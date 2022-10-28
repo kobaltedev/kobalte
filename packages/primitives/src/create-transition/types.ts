@@ -38,4 +38,4 @@ export type TransitionName =
   | "pop-bottom-left"
   | "pop-bottom-right";
 
-export type HopeTransition = TransitionName | TransitionStyles;
+export type KobalteTransition = TransitionName | TransitionStyles;

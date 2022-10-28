@@ -8,6 +8,11 @@
 
 import { Dict } from "./types";
 
+// Array assertions
+export function isArray<T>(value: any): value is Array<T> {
+  return Array.isArray(value);
+}
+
 // String assertions
 export function isString(value: any): value is string {
   return Object.prototype.toString.call(value) === "[object String]";

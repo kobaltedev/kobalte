@@ -153,6 +153,7 @@ importers:
       '@kobalte/utils': ^0.0.0
       '@tailwindcss/forms': 0.5.3
       autoprefixer: 10.4.13
+      clsx: ^1.2.1
       cssnano: 5.1.13
       postcss: 8.4.18
       postcss-cli: 10.0.0
@@ -162,6 +163,7 @@ importers:
       '@floating-ui/dom': 1.0.3
       '@kobalte/primitives': link:../primitives
       '@kobalte/utils': link:../utils
+      clsx: 1.2.1
     devDependencies:
       '@kobalte/tailwind': link:../tailwind
       '@kobalte/tests': link:../tests
@@ -203,6 +205,16 @@ importers:
       '@solid-primitives/media': 2.0.4_solid-js@1.6.0
     devDependencies:
       '@kobalte/tests': link:../tests
+
+  packages/styles:
+    specifiers:
+      '@kobalte/utils': ^0.0.0
+      clsx: ^1.2.1
+      dset: ^3.1.2
+    dependencies:
+      '@kobalte/utils': link:../utils
+      clsx: 1.2.1
+      dset: 3.1.2
 
   packages/tailwind:
     specifiers:
@@ -4887,6 +4899,11 @@ packages:
     engines: {node: '>=0.8'}
     dev: true
 
+  /clsx/1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
+    dev: false
+
   /co/4.6.0:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
@@ -5552,6 +5569,11 @@ packages:
     dependencies:
       is-obj: 2.0.0
     dev: true
+
+  /dset/3.1.2:
+    resolution: {integrity: sha512-g/M9sqy3oHe477Ar4voQxWtaPIFw1jTdKZuomOjhCcBx9nHUNn0pu6NopuFFrTh/TRZIKEj+76vLWFu9BNKk+Q==}
+    engines: {node: '>=4'}
+    dev: false
 
   /eastasianwidth/0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}

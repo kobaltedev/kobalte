@@ -10,7 +10,7 @@ import { isString } from "@kobalte/utils";
 import { JSX } from "solid-js";
 
 import { DEFAULT_TRANSITIONS } from "./default-transitions";
-import { HopeTransition, TransitionStyles } from "./types";
+import { KobalteTransition, TransitionStyles } from "./types";
 
 const TRANSITION_PHASES_MAP = {
   beforeEnter: "out",
@@ -24,13 +24,15 @@ const TRANSITION_PHASES_MAP = {
 export type TransitionPhase = keyof typeof TRANSITION_PHASES_MAP;
 
 interface GetTransitionStylesParams {
-  transition: HopeTransition;
+  transition: KobalteTransition;
   phase: TransitionPhase;
   duration: number;
   easing: JSX.CSSProperties["transition-timing-function"];
 }
 
-export function getTransitionStyles(params: GetTransitionStylesParams): JSX.CSSProperties {
+export function getTransitionStyles(
+  params: GetTransitionStylesParams
+): JSX.CSSProperties {
   const shared: JSX.CSSProperties = {
     "transition-duration": `${params.duration}ms`,
     "transition-timing-function": params.easing,
@@ -61,6 +63,9 @@ export function getTransitionStyles(params: GetTransitionStylesParams): JSX.CSSP
 
 function getTransitionProperty(transitionStyles: TransitionStyles): string {
   return [
-    ...new Set([...Object.keys(transitionStyles.in), ...Object.keys(transitionStyles.out)]),
+    ...new Set([
+      ...Object.keys(transitionStyles.in),
+      ...Object.keys(transitionStyles.out),
+    ]),
   ].join(", ");
 }
