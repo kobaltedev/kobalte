@@ -46,7 +46,13 @@
     "test": "jest --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@kobalte/utils": "^0.0.0",
+    "@solid-primitives/media": "^2.0.4"
+  },
+  "devDependencies": {
+    "@kobalte/tests": "^0.0.0"
+  },
   "peerDependencies": {
     "solid-js": "^1.6.0"
   },

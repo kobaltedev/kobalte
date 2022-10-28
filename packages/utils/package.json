@@ -47,8 +47,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@solid-primitives/refs": "0.3.3",
-    "@solid-primitives/utils": "3.1.0"
+    "@solid-primitives/refs": "^0.3.3",
+    "@solid-primitives/utils": "^3.1.0"
   },
   "peerDependencies": {
     "solid-js": "^1.6.0"
