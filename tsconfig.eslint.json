@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // ensure that nobody can accidentally use this config for a build
+    "noEmit": true
+  },
+  "include": ["packages", "apps", "configs"],
+  "exclude": ["node_modules", "template", "**/dist", "**/build"]
+}

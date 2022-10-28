@@ -1,0 +1,63 @@
+{
+  "name": "@kobalte/core",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Kobalte core component library.",
+  "keywords": [
+    "solid",
+    "solidjs",
+    "ui",
+    "library",
+    "design-system",
+    "components"
+  ],
+  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/core#readme",
+  "bugs": {
+    "url": "https://github.com/fabien-ml/kobalte/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabien-ml/kobalte.git"
+  },
+  "license": "MIT",
+  "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "solid": "./dist/source/index.jsx",
+      "import": "./dist/esm/index.js",
+      "browser": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js"
+      },
+      "require": "./dist/cjs/index.js",
+      "node": "./dist/cjs/index.js"
+    }
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c ../../configs/rollup.config.ts",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "vite serve dev --host",
+    "test": "jest --passWithNoTests",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@kobalte/primitives": "^0.0.0",
+    "@kobalte/utils": "^0.0.0"
+  },
+  "devDependencies": {
+    "@kobalte/tests": "^0.0.0"
+  },
+  "peerDependencies": {
+    "solid-js": "^1.6.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

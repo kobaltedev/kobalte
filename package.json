@@ -1,0 +1,95 @@
+{
+  "name": "kobalte-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "An opinionated Design System for SolidJS.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabien-ml/kobalte.git"
+  },
+  "license": "MIT",
+  "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "changeset": "changeset",
+    "ci:release": "pnpm build && changeset publish",
+    "ci:version": "changeset version && pnpm i --no-frozen-lockfile && git add .",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "commit": "git-cz",
+    "dev": "pnpm -F @kobalte/core dev",
+    "dev:docs": "pnpm -F @kobalte/docs dev",
+    "format": "prettier . --write --ignore-path .gitignore && git update-index --again",
+    "prepare": "husky install",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck"
+  },
+  "lint-staged": {
+    "*.{md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "eslint",
+      "prettier --write"
+    ],
+    "package.json": "npx sort-package-json"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "7.19.1",
+    "@babel/preset-env": "7.19.1",
+    "@changesets/cli": "2.24.4",
+    "@commitlint/cli": "17.1.2",
+    "@commitlint/config-conventional": "17.1.0",
+    "@commitlint/cz-commitlint": "17.1.2",
+    "@jest/types": "28.1.1",
+    "@testing-library/dom": "8.17.1",
+    "@testing-library/jest-dom": "5.16.5",
+    "@testing-library/user-event": "14.4.3",
+    "@types/jest": "28.1.4",
+    "@types/node": "18.7.18",
+    "@types/testing-library__jest-dom": "5.14.5",
+    "@typescript-eslint/eslint-plugin": "5.30.5",
+    "@typescript-eslint/parser": "5.30.5",
+    "babel-preset-solid": "1.6.0",
+    "commitizen": "4.2.5",
+    "eslint": "8.19.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-import-resolver-typescript": "2.7.1",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-jsx-a11y": "6.6.1",
+    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-simple-import-sort": "7.0.0",
+    "eslint-plugin-solid": "0.7.2",
+    "husky": "8.0.1",
+    "inquirer": "8.2.4",
+    "jest": "28.1.2",
+    "jest-environment-jsdom": "28.1.2",
+    "lint-staged": "13.0.3",
+    "prettier": "2.7.1",
+    "prettier-plugin-tailwindcss": "0.1.13",
+    "rollup": "2.79.0",
+    "rollup-preset-solid": "1.4.0",
+    "solid-js": "1.6.0",
+    "solid-testing-library": "0.3.0",
+    "sort-package-json": "1.57.0",
+    "ts-jest": "28.0.5",
+    "turbo": "1.4.6",
+    "typescript": "4.8.3",
+    "vite": "3.1.4",
+    "vite-plugin-solid": "2.3.9"
+  },
+  "packageManager": "pnpm@7.3.0",
+  "pnpm": {
+    "overrides": {
+      "vite-plugin-solid": "2.3.9"
+    }
+  }
+}
