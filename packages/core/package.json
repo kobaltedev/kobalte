@@ -54,6 +54,7 @@
     "@kobalte/utils": "^0.0.0"
   },
   "devDependencies": {
+    "@kobalte/tailwind": "^0.0.0",
     "@kobalte/tests": "^0.0.0",
     "@tailwindcss/forms": "0.5.3",
     "autoprefixer": "10.4.13",

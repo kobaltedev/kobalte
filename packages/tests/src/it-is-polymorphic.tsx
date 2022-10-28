@@ -27,7 +27,7 @@ export function itIsPolymorphic<P>(
 
     const { container: withTag } = render(() => (
       <Wrapper>
-        <Comp as="a" href="https://kobalte.com" {...requiredProps} />
+        <Comp as="a" href="https://kobalte.dev" {...requiredProps} />
       </Wrapper>
     ));
 

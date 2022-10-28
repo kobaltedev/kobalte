@@ -1,0 +1,60 @@
+{
+  "name": "@kobalte/docs",
+  "private": true,
+  "description": "Documentation website of the Kobalte design system.",
+  "keywords": [
+    "solid",
+    "solidjs",
+    "ui",
+    "library",
+    "design-system",
+    "components"
+  ],
+  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/apps/docs#readme",
+  "bugs": {
+    "url": "https://github.com/fabien-ml/kobalte/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabien-ml/kobalte.git"
+  },
+  "license": "MIT",
+  "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
+  "type": "module",
+  "scripts": {
+    "build": "solid-start build",
+    "clean": "rm -rf .solid && rm -rf netlify && rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "solid-start dev --host",
+    "start": "solid-start start"
+  },
+  "dependencies": {
+    "@kobalte/core": "0.0.0",
+    "@solidjs/meta": "0.28.0",
+    "@solidjs/router": "0.4.3"
+  },
+  "devDependencies": {
+    "@kobalte/mdx": "0.0.0",
+    "@kobalte/tailwind": "0.0.0",
+    "autoprefixer": "10.4.13",
+    "babel-preset-solid": "1.6.0",
+    "encoding": "0.1.13",
+    "iconv-lite": "0.6.3",
+    "node-fetch": "2.6.7",
+    "postcss": "8.4.18",
+    "rehype-pretty-code": "0.3.2",
+    "remark-code-extra": "1.0.1",
+    "remark-gfm": "3.0.1",
+    "safer-buffer": "2.1.2",
+    "shiki": "0.11.1",
+    "solid-js": "1.6.0",
+    "solid-mdx": "0.0.6",
+    "solid-start": "0.1.3",
+    "solid-start-netlify": "0.1.3",
+    "solid-start-node": "0.1.3",
+    "tailwindcss": "3.2.1",
+    "undici": "5.10.0"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

@@ -1,84 +1,85 @@
-@tailwind base;
+:root {
+  /* Tailwind - blue */
+  --kobalte-colors-primary-50: 239 246 255;
+  --kobalte-colors-primary-100: 219 234 254;
+  --kobalte-colors-primary-200: 191 219 254;
+  --kobalte-colors-primary-300: 147 197 253;
+  --kobalte-colors-primary-400: 96 165 250;
+  --kobalte-colors-primary-500: 59 130 246;
+  --kobalte-colors-primary-600: 37 99 235;
+  --kobalte-colors-primary-700: 29 78 216;
+  --kobalte-colors-primary-800: 30 64 175;
+  --kobalte-colors-primary-900: 30 58 138;
 
-@layer base {
-  :root {
-    /* Colors */
-    --kobalte-colors-primary-50: 239 246 255;
-    --kobalte-colors-primary-100: 219 234 254;
-    --kobalte-colors-primary-200: 191 219 254;
-    --kobalte-colors-primary-300: 147 197 253;
-    --kobalte-colors-primary-400: 96 165 250;
-    --kobalte-colors-primary-500: 59 130 246;
-    --kobalte-colors-primary-600: 37 99 235;
-    --kobalte-colors-primary-700: 29 78 216;
-    --kobalte-colors-primary-800: 30 64 175;
-    --kobalte-colors-primary-900: 30 58 138;
+  /* Tailwind - slate */
+  --kobalte-colors-neutral-50: 248 250 252;
+  --kobalte-colors-neutral-100: 241 245 249;
+  --kobalte-colors-neutral-200: 226 232 240;
+  --kobalte-colors-neutral-300: 203 213 225;
+  --kobalte-colors-neutral-400: 148 163 184;
+  --kobalte-colors-neutral-500: 100 116 139;
+  --kobalte-colors-neutral-600: 71 85 105;
+  --kobalte-colors-neutral-700: 51 65 85;
+  --kobalte-colors-neutral-800: 30 41 59;
+  --kobalte-colors-neutral-900: 15 23 42;
 
-    --kobalte-colors-neutral-50: 249 250 250;
-    --kobalte-colors-neutral-100: 244 245 246;
-    --kobalte-colors-neutral-200: 227 229 232;
-    --kobalte-colors-neutral-300: 207 211 216;
-    --kobalte-colors-neutral-400: 154 161 172;
-    --kobalte-colors-neutral-500: 103 112 126;
-    --kobalte-colors-neutral-600: 73 80 90;
-    --kobalte-colors-neutral-700: 57 62 70;
-    --kobalte-colors-neutral-800: 34 37 42;
-    --kobalte-colors-neutral-900: 21 22 25;
+  /* Tailwind - green */
+  --kobalte-colors-success-50: 240 253 244;
+  --kobalte-colors-success-100: 220 252 231;
+  --kobalte-colors-success-200: 187 247 208;
+  --kobalte-colors-success-300: 134 239 172;
+  --kobalte-colors-success-400: 74 222 128;
+  --kobalte-colors-success-500: 34 197 94;
+  --kobalte-colors-success-600: 22 163 74;
+  --kobalte-colors-success-700: 21 128 61;
+  --kobalte-colors-success-800: 22 101 52;
+  --kobalte-colors-success-900: 20 83 45;
 
-    --kobalte-colors-success-50: 240 253 244;
-    --kobalte-colors-success-100: 220 252 231;
-    --kobalte-colors-success-200: 187 247 208;
-    --kobalte-colors-success-300: 134 239 172;
-    --kobalte-colors-success-400: 74 222 128;
-    --kobalte-colors-success-500: 34 197 94;
-    --kobalte-colors-success-600: 22 163 74;
-    --kobalte-colors-success-700: 21 128 61;
-    --kobalte-colors-success-800: 22 101 52;
-    --kobalte-colors-success-900: 20 83 45;
+  /* Tailwind - violet */
+  --kobalte-colors-info-50: 245 243 255;
+  --kobalte-colors-info-100: 237 233 254;
+  --kobalte-colors-info-200: 221 214 254;
+  --kobalte-colors-info-300: 196 181 253;
+  --kobalte-colors-info-400: 167 139 250;
+  --kobalte-colors-info-500: 139 92 246;
+  --kobalte-colors-info-600: 124 58 237;
+  --kobalte-colors-info-700: 109 40 217;
+  --kobalte-colors-info-800: 91 33 182;
+  --kobalte-colors-info-900: 76 29 149;
 
-    --kobalte-colors-info-50: 245 243 255;
-    --kobalte-colors-info-100: 237 233 254;
-    --kobalte-colors-info-200: 221 214 254;
-    --kobalte-colors-info-300: 196 181 253;
-    --kobalte-colors-info-400: 167 139 250;
-    --kobalte-colors-info-500: 139 92 246;
-    --kobalte-colors-info-600: 124 58 237;
-    --kobalte-colors-info-700: 109 40 217;
-    --kobalte-colors-info-800: 91 33 182;
-    --kobalte-colors-info-900: 76 29 149;
+  /* Tailwind - yellow */
+  --kobalte-colors-warning-50: 254 252 232;
+  --kobalte-colors-warning-100: 254 249 195;
+  --kobalte-colors-warning-200: 254 240 138;
+  --kobalte-colors-warning-300: 253 224 71;
+  --kobalte-colors-warning-400: 250 204 21;
+  --kobalte-colors-warning-500: 234 179 8;
+  --kobalte-colors-warning-600: 202 138 4;
+  --kobalte-colors-warning-700: 161 98 7;
+  --kobalte-colors-warning-800: 133 77 14;
+  --kobalte-colors-warning-900: 113 63 18;
 
-    --kobalte-colors-warning-50: 254 252 232;
-    --kobalte-colors-warning-100: 254 249 195;
-    --kobalte-colors-warning-200: 254 240 138;
-    --kobalte-colors-warning-300: 253 224 71;
-    --kobalte-colors-warning-400: 250 204 21;
-    --kobalte-colors-warning-500: 234 179 8;
-    --kobalte-colors-warning-600: 202 138 4;
-    --kobalte-colors-warning-700: 161 98 7;
-    --kobalte-colors-warning-800: 133 77 14;
-    --kobalte-colors-warning-900: 113 63 18;
+  /* Tailwind - red */
+  --kobalte-colors-danger-50: 254 242 242;
+  --kobalte-colors-danger-100: 254 226 226;
+  --kobalte-colors-danger-200: 254 202 202;
+  --kobalte-colors-danger-300: 252 165 165;
+  --kobalte-colors-danger-400: 248 113 113;
+  --kobalte-colors-danger-500: 239 68 68;
+  --kobalte-colors-danger-600: 220 38 38;
+  --kobalte-colors-danger-700: 185 28 28;
+  --kobalte-colors-danger-800: 153 27 27;
+  --kobalte-colors-danger-900: 127 29 29;
+}
 
-    --kobalte-colors-danger-50: 254 242 242;
-    --kobalte-colors-danger-100: 254 226 226;
-    --kobalte-colors-danger-200: 254 202 202;
-    --kobalte-colors-danger-300: 252 165 165;
-    --kobalte-colors-danger-400: 248 113 113;
-    --kobalte-colors-danger-500: 239 68 68;
-    --kobalte-colors-danger-600: 220 38 38;
-    --kobalte-colors-danger-700: 185 28 28;
-    --kobalte-colors-danger-800: 153 27 27;
-    --kobalte-colors-danger-900: 127 29 29;
-  }
+html {
+  font-size: 16px;
+}
 
-  html {
-    font-size: 16px;
-  }
-
-  body {
-    @apply bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-100;
-    font-family: inherit;
-    line-height: inherit;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+body {
+  @apply bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-100;
+  font-family: inherit;
+  line-height: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
