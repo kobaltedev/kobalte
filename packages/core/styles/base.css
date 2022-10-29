@@ -1,75 +1,382 @@
 :root {
-  /* Tailwind - blue */
-  --kobalte-colors-primary-50: 239 246 255;
-  --kobalte-colors-primary-100: 219 234 254;
-  --kobalte-colors-primary-200: 191 219 254;
-  --kobalte-colors-primary-300: 147 197 253;
-  --kobalte-colors-primary-400: 96 165 250;
-  --kobalte-colors-primary-500: 59 130 246;
-  --kobalte-colors-primary-600: 37 99 235;
-  --kobalte-colors-primary-700: 29 78 216;
-  --kobalte-colors-primary-800: 30 64 175;
-  --kobalte-colors-primary-900: 30 58 138;
+  /* TailwindCSS colors */
+  --kobalte-colors-slate-50: 248 250 252;
+  --kobalte-colors-slate-100: 241 245 249;
+  --kobalte-colors-slate-200: 226 232 240;
+  --kobalte-colors-slate-300: 203 213 225;
+  --kobalte-colors-slate-400: 148 163 184;
+  --kobalte-colors-slate-500: 100 116 139;
+  --kobalte-colors-slate-600: 71 85 105;
+  --kobalte-colors-slate-700: 51 65 85;
+  --kobalte-colors-slate-800: 30 41 59;
+  --kobalte-colors-slate-900: 15 23 42;
 
-  /* Tailwind - slate */
-  --kobalte-colors-neutral-50: 248 250 252;
-  --kobalte-colors-neutral-100: 241 245 249;
-  --kobalte-colors-neutral-200: 226 232 240;
-  --kobalte-colors-neutral-300: 203 213 225;
-  --kobalte-colors-neutral-400: 148 163 184;
-  --kobalte-colors-neutral-500: 100 116 139;
-  --kobalte-colors-neutral-600: 71 85 105;
-  --kobalte-colors-neutral-700: 51 65 85;
-  --kobalte-colors-neutral-800: 30 41 59;
-  --kobalte-colors-neutral-900: 15 23 42;
+  --kobalte-colors-gray-50: 249 250 251;
+  --kobalte-colors-gray-100: 243 244 246;
+  --kobalte-colors-gray-200: 229 231 235;
+  --kobalte-colors-gray-300: 209 213 219;
+  --kobalte-colors-gray-400: 156 163 175;
+  --kobalte-colors-gray-500: 107 114 128;
+  --kobalte-colors-gray-600: 75 85 99;
+  --kobalte-colors-gray-700: 55 65 81;
+  --kobalte-colors-gray-800: 31 41 55;
+  --kobalte-colors-gray-900: 17 24 39;
 
-  /* Tailwind - green */
-  --kobalte-colors-success-50: 240 253 244;
-  --kobalte-colors-success-100: 220 252 231;
-  --kobalte-colors-success-200: 187 247 208;
-  --kobalte-colors-success-300: 134 239 172;
-  --kobalte-colors-success-400: 74 222 128;
-  --kobalte-colors-success-500: 34 197 94;
-  --kobalte-colors-success-600: 22 163 74;
-  --kobalte-colors-success-700: 21 128 61;
-  --kobalte-colors-success-800: 22 101 52;
-  --kobalte-colors-success-900: 20 83 45;
+  --kobalte-colors-zinc-50: 250 250 250;
+  --kobalte-colors-zinc-100: 244 244 245;
+  --kobalte-colors-zinc-200: 228 228 231;
+  --kobalte-colors-zinc-300: 212 212 216;
+  --kobalte-colors-zinc-400: 161 161 170;
+  --kobalte-colors-zinc-500: 113 113 122;
+  --kobalte-colors-zinc-600: 82 82 91;
+  --kobalte-colors-zinc-700: 63 63 70;
+  --kobalte-colors-zinc-800: 39 39 42;
+  --kobalte-colors-zinc-900: 24 24 27;
 
-  /* Tailwind - violet */
-  --kobalte-colors-info-50: 245 243 255;
-  --kobalte-colors-info-100: 237 233 254;
-  --kobalte-colors-info-200: 221 214 254;
-  --kobalte-colors-info-300: 196 181 253;
-  --kobalte-colors-info-400: 167 139 250;
-  --kobalte-colors-info-500: 139 92 246;
-  --kobalte-colors-info-600: 124 58 237;
-  --kobalte-colors-info-700: 109 40 217;
-  --kobalte-colors-info-800: 91 33 182;
-  --kobalte-colors-info-900: 76 29 149;
+  --kobalte-colors-neutral-50: 250 250 250;
+  --kobalte-colors-neutral-100: 245 245 245;
+  --kobalte-colors-neutral-200: 229 229 229;
+  --kobalte-colors-neutral-300: 212 212 212;
+  --kobalte-colors-neutral-400: 163 163 163;
+  --kobalte-colors-neutral-500: 115 115 115;
+  --kobalte-colors-neutral-600: 82 82 82;
+  --kobalte-colors-neutral-700: 64 64 64;
+  --kobalte-colors-neutral-800: 38 38 38;
+  --kobalte-colors-neutral-900: 23 23 23;
 
-  /* Tailwind - yellow */
-  --kobalte-colors-warning-50: 254 252 232;
-  --kobalte-colors-warning-100: 254 249 195;
-  --kobalte-colors-warning-200: 254 240 138;
-  --kobalte-colors-warning-300: 253 224 71;
-  --kobalte-colors-warning-400: 250 204 21;
-  --kobalte-colors-warning-500: 234 179 8;
-  --kobalte-colors-warning-600: 202 138 4;
-  --kobalte-colors-warning-700: 161 98 7;
-  --kobalte-colors-warning-800: 133 77 14;
-  --kobalte-colors-warning-900: 113 63 18;
+  --kobalte-colors-stone-50: 250 250 249;
+  --kobalte-colors-stone-100: 245 245 244;
+  --kobalte-colors-stone-200: 231 229 228;
+  --kobalte-colors-stone-300: 214 211 209;
+  --kobalte-colors-stone-400: 168 162 158;
+  --kobalte-colors-stone-500: 120 113 108;
+  --kobalte-colors-stone-600: 87 83 78;
+  --kobalte-colors-stone-700: 68 64 60;
+  --kobalte-colors-stone-800: 41 37 36;
+  --kobalte-colors-stone-900: 28 25 23;
 
-  /* Tailwind - red */
-  --kobalte-colors-danger-50: 254 242 242;
-  --kobalte-colors-danger-100: 254 226 226;
-  --kobalte-colors-danger-200: 254 202 202;
-  --kobalte-colors-danger-300: 252 165 165;
-  --kobalte-colors-danger-400: 248 113 113;
-  --kobalte-colors-danger-500: 239 68 68;
-  --kobalte-colors-danger-600: 220 38 38;
-  --kobalte-colors-danger-700: 185 28 28;
-  --kobalte-colors-danger-800: 153 27 27;
-  --kobalte-colors-danger-900: 127 29 29;
+  --kobalte-colors-red-50: 254 242 242;
+  --kobalte-colors-red-100: 254 226 226;
+  --kobalte-colors-red-200: 254 202 202;
+  --kobalte-colors-red-300: 252 165 165;
+  --kobalte-colors-red-400: 248 113 113;
+  --kobalte-colors-red-500: 239 68 68;
+  --kobalte-colors-red-600: 220 38 38;
+  --kobalte-colors-red-700: 185 28 28;
+  --kobalte-colors-red-800: 153 27 27;
+  --kobalte-colors-red-900: 127 29 29;
+
+  --kobalte-colors-orange-50: 255 247 237;
+  --kobalte-colors-orange-100: 255 237 213;
+  --kobalte-colors-orange-200: 254 215 170;
+  --kobalte-colors-orange-300: 253 186 116;
+  --kobalte-colors-orange-400: 251 146 60;
+  --kobalte-colors-orange-500: 249 115 22;
+  --kobalte-colors-orange-600: 234 88 12;
+  --kobalte-colors-orange-700: 194 65 12;
+  --kobalte-colors-orange-800: 154 52 18;
+  --kobalte-colors-orange-900: 124 45 18;
+
+  --kobalte-colors-amber-50: 255 251 235;
+  --kobalte-colors-amber-100: 254 243 199;
+  --kobalte-colors-amber-200: 253 230 138;
+  --kobalte-colors-amber-300: 252 211 77;
+  --kobalte-colors-amber-400: 251 191 36;
+  --kobalte-colors-amber-500: 245 158 11;
+  --kobalte-colors-amber-600: 217 119 6;
+  --kobalte-colors-amber-700: 180 83 9;
+  --kobalte-colors-amber-800: 146 64 14;
+  --kobalte-colors-amber-900: 120 53 15;
+
+  --kobalte-colors-yellow-50: 254 252 232;
+  --kobalte-colors-yellow-100: 254 249 195;
+  --kobalte-colors-yellow-200: 254 240 138;
+  --kobalte-colors-yellow-300: 253 224 71;
+  --kobalte-colors-yellow-400: 250 204 21;
+  --kobalte-colors-yellow-500: 234 179 8;
+  --kobalte-colors-yellow-600: 202 138 4;
+  --kobalte-colors-yellow-700: 161 98 7;
+  --kobalte-colors-yellow-800: 133 77 14;
+  --kobalte-colors-yellow-900: 113 63 18;
+
+  --kobalte-colors-lime-50: 247 254 231;
+  --kobalte-colors-lime-100: 236 252 203;
+  --kobalte-colors-lime-200: 217 249 157;
+  --kobalte-colors-lime-300: 190 242 100;
+  --kobalte-colors-lime-400: 163 230 53;
+  --kobalte-colors-lime-500: 132 204 22;
+  --kobalte-colors-lime-600: 101 163 13;
+  --kobalte-colors-lime-700: 77 124 15;
+  --kobalte-colors-lime-800: 63 98 18;
+  --kobalte-colors-lime-900: 54 83 20;
+
+  --kobalte-colors-green-50: 240 253 244;
+  --kobalte-colors-green-100: 220 252 231;
+  --kobalte-colors-green-200: 187 247 208;
+  --kobalte-colors-green-300: 134 239 172;
+  --kobalte-colors-green-400: 74 222 128;
+  --kobalte-colors-green-500: 34 197 94;
+  --kobalte-colors-green-600: 22 163 74;
+  --kobalte-colors-green-700: 21 128 61;
+  --kobalte-colors-green-800: 22 101 52;
+  --kobalte-colors-green-900: 20 83 45;
+
+  --kobalte-colors-emerald-50: 236 253 245;
+  --kobalte-colors-emerald-100: 209 250 229;
+  --kobalte-colors-emerald-200: 167 243 208;
+  --kobalte-colors-emerald-300: 110 231 183;
+  --kobalte-colors-emerald-400: 52 211 153;
+  --kobalte-colors-emerald-500: 16 185 129;
+  --kobalte-colors-emerald-600: 5 150 105;
+  --kobalte-colors-emerald-700: 4 120 87;
+  --kobalte-colors-emerald-800: 6 95 70;
+  --kobalte-colors-emerald-900: 6 78 59;
+
+  --kobalte-colors-teal-50: 240 253 250;
+  --kobalte-colors-teal-100: 204 251 241;
+  --kobalte-colors-teal-200: 153 246 228;
+  --kobalte-colors-teal-300: 94 234 212;
+  --kobalte-colors-teal-400: 45 212 191;
+  --kobalte-colors-teal-500: 20 184 166;
+  --kobalte-colors-teal-600: 13 148 136;
+  --kobalte-colors-teal-700: 15 118 110;
+  --kobalte-colors-teal-800: 17 94 89;
+  --kobalte-colors-teal-900: 19 78 74;
+
+  --kobalte-colors-cyan-50: 236 254 255;
+  --kobalte-colors-cyan-100: 207 250 254;
+  --kobalte-colors-cyan-200: 165 243 252;
+  --kobalte-colors-cyan-300: 103 232 249;
+  --kobalte-colors-cyan-400: 34 211 238;
+  --kobalte-colors-cyan-500: 6 182 212;
+  --kobalte-colors-cyan-600: 8 145 178;
+  --kobalte-colors-cyan-700: 14 116 144;
+  --kobalte-colors-cyan-800: 21 94 117;
+  --kobalte-colors-cyan-900: 22 78 99;
+
+  --kobalte-colors-sky-50: 240 249 255;
+  --kobalte-colors-sky-100: 224 242 254;
+  --kobalte-colors-sky-200: 186 230 253;
+  --kobalte-colors-sky-300: 125 211 252;
+  --kobalte-colors-sky-400: 56 189 248;
+  --kobalte-colors-sky-500: 14 165 233;
+  --kobalte-colors-sky-600: 2 132 199;
+  --kobalte-colors-sky-700: 3 105 161;
+  --kobalte-colors-sky-800: 7 89 133;
+  --kobalte-colors-sky-900: 12 74 110;
+
+  --kobalte-colors-blue-50: 239 246 255;
+  --kobalte-colors-blue-100: 219 234 254;
+  --kobalte-colors-blue-200: 191 219 254;
+  --kobalte-colors-blue-300: 147 197 253;
+  --kobalte-colors-blue-400: 96 165 250;
+  --kobalte-colors-blue-500: 59 130 246;
+  --kobalte-colors-blue-600: 37 99 235;
+  --kobalte-colors-blue-700: 29 78 216;
+  --kobalte-colors-blue-800: 30 64 175;
+  --kobalte-colors-blue-900: 30 58 138;
+
+  --kobalte-colors-indigo-50: 238 242 255;
+  --kobalte-colors-indigo-100: 224 231 255;
+  --kobalte-colors-indigo-200: 199 210 254;
+  --kobalte-colors-indigo-300: 165 180 252;
+  --kobalte-colors-indigo-400: 129 140 248;
+  --kobalte-colors-indigo-500: 99 102 241;
+  --kobalte-colors-indigo-600: 79 70 229;
+  --kobalte-colors-indigo-700: 67 56 202;
+  --kobalte-colors-indigo-800: 55 48 163;
+  --kobalte-colors-indigo-900: 49 46 129;
+
+  --kobalte-colors-violet-50: 245 243 255;
+  --kobalte-colors-violet-100: 237 233 254;
+  --kobalte-colors-violet-200: 221 214 254;
+  --kobalte-colors-violet-300: 196 181 253;
+  --kobalte-colors-violet-400: 167 139 250;
+  --kobalte-colors-violet-500: 139 92 246;
+  --kobalte-colors-violet-600: 124 58 237;
+  --kobalte-colors-violet-700: 109 40 217;
+  --kobalte-colors-violet-800: 91 33 182;
+  --kobalte-colors-violet-900: 76 29 149;
+
+  --kobalte-colors-purple-50: 250 245 255;
+  --kobalte-colors-purple-100: 243 232 255;
+  --kobalte-colors-purple-200: 233 213 255;
+  --kobalte-colors-purple-300: 216 180 254;
+  --kobalte-colors-purple-400: 192 132 252;
+  --kobalte-colors-purple-500: 168 85 247;
+  --kobalte-colors-purple-600: 147 51 234;
+  --kobalte-colors-purple-700: 126 34 206;
+  --kobalte-colors-purple-800: 107 33 168;
+  --kobalte-colors-purple-900: 88 28 135;
+
+  --kobalte-colors-fuchsia-50: 253 244 255;
+  --kobalte-colors-fuchsia-100: 250 232 255;
+  --kobalte-colors-fuchsia-200: 245 208 254;
+  --kobalte-colors-fuchsia-300: 240 171 252;
+  --kobalte-colors-fuchsia-400: 232 121 249;
+  --kobalte-colors-fuchsia-500: 217 70 239;
+  --kobalte-colors-fuchsia-600: 192 38 211;
+  --kobalte-colors-fuchsia-700: 162 28 175;
+  --kobalte-colors-fuchsia-800: 134 25 143;
+  --kobalte-colors-fuchsia-900: 112 26 117;
+
+  --kobalte-colors-pink-50: 253 242 248;
+  --kobalte-colors-pink-100: 252 231 243;
+  --kobalte-colors-pink-200: 251 207 232;
+  --kobalte-colors-pink-300: 249 168 212;
+  --kobalte-colors-pink-400: 244 114 182;
+  --kobalte-colors-pink-500: 236 72 153;
+  --kobalte-colors-pink-600: 219 39 119;
+  --kobalte-colors-pink-700: 190 24 93;
+  --kobalte-colors-pink-800: 157 23 77;
+  --kobalte-colors-pink-900: 131 24 67;
+
+  --kobalte-colors-rose-50: 255 241 242;
+  --kobalte-colors-rose-100: 255 228 230;
+  --kobalte-colors-rose-200: 254 205 211;
+  --kobalte-colors-rose-300: 253 164 175;
+  --kobalte-colors-rose-400: 251 113 133;
+  --kobalte-colors-rose-500: 244 63 94;
+  --kobalte-colors-rose-600: 225 29 72;
+  --kobalte-colors-rose-700: 190 18 60;
+  --kobalte-colors-rose-800: 159 18 57;
+  --kobalte-colors-rose-900: 136 19 55;
+
+  /* Semantic colors */
+  --kobalte-colors-primary-50: var(--kobalte-colors-blue-50);
+  --kobalte-colors-primary-100: var(--kobalte-colors-blue-100);
+  --kobalte-colors-primary-200: var(--kobalte-colors-blue-200);
+  --kobalte-colors-primary-300: var(--kobalte-colors-blue-300);
+  --kobalte-colors-primary-400: var(--kobalte-colors-blue-400);
+  --kobalte-colors-primary-500: var(--kobalte-colors-blue-500);
+  --kobalte-colors-primary-600: var(--kobalte-colors-blue-600);
+  --kobalte-colors-primary-700: var(--kobalte-colors-blue-700);
+  --kobalte-colors-primary-800: var(--kobalte-colors-blue-800);
+  --kobalte-colors-primary-900: var(--kobalte-colors-blue-900);
+
+  --kobalte-colors-secondary-50: var(--kobalte-colors-slate-50);
+  --kobalte-colors-secondary-100: var(--kobalte-colors-slate-100);
+  --kobalte-colors-secondary-200: var(--kobalte-colors-slate-200);
+  --kobalte-colors-secondary-300: var(--kobalte-colors-slate-300);
+  --kobalte-colors-secondary-400: var(--kobalte-colors-slate-400);
+  --kobalte-colors-secondary-500: var(--kobalte-colors-slate-500);
+  --kobalte-colors-secondary-600: var(--kobalte-colors-slate-600);
+  --kobalte-colors-secondary-700: var(--kobalte-colors-slate-700);
+  --kobalte-colors-secondary-800: var(--kobalte-colors-slate-800);
+  --kobalte-colors-secondary-900: var(--kobalte-colors-slate-900);
+
+  --kobalte-colors-success-50: var(--kobalte-colors-green-50);
+  --kobalte-colors-success-100: var(--kobalte-colors-green-100);
+  --kobalte-colors-success-200: var(--kobalte-colors-green-200);
+  --kobalte-colors-success-300: var(--kobalte-colors-green-300);
+  --kobalte-colors-success-400: var(--kobalte-colors-green-400);
+  --kobalte-colors-success-500: var(--kobalte-colors-green-500);
+  --kobalte-colors-success-600: var(--kobalte-colors-green-600);
+  --kobalte-colors-success-700: var(--kobalte-colors-green-700);
+  --kobalte-colors-success-800: var(--kobalte-colors-green-800);
+  --kobalte-colors-success-900: var(--kobalte-colors-green-900);
+
+  --kobalte-colors-info-50: var(--kobalte-colors-violet-50);
+  --kobalte-colors-info-100: var(--kobalte-colors-violet-100);
+  --kobalte-colors-info-200: var(--kobalte-colors-violet-200);
+  --kobalte-colors-info-300: var(--kobalte-colors-violet-300);
+  --kobalte-colors-info-400: var(--kobalte-colors-violet-400);
+  --kobalte-colors-info-500: var(--kobalte-colors-violet-500);
+  --kobalte-colors-info-600: var(--kobalte-colors-violet-600);
+  --kobalte-colors-info-700: var(--kobalte-colors-violet-700);
+  --kobalte-colors-info-800: var(--kobalte-colors-violet-800);
+  --kobalte-colors-info-900: var(--kobalte-colors-violet-900);
+
+  --kobalte-colors-warning-50: var(--kobalte-colors-yellow-50);
+  --kobalte-colors-warning-100: var(--kobalte-colors-yellow-100);
+  --kobalte-colors-warning-200: var(--kobalte-colors-yellow-200);
+  --kobalte-colors-warning-300: var(--kobalte-colors-yellow-300);
+  --kobalte-colors-warning-400: var(--kobalte-colors-yellow-400);
+  --kobalte-colors-warning-500: var(--kobalte-colors-yellow-500);
+  --kobalte-colors-warning-600: var(--kobalte-colors-yellow-600);
+  --kobalte-colors-warning-700: var(--kobalte-colors-yellow-700);
+  --kobalte-colors-warning-800: var(--kobalte-colors-yellow-800);
+  --kobalte-colors-warning-900: var(--kobalte-colors-yellow-900);
+
+  --kobalte-colors-danger-50: var(--kobalte-colors-red-50);
+  --kobalte-colors-danger-100: var(--kobalte-colors-red-100);
+  --kobalte-colors-danger-200: var(--kobalte-colors-red-200);
+  --kobalte-colors-danger-300: var(--kobalte-colors-red-300);
+  --kobalte-colors-danger-400: var(--kobalte-colors-red-400);
+  --kobalte-colors-danger-500: var(--kobalte-colors-red-500);
+  --kobalte-colors-danger-600: var(--kobalte-colors-red-600);
+  --kobalte-colors-danger-700: var(--kobalte-colors-red-700);
+  --kobalte-colors-danger-800: var(--kobalte-colors-red-800);
+  --kobalte-colors-danger-900: var(--kobalte-colors-red-900);
+}
+
+.kobalte-theme-dark {
+  /* Semantic colors (inverted) */
+  --kobalte-colors-primary-50: var(--kobalte-colors-blue-900);
+  --kobalte-colors-primary-100: var(--kobalte-colors-blue-800);
+  --kobalte-colors-primary-200: var(--kobalte-colors-blue-700);
+  --kobalte-colors-primary-300: var(--kobalte-colors-blue-600);
+  --kobalte-colors-primary-400: var(--kobalte-colors-blue-500);
+  --kobalte-colors-primary-500: var(--kobalte-colors-blue-400);
+  --kobalte-colors-primary-600: var(--kobalte-colors-blue-300);
+  --kobalte-colors-primary-700: var(--kobalte-colors-blue-200);
+  --kobalte-colors-primary-800: var(--kobalte-colors-blue-100);
+  --kobalte-colors-primary-900: var(--kobalte-colors-blue-50);
+
+  --kobalte-colors-secondary-50: var(--kobalte-colors-slate-900);
+  --kobalte-colors-secondary-100: var(--kobalte-colors-slate-800);
+  --kobalte-colors-secondary-200: var(--kobalte-colors-slate-700);
+  --kobalte-colors-secondary-300: var(--kobalte-colors-slate-600);
+  --kobalte-colors-secondary-400: var(--kobalte-colors-slate-500);
+  --kobalte-colors-secondary-500: var(--kobalte-colors-slate-400);
+  --kobalte-colors-secondary-600: var(--kobalte-colors-slate-300);
+  --kobalte-colors-secondary-700: var(--kobalte-colors-slate-200);
+  --kobalte-colors-secondary-800: var(--kobalte-colors-slate-100);
+  --kobalte-colors-secondary-900: var(--kobalte-colors-slate-50);
+
+  --kobalte-colors-success-50: var(--kobalte-colors-green-900);
+  --kobalte-colors-success-100: var(--kobalte-colors-green-800);
+  --kobalte-colors-success-200: var(--kobalte-colors-green-700);
+  --kobalte-colors-success-300: var(--kobalte-colors-green-600);
+  --kobalte-colors-success-400: var(--kobalte-colors-green-500);
+  --kobalte-colors-success-500: var(--kobalte-colors-green-400);
+  --kobalte-colors-success-600: var(--kobalte-colors-green-300);
+  --kobalte-colors-success-700: var(--kobalte-colors-green-200);
+  --kobalte-colors-success-800: var(--kobalte-colors-green-100);
+  --kobalte-colors-success-900: var(--kobalte-colors-green-50);
+
+  --kobalte-colors-info-50: var(--kobalte-colors-violet-900);
+  --kobalte-colors-info-100: var(--kobalte-colors-violet-800);
+  --kobalte-colors-info-200: var(--kobalte-colors-violet-700);
+  --kobalte-colors-info-300: var(--kobalte-colors-violet-600);
+  --kobalte-colors-info-400: var(--kobalte-colors-violet-500);
+  --kobalte-colors-info-500: var(--kobalte-colors-violet-400);
+  --kobalte-colors-info-600: var(--kobalte-colors-violet-300);
+  --kobalte-colors-info-700: var(--kobalte-colors-violet-200);
+  --kobalte-colors-info-800: var(--kobalte-colors-violet-100);
+  --kobalte-colors-info-900: var(--kobalte-colors-violet-50);
+
+  --kobalte-colors-warning-50: var(--kobalte-colors-yellow-900);
+  --kobalte-colors-warning-100: var(--kobalte-colors-yellow-800);
+  --kobalte-colors-warning-200: var(--kobalte-colors-yellow-700);
+  --kobalte-colors-warning-300: var(--kobalte-colors-yellow-600);
+  --kobalte-colors-warning-400: var(--kobalte-colors-yellow-500);
+  --kobalte-colors-warning-500: var(--kobalte-colors-yellow-400);
+  --kobalte-colors-warning-600: var(--kobalte-colors-yellow-300);
+  --kobalte-colors-warning-700: var(--kobalte-colors-yellow-200);
+  --kobalte-colors-warning-800: var(--kobalte-colors-yellow-100);
+  --kobalte-colors-warning-900: var(--kobalte-colors-yellow-50);
+
+  --kobalte-colors-danger-50: var(--kobalte-colors-red-900);
+  --kobalte-colors-danger-100: var(--kobalte-colors-red-800);
+  --kobalte-colors-danger-200: var(--kobalte-colors-red-700);
+  --kobalte-colors-danger-300: var(--kobalte-colors-red-600);
+  --kobalte-colors-danger-400: var(--kobalte-colors-red-500);
+  --kobalte-colors-danger-500: var(--kobalte-colors-red-400);
+  --kobalte-colors-danger-600: var(--kobalte-colors-red-300);
+  --kobalte-colors-danger-700: var(--kobalte-colors-red-200);
+  --kobalte-colors-danger-800: var(--kobalte-colors-red-100);
+  --kobalte-colors-danger-900: var(--kobalte-colors-red-50);
 }
 
 html {
@@ -77,7 +384,7 @@ html {
 }
 
 body {
-  @apply bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-100;
+  @apply bg-white dark:bg-secondary-50 text-secondary-800;
   font-family: inherit;
   line-height: inherit;
   -webkit-font-smoothing: antialiased;
