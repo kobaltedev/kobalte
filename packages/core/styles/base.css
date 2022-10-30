@@ -13,16 +13,16 @@
   --kobalte-colors-slate-800: 30 41 59;
   --kobalte-colors-slate-900: 15 23 42;
 
-  --kobalte-colors-gray-50: 249 250 251;
-  --kobalte-colors-gray-100: 243 244 246;
-  --kobalte-colors-gray-200: 229 231 235;
-  --kobalte-colors-gray-300: 209 213 219;
-  --kobalte-colors-gray-400: 156 163 175;
-  --kobalte-colors-gray-500: 107 114 128;
-  --kobalte-colors-gray-600: 75 85 99;
-  --kobalte-colors-gray-700: 55 65 81;
-  --kobalte-colors-gray-800: 31 41 55;
-  --kobalte-colors-gray-900: 17 24 39;
+  --kobalte-colors-cloud-50: 249 250 251;
+  --kobalte-colors-cloud-100: 243 244 246;
+  --kobalte-colors-cloud-200: 229 231 235;
+  --kobalte-colors-cloud-300: 209 213 219;
+  --kobalte-colors-cloud-400: 156 163 175;
+  --kobalte-colors-cloud-500: 107 114 128;
+  --kobalte-colors-cloud-600: 75 85 99;
+  --kobalte-colors-cloud-700: 55 65 81;
+  --kobalte-colors-cloud-800: 31 41 55;
+  --kobalte-colors-cloud-900: 17 24 39;
 
   --kobalte-colors-zinc-50: 250 250 250;
   --kobalte-colors-zinc-100: 244 244 245;
@@ -34,6 +34,17 @@
   --kobalte-colors-zinc-700: 63 63 70;
   --kobalte-colors-zinc-800: 39 39 42;
   --kobalte-colors-zinc-900: 24 24 27;
+
+  --kobalte-colors-gray-50: 250 250 250;
+  --kobalte-colors-gray-100: 245 245 245;
+  --kobalte-colors-gray-200: 229 229 229;
+  --kobalte-colors-gray-300: 212 212 212;
+  --kobalte-colors-gray-400: 163 163 163;
+  --kobalte-colors-gray-500: 115 115 115;
+  --kobalte-colors-gray-600: 82 82 82;
+  --kobalte-colors-gray-700: 64 64 64;
+  --kobalte-colors-gray-800: 38 38 38;
+  --kobalte-colors-gray-900: 23 23 23;
 
   --kobalte-colors-stone-50: 250 250 249;
   --kobalte-colors-stone-100: 245 245 244;
@@ -341,21 +352,21 @@
   --kobalte-colors-slate-surface-300: 29 41 68;
   --kobalte-colors-slate-surface-400: 33 47 80;
 
-  --kobalte-colors-gray-50: 17 24 39;
-  --kobalte-colors-gray-100: 31 41 55;
-  --kobalte-colors-gray-200: 55 65 81;
-  --kobalte-colors-gray-300: 75 85 99;
-  --kobalte-colors-gray-400: 107 114 128;
-  --kobalte-colors-gray-500: 156 163 175;
-  --kobalte-colors-gray-600: 209 213 219;
-  --kobalte-colors-gray-700: 229 231 235;
-  --kobalte-colors-gray-800: 243 244 246;
-  --kobalte-colors-gray-900: 249 250 251;
-  --kobalte-colors-gray-surface-50: 16 22 35;
-  --kobalte-colors-gray-surface-100: 25 32 47;
-  --kobalte-colors-gray-surface-200: 30 38 57;
-  --kobalte-colors-gray-surface-300: 33 43 63;
-  --kobalte-colors-gray-surface-400: 38 50 74;
+  --kobalte-colors-cloud-50: 17 24 39;
+  --kobalte-colors-cloud-100: 31 41 55;
+  --kobalte-colors-cloud-200: 55 65 81;
+  --kobalte-colors-cloud-300: 75 85 99;
+  --kobalte-colors-cloud-400: 107 114 128;
+  --kobalte-colors-cloud-500: 156 163 175;
+  --kobalte-colors-cloud-600: 209 213 219;
+  --kobalte-colors-cloud-700: 229 231 235;
+  --kobalte-colors-cloud-800: 243 244 246;
+  --kobalte-colors-cloud-900: 249 250 251;
+  --kobalte-colors-cloud-surface-50: 16 22 35;
+  --kobalte-colors-cloud-surface-100: 25 32 47;
+  --kobalte-colors-cloud-surface-200: 30 38 57;
+  --kobalte-colors-cloud-surface-300: 33 43 63;
+  --kobalte-colors-cloud-surface-400: 38 50 74;
 
   --kobalte-colors-zinc-50: 24 24 27;
   --kobalte-colors-zinc-100: 39 39 42;
@@ -372,6 +383,22 @@
   --kobalte-colors-zinc-surface-200: 43 43 44;
   --kobalte-colors-zinc-surface-300: 48 48 49;
   --kobalte-colors-zinc-surface-400: 55 55 57;
+
+  --kobalte-colors-gray-50: 23 23 23;
+  --kobalte-colors-gray-100: 38 38 38;
+  --kobalte-colors-gray-200: 64 64 64;
+  --kobalte-colors-gray-300: 82 82 82;
+  --kobalte-colors-gray-400: 115 115 115;
+  --kobalte-colors-gray-500: 163 163 163;
+  --kobalte-colors-gray-600: 212 212 212;
+  --kobalte-colors-gray-700: 229 229 229;
+  --kobalte-colors-gray-800: 245 245 245;
+  --kobalte-colors-gray-900: 250 250 250;
+  --kobalte-colors-gray-surface-50: 30 26 26;
+  --kobalte-colors-gray-surface-100: 36 35 35;
+  --kobalte-colors-gray-surface-200: 44 43 43;
+  --kobalte-colors-gray-surface-300: 49 48 48;
+  --kobalte-colors-gray-surface-400: 57 55 55;
 
   --kobalte-colors-stone-50: 28 25 23;
   --kobalte-colors-stone-100: 41 37 36;
