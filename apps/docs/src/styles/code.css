@@ -38,24 +38,20 @@ pre {
 }
 
 pre.shiki {
+  @apply rounded-lg p-3 font-mono;
   overflow-x: auto;
 
   display: flex;
   align-items: center;
 
-  border-radius: var(--kobalte-radii-lg);
-  border: 1px solid var(--kobalte-colors-neutral-200);
+  border: 1px solid rgb(var(--kobalte-colors-neutral-200));
 
-  background-color: var(--kobalte-colors-neutral-50) !important;
-
-  padding: var(--kobalte-space-3);
-
-  font-family: var(--kobalte-fonts-mono);
+  background-color: rgb(var(--kobalte-colors-neutral-50)) !important;
 }
 
 .kobalte-theme-dark pre.shiki {
-  border-color: var(--kobalte-colors-neutral-700);
-  background-color: var(--kobalte-colors-neutral-800) !important;
+  border-color: rgb(var(--kobalte-colors-neutral-700));
+  background-color: rgb(var(--kobalte-colors-neutral-800)) !important;
 }
 
 /* Reset mdx-components `code`. */
@@ -83,10 +79,10 @@ pre.shiki div.highlight {
 }
 pre.shiki div.highlight {
   opacity: 1;
-  background-color: rgb(var(--kobalte-colors-success-lightChannel) / 0.4);
+  background-color: rgb(var(--kobalte-colors-success-100) / 0.4);
 }
 .kobalte-theme-dark pre.shiki div.highlight {
-  background-color: rgb(var(--kobalte-colors-success-darkChannel) / 0.6);
+  background-color: rgb(var(--kobalte-colors-success-900) / 0.6);
 }
 pre.shiki div.line {
   min-height: 1rem;

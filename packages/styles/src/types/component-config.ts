@@ -3,7 +3,7 @@ import {
   MultiPartVariantSelection,
 } from "./composition";
 
-export type ComponentTheme<
+export type ComponentConfig<
   Parts extends string = string,
   Variants extends Record<string, any> = {},
   Props extends MultiPartVariantSelection<Variants> = {},
@@ -16,8 +16,4 @@ export type ComponentTheme<
   classComposition?: Partial<MultiPartClassComposition<Parts, Variants>>;
 };
 
-export interface Theme {
-  components: Record<string, ComponentTheme>;
-}
-
-export type ThemeOverride = Partial<Theme>;
+export type ComponentsConfig = Record<string, ComponentConfig>;

@@ -10,13 +10,13 @@ import { filterUndefined, pack } from "@kobalte/utils";
 import { clsx } from "clsx";
 import { createMemo } from "solid-js";
 
-import { useComponentTheme } from "./theme";
+import { useComponentConfig } from "./components-config-provider";
+import { shouldApplyCompound } from "./create-class-composition";
 import {
   MultiPartClassComposition,
   MultiPartVariantSelection,
   UseMultiPartClassCompositionFn,
 } from "./types";
-import { shouldApplyCompound } from "./utils/should-apply-compound";
 
 /**
  * Create a multi-part CSS class composition with multi-variant support.
@@ -26,16 +26,16 @@ export function createMultiPartClassComposition<
   Parts extends string,
   Variants extends Record<string, any>
 >(
-  baseConfig: MultiPartClassComposition<Parts, Variants>,
+  composition: MultiPartClassComposition<Parts, Variants>,
   defaultVariants?: MultiPartVariantSelection<Variants>
 ): UseMultiPartClassCompositionFn<Parts, Variants> {
-  const parts = Object.keys(baseConfig) as Array<Parts>;
+  const parts = Object.keys(composition) as Array<Parts>;
 
   return function useMultiPartClassComposition(
     name: string,
     variantProps: MultiPartVariantSelection<Variants>
   ) {
-    const componentTheme = useComponentTheme(name);
+    const componentConfig = useComponentConfig(name);
 
     const selectedVariants = createMemo(() => {
       return {
@@ -45,18 +45,18 @@ export function createMultiPartClassComposition<
     });
 
     const classes = createMemo(() => {
-      const componentThemeConfig = componentTheme()?.classComposition;
+      const themeComposition = componentConfig()?.classComposition;
 
       return parts.reduce((acc, part) => {
-        const baseClass = baseConfig[part].base ?? "";
-        const variantClasses = baseConfig[part].variants ?? ({} as any);
-        const compoundVariants = baseConfig[part].compoundVariants ?? [];
+        const baseClass = composition[part].base ?? "";
+        const variantClasses = composition[part].variants ?? ({} as any);
+        const compoundVariants = composition[part].compoundVariants ?? [];
 
-        const themeBaseClass = componentThemeConfig?.[part]?.base ?? "";
+        const themeBaseClass = themeComposition?.[part]?.base ?? "";
         const themeVariantClasses =
-          componentThemeConfig?.[part]?.variants ?? ({} as any);
+          themeComposition?.[part]?.variants ?? ({} as any);
         const themeCompoundVariants =
-          componentThemeConfig?.[part]?.compoundVariants ?? [];
+          themeComposition?.[part]?.compoundVariants ?? [];
 
         // 1. add "base" classes.
         const classes = [...pack(baseClass), ...pack(themeBaseClass)];

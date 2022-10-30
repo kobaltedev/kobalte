@@ -148,6 +148,7 @@ importers:
     specifiers:
       '@floating-ui/dom': ^1.0.3
       '@kobalte/primitives': ^0.0.0
+      '@kobalte/styles': ^0.0.0
       '@kobalte/tailwind': ^0.0.0
       '@kobalte/tests': ^0.0.0
       '@kobalte/utils': ^0.0.0
@@ -162,6 +163,7 @@ importers:
     dependencies:
       '@floating-ui/dom': 1.0.3
       '@kobalte/primitives': link:../primitives
+      '@kobalte/styles': link:../styles
       '@kobalte/utils': link:../utils
       clsx: 1.2.1
     devDependencies:

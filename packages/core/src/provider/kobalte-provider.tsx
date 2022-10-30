@@ -1,3 +1,7 @@
+import {
+  ComponentsConfigProvider,
+  ComponentsConfigProviderProps,
+} from "@kobalte/styles";
 import { splitProps } from "solid-js";
 
 import { ColorModeProvider, ColorModeProviderProps } from "../color-mode";
@@ -5,7 +9,7 @@ import { watchModals } from "../modal";
 import { mergeDefaultProps } from "../utils";
 
 export function KobalteProvider(
-  props: ColorModeProviderProps & ThemeProviderProps
+  props: ColorModeProviderProps & ComponentsConfigProviderProps
 ) {
   watchModals();
 
@@ -28,7 +32,7 @@ export function KobalteProvider(
       storageManager={local.storageManager}
       disableTransitionOnChange={local.disableTransitionOnChange}
     >
-      <ThemeProvider {...others} />
+      <ComponentsConfigProvider {...others} />
     </ColorModeProvider>
   );
 }

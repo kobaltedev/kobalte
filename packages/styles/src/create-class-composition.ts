@@ -11,7 +11,6 @@ import { clsx } from "clsx";
 import { Accessor, createMemo } from "solid-js";
 
 import { BooleanMap, StringOrStringArray } from "./types";
-import { shouldApplyCompound } from "./utils/should-apply-compound";
 
 type VariantDefinitions = Record<string, StringOrStringArray>;
 
@@ -52,6 +51,20 @@ type UseClassesFn<Variants extends VariantGroups> = (
 
 /** Extract the variant props type of `useClasses` primitive. */
 export type VariantProps<T extends UseClassesFn<any>> = Parameters<T>[0];
+
+/** Return whether a compound variant should be applied. */
+export function shouldApplyCompound<T extends Record<string, any>>(
+  compoundCheck: T,
+  selections: T
+) {
+  for (const key of Object.keys(compoundCheck)) {
+    if (compoundCheck[key] !== selections[key]) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 /** Get the variants classNames of selected variants. */
 export function getSelectedVariantClasses<Variants extends VariantGroups>(

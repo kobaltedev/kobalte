@@ -65,7 +65,7 @@ export type UseMultiPartClassCompositionFn<
   variantProps: MultiPartVariantSelection<Variants>
 ) => Accessor<Record<Parts, string>>;
 
-/** Extract the variant props type of a `useMultiPartClassComposition` primitive. */
+/** Extract the variant props type of `useMultiPartClassComposition` primitive. */
 export type MultiPartClassCompositionVariantProps<
   T extends UseMultiPartClassCompositionFn<any, any>
 > = Parameters<T>[1];

@@ -1,4 +1,3 @@
-export * from "./color-mode";
-export * from "./polymorphic";
+export * from "./component-config";
 export * from "./composition";
-export * from "./theme";
+export * from "./polymorphic";

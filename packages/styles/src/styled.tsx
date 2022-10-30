@@ -40,10 +40,7 @@ export function styled<
 
   const useClasses = createClassComposition(composition);
 
-  const polymorphicComponent = createPolymorphicComponent<
-    T,
-    VariantSelection<Variants>
-  >(props => {
+  return createPolymorphicComponent<T, VariantSelection<Variants>>(props => {
     const [local, variantProps, others] = splitProps(
       props,
       ["as", "class"],
@@ -60,6 +57,4 @@ export function styled<
       />
     );
   });
-
-  return polymorphicComponent;
 }

@@ -1,61 +1,46 @@
-import { IconButton } from "@kobalte/core";
+import { styled } from "@kobalte/core";
 import { Title as MetaTitle } from "@solidjs/meta";
 import { Link, LinkProps } from "@solidjs/router";
-import { ComponentProps, createMemo, createSignal, Show, splitProps } from "solid-js";
+import {
+  ComponentProps,
+  createMemo,
+  createSignal,
+  Show,
+  splitProps,
+} from "solid-js";
 
 import { CheckIcon, CopyIcon } from "./components/icons";
 
-const H1 = hope("h1", {
-  baseStyle: {
-    color: "neutral.800",
-    fontFamily: "display",
-    fontSize: "4xl",
-    fontWeight: "medium",
-    lineHeight: 10,
-    letterSpacing: "tight",
-    mt: 1,
-    scrollMarginTop: "150px", // header height x1.5
-    mb: 8,
-    _dark: {
-      color: "neutral.200",
-    },
-  },
+const H1 = styled("h1", {
+  base: [
+    "text-neutral-800 text-4xl tracking-tight",
+    "font-display font-medium",
+    "mt-1 mb-8",
+    "scroll-mt-[150px]", // header height x1.5
+  ],
 });
 
-const H2 = hope("h2", ({ vars }) => ({
-  baseStyle: {
-    color: "neutral.800",
-    fontFamily: "display",
-    fontSize: "3xl",
-    fontWeight: "medium",
-    lineHeight: 9,
-    mt: 10,
-    scrollMarginTop: "150px", // header height x1.5
-    pb: 1,
-    borderBottom: `1px solid ${vars.colors.neutral["200"]}`,
-    _dark: {
-      color: "neutral.200",
-      borderBottomColor: "neutral.800",
-    },
-  },
-}));
-
-const H3 = hope("h3", {
-  baseStyle: {
-    color: "neutral.800",
-    fontFamily: "display",
-    fontSize: "2xl",
-    fontWeight: "medium",
-    lineHeight: 8,
-    mt: 8,
-    scrollMarginTop: "150px", // header height x1.5
-    _dark: {
-      color: "neutral.200",
-    },
-  },
+const H2 = styled("h2", {
+  base: [
+    "text-neutral-800 text-3xl",
+    "font-display font-medium",
+    "border-b border-b-neutral-200",
+    "mt-10 pb-1",
+    "scroll-mt-[150px]", // header height x1.5
+  ],
 });
 
-const P = hope("p", {
+const H3 = styled("h3", {
+  base: [
+    "text-neutral-800 text-2xl",
+    "font-display font-medium",
+    "border-b border-b-neutral-200",
+    "mt-8",
+    "scroll-mt-[150px]", // header height x1.5
+  ],
+});
+
+const P = styled("p", {
   baseStyle: {
     _notFirst: {
       mt: 6,
@@ -67,7 +52,7 @@ const P = hope("p", {
   },
 });
 
-const Code = hope("code", ({ vars }) => ({
+const Code = styled("code", ({ vars }) => ({
   baseStyle: {
     rounded: "md",
     bg: "neutral.100",
@@ -82,7 +67,7 @@ const Code = hope("code", ({ vars }) => ({
     },
 
     // Reset style inside Callout.
-    ".hope-docs-Callout-root &": {
+    ".styled-docs-Callout-root &": {
       border: `1px solid ${vars.colors.neutral["300"]}`,
       color: "neutral.700",
 
@@ -187,7 +172,7 @@ const Pre = (props: ComponentProps<"pre">) => {
   );
 };
 
-const Ul = hope("ul", {
+const Ul = styled("ul", {
   baseStyle: {
     listStyleType: "disc",
     ml: 6,
@@ -198,7 +183,7 @@ const Ul = hope("ul", {
   },
 });
 
-const Ol = hope("ol", {
+const Ol = styled("ol", {
   baseStyle: {
     listStyleType: "decimal",
     ml: 6,
@@ -209,13 +194,13 @@ const Ol = hope("ol", {
   },
 });
 
-const Li = hope("li", {
+const Li = styled("li", {
   baseStyle: {
     my: 3,
   },
 });
 
-const Table = hope("table", {
+const Table = styled("table", {
   baseStyle: {
     w: "full",
     p: 0,
@@ -228,7 +213,7 @@ const Table = hope("table", {
   },
 });
 
-const Tr = hope("tr", ({ vars }) => ({
+const Tr = styled("tr", ({ vars }) => ({
   baseStyle: {
     bg: "transparent",
     m: 0,
@@ -250,7 +235,7 @@ const Tr = hope("tr", ({ vars }) => ({
   },
 }));
 
-const Th = hope("th", ({ vars }) => ({
+const Th = styled("th", ({ vars }) => ({
   baseStyle: {
     m: 0,
     px: 4,
@@ -267,7 +252,7 @@ const Th = hope("th", ({ vars }) => ({
   },
 }));
 
-const Td = hope("td", {
+const Td = styled("td", {
   baseStyle: {
     m: 0,
     px: 4,
@@ -287,7 +272,7 @@ const ExternalLink = (props: LinkProps) => {
   );
 };
 
-const A = hope(ExternalLink, {
+const A = styled(ExternalLink, {
   baseStyle: {
     color: "primary.500",
     textDecoration: "underline",
@@ -318,9 +303,9 @@ export const mdxComponents = {
   ol: Ol,
   li: Li,
   table: (props: any) => (
-    <hope.div overflowX="auto">
+    <styled.div overflowX="auto">
       <Table {...props} />
-    </hope.div>
+    </styled.div>
   ),
   tr: Tr,
   th: Th,

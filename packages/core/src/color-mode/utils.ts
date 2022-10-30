@@ -40,10 +40,10 @@ function preventTransition() {
 }
 
 export function setColorModeClassName(isDark: boolean) {
-  document.body.classList.add(
+  document.documentElement.classList.add(
     isDark ? COLOR_MODE_CLASSNAMES.dark : COLOR_MODE_CLASSNAMES.light
   );
-  document.body.classList.remove(
+  document.documentElement.classList.remove(
     isDark ? COLOR_MODE_CLASSNAMES.light : COLOR_MODE_CLASSNAMES.dark
   );
 }

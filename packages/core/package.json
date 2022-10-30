@@ -51,6 +51,7 @@
   "dependencies": {
     "@floating-ui/dom": "^1.0.3",
     "@kobalte/primitives": "^0.0.0",
+    "@kobalte/styles": "^0.0.0",
     "@kobalte/utils": "^0.0.0",
     "clsx": "^1.2.1"
   },
