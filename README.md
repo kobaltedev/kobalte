@@ -12,7 +12,7 @@
   </a>
 </p>
 
-An opinionated Design System for SolidJS.
+An open source Design System for SolidJS.
 
 ## Documentation
 

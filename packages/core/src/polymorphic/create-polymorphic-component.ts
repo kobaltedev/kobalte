@@ -1,5 +1,5 @@
 import { ClassProp, ElementType, OverrideProps } from "@kobalte/utils";
-import { ComponentProps, JSX, ParentProps } from "solid-js";
+import { Component, ComponentProps, JSX, ParentProps } from "solid-js";
 
 /** The `as` prop type. */
 export type As<Props = any> = ElementType<Props>;
@@ -17,3 +17,13 @@ export type PolymorphicComponent<DefaultType extends As, Props = {}> = {
   ): JSX.Element;
   (props: PolymorphicProps<DefaultType, Props>): JSX.Element;
 };
+
+/** Create a polymorphic component with the `as` prop support. */
+export function createPolymorphicComponent<
+  DefaultType extends As,
+  Props = {},
+  Composite = {}
+>(component: Component<PolymorphicProps<DefaultType, Props>>) {
+  return component as unknown as PolymorphicComponent<DefaultType, Props> &
+    Composite;
+}
