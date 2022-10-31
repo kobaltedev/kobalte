@@ -3,31 +3,6 @@
 const plugin = require("tailwindcss/plugin");
 
 const TEN_SHADES_COLORS = [
-  /* TailwindCSS colors */
-  "slate",
-  "smoke",
-  "zinc",
-  "gray",
-  "stone",
-  "red",
-  "orange",
-  "amber",
-  "yellow",
-  "lime",
-  "green",
-  "emerald",
-  "teal",
-  "cyan",
-  "sky",
-  "blue",
-  "indigo",
-  "violet",
-  "purple",
-  "fuchsia",
-  "pink",
-  "rose",
-
-  /* Semantic colors */
   "primary",
   "neutral",
   "success",
@@ -62,10 +37,10 @@ function getColors() {
       acc[name] = createColorObject(TEN_SHADES, true);
       return acc;
     }, {}),
-    border: createColorObject(FOUR_SHADES, false),
+    border: createColorObject(FOUR_SHADES, true),
     fill: createColorObject(FOUR_SHADES, false),
     text: createColorObject(FOUR_SHADES, false),
-    bg: createColorObject(BG_SHADES, false),
+    bg: createColorObject(BG_SHADES, true),
   };
 
   return Object.keys(colorDefinitions).reduce(

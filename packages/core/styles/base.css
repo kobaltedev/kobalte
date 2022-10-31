@@ -1,315 +1,77 @@
 :root {
   --kb-color-white: 255 255 255;
 
-  /* TailwindCSS colors */
-  --kb-color-slate-50: 248 250 252;
-  --kb-color-slate-100: 241 245 249;
-  --kb-color-slate-200: 226 232 240;
-  --kb-color-slate-300: 203 213 225;
-  --kb-color-slate-400: 148 163 184;
-  --kb-color-slate-500: 100 116 139;
-  --kb-color-slate-600: 71 85 105;
-  --kb-color-slate-700: 51 65 85;
-  --kb-color-slate-800: 30 41 59;
-  --kb-color-slate-900: 15 23 42;
+  /* Tailwind - blue */
+  --kb-color-primary-50: 239 246 255;
+  --kb-color-primary-100: 219 234 254;
+  --kb-color-primary-200: 191 219 254;
+  --kb-color-primary-300: 147 197 253;
+  --kb-color-primary-400: 96 165 250;
+  --kb-color-primary-500: 59 130 246;
+  --kb-color-primary-600: 37 99 235;
+  --kb-color-primary-700: 29 78 216;
+  --kb-color-primary-800: 30 64 175;
+  --kb-color-primary-900: 30 58 138;
 
-  --kb-color-smoke-50: 249 250 251;
-  --kb-color-smoke-100: 243 244 246;
-  --kb-color-smoke-200: 229 231 235;
-  --kb-color-smoke-300: 209 213 219;
-  --kb-color-smoke-400: 156 163 175;
-  --kb-color-smoke-500: 107 114 128;
-  --kb-color-smoke-600: 75 85 99;
-  --kb-color-smoke-700: 55 65 81;
-  --kb-color-smoke-800: 31 41 55;
-  --kb-color-smoke-900: 17 24 39;
+  /* Tailwind - zinc */
+  --kb-color-neutral-50: 250 250 250;
+  --kb-color-neutral-100: 244 244 245;
+  --kb-color-neutral-200: 228 228 231;
+  --kb-color-neutral-300: 212 212 216;
+  --kb-color-neutral-400: 161 161 170;
+  --kb-color-neutral-500: 113 113 122;
+  --kb-color-neutral-600: 82 82 91;
+  --kb-color-neutral-700: 63 63 70;
+  --kb-color-neutral-800: 39 39 42;
+  --kb-color-neutral-900: 24 24 27;
 
-  --kb-color-zinc-50: 250 250 250;
-  --kb-color-zinc-100: 244 244 245;
-  --kb-color-zinc-200: 228 228 231;
-  --kb-color-zinc-300: 212 212 216;
-  --kb-color-zinc-400: 161 161 170;
-  --kb-color-zinc-500: 113 113 122;
-  --kb-color-zinc-600: 82 82 91;
-  --kb-color-zinc-700: 63 63 70;
-  --kb-color-zinc-800: 39 39 42;
-  --kb-color-zinc-900: 24 24 27;
+  /* Tailwind - green */
+  --kb-color-success-50: 240 253 244;
+  --kb-color-success-100: 220 252 231;
+  --kb-color-success-200: 187 247 208;
+  --kb-color-success-300: 134 239 172;
+  --kb-color-success-400: 74 222 128;
+  --kb-color-success-500: 34 197 94;
+  --kb-color-success-600: 22 163 74;
+  --kb-color-success-700: 21 128 61;
+  --kb-color-success-800: 22 101 52;
+  --kb-color-success-900: 20 83 45;
 
-  --kb-color-gray-50: 250 250 250;
-  --kb-color-gray-100: 245 245 245;
-  --kb-color-gray-200: 229 229 229;
-  --kb-color-gray-300: 212 212 212;
-  --kb-color-gray-400: 163 163 163;
-  --kb-color-gray-500: 115 115 115;
-  --kb-color-gray-600: 82 82 82;
-  --kb-color-gray-700: 64 64 64;
-  --kb-color-gray-800: 38 38 38;
-  --kb-color-gray-900: 23 23 23;
+  /* Tailwind - violet */
+  --kb-color-info-50: 245 243 255;
+  --kb-color-info-100: 237 233 254;
+  --kb-color-info-200: 221 214 254;
+  --kb-color-info-300: 196 181 253;
+  --kb-color-info-400: 167 139 250;
+  --kb-color-info-500: 139 92 246;
+  --kb-color-info-600: 124 58 237;
+  --kb-color-info-700: 109 40 217;
+  --kb-color-info-800: 91 33 182;
+  --kb-color-info-900: 76 29 149;
 
-  --kb-color-stone-50: 250 250 249;
-  --kb-color-stone-100: 245 245 244;
-  --kb-color-stone-200: 231 229 228;
-  --kb-color-stone-300: 214 211 209;
-  --kb-color-stone-400: 168 162 158;
-  --kb-color-stone-500: 120 113 108;
-  --kb-color-stone-600: 87 83 78;
-  --kb-color-stone-700: 68 64 60;
-  --kb-color-stone-800: 41 37 36;
-  --kb-color-stone-900: 28 25 23;
+  /* Tailwind - orange */
+  --kb-color-warning-50: 255 247 237;
+  --kb-color-warning-100: 255 237 213;
+  --kb-color-warning-200: 254 215 170;
+  --kb-color-warning-300: 253 186 116;
+  --kb-color-warning-400: 251 146 60;
+  --kb-color-warning-500: 249 115 22;
+  --kb-color-warning-600: 234 88 12;
+  --kb-color-warning-700: 194 65 12;
+  --kb-color-warning-800: 154 52 18;
+  --kb-color-warning-900: 124 45 18;
 
-  --kb-color-red-50: 254 242 242;
-  --kb-color-red-100: 254 226 226;
-  --kb-color-red-200: 254 202 202;
-  --kb-color-red-300: 252 165 165;
-  --kb-color-red-400: 248 113 113;
-  --kb-color-red-500: 239 68 68;
-  --kb-color-red-600: 220 38 38;
-  --kb-color-red-700: 185 28 28;
-  --kb-color-red-800: 153 27 27;
-  --kb-color-red-900: 127 29 29;
-
-  --kb-color-orange-50: 255 247 237;
-  --kb-color-orange-100: 255 237 213;
-  --kb-color-orange-200: 254 215 170;
-  --kb-color-orange-300: 253 186 116;
-  --kb-color-orange-400: 251 146 60;
-  --kb-color-orange-500: 249 115 22;
-  --kb-color-orange-600: 234 88 12;
-  --kb-color-orange-700: 194 65 12;
-  --kb-color-orange-800: 154 52 18;
-  --kb-color-orange-900: 124 45 18;
-
-  --kb-color-amber-50: 255 251 235;
-  --kb-color-amber-100: 254 243 199;
-  --kb-color-amber-200: 253 230 138;
-  --kb-color-amber-300: 252 211 77;
-  --kb-color-amber-400: 251 191 36;
-  --kb-color-amber-500: 245 158 11;
-  --kb-color-amber-600: 217 119 6;
-  --kb-color-amber-700: 180 83 9;
-  --kb-color-amber-800: 146 64 14;
-  --kb-color-amber-900: 120 53 15;
-
-  --kb-color-yellow-50: 254 252 232;
-  --kb-color-yellow-100: 254 249 195;
-  --kb-color-yellow-200: 254 240 138;
-  --kb-color-yellow-300: 253 224 71;
-  --kb-color-yellow-400: 250 204 21;
-  --kb-color-yellow-500: 234 179 8;
-  --kb-color-yellow-600: 202 138 4;
-  --kb-color-yellow-700: 161 98 7;
-  --kb-color-yellow-800: 133 77 14;
-  --kb-color-yellow-900: 113 63 18;
-
-  --kb-color-lime-50: 247 254 231;
-  --kb-color-lime-100: 236 252 203;
-  --kb-color-lime-200: 217 249 157;
-  --kb-color-lime-300: 190 242 100;
-  --kb-color-lime-400: 163 230 53;
-  --kb-color-lime-500: 132 204 22;
-  --kb-color-lime-600: 101 163 13;
-  --kb-color-lime-700: 77 124 15;
-  --kb-color-lime-800: 63 98 18;
-  --kb-color-lime-900: 54 83 20;
-
-  --kb-color-green-50: 240 253 244;
-  --kb-color-green-100: 220 252 231;
-  --kb-color-green-200: 187 247 208;
-  --kb-color-green-300: 134 239 172;
-  --kb-color-green-400: 74 222 128;
-  --kb-color-green-500: 34 197 94;
-  --kb-color-green-600: 22 163 74;
-  --kb-color-green-700: 21 128 61;
-  --kb-color-green-800: 22 101 52;
-  --kb-color-green-900: 20 83 45;
-
-  --kb-color-emerald-50: 236 253 245;
-  --kb-color-emerald-100: 209 250 229;
-  --kb-color-emerald-200: 167 243 208;
-  --kb-color-emerald-300: 110 231 183;
-  --kb-color-emerald-400: 52 211 153;
-  --kb-color-emerald-500: 16 185 129;
-  --kb-color-emerald-600: 5 150 105;
-  --kb-color-emerald-700: 4 120 87;
-  --kb-color-emerald-800: 6 95 70;
-  --kb-color-emerald-900: 6 78 59;
-
-  --kb-color-teal-50: 240 253 250;
-  --kb-color-teal-100: 204 251 241;
-  --kb-color-teal-200: 153 246 228;
-  --kb-color-teal-300: 94 234 212;
-  --kb-color-teal-400: 45 212 191;
-  --kb-color-teal-500: 20 184 166;
-  --kb-color-teal-600: 13 148 136;
-  --kb-color-teal-700: 15 118 110;
-  --kb-color-teal-800: 17 94 89;
-  --kb-color-teal-900: 19 78 74;
-
-  --kb-color-cyan-50: 236 254 255;
-  --kb-color-cyan-100: 207 250 254;
-  --kb-color-cyan-200: 165 243 252;
-  --kb-color-cyan-300: 103 232 249;
-  --kb-color-cyan-400: 34 211 238;
-  --kb-color-cyan-500: 6 182 212;
-  --kb-color-cyan-600: 8 145 178;
-  --kb-color-cyan-700: 14 116 144;
-  --kb-color-cyan-800: 21 94 117;
-  --kb-color-cyan-900: 22 78 99;
-
-  --kb-color-sky-50: 240 249 255;
-  --kb-color-sky-100: 224 242 254;
-  --kb-color-sky-200: 186 230 253;
-  --kb-color-sky-300: 125 211 252;
-  --kb-color-sky-400: 56 189 248;
-  --kb-color-sky-500: 14 165 233;
-  --kb-color-sky-600: 2 132 199;
-  --kb-color-sky-700: 3 105 161;
-  --kb-color-sky-800: 7 89 133;
-  --kb-color-sky-900: 12 74 110;
-
-  --kb-color-blue-50: 239 246 255;
-  --kb-color-blue-100: 219 234 254;
-  --kb-color-blue-200: 191 219 254;
-  --kb-color-blue-300: 147 197 253;
-  --kb-color-blue-400: 96 165 250;
-  --kb-color-blue-500: 59 130 246;
-  --kb-color-blue-600: 37 99 235;
-  --kb-color-blue-700: 29 78 216;
-  --kb-color-blue-800: 30 64 175;
-  --kb-color-blue-900: 30 58 138;
-
-  --kb-color-indigo-50: 238 242 255;
-  --kb-color-indigo-100: 224 231 255;
-  --kb-color-indigo-200: 199 210 254;
-  --kb-color-indigo-300: 165 180 252;
-  --kb-color-indigo-400: 129 140 248;
-  --kb-color-indigo-500: 99 102 241;
-  --kb-color-indigo-600: 79 70 229;
-  --kb-color-indigo-700: 67 56 202;
-  --kb-color-indigo-800: 55 48 163;
-  --kb-color-indigo-900: 49 46 129;
-
-  --kb-color-violet-50: 245 243 255;
-  --kb-color-violet-100: 237 233 254;
-  --kb-color-violet-200: 221 214 254;
-  --kb-color-violet-300: 196 181 253;
-  --kb-color-violet-400: 167 139 250;
-  --kb-color-violet-500: 139 92 246;
-  --kb-color-violet-600: 124 58 237;
-  --kb-color-violet-700: 109 40 217;
-  --kb-color-violet-800: 91 33 182;
-  --kb-color-violet-900: 76 29 149;
-
-  --kb-color-purple-50: 250 245 255;
-  --kb-color-purple-100: 243 232 255;
-  --kb-color-purple-200: 233 213 255;
-  --kb-color-purple-300: 216 180 254;
-  --kb-color-purple-400: 192 132 252;
-  --kb-color-purple-500: 168 85 247;
-  --kb-color-purple-600: 147 51 234;
-  --kb-color-purple-700: 126 34 206;
-  --kb-color-purple-800: 107 33 168;
-  --kb-color-purple-900: 88 28 135;
-
-  --kb-color-fuchsia-50: 253 244 255;
-  --kb-color-fuchsia-100: 250 232 255;
-  --kb-color-fuchsia-200: 245 208 254;
-  --kb-color-fuchsia-300: 240 171 252;
-  --kb-color-fuchsia-400: 232 121 249;
-  --kb-color-fuchsia-500: 217 70 239;
-  --kb-color-fuchsia-600: 192 38 211;
-  --kb-color-fuchsia-700: 162 28 175;
-  --kb-color-fuchsia-800: 134 25 143;
-  --kb-color-fuchsia-900: 112 26 117;
-
-  --kb-color-pink-50: 253 242 248;
-  --kb-color-pink-100: 252 231 243;
-  --kb-color-pink-200: 251 207 232;
-  --kb-color-pink-300: 249 168 212;
-  --kb-color-pink-400: 244 114 182;
-  --kb-color-pink-500: 236 72 153;
-  --kb-color-pink-600: 219 39 119;
-  --kb-color-pink-700: 190 24 93;
-  --kb-color-pink-800: 157 23 77;
-  --kb-color-pink-900: 131 24 67;
-
-  --kb-color-rose-50: 255 241 242;
-  --kb-color-rose-100: 255 228 230;
-  --kb-color-rose-200: 254 205 211;
-  --kb-color-rose-300: 253 164 175;
-  --kb-color-rose-400: 251 113 133;
-  --kb-color-rose-500: 244 63 94;
-  --kb-color-rose-600: 225 29 72;
-  --kb-color-rose-700: 190 18 60;
-  --kb-color-rose-800: 159 18 57;
-  --kb-color-rose-900: 136 19 55;
-
-  /* Semantic colors */
-  --kb-color-primary-50: var(--kb-color-blue-50);
-  --kb-color-primary-100: var(--kb-color-blue-100);
-  --kb-color-primary-200: var(--kb-color-blue-200);
-  --kb-color-primary-300: var(--kb-color-blue-300);
-  --kb-color-primary-400: var(--kb-color-blue-400);
-  --kb-color-primary-500: var(--kb-color-blue-500);
-  --kb-color-primary-600: var(--kb-color-blue-600);
-  --kb-color-primary-700: var(--kb-color-blue-700);
-  --kb-color-primary-800: var(--kb-color-blue-800);
-  --kb-color-primary-900: var(--kb-color-blue-900);
-
-  --kb-color-neutral-50: var(--kb-color-slate-50);
-  --kb-color-neutral-100: var(--kb-color-slate-100);
-  --kb-color-neutral-200: var(--kb-color-slate-200);
-  --kb-color-neutral-300: var(--kb-color-slate-300);
-  --kb-color-neutral-400: var(--kb-color-slate-400);
-  --kb-color-neutral-500: var(--kb-color-slate-500);
-  --kb-color-neutral-600: var(--kb-color-slate-600);
-  --kb-color-neutral-700: var(--kb-color-slate-700);
-  --kb-color-neutral-800: var(--kb-color-slate-800);
-  --kb-color-neutral-900: var(--kb-color-slate-900);
-
-  --kb-color-success-50: var(--kb-color-green-50);
-  --kb-color-success-100: var(--kb-color-green-100);
-  --kb-color-success-200: var(--kb-color-green-200);
-  --kb-color-success-300: var(--kb-color-green-300);
-  --kb-color-success-400: var(--kb-color-green-400);
-  --kb-color-success-500: var(--kb-color-green-500);
-  --kb-color-success-600: var(--kb-color-green-600);
-  --kb-color-success-700: var(--kb-color-green-700);
-  --kb-color-success-800: var(--kb-color-green-800);
-  --kb-color-success-900: var(--kb-color-green-900);
-
-  --kb-color-info-50: var(--kb-color-violet-50);
-  --kb-color-info-100: var(--kb-color-violet-100);
-  --kb-color-info-200: var(--kb-color-violet-200);
-  --kb-color-info-300: var(--kb-color-violet-300);
-  --kb-color-info-400: var(--kb-color-violet-400);
-  --kb-color-info-500: var(--kb-color-violet-500);
-  --kb-color-info-600: var(--kb-color-violet-600);
-  --kb-color-info-700: var(--kb-color-violet-700);
-  --kb-color-info-800: var(--kb-color-violet-800);
-  --kb-color-info-900: var(--kb-color-violet-900);
-
-  --kb-color-warning-50: var(--kb-color-yellow-50);
-  --kb-color-warning-100: var(--kb-color-yellow-100);
-  --kb-color-warning-200: var(--kb-color-yellow-200);
-  --kb-color-warning-300: var(--kb-color-yellow-300);
-  --kb-color-warning-400: var(--kb-color-yellow-400);
-  --kb-color-warning-500: var(--kb-color-yellow-500);
-  --kb-color-warning-600: var(--kb-color-yellow-600);
-  --kb-color-warning-700: var(--kb-color-yellow-700);
-  --kb-color-warning-800: var(--kb-color-yellow-800);
-  --kb-color-warning-900: var(--kb-color-yellow-900);
-
-  --kb-color-danger-50: var(--kb-color-red-50);
-  --kb-color-danger-100: var(--kb-color-red-100);
-  --kb-color-danger-200: var(--kb-color-red-200);
-  --kb-color-danger-300: var(--kb-color-red-300);
-  --kb-color-danger-400: var(--kb-color-red-400);
-  --kb-color-danger-500: var(--kb-color-red-500);
-  --kb-color-danger-600: var(--kb-color-red-600);
-  --kb-color-danger-700: var(--kb-color-red-700);
-  --kb-color-danger-800: var(--kb-color-red-800);
-  --kb-color-danger-900: var(--kb-color-red-900);
+  /* Tailwind - red */
+  --kb-color-danger-50: 254 242 242;
+  --kb-color-danger-100: 254 226 226;
+  --kb-color-danger-200: 254 202 202;
+  --kb-color-danger-300: 252 165 165;
+  --kb-color-danger-400: 248 113 113;
+  --kb-color-danger-500: 239 68 68;
+  --kb-color-danger-600: 220 38 38;
+  --kb-color-danger-700: 185 28 28;
+  --kb-color-danger-800: 153 27 27;
+  --kb-color-danger-900: 127 29 29;
 
   /* Specific semantic colors aliases */
   --kb-color-border-1: var(--kb-color-neutral-100);
@@ -336,38 +98,6 @@
 }
 
 [data-kb-theme="dark"] {
-  /* Surface colors */
-  --kb-color-slate-surface-50: 14 21 37;
-  --kb-color-slate-surface-100: 21 30 50;
-  --kb-color-slate-surface-200: 26 36 61;
-  --kb-color-slate-surface-300: 29 41 68;
-  --kb-color-slate-surface-400: 33 47 80;
-
-  --kb-color-smoke-surface-50: 16 22 35;
-  --kb-color-smoke-surface-100: 25 32 47;
-  --kb-color-smoke-surface-200: 30 38 57;
-  --kb-color-smoke-surface-300: 33 43 63;
-  --kb-color-smoke-surface-400: 38 50 74;
-
-  --kb-color-zinc-surface-50: 24 24 27;
-  --kb-color-zinc-surface-100: 35 35 36;
-  --kb-color-zinc-surface-200: 43 43 44;
-  --kb-color-zinc-surface-300: 48 48 49;
-  --kb-color-zinc-surface-400: 55 55 57;
-
-  --kb-color-gray-surface-50: 30 26 26;
-  --kb-color-gray-surface-100: 36 35 35;
-  --kb-color-gray-surface-200: 44 43 43;
-  --kb-color-gray-surface-300: 49 48 48;
-  --kb-color-gray-surface-400: 57 55 55;
-
-  --kb-color-stone-surface-50: 28 25 23;
-  --kb-color-stone-surface-100: 37 35 34;
-  --kb-color-stone-surface-200: 46 43 41;
-  --kb-color-stone-surface-300: 51 48 46;
-  --kb-color-stone-surface-400: 59 55 53;
-
-  /* Specific semantic colors aliases */
   --kb-color-border-1: var(--kb-color-neutral-800);
   --kb-color-border-2: var(--kb-color-neutral-700);
   --kb-color-border-3: var(--kb-color-neutral-600);
@@ -383,11 +113,11 @@
   --kb-color-text-3: 255 255 255 / 0.5;
   --kb-color-text-4: 255 255 255 / 0.3;
 
-  --kb-color-bg-1: var(--kb-color-slate-surface-50);
-  --kb-color-bg-2: var(--kb-color-slate-surface-100);
-  --kb-color-bg-3: var(--kb-color-slate-surface-200);
-  --kb-color-bg-4: var(--kb-color-slate-surface-300);
-  --kb-color-bg-5: var(--kb-color-slate-surface-400);
+  --kb-color-bg-1: 24 24 27;
+  --kb-color-bg-2: 35 35 36;
+  --kb-color-bg-3: 43 43 44;
+  --kb-color-bg-4: 48 48 49;
+  --kb-color-bg-5: 55 55 57;
   --kb-color-bg-white: 246 246 246;
 }
 
