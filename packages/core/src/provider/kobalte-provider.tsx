@@ -1,14 +1,11 @@
 import { ColorModeProvider, ColorModeProviderProps } from "../color-mode";
-import {
-  ComponentConfigs,
-  ComponentConfigsContext,
-} from "../component-configs";
+import { ComponentConfig, ComponentConfigContext } from "../component-config";
 import { watchModals } from "../modal";
 import { mergeDefaultProps } from "../utils";
 
 interface KobalteProviderProps extends ColorModeProviderProps {
-  /** DefaultProps and class composition configuration for components. */
-  componentConfigs?: ComponentConfigs;
+  /** Default props for global configuration of all components. */
+  componentConfig?: ComponentConfig;
 }
 
 export function KobalteProvider(props: KobalteProviderProps) {
@@ -22,9 +19,9 @@ export function KobalteProvider(props: KobalteProviderProps) {
       storageManager={props.storageManager}
       disableTransitionOnChange={props.disableTransitionOnChange}
     >
-      <ComponentConfigsContext.Provider value={props.componentConfigs ?? {}}>
+      <ComponentConfigContext.Provider value={props.componentConfig ?? {}}>
         {props.children}
-      </ComponentConfigsContext.Provider>
+      </ComponentConfigContext.Provider>
     </ColorModeProvider>
   );
 }

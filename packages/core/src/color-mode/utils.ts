@@ -8,11 +8,6 @@
 
 import { ColorMode, ColorModeStorageManager } from "./types";
 
-export const COLOR_MODE_CLASSNAMES = {
-  light: "kobalte-theme-light",
-  dark: "kobalte-theme-dark",
-};
-
 function query() {
   return window.matchMedia("(prefers-color-scheme: dark)");
 }
@@ -39,21 +34,12 @@ function preventTransition() {
   };
 }
 
-export function setColorModeClassName(isDark: boolean) {
-  document.documentElement.classList.add(
-    isDark ? COLOR_MODE_CLASSNAMES.dark : COLOR_MODE_CLASSNAMES.light
-  );
-  document.documentElement.classList.remove(
-    isDark ? COLOR_MODE_CLASSNAMES.light : COLOR_MODE_CLASSNAMES.dark
-  );
-}
-
 export function setColorModeDataset(
   value: ColorMode,
   shouldPreventTransition = true
 ) {
   const cleanup = shouldPreventTransition ? preventTransition() : undefined;
-  document.documentElement.dataset.theme = value;
+  document.documentElement.dataset.kbTheme = value;
   document.documentElement.style.colorScheme = value;
   cleanup?.();
 }

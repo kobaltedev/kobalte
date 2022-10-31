@@ -15,32 +15,32 @@ import { Accessor, createMemo } from "solid-js";
 type BooleanStringUnion = "true" | "false";
 
 /** Infer the type to `boolean` if it's a string union of `"true" | "false"`. */
-export type BooleanMap<T> = T extends BooleanStringUnion ? boolean : T;
+type BooleanMap<T> = T extends BooleanStringUnion ? boolean : T;
 
 /** Infer the type to string union of `"true" | "false"` if it's a `boolean`. */
-export type ReverseBooleanMap<T> = T extends boolean ? BooleanStringUnion : T;
+type ReverseBooleanMap<T> = T extends boolean ? BooleanStringUnion : T;
 
-export type VariantSelection<Variants extends Record<string, any>> = {
+type VariantSelection<Variants extends Record<string, any>> = {
   [VariantGroup in keyof Variants]?: BooleanMap<Variants[VariantGroup]>;
 };
 
-export interface CompoundVariant<Variants extends Record<string, any>> {
+interface CompoundVariant<Variants extends Record<string, any>> {
   /** The combined variants that should apply the classes. */
   variants: VariantSelection<Variants>;
 
   /** The classes to be applied. */
-  classes: string[];
+  classes: string;
 }
 
-/** A CSS class composition. */
-export interface ClassComposition<Variants extends Record<string, any>> {
+/** A class composition part. */
+interface ClassCompositionPart<Variants extends Record<string, any>> {
   /** The base classes. */
-  base?: string[];
+  base?: string;
 
   /** The variants class. */
   variants?: {
     [K in keyof Variants]?: {
-      [V in ReverseBooleanMap<Variants[K]>]?: string[];
+      [V in ReverseBooleanMap<Variants[K]>]?: string;
     };
   };
 
@@ -48,24 +48,25 @@ export interface ClassComposition<Variants extends Record<string, any>> {
   compoundVariants?: Array<CompoundVariant<Variants>>;
 }
 
-/** A multi-part CSS class composition. */
-export type MultiPartClassComposition<
+/** A multi-part class composition. */
+type ClassComposition<
   Parts extends string,
   Variants extends Record<string, any>
-> = Record<Parts, ClassComposition<Variants>>;
+> = Record<Parts, ClassCompositionPart<Variants>>;
 
-export type UseClassesFn<
+type UseClassCompositionFn<
   Parts extends string,
   Variants extends Record<string, any>
 > = (
   variantProps: VariantSelection<Variants>
 ) => Accessor<Record<Parts, string>>;
 
-/** Extract the variant props type of `useClasses` primitive. */
-export type VariantProps<T extends UseClassesFn<any, any>> = Parameters<T>[1];
+/** Extract the variant props type of `useClassComposition` primitive. */
+export type VariantProps<T extends UseClassCompositionFn<any, any>> =
+  Parameters<T>[0];
 
 /** Return whether a compound variant should be applied. */
-export function shouldApplyCompoundVariant<T extends Record<string, any>>(
+function shouldApplyCompoundVariant<T extends Record<string, any>>(
   compoundCheck: T,
   selections: T
 ) {
@@ -80,18 +81,18 @@ export function shouldApplyCompoundVariant<T extends Record<string, any>>(
 
 /**
  * Create a multipart CSS class composition with multi-variant support.
- * @return A function to apply the CSS classes to each part for a given set of variants.
+ * @return A function to apply the CSS classes to each part of the component for a given set of variants.
  */
 export function createClassComposition<
   Parts extends string,
   Variants extends Record<string, any>
 >(
-  composition: MultiPartClassComposition<Parts, Variants>,
+  config: ClassComposition<Parts, Variants>,
   defaultVariants?: VariantSelection<Variants>
-): UseClassesFn<Parts, Variants> {
-  const parts = Object.keys(composition) as Array<Parts>;
+): UseClassCompositionFn<Parts, Variants> {
+  const parts = Object.keys(config) as Array<Parts>;
 
-  return function useMultiPartClassComposition(
+  return function useClassComposition(
     variantProps: VariantSelection<Variants>
   ) {
     const selectedVariants = createMemo(() => {
@@ -103,12 +104,12 @@ export function createClassComposition<
 
     const classes = createMemo(() => {
       return parts.reduce((acc, part) => {
-        const baseClasses = composition[part].base ?? [];
-        const variantClasses = composition[part].variants ?? ({} as any);
-        const compoundVariants = composition[part].compoundVariants ?? [];
+        const baseClasses = config[part].base ?? "";
+        const variantClasses = config[part].variants ?? ({} as any);
+        const compoundVariants = config[part].compoundVariants ?? [];
 
         // 1. add "base" classes.
-        const classes = [...baseClasses];
+        const classes = [baseClasses];
 
         // 2. add "variants" classes.
         for (const name in selectedVariants()) {
@@ -118,7 +119,7 @@ export function createClassComposition<
             continue;
           }
 
-          classes.push(...(variantClasses[name]?.[String(value)] ?? []));
+          classes.push(variantClasses[name]?.[String(value)]);
         }
 
         // 3. add "compound variants" classes.
@@ -129,7 +130,7 @@ export function createClassComposition<
               selectedVariants()
             )
           ) {
-            classes.push(...compoundVariant.classes);
+            classes.push(compoundVariant.classes);
           }
         }
 

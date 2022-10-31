@@ -20,7 +20,6 @@ import {
   addColorModeListener,
   getInitialColorMode,
   getSystemColorMode,
-  setColorModeClassName,
   setColorModeDataset,
 } from "./utils";
 
@@ -41,7 +40,6 @@ export function ColorModeProvider(props: ColorModeProviderProps) {
   const applyColorMode = (value: ColorMode) => {
     rawSetColorMode(value);
 
-    setColorModeClassName(value === "dark");
     setColorModeDataset(value, props.disableTransitionOnChange);
   };
 

@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@kobalte/docs", "@kobalte/mdx"]
+  "ignore": ["@kobalte/docs"]
 }

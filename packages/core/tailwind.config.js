@@ -2,7 +2,7 @@
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [{ raw: "" }],
+  content: ["./dev/**/*.{html,ts,tsx}"],
   plugins: [
     require("@tailwindcss/forms")({
       strategy: "class",

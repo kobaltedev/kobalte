@@ -5,7 +5,7 @@ const plugin = require("tailwindcss/plugin");
 const TEN_SHADES_COLORS = [
   /* TailwindCSS colors */
   "slate",
-  "cloud",
+  "smoke",
   "zinc",
   "gray",
   "stone",
@@ -36,10 +36,21 @@ const TEN_SHADES_COLORS = [
   "danger",
 ];
 
-const FOUR_SHADES = ["50", "100", "200", "300"];
-const FIVE_SHADES = [...FOUR_SHADES, "400"];
-const TEN_SHADES = [...FIVE_SHADES, "500", "600", "700", "800", "900"];
-const BG_SHADES = [...FIVE_SHADES, "white"];
+const TEN_SHADES = [
+  "50",
+  "100",
+  "200",
+  "300",
+  "400",
+  "500",
+  "600",
+  "700",
+  "800",
+  "900",
+];
+
+const FOUR_SHADES = ["1", "2", "3", "4"];
+const BG_SHADES = [...FOUR_SHADES, "5", "white"];
 
 function createColorObject(shades, withAlpha) {
   return { shades, withAlpha };
@@ -54,25 +65,34 @@ function getColors() {
     border: createColorObject(FOUR_SHADES, false),
     fill: createColorObject(FOUR_SHADES, false),
     text: createColorObject(FOUR_SHADES, false),
-    background: createColorObject(BG_SHADES, false),
+    bg: createColorObject(BG_SHADES, false),
   };
 
-  return Object.keys(colorDefinitions).reduce((acc, name) => {
-    const color = colorDefinitions[name];
+  return Object.keys(colorDefinitions).reduce(
+    (acc, name) => {
+      const color = colorDefinitions[name];
 
-    acc[name] = color.shades.reduce((acc, shade) => {
-      acc[shade] = `rgb(var(--kobalte-colors-${name}-${shade})${
-        color.withAlpha ? " / <alpha-value>" : ""
-      })`;
+      acc[name] = color.shades.reduce((acc, shade) => {
+        acc[shade] = `rgb(var(--kb-color-${name}-${shade})${
+          color.withAlpha ? " / <alpha-value>" : ""
+        })`;
+        return acc;
+      }, {});
+
       return acc;
-    }, {});
-
-    return acc;
-  }, {});
+    },
+    {
+      inherit: "inherit",
+      current: "currentColor",
+      transparent: "transparent",
+      black: "#000",
+      white: "#fff",
+    }
+  );
 }
 
 module.exports = plugin(function () {}, {
-  darkMode: ["class", ".kobalte-theme-dark"],
+  darkMode: ["class", "[data-kb-theme='dark']"],
   theme: {
     colors: getColors(),
   },
