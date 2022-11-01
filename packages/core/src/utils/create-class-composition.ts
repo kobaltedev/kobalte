@@ -24,13 +24,11 @@ type VariantSelection<Variants extends Record<string, any>> = {
   [VariantGroup in keyof Variants]?: BooleanMap<Variants[VariantGroup]>;
 };
 
-interface CompoundVariant<Variants extends Record<string, any>> {
-  /** The combined variants that should apply the classes. */
-  variants: VariantSelection<Variants>;
-
-  /** The classes to be applied. */
-  classes: string;
-}
+type CompoundVariant<Variants extends Record<string, any>> =
+  VariantSelection<Variants> & {
+    /** The CSS classes to be applied. */
+    classes: string;
+  };
 
 /** A class composition part. */
 interface ClassCompositionPart<Variants extends Record<string, any>> {
@@ -60,10 +58,6 @@ type UseClassCompositionFn<
 > = (
   variantProps: VariantSelection<Variants>
 ) => Accessor<Record<Parts, string>>;
-
-/** Extract the variant props type of `useClassComposition` primitive. */
-export type VariantProps<T extends UseClassCompositionFn<any, any>> =
-  Parameters<T>[0];
 
 /** Return whether a compound variant should be applied. */
 function shouldApplyCompoundVariant<T extends Record<string, any>>(
@@ -109,7 +103,7 @@ export function createClassComposition<
         const compoundVariants = config[part].compoundVariants ?? [];
 
         // 1. add "base" classes.
-        const classes = [baseClasses];
+        const result = [baseClasses];
 
         // 2. add "variants" classes.
         for (const name in selectedVariants()) {
@@ -119,22 +113,22 @@ export function createClassComposition<
             continue;
           }
 
-          classes.push(variantClasses[name]?.[String(value)]);
+          result.push(variantClasses[name]?.[String(value)]);
         }
 
         // 3. add "compound variants" classes.
-        for (const compoundVariant of compoundVariants) {
+        for (const { classes, ...variants } of compoundVariants) {
           if (
             shouldApplyCompoundVariant(
-              compoundVariant.variants,
+              variants as VariantSelection<Variants>,
               selectedVariants()
             )
           ) {
-            classes.push(compoundVariant.classes);
+            result.push(classes);
           }
         }
 
-        acc[part] = clsx(classes);
+        acc[part] = clsx(result);
 
         return acc;
       }, {} as Record<Parts, string>);

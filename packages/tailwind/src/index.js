@@ -25,7 +25,7 @@ const TEN_SHADES = [
 ];
 
 const FOUR_SHADES = ["1", "2", "3", "4"];
-const BG_SHADES = [...FOUR_SHADES, "5", "white"];
+const BG_SHADES = [...FOUR_SHADES, "5"];
 
 function createColorObject(shades, withAlpha) {
   return { shades, withAlpha };

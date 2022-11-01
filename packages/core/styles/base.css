@@ -94,7 +94,6 @@
   --kb-color-bg-3: var(--kb-color-white);
   --kb-color-bg-4: var(--kb-color-white);
   --kb-color-bg-5: var(--kb-color-white);
-  --kb-color-bg-white: var(--kb-color-white);
 }
 
 [data-kb-theme="dark"] {
@@ -118,7 +117,6 @@
   --kb-color-bg-3: 43 43 44;
   --kb-color-bg-4: 48 48 49;
   --kb-color-bg-5: 55 55 57;
-  --kb-color-bg-white: 246 246 246;
 }
 
 html {
