@@ -1,6 +1,5 @@
 import {
   itHasSemanticClass,
-  itIsPolymorphic,
   itRendersChildren,
   itSupportsClass,
   itSupportsRef,
@@ -14,7 +13,6 @@ import { ButtonGroup, ButtonGroupProps } from "./button-group";
 const defaultProps: ButtonGroupProps = {};
 
 describe("ButtonGroup", () => {
-  itIsPolymorphic(ButtonGroup as any, defaultProps);
   itRendersChildren(ButtonGroup as any, defaultProps);
   itSupportsClass(ButtonGroup as any, defaultProps);
   itHasSemanticClass(ButtonGroup as any, defaultProps, "kb-button-group");

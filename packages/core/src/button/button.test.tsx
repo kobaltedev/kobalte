@@ -146,7 +146,7 @@ describe("Button", () => {
       </Button>
     ));
 
-    expect(container.querySelector(".hope-Button-loaderWrapper")).toBeInTheDocument();
+    expect(container.querySelector(".kb-button__loader-wrapper")).toBeInTheDocument();
   });
 
   it("should show loading text when 'isLoading' prop is true and a loading text is provided", () => {
