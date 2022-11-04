@@ -1,9 +1,12 @@
-import { Button } from "../src";
+import { Button, useColorMode } from "../src";
 import { For } from "solid-js";
 
 export default function App() {
+  const { toggleColorMode } = useColorMode();
+
   return (
     <>
+      <button onClick={toggleColorMode}>Toggle color mode</button>
       <div
         style={{
           margin: "16px",
@@ -30,7 +33,7 @@ export default function App() {
                 <Button variant={variant as any} size="md">
                   Button
                 </Button>
-                <Button variant={variant as any} size="lg">
+                <Button variant={variant as any} size="lg" isDisabled>
                   Button
                 </Button>
               </div>
@@ -55,7 +58,7 @@ export default function App() {
                 <Button variant={variant as any} size="md" isDestructive>
                   Button
                 </Button>
-                <Button variant={variant as any} size="lg" isDestructive>
+                <Button variant={variant as any} size="lg" isDestructive isDisabled>
                   Button
                 </Button>
               </div>
