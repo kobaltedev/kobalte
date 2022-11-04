@@ -1,69 +1,59 @@
-import { cva } from "../utils";
+import { bem, cva } from "../utils";
+import { ButtonParts, ButtonVariants } from "./types";
 
-type ButtonParts = "root" | "icon" | "loaderWrapper" | "loaderIcon";
-
-export interface ButtonVariants {
-  /** The color of the button. */
-  color?: "primary" | "secondary" | "success" | "warning" | "danger";
-
-  /** The visual style of the button. */
-  variant?: "solid" | "soft" | "outlined" | "plain";
-
-  /** The size of the button. */
-  size?: "xs" | "sm" | "md" | "lg";
-
-  /** Whether the button should take all available width. */
-  isFullWidth?: boolean;
-
-  /** Whether the button is an icon only button. */
-  isIconOnly?: boolean;
-}
+const bemButton = bem("kb-button");
 
 export const buttonStyles = cva<ButtonParts, ButtonVariants>(
   {
     root: {
-      base: "kb-button",
+      base: bemButton.block(),
       variants: {
-        color: {
-          primary: "kb-button--primary",
-          secondary: "kb-button--secondary",
-          success: "kb-button--success",
-          warning: "kb-button--warning",
-          danger: "kb-button--danger",
-        },
         variant: {
-          solid: "kb-button--solid",
-          soft: "kb-button--soft",
-          outlined: "kb-button--outlined",
-          plain: "kb-button--plain",
+          primary: bemButton.withModifier("primary"),
+          secondary: bemButton.withModifier("secondary"),
+          tertiary: bemButton.withModifier("tertiary"),
+          default: bemButton.withModifier("default"),
         },
         size: {
-          xs: "kb-button--xs",
-          sm: "kb-button--sm",
-          md: "kb-button--md",
-          lg: "kb-button--lg",
+          xs: bemButton.withModifier("xs"),
+          sm: bemButton.withModifier("sm"),
+          md: bemButton.withModifier("md"),
+          lg: bemButton.withModifier("lg"),
+        },
+        isDestructive: {
+          true: bemButton.withModifier("destructive"),
         },
         isFullWidth: {
-          true: "kb-button--full-width",
+          true: bemButton.withModifier("full-width"),
         },
         isIconOnly: {
-          true: "kb-button--icon-only",
+          true: bemButton.withModifier("icon-only"),
         },
       },
     },
     icon: {
-      base: "kb-button__icon",
+      base: bemButton.withElement("icon"),
+    },
+    leftIcon: {
+      base: bemButton.withElement("left-icon"),
+    },
+    rightIcon: {
+      base: bemButton.withElement("right-icon"),
     },
     loaderWrapper: {
-      base: "kb-button__loader-wrapper",
+      base: bemButton.withElement("loader-wrapper"),
+      variants: {
+        hasLoadingText: {
+          true: bemButton.withElementModifier("loader-wrapper", "has-loading-text"),
+        },
+      },
     },
     loaderIcon: {
-      base: "kb-button__loader-icon",
+      base: bemButton.withElement("loader-icon"),
     },
   },
   {
-    color: "secondary",
-    variant: "soft",
+    variant: "default",
     size: "md",
   }
 );

@@ -1,7 +1,7 @@
 :root {
   --kb-color-white: 255 255 255;
 
-  /* Tailwind - blue */
+  // Tailwind - blue
   --kb-color-primary-50: 239 246 255;
   --kb-color-primary-100: 219 234 254;
   --kb-color-primary-200: 191 219 254;
@@ -13,7 +13,7 @@
   --kb-color-primary-800: 30 64 175;
   --kb-color-primary-900: 30 58 138;
 
-  /* Tailwind - zinc */
+  // Tailwind - zinc
   --kb-color-neutral-50: 250 250 250;
   --kb-color-neutral-100: 244 244 245;
   --kb-color-neutral-200: 228 228 231;
@@ -25,7 +25,7 @@
   --kb-color-neutral-800: 39 39 42;
   --kb-color-neutral-900: 24 24 27;
 
-  /* Tailwind - green */
+  // Tailwind - green
   --kb-color-success-50: 240 253 244;
   --kb-color-success-100: 220 252 231;
   --kb-color-success-200: 187 247 208;
@@ -37,7 +37,7 @@
   --kb-color-success-800: 22 101 52;
   --kb-color-success-900: 20 83 45;
 
-  /* Tailwind - violet */
+  // Tailwind - violet
   --kb-color-info-50: 245 243 255;
   --kb-color-info-100: 237 233 254;
   --kb-color-info-200: 221 214 254;
@@ -49,19 +49,19 @@
   --kb-color-info-800: 91 33 182;
   --kb-color-info-900: 76 29 149;
 
-  /* Tailwind - orange */
-  --kb-color-warning-50: 255 247 237;
-  --kb-color-warning-100: 255 237 213;
-  --kb-color-warning-200: 254 215 170;
-  --kb-color-warning-300: 253 186 116;
-  --kb-color-warning-400: 251 146 60;
-  --kb-color-warning-500: 249 115 22;
-  --kb-color-warning-600: 234 88 12;
-  --kb-color-warning-700: 194 65 12;
-  --kb-color-warning-800: 154 52 18;
-  --kb-color-warning-900: 124 45 18;
+  // Tailwind - amber
+  --kb-color-warning-50: 255 251 235;
+  --kb-color-warning-100: 254 243 199;
+  --kb-color-warning-200: 253 230 138;
+  --kb-color-warning-300: 252 211 77;
+  --kb-color-warning-400: 251 191 36;
+  --kb-color-warning-500: 245 158 11;
+  --kb-color-warning-600: 217 119 6;
+  --kb-color-warning-700: 180 83 9;
+  --kb-color-warning-800: 146 64 14;
+  --kb-color-warning-900: 120 53 15;
 
-  /* Tailwind - red */
+  // Tailwind - red
   --kb-color-danger-50: 254 242 242;
   --kb-color-danger-100: 254 226 226;
   --kb-color-danger-200: 254 202 202;
@@ -73,7 +73,7 @@
   --kb-color-danger-800: 153 27 27;
   --kb-color-danger-900: 127 29 29;
 
-  /* Specific semantic colors aliases */
+  // Specific semantic colors aliases
   --kb-color-border-1: var(--kb-color-neutral-100);
   --kb-color-border-2: var(--kb-color-neutral-200);
   --kb-color-border-3: var(--kb-color-neutral-300);
@@ -117,16 +117,4 @@
   --kb-color-bg-3: 43 43 44;
   --kb-color-bg-4: 48 48 49;
   --kb-color-bg-5: 55 55 57;
-}
-
-html {
-  font-size: 16px;
-}
-
-body {
-  @apply bg-bg-1 text-text-1;
-  font-family: inherit;
-  line-height: inherit;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }

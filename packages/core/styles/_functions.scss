@@ -1,0 +1,4 @@
+// create a dark theme selector
+@function dark-selector($selector: "&") {
+  @return "[data-kb-theme=dark] #{$selector}:not([data-kb-theme]), #{$selector}[data-kb-theme=dark]";
+}

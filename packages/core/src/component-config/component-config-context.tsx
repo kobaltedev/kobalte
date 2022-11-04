@@ -1,7 +1,9 @@
 import { createContext } from "solid-js";
 
+import { ButtonConfig } from "../button";
+
 export interface ComponentConfig {
-  // ex: Button?: => ButtonConfig => Pick<ButtonProps, "variant" | "size" | "color">
+  Button?: ButtonConfig;
 }
 
 export const ComponentConfigContext = createContext<ComponentConfig | undefined>({});

@@ -1,15 +1,18 @@
-import "./index.css";
+import "./index.scss";
 
 import { render } from "solid-js/web";
 
-import { KobalteProvider } from "../src";
+import { ColorModeScript, KobalteProvider } from "../src";
 import App from "./App";
 
 render(
   () => (
-    <KobalteProvider>
-      <App />
-    </KobalteProvider>
+    <>
+      <ColorModeScript />
+      <KobalteProvider>
+        <App />
+      </KobalteProvider>
+    </>
   ),
   document.getElementById("root") as HTMLDivElement
 );

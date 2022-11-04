@@ -1,0 +1,55 @@
+.kb-button-group {
+  display: inline-flex;
+
+  & > *:focus {
+    z-index: 1;
+  }
+}
+
+/* -------------------------------------------------------------------------------------------------
+ * orientation - horizontal
+ * -----------------------------------------------------------------------------------------------*/
+
+.kb-button-group--horizontal {
+  flex-direction: row;
+
+  & > *:first-of-type:not(:last-of-type) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  & > *:not(:first-of-type):not(:last-of-type) {
+    border-radius: 0;
+    margin-left: -1px;
+  }
+
+  & > *:not(:first-of-type):last-of-type {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: -1px;
+  }
+}
+
+/* -------------------------------------------------------------------------------------------------
+ * orientation - vertical
+ * -----------------------------------------------------------------------------------------------*/
+
+.kb-button-group--vertical {
+  flex-direction: column;
+
+  & > *:first-of-type:not(:last-of-type) {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  & > *:not(:first-of-type):not(:last-of-type) {
+    border-radius: 0;
+    margin-top: -1px;
+  }
+
+  & > *:not(:first-of-type):last-of-type {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    margin-top: -1px;
+  }
+}
