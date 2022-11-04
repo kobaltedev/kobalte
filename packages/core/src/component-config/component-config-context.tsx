@@ -4,4 +4,4 @@ export interface ComponentConfig {
   // ex: Button?: => ButtonConfig => Pick<ButtonProps, "variant" | "size" | "color">
 }
 
-export const ComponentConfigContext = createContext<ComponentConfig>({});
+export const ComponentConfigContext = createContext<ComponentConfig | undefined>({});

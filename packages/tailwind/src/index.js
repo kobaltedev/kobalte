@@ -2,27 +2,9 @@
 
 const plugin = require("tailwindcss/plugin");
 
-const TEN_SHADES_COLORS = [
-  "primary",
-  "neutral",
-  "success",
-  "info",
-  "warning",
-  "danger",
-];
+const TEN_SHADES_COLORS = ["primary", "neutral", "success", "info", "warning", "danger"];
 
-const TEN_SHADES = [
-  "50",
-  "100",
-  "200",
-  "300",
-  "400",
-  "500",
-  "600",
-  "700",
-  "800",
-  "900",
-];
+const TEN_SHADES = ["50", "100", "200", "300", "400", "500", "600", "700", "800", "900"];
 
 const FOUR_SHADES = ["1", "2", "3", "4"];
 const BG_SHADES = [...FOUR_SHADES, "5"];

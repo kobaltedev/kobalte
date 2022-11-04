@@ -30,9 +30,7 @@ interface GetTransitionStylesParams {
   easing: JSX.CSSProperties["transition-timing-function"];
 }
 
-export function getTransitionStyles(
-  params: GetTransitionStylesParams
-): JSX.CSSProperties {
+export function getTransitionStyles(params: GetTransitionStylesParams): JSX.CSSProperties {
   const shared: JSX.CSSProperties = {
     "transition-duration": `${params.duration}ms`,
     "transition-timing-function": params.easing,
@@ -63,9 +61,6 @@ export function getTransitionStyles(
 
 function getTransitionProperty(transitionStyles: TransitionStyles): string {
   return [
-    ...new Set([
-      ...Object.keys(transitionStyles.in),
-      ...Object.keys(transitionStyles.out),
-    ]),
+    ...new Set([...Object.keys(transitionStyles.in), ...Object.keys(transitionStyles.out)]),
   ].join(", ");
 }

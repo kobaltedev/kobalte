@@ -23,9 +23,7 @@ const ARIA_MODAL_SELECTOR = '[aria-modal="true"], [data-ismodal="true"]';
 
 function hideOthers(document: Document, modal: HTMLElement) {
   // Apply `aria-hidden` on each sibling element of the highest ancestor element of modal (e.g. the portal).
-  const elements = Array.from<HTMLElement>(
-    document.querySelectorAll(ROOT_ELEMENTS_SELECTOR)
-  )
+  const elements = Array.from<HTMLElement>(document.querySelectorAll(ROOT_ELEMENTS_SELECTOR))
     .filter(element => !element.contains(modal))
     .map(element => {
       const previousAriaHidden = element.getAttribute("aria-hidden") || "";
@@ -49,10 +47,7 @@ function hideOthers(document: Document, modal: HTMLElement) {
 /**
  * Polyfill for `aria-modal`, watch for added modals and hide any surrounding DOM elements with `aria-hidden`.
  */
-export function watchModals(
-  selector = "body",
-  { document = currentDocument } = {}
-): Revert {
+export function watchModals(selector = "body", { document = currentDocument } = {}): Revert {
   /**
    * Listen for additions to the child list of the selected element (defaults to body). This is where providers render modal portals.
    * When one is added, see if there is a modal inside it, if there is, then hide everything else from screen readers.
@@ -78,16 +73,14 @@ export function watchModals(
       }
 
       if (mutation.addedNodes.length > 0) {
-        const addNode: Element = Array.from(mutation.addedNodes).find(
-          (node: any) => node.querySelector?.(ARIA_MODAL_SELECTOR)
+        const addNode: Element = Array.from(mutation.addedNodes).find((node: any) =>
+          node.querySelector?.(ARIA_MODAL_SELECTOR)
         ) as HTMLElement;
 
         if (addNode) {
           modalContainers.push(addNode);
 
-          const modal = addNode.querySelector(
-            ARIA_MODAL_SELECTOR
-          ) as HTMLElement;
+          const modal = addNode.querySelector(ARIA_MODAL_SELECTOR) as HTMLElement;
 
           undo?.();
           undo = hideOthers(document, modal);
@@ -101,15 +94,11 @@ export function watchModals(
 
         if (nodeIndexRemove >= 0) {
           undo?.();
-          modalContainers = modalContainers.filter(
-            (val, i) => i !== nodeIndexRemove
-          );
+          modalContainers = modalContainers.filter((val, i) => i !== nodeIndexRemove);
 
           if (modalContainers.length > 0) {
             const modal =
-              modalContainers[modalContainers.length - 1].querySelector(
-                ARIA_MODAL_SELECTOR
-              );
+              modalContainers[modalContainers.length - 1].querySelector(ARIA_MODAL_SELECTOR);
 
             undo = hideOthers(document, modal);
           } else {

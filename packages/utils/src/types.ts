@@ -18,11 +18,7 @@ export type ElementType<Props = any> = DOMElements | Component<Props>;
  * Allows for extending a set of props (`Source`) by an overriding set of props (`Override`),
  * ensuring that any duplicates are overridden by the overriding set of props.
  */
-export type OverrideProps<Source = {}, Override = {}> = Omit<
-  Source,
-  keyof Override
-> &
-  Override;
+export type OverrideProps<Source = {}, Override = {}> = Omit<Source, keyof Override> & Override;
 
 export interface ClassProp {
   /** The HTML `class` attribute. */

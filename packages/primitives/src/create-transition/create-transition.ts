@@ -102,9 +102,7 @@ export function createTransition(
 
   const reduceMotion = createReducedMotion();
 
-  const [duration, setDuration] = createSignal(
-    reduceMotion() ? 0 : access(options).duration!
-  );
+  const [duration, setDuration] = createSignal(reduceMotion() ? 0 : access(options).duration!);
 
   const [phase, setPhase] = createSignal<TransitionPhase>(
     access(shouldMount) ? "afterEnter" : "afterExit"
@@ -115,28 +113,18 @@ export function createTransition(
   let timeoutId = -1;
 
   const handleStateChange = (shouldMount: boolean) => {
-    const preHandler = shouldMount
-      ? access(options).onBeforeEnter
-      : access(options).onBeforeExit;
-    const postHandler = shouldMount
-      ? access(options).onAfterEnter
-      : access(options).onAfterExit;
+    const preHandler = shouldMount ? access(options).onBeforeEnter : access(options).onBeforeExit;
+    const postHandler = shouldMount ? access(options).onAfterEnter : access(options).onAfterExit;
 
     setPhase(shouldMount ? "beforeEnter" : "beforeExit");
 
     window.clearTimeout(timeoutId);
 
     const newDuration = setDuration(
-      reduceMotion()
-        ? 0
-        : shouldMount
-        ? access(options).duration!
-        : access(options).exitDuration!
+      reduceMotion() ? 0 : shouldMount ? access(options).duration! : access(options).exitDuration!
     );
 
-    setEasing(
-      shouldMount ? access(options).easing! : access(options).exitEasing!
-    );
+    setEasing(shouldMount ? access(options).easing! : access(options).exitEasing!);
 
     if (newDuration === 0) {
       preHandler?.();

@@ -20,9 +20,7 @@ export function useColorMode() {
   const context = useContext(ColorModeContext);
 
   if (context === undefined) {
-    throw new Error(
-      "[kobalte]: `useColorMode` must be used within a `ColorModeProvider`"
-    );
+    throw new Error("[kobalte]: `useColorMode` must be used within a `ColorModeProvider`");
   }
 
   return context;
@@ -41,10 +39,7 @@ export function useColorMode() {
  * const Icon = useColorModeValue(MoonIcon, SunIcon)
  * ```
  */
-export function useColorModeValue<TLight = unknown, TDark = unknown>(
-  light: TLight,
-  dark: TDark
-) {
+export function useColorModeValue<TLight = unknown, TDark = unknown>(light: TLight, dark: TDark) {
   const { colorMode } = useColorMode();
 
   return createMemo(() => (colorMode() === "dark" ? dark : light));

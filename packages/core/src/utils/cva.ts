@@ -24,11 +24,10 @@ type VariantSelection<Variants extends Record<string, any>> = {
   [VariantGroup in keyof Variants]?: BooleanMap<Variants[VariantGroup]>;
 };
 
-type CompoundVariant<Variants extends Record<string, any>> =
-  VariantSelection<Variants> & {
-    /** The CSS classes to be applied. */
-    classes: string;
-  };
+type CompoundVariant<Variants extends Record<string, any>> = VariantSelection<Variants> & {
+  /** The CSS classes to be applied. */
+  className: string;
+};
 
 /** A class composition part. */
 interface ClassCompositionPart<Variants extends Record<string, any>> {
@@ -47,15 +46,12 @@ interface ClassCompositionPart<Variants extends Record<string, any>> {
 }
 
 /** A multi-part class composition. */
-type ClassComposition<
-  Parts extends string,
-  Variants extends Record<string, any>
-> = Record<Parts, ClassCompositionPart<Variants>>;
+type ClassComposition<Parts extends string, Variants extends Record<string, any>> = Record<
+  Parts,
+  ClassCompositionPart<Variants>
+>;
 
-type UseClassCompositionFn<
-  Parts extends string,
-  Variants extends Record<string, any>
-> = (
+type UseClassCompositionFn<Parts extends string, Variants extends Record<string, any>> = (
   variantProps: VariantSelection<Variants>
 ) => Accessor<Record<Parts, string>>;
 
@@ -77,18 +73,13 @@ function shouldApplyCompoundVariant<T extends Record<string, any>>(
  * Create a multipart CSS class composition with multi-variant support.
  * @return A function to apply the CSS classes to each part of the component for a given set of variants.
  */
-export function createClassComposition<
-  Parts extends string,
-  Variants extends Record<string, any>
->(
-  config: ClassComposition<Parts, Variants>,
+export function cva<Parts extends string, Variants extends Record<string, any>>(
+  composition: ClassComposition<Parts, Variants>,
   defaultVariants?: VariantSelection<Variants>
 ): UseClassCompositionFn<Parts, Variants> {
-  const parts = Object.keys(config) as Array<Parts>;
+  const parts = Object.keys(composition) as Array<Parts>;
 
-  return function useClassComposition(
-    variantProps: VariantSelection<Variants>
-  ) {
+  return function useClassComposition(variantProps: VariantSelection<Variants>) {
     const selectedVariants = createMemo(() => {
       return {
         ...defaultVariants,
@@ -96,11 +87,11 @@ export function createClassComposition<
       } as VariantSelection<Variants>;
     });
 
-    const classes = createMemo(() => {
+    const classNames = createMemo(() => {
       return parts.reduce((acc, part) => {
-        const baseClasses = config[part].base ?? "";
-        const variantClasses = config[part].variants ?? ({} as any);
-        const compoundVariants = config[part].compoundVariants ?? [];
+        const baseClasses = composition[part].base ?? "";
+        const variantClasses = composition[part].variants ?? ({} as any);
+        const compoundVariants = composition[part].compoundVariants ?? [];
 
         // 1. add "base" classes.
         const result = [baseClasses];
@@ -117,14 +108,11 @@ export function createClassComposition<
         }
 
         // 3. add "compound variants" classes.
-        for (const { classes, ...variants } of compoundVariants) {
+        for (const { className, ...variants } of compoundVariants) {
           if (
-            shouldApplyCompoundVariant(
-              variants as VariantSelection<Variants>,
-              selectedVariants()
-            )
+            shouldApplyCompoundVariant(variants as VariantSelection<Variants>, selectedVariants())
           ) {
-            result.push(classes);
+            result.push(className);
           }
         }
 
@@ -134,6 +122,6 @@ export function createClassComposition<
       }, {} as Record<Parts, string>);
     });
 
-    return classes;
+    return classNames;
   };
 }

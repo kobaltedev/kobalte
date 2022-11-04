@@ -1,9 +1,6 @@
 import { mergeProps, useContext } from "solid-js";
 
-import {
-  ComponentConfig,
-  ComponentConfigContext,
-} from "./component-config-context";
+import { ComponentConfig, ComponentConfigContext } from "./component-config-context";
 
 /**
  * Merge default, global config and component props into a single props object.
@@ -18,7 +15,7 @@ export function mergeComponentConfigProps<T extends Record<string, any>>(
   defaultProps: Partial<T>,
   props: T
 ): T {
-  const configProps = useContext(ComponentConfigContext)[name] ?? {};
+  const configProps = useContext(ComponentConfigContext)?.[name] ?? {};
 
   return mergeProps(defaultProps, configProps, props);
 }

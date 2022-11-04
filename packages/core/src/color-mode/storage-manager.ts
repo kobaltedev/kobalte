@@ -8,19 +8,17 @@
 
 import { isServer } from "solid-js/web";
 
-import { ColorModeStorageManager, MaybeColorMode } from "./types";
+import { ColorModeStorageManager, MaybeConfigColorMode } from "./types";
 
 export const COLOR_MODE_STORAGE_KEY = "kb-color-mode";
 
-export function createLocalStorageManager(
-  key: string
-): ColorModeStorageManager {
+export function createLocalStorageManager(key: string): ColorModeStorageManager {
   return {
     ssr: false,
     type: "localStorage",
-    get: (): MaybeColorMode => {
+    get: fallback => {
       if (isServer) {
-        return undefined;
+        return fallback;
       }
 
       let value: any;
@@ -30,7 +28,7 @@ export function createLocalStorageManager(
         // noop
       }
 
-      return value ?? undefined;
+      return value ?? fallback;
     },
     set: value => {
       try {
@@ -42,32 +40,27 @@ export function createLocalStorageManager(
   };
 }
 
-export const localStorageManager = createLocalStorageManager(
-  COLOR_MODE_STORAGE_KEY
-);
+export const localStorageManager = createLocalStorageManager(COLOR_MODE_STORAGE_KEY);
 
-function parseCookie(cookie: string, key: string): MaybeColorMode {
+function parseCookie(cookie: string, key: string): MaybeConfigColorMode {
   const match = cookie.match(new RegExp(`(^| )${key}=([^;]+)`));
-  return match?.[2] as MaybeColorMode;
+  return match?.[2] as MaybeConfigColorMode;
 }
 
-export function createCookieStorageManager(
-  key: string,
-  cookie?: string
-): ColorModeStorageManager {
+export function createCookieStorageManager(key: string, cookie?: string): ColorModeStorageManager {
   return {
     ssr: !!cookie,
     type: "cookie",
-    get: (): MaybeColorMode => {
+    get: fallback => {
       if (cookie) {
-        return parseCookie(cookie, key) ?? undefined;
+        return parseCookie(cookie, key) ?? fallback;
       }
 
       if (isServer) {
-        return undefined;
+        return fallback;
       }
 
-      return parseCookie(document.cookie, key) ?? undefined;
+      return parseCookie(document.cookie, key) ?? fallback;
     },
     set: value => {
       document.cookie = `${key}=${value}; max-age=31536000; path=/`;
@@ -75,9 +68,7 @@ export function createCookieStorageManager(
   };
 }
 
-export const cookieStorageManager = createCookieStorageManager(
-  COLOR_MODE_STORAGE_KEY
-);
+export const cookieStorageManager = createCookieStorageManager(COLOR_MODE_STORAGE_KEY);
 
 export function cookieStorageManagerSSR(cookie: string) {
   return createCookieStorageManager(COLOR_MODE_STORAGE_KEY, cookie);

@@ -1,4 +1,4 @@
-import { createClassComposition } from "../utils";
+import { cva } from "../utils";
 
 type ButtonParts = "root" | "icon" | "loaderWrapper" | "loaderIcon";
 
@@ -19,7 +19,7 @@ export interface ButtonVariants {
   isIconOnly?: boolean;
 }
 
-export const buttonStyles = createClassComposition<ButtonParts, ButtonVariants>(
+export const buttonStyles = cva<ButtonParts, ButtonVariants>(
   {
     root: {
       base: "kb-button",
