@@ -8,20 +8,22 @@ export const buttonStyles = cva<ButtonParts, ButtonVariants>(
     root: {
       base: bemButton.block(),
       variants: {
-        variant: {
+        color: {
           primary: bemButton.withModifier("primary"),
           secondary: bemButton.withModifier("secondary"),
-          tertiary: bemButton.withModifier("tertiary"),
-          default: bemButton.withModifier("default"),
+          danger: bemButton.withModifier("danger"),
+        },
+        variant: {
+          solid: bemButton.withModifier("solid"),
+          soft: bemButton.withModifier("soft"),
+          outlined: bemButton.withModifier("outlined"),
+          plain: bemButton.withModifier("plain"),
         },
         size: {
           xs: bemButton.withModifier("xs"),
           sm: bemButton.withModifier("sm"),
           md: bemButton.withModifier("md"),
           lg: bemButton.withModifier("lg"),
-        },
-        isDestructive: {
-          true: bemButton.withModifier("destructive"),
         },
         isFullWidth: {
           true: bemButton.withModifier("full-width"),
@@ -53,7 +55,8 @@ export const buttonStyles = cva<ButtonParts, ButtonVariants>(
     },
   },
   {
-    variant: "default",
+    color: "secondary",
+    variant: "soft",
     size: "md",
   }
 );

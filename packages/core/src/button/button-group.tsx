@@ -9,10 +9,7 @@ interface ButtonGroupVariants {
   orientation?: "horizontal" | "vertical";
 }
 
-type ButtonGroupContextValue = Pick<
-  ButtonProps,
-  "variant" | "size" | "isDestructive" | "isDisabled"
->;
+type ButtonGroupContextValue = Pick<ButtonProps, "color" | "variant" | "size" | "isDisabled">;
 
 export type ButtonGroupProps = ComponentProps<"div"> &
   ButtonGroupVariants &
@@ -48,7 +45,7 @@ export const ButtonGroup = (props: ButtonGroupProps) => {
     props,
     ["class"],
     ["orientation"],
-    ["variant", "size", "isDestructive", "isDisabled"]
+    ["color", "variant", "size", "isDisabled"]
   );
 
   const classNames = buttonGroupStyles(variantProps);

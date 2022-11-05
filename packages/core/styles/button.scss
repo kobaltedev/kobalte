@@ -2,6 +2,12 @@
 @use "functions" as *;
 @use "mixins" as *;
 
+$colorMap: (
+  primary: primary,
+  secondary: neutral,
+  danger: danger,
+);
+
 .kb-button {
   appearance: none;
   position: relative;
@@ -50,195 +56,200 @@
 }
 
 /* -------------------------------------------------------------------------------------------------
- * variant - default
+ * variant - solid
  * -----------------------------------------------------------------------------------------------*/
 
-.kb-button--default {
-  border-color: rgb(var(--kb-color-neutral-100));
-  background-color: rgb(var(--kb-color-neutral-100));
-  color: rgb(var(--kb-color-text-2));
+.kb-button--solid {
+  @each $name, $color in $colorMap {
+    $isNeutral: $color == neutral;
 
-  &:hover {
-    border-color: rgb(var(--kb-color-neutral-200));
-    background-color: rgb(var(--kb-color-neutral-200));
-  }
+    &.kb-button--#{$name} {
+      $baseShade: if($isNeutral, 800, 600);
+      border-color: rgb(var(--kb-color-#{$color}-#{$baseShade}));
+      background-color: rgb(var(--kb-color-#{$color}-#{$baseShade}));
+      color: rgb(var(--kb-color-white));
 
-  &:active {
-    border-color: rgb(var(--kb-color-neutral-300));
-    background-color: rgb(var(--kb-color-neutral-300));
-  }
+      &:hover {
+        $hoverShade: if($isNeutral, 700, 500);
+        border-color: rgb(var(--kb-color-#{$color}-#{$hoverShade}));
+        background-color: rgb(var(--kb-color-#{$color}-#{$hoverShade}));
+      }
 
-  &:disabled {
-    border-color: rgb(var(--kb-color-neutral-50));
-    background-color: rgb(var(--kb-color-neutral-50));
-    color: rgb(var(--kb-color-text-4));
-  }
+      &:active {
+        $activeShade: if($isNeutral, 900, 700);
+        border-color: rgb(var(--kb-color-#{$color}-#{$activeShade}));
+        background-color: rgb(var(--kb-color-#{$color}-#{$activeShade}));
+      }
 
-  #{dark-selector()} {
-    border-color: transparent;
-    background-color: rgb(var(--kb-color-neutral-100) / 0.08);
-  }
+      &:disabled {
+        border-color: rgb(var(--kb-color-#{$color}-200));
+        background-color: rgb(var(--kb-color-#{$color}-200));
+      }
 
-  #{dark-selector("&:hover")} {
-    border-color: transparent;
-    background-color: rgb(var(--kb-color-neutral-200) / 0.14);
-  }
+      #{dark-selector()} {
+        border-color: rgb(var(--kb-color-#{$color}-600));
+        background-color: rgb(var(--kb-color-#{$color}-600));
+      }
 
-  #{dark-selector("&:active")} {
-    border-color: transparent;
-    background-color: rgb(var(--kb-color-neutral-300) / 0.22);
-  }
+      #{dark-selector("&:hover")} {
+        border-color: rgb(var(--kb-color-#{$color}-700));
+        background-color: rgb(var(--kb-color-#{$color}-700));
+      }
 
-  #{dark-selector("&:disabled")} {
-    border-color: transparent;
-    background-color: rgb(var(--kb-color-neutral-100) / 0.04);
+      #{dark-selector("&:active")} {
+        border-color: rgb(var(--kb-color-#{$color}-500));
+        background-color: rgb(var(--kb-color-#{$color}-500));
+      }
+
+      #{dark-selector("&:disabled")} {
+        border-color: transparent;
+        background-color: rgb(var(--kb-color-#{$color}-600) / 0.3);
+        color: rgb(var(--kb-color-white) / 0.3);
+      }
+    }
   }
 }
 
 /* -------------------------------------------------------------------------------------------------
- * variant - primary
+ * variant - soft
  * -----------------------------------------------------------------------------------------------*/
 
-@mixin variant-primary($color) {
-  border-color: rgb(var(--kb-color-#{$color}-600));
-  background-color: rgb(var(--kb-color-#{$color}-600));
-  color: rgb(var(--kb-color-white));
+.kb-button--soft {
+  @each $name, $color in $colorMap {
+    $isNeutral: $color == neutral;
 
-  &:hover {
-    border-color: rgb(var(--kb-color-#{$color}-500));
-    background-color: rgb(var(--kb-color-#{$color}-500));
-  }
+    &.kb-button--#{$name} {
+      border-color: rgb(var(--kb-color-#{$color}-100));
+      background-color: rgb(var(--kb-color-#{$color}-100));
+      color: rgb(var(--kb-color-#{$color}-#{if($isNeutral, 800, 700)}));
 
-  &:active {
-    border-color: rgb(var(--kb-color-#{$color}-700));
-    background-color: rgb(var(--kb-color-#{$color}-700));
-  }
+      &:hover {
+        border-color: rgb(var(--kb-color-#{$color}-200));
+        background-color: rgb(var(--kb-color-#{$color}-200));
+      }
 
-  &:disabled {
-    border-color: rgb(var(--kb-color-#{$color}-200));
-    background-color: rgb(var(--kb-color-#{$color}-200));
-  }
+      &:active {
+        border-color: rgb(var(--kb-color-#{$color}-300));
+        background-color: rgb(var(--kb-color-#{$color}-300));
+      }
 
-  #{dark-selector("&:hover")} {
-    border-color: rgb(var(--kb-color-#{$color}-700));
-    background-color: rgb(var(--kb-color-#{$color}-700));
-  }
+      &:disabled {
+        border-color: rgb(var(--kb-color-#{$color}-50));
+        background-color: rgb(var(--kb-color-#{$color}-50));
+        color: rgb(var(--kb-color-#{$color}-200));
+      }
 
-  #{dark-selector("&:active")} {
-    border-color: rgb(var(--kb-color-#{$color}-500));
-    background-color: rgb(var(--kb-color-#{$color}-500));
-  }
+      #{dark-selector()} {
+        border-color: transparent;
+        background-color: rgb(var(--kb-color-#{$color}-500) / 0.2);
+        @if $isNeutral {
+          color: rgb(var(--kb-color-text-2));
+        } @else {
+          color: rgb(var(--kb-color-#{$color}-400));
+        }
+      }
 
-  #{dark-selector("&:disabled")} {
-    border-color: transparent;
-    background-color: rgb(var(--kb-color-#{$color}-600) / 0.3);
-    color: rgb(var(--kb-color-white) / 0.3);
-  }
-}
+      #{dark-selector("&:hover")} {
+        border-color: transparent;
+        background-color: rgb(var(--kb-color-#{$color}-500) / 0.35);
+      }
 
-.kb-button--primary {
-  @include variant-primary("primary");
+      #{dark-selector("&:active")} {
+        border-color: transparent;
+        background-color: rgb(var(--kb-color-#{$color}-500) / 0.5);
+      }
 
-  &.kb-button--destructive {
-    @include variant-primary("danger");
+      #{dark-selector("&:disabled")} {
+        border-color: transparent;
+        background-color: rgb(var(--kb-color-#{$color}-600) / 0.1);
+        color: rgb(var(--kb-color-#{$color}-500) / 0.3);
+      }
+    }
   }
 }
 
 /* -------------------------------------------------------------------------------------------------
- * variant - secondary
+ * variant - outlined
  * -----------------------------------------------------------------------------------------------*/
 
-@mixin variant-secondary($color) {
-  border-color: rgb(var(--kb-color-#{$color}-100));
-  background-color: rgb(var(--kb-color-#{$color}-100));
-  color: rgb(var(--kb-color-#{$color}-700));
+.kb-button--outlined {
+  @each $name, $color in $colorMap {
+    $isNeutral: $color == neutral;
 
-  &:hover {
-    border-color: rgb(var(--kb-color-#{$color}-200));
-    background-color: rgb(var(--kb-color-#{$color}-200));
-  }
+    &.kb-button--#{$name} {
+      $shade: if($isNeutral, 700, 600);
+      border-color: rgb(var(--kb-color-#{$color}-#{$shade}));
+      background-color: transparent;
+      color: rgb(var(--kb-color-#{$color}-#{$shade}));
 
-  &:active {
-    border-color: rgb(var(--kb-color-#{$color}-300));
-    background-color: rgb(var(--kb-color-#{$color}-300));
-  }
+      &:hover {
+        background-color: rgb(var(--kb-color-fill-2));
+      }
 
-  &:disabled {
-    border-color: rgb(var(--kb-color-#{$color}-50));
-    background-color: rgb(var(--kb-color-#{$color}-50));
-    color: rgb(var(--kb-color-#{$color}-200));
-  }
+      &:active {
+        background-color: rgb(var(--kb-color-fill-3) / 0.8);
+      }
 
-  #{dark-selector()} {
-    border-color: transparent;
-    background-color: rgb(var(--kb-color-#{$color}-500) / 0.2);
-    color: rgb(var(--kb-color-#{$color}-400));
-  }
+      &:disabled {
+        border-color: rgb(var(--kb-color-#{$color}-200));
+        background-color: transparent;
+        color: rgb(var(--kb-color-#{$color}-200));
+      }
 
-  #{dark-selector("&:hover")} {
-    border-color: transparent;
-    background-color: rgb(var(--kb-color-#{$color}-500) / 0.35);
-  }
+      #{dark-selector()} {
+        border-color: rgb(var(--kb-color-#{$color}-500));
+        color: rgb(var(--kb-color-#{$color}-400));
+      }
 
-  #{dark-selector("&:active")} {
-    border-color: transparent;
-    background-color: rgb(var(--kb-color-#{$color}-500) / 0.5);
-  }
+      #{dark-selector("&:active")} {
+        background-color: rgb(var(--kb-color-fill-3));
+      }
 
-  #{dark-selector("&:disabled")} {
-    border-color: transparent;
-    background-color: rgb(var(--kb-color-#{$color}-600) / 0.1);
-    color: rgb(var(--kb-color-#{$color}-500) / 0.3);
-  }
-}
-
-.kb-button--secondary {
-  @include variant-secondary("primary");
-
-  &.kb-button--destructive {
-    @include variant-secondary("danger");
+      #{dark-selector("&:disabled")} {
+        border-color: rgb(var(--kb-color-#{$color}-600) / 0.3);
+        color: rgb(var(--kb-color-#{$color}-600) / 0.4);
+      }
+    }
   }
 }
 
 /* -------------------------------------------------------------------------------------------------
- * variant - tertiary
+ * variant - plain
  * -----------------------------------------------------------------------------------------------*/
 
-@mixin variant-tertiary($color) {
-  border-color: transparent;
-  background-color: transparent;
-  color: rgb(var(--kb-color-#{$color}-600));
+.kb-button--plain {
+  @each $name, $color in $colorMap {
+    $isNeutral: $color == neutral;
 
-  &:hover {
-    border-color: transparent;
-    background-color: rgb(var(--kb-color-fill-2));
-  }
+    &.kb-button--#{$name} {
+      border-color: transparent;
+      background-color: transparent;
+      color: rgb(var(--kb-color-#{$color}-#{if($isNeutral, 700, 600)}));
 
-  &:active {
-    border-color: transparent;
-    background-color: rgb(var(--kb-color-fill-3));
-  }
+      &:hover {
+        border-color: transparent;
+        background-color: rgb(var(--kb-color-fill-2));
+      }
 
-  &:disabled {
-    border-color: transparent;
-    background-color: transparent;
-    color: rgb(var(--kb-color-#{$color}-200));
-  }
+      &:active {
+        border-color: transparent;
+        background-color: rgb(var(--kb-color-fill-3));
+      }
 
-  #{dark-selector()} {
-    color: rgb(var(--kb-color-#{$color}-400));
-  }
+      &:disabled {
+        border-color: transparent;
+        background-color: transparent;
+        color: rgb(var(--kb-color-#{$color}-200));
+      }
 
-  #{dark-selector("&:disabled")} {
-    color: rgb(var(--kb-color-#{$color}-600) / 0.4);
-  }
-}
+      #{dark-selector()} {
+        color: rgb(var(--kb-color-#{$color}-400));
+      }
 
-.kb-button--tertiary {
-  @include variant-tertiary("primary");
-
-  &.kb-button--destructive {
-    @include variant-tertiary("danger");
+      #{dark-selector("&:disabled")} {
+        color: rgb(var(--kb-color-#{$color}-600) / 0.4);
+      }
+    }
   }
 }
 
@@ -287,6 +298,7 @@
   display: inline-flex;
   align-self: center;
   flex-shrink: 0;
+  font-size: 1.2em;
 }
 
 /* -------------------------------------------------------------------------------------------------

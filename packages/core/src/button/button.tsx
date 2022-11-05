@@ -33,14 +33,14 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
 
   const propsWithButtonGroupDefaults = mergeDefaultProps(
     {
+      get color() {
+        return buttonGroupContext?.color;
+      },
       get variant() {
         return buttonGroupContext?.variant;
       },
       get size() {
         return buttonGroupContext?.size;
-      },
-      get isDestructive() {
-        return buttonGroupContext?.isDestructive;
       },
       get isDisabled() {
         return buttonGroupContext?.isDisabled;
@@ -72,7 +72,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       "isDisabled",
     ],
     ["children", "leftIcon", "rightIcon"],
-    ["variant", "size", "isDestructive", "isFullWidth", "isIconOnly"]
+    ["color", "variant", "size", "isFullWidth", "isIconOnly"]
   );
 
   const tagName = createTagName(
@@ -93,14 +93,14 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
   });
 
   const classNames = buttonStyles({
+    get color() {
+      return variantProps.color;
+    },
     get variant() {
       return variantProps.variant;
     },
     get size() {
       return variantProps.size;
-    },
-    get isDestructive() {
-      return variantProps.isDestructive;
     },
     get isFullWidth() {
       return variantProps.isFullWidth;

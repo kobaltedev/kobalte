@@ -10,13 +10,13 @@ export type ButtonParts =
 
 export interface ButtonVariants {
   /** The color of the button. */
-  variant?: "primary" | "secondary" | "tertiary" | "default";
+  color?: "primary" | "secondary" | "danger";
+
+  /** The visual style of the button. */
+  variant?: "solid" | "soft" | "outlined" | "plain";
 
   /** The size of the button. */
   size?: "xs" | "sm" | "md" | "lg";
-
-  /** Whether the button should trigger a destructive action (e.g. delete something, etc...). */
-  isDestructive?: boolean;
 
   /** Whether the button should take all available width. */
   isFullWidth?: boolean;
@@ -61,7 +61,7 @@ export interface ButtonContextValue {
   classNames: Accessor<Record<ButtonParts, string>>;
 }
 
-export type ButtonConfig = Pick<ButtonProps, "variant" | "size" | "loaderPlacement">;
+export type ButtonConfig = Pick<ButtonProps, "color" | "variant" | "size" | "loaderPlacement">;
 
 export interface IconButtonProps
   extends Omit<
