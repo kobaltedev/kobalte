@@ -1,11 +1,16 @@
 @use "common/functions" as *;
 @use "common/mixins" as *;
+@use "common/variables" as *;
 
 $colorMap: (
   primary: primary,
   secondary: neutral,
   danger: danger,
 );
+
+// -------------------------------------------------------------------------------------------------
+// base
+// -------------------------------------------------------------------------------------------------
 
 .kb-button {
   appearance: none;
@@ -21,13 +26,13 @@ $colorMap: (
   outline: none;
 
   border: 1px solid transparent;
-  border-radius: 3px;
+  border-radius: $kb-button-border-radius;
 
   padding: 0;
 
   font-family: inherit;
   font-size: 100%;
-  font-weight: 400;
+  font-weight: $kb-button-font-weight;
   line-height: 1;
   text-decoration: none;
 
@@ -54,9 +59,61 @@ $colorMap: (
   width: 100%;
 }
 
-/* -------------------------------------------------------------------------------------------------
- * variant - solid
- * -----------------------------------------------------------------------------------------------*/
+// -------------------------------------------------------------------------------------------------
+// variant - default
+// -------------------------------------------------------------------------------------------------
+
+.kb-button--default {
+  border-color: $kb-button-default-border-color;
+  background-color: $kb-button-default-background-color;
+  color: $kb-button-default-color;
+
+  &:hover {
+    border-color: $kb-button-default-hover-border-color;
+    background-color: $kb-button-default-hover-background-color;
+    color: $kb-button-default-hover-color;
+  }
+
+  &:active {
+    border-color: $kb-button-default-active-border-color;
+    background-color: $kb-button-default-active-background-color;
+    color: $kb-button-default-active-color;
+  }
+
+  &:disabled {
+    border-color: $kb-button-default-disabled-border-color;
+    background-color: $kb-button-default-disabled-background-color;
+    color: $kb-button-default-disabled-color;
+  }
+
+  #{dark-selector()} {
+    border-color: $kb-button-default-dark-border-color;
+    background-color: $kb-button-default-dark-background-color;
+    color: $kb-button-default-dark-color;
+  }
+
+  #{dark-selector("&:hover")} {
+    border-color: $kb-button-default-dark-hover-border-color;
+    background-color: $kb-button-default-dark-hover-background-color;
+    color: $kb-button-default-dark-hover-color;
+  }
+
+  #{dark-selector("&:active")} {
+    border-color: $kb-button-default-dark-active-border-color;
+    background-color: $kb-button-default-dark-active-background-color;
+    color: $kb-button-default-dark-active-color;
+  }
+
+  #{dark-selector("&:disabled")} {
+    border-color: $kb-button-default-dark-disabled-border-color;
+    background-color: $kb-button-default-dark-disabled-background-color;
+    color: $kb-button-default-dark-disabled-color;
+  }
+}
+
+// -------------------------------------------------------------------------------------------------
+// variant - solid
+// -------------------------------------------------------------------------------------------------
 
 @each $name, $color in $colorMap {
   $isNeutral: $color == neutral;
@@ -107,16 +164,14 @@ $colorMap: (
   }
 }
 
-/* -------------------------------------------------------------------------------------------------
- * variant - soft
- * -----------------------------------------------------------------------------------------------*/
+// -------------------------------------------------------------------------------------------------
+// variant - soft
+// -------------------------------------------------------------------------------------------------
 
 @each $name, $color in $colorMap {
   $isNeutral: $color == neutral;
-  $baseSelector: ".kb-button--soft.kb-button--#{$name}";
-  $selector: if($isNeutral, ".kb-button--default, #{$baseSelector}", $baseSelector);
 
-  #{$selector} {
+  .kb-button--soft.kb-button--#{$name} {
     border-color: rgb(var(--kb-color-#{$color}-100));
     background-color: rgb(var(--kb-color-#{$color}-100));
     color: rgb(var(--kb-color-#{$color}-#{if($isNeutral, 800, 700)}));
@@ -161,9 +216,9 @@ $colorMap: (
   }
 }
 
-/* -------------------------------------------------------------------------------------------------
- * variant - outlined
- * -----------------------------------------------------------------------------------------------*/
+// -------------------------------------------------------------------------------------------------
+// variant - outlined
+// -------------------------------------------------------------------------------------------------
 
 @each $name, $color in $colorMap {
   $isNeutral: $color == neutral;
@@ -204,9 +259,9 @@ $colorMap: (
   }
 }
 
-/* -------------------------------------------------------------------------------------------------
- * variant - plain
- * -----------------------------------------------------------------------------------------------*/
+// -------------------------------------------------------------------------------------------------
+// variant - plain
+// -------------------------------------------------------------------------------------------------
 
 @each $name, $color in $colorMap {
   $isNeutral: $color == neutral;
@@ -242,57 +297,57 @@ $colorMap: (
   }
 }
 
-/* -------------------------------------------------------------------------------------------------
- * size
- * -----------------------------------------------------------------------------------------------*/
+// -------------------------------------------------------------------------------------------------
+// size
+// -------------------------------------------------------------------------------------------------
 
 .kb-button--xs {
-  height: 24px;
-  padding: 0 10px;
-  font-size: 12px;
+  height: $kb-button-xs-height;
+  padding: $kb-button-xs-padding;
+  font-size: $kb-button-xs-font-size;
 
   &.kb-button--icon-only {
-    width: 24px;
+    width: $kb-button-xs-height;
     padding: 0;
   }
 }
 
 .kb-button--sm {
-  height: 28px;
-  padding: 0 12px;
-  font-size: 14px;
+  height: $kb-button-sm-height;
+  padding: $kb-button-sm-padding;
+  font-size: $kb-button-sm-font-size;
 
   &.kb-button--icon-only {
-    width: 28px;
+    width: $kb-button-sm-height;
     padding: 0;
   }
 }
 
 .kb-button--md {
-  height: 32px;
-  padding: 0 16px;
-  font-size: 14px;
+  height: $kb-button-md-height;
+  padding: $kb-button-md-padding;
+  font-size: $kb-button-md-font-size;
 
   &.kb-button--icon-only {
-    width: 32px;
+    width: $kb-button-md-height;
     padding: 0;
   }
 }
 
 .kb-button--lg {
-  height: 36px;
-  padding: 0 18px;
-  font-size: 16px;
+  height: $kb-button-lg-height;
+  padding: $kb-button-lg-padding;
+  font-size: $kb-button-lg-font-size;
 
   &.kb-button--icon-only {
-    width: 36px;
+    width: $kb-button-lg-height;
     padding: 0;
   }
 }
 
-/* -------------------------------------------------------------------------------------------------
- * icon
- * -----------------------------------------------------------------------------------------------*/
+// -------------------------------------------------------------------------------------------------
+// icon
+// -------------------------------------------------------------------------------------------------
 
 .kb-button__icon {
   display: inline-flex;
@@ -301,9 +356,9 @@ $colorMap: (
   font-size: 1.2em;
 }
 
-/* -------------------------------------------------------------------------------------------------
- * loader
- * -----------------------------------------------------------------------------------------------*/
+// -------------------------------------------------------------------------------------------------
+// loader
+// -------------------------------------------------------------------------------------------------
 
 .kb-button__loader-wrapper {
   position: absolute;

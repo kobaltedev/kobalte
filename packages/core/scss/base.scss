@@ -143,7 +143,7 @@
 
 // Use accessible typography.
 html {
-  font-family: $kbFontFamily;
+  font-family: $kb-font-family;
   line-height: 1.5;
   font-size: 16px; // set 1rem unit
 }
@@ -152,7 +152,7 @@ html {
 body {
   background-color: rgb(var(--kb-color-bg-1));
   color: rgb(var(--kb-color-text-1));
-  font-size: $kbBodyFontSize;
+  font-size: $kb-body-font-size;
   font-family: inherit;
   line-height: inherit;
   -webkit-font-smoothing: antialiased;
