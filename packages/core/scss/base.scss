@@ -1,3 +1,9 @@
+@use "common/variables" as *;
+
+// -------------------------------------------------------------------------------------------------
+// CSS Variables
+// -------------------------------------------------------------------------------------------------
+
 :root {
   --kb-color-white: 255 255 255;
 
@@ -102,19 +108,116 @@
   --kb-color-border-3: var(--kb-color-neutral-600);
   --kb-color-border-4: var(--kb-color-neutral-400);
 
-  --kb-color-fill-1: 255 255 255 / 0.04;
-  --kb-color-fill-2: 255 255 255 / 0.08;
-  --kb-color-fill-3: 255 255 255 / 0.12;
-  --kb-color-fill-4: 255 255 255 / 0.16;
+  --kb-color-fill-1: var(--kb-color-white) / 0.04;
+  --kb-color-fill-2: var(--kb-color-white) / 0.08;
+  --kb-color-fill-3: var(--kb-color-white) / 0.12;
+  --kb-color-fill-4: var(--kb-color-white) / 0.16;
 
-  --kb-color-text-1: 255 255 255 / 0.9;
-  --kb-color-text-2: 255 255 255 / 0.7;
-  --kb-color-text-3: 255 255 255 / 0.5;
-  --kb-color-text-4: 255 255 255 / 0.3;
+  --kb-color-text-1: var(--kb-color-white) / 0.9;
+  --kb-color-text-2: var(--kb-color-white) / 0.7;
+  --kb-color-text-3: var(--kb-color-white) / 0.5;
+  --kb-color-text-4: var(--kb-color-white) / 0.3;
 
   --kb-color-bg-1: 24 24 27;
   --kb-color-bg-2: 35 35 36;
   --kb-color-bg-3: 43 43 44;
   --kb-color-bg-4: 48 48 49;
   --kb-color-bg-5: 55 55 57;
+}
+
+// -------------------------------------------------------------------------------------------------
+// Preflight
+// -------------------------------------------------------------------------------------------------
+
+// Use a more-intuitive box-sizing model.
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// Remove default margin.
+* {
+  margin: 0;
+}
+
+// Use accessible typography.
+html {
+  font-family: $kbFontFamily;
+  line-height: 1.5;
+  font-size: 16px; // set 1rem unit
+}
+
+// Use theme colors and improve text rendering.
+body {
+  background-color: rgb(var(--kb-color-bg-1));
+  color: rgb(var(--kb-color-text-1));
+  font-size: $kbBodyFontSize;
+  font-family: inherit;
+  line-height: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Improve media defaults.
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+// Remove built-in form typography styles.
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+// Remove built-in headings typography styles.
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font: inherit;
+}
+
+// Avoid text overflows.
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+// Add default styles for svg-based icon.
+.kb-icon {
+  display: inline-block;
+  flex-shrink: 0;
+  height: 1em;
+  width: 1em;
+  color: currentColor;
+  line-height: 1em;
+  vertical-align: middle;
+}
+
+// -------------------------------------------------------------------------------------------------
+// Animations
+// -------------------------------------------------------------------------------------------------
+
+@keyframes kb-animation-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

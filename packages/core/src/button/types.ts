@@ -13,7 +13,7 @@ export interface ButtonVariants {
   color?: "primary" | "secondary" | "danger";
 
   /** The visual style of the button. */
-  variant?: "solid" | "soft" | "outlined" | "plain";
+  variant?: "solid" | "soft" | "outlined" | "plain" | "default";
 
   /** The size of the button. */
   size?: "xs" | "sm" | "md" | "lg";
