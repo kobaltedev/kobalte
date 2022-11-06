@@ -2,7 +2,7 @@
 // A Fluent UI inspired theme
 // -------------------------------------------------------------------------------------------------
 
-@use "../common/variables" with (
+@forward "../variables/base" with (
   $kb-font-family: (
     "Segoe UI",
     ui-sans-serif,

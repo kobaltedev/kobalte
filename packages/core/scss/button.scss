@@ -1,12 +1,6 @@
 @use "common/functions" as *;
 @use "common/mixins" as *;
-@use "common/variables" as *;
-
-$colorMap: (
-  primary: primary,
-  secondary: neutral,
-  danger: danger,
-);
+@use "variables/button" as *;
 
 // -------------------------------------------------------------------------------------------------
 // base
@@ -26,7 +20,6 @@ $colorMap: (
   outline: none;
 
   border: 1px solid transparent;
-  border-radius: $kb-button-border-radius;
 
   padding: 0;
 
@@ -64,47 +57,55 @@ $colorMap: (
 // -------------------------------------------------------------------------------------------------
 
 .kb-button--default {
+  box-shadow: $kb-button-default-box-shadow;
   border-color: $kb-button-default-border-color;
   background-color: $kb-button-default-background-color;
   color: $kb-button-default-color;
 
   &:hover {
+    box-shadow: $kb-button-default-hover-box-shadow;
     border-color: $kb-button-default-hover-border-color;
     background-color: $kb-button-default-hover-background-color;
     color: $kb-button-default-hover-color;
   }
 
   &:active {
+    box-shadow: $kb-button-default-active-box-shadow;
     border-color: $kb-button-default-active-border-color;
     background-color: $kb-button-default-active-background-color;
     color: $kb-button-default-active-color;
   }
 
   &:disabled {
+    box-shadow: $kb-button-default-disabled-box-shadow;
     border-color: $kb-button-default-disabled-border-color;
     background-color: $kb-button-default-disabled-background-color;
     color: $kb-button-default-disabled-color;
   }
 
   #{dark-selector()} {
+    box-shadow: $kb-button-default-box-shadow;
     border-color: $kb-button-default-dark-border-color;
     background-color: $kb-button-default-dark-background-color;
     color: $kb-button-default-dark-color;
   }
 
   #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-default-dark-hover-box-shadow;
     border-color: $kb-button-default-dark-hover-border-color;
     background-color: $kb-button-default-dark-hover-background-color;
     color: $kb-button-default-dark-hover-color;
   }
 
   #{dark-selector("&:active")} {
+    box-shadow: $kb-button-default-dark-active-box-shadow;
     border-color: $kb-button-default-dark-active-border-color;
     background-color: $kb-button-default-dark-active-background-color;
     color: $kb-button-default-dark-active-color;
   }
 
   #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-default-dark-disabled-box-shadow;
     border-color: $kb-button-default-dark-disabled-border-color;
     background-color: $kb-button-default-dark-disabled-background-color;
     color: $kb-button-default-dark-disabled-color;
@@ -115,52 +116,174 @@ $colorMap: (
 // variant - solid
 // -------------------------------------------------------------------------------------------------
 
-@each $name, $color in $colorMap {
-  $isNeutral: $color == neutral;
+// primary
+.kb-button--solid.kb-button--primary {
+  box-shadow: $kb-button-solid-primary-box-shadow;
+  border-color: $kb-button-solid-primary-border-color;
+  background-color: $kb-button-solid-primary-background-color;
+  color: $kb-button-solid-primary-color;
 
-  .kb-button--solid.kb-button--#{$name} {
-    $baseShade: if($isNeutral, 800, 600);
-    border-color: rgb(var(--kb-color-#{$color}-#{$baseShade}));
-    background-color: rgb(var(--kb-color-#{$color}-#{$baseShade}));
-    color: rgb(var(--kb-color-white));
+  &:hover {
+    box-shadow: $kb-button-solid-primary-hover-box-shadow;
+    border-color: $kb-button-solid-primary-hover-border-color;
+    background-color: $kb-button-solid-primary-hover-background-color;
+    color: $kb-button-solid-primary-hover-color;
+  }
 
-    &:hover {
-      $hoverShade: if($isNeutral, 700, 500);
-      border-color: rgb(var(--kb-color-#{$color}-#{$hoverShade}));
-      background-color: rgb(var(--kb-color-#{$color}-#{$hoverShade}));
-    }
+  &:active {
+    box-shadow: $kb-button-solid-primary-active-box-shadow;
+    border-color: $kb-button-solid-primary-active-border-color;
+    background-color: $kb-button-solid-primary-active-background-color;
+    color: $kb-button-solid-primary-active-color;
+  }
 
-    &:active {
-      $activeShade: if($isNeutral, 900, 700);
-      border-color: rgb(var(--kb-color-#{$color}-#{$activeShade}));
-      background-color: rgb(var(--kb-color-#{$color}-#{$activeShade}));
-    }
+  &:disabled {
+    box-shadow: $kb-button-solid-primary-disabled-box-shadow;
+    border-color: $kb-button-solid-primary-disabled-border-color;
+    background-color: $kb-button-solid-primary-disabled-background-color;
+    color: $kb-button-solid-primary-disabled-color;
+  }
 
-    &:disabled {
-      border-color: rgb(var(--kb-color-#{$color}-200));
-      background-color: rgb(var(--kb-color-#{$color}-200));
-    }
+  #{dark-selector()} {
+    box-shadow: $kb-button-solid-primary-box-shadow;
+    border-color: $kb-button-solid-primary-dark-border-color;
+    background-color: $kb-button-solid-primary-dark-background-color;
+    color: $kb-button-solid-primary-dark-color;
+  }
 
-    #{dark-selector()} {
-      border-color: rgb(var(--kb-color-#{$color}-600));
-      background-color: rgb(var(--kb-color-#{$color}-600));
-    }
+  #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-solid-primary-dark-hover-box-shadow;
+    border-color: $kb-button-solid-primary-dark-hover-border-color;
+    background-color: $kb-button-solid-primary-dark-hover-background-color;
+    color: $kb-button-solid-primary-dark-hover-color;
+  }
 
-    #{dark-selector("&:hover")} {
-      border-color: rgb(var(--kb-color-#{$color}-700));
-      background-color: rgb(var(--kb-color-#{$color}-700));
-    }
+  #{dark-selector("&:active")} {
+    box-shadow: $kb-button-solid-primary-dark-active-box-shadow;
+    border-color: $kb-button-solid-primary-dark-active-border-color;
+    background-color: $kb-button-solid-primary-dark-active-background-color;
+    color: $kb-button-solid-primary-dark-active-color;
+  }
 
-    #{dark-selector("&:active")} {
-      border-color: rgb(var(--kb-color-#{$color}-500));
-      background-color: rgb(var(--kb-color-#{$color}-500));
-    }
+  #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-solid-primary-dark-disabled-box-shadow;
+    border-color: $kb-button-solid-primary-dark-disabled-border-color;
+    background-color: $kb-button-solid-primary-dark-disabled-background-color;
+    color: $kb-button-solid-primary-dark-disabled-color;
+  }
+}
 
-    #{dark-selector("&:disabled")} {
-      border-color: transparent;
-      background-color: rgb(var(--kb-color-#{$color}-600) / 0.3);
-      color: rgb(var(--kb-color-white) / 0.3);
-    }
+// secondary
+.kb-button--solid.kb-button--secondary {
+  box-shadow: $kb-button-solid-secondary-box-shadow;
+  border-color: $kb-button-solid-secondary-border-color;
+  background-color: $kb-button-solid-secondary-background-color;
+  color: $kb-button-solid-secondary-color;
+
+  &:hover {
+    box-shadow: $kb-button-solid-secondary-hover-box-shadow;
+    border-color: $kb-button-solid-secondary-hover-border-color;
+    background-color: $kb-button-solid-secondary-hover-background-color;
+    color: $kb-button-solid-secondary-hover-color;
+  }
+
+  &:active {
+    box-shadow: $kb-button-solid-secondary-active-box-shadow;
+    border-color: $kb-button-solid-secondary-active-border-color;
+    background-color: $kb-button-solid-secondary-active-background-color;
+    color: $kb-button-solid-secondary-active-color;
+  }
+
+  &:disabled {
+    box-shadow: $kb-button-solid-secondary-disabled-box-shadow;
+    border-color: $kb-button-solid-secondary-disabled-border-color;
+    background-color: $kb-button-solid-secondary-disabled-background-color;
+    color: $kb-button-solid-secondary-disabled-color;
+  }
+
+  #{dark-selector()} {
+    box-shadow: $kb-button-solid-secondary-box-shadow;
+    border-color: $kb-button-solid-secondary-dark-border-color;
+    background-color: $kb-button-solid-secondary-dark-background-color;
+    color: $kb-button-solid-secondary-dark-color;
+  }
+
+  #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-solid-secondary-dark-hover-box-shadow;
+    border-color: $kb-button-solid-secondary-dark-hover-border-color;
+    background-color: $kb-button-solid-secondary-dark-hover-background-color;
+    color: $kb-button-solid-secondary-dark-hover-color;
+  }
+
+  #{dark-selector("&:active")} {
+    box-shadow: $kb-button-solid-secondary-dark-active-box-shadow;
+    border-color: $kb-button-solid-secondary-dark-active-border-color;
+    background-color: $kb-button-solid-secondary-dark-active-background-color;
+    color: $kb-button-solid-secondary-dark-active-color;
+  }
+
+  #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-solid-secondary-dark-disabled-box-shadow;
+    border-color: $kb-button-solid-secondary-dark-disabled-border-color;
+    background-color: $kb-button-solid-secondary-dark-disabled-background-color;
+    color: $kb-button-solid-secondary-dark-disabled-color;
+  }
+}
+
+// danger
+.kb-button--solid.kb-button--danger {
+  box-shadow: $kb-button-solid-danger-box-shadow;
+  border-color: $kb-button-solid-danger-border-color;
+  background-color: $kb-button-solid-danger-background-color;
+  color: $kb-button-solid-danger-color;
+
+  &:hover {
+    box-shadow: $kb-button-solid-danger-hover-box-shadow;
+    border-color: $kb-button-solid-danger-hover-border-color;
+    background-color: $kb-button-solid-danger-hover-background-color;
+    color: $kb-button-solid-danger-hover-color;
+  }
+
+  &:active {
+    box-shadow: $kb-button-solid-danger-active-box-shadow;
+    border-color: $kb-button-solid-danger-active-border-color;
+    background-color: $kb-button-solid-danger-active-background-color;
+    color: $kb-button-solid-danger-active-color;
+  }
+
+  &:disabled {
+    box-shadow: $kb-button-solid-danger-disabled-box-shadow;
+    border-color: $kb-button-solid-danger-disabled-border-color;
+    background-color: $kb-button-solid-danger-disabled-background-color;
+    color: $kb-button-solid-danger-disabled-color;
+  }
+
+  #{dark-selector()} {
+    box-shadow: $kb-button-solid-danger-box-shadow;
+    border-color: $kb-button-solid-danger-dark-border-color;
+    background-color: $kb-button-solid-danger-dark-background-color;
+    color: $kb-button-solid-danger-dark-color;
+  }
+
+  #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-solid-danger-dark-hover-box-shadow;
+    border-color: $kb-button-solid-danger-dark-hover-border-color;
+    background-color: $kb-button-solid-danger-dark-hover-background-color;
+    color: $kb-button-solid-danger-dark-hover-color;
+  }
+
+  #{dark-selector("&:active")} {
+    box-shadow: $kb-button-solid-danger-dark-active-box-shadow;
+    border-color: $kb-button-solid-danger-dark-active-border-color;
+    background-color: $kb-button-solid-danger-dark-active-background-color;
+    color: $kb-button-solid-danger-dark-active-color;
+  }
+
+  #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-solid-danger-dark-disabled-box-shadow;
+    border-color: $kb-button-solid-danger-dark-disabled-border-color;
+    background-color: $kb-button-solid-danger-dark-disabled-background-color;
+    color: $kb-button-solid-danger-dark-disabled-color;
   }
 }
 
@@ -168,51 +291,174 @@ $colorMap: (
 // variant - soft
 // -------------------------------------------------------------------------------------------------
 
-@each $name, $color in $colorMap {
-  $isNeutral: $color == neutral;
+// primary
+.kb-button--soft.kb-button--primary {
+  box-shadow: $kb-button-soft-primary-box-shadow;
+  border-color: $kb-button-soft-primary-border-color;
+  background-color: $kb-button-soft-primary-background-color;
+  color: $kb-button-soft-primary-color;
 
-  .kb-button--soft.kb-button--#{$name} {
-    border-color: rgb(var(--kb-color-#{$color}-100));
-    background-color: rgb(var(--kb-color-#{$color}-100));
-    color: rgb(var(--kb-color-#{$color}-#{if($isNeutral, 800, 700)}));
+  &:hover {
+    box-shadow: $kb-button-soft-primary-hover-box-shadow;
+    border-color: $kb-button-soft-primary-hover-border-color;
+    background-color: $kb-button-soft-primary-hover-background-color;
+    color: $kb-button-soft-primary-hover-color;
+  }
 
-    &:hover {
-      border-color: rgb(var(--kb-color-#{$color}-200));
-      background-color: rgb(var(--kb-color-#{$color}-200));
-    }
+  &:active {
+    box-shadow: $kb-button-soft-primary-active-box-shadow;
+    border-color: $kb-button-soft-primary-active-border-color;
+    background-color: $kb-button-soft-primary-active-background-color;
+    color: $kb-button-soft-primary-active-color;
+  }
 
-    &:active {
-      border-color: rgb(var(--kb-color-#{$color}-300));
-      background-color: rgb(var(--kb-color-#{$color}-300));
-    }
+  &:disabled {
+    box-shadow: $kb-button-soft-primary-disabled-box-shadow;
+    border-color: $kb-button-soft-primary-disabled-border-color;
+    background-color: $kb-button-soft-primary-disabled-background-color;
+    color: $kb-button-soft-primary-disabled-color;
+  }
 
-    &:disabled {
-      border-color: rgb(var(--kb-color-#{$color}-50));
-      background-color: rgb(var(--kb-color-#{$color}-50));
-      color: rgb(var(--kb-color-#{$color}-200));
-    }
+  #{dark-selector()} {
+    box-shadow: $kb-button-soft-primary-box-shadow;
+    border-color: $kb-button-soft-primary-dark-border-color;
+    background-color: $kb-button-soft-primary-dark-background-color;
+    color: $kb-button-soft-primary-dark-color;
+  }
 
-    #{dark-selector()} {
-      border-color: transparent;
-      background-color: rgb(var(--kb-color-#{$color}-500) / 0.2);
-      color: rgb(var(if($isNeutral, --kb-color-text-2, --kb-color-#{$color}-400)));
-    }
+  #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-soft-primary-dark-hover-box-shadow;
+    border-color: $kb-button-soft-primary-dark-hover-border-color;
+    background-color: $kb-button-soft-primary-dark-hover-background-color;
+    color: $kb-button-soft-primary-dark-hover-color;
+  }
 
-    #{dark-selector("&:hover")} {
-      border-color: transparent;
-      background-color: rgb(var(--kb-color-#{$color}-500) / 0.35);
-    }
+  #{dark-selector("&:active")} {
+    box-shadow: $kb-button-soft-primary-dark-active-box-shadow;
+    border-color: $kb-button-soft-primary-dark-active-border-color;
+    background-color: $kb-button-soft-primary-dark-active-background-color;
+    color: $kb-button-soft-primary-dark-active-color;
+  }
 
-    #{dark-selector("&:active")} {
-      border-color: transparent;
-      background-color: rgb(var(--kb-color-#{$color}-500) / 0.5);
-    }
+  #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-soft-primary-dark-disabled-box-shadow;
+    border-color: $kb-button-soft-primary-dark-disabled-border-color;
+    background-color: $kb-button-soft-primary-dark-disabled-background-color;
+    color: $kb-button-soft-primary-dark-disabled-color;
+  }
+}
 
-    #{dark-selector("&:disabled")} {
-      border-color: transparent;
-      background-color: rgb(var(--kb-color-#{$color}-600) / 0.1);
-      color: rgb(var(--kb-color-#{$color}-500) / 0.3);
-    }
+// secondary
+.kb-button--soft.kb-button--secondary {
+  box-shadow: $kb-button-soft-secondary-box-shadow;
+  border-color: $kb-button-soft-secondary-border-color;
+  background-color: $kb-button-soft-secondary-background-color;
+  color: $kb-button-soft-secondary-color;
+
+  &:hover {
+    box-shadow: $kb-button-soft-secondary-hover-box-shadow;
+    border-color: $kb-button-soft-secondary-hover-border-color;
+    background-color: $kb-button-soft-secondary-hover-background-color;
+    color: $kb-button-soft-secondary-hover-color;
+  }
+
+  &:active {
+    box-shadow: $kb-button-soft-secondary-active-box-shadow;
+    border-color: $kb-button-soft-secondary-active-border-color;
+    background-color: $kb-button-soft-secondary-active-background-color;
+    color: $kb-button-soft-secondary-active-color;
+  }
+
+  &:disabled {
+    box-shadow: $kb-button-soft-secondary-disabled-box-shadow;
+    border-color: $kb-button-soft-secondary-disabled-border-color;
+    background-color: $kb-button-soft-secondary-disabled-background-color;
+    color: $kb-button-soft-secondary-disabled-color;
+  }
+
+  #{dark-selector()} {
+    box-shadow: $kb-button-soft-secondary-box-shadow;
+    border-color: $kb-button-soft-secondary-dark-border-color;
+    background-color: $kb-button-soft-secondary-dark-background-color;
+    color: $kb-button-soft-secondary-dark-color;
+  }
+
+  #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-soft-secondary-dark-hover-box-shadow;
+    border-color: $kb-button-soft-secondary-dark-hover-border-color;
+    background-color: $kb-button-soft-secondary-dark-hover-background-color;
+    color: $kb-button-soft-secondary-dark-hover-color;
+  }
+
+  #{dark-selector("&:active")} {
+    box-shadow: $kb-button-soft-secondary-dark-active-box-shadow;
+    border-color: $kb-button-soft-secondary-dark-active-border-color;
+    background-color: $kb-button-soft-secondary-dark-active-background-color;
+    color: $kb-button-soft-secondary-dark-active-color;
+  }
+
+  #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-soft-secondary-dark-disabled-box-shadow;
+    border-color: $kb-button-soft-secondary-dark-disabled-border-color;
+    background-color: $kb-button-soft-secondary-dark-disabled-background-color;
+    color: $kb-button-soft-secondary-dark-disabled-color;
+  }
+}
+
+// danger
+.kb-button--soft.kb-button--danger {
+  box-shadow: $kb-button-soft-danger-box-shadow;
+  border-color: $kb-button-soft-danger-border-color;
+  background-color: $kb-button-soft-danger-background-color;
+  color: $kb-button-soft-danger-color;
+
+  &:hover {
+    box-shadow: $kb-button-soft-danger-hover-box-shadow;
+    border-color: $kb-button-soft-danger-hover-border-color;
+    background-color: $kb-button-soft-danger-hover-background-color;
+    color: $kb-button-soft-danger-hover-color;
+  }
+
+  &:active {
+    box-shadow: $kb-button-soft-danger-active-box-shadow;
+    border-color: $kb-button-soft-danger-active-border-color;
+    background-color: $kb-button-soft-danger-active-background-color;
+    color: $kb-button-soft-danger-active-color;
+  }
+
+  &:disabled {
+    box-shadow: $kb-button-soft-danger-disabled-box-shadow;
+    border-color: $kb-button-soft-danger-disabled-border-color;
+    background-color: $kb-button-soft-danger-disabled-background-color;
+    color: $kb-button-soft-danger-disabled-color;
+  }
+
+  #{dark-selector()} {
+    box-shadow: $kb-button-soft-danger-box-shadow;
+    border-color: $kb-button-soft-danger-dark-border-color;
+    background-color: $kb-button-soft-danger-dark-background-color;
+    color: $kb-button-soft-danger-dark-color;
+  }
+
+  #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-soft-danger-dark-hover-box-shadow;
+    border-color: $kb-button-soft-danger-dark-hover-border-color;
+    background-color: $kb-button-soft-danger-dark-hover-background-color;
+    color: $kb-button-soft-danger-dark-hover-color;
+  }
+
+  #{dark-selector("&:active")} {
+    box-shadow: $kb-button-soft-danger-dark-active-box-shadow;
+    border-color: $kb-button-soft-danger-dark-active-border-color;
+    background-color: $kb-button-soft-danger-dark-active-background-color;
+    color: $kb-button-soft-danger-dark-active-color;
+  }
+
+  #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-soft-danger-dark-disabled-box-shadow;
+    border-color: $kb-button-soft-danger-dark-disabled-border-color;
+    background-color: $kb-button-soft-danger-dark-disabled-background-color;
+    color: $kb-button-soft-danger-dark-disabled-color;
   }
 }
 
@@ -220,42 +466,174 @@ $colorMap: (
 // variant - outlined
 // -------------------------------------------------------------------------------------------------
 
-@each $name, $color in $colorMap {
-  $isNeutral: $color == neutral;
+// primary
+.kb-button--outlined.kb-button--primary {
+  box-shadow: $kb-button-outlined-primary-box-shadow;
+  border-color: $kb-button-outlined-primary-border-color;
+  background-color: $kb-button-outlined-primary-background-color;
+  color: $kb-button-outlined-primary-color;
 
-  .kb-button--outlined.kb-button--#{$name} {
-    $shade: if($isNeutral, 700, 600);
-    border-color: rgb(var(--kb-color-#{$color}-#{$shade}));
-    background-color: transparent;
-    color: rgb(var(--kb-color-#{$color}-#{$shade}));
+  &:hover {
+    box-shadow: $kb-button-outlined-primary-hover-box-shadow;
+    border-color: $kb-button-outlined-primary-hover-border-color;
+    background-color: $kb-button-outlined-primary-hover-background-color;
+    color: $kb-button-outlined-primary-hover-color;
+  }
 
-    &:hover {
-      background-color: rgb(var(--kb-color-fill-2));
-    }
+  &:active {
+    box-shadow: $kb-button-outlined-primary-active-box-shadow;
+    border-color: $kb-button-outlined-primary-active-border-color;
+    background-color: $kb-button-outlined-primary-active-background-color;
+    color: $kb-button-outlined-primary-active-color;
+  }
 
-    &:active {
-      background-color: rgb(var(--kb-color-fill-3) / 0.8);
-    }
+  &:disabled {
+    box-shadow: $kb-button-outlined-primary-disabled-box-shadow;
+    border-color: $kb-button-outlined-primary-disabled-border-color;
+    background-color: $kb-button-outlined-primary-disabled-background-color;
+    color: $kb-button-outlined-primary-disabled-color;
+  }
 
-    &:disabled {
-      border-color: rgb(var(--kb-color-#{$color}-200));
-      background-color: transparent;
-      color: rgb(var(--kb-color-#{$color}-200));
-    }
+  #{dark-selector()} {
+    box-shadow: $kb-button-outlined-primary-box-shadow;
+    border-color: $kb-button-outlined-primary-dark-border-color;
+    background-color: $kb-button-outlined-primary-dark-background-color;
+    color: $kb-button-outlined-primary-dark-color;
+  }
 
-    #{dark-selector()} {
-      border-color: rgb(var(--kb-color-#{$color}-500));
-      color: rgb(var(--kb-color-#{$color}-400));
-    }
+  #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-outlined-primary-dark-hover-box-shadow;
+    border-color: $kb-button-outlined-primary-dark-hover-border-color;
+    background-color: $kb-button-outlined-primary-dark-hover-background-color;
+    color: $kb-button-outlined-primary-dark-hover-color;
+  }
 
-    #{dark-selector("&:active")} {
-      background-color: rgb(var(--kb-color-fill-3));
-    }
+  #{dark-selector("&:active")} {
+    box-shadow: $kb-button-outlined-primary-dark-active-box-shadow;
+    border-color: $kb-button-outlined-primary-dark-active-border-color;
+    background-color: $kb-button-outlined-primary-dark-active-background-color;
+    color: $kb-button-outlined-primary-dark-active-color;
+  }
 
-    #{dark-selector("&:disabled")} {
-      border-color: rgb(var(--kb-color-#{$color}-600) / 0.3);
-      color: rgb(var(--kb-color-#{$color}-600) / 0.4);
-    }
+  #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-outlined-primary-dark-disabled-box-shadow;
+    border-color: $kb-button-outlined-primary-dark-disabled-border-color;
+    background-color: $kb-button-outlined-primary-dark-disabled-background-color;
+    color: $kb-button-outlined-primary-dark-disabled-color;
+  }
+}
+
+// secondary
+.kb-button--outlined.kb-button--secondary {
+  box-shadow: $kb-button-outlined-secondary-box-shadow;
+  border-color: $kb-button-outlined-secondary-border-color;
+  background-color: $kb-button-outlined-secondary-background-color;
+  color: $kb-button-outlined-secondary-color;
+
+  &:hover {
+    box-shadow: $kb-button-outlined-secondary-hover-box-shadow;
+    border-color: $kb-button-outlined-secondary-hover-border-color;
+    background-color: $kb-button-outlined-secondary-hover-background-color;
+    color: $kb-button-outlined-secondary-hover-color;
+  }
+
+  &:active {
+    box-shadow: $kb-button-outlined-secondary-active-box-shadow;
+    border-color: $kb-button-outlined-secondary-active-border-color;
+    background-color: $kb-button-outlined-secondary-active-background-color;
+    color: $kb-button-outlined-secondary-active-color;
+  }
+
+  &:disabled {
+    box-shadow: $kb-button-outlined-secondary-disabled-box-shadow;
+    border-color: $kb-button-outlined-secondary-disabled-border-color;
+    background-color: $kb-button-outlined-secondary-disabled-background-color;
+    color: $kb-button-outlined-secondary-disabled-color;
+  }
+
+  #{dark-selector()} {
+    box-shadow: $kb-button-outlined-secondary-box-shadow;
+    border-color: $kb-button-outlined-secondary-dark-border-color;
+    background-color: $kb-button-outlined-secondary-dark-background-color;
+    color: $kb-button-outlined-secondary-dark-color;
+  }
+
+  #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-outlined-secondary-dark-hover-box-shadow;
+    border-color: $kb-button-outlined-secondary-dark-hover-border-color;
+    background-color: $kb-button-outlined-secondary-dark-hover-background-color;
+    color: $kb-button-outlined-secondary-dark-hover-color;
+  }
+
+  #{dark-selector("&:active")} {
+    box-shadow: $kb-button-outlined-secondary-dark-active-box-shadow;
+    border-color: $kb-button-outlined-secondary-dark-active-border-color;
+    background-color: $kb-button-outlined-secondary-dark-active-background-color;
+    color: $kb-button-outlined-secondary-dark-active-color;
+  }
+
+  #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-outlined-secondary-dark-disabled-box-shadow;
+    border-color: $kb-button-outlined-secondary-dark-disabled-border-color;
+    background-color: $kb-button-outlined-secondary-dark-disabled-background-color;
+    color: $kb-button-outlined-secondary-dark-disabled-color;
+  }
+}
+
+// danger
+.kb-button--outlined.kb-button--danger {
+  box-shadow: $kb-button-outlined-danger-box-shadow;
+  border-color: $kb-button-outlined-danger-border-color;
+  background-color: $kb-button-outlined-danger-background-color;
+  color: $kb-button-outlined-danger-color;
+
+  &:hover {
+    box-shadow: $kb-button-outlined-danger-hover-box-shadow;
+    border-color: $kb-button-outlined-danger-hover-border-color;
+    background-color: $kb-button-outlined-danger-hover-background-color;
+    color: $kb-button-outlined-danger-hover-color;
+  }
+
+  &:active {
+    box-shadow: $kb-button-outlined-danger-active-box-shadow;
+    border-color: $kb-button-outlined-danger-active-border-color;
+    background-color: $kb-button-outlined-danger-active-background-color;
+    color: $kb-button-outlined-danger-active-color;
+  }
+
+  &:disabled {
+    box-shadow: $kb-button-outlined-danger-disabled-box-shadow;
+    border-color: $kb-button-outlined-danger-disabled-border-color;
+    background-color: $kb-button-outlined-danger-disabled-background-color;
+    color: $kb-button-outlined-danger-disabled-color;
+  }
+
+  #{dark-selector()} {
+    box-shadow: $kb-button-outlined-danger-box-shadow;
+    border-color: $kb-button-outlined-danger-dark-border-color;
+    background-color: $kb-button-outlined-danger-dark-background-color;
+    color: $kb-button-outlined-danger-dark-color;
+  }
+
+  #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-outlined-danger-dark-hover-box-shadow;
+    border-color: $kb-button-outlined-danger-dark-hover-border-color;
+    background-color: $kb-button-outlined-danger-dark-hover-background-color;
+    color: $kb-button-outlined-danger-dark-hover-color;
+  }
+
+  #{dark-selector("&:active")} {
+    box-shadow: $kb-button-outlined-danger-dark-active-box-shadow;
+    border-color: $kb-button-outlined-danger-dark-active-border-color;
+    background-color: $kb-button-outlined-danger-dark-active-background-color;
+    color: $kb-button-outlined-danger-dark-active-color;
+  }
+
+  #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-outlined-danger-dark-disabled-box-shadow;
+    border-color: $kb-button-outlined-danger-dark-disabled-border-color;
+    background-color: $kb-button-outlined-danger-dark-disabled-background-color;
+    color: $kb-button-outlined-danger-dark-disabled-color;
   }
 }
 
@@ -263,37 +641,174 @@ $colorMap: (
 // variant - plain
 // -------------------------------------------------------------------------------------------------
 
-@each $name, $color in $colorMap {
-  $isNeutral: $color == neutral;
+// primary
+.kb-button--plain.kb-button--primary {
+  box-shadow: $kb-button-plain-primary-box-shadow;
+  border-color: $kb-button-plain-primary-border-color;
+  background-color: $kb-button-plain-primary-background-color;
+  color: $kb-button-plain-primary-color;
 
-  .kb-button--plain.kb-button--#{$name} {
-    border-color: transparent;
-    background-color: transparent;
-    color: rgb(var(--kb-color-#{$color}-#{if($isNeutral, 700, 600)}));
+  &:hover {
+    box-shadow: $kb-button-plain-primary-hover-box-shadow;
+    border-color: $kb-button-plain-primary-hover-border-color;
+    background-color: $kb-button-plain-primary-hover-background-color;
+    color: $kb-button-plain-primary-hover-color;
+  }
 
-    &:hover {
-      border-color: transparent;
-      background-color: rgb(var(--kb-color-fill-2));
-    }
+  &:active {
+    box-shadow: $kb-button-plain-primary-active-box-shadow;
+    border-color: $kb-button-plain-primary-active-border-color;
+    background-color: $kb-button-plain-primary-active-background-color;
+    color: $kb-button-plain-primary-active-color;
+  }
 
-    &:active {
-      border-color: transparent;
-      background-color: rgb(var(--kb-color-fill-3));
-    }
+  &:disabled {
+    box-shadow: $kb-button-plain-primary-disabled-box-shadow;
+    border-color: $kb-button-plain-primary-disabled-border-color;
+    background-color: $kb-button-plain-primary-disabled-background-color;
+    color: $kb-button-plain-primary-disabled-color;
+  }
 
-    &:disabled {
-      border-color: transparent;
-      background-color: transparent;
-      color: rgb(var(--kb-color-#{$color}-200));
-    }
+  #{dark-selector()} {
+    box-shadow: $kb-button-plain-primary-box-shadow;
+    border-color: $kb-button-plain-primary-dark-border-color;
+    background-color: $kb-button-plain-primary-dark-background-color;
+    color: $kb-button-plain-primary-dark-color;
+  }
 
-    #{dark-selector()} {
-      color: rgb(var(--kb-color-#{$color}-400));
-    }
+  #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-plain-primary-dark-hover-box-shadow;
+    border-color: $kb-button-plain-primary-dark-hover-border-color;
+    background-color: $kb-button-plain-primary-dark-hover-background-color;
+    color: $kb-button-plain-primary-dark-hover-color;
+  }
 
-    #{dark-selector("&:disabled")} {
-      color: rgb(var(--kb-color-#{$color}-600) / 0.4);
-    }
+  #{dark-selector("&:active")} {
+    box-shadow: $kb-button-plain-primary-dark-active-box-shadow;
+    border-color: $kb-button-plain-primary-dark-active-border-color;
+    background-color: $kb-button-plain-primary-dark-active-background-color;
+    color: $kb-button-plain-primary-dark-active-color;
+  }
+
+  #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-plain-primary-dark-disabled-box-shadow;
+    border-color: $kb-button-plain-primary-dark-disabled-border-color;
+    background-color: $kb-button-plain-primary-dark-disabled-background-color;
+    color: $kb-button-plain-primary-dark-disabled-color;
+  }
+}
+
+// secondary
+.kb-button--plain.kb-button--secondary {
+  box-shadow: $kb-button-plain-secondary-box-shadow;
+  border-color: $kb-button-plain-secondary-border-color;
+  background-color: $kb-button-plain-secondary-background-color;
+  color: $kb-button-plain-secondary-color;
+
+  &:hover {
+    box-shadow: $kb-button-plain-secondary-hover-box-shadow;
+    border-color: $kb-button-plain-secondary-hover-border-color;
+    background-color: $kb-button-plain-secondary-hover-background-color;
+    color: $kb-button-plain-secondary-hover-color;
+  }
+
+  &:active {
+    box-shadow: $kb-button-plain-secondary-active-box-shadow;
+    border-color: $kb-button-plain-secondary-active-border-color;
+    background-color: $kb-button-plain-secondary-active-background-color;
+    color: $kb-button-plain-secondary-active-color;
+  }
+
+  &:disabled {
+    box-shadow: $kb-button-plain-secondary-disabled-box-shadow;
+    border-color: $kb-button-plain-secondary-disabled-border-color;
+    background-color: $kb-button-plain-secondary-disabled-background-color;
+    color: $kb-button-plain-secondary-disabled-color;
+  }
+
+  #{dark-selector()} {
+    box-shadow: $kb-button-plain-secondary-box-shadow;
+    border-color: $kb-button-plain-secondary-dark-border-color;
+    background-color: $kb-button-plain-secondary-dark-background-color;
+    color: $kb-button-plain-secondary-dark-color;
+  }
+
+  #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-plain-secondary-dark-hover-box-shadow;
+    border-color: $kb-button-plain-secondary-dark-hover-border-color;
+    background-color: $kb-button-plain-secondary-dark-hover-background-color;
+    color: $kb-button-plain-secondary-dark-hover-color;
+  }
+
+  #{dark-selector("&:active")} {
+    box-shadow: $kb-button-plain-secondary-dark-active-box-shadow;
+    border-color: $kb-button-plain-secondary-dark-active-border-color;
+    background-color: $kb-button-plain-secondary-dark-active-background-color;
+    color: $kb-button-plain-secondary-dark-active-color;
+  }
+
+  #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-plain-secondary-dark-disabled-box-shadow;
+    border-color: $kb-button-plain-secondary-dark-disabled-border-color;
+    background-color: $kb-button-plain-secondary-dark-disabled-background-color;
+    color: $kb-button-plain-secondary-dark-disabled-color;
+  }
+}
+
+// danger
+.kb-button--plain.kb-button--danger {
+  box-shadow: $kb-button-plain-danger-box-shadow;
+  border-color: $kb-button-plain-danger-border-color;
+  background-color: $kb-button-plain-danger-background-color;
+  color: $kb-button-plain-danger-color;
+
+  &:hover {
+    box-shadow: $kb-button-plain-danger-hover-box-shadow;
+    border-color: $kb-button-plain-danger-hover-border-color;
+    background-color: $kb-button-plain-danger-hover-background-color;
+    color: $kb-button-plain-danger-hover-color;
+  }
+
+  &:active {
+    box-shadow: $kb-button-plain-danger-active-box-shadow;
+    border-color: $kb-button-plain-danger-active-border-color;
+    background-color: $kb-button-plain-danger-active-background-color;
+    color: $kb-button-plain-danger-active-color;
+  }
+
+  &:disabled {
+    box-shadow: $kb-button-plain-danger-disabled-box-shadow;
+    border-color: $kb-button-plain-danger-disabled-border-color;
+    background-color: $kb-button-plain-danger-disabled-background-color;
+    color: $kb-button-plain-danger-disabled-color;
+  }
+
+  #{dark-selector()} {
+    box-shadow: $kb-button-plain-danger-box-shadow;
+    border-color: $kb-button-plain-danger-dark-border-color;
+    background-color: $kb-button-plain-danger-dark-background-color;
+    color: $kb-button-plain-danger-dark-color;
+  }
+
+  #{dark-selector("&:hover")} {
+    box-shadow: $kb-button-plain-danger-dark-hover-box-shadow;
+    border-color: $kb-button-plain-danger-dark-hover-border-color;
+    background-color: $kb-button-plain-danger-dark-hover-background-color;
+    color: $kb-button-plain-danger-dark-hover-color;
+  }
+
+  #{dark-selector("&:active")} {
+    box-shadow: $kb-button-plain-danger-dark-active-box-shadow;
+    border-color: $kb-button-plain-danger-dark-active-border-color;
+    background-color: $kb-button-plain-danger-dark-active-background-color;
+    color: $kb-button-plain-danger-dark-active-color;
+  }
+
+  #{dark-selector("&:disabled")} {
+    box-shadow: $kb-button-plain-danger-dark-disabled-box-shadow;
+    border-color: $kb-button-plain-danger-dark-disabled-border-color;
+    background-color: $kb-button-plain-danger-dark-disabled-background-color;
+    color: $kb-button-plain-danger-dark-disabled-color;
   }
 }
 
@@ -302,6 +817,7 @@ $colorMap: (
 // -------------------------------------------------------------------------------------------------
 
 .kb-button--xs {
+  border-radius: $kb-button-xs-border-radius;
   height: $kb-button-xs-height;
   padding: $kb-button-xs-padding;
   font-size: $kb-button-xs-font-size;
@@ -313,6 +829,7 @@ $colorMap: (
 }
 
 .kb-button--sm {
+  border-radius: $kb-button-sm-border-radius;
   height: $kb-button-sm-height;
   padding: $kb-button-sm-padding;
   font-size: $kb-button-sm-font-size;
@@ -324,6 +841,7 @@ $colorMap: (
 }
 
 .kb-button--md {
+  border-radius: $kb-button-md-border-radius;
   height: $kb-button-md-height;
   padding: $kb-button-md-padding;
   font-size: $kb-button-md-font-size;
@@ -335,6 +853,7 @@ $colorMap: (
 }
 
 .kb-button--lg {
+  border-radius: $kb-button-lg-border-radius;
   height: $kb-button-lg-height;
   padding: $kb-button-lg-padding;
   font-size: $kb-button-lg-font-size;
@@ -353,7 +872,7 @@ $colorMap: (
   display: inline-flex;
   align-self: center;
   flex-shrink: 0;
-  font-size: 1.2em;
+  font-size: $kb-button-icon-font-size;
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -374,6 +893,6 @@ $colorMap: (
 }
 
 .kb-button__loader-icon {
-  font-size: 1.3em;
-  animation: 1s linear infinite kb-animation-spin;
+  font-size: $kb-button-loader-icon-font-size;
+  animation: $kb-button-loader-icon-animation;
 }

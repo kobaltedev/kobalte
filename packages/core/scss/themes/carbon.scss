@@ -2,7 +2,7 @@
 // A Carbon design system inspired theme
 // -------------------------------------------------------------------------------------------------
 
-@use "../common/variables" with (
+@forward "../variables/base" with (
   $kb-font-family: (
     "IBM Plex Sans",
     "Helvetica Neue",

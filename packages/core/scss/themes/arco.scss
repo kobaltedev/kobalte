@@ -2,6 +2,6 @@
 // An Arco design system inspired theme
 // -------------------------------------------------------------------------------------------------
 
-@use "../common/variables" with (
-  $kb-body-font-size: 14px
+@forward "../variables/base" with (
+  $kb-body-font-size: 14px !default
 );

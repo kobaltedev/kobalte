@@ -2,7 +2,7 @@
 // A Material Design 3 inspired theme
 // -------------------------------------------------------------------------------------------------
 
-@use "../common/variables" with (
+@forward "../variables/base" with (
   $kb-font-family: (
     Roboto,
     ui-sans-serif,
