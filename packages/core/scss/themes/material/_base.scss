@@ -1,8 +1,4 @@
-// -------------------------------------------------------------------------------------------------
-// A Material Design 3 inspired theme
-// -------------------------------------------------------------------------------------------------
-
-@forward "../variables/base" with (
+@forward "../default/base" with (
   $kb-font-family: (
     Roboto,
     ui-sans-serif,
@@ -19,4 +15,5 @@
     "Segoe UI Symbol",
     "Noto Color Emoji",
   )
+  !default
 );

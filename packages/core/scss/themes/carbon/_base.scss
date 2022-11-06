@@ -1,8 +1,4 @@
-// -------------------------------------------------------------------------------------------------
-// A Carbon design system inspired theme
-// -------------------------------------------------------------------------------------------------
-
-@forward "../variables/base" with (
+@forward "../default/base" with (
   $kb-font-family: (
     "IBM Plex Sans",
     "Helvetica Neue",
@@ -20,4 +16,5 @@
     "Segoe UI Symbol",
     "Noto Color Emoji",
   )
+  !default
 );

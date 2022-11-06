@@ -18,15 +18,27 @@ export default function App() {
           gap: "16px",
         }}
       >
-        <Button size="sm" leftIcon={<SpinnerIcon />} rightIcon={<SpinnerIcon />}>
-          Button
-        </Button>
-        <Button size="md" leftIcon={<SpinnerIcon />} rightIcon={<SpinnerIcon />}>
-          Button
-        </Button>
-        <Button size="lg" leftIcon={<SpinnerIcon />} rightIcon={<SpinnerIcon />} isDisabled>
-          Button
-        </Button>
+        <div
+          style={{
+            margin: "16px",
+            display: "flex",
+            "align-items": "center",
+            gap: "16px",
+          }}
+        >
+          <Button size="xs" leftIcon={<SpinnerIcon />} rightIcon={<SpinnerIcon />}>
+            Button
+          </Button>
+          <Button size="sm" leftIcon={<SpinnerIcon />} rightIcon={<SpinnerIcon />}>
+            Button
+          </Button>
+          <Button size="md" leftIcon={<SpinnerIcon />} rightIcon={<SpinnerIcon />}>
+            Button
+          </Button>
+          <Button size="lg" leftIcon={<SpinnerIcon />} rightIcon={<SpinnerIcon />} isDisabled>
+            Button
+          </Button>
+        </div>
         <div>
           <For each={["solid", "soft", "outlined", "plain"]}>
             {variant => (
@@ -48,6 +60,9 @@ export default function App() {
                         gap: "16px",
                       }}
                     >
+                      <Button variant={variant as any} color={color as any} size="xs">
+                        Button
+                      </Button>
                       <Button variant={variant as any} color={color as any} size="sm">
                         Button
                       </Button>

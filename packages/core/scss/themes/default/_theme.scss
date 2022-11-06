@@ -1,7 +1,6 @@
 // -------------------------------------------------------------------------------------------------
-// An Arco design system inspired theme
+// The default Kobalte theme
 // -------------------------------------------------------------------------------------------------
 
-@forward "../variables/base" with (
-  $kb-body-font-size: 14px !default
-);
+@forward "base";
+@forward "button";

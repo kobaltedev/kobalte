@@ -1,8 +1,4 @@
-// -------------------------------------------------------------------------------------------------
-// A Fluent UI inspired theme
-// -------------------------------------------------------------------------------------------------
-
-@forward "../variables/base" with (
+@forward "../default/base" with (
   $kb-font-family: (
     "Segoe UI",
     ui-sans-serif,
@@ -19,4 +15,5 @@
     "Segoe UI Symbol",
     "Noto Color Emoji",
   )
+  !default
 );
