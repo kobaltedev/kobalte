@@ -32,6 +32,12 @@ export const buttonStyles = cva<ButtonParts, ButtonVariants>(
         isIconOnly: {
           true: bemButton.withModifier("icon-only"),
         },
+        hasLeftIcon: {
+          true: bemButton.withModifier("has-left-icon"),
+        },
+        hasRightIcon: {
+          true: bemButton.withModifier("has-right-icon"),
+        },
       },
     },
     icon: {

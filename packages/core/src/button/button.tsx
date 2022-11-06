@@ -108,6 +108,12 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
     get isIconOnly() {
       return variantProps.isIconOnly;
     },
+    get hasLeftIcon() {
+      return contentProps.leftIcon != null; //TODO: use solid children helper
+    },
+    get hasRightIcon() {
+      return contentProps.rightIcon != null; //TODO: use solid children helper
+    },
     get hasLoadingText() {
       return !!local.loadingText;
     },

@@ -554,25 +554,25 @@
   // -------------------------------------------------------------------------------------------------
   // size
   // -------------------------------------------------------------------------------------------------
-  $kb-button-xs-border-radius: 2px !default,
-  $kb-button-xs-height: 24px !default,
-  $kb-button-xs-padding: 0 10px !default,
-  $kb-button-xs-font-size: 12px !default,
+  $kb-button-xs-border-radius: 0 !default,
+  $kb-button-xs-height: 32px !default,
+  $kb-button-xs-padding: 0 60px 0 12px !default,
+  $kb-button-xs-font-size: 14px !default,
 
-  $kb-button-sm-border-radius: 2px !default,
-  $kb-button-sm-height: 28px !default,
-  $kb-button-sm-padding: 0 14px !default,
+  $kb-button-sm-border-radius: 0 !default,
+  $kb-button-sm-height: 40px !default,
+  $kb-button-sm-padding: 0 60px 0 12px !default,
   $kb-button-sm-font-size: 14px !default,
 
-  $kb-button-md-border-radius: 2px !default,
-  $kb-button-md-height: 32px !default,
-  $kb-button-md-padding: 0 16px !default,
-  $kb-button-md-font-size: 14px !default,
+  $kb-button-md-border-radius: 0 !default,
+  $kb-button-md-height: 48px !default,
+  $kb-button-md-padding: 0 64px 0 16px !default,
+  $kb-button-md-font-size: 16px !default,
 
-  $kb-button-lg-border-radius: 2px !default,
-  $kb-button-lg-height: 36px !default,
-  $kb-button-lg-padding: 0 18px !default,
-  $kb-button-lg-font-size: 14px !default,
+  $kb-button-lg-border-radius: 0 !default,
+  $kb-button-lg-height: 64px !default,
+  $kb-button-lg-padding: 0 64px 0 16px !default,
+  $kb-button-lg-font-size: 16px !default,
 
   // -------------------------------------------------------------------------------------------------
   // icon
@@ -585,3 +585,35 @@
   $kb-button-loader-icon-font-size: 1em !default,
   $kb-button-loader-icon-animation: 1s linear infinite kb-animation-spin !default
 );
+
+// -------------------------------------------------------------------------------------------------
+// Overrides
+// -------------------------------------------------------------------------------------------------
+
+.kb-button--has-right-icon.kb-button--xs,
+.kb-button--has-right-icon.kb-button--sm,
+.kb-button--plain.kb-button--xs,
+.kb-button--plain.kb-button--sm {
+  padding-right: 12px;
+}
+
+.kb-button--has-right-icon.kb-button--md,
+.kb-button--has-right-icon.kb-button--lg,
+.kb-button--plain.kb-button--md,
+.kb-button--plain.kb-button--lg {
+  padding-right: 16px;
+}
+
+.kb-button--has-right-icon.kb-button--xs,
+.kb-button--has-right-icon.kb-button--sm {
+  .kb-button__right-icon {
+    margin-left: 34px;
+  }
+}
+
+.kb-button--has-right-icon.kb-button--md,
+.kb-button--has-right-icon.kb-button--lg {
+  .kb-button__right-icon {
+    margin-left: 32px;
+  }
+}

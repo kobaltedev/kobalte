@@ -24,11 +24,18 @@ export interface ButtonVariants {
   /** Whether the button is an icon only button. */
   isIconOnly?: boolean;
 
+  /** Whether the button has an icon at the left of the label. */
+  hasLeftIcon?: boolean;
+
+  /** Whether the button has an icon at the right of the label. */
+  hasRightIcon?: boolean;
+
   /** Whether the button has a loading text next to the loader icon. */
   hasLoadingText?: boolean;
 }
 
-export interface ButtonProps extends Omit<ButtonVariants, "hasLoadingText"> {
+export interface ButtonProps
+  extends Omit<ButtonVariants, "hasLeftIcon" | "hasRightIcon" | "hasLoadingText"> {
   /** The placement of the loader when `isLoading` is true. */
   loaderPlacement?: "start" | "end";
 
