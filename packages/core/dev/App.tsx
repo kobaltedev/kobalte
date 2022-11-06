@@ -26,16 +26,37 @@ export default function App() {
             gap: "16px",
           }}
         >
-          <Button size="xs" leftIcon={<SpinnerIcon />} rightIcon={<SpinnerIcon />}>
+          <Button size="xs" leftIcon={<SpinnerIcon />}>
             Button
           </Button>
-          <Button size="sm" leftIcon={<SpinnerIcon />} rightIcon={<SpinnerIcon />}>
+          <Button size="sm" leftIcon={<SpinnerIcon />}>
             Button
           </Button>
-          <Button size="md" leftIcon={<SpinnerIcon />} rightIcon={<SpinnerIcon />}>
+          <Button size="md" leftIcon={<SpinnerIcon />}>
             Button
           </Button>
-          <Button size="lg" leftIcon={<SpinnerIcon />} rightIcon={<SpinnerIcon />} isDisabled>
+          <Button size="lg" leftIcon={<SpinnerIcon />} isDisabled>
+            Button
+          </Button>
+        </div>
+        <div
+          style={{
+            margin: "16px",
+            display: "flex",
+            "align-items": "center",
+            gap: "16px",
+          }}
+        >
+          <Button size="xs" rightIcon={<SpinnerIcon />}>
+            Button
+          </Button>
+          <Button size="sm" rightIcon={<SpinnerIcon />}>
+            Button
+          </Button>
+          <Button size="md" rightIcon={<SpinnerIcon />}>
+            Button
+          </Button>
+          <Button size="lg" rightIcon={<SpinnerIcon />} isDisabled>
             Button
           </Button>
         </div>
