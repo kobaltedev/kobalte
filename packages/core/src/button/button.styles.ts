@@ -18,7 +18,6 @@ export const buttonStyles = cva<ButtonParts, ButtonVariants>(
           soft: bemButton.withModifier("soft"),
           outlined: bemButton.withModifier("outlined"),
           plain: bemButton.withModifier("plain"),
-          default: bemButton.withModifier("default"),
         },
         size: {
           xs: bemButton.withModifier("xs"),
@@ -62,7 +61,8 @@ export const buttonStyles = cva<ButtonParts, ButtonVariants>(
     },
   },
   {
-    variant: "default",
+    color: "primary",
+    variant: "solid",
     size: "md",
   }
 );

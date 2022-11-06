@@ -5,49 +5,6 @@
   $kb-button-font-weight: 400 !default,
 
   // -------------------------------------------------------------------------------------------------
-  // variant - default
-  // -------------------------------------------------------------------------------------------------
-  $kb-button-default-box-shadow: none !default,
-  $kb-button-default-border-color: rgb(var(--kb-color-neutral-100)) !default,
-  $kb-button-default-background-color: rgb(var(--kb-color-neutral-100)) !default,
-  $kb-button-default-color: rgb(var(--kb-color-neutral-800)) !default,
-
-  $kb-button-default-hover-box-shadow: none !default,
-  $kb-button-default-hover-border-color: rgb(var(--kb-color-neutral-200)) !default,
-  $kb-button-default-hover-background-color: rgb(var(--kb-color-neutral-200)) !default,
-  $kb-button-default-hover-color: rgb(var(--kb-color-neutral-800)) !default,
-
-  $kb-button-default-active-box-shadow: none !default,
-  $kb-button-default-active-border-color: rgb(var(--kb-color-neutral-300)) !default,
-  $kb-button-default-active-background-color: rgb(var(--kb-color-neutral-300)) !default,
-  $kb-button-default-active-color: rgb(var(--kb-color-neutral-800)) !default,
-
-  $kb-button-default-disabled-box-shadow: none !default,
-  $kb-button-default-disabled-border-color: rgb(var(--kb-color-neutral-50)) !default,
-  $kb-button-default-disabled-background-color: rgb(var(--kb-color-neutral-50)) !default,
-  $kb-button-default-disabled-color: rgb(var(--kb-color-neutral-200)) !default,
-
-  $kb-button-default-dark-box-shadow: none !default,
-  $kb-button-default-dark-border-color: transparent !default,
-  $kb-button-default-dark-background-color: rgb(var(--kb-color-neutral-500) / 0.2) !default,
-  $kb-button-default-dark-color: rgb(var(--kb-color-text-2)) !default,
-
-  $kb-button-default-dark-hover-box-shadow: none !default,
-  $kb-button-default-dark-hover-border-color: transparent !default,
-  $kb-button-default-dark-hover-background-color: rgb(var(--kb-color-neutral-500) / 0.35) !default,
-  $kb-button-default-dark-hover-color: rgb(var(--kb-color-text-2)) !default,
-
-  $kb-button-default-dark-active-box-shadow: none !default,
-  $kb-button-default-dark-active-border-color: transparent !default,
-  $kb-button-default-dark-active-background-color: rgb(var(--kb-color-neutral-500) / 0.5) !default,
-  $kb-button-default-dark-active-color: rgb(var(--kb-color-text-2)) !default,
-
-  $kb-button-default-dark-disabled-box-shadow: none !default,
-  $kb-button-default-dark-disabled-border-color: transparent !default,
-  $kb-button-default-dark-disabled-background-color: rgb(var(--kb-color-neutral-600) / 0.1) !default,
-  $kb-button-default-dark-disabled-color: rgb(var(--kb-color-neutral-500) / 0.3) !default,
-
-  // -------------------------------------------------------------------------------------------------
   // variant - solid
   // -------------------------------------------------------------------------------------------------
   // primary
@@ -57,19 +14,19 @@
   $kb-button-solid-primary-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-primary-hover-box-shadow: none !default,
-  $kb-button-solid-primary-hover-border-color: rgb(var(--kb-color-primary-500)) !default,
-  $kb-button-solid-primary-hover-background-color: rgb(var(--kb-color-primary-500)) !default,
+  $kb-button-solid-primary-hover-border-color: rgb(var(--kb-color-primary-700)) !default,
+  $kb-button-solid-primary-hover-background-color: rgb(var(--kb-color-primary-700)) !default,
   $kb-button-solid-primary-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-primary-active-box-shadow: none !default,
-  $kb-button-solid-primary-active-border-color: rgb(var(--kb-color-primary-700)) !default,
-  $kb-button-solid-primary-active-background-color: rgb(var(--kb-color-primary-700)) !default,
+  $kb-button-solid-primary-active-border-color: rgb(var(--kb-color-primary-800)) !default,
+  $kb-button-solid-primary-active-background-color: rgb(var(--kb-color-primary-800)) !default,
   $kb-button-solid-primary-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-primary-disabled-box-shadow: none !default,
-  $kb-button-solid-primary-disabled-border-color: rgb(var(--kb-color-primary-200)) !default,
-  $kb-button-solid-primary-disabled-background-color: rgb(var(--kb-color-primary-200)) !default,
-  $kb-button-solid-primary-disabled-color: rgb(var(--kb-color-white)) !default,
+  $kb-button-solid-primary-disabled-border-color: rgb(var(--kb-color-neutral-300)) !default,
+  $kb-button-solid-primary-disabled-background-color: rgb(var(--kb-color-neutral-300)) !default,
+  $kb-button-solid-primary-disabled-color: rgb(var(--kb-color-neutral-400)) !default,
 
   $kb-button-solid-primary-dark-box-shadow: none !default,
   $kb-button-solid-primary-dark-border-color: rgb(var(--kb-color-primary-600)) !default,
@@ -82,55 +39,55 @@
   $kb-button-solid-primary-dark-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-primary-dark-active-box-shadow: none !default,
-  $kb-button-solid-primary-dark-active-border-color: rgb(var(--kb-color-primary-500)) !default,
-  $kb-button-solid-primary-dark-active-background-color: rgb(var(--kb-color-primary-500)) !default,
+  $kb-button-solid-primary-dark-active-border-color: rgb(var(--kb-color-primary-800)) !default,
+  $kb-button-solid-primary-dark-active-background-color: rgb(var(--kb-color-primary-800)) !default,
   $kb-button-solid-primary-dark-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-primary-dark-disabled-box-shadow: none !default,
   $kb-button-solid-primary-dark-disabled-border-color: transparent !default,
-  $kb-button-solid-primary-dark-disabled-background-color: rgb(var(--kb-color-primary-600) / 0.3) !default,
-  $kb-button-solid-primary-dark-disabled-color: rgb(var(--kb-color-white) / 0.3) !default,
+  $kb-button-solid-primary-dark-disabled-background-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
+  $kb-button-solid-primary-dark-disabled-color: rgb(var(--kb-color-text-4)) !default,
 
   // secondary
   $kb-button-solid-secondary-box-shadow: none !default,
-  $kb-button-solid-secondary-border-color: rgb(var(--kb-color-neutral-800)) !default,
-  $kb-button-solid-secondary-background-color: rgb(var(--kb-color-neutral-800)) !default,
+  $kb-button-solid-secondary-border-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-solid-secondary-background-color: rgb(var(--kb-color-neutral-700)) !default,
   $kb-button-solid-secondary-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-secondary-hover-box-shadow: none !default,
-  $kb-button-solid-secondary-hover-border-color: rgb(var(--kb-color-neutral-700)) !default,
-  $kb-button-solid-secondary-hover-background-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-solid-secondary-hover-border-color: rgb(var(--kb-color-neutral-600)) !default,
+  $kb-button-solid-secondary-hover-background-color: rgb(var(--kb-color-neutral-600)) !default,
   $kb-button-solid-secondary-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-secondary-active-box-shadow: none !default,
-  $kb-button-solid-secondary-active-border-color: rgb(var(--kb-color-neutral-900)) !default,
-  $kb-button-solid-secondary-active-background-color: rgb(var(--kb-color-neutral-900)) !default,
+  $kb-button-solid-secondary-active-border-color: rgb(var(--kb-color-neutral-500)) !default,
+  $kb-button-solid-secondary-active-background-color: rgb(var(--kb-color-neutral-500)) !default,
   $kb-button-solid-secondary-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-secondary-disabled-box-shadow: none !default,
-  $kb-button-solid-secondary-disabled-border-color: rgb(var(--kb-color-neutral-200)) !default,
-  $kb-button-solid-secondary-disabled-background-color: rgb(var(--kb-color-neutral-200)) !default,
-  $kb-button-solid-secondary-disabled-color: rgb(var(--kb-color-white)) !default,
+  $kb-button-solid-secondary-disabled-border-color: rgb(var(--kb-color-neutral-300)) !default,
+  $kb-button-solid-secondary-disabled-background-color: rgb(var(--kb-color-neutral-300)) !default,
+  $kb-button-solid-secondary-disabled-color: rgb(var(--kb-color-neutral-400)) !default,
 
   $kb-button-solid-secondary-dark-box-shadow: none !default,
-  $kb-button-solid-secondary-dark-border-color: rgb(var(--kb-color-neutral-600)) !default,
-  $kb-button-solid-secondary-dark-background-color: rgb(var(--kb-color-neutral-600)) !default,
+  $kb-button-solid-secondary-dark-border-color: rgb(var(--kb-color-neutral-500)) !default,
+  $kb-button-solid-secondary-dark-background-color: rgb(var(--kb-color-neutral-500)) !default,
   $kb-button-solid-secondary-dark-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-secondary-dark-hover-box-shadow: none !default,
-  $kb-button-solid-secondary-dark-hover-border-color: rgb(var(--kb-color-neutral-700)) !default,
-  $kb-button-solid-secondary-dark-hover-background-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-solid-secondary-dark-hover-border-color: rgb(var(--kb-color-neutral-600)) !default,
+  $kb-button-solid-secondary-dark-hover-background-color: rgb(var(--kb-color-neutral-600)) !default,
   $kb-button-solid-secondary-dark-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-secondary-dark-active-box-shadow: none !default,
-  $kb-button-solid-secondary-dark-active-border-color: rgb(var(--kb-color-neutral-500)) !default,
-  $kb-button-solid-secondary-dark-active-background-color: rgb(var(--kb-color-neutral-500)) !default,
+  $kb-button-solid-secondary-dark-active-border-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-solid-secondary-dark-active-background-color: rgb(var(--kb-color-neutral-700)) !default,
   $kb-button-solid-secondary-dark-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-secondary-dark-disabled-box-shadow: none !default,
   $kb-button-solid-secondary-dark-disabled-border-color: transparent !default,
-  $kb-button-solid-secondary-dark-disabled-background-color: rgb(var(--kb-color-neutral-600) / 0.3) !default,
-  $kb-button-solid-secondary-dark-disabled-color: rgb(var(--kb-color-white) / 0.3) !default,
+  $kb-button-solid-secondary-dark-disabled-background-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
+  $kb-button-solid-secondary-dark-disabled-color: rgb(var(--kb-color-text-4)) !default,
 
   // danger
   $kb-button-solid-danger-box-shadow: none !default,
@@ -139,19 +96,19 @@
   $kb-button-solid-danger-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-danger-hover-box-shadow: none !default,
-  $kb-button-solid-danger-hover-border-color: rgb(var(--kb-color-danger-500)) !default,
-  $kb-button-solid-danger-hover-background-color: rgb(var(--kb-color-danger-500)) !default,
+  $kb-button-solid-danger-hover-border-color: rgb(var(--kb-color-danger-700)) !default,
+  $kb-button-solid-danger-hover-background-color: rgb(var(--kb-color-danger-700)) !default,
   $kb-button-solid-danger-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-danger-active-box-shadow: none !default,
-  $kb-button-solid-danger-active-border-color: rgb(var(--kb-color-danger-700)) !default,
-  $kb-button-solid-danger-active-background-color: rgb(var(--kb-color-danger-700)) !default,
+  $kb-button-solid-danger-active-border-color: rgb(var(--kb-color-danger-800)) !default,
+  $kb-button-solid-danger-active-background-color: rgb(var(--kb-color-danger-800)) !default,
   $kb-button-solid-danger-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-danger-disabled-box-shadow: none !default,
-  $kb-button-solid-danger-disabled-border-color: rgb(var(--kb-color-danger-200)) !default,
-  $kb-button-solid-danger-disabled-background-color: rgb(var(--kb-color-danger-200)) !default,
-  $kb-button-solid-danger-disabled-color: rgb(var(--kb-color-white)) !default,
+  $kb-button-solid-danger-disabled-border-color: rgb(var(--kb-color-neutral-300)) !default,
+  $kb-button-solid-danger-disabled-background-color: rgb(var(--kb-color-neutral-300)) !default,
+  $kb-button-solid-danger-disabled-color: rgb(var(--kb-color-neutral-400)) !default,
 
   $kb-button-solid-danger-dark-box-shadow: none !default,
   $kb-button-solid-danger-dark-border-color: rgb(var(--kb-color-danger-600)) !default,
@@ -164,14 +121,14 @@
   $kb-button-solid-danger-dark-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-danger-dark-active-box-shadow: none !default,
-  $kb-button-solid-danger-dark-active-border-color: rgb(var(--kb-color-danger-500)) !default,
-  $kb-button-solid-danger-dark-active-background-color: rgb(var(--kb-color-danger-500)) !default,
+  $kb-button-solid-danger-dark-active-border-color: rgb(var(--kb-color-danger-800)) !default,
+  $kb-button-solid-danger-dark-active-background-color: rgb(var(--kb-color-danger-800)) !default,
   $kb-button-solid-danger-dark-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-solid-danger-dark-disabled-box-shadow: none !default,
   $kb-button-solid-danger-dark-disabled-border-color: transparent !default,
-  $kb-button-solid-danger-dark-disabled-background-color: rgb(var(--kb-color-danger-600) / 0.3) !default,
-  $kb-button-solid-danger-dark-disabled-color: rgb(var(--kb-color-white) / 0.3) !default,
+  $kb-button-solid-danger-dark-disabled-background-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
+  $kb-button-solid-danger-dark-disabled-color: rgb(var(--kb-color-text-4)) !default,
 
   // -------------------------------------------------------------------------------------------------
   // variant - soft
@@ -183,19 +140,19 @@
   $kb-button-soft-primary-color: rgb(var(--kb-color-primary-700)) !default,
 
   $kb-button-soft-primary-hover-box-shadow: none !default,
-  $kb-button-soft-primary-hover-border-color: rgb(var(--kb-color-primary-200)) !default,
-  $kb-button-soft-primary-hover-background-color: rgb(var(--kb-color-primary-200)) !default,
-  $kb-button-soft-primary-hover-color: rgb(var(--kb-color-primary-700)) !default,
+  $kb-button-soft-primary-hover-border-color: rgb(var(--kb-color-primary-600)) !default,
+  $kb-button-soft-primary-hover-background-color: rgb(var(--kb-color-primary-600)) !default,
+  $kb-button-soft-primary-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-soft-primary-active-box-shadow: none !default,
-  $kb-button-soft-primary-active-border-color: rgb(var(--kb-color-primary-300)) !default,
-  $kb-button-soft-primary-active-background-color: rgb(var(--kb-color-primary-300)) !default,
-  $kb-button-soft-primary-active-color: rgb(var(--kb-color-primary-700)) !default,
+  $kb-button-soft-primary-active-border-color: rgb(var(--kb-color-primary-800)) !default,
+  $kb-button-soft-primary-active-background-color: rgb(var(--kb-color-primary-800)) !default,
+  $kb-button-soft-primary-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-soft-primary-disabled-box-shadow: none !default,
-  $kb-button-soft-primary-disabled-border-color: rgb(var(--kb-color-primary-50)) !default,
-  $kb-button-soft-primary-disabled-background-color: rgb(var(--kb-color-primary-50)) !default,
-  $kb-button-soft-primary-disabled-color: rgb(var(--kb-color-primary-200)) !default,
+  $kb-button-soft-primary-disabled-border-color: rgb(var(--kb-color-neutral-300)) !default,
+  $kb-button-soft-primary-disabled-background-color: rgb(var(--kb-color-neutral-300)) !default,
+  $kb-button-soft-primary-disabled-color: rgb(var(--kb-color-neutral-400)) !default,
 
   $kb-button-soft-primary-dark-box-shadow: none !default,
   $kb-button-soft-primary-dark-border-color: transparent !default,
@@ -203,19 +160,19 @@
   $kb-button-soft-primary-dark-color: rgb(var(--kb-color-primary-400)) !default,
 
   $kb-button-soft-primary-dark-hover-box-shadow: none !default,
-  $kb-button-soft-primary-dark-hover-border-color: transparent !default,
-  $kb-button-soft-primary-dark-hover-background-color: rgb(var(--kb-color-primary-500) / 0.35) !default,
-  $kb-button-soft-primary-dark-hover-color: rgb(var(--kb-color-primary-400)) !default,
+  $kb-button-soft-primary-dark-hover-border-color: rgb(var(--kb-color-primary-600)) !default,
+  $kb-button-soft-primary-dark-hover-background-color: rgb(var(--kb-color-primary-600)) !default,
+  $kb-button-soft-primary-dark-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-soft-primary-dark-active-box-shadow: none !default,
-  $kb-button-soft-primary-dark-active-border-color: transparent !default,
-  $kb-button-soft-primary-dark-active-background-color: rgb(var(--kb-color-primary-500) / 0.5) !default,
-  $kb-button-soft-primary-dark-active-color: rgb(var(--kb-color-primary-400)) !default,
+  $kb-button-soft-primary-dark-active-border-color: rgb(var(--kb-color-primary-800)) !default,
+  $kb-button-soft-primary-dark-active-background-color: rgb(var(--kb-color-primary-800)) !default,
+  $kb-button-soft-primary-dark-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-soft-primary-dark-disabled-box-shadow: none !default,
   $kb-button-soft-primary-dark-disabled-border-color: transparent !default,
-  $kb-button-soft-primary-dark-disabled-background-color: rgb(var(--kb-color-primary-600) / 0.1) !default,
-  $kb-button-soft-primary-dark-disabled-color: rgb(var(--kb-color-primary-500) / 0.3) !default,
+  $kb-button-soft-primary-dark-disabled-background-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
+  $kb-button-soft-primary-dark-disabled-color: rgb(var(--kb-color-text-4)) !default,
 
   // secondary
   $kb-button-soft-secondary-box-shadow: none !default,
@@ -224,19 +181,19 @@
   $kb-button-soft-secondary-color: rgb(var(--kb-color-neutral-800)) !default,
 
   $kb-button-soft-secondary-hover-box-shadow: none !default,
-  $kb-button-soft-secondary-hover-border-color: rgb(var(--kb-color-neutral-200)) !default,
-  $kb-button-soft-secondary-hover-background-color: rgb(var(--kb-color-neutral-200)) !default,
-  $kb-button-soft-secondary-hover-color: rgb(var(--kb-color-neutral-800)) !default,
+  $kb-button-soft-secondary-hover-border-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-soft-secondary-hover-background-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-soft-secondary-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-soft-secondary-active-box-shadow: none !default,
-  $kb-button-soft-secondary-active-border-color: rgb(var(--kb-color-neutral-300)) !default,
-  $kb-button-soft-secondary-active-background-color: rgb(var(--kb-color-neutral-300)) !default,
-  $kb-button-soft-secondary-active-color: rgb(var(--kb-color-neutral-800)) !default,
+  $kb-button-soft-secondary-active-border-color: rgb(var(--kb-color-neutral-500)) !default,
+  $kb-button-soft-secondary-active-background-color: rgb(var(--kb-color-neutral-500)) !default,
+  $kb-button-soft-secondary-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-soft-secondary-disabled-box-shadow: none !default,
-  $kb-button-soft-secondary-disabled-border-color: rgb(var(--kb-color-neutral-50)) !default,
-  $kb-button-soft-secondary-disabled-background-color: rgb(var(--kb-color-neutral-50)) !default,
-  $kb-button-soft-secondary-disabled-color: rgb(var(--kb-color-neutral-200)) !default,
+  $kb-button-soft-secondary-disabled-border-color: rgb(var(--kb-color-neutral-300)) !default,
+  $kb-button-soft-secondary-disabled-background-color: rgb(var(--kb-color-neutral-300)) !default,
+  $kb-button-soft-secondary-disabled-color: rgb(var(--kb-color-neutral-400)) !default,
 
   $kb-button-soft-secondary-dark-box-shadow: none !default,
   $kb-button-soft-secondary-dark-border-color: transparent !default,
@@ -244,19 +201,19 @@
   $kb-button-soft-secondary-dark-color: rgb(var(--kb-color-text-2)) !default,
 
   $kb-button-soft-secondary-dark-hover-box-shadow: none !default,
-  $kb-button-soft-secondary-dark-hover-border-color: transparent !default,
-  $kb-button-soft-secondary-dark-hover-background-color: rgb(var(--kb-color-neutral-500) / 0.35) !default,
-  $kb-button-soft-secondary-dark-hover-color: rgb(var(--kb-color-text-2)) !default,
+  $kb-button-soft-secondary-dark-hover-border-color: rgb(var(--kb-color-neutral-500)) !default,
+  $kb-button-soft-secondary-dark-hover-background-color: rgb(var(--kb-color-neutral-500)) !default,
+  $kb-button-soft-secondary-dark-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-soft-secondary-dark-active-box-shadow: none !default,
-  $kb-button-soft-secondary-dark-active-border-color: transparent !default,
-  $kb-button-soft-secondary-dark-active-background-color: rgb(var(--kb-color-neutral-500) / 0.5) !default,
-  $kb-button-soft-secondary-dark-active-color: rgb(var(--kb-color-text-2)) !default,
+  $kb-button-soft-secondary-dark-active-border-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-soft-secondary-dark-active-background-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-soft-secondary-dark-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-soft-secondary-dark-disabled-box-shadow: none !default,
   $kb-button-soft-secondary-dark-disabled-border-color: transparent !default,
-  $kb-button-soft-secondary-dark-disabled-background-color: rgb(var(--kb-color-neutral-600) / 0.1) !default,
-  $kb-button-soft-secondary-dark-disabled-color: rgb(var(--kb-color-neutral-500) / 0.3) !default,
+  $kb-button-soft-secondary-dark-disabled-background-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
+  $kb-button-soft-secondary-dark-disabled-color: rgb(var(--kb-color-text-4)) !default,
 
   // danger
   $kb-button-soft-danger-box-shadow: none !default,
@@ -265,19 +222,19 @@
   $kb-button-soft-danger-color: rgb(var(--kb-color-danger-700)) !default,
 
   $kb-button-soft-danger-hover-box-shadow: none !default,
-  $kb-button-soft-danger-hover-border-color: rgb(var(--kb-color-danger-200)) !default,
-  $kb-button-soft-danger-hover-background-color: rgb(var(--kb-color-danger-200)) !default,
-  $kb-button-soft-danger-hover-color: rgb(var(--kb-color-danger-700)) !default,
+  $kb-button-soft-danger-hover-border-color: rgb(var(--kb-color-danger-600)) !default,
+  $kb-button-soft-danger-hover-background-color: rgb(var(--kb-color-danger-600)) !default,
+  $kb-button-soft-danger-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-soft-danger-active-box-shadow: none !default,
-  $kb-button-soft-danger-active-border-color: rgb(var(--kb-color-danger-300)) !default,
-  $kb-button-soft-danger-active-background-color: rgb(var(--kb-color-danger-300)) !default,
-  $kb-button-soft-danger-active-color: rgb(var(--kb-color-danger-700)) !default,
+  $kb-button-soft-danger-active-border-color: rgb(var(--kb-color-danger-800)) !default,
+  $kb-button-soft-danger-active-background-color: rgb(var(--kb-color-danger-800)) !default,
+  $kb-button-soft-danger-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-soft-danger-disabled-box-shadow: none !default,
-  $kb-button-soft-danger-disabled-border-color: rgb(var(--kb-color-danger-50)) !default,
-  $kb-button-soft-danger-disabled-background-color: rgb(var(--kb-color-danger-50)) !default,
-  $kb-button-soft-danger-disabled-color: rgb(var(--kb-color-danger-200)) !default,
+  $kb-button-soft-danger-disabled-border-color: rgb(var(--kb-color-neutral-300)) !default,
+  $kb-button-soft-danger-disabled-background-color: rgb(var(--kb-color-neutral-300)) !default,
+  $kb-button-soft-danger-disabled-color: rgb(var(--kb-color-neutral-400)) !default,
 
   $kb-button-soft-danger-dark-box-shadow: none !default,
   $kb-button-soft-danger-dark-border-color: transparent !default,
@@ -285,19 +242,19 @@
   $kb-button-soft-danger-dark-color: rgb(var(--kb-color-danger-400)) !default,
 
   $kb-button-soft-danger-dark-hover-box-shadow: none !default,
-  $kb-button-soft-danger-dark-hover-border-color: transparent !default,
-  $kb-button-soft-danger-dark-hover-background-color: rgb(var(--kb-color-danger-500) / 0.35) !default,
-  $kb-button-soft-danger-dark-hover-color: rgb(var(--kb-color-danger-400)) !default,
+  $kb-button-soft-danger-dark-hover-border-color: rgb(var(--kb-color-danger-600)) !default,
+  $kb-button-soft-danger-dark-hover-background-color: rgb(var(--kb-color-danger-600)) !default,
+  $kb-button-soft-danger-dark-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-soft-danger-dark-active-box-shadow: none !default,
-  $kb-button-soft-danger-dark-active-border-color: transparent !default,
-  $kb-button-soft-danger-dark-active-background-color: rgb(var(--kb-color-danger-500) / 0.5) !default,
-  $kb-button-soft-danger-dark-active-color: rgb(var(--kb-color-danger-400)) !default,
+  $kb-button-soft-danger-dark-active-border-color: rgb(var(--kb-color-danger-800)) !default,
+  $kb-button-soft-danger-dark-active-background-color: rgb(var(--kb-color-danger-800)) !default,
+  $kb-button-soft-danger-dark-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-soft-danger-dark-disabled-box-shadow: none !default,
   $kb-button-soft-danger-dark-disabled-border-color: transparent !default,
-  $kb-button-soft-danger-dark-disabled-background-color: rgb(var(--kb-color-danger-600) / 0.1) !default,
-  $kb-button-soft-danger-dark-disabled-color: rgb(var(--kb-color-danger-500) / 0.3) !default,
+  $kb-button-soft-danger-dark-disabled-background-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
+  $kb-button-soft-danger-dark-disabled-color: rgb(var(--kb-color-text-4)) !default,
 
   // -------------------------------------------------------------------------------------------------
   // variant - outlined
@@ -310,18 +267,18 @@
 
   $kb-button-outlined-primary-hover-box-shadow: none !default,
   $kb-button-outlined-primary-hover-border-color: rgb(var(--kb-color-primary-600)) !default,
-  $kb-button-outlined-primary-hover-background-color: rgb(var(--kb-color-fill-2)) !default,
-  $kb-button-outlined-primary-hover-color: rgb(var(--kb-color-primary-600)) !default,
+  $kb-button-outlined-primary-hover-background-color: rgb(var(--kb-color-primary-600)) !default,
+  $kb-button-outlined-primary-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-outlined-primary-active-box-shadow: none !default,
-  $kb-button-outlined-primary-active-border-color: rgb(var(--kb-color-primary-600)) !default,
-  $kb-button-outlined-primary-active-background-color: rgb(var(--kb-color-fill-3) / 0.8) !default,
-  $kb-button-outlined-primary-active-color: rgb(var(--kb-color-primary-600)) !default,
+  $kb-button-outlined-primary-active-border-color: rgb(var(--kb-color-primary-800)) !default,
+  $kb-button-outlined-primary-active-background-color: rgb(var(--kb-color-primary-800)) !default,
+  $kb-button-outlined-primary-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-outlined-primary-disabled-box-shadow: none !default,
-  $kb-button-outlined-primary-disabled-border-color: rgb(var(--kb-color-primary-200)) !default,
+  $kb-button-outlined-primary-disabled-border-color: rgb(var(--kb-color-neutral-300)) !default,
   $kb-button-outlined-primary-disabled-background-color: transparent !default,
-  $kb-button-outlined-primary-disabled-color: rgb(var(--kb-color-primary-200)) !default,
+  $kb-button-outlined-primary-disabled-color: rgb(var(--kb-color-neutral-300)) !default,
 
   $kb-button-outlined-primary-dark-box-shadow: none !default,
   $kb-button-outlined-primary-dark-border-color: rgb(var(--kb-color-primary-500)) !default,
@@ -329,19 +286,19 @@
   $kb-button-outlined-primary-dark-color: rgb(var(--kb-color-primary-400)) !default,
 
   $kb-button-outlined-primary-dark-hover-box-shadow: none !default,
-  $kb-button-outlined-primary-dark-hover-border-color: rgb(var(--kb-color-primary-500)) !default,
-  $kb-button-outlined-primary-dark-hover-background-color: rgb(var(--kb-color-fill-2)) !default,
-  $kb-button-outlined-primary-dark-hover-color: rgb(var(--kb-color-primary-400)) !default,
+  $kb-button-outlined-primary-dark-hover-border-color: rgb(var(--kb-color-primary-600)) !default,
+  $kb-button-outlined-primary-dark-hover-background-color: rgb(var(--kb-color-primary-600)) !default,
+  $kb-button-outlined-primary-dark-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-outlined-primary-dark-active-box-shadow: none !default,
-  $kb-button-outlined-primary-dark-active-border-color: rgb(var(--kb-color-primary-500)) !default,
-  $kb-button-outlined-primary-dark-active-background-color: rgb(var(--kb-color-fill-3)) !default,
-  $kb-button-outlined-primary-dark-active-color: rgb(var(--kb-color-primary-400)) !default,
+  $kb-button-outlined-primary-dark-active-border-color: rgb(var(--kb-color-primary-800)) !default,
+  $kb-button-outlined-primary-dark-active-background-color: rgb(var(--kb-color-primary-800)) !default,
+  $kb-button-outlined-primary-dark-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-outlined-primary-dark-disabled-box-shadow: none !default,
-  $kb-button-outlined-primary-dark-disabled-border-color: rgb(var(--kb-color-primary-600) / 0.3) !default,
+  $kb-button-outlined-primary-dark-disabled-border-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
   $kb-button-outlined-primary-dark-disabled-background-color: transparent !default,
-  $kb-button-outlined-primary-dark-disabled-color: rgb(var(--kb-color-primary-600) / 0.4) !default,
+  $kb-button-outlined-primary-dark-disabled-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
 
   // secondary
   $kb-button-outlined-secondary-box-shadow: none !default,
@@ -351,18 +308,18 @@
 
   $kb-button-outlined-secondary-hover-box-shadow: none !default,
   $kb-button-outlined-secondary-hover-border-color: rgb(var(--kb-color-neutral-700)) !default,
-  $kb-button-outlined-secondary-hover-background-color: rgb(var(--kb-color-fill-2)) !default,
-  $kb-button-outlined-secondary-hover-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-outlined-secondary-hover-background-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-outlined-secondary-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-outlined-secondary-active-box-shadow: none !default,
-  $kb-button-outlined-secondary-active-border-color: rgb(var(--kb-color-neutral-700)) !default,
-  $kb-button-outlined-secondary-active-background-color: rgb(var(--kb-color-fill-3) / 0.8) !default,
-  $kb-button-outlined-secondary-active-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-outlined-secondary-active-border-color: rgb(var(--kb-color-neutral-500)) !default,
+  $kb-button-outlined-secondary-active-background-color: rgb(var(--kb-color-neutral-500)) !default,
+  $kb-button-outlined-secondary-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-outlined-secondary-disabled-box-shadow: none !default,
-  $kb-button-outlined-secondary-disabled-border-color: rgb(var(--kb-color-neutral-200)) !default,
+  $kb-button-outlined-secondary-disabled-border-color: rgb(var(--kb-color-neutral-300)) !default,
   $kb-button-outlined-secondary-disabled-background-color: transparent !default,
-  $kb-button-outlined-secondary-disabled-color: rgb(var(--kb-color-neutral-200)) !default,
+  $kb-button-outlined-secondary-disabled-color: rgb(var(--kb-color-neutral-300)) !default,
 
   $kb-button-outlined-secondary-dark-box-shadow: none !default,
   $kb-button-outlined-secondary-dark-border-color: rgb(var(--kb-color-neutral-500)) !default,
@@ -371,18 +328,18 @@
 
   $kb-button-outlined-secondary-dark-hover-box-shadow: none !default,
   $kb-button-outlined-secondary-dark-hover-border-color: rgb(var(--kb-color-neutral-500)) !default,
-  $kb-button-outlined-secondary-dark-hover-background-color: rgb(var(--kb-color-fill-2)) !default,
-  $kb-button-outlined-secondary-dark-hover-color: rgb(var(--kb-color-neutral-400)) !default,
+  $kb-button-outlined-secondary-dark-hover-background-color: rgb(var(--kb-color-neutral-500)) !default,
+  $kb-button-outlined-secondary-dark-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-outlined-secondary-dark-active-box-shadow: none !default,
-  $kb-button-outlined-secondary-dark-active-border-color: rgb(var(--kb-color-neutral-500)) !default,
-  $kb-button-outlined-secondary-dark-active-background-color: rgb(var(--kb-color-fill-3)) !default,
-  $kb-button-outlined-secondary-dark-active-color: rgb(var(--kb-color-neutral-400)) !default,
+  $kb-button-outlined-secondary-dark-active-border-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-outlined-secondary-dark-active-background-color: rgb(var(--kb-color-neutral-700)) !default,
+  $kb-button-outlined-secondary-dark-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-outlined-secondary-dark-disabled-box-shadow: none !default,
-  $kb-button-outlined-secondary-dark-disabled-border-color: rgb(var(--kb-color-neutral-600) / 0.3) !default,
+  $kb-button-outlined-secondary-dark-disabled-border-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
   $kb-button-outlined-secondary-dark-disabled-background-color: transparent !default,
-  $kb-button-outlined-secondary-dark-disabled-color: rgb(var(--kb-color-neutral-600) / 0.4) !default,
+  $kb-button-outlined-secondary-dark-disabled-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
 
   // danger
   $kb-button-outlined-danger-box-shadow: none !default,
@@ -392,18 +349,18 @@
 
   $kb-button-outlined-danger-hover-box-shadow: none !default,
   $kb-button-outlined-danger-hover-border-color: rgb(var(--kb-color-danger-600)) !default,
-  $kb-button-outlined-danger-hover-background-color: rgb(var(--kb-color-fill-2)) !default,
-  $kb-button-outlined-danger-hover-color: rgb(var(--kb-color-danger-600)) !default,
+  $kb-button-outlined-danger-hover-background-color: rgb(var(--kb-color-danger-600)) !default,
+  $kb-button-outlined-danger-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-outlined-danger-active-box-shadow: none !default,
-  $kb-button-outlined-danger-active-border-color: rgb(var(--kb-color-danger-600)) !default,
-  $kb-button-outlined-danger-active-background-color: rgb(var(--kb-color-fill-3) / 0.8) !default,
-  $kb-button-outlined-danger-active-color: rgb(var(--kb-color-danger-600)) !default,
+  $kb-button-outlined-danger-active-border-color: rgb(var(--kb-color-danger-800)) !default,
+  $kb-button-outlined-danger-active-background-color: rgb(var(--kb-color-danger-800)) !default,
+  $kb-button-outlined-danger-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-outlined-danger-disabled-box-shadow: none !default,
-  $kb-button-outlined-danger-disabled-border-color: rgb(var(--kb-color-danger-200)) !default,
+  $kb-button-outlined-danger-disabled-border-color: rgb(var(--kb-color-neutral-300)) !default,
   $kb-button-outlined-danger-disabled-background-color: transparent !default,
-  $kb-button-outlined-danger-disabled-color: rgb(var(--kb-color-danger-200)) !default,
+  $kb-button-outlined-danger-disabled-color: rgb(var(--kb-color-neutral-300)) !default,
 
   $kb-button-outlined-danger-dark-box-shadow: none !default,
   $kb-button-outlined-danger-dark-border-color: rgb(var(--kb-color-danger-500)) !default,
@@ -411,19 +368,19 @@
   $kb-button-outlined-danger-dark-color: rgb(var(--kb-color-danger-400)) !default,
 
   $kb-button-outlined-danger-dark-hover-box-shadow: none !default,
-  $kb-button-outlined-danger-dark-hover-border-color: rgb(var(--kb-color-danger-500)) !default,
-  $kb-button-outlined-danger-dark-hover-background-color: rgb(var(--kb-color-fill-2)) !default,
-  $kb-button-outlined-danger-dark-hover-color: rgb(var(--kb-color-danger-400)) !default,
+  $kb-button-outlined-danger-dark-hover-border-color: rgb(var(--kb-color-danger-600)) !default,
+  $kb-button-outlined-danger-dark-hover-background-color: rgb(var(--kb-color-danger-600)) !default,
+  $kb-button-outlined-danger-dark-hover-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-outlined-danger-dark-active-box-shadow: none !default,
-  $kb-button-outlined-danger-dark-active-border-color: rgb(var(--kb-color-danger-500)) !default,
-  $kb-button-outlined-danger-dark-active-background-color: rgb(var(--kb-color-fill-3)) !default,
-  $kb-button-outlined-danger-dark-active-color: rgb(var(--kb-color-danger-400)) !default,
+  $kb-button-outlined-danger-dark-active-border-color: rgb(var(--kb-color-danger-800)) !default,
+  $kb-button-outlined-danger-dark-active-background-color: rgb(var(--kb-color-danger-800)) !default,
+  $kb-button-outlined-danger-dark-active-color: rgb(var(--kb-color-white)) !default,
 
   $kb-button-outlined-danger-dark-disabled-box-shadow: none !default,
-  $kb-button-outlined-danger-dark-disabled-border-color: rgb(var(--kb-color-danger-600) / 0.3) !default,
+  $kb-button-outlined-danger-dark-disabled-border-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
   $kb-button-outlined-danger-dark-disabled-background-color: transparent !default,
-  $kb-button-outlined-danger-dark-disabled-color: rgb(var(--kb-color-danger-600) / 0.4) !default,
+  $kb-button-outlined-danger-dark-disabled-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
 
   // -------------------------------------------------------------------------------------------------
   // variant - plain
@@ -447,7 +404,7 @@
   $kb-button-plain-primary-disabled-box-shadow: none !default,
   $kb-button-plain-primary-disabled-border-color: transparent !default,
   $kb-button-plain-primary-disabled-background-color: transparent !default,
-  $kb-button-plain-primary-disabled-color: rgb(var(--kb-color-primary-200)) !default,
+  $kb-button-plain-primary-disabled-color: rgb(var(--kb-color-neutral-300)) !default,
 
   $kb-button-plain-primary-dark-box-shadow: none !default,
   $kb-button-plain-primary-dark-border-color: transparent !default,
@@ -467,7 +424,7 @@
   $kb-button-plain-primary-dark-disabled-box-shadow: none !default,
   $kb-button-plain-primary-dark-disabled-border-color: transparent !default,
   $kb-button-plain-primary-dark-disabled-background-color: transparent !default,
-  $kb-button-plain-primary-dark-disabled-color: rgb(var(--kb-color-primary-600) / 0.4) !default,
+  $kb-button-plain-primary-dark-disabled-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
 
   // secondary
   $kb-button-plain-secondary-box-shadow: none !default,
@@ -488,7 +445,7 @@
   $kb-button-plain-secondary-disabled-box-shadow: none !default,
   $kb-button-plain-secondary-disabled-border-color: transparent !default,
   $kb-button-plain-secondary-disabled-background-color: transparent !default,
-  $kb-button-plain-secondary-disabled-color: rgb(var(--kb-color-neutral-200)) !default,
+  $kb-button-plain-secondary-disabled-color: rgb(var(--kb-color-neutral-300)) !default,
 
   $kb-button-plain-secondary-dark-box-shadow: none !default,
   $kb-button-plain-secondary-dark-border-color: transparent !default,
@@ -508,7 +465,7 @@
   $kb-button-plain-secondary-dark-disabled-box-shadow: none !default,
   $kb-button-plain-secondary-dark-disabled-border-color: transparent !default,
   $kb-button-plain-secondary-dark-disabled-background-color: transparent !default,
-  $kb-button-plain-secondary-dark-disabled-color: rgb(var(--kb-color-neutral-600) / 0.4) !default,
+  $kb-button-plain-secondary-dark-disabled-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
 
   // danger
   $kb-button-plain-danger-box-shadow: none !default,
@@ -529,7 +486,7 @@
   $kb-button-plain-danger-disabled-box-shadow: none !default,
   $kb-button-plain-danger-disabled-border-color: transparent !default,
   $kb-button-plain-danger-disabled-background-color: transparent !default,
-  $kb-button-plain-danger-disabled-color: rgb(var(--kb-color-danger-200)) !default,
+  $kb-button-plain-danger-disabled-color: rgb(var(--kb-color-neutral-300)) !default,
 
   $kb-button-plain-danger-dark-box-shadow: none !default,
   $kb-button-plain-danger-dark-border-color: transparent !default,
@@ -549,7 +506,7 @@
   $kb-button-plain-danger-dark-disabled-box-shadow: none !default,
   $kb-button-plain-danger-dark-disabled-border-color: transparent !default,
   $kb-button-plain-danger-dark-disabled-background-color: transparent !default,
-  $kb-button-plain-danger-dark-disabled-color: rgb(var(--kb-color-danger-600) / 0.4) !default,
+  $kb-button-plain-danger-dark-disabled-color: rgb(var(--kb-color-neutral-400) / 0.2) !default,
 
   // -------------------------------------------------------------------------------------------------
   // size
@@ -607,13 +564,13 @@
 .kb-button--has-right-icon.kb-button--xs,
 .kb-button--has-right-icon.kb-button--sm {
   .kb-button__right-icon {
-    margin-left: 34px;
+    margin-left: 26px;
   }
 }
 
 .kb-button--has-right-icon.kb-button--md,
 .kb-button--has-right-icon.kb-button--lg {
   .kb-button__right-icon {
-    margin-left: 32px;
+    margin-left: 24px;
   }
 }

@@ -53,66 +53,6 @@
 }
 
 // -------------------------------------------------------------------------------------------------
-// variant - default
-// -------------------------------------------------------------------------------------------------
-
-.kb-button--default {
-  box-shadow: $kb-button-default-box-shadow;
-  border-color: $kb-button-default-border-color;
-  background-color: $kb-button-default-background-color;
-  color: $kb-button-default-color;
-
-  &:hover {
-    box-shadow: $kb-button-default-hover-box-shadow;
-    border-color: $kb-button-default-hover-border-color;
-    background-color: $kb-button-default-hover-background-color;
-    color: $kb-button-default-hover-color;
-  }
-
-  &:active {
-    box-shadow: $kb-button-default-active-box-shadow;
-    border-color: $kb-button-default-active-border-color;
-    background-color: $kb-button-default-active-background-color;
-    color: $kb-button-default-active-color;
-  }
-
-  &:disabled {
-    box-shadow: $kb-button-default-disabled-box-shadow;
-    border-color: $kb-button-default-disabled-border-color;
-    background-color: $kb-button-default-disabled-background-color;
-    color: $kb-button-default-disabled-color;
-  }
-
-  #{dark-selector()} {
-    box-shadow: $kb-button-default-box-shadow;
-    border-color: $kb-button-default-dark-border-color;
-    background-color: $kb-button-default-dark-background-color;
-    color: $kb-button-default-dark-color;
-  }
-
-  #{dark-selector("&:hover")} {
-    box-shadow: $kb-button-default-dark-hover-box-shadow;
-    border-color: $kb-button-default-dark-hover-border-color;
-    background-color: $kb-button-default-dark-hover-background-color;
-    color: $kb-button-default-dark-hover-color;
-  }
-
-  #{dark-selector("&:active")} {
-    box-shadow: $kb-button-default-dark-active-box-shadow;
-    border-color: $kb-button-default-dark-active-border-color;
-    background-color: $kb-button-default-dark-active-background-color;
-    color: $kb-button-default-dark-active-color;
-  }
-
-  #{dark-selector("&:disabled")} {
-    box-shadow: $kb-button-default-dark-disabled-box-shadow;
-    border-color: $kb-button-default-dark-disabled-border-color;
-    background-color: $kb-button-default-dark-disabled-background-color;
-    color: $kb-button-default-dark-disabled-color;
-  }
-}
-
-// -------------------------------------------------------------------------------------------------
 // variant - solid
 // -------------------------------------------------------------------------------------------------
 
