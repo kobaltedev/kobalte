@@ -1,0 +1,19 @@
+@use "../base/preflight";
+
+:root {
+}
+
+[data-kb-theme="dark"] {
+}
+
+html {
+  font-family: "IBM Plex Sans", "Helvetica Neue", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+}
+
+body {
+  background-color: rgb(var(--kb-color-bg-1));
+  color: rgb(var(--kb-color-text-1));
+  font-size: 14px;
+}

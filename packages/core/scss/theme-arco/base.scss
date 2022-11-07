@@ -1,8 +1,4 @@
-@use "themes/default/base" as *;
-
-// -------------------------------------------------------------------------------------------------
-// CSS Variables
-// -------------------------------------------------------------------------------------------------
+@use "../base/preflight";
 
 :root {
   --kb-color-white: 255 255 255;
@@ -125,99 +121,13 @@
   --kb-color-bg-5: 55 55 57;
 }
 
-// -------------------------------------------------------------------------------------------------
-// Preflight
-// -------------------------------------------------------------------------------------------------
-
-// Use a more-intuitive box-sizing model.
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-// Remove default margin.
-* {
-  margin: 0;
-}
-
-// Use accessible typography.
 html {
-  font-family: $kb-font-family;
-  line-height: 1.5;
-  font-size: 16px; // set 1rem unit
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-// Use theme colors and improve text rendering.
 body {
   background-color: rgb(var(--kb-color-bg-1));
   color: rgb(var(--kb-color-text-1));
-  font-size: $kb-body-font-size;
-  font-family: inherit;
-  line-height: inherit;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-// Improve media defaults.
-img,
-picture,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
-}
-
-// Remove built-in form typography styles.
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
-
-// Remove built-in headings typography styles.
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font: inherit;
-}
-
-// Avoid text overflows.
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  overflow-wrap: break-word;
-}
-
-// Add default styles for svg-based icon.
-.kb-icon {
-  display: inline-block;
-  flex-shrink: 0;
-  height: 1em;
-  width: 1em;
-  color: currentColor;
-  line-height: 1em;
-  vertical-align: middle;
-}
-
-// -------------------------------------------------------------------------------------------------
-// Animations
-// -------------------------------------------------------------------------------------------------
-
-@keyframes kb-animation-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  font-size: 14px;
 }

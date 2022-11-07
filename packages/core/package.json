@@ -41,7 +41,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c ../../configs/rollup.config.ts && pnpm build:styles",
+    "build:styles": "sass scss:dist/styles --no-source-map && postcss -r dist/styles/**/*.css",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "vite serve dev --host",
     "test": "jest --passWithNoTests",
@@ -55,7 +56,10 @@
   },
   "devDependencies": {
     "@kobalte/tests": "^0.0.0",
-    "rollup-plugin-copy": "3.4.0",
+    "autoprefixer": "10.4.13",
+    "cssnano": "5.1.13",
+    "postcss": "8.4.18",
+    "postcss-cli": "10.0.0",
     "sass": "1.56.0"
   },
   "peerDependencies": {
