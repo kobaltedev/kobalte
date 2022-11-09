@@ -12,7 +12,7 @@
   </a>
 </p>
 
-A design agnostic component library for building SolidJS applications.
+🔹 An open source design system for building SolidJS applications.
 
 ## Documentation
 
