@@ -1,44 +1,9 @@
 import { clsx } from "clsx";
-import { ComponentProps, createContext, splitProps, useContext } from "solid-js";
+import { splitProps } from "solid-js";
 
-import { bem, cva } from "../utils";
-import { ButtonProps } from "./types";
-
-interface ButtonGroupVariants {
-  /** The orientation of the group. */
-  orientation?: "horizontal" | "vertical";
-}
-
-type ButtonGroupContextValue = Pick<ButtonProps, "color" | "variant" | "size" | "isDisabled">;
-
-export type ButtonGroupProps = ComponentProps<"div"> &
-  ButtonGroupVariants &
-  ButtonGroupContextValue;
-
-const ButtonGroupContext = createContext<ButtonGroupContextValue>();
-
-export function useButtonGroupContext() {
-  return useContext(ButtonGroupContext);
-}
-
-const bemButtonGroup = bem("kb-button-group");
-
-const buttonGroupStyles = cva<"root", ButtonGroupVariants>(
-  {
-    root: {
-      base: bemButtonGroup.block(),
-      variants: {
-        orientation: {
-          horizontal: bemButtonGroup.withModifier("horizontal"),
-          vertical: bemButtonGroup.withModifier("vertical"),
-        },
-      },
-    },
-  },
-  {
-    orientation: "horizontal",
-  }
-);
+import { buttonGroupStyles } from "./button-group.styles";
+import { ButtonGroupContext } from "./button-group-context";
+import { ButtonGroupProps } from "./types";
 
 export const ButtonGroup = (props: ButtonGroupProps) => {
   const [local, variantProps, contextValue, others] = splitProps(

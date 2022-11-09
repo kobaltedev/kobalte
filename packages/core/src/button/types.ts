@@ -1,4 +1,4 @@
-import { Accessor, JSX } from "solid-js";
+import { Accessor, ComponentProps, JSX } from "solid-js";
 
 export type ButtonParts =
   | "root"
@@ -87,3 +87,17 @@ export interface IconButtonProps
   /** The icon to be used in the button. */
   children?: JSX.Element;
 }
+
+export interface ButtonGroupVariants {
+  /** The orientation of the group. */
+  orientation?: "horizontal" | "vertical";
+}
+
+export type ButtonGroupContextValue = Pick<
+  ButtonProps,
+  "color" | "variant" | "size" | "isDisabled"
+>;
+
+export type ButtonGroupProps = ComponentProps<"div"> &
+  ButtonGroupVariants &
+  ButtonGroupContextValue;

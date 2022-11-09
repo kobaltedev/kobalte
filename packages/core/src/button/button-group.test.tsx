@@ -8,7 +8,8 @@ import {
 import { render, screen } from "solid-testing-library";
 
 import { Button } from "./button";
-import { ButtonGroup, ButtonGroupProps } from "./button-group";
+import { ButtonGroup } from "./button-group";
+import { ButtonGroupProps } from "./types";
 
 const defaultProps: ButtonGroupProps = {};
 

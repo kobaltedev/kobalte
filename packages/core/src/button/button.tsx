@@ -9,24 +9,29 @@
 import { createTagName } from "@kobalte/primitives";
 import { mergeRefs } from "@kobalte/utils";
 import { clsx } from "clsx";
-import { createMemo, createSignal, onMount, Show, splitProps } from "solid-js";
+import { children, createMemo, createSignal, onMount, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { mergeComponentConfigProps } from "../component-config";
 import { createPolymorphicComponent, mergeDefaultProps } from "../utils";
 import { buttonStyles } from "./button.styles";
 import { ButtonContext, useButtonContext } from "./button-context";
-import { useButtonGroupContext } from "./button-group";
+import { ButtonGroup } from "./button-group";
+import { useButtonGroupContext } from "./button-group-context";
 import { ButtonIcon } from "./button-icon";
 import { ButtonLoader } from "./button-loader";
 import { isButton } from "./is-button";
 import { ButtonContentProps, ButtonProps } from "./types";
 
+type ButtonComposite = {
+  Group: typeof ButtonGroup;
+};
+
 /**
  * Button is used to trigger an action or event,
  * such as submitting a form, opening a dialog, canceling an action, or performing a delete operation.
  */
-export const Button = createPolymorphicComponent<"button", ButtonProps>(props => {
+export const Button = createPolymorphicComponent<"button", ButtonProps, ButtonComposite>(props => {
   let ref: HTMLButtonElement | undefined;
 
   const buttonGroupContext = useButtonGroupContext();
@@ -92,6 +97,9 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
     return isNativeButton() ? "button" : undefined;
   });
 
+  const resolvedLeftIcon = children(() => contentProps.leftIcon);
+  const resolvedRightIcon = children(() => contentProps.rightIcon);
+
   const classNames = buttonStyles({
     get color() {
       return variantProps.color;
@@ -109,10 +117,10 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       return variantProps.isIconOnly;
     },
     get hasLeftIcon() {
-      return contentProps.leftIcon != null; //TODO: use solid children helper
+      return resolvedLeftIcon() != null;
     },
     get hasRightIcon() {
-      return contentProps.rightIcon != null; //TODO: use solid children helper
+      return resolvedRightIcon() != null;
     },
     get hasLoadingText() {
       return !!local.loadingText;
@@ -159,7 +167,9 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
   );
 });
 
-function ButtonContent(props: ButtonContentProps) {
+Button.Group = ButtonGroup;
+
+const ButtonContent = (props: ButtonContentProps) => {
   const buttonContext = useButtonContext();
 
   return (
@@ -173,4 +183,4 @@ function ButtonContent(props: ButtonContentProps) {
       </Show>
     </>
   );
-}
+};
