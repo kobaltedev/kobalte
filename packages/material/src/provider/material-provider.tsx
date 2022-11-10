@@ -2,12 +2,12 @@ import { ColorModeProvider, ColorModeProviderProps } from "../color-mode";
 import { ComponentConfig, ComponentConfigContext } from "../component-config";
 import { watchModals } from "../modal";
 
-interface KobalteProviderProps extends ColorModeProviderProps {
+interface MaterialProviderProps extends ColorModeProviderProps {
   /** Default props for global configuration of all components. */
   componentConfig?: ComponentConfig;
 }
 
-export function KobalteProvider(props: KobalteProviderProps) {
+export function MaterialProvider(props: MaterialProviderProps) {
   watchModals();
 
   return (

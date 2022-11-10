@@ -12,7 +12,7 @@
   </a>
 </p>
 
-🔹 An open source design system for building SolidJS applications.
+UI toolkit for building SolidJS applications.
 
 ## Documentation
 

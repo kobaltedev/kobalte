@@ -1,8 +1,8 @@
 {
-  "name": "@kobalte/core",
+  "name": "@kobalte/material",
   "version": "0.0.0",
   "private": false,
-  "description": "Kobalte core component library.",
+  "description": "A Material Design 3 inspired component library for SolidJS.",
   "keywords": [
     "solid",
     "solidjs",
@@ -11,7 +11,7 @@
     "design-system",
     "components"
   ],
-  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/core#readme",
+  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/material#readme",
   "bugs": {
     "url": "https://github.com/fabien-ml/kobalte/issues"
   },

@@ -2,16 +2,16 @@ import "./index.scss";
 
 import { render } from "solid-js/web";
 
-import { ColorModeScript, KobalteProvider } from "../src";
+import { ColorModeScript, MaterialProvider } from "../src";
 import App from "./App";
 
 render(
   () => (
     <>
       <ColorModeScript />
-      <KobalteProvider>
+      <MaterialProvider>
         <App />
-      </KobalteProvider>
+      </MaterialProvider>
     </>
   ),
   document.getElementById("root") as HTMLDivElement
