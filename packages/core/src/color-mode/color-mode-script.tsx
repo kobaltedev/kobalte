@@ -6,9 +6,8 @@
  * https://github.com/chakra-ui/chakra-ui/blob/132a98958be64e46619b1e280ca6405d0a833cb0/packages/components/color-mode/src/color-mode-script.tsx
  */
 
-import { createMemo } from "solid-js";
+import { createMemo, mergeProps } from "solid-js";
 
-import { mergeDefaultProps } from "../utils";
 import { COLOR_MODE_STORAGE_KEY } from "./storage-manager";
 import { ColorModeScriptProps, ConfigColorMode } from "./types";
 
@@ -26,12 +25,12 @@ function normalize(initialColorMode: ConfigColorMode) {
 }
 
 export function ColorModeScript(props: ColorModeScriptProps) {
-  props = mergeDefaultProps(
+  props = mergeProps(
     {
       initialColorMode: "system",
       storageType: "localStorage",
       storageKey: COLOR_MODE_STORAGE_KEY,
-    },
+    } as ColorModeScriptProps,
     props
   );
 
@@ -39,10 +38,10 @@ export function ColorModeScript(props: ColorModeScriptProps) {
     // runtime safe-guard against invalid color mode values
     const init = normalize(props.initialColorMode!);
 
-    const cookieScript = `(function(){try{var a=function(o){var l="(prefers-color-scheme: dark)",v=window.matchMedia(l).matches?"dark":"light",e=o==="system"?v:o,d=document.documentElement,s=e==="dark";return d.style.colorScheme=e,d.dataset.kbTheme=e,o},u=a,h="${init}",r="${props.storageKey}",t=document.cookie.match(new RegExp("(^| )".concat(r,"=([^;]+)"))),c=t?t[2]:null;c?a(c):document.cookie="".concat(r,"=").concat(a(h),"; max-age=31536000; path=/")}catch(a){}})();
+    const cookieScript = `(function(){try{var a=function(o){var l="(prefers-color-scheme: dark)",v=window.matchMedia(l).matches?"dark":"light",e=o==="system"?v:o,d=document.documentElement,s=e==="dark";return d.style.colorScheme=e,d.dataset.kobalteTheme=e,o},u=a,h="${init}",r="${props.storageKey}",t=document.cookie.match(new RegExp("(^| )".concat(r,"=([^;]+)"))),c=t?t[2]:null;c?a(c):document.cookie="".concat(r,"=").concat(a(h),"; max-age=31536000; path=/")}catch(a){}})();
   `;
 
-    const localStorageScript = `(function(){try{var a=function(c){var v="(prefers-color-scheme: dark)",h=window.matchMedia(v).matches?"dark":"light",r=c==="system"?h:c,o=document.documentElement,i=r==="dark";return o.style.colorScheme=r,o.dataset.kbTheme=r,c},n=a,m="${init}",e="${props.storageKey}",t=localStorage.getItem(e);t?a(t):localStorage.setItem(e,a(m))}catch(a){}})();
+    const localStorageScript = `(function(){try{var a=function(c){var v="(prefers-color-scheme: dark)",h=window.matchMedia(v).matches?"dark":"light",r=c==="system"?h:c,o=document.documentElement,i=r==="dark";return o.style.colorScheme=r,o.dataset.kobalteTheme=r,c},n=a,m="${init}",e="${props.storageKey}",t=localStorage.getItem(e);t?a(t):localStorage.setItem(e,a(m))}catch(a){}})();
   `;
 
     const fn = props.storageType === "cookie" ? cookieScript : localStorageScript;

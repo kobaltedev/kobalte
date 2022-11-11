@@ -1,5 +1,6 @@
-import { ClassProp, ElementType, OverrideProps } from "@kobalte/utils";
 import { Component, ComponentProps, JSX, ParentProps } from "solid-js";
+
+import { ClassProp, ElementType, OverrideProps } from "./types";
 
 /** The `as` prop type. */
 export type As<Props = any> = ElementType<Props>;

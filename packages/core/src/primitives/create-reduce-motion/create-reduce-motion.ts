@@ -1,4 +1,4 @@
-import { createMediaQuery } from "@solid-primitives/media";
+import { createMediaQuery } from "@kobalte/utils";
 
 /**
  * Detects if user prefers to reduce motion.

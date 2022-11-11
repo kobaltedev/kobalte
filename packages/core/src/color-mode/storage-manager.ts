@@ -10,7 +10,7 @@ import { isServer } from "solid-js/web";
 
 import { ColorModeStorageManager, MaybeConfigColorMode } from "./types";
 
-export const COLOR_MODE_STORAGE_KEY = "kb-color-mode";
+export const COLOR_MODE_STORAGE_KEY = "kobalte-color-mode";
 
 export function createLocalStorageManager(key: string): ColorModeStorageManager {
   return {

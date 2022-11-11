@@ -47,6 +47,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@solid-primitives/media": "^2.0.4",
     "@solid-primitives/refs": "^0.3.4",
     "@solid-primitives/utils": "^4.0.0"
   },

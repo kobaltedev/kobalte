@@ -2,7 +2,7 @@
   "name": "@kobalte/core",
   "version": "0.0.0",
   "private": false,
-  "description": "Unstyled SolidJS components for building accessible web apps and design systems.",
+  "description": "Unstyled components for building accessible web apps and design systems with SolidJS.",
   "keywords": [
     "solid",
     "solidjs",
@@ -49,7 +49,6 @@
   },
   "dependencies": {
     "@floating-ui/dom": "^1.0.3",
-    "@kobalte/primitives": "^0.0.0",
     "@kobalte/utils": "^0.0.0"
   },
   "devDependencies": {

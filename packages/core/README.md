@@ -1,6 +1,6 @@
 # @kobalte/core
 
-Unstyled SolidJS components for building accessible web apps and design systems.
+Unstyled components for building accessible web apps and design systems with SolidJS.
 
 ## Installation
 
