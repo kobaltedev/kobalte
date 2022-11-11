@@ -1,8 +1,8 @@
 {
-  "name": "@kobalte/material",
+  "name": "@kobalte/core",
   "version": "0.0.0",
   "private": false,
-  "description": "A Material Design 3 inspired component library for SolidJS.",
+  "description": "Unstyled SolidJS components for building accessible web apps and design systems.",
   "keywords": [
     "solid",
     "solidjs",
@@ -11,7 +11,7 @@
     "design-system",
     "components"
   ],
-  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/material#readme",
+  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/core#readme",
   "bugs": {
     "url": "https://github.com/fabien-ml/kobalte/issues"
   },
@@ -41,8 +41,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c ../../configs/rollup.config.ts && pnpm build:styles",
-    "build:styles": "sass scss:dist/styles --no-source-map && postcss -r dist/styles/**/*.css",
+    "build": "rollup -c ../../configs/rollup.config.ts",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "vite serve dev --host",
     "test": "jest --passWithNoTests",
@@ -51,16 +50,10 @@
   "dependencies": {
     "@floating-ui/dom": "^1.0.3",
     "@kobalte/primitives": "^0.0.0",
-    "@kobalte/utils": "^0.0.0",
-    "clsx": "^1.2.1"
+    "@kobalte/utils": "^0.0.0"
   },
   "devDependencies": {
-    "@kobalte/tests": "^0.0.0",
-    "autoprefixer": "10.4.13",
-    "cssnano": "5.1.13",
-    "postcss": "8.4.18",
-    "postcss-cli": "10.0.0",
-    "sass": "1.56.0"
+    "@kobalte/tests": "^0.0.0"
   },
   "peerDependencies": {
     "solid-js": "^1.6.1"
