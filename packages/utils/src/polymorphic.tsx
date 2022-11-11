@@ -1,6 +1,16 @@
 import { Component, ComponentProps, JSX, ParentProps } from "solid-js";
 
-import { ClassProp, ElementType, OverrideProps } from "./types";
+/** All HTML and SVG elements. */
+export type DOMElements = keyof JSX.IntrinsicElements;
+
+/** Any HTML element or SolidJS component. */
+export type ElementType<Props = any> = DOMElements | Component<Props>;
+
+/**
+ * Allows for extending a set of props (`Source`) by an overriding set of props (`Override`),
+ * ensuring that any duplicates are overridden by the overriding set of props.
+ */
+export type OverrideProps<Source = {}, Override = {}> = Omit<Source, keyof Override> & Override;
 
 /** The `as` prop type. */
 export type As<Props = any> = ElementType<Props>;
@@ -8,7 +18,7 @@ export type As<Props = any> = ElementType<Props>;
 /** Props object that includes the `as` prop. */
 export type PolymorphicProps<Type extends As = As, Props = {}> = OverrideProps<
   ComponentProps<Type>,
-  ParentProps<Props & ClassProp & { as?: Type }>
+  ParentProps<Props & { as?: Type }>
 >;
 
 /** A component with the `as` prop. */

@@ -6,8 +6,6 @@
  * https://github.com/chakra-ui/chakra-ui/blob/main/packages/utils/src/assertion.ts
  */
 
-import { Dict } from "./types";
-
 // Array assertions
 export function isArray<T>(value: any): value is Array<T> {
   return Array.isArray(value);
