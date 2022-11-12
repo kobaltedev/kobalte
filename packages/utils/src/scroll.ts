@@ -12,15 +12,15 @@
  * https://github.com/chakra-ui/chakra-ui/blob/59391bb95b05a13feeb9fe84b0cdb027519460ce/packages/utilities/dom-utils/src/dom.ts
  */
 
-function isScrollable(node: Element): boolean {
-  const style = window.getComputedStyle(node);
-  return /(auto|scroll)/.test(style.overflow + style.overflowX + style.overflowY);
-}
-
 export function getScrollParent(node: Element | null): Element {
   while (node && !isScrollable(node)) {
     node = node.parentElement;
   }
 
   return node || document.scrollingElement || document.documentElement;
+}
+
+function isScrollable(node: Element): boolean {
+  const style = window.getComputedStyle(node);
+  return /(auto|scroll)/.test(style.overflow + style.overflowX + style.overflowY);
 }

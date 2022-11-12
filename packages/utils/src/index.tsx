@@ -1,4 +1,6 @@
 export * from "./assertion";
+export * from "./enums";
+export * from "./events";
 export * from "./external";
 export * from "./function";
 export * from "./platform";

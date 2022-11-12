@@ -15,3 +15,8 @@ export function isArray<T>(value: any): value is Array<T> {
 export function isString(value: any): value is string {
   return Object.prototype.toString.call(value) === "[object String]";
 }
+
+// Function assertions
+export function isFunction<T extends Function = Function>(value: any): value is T {
+  return typeof value === "function";
+}

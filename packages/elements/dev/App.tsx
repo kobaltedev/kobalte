@@ -1,4 +1,4 @@
-import { Button, useColorMode } from "../src";
+import { useColorMode } from "../src";
 
 export default function App() {
   const { toggleColorMode } = useColorMode();
