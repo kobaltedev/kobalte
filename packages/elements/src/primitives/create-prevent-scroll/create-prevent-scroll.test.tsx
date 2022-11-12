@@ -20,7 +20,7 @@ describe("createPreventScroll", function () {
   it("should set overflow: hidden on the body on mount and remove on unmount", () => {
     expect(document.documentElement).not.toHaveStyle("overflow: hidden");
 
-    const res = render(() => <Example isEnabled />);
+    const res = render(() => <Example />);
     expect(document.documentElement).toHaveStyle("overflow: hidden");
 
     res.unmount();
@@ -30,10 +30,10 @@ describe("createPreventScroll", function () {
   it("should work with nested modals", () => {
     expect(document.documentElement).not.toHaveStyle("overflow: hidden");
 
-    const one = render(() => <Example isEnabled />);
+    const one = render(() => <Example />);
     expect(document.documentElement).toHaveStyle("overflow: hidden");
 
-    const two = render(() => <Example isEnabled />);
+    const two = render(() => <Example />);
     expect(document.documentElement).toHaveStyle("overflow: hidden");
 
     two.unmount();
@@ -43,15 +43,15 @@ describe("createPreventScroll", function () {
     expect(document.documentElement).not.toHaveStyle("overflow: hidden");
   });
 
-  it("should remove overflow: hidden when isDisabled option is true", async () => {
+  it("should remove overflow: hidden when 'disabled' option is true", async () => {
     expect(document.documentElement).not.toHaveStyle("overflow: hidden");
 
     render(() => {
-      const [isEnabled, setEnabled] = createSignal(true);
+      const [disabled, setDisabled] = createSignal(false);
       return (
         <>
-          <button onClick={() => setEnabled(false)}>Disable scroll lock</button>
-          <Example isEnabled={isEnabled} />
+          <button onClick={() => setDisabled(true)}>Disable scroll lock</button>
+          <Example disabled={disabled} />
         </>
       );
     });

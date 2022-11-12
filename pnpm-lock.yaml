@@ -90,7 +90,7 @@ importers:
       vite: 3.2.2
       vite-plugin-solid: 2.4.0_solid-js@1.6.1+vite@3.2.2
 
-  packages/core:
+  packages/elements:
     specifiers:
       '@floating-ui/dom': ^1.0.3
       '@kobalte/tests': ^0.0.0

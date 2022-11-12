@@ -10,8 +10,8 @@ import { access, chain, getScrollParent, isIOS, MaybeAccessor } from "@kobalte/u
 import { createEffect, on, onCleanup } from "solid-js";
 
 export interface PreventScrollOptions {
-  /** Whether the scroll lock is enabled. */
-  isEnabled: MaybeAccessor<boolean>;
+  /** Whether the scroll lock is disabled. */
+  disabled?: MaybeAccessor<boolean | undefined>;
 }
 
 const visualViewport = typeof window !== "undefined" && window.visualViewport;
@@ -37,9 +37,9 @@ const nonTextInputTypes = new Set([
 export function createPreventScroll(options: PreventScrollOptions) {
   createEffect(
     on(
-      () => access(options.isEnabled),
-      isEnabled => {
-        if (!isEnabled) {
+      () => access(options.disabled),
+      disabled => {
+        if (disabled) {
           return;
         }
 

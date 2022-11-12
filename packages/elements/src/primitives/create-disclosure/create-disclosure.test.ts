@@ -3,13 +3,13 @@ import { createRoot } from "solid-js";
 import { createDisclosure } from "./create-disclosure";
 
 describe("createDisclosure", () => {
-  it("can be default 'isOpen' (uncontrolled)", () => {
+  it("can be default 'open' (uncontrolled)", () => {
     createRoot(dispose => {
       const state = createDisclosure({
-        defaultIsOpen: true,
+        defaultOpen: true,
       });
 
-      expect(state.isOpen()).toBeTruthy();
+      expect(state.open()).toBeTruthy();
 
       dispose();
     });
@@ -20,15 +20,15 @@ describe("createDisclosure", () => {
       const onChangeSpy = jest.fn();
 
       const state = createDisclosure({
-        isOpen: true,
+        open: true,
         onOpenChange: onChangeSpy,
       });
 
-      expect(state.isOpen()).toBeTruthy();
+      expect(state.open()).toBeTruthy();
 
-      state.toggle();
+      state.onToggle();
 
-      expect(state.isOpen()).toBeTruthy();
+      expect(state.open()).toBeTruthy();
       expect(onChangeSpy).toHaveBeenCalledTimes(1);
       expect(onChangeSpy).toHaveBeenCalledWith(false);
 
@@ -36,47 +36,47 @@ describe("createDisclosure", () => {
     });
   });
 
-  it("should set 'isOpen' state to true when calling 'open'", () => {
+  it("should set 'open' state to true when calling 'onOpen'", () => {
     createRoot(dispose => {
-      const state = createDisclosure({ defaultIsOpen: false });
+      const state = createDisclosure({ defaultOpen: false });
 
-      expect(state.isOpen()).toBeFalsy();
+      expect(state.open()).toBeFalsy();
 
-      state.open();
+      state.onOpen();
 
-      expect(state.isOpen()).toBeTruthy();
+      expect(state.open()).toBeTruthy();
 
       dispose();
     });
   });
 
-  it("should set 'isOpen' state to false when calling 'close'", () => {
+  it("should set 'open' state to false when calling 'onClose'", () => {
     createRoot(dispose => {
-      const state = createDisclosure({ defaultIsOpen: true });
+      const state = createDisclosure({ defaultOpen: true });
 
-      expect(state.isOpen()).toBeTruthy();
+      expect(state.open()).toBeTruthy();
 
-      state.close();
+      state.onClose();
 
-      expect(state.isOpen()).toBeFalsy();
+      expect(state.open()).toBeFalsy();
 
       dispose();
     });
   });
 
-  it("should toggle 'isOpen' state", () => {
+  it("should toggle 'open' state when calling 'onToggle'", () => {
     createRoot(dispose => {
-      const state = createDisclosure({ defaultIsOpen: false });
+      const state = createDisclosure({ defaultOpen: false });
 
-      expect(state.isOpen()).toBeFalsy();
+      expect(state.open()).toBeFalsy();
 
-      state.toggle();
+      state.onToggle();
 
-      expect(state.isOpen()).toBeTruthy();
+      expect(state.open()).toBeTruthy();
 
-      state.toggle();
+      state.onToggle();
 
-      expect(state.isOpen()).toBeFalsy();
+      expect(state.open()).toBeFalsy();
 
       dispose();
     });
