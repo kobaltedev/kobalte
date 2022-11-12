@@ -27,7 +27,10 @@ export type PolymorphicComponent<DefaultType extends As, Props = {}> = {
   (props: PolymorphicProps<DefaultType, Props>): JSX.Element;
 };
 
-/** Create a polymorphic component with the `as` prop support. */
+/**
+ * Create a component with the type cast to `PolymorphicComponent`.
+ * You have to use `Dynamic` internally and pass the `as` prop to handle polymorphism correctly.
+ */
 export function createPolymorphicComponent<DefaultType extends As, Props = {}, Composite = {}>(
   component: Component<PolymorphicProps<DefaultType, Props>>
 ) {
