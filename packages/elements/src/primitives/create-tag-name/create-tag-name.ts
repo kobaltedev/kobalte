@@ -6,7 +6,7 @@
  * https://github.com/ariakit/ariakit/blob/main/packages/ariakit-utils/src/hooks.ts
  */
 
-import { stringOrUndefined } from "@kobalte/utils";
+import { isString } from "@kobalte/utils";
 import { Accessor, Component, createEffect, createSignal } from "solid-js";
 
 /**
@@ -29,4 +29,8 @@ export function createTagName(
   });
 
   return tagName;
+}
+
+function stringOrUndefined(value: any) {
+  return isString(value) ? value : undefined;
 }
