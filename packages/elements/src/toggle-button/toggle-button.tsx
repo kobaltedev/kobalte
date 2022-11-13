@@ -15,7 +15,6 @@ import { createControllableBooleanSignal } from "../primitives";
 export interface ToggleButtonProps extends ComponentProps<"button"> {
   /**
    * The controlled pressed state of the toggle button.
-   * Must be used in conjunction with `onPressedChange`.
    */
   pressed?: boolean;
 
