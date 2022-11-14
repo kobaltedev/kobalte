@@ -6,6 +6,18 @@
  * https://github.com/adobe/react-spectrum/blob/cf9ab24f3255be1530d0f584061a01aa1e8180e6/packages/@react-aria/utils/src/platform.ts
  */
 
+function testUserAgent(re: RegExp) {
+  if (typeof window === "undefined" || window.navigator == null) {
+    return false;
+  }
+  return (
+    // @ts-ignore
+    window.navigator["userAgentData"]?.brands.some((brand: { brand: string; version: string }) =>
+      re.test(brand.brand)
+    ) || re.test(window.navigator.userAgent)
+  );
+}
+
 function testPlatform(re: RegExp) {
   return typeof window !== "undefined" && window.navigator != null
     ? // @ts-ignore
@@ -31,4 +43,20 @@ export function isIPad() {
 
 export function isIOS() {
   return isIPhone() || isIPad();
+}
+
+export function isAppleDevice() {
+  return isMac() || isIOS();
+}
+
+export function isWebKit() {
+  return testUserAgent(/AppleWebKit/i) && !isChrome();
+}
+
+export function isChrome() {
+  return testUserAgent(/Chrome/i);
+}
+
+export function isAndroid() {
+  return testUserAgent(/Android/i);
 }

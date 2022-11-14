@@ -7,8 +7,8 @@
  * https://github.com/adobe/react-spectrum/blob/a9dea8a3672179e6c38aafd1429daf44c7ea2ff6/packages/@react-aria/interactions/src/usePress.ts
  */
 
-import { Accessor, JSX } from "solid-js";
 import { MaybeAccessor } from "@kobalte/utils";
+import { Accessor, JSX } from "solid-js";
 
 export type PointerType = "mouse" | "pen" | "touch" | "keyboard" | "virtual";
 
@@ -58,7 +58,7 @@ export interface PressEvents {
   onPressChange?: (isPressed: boolean) => void;
 }
 
-export interface CreatePressableProps extends JSX.HTMLAttributes<any>, PressEvents {
+export interface CreatePressProps extends JSX.HTMLAttributes<any>, PressEvents {
   /** Whether the target is in a controlled press state (e.g. an overlay it triggers is open). */
   isPressed?: MaybeAccessor<boolean | undefined>;
 
@@ -83,16 +83,16 @@ export interface CreatePressableProps extends JSX.HTMLAttributes<any>, PressEven
   allowTextSelectionOnPress?: MaybeAccessor<boolean | undefined>;
 }
 
-export interface CreatePressableResult<T extends HTMLElement> {
+export interface CreatePressResult<T extends HTMLElement> {
   /** Whether the target is currently pressed. */
   isPressed: Accessor<boolean>;
 
   /** Props to spread onto the target element. */
-  pressableProps: JSX.HTMLAttributes<T>;
+  pressProps: JSX.HTMLAttributes<T>;
 }
 
 export interface EventBase {
-  currentTarget: EventTarget;
+  currentTarget: EventTarget | null;
   shiftKey: boolean;
   ctrlKey: boolean;
   metaKey: boolean;

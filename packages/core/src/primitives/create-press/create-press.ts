@@ -15,19 +15,30 @@ import {
 } from "@kobalte/utils";
 import { createEffect, createSignal, JSX, mergeProps, on, onCleanup, splitProps } from "solid-js";
 
-import { CreatePressableProps, CreatePressableResult, EventBase, PointerType } from "./types";
-import { disableTextSelection, isVirtualClick, restoreTextSelection } from "./utils";
+import { isVirtualClick, isVirtualPointerEvent } from "./is-virtual-event";
+import { disableTextSelection, restoreTextSelection } from "./text-selection";
+import { CreatePressProps, CreatePressResult, EventBase, PointerType } from "./types";
+
+interface PressState {
+  isPressed: boolean;
+  ignoreEmulatedMouseEvents: boolean;
+  ignoreClickAfterPress: boolean;
+  didFirePressStart: boolean;
+  activePointerId: any;
+  isOverTarget: boolean;
+  target: HTMLElement | null;
+  pointerType: PointerType | null;
+}
 
 /**
  * Handles press interactions across mouse, touch, keyboard, and screen readers.
  * It normalizes behavior across browsers and platforms, and handles many nuances
  * of dealing with pointer and keyboard events.
- * @param props - Props for the pressable primitive.
+ * @param props - Props for the press primitive.
  */
-export function createPressable<T extends HTMLElement>(
-  props: CreatePressableProps
-): CreatePressableResult<T> {
-  const [local, domProps] = splitProps(props, [
+export function createPress<T extends HTMLElement>(props: CreatePressProps): CreatePressResult<T> {
+  const [local, others] = splitProps(props, [
+    // Event handlers to be chained internally
     "onKeyDown",
     "onKeyUp",
     "onClick",
@@ -35,12 +46,12 @@ export function createPressable<T extends HTMLElement>(
     "onMouseDown",
     "onPointerUp",
     "onDragStart",
-    // Specific
+    // Specific to createPress
+    "onPress",
+    "onPressChange",
     "onPressStart",
     "onPressEnd",
     "onPressUp",
-    "onPress",
-    "onPressChange",
     "isDisabled",
     "isPressed",
     "preventFocusOnPress",
@@ -48,23 +59,23 @@ export function createPressable<T extends HTMLElement>(
     "allowTextSelectionOnPress",
   ]);
 
-  const [isTriggerPressed, setIsTriggerPressed] = createSignal(false);
+  const [isPressed, setIsPressed] = createSignal(false);
 
-  const [_isPressed, _setIsPressed] = createSignal(false);
-  const [ignoreEmulatedMouseEvents, setIgnoreEmulatedMouseEvents] = createSignal(false);
-  const [ignoreClickAfterPress, setIgnoreClickAfterPress] = createSignal(false);
-  const [didFirePressStart, setDidFirePressStart] = createSignal(false);
-  const [activePointerId, setActivePointerId] = createSignal<any>(null);
-  const [target, setTarget] = createSignal<HTMLElement | null>(null);
-  const [isOverTarget, setIsOverTarget] = createSignal(false);
-  const [pointerType, setPointerType] = createSignal<PointerType | null>(null);
+  const state: PressState = {
+    isPressed: false,
+    ignoreEmulatedMouseEvents: false,
+    ignoreClickAfterPress: false,
+    didFirePressStart: false,
+    activePointerId: null,
+    isOverTarget: false,
+    target: null,
+    pointerType: null,
+  };
 
   const { addGlobalListener, removeAllGlobalListeners } = createGlobalListeners();
 
-  const isPressed = () => access(local.isPressed) ?? isTriggerPressed();
-
   const triggerPressStart = (originalEvent: EventBase, pointerType: PointerType) => {
-    if (access(local.isDisabled) || didFirePressStart()) {
+    if (access(local.isDisabled) || state.didFirePressStart) {
       return;
     }
 
@@ -80,8 +91,8 @@ export function createPressable<T extends HTMLElement>(
 
     local.onPressChange?.(true);
 
-    setDidFirePressStart(true);
-    setIsTriggerPressed(true);
+    state.didFirePressStart = true;
+    setIsPressed(true);
   };
 
   const triggerPressEnd = (
@@ -89,12 +100,12 @@ export function createPressable<T extends HTMLElement>(
     pointerType: PointerType,
     wasPressed = true
   ) => {
-    if (!didFirePressStart()) {
+    if (!state.didFirePressStart) {
       return;
     }
 
-    setIgnoreClickAfterPress(true);
-    setDidFirePressStart(false);
+    state.ignoreClickAfterPress = true;
+    state.didFirePressStart = false;
 
     local.onPressEnd?.({
       type: "pressend",
@@ -107,7 +118,7 @@ export function createPressable<T extends HTMLElement>(
     });
 
     local.onPressChange?.(false);
-    setIsTriggerPressed(false);
+    setIsPressed(false);
 
     if (wasPressed && !access(local.isDisabled)) {
       local.onPress?.({
@@ -139,53 +150,49 @@ export function createPressable<T extends HTMLElement>(
   };
 
   const cancel = (e: EventBase) => {
-    if (!_isPressed()) {
+    if (!state.isPressed) {
       return;
     }
 
-    if (isOverTarget()) {
-      triggerPressEnd(createEvent(target()!, e), pointerType()!, false);
+    if (state.isOverTarget) {
+      triggerPressEnd(createEvent(state.target!, e), state.pointerType!, false);
     }
 
-    _setIsPressed(false);
-    setIsOverTarget(false);
-    setActivePointerId(null);
-    setPointerType(null);
+    state.isPressed = false;
+    state.isOverTarget = false;
+    state.activePointerId = null;
+    state.pointerType = null;
 
     removeAllGlobalListeners();
 
     if (!access(local.allowTextSelectionOnPress)) {
-      restoreTextSelection(target()!);
+      restoreTextSelection(state.target ?? undefined);
     }
   };
 
   const globalOnKeyUp = (e: KeyboardEvent) => {
-    if (_isPressed() && isValidKeyboardEvent(e)) {
-      if (shouldPreventDefaultKeyboard(e.target as Element)) {
+    if (state.isPressed && isValidKeyboardEvent(e, state.target!)) {
+      if (shouldPreventDefaultKeyboard(e.target as Element, e.key)) {
         e.preventDefault();
       }
 
       e.stopPropagation();
 
-      _setIsPressed(false);
+      state.isPressed = false;
+      const target = e.target as HTMLElement;
 
-      const eventTarget = e.target as HTMLElement;
-
-      triggerPressEnd(
-        createEvent(target()!, e as EventBase),
-        "keyboard",
-        target()?.contains(eventTarget)
-      );
+      triggerPressEnd(createEvent(state.target!, e), "keyboard", state.target?.contains(target));
 
       removeAllGlobalListeners();
 
       // If the target is a link, trigger the click method to open the URL,
       // but defer triggering pressEnd until onClick event handler.
       if (
-        (target()?.contains(eventTarget) && isHTMLAnchorLink(target()!)) ||
-        target()?.getAttribute("role") === "link"
+        state.target instanceof HTMLElement &&
+        state.target.contains(target) &&
+        (isHTMLAnchorLink(state.target) || state.target.getAttribute("role") === "link")
       ) {
-        target()?.click();
+        state.target.click();
       }
     }
   };
@@ -194,87 +201,95 @@ export function createPressable<T extends HTMLElement>(
   // Use pointer move events instead to implement our own hit testing.
   // See https://bugs.webkit.org/show_bug.cgi?id=199803
   const globalOnPointerMove = (e: PointerEvent) => {
-    if (e.pointerId !== activePointerId()) {
+    if (e.pointerId !== state.activePointerId) {
       return;
     }
 
-    if (isPointOverTarget(e, target()!)) {
-      if (!isOverTarget()) {
-        setIsOverTarget(true);
-        triggerPressStart(createEvent(target()!, e as EventBase), pointerType()!);
+    if (isPointOverTarget(e, state.target!)) {
+      if (!state.isOverTarget) {
+        state.isOverTarget = true;
+        triggerPressStart(createEvent(state.target!, e), state.pointerType!);
       }
-    } else if (isOverTarget()) {
-      setIsOverTarget(false);
-      triggerPressEnd(createEvent(target()!, e as EventBase), pointerType()!, false);
+    } else if (state.isOverTarget) {
+      state.isOverTarget = false;
+      triggerPressEnd(createEvent(state.target!, e), state.pointerType!, false);
 
       if (access(local.shouldCancelOnPointerExit)) {
-        cancel(e as EventBase);
+        cancel(e);
       }
     }
   };
 
   const globalOnPointerUp = (e: PointerEvent) => {
-    if (e.pointerId === activePointerId() && _isPressed() && e.button === 0) {
-      if (isPointOverTarget(e, target()!)) {
-        triggerPressEnd(createEvent(target()!, e as EventBase), pointerType()!);
-      } else if (isOverTarget()) {
-        triggerPressEnd(createEvent(target()!, e as EventBase), pointerType()!, false);
+    if (e.pointerId === state.activePointerId && state.isPressed && e.button === 0) {
+      if (isPointOverTarget(e, state.target!)) {
+        triggerPressEnd(createEvent(state.target!, e), state.pointerType!);
+      } else if (state.isOverTarget) {
+        triggerPressEnd(createEvent(state.target!, e), state.pointerType!, false);
       }
 
-      _setIsPressed(false);
-      setIsOverTarget(false);
-      setActivePointerId(null);
-      setPointerType(null);
+      state.isPressed = false;
+      state.isOverTarget = false;
+      state.activePointerId = null;
+      state.pointerType = null;
 
       removeAllGlobalListeners();
 
       if (!access(local.allowTextSelectionOnPress)) {
-        restoreTextSelection(target()!);
+        restoreTextSelection(state.target ?? undefined);
       }
     }
   };
 
   const globalOnPointerCancel = (e: PointerEvent) => {
-    cancel(e as EventBase);
+    cancel(e);
   };
 
   const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = e => {
     callHandler(local.onKeyDown, e);
 
-    if (isValidKeyboardEvent(e) && e.currentTarget.contains(e.target as HTMLElement)) {
-      if (shouldPreventDefaultKeyboard(e.target as Element)) {
+    if (isValidKeyboardEvent(e, e.currentTarget) && e.currentTarget.contains(e.target as Element)) {
+      if (shouldPreventDefaultKeyboard(e.target as Element, e.key)) {
         e.preventDefault();
       }
-
       e.stopPropagation();
 
       // If the event is repeating, it may have started on a different element
       // after which focus moved to the current element. Ignore these events and
       // only handle the first key down event.
-      if (!_isPressed() && !e.repeat) {
-        setTarget(e.currentTarget as HTMLElement);
-        _setIsPressed(true);
+      if (!state.isPressed && !e.repeat) {
+        state.target = e.currentTarget;
+        state.isPressed = true;
         triggerPressStart(e, "keyboard");
 
         // Focus may move before the key up event, so register the event on the document
         // instead of the same element where the key down event occurred.
         addGlobalListener(document, "keyup", globalOnKeyUp, false);
       }
+    } else if (e.key === EventKey.Enter && isHTMLAnchorLink(e.currentTarget)) {
+      // If the target is a link, we won't have handled this above because we want the default
+      // browser behavior to open the link when pressing Enter. But we still need to prevent
+      // default so that elements above do not also handle it (e.g. table row).
+      e.stopPropagation();
     }
   };
 
   const onKeyUp: JSX.EventHandlerUnion<T, KeyboardEvent> = e => {
     callHandler(local.onKeyUp, e);
 
-    if (isValidKeyboardEvent(e) && !e.repeat && e.currentTarget.contains(e.target as HTMLElement)) {
-      triggerPressUp(createEvent(target()!, e), "keyboard");
+    if (
+      isValidKeyboardEvent(e, e.currentTarget) &&
+      !e.repeat &&
+      e.currentTarget.contains(e.target as Element)
+    ) {
+      triggerPressUp(createEvent(state.target!, e), "keyboard");
     }
   };
 
   const onClick: JSX.EventHandlerUnion<T, MouseEvent> = e => {
     callHandler(local.onClick, e);
 
-    if (e && !e.currentTarget.contains(e.target as HTMLElement)) {
+    if (e && !e.currentTarget.contains(e.target as Element)) {
       return;
     }
 
@@ -288,9 +303,9 @@ export function createPressable<T extends HTMLElement>(
       // If triggered from a screen reader or by using element.click(),
       // trigger as if it were a keyboard click.
       if (
-        !ignoreClickAfterPress() &&
-        !ignoreEmulatedMouseEvents() &&
-        (pointerType() === "virtual" || isVirtualClick(e))
+        !state.ignoreClickAfterPress &&
+        !state.ignoreEmulatedMouseEvents &&
+        (state.pointerType === "virtual" || isVirtualClick(e))
       ) {
         // Ensure the element receives focus (VoiceOver on iOS does not do this)
         if (!access(local.isDisabled) && !access(local.preventFocusOnPress)) {
@@ -302,8 +317,8 @@ export function createPressable<T extends HTMLElement>(
         triggerPressEnd(e, "virtual");
       }
 
-      setIgnoreEmulatedMouseEvents(false);
-      setIgnoreClickAfterPress(false);
+      state.ignoreEmulatedMouseEvents = false;
+      state.ignoreClickAfterPress = false;
     }
   };
 
@@ -320,7 +335,7 @@ export function createPressable<T extends HTMLElement>(
     // https://bugs.webkit.org/show_bug.cgi?id=222627
     // https://bugs.webkit.org/show_bug.cgi?id=223202
     if (isVirtualPointerEvent(e)) {
-      setPointerType("virtual");
+      state.pointerType = "virtual";
       return;
     }
 
@@ -330,28 +345,28 @@ export function createPressable<T extends HTMLElement>(
       e.preventDefault();
     }
 
-    const newPointerType = setPointerType(e.pointerType as PointerType);
+    state.pointerType = e.pointerType as PointerType;
 
     e.stopPropagation();
 
-    if (_isPressed()) {
+    if (state.isPressed) {
       return;
     }
 
-    _setIsPressed(true);
-    setIsOverTarget(true);
-    setActivePointerId(e.pointerId);
-    const newTarget = setTarget(e.currentTarget as any);
+    state.isPressed = true;
+    state.isOverTarget = true;
+    state.activePointerId = e.pointerId;
+    state.target = e.currentTarget;
 
     if (!access(local.isDisabled) && !access(local.preventFocusOnPress)) {
       focusWithoutScrolling(e.currentTarget);
     }
 
     if (!access(local.allowTextSelectionOnPress)) {
-      disableTextSelection(newTarget);
+      disableTextSelection(state.target ?? undefined);
     }
 
-    triggerPressStart(e, newPointerType);
+    triggerPressStart(e, state.pointerType);
 
     addGlobalListener(document, "pointermove", globalOnPointerMove, false);
     addGlobalListener(document, "pointerup", globalOnPointerUp, false);
@@ -381,7 +396,7 @@ export function createPressable<T extends HTMLElement>(
     callHandler(local.onPointerUp, e);
 
     // iOS fires pointerup with zero width and height, so check the pointerType recorded during pointerdown.
-    if (!e.currentTarget.contains(e.target as HTMLElement) || pointerType() === "virtual") {
+    if (!e.currentTarget.contains(e.target as Element) || state.pointerType === "virtual") {
       return;
     }
 
@@ -389,14 +404,14 @@ export function createPressable<T extends HTMLElement>(
     // Safari on iOS sometimes fires pointerup events, even
     // when the touch isn't over the target, so double check.
     if (e.button === 0 && isPointOverTarget(e, e.currentTarget)) {
-      triggerPressUp(e, pointerType() || (e.pointerType as PointerType));
+      triggerPressUp(e, state.pointerType ?? (e.pointerType as PointerType));
     }
   };
 
   const onDragStart: JSX.EventHandlerUnion<T, DragEvent> = e => {
     callHandler(local.onDragStart, e);
 
-    if (!e.currentTarget.contains(e.target as HTMLElement)) {
+    if (!e.currentTarget.contains(e.target as Element)) {
       return;
     }
 
@@ -404,13 +419,14 @@ export function createPressable<T extends HTMLElement>(
     cancel(e);
   };
 
+  // Remove user-select: none in case component unmounts immediately after pressStart
   createEffect(
     on(
       () => access(local.allowTextSelectionOnPress),
       allowTextSelectionOnPress => {
         onCleanup(() => {
           if (!allowTextSelectionOnPress) {
-            restoreTextSelection(target() ?? undefined);
+            restoreTextSelection(state.target ?? undefined);
           }
         });
       }
@@ -418,8 +434,8 @@ export function createPressable<T extends HTMLElement>(
   );
 
   return {
-    isPressed,
-    pressableProps: mergeProps(domProps, {
+    isPressed: () => access(local.isPressed) ?? isPressed(),
+    pressProps: mergeProps(others, {
       onKeyDown,
       onKeyUp,
       onClick,
@@ -431,18 +447,23 @@ export function createPressable<T extends HTMLElement>(
   };
 }
 
-function isValidKeyboardEvent(event: KeyboardEvent): boolean {
-  const { key, target } = event;
-  const element = target as HTMLElement;
-  const { tagName, isContentEditable } = element;
+function isHTMLAnchorLink(target: Element): boolean {
+  return target.tagName === "A" && target.hasAttribute("href");
+}
+
+function isValidKeyboardEvent(event: KeyboardEvent, currentTarget: Element): boolean {
+  const { key, code } = event;
+  const element = currentTarget as HTMLElement;
   const role = element.getAttribute("role");
 
   // Accessibility for keyboards. Space and Enter only.
   return (
-    (key === EventKey.Enter || key === EventKey.Space) &&
-    tagName !== "INPUT" &&
-    tagName !== "TEXTAREA" &&
-    !isContentEditable &&
+    (key === EventKey.Enter || key === EventKey.Space || code === "Space") &&
+    !(
+      (element instanceof HTMLInputElement && !isValidInputKey(element, key)) ||
+      element instanceof HTMLTextAreaElement ||
+      element.isContentEditable
+    ) &&
     // A link with a valid href should be handled natively,
     // unless it also has role='button' and was triggered using Space.
     (!isHTMLAnchorLink(element) || (role === "button" && key !== EventKey.Enter)) &&
@@ -450,9 +471,23 @@ function isValidKeyboardEvent(event: KeyboardEvent): boolean {
     !(role === "link" && key !== EventKey.Enter)
   );
 }
+function getTouchFromEvent(event: TouchEvent): Touch | null {
+  const { targetTouches } = event;
+  if (targetTouches.length > 0) {
+    return targetTouches[0];
+  }
+  return null;
+}
 
-function isHTMLAnchorLink(target: HTMLElement): boolean {
-  return target.tagName === "A" && target.hasAttribute("href");
+function getTouchById(event: TouchEvent, pointerId: null | number): null | Touch {
+  const changedTouches = event.changedTouches;
+  for (let i = 0; i < changedTouches.length; i++) {
+    const touch = changedTouches[i];
+    if (touch.identifier === pointerId) {
+      return touch;
+    }
+  }
+  return null;
 }
 
 function createEvent(target: HTMLElement, e: EventBase): EventBase {
@@ -482,8 +517,8 @@ interface EventPoint {
 }
 
 function getPointClientRect(point: EventPoint): Rect {
-  const offsetX = (point.width && point.width / 2) || point.radiusX || 0;
-  const offsetY = (point.height && point.height / 2) || point.radiusY || 0;
+  const offsetX = (point.width ?? 0) / 2 || point.radiusX || 0;
+  const offsetY = (point.height ?? 0) / 2 || point.radiusY || 0;
 
   return {
     top: point.clientY - offsetY,
@@ -493,46 +528,56 @@ function getPointClientRect(point: EventPoint): Rect {
   };
 }
 
-function isPointOverTarget(point: EventPoint, target: HTMLElement) {
-  const rect = target.getBoundingClientRect();
-  const pointRect = getPointClientRect(point);
-  return areRectanglesOverlapping(rect, pointRect);
-}
-
 function areRectanglesOverlapping(a: Rect, b: Rect) {
   // check if they cannot overlap on x-axis
   if (a.left > b.right || b.left > a.right) {
     return false;
   }
-
   // check if they cannot overlap on y-axis
   if (a.top > b.bottom || b.top > a.bottom) {
     return false;
+  }
+  return true;
+}
+
+function isPointOverTarget(point: EventPoint, target: Element) {
+  const rect = target.getBoundingClientRect();
+  const pointRect = getPointClientRect(point);
+  return areRectanglesOverlapping(rect, pointRect);
+}
+
+function shouldPreventDefault(target: Element) {
+  // We cannot prevent default if the target is a draggable element.
+  return !(target instanceof HTMLElement) || !target.draggable;
+}
+
+function shouldPreventDefaultKeyboard(target: Element, key: string) {
+  if (target instanceof HTMLInputElement) {
+    return !isValidInputKey(target, key);
+  }
+
+  if (target instanceof HTMLButtonElement) {
+    return target.type !== "submit";
   }
 
   return true;
 }
 
-function shouldPreventDefault(target: HTMLElement) {
-  // We cannot prevent default if the target is a draggable element.
-  return !target.draggable;
-}
+const nonTextInputTypes = new Set([
+  "checkbox",
+  "radio",
+  "range",
+  "color",
+  "file",
+  "image",
+  "button",
+  "submit",
+  "reset",
+]);
 
-function shouldPreventDefaultKeyboard(target: Element) {
-  return !(
-    (target.tagName === "INPUT" || target.tagName === "BUTTON") &&
-    (target as HTMLButtonElement | HTMLInputElement).type === "submit"
-  );
-}
-
-function isVirtualPointerEvent(event: PointerEvent) {
-  // If the pointer size is zero, then we assume it's from a screen reader.
-  // Android TalkBack double tap will sometimes return an event with width and height of 1
-  // and pointerType === 'mouse' so we need to check for a specific combination of event attributes.
-  // Cannot use "event.pressure === 0" as the sole check due to Safari pointer events always returning pressure === 0
-  // instead of .5, see https://bugs.webkit.org/show_bug.cgi?id=206216
-  return (
-    (event.width === 0 && event.height === 0) ||
-    (event.width === 1 && event.height === 1 && event.pressure === 0 && event.detail === 0)
-  );
+function isValidInputKey(target: HTMLInputElement, key: string) {
+  // Only space should toggle checkboxes and radios, not enter.
+  return target.type === "checkbox" || target.type === "radio"
+    ? key === " "
+    : nonTextInputTypes.has(target.type);
 }

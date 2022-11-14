@@ -1,5 +1,5 @@
 {
-  "name": "@kobalte/elements",
+  "name": "@kobalte/core",
   "version": "0.0.0",
   "private": false,
   "description": "Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
@@ -11,7 +11,7 @@
     "design-system",
     "components"
   ],
-  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/elements#readme",
+  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/core#readme",
   "bugs": {
     "url": "https://github.com/fabien-ml/kobalte/issues"
   },

@@ -5,4 +5,5 @@ export * from "./primitives";
 // components
 export * from "./alert";
 export * from "./button";
+export * from "./pressable";
 export * from "./toggle-button";

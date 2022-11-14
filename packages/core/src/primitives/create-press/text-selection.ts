@@ -4,7 +4,6 @@
  *
  * Credits to the React Spectrum team:
  * https://github.com/adobe/react-spectrum/blob/a9dea8a3672179e6c38aafd1429daf44c7ea2ff6/packages/@react-aria/interactions/src/textSelection.ts
- * https://github.com/solidjs-community/solid-aria/blob/2c5f54feb5cfea514b1ee0a52d0416878f882351/packages/interactions/src/utils.ts
  */
 
 import { isIOS, runAfterTransition } from "@kobalte/utils";
@@ -86,19 +85,8 @@ export function restoreTextSelection(target?: Element) {
       if (target.getAttribute("style") === "") {
         target.removeAttribute("style");
       }
+
       modifiedElementMap.delete(target);
     }
   }
-}
-
-// Keyboards, Assistive Technologies, and element.click() all produce a "virtual"
-// click event. This is a method of inferring such clicks. Every up-to-date browsers
-// sets a zero value of "detail" for click events that are "virtual".
-export function isVirtualClick(event: MouseEvent | PointerEvent): boolean {
-  // JAWS/NVDA with Firefox.
-  if ((event as any).mozInputSource === 0 && event.isTrusted) {
-    return true;
-  }
-
-  return event.detail === 0;
 }

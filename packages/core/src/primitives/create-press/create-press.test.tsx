@@ -11,24 +11,29 @@ import { createSignal, JSX, mergeProps, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { createPressable } from "./create-pressable";
-import { CreatePressableProps } from "./types";
+import { createPress } from "./create-press";
+import { CreatePressProps } from "./types";
 
 function Example(
-  props: CreatePressableProps &
-    JSX.HTMLAttributes<any> & { elementType?: any; draggable?: boolean; href?: string }
+  props: CreatePressProps &
+    JSX.HTMLAttributes<any> & {
+      elementType?: any;
+      draggable?: boolean;
+      href?: string;
+      type?: string;
+    }
 ) {
-  const { pressableProps } = createPressable(props);
+  const { pressProps } = createPress(props);
 
   return (
     <Dynamic
-      {...pressableProps}
+      {...pressProps}
       component={props.elementType ?? "div"}
       style={props.style}
       tabIndex="0"
       draggable={props.draggable}
     >
-      test
+      {props.elementType !== "input" ? "test" : undefined}
     </Dynamic>
   );
 }
@@ -51,7 +56,7 @@ function pointerEvent(type: any, opts: any) {
   return evt;
 }
 
-describe("createPressable", () => {
+describe("createPress", () => {
   beforeAll(() => {
     jest.useFakeTimers({ legacyFakeTimers: true });
     jest.spyOn(window, "requestAnimationFrame").mockImplementation(cb => {
@@ -809,13 +814,27 @@ describe("createPressable", () => {
       // Make sure we can still determine that this is a virtual event by checking the pressure, detail, and height/width.
       fireEvent(
         el,
-        pointerEvent("pointerdown", { pointerId: 1, width: 1, height: 1, pressure: 0, detail: 0 })
+        pointerEvent("pointerdown", {
+          pointerId: 1,
+          width: 1,
+          height: 1,
+          pressure: 0,
+          detail: 0,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointerup", { pointerId: 1, width: 1, height: 1, pressure: 0, detail: 0 })
+        pointerEvent("pointerup", {
+          pointerId: 1,
+          width: 1,
+          height: 1,
+          pressure: 0,
+          detail: 0,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -1045,7 +1064,7 @@ describe("createPressable", () => {
       fireEvent.keyUp(el, { key: "Enter" });
       await Promise.resolve();
 
-      // Enter key should handled natively
+      // Enter key should handle natively
       expect(events).toEqual([]);
 
       fireEvent.click(el);
@@ -1480,6 +1499,105 @@ describe("createPressable", () => {
 
       expect(events).toEqual([]);
     });
+
+    it("should fire press events on checkboxes but not prevent default", async () => {
+      const events: any[] = [];
+      const addEvent = (e: any) => events.push(e);
+
+      render(() => (
+        <Example
+          elementType="input"
+          type="checkbox"
+          onPressStart={addEvent}
+          onPressEnd={addEvent}
+          onPressChange={pressed => addEvent({ type: "presschange", pressed })}
+          onPress={addEvent}
+          onPressUp={addEvent}
+        />
+      ));
+
+      const el = screen.getByRole("checkbox");
+
+      fireEvent.keyDown(el, { key: "Enter" });
+      await Promise.resolve();
+
+      fireEvent.keyUp(el, { key: "Enter" });
+      await Promise.resolve();
+
+      // Enter key handled should do nothing on a checkbox
+      expect(events).toEqual([]);
+
+      let allow = fireEvent.keyDown(el, { key: " " });
+      await Promise.resolve();
+
+      expect(allow).toBeTruthy();
+      expect(events).toEqual([
+        {
+          type: "pressstart",
+          target: el,
+          pointerType: "keyboard",
+          ctrlKey: false,
+          metaKey: false,
+          shiftKey: false,
+          altKey: false,
+        },
+        {
+          type: "presschange",
+          pressed: true,
+        },
+      ]);
+
+      allow = fireEvent.keyUp(el, { key: " " });
+      await Promise.resolve();
+
+      expect(allow).toBeTruthy();
+      expect(events).toEqual([
+        {
+          type: "pressstart",
+          target: el,
+          pointerType: "keyboard",
+          ctrlKey: false,
+          metaKey: false,
+          shiftKey: false,
+          altKey: false,
+        },
+        {
+          type: "presschange",
+          pressed: true,
+        },
+        {
+          type: "pressup",
+          target: el,
+          pointerType: "keyboard",
+          ctrlKey: false,
+          metaKey: false,
+          shiftKey: false,
+          altKey: false,
+        },
+        {
+          type: "pressend",
+          target: el,
+          pointerType: "keyboard",
+          ctrlKey: false,
+          metaKey: false,
+          shiftKey: false,
+          altKey: false,
+        },
+        {
+          type: "presschange",
+          pressed: false,
+        },
+        {
+          type: "press",
+          target: el,
+          pointerType: "keyboard",
+          ctrlKey: false,
+          metaKey: false,
+          shiftKey: false,
+          altKey: false,
+        },
+      ]);
+    });
   });
 
   describe("virtual click events", () => {
@@ -1574,24 +1692,26 @@ describe("createPressable", () => {
   });
 
   describe("disable text-selection when pressed", () => {
+    installPointerEvent();
+
     const handler = jest.fn();
     const mockUserSelect = "contain";
     const oldUserSelect = document.documentElement.style.webkitUserSelect;
     let platformGetter: any;
 
-    function TestStyleChange(props: CreatePressableProps & { styleToApply?: any }) {
+    function TestStyleChange(props: CreatePressProps & { styleToApply?: any }) {
       const [local, others] = splitProps(props, ["styleToApply"]);
-
-      const createPressableProps = mergeProps(others, {
-        onPressStart: () => setTimeout(() => setShow(true), 3000),
-      });
 
       const [show, setShow] = createSignal(false);
 
-      const { pressableProps } = createPressable<HTMLDivElement>(createPressableProps);
+      const createPressProps = mergeProps(others, {
+        onPressStart: () => setTimeout(() => setShow(true), 3000),
+      });
+
+      const { pressProps } = createPress<HTMLDivElement>(createPressProps);
 
       return (
-        <div style={show() ? local.styleToApply : {}} {...pressableProps}>
+        <div style={show() ? local.styleToApply : {}} {...pressProps}>
           test
         </div>
       );
@@ -1628,18 +1748,19 @@ describe("createPressable", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent.touchStart(el, { targetTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(document.documentElement.style.webkitUserSelect).toBe("none");
       expect(el).not.toHaveStyle("user-select: none");
 
-      fireEvent.touchEnd(el, { targetTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
     });
 
     it("should not add user-select: none to the page when press start (non-iOS)", async () => {
       platformGetter.mockReturnValue("Android");
+
       render(() => (
         <Example
           onPressStart={handler}
@@ -1652,7 +1773,7 @@ describe("createPressable", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent.touchStart(el, { targetTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(document.documentElement.style.webkitUserSelect).toBe(mockUserSelect);
@@ -1672,31 +1793,48 @@ describe("createPressable", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent.touchStart(el, { targetTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent.touchEnd(el, { changedTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
+
       jest.advanceTimersByTime(300);
 
       expect(document.documentElement.style.webkitUserSelect).toBe(mockUserSelect);
 
       // Checkbox doesn't remove `user-select: none;` style from HTML Element issue
       // see https://github.com/adobe/react-spectrum/issues/862
-      fireEvent.touchStart(el, { targetTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent.touchEnd(el, { changedTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent.touchStart(el, { targetTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent.touchMove(el, { changedTouches: [{ identifier: 1, clientX: 100, clientY: 100 }] });
+      fireEvent(
+        el,
+        pointerEvent("pointermove", {
+          pointerId: 1,
+          pointerType: "touch",
+          clientX: 100,
+          clientY: 100,
+        })
+      );
       await Promise.resolve();
       jest.advanceTimersByTime(300);
 
-      fireEvent.touchEnd(el, { changedTouches: [{ identifier: 1, clientX: 100, clientY: 100 }] });
+      fireEvent(
+        el,
+        pointerEvent("pointerup", {
+          pointerId: 1,
+          pointerType: "touch",
+          clientX: 100,
+          clientY: 100,
+        })
+      );
       await Promise.resolve();
       jest.advanceTimersByTime(300);
 
@@ -1705,6 +1843,7 @@ describe("createPressable", () => {
 
     it("should remove user-select: none from the element when press end (non-iOS)", async () => {
       platformGetter.mockReturnValue("Android");
+
       render(() => (
         <Example
           style={{ "user-select": "text" }}
@@ -1718,31 +1857,47 @@ describe("createPressable", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent.touchStart(el, { targetTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(el).toHaveStyle("user-select: none");
 
-      fireEvent.touchEnd(el, { changedTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(el).toHaveStyle("user-select: text");
 
       // Checkbox doesn't remove `user-select: none;` style from HTML Element issue
       // see https://github.com/adobe/react-spectrum/issues/862
-      fireEvent.touchStart(el, { targetTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent.touchEnd(el, { changedTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent.touchStart(el, { targetTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent.touchMove(el, { changedTouches: [{ identifier: 1, clientX: 100, clientY: 100 }] });
+      fireEvent(
+        el,
+        pointerEvent("pointermove", {
+          pointerId: 1,
+          pointerType: "touch",
+          clientX: 100,
+          clientY: 100,
+        })
+      );
       await Promise.resolve();
 
-      fireEvent.touchEnd(el, { changedTouches: [{ identifier: 1, clientX: 100, clientY: 100 }] });
+      fireEvent(
+        el,
+        pointerEvent("pointerup", {
+          pointerId: 1,
+          pointerType: "touch",
+          clientX: 100,
+          clientY: 100,
+        })
+      );
       await Promise.resolve();
 
       expect(el).toHaveStyle("user-select: text");
@@ -1770,21 +1925,21 @@ describe("createPressable", () => {
 
       const els = screen.getAllByText("test");
 
-      fireEvent.touchStart(els[0], { targetTouches: [{ identifier: 1 }] });
+      fireEvent(els[0], pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent.touchEnd(els[0], { changedTouches: [{ identifier: 1 }] });
+      fireEvent(els[0], pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(document.documentElement.style.webkitUserSelect).toBe("none");
 
-      fireEvent.touchStart(els[1], { targetTouches: [{ identifier: 1 }] });
+      fireEvent(els[1], pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
       jest.advanceTimersByTime(300);
 
       expect(document.documentElement.style.webkitUserSelect).toBe("none");
 
-      fireEvent.touchEnd(els[1], { changedTouches: [{ identifier: 1 }] });
+      fireEvent(els[1], pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
       jest.advanceTimersByTime(300);
 
@@ -1793,6 +1948,7 @@ describe("createPressable", () => {
 
     it("should clean up user-select: none when pressing and releasing two different elements (non-iOS)", async () => {
       platformGetter.mockReturnValue("Android");
+
       render(() => (
         <>
           <Example
@@ -1816,22 +1972,22 @@ describe("createPressable", () => {
 
       const els = screen.getAllByText("test");
 
-      fireEvent.touchStart(els[0], { targetTouches: [{ identifier: 1 }] });
+      fireEvent(els[0], pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent.touchStart(els[1], { targetTouches: [{ identifier: 2 }] });
+      fireEvent(els[1], pointerEvent("pointerdown", { pointerId: 2, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(els[0]).toHaveStyle("user-select: none");
       expect(els[1]).toHaveStyle("user-select: none");
 
-      fireEvent.touchEnd(els[0], { changedTouches: [{ identifier: 1 }] });
+      fireEvent(els[0], pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(els[0]).toHaveStyle("user-select: text");
       expect(els[1]).toHaveStyle("user-select: none");
 
-      fireEvent.touchEnd(els[1], { changedTouches: [{ identifier: 2 }] });
+      fireEvent(els[1], pointerEvent("pointerup", { pointerId: 2, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(els[0]).toHaveStyle("user-select: text");
@@ -1851,7 +2007,7 @@ describe("createPressable", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent.touchStart(el, { targetTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(document.documentElement.style.webkitUserSelect).toBe("none");
@@ -1865,6 +2021,7 @@ describe("createPressable", () => {
 
     it("non related style changes during press down shouldn't overwrite user-select on press end (non-iOS)", async () => {
       platformGetter.mockReturnValue("Android");
+
       render(() => (
         <TestStyleChange
           styleToApply={{ background: "red" }}
@@ -1878,7 +2035,7 @@ describe("createPressable", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent.touchStart(el, { targetTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(el).toHaveStyle(`
@@ -1892,7 +2049,7 @@ describe("createPressable", () => {
         background: red;
       `);
 
-      fireEvent.touchEnd(el, { changedTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(el).toHaveStyle(`
@@ -1902,6 +2059,7 @@ describe("createPressable", () => {
 
     it("changes to user-select during press down remain on press end (non-iOS)", async () => {
       platformGetter.mockReturnValue("Android");
+
       render(() => (
         <TestStyleChange
           styleToApply={{ background: "red", "user-select": "text" }}
@@ -1915,7 +2073,7 @@ describe("createPressable", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent.touchStart(el, { targetTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(el).toHaveStyle(`
@@ -1929,7 +2087,7 @@ describe("createPressable", () => {
         background: red;
       `);
 
-      fireEvent.touchEnd(el, { changedTouches: [{ identifier: 1 }] });
+      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(el).toHaveStyle(`

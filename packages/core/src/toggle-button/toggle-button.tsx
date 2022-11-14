@@ -7,8 +7,7 @@
  */
 
 import { callHandler } from "@kobalte/utils";
-import { ComponentProps, JSX } from "solid-js";
-import { splitProps } from "solid-js/types/server/rendering";
+import { ComponentProps, JSX, splitProps } from "solid-js";
 
 import { createControllableBooleanSignal } from "../primitives";
 

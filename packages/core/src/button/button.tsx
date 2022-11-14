@@ -1,11 +1,11 @@
 import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { ComponentProps, createMemo, createSignal, onMount, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { createMemo, splitProps } from "solid-js";
 
+import { Pressable, PressableProps } from "../pressable";
 import { createTagName } from "../primitives";
 import { isButton } from "./is-button";
 
-export interface ButtonProps {
+export interface ButtonProps extends PressableProps {
   /** Whether the button is disabled. */
   disabled?: boolean;
 }
@@ -19,7 +19,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
 
   props = mergeDefaultProps({ as: "button" }, props);
 
-  const [local, others] = splitProps(props, ["as", "ref", "disabled"]);
+  const [local, others] = splitProps(props, ["ref", "disabled"]);
 
   const tagName = createTagName(
     () => ref,
@@ -40,8 +40,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
   });
 
   return (
-    <Dynamic
-      component={local.as}
+    <Pressable
       ref={mergeRefs(el => (ref = el), local.ref)}
       type={isNativeButton() && !isInput() ? "button" : undefined}
       role={!isNativeButton() && !isLink() ? "button" : undefined}

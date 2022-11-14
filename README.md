@@ -9,13 +9,13 @@ A UI toolkit for building SolidJS applications.
 
 ## Packages
 
-| Name                                    |                              Version                               | Description                                                               |
-| --------------------------------------- | :----------------------------------------------------------------: |---------------------------------------------------------------------------|
-| [@kobalte/elements](/packages/elements) | [![elements-npm]](https://www.npmjs.com/package/@kobalte/elements) | Unstyled components and primitives for building accessible web apps and design systems. |
-| [@kobalte/pigment](/packages/pigment)   |  [![pigment-npm]](https://www.npmjs.com/package/@kobalte/pigment)  | Kobalte's offical design system implementation.                           |
-| [@kobalte/material](/packages/material) | [![material-npm]](https://www.npmjs.com/package/@kobalte/material) | An implementation of the Material Design 3 specification.                 |
+| Name                                    |                              Version                               | Description                                                                             |
+| --------------------------------------- | :----------------------------------------------------------------: | --------------------------------------------------------------------------------------- |
+| [@kobalte/core](/packages/core)         |     [![core-npm]](https://www.npmjs.com/package/@kobalte/core)     | Unstyled components and primitives for building accessible web apps and design systems. |
+| [@kobalte/pigment](/packages/pigment)   |  [![pigment-npm]](https://www.npmjs.com/package/@kobalte/pigment)  | Kobalte's offical design system implementation.                                         |
+| [@kobalte/material](/packages/material) | [![material-npm]](https://www.npmjs.com/package/@kobalte/material) | An implementation of the Material Design 3 specification.                               |
 
-[elements-npm]: https://img.shields.io/npm/v/@kobalte/elements
+[core-npm]: https://img.shields.io/npm/v/@kobalte/core
 [pigment-npm]: https://img.shields.io/npm/v/@kobalte/pigment
 [material-npm]: https://img.shields.io/npm/v/@kobalte/material
 

@@ -20,7 +20,7 @@
     "ci:version": "changeset version && pnpm i --no-frozen-lockfile && git add .",
     "clean": "turbo run clean && rm -rf node_modules",
     "commit": "git-cz",
-    "dev:elements": "pnpm -F @kobalte/elements dev",
+    "dev:core": "pnpm -F @kobalte/core dev",
     "dev:docs": "pnpm -F @kobalte/docs dev",
     "format": "prettier . --write --ignore-path .gitignore && git update-index --again",
     "prepare": "husky install",
