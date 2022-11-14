@@ -13,6 +13,7 @@ import { fireEvent, render, screen } from "solid-testing-library";
 
 import { createPress } from "./create-press";
 import { CreatePressProps } from "./types";
+import { chainHandlers } from "@kobalte/utils";
 
 function Example(
   props: CreatePressProps &
@@ -23,13 +24,57 @@ function Example(
       type?: string;
     }
 ) {
-  let ref: any;
-  const { pressProps } = createPress(props, () => ref);
+  const [local, others] = splitProps(props, [
+    "onKeyDown",
+    "onKeyUp",
+    "onClick",
+    "onPointerDown",
+    "onMouseDown",
+    "onPointerUp",
+    "onDragStart",
+  ]);
+
+  const { pressHandlers } = createPress(props);
+
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    chainHandlers(e, [local.onKeyDown, pressHandlers.onKeyDown]);
+  };
+
+  const onKeyUp: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    chainHandlers(e, [local.onKeyUp, pressHandlers.onKeyUp]);
+  };
+
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    chainHandlers(e, [local.onClick, pressHandlers.onClick]);
+  };
+
+  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    chainHandlers(e, [local.onPointerDown, pressHandlers.onPointerDown]);
+  };
+
+  const onMouseDown: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    chainHandlers(e, [local.onMouseDown, pressHandlers.onMouseDown]);
+  };
+
+  const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    chainHandlers(e, [local.onPointerUp, pressHandlers.onPointerUp]);
+  };
+
+  const onDragStart: JSX.EventHandlerUnion<any, DragEvent> = e => {
+    chainHandlers(e, [local.onDragStart, pressHandlers.onDragStart]);
+  };
 
   return (
     <Dynamic
-      ref={ref}
-      {...pressProps}
+      {...pressHandlers}
+      {...others}
+      onKeyDown={onKeyDown}
+      onKeyUp={onKeyUp}
+      onClick={onClick}
+      onPointerDown={onPointerDown}
+      onMouseDown={onMouseDown}
+      onPointerUp={onPointerUp}
+      onDragStart={onDragStart}
       component={props.elementType ?? "div"}
       style={props.style}
       tabIndex="0"
@@ -1702,8 +1747,6 @@ describe("createPress", () => {
     let platformGetter: any;
 
     function TestStyleChange(props: CreatePressProps & { styleToApply?: any }) {
-      let ref: any;
-
       const [local, others] = splitProps(props, ["styleToApply"]);
 
       const [show, setShow] = createSignal(false);
@@ -1712,10 +1755,10 @@ describe("createPress", () => {
         onPressStart: () => setTimeout(() => setShow(true), 3000),
       });
 
-      const { pressProps } = createPress<HTMLDivElement>(createPressProps, () => ref);
+      const { pressHandlers } = createPress<HTMLDivElement>(createPressProps);
 
       return (
-        <div ref={ref} style={show() ? local.styleToApply : {}} {...pressProps}>
+        <div style={show() ? local.styleToApply : {}} {...pressHandlers}>
           test
         </div>
       );

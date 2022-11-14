@@ -170,4 +170,6 @@ describe("Button", () => {
     expect(button).not.toHaveAttribute("disabled");
     expect(button).toHaveAttribute("aria-disabled");
   });
+
+  //TODO: add react-aria useButton tests adaptation
 });

@@ -6,23 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/a9dea8a3672179e6c38aafd1429daf44c7ea2ff6/packages/@react-aria/interactions/src/usePress.ts
  */
 
-import {
-  access,
-  callHandler,
-  createGlobalListeners,
-  EventKey,
-  focusWithoutScrolling,
-} from "@kobalte/utils";
-import {
-  Accessor,
-  createEffect,
-  createSignal,
-  JSX,
-  mergeProps,
-  on,
-  onCleanup,
-  splitProps,
-} from "solid-js";
+import { access, createGlobalListeners, EventKey, focusWithoutScrolling } from "@kobalte/utils";
+import { createEffect, createSignal, JSX, on, onCleanup } from "solid-js";
 
 import { isVirtualClick, isVirtualPointerEvent } from "./is-virtual-event";
 import { disableTextSelection, restoreTextSelection } from "./text-selection";
@@ -68,34 +53,8 @@ interface PressState {
  * It normalizes behavior across browsers and platforms, and handles many nuances
  * of dealing with pointer and keyboard events.
  * @param props - Props for the press primitive.
- * @param ref - The ref of the element.
  */
-export function createPress<T extends HTMLElement>(
-  props: CreatePressProps,
-  ref: Accessor<T | undefined>
-): CreatePressResult<T> {
-  const [local, others] = splitProps(props, [
-    // Event handlers to be chained internally
-    "onKeyDown",
-    "onKeyUp",
-    "onClick",
-    "onPointerDown",
-    "onMouseDown",
-    "onPointerUp",
-    "onDragStart",
-    // Specific to createPress
-    "onPressStart",
-    "onPressEnd",
-    "onPressUp",
-    "onPressChange",
-    "onPress",
-    "pressed",
-    "disabled",
-    "preventFocusOnPress",
-    "cancelOnPointerExit",
-    "allowTextSelectionOnPress",
-  ]);
-
+export function createPress<T extends HTMLElement>(props: CreatePressProps): CreatePressResult<T> {
   const [isPressed, setIsPressed] = createSignal(false);
 
   const state: PressState = {
@@ -112,11 +71,11 @@ export function createPress<T extends HTMLElement>(
   const { addGlobalListener, removeAllGlobalListeners } = createGlobalListeners();
 
   const triggerPressStart = (originalEvent: EventBase, pointerType: PointerType) => {
-    if (access(local.disabled) || state.didFirePressStart) {
+    if (access(props.disabled) || state.didFirePressStart) {
       return;
     }
 
-    local.onPressStart?.({
+    props.onPressStart?.({
       type: "pressstart",
       pointerType,
       target: originalEvent.currentTarget as HTMLElement,
@@ -126,7 +85,7 @@ export function createPress<T extends HTMLElement>(
       altKey: originalEvent.altKey,
     });
 
-    local.onPressChange?.(true);
+    props.onPressChange?.(true);
 
     state.didFirePressStart = true;
     setIsPressed(true);
@@ -144,7 +103,7 @@ export function createPress<T extends HTMLElement>(
     state.ignoreClickAfterPress = true;
     state.didFirePressStart = false;
 
-    local.onPressEnd?.({
+    props.onPressEnd?.({
       type: "pressend",
       pointerType,
       target: originalEvent.currentTarget as HTMLElement,
@@ -154,11 +113,11 @@ export function createPress<T extends HTMLElement>(
       altKey: originalEvent.altKey,
     });
 
-    local.onPressChange?.(false);
+    props.onPressChange?.(false);
     setIsPressed(false);
 
-    if (wasPressed && !access(local.disabled)) {
-      local.onPress?.({
+    if (wasPressed && !access(props.disabled)) {
+      props.onPress?.({
         type: "press",
         pointerType,
         target: originalEvent.currentTarget as HTMLElement,
@@ -171,11 +130,11 @@ export function createPress<T extends HTMLElement>(
   };
 
   const triggerPressUp = (originalEvent: EventBase, pointerType: PointerType) => {
-    if (access(local.disabled)) {
+    if (access(props.disabled)) {
       return;
     }
 
-    local.onPressUp?.({
+    props.onPressUp?.({
       type: "pressup",
       pointerType,
       target: originalEvent.currentTarget as HTMLElement,
@@ -202,7 +161,7 @@ export function createPress<T extends HTMLElement>(
 
     removeAllGlobalListeners();
 
-    if (!access(local.allowTextSelectionOnPress)) {
+    if (!access(props.allowTextSelectionOnPress)) {
       restoreTextSelection(state.target ?? undefined);
     }
   };
@@ -251,7 +210,7 @@ export function createPress<T extends HTMLElement>(
       state.isOverTarget = false;
       triggerPressEnd(createEvent(state.target!, e), state.pointerType!, false);
 
-      if (access(local.cancelOnPointerExit)) {
+      if (access(props.cancelOnPointerExit)) {
         cancel(e);
       }
     }
@@ -272,7 +231,7 @@ export function createPress<T extends HTMLElement>(
 
       removeAllGlobalListeners();
 
-      if (!access(local.allowTextSelectionOnPress)) {
+      if (!access(props.allowTextSelectionOnPress)) {
         restoreTextSelection(state.target ?? undefined);
       }
     }
@@ -283,8 +242,6 @@ export function createPress<T extends HTMLElement>(
   };
 
   const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = e => {
-    callHandler(local.onKeyDown, e);
-
     if (isValidKeyboardEvent(e, e.currentTarget) && e.currentTarget.contains(e.target as Element)) {
       if (shouldPreventDefaultKeyboard(e.target as Element, e.key)) {
         e.preventDefault();
@@ -312,8 +269,6 @@ export function createPress<T extends HTMLElement>(
   };
 
   const onKeyUp: JSX.EventHandlerUnion<T, KeyboardEvent> = e => {
-    callHandler(local.onKeyUp, e);
-
     if (
       isValidKeyboardEvent(e, e.currentTarget) &&
       !e.repeat &&
@@ -324,13 +279,6 @@ export function createPress<T extends HTMLElement>(
   };
 
   const onClick: JSX.EventHandlerUnion<T, MouseEvent> = e => {
-    if (local.onClick) {
-      callHandler(local.onClick, e);
-      console.warn(
-        "[kobalte]: use onPress instead of onClick for better press interactions support across browsers and platforms."
-      );
-    }
-
     if (e && !e.currentTarget.contains(e.target as Element)) {
       return;
     }
@@ -338,7 +286,7 @@ export function createPress<T extends HTMLElement>(
     if (e && e.button === 0) {
       e.stopPropagation();
 
-      if (access(local.disabled)) {
+      if (access(props.disabled)) {
         e.preventDefault();
       }
 
@@ -350,7 +298,7 @@ export function createPress<T extends HTMLElement>(
         (state.pointerType === "virtual" || isVirtualClick(e))
       ) {
         // Ensure the element receives focus (VoiceOver on iOS does not do this)
-        if (!access(local.disabled) && !access(local.preventFocusOnPress)) {
+        if (!access(props.disabled) && !access(props.preventFocusOnPress)) {
           focusWithoutScrolling(e.currentTarget);
         }
 
@@ -365,8 +313,6 @@ export function createPress<T extends HTMLElement>(
   };
 
   const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = e => {
-    callHandler(local.onPointerDown, e);
-
     // Only handle left clicks, and ignore events that bubbled through portals.
     if (e.button !== 0 || !e.currentTarget.contains(e.target as HTMLElement)) {
       return;
@@ -400,11 +346,11 @@ export function createPress<T extends HTMLElement>(
     state.activePointerId = e.pointerId;
     state.target = e.currentTarget;
 
-    if (!access(local.disabled) && !access(local.preventFocusOnPress)) {
+    if (!access(props.disabled) && !access(props.preventFocusOnPress)) {
       focusWithoutScrolling(e.currentTarget);
     }
 
-    if (!access(local.allowTextSelectionOnPress)) {
+    if (!access(props.allowTextSelectionOnPress)) {
       disableTextSelection(state.target ?? undefined);
     }
 
@@ -416,8 +362,6 @@ export function createPress<T extends HTMLElement>(
   };
 
   const onMouseDown: JSX.EventHandlerUnion<T, MouseEvent> = e => {
-    callHandler(local.onMouseDown, e);
-
     if (!e.currentTarget.contains(e.target as HTMLElement)) {
       return;
     }
@@ -435,8 +379,6 @@ export function createPress<T extends HTMLElement>(
   };
 
   const onPointerUp: JSX.EventHandlerUnion<T, PointerEvent> = e => {
-    callHandler(local.onPointerUp, e);
-
     // iOS fires pointerup with zero width and height, so check the pointerType recorded during pointerdown.
     if (!e.currentTarget.contains(e.target as Element) || state.pointerType === "virtual") {
       return;
@@ -451,8 +393,6 @@ export function createPress<T extends HTMLElement>(
   };
 
   const onDragStart: JSX.EventHandlerUnion<T, DragEvent> = e => {
-    callHandler(local.onDragStart, e);
-
     if (!e.currentTarget.contains(e.target as Element)) {
       return;
     }
@@ -464,7 +404,7 @@ export function createPress<T extends HTMLElement>(
   // Remove user-select: none in case component unmounts immediately after pressStart
   createEffect(
     on(
-      () => access(local.allowTextSelectionOnPress),
+      () => access(props.allowTextSelectionOnPress),
       allowTextSelectionOnPress => {
         onCleanup(() => {
           if (!allowTextSelectionOnPress) {
@@ -475,28 +415,9 @@ export function createPress<T extends HTMLElement>(
     )
   );
 
-  // Can't set `data-pressed` prop
-  // because calling "isPressed()" in JSX break "inline style" reactivity, hence this hack
-  createEffect(() => {
-    const el = ref();
-
-    if (!el) {
-      return;
-    }
-
-    if (local.pressed ?? isPressed()) {
-      el.dataset.pressed = "";
-    } else {
-      delete el.dataset.pressed;
-    }
-  });
-
   return {
-    isPressed: () => access(local.pressed) ?? isPressed(),
-    pressProps: mergeProps(others, {
-      get "data-disabled"() {
-        return access(local.disabled) ? "" : undefined;
-      },
+    isPressed: () => access(props.pressed) ?? isPressed(),
+    pressHandlers: {
       onKeyDown,
       onKeyUp,
       onClick,
@@ -504,7 +425,7 @@ export function createPress<T extends HTMLElement>(
       onMouseDown,
       onPointerUp,
       onDragStart,
-    }),
+    },
   };
 }
 
