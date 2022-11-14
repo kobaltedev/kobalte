@@ -58,12 +58,12 @@ export interface PressEvents {
   onPressChange?: (isPressed: boolean) => void;
 }
 
-export interface CreatePressProps extends JSX.HTMLAttributes<any>, PressEvents {
+export interface CreatePressProps extends PressEvents {
   /** Whether the target is in a controlled press state (e.g. an overlay it triggers is open). */
-  isPressed?: MaybeAccessor<boolean | undefined>;
+  pressed?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the press events should be disabled. */
-  isDisabled?: MaybeAccessor<boolean | undefined>;
+  disabled?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the target should not receive focus on press. */
   preventFocusOnPress?: MaybeAccessor<boolean | undefined>;
@@ -77,10 +77,19 @@ export interface CreatePressProps extends JSX.HTMLAttributes<any>, PressEvents {
    * If set to `true`, the press is canceled when the pointer leaves the target and
    * onPressStart will not be fired if the pointer returns.
    */
-  shouldCancelOnPointerExit?: MaybeAccessor<boolean | undefined>;
+  cancelOnPointerExit?: MaybeAccessor<boolean | undefined>;
 
   /** Whether text selection should be enabled on the pressable element. */
   allowTextSelectionOnPress?: MaybeAccessor<boolean | undefined>;
+
+  // Event handlers to be chained internally
+  onKeyDown?: JSX.EventHandlerUnion<any, KeyboardEvent>;
+  onKeyUp?: JSX.EventHandlerUnion<any, KeyboardEvent>;
+  onClick?: JSX.EventHandlerUnion<any, MouseEvent>;
+  onPointerDown?: JSX.EventHandlerUnion<any, PointerEvent>;
+  onMouseDown?: JSX.EventHandlerUnion<any, MouseEvent>;
+  onPointerUp?: JSX.EventHandlerUnion<any, PointerEvent>;
+  onDragStart?: JSX.EventHandlerUnion<any, DragEvent>;
 }
 
 export interface CreatePressResult<T extends HTMLElement> {
@@ -89,12 +98,4 @@ export interface CreatePressResult<T extends HTMLElement> {
 
   /** Props to spread onto the target element. */
   pressProps: JSX.HTMLAttributes<T>;
-}
-
-export interface EventBase {
-  currentTarget: EventTarget | null;
-  shiftKey: boolean;
-  ctrlKey: boolean;
-  metaKey: boolean;
-  altKey: boolean;
 }

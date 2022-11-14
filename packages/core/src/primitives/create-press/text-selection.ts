@@ -58,7 +58,7 @@ export function restoreTextSelection(target?: Element) {
     // There appears to be a delay on iOS where selection still might occur
     // after pointer up, so wait a bit before removing user-select.
     setTimeout(() => {
-      // Wait for any CSS transitions to complete so we don't recompute style
+      // Wait for any CSS transitions to complete, so we don't recompute style
       // for the whole page in the middle of the animation and cause jank.
       runAfterTransition(() => {
         // Avoid race conditions

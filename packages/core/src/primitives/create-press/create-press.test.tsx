@@ -23,10 +23,12 @@ function Example(
       type?: string;
     }
 ) {
-  const { pressProps } = createPress(props);
+  let ref: any;
+  const { pressProps } = createPress(props, () => ref);
 
   return (
     <Dynamic
+      ref={ref}
       {...pressProps}
       component={props.elementType ?? "div"}
       style={props.style}
@@ -443,7 +445,7 @@ describe("createPress", () => {
 
       render(() => (
         <Example
-          shouldCancelOnPointerExit
+          cancelOnPointerExit
           onPressStart={addEvent}
           onPressEnd={addEvent}
           onPressChange={pressed => addEvent({ type: "presschange", pressed })}
@@ -890,7 +892,7 @@ describe("createPress", () => {
 
       render(() => (
         <Example
-          isDisabled
+          disabled
           onPressStart={addEvent}
           onPressEnd={addEvent}
           onPressChange={pressed => addEvent({ type: "presschange", pressed })}
@@ -1700,6 +1702,8 @@ describe("createPress", () => {
     let platformGetter: any;
 
     function TestStyleChange(props: CreatePressProps & { styleToApply?: any }) {
+      let ref: any;
+
       const [local, others] = splitProps(props, ["styleToApply"]);
 
       const [show, setShow] = createSignal(false);
@@ -1708,10 +1712,10 @@ describe("createPress", () => {
         onPressStart: () => setTimeout(() => setShow(true), 3000),
       });
 
-      const { pressProps } = createPress<HTMLDivElement>(createPressProps);
+      const { pressProps } = createPress<HTMLDivElement>(createPressProps, () => ref);
 
       return (
-        <div style={show() ? local.styleToApply : {}} {...pressProps}>
+        <div ref={ref} style={show() ? local.styleToApply : {}} {...pressProps}>
           test
         </div>
       );

@@ -13,11 +13,44 @@ import {
   EventKey,
   focusWithoutScrolling,
 } from "@kobalte/utils";
-import { createEffect, createSignal, JSX, mergeProps, on, onCleanup, splitProps } from "solid-js";
+import {
+  Accessor,
+  createEffect,
+  createSignal,
+  JSX,
+  mergeProps,
+  on,
+  onCleanup,
+  splitProps,
+} from "solid-js";
 
 import { isVirtualClick, isVirtualPointerEvent } from "./is-virtual-event";
 import { disableTextSelection, restoreTextSelection } from "./text-selection";
-import { CreatePressProps, CreatePressResult, EventBase, PointerType } from "./types";
+import { CreatePressProps, CreatePressResult, PointerType } from "./types";
+
+interface EventBase {
+  currentTarget: EventTarget | null;
+  shiftKey: boolean;
+  ctrlKey: boolean;
+  metaKey: boolean;
+  altKey: boolean;
+}
+
+interface Rect {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
+interface EventPoint {
+  clientX: number;
+  clientY: number;
+  width?: number;
+  height?: number;
+  radiusX?: number;
+  radiusY?: number;
+}
 
 interface PressState {
   isPressed: boolean;
@@ -35,8 +68,12 @@ interface PressState {
  * It normalizes behavior across browsers and platforms, and handles many nuances
  * of dealing with pointer and keyboard events.
  * @param props - Props for the press primitive.
+ * @param ref - The ref of the element.
  */
-export function createPress<T extends HTMLElement>(props: CreatePressProps): CreatePressResult<T> {
+export function createPress<T extends HTMLElement>(
+  props: CreatePressProps,
+  ref: Accessor<T | undefined>
+): CreatePressResult<T> {
   const [local, others] = splitProps(props, [
     // Event handlers to be chained internally
     "onKeyDown",
@@ -47,15 +84,15 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
     "onPointerUp",
     "onDragStart",
     // Specific to createPress
-    "onPress",
-    "onPressChange",
     "onPressStart",
     "onPressEnd",
     "onPressUp",
-    "isDisabled",
-    "isPressed",
+    "onPressChange",
+    "onPress",
+    "pressed",
+    "disabled",
     "preventFocusOnPress",
-    "shouldCancelOnPointerExit",
+    "cancelOnPointerExit",
     "allowTextSelectionOnPress",
   ]);
 
@@ -75,7 +112,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   const { addGlobalListener, removeAllGlobalListeners } = createGlobalListeners();
 
   const triggerPressStart = (originalEvent: EventBase, pointerType: PointerType) => {
-    if (access(local.isDisabled) || state.didFirePressStart) {
+    if (access(local.disabled) || state.didFirePressStart) {
       return;
     }
 
@@ -120,7 +157,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
     local.onPressChange?.(false);
     setIsPressed(false);
 
-    if (wasPressed && !access(local.isDisabled)) {
+    if (wasPressed && !access(local.disabled)) {
       local.onPress?.({
         type: "press",
         pointerType,
@@ -134,7 +171,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   };
 
   const triggerPressUp = (originalEvent: EventBase, pointerType: PointerType) => {
-    if (access(local.isDisabled)) {
+    if (access(local.disabled)) {
       return;
     }
 
@@ -214,7 +251,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
       state.isOverTarget = false;
       triggerPressEnd(createEvent(state.target!, e), state.pointerType!, false);
 
-      if (access(local.shouldCancelOnPointerExit)) {
+      if (access(local.cancelOnPointerExit)) {
         cancel(e);
       }
     }
@@ -287,7 +324,12 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   };
 
   const onClick: JSX.EventHandlerUnion<T, MouseEvent> = e => {
-    callHandler(local.onClick, e);
+    if (local.onClick) {
+      callHandler(local.onClick, e);
+      console.warn(
+        "[kobalte]: use onPress instead of onClick for better press interactions support across browsers and platforms."
+      );
+    }
 
     if (e && !e.currentTarget.contains(e.target as Element)) {
       return;
@@ -296,7 +338,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
     if (e && e.button === 0) {
       e.stopPropagation();
 
-      if (access(local.isDisabled)) {
+      if (access(local.disabled)) {
         e.preventDefault();
       }
 
@@ -308,7 +350,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
         (state.pointerType === "virtual" || isVirtualClick(e))
       ) {
         // Ensure the element receives focus (VoiceOver on iOS does not do this)
-        if (!access(local.isDisabled) && !access(local.preventFocusOnPress)) {
+        if (!access(local.disabled) && !access(local.preventFocusOnPress)) {
           focusWithoutScrolling(e.currentTarget);
         }
 
@@ -358,7 +400,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
     state.activePointerId = e.pointerId;
     state.target = e.currentTarget;
 
-    if (!access(local.isDisabled) && !access(local.preventFocusOnPress)) {
+    if (!access(local.disabled) && !access(local.preventFocusOnPress)) {
       focusWithoutScrolling(e.currentTarget);
     }
 
@@ -433,9 +475,28 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
     )
   );
 
+  // Can't set `data-pressed` prop
+  // because calling "isPressed()" in JSX break "inline style" reactivity, hence this hack
+  createEffect(() => {
+    const el = ref();
+
+    if (!el) {
+      return;
+    }
+
+    if (local.pressed ?? isPressed()) {
+      el.dataset.pressed = "";
+    } else {
+      delete el.dataset.pressed;
+    }
+  });
+
   return {
-    isPressed: () => access(local.isPressed) ?? isPressed(),
+    isPressed: () => access(local.pressed) ?? isPressed(),
     pressProps: mergeProps(others, {
+      get "data-disabled"() {
+        return access(local.disabled) ? "" : undefined;
+      },
       onKeyDown,
       onKeyUp,
       onClick,
@@ -471,24 +532,6 @@ function isValidKeyboardEvent(event: KeyboardEvent, currentTarget: Element): boo
     !(role === "link" && key !== EventKey.Enter)
   );
 }
-function getTouchFromEvent(event: TouchEvent): Touch | null {
-  const { targetTouches } = event;
-  if (targetTouches.length > 0) {
-    return targetTouches[0];
-  }
-  return null;
-}
-
-function getTouchById(event: TouchEvent, pointerId: null | number): null | Touch {
-  const changedTouches = event.changedTouches;
-  for (let i = 0; i < changedTouches.length; i++) {
-    const touch = changedTouches[i];
-    if (touch.identifier === pointerId) {
-      return touch;
-    }
-  }
-  return null;
-}
 
 function createEvent(target: HTMLElement, e: EventBase): EventBase {
   return {
@@ -498,22 +541,6 @@ function createEvent(target: HTMLElement, e: EventBase): EventBase {
     metaKey: e.metaKey,
     altKey: e.altKey,
   };
-}
-
-interface Rect {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-}
-
-interface EventPoint {
-  clientX: number;
-  clientY: number;
-  width?: number;
-  height?: number;
-  radiusX?: number;
-  radiusY?: number;
 }
 
 function getPointClientRect(point: EventPoint): Rect {
