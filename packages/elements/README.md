@@ -1,15 +1,15 @@
-# @kobalte/core
+# @kobalte/elements
 
 Unstyled components and primitives for building accessible web apps and design systems with SolidJS.
 
 ## Installation
 
 ```bash
-npm install @kobalte/core
+npm install @kobalte/elements
 # or
-yarn add @kobalte/core
+yarn add @kobalte/elements
 # or
-pnpm add @kobalte/core
+pnpm add @kobalte/elements
 ```
 
 ## Documentation
