@@ -6,14 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/a9dea8a3672179e6c38aafd1429daf44c7ea2ff6/packages/@react-aria/interactions/test/usePress.test.js
  */
 
-import { installPointerEvent } from "@kobalte/tests";
+import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
+import { chainHandlers } from "@kobalte/utils";
 import { createSignal, JSX, mergeProps, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { fireEvent, render, screen } from "solid-testing-library";
 
 import { createPress } from "./create-press";
 import { CreatePressProps } from "./types";
-import { chainHandlers } from "@kobalte/utils";
 
 function Example(
   props: CreatePressProps &
@@ -25,12 +25,13 @@ function Example(
     }
 ) {
   const [local, others] = splitProps(props, [
+    "elementType",
     "onKeyDown",
     "onKeyUp",
     "onClick",
     "onPointerDown",
-    "onMouseDown",
     "onPointerUp",
+    "onMouseDown",
     "onDragStart",
   ]);
 
@@ -52,12 +53,12 @@ function Example(
     chainHandlers(e, [local.onPointerDown, pressHandlers.onPointerDown]);
   };
 
-  const onMouseDown: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-    chainHandlers(e, [local.onMouseDown, pressHandlers.onMouseDown]);
-  };
-
   const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
     chainHandlers(e, [local.onPointerUp, pressHandlers.onPointerUp]);
+  };
+
+  const onMouseDown: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    chainHandlers(e, [local.onMouseDown, pressHandlers.onMouseDown]);
   };
 
   const onDragStart: JSX.EventHandlerUnion<any, DragEvent> = e => {
@@ -66,41 +67,20 @@ function Example(
 
   return (
     <Dynamic
-      {...pressHandlers}
-      {...others}
+      component={local.elementType ?? "div"}
+      tabIndex="0"
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}
       onClick={onClick}
       onPointerDown={onPointerDown}
-      onMouseDown={onMouseDown}
       onPointerUp={onPointerUp}
+      onMouseDown={onMouseDown}
       onDragStart={onDragStart}
-      component={props.elementType ?? "div"}
-      style={props.style}
-      tabIndex="0"
-      draggable={props.draggable}
+      {...others}
     >
-      {props.elementType !== "input" ? "test" : undefined}
+      {local.elementType !== "input" ? "test" : undefined}
     </Dynamic>
   );
-}
-
-function pointerEvent(type: any, opts: any) {
-  const evt = new Event(type, { bubbles: true, cancelable: true });
-  Object.assign(
-    evt,
-    {
-      ctrlKey: false,
-      metaKey: false,
-      shiftKey: false,
-      altKey: false,
-      button: opts.button || 0,
-      width: 1,
-      height: 1,
-    },
-    opts
-  );
-  return evt;
 }
 
 describe("createPress", () => {
@@ -135,12 +115,12 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointerup", {
+        createPointerEvent("pointerup", {
           pointerId: 1,
           pointerType: "mouse",
           clientX: 0,
@@ -215,12 +195,12 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointermove", {
+        createPointerEvent("pointermove", {
           pointerId: 1,
           pointerType: "mouse",
           clientX: 100,
@@ -231,7 +211,7 @@ describe("createPress", () => {
 
       fireEvent(
         el,
-        pointerEvent("pointerup", {
+        createPointerEvent("pointerup", {
           pointerId: 1,
           pointerType: "mouse",
           clientX: 100,
@@ -242,7 +222,12 @@ describe("createPress", () => {
 
       fireEvent(
         el,
-        pointerEvent("pointermove", { pointerId: 1, pointerType: "mouse", clientX: 0, clientY: 0 })
+        createPointerEvent("pointermove", {
+          pointerId: 1,
+          pointerType: "mouse",
+          clientX: 0,
+          clientY: 0,
+        })
       );
       await Promise.resolve();
 
@@ -277,12 +262,12 @@ describe("createPress", () => {
 
       events = [];
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointermove", {
+        createPointerEvent("pointermove", {
           pointerId: 1,
           pointerType: "mouse",
           clientX: 100,
@@ -293,13 +278,23 @@ describe("createPress", () => {
 
       fireEvent(
         el,
-        pointerEvent("pointermove", { pointerId: 1, pointerType: "mouse", clientX: 0, clientY: 0 })
+        createPointerEvent("pointermove", {
+          pointerId: 1,
+          pointerType: "mouse",
+          clientX: 0,
+          clientY: 0,
+        })
       );
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointerup", { pointerId: 1, pointerType: "mouse", clientX: 0, clientY: 0 })
+        createPointerEvent("pointerup", {
+          pointerId: 1,
+          pointerType: "mouse",
+          clientX: 0,
+          clientY: 0,
+        })
       );
       await Promise.resolve();
 
@@ -393,10 +388,10 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
-      fireEvent(el, pointerEvent("pointercancel", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(el, createPointerEvent("pointercancel", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(events).toEqual([
@@ -445,7 +440,7 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       fireEvent(
@@ -501,12 +496,12 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointermove", {
+        createPointerEvent("pointermove", {
           pointerId: 1,
           pointerType: "mouse",
           clientX: 100,
@@ -517,7 +512,12 @@ describe("createPress", () => {
 
       fireEvent(
         el,
-        pointerEvent("pointermove", { pointerId: 1, pointerType: "mouse", clientX: 0, clientY: 0 })
+        createPointerEvent("pointermove", {
+          pointerId: 1,
+          pointerType: "mouse",
+          clientX: 0,
+          clientY: 0,
+        })
       );
       await Promise.resolve();
 
@@ -569,13 +569,13 @@ describe("createPress", () => {
 
       fireEvent(
         el,
-        pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse", shiftKey: true })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse", shiftKey: true })
       );
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointerup", {
+        createPointerEvent("pointerup", {
           pointerId: 1,
           pointerType: "mouse",
           ctrlKey: true,
@@ -651,12 +651,15 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse", button: 1 }));
+      fireEvent(
+        el,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse", button: 1 })
+      );
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointerup", {
+        createPointerEvent("pointerup", {
           pointerId: 1,
           pointerType: "mouse",
           button: 1,
@@ -674,12 +677,17 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointerup", { pointerId: 1, pointerType: "mouse", clientX: 0, clientY: 0 })
+        createPointerEvent("pointerup", {
+          pointerId: 1,
+          pointerType: "mouse",
+          clientX: 0,
+          clientY: 0,
+        })
       );
       await Promise.resolve();
 
@@ -691,12 +699,17 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointerup", { pointerId: 1, pointerType: "mouse", clientX: 0, clientY: 0 })
+        createPointerEvent("pointerup", {
+          pointerId: 1,
+          pointerType: "mouse",
+          clientX: 0,
+          clientY: 0,
+        })
       );
       await Promise.resolve();
 
@@ -710,7 +723,7 @@ describe("createPress", () => {
 
       let allowDefault = fireEvent(
         el,
-        pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
       );
       await Promise.resolve();
 
@@ -733,7 +746,7 @@ describe("createPress", () => {
 
       let allowDefault = fireEvent(
         el,
-        pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
       );
       await Promise.resolve();
 
@@ -751,7 +764,7 @@ describe("createPress", () => {
       const el = screen.getByText("test");
       let allowDefault = fireEvent(
         el,
-        pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
       );
       await Promise.resolve();
 
@@ -780,13 +793,18 @@ describe("createPress", () => {
 
       fireEvent(
         el,
-        pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse", width: 0, height: 0 })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+          width: 0,
+          height: 0,
+        })
       );
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointerup", {
+        createPointerEvent("pointerup", {
           pointerId: 1,
           pointerType: "mouse",
           width: 0,
@@ -861,7 +879,7 @@ describe("createPress", () => {
       // Make sure we can still determine that this is a virtual event by checking the pressure, detail, and height/width.
       fireEvent(
         el,
-        pointerEvent("pointerdown", {
+        createPointerEvent("pointerdown", {
           pointerId: 1,
           width: 1,
           height: 1,
@@ -874,7 +892,7 @@ describe("createPress", () => {
 
       fireEvent(
         el,
-        pointerEvent("pointerup", {
+        createPointerEvent("pointerup", {
           pointerId: 1,
           width: 1,
           height: 1,
@@ -948,12 +966,17 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointerup", { pointerId: 1, pointerType: "mouse", clientX: 0, clientY: 0 })
+        createPointerEvent("pointerup", {
+          pointerId: 1,
+          pointerType: "mouse",
+          clientX: 0,
+          clientY: 0,
+        })
       );
       await Promise.resolve();
 
@@ -967,7 +990,7 @@ describe("createPress", () => {
       const el = screen.getByText("test");
       fireEvent(
         el,
-        pointerEvent("pointerdown", {
+        createPointerEvent("pointerdown", {
           pointerId: 1,
           pointerType: "mouse",
           clientX: 0,
@@ -980,7 +1003,7 @@ describe("createPress", () => {
 
       fireEvent(
         el,
-        pointerEvent("pointermove", {
+        createPointerEvent("pointermove", {
           pointerId: 1,
           pointerType: "mouse",
           clientX: 10,
@@ -993,7 +1016,7 @@ describe("createPress", () => {
 
       fireEvent(
         el,
-        pointerEvent("pointerup", {
+        createPointerEvent("pointerup", {
           pointerId: 1,
           pointerType: "mouse",
           clientX: 10,
@@ -1795,13 +1818,13 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(document.documentElement.style.webkitUserSelect).toBe("none");
       expect(el).not.toHaveStyle("user-select: none");
 
-      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
     });
 
@@ -1820,7 +1843,7 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(document.documentElement.style.webkitUserSelect).toBe(mockUserSelect);
@@ -1840,10 +1863,10 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       jest.advanceTimersByTime(300);
@@ -1852,18 +1875,18 @@ describe("createPress", () => {
 
       // Checkbox doesn't remove `user-select: none;` style from HTML Element issue
       // see https://github.com/adobe/react-spectrum/issues/862
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointermove", {
+        createPointerEvent("pointermove", {
           pointerId: 1,
           pointerType: "touch",
           clientX: 100,
@@ -1875,7 +1898,7 @@ describe("createPress", () => {
 
       fireEvent(
         el,
-        pointerEvent("pointerup", {
+        createPointerEvent("pointerup", {
           pointerId: 1,
           pointerType: "touch",
           clientX: 100,
@@ -1904,30 +1927,30 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(el).toHaveStyle("user-select: none");
 
-      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(el).toHaveStyle("user-select: text");
 
       // Checkbox doesn't remove `user-select: none;` style from HTML Element issue
       // see https://github.com/adobe/react-spectrum/issues/862
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       fireEvent(
         el,
-        pointerEvent("pointermove", {
+        createPointerEvent("pointermove", {
           pointerId: 1,
           pointerType: "touch",
           clientX: 100,
@@ -1938,7 +1961,7 @@ describe("createPress", () => {
 
       fireEvent(
         el,
-        pointerEvent("pointerup", {
+        createPointerEvent("pointerup", {
           pointerId: 1,
           pointerType: "touch",
           clientX: 100,
@@ -1972,21 +1995,21 @@ describe("createPress", () => {
 
       const els = screen.getAllByText("test");
 
-      fireEvent(els[0], pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(els[0], createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent(els[0], pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(els[0], createPointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(document.documentElement.style.webkitUserSelect).toBe("none");
 
-      fireEvent(els[1], pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(els[1], createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
       jest.advanceTimersByTime(300);
 
       expect(document.documentElement.style.webkitUserSelect).toBe("none");
 
-      fireEvent(els[1], pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(els[1], createPointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
       jest.advanceTimersByTime(300);
 
@@ -2019,22 +2042,22 @@ describe("createPress", () => {
 
       const els = screen.getAllByText("test");
 
-      fireEvent(els[0], pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(els[0], createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
-      fireEvent(els[1], pointerEvent("pointerdown", { pointerId: 2, pointerType: "touch" }));
+      fireEvent(els[1], createPointerEvent("pointerdown", { pointerId: 2, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(els[0]).toHaveStyle("user-select: none");
       expect(els[1]).toHaveStyle("user-select: none");
 
-      fireEvent(els[0], pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(els[0], createPointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(els[0]).toHaveStyle("user-select: text");
       expect(els[1]).toHaveStyle("user-select: none");
 
-      fireEvent(els[1], pointerEvent("pointerup", { pointerId: 2, pointerType: "touch" }));
+      fireEvent(els[1], createPointerEvent("pointerup", { pointerId: 2, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(els[0]).toHaveStyle("user-select: text");
@@ -2054,7 +2077,7 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(document.documentElement.style.webkitUserSelect).toBe("none");
@@ -2082,7 +2105,7 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(el).toHaveStyle(`
@@ -2096,7 +2119,7 @@ describe("createPress", () => {
         background: red;
       `);
 
-      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(el).toHaveStyle(`
@@ -2120,7 +2143,7 @@ describe("createPress", () => {
 
       const el = screen.getByText("test");
 
-      fireEvent(el, pointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(el).toHaveStyle(`
@@ -2134,7 +2157,7 @@ describe("createPress", () => {
         background: red;
       `);
 
-      fireEvent(el, pointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(el, createPointerEvent("pointerup", { pointerId: 1, pointerType: "touch" }));
       await Promise.resolve();
 
       expect(el).toHaveStyle(`

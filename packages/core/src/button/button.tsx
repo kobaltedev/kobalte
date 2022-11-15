@@ -1,3 +1,17 @@
+/*!
+ * Portions of this file are based on code from react-spectrum.
+ * Apache License Version 2.0, Copyright 2020 Adobe.
+ *
+ * Credits to the React Spectrum team:
+ * https://github.com/adobe/react-spectrum/blob/a13802d8be6f83af1450e56f7a88527b10d9cadf/packages/@react-aria/button/src/useButton.ts
+ *
+ * Portions of this file are based on code from ariakit.
+ * MIT Licensed, Copyright (c) Diego Haz.
+ *
+ * Credits to the Ariakit team:
+ * https://github.com/ariakit/ariakit/blob/8a13899ff807bbf39f3d89d2d5964042ba4d5287/packages/ariakit/src/button/button.ts
+ */
+
 import {
   chainHandlers,
   createPolymorphicComponent,
@@ -42,8 +56,8 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       "onKeyUp",
       "onClick",
       "onPointerDown",
-      "onMouseDown",
       "onPointerUp",
+      "onMouseDown",
       "onDragStart",
     ],
     [
@@ -64,12 +78,17 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
 
   const tagName = createTagName(
     () => ref,
-    () => "button"
+    () => local.as ?? "button"
   );
 
   const isNativeButton = createMemo(() => {
-    const _tagName = tagName();
-    return !!_tagName && isButton({ tagName: _tagName, type: local.type });
+    const elementTagName = tagName();
+
+    if (elementTagName == null) {
+      return false;
+    }
+
+    return isButton({ tagName: elementTagName, type: local.type });
   });
 
   const isLink = createMemo(() => {
@@ -100,12 +119,12 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
     chainHandlers(e, [local.onPointerDown, pressHandlers.onPointerDown]);
   };
 
-  const onMouseDown: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
-    chainHandlers(e, [local.onMouseDown, pressHandlers.onMouseDown]);
-  };
-
   const onPointerUp: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> = e => {
     chainHandlers(e, [local.onPointerUp, pressHandlers.onPointerUp]);
+  };
+
+  const onMouseDown: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
+    chainHandlers(e, [local.onMouseDown, pressHandlers.onMouseDown]);
   };
 
   const onDragStart: JSX.EventHandlerUnion<HTMLButtonElement, DragEvent> = e => {
@@ -127,8 +146,8 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       onKeyUp={onKeyUp}
       onClick={onClick}
       onPointerDown={onPointerDown}
-      onMouseDown={onMouseDown}
       onPointerUp={onPointerUp}
+      onMouseDown={onMouseDown}
       onDragStart={onDragStart}
       {...others}
     />

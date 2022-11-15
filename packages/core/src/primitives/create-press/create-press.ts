@@ -361,6 +361,20 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
     addGlobalListener(document, "pointercancel", globalOnPointerCancel, false);
   };
 
+  const onPointerUp: JSX.EventHandlerUnion<T, PointerEvent> = e => {
+    // iOS fires pointerup with zero width and height, so check the pointerType recorded during pointerdown.
+    if (!e.currentTarget.contains(e.target as Element) || state.pointerType === "virtual") {
+      return;
+    }
+
+    // Only handle left clicks
+    // Safari on iOS sometimes fires pointerup events, even
+    // when the touch isn't over the target, so double check.
+    if (e.button === 0 && isPointOverTarget(e, e.currentTarget)) {
+      triggerPressUp(e, state.pointerType ?? (e.pointerType as PointerType));
+    }
+  };
+
   const onMouseDown: JSX.EventHandlerUnion<T, MouseEvent> = e => {
     if (!e.currentTarget.contains(e.target as HTMLElement)) {
       return;
@@ -375,20 +389,6 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
       }
 
       e.stopPropagation();
-    }
-  };
-
-  const onPointerUp: JSX.EventHandlerUnion<T, PointerEvent> = e => {
-    // iOS fires pointerup with zero width and height, so check the pointerType recorded during pointerdown.
-    if (!e.currentTarget.contains(e.target as Element) || state.pointerType === "virtual") {
-      return;
-    }
-
-    // Only handle left clicks
-    // Safari on iOS sometimes fires pointerup events, even
-    // when the touch isn't over the target, so double check.
-    if (e.button === 0 && isPointOverTarget(e, e.currentTarget)) {
-      triggerPressUp(e, state.pointerType ?? (e.pointerType as PointerType));
     }
   };
 
@@ -422,8 +422,8 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
       onKeyUp,
       onClick,
       onPointerDown,
-      onMouseDown,
       onPointerUp,
+      onMouseDown,
       onDragStart,
     },
   };
@@ -481,10 +481,12 @@ function areRectanglesOverlapping(a: Rect, b: Rect) {
   if (a.left > b.right || b.left > a.right) {
     return false;
   }
+
   // check if they cannot overlap on y-axis
   if (a.top > b.bottom || b.top > a.bottom) {
     return false;
   }
+
   return true;
 }
 
@@ -511,7 +513,7 @@ function shouldPreventDefaultKeyboard(target: Element, key: string) {
   return true;
 }
 
-const nonTextInputTypes = new Set([
+const NON_TEXT_INPUT_TYPES = new Set([
   "checkbox",
   "radio",
   "range",
@@ -526,6 +528,6 @@ const nonTextInputTypes = new Set([
 function isValidInputKey(target: HTMLInputElement, key: string) {
   // Only space should toggle checkboxes and radios, not enter.
   return target.type === "checkbox" || target.type === "radio"
-    ? key === " "
-    : nonTextInputTypes.has(target.type);
+    ? key === EventKey.Space
+    : NON_TEXT_INPUT_TYPES.has(target.type);
 }

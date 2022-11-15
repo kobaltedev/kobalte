@@ -93,8 +93,8 @@ export interface CreatePressResult<T extends HTMLElement> {
     onKeyUp: JSX.EventHandlerUnion<T, KeyboardEvent>;
     onClick: JSX.EventHandlerUnion<T, MouseEvent>;
     onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
-    onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
     onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
+    onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
     onDragStart: JSX.EventHandlerUnion<T, DragEvent>;
   };
 }

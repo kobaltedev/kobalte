@@ -1,18 +1,22 @@
 import {
   checkAccessibility,
+  createPointerEvent,
+  installPointerEvent,
   itIsPolymorphic,
   itRendersChildren,
   itSupportsClass,
   itSupportsRef,
   itSupportsStyle,
 } from "@kobalte/tests";
-import { render, screen } from "solid-testing-library";
+import { fireEvent, render, screen } from "solid-testing-library";
 
 import { Button, ButtonProps } from "./button";
 
 const defaultProps: ButtonProps = {};
 
 describe("Button", () => {
+  installPointerEvent();
+
   checkAccessibility([<Button>Button</Button>]);
   itIsPolymorphic(Button as any, defaultProps);
   itRendersChildren(Button as any, defaultProps);
@@ -171,5 +175,35 @@ describe("Button", () => {
     expect(button).toHaveAttribute("aria-disabled");
   });
 
-  //TODO: add react-aria useButton tests adaptation
+  it("should not have attribute 'data-pressed' and 'data-disabled'  by default", async () => {
+    render(() => <Button data-testid="button">Button</Button>);
+
+    const button = screen.getByTestId("button");
+
+    expect(button).not.toHaveAttribute("data-pressed");
+    expect(button).not.toHaveAttribute("data-disabled");
+  });
+
+  it("should have attribute 'data-pressed' when pressed", async () => {
+    render(() => <Button data-testid="button">Button</Button>);
+
+    const button = screen.getByTestId("button");
+
+    fireEvent(button, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
+
+    expect(button).toHaveAttribute("data-pressed");
+  });
+
+  it("should have attribute 'data-disabled' when disabled", () => {
+    render(() => (
+      <Button data-testid="button" disabled>
+        Button
+      </Button>
+    ));
+
+    const button = screen.getByTestId("button");
+
+    expect(button).toHaveAttribute("data-disabled");
+  });
 });
