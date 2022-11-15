@@ -66,7 +66,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       "onPressUp",
       "onPressChange",
       "onPress",
-      "pressed",
+      //"pressed",
       "disabled",
       "preventFocusOnPress",
       "cancelOnPointerExit",
@@ -74,7 +74,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
     ]
   );
 
-  const { isPressed, pressHandlers } = createPress<HTMLButtonElement>(createPressProps);
+  const { pressed, pressHandlers } = createPress<HTMLButtonElement>(createPressProps);
 
   const tagName = createTagName(
     () => ref,
@@ -140,7 +140,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       tabIndex={!isNativeButton() && !isLink() && !local.disabled ? 0 : undefined}
       disabled={isNativeButton() || isInput() ? local.disabled : undefined}
       aria-disabled={!isNativeButton() && !isInput() && local.disabled ? true : undefined}
-      data-pressed={isPressed() ? "" : undefined}
+      data-pressed={pressed() ? "" : undefined}
       data-disabled={local.disabled ? "" : undefined}
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}

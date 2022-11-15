@@ -55,7 +55,7 @@ interface PressState {
  * @param props - Props for the press primitive.
  */
 export function createPress<T extends HTMLElement>(props: CreatePressProps): CreatePressResult<T> {
-  const [isPressed, setIsPressed] = createSignal(false);
+  const [pressed, setPressed] = createSignal(false);
 
   const state: PressState = {
     isPressed: false,
@@ -88,7 +88,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
     props.onPressChange?.(true);
 
     state.didFirePressStart = true;
-    setIsPressed(true);
+    setPressed(true);
   };
 
   const triggerPressEnd = (
@@ -114,7 +114,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
     });
 
     props.onPressChange?.(false);
-    setIsPressed(false);
+    setPressed(false);
 
     if (wasPressed && !access(props.disabled)) {
       props.onPress?.({
@@ -416,7 +416,8 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   );
 
   return {
-    isPressed: () => access(props.pressed) ?? isPressed(),
+    //pressed: () => access(props.pressed) ?? pressed(),
+    pressed,
     pressHandlers: {
       onKeyDown,
       onKeyUp,

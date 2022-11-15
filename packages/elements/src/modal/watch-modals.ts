@@ -3,13 +3,13 @@
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *
  * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/aria-modal-polyfill/src/index.ts
+ * https://github.com/adobe/react-spectrum/blob/a13802d8be6f83af1450e56f7a88527b10d9cadf/packages/@react-aria/aria-modal-polyfill/src/index.ts
  *
  * Portions of this file are based on code from mantinedev.
  * MIT Licensed, Copyright (c) 2021 Vitaly Rtishchev.
  *
  * Credits to the Mantinedev team:
- * https://github.com/mantinedev/mantine/blob/master/src/mantine-hooks/src/use-focus-trap/create-aria-hider.ts
+ * https://github.com/mantinedev/mantine/blob/1a89027b8becf923a3eec80c0aee90abf44e2e6b/src/mantine-hooks/src/use-focus-trap/create-aria-hider.ts
  */
 
 import { noop } from "@kobalte/utils";
