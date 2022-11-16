@@ -33,7 +33,7 @@ describe("ToggleButton", () => {
     const toggle = screen.getByTestId("toggle");
 
     expect(toggle).toHaveAttribute("aria-pressed", "true");
-    expect(toggle).toHaveAttribute("data-state", "on");
+    expect(toggle).toHaveAttribute("data-selected");
   });
 
   it("can be controlled", async () => {
@@ -48,13 +48,13 @@ describe("ToggleButton", () => {
     const toggle = screen.getByTestId("toggle");
 
     expect(toggle).toHaveAttribute("aria-pressed", "true");
-    expect(toggle).toHaveAttribute("data-state", "on");
+    expect(toggle).toHaveAttribute("data-selected");
 
     fireEvent.click(toggle);
     await Promise.resolve();
 
     expect(toggle).toHaveAttribute("aria-pressed", "true");
-    expect(toggle).toHaveAttribute("data-state", "on");
+    expect(toggle).toHaveAttribute("data-selected");
     expect(onChangeSpy).toHaveBeenCalledTimes(1);
     expect(onChangeSpy).toHaveBeenCalledWith(false);
   });
@@ -65,7 +65,7 @@ describe("ToggleButton", () => {
     const toggle = screen.getByTestId("toggle");
 
     expect(toggle).toHaveAttribute("aria-pressed", "false");
-    expect(toggle).toHaveAttribute("data-state", "off");
+    expect(toggle).not.toHaveAttribute("data-selected");
   });
 
   it("should have correct attributes when the toggle button is on (selected)", () => {
@@ -78,6 +78,6 @@ describe("ToggleButton", () => {
     const toggle = screen.getByTestId("toggle");
 
     expect(toggle).toHaveAttribute("aria-pressed", "true");
-    expect(toggle).toHaveAttribute("data-state", "on");
+    expect(toggle).toHaveAttribute("data-selected");
   });
 });

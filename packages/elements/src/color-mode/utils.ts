@@ -38,7 +38,7 @@ function preventTransition() {
 
 export function setColorModeDataset(value: ColorMode, shouldPreventTransition = true) {
   const cleanup = shouldPreventTransition ? preventTransition() : undefined;
-  document.documentElement.dataset.kobalteTheme = value;
+  document.documentElement.dataset.kbTheme = value;
   document.documentElement.style.colorScheme = value;
   cleanup?.();
 }

@@ -58,7 +58,7 @@ export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonPro
   return (
     <Button
       aria-pressed={state.selected()}
-      data-state={state.selected() ? "on" : "off"}
+      data-selected={state.selected() ? "" : undefined}
       onPress={onPress}
       {...others}
     />
