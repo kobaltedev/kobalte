@@ -33,7 +33,7 @@ export interface ToggleButtonProps extends ButtonProps {
 }
 
 /**
- * A two-state button that can be either on or off.
+ * A two-state button that allow users to toggle a selection on or off.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
 export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonProps>(props => {
