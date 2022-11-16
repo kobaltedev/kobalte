@@ -12,7 +12,7 @@ A UI toolkit for building SolidJS applications.
 | Name                                    |                              Version                               | Description                                                                             |
 | :-------------------------------------- | :----------------------------------------------------------------: | :-------------------------------------------------------------------------------------- |
 | [@kobalte/elements](/packages/elements) | [![elements-npm]](https://www.npmjs.com/package/@kobalte/elements) | Unstyled components and primitives for building accessible web apps and design systems. |
-| [@kobalte/pigment](/packages/pigment)   |  [![pigment-npm]](https://www.npmjs.com/package/@kobalte/pigment)  | A full featured component library built on top of `@kobalte/elements`.                  |
+| [@kobalte/pigment](/packages/pigment)   |  [![pigment-npm]](https://www.npmjs.com/package/@kobalte/pigment)  | Kobalte's design system implementation, built on top of `@kobalte/elements`.            |
 
 [elements-npm]: https://img.shields.io/npm/v/@kobalte/elements
 [pigment-npm]: https://img.shields.io/npm/v/@kobalte/pigment

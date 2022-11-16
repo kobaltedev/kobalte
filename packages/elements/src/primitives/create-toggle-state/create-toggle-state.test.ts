@@ -3,13 +3,13 @@ import { createRoot } from "solid-js";
 import { createToggleState } from "./create-toggle-state";
 
 describe("createToggleState", () => {
-  it("can be default checked (uncontrolled)", () => {
+  it("can be default selected (uncontrolled)", () => {
     createRoot(dispose => {
       const state = createToggleState({
-        defaultChecked: true,
+        defaultSelected: true,
       });
 
-      expect(state.checked()).toBeTruthy();
+      expect(state.selected()).toBeTruthy();
 
       dispose();
     });
@@ -20,15 +20,15 @@ describe("createToggleState", () => {
       const onChangeSpy = jest.fn();
 
       const state = createToggleState({
-        checked: true,
-        onCheckedChange: onChangeSpy,
+        selected: true,
+        onSelectedChange: onChangeSpy,
       });
 
-      expect(state.checked()).toBeTruthy();
+      expect(state.selected()).toBeTruthy();
 
-      state.toggleChecked();
+      state.toggle();
 
-      expect(state.checked()).toBeTruthy();
+      expect(state.selected()).toBeTruthy();
       expect(onChangeSpy).toHaveBeenCalledTimes(1);
       expect(onChangeSpy).toHaveBeenCalledWith(false);
 
@@ -36,71 +36,71 @@ describe("createToggleState", () => {
     });
   });
 
-  it("should setChecked with the given value", () => {
+  it("should setSelected with the given value", () => {
     createRoot(dispose => {
-      const state = createToggleState({ defaultChecked: false });
+      const state = createToggleState({ defaultSelected: false });
 
-      expect(state.checked()).toBeFalsy();
+      expect(state.selected()).toBeFalsy();
 
-      state.setChecked(true);
+      state.setSelected(true);
 
-      expect(state.checked()).toBeTruthy();
+      expect(state.selected()).toBeTruthy();
 
-      state.setChecked(false);
+      state.setSelected(false);
 
-      expect(state.checked()).toBeFalsy();
+      expect(state.selected()).toBeFalsy();
 
       dispose();
     });
   });
 
-  it("should not setChecked with the given value when is read only", () => {
+  it("should not setSelected with the given value when is read only", () => {
     createRoot(dispose => {
       const state = createToggleState({
-        defaultChecked: false,
+        defaultSelected: false,
         readOnly: true,
       });
 
-      expect(state.checked()).toBeFalsy();
+      expect(state.selected()).toBeFalsy();
 
-      state.setChecked(true);
+      state.setSelected(true);
 
-      expect(state.checked()).toBeFalsy();
+      expect(state.selected()).toBeFalsy();
 
       dispose();
     });
   });
 
-  it("should toggle checked state", () => {
+  it("should toggle selected state", () => {
     createRoot(dispose => {
-      const state = createToggleState({ defaultChecked: false });
+      const state = createToggleState({ defaultSelected: false });
 
-      expect(state.checked()).toBeFalsy();
+      expect(state.selected()).toBeFalsy();
 
-      state.toggleChecked();
+      state.toggle();
 
-      expect(state.checked()).toBeTruthy();
+      expect(state.selected()).toBeTruthy();
 
-      state.toggleChecked();
+      state.toggle();
 
-      expect(state.checked()).toBeFalsy();
+      expect(state.selected()).toBeFalsy();
 
       dispose();
     });
   });
 
-  it("should not toggle checked state when is read only", () => {
+  it("should not toggle selected state when is read only", () => {
     createRoot(dispose => {
       const state = createToggleState({
-        defaultChecked: false,
+        defaultSelected: false,
         readOnly: true,
       });
 
-      expect(state.checked()).toBeFalsy();
+      expect(state.selected()).toBeFalsy();
 
-      state.toggleChecked();
+      state.toggle();
 
-      expect(state.checked()).toBeFalsy();
+      expect(state.selected()).toBeFalsy();
 
       dispose();
     });

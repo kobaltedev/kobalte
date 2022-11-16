@@ -19,17 +19,17 @@ import { Button, ButtonProps } from "../button";
 import { createToggleState, PressEvents } from "../primitives";
 
 export interface ToggleButtonProps extends ButtonProps {
-  /** The controlled pressed state. */
-  pressed?: boolean;
+  /** The controlled selected state. */
+  selected?: boolean;
 
   /**
-   * The default pressed state when initially rendered.
-   * Useful when you do not need to control the pressed state.
+   * The default selected state when initially rendered.
+   * Useful when you do not need to control the selected state.
    */
-  defaultPressed?: boolean;
+  defaultSelected?: boolean;
 
-  /** Event handler called when the pressed state changes. */
-  onPressedChange?: (pressed: boolean) => void;
+  /** Event handler called when the selected state changes. */
+  onSelectedChange?: (selected: boolean) => void;
 }
 
 /**
@@ -38,27 +38,27 @@ export interface ToggleButtonProps extends ButtonProps {
  */
 export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonProps>(props => {
   const [local, others] = splitProps(props, [
-    "pressed",
-    "defaultPressed",
-    "onPressedChange",
+    "selected",
+    "defaultSelected",
+    "onSelectedChange",
     "onPress",
   ]);
 
-  const { checked, toggleChecked } = createToggleState({
-    checked: () => local.pressed,
-    defaultChecked: () => local.defaultPressed,
-    onCheckedChange: checked => local.onPressedChange?.(checked),
+  const state = createToggleState({
+    selected: () => local.selected,
+    defaultSelected: () => local.defaultSelected,
+    onSelectedChange: selected => local.onSelectedChange?.(selected),
   });
 
   const onPress: PressEvents["onPress"] = e => {
-    toggleChecked();
+    state.toggle();
     local.onPress?.(e);
   };
 
   return (
     <Button
-      aria-pressed={checked()}
-      data-state={checked() ? "on" : "off"}
+      aria-pressed={state.selected()}
+      data-state={state.selected() ? "on" : "off"}
       onPress={onPress}
       {...others}
     />

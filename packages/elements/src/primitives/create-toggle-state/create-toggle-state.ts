@@ -12,58 +12,58 @@ import { Accessor } from "solid-js";
 import { createControllableBooleanSignal } from "../create-controllable-signal";
 
 export interface CreateToggleStateProps {
-  /** The controlled checked state. */
-  checked?: MaybeAccessor<boolean | undefined>;
+  /** The controlled selected state. */
+  selected?: MaybeAccessor<boolean | undefined>;
 
   /**
-   * The default checked state when initially rendered.
-   * Useful when you do not need to control the checked state.
+   * The default selected state when initially rendered.
+   * Useful when you do not need to control the selected state.
    */
-  defaultChecked?: MaybeAccessor<boolean | undefined>;
+  defaultSelected?: MaybeAccessor<boolean | undefined>;
 
-  /** Whether the checked state cannot be changed by the user. */
+  /** Whether the selected state cannot be changed by the user. */
   readOnly?: MaybeAccessor<boolean | undefined>;
 
-  /** Event handler called when the checked state changes. */
-  onCheckedChange?: (checked: boolean) => void;
+  /** Event handler called when the selected state changes. */
+  onSelectedChange?: (selected: boolean) => void;
 }
 
 export interface ToggleState {
-  /** The checked state. */
-  checked: Accessor<boolean>;
+  /** The selected state. */
+  selected: Accessor<boolean>;
 
-  /** Updates the checked state. */
-  setChecked: (checked: boolean) => void;
+  /** Updates the selected state. */
+  setSelected: (selected: boolean) => void;
 
-  /** Toggle the checked state. */
-  toggleChecked: () => void;
+  /** Toggle the selected state. */
+  toggle: () => void;
 }
 
 /**
  * Provides state management for toggle components like checkboxes and switches.
  */
 export function createToggleState(props: CreateToggleStateProps = {}): ToggleState {
-  const [checked, _setChecked] = createControllableBooleanSignal({
-    value: () => access(props.checked),
-    defaultValue: () => !!access(props.defaultChecked),
-    onChange: value => props.onCheckedChange?.(value),
+  const [selected, _setSelected] = createControllableBooleanSignal({
+    value: () => access(props.selected),
+    defaultValue: () => !!access(props.defaultSelected),
+    onChange: value => props.onSelectedChange?.(value),
   });
 
-  const setChecked = (value: boolean) => {
+  const setSelected = (value: boolean) => {
     if (!access(props.readOnly)) {
-      _setChecked(value);
+      _setSelected(value);
     }
   };
 
-  const toggleChecked = () => {
+  const toggle = () => {
     if (!access(props.readOnly)) {
-      _setChecked(!checked());
+      _setSelected(!selected());
     }
   };
 
   return {
-    checked,
-    setChecked,
-    toggleChecked,
+    selected,
+    setSelected,
+    toggle,
   };
 }
