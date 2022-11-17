@@ -7,28 +7,25 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-stately/radio/src/useRadioGroupState.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps, ValidationState } from "@kobalte/utils";
+import {
+  createPolymorphicComponent,
+  mergeDefaultProps,
+  mergeRefs,
+  ValidationState,
+} from "@kobalte/utils";
 import { createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createControllableSignal } from "../primitives";
+import { createControllableSignal, createFormResetListener } from "../primitives";
 import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context";
 import { RadioGroupDescription } from "./radio-group-description";
 import { RadioGroupErrorMessage } from "./radio-group-error-message";
-import { RadioGroupItem } from "./radio-group-item";
-import { RadioGroupItemControl } from "./radio-group-item-control";
-import { RadioGroupItemInput } from "./radio-group-item-input";
-import { RadioGroupItemLabel } from "./radio-group-item-label";
 import { RadioGroupLabel } from "./radio-group-label";
 
 type RadioGroupComposite = {
   Label: typeof RadioGroupLabel;
   Description: typeof RadioGroupDescription;
   ErrorMessage: typeof RadioGroupErrorMessage;
-  Item: typeof RadioGroupItem;
-  ItemLabel: typeof RadioGroupItemLabel;
-  ItemInput: typeof RadioGroupItemInput;
-  ItemControl: typeof RadioGroupItemControl;
 };
 
 export interface RadioGroupProps {
@@ -42,7 +39,7 @@ export interface RadioGroupProps {
   defaultValue?: string;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value: string | undefined) => void;
 
   /**
    * The name of the radio group.
@@ -72,6 +69,8 @@ export interface RadioGroupProps {
  */
 export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, RadioGroupComposite>(
   props => {
+    let ref: HTMLDivElement | undefined;
+
     const defaultId = `kb-radiogroup-${createUniqueId()}`;
 
     props = mergeDefaultProps(
@@ -86,6 +85,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
 
     const [local, others] = splitProps(props, [
       "as",
+      "ref",
       "children",
       "value",
       "defaultValue",
@@ -101,7 +101,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
       "aria-describedby",
     ]);
 
-    const [selectedValue, setSelectedValue] = createControllableSignal({
+    const [selectedValue, setSelectedValue] = createControllableSignal<string | undefined>({
       value: () => local.value,
       defaultValue: () => local.defaultValue,
       onChange: value => local.onValueChange?.(value),
@@ -112,27 +112,35 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
     const [ariaErrorMessage, setAriaErrorMessage] = createSignal<string>();
 
     const allAriaLabelledBy = createMemo(() => {
-      return [local["aria-labelledby"], ariaLabelledBy()].filter(Boolean).join(" ");
+      return [local["aria-labelledby"], ariaLabelledBy()].filter(Boolean).join(" ") || undefined;
     });
 
     const allAriaDescribedBy = createMemo(() => {
       // aria-errormessage is not fully supported, so we put it as the first aria-describedby id instead
       // @See https://www.davidmacd.com/blog/test-aria-describedby-errormessage-aria-live.ht
       // and https://a11ysupport.io/tech/aria/aria-errormessage_attribute
-      return [ariaErrorMessage(), local["aria-describedby"], ariaDescribedBy()]
-        .filter(Boolean)
-        .join(" ");
+      return (
+        [ariaErrorMessage(), local["aria-describedby"], ariaDescribedBy()]
+          .filter(Boolean)
+          .join(" ") || undefined
+      );
     });
 
+    createFormResetListener(
+      () => ref,
+      () => setSelectedValue(undefined)
+    );
+
     const context: RadioGroupContextValue = {
-      value: selectedValue,
-      onValueChange: setSelectedValue,
+      selectedValue,
+      setSelectedValue,
       name: () => local.name!,
       validationState: () => local.validationState,
       required: () => local.required,
       disabled: () => local.disabled,
       readOnly: () => local.readOnly,
       getPartId: part => `${local.id!}-${part}`,
+      allAriaDescribedBy,
       setAriaLabelledBy,
       setAriaDescribedBy,
       setAriaErrorMessage,
@@ -141,10 +149,11 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
     return (
       <Dynamic
         component={local.as}
+        ref={mergeRefs(el => (ref = el), local.ref)}
         role="radiogroup"
         id={local.id}
-        aria-labelledby={allAriaLabelledBy() || undefined}
-        aria-describedby={allAriaDescribedBy() || undefined}
+        aria-labelledby={allAriaLabelledBy()}
+        aria-describedby={allAriaDescribedBy()}
         aria-invalid={local.validationState === "invalid" || undefined}
         aria-required={local.required || undefined}
         aria-disabled={local.disabled || undefined}
@@ -167,7 +176,3 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
 RadioGroup.Label = RadioGroupLabel;
 RadioGroup.Description = RadioGroupDescription;
 RadioGroup.ErrorMessage = RadioGroupErrorMessage;
-RadioGroup.Item = RadioGroupItem;
-RadioGroup.ItemLabel = RadioGroupItemLabel;
-RadioGroup.ItemInput = RadioGroupItemInput;
-RadioGroup.ItemControl = RadioGroupItemControl;

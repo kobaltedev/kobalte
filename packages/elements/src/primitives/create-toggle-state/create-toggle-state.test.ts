@@ -9,7 +9,7 @@ describe("createToggleState", () => {
         defaultSelected: true,
       });
 
-      expect(state.selected()).toBeTruthy();
+      expect(state.isSelected()).toBeTruthy();
 
       dispose();
     });
@@ -24,11 +24,11 @@ describe("createToggleState", () => {
         onSelectedChange: onChangeSpy,
       });
 
-      expect(state.selected()).toBeTruthy();
+      expect(state.isSelected()).toBeTruthy();
 
       state.toggle();
 
-      expect(state.selected()).toBeTruthy();
+      expect(state.isSelected()).toBeTruthy();
       expect(onChangeSpy).toHaveBeenCalledTimes(1);
       expect(onChangeSpy).toHaveBeenCalledWith(false);
 
@@ -40,15 +40,15 @@ describe("createToggleState", () => {
     createRoot(dispose => {
       const state = createToggleState({ defaultSelected: false });
 
-      expect(state.selected()).toBeFalsy();
+      expect(state.isSelected()).toBeFalsy();
 
-      state.setSelected(true);
+      state.setIsSelected(true);
 
-      expect(state.selected()).toBeTruthy();
+      expect(state.isSelected()).toBeTruthy();
 
-      state.setSelected(false);
+      state.setIsSelected(false);
 
-      expect(state.selected()).toBeFalsy();
+      expect(state.isSelected()).toBeFalsy();
 
       dispose();
     });
@@ -61,11 +61,11 @@ describe("createToggleState", () => {
         readOnly: true,
       });
 
-      expect(state.selected()).toBeFalsy();
+      expect(state.isSelected()).toBeFalsy();
 
-      state.setSelected(true);
+      state.setIsSelected(true);
 
-      expect(state.selected()).toBeFalsy();
+      expect(state.isSelected()).toBeFalsy();
 
       dispose();
     });
@@ -75,15 +75,15 @@ describe("createToggleState", () => {
     createRoot(dispose => {
       const state = createToggleState({ defaultSelected: false });
 
-      expect(state.selected()).toBeFalsy();
+      expect(state.isSelected()).toBeFalsy();
 
       state.toggle();
 
-      expect(state.selected()).toBeTruthy();
+      expect(state.isSelected()).toBeTruthy();
 
       state.toggle();
 
-      expect(state.selected()).toBeFalsy();
+      expect(state.isSelected()).toBeFalsy();
 
       dispose();
     });
@@ -96,11 +96,11 @@ describe("createToggleState", () => {
         readOnly: true,
       });
 
-      expect(state.selected()).toBeFalsy();
+      expect(state.isSelected()).toBeFalsy();
 
       state.toggle();
 
-      expect(state.selected()).toBeFalsy();
+      expect(state.isSelected()).toBeFalsy();
 
       dispose();
     });

@@ -2,14 +2,15 @@ import { ValidationState } from "@kobalte/utils";
 import { Accessor, createContext, useContext } from "solid-js";
 
 export interface RadioGroupContextValue {
-  value: Accessor<string | undefined>;
-  onValueChange: (value: string) => void;
+  selectedValue: Accessor<string | undefined>;
+  setSelectedValue: (value: string) => void;
   name: Accessor<string>;
   validationState: Accessor<ValidationState | undefined>;
   required: Accessor<boolean | undefined>;
   disabled: Accessor<boolean | undefined>;
   readOnly: Accessor<boolean | undefined>;
   getPartId: (part: string) => string;
+  allAriaDescribedBy: Accessor<string | undefined>;
   setAriaLabelledBy: (id: string | undefined) => void;
   setAriaDescribedBy: (id: string | undefined) => void;
   setAriaErrorMessage: (id: string | undefined) => void;

@@ -30,10 +30,10 @@ export interface CreateToggleStateProps {
 
 export interface ToggleState {
   /** The selected state. */
-  selected: Accessor<boolean>;
+  isSelected: Accessor<boolean>;
 
   /** Updates the selected state. */
-  setSelected: (selected: boolean) => void;
+  setIsSelected: (selected: boolean) => void;
 
   /** Toggle the selected state. */
   toggle: () => void;
@@ -43,27 +43,27 @@ export interface ToggleState {
  * Provides state management for toggle components like checkboxes and switches.
  */
 export function createToggleState(props: CreateToggleStateProps = {}): ToggleState {
-  const [selected, _setSelected] = createControllableBooleanSignal({
+  const [isSelected, _setIsSelected] = createControllableBooleanSignal({
     value: () => access(props.selected),
     defaultValue: () => !!access(props.defaultSelected),
     onChange: value => props.onSelectedChange?.(value),
   });
 
-  const setSelected = (value: boolean) => {
+  const setIsSelected = (value: boolean) => {
     if (!access(props.readOnly)) {
-      _setSelected(value);
+      _setIsSelected(value);
     }
   };
 
   const toggle = () => {
     if (!access(props.readOnly)) {
-      _setSelected(!selected());
+      _setIsSelected(!isSelected());
     }
   };
 
   return {
-    selected,
-    setSelected,
+    isSelected,
+    setIsSelected,
     toggle,
   };
 }

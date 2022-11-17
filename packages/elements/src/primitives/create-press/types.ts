@@ -59,10 +59,6 @@ export interface PressEvents {
 }
 
 export interface CreatePressProps extends PressEvents {
-  // TODO: check if needed later, change the name to not conflict with `ToggleButton` "pressed" state.
-  // /** Whether the target is in a controlled press state (e.g. an overlay it triggers is open). */
-  // pressed?: MaybeAccessor<boolean | undefined>;
-
   /** Whether the press events should be disabled. */
   disabled?: MaybeAccessor<boolean | undefined>;
 
@@ -86,7 +82,7 @@ export interface CreatePressProps extends PressEvents {
 
 export interface CreatePressResult<T extends HTMLElement> {
   /** Whether the target is currently pressed. */
-  pressed: Accessor<boolean>;
+  isPressed: Accessor<boolean>;
 
   /** PressEvent handlers to spread onto the target element. */
   pressHandlers: {

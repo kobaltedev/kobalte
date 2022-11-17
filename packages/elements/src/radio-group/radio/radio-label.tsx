@@ -2,22 +2,24 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useRadioGroupItemContext } from "./radio-group-item-context";
+import { useRadioContext } from "./radio-context";
 
 /**
- * The element in the radio item that visually represents a radio/radio button.
+ * A label that gives the user information on the radio button.
  */
-export const RadioGroupItemControl = createPolymorphicComponent<"div">(props => {
-  const context = useRadioGroupItemContext();
+export const RadioLabel = createPolymorphicComponent<"span">(props => {
+  const context = useRadioContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+  props = mergeDefaultProps({ as: "span" }, props);
 
   const [local, others] = splitProps(props, ["as"]);
 
   return (
     <Dynamic
       component={local.as}
-      data-part="item-control"
+      data-part="label"
+      data-checked={context.isSelected() ? "" : undefined}
+      data-disabled={context.isDisabled() ? "" : undefined}
       data-focus={context.isFocused() ? "" : undefined}
       data-focus-visible={context.isFocusVisible() ? "" : undefined}
       {...others}
