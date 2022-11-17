@@ -6,10 +6,16 @@
  * https://github.com/adobe/react-spectrum/blob/a9dea8a3672179e6c38aafd1429daf44c7ea2ff6/packages/@react-aria/interactions/src/usePress.ts
  */
 
-import { access, createGlobalListeners, EventKey, focusWithoutScrolling } from "@kobalte/utils";
+import {
+  access,
+  createGlobalListeners,
+  EventKey,
+  focusWithoutScrolling,
+  isVirtualClick,
+  isVirtualPointerEvent,
+} from "@kobalte/utils";
 import { createEffect, createSignal, JSX, on, onCleanup } from "solid-js";
 
-import { isVirtualClick, isVirtualPointerEvent } from "./is-virtual-event";
 import { disableTextSelection, restoreTextSelection } from "./text-selection";
 import { CreatePressProps, CreatePressResult, PointerType } from "./types";
 

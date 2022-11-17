@@ -78,7 +78,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
 
   const tagName = createTagName(
     () => ref,
-    () => local.as ?? "button"
+    () => local.as || "button"
   );
 
   const isNativeButton = createMemo(() => {

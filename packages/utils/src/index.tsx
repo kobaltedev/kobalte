@@ -7,6 +7,7 @@ export * from "./focus-without-scrolling";
 export * from "./function";
 export * from "./get-scroll-parent";
 export * from "./inputs";
+export * from "./is-virtual-event";
 export * from "./platform";
 export * from "./polymorphic";
 export * from "./props";

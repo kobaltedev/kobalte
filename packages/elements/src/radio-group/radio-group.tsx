@@ -1,3 +1,12 @@
+/*!
+ * Portions of this file are based on code from react-spectrum.
+ * Apache License Version 2.0, Copyright 2020 Adobe.
+ *
+ * Credits to the React Spectrum team:
+ * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadioGroup.ts
+ * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-stately/radio/src/useRadioGroupState.ts
+ */
+
 import { createPolymorphicComponent, mergeDefaultProps, ValidationState } from "@kobalte/utils";
 import { createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -134,12 +143,12 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
         component={local.as}
         role="radiogroup"
         id={local.id}
-        aria-labelledby={allAriaLabelledBy()}
-        aria-describedby={allAriaDescribedBy()}
-        aria-invalid={local.validationState === "invalid" ?? undefined}
-        aria-required={local.required ?? undefined}
-        aria-disabled={local.disabled ?? undefined}
-        aria-readonly={local.readOnly ?? undefined}
+        aria-labelledby={allAriaLabelledBy() || undefined}
+        aria-describedby={allAriaDescribedBy() || undefined}
+        aria-invalid={local.validationState === "invalid" || undefined}
+        aria-required={local.required || undefined}
+        aria-disabled={local.disabled || undefined}
+        aria-readonly={local.readOnly || undefined}
         aria-orientation={local.orientation}
         data-part="root"
         data-valid={local.validationState === "valid" ? "" : undefined}

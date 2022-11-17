@@ -6,11 +6,11 @@
  * https://github.com/adobe/react-spectrum/blob/a9dea8a3672179e6c38aafd1429daf44c7ea2ff6/packages/@react-aria/utils/src/isVirtualEvent.ts
  */
 
-import { isAndroid } from "@kobalte/utils";
-
 // Original licensing for the following method can be found in the
 // NOTICE file in the root directory of this source tree.
 // See https://github.com/facebook/react/blob/3c713d513195a53788b3f8bb4b70279d68b15bcc/packages/react-interactions/events/src/dom/shared/index.js#L74-L87
+
+import { isAndroid } from "./platform";
 
 // Keyboards, Assistive Technologies, and element.click() all produce a "virtual"
 // click event. This is a method of inferring such clicks. Every browser except

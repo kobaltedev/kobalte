@@ -1,0 +1,3 @@
+.radio [data-part="item-label"][data-focus-visible] {
+  color: blue;
+}

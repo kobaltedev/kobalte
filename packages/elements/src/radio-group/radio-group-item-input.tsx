@@ -6,6 +6,8 @@ import {
 import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
+import { useRadioGroupItemContext } from "./radio-group-item-context";
+
 export interface RadioGroupItemInputProps {
   /** The HTML style attribute (only object form supported). */
   style?: JSX.CSSProperties;
@@ -16,6 +18,8 @@ export interface RadioGroupItemInputProps {
  */
 export const RadioGroupItemInput = createPolymorphicComponent<"input", RadioGroupItemInputProps>(
   props => {
+    const context = useRadioGroupItemContext();
+
     props = mergeDefaultProps({ as: "input" }, props);
 
     const [local, others] = splitProps(props, ["as", "style"]);
@@ -24,8 +28,10 @@ export const RadioGroupItemInput = createPolymorphicComponent<"input", RadioGrou
       <Dynamic
         component={local.as}
         type="radio"
-        data-part="item-input"
         style={{ ...visuallyHiddenStyles, ...local.style }}
+        data-part="item-input"
+        data-focus={context.isFocused() ? "" : undefined}
+        data-focus-visible={context.isFocusVisible() ? "" : undefined}
         {...others}
       />
     );

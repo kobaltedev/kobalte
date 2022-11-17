@@ -67,7 +67,7 @@ function Example(
 
   return (
     <Dynamic
-      component={local.elementType ?? "div"}
+      component={local.elementType || "div"}
       tabIndex="0"
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}

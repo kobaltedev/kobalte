@@ -10,12 +10,13 @@ export default function App() {
   return (
     <>
       <button onClick={toggleColorMode}>Toggle color mode</button>
+      <br />
       <RadioGroup id="chien" name="food">
         <RadioGroup.Label>Favorite pet</RadioGroup.Label>
         <div>
           <For each={pets}>
             {pet => (
-              <RadioGroup.Item>
+              <RadioGroup.Item class="radio">
                 <RadioGroup.ItemInput />
                 <RadioGroup.ItemControl />
                 <RadioGroup.ItemLabel>{pet}</RadioGroup.ItemLabel>
