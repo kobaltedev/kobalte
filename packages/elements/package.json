@@ -1,8 +1,8 @@
 {
-  "name": "@kobalte/utils",
+  "name": "@kobalte/elements",
   "version": "0.0.0",
   "private": false,
-  "description": "Common utilities and types for Kobalte.",
+  "description": "Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
   "keywords": [
     "solid",
     "solidjs",
@@ -11,7 +11,7 @@
     "design-system",
     "components"
   ],
-  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/utils#readme",
+  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/elements#readme",
   "bugs": {
     "url": "https://github.com/fabien-ml/kobalte/issues"
   },
@@ -43,14 +43,16 @@
   "scripts": {
     "build": "rollup -c ../../configs/rollup.config.ts",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "vite serve dev --host",
     "test": "jest --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@solid-primitives/media": "^2.0.4",
-    "@solid-primitives/props": "^3.0.1",
-    "@solid-primitives/refs": "^0.3.4",
-    "@solid-primitives/utils": "^4.0.0"
+    "@floating-ui/dom": "^1.0.3",
+    "@kobalte/utils": "^0.0.0"
+  },
+  "devDependencies": {
+    "@kobalte/tests": "^0.0.0"
   },
   "peerDependencies": {
     "solid-js": "^1.6.1"

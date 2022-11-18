@@ -2,7 +2,7 @@
   "name": "kobalte-monorepo",
   "version": "0.0.0",
   "private": true,
-  "description": "A design agnostic component library for building SolidJS applications.",
+  "description": "A UI toolkit for building SolidJS applications.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fabien-ml/kobalte.git"
@@ -20,7 +20,7 @@
     "ci:version": "changeset version && pnpm i --no-frozen-lockfile && git add .",
     "clean": "turbo run clean && rm -rf node_modules",
     "commit": "git-cz",
-    "dev": "pnpm -F @kobalte/core dev",
+    "dev:elements": "pnpm -F @kobalte/elements dev",
     "dev:docs": "pnpm -F @kobalte/docs dev",
     "format": "prettier . --write --ignore-path .gitignore && git update-index --again",
     "prepare": "husky install",

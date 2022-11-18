@@ -44,3 +44,19 @@ export function isIPad() {
 export function isIOS() {
   return isIPhone() || isIPad();
 }
+
+export function isAppleDevice() {
+  return isMac() || isIOS();
+}
+
+export function isWebKit() {
+  return testUserAgent(/AppleWebKit/i) && !isChrome();
+}
+
+export function isChrome() {
+  return testUserAgent(/Chrome/i);
+}
+
+export function isAndroid() {
+  return testUserAgent(/Android/i);
+}
