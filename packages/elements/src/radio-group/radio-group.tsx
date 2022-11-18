@@ -132,7 +132,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
     );
 
     const context: RadioGroupContextValue = {
-      selectedValue,
+      isSelectedValue: (value: string) => value === selectedValue(),
       setSelectedValue,
       name: () => local.name!,
       validationState: () => local.validationState,

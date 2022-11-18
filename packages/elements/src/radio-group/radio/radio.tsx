@@ -12,15 +12,17 @@ import { Dynamic } from "solid-js/web";
 
 import { createHover } from "../../primitives";
 import { useRadioGroupContext } from "../radio-group-context";
-import { RadioContext, RadioContextValue, RadioDataAttrs } from "./radio-context";
+import { RadioContext, RadioContextValue, RadioDataSet } from "./radio-context";
 import { RadioControl } from "./radio-control";
 import { RadioInput } from "./radio-input";
 import { RadioLabel } from "./radio-label";
+import { RadioIndicator } from "./radio-indicator";
 
 type RadioComposite = {
   Label: typeof RadioLabel;
   Input: typeof RadioInput;
   Control: typeof RadioControl;
+  Indicator: typeof RadioIndicator;
 };
 
 export interface RadioProps {
@@ -48,7 +50,7 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
   const [isFocusVisible, setIsFocusVisible] = createSignal(false);
 
   const isSelected = createMemo(() => {
-    return radioGroupContext.selectedValue() === local.value;
+    return radioGroupContext.isSelectedValue(local.value);
   });
 
   const isDisabled = createMemo(() => {
@@ -59,7 +61,9 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
     disabled: isDisabled,
   });
 
-  const dataAttrs: Accessor<RadioDataAttrs> = createMemo(() => ({
+  const dataset: Accessor<RadioDataSet> = createMemo(() => ({
+    "data-valid": radioGroupContext.validationState() === "valid" ? "" : undefined,
+    "data-invalid": radioGroupContext.validationState() === "invalid" ? "" : undefined,
     "data-checked": isSelected() ? "" : undefined,
     "data-disabled": isDisabled() ? "" : undefined,
     "data-hover": isHovered() ? "" : undefined,
@@ -69,7 +73,7 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
 
   const context: RadioContextValue = {
     value: () => local.value,
-    dataAttrs,
+    dataset,
     isSelected,
     isDisabled,
     setIsFocused,
@@ -80,7 +84,7 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
     <Dynamic
       component={local.as}
       data-part="root"
-      {...context.dataAttrs()}
+      {...context.dataset()}
       {...combineProps(others, hoverHandlers)}
     >
       <RadioContext.Provider value={context}>{local.children}</RadioContext.Provider>
@@ -91,3 +95,4 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
 Radio.Label = RadioLabel;
 Radio.Input = RadioInput;
 Radio.Control = RadioControl;
+Radio.Indicator = RadioIndicator;

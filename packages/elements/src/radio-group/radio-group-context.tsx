@@ -2,7 +2,7 @@ import { ValidationState } from "@kobalte/utils";
 import { Accessor, createContext, useContext } from "solid-js";
 
 export interface RadioGroupContextValue {
-  selectedValue: Accessor<string | undefined>;
+  isSelectedValue: (value: string) => boolean;
   setSelectedValue: (value: string) => void;
   name: Accessor<string>;
   validationState: Accessor<ValidationState | undefined>;

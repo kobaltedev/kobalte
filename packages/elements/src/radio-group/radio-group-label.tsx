@@ -33,5 +33,16 @@ export const RadioGroupLabel = createPolymorphicComponent<"span">(props => {
     )
   );
 
-  return <Dynamic component={local.as} id={local.id} data-part="label" {...others} />;
+  return (
+    <Dynamic
+      component={local.as}
+      id={local.id}
+      data-part="label"
+      data-valid={context.validationState() === "valid" ? "" : undefined}
+      data-invalid={context.validationState() === "invalid" ? "" : undefined}
+      data-required={context.required() ? "" : undefined}
+      data-disabled={context.disabled() ? "" : undefined}
+      {...others}
+    />
+  );
 });

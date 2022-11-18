@@ -20,24 +20,19 @@ import { createFocusRing, createPress } from "../../primitives";
 import { useRadioGroupContext } from "../radio-group-context";
 import { useRadioContext } from "./radio-context";
 
-export interface RadioInputProps {
-  /** The HTML style attribute (only object form supported). */
-  style?: JSX.CSSProperties;
-}
-
 /**
  * The native html input that is visually hidden in a radio button.
  */
-export const RadioInput = createPolymorphicComponent<"input", RadioInputProps>(props => {
+export const RadioInput = createPolymorphicComponent<"input">(props => {
   const radioGroupContext = useRadioGroupContext();
   const radioContext = useRadioContext();
 
   props = mergeDefaultProps({ as: "input" }, props);
 
-  const [local, others] = splitProps(props, ["as", "style", "onChange"]);
+  const [local, others] = splitProps(props, ["as", "onChange"]);
 
   const { pressHandlers } = createPress({
-    disabled: () => radioContext.isDisabled(),
+    disabled: radioContext.isDisabled,
   });
 
   const { focusRingHandlers } = createFocusRing({
@@ -72,12 +67,11 @@ export const RadioInput = createPolymorphicComponent<"input", RadioInputProps>(p
       value={radioContext.value()}
       checked={radioContext.isSelected()}
       disabled={radioContext.isDisabled()}
-      style={{ ...visuallyHiddenStyles, ...local.style }}
       aria-describedby={radioGroupContext.allAriaDescribedBy()}
       data-part="input"
       onChange={onChange}
-      {...radioContext.dataAttrs()}
-      {...combineProps(others, pressHandlers, focusRingHandlers)}
+      {...radioContext.dataset()}
+      {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers, focusRingHandlers)}
     />
   );
 });

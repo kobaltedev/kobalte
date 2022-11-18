@@ -33,5 +33,13 @@ export const RadioGroupErrorMessage = createPolymorphicComponent<"div">(props =>
     )
   );
 
-  return <Dynamic component={local.as} id={local.id} data-part="error-message" {...others} />;
+  return (
+    <Dynamic
+      component={local.as}
+      id={local.id}
+      data-part="error-message"
+      data-disabled={context.disabled() ? "" : undefined}
+      {...others}
+    />
+  );
 });
