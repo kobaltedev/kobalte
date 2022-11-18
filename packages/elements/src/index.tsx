@@ -1,6 +1,7 @@
 // utils
 export * from "./color-mode";
 export * from "./primitives";
+export { createPolymorphicComponent } from "@kobalte/utils";
 
 // components
 export * from "./alert";
