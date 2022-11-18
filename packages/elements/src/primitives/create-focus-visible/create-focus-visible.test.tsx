@@ -6,6 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/2bcc2f0b45ea8b20621458a93f1804a3f9df9ac4/packages/@react-aria/interactions/test/useFocusVisible.test.js
  */
 
+import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { createRoot } from "solid-js";
 import { fireEvent, render, screen } from "solid-testing-library";
 
@@ -57,6 +58,8 @@ function toggleBrowserWindow() {
 }
 
 describe("createFocusVisible", () => {
+  installPointerEvent();
+
   beforeEach(() => {
     fireEvent.focus(document.body);
   });
@@ -77,7 +80,7 @@ describe("createFocusVisible", () => {
 
     const el = screen.getByText("example-focusVisible");
 
-    fireEvent.mouseDown(el);
+    fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
     toggleBrowserTabs();
 
     expect(el.textContent).toBe("example");
@@ -99,7 +102,7 @@ describe("createFocusVisible", () => {
 
     const el = screen.getByText("example-focusVisible");
 
-    fireEvent.mouseDown(el);
+    fireEvent(el, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
     toggleBrowserWindow();
 
     expect(el.textContent).toBe("example");
@@ -107,8 +110,10 @@ describe("createFocusVisible", () => {
 });
 
 describe("createFocusVisibleListener", function () {
+  installPointerEvent();
+
   it("emits on modality change (non-text input)", async () => {
-    createRoot(async dispose => {
+    await createRoot(async dispose => {
       const fnMock = jest.fn();
 
       createFocusVisibleListener(fnMock, [], () => false);
@@ -128,10 +133,17 @@ describe("createFocusVisibleListener", function () {
       fireEvent.keyUp(document.body, { key: "Escape" });
       await Promise.resolve();
 
-      fireEvent.mouseDown(document.body);
+      fireEvent(
+        document.body,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
-      fireEvent.mouseUp(document.body); // does not trigger change handlers (but included for completeness)
+      // does not trigger change handlers (but included for completeness)
+      fireEvent(
+        document.body,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       expect(fnMock).toHaveBeenCalledTimes(5);
@@ -142,7 +154,7 @@ describe("createFocusVisibleListener", function () {
   });
 
   it("emits on modality change (text input)", async () => {
-    createRoot(async dispose => {
+    await createRoot(async dispose => {
       const fnMock = jest.fn();
 
       createFocusVisibleListener(fnMock, [], () => true);
@@ -162,10 +174,17 @@ describe("createFocusVisibleListener", function () {
       fireEvent.keyUp(document.body, { key: "Escape" });
       await Promise.resolve();
 
-      fireEvent.mouseDown(document.body);
+      fireEvent(
+        document.body,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
-      fireEvent.mouseUp(document.body); // does not trigger change handlers (but included for completeness)
+      // does not trigger change handlers (but included for completeness)
+      fireEvent(
+        document.body,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       expect(fnMock).toHaveBeenCalledTimes(3);
