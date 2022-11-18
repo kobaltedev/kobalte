@@ -7,12 +7,11 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { chainHandlers } from "@kobalte/utils";
 import { createSignal, JSX, mergeProps, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { createPress } from "./create-press";
+import { CREATE_PRESS_PROP_NAMES, createPress } from "./create-press";
 import { CreatePressProps } from "./types";
 
 function Example(
@@ -24,60 +23,16 @@ function Example(
       type?: string;
     }
 ) {
-  const [local, others] = splitProps(props, [
-    "elementType",
-    "onKeyDown",
-    "onKeyUp",
-    "onClick",
-    "onPointerDown",
-    "onPointerUp",
-    "onMouseDown",
-    "onDragStart",
-  ]);
+  const [local, createPressProps, others] = splitProps(
+    props,
+    ["elementType"],
+    CREATE_PRESS_PROP_NAMES
+  );
 
-  const { pressHandlers } = createPress(props);
-
-  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
-    chainHandlers(e, [local.onKeyDown, pressHandlers.onKeyDown]);
-  };
-
-  const onKeyUp: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
-    chainHandlers(e, [local.onKeyUp, pressHandlers.onKeyUp]);
-  };
-
-  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-    chainHandlers(e, [local.onClick, pressHandlers.onClick]);
-  };
-
-  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
-    chainHandlers(e, [local.onPointerDown, pressHandlers.onPointerDown]);
-  };
-
-  const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
-    chainHandlers(e, [local.onPointerUp, pressHandlers.onPointerUp]);
-  };
-
-  const onMouseDown: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-    chainHandlers(e, [local.onMouseDown, pressHandlers.onMouseDown]);
-  };
-
-  const onDragStart: JSX.EventHandlerUnion<any, DragEvent> = e => {
-    chainHandlers(e, [local.onDragStart, pressHandlers.onDragStart]);
-  };
+  const { pressHandlers } = createPress(createPressProps);
 
   return (
-    <Dynamic
-      component={local.elementType || "div"}
-      tabIndex="0"
-      onKeyDown={onKeyDown}
-      onKeyUp={onKeyUp}
-      onClick={onClick}
-      onPointerDown={onPointerDown}
-      onPointerUp={onPointerUp}
-      onMouseDown={onMouseDown}
-      onDragStart={onDragStart}
-      {...others}
-    >
+    <Dynamic component={local.elementType || "div"} tabIndex="0" {...pressHandlers} {...others}>
       {local.elementType !== "input" ? "test" : undefined}
     </Dynamic>
   );

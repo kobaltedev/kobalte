@@ -58,7 +58,17 @@ export interface PressEvents {
   onPressChange?: (pressed: boolean) => void;
 }
 
-export interface CreatePressProps extends PressEvents {
+export interface PressHandlers<T extends HTMLElement> {
+  onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+  onKeyUp: JSX.EventHandlerUnion<T, KeyboardEvent>;
+  onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+  onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+  onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
+  onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
+  onDragStart: JSX.EventHandlerUnion<T, DragEvent>;
+}
+
+export interface CreatePressProps extends PressEvents, Partial<PressHandlers<any>> {
   /** Whether the press events should be disabled. */
   disabled?: MaybeAccessor<boolean | undefined>;
 
@@ -85,13 +95,5 @@ export interface CreatePressResult<T extends HTMLElement> {
   isPressed: Accessor<boolean>;
 
   /** PressEvent handlers to spread onto the target element. */
-  pressHandlers: {
-    onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
-    onKeyUp: JSX.EventHandlerUnion<T, KeyboardEvent>;
-    onClick: JSX.EventHandlerUnion<T, MouseEvent>;
-    onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
-    onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
-    onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
-    onDragStart: JSX.EventHandlerUnion<T, DragEvent>;
-  };
+  pressHandlers: PressHandlers<T>;
 }

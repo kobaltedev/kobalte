@@ -12,16 +12,16 @@
  * https://github.com/ariakit/ariakit/blob/8a13899ff807bbf39f3d89d2d5964042ba4d5287/packages/ariakit/src/button/button.ts
  */
 
-import {
-  chainHandlers,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
-import { createMemo, JSX, splitProps } from "solid-js";
+import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { createMemo, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createFocusRing, createPress, CreatePressProps, createTagName } from "../primitives";
+import {
+  CREATE_PRESS_PROP_NAMES,
+  createPress,
+  CreatePressProps,
+  createTagName,
+} from "../primitives";
 import { isButton } from "./is-button";
 
 export interface ButtonProps extends CreatePressProps {
@@ -47,39 +47,11 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
 
   const [local, createPressProps, others] = splitProps(
     props,
-    [
-      "as",
-      "ref",
-      "type",
-      "disabled",
-      "onKeyDown",
-      "onKeyUp",
-      "onClick",
-      "onPointerDown",
-      "onPointerUp",
-      "onMouseDown",
-      "onDragStart",
-      "onFocusIn",
-      "onFocusOut",
-    ],
-    [
-      "onPressStart",
-      "onPressEnd",
-      "onPressUp",
-      "onPressChange",
-      "onPress",
-      "disabled",
-      "preventFocusOnPress",
-      "cancelOnPointerExit",
-      "allowTextSelectionOnPress",
-    ]
+    ["as", "ref", "type", "disabled"],
+    CREATE_PRESS_PROP_NAMES
   );
 
   const { isPressed, pressHandlers } = createPress<HTMLButtonElement>(createPressProps);
-
-  const { isFocused, isFocusVisible, focusHandlers } = createFocusRing({
-    within: true,
-  });
 
   const tagName = createTagName(
     () => ref,
@@ -104,46 +76,6 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
     return tagName() === "input";
   });
 
-  const onKeyDown: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = e => {
-    chainHandlers(e, [local.onKeyDown, pressHandlers.onKeyDown]);
-  };
-
-  const onKeyUp: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = e => {
-    chainHandlers(e, [local.onKeyUp, pressHandlers.onKeyUp]);
-  };
-
-  const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
-    if (local.onClick) {
-      console.warn("[kobalte]: onClick is deprecated, please use onPress");
-    }
-
-    chainHandlers(e, [local.onClick, pressHandlers.onClick]);
-  };
-
-  const onPointerDown: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> = e => {
-    chainHandlers(e, [local.onPointerDown, pressHandlers.onPointerDown]);
-  };
-
-  const onPointerUp: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> = e => {
-    chainHandlers(e, [local.onPointerUp, pressHandlers.onPointerUp]);
-  };
-
-  const onMouseDown: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
-    chainHandlers(e, [local.onMouseDown, pressHandlers.onMouseDown]);
-  };
-
-  const onDragStart: JSX.EventHandlerUnion<HTMLButtonElement, DragEvent> = e => {
-    chainHandlers(e, [local.onDragStart, pressHandlers.onDragStart]);
-  };
-
-  const onFocusIn: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    chainHandlers(e, [local.onFocusIn, focusHandlers.onFocusIn]);
-  };
-
-  const onFocusOut: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    chainHandlers(e, [local.onFocusOut, focusHandlers.onFocusOut]);
-  };
-
   return (
     <Dynamic
       component={local.as}
@@ -155,17 +87,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       aria-disabled={!isNativeButton() && !isInput() && local.disabled ? true : undefined}
       data-pressed={isPressed() ? "" : undefined}
       data-disabled={local.disabled ? "" : undefined}
-      data-focus={isFocused() ? "" : undefined}
-      data-focus-visible={isFocusVisible() ? "" : undefined}
-      onKeyDown={onKeyDown}
-      onKeyUp={onKeyUp}
-      onClick={onClick}
-      onPointerDown={onPointerDown}
-      onPointerUp={onPointerUp}
-      onMouseDown={onMouseDown}
-      onDragStart={onDragStart}
-      onFocusIn={onFocusIn}
-      onFocusOut={onFocusOut}
+      {...pressHandlers}
       {...others}
     />
   );
