@@ -9,7 +9,10 @@
     "ui",
     "library",
     "design-system",
-    "components"
+    "components",
+    "headless",
+    "unstyled",
+    "aria"
   ],
   "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/tests#readme",
   "bugs": {
