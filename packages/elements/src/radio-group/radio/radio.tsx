@@ -42,26 +42,7 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
 
   props = mergeDefaultProps({ as: "label" }, props);
 
-  const [local, others] = splitProps(props, [
-    "as",
-    "children",
-    "onFocusIn",
-    "onFocusOut",
-    "value",
-    "disabled",
-  ]);
-
-  const { isFocused, isFocusVisible, focusHandlers } = createFocusRing({
-    within: true,
-  });
-
-  const onFocusIn: JSX.EventHandlerUnion<HTMLLabelElement, FocusEvent> = e => {
-    chainHandlers(e, [local.onFocusIn, focusHandlers.onFocusIn]);
-  };
-
-  const onFocusOut: JSX.EventHandlerUnion<HTMLLabelElement, FocusEvent> = e => {
-    chainHandlers(e, [local.onFocusOut, focusHandlers.onFocusOut]);
-  };
+  const [local, others] = splitProps(props, ["as", "children", "value", "disabled"]);
 
   const isSelected = createMemo(() => {
     return radioGroupContext.selectedValue() === local.value;
@@ -74,8 +55,6 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
   const context: RadioContextValue = {
     value: () => local.value,
     isSelected,
-    isFocused,
-    isFocusVisible,
     isDisabled,
   };
 
@@ -85,10 +64,6 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
       data-part="root"
       data-checked={isSelected() ? "" : undefined}
       data-disabled={isDisabled() ? "" : undefined}
-      data-focus={isFocused() ? "" : undefined}
-      data-focus-visible={isFocusVisible() ? "" : undefined}
-      onFocusIn={onFocusIn}
-      onFocusOut={onFocusOut}
       {...others}
     >
       <RadioContext.Provider value={context}>{local.children}</RadioContext.Provider>

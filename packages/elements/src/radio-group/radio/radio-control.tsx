@@ -20,8 +20,6 @@ export const RadioControl = createPolymorphicComponent<"div">(props => {
       data-part="control"
       data-checked={context.isSelected() ? "" : undefined}
       data-disabled={context.isDisabled() ? "" : undefined}
-      data-focus={context.isFocused() ? "" : undefined}
-      data-focus-visible={context.isFocusVisible() ? "" : undefined}
       {...others}
     />
   );

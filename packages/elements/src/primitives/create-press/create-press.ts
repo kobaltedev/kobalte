@@ -8,14 +8,13 @@
 
 import {
   access,
-  callHandler,
   createGlobalListeners,
   EventKey,
   focusWithoutScrolling,
   isVirtualClick,
   isVirtualPointerEvent,
 } from "@kobalte/utils";
-import { createEffect, createSignal, JSX, on, onCleanup, splitProps } from "solid-js";
+import { createEffect, createSignal, JSX, on, onCleanup } from "solid-js";
 
 import { disableTextSelection, restoreTextSelection } from "./text-selection";
 import { CreatePressProps, CreatePressResult, PointerType } from "./types";
@@ -56,13 +55,6 @@ interface PressState {
 }
 
 const createPressPropNamesObject: Record<keyof CreatePressProps, true> = {
-  onKeyDown: true,
-  onKeyUp: true,
-  onClick: true,
-  onPointerDown: true,
-  onPointerUp: true,
-  onMouseDown: true,
-  onDragStart: true,
   onPressStart: true,
   onPressEnd: true,
   onPressUp: true,
@@ -273,8 +265,6 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   };
 
   const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = e => {
-    callHandler(e, props.onKeyDown);
-
     if (isValidKeyboardEvent(e, e.currentTarget) && e.currentTarget.contains(e.target as Element)) {
       if (shouldPreventDefaultKeyboard(e.target as Element, e.key)) {
         e.preventDefault();
@@ -302,8 +292,6 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   };
 
   const onKeyUp: JSX.EventHandlerUnion<T, KeyboardEvent> = e => {
-    callHandler(e, props.onKeyUp);
-
     if (
       isValidKeyboardEvent(e, e.currentTarget) &&
       !e.repeat &&
@@ -314,11 +302,6 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   };
 
   const onClick: JSX.EventHandlerUnion<T, MouseEvent> = e => {
-    if (props.onClick) {
-      console.warn("[kobalte]: onClick is deprecated, please use onPress");
-      callHandler(e, props.onClick);
-    }
-
     if (e && !e.currentTarget.contains(e.target as Element)) {
       return;
     }
@@ -353,8 +336,6 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   };
 
   const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = e => {
-    callHandler(e, props.onPointerDown);
-
     // Only handle left clicks, and ignore events that bubbled through portals.
     if (e.button !== 0 || !e.currentTarget.contains(e.target as HTMLElement)) {
       return;
@@ -404,8 +385,6 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   };
 
   const onPointerUp: JSX.EventHandlerUnion<T, PointerEvent> = e => {
-    callHandler(e, props.onPointerUp);
-
     // iOS fires pointerup with zero width and height, so check the pointerType recorded during pointerdown.
     if (!e.currentTarget.contains(e.target as Element) || state.pointerType === "virtual") {
       return;
@@ -420,8 +399,6 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   };
 
   const onMouseDown: JSX.EventHandlerUnion<T, MouseEvent> = e => {
-    callHandler(e, props.onMouseDown);
-
     if (!e.currentTarget.contains(e.target as HTMLElement)) {
       return;
     }
@@ -439,8 +416,6 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   };
 
   const onDragStart: JSX.EventHandlerUnion<T, DragEvent> = e => {
-    callHandler(e, props.onDragStart);
-
     if (!e.currentTarget.contains(e.target as Element)) {
       return;
     }
@@ -465,7 +440,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
 
   return {
     isPressed,
-    pressHandlers: {
+    pressProps: {
       onKeyDown,
       onKeyUp,
       onClick,

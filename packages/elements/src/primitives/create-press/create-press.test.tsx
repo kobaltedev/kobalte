@@ -7,6 +7,7 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
+import { combineProps } from "@kobalte/utils";
 import { createSignal, JSX, mergeProps, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { fireEvent, render, screen } from "solid-testing-library";
@@ -29,10 +30,14 @@ function Example(
     CREATE_PRESS_PROP_NAMES
   );
 
-  const { pressHandlers } = createPress(createPressProps);
+  const { pressProps } = createPress(createPressProps);
 
   return (
-    <Dynamic component={local.elementType || "div"} tabIndex="0" {...pressHandlers} {...others}>
+    <Dynamic
+      component={local.elementType || "div"}
+      tabIndex="0"
+      {...combineProps(others, pressProps)}
+    >
       {local.elementType !== "input" ? "test" : undefined}
     </Dynamic>
   );
@@ -1733,10 +1738,10 @@ describe("createPress", () => {
         onPressStart: () => setTimeout(() => setShow(true), 3000),
       });
 
-      const { pressHandlers } = createPress<HTMLDivElement>(createPressProps);
+      const { pressProps } = createPress<HTMLDivElement>(createPressProps);
 
       return (
-        <div style={show() ? local.styleToApply : {}} {...pressHandlers}>
+        <div style={show() ? local.styleToApply : {}} {...pressProps}>
           test
         </div>
       );

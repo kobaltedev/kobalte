@@ -1,6 +1,6 @@
 import { For } from "solid-js";
 
-import { Radio, RadioGroup, useColorMode } from "../src";
+import { Button, Radio, RadioGroup, useColorMode } from "../src";
 
 const pets = ["Dogs", "Cats", "Dragons"];
 
@@ -23,6 +23,7 @@ export default function App() {
     <>
       <button onClick={toggleColorMode}>Toggle color mode</button>
       <br />
+      <Button onClick={() => console.log("foo")}>Button</Button>
       <form id={"form"} onSubmit={onSubmit}>
         <RadioGroup id="chien" name="food">
           <RadioGroup.Label>Favorite pet</RadioGroup.Label>
@@ -30,7 +31,7 @@ export default function App() {
             <For each={pets}>
               {pet => (
                 <Radio class="radio" value={pet}>
-                  <Radio.Input />
+                  <Radio.Input onClick={() => console.log("foo")} />
                   <Radio.Control />
                   <Radio.Label>{pet}</Radio.Label>
                 </Radio>

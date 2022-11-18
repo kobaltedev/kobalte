@@ -12,8 +12,14 @@
  * https://github.com/ariakit/ariakit/blob/8a13899ff807bbf39f3d89d2d5964042ba4d5287/packages/ariakit/src/button/button.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { createMemo, splitProps } from "solid-js";
+import {
+  callHandler,
+  combineProps,
+  createPolymorphicComponent,
+  mergeDefaultProps,
+  mergeRefs,
+} from "@kobalte/utils";
+import { createMemo, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
@@ -47,11 +53,11 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
 
   const [local, createPressProps, others] = splitProps(
     props,
-    ["as", "ref", "type", "disabled"],
+    ["as", "ref", "type", "disabled", "onClick"],
     CREATE_PRESS_PROP_NAMES
   );
 
-  const { isPressed, pressHandlers } = createPress<HTMLButtonElement>(createPressProps);
+  const { isPressed, pressProps } = createPress<HTMLButtonElement>(createPressProps);
 
   const tagName = createTagName(
     () => ref,
@@ -76,6 +82,13 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
     return tagName() === "input";
   });
 
+  const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
+    if (local.onClick) {
+      callHandler(e, local.onClick);
+      console.warn("[kobalte]: use `onPress` instead of `onClick` for handling click interactions");
+    }
+  };
+
   return (
     <Dynamic
       component={local.as}
@@ -87,8 +100,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       aria-disabled={!isNativeButton() && !isInput() && local.disabled ? true : undefined}
       data-pressed={isPressed() ? "" : undefined}
       data-disabled={local.disabled ? "" : undefined}
-      {...pressHandlers}
-      {...others}
+      {...combineProps(others, { onClick }, pressProps)}
     />
   );
 });

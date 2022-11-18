@@ -8,6 +8,7 @@
 
 import {
   callHandler,
+  combineProps,
   createPolymorphicComponent,
   mergeDefaultProps,
   visuallyHiddenStyles,
@@ -15,6 +16,7 @@ import {
 import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
+import { createPress } from "../../primitives";
 import { useRadioGroupContext } from "../radio-group-context";
 import { useRadioContext } from "./radio-context";
 
@@ -33,6 +35,12 @@ export const RadioInput = createPolymorphicComponent<"input", RadioInputProps>(p
   props = mergeDefaultProps({ as: "input" }, props);
 
   const [local, others] = splitProps(props, ["as", "style", "onChange"]);
+
+  const { pressProps } = createPress({
+    get disabled() {
+      return radioContext.isDisabled();
+    },
+  });
 
   const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = e => {
     callHandler(e, local.onChange);
@@ -66,10 +74,8 @@ export const RadioInput = createPolymorphicComponent<"input", RadioInputProps>(p
       data-part="input"
       data-checked={radioContext.isSelected() ? "" : undefined}
       data-disabled={radioContext.isDisabled() ? "" : undefined}
-      data-focus={radioContext.isFocused() ? "" : undefined}
-      data-focus-visible={radioContext.isFocusVisible() ? "" : undefined}
       onChange={onChange}
-      {...others}
+      {...combineProps(others, pressProps)}
     />
   );
 });

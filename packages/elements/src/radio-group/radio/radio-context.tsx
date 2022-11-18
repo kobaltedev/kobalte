@@ -3,8 +3,6 @@ import { Accessor, createContext, useContext } from "solid-js";
 export interface RadioContextValue {
   value: Accessor<string>;
   isSelected: Accessor<boolean>;
-  isFocused: Accessor<boolean>;
-  isFocusVisible: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
 }
 

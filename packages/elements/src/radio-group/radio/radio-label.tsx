@@ -20,8 +20,6 @@ export const RadioLabel = createPolymorphicComponent<"span">(props => {
       data-part="label"
       data-checked={context.isSelected() ? "" : undefined}
       data-disabled={context.isDisabled() ? "" : undefined}
-      data-focus={context.isFocused() ? "" : undefined}
-      data-focus-visible={context.isFocusVisible() ? "" : undefined}
       {...others}
     />
   );
