@@ -53,11 +53,11 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
 
   const [local, createPressProps, others] = splitProps(
     props,
-    ["as", "ref", "type", "disabled", "onClick"],
+    ["as", "type", "disabled", "onClick"],
     CREATE_PRESS_PROP_NAMES
   );
 
-  const { isPressed, pressProps } = createPress<HTMLButtonElement>(createPressProps);
+  const { isPressed, pressHandlers } = createPress<HTMLButtonElement>(createPressProps);
 
   const tagName = createTagName(
     () => ref,
@@ -92,7 +92,6 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
   return (
     <Dynamic
       component={local.as}
-      ref={mergeRefs(el => (ref = el), local.ref)}
       type={isNativeButton() || isInput() ? local.type : undefined}
       role={!isNativeButton() && !isLink() ? "button" : undefined}
       tabIndex={!isNativeButton() && !isLink() && !local.disabled ? 0 : undefined}
@@ -100,7 +99,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       aria-disabled={!isNativeButton() && !isInput() && local.disabled ? true : undefined}
       data-pressed={isPressed() ? "" : undefined}
       data-disabled={local.disabled ? "" : undefined}
-      {...combineProps(others, { onClick }, pressProps)}
+      {...combineProps({ ref, onClick }, others, pressHandlers)}
     />
   );
 });

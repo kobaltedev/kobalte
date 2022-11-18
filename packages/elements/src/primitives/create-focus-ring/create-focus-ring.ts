@@ -7,7 +7,7 @@
  */
 
 import { access, MaybeAccessor } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, JSX } from "solid-js";
+import { Accessor, createSignal, JSX } from "solid-js";
 
 import { createFocusVisibleListener } from "../create-focus-visible";
 
@@ -24,20 +24,28 @@ export interface CreateFocusRingProps {
 
   /** Whether the element will be autofocused. */
   autoFocus?: MaybeAccessor<boolean | undefined>;
+
+  /** Handler that is called when the focus state changes. */
+  onFocusChange?: (isFocused: boolean) => void;
+
+  /** Handler that is called when the focus-visible state changes. */
+  onFocusVisibleChange?: (isFocusVisible: boolean) => void;
 }
 
-export interface CreateFocusRingResult {
+export interface FocusRingHandlers<T extends HTMLElement> {
+  onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
+  onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
+}
+
+export interface CreateFocusRingResult<T extends HTMLElement> {
   /** Whether the element is currently focused. */
   isFocused: Accessor<boolean>;
 
-  /** Whether keyboard focus should be visible. */
+  /** Whether the focus ring should be visible to indicate keyboard focus. */
   isFocusVisible: Accessor<boolean>;
 
   /** Event handlers to apply to the container element with the focus ring. */
-  focusHandlers: {
-    onFocusIn: JSX.EventHandlerUnion<any, FocusEvent>;
-    onFocusOut: JSX.EventHandlerUnion<any, FocusEvent>;
-  };
+  focusRingHandlers: FocusRingHandlers<T>;
 }
 
 /**
@@ -45,40 +53,49 @@ export interface CreateFocusRingResult {
  * Focus rings are visible only when the user is interacting with a keyboard,
  * not with a mouse, touch, or other input methods.
  */
-export function createFocusRing(props: CreateFocusRingProps = {}): CreateFocusRingResult {
+export function createFocusRing<T extends HTMLElement>(
+  props: CreateFocusRingProps = {}
+): CreateFocusRingResult<T> {
   const [isFocused, setIsFocused] = createSignal(false);
-  const [isFocusVisibleState, setIsFocusVisibleState] = createSignal(false);
+  const [isFocusVisible, setIsFocusVisible] = createSignal(false);
+  const [isFocusRingVisible, setIsFocusRingVisible] = createSignal(false);
 
-  createFocusVisibleListener(setIsFocusVisibleState, [], () => !!access(props.isTextInput));
-
-  const isFocusVisible = createMemo(() => {
-    return isFocused() && isFocusVisibleState();
-  });
+  createFocusVisibleListener(setIsFocusVisible, [], () => !!access(props.isTextInput));
 
   const shouldPreventFocusWithin = (e: FocusEvent) => {
     return !access(props.within) && e.currentTarget !== e.target;
   };
 
-  const onFocusIn: JSX.EventHandlerUnion<any, FocusEvent> = e => {
-    if (shouldPreventFocusWithin(e)) {
-      return;
-    }
+  const updateStateAndNotifyHandlers = (newIsFocused: boolean) => {
+    const newIsFocusRingVisible = newIsFocused && isFocusVisible();
 
-    setIsFocused(true);
+    setIsFocused(newIsFocused);
+    setIsFocusRingVisible(newIsFocusRingVisible);
+
+    props.onFocusChange?.(newIsFocused);
+    props.onFocusVisibleChange?.(newIsFocusRingVisible);
   };
 
-  const onFocusOut: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+  const onFocusIn: JSX.EventHandlerUnion<T, FocusEvent> = e => {
     if (shouldPreventFocusWithin(e)) {
       return;
     }
 
-    setIsFocused(false);
+    updateStateAndNotifyHandlers(true);
+  };
+
+  const onFocusOut: JSX.EventHandlerUnion<T, FocusEvent> = e => {
+    if (shouldPreventFocusWithin(e)) {
+      return;
+    }
+
+    updateStateAndNotifyHandlers(false);
   };
 
   return {
     isFocused,
-    isFocusVisible,
-    focusHandlers: {
+    isFocusVisible: isFocusRingVisible,
+    focusRingHandlers: {
       onFocusIn,
       onFocusOut,
     },

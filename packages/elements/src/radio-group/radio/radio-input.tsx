@@ -16,7 +16,7 @@ import {
 import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createPress } from "../../primitives";
+import { createFocusRing, createPress } from "../../primitives";
 import { useRadioGroupContext } from "../radio-group-context";
 import { useRadioContext } from "./radio-context";
 
@@ -36,10 +36,13 @@ export const RadioInput = createPolymorphicComponent<"input", RadioInputProps>(p
 
   const [local, others] = splitProps(props, ["as", "style", "onChange"]);
 
-  const { pressProps } = createPress({
-    get disabled() {
-      return radioContext.isDisabled();
-    },
+  const { pressHandlers } = createPress({
+    disabled: () => radioContext.isDisabled(),
+  });
+
+  const { focusRingHandlers } = createFocusRing({
+    onFocusChange: value => radioContext.setIsFocused(value),
+    onFocusVisibleChange: value => radioContext.setIsFocusVisible(value),
   });
 
   const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = e => {
@@ -72,10 +75,9 @@ export const RadioInput = createPolymorphicComponent<"input", RadioInputProps>(p
       style={{ ...visuallyHiddenStyles, ...local.style }}
       aria-describedby={radioGroupContext.allAriaDescribedBy()}
       data-part="input"
-      data-checked={radioContext.isSelected() ? "" : undefined}
-      data-disabled={radioContext.isDisabled() ? "" : undefined}
       onChange={onChange}
-      {...combineProps(others, pressProps)}
+      {...radioContext.dataAttrs()}
+      {...combineProps(others, pressHandlers, focusRingHandlers)}
     />
   );
 });

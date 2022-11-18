@@ -14,13 +14,5 @@ export const RadioControl = createPolymorphicComponent<"div">(props => {
 
   const [local, others] = splitProps(props, ["as"]);
 
-  return (
-    <Dynamic
-      component={local.as}
-      data-part="control"
-      data-checked={context.isSelected() ? "" : undefined}
-      data-disabled={context.isDisabled() ? "" : undefined}
-      {...others}
-    />
-  );
+  return <Dynamic component={local.as} data-part="control" {...context.dataAttrs()} {...others} />;
 });

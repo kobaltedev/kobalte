@@ -1,49 +1,71 @@
-import { For } from "solid-js";
+import { splitProps } from "solid-js";
 
-import { Button, Radio, RadioGroup, useColorMode } from "../src";
+import { Radio, RadioGroup, useRadioGroupContext } from "../src";
 
-const pets = ["Dogs", "Cats", "Dragons"];
+function SwatchGroup(props: any) {
+  const [local, others] = splitProps(props, ["children", "label"]);
 
-export default function App() {
-  const { toggleColorMode } = useColorMode();
+  return (
+    <RadioGroup orientation="horizontal" {...others}>
+      <RadioGroup.Label class="text-sm font-semibold text-gray-700">{local.label}</RadioGroup.Label>
+      <div class="flex gap-2 mt-2">{local.children}</div>
+    </RadioGroup>
+  );
+}
 
-  const onSubmit = (e: SubmitEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+function Swatch(props: any) {
+  const radioGroupContext = useRadioGroupContext();
 
-    const form = document.getElementById("form") as HTMLFormElement;
-    const formData = new FormData(form);
-
-    for (const [key, value] of formData) {
-      console.log(`${key}: ${value}`);
+  const ring = () => {
+    if (radioGroupContext.selectedValue() === props.value) {
+      const color = props.value.replace(
+        /bg-(.*)-(.*)/,
+        (_: any, c: any, v: any) => `ring-${c}-${Math.max(500, Number(v))}`
+      );
+      return `ring-2 ring-offset-2 ${color} data-[focus-visible]:ring-black`;
     }
+
+    return "data-[focus-visible]:ring-black";
+  };
+
+  const border = () => {
+    return props.value.replace(
+      /bg-(.*)-(.*)/,
+      (_: any, c: any, v: any) => `border-${c}-${Number(v) + 100}`
+    );
+  };
+
+  const bgHover = () => {
+    return props.value.replace(
+      /bg-(.*)-(.*)/,
+      (_: any, c: any, v: any) => `data-[hover]:bg-${c}-${Number(v) + 100}`
+    );
   };
 
   return (
+    <Radio
+      class={`${props.value} ${bgHover()} w-8 h-8 rounded border ${border()} ${ring()}`}
+      {...props}
+    >
+      <Radio.Input />
+    </Radio>
+  );
+}
+
+export default function App() {
+  return (
     <>
-      <button onClick={toggleColorMode}>Toggle color mode</button>
-      <br />
-      <Button onClick={() => console.log("foo")}>Button</Button>
-      <form id={"form"} onSubmit={onSubmit}>
-        <RadioGroup id="chien" name="food">
-          <RadioGroup.Label>Favorite pet</RadioGroup.Label>
-          <div>
-            <For each={pets}>
-              {pet => (
-                <Radio class="radio" value={pet}>
-                  <Radio.Input onClick={() => console.log("foo")} />
-                  <Radio.Control />
-                  <Radio.Label>{pet}</Radio.Label>
-                </Radio>
-              )}
-            </For>
-          </div>
-          <RadioGroup.Description>Choose wisely</RadioGroup.Description>
-          <RadioGroup.ErrorMessage>Noo, you choose wrongly</RadioGroup.ErrorMessage>
-        </RadioGroup>
-        <input type="reset" />
-        <input type="submit" />
-      </form>
+      <div class="flex flex-col items-center max-w-lg">
+        <SwatchGroup label="Color" defaultValue="bg-red-500">
+          <Swatch value="bg-red-500" aria-label="Red" />
+          <Swatch value="bg-orange-500" aria-label="Orange" />
+          <Swatch value="bg-yellow-400" aria-label="Yellow" />
+          <Swatch value="bg-green-500" aria-label="Green" />
+          <Swatch value="bg-sky-400" aria-label="Blue" />
+          <Swatch value="bg-pink-500" aria-label="Pink" />
+          <Swatch value="bg-purple-500" aria-label="Purple" />
+        </SwatchGroup>
+      </div>
     </>
   );
 }

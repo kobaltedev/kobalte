@@ -6,13 +6,13 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
  */
 
-import { chainHandlers, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createMemo, JSX, splitProps } from "solid-js";
+import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { Accessor, createMemo, createSignal, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createFocusRing } from "../../primitives";
+import { createHover } from "../../primitives";
 import { useRadioGroupContext } from "../radio-group-context";
-import { RadioContext, RadioContextValue } from "./radio-context";
+import { RadioContext, RadioContextValue, RadioDataAttrs } from "./radio-context";
 import { RadioControl } from "./radio-control";
 import { RadioInput } from "./radio-input";
 import { RadioLabel } from "./radio-label";
@@ -44,6 +44,9 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
 
   const [local, others] = splitProps(props, ["as", "children", "value", "disabled"]);
 
+  const [isFocused, setIsFocused] = createSignal(false);
+  const [isFocusVisible, setIsFocusVisible] = createSignal(false);
+
   const isSelected = createMemo(() => {
     return radioGroupContext.selectedValue() === local.value;
   });
@@ -52,19 +55,33 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
     return local.disabled || radioGroupContext.disabled() || false;
   });
 
+  const { isHovered, hoverHandlers } = createHover({
+    disabled: isDisabled,
+  });
+
+  const dataAttrs: Accessor<RadioDataAttrs> = createMemo(() => ({
+    "data-checked": isSelected() ? "" : undefined,
+    "data-disabled": isDisabled() ? "" : undefined,
+    "data-hover": isHovered() ? "" : undefined,
+    "data-focus": isFocused() ? "" : undefined,
+    "data-focus-visible": isFocusVisible() ? "" : undefined,
+  }));
+
   const context: RadioContextValue = {
     value: () => local.value,
+    dataAttrs,
     isSelected,
     isDisabled,
+    setIsFocused,
+    setIsFocusVisible,
   };
 
   return (
     <Dynamic
       component={local.as}
       data-part="root"
-      data-checked={isSelected() ? "" : undefined}
-      data-disabled={isDisabled() ? "" : undefined}
-      {...others}
+      {...context.dataAttrs()}
+      {...combineProps(others, hoverHandlers)}
     >
       <RadioContext.Provider value={context}>{local.children}</RadioContext.Provider>
     </Dynamic>

@@ -440,7 +440,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
 
   return {
     isPressed,
-    pressProps: {
+    pressHandlers: {
       onKeyDown,
       onKeyUp,
       onClick,

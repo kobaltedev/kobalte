@@ -80,7 +80,7 @@ export interface CreatePressProps extends PressEvents {
   allowTextSelectionOnPress?: MaybeAccessor<boolean | undefined>;
 }
 
-export interface PressProps<T extends HTMLElement> {
+export interface PressHandlers<T extends HTMLElement> {
   onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
   onKeyUp: JSX.EventHandlerUnion<T, KeyboardEvent>;
   onClick: JSX.EventHandlerUnion<T, MouseEvent>;
@@ -94,6 +94,6 @@ export interface CreatePressResult<T extends HTMLElement> {
   /** Whether the target is currently pressed. */
   isPressed: Accessor<boolean>;
 
-  /** Props to spread onto the target element. */
-  pressProps: PressProps<T>;
+  /** Event handlers to spread onto the target element. */
+  pressHandlers: PressHandlers<T>;
 }

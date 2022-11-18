@@ -30,13 +30,13 @@ function Example(
     CREATE_PRESS_PROP_NAMES
   );
 
-  const { pressProps } = createPress(createPressProps);
+  const { pressHandlers } = createPress(createPressProps);
 
   return (
     <Dynamic
       component={local.elementType || "div"}
       tabIndex="0"
-      {...combineProps(others, pressProps)}
+      {...combineProps(others, pressHandlers)}
     >
       {local.elementType !== "input" ? "test" : undefined}
     </Dynamic>
@@ -1738,10 +1738,10 @@ describe("createPress", () => {
         onPressStart: () => setTimeout(() => setShow(true), 3000),
       });
 
-      const { pressProps } = createPress<HTMLDivElement>(createPressProps);
+      const { pressHandlers } = createPress<HTMLDivElement>(createPressProps);
 
       return (
-        <div style={show() ? local.styleToApply : {}} {...pressProps}>
+        <div style={show() ? local.styleToApply : {}} {...pressHandlers}>
           test
         </div>
       );
