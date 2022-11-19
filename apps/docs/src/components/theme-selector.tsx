@@ -10,7 +10,7 @@ export function ThemeSelector(props: ButtonProps) {
     <Button
       aria-label="toggle color mode"
       onPress={toggleColorMode}
-      class="cursor-default flex h-6 w-6 items-center justify-center rounded hover:bg-zinc-200 dark:bg-zinc-700 dark:hover:bg-zinc-600"
+      class="flex p-1 items-center justify-center transition rounded text-zinc-700 hover:text-zinc-800 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:text-zinc-200 dark:hover:bg-zinc-800"
       {...props}
     >
       <Show when={colorMode() === "dark"} fallback={<MoonIcon class="h-5 w-5" />}>
