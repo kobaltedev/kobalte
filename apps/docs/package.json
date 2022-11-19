@@ -26,7 +26,7 @@
   "type": "module",
   "scripts": {
     "build": "solid-start build",
-    "clean": "rm -rf .solid && rm -rf vercel && rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "clean": "rm -rf .solid && rm -rf .vercel && rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "solid-start dev --host",
     "start": "solid-start start"
   },
@@ -34,7 +34,7 @@
     "@kobalte/elements": "0.0.0",
     "@solidjs/meta": "0.28.2",
     "@solidjs/router": "0.5.0",
-    "clsx": "^1.2.1",
+    "clsx": "1.2.1",
     "solid-js": "1.6.1",
     "solid-start": "0.2.5",
     "undici": "5.12.0"
