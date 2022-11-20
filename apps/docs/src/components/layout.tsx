@@ -6,6 +6,7 @@ import { Header } from "./header";
 import { Navigation } from "./navigation";
 import { Prose } from "./prose";
 import { TableOfContents } from "./table-of-contents";
+import { Footer } from "./footer";
 
 export function Layout(props: ParentProps) {
   const location = useLocation();
@@ -20,7 +21,7 @@ export function Layout(props: ParentProps) {
       <Header navSections={NAV_SECTIONS} />
       <div class="relative flex justify-center dark:bg-zinc-900">
         <div class="hidden lg:relative lg:block lg:flex-none">
-          <div class="sticky top-[4.5rem] h-[calc(100vh-4.5rem)] overflow-y-auto py-4 pl-6">
+          <div class="sticky top-[61px] h-[calc(100vh-61px)] overflow-y-auto py-6 pl-6">
             <Navigation sections={NAV_SECTIONS} />
           </div>
         </div>
@@ -58,6 +59,7 @@ export function Layout(props: ParentProps) {
               </div>
             </Show>
           </dl>
+          <Footer />
         </div>
         <TableOfContents />
       </div>
