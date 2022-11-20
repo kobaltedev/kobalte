@@ -118,8 +118,8 @@ importers:
       solid-js: 1.6.1
       solid-mdx: 0.0.6
       solid-start: 0.2.5
+      solid-start-netlify: 0.2.5
       solid-start-node: 0.2.5
-      solid-start-vercel: 0.2.5
       tailwindcss: 3.2.4
       typescript: 4.8.3
       undici: 5.12.0
@@ -153,8 +153,8 @@ importers:
       solid-js: 1.6.1
       solid-mdx: 0.0.6_solid-js@1.6.1+vite@3.2.4
       solid-start: 0.2.5_boqkefs5j5tlqcohxbofs3anr4
+      solid-start-netlify: 0.2.5_solid-start@0.2.5
       solid-start-node: 0.2.5_xnqt2a65zojtexxebxq45opgwu
-      solid-start-vercel: 0.2.5_pwel2bd237mbr7ooh5pghdxziu
       tailwindcss: 3.2.4
       typescript: 4.8.3
       undici: 5.12.0
@@ -3257,6 +3257,23 @@ packages:
       '@babel/helper-module-imports': 7.18.6
       '@rollup/pluginutils': 3.1.0_rollup@2.79.0
       rollup: 2.79.0
+    dev: true
+
+  /@rollup/plugin-babel/5.3.1_rw3hudt2pmn5afxog7l3b6qtze:
+    resolution: {integrity: sha512-WFfdLWU/xVWKeRQnKmIAQULUI7Il0gZnBIH/ZFO069wYIfPu+8zrfp/KMW0atmELoRDq8FbiP3VCss9MhCut7Q==}
+    engines: {node: '>= 10.0.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+      '@types/babel__core': ^7.1.9
+      rollup: ^1.20.0||^2.0.0
+    peerDependenciesMeta:
+      '@types/babel__core':
+        optional: true
+    dependencies:
+      '@babel/core': 7.20.2
+      '@babel/helper-module-imports': 7.18.6
+      '@rollup/pluginutils': 3.1.0_rollup@2.79.1
+      rollup: 2.79.1
     dev: true
 
   /@rollup/plugin-commonjs/22.0.2_rollup@2.79.1:
@@ -6800,7 +6817,7 @@ packages:
     dependencies:
       '@types/unist': 2.0.6
       comma-separated-tokens: 2.0.3
-      property-information: 6.1.1
+      property-information: 6.2.0
       space-separated-tokens: 2.0.2
       style-to-object: 0.3.0
       unist-util-is: 5.1.1
@@ -6814,7 +6831,7 @@ packages:
       '@types/parse5': 6.0.3
       '@types/unist': 2.0.6
       hastscript: 7.1.0
-      property-information: 6.1.1
+      property-information: 6.2.0
       vfile: 5.3.6
       vfile-location: 4.0.1
       web-namespaces: 2.0.1
@@ -6865,7 +6882,7 @@ packages:
       hast-util-whitespace: 2.0.0
       mdast-util-mdx-expression: 1.3.1
       mdast-util-mdxjs-esm: 1.3.0
-      property-information: 6.1.1
+      property-information: 6.2.0
       space-separated-tokens: 2.0.2
       style-to-object: 0.3.0
       unist-util-position: 4.0.3
@@ -6880,7 +6897,7 @@ packages:
       '@types/hast': 2.3.4
       '@types/parse5': 6.0.3
       hast-to-hyperscript: 10.0.1
-      property-information: 6.1.1
+      property-information: 6.2.0
       web-namespaces: 2.0.1
       zwitch: 2.0.4
     dev: true
@@ -6901,7 +6918,7 @@ packages:
       '@types/hast': 2.3.4
       comma-separated-tokens: 2.0.3
       hast-util-parse-selector: 3.1.0
-      property-information: 6.1.1
+      property-information: 6.2.0
       space-separated-tokens: 2.0.2
     dev: true
 
@@ -9572,8 +9589,8 @@ packages:
       sisteransi: 1.0.5
     dev: true
 
-  /property-information/6.1.1:
-    resolution: {integrity: sha512-hrzC564QIl0r0vy4l6MvRLhafmUowhO/O3KgVSoXIbbA2Sz4j8HGpJc6T2cubRVwMwpdiG/vKGfhT4IixmKN9w==}
+  /property-information/6.2.0:
+    resolution: {integrity: sha512-kma4U7AFCTwpqq5twzC1YVIDXSqg6qQK6JN0smOw8fgRy1OkMi0CYSzFmsy6dnqSenamAtj0CyXMUJ1Mf6oROg==}
     dev: true
 
   /pseudomap/1.0.2:
@@ -10244,6 +10261,26 @@ packages:
       solid-js: 1.6.1
     dev: true
 
+  /solid-start-netlify/0.2.5_solid-start@0.2.5:
+    resolution: {integrity: sha512-xZuFFNrLktYQO12d6qh03UP8sYHsrRg4Lqn/REsZD6FeD+/D88O27xD2P+5glOhtKMX6jnJpLef9mTTgG3NUDQ==}
+    peerDependencies:
+      solid-start: '*'
+    dependencies:
+      '@babel/core': 7.20.2
+      '@babel/preset-env': 7.20.2_@babel+core@7.20.2
+      '@rollup/plugin-babel': 5.3.1_rw3hudt2pmn5afxog7l3b6qtze
+      '@rollup/plugin-commonjs': 22.0.2_rollup@2.79.1
+      '@rollup/plugin-json': 4.1.0_rollup@2.79.1
+      '@rollup/plugin-node-resolve': 13.3.0_rollup@2.79.1
+      encoding: 0.1.13
+      rollup: 2.79.1
+      solid-start: 0.2.5_boqkefs5j5tlqcohxbofs3anr4
+      terser: 5.15.1
+    transitivePeerDependencies:
+      - '@types/babel__core'
+      - supports-color
+    dev: true
+
   /solid-start-node/0.2.5_xnqt2a65zojtexxebxq45opgwu:
     resolution: {integrity: sha512-TulWMS4ChQg6V2+BhRto18fv7YQL6VknZRErqcjHIOR2h20siDwJ26GiHDQ1CgPGOLEu4S8wAeaxaj7OBOWmDQ==}
     peerDependencies:
@@ -10264,21 +10301,6 @@ packages:
       vite: 3.2.4
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /solid-start-vercel/0.2.5_pwel2bd237mbr7ooh5pghdxziu:
-    resolution: {integrity: sha512-jeLVkrf3Y41+CYq83kxF4NEf7n0KRcVplPU5BdmLbOJl8vIsgLW/WRqM7Kj/1WHs9P/OWIhiXSW1KIOK7GAHuQ==}
-    peerDependencies:
-      solid-start: '*'
-      vite: '*'
-    dependencies:
-      '@rollup/plugin-commonjs': 22.0.2_rollup@2.79.1
-      '@rollup/plugin-json': 4.1.0_rollup@2.79.1
-      '@rollup/plugin-node-resolve': 13.3.0_rollup@2.79.1
-      rollup: 2.79.1
-      solid-start: 0.2.5_boqkefs5j5tlqcohxbofs3anr4
-      terser: 5.15.1
-      vite: 3.2.4
     dev: true
 
   /solid-start/0.2.5_boqkefs5j5tlqcohxbofs3anr4:
