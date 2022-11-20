@@ -29,7 +29,7 @@ function getHeadingsFromToc(tableOfContents: TocItem[]) {
 }
 
 function useCurrentSection(tableOfContents: Accessor<TocItem[] | undefined>) {
-  const [currentSection, setCurrentSection] = createSignal(tableOfContents()?.[0].slug);
+  const [currentSection, setCurrentSection] = createSignal(tableOfContents()?.[0]?.slug);
 
   createEffect(() => {
     const toc = tableOfContents();
@@ -107,7 +107,7 @@ export function TableOfContents() {
                       class={clsx(
                         "block w-full font-sans transition font-normal rounded py-2",
                         section.slug === currentSection()
-                          ? "text-blue-600"
+                          ? "text-sky-700 hover:text-sky-800 dark:text-sky-600 dark:hover:text-sky-500"
                           : "font-normal text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300",
                         section.depth === 3 && "pl-5"
                       )}

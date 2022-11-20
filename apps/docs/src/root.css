@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  button {
-    cursor: default;
-  }
-}
-
 @font-face {
   font-family: "Lexend";
   font-style: normal;
@@ -32,6 +26,12 @@
   src: url("/fonts/Inter-italic.var.woff2") format("woff2");
 }
 
+@layer base {
+  button {
+    cursor: default;
+  }
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
@@ -53,6 +53,23 @@
     </div>
   </pre>
   */
+
+.kb-preview + pre.shiki,
+.kb-preview + pre.shiki + pre.shiki {
+  margin: 0 0 16px 0;
+  padding: 16px;
+  border-top: none;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+pre.shiki .kb-copy-btn {
+  opacity: 0;
+}
+
+pre.shiki:hover .kb-copy-btn {
+  opacity: 1;
+}
 
 pre {
   /* In theory shiki will overwrite these, but this is to make sure there are defaults regardless */
@@ -88,7 +105,7 @@ pre.shiki {
   display: flex;
   align-items: center;
 
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid #e4e4e7;
 
   background-color: #fafafa !important;
@@ -129,10 +146,10 @@ pre.shiki div.highlight {
 }
 pre.shiki div.highlight {
   opacity: 1;
-  background-color: rgb(219 234 254 / 0.4);
+  background-color: rgb(224 242 254 / 0.8);
 }
 [data-kb-theme="dark"] pre.shiki div.highlight {
-  background-color: rgb(30 58 138 / 0.6);
+  background-color: rgb(12 74 110 / 0.4);
 }
 pre.shiki div.line {
   min-height: 1rem;

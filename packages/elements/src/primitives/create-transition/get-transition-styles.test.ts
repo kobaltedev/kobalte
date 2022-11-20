@@ -51,7 +51,7 @@ describe("getTransitionStyles", () => {
     createRoot(dispose => {
       const customTransition = {
         in: { opacity: 1, "background-color": "red" },
-        out: { opacity: 0, "background-color": "blue" },
+        out: { opacity: 0, "background-color": "sky" },
         common: { color: "green" },
       };
 

@@ -29,9 +29,9 @@ export function Navigation(props: NavigationProps) {
                       <Link
                         href={link.href}
                         class={clsx(
-                          "block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/20",
+                          "block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
                           link.href === location.pathname
-                            ? "text-blue-500 dark:text-blue-600"
+                            ? "text-sky-700 dark:text-sky-600"
                             : "text-zinc-600 dark:text-zinc-400"
                         )}
                       >
