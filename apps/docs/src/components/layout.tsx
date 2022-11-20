@@ -40,7 +40,10 @@ export function Layout(props: ParentProps) {
                     href={previousPage().href}
                     class="text-base font-semibold text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
                   >
-                    <span aria-hidden="true">&larr;</span> {previousPage().title}
+                    <span aria-hidden="true" class="mr-1">
+                      &larr;
+                    </span>
+                    <span>{previousPage().title}</span>
                   </Link>
                 </dd>
               </div>
@@ -53,7 +56,10 @@ export function Layout(props: ParentProps) {
                     href={nextPage().href}
                     class="text-base font-semibold text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
                   >
-                    {nextPage().title} <span aria-hidden="true">&rarr;</span>
+                    <span>{nextPage().title}</span>
+                    <span aria-hidden="true" class="ml-1">
+                      &rarr;
+                    </span>
                   </Link>
                 </dd>
               </div>
