@@ -21,9 +21,9 @@ For full documentation, visit [kobalte.dev](https://kobalte.dev/).
 
 ## Acknowledgment
 
-- [React Aria](https://react-spectrum.adobe.com/react-aria/)
-- [Radix UI](https://www.radix-ui.com/)
 - [Ariakit](https://ariakit.org/)
+- [Radix UI](https://www.radix-ui.com/)
+- [React Aria](https://react-spectrum.adobe.com/react-aria/)
 - [Zag](https://zagjs.com/)
 
 ## License
