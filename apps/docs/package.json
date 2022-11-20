@@ -34,10 +34,7 @@
     "@kobalte/elements": "0.0.0",
     "@solidjs/meta": "0.28.2",
     "@solidjs/router": "0.5.0",
-    "clsx": "1.2.1",
-    "solid-js": "1.6.1",
-    "solid-start": "0.2.5",
-    "undici": "5.12.0"
+    "clsx": "1.2.1"
   },
   "devDependencies": {
     "@mdx-js/mdx": "2.1.3",
@@ -59,11 +56,14 @@
     "remark-shiki-twoslash": "3.1.0",
     "safer-buffer": "2.1.2",
     "shiki": "0.11.1",
+    "solid-js": "1.6.1",
     "solid-mdx": "0.0.6",
+    "solid-start": "0.2.5",
     "solid-start-node": "0.2.5",
     "solid-start-vercel": "0.2.5",
     "tailwindcss": "3.2.4",
     "typescript": "4.8.3",
+    "undici": "5.12.0",
     "unist-util-visit": "4.1.1",
     "vite": "3.2.4"
   },
