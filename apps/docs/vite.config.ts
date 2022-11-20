@@ -11,7 +11,7 @@ import solid from "solid-start/vite";
 // @ts-ignore
 import node from "solid-start-node";
 // @ts-ignore
-import vercel from "solid-start-vercel";
+import netlify from "solid-start-netlify";
 import { visit } from "unist-util-visit";
 import { defineConfig } from "vite";
 
@@ -202,7 +202,7 @@ async function mdx(config: any) {
 
 ///
 
-const adapter = process.env.GITHUB_ACTIONS ? node() : vercel();
+const adapter = process.env.GITHUB_ACTIONS ? node() : netlify();
 
 export default defineConfig({
   plugins: [
