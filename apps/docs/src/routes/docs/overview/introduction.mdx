@@ -1,9 +1,25 @@
-# Hello
+import { Preview } from "../../../components/preview";
+import { Callout } from "../../../components/callout";
 
-## Lorem Ipsum is simply dummy
+# Lorem Ipsum is simply dummy
 
 ### Lorem Ipsum is simply dummy
 
+<Callout type="note">
+  <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
+</Callout>
+
+<Callout type="warning">
+  <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
+</Callout>
+
+<Preview centered rounded>
+  <button>Button</button>
+</Preview>
+
+<Preview>
+  <button>Button</button>
+</Preview>
 ```tsx {2}
 export function Foo() {
   return <div></div>;

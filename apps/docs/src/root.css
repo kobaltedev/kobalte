@@ -54,6 +54,15 @@
   </pre>
   */
 
+.kb-preview + pre.shiki,
+.kb-preview + pre.shiki + pre.shiki {
+  margin: 0 0 16px 0;
+  padding: 16px;
+  border-top: none;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
 pre {
   /* In theory shiki will overwrite these, but this is to make sure there are defaults regardless */
   background-color: white;
@@ -88,7 +97,7 @@ pre.shiki {
   display: flex;
   align-items: center;
 
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid #e4e4e7;
 
   background-color: #fafafa !important;

@@ -29,7 +29,7 @@ function getHeadingsFromToc(tableOfContents: TocItem[]) {
 }
 
 function useCurrentSection(tableOfContents: Accessor<TocItem[] | undefined>) {
-  const [currentSection, setCurrentSection] = createSignal(tableOfContents()?.[0].slug);
+  const [currentSection, setCurrentSection] = createSignal(tableOfContents()?.[0]?.slug);
 
   createEffect(() => {
     const toc = tableOfContents();
