@@ -29,7 +29,7 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
 
   props = mergeDefaultProps({ as: "input" }, props);
 
-  const [local, others] = splitProps(props, ["as", "onChange"]);
+  const [local, others] = splitProps(props, ["as", "onChange", "onFocus", "onBlur"]);
 
   const { pressHandlers } = createPress({
     isDisabled: radioContext.isDisabled,
@@ -54,6 +54,16 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
     target.checked = radioContext.isSelected();
   };
 
+  const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = e => {
+    callHandler(e, local.onFocus);
+    radioContext.setIsFocused(true);
+  };
+
+  const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = e => {
+    callHandler(e, local.onBlur);
+    radioContext.setIsFocused(false);
+  };
+
   return (
     <Dynamic
       component={local.as}
@@ -65,6 +75,8 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
       aria-describedby={radioGroupContext.allAriaDescribedBy()}
       data-part="input"
       onChange={onChange}
+      onFocus={onFocus}
+      onBlur={onBlur}
       {...radioContext.dataset()}
       {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers)}
     />

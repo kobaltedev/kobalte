@@ -14,9 +14,9 @@ import { createHover } from "../../primitives";
 import { useRadioGroupContext } from "../radio-group-context";
 import { RadioContext, RadioContextValue, RadioDataSet } from "./radio-context";
 import { RadioControl } from "./radio-control";
+import { RadioIndicator } from "./radio-indicator";
 import { RadioInput } from "./radio-input";
 import { RadioLabel } from "./radio-label";
-import { RadioIndicator } from "./radio-indicator";
 
 type RadioComposite = {
   Label: typeof RadioLabel;
@@ -47,7 +47,6 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
   const [local, others] = splitProps(props, ["as", "children", "value", "isDisabled"]);
 
   const [isFocused, setIsFocused] = createSignal(false);
-  const [isFocusVisible, setIsFocusVisible] = createSignal(false);
 
   const isSelected = createMemo(() => {
     return radioGroupContext.isSelectedValue(local.value);
@@ -57,9 +56,7 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
     return local.isDisabled || radioGroupContext.isDisabled() || false;
   });
 
-  const { isHovered, hoverHandlers } = createHover({
-    isDisabled: isDisabled,
-  });
+  const { isHovered, hoverHandlers } = createHover({ isDisabled });
 
   const dataset: Accessor<RadioDataSet> = createMemo(() => ({
     "data-valid": radioGroupContext.validationState() === "valid" ? "" : undefined,
@@ -68,7 +65,6 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
     "data-disabled": isDisabled() ? "" : undefined,
     "data-hover": isHovered() ? "" : undefined,
     "data-focus": isFocused() ? "" : undefined,
-    "data-focus-visible": isFocusVisible() ? "" : undefined,
   }));
 
   const context: RadioContextValue = {
@@ -77,7 +73,6 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
     isSelected,
     isDisabled,
     setIsFocused,
-    setIsFocusVisible,
   };
 
   return (

@@ -13,11 +13,15 @@ import {
   mergeRefs,
   ValidationState,
 } from "@kobalte/utils";
-import { createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
+import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createControllableSignal, createFormResetListener } from "../primitives";
-import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context";
+import {
+  RadioGroupContext,
+  RadioGroupContextValue,
+  RadioGroupDataSet,
+} from "./radio-group-context";
 import { RadioGroupDescription } from "./radio-group-description";
 import { RadioGroupErrorMessage } from "./radio-group-error-message";
 import { RadioGroupLabel } from "./radio-group-label";
@@ -116,15 +120,22 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
     });
 
     const allAriaDescribedBy = createMemo(() => {
-      // aria-errormessage is not fully supported, so we put it as an aria-describedby instead
-      // @See https://www.davidmacd.com/blog/test-aria-describedby-errormessage-aria-live.ht
-      // and https://a11ysupport.io/tech/aria/aria-errormessage_attribute
+      // Use aria-describedby for error message because aria-errormessage is unsupported using VoiceOver or NVDA.
+      // See https://github.com/adobe/react-spectrum/issues/1346#issuecomment-740136268
       return (
         [ariaDescribedBy(), ariaErrorMessage(), local["aria-describedby"]]
           .filter(Boolean)
           .join(" ") || undefined
       );
     });
+
+    const dataset: Accessor<RadioGroupDataSet> = createMemo(() => ({
+      "data-valid": local.validationState === "valid" ? "" : undefined,
+      "data-invalid": local.validationState === "invalid" ? "" : undefined,
+      "data-required": local.isRequired ? "" : undefined,
+      "data-disabled": local.isDisabled ? "" : undefined,
+      "data-readonly": local.isReadOnly ? "" : undefined,
+    }));
 
     createFormResetListener(
       () => ref,
@@ -135,6 +146,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
       isSelectedValue: (value: string) => value === selectedValue(),
       setSelectedValue,
       name: () => local.name!,
+      dataset,
       validationState: () => local.validationState,
       isRequired: () => local.isRequired,
       isDisabled: () => local.isDisabled,
@@ -160,11 +172,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
         aria-readonly={local.isReadOnly || undefined}
         aria-orientation={local.orientation}
         data-part="root"
-        data-valid={local.validationState === "valid" ? "" : undefined}
-        data-invalid={local.validationState === "invalid" ? "" : undefined}
-        data-required={local.isRequired ? "" : undefined}
-        data-disabled={local.isDisabled ? "" : undefined}
-        data-readonly={local.isReadOnly ? "" : undefined}
+        {...dataset()}
         {...others}
       >
         <RadioGroupContext.Provider value={context}>{local.children}</RadioGroupContext.Provider>

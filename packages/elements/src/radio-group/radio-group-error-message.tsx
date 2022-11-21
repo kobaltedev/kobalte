@@ -38,7 +38,7 @@ export const RadioGroupErrorMessage = createPolymorphicComponent<"div">(props =>
       component={local.as}
       id={local.id}
       data-part="error-message"
-      data-disabled={context.isDisabled() ? "" : undefined}
+      {...context.dataset()}
       {...others}
     />
   );
