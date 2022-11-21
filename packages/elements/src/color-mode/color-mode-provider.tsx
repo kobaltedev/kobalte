@@ -9,6 +9,7 @@
 import { createEffect, createSignal, onCleanup } from "solid-js";
 
 import { ColorModeContext } from "./color-mode-context";
+import { initialColorMode } from "./color-mode-script";
 import { localStorageManager } from "./storage-manager";
 import { ColorMode, ColorModeContextType, ColorModeProviderProps, ConfigColorMode } from "./types";
 import {
@@ -55,7 +56,7 @@ export function ColorModeProvider(props: ColorModeProviderProps) {
   };
 
   createEffect(() => {
-    setColorMode(colorModeManager().get() ?? "system");
+    setColorMode(colorModeManager().get() ?? initialColorMode());
   });
 
   onCleanup(() => {
