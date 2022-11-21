@@ -6,9 +6,9 @@ export interface RadioGroupContextValue {
   setSelectedValue: (value: string) => void;
   name: Accessor<string>;
   validationState: Accessor<ValidationState | undefined>;
-  required: Accessor<boolean | undefined>;
-  disabled: Accessor<boolean | undefined>;
-  readOnly: Accessor<boolean | undefined>;
+  isRequired: Accessor<boolean | undefined>;
+  isDisabled: Accessor<boolean | undefined>;
+  isReadOnly: Accessor<boolean | undefined>;
   getPartId: (part: string) => string;
   allAriaDescribedBy: Accessor<string | undefined>;
   setAriaLabelledBy: (id: string | undefined) => void;

@@ -60,7 +60,7 @@ export interface PressEvents {
 
 export interface CreatePressProps extends PressEvents {
   /** Whether the press events should be disabled. */
-  disabled?: MaybeAccessor<boolean | undefined>;
+  isDisabled?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the target should not receive focus on press. */
   preventFocusOnPress?: MaybeAccessor<boolean | undefined>;

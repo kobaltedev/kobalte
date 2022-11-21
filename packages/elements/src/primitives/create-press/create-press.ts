@@ -60,7 +60,7 @@ const createPressPropNamesObject: Record<keyof CreatePressProps, true> = {
   onPressUp: true,
   onPressChange: true,
   onPress: true,
-  disabled: true,
+  isDisabled: true,
   preventFocusOnPress: true,
   cancelOnPointerExit: true,
   allowTextSelectionOnPress: true,
@@ -94,7 +94,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   const { addGlobalListener, removeAllGlobalListeners } = createGlobalListeners();
 
   const triggerPressStart = (originalEvent: EventBase, pointerType: PointerType) => {
-    if (access(props.disabled) || state.didFirePressStart) {
+    if (access(props.isDisabled) || state.didFirePressStart) {
       return;
     }
 
@@ -139,7 +139,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
     props.onPressChange?.(false);
     setIsPressed(false);
 
-    if (wasPressed && !access(props.disabled)) {
+    if (wasPressed && !access(props.isDisabled)) {
       props.onPress?.({
         type: "press",
         pointerType,
@@ -153,7 +153,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
   };
 
   const triggerPressUp = (originalEvent: EventBase, pointerType: PointerType) => {
-    if (access(props.disabled)) {
+    if (access(props.isDisabled)) {
       return;
     }
 
@@ -309,7 +309,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
     if (e && e.button === 0) {
       e.stopPropagation();
 
-      if (access(props.disabled)) {
+      if (access(props.isDisabled)) {
         e.preventDefault();
       }
 
@@ -321,7 +321,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
         (state.pointerType === "virtual" || isVirtualClick(e))
       ) {
         // Ensure the element receives focus (VoiceOver on iOS does not do this)
-        if (!access(props.disabled) && !access(props.preventFocusOnPress)) {
+        if (!access(props.isDisabled) && !access(props.preventFocusOnPress)) {
           focusWithoutScrolling(e.currentTarget);
         }
 
@@ -369,7 +369,7 @@ export function createPress<T extends HTMLElement>(props: CreatePressProps): Cre
     state.activePointerId = e.pointerId;
     state.target = e.currentTarget;
 
-    if (!access(props.disabled) && !access(props.preventFocusOnPress)) {
+    if (!access(props.isDisabled) && !access(props.preventFocusOnPress)) {
       focusWithoutScrolling(e.currentTarget);
     }
 

@@ -40,8 +40,8 @@ export const RadioGroupLabel = createPolymorphicComponent<"span">(props => {
       data-part="label"
       data-valid={context.validationState() === "valid" ? "" : undefined}
       data-invalid={context.validationState() === "invalid" ? "" : undefined}
-      data-required={context.required() ? "" : undefined}
-      data-disabled={context.disabled() ? "" : undefined}
+      data-required={context.isRequired() ? "" : undefined}
+      data-disabled={context.isDisabled() ? "" : undefined}
       {...others}
     />
   );

@@ -915,7 +915,7 @@ describe("createPress", () => {
 
       render(() => (
         <Example
-          disabled
+          isDisabled
           onPressStart={addEvent}
           onPressEnd={addEvent}
           onPressChange={pressed => addEvent({ type: "presschange", pressed })}

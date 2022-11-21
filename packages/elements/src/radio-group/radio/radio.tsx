@@ -33,7 +33,7 @@ export interface RadioProps {
   value: string;
 
   /** Whether the radio button is disabled or not. */
-  disabled?: boolean;
+  isDisabled?: boolean;
 }
 
 /**
@@ -44,7 +44,7 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
 
   props = mergeDefaultProps({ as: "label" }, props);
 
-  const [local, others] = splitProps(props, ["as", "children", "value", "disabled"]);
+  const [local, others] = splitProps(props, ["as", "children", "value", "isDisabled"]);
 
   const [isFocused, setIsFocused] = createSignal(false);
   const [isFocusVisible, setIsFocusVisible] = createSignal(false);
@@ -54,11 +54,11 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
   });
 
   const isDisabled = createMemo(() => {
-    return local.disabled || radioGroupContext.disabled() || false;
+    return local.isDisabled || radioGroupContext.isDisabled() || false;
   });
 
   const { isHovered, hoverHandlers } = createHover({
-    disabled: isDisabled,
+    isDisabled: isDisabled,
   });
 
   const dataset: Accessor<RadioDataSet> = createMemo(() => ({

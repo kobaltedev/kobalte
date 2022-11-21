@@ -17,7 +17,6 @@ import {
   combineProps,
   createPolymorphicComponent,
   mergeDefaultProps,
-  mergeRefs,
 } from "@kobalte/utils";
 import { createMemo, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -32,7 +31,7 @@ import { isButton } from "./is-button";
 
 export interface ButtonProps extends CreatePressProps {
   /** Whether the button is disabled. */
-  disabled?: boolean;
+  isDisabled?: boolean;
 }
 
 /**
@@ -53,7 +52,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
 
   const [local, createPressProps, others] = splitProps(
     props,
-    ["as", "type", "disabled", "onClick"],
+    ["as", "type", "isDisabled", "onClick"],
     CREATE_PRESS_PROP_NAMES
   );
 
@@ -94,11 +93,11 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       component={local.as}
       type={isNativeButton() || isInput() ? local.type : undefined}
       role={!isNativeButton() && !isLink() ? "button" : undefined}
-      tabIndex={!isNativeButton() && !isLink() && !local.disabled ? 0 : undefined}
-      disabled={isNativeButton() || isInput() ? local.disabled : undefined}
-      aria-disabled={!isNativeButton() && !isInput() && local.disabled ? true : undefined}
+      tabIndex={!isNativeButton() && !isLink() && !local.isDisabled ? 0 : undefined}
+      disabled={isNativeButton() || isInput() ? local.isDisabled : undefined}
+      aria-disabled={!isNativeButton() && !isInput() && local.isDisabled ? true : undefined}
       data-pressed={isPressed() ? "" : undefined}
-      data-disabled={local.disabled ? "" : undefined}
+      data-disabled={local.isDisabled ? "" : undefined}
       {...combineProps({ ref, onClick }, others, pressHandlers)}
     />
   );

@@ -51,7 +51,7 @@ describe("createPreventScroll", function () {
       return (
         <>
           <button onClick={() => setDisabled(true)}>Disable scroll lock</button>
-          <Example disabled={disabled} />
+          <Example isDisabled={disabled} />
         </>
       );
     });
