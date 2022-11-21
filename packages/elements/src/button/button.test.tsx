@@ -126,7 +126,7 @@ describe("Button", () => {
 
   it("should not have attribute 'tabindex=0' when it's disabled", () => {
     render(() => (
-      <Button data-testid="button" as="div" disabled>
+      <Button data-testid="button" as="div" isDisabled>
         Button
       </Button>
     ));
@@ -138,7 +138,7 @@ describe("Button", () => {
 
   it("should have correct 'disabled' attribute when disabled and it's a native button", () => {
     render(() => (
-      <Button data-testid="button" disabled>
+      <Button data-testid="button" isDisabled>
         Button
       </Button>
     ));
@@ -151,7 +151,7 @@ describe("Button", () => {
 
   it("should have correct 'disabled' attribute when disabled and it's an input", () => {
     render(() => (
-      <Button data-testid="button" as="input" disabled>
+      <Button data-testid="button" as="input" isDisabled>
         Button
       </Button>
     ));
@@ -164,7 +164,7 @@ describe("Button", () => {
 
   it("should have correct 'disabled' attribute when disabled and it's not a native button nor input", () => {
     render(() => (
-      <Button data-testid="button" as="div" disabled>
+      <Button data-testid="button" as="div" isDisabled>
         Button
       </Button>
     ));
@@ -197,7 +197,7 @@ describe("Button", () => {
 
   it("should have attribute 'data-disabled' when disabled", () => {
     render(() => (
-      <Button data-testid="button" disabled>
+      <Button data-testid="button" isDisabled>
         Button
       </Button>
     ));

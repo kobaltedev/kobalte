@@ -13,7 +13,7 @@ export function Preview(props: PreviewProps) {
     <div
       class={clsx(
         local.class,
-        "kb-preview mt-4 overflow-y-auto p-4 border border-solid border-zinc-200 dark:bg-[#121212] dark:border-zinc-700",
+        "kb-preview not-prose mt-4 overflow-y-auto p-4 border border-solid border-zinc-200 dark:bg-[#121212] dark:border-zinc-700",
         local.centered && "flex items-center justify-center",
         local.rounded ? "rounded-lg" : "rounded-t-lg"
       )}

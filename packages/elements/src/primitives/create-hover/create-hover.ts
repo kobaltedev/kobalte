@@ -91,7 +91,7 @@ export function createHover<T extends HTMLElement>(
     const eventTarget = event.target as HTMLElement | null;
 
     if (
-      access(props.disabled) ||
+      access(props.isDisabled) ||
       pointerType === "touch" ||
       state.isHovered ||
       !eventCurrentTarget?.contains(eventTarget)
@@ -143,7 +143,7 @@ export function createHover<T extends HTMLElement>(
   };
 
   const onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent> = e => {
-    if (!access(props.disabled) && e.currentTarget.contains(e.target as Element)) {
+    if (!access(props.isDisabled) && e.currentTarget.contains(e.target as Element)) {
       triggerHoverEnd(e, e.pointerType as PointerType);
     }
   };
@@ -156,7 +156,7 @@ export function createHover<T extends HTMLElement>(
 
   createEffect(
     on(
-      () => access(props.disabled),
+      () => access(props.isDisabled),
       disabled => {
         // Call the triggerHoverEnd as soon as isDisabled changes to true
         // Safe to call triggerHoverEnd, it will early return if we aren't currently hovering

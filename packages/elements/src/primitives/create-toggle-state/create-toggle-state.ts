@@ -13,19 +13,19 @@ import { createControllableBooleanSignal } from "../create-controllable-signal";
 
 export interface CreateToggleStateProps {
   /** The controlled selected state. */
-  selected?: MaybeAccessor<boolean | undefined>;
+  isSelected?: MaybeAccessor<boolean | undefined>;
 
   /**
    * The default selected state when initially rendered.
    * Useful when you do not need to control the selected state.
    */
-  defaultSelected?: MaybeAccessor<boolean | undefined>;
+  defaultIsSelected?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the selected state cannot be changed by the user. */
-  readOnly?: MaybeAccessor<boolean | undefined>;
+  isReadOnly?: MaybeAccessor<boolean | undefined>;
 
   /** Event handler called when the selected state changes. */
-  onSelectedChange?: (selected: boolean) => void;
+  onSelectedChange?: (isSelected: boolean) => void;
 }
 
 export interface ToggleState {
@@ -44,19 +44,19 @@ export interface ToggleState {
  */
 export function createToggleState(props: CreateToggleStateProps = {}): ToggleState {
   const [isSelected, _setIsSelected] = createControllableBooleanSignal({
-    value: () => access(props.selected),
-    defaultValue: () => !!access(props.defaultSelected),
+    value: () => access(props.isSelected),
+    defaultValue: () => !!access(props.defaultIsSelected),
     onChange: value => props.onSelectedChange?.(value),
   });
 
   const setIsSelected = (value: boolean) => {
-    if (!access(props.readOnly)) {
+    if (!access(props.isReadOnly)) {
       _setIsSelected(value);
     }
   };
 
   const toggle = () => {
-    if (!access(props.readOnly)) {
+    if (!access(props.isReadOnly)) {
       _setIsSelected(!isSelected());
     }
   };

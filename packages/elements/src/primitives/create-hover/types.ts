@@ -36,7 +36,7 @@ export interface HoverEvents {
 
 export interface CreateHoverProps extends HoverEvents {
   /** Whether the hover events should be disabled. */
-  disabled?: MaybeAccessor<boolean | undefined>;
+  isDisabled?: MaybeAccessor<boolean | undefined>;
 }
 
 export interface HoverHandlers<T extends HTMLElement> {

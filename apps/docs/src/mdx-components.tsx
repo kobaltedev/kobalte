@@ -54,10 +54,10 @@ export const mdxComponents = {
           aria-label="copy to clipboard"
           onPress={copyToClipboard}
           class={clsx(
-            "kb-copy-btn transition outline-none absolute top-2 right-2 z-10 text-base h-6 w-6 rounded appearance-none flex items-center justify-center",
+            "kb-copy-btn transition outline-none absolute top-3 right-2 z-10 text-base h-6 w-6 rounded appearance-none flex items-center justify-center",
             isCopied()
               ? "text-emerald-700 hover:bg-emerald-200/50 dark:text-emerald-400 dark:hover:bg-emerald-900/60"
-              : "text-zinc-700 hover:bg-zinc-200/50 dark:text-zinc-400 dark:hover:bg-zinc-900/60"
+              : "text-zinc-700 hover:bg-zinc-200/70 dark:text-zinc-400 dark:hover:bg-zinc-900/60"
           )}
         >
           <Show when={isCopied()} fallback={<CopyIcon class="h-4 w-4" />}>

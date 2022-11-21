@@ -11,7 +11,7 @@ import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
 
 export interface CreateInteractOutsideProps {
   /** Whether the interact outside events should be disabled. */
-  disabled?: MaybeAccessor<boolean | undefined>;
+  isDisabled?: MaybeAccessor<boolean | undefined>;
 
   /** Handler that is called when an interaction outside the `ref` element start. */
   onInteractOutsideStart?: (e: Event) => void;
@@ -33,7 +33,7 @@ export function createInteractOutside(
   const [isPointerDown, setIsPointerDown] = createSignal(false);
 
   createEffect(() => {
-    if (access(props.disabled)) {
+    if (access(props.isDisabled)) {
       return;
     }
 

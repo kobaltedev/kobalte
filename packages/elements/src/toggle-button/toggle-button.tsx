@@ -20,16 +20,16 @@ import { createToggleState, PressEvents } from "../primitives";
 
 export interface ToggleButtonProps extends ButtonProps {
   /** The controlled selected state. */
-  selected?: boolean;
+  isSelected?: boolean;
 
   /**
    * The default selected state when initially rendered.
    * Useful when you do not need to control the selected state.
    */
-  defaultSelected?: boolean;
+  defaultIsSelected?: boolean;
 
   /** Event handler called when the selected state changes. */
-  onSelectedChange?: (selected: boolean) => void;
+  onSelectedChange?: (isSelected: boolean) => void;
 }
 
 /**
@@ -38,15 +38,15 @@ export interface ToggleButtonProps extends ButtonProps {
  */
 export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonProps>(props => {
   const [local, others] = splitProps(props, [
-    "selected",
-    "defaultSelected",
+    "isSelected",
+    "defaultIsSelected",
     "onSelectedChange",
     "onPress",
   ]);
 
   const state = createToggleState({
-    selected: () => local.selected,
-    defaultSelected: () => local.defaultSelected,
+    isSelected: () => local.isSelected,
+    defaultIsSelected: () => local.defaultIsSelected,
     onSelectedChange: selected => local.onSelectedChange?.(selected),
   });
 

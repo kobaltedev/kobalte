@@ -13,11 +13,15 @@ import {
   mergeRefs,
   ValidationState,
 } from "@kobalte/utils";
-import { createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
+import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createControllableSignal, createFormResetListener } from "../primitives";
-import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context";
+import {
+  RadioGroupContext,
+  RadioGroupContextValue,
+  RadioGroupDataSet,
+} from "./radio-group-context";
 import { RadioGroupDescription } from "./radio-group-description";
 import { RadioGroupErrorMessage } from "./radio-group-error-message";
 import { RadioGroupLabel } from "./radio-group-label";
@@ -51,13 +55,13 @@ export interface RadioGroupProps {
   validationState?: ValidationState;
 
   /** Whether the user must check a radio group item before the owning form can be submitted. */
-  required?: boolean;
+  isRequired?: boolean;
 
   /** Whether the radio group is disabled. */
-  disabled?: boolean;
+  isDisabled?: boolean;
 
   /** Whether the radio group items can be selected but not changed by the user. */
-  readOnly?: boolean;
+  isReadOnly?: boolean;
 
   /** The axis the radio group items should align with. */
   orientation?: "horizontal" | "vertical";
@@ -93,9 +97,9 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
       "id",
       "name",
       "validationState",
-      "required",
-      "disabled",
-      "readOnly",
+      "isRequired",
+      "isDisabled",
+      "isReadOnly",
       "orientation",
       "aria-labelledby",
       "aria-describedby",
@@ -112,19 +116,26 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
     const [ariaErrorMessage, setAriaErrorMessage] = createSignal<string>();
 
     const allAriaLabelledBy = createMemo(() => {
-      return [local["aria-labelledby"], ariaLabelledBy()].filter(Boolean).join(" ") || undefined;
+      return [ariaLabelledBy(), local["aria-labelledby"]].filter(Boolean).join(" ") || undefined;
     });
 
     const allAriaDescribedBy = createMemo(() => {
-      // aria-errormessage is not fully supported, so we put it as the first aria-describedby id instead
-      // @See https://www.davidmacd.com/blog/test-aria-describedby-errormessage-aria-live.ht
-      // and https://a11ysupport.io/tech/aria/aria-errormessage_attribute
+      // Use aria-describedby for error message because aria-errormessage is unsupported using VoiceOver or NVDA.
+      // See https://github.com/adobe/react-spectrum/issues/1346#issuecomment-740136268
       return (
-        [ariaErrorMessage(), local["aria-describedby"], ariaDescribedBy()]
+        [ariaDescribedBy(), ariaErrorMessage(), local["aria-describedby"]]
           .filter(Boolean)
           .join(" ") || undefined
       );
     });
+
+    const dataset: Accessor<RadioGroupDataSet> = createMemo(() => ({
+      "data-valid": local.validationState === "valid" ? "" : undefined,
+      "data-invalid": local.validationState === "invalid" ? "" : undefined,
+      "data-required": local.isRequired ? "" : undefined,
+      "data-disabled": local.isDisabled ? "" : undefined,
+      "data-readonly": local.isReadOnly ? "" : undefined,
+    }));
 
     createFormResetListener(
       () => ref,
@@ -135,10 +146,11 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
       isSelectedValue: (value: string) => value === selectedValue(),
       setSelectedValue,
       name: () => local.name!,
+      dataset,
       validationState: () => local.validationState,
-      required: () => local.required,
-      disabled: () => local.disabled,
-      readOnly: () => local.readOnly,
+      isRequired: () => local.isRequired,
+      isDisabled: () => local.isDisabled,
+      isReadOnly: () => local.isReadOnly,
       getPartId: part => `${local.id!}-${part}`,
       allAriaDescribedBy,
       setAriaLabelledBy,
@@ -155,16 +167,12 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
         aria-labelledby={allAriaLabelledBy()}
         aria-describedby={allAriaDescribedBy()}
         aria-invalid={local.validationState === "invalid" || undefined}
-        aria-required={local.required || undefined}
-        aria-disabled={local.disabled || undefined}
-        aria-readonly={local.readOnly || undefined}
+        aria-required={local.isRequired || undefined}
+        aria-disabled={local.isDisabled || undefined}
+        aria-readonly={local.isReadOnly || undefined}
         aria-orientation={local.orientation}
         data-part="root"
-        data-valid={local.validationState === "valid" ? "" : undefined}
-        data-invalid={local.validationState === "invalid" ? "" : undefined}
-        data-required={local.required ? "" : undefined}
-        data-disabled={local.disabled ? "" : undefined}
-        data-readonly={local.readOnly ? "" : undefined}
+        {...dataset()}
         {...others}
       >
         <RadioGroupContext.Provider value={context}>{local.children}</RadioGroupContext.Provider>

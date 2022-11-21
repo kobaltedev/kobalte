@@ -16,7 +16,7 @@ import {
 import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createFocusRing, createPress } from "../../primitives";
+import { createPress } from "../../primitives";
 import { useRadioGroupContext } from "../radio-group-context";
 import { useRadioContext } from "./radio-context";
 
@@ -29,15 +29,10 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
 
   props = mergeDefaultProps({ as: "input" }, props);
 
-  const [local, others] = splitProps(props, ["as", "onChange"]);
+  const [local, others] = splitProps(props, ["as", "onChange", "onFocus", "onBlur"]);
 
   const { pressHandlers } = createPress({
-    disabled: radioContext.isDisabled,
-  });
-
-  const { focusRingHandlers } = createFocusRing({
-    onFocusChange: value => radioContext.setIsFocused(value),
-    onFocusVisibleChange: value => radioContext.setIsFocusVisible(value),
+    isDisabled: radioContext.isDisabled,
   });
 
   const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = e => {
@@ -59,6 +54,16 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
     target.checked = radioContext.isSelected();
   };
 
+  const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = e => {
+    callHandler(e, local.onFocus);
+    radioContext.setIsFocused(true);
+  };
+
+  const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = e => {
+    callHandler(e, local.onBlur);
+    radioContext.setIsFocused(false);
+  };
+
   return (
     <Dynamic
       component={local.as}
@@ -70,8 +75,10 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
       aria-describedby={radioGroupContext.allAriaDescribedBy()}
       data-part="input"
       onChange={onChange}
+      onFocus={onFocus}
+      onBlur={onBlur}
       {...radioContext.dataset()}
-      {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers, focusRingHandlers)}
+      {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers)}
     />
   );
 });

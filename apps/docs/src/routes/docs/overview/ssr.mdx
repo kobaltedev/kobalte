@@ -1,1 +1,24 @@
+import { Callout } from "../../../components/callout";
+
 # Server side rendering
+
+## Usage with SolidStart
+
+If you are using [SolidStart](https://start.solidjs.com/) you will need to add the ssr setting to your `vite.config.ts`:
+
+```ts {5-7}
+import solid from "solid-start/vite";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [solid()],
+  ssr: {
+    noExternal: ["@kobalte/elements"],
+  },
+});
+```
+
+<Callout type="warning">
+  Kobalte Elements has been tested with `solid-js@1.6.1` and `solid-start@0.2.5`. Compatibility with
+  other versions is not guaranteed.
+</Callout>

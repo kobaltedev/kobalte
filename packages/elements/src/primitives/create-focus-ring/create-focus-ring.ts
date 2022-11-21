@@ -21,15 +21,6 @@ export interface CreateFocusRingProps {
 
   /** Whether the element is a text input. */
   isTextInput?: MaybeAccessor<boolean | undefined>;
-
-  /** Whether the element will be autofocused. */
-  autoFocus?: MaybeAccessor<boolean | undefined>;
-
-  /** Handler that is called when the focus state changes. */
-  onFocusChange?: (isFocused: boolean) => void;
-
-  /** Handler that is called when the focus-visible state changes. */
-  onFocusVisibleChange?: (isFocusVisible: boolean) => void;
 }
 
 export interface FocusRingHandlers<T extends HTMLElement> {
@@ -66,14 +57,11 @@ export function createFocusRing<T extends HTMLElement>(
     return !access(props.within) && e.currentTarget !== e.target;
   };
 
-  const updateStateAndNotifyHandlers = (newIsFocused: boolean) => {
+  const updateState = (newIsFocused: boolean) => {
     const newIsFocusRingVisible = newIsFocused && isFocusVisible();
 
     setIsFocused(newIsFocused);
     setIsFocusRingVisible(newIsFocusRingVisible);
-
-    props.onFocusChange?.(newIsFocused);
-    props.onFocusVisibleChange?.(newIsFocusRingVisible);
   };
 
   const onFocusIn: JSX.EventHandlerUnion<T, FocusEvent> = e => {
@@ -81,7 +69,7 @@ export function createFocusRing<T extends HTMLElement>(
       return;
     }
 
-    updateStateAndNotifyHandlers(true);
+    updateState(true);
   };
 
   const onFocusOut: JSX.EventHandlerUnion<T, FocusEvent> = e => {
@@ -89,7 +77,7 @@ export function createFocusRing<T extends HTMLElement>(
       return;
     }
 
-    updateStateAndNotifyHandlers(false);
+    updateState(false);
   };
 
   return {

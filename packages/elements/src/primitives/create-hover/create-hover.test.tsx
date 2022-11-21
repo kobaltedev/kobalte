@@ -37,7 +37,7 @@ describe("createHover", () => {
 
     render(() => (
       <Example
-        disabled
+        isDisabled
         onHoverEnd={addEvent}
         onHoverChange={isHovering => addEvent({ type: "hoverchange", isHovering })}
         onHoverStart={addEvent}
@@ -309,7 +309,7 @@ describe("createHover", () => {
       return (
         <div>
           <Example
-            disabled={isDisabled()}
+            isDisabled={isDisabled()}
             onHoverStart={addEvent}
             onHoverEnd={addEvent}
             onHoverChange={isHovering => addEvent({ type: "hoverchange", isHovering })}

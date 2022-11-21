@@ -11,7 +11,7 @@ import { createEffect, on, onCleanup } from "solid-js";
 
 export interface PreventScrollOptions {
   /** Whether the scroll lock is disabled. */
-  disabled?: MaybeAccessor<boolean | undefined>;
+  isDisabled?: MaybeAccessor<boolean | undefined>;
 }
 
 const visualViewport = typeof window !== "undefined" && window.visualViewport;
@@ -37,7 +37,7 @@ const nonTextInputTypes = new Set([
 export function createPreventScroll(options: PreventScrollOptions) {
   createEffect(
     on(
-      () => access(options.disabled),
+      () => access(options.isDisabled),
       disabled => {
         if (disabled) {
           return;

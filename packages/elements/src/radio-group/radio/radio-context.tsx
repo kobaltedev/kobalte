@@ -7,7 +7,6 @@ export interface RadioDataSet {
   "data-disabled": string | undefined;
   "data-hover": string | undefined;
   "data-focus": string | undefined;
-  "data-focus-visible": string | undefined;
 }
 
 export interface RadioContextValue {
@@ -16,7 +15,6 @@ export interface RadioContextValue {
   isSelected: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
   setIsFocused: (isFocused: boolean) => void;
-  setIsFocusVisible: (isFocusVisible: boolean) => void;
 }
 
 export const RadioContext = createContext<RadioContextValue>();

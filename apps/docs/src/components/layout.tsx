@@ -6,6 +6,7 @@ import { Header } from "./header";
 import { Navigation } from "./navigation";
 import { Prose } from "./prose";
 import { TableOfContents } from "./table-of-contents";
+import { Footer } from "./footer";
 
 export function Layout(props: ParentProps) {
   const location = useLocation();
@@ -20,7 +21,7 @@ export function Layout(props: ParentProps) {
       <Header navSections={NAV_SECTIONS} />
       <div class="relative flex justify-center dark:bg-zinc-900">
         <div class="hidden lg:relative lg:block lg:flex-none">
-          <div class="sticky top-[4.5rem] h-[calc(100vh-4.5rem)] overflow-y-auto py-4 pl-6">
+          <div class="sticky top-[61px] h-[calc(100vh-61px)] overflow-y-auto py-6 pl-6">
             <Navigation sections={NAV_SECTIONS} />
           </div>
         </div>
@@ -39,7 +40,10 @@ export function Layout(props: ParentProps) {
                     href={previousPage().href}
                     class="text-base font-semibold text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
                   >
-                    <span aria-hidden="true">&larr;</span> {previousPage().title}
+                    <span aria-hidden="true" class="mr-1">
+                      &larr;
+                    </span>
+                    <span>{previousPage().title}</span>
                   </Link>
                 </dd>
               </div>
@@ -52,12 +56,16 @@ export function Layout(props: ParentProps) {
                     href={nextPage().href}
                     class="text-base font-semibold text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
                   >
-                    {nextPage().title} <span aria-hidden="true">&rarr;</span>
+                    <span>{nextPage().title}</span>
+                    <span aria-hidden="true" class="ml-1">
+                      &rarr;
+                    </span>
                   </Link>
                 </dd>
               </div>
             </Show>
           </dl>
+          <Footer />
         </div>
         <TableOfContents />
       </div>

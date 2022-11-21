@@ -17,11 +17,15 @@ export function Header(props: HeaderProps) {
     >
       <div class="mr-6 flex lg:hidden">{/* MobileNavigation */}</div>
       <div class="relative flex flex-grow basis-0 items-center space-x-2">
-        <span class="text-zinc-800 dark:text-white/90 font-medium font-display text-xl leading-none">
+        <Link
+          class="text-zinc-800 dark:text-white/90 font-medium font-display text-xl leading-none"
+          href="/"
+        >
           Kobalte
-        </span>
+          <span class="text-3xl leading-[0] text-sky-600">.</span>
+        </Link>
         <span class="rounded bg-zinc-100 px-1.5 py-1 text-sm leading-none dark:bg-zinc-800 dark:text-zinc-300">
-          v0.0.0
+          v0.1.0
         </span>
       </div>
       <div class="-my-5 mr-6 sm:mr-8 md:mr-0">{/* Search */}</div>

@@ -6,7 +6,7 @@ describe("createToggleState", () => {
   it("can be default selected (uncontrolled)", () => {
     createRoot(dispose => {
       const state = createToggleState({
-        defaultSelected: true,
+        defaultIsSelected: true,
       });
 
       expect(state.isSelected()).toBeTruthy();
@@ -20,7 +20,7 @@ describe("createToggleState", () => {
       const onChangeSpy = jest.fn();
 
       const state = createToggleState({
-        selected: true,
+        isSelected: true,
         onSelectedChange: onChangeSpy,
       });
 
@@ -38,7 +38,7 @@ describe("createToggleState", () => {
 
   it("should setSelected with the given value", () => {
     createRoot(dispose => {
-      const state = createToggleState({ defaultSelected: false });
+      const state = createToggleState({ defaultIsSelected: false });
 
       expect(state.isSelected()).toBeFalsy();
 
@@ -57,8 +57,8 @@ describe("createToggleState", () => {
   it("should not setSelected with the given value when is read only", () => {
     createRoot(dispose => {
       const state = createToggleState({
-        defaultSelected: false,
-        readOnly: true,
+        defaultIsSelected: false,
+        isReadOnly: true,
       });
 
       expect(state.isSelected()).toBeFalsy();
@@ -73,7 +73,7 @@ describe("createToggleState", () => {
 
   it("should toggle selected state", () => {
     createRoot(dispose => {
-      const state = createToggleState({ defaultSelected: false });
+      const state = createToggleState({ defaultIsSelected: false });
 
       expect(state.isSelected()).toBeFalsy();
 
@@ -92,8 +92,8 @@ describe("createToggleState", () => {
   it("should not toggle selected state when is read only", () => {
     createRoot(dispose => {
       const state = createToggleState({
-        defaultSelected: false,
-        readOnly: true,
+        defaultIsSelected: false,
+        isReadOnly: true,
       });
 
       expect(state.isSelected()).toBeFalsy();

@@ -38,7 +38,7 @@ export const RadioGroupDescription = createPolymorphicComponent<"div">(props => 
       component={local.as}
       id={local.id}
       data-part="description"
-      data-disabled={context.disabled() ? "" : undefined}
+      {...context.dataset()}
       {...others}
     />
   );
