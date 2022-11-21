@@ -11,6 +11,8 @@ import { createMemo, createSignal, mergeProps } from "solid-js";
 import { COLOR_MODE_STORAGE_KEY } from "./storage-manager";
 import { ColorModeScriptProps, ConfigColorMode } from "./types";
 
+const FALLBACK_VALUE: ConfigColorMode = "system";
+
 const VALID_VALUES = new Set<ConfigColorMode>(["light", "dark", "system"]);
 
 /**
@@ -18,32 +20,32 @@ const VALID_VALUES = new Set<ConfigColorMode>(["light", "dark", "system"]);
  */
 function normalize(initialColorMode: ConfigColorMode) {
   if (!VALID_VALUES.has(initialColorMode)) {
-    return "light";
+    return FALLBACK_VALUE;
   }
 
   return initialColorMode;
 }
 
 /** Globally managed initial color mode. */
-const [initialColorMode, setInitialColorMode] = createSignal<ConfigColorMode>("system");
+const [initialColorMode, setInitialColorMode] = createSignal<ConfigColorMode>(FALLBACK_VALUE);
 
 export { initialColorMode };
 
 export function ColorModeScript(props: ColorModeScriptProps) {
   props = mergeProps(
     {
-      initialColorMode: "system",
+      initialColorMode: FALLBACK_VALUE,
       storageType: "localStorage",
       storageKey: COLOR_MODE_STORAGE_KEY,
     } as ColorModeScriptProps,
     props
   );
 
+  setInitialColorMode(normalize(props.initialColorMode!));
+
   const scriptSrc = createMemo(() => {
     // runtime safe-guard against invalid color mode values
-    const init = normalize(props.initialColorMode!);
-
-    setInitialColorMode(init);
+    const init = initialColorMode();
 
     const cookieScript = `(function(){try{var a=function(o){var l="(prefers-color-scheme: dark)",v=window.matchMedia(l).matches?"dark":"light",e=o==="system"?v:o,d=document.documentElement,s=e==="dark";return d.style.colorScheme=e,d.dataset.kbTheme=e,o},u=a,h="${init}",r="${props.storageKey}",t=document.cookie.match(new RegExp("(^| )".concat(r,"=([^;]+)"))),c=t?t[2]:null;c?a(c):document.cookie="".concat(r,"=").concat(a(h),"; max-age=31536000; path=/")}catch(a){}})();`;
 
