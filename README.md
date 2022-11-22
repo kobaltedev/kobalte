@@ -5,7 +5,7 @@
 [workflow-badge]: https://img.shields.io/github/workflow/status/fabien-ml/kobalte/CI
 [license-badge]: https://img.shields.io/github/license/fabien-ml/kobalte
 
-A UI toolkit for building SolidJS applications.
+A UI toolkit for building accessible web apps and design systems with SolidJS.
 
 ## Packages
 

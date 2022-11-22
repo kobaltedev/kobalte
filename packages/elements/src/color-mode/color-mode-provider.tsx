@@ -9,11 +9,11 @@
 import { createEffect, createSignal, onCleanup } from "solid-js";
 
 import { ColorModeContext } from "./color-mode-context";
-import { initialColorMode } from "./color-mode-script";
 import { localStorageManager } from "./storage-manager";
 import { ColorMode, ColorModeContextType, ColorModeProviderProps, ConfigColorMode } from "./types";
 import {
   addColorModeListener,
+  FALLBACK_COLOR_MODE_VALUE,
   getInitialColorMode,
   getSystemColorMode,
   setColorModeDataset,
@@ -24,6 +24,7 @@ import {
  * Returns the color mode and function to toggle the color mode
  */
 export function ColorModeProvider(props: ColorModeProviderProps) {
+  const fallbackColorMode = () => props.initialColorMode ?? FALLBACK_COLOR_MODE_VALUE;
   const colorModeManager = () => props.storageManager ?? localStorageManager;
   let colorModeListenerCleanupFn: (() => unknown) | undefined;
 
@@ -56,7 +57,7 @@ export function ColorModeProvider(props: ColorModeProviderProps) {
   };
 
   createEffect(() => {
-    setColorMode(colorModeManager().get() ?? initialColorMode());
+    setColorMode(colorModeManager().get() ?? fallbackColorMode());
   });
 
   onCleanup(() => {
