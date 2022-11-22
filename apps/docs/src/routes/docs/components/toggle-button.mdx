@@ -1,15 +1,14 @@
 import { ToggleButton } from "@kobalte/elements";
 
 import { Preview } from "../../../components/preview";
+import { Kbd } from "../../../components/kbd";
 
 # Toggle Button
 
 A two-state button that can be either off (not pressed) or on (pressed).
 
 <Preview isCentered>
-  <ToggleButton>
-    <FontItalicIcon />
-  </ToggleButton>
+  <ToggleButton></ToggleButton>
 </Preview>
 
 ```tsx
@@ -18,14 +17,16 @@ A two-state button that can be either off (not pressed) or on (pressed).
 
 ## Features
 
-- Adhere to the [WAI ARIA Button](https://www.w3.org/WAI/ARIA/apg/patterns/button/) design pattern.
+- Native HTML `<button>`, `<a>`, and custom element type support.
+- Exposed as a toggle button via the [WAI ARIA Button](https://www.w3.org/WAI/ARIA/apg/patterns/button/) design pattern.
+- Mouse and touch event handling, and press state management.
+- Keyboard event support for <Kbd>Space</Kbd> and <Kbd>Enter</Kbd> keys.
+- Can be controlled or uncontrolled.
 
 ## Import
 
 ```ts
 import { ToggleButton } from "@kobalte/elements";
 ```
-
-## Anatomy
 
 ## API Reference

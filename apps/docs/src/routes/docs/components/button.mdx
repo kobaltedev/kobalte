@@ -1,6 +1,7 @@
 import { Button } from "@kobalte/elements";
 
 import { Preview } from "../../../components/preview";
+import { Kbd } from "../../../components/kbd";
 
 # Button
 
@@ -20,14 +21,15 @@ Enables users to trigger an action or event, such as submitting a form, opening 
 
 ## Features
 
-- Adhere to the [WAI ARIA Button](https://www.w3.org/WAI/ARIA/apg/patterns/button/) design pattern.
+- Native HTML `<button>` support.
+- `<a>` and custom element type support via the [WAI ARIA Button](https://www.w3.org/WAI/ARIA/apg/patterns/button/) design pattern.
+- Mouse and touch event handling, and press state management.
+- Keyboard event support for <Kbd>Space</Kbd> and <Kbd>Enter</Kbd> keys.
 
 ## Import
 
 ```ts
 import { Button } from "@kobalte/elements";
 ```
-
-## Anatomy
 
 ## API Reference
