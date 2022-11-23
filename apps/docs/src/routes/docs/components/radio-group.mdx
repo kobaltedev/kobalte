@@ -105,6 +105,174 @@ The radio group consists of:
 - **Radio.Indicator**: A visual indicator rendered when the radio button is in a checked state.
 - **Radio.Label**: A label that gives the user information on the radio button.
 
+## Usage
+
+### Default value
+
+An initial, uncontrolled value can be provided to the RadioGroup using the `defaultValue` prop, which accepts a value corresponding with the `value` prop of each Radio.
+
+```tsx {0}
+<RadioGroup defaultValue="solid">
+  <RadioGroup.Label>Favorite library</RadioGroup.Label>
+  <Radio value="solid">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Solid</Radio.Label>
+  </Radio>
+  <Radio value="svelte">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Svelte</Radio.Label>
+  </Radio>
+</RadioGroup>
+```
+
+### Controlled value
+
+A controlled value can be provided using the `value` prop, which accepts a value corresponding with the `value` prop of each Radio. The `onValueChange` event is fired when the user selects a radio button.
+
+```tsx {1,4}
+function Example() {
+  const [selected, setSelected] = createSignal<string>();
+
+  return (
+    <RadioGroup value={selected} onValueChange={setSelected}>
+      <RadioGroup.Label>Favorite library</RadioGroup.Label>
+      <Radio value="solid">
+        <Radio.Input />
+        <Radio.Control />
+        <Radio.Label>Solid</Radio.Label>
+      </Radio>
+      <Radio value="svelte">
+        <Radio.Input />
+        <Radio.Control />
+        <Radio.Label>Svelte</Radio.Label>
+      </Radio>
+    </RadioGroup>
+  );
+}
+```
+
+### Description
+
+The `RadioGroup.Description` component can be used to associate additional help text with a radio group.
+
+```tsx {12}
+<RadioGroup>
+  <RadioGroup.Label>Favorite library</RadioGroup.Label>
+  <Radio value="solid">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Solid</Radio.Label>
+  </Radio>
+  <Radio value="svelte">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Svelte</Radio.Label>
+  </Radio>
+  <RadioGroup.Description>Choose wisely.</RadioGroup.Description>
+</RadioGroup>
+```
+
+### Error message
+
+The `RadioGroup.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the radio group as invalid for assistive technologies.
+
+```tsx {0,12}
+<RadioGroup validationState="invalid">
+  <RadioGroup.Label>Favorite library</RadioGroup.Label>
+  <Radio value="solid">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Solid</Radio.Label>
+  </Radio>
+  <Radio value="svelte">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Svelte</Radio.Label>
+  </Radio>
+  <RadioGroup.ErrorMessage>No, you choose wrong</RadioGroup.ErrorMessage>
+</RadioGroup>
+```
+
+### Disabled
+
+The entire RadioGroup can be disabled with the `isDisabled` prop.
+
+```tsx {0}
+<RadioGroup isDisabled>
+  <RadioGroup.Label>Favorite library</RadioGroup.Label>
+  <Radio value="solid">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Solid</Radio.Label>
+  </Radio>
+  <Radio value="svelte">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Svelte</Radio.Label>
+  </Radio>
+</RadioGroup>
+```
+
+To disable an individual radio, pass `isDisabled` to the Radio instead.
+
+```tsx {7}
+<RadioGroup>
+  <RadioGroup.Label>Favorite library</RadioGroup.Label>
+  <Radio value="solid">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Solid</Radio.Label>
+  </Radio>
+  <Radio value="svelte" isDisabled>
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Svelte</Radio.Label>
+  </Radio>
+</RadioGroup>
+```
+
+### Read only
+
+The `isReadOnly` prop makes the RadioGroup selection immutable while remaining focusable.
+
+```tsx {0}
+<RadioGroup isReadOnly>
+  <RadioGroup.Label>Favorite library</RadioGroup.Label>
+  <Radio value="solid">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Solid</Radio.Label>
+  </Radio>
+  <Radio value="svelte">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Svelte</Radio.Label>
+  </Radio>
+</RadioGroup>
+```
+
+### HTML forms
+
+RadioGroup supports the `name` prop, paired with the Radio `value` prop, for integration with HTML forms.
+
+```tsx {0}
+<RadioGroup name="framework">
+  <RadioGroup.Label>Favorite library</RadioGroup.Label>
+  <Radio value="solid">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Solid</Radio.Label>
+  </Radio>
+  <Radio value="svelte">
+    <Radio.Input />
+    <Radio.Control />
+    <Radio.Label>Svelte</Radio.Label>
+  </Radio>
+</RadioGroup>
+```
+
 ## API Reference
 
 ### RadioGroup
@@ -130,6 +298,12 @@ The radio group consists of:
 | data-readonly   | Present when the radio group is read only.                                                   |
 
 `RadioGroup.Label`, `RadioGroup.Description` and `RadioGroup.ErrorMesssage` shares the same `data-*` attributes.
+
+### RadioGroup.ErrorMessage
+
+| Prop       | Type      | Description                                                                                                             |
+| :--------- | :-------- | :---------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` | Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
 ### Radio
 

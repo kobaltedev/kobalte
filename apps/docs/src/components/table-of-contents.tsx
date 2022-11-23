@@ -105,11 +105,11 @@ export function TableOfContents() {
                     <Link
                       href={`${path.pathname}#${section.slug}`}
                       class={clsx(
-                        "block w-full font-sans transition font-normal rounded py-2",
+                        "block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
                         section.slug === currentSection()
-                          ? "text-sky-700 hover:text-sky-800 dark:text-sky-600 dark:hover:text-sky-500"
-                          : "font-normal text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300",
-                        section.depth === 3 && "pl-5"
+                          ? "text-sky-700 dark:text-sky-600"
+                          : "text-zinc-600 dark:text-zinc-400",
+                        section.depth === 3 && "pl-6"
                       )}
                     >
                       {section.text}
