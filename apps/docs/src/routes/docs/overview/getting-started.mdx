@@ -2,10 +2,6 @@ import { Preview } from "../../../components/preview";
 
 # Getting started
 
-## Building a Popover
-
-Get familiar with core Kobalte Elements concepts by building an accessible Popover component.
-
 ### Installation
 
 Install Kobalte Elements by running either of the following:
@@ -22,88 +18,6 @@ yarn add @kobalte/elements
 pnpm add @kobalte/elements
 ```
 
-### Import the parts
+## [TODO]
 
-Import and structure the parts.
-
-```tsx
-// index.tsx
-
-import { Popover } from "@kobalte/elements";
-
-export function PopoverDemo() {
-  return (
-    <Popover>
-      <Popover.Trigger>More info</Popover.Trigger>
-      <Popover.Content>
-        Some more info…
-        <Popover.Arrow />
-      </Popover.Content>
-    </Popover>
-  );
-}
-```
-
-### Add your styles
-
-Add styles where desired.
-
-```tsx {3,8,9,11}
-// index.tsx
-
-import { Popover } from "@kobalte/elements";
-import "./styles.css";
-
-export function PopoverDemo() {
-  return (
-    <Popover>
-      <Popover.Trigger class="popover__trigger">More info</Popover.Trigger>
-      <Popover.Content class="popover__content">
-        Some more info…
-        <Popover.Arrow class="popover__arrow" />
-      </Popover.Content>
-    </Popover>
-  );
-}
-```
-
-```css
-/* styles.css */
-
-.popover__trigger {
-  background-color: white;
-  border-radius: 4px;
-}
-
-.popover__content {
-  border-radius: 4px;
-  padding: 20px;
-  width: 260px;
-  background-color: white;
-}
-
-.popover__arrow {
-  fill: white;
-}
-```
-
-### Demo
-
-Here's a complete demo.
-
-<Preview rounded>Popover</Preview>
-
-## Summary
-
-The steps above outline briefly what's involved in using Kobalte Elements in your application.
-
-These components are low-level enough to give you control over how you want to wrap them. You're free to introduce your own high-level API to better suit the needs of your team and product.
-
-In a few simple steps, we've implemented a fully accessible Popover component, without having to worry about many of its complexities.
-
-- Adheres to [WAI-ARIA](https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/) design pattern.
-- Can be controlled or uncontrolled.
-- Customize side, alignment and offsets.
-- Optionally render a pointing arrow.
-- Focus is fully managed and customizable.
-- Dismissing and layering behavior is highly customizable.
+[Tutorial for building a component]

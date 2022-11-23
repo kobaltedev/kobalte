@@ -1,5 +1,103 @@
+import { Callout } from "../../../components/callout";
+
 # Styling
 
-## Heading 2
+Kobalte Elements are unstyled, allowing you to completely customize the look and feel. Bring your preferred styling solution (vanilla CSS, Tailwind, CSS-in-JS libraries, etc...).
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus culpa, deleniti dicta dolore eveniet facere, illum ipsa iste maxime numquam placeat praesentium quam quidem rem rerum sequi, vero? Necessitatibus, temporibus!
+## Styling a component part
+
+All components and their parts accept a `class` prop. This class will be passed through to the DOM element. You can style a component part by targeting the `class` that you provide.
+
+```tsx
+import { Popover } from "@kobalte/elements";
+import "./styles.css";
+
+export const MyPopover = () => (
+  <Popover>
+    <Popover.Trigger class="my-popover__trigger">Open</Popover.Trigger>
+    <Popover.Content class="my-popover__content">...</Popover.Content>
+  </Popover>
+);
+```
+
+```css
+/* styles.css */
+
+.my-popover__trigger {
+  border-radius: 6px;
+}
+
+.my-popover__content {
+  border: 1px solid slategrey;
+}
+```
+
+## Styling a state
+
+When a component or its parts can have multiple states, we automatically attach `data-*` attributes that represents the specific state. For example, a popover's trigger can have:
+
+- `data-expanded` — When the popover is expanded.
+- `data-disabled` — When the popover is disabled.
+
+You can style a component state by targeting the `data-*` attributes added by Kobalte.
+
+```css
+/* styles.css */
+
+.my-popover__trigger[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+```
+
+## Using the TailwindCSS plugin
+
+If you are using [TailwindCSS](https://tailwindcss.com/), you can use the `@kobalte/tailwindcss` plugin to target Kobalte's `data-*` attributes with modifiers like `ui-expanded:*`:
+
+```tsx
+import { Popover } from "@kobalte/elements";
+
+export const MyPopover = () => (
+  <Popover>
+    <Popover.Trigger class="ui-disabled:bg-slate-100">Open</Popover.Trigger>
+    <Popover.Content class="ui-expanded:shadow-md">...</Popover.Content>
+  </Popover>
+);
+```
+
+## Extending a component
+
+Extending a component is done the same way you extend any SolidJS component.
+
+```tsx
+import { Popover, PopoverTriggerProps } from "@kobalte/elements";
+
+export const MyPopoverTrigger = (props: PopoverTriggerProps) => {
+  return <Popover.Trigger {...props} />;
+};
+```
+
+## Changing the rendered element
+
+Kobalte Elements are polymorphic, meaning you can use the `as` prop to change the rendered node.
+
+For example, you can use a custom button called `MyButton` as the trigger for a `Popover.Trigger` like below:
+
+```tsx
+import { Popover } from "@kobalte/elements";
+import { MyButton } from "./my-button";
+
+export default () => {
+  return (
+    <Popover>
+      <Popover.Trigger as={MyButton}>Open</Popover.Trigger>
+      <Popover.Content>...</Popover.Content>
+    </Popover>
+  );
+};
+```
+
+<Callout type="warning">
+  If you decide to change the default rendered node (e.g. change a `button` to a `div`) then it's up
+  to you to ensure the correct accessibility and functionality of your chosen node type.
+</Callout>

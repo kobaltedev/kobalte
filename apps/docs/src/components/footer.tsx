@@ -7,7 +7,7 @@ export function Footer() {
     <footer class="mt-6 border-t border-zinc-200 dark:border-zinc-800 dark:bg-zinc-900">
       <div class="max-w-4xl mx-auto px-4">
         <div class="flex flex-col sm:flex-row items-baseline justify-between gap-4 py-8 md:py-12">
-          <div class="col-span-12 lg:col-span-4">
+          <div>
             <div class="mb-2">
               <Link class="inline-block font-semibold font-display text-xl" href="/">
                 Kobalte
@@ -16,11 +16,11 @@ export function Footer() {
             </div>
             <div class="text-sm text-gray-600">
               <span class="text-sm text-zinc-700 mr-4 dark:text-zinc-400">
-                Made in 🇫🇷 by Fabien MARIE-LOUISE
+                Made in 🇫🇷 by Fabien MARIE-LOUISE.
               </span>
             </div>
           </div>
-          <div class="col-span-6 md:col-span-3 lg:col-span-2">
+          <div>
             <div class="text-zinc-800 dark:text-zinc-300 font-medium mb-2">Community</div>
             <ul class="text-sm flex items-center space-x-6">
               <li class="mb-2">
