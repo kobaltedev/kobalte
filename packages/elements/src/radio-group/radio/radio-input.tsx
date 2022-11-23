@@ -21,7 +21,7 @@ import { useRadioGroupContext } from "../radio-group-context";
 import { useRadioContext } from "./radio-context";
 
 /**
- * The native html input that is visually hidden in a radio button.
+ * The native html input that is visually hidden in the radio button.
  */
 export const RadioInput = createPolymorphicComponent<"input">(props => {
   const radioGroupContext = useRadioGroupContext();

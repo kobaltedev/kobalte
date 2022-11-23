@@ -21,7 +21,7 @@ export function Layout(props: ParentProps) {
       <Header navSections={NAV_SECTIONS} />
       <div class="relative flex justify-center dark:bg-zinc-900">
         <div class="hidden lg:relative lg:block lg:flex-none">
-          <div class="sticky top-[61px] h-[calc(100vh-61px)] overflow-y-auto py-6 pl-6">
+          <div class="sticky top-[61px] h-[calc(100vh-61px)] overflow-y-auto py-6 pl-6 pr-2">
             <Navigation sections={NAV_SECTIONS} />
           </div>
         </div>

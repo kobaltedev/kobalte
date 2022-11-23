@@ -44,6 +44,11 @@ import { Button } from "@kobalte/elements";
 | onPressUp           | `(event: PressEvent) => void`  | Handler that is called when a press is released over the target, regardless of whether it started on the target or not. |
 | onPressChange       | `(isPressed: boolean) => void` | Handler that is called when the press state changes.                                                                    |
 
+| Data attributes | Description                                                                         |
+| :-------------- | :---------------------------------------------------------------------------------- |
+| data-active     | Present when the button is activated by a pointer down (mouse, touch, pen, etc...). |
+| data-disabled   | Present when the button is disabled.                                                |
+
 Each of the _press handlers_ above are fired with a `PressEvent`, which exposes information about the target and the type of event that triggered the interaction.
 
 | Name        | Type                                                     | Description                                                          |
@@ -55,13 +60,6 @@ Each of the _press handlers_ above are fired with a `PressEvent`, which exposes 
 | ctrlKey     | `boolean`                                                | Whether the ctrl keyboard modifier was held during the press event.  |
 | metaKey     | `boolean`                                                | Whether the meta keyboard modifier was held during the press event.  |
 | altKey      | `boolean`                                                | Whether the alt keyboard modifier was held during the press event.   |
-
-The following `data-*` attributes are added to help styling the button states.
-
-| Data attributes | Description                                                                         |
-| :-------------- | :---------------------------------------------------------------------------------- |
-| data-active     | Present when the button is activated by a pointer down (mouse, touch, pen, etc...). |
-| data-disabled   | Present when the button is disabled.                                                |
 
 ## Accessibility
 
