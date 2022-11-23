@@ -52,7 +52,43 @@ You can style a component state by targeting the `data-*` attributes added by Ko
 
 ## Using the TailwindCSS plugin
 
-If you are using [TailwindCSS](https://tailwindcss.com/), you can use the `@kobalte/tailwindcss` plugin to target Kobalte's `data-*` attributes with modifiers like `ui-expanded:*`:
+If you are using [TailwindCSS](https://tailwindcss.com/), you can use the `@kobalte/tailwindcss` plugin to target Kobalte's `data-*` attributes with modifiers like `ui-expanded:*`.
+
+### Installation
+
+```bash
+npm install @kobalte/tailwindcss
+```
+
+```bash
+yarn add @kobalte/tailwindcss
+```
+
+```bash
+pnpm add @kobalte/tailwindcss
+```
+
+### Usage
+
+Add the plugin to your `tailwind.config.js` :
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [],
+  theme: {
+    extend: {},
+  },
+  plugins: [
+    require("@kobalte/tailwindcss"),
+
+    // Or with a custom prefix:
+    require("@kobalte/tailwindcss")({ prefix: "ui" }),
+  ],
+};
+```
+
+Style your component:
 
 ```tsx
 import { Popover } from "@kobalte/elements";
@@ -64,6 +100,25 @@ export const MyPopover = () => (
   </Popover>
 );
 ```
+
+You can use the following modifiers:
+
+| Modifier           | Inverse modifier       | Target data attribute |
+| :----------------- | :--------------------- | :-------------------- |
+| `ui-valid`         | `ui-not-valid`         | `data-valid`          |
+| `ui-invalid`       | `ui-not-invalid`       | `data-invalid`        |
+| `ui-required`      | `ui-not-required`      | `data-required`       |
+| `ui-disabled`      | `ui-not-disabled`      | `data-disabled`       |
+| `ui-readonly`      | `ui-not-readonly`      | `data-readonly`       |
+| `ui-checked`       | `ui-not-checked`       | `data-checked`        |
+| `ui-indeterminate` | `ui-not-indeterminate` | `data-indeterminate`  |
+| `ui-selected`      | `ui-not-selected`      | `data-selected`       |
+| `ui-pressed`       | `ui-not-pressed`       | `data-pressed`        |
+| `ui-expanded`      | `ui-not-expanded`      | `data-expanded`       |
+| `ui-hover`         | `ui-not-hover`         | `data-hover`          |
+| `ui-focus`         | `ui-not-focus`         | `data-focus`          |
+| `ui-focus-visible` | `ui-not-focus-visible` | `data-focus-visible`  |
+| `ui-active`        | `ui-not-active`        | `data-active`         |
 
 <Callout type="note">
   All examples in the documentation are styled using TailwindCSS and the Kobalte plugin.
