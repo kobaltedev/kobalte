@@ -33,12 +33,12 @@ type RadioGroupComposite = {
 };
 
 export interface RadioGroupProps {
-  /** The controlled value of the radio item to check. */
+  /** The controlled value of the radio button to check. */
   value?: string;
 
   /**
-   * The value of the radio item that should be checked when initially rendered.
-   * Useful when you do not need to control the state of the radio items.
+   * The value of the radio button that should be checked when initially rendered.
+   * Useful when you do not need to control the state of the radio buttons.
    */
   defaultValue?: string;
 
@@ -51,6 +51,9 @@ export interface RadioGroupProps {
    */
   name?: string;
 
+  /** The axis the radio group items should align with. */
+  orientation?: "horizontal" | "vertical";
+
   /** Whether the radio group should display its "valid" or "invalid" visual styling. */
   validationState?: ValidationState;
 
@@ -62,9 +65,6 @@ export interface RadioGroupProps {
 
   /** Whether the radio group items can be selected but not changed by the user. */
   isReadOnly?: boolean;
-
-  /** The axis the radio group items should align with. */
-  orientation?: "horizontal" | "vertical";
 }
 
 /**
@@ -105,7 +105,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
       "aria-describedby",
     ]);
 
-    const [selectedValue, setSelectedValue] = createControllableSignal<string | undefined>({
+    const [selectedValue, _setSelectedValue] = createControllableSignal<string | undefined>({
       value: () => local.value,
       defaultValue: () => local.defaultValue,
       onChange: value => local.onValueChange?.(value),
@@ -139,12 +139,16 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
 
     createFormResetListener(
       () => ref,
-      () => setSelectedValue(undefined)
+      () => _setSelectedValue(undefined)
     );
 
     const context: RadioGroupContextValue = {
       isSelectedValue: (value: string) => value === selectedValue(),
-      setSelectedValue,
+      setSelectedValue: value => {
+        if (!local.isReadOnly && !local.isDisabled) {
+          _setSelectedValue(value);
+        }
+      },
       name: () => local.name!,
       dataset,
       validationState: () => local.validationState,

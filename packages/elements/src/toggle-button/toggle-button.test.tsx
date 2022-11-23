@@ -25,7 +25,7 @@ describe("ToggleButton", () => {
 
   it("can be default selected (uncontrolled)", () => {
     render(() => (
-      <ToggleButton data-testid="toggle" defaultIsSelected>
+      <ToggleButton data-testid="toggle" defaultIsPressed>
         Button
       </ToggleButton>
     ));
@@ -33,14 +33,14 @@ describe("ToggleButton", () => {
     const toggle = screen.getByTestId("toggle");
 
     expect(toggle).toHaveAttribute("aria-pressed", "true");
-    expect(toggle).toHaveAttribute("data-selected");
+    expect(toggle).toHaveAttribute("data-pressed");
   });
 
   it("can be controlled", async () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <ToggleButton data-testid="toggle" isSelected onSelectedChange={onChangeSpy}>
+      <ToggleButton data-testid="toggle" isPressed onPressedChange={onChangeSpy}>
         Button
       </ToggleButton>
     ));
@@ -48,13 +48,13 @@ describe("ToggleButton", () => {
     const toggle = screen.getByTestId("toggle");
 
     expect(toggle).toHaveAttribute("aria-pressed", "true");
-    expect(toggle).toHaveAttribute("data-selected");
+    expect(toggle).toHaveAttribute("data-pressed");
 
     fireEvent.click(toggle);
     await Promise.resolve();
 
     expect(toggle).toHaveAttribute("aria-pressed", "true");
-    expect(toggle).toHaveAttribute("data-selected");
+    expect(toggle).toHaveAttribute("data-pressed");
     expect(onChangeSpy).toHaveBeenCalledTimes(1);
     expect(onChangeSpy).toHaveBeenCalledWith(false);
   });
@@ -65,12 +65,12 @@ describe("ToggleButton", () => {
     const toggle = screen.getByTestId("toggle");
 
     expect(toggle).toHaveAttribute("aria-pressed", "false");
-    expect(toggle).not.toHaveAttribute("data-selected");
+    expect(toggle).not.toHaveAttribute("data-pressed");
   });
 
   it("should have correct attributes when the toggle button is on (selected)", () => {
     render(() => (
-      <ToggleButton data-testid="toggle" isSelected>
+      <ToggleButton data-testid="toggle" isPressed>
         Button
       </ToggleButton>
     ));
@@ -78,6 +78,6 @@ describe("ToggleButton", () => {
     const toggle = screen.getByTestId("toggle");
 
     expect(toggle).toHaveAttribute("aria-pressed", "true");
-    expect(toggle).toHaveAttribute("data-selected");
+    expect(toggle).toHaveAttribute("data-pressed");
   });
 });

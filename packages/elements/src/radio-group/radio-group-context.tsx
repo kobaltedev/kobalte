@@ -11,7 +11,7 @@ export interface RadioGroupDataSet {
 
 export interface RadioGroupContextValue {
   isSelectedValue: (value: string) => boolean;
-  setSelectedValue: (value: string) => void;
+  setSelectedValue: (value: string | undefined) => void;
   name: Accessor<string>;
   dataset: Accessor<RadioGroupDataSet>;
   validationState: Accessor<ValidationState | undefined>;

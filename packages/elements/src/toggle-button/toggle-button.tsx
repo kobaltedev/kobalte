@@ -12,24 +12,38 @@
  * https://github.com/adobe/react-spectrum/blob/a13802d8be6f83af1450e56f7a88527b10d9cadf/packages/@react-aria/button/src/useToggleButton.ts
  */
 
-import { createPolymorphicComponent } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { createPolymorphicComponent, isFunction } from "@kobalte/utils";
+import { Accessor, JSX, splitProps } from "solid-js";
 
 import { Button, ButtonProps } from "../button";
 import { createToggleState, PressEvents } from "../primitives";
 
+export interface ToggleButtonState {
+  /** Whether the toggle button is on (pressed) or off (not pressed). */
+  isPressed: Accessor<boolean>;
+}
+
 export interface ToggleButtonProps extends ButtonProps {
-  /** The controlled selected state. */
-  isSelected?: boolean;
+  /** The controlled pressed state of the toggle button. */
+  isPressed?: boolean;
 
   /**
-   * The default selected state when initially rendered.
-   * Useful when you do not need to control the selected state.
+   * The default pressed state when initially rendered.
+   * Useful when you do not need to control the pressed state.
    */
-  defaultIsSelected?: boolean;
+  defaultIsPressed?: boolean;
 
-  /** Event handler called when the selected state changes. */
-  onSelectedChange?: (isSelected: boolean) => void;
+  /**
+   * Event handler called when the pressed state of the toggle button changes.
+   * This handler is different from the `onPressChange` handler which is related to `PressEvent`.
+   */
+  onPressedChange?: (isPressed: boolean) => void;
+
+  /**
+   * The children of the toggle button.
+   * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
+   */
+  children?: JSX.Element | ((state: ToggleButtonState) => JSX.Element);
 }
 
 /**
@@ -38,16 +52,17 @@ export interface ToggleButtonProps extends ButtonProps {
  */
 export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonProps>(props => {
   const [local, others] = splitProps(props, [
-    "isSelected",
-    "defaultIsSelected",
-    "onSelectedChange",
+    "isPressed",
+    "defaultIsPressed",
+    "onPressedChange",
     "onPress",
+    "children",
   ]);
 
   const state = createToggleState({
-    isSelected: () => local.isSelected,
-    defaultIsSelected: () => local.defaultIsSelected,
-    onSelectedChange: selected => local.onSelectedChange?.(selected),
+    isSelected: () => local.isPressed,
+    defaultIsSelected: () => local.defaultIsPressed,
+    onSelectedChange: selected => local.onPressedChange?.(selected),
   });
 
   const onPress: PressEvents["onPress"] = e => {
@@ -58,9 +73,13 @@ export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonPro
   return (
     <Button
       aria-pressed={state.isSelected()}
-      data-selected={state.isSelected() ? "" : undefined}
+      data-pressed={state.isSelected() ? "" : undefined}
       onPress={onPress}
       {...others}
-    />
+    >
+      {isFunction(local.children)
+        ? local.children?.({ isPressed: state.isSelected })
+        : local.children}
+    </Button>
   );
 });
