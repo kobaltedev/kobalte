@@ -96,7 +96,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       tabIndex={!isNativeButton() && !isLink() && !local.isDisabled ? 0 : undefined}
       disabled={isNativeButton() || isInput() ? local.isDisabled : undefined}
       aria-disabled={!isNativeButton() && !isInput() && local.isDisabled ? true : undefined}
-      data-pressed={isPressed() ? "" : undefined}
+      data-active={isPressed() ? "" : undefined}
       data-disabled={local.isDisabled ? "" : undefined}
       {...combineProps({ ref, onClick }, others, pressHandlers)}
     />

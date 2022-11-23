@@ -9,11 +9,13 @@ A UI toolkit for building accessible web apps and design systems with SolidJS.
 
 ## Packages
 
-| Name                                    |                              Version                               | Description                                                                             |
-| :-------------------------------------- | :----------------------------------------------------------------: | :-------------------------------------------------------------------------------------- |
-| [@kobalte/elements](/packages/elements) | [![elements-npm]](https://www.npmjs.com/package/@kobalte/elements) | Unstyled components and primitives for building accessible web apps and design systems. |
+| Name                                          |                                 Version                                  | Description                                                                                                        |
+| :-------------------------------------------- | :----------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------- |
+| [@kobalte/elements](/packages/elements)       |    [![elements-npm]](https://www.npmjs.com/package/@kobalte/elements)    | Unstyled components and primitives for building accessible web apps and design systems.                            |
+| [@kobalte/tailwindcss](/packages/tailwindcss) | [![tailwindcss-npm]](https://www.npmjs.com/package/@kobalte/tailwindcss) | A TailwindCSS plugin for styling Kobalte Elements with `data-*` attributes by using modifiers like `ui-expanded:*` |
 
 [elements-npm]: https://img.shields.io/npm/v/@kobalte/elements
+[tailwindcss-npm]: https://img.shields.io/npm/v/@kobalte/tailwindcss
 
 ## Documentation
 

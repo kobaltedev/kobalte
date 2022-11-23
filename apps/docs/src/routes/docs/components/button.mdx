@@ -33,3 +33,41 @@ import { Button } from "@kobalte/elements";
 ```
 
 ## API Reference
+
+| Prop                | Type                           | Description                                                                                                             |
+| :------------------ | :----------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| isDisabled          | `boolean`                      | Whether the button is disabled.                                                                                         |
+| preventFocusOnPress | `boolean`                      | Whether the target should not receive focus on press.                                                                   |
+| onPress             | `(event: PressEvent) => void`  | Handler that is called when the press is released over the target.                                                      |
+| onPressStart        | `(event: PressEvent) => void`  | Handler that is called when a press interaction starts.                                                                 |
+| onPressEnd          | `(event: PressEvent) => void`  | Handler that is called when a press interaction ends, either over the target or when the pointer leaves the target.     |
+| onPressUp           | `(event: PressEvent) => void`  | Handler that is called when a press is released over the target, regardless of whether it started on the target or not. |
+| onPressChange       | `(isPressed: boolean) => void` | Handler that is called when the press state changes.                                                                    |
+
+Each of the _press handlers_ above are fired with a `PressEvent`, which exposes information about the target and the type of event that triggered the interaction.
+
+| Name        | Type                                                     | Description                                                          |
+| :---------- | :------------------------------------------------------- | :------------------------------------------------------------------- |
+| type        | `'press' \| 'pressstart' \| 'pressend' \| 'pressup'`     | The type of press event being fired.                                 |
+| pointerType | `'mouse' \| 'pen' \| 'touch' \| 'keyboard' \| 'virtual'` | The pointer type that triggered the press event.                     |
+| target      | `Element`                                                | The target element of the press event.                               |
+| shiftKey    | `boolean`                                                | Whether the shift keyboard modifier was held during the press event. |
+| ctrlKey     | `boolean`                                                | Whether the ctrl keyboard modifier was held during the press event.  |
+| metaKey     | `boolean`                                                | Whether the meta keyboard modifier was held during the press event.  |
+| altKey      | `boolean`                                                | Whether the alt keyboard modifier was held during the press event.   |
+
+The following `data-*` attributes are added to help styling the button states.
+
+| Data attributes | Description                                                                         |
+| :-------------- | :---------------------------------------------------------------------------------- |
+| data-active     | Present when the button is activated by a pointer down (mouse, touch, pen, etc...). |
+| data-disabled   | Present when the button is disabled.                                                |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description           |
+| :--------------- | :-------------------- |
+| <Kbd>Space</Kbd> | Activates the button. |
+| <Kbd>Enter</Kbd> | Activates the button. |

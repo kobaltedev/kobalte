@@ -23,7 +23,7 @@ export const mdxComponents = {
       <span class={clsx(local.class, "not-prose")}>
         <code
           class={clsx(
-            "rounded text-sky-800 bg-sky-100 px-[0.4em] py-[0.2em] text-[0.9em] font-mono break-words dark:text-sky-300 dark:bg-sky-900/60"
+            "kb-code rounded text-sky-800 bg-sky-100 px-[0.4em] py-[0.2em] text-[0.9em] font-mono break-words dark:text-sky-300 dark:bg-sky-900/60"
           )}
           {...others}
         />
@@ -67,5 +67,10 @@ export const mdxComponents = {
         {local.children}
       </pre>
     );
+  },
+  table: (props: ComponentProps<"table">) => {
+    const [local, others] = splitProps(props, ["class"]);
+
+    return <table class={clsx(local.class, "kb-table")} {...others} />;
   },
 };

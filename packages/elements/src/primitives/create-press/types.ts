@@ -55,7 +55,7 @@ export interface PressEvents {
   onPress?: (event: PressEvent) => void;
 
   /** Handler that is called when the press state changes. */
-  onPressChange?: (pressed: boolean) => void;
+  onPressChange?: (isPressed: boolean) => void;
 }
 
 export interface CreatePressProps extends PressEvents {

@@ -175,16 +175,16 @@ describe("Button", () => {
     expect(button).toHaveAttribute("aria-disabled");
   });
 
-  it("should not have attribute 'data-pressed' and 'data-disabled'  by default", async () => {
+  it("should not have attribute 'data-active' and 'data-disabled'  by default", async () => {
     render(() => <Button data-testid="button">Button</Button>);
 
     const button = screen.getByTestId("button");
 
-    expect(button).not.toHaveAttribute("data-pressed");
+    expect(button).not.toHaveAttribute("data-active");
     expect(button).not.toHaveAttribute("data-disabled");
   });
 
-  it("should have attribute 'data-pressed' when pressed", async () => {
+  it("should have attribute 'data-active' when pressed", async () => {
     render(() => <Button data-testid="button">Button</Button>);
 
     const button = screen.getByTestId("button");
@@ -192,7 +192,7 @@ describe("Button", () => {
     fireEvent(button, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
     await Promise.resolve();
 
-    expect(button).toHaveAttribute("data-pressed");
+    expect(button).toHaveAttribute("data-active");
   });
 
   it("should have attribute 'data-disabled' when disabled", () => {
