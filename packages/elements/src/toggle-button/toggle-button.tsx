@@ -39,7 +39,10 @@ export interface ToggleButtonProps extends ButtonProps {
    */
   onPressedChange?: (isPressed: boolean) => void;
 
-  /** The children of the toggle button. */
+  /**
+   * The children of the toggle button.
+   * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
+   */
   children?: JSX.Element | ((state: ToggleButtonState) => JSX.Element);
 }
 

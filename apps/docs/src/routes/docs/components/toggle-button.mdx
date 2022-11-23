@@ -49,6 +49,50 @@ A two-state button that can be either on (pressed) or off (not pressed).
 import { ToggleButton } from "@kobalte/elements";
 ```
 
+## Usage
+
+### Default value
+
+An initial, uncontrolled value can be provided to the ToggleButton using the `defaultIsPressed` prop.
+
+```tsx
+<ToggleButton defaultIsPressed />
+```
+
+### Controlled value
+
+A controlled value can be provided using the `isPressed` prop. The `onPressedChange` event is fired when the user toggle the button.
+
+```tsx
+function Example() {
+  const [pressed, setPressed] = createSignal(false);
+
+  return <ToggleButton isPressed={pressed} onPressedChange={setPressed} />;
+}
+```
+
+### Disabled
+
+The ToggleButton can be disabled with the `isDisabled` prop.
+
+```tsx
+<ToggleButton isDisabled />
+```
+
+### Accessing internal state
+
+The internal state of the ToggleButton can be accessed by using a function as children (_render prop_).
+
+```tsx
+<ToggleButton aria-label="mute">
+  {state => (
+    <Show when={state.isPressed()} fallback={<VolumeOnIcon />}>
+      <VolumeOffIcon />
+    </Show>
+  )}
+</ToggleButton>
+```
+
 ## API Reference
 
 `ToggleButton` consists of [Button](/docs/components/button) and additional features.
@@ -58,7 +102,7 @@ import { ToggleButton } from "@kobalte/elements";
 | isPressed        | `boolean`                                                  | The controlled pressed state of the toggle button.                                                                                                                            |
 | defaultIsPressed | `boolean`                                                  | The default pressed state when initially rendered. Useful when you do not need to control the pressed state.                                                                  |
 | onPressedChange  | `(isPressed: boolean) => void`                             | Event handler called when the pressed state of the toggle button changes. This handler is different from the button `onPressChange` handler which is related to `PressEvent`. |
-| children         | `JSX.Element \| (state: ToggleButtonState) => JSX.Element` | The children of the toggle button.                                                                                                                                            |
+| children         | `JSX.Element \| (state: ToggleButtonState) => JSX.Element` | The children of the toggle button. Can be a `JSX.Element` or a _render prop_ for having access to the internal state.                                                         |
 
 | Data attributes | Description                                     |
 | :-------------- | :---------------------------------------------- |
