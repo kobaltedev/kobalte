@@ -14,7 +14,7 @@ pnpm add -D @kobalte/tailwindcss
 
 ## Usage
 
-Add the plugin to your `tailwind.config.js` :
+Add the plugin to your `tailwind.config.js`:
 
 ```js
 /** @type {import('tailwindcss').Config} */
@@ -45,24 +45,24 @@ export const MyPopover = () => (
 );
 ```
 
-You can use the following variants:
+You can use the following modifiers:
 
-| Variant            | Inverse variant        |
-| :----------------- | :--------------------- |
-| `ui-valid`         | `ui-not-valid`         |
-| `ui-invalid`       | `ui-not-invalid`       |
-| `ui-required`      | `ui-not-required`      |
-| `ui-disabled`      | `ui-not-disabled`      |
-| `ui-readonly`      | `ui-not-readonly`      |
-| `ui-checked`       | `ui-not-checked`       |
-| `ui-indeterminate` | `ui-not-indeterminate` |
-| `ui-selected`      | `ui-not-selected`      |
-| `ui-pressed`       | `ui-not-pressed`       |
-| `ui-expanded`      | `ui-not-expanded`      |
-| `ui-hover`         | `ui-not-hover`         |
-| `ui-focus`         | `ui-not-focus`         |
-| `ui-focus-visible` | `ui-not-focus-visible` |
-| `ui-active`        | `ui-not-active`        |
+| Modifier           | Inverse modifier       | Target data attribute |
+| :----------------- | :--------------------- | :-------------------- |
+| `ui-valid`         | `ui-not-valid`         | `data-valid`          |
+| `ui-invalid`       | `ui-not-invalid`       | `data-invalid`        |
+| `ui-required`      | `ui-not-required`      | `data-required`       |
+| `ui-disabled`      | `ui-not-disabled`      | `data-disabled`       |
+| `ui-readonly`      | `ui-not-readonly`      | `data-readonly`       |
+| `ui-checked`       | `ui-not-checked`       | `data-checked`        |
+| `ui-indeterminate` | `ui-not-indeterminate` | `data-indeterminate`  |
+| `ui-selected`      | `ui-not-selected`      | `data-selected`       |
+| `ui-pressed`       | `ui-not-pressed`       | `data-pressed`        |
+| `ui-expanded`      | `ui-not-expanded`      | `data-expanded`       |
+| `ui-hover`         | `ui-not-hover`         | `data-hover`          |
+| `ui-focus`         | `ui-not-focus`         | `data-focus`          |
+| `ui-focus-visible` | `ui-not-focus-visible` | `data-focus-visible`  |
+| `ui-active`        | `ui-not-active`        | `data-active`         |
 
 ## Documentation
 
