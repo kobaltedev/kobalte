@@ -2,9 +2,9 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useRadioGroupContext } from "./radio-group-context";
+import { useFormControlContext } from "./form-control-context";
 
-export interface RadioGroupErrorMessageProps {
+export interface FormControlErrorMessageProps {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -13,18 +13,18 @@ export interface RadioGroupErrorMessageProps {
 }
 
 /**
- * An error message that gives the user information about what's going wrong with the radio group.
+ * The error message that gives the user information about how to fix a validation error on the form control.
  */
-export const RadioGroupErrorMessage = createPolymorphicComponent<
+export const FormControlErrorMessage = createPolymorphicComponent<
   "div",
-  RadioGroupErrorMessageProps
+  FormControlErrorMessageProps
 >(props => {
-  const context = useRadioGroupContext();
+  const context = useFormControlContext();
 
   props = mergeDefaultProps(
     {
       as: "div",
-      id: context.getPartId("error-message"),
+      id: context.generateId("error-message"),
     },
     props
   );

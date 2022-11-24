@@ -3,20 +3,20 @@ import { createEffect, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createTagName } from "../primitives";
-import { useFieldContext } from "./field-context";
+import { useFormControlContext } from "./form-control-context";
 
 /**
- * A label that gives the user information on the field.
+ * The label that gives the user information on the form control.
  */
-export const FieldLabel = createPolymorphicComponent<"label">(props => {
-  let ref: HTMLLabelElement | undefined;
+export const FormControlLabel = createPolymorphicComponent<"label">(props => {
+  let ref: HTMLElement | undefined;
 
-  const context = useFieldContext();
+  const context = useFormControlContext();
 
   props = mergeDefaultProps(
     {
       as: "label",
-      id: context.generateFieldPartId("label"),
+      id: context.generateId("label"),
     },
     props
   );
@@ -35,7 +35,7 @@ export const FieldLabel = createPolymorphicComponent<"label">(props => {
       component={local.as}
       ref={mergeRefs(el => (ref = el), local.ref)}
       id={local.id}
-      for={tagName() === "label" ? context.inputId() : undefined}
+      for={tagName() === "label" ? context.fieldId() : undefined}
       {...context.dataset()}
       {...others}
     />

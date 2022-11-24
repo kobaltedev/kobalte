@@ -16,14 +16,16 @@ import {
 import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createPress } from "../../primitives";
-import { useRadioGroupContext } from "../radio-group-context";
+import { useFormControlContext } from "../form-control";
+import { createPress } from "../primitives";
 import { useRadioContext } from "./radio-context";
+import { useRadioGroupContext } from "./radio-group-context";
 
 /**
  * The native html input that is visually hidden in the radio button.
  */
 export const RadioInput = createPolymorphicComponent<"input">(props => {
+  const formControlContext = useFormControlContext();
   const radioGroupContext = useRadioGroupContext();
   const radioContext = useRadioContext();
 
@@ -68,13 +70,13 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
     <Dynamic
       component={local.as}
       type="radio"
-      name={radioGroupContext.name()}
+      name={formControlContext.name()}
       value={radioContext.value()}
       checked={radioContext.isSelected()}
-      required={radioGroupContext.isRequired()}
+      required={formControlContext.isRequired()}
       disabled={radioContext.isDisabled()}
-      readonly={radioGroupContext.isReadOnly()}
-      aria-describedby={radioGroupContext.allAriaDescribedBy()}
+      readonly={formControlContext.isReadOnly()}
+      aria-describedby={formControlContext.mergeAriaDescribedBy()}
       onChange={onChange}
       onFocus={onFocus}
       onBlur={onBlur}
