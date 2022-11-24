@@ -73,4 +73,8 @@ export const mdxComponents = {
 
     return <table class={clsx(local.class, "kb-table")} {...others} />;
   },
+  a: (props: ComponentProps<"a">) => {
+    // eslint-disable-next-line jsx-a11y/anchor-has-content
+    return <a target="_blank" rel="noopener noreferrer" {...props} />;
+  },
 };

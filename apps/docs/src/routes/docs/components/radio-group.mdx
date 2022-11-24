@@ -18,7 +18,7 @@ A set of checkable buttons, known as radio buttons, where no more than one of th
         {library => (
           <Radio value={library} class="flex items-center">
             <Radio.Input />
-            <Radio.Control class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus:border-blue-500 ui-focus:ring ui-focus:ring-blue-100 dark:ui-focus:border-blue-600 dark:ui-focus:ring-blue-900/60">
+            <Radio.Control class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus-visible:border-blue-500 ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:border-blue-600 dark:ui-focus-visible:ring-blue-900/60">
               <Radio.Indicator class="h-2.5 w-2.5 rounded-full bg-blue-500" />
             </Radio.Control>
             <Radio.Label class="text-sm text-zinc-900 dark:text-white/90 first-letter:uppercase">
@@ -44,7 +44,7 @@ A set of checkable buttons, known as radio buttons, where no more than one of th
       {library => (
         <Radio value={library} class="flex items-center">
           <Radio.Input />
-          <Radio.Control class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus:border-blue-500 ui-focus:ring ui-focus:ring-blue-100 dark:ui-focus:border-blue-600 dark:ui-focus:ring-blue-900/60">
+          <Radio.Control class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus-visible:border-blue-500 ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:border-blue-600 dark:ui-focus-visible:ring-blue-900/60">
             <Radio.Indicator class="h-2.5 w-2.5 rounded-full bg-blue-500" />
           </Radio.Control>
           <Radio.Label class="text-sm text-zinc-900 dark:text-white/90 first-letter:uppercase">
@@ -314,14 +314,15 @@ The radio group supports the `name` prop, paired with the radio `value` prop, fo
 | value      | `string`  | The value of the radio button, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio#Value). |
 | isDisabled | `boolean` | Whether the radio button is disabled or not.                                                                                                              |
 
-| Data attributes | Description                                                                       |
-| :-------------- | :-------------------------------------------------------------------------------- |
-| data-valid      | Present when the parent radio group is valid according to the validation rules.   |
-| data-invalid    | Present when the parent radio group is invalid according to the validation rules. |
-| data-checked    | Present when the radio is checked.                                                |
-| data-disabled   | Present when the radio is disabled.                                               |
-| data-hover      | Present when the radio is hovered.                                                |
-| data-focus      | Present when the radio is focused.                                                |
+| Data attributes    | Description                                                                       |
+| :----------------- | :-------------------------------------------------------------------------------- |
+| data-valid         | Present when the parent radio group is valid according to the validation rules.   |
+| data-invalid       | Present when the parent radio group is invalid according to the validation rules. |
+| data-checked       | Present when the radio is checked.                                                |
+| data-disabled      | Present when the radio is disabled.                                               |
+| data-hover         | Present when the radio is hovered.                                                |
+| data-focus         | Present when the radio is focused.                                                |
+| data-focus-visible | Present when the radio is focused via keyboard.                                   |
 
 `Radio.Input`, `Radio.Control`, `Radio.Indicator` and `Radio.Label` shares the same `data-*` attributes.
 

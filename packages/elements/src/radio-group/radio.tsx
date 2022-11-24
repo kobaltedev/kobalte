@@ -49,6 +49,7 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
   const [local, others] = splitProps(props, ["as", "children", "value", "isDisabled"]);
 
   const [isFocused, setIsFocused] = createSignal(false);
+  const [isFocusVisible, setIsFocusVisible] = createSignal(false);
 
   const isSelected = createMemo(() => {
     return radioGroupContext.isSelectedValue(local.value);
@@ -67,6 +68,7 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
     "data-disabled": isDisabled() ? "" : undefined,
     "data-hover": isHovered() ? "" : undefined,
     "data-focus": isFocused() ? "" : undefined,
+    "data-focus-visible": isFocusVisible() ? "" : undefined,
   }));
 
   const context: RadioContextValue = {
@@ -75,6 +77,7 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
     isSelected,
     isDisabled,
     setIsFocused,
+    setIsFocusVisible,
   };
 
   return (
