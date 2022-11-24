@@ -1,5 +1,5 @@
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, on, onCleanup, Show, splitProps } from "solid-js";
+import { createEffect, onCleanup, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useRadioGroupContext } from "./radio-group-context";
