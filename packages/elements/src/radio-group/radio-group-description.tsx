@@ -33,13 +33,5 @@ export const RadioGroupDescription = createPolymorphicComponent<"div">(props => 
     )
   );
 
-  return (
-    <Dynamic
-      component={local.as}
-      id={local.id}
-      data-part="description"
-      {...context.dataset()}
-      {...others}
-    />
-  );
+  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
 });

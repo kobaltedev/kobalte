@@ -43,13 +43,7 @@ export const RadioGroupErrorMessage = createPolymorphicComponent<
 
   return (
     <Show when={local.forceMount || isInvalid()}>
-      <Dynamic
-        component={local.as}
-        id={local.id}
-        data-part="error-message"
-        {...context.dataset()}
-        {...others}
-      />
+      <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />
     </Show>
   );
 });

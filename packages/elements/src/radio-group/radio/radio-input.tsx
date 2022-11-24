@@ -75,7 +75,6 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
       disabled={radioContext.isDisabled()}
       readonly={radioGroupContext.isReadOnly()}
       aria-describedby={radioGroupContext.allAriaDescribedBy()}
-      data-part="input"
       onChange={onChange}
       onFocus={onFocus}
       onBlur={onBlur}

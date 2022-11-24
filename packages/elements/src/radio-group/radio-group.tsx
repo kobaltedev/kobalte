@@ -105,7 +105,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
       "aria-describedby",
     ]);
 
-    const [selectedValue, _setSelectedValue] = createControllableSignal<string | undefined>({
+    const [selected, setSelected] = createControllableSignal<string | undefined>({
       value: () => local.value,
       defaultValue: () => local.defaultValue,
       onChange: value => local.onValueChange?.(value),
@@ -139,14 +139,14 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
 
     createFormResetListener(
       () => ref,
-      () => _setSelectedValue(undefined)
+      () => setSelected(undefined)
     );
 
     const context: RadioGroupContextValue = {
-      isSelectedValue: (value: string) => value === selectedValue(),
+      isSelectedValue: (value: string) => value === selected(),
       setSelectedValue: value => {
         if (!local.isReadOnly && !local.isDisabled) {
-          _setSelectedValue(value);
+          setSelected(value);
         }
       },
       name: () => local.name!,
@@ -175,7 +175,6 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
         aria-disabled={local.isDisabled || undefined}
         aria-readonly={local.isReadOnly || undefined}
         aria-orientation={local.orientation}
-        data-part="root"
         {...dataset()}
         {...others}
       >

@@ -76,12 +76,7 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
   };
 
   return (
-    <Dynamic
-      component={local.as}
-      data-part="root"
-      {...context.dataset()}
-      {...combineProps(others, hoverHandlers)}
-    >
+    <Dynamic component={local.as} {...context.dataset()} {...combineProps(others, hoverHandlers)}>
       <RadioContext.Provider value={context}>{local.children}</RadioContext.Provider>
     </Dynamic>
   );

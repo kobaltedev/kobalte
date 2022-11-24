@@ -33,13 +33,5 @@ export const RadioGroupLabel = createPolymorphicComponent<"span">(props => {
     )
   );
 
-  return (
-    <Dynamic
-      component={local.as}
-      id={local.id}
-      data-part="label"
-      {...context.dataset()}
-      {...others}
-    />
-  );
+  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
 });
