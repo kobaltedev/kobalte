@@ -28,10 +28,7 @@ export const FieldLabel = createPolymorphicComponent<"label">(props => {
     () => local.as || "label"
   );
 
-  createEffect(() => {
-    const cleanup = context.registerFieldLabel(local.id!);
-    onCleanup(cleanup);
-  });
+  createEffect(() => onCleanup(context.registerLabel(local.id!)));
 
   return (
     <Dynamic

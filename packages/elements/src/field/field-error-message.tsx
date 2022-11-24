@@ -20,10 +20,7 @@ export const FieldErrorMessage = createPolymorphicComponent<"div">(props => {
 
   const [local, others] = splitProps(props, ["as", "id"]);
 
-  createEffect(() => {
-    const cleanup = context.registerFieldErrorMessage(local.id!);
-    onCleanup(cleanup);
-  });
+  createEffect(() => onCleanup(context.registerErrorMessage(local.id!)));
 
   return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
 });

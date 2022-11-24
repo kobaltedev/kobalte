@@ -34,11 +34,11 @@ export const RadioGroupErrorMessage = createPolymorphicComponent<
   const isInvalid = () => context.validationState() === "invalid";
 
   createEffect(() => {
-    context.setAriaErrorMessage(isInvalid() ? local.id : undefined);
+    if (!isInvalid()) {
+      return;
+    }
 
-    onCleanup(() => {
-      context.setAriaErrorMessage(undefined);
-    });
+    onCleanup(context.registerErrorMessage(local.id!));
   });
 
   return (

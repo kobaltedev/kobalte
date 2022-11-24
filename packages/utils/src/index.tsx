@@ -8,7 +8,6 @@ export * from "./function";
 export * from "./get-scroll-parent";
 export * from "./inputs";
 export * from "./is-virtual-event";
-export * from "./merge-aria-labels";
 export * from "./platform";
 export * from "./polymorphic";
 export * from "./props";

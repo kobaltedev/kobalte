@@ -18,10 +18,10 @@ export interface FieldContextValue {
   isReadOnly: Accessor<boolean | undefined>;
   inputId: Accessor<string | undefined>;
   generateFieldPartId: (part: string) => string;
-  registerFieldLabel: (id: string) => () => void;
-  registerFieldInput: (id: string) => () => void;
-  registerFieldDescription: (id: string) => () => void;
-  registerFieldErrorMessage: (id: string) => () => void;
+  registerLabel: (id: string) => () => void;
+  registerInput: (id: string) => () => void;
+  registerDescription: (id: string) => () => void;
+  registerErrorMessage: (id: string) => () => void;
 }
 
 export const FieldContext = createContext<FieldContextValue>();

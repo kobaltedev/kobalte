@@ -111,21 +111,27 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
       onChange: value => local.onValueChange?.(value),
     });
 
-    const [ariaLabelledBy, setAriaLabelledBy] = createSignal<string>();
-    const [ariaDescribedBy, setAriaDescribedBy] = createSignal<string>();
-    const [ariaErrorMessage, setAriaErrorMessage] = createSignal<string>();
+    const [labelId, setLabelId] = createSignal<string>();
+    const [descriptionId, setDescriptionId] = createSignal<string>();
+    const [errorMessageId, setErrorMessageId] = createSignal<string>();
 
-    const allAriaLabelledBy = createMemo(() => {
-      return [ariaLabelledBy(), local["aria-labelledby"]].filter(Boolean).join(" ") || undefined;
+    const ariaLabelledBy = createMemo(() => {
+      // If the radio group has "aria-label", add itself to "aria-labelledby"
+      const isSelfLabelled = others["aria-label"] != null;
+
+      return (
+        [labelId(), isSelfLabelled && local.id, local["aria-labelledby"]]
+          .filter(Boolean)
+          .join(" ") || undefined
+      );
     });
 
-    const allAriaDescribedBy = createMemo(() => {
+    const ariaDescribedBy = createMemo(() => {
       // Use aria-describedby for error message because aria-errormessage is unsupported using VoiceOver or NVDA.
       // See https://github.com/adobe/react-spectrum/issues/1346#issuecomment-740136268
       return (
-        [ariaDescribedBy(), ariaErrorMessage(), local["aria-describedby"]]
-          .filter(Boolean)
-          .join(" ") || undefined
+        [descriptionId(), errorMessageId(), local["aria-describedby"]].filter(Boolean).join(" ") ||
+        undefined
       );
     });
 
@@ -156,10 +162,19 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
       isDisabled: () => local.isDisabled,
       isReadOnly: () => local.isReadOnly,
       getPartId: part => `${local.id!}-${part}`,
-      allAriaDescribedBy,
-      setAriaLabelledBy,
-      setAriaDescribedBy,
-      setAriaErrorMessage,
+      ariaDescribedBy,
+      registerLabel: id => {
+        setLabelId(id);
+        return () => setLabelId(undefined);
+      },
+      registerDescription: id => {
+        setDescriptionId(id);
+        return () => setDescriptionId(undefined);
+      },
+      registerErrorMessage: id => {
+        setErrorMessageId(id);
+        return () => setErrorMessageId(undefined);
+      },
     };
 
     return (
@@ -168,8 +183,8 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
         ref={mergeRefs(el => (ref = el), local.ref)}
         role="radiogroup"
         id={local.id}
-        aria-labelledby={allAriaLabelledBy()}
-        aria-describedby={allAriaDescribedBy()}
+        aria-labelledby={ariaLabelledBy()}
+        aria-describedby={ariaDescribedBy()}
         aria-invalid={local.validationState === "invalid" || undefined}
         aria-required={local.isRequired || undefined}
         aria-disabled={local.isDisabled || undefined}

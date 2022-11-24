@@ -103,19 +103,19 @@ export const Field = createPolymorphicComponent<"div", FieldProps, FieldComposit
     isReadOnly: () => local.isReadOnly,
     inputId,
     generateFieldPartId: part => `${local.id!}-${part}`,
-    registerFieldLabel: id => {
+    registerLabel: id => {
       setLabelId(id);
       return () => setLabelId(undefined);
     },
-    registerFieldInput: id => {
+    registerInput: id => {
       setInputId(id);
       return () => setInputId(undefined);
     },
-    registerFieldDescription: id => {
+    registerDescription: id => {
       setDescriptionId(id);
       return () => setDescriptionId(undefined);
     },
-    registerFieldErrorMessage: id => {
+    registerErrorMessage: id => {
       setErrorMessageId(id);
       return () => setErrorMessageId(undefined);
     },

@@ -19,10 +19,10 @@ export interface RadioGroupContextValue {
   isDisabled: Accessor<boolean | undefined>;
   isReadOnly: Accessor<boolean | undefined>;
   getPartId: (part: string) => string;
-  allAriaDescribedBy: Accessor<string | undefined>;
-  setAriaLabelledBy: (id: string | undefined) => void;
-  setAriaDescribedBy: (id: string | undefined) => void;
-  setAriaErrorMessage: (id: string | undefined) => void;
+  ariaDescribedBy: Accessor<string | undefined>;
+  registerLabel: (id: string) => () => void;
+  registerDescription: (id: string) => () => void;
+  registerErrorMessage: (id: string) => () => void;
 }
 
 export const RadioGroupContext = createContext<RadioGroupContextValue>();

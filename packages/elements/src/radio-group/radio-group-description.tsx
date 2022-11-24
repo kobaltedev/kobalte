@@ -20,18 +20,7 @@ export const RadioGroupDescription = createPolymorphicComponent<"div">(props => 
 
   const [local, others] = splitProps(props, ["as", "id"]);
 
-  createEffect(
-    on(
-      () => local.id,
-      id => {
-        context.setAriaDescribedBy(id);
-
-        onCleanup(() => {
-          context.setAriaDescribedBy(undefined);
-        });
-      }
-    )
-  );
+  createEffect(() => onCleanup(context.registerDescription(local.id!)));
 
   return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
 });

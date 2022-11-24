@@ -20,18 +20,7 @@ export const RadioGroupLabel = createPolymorphicComponent<"span">(props => {
 
   const [local, others] = splitProps(props, ["as", "id"]);
 
-  createEffect(
-    on(
-      () => local.id,
-      id => {
-        context.setAriaLabelledBy(id);
-
-        onCleanup(() => {
-          context.setAriaLabelledBy(undefined);
-        });
-      }
-    )
-  );
+  createEffect(() => onCleanup(context.registerLabel(local.id!)));
 
   return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
 });
