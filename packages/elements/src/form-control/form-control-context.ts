@@ -16,14 +16,16 @@ export interface FormControlContextValue {
   isRequired: Accessor<boolean | undefined>;
   isDisabled: Accessor<boolean | undefined>;
   isReadOnly: Accessor<boolean | undefined>;
+  labelId: Accessor<string | undefined>;
   fieldId: Accessor<string | undefined>;
+  descriptionId: Accessor<string | undefined>;
+  errorMessageId: Accessor<string | undefined>;
+  ariaDescribedBy: Accessor<string | undefined>;
   generateId: (part: string) => string;
   registerLabel: (id: string) => () => void;
   registerField: (id: string) => () => void;
   registerDescription: (id: string) => () => void;
   registerErrorMessage: (id: string) => () => void;
-  mergeAriaLabelledBy: (ids?: string[]) => string | undefined;
-  mergeAriaDescribedBy: (ids?: string[]) => string | undefined;
 }
 
 export const FormControlContext = createContext<FormControlContextValue>();

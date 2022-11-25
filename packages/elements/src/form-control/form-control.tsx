@@ -19,9 +19,11 @@ import {
 import { FormControlDescription } from "./form-control-description";
 import { FormControlErrorMessage } from "./form-control-error-message";
 import { FormControlLabel } from "./form-control-label";
+import { FormControlField } from "./form-control-field";
 
 export type FormControlComposite = {
   Label: typeof FormControlLabel;
+  Field: typeof FormControlField;
   Description: typeof FormControlDescription;
   ErrorMessage: typeof FormControlErrorMessage;
 };
@@ -84,25 +86,41 @@ export const FormControl = createPolymorphicComponent<
   const [descriptionId, setDescriptionId] = createSignal<string>();
   const [errorMessageId, setErrorMessageId] = createSignal<string>();
 
-  const mergeAriaLabelledBy = (ids: string[] = []) => {
-    // If the form control is the field and has "aria-label", add itself to "aria-labelledby"
-    const isSelfLabelled = local.isField && others["aria-label"] != null;
+  const ariaLabelledBy = () => {
+    if (local.isField) {
+      const hasAriaLabelledBy = local["aria-labelledby"] != null || labelId() != null;
 
-    return (
-      [labelId(), isSelfLabelled && local.id, local["aria-labelledby"], ...ids]
-        .filter(Boolean)
-        .join(" ") || undefined
-    );
+      return (
+        [
+          local["aria-labelledby"],
+          labelId(),
+          // If there is both an aria-label and aria-labelledby, add the field itself has an aria-labelledby
+          hasAriaLabelledBy && others["aria-label"] != null ? local.id : undefined,
+        ]
+          .filter(Boolean)
+          .join(" ") || undefined
+      );
+    }
+
+    return local["aria-labelledby"];
   };
 
-  const mergeAriaDescribedBy = (ids: string[] = []) => {
-    // Use aria-describedby for error message because aria-errormessage is unsupported using VoiceOver or NVDA.
-    // See https://github.com/adobe/react-spectrum/issues/1346#issuecomment-740136268
-    return (
-      [descriptionId(), errorMessageId(), local["aria-describedby"], ...ids]
-        .filter(Boolean)
-        .join(" ") || undefined
-    );
+  const ariaDescribedBy = () => {
+    if (local.isField) {
+      return (
+        [
+          descriptionId(),
+          // Use aria-describedby for error message because aria-errormessage is unsupported using VoiceOver or NVDA.
+          // See https://github.com/adobe/react-spectrum/issues/1346#issuecomment-740136268
+          errorMessageId(),
+          local["aria-describedby"],
+        ]
+          .filter(Boolean)
+          .join(" ") || undefined
+      );
+    }
+
+    return local["aria-describedby"];
   };
 
   const dataset: Accessor<FormControlDataSet> = createMemo(() => ({
@@ -120,7 +138,11 @@ export const FormControl = createPolymorphicComponent<
     isRequired: () => local.isRequired,
     isDisabled: () => local.isDisabled,
     isReadOnly: () => local.isReadOnly,
+    labelId,
     fieldId,
+    descriptionId,
+    errorMessageId,
+    ariaDescribedBy,
     generateId: part => `${local.id!}-${part}`,
     registerLabel: id => {
       setLabelId(id);
@@ -138,16 +160,14 @@ export const FormControl = createPolymorphicComponent<
       setErrorMessageId(id);
       return () => setErrorMessageId(undefined);
     },
-    mergeAriaLabelledBy,
-    mergeAriaDescribedBy,
   };
 
   return (
     <Dynamic
       component={local.as}
       id={local.id}
-      aria-labelledby={local.isField ? mergeAriaLabelledBy() : local["aria-labelledby"]}
-      aria-describedby={local.isField ? mergeAriaDescribedBy() : local["aria-describedby"]}
+      aria-labelledby={ariaLabelledBy()}
+      aria-describedby={ariaDescribedBy()}
       {...dataset()}
       {...others}
     >
@@ -157,5 +177,6 @@ export const FormControl = createPolymorphicComponent<
 });
 
 FormControl.Label = FormControlLabel;
+FormControl.Field = FormControlField;
 FormControl.Description = FormControlDescription;
 FormControl.ErrorMessage = FormControlErrorMessage;

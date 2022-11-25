@@ -71,7 +71,7 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
       required={formControlContext.isRequired()}
       disabled={radioContext.isDisabled()}
       readonly={formControlContext.isReadOnly()}
-      aria-describedby={formControlContext.mergeAriaDescribedBy()}
+      aria-describedby={formControlContext.ariaDescribedBy()}
       onChange={onChange}
       {...radioContext.dataset()}
       {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers, focusRingHandlers)}
