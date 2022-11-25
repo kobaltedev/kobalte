@@ -6,12 +6,15 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-spectrum/radio/test/Radio.test.js
  */
 
+import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "solid-testing-library";
 
 import { Radio } from "./radio";
 import { RadioGroup } from "./radio-group";
 
 describe("RadioGroup", () => {
+  installPointerEvent();
+
   it("handles defaults", async () => {
     const onChangeSpy = jest.fn();
 
@@ -659,5 +662,311 @@ describe("RadioGroup", () => {
 
     expect(groupOnChangeSpy).toHaveBeenCalledTimes(0);
     expect(radios[2].checked).toBeFalsy();
+  });
+
+  describe("data-attributes", () => {
+    it("should have 'data-valid' attribute on radios when radio group is valid", async () => {
+      render(() => (
+        <RadioGroup validationState="valid">
+          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+          <div>
+            <Radio data-testid="dogs-radio" value="dogs">
+              <Radio.Input data-testid="dogs-radio-input" />
+              <Radio.Control data-testid="dogs-radio-control" />
+              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
+            </Radio>
+            <Radio data-testid="cats-radio" value="cats">
+              <Radio.Input data-testid="cats-radio-input" />
+              <Radio.Control data-testid="cats-radio-control" />
+              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
+            </Radio>
+            <Radio data-testid="dragons-radio" value="dragons">
+              <Radio.Input data-testid="dragons-radio-input" />
+              <Radio.Control data-testid="dragons-radio-control" />
+              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
+            </Radio>
+          </div>
+        </RadioGroup>
+      ));
+
+      const radioElements = screen.getAllByTestId(/^(dogs|cats|dragons)/);
+
+      for (const el of radioElements) {
+        expect(el).toHaveAttribute("data-valid");
+      }
+    });
+
+    it("should have 'data-invalid' attribute on radios when radio group is invalid", async () => {
+      render(() => (
+        <RadioGroup validationState="invalid">
+          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+          <div>
+            <Radio data-testid="dogs-radio" value="dogs">
+              <Radio.Input data-testid="dogs-radio-input" />
+              <Radio.Control data-testid="dogs-radio-control" />
+              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
+            </Radio>
+            <Radio data-testid="cats-radio" value="cats">
+              <Radio.Input data-testid="cats-radio-input" />
+              <Radio.Control data-testid="cats-radio-control" />
+              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
+            </Radio>
+            <Radio data-testid="dragons-radio" value="dragons">
+              <Radio.Input data-testid="dragons-radio-input" />
+              <Radio.Control data-testid="dragons-radio-control" />
+              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
+            </Radio>
+          </div>
+        </RadioGroup>
+      ));
+
+      const radioElements = screen.getAllByTestId(/^(dogs|cats|dragons)/);
+
+      for (const el of radioElements) {
+        expect(el).toHaveAttribute("data-invalid");
+      }
+    });
+
+    it("should have 'data-checked' attribute on checked radio", async () => {
+      render(() => (
+        <RadioGroup defaultValue="cats">
+          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+          <div>
+            <Radio data-testid="dogs-radio" value="dogs">
+              <Radio.Input data-testid="dogs-radio-input" />
+              <Radio.Control data-testid="dogs-radio-control" />
+              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
+            </Radio>
+            <Radio data-testid="cats-radio" value="cats">
+              <Radio.Input data-testid="cats-radio-input" />
+              <Radio.Control data-testid="cats-radio-control" />
+              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
+            </Radio>
+            <Radio data-testid="dragons-radio" value="dragons">
+              <Radio.Input data-testid="dragons-radio-input" />
+              <Radio.Control data-testid="dragons-radio-control" />
+              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
+            </Radio>
+          </div>
+        </RadioGroup>
+      ));
+
+      const dogsElements = screen.getAllByTestId(/^dogs/);
+      const catsElements = screen.getAllByTestId(/^cats/);
+      const dragonsElements = screen.getAllByTestId(/^dragons/);
+
+      for (const el of dogsElements) {
+        expect(el).not.toHaveAttribute("data-checked");
+      }
+
+      for (const el of catsElements) {
+        expect(el).toHaveAttribute("data-checked");
+      }
+
+      for (const el of dragonsElements) {
+        expect(el).not.toHaveAttribute("data-checked");
+      }
+    });
+
+    it("should have 'data-disabled' attribute on radios when radio group is disabled", async () => {
+      render(() => (
+        <RadioGroup isDisabled>
+          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+          <div>
+            <Radio data-testid="dogs-radio" value="dogs">
+              <Radio.Input data-testid="dogs-radio-input" />
+              <Radio.Control data-testid="dogs-radio-control" />
+              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
+            </Radio>
+            <Radio data-testid="cats-radio" value="cats">
+              <Radio.Input data-testid="cats-radio-input" />
+              <Radio.Control data-testid="cats-radio-control" />
+              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
+            </Radio>
+            <Radio data-testid="dragons-radio" value="dragons">
+              <Radio.Input data-testid="dragons-radio-input" />
+              <Radio.Control data-testid="dragons-radio-control" />
+              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
+            </Radio>
+          </div>
+        </RadioGroup>
+      ));
+
+      const radioElements = screen.getAllByTestId(/^(dogs|cats|dragons)/);
+
+      for (const el of radioElements) {
+        expect(el).toHaveAttribute("data-disabled");
+      }
+    });
+
+    it("should have 'data-disabled' attribute on single disabled radio", async () => {
+      render(() => (
+        <RadioGroup>
+          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+          <div>
+            <Radio data-testid="dogs-radio" value="dogs">
+              <Radio.Input data-testid="dogs-radio-input" />
+              <Radio.Control data-testid="dogs-radio-control" />
+              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
+            </Radio>
+            <Radio data-testid="cats-radio" value="cats" isDisabled>
+              <Radio.Input data-testid="cats-radio-input" />
+              <Radio.Control data-testid="cats-radio-control" />
+              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
+            </Radio>
+            <Radio data-testid="dragons-radio" value="dragons">
+              <Radio.Input data-testid="dragons-radio-input" />
+              <Radio.Control data-testid="dragons-radio-control" />
+              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
+            </Radio>
+          </div>
+        </RadioGroup>
+      ));
+
+      const dogsElements = screen.getAllByTestId(/^dogs/);
+      const catsElements = screen.getAllByTestId(/^cats/);
+      const dragonsElements = screen.getAllByTestId(/^dragons/);
+
+      for (const el of dogsElements) {
+        expect(el).not.toHaveAttribute("data-disabled");
+      }
+
+      for (const el of catsElements) {
+        expect(el).toHaveAttribute("data-disabled");
+      }
+
+      for (const el of dragonsElements) {
+        expect(el).not.toHaveAttribute("data-disabled");
+      }
+    });
+
+    it("should have 'data-hover' attribute on hovered radio", async () => {
+      render(() => (
+        <RadioGroup>
+          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+          <div>
+            <Radio data-testid="dogs-radio" value="dogs">
+              <Radio.Input data-testid="dogs-radio-input" />
+              <Radio.Control data-testid="dogs-radio-control" />
+              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
+            </Radio>
+            <Radio data-testid="cats-radio" value="cats">
+              <Radio.Input data-testid="cats-radio-input" />
+              <Radio.Control data-testid="cats-radio-control" />
+              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
+            </Radio>
+            <Radio data-testid="dragons-radio" value="dragons">
+              <Radio.Input data-testid="dragons-radio-input" />
+              <Radio.Control data-testid="dragons-radio-control" />
+              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
+            </Radio>
+          </div>
+        </RadioGroup>
+      ));
+
+      const catsRadioRoot = screen.getByTestId("cats-radio");
+      const catsElements = screen.getAllByTestId(/^cats/);
+
+      fireEvent(catsRadioRoot, createPointerEvent("pointerenter", { pointerType: "mouse" }));
+      await Promise.resolve();
+
+      for (const el of catsElements) {
+        expect(el).toHaveAttribute("data-hover");
+      }
+
+      fireEvent(catsRadioRoot, createPointerEvent("pointerleave", { pointerType: "mouse" }));
+      await Promise.resolve();
+
+      for (const el of catsElements) {
+        expect(el).not.toHaveAttribute("data-hover");
+      }
+    });
+
+    it.skip("should have 'data-focus' attribute on focused radio", async () => {
+      render(() => (
+        <RadioGroup>
+          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+          <div>
+            <Radio data-testid="dogs-radio" value="dogs">
+              <Radio.Input data-testid="dogs-radio-input" />
+              <Radio.Control data-testid="dogs-radio-control" />
+              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
+            </Radio>
+            <Radio data-testid="cats-radio" value="cats">
+              <Radio.Input data-testid="cats-radio-input" />
+              <Radio.Control data-testid="cats-radio-control" />
+              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
+            </Radio>
+            <Radio data-testid="dragons-radio" value="dragons">
+              <Radio.Input data-testid="dragons-radio-input" />
+              <Radio.Control data-testid="dragons-radio-control" />
+              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
+            </Radio>
+          </div>
+        </RadioGroup>
+      ));
+
+      const catsRadioRoot = screen.getByTestId("cats-radio");
+      const catsElements = screen.getAllByTestId(/^cats/);
+
+      fireEvent(catsRadioRoot, createPointerEvent("pointerdown", { pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(catsRadioRoot, createPointerEvent("pointerup", { pointerType: "mouse" }));
+      await Promise.resolve();
+
+      for (const el of catsElements) {
+        expect(el).toHaveAttribute("data-focus");
+      }
+
+      fireEvent(document.body, createPointerEvent("pointerdown", { pointerType: "mouse" }));
+      await Promise.resolve();
+
+      for (const el of catsElements) {
+        expect(el).not.toHaveAttribute("data-focus");
+      }
+    });
+
+    it.skip("should have 'data-focus-visible' attribute on keyboard focused radio", async () => {
+      render(() => (
+        <RadioGroup>
+          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+          <div>
+            <Radio data-testid="dogs-radio" value="dogs">
+              <Radio.Input data-testid="dogs-radio-input" />
+              <Radio.Control data-testid="dogs-radio-control" />
+              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
+            </Radio>
+            <Radio data-testid="cats-radio" value="cats">
+              <Radio.Input data-testid="cats-radio-input" />
+              <Radio.Control data-testid="cats-radio-control" />
+              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
+            </Radio>
+            <Radio data-testid="dragons-radio" value="dragons">
+              <Radio.Input data-testid="dragons-radio-input" />
+              <Radio.Control data-testid="dragons-radio-control" />
+              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
+            </Radio>
+          </div>
+        </RadioGroup>
+      ));
+
+      const catsRadioInput = screen.getByTestId("cats-radio-input");
+      const catsElements = screen.getAllByTestId(/^cats/);
+
+      fireEvent.keyDown(catsRadioInput, { key: "Tab" });
+      await Promise.resolve();
+
+      for (const el of catsElements) {
+        expect(el).toHaveAttribute("data-focus-visible");
+      }
+
+      fireEvent(document.body, createPointerEvent("pointerdown", { pointerType: "mouse" }));
+      await Promise.resolve();
+
+      for (const el of catsElements) {
+        expect(el).not.toHaveAttribute("data-focus-visible");
+      }
+    });
   });
 });
