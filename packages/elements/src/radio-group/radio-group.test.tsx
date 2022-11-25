@@ -351,7 +351,7 @@ describe("RadioGroup", () => {
     expect(radioGroup).toHaveAttribute("aria-invalid", "true");
   });
 
-  it("passes through (aria-errormessage'", () => {
+  it("passes through 'aria-errormessage'", () => {
     render(() => (
       <RadioGroup validationState="invalid" aria-errormessage="test">
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
@@ -968,23 +968,75 @@ describe("RadioGroup", () => {
   });
 
   describe("Radio", () => {
-    it("should generate a default id for the input", () => {
+    it("should generate default ids", () => {
       render(() => (
         <RadioGroup>
-          <Radio value="cats">
-            <Radio.Input />
-            <Radio.Control />
-            <Radio.Label>Cats</Radio.Label>
+          <Radio data-testid="radio" value="cats">
+            <Radio.Input data-testid="input" />
+            <Radio.Control data-testid="control" />
+            <Radio.Label data-testid="label">Cats</Radio.Label>
           </Radio>
         </RadioGroup>
       ));
 
-      const radio = screen.getByRole("radio");
+      const radio = screen.getByTestId("radio");
+      const input = screen.getByTestId("input");
+      const control = screen.getByTestId("control");
+      const label = screen.getByTestId("label");
 
       expect(radio.id).toBeDefined();
+      expect(input.id).toBe(`${radio.id}-input`);
+      expect(control.id).toBe(`${radio.id}-control`);
+      expect(label.id).toBe(`${radio.id}-label`);
     });
 
-    it("should pass 'aria-label' to input", () => {
+    it("should generate ids based on radio id", () => {
+      render(() => (
+        <RadioGroup>
+          <Radio data-testid="radio" value="cats" id="foo">
+            <Radio.Input data-testid="input" />
+            <Radio.Control data-testid="control" />
+            <Radio.Label data-testid="label">Cats</Radio.Label>
+          </Radio>
+        </RadioGroup>
+      ));
+
+      const radio = screen.getByTestId("radio");
+      const input = screen.getByTestId("input");
+      const control = screen.getByTestId("control");
+      const label = screen.getByTestId("label");
+
+      expect(radio.id).toBe("foo");
+      expect(input.id).toBe("foo-input");
+      expect(control.id).toBe("foo-control");
+      expect(label.id).toBe("foo-label");
+    });
+
+    it("supports custom ids", () => {
+      render(() => (
+        <RadioGroup>
+          <Radio data-testid="radio" value="cats" id="custom-radio-id">
+            <Radio.Input data-testid="input" id="custom-input-id" />
+            <Radio.Control data-testid="control" id="custom-control-id" />
+            <Radio.Label data-testid="label" id="custom-label-id">
+              Cats
+            </Radio.Label>
+          </Radio>
+        </RadioGroup>
+      ));
+
+      const radio = screen.getByTestId("radio");
+      const input = screen.getByTestId("input");
+      const control = screen.getByTestId("control");
+      const label = screen.getByTestId("label");
+
+      expect(radio.id).toBe("custom-radio-id");
+      expect(input.id).toBe("custom-input-id");
+      expect(control.id).toBe("custom-control-id");
+      expect(label.id).toBe("custom-label-id");
+    });
+
+    it("supports 'aria-label'", () => {
       render(() => (
         <RadioGroup>
           <Radio value="cats" aria-label="Label">
@@ -1000,7 +1052,7 @@ describe("RadioGroup", () => {
       expect(radio).toHaveAttribute("aria-label", "Label");
     });
 
-    it("should pass 'aria-labelledby' to input", () => {
+    it("supports 'aria-labelledby'", () => {
       render(() => (
         <RadioGroup>
           <Radio value="cats" aria-labelledby="foo">
@@ -1016,7 +1068,7 @@ describe("RadioGroup", () => {
       expect(radio).toHaveAttribute("aria-labelledby", "foo");
     });
 
-    it("should combine 'aria-label' and 'aria-labelledby' on input", () => {
+    it("should combine 'aria-label' and 'aria-labelledby'", () => {
       render(() => (
         <RadioGroup>
           <Radio value="cats" aria-label="Label" aria-labelledby="foo">
@@ -1032,7 +1084,7 @@ describe("RadioGroup", () => {
       expect(radio).toHaveAttribute("aria-labelledby", `foo ${radio.id}`);
     });
 
-    it("should pass 'aria-describedby' to input", () => {
+    it("supports 'aria-describedby'", () => {
       render(() => (
         <RadioGroup>
           <Radio value="cats" aria-describedby="foo">
@@ -1048,7 +1100,7 @@ describe("RadioGroup", () => {
       expect(radio).toHaveAttribute("aria-describedby", "foo");
     });
 
-    it("should combine 'aria-describedby' from both radio and radio group on input", () => {
+    it("should combine 'aria-describedby' from both radio and radio group", () => {
       render(() => (
         <RadioGroup>
           <Radio value="cats" aria-describedby="foo">
