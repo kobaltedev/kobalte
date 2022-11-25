@@ -882,7 +882,7 @@ describe("RadioGroup", () => {
       }
     });
 
-    it.skip("should have 'data-focus' attribute on focused radio", async () => {
+    it("should have 'data-focus' attribute on focused radio", async () => {
       render(() => (
         <RadioGroup>
           <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
@@ -906,20 +906,17 @@ describe("RadioGroup", () => {
         </RadioGroup>
       ));
 
-      const catsRadioRoot = screen.getByTestId("cats-radio");
+      const catsRadioInput = screen.getByTestId("cats-radio-input");
       const catsElements = screen.getAllByTestId(/^cats/);
 
-      fireEvent(catsRadioRoot, createPointerEvent("pointerdown", { pointerType: "mouse" }));
-      await Promise.resolve();
-
-      fireEvent(catsRadioRoot, createPointerEvent("pointerup", { pointerType: "mouse" }));
+      catsRadioInput.focus();
       await Promise.resolve();
 
       for (const el of catsElements) {
         expect(el).toHaveAttribute("data-focus");
       }
 
-      fireEvent(document.body, createPointerEvent("pointerdown", { pointerType: "mouse" }));
+      catsRadioInput.blur();
       await Promise.resolve();
 
       for (const el of catsElements) {
