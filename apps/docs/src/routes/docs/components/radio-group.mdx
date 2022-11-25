@@ -18,7 +18,7 @@ A set of checkable buttons, known as radio buttons, where no more than one of th
         {library => (
           <Radio value={library} class="flex items-center">
             <Radio.Input />
-            <Radio.Control class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus:border-blue-500 ui-focus:ring ui-focus:ring-blue-100 dark:ui-focus:border-blue-600 dark:ui-focus:ring-blue-900/60">
+            <Radio.Control class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus-visible:border-blue-500 ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:border-blue-600 dark:ui-focus-visible:ring-blue-900/60">
               <Radio.Indicator class="h-2.5 w-2.5 rounded-full bg-blue-500" />
             </Radio.Control>
             <Radio.Label class="text-sm text-zinc-900 dark:text-white/90 first-letter:uppercase">
@@ -44,7 +44,7 @@ A set of checkable buttons, known as radio buttons, where no more than one of th
       {library => (
         <Radio value={library} class="flex items-center">
           <Radio.Input />
-          <Radio.Control class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus:border-blue-500 ui-focus:ring ui-focus:ring-blue-100 dark:ui-focus:border-blue-600 dark:ui-focus:ring-blue-900/60">
+          <Radio.Control class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus-visible:border-blue-500 ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:border-blue-600 dark:ui-focus-visible:ring-blue-900/60">
             <Radio.Indicator class="h-2.5 w-2.5 rounded-full bg-blue-500" />
           </Radio.Control>
           <Radio.Label class="text-sm text-zinc-900 dark:text-white/90 first-letter:uppercase">
@@ -76,6 +76,18 @@ import { RadioGroup, Radio } from "@kobalte/elements";
 
 ## Anatomy
 
+The radio group consists of:
+
+- **RadioGroup**: The root container for the radio group.
+- **RadioGroup.Label**: The label that gives the user information on the radio group.
+- **RadioGroup.Description**: The description that gives the user more information on the radio group.
+- **RadioGroup.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the radio group.
+- **Radio**: The root container for a radio button.
+- **Radio.Input**: The native html input that is visually hidden in the radio button.
+- **Radio.Control**: The element that visually represents a radio button.
+- **Radio.Indicator**: The visual indicator rendered when the radio button is in a checked state.
+- **Radio.Label**: The label that gives the user information on the radio button.
+
 ```tsx
 <RadioGroup>
   <RadioGroup.Label />
@@ -93,23 +105,11 @@ import { RadioGroup, Radio } from "@kobalte/elements";
 </RadioGroup>
 ```
 
-The radio group consists of:
-
-- **RadioGroup**: The root container for the radio group.
-- **RadioGroup.Label**: A label that gives the user information on the radio group.
-- **RadioGroup.Description**: A description that gives the user more information on the radio group.
-- **RadioGroup.ErrorMessage**: An error message that gives the user information about what's going wrong with the radio group.
-- **Radio**: The root container for a radio button.
-- **Radio.Input**: The native html input that is visually hidden in the radio button.
-- **Radio.Control**: The element that visually represents a radio button.
-- **Radio.Indicator**: A visual indicator rendered when the radio button is in a checked state.
-- **Radio.Label**: A label that gives the user information on the radio button.
-
 ## Usage
 
 ### Default value
 
-An initial, uncontrolled value can be provided to the RadioGroup using the `defaultValue` prop, which accepts a value corresponding with the `value` prop of each Radio.
+An initial, uncontrolled value can be provided to the radio group using the `defaultValue` prop, which accepts a value corresponding with the `value` prop of each radio.
 
 ```tsx {0}
 <RadioGroup defaultValue="solid">
@@ -129,7 +129,7 @@ An initial, uncontrolled value can be provided to the RadioGroup using the `defa
 
 ### Controlled value
 
-A controlled value can be provided using the `value` prop, which accepts a value corresponding with the `value` prop of each Radio. The `onValueChange` event is fired when the user selects a radio button.
+A controlled value can be provided using the `value` prop, which accepts a value corresponding with the `value` prop of each radio. The `onValueChange` event is fired when the user selects a radio.
 
 ```tsx {1,4}
 function Example() {
@@ -178,6 +178,8 @@ The `RadioGroup.Description` component can be used to associate additional help 
 
 The `RadioGroup.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the radio group as invalid for assistive technologies.
 
+By default `RadioGroup.ErrorMessage` will render only when the radio group is _invalid_, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
 ```tsx {0,12}
 <RadioGroup validationState="invalid">
   <RadioGroup.Label>Favorite library</RadioGroup.Label>
@@ -197,7 +199,7 @@ The `RadioGroup.ErrorMessage` component can be used to help the user fix a valid
 
 ### Disabled
 
-The entire RadioGroup can be disabled with the `isDisabled` prop.
+The entire radio group can be disabled with the `isDisabled` prop.
 
 ```tsx {0}
 <RadioGroup isDisabled>
@@ -215,7 +217,7 @@ The entire RadioGroup can be disabled with the `isDisabled` prop.
 </RadioGroup>
 ```
 
-To disable an individual radio, pass `isDisabled` to the Radio instead.
+To disable an individual radio, pass `isDisabled` to the radio instead.
 
 ```tsx {7}
 <RadioGroup>
@@ -235,7 +237,7 @@ To disable an individual radio, pass `isDisabled` to the Radio instead.
 
 ### Read only
 
-The `isReadOnly` prop makes the RadioGroup selection immutable while remaining focusable.
+The `isReadOnly` prop makes the radio group selection immutable while remaining focusable.
 
 ```tsx {0}
 <RadioGroup isReadOnly>
@@ -255,7 +257,7 @@ The `isReadOnly` prop makes the RadioGroup selection immutable while remaining f
 
 ### HTML forms
 
-RadioGroup supports the `name` prop, paired with the Radio `value` prop, for integration with HTML forms.
+The radio group supports the `name` prop, paired with the radio `value` prop, for integration with HTML forms.
 
 ```tsx {0}
 <RadioGroup name="framework">
@@ -312,14 +314,15 @@ RadioGroup supports the `name` prop, paired with the Radio `value` prop, for int
 | value      | `string`  | The value of the radio button, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio#Value). |
 | isDisabled | `boolean` | Whether the radio button is disabled or not.                                                                                                              |
 
-| Data attributes | Description                                                                       |
-| :-------------- | :-------------------------------------------------------------------------------- |
-| data-valid      | Present when the parent radio group is valid according to the validation rules.   |
-| data-invalid    | Present when the parent radio group is invalid according to the validation rules. |
-| data-checked    | Present when the radio is checked.                                                |
-| data-disabled   | Present when the radio is disabled.                                               |
-| data-hover      | Present when the radio is hovered.                                                |
-| data-focus      | Present when the radio is focused.                                                |
+| Data attributes    | Description                                                                       |
+| :----------------- | :-------------------------------------------------------------------------------- |
+| data-valid         | Present when the parent radio group is valid according to the validation rules.   |
+| data-invalid       | Present when the parent radio group is invalid according to the validation rules. |
+| data-checked       | Present when the radio is checked.                                                |
+| data-disabled      | Present when the radio is disabled.                                               |
+| data-hover         | Present when the radio is hovered.                                                |
+| data-focus         | Present when the radio is focused.                                                |
+| data-focus-visible | Present when the radio is focused via keyboard.                                   |
 
 `Radio.Input`, `Radio.Control`, `Radio.Indicator` and `Radio.Label` shares the same `data-*` attributes.
 

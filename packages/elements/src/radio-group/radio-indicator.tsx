@@ -24,7 +24,7 @@ export const RadioIndicator = createPolymorphicComponent<"div", RadioIndicatorPr
 
   return (
     <Show when={local.forceMount || context.isSelected()}>
-      <Dynamic component={local.as} data-part="indicator" {...context.dataset()} {...others} />
+      <Dynamic component={local.as} {...context.dataset()} {...others} />
     </Show>
   );
 });

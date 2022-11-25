@@ -16,23 +16,30 @@ import {
 import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createPress } from "../../primitives";
-import { useRadioGroupContext } from "../radio-group-context";
+import { useFormControlContext } from "../form-control";
+import { createFocusRing, createPress } from "../primitives";
 import { useRadioContext } from "./radio-context";
+import { useRadioGroupContext } from "./radio-group-context";
 
 /**
  * The native html input that is visually hidden in the radio button.
  */
 export const RadioInput = createPolymorphicComponent<"input">(props => {
+  const formControlContext = useFormControlContext();
   const radioGroupContext = useRadioGroupContext();
   const radioContext = useRadioContext();
 
   props = mergeDefaultProps({ as: "input" }, props);
 
-  const [local, others] = splitProps(props, ["as", "onChange", "onFocus", "onBlur"]);
+  const [local, others] = splitProps(props, ["as", "onChange"]);
 
   const { pressHandlers } = createPress({
     isDisabled: radioContext.isDisabled,
+  });
+
+  const { focusRingHandlers } = createFocusRing({
+    onFocusChange: value => radioContext.setIsFocused(value),
+    onFocusVisibleChange: value => radioContext.setIsFocusVisible(value),
   });
 
   const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = e => {
@@ -54,33 +61,20 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
     target.checked = radioContext.isSelected();
   };
 
-  const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = e => {
-    callHandler(e, local.onFocus);
-    radioContext.setIsFocused(true);
-  };
-
-  const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = e => {
-    callHandler(e, local.onBlur);
-    radioContext.setIsFocused(false);
-  };
-
   return (
     <Dynamic
       component={local.as}
       type="radio"
-      name={radioGroupContext.name()}
+      name={formControlContext.name()}
       value={radioContext.value()}
       checked={radioContext.isSelected()}
-      required={radioGroupContext.isRequired()}
+      required={formControlContext.isRequired()}
       disabled={radioContext.isDisabled()}
-      readonly={radioGroupContext.isReadOnly()}
-      aria-describedby={radioGroupContext.allAriaDescribedBy()}
-      data-part="input"
+      readonly={formControlContext.isReadOnly()}
+      aria-describedby={formControlContext.ariaDescribedBy()}
       onChange={onChange}
-      onFocus={onFocus}
-      onBlur={onBlur}
       {...radioContext.dataset()}
-      {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers)}
+      {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers, focusRingHandlers)}
     />
   );
 });

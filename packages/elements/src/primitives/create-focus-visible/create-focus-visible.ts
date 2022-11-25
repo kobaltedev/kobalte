@@ -59,14 +59,6 @@ function handlePointerEvent(e: PointerEvent | MouseEvent) {
   currentModality = "pointer";
   if (e.type === "mousedown" || e.type === "pointerdown") {
     hasEventBeforeFocus = true;
-
-    /*
-    const target = e.composedPath ? e.composedPath()[0] : e.target;
-    if ((target as HTMLElement).matches(":focus-visible")) {
-      return;
-    }
-    */
-
     triggerChangeHandlers("pointer", e);
   }
 }

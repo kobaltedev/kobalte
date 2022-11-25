@@ -14,5 +14,5 @@ export const RadioLabel = createPolymorphicComponent<"span">(props => {
 
   const [local, others] = splitProps(props, ["as"]);
 
-  return <Dynamic component={local.as} data-part="label" {...context.dataset()} {...others} />;
+  return <Dynamic component={local.as} {...context.dataset()} {...others} />;
 });

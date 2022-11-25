@@ -80,10 +80,11 @@ module.exports = {
     extend: {},
   },
   plugins: [
+    // default prefix is "ui"
     require("@kobalte/tailwindcss"),
 
-    // Or with a custom prefix:
-    require("@kobalte/tailwindcss")({ prefix: "ui" }),
+    // or with a custom prefix:
+    require("@kobalte/tailwindcss")({ prefix: "kb" }),
   ],
 };
 ```
@@ -103,22 +104,24 @@ export const MyPopover = () => (
 
 You can use the following modifiers:
 
-| Modifier           | Inverse modifier       | Target data attribute |
-| :----------------- | :--------------------- | :-------------------- |
-| `ui-valid`         | `ui-not-valid`         | `data-valid`          |
-| `ui-invalid`       | `ui-not-invalid`       | `data-invalid`        |
-| `ui-required`      | `ui-not-required`      | `data-required`       |
-| `ui-disabled`      | `ui-not-disabled`      | `data-disabled`       |
-| `ui-readonly`      | `ui-not-readonly`      | `data-readonly`       |
-| `ui-checked`       | `ui-not-checked`       | `data-checked`        |
-| `ui-indeterminate` | `ui-not-indeterminate` | `data-indeterminate`  |
-| `ui-selected`      | `ui-not-selected`      | `data-selected`       |
-| `ui-pressed`       | `ui-not-pressed`       | `data-pressed`        |
-| `ui-expanded`      | `ui-not-expanded`      | `data-expanded`       |
-| `ui-hover`         | `ui-not-hover`         | `data-hover`          |
-| `ui-focus`         | `ui-not-focus`         | `data-focus`          |
-| `ui-focus-visible` | `ui-not-focus-visible` | `data-focus-visible`  |
-| `ui-active`        | `ui-not-active`        | `data-active`         |
+| Modifier           | CSS Selector                                            |
+| :----------------- | :------------------------------------------------------ |
+| `ui-valid`         | `&[data-valid], :where([data-valid]) &`                 |
+| `ui-invalid`       | `&[data-invalid], :where([data-invalid]) &`             |
+| `ui-required`      | `&[data-required], :where([data-required]) &`           |
+| `ui-disabled`      | `&[data-disabled], :where([data-disabled]) &`           |
+| `ui-readonly`      | `&[data-readonly], :where([data-readonly]) &`           |
+| `ui-checked`       | `&[data-checked], :where([data-checked]) &`             |
+| `ui-indeterminate` | `&[data-indeterminate], :where([data-indeterminate]) &` |
+| `ui-selected`      | `&[data-selected], :where([data-selected]) &`           |
+| `ui-pressed`       | `&[data-pressed], :where([data-pressed]) &`             |
+| `ui-expanded`      | `&[data-expanded], :where([data-expanded]) &`           |
+| `ui-hover`         | `&[data-hover], :where([data-hover]) &`                 |
+| `ui-focus`         | `&[data-focus], :where([data-focus]) &`                 |
+| `ui-focus-visible` | `&[data-focus-visible], :where([data-focus-visible]) &` |
+| `ui-active`        | `&[data-active], :where([data-active]) &`               |
+
+It's also possible to use _inverse modifiers_ in the form of `ui-not-*`.
 
 <Callout type="note">
   All examples in the documentation are styled using TailwindCSS and the Kobalte plugin.

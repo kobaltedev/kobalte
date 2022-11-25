@@ -10,10 +10,11 @@ import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@ko
 import { Accessor, createMemo, createSignal, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createHover } from "../../primitives";
-import { useRadioGroupContext } from "../radio-group-context";
+import { useFormControlContext } from "../form-control";
+import { createHover } from "../primitives";
 import { RadioContext, RadioContextValue, RadioDataSet } from "./radio-context";
 import { RadioControl } from "./radio-control";
+import { useRadioGroupContext } from "./radio-group-context";
 import { RadioIndicator } from "./radio-indicator";
 import { RadioInput } from "./radio-input";
 import { RadioLabel } from "./radio-label";
@@ -40,6 +41,7 @@ export interface RadioProps {
  * The root container for a radio button.
  */
 export const Radio = createPolymorphicComponent<"label", RadioProps, RadioComposite>(props => {
+  const formControlContext = useFormControlContext();
   const radioGroupContext = useRadioGroupContext();
 
   props = mergeDefaultProps({ as: "label" }, props);
@@ -47,24 +49,26 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
   const [local, others] = splitProps(props, ["as", "children", "value", "isDisabled"]);
 
   const [isFocused, setIsFocused] = createSignal(false);
+  const [isFocusVisible, setIsFocusVisible] = createSignal(false);
 
   const isSelected = createMemo(() => {
     return radioGroupContext.isSelectedValue(local.value);
   });
 
   const isDisabled = createMemo(() => {
-    return local.isDisabled || radioGroupContext.isDisabled() || false;
+    return local.isDisabled || formControlContext.isDisabled() || false;
   });
 
   const { isHovered, hoverHandlers } = createHover({ isDisabled });
 
   const dataset: Accessor<RadioDataSet> = createMemo(() => ({
-    "data-valid": radioGroupContext.validationState() === "valid" ? "" : undefined,
-    "data-invalid": radioGroupContext.validationState() === "invalid" ? "" : undefined,
+    "data-valid": formControlContext.dataset()["data-valid"],
+    "data-invalid": formControlContext.dataset()["data-invalid"],
     "data-checked": isSelected() ? "" : undefined,
     "data-disabled": isDisabled() ? "" : undefined,
     "data-hover": isHovered() ? "" : undefined,
     "data-focus": isFocused() ? "" : undefined,
+    "data-focus-visible": isFocusVisible() ? "" : undefined,
   }));
 
   const context: RadioContextValue = {
@@ -73,15 +77,11 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
     isSelected,
     isDisabled,
     setIsFocused,
+    setIsFocusVisible,
   };
 
   return (
-    <Dynamic
-      component={local.as}
-      data-part="root"
-      {...context.dataset()}
-      {...combineProps(others, hoverHandlers)}
-    >
+    <Dynamic component={local.as} {...context.dataset()} {...combineProps(others, hoverHandlers)}>
       <RadioContext.Provider value={context}>{local.children}</RadioContext.Provider>
     </Dynamic>
   );

@@ -24,10 +24,11 @@ module.exports = {
     extend: {},
   },
   plugins: [
+    // default prefix is "ui"
     require("@kobalte/tailwindcss"),
 
-    // Or with a custom prefix:
-    require("@kobalte/tailwindcss")({ prefix: "ui" }),
+    // or with a custom prefix:
+    require("@kobalte/tailwindcss")({ prefix: "kb" }),
   ],
 };
 ```
@@ -47,26 +48,26 @@ export const MyPopover = () => (
 
 You can use the following modifiers:
 
-| Modifier           | Inverse modifier       | Target data attribute |
-| :----------------- | :--------------------- | :-------------------- |
-| `ui-valid`         | `ui-not-valid`         | `data-valid`          |
-| `ui-invalid`       | `ui-not-invalid`       | `data-invalid`        |
-| `ui-required`      | `ui-not-required`      | `data-required`       |
-| `ui-disabled`      | `ui-not-disabled`      | `data-disabled`       |
-| `ui-readonly`      | `ui-not-readonly`      | `data-readonly`       |
-| `ui-checked`       | `ui-not-checked`       | `data-checked`        |
-| `ui-indeterminate` | `ui-not-indeterminate` | `data-indeterminate`  |
-| `ui-selected`      | `ui-not-selected`      | `data-selected`       |
-| `ui-pressed`       | `ui-not-pressed`       | `data-pressed`        |
-| `ui-expanded`      | `ui-not-expanded`      | `data-expanded`       |
-| `ui-hover`         | `ui-not-hover`         | `data-hover`          |
-| `ui-focus`         | `ui-not-focus`         | `data-focus`          |
-| `ui-focus-visible` | `ui-not-focus-visible` | `data-focus-visible`  |
-| `ui-active`        | `ui-not-active`        | `data-active`         |
+| Modifier           | Inverse modifier       |
+| :----------------- | :--------------------- |
+| `ui-valid`         | `ui-not-valid`         |
+| `ui-invalid`       | `ui-not-invalid`       |
+| `ui-required`      | `ui-not-required`      |
+| `ui-disabled`      | `ui-not-disabled`      |
+| `ui-readonly`      | `ui-not-readonly`      |
+| `ui-checked`       | `ui-not-checked`       |
+| `ui-indeterminate` | `ui-not-indeterminate` |
+| `ui-selected`      | `ui-not-selected`      |
+| `ui-pressed`       | `ui-not-pressed`       |
+| `ui-expanded`      | `ui-not-expanded`      |
+| `ui-hover`         | `ui-not-hover`         |
+| `ui-focus`         | `ui-not-focus`         |
+| `ui-focus-visible` | `ui-not-focus-visible` |
+| `ui-active`        | `ui-not-active`        |
 
 ## Documentation
 
-For full documentation, visit [kobalte.dev](https://kobalte.dev/).
+For full documentation, visit [kobalte.dev](https://kobalte.dev/docs/overview/styling#using-the-tailwindcss-plugin).
 
 ## Acknowledgment
 
