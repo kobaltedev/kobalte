@@ -18,7 +18,13 @@ export interface RadioIndicatorProps {
 export const RadioIndicator = createPolymorphicComponent<"div", RadioIndicatorProps>(props => {
   const context = useRadioContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+  props = mergeDefaultProps(
+    {
+      as: "div",
+      id: context.generateId("indicator"),
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, ["as", "forceMount"]);
 

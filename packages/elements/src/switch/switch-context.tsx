@@ -1,5 +1,5 @@
-import { Accessor, createContext, useContext } from "solid-js";
 import { ValidationState } from "@kobalte/utils";
+import { Accessor, createContext, useContext } from "solid-js";
 
 export interface SwitchDataSet {
   "data-valid": string | undefined;
@@ -17,11 +17,15 @@ export interface SwitchContextValue {
   name: Accessor<string | undefined>;
   value: Accessor<string>;
   dataset: Accessor<SwitchDataSet>;
+  ariaLabel: Accessor<string | undefined>;
+  ariaLabelledBy: Accessor<string | undefined>;
+  ariaDescribedBy: Accessor<string | undefined>;
   validationState: Accessor<ValidationState | undefined>;
   isChecked: Accessor<boolean>;
   isRequired: Accessor<boolean | undefined>;
   isDisabled: Accessor<boolean | undefined>;
   isReadOnly: Accessor<boolean | undefined>;
+  generateId: (part: string) => string;
   setIsChecked: (isChecked: boolean) => void;
   setIsFocused: (isFocused: boolean) => void;
   setIsFocusVisible: (isFocusVisible: boolean) => void;

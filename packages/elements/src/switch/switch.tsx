@@ -10,12 +10,13 @@ import {
   combineProps,
   createPolymorphicComponent,
   mergeDefaultProps,
+  mergeRefs,
   ValidationState,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, splitProps } from "solid-js";
+import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createHover, createToggleState } from "../primitives";
+import { createFormResetListener, createHover, createToggleState } from "../primitives";
 import { SwitchContext, SwitchContextValue, SwitchDataSet } from "./switch-context";
 import { SwitchControl } from "./switch-control";
 import { SwitchInput } from "./switch-input";
@@ -72,16 +73,22 @@ export interface SwitchProps {
  * This component is based on the [WAI-ARIA Switch Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch/)
  */
 export const Switch = createPolymorphicComponent<"label", SwitchProps, SwitchComposite>(props => {
+  let ref: HTMLLabelElement | undefined;
+
+  const defaultId = `kb-switch-${createUniqueId()}`;
+
   props = mergeDefaultProps(
     {
       as: "label",
       value: "on",
+      id: defaultId,
     },
     props
   );
 
   const [local, others] = splitProps(props, [
     "as",
+    "ref",
     "children",
     "value",
     "isChecked",
@@ -89,6 +96,9 @@ export const Switch = createPolymorphicComponent<"label", SwitchProps, SwitchCom
     "onCheckedChange",
     "name",
     "value",
+    "aria-label",
+    "aria-labelledby",
+    "aria-describedby",
     "validationState",
     "isRequired",
     "isDisabled",
@@ -105,6 +115,11 @@ export const Switch = createPolymorphicComponent<"label", SwitchProps, SwitchCom
     isDisabled: () => local.isDisabled,
     isReadOnly: () => local.isReadOnly,
   });
+
+  createFormResetListener(
+    () => ref,
+    () => state.setIsSelected(local.defaultIsChecked ?? false)
+  );
 
   const { isHovered, hoverHandlers } = createHover({
     isDisabled: () => local.isDisabled,
@@ -123,21 +138,30 @@ export const Switch = createPolymorphicComponent<"label", SwitchProps, SwitchCom
   }));
 
   const context: SwitchContextValue = {
-    name: () => local.name,
+    name: () => local.name ?? others.id!,
     value: () => local.value!,
     dataset,
+    ariaLabel: () => local["aria-label"],
+    ariaLabelledBy: () => local["aria-labelledby"],
+    ariaDescribedBy: () => local["aria-describedby"],
     validationState: () => local.validationState,
     isChecked: state.isSelected,
     isRequired: () => local.isRequired,
     isDisabled: () => local.isDisabled,
     isReadOnly: () => local.isReadOnly,
+    generateId: part => `${others.id!}-${part}`,
     setIsChecked: state.setIsSelected,
     setIsFocused,
     setIsFocusVisible,
   };
 
   return (
-    <Dynamic component={local.as} {...context.dataset()} {...combineProps(others, hoverHandlers)}>
+    <Dynamic
+      component={local.as}
+      ref={mergeRefs(el => (ref = el), local.ref)}
+      {...context.dataset()}
+      {...combineProps(others, hoverHandlers)}
+    >
       <SwitchContext.Provider value={context}>{local.children}</SwitchContext.Provider>
     </Dynamic>
   );

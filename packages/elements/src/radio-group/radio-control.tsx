@@ -10,7 +10,13 @@ import { useRadioContext } from "./radio-context";
 export const RadioControl = createPolymorphicComponent<"div">(props => {
   const context = useRadioContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+  props = mergeDefaultProps(
+    {
+      as: "div",
+      id: context.generateId("control"),
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, ["as"]);
 

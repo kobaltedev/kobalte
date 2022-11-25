@@ -25,7 +25,13 @@ import { useSwitchContext } from "./switch-context";
 export const SwitchInput = createPolymorphicComponent<"input">(props => {
   const context = useSwitchContext();
 
-  props = mergeDefaultProps({ as: "input" }, props);
+  props = mergeDefaultProps(
+    {
+      as: "input",
+      id: context.generateId("input"),
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, ["as", "onChange"]);
 
@@ -37,6 +43,18 @@ export const SwitchInput = createPolymorphicComponent<"input">(props => {
     onFocusChange: value => context.setIsFocused(value),
     onFocusVisibleChange: value => context.setIsFocusVisible(value),
   });
+
+  const ariaLabelledBy = () => {
+    return (
+      [
+        context.ariaLabelledBy(),
+        // If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
+        context.ariaLabelledBy() != null && context.ariaLabel() != null ? others.id : undefined,
+      ]
+        .filter(Boolean)
+        .join(" ") || undefined
+    );
+  };
 
   const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = e => {
     callHandler(e, local.onChange);
@@ -68,6 +86,9 @@ export const SwitchInput = createPolymorphicComponent<"input">(props => {
       required={context.isRequired()}
       disabled={context.isDisabled()}
       readonly={context.isReadOnly()}
+      aria-label={context.ariaLabel()}
+      aria-labelledby={ariaLabelledBy()}
+      aria-describedby={context.ariaDescribedBy()}
       aria-invalid={context.validationState() === "invalid" || undefined}
       aria-required={context.isRequired() || undefined}
       aria-disabled={context.isDisabled() || undefined}

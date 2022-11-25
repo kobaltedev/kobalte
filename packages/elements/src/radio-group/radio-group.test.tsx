@@ -966,4 +966,104 @@ describe("RadioGroup", () => {
       }
     });
   });
+
+  describe("Radio", () => {
+    it("should generate a default id for the input", () => {
+      render(() => (
+        <RadioGroup>
+          <Radio value="cats">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+        </RadioGroup>
+      ));
+
+      const radio = screen.getByRole("radio");
+
+      expect(radio.id).toBeDefined();
+    });
+
+    it("should pass 'aria-label' to input", () => {
+      render(() => (
+        <RadioGroup>
+          <Radio value="cats" aria-label="Label">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+        </RadioGroup>
+      ));
+
+      const radio = screen.getByRole("radio");
+
+      expect(radio).toHaveAttribute("aria-label", "Label");
+    });
+
+    it("should pass 'aria-labelledby' to input", () => {
+      render(() => (
+        <RadioGroup>
+          <Radio value="cats" aria-labelledby="foo">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+        </RadioGroup>
+      ));
+
+      const radio = screen.getByRole("radio");
+
+      expect(radio).toHaveAttribute("aria-labelledby", "foo");
+    });
+
+    it("should combine 'aria-label' and 'aria-labelledby' on input", () => {
+      render(() => (
+        <RadioGroup>
+          <Radio value="cats" aria-label="Label" aria-labelledby="foo">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+        </RadioGroup>
+      ));
+
+      const radio = screen.getByRole("radio");
+
+      expect(radio).toHaveAttribute("aria-labelledby", `foo ${radio.id}`);
+    });
+
+    it("should pass 'aria-describedby' to input", () => {
+      render(() => (
+        <RadioGroup>
+          <Radio value="cats" aria-describedby="foo">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+        </RadioGroup>
+      ));
+
+      const radio = screen.getByRole("radio");
+
+      expect(radio).toHaveAttribute("aria-describedby", "foo");
+    });
+
+    it("should combine 'aria-describedby' from both radio and radio group on input", () => {
+      render(() => (
+        <RadioGroup>
+          <Radio value="cats" aria-describedby="foo">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+          <RadioGroup.Description data-testid="description">Description</RadioGroup.Description>
+        </RadioGroup>
+      ));
+
+      const radio = screen.getByRole("radio");
+      const description = screen.getByTestId("description");
+
+      expect(radio).toHaveAttribute("aria-describedby", `foo ${description.id}`);
+    });
+  });
 });

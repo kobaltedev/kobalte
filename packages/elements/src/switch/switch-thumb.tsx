@@ -10,7 +10,13 @@ import { useSwitchContext } from "./switch-context";
 export const SwitchThumb = createPolymorphicComponent<"div">(props => {
   const context = useSwitchContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+  props = mergeDefaultProps(
+    {
+      as: "div",
+      id: context.generateId("thumb"),
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, ["as"]);
 

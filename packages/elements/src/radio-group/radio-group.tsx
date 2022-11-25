@@ -73,7 +73,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, For
 
     createFormResetListener(
       () => ref,
-      () => setSelected(undefined)
+      () => setSelected(local.defaultValue)
     );
 
     const context: RadioGroupContextValue = {

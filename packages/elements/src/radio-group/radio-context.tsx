@@ -13,8 +13,12 @@ export interface RadioDataSet {
 export interface RadioContextValue {
   value: Accessor<string>;
   dataset: Accessor<RadioDataSet>;
+  ariaLabel: Accessor<string | undefined>;
+  ariaLabelledBy: Accessor<string | undefined>;
+  ariaDescribedBy: Accessor<string | undefined>;
   isSelected: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
+  generateId: (part: string) => string;
   setIsFocused: (isFocused: boolean) => void;
   setIsFocusVisible: (isFocusVisible: boolean) => void;
 }

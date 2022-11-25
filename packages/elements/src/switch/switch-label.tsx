@@ -10,7 +10,13 @@ import { useSwitchContext } from "./switch-context";
 export const SwitchLabel = createPolymorphicComponent<"span">(props => {
   const context = useSwitchContext();
 
-  props = mergeDefaultProps({ as: "span" }, props);
+  props = mergeDefaultProps(
+    {
+      as: "span",
+      id: context.generateId("label"),
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, ["as"]);
 
