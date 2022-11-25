@@ -18,8 +18,8 @@ import {
 } from "./form-control-context";
 import { FormControlDescription } from "./form-control-description";
 import { FormControlErrorMessage } from "./form-control-error-message";
-import { FormControlLabel } from "./form-control-label";
 import { FormControlField } from "./form-control-field";
+import { FormControlLabel } from "./form-control-label";
 
 export type FormControlComposite = {
   Label: typeof FormControlLabel;

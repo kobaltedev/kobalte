@@ -230,6 +230,91 @@ describe("FormControl", () => {
     expect(field).toHaveAttribute("aria-describedby", `${description.id} ${error.id} foo`);
   });
 
+  describe("ids", () => {
+    it("should generate default ids", () => {
+      render(() => (
+        <FormControl data-testid="form-control" validationState="invalid">
+          <FormControl.Label data-testid="label">Label</FormControl.Label>
+          <FormControl.Field data-testid="field" />
+          <FormControl.Description data-testid="description">Description</FormControl.Description>
+          <FormControl.ErrorMessage data-testid="error-message">
+            ErrorMessage
+          </FormControl.ErrorMessage>
+        </FormControl>
+      ));
+
+      const formControl = screen.getByTestId("form-control");
+      const label = screen.getByTestId("label");
+      const field = screen.getByTestId("field");
+      const description = screen.getByTestId("description");
+      const error = screen.getByTestId("error-message");
+
+      expect(formControl.id).toBeDefined();
+      expect(label.id).toBe(`${formControl.id}-label`);
+      expect(field.id).toBe(`${formControl.id}-field`);
+      expect(description.id).toBe(`${formControl.id}-description`);
+      expect(error.id).toBe(`${formControl.id}-error-message`);
+    });
+
+    it("should generate ids based on form control id", () => {
+      render(() => (
+        <FormControl data-testid="form-control" id="foo" validationState="invalid">
+          <FormControl.Label data-testid="label">Label</FormControl.Label>
+          <FormControl.Field data-testid="field" />
+          <FormControl.Description data-testid="description">Description</FormControl.Description>
+          <FormControl.ErrorMessage data-testid="error-message">
+            ErrorMessage
+          </FormControl.ErrorMessage>
+        </FormControl>
+      ));
+
+      const formControl = screen.getByTestId("form-control");
+      const label = screen.getByTestId("label");
+      const field = screen.getByTestId("field");
+      const description = screen.getByTestId("description");
+      const error = screen.getByTestId("error-message");
+
+      expect(formControl.id).toBe("foo");
+      expect(label.id).toBe(`foo-label`);
+      expect(field.id).toBe(`foo-field`);
+      expect(description.id).toBe(`foo-description`);
+      expect(error.id).toBe(`foo-error-message`);
+    });
+
+    it("supports custom ids", () => {
+      render(() => (
+        <FormControl
+          data-testid="form-control"
+          id="custom-form-control-id"
+          validationState="invalid"
+        >
+          <FormControl.Label data-testid="label" id="custom-label-id">
+            Label
+          </FormControl.Label>
+          <FormControl.Field data-testid="field" id="custom-field-id" />
+          <FormControl.Description data-testid="description" id="custom-description-id">
+            Description
+          </FormControl.Description>
+          <FormControl.ErrorMessage data-testid="error-message" id="custom-error-message-id">
+            ErrorMessage
+          </FormControl.ErrorMessage>
+        </FormControl>
+      ));
+
+      const formControl = screen.getByTestId("form-control");
+      const label = screen.getByTestId("label");
+      const field = screen.getByTestId("field");
+      const description = screen.getByTestId("description");
+      const error = screen.getByTestId("error-message");
+
+      expect(formControl.id).toBe("custom-form-control-id");
+      expect(label.id).toBe(`custom-label-id`);
+      expect(field.id).toBe(`custom-field-id`);
+      expect(description.id).toBe(`custom-description-id`);
+      expect(error.id).toBe(`custom-error-message-id`);
+    });
+  });
+
   describe("data-attributes", () => {
     it("should not have 'data-*' attributes by default", () => {
       render(() => (
