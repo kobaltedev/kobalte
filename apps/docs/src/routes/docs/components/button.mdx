@@ -44,10 +44,12 @@ import { Button } from "@kobalte/elements";
 | onPressUp           | `(event: PressEvent) => void`  | Handler that is called when a press is released over the target, regardless of whether it started on the target or not. |
 | onPressChange       | `(isPressed: boolean) => void` | Handler that is called when the press state changes.                                                                    |
 
-| Data attributes | Description                                                                         |
-| :-------------- | :---------------------------------------------------------------------------------- |
-| data-active     | Present when the button is activated by a pointer down (mouse, touch, pen, etc...). |
-| data-disabled   | Present when the button is disabled.                                                |
+| Data attributes    | Description                                                                         |
+| :----------------- | :---------------------------------------------------------------------------------- |
+| data-active        | Present when the button is activated by a pointer down (mouse, touch, pen, etc...). |
+| data-disabled      | Present when the button is disabled.                                                |
+| data-focus         | Present when the button is focused.                                                 |
+| data-focus-visible | Present when the button is focused via keyboard.                                    |
 
 Each of the _press handlers_ above are fired with a `PressEvent`, which exposes information about the target and the type of event that triggered the interaction.
 

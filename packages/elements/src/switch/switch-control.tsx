@@ -2,15 +2,15 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useRadioContext } from "./radio-context";
+import { useSwitchContext } from "./switch-context";
 
 /**
- * The label that gives the user information on the radio button.
+ * The element that visually represents a switch.
  */
-export const RadioLabel = createPolymorphicComponent<"span">(props => {
-  const context = useRadioContext();
+export const SwitchControl = createPolymorphicComponent<"div">(props => {
+  const context = useSwitchContext();
 
-  props = mergeDefaultProps({ as: "span" }, props);
+  props = mergeDefaultProps({ as: "div" }, props);
 
   const [local, others] = splitProps(props, ["as"]);
 
