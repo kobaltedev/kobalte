@@ -63,10 +63,6 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, For
       "defaultValue",
       "onValueChange",
       "orientation",
-      "validationState",
-      "isRequired",
-      "isDisabled",
-      "isReadOnly",
     ]);
 
     const [selected, setSelected] = createControllableSignal<string | undefined>({
@@ -83,7 +79,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, For
     const context: RadioGroupContextValue = {
       isSelectedValue: (value: string) => value === selected(),
       setSelectedValue: value => {
-        if (!local.isReadOnly && !local.isDisabled) {
+        if (!others.isReadOnly && !others.isDisabled) {
           setSelected(value);
         }
       },
@@ -94,10 +90,10 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, For
         isField
         ref={mergeRefs(el => (ref = el), local.ref)}
         role="radiogroup"
-        aria-invalid={local.validationState === "invalid" || undefined}
-        aria-required={local.isRequired || undefined}
-        aria-disabled={local.isDisabled || undefined}
-        aria-readonly={local.isReadOnly || undefined}
+        aria-invalid={others.validationState === "invalid" || undefined}
+        aria-required={others.isRequired || undefined}
+        aria-disabled={others.isDisabled || undefined}
+        aria-readonly={others.isReadOnly || undefined}
         aria-orientation={local.orientation}
         {...others}
       >
