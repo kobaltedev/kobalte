@@ -68,7 +68,8 @@ export interface SwitchProps {
 }
 
 /**
- * The root container for a switch.
+ * A control that allows users to choose one of two values: on or off.
+ * This component is based on the [WAI-ARIA Switch Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch/)
  */
 export const Switch = createPolymorphicComponent<"label", SwitchProps, SwitchComposite>(props => {
   props = mergeDefaultProps(

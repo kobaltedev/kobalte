@@ -58,6 +58,10 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/radio-group",
       },
       {
+        title: "Switch",
+        href: "/docs/components/switch",
+      },
+      {
         title: "Toggle Button",
         href: "/docs/components/toggle-button",
       },
