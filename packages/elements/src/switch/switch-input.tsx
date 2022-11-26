@@ -89,6 +89,7 @@ export const SwitchInput = createPolymorphicComponent<"input">(props => {
       aria-label={context.ariaLabel()}
       aria-labelledby={ariaLabelledBy()}
       aria-describedby={context.ariaDescribedBy()}
+      aria-errormessage={context.ariaErrorMessage()}
       aria-invalid={context.validationState() === "invalid" || undefined}
       aria-required={context.isRequired() || undefined}
       aria-disabled={context.isDisabled() || undefined}

@@ -42,23 +42,23 @@ describe("RadioGroup", () => {
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
-    const radios = screen.getAllByRole("radio") as HTMLInputElement[];
+    const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
     expect(radioGroup).toBeInTheDocument();
-    expect(radios.length).toBe(3);
+    expect(inputs.length).toBe(3);
 
-    const groupName = radios[0].getAttribute("name");
-    expect(radios[0]).toHaveAttribute("name", groupName);
-    expect(radios[1]).toHaveAttribute("name", groupName);
-    expect(radios[2]).toHaveAttribute("name", groupName);
+    const groupName = inputs[0].getAttribute("name");
+    expect(inputs[0]).toHaveAttribute("name", groupName);
+    expect(inputs[1]).toHaveAttribute("name", groupName);
+    expect(inputs[2]).toHaveAttribute("name", groupName);
 
-    expect(radios[0].value).toBe("dogs");
-    expect(radios[1].value).toBe("cats");
-    expect(radios[2].value).toBe("dragons");
+    expect(inputs[0].value).toBe("dogs");
+    expect(inputs[1].value).toBe("cats");
+    expect(inputs[2].value).toBe("dragons");
 
-    expect(radios[0].checked).toBeFalsy();
-    expect(radios[1].checked).toBeFalsy();
-    expect(radios[2].checked).toBeFalsy();
+    expect(inputs[0].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeFalsy();
 
     const dragons = screen.getByLabelText("Dragons");
 
@@ -68,9 +68,9 @@ describe("RadioGroup", () => {
     expect(onChangeSpy).toHaveBeenCalledTimes(1);
     expect(onChangeSpy).toHaveBeenCalledWith("dragons");
 
-    expect(radios[0].checked).toBeFalsy();
-    expect(radios[1].checked).toBeFalsy();
-    expect(radios[2].checked).toBeTruthy();
+    expect(inputs[0].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeTruthy();
   });
 
   it("can have a default value", async () => {
@@ -100,15 +100,15 @@ describe("RadioGroup", () => {
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
-    const radios = screen.getAllByRole("radio") as HTMLInputElement[];
+    const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
     expect(radioGroup).toBeTruthy();
-    expect(radios.length).toBe(3);
+    expect(inputs.length).toBe(3);
     expect(onChangeSpy).not.toHaveBeenCalled();
 
-    expect(radios[0].checked).toBeFalsy();
-    expect(radios[1].checked).toBeTruthy();
-    expect(radios[2].checked).toBeFalsy();
+    expect(inputs[0].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeTruthy();
+    expect(inputs[2].checked).toBeFalsy();
 
     const dragons = screen.getByLabelText("Dragons");
 
@@ -118,9 +118,9 @@ describe("RadioGroup", () => {
     expect(onChangeSpy).toHaveBeenCalledTimes(1);
     expect(onChangeSpy).toHaveBeenCalledWith("dragons");
 
-    expect(radios[0].checked).toBeFalsy();
-    expect(radios[1].checked).toBeFalsy();
-    expect(radios[2].checked).toBeTruthy();
+    expect(inputs[0].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeTruthy();
   });
 
   it("value can be controlled", async () => {
@@ -148,11 +148,11 @@ describe("RadioGroup", () => {
       </RadioGroup>
     ));
 
-    const radios = screen.getAllByRole("radio") as HTMLInputElement[];
+    const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
-    expect(radios[0].checked).toBeFalsy();
-    expect(radios[1].checked).toBeTruthy();
-    expect(radios[2].checked).toBeFalsy();
+    expect(inputs[0].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeTruthy();
+    expect(inputs[2].checked).toBeFalsy();
 
     const dragons = screen.getByLabelText("Dragons");
 
@@ -162,11 +162,11 @@ describe("RadioGroup", () => {
     expect(onChangeSpy).toHaveBeenCalledTimes(1);
     expect(onChangeSpy).toHaveBeenCalledWith("dragons");
 
-    expect(radios[0].checked).toBeFalsy();
-    expect(radios[1].checked).toBeFalsy();
+    expect(inputs[0].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeFalsy();
 
     // false because `value` is controlled
-    expect(radios[2].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeFalsy();
   });
 
   it("name can be controlled", () => {
@@ -193,11 +193,11 @@ describe("RadioGroup", () => {
       </RadioGroup>
     ));
 
-    const radios = screen.getAllByRole("radio") as HTMLInputElement[];
+    const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
-    expect(radios[0]).toHaveAttribute("name", "test-name");
-    expect(radios[1]).toHaveAttribute("name", "test-name");
-    expect(radios[2]).toHaveAttribute("name", "test-name");
+    expect(inputs[0]).toHaveAttribute("name", "test-name");
+    expect(inputs[1]).toHaveAttribute("name", "test-name");
+    expect(inputs[2]).toHaveAttribute("name", "test-name");
   });
 
   it("supports labeling", () => {
@@ -409,10 +409,10 @@ describe("RadioGroup", () => {
 
     expect(radioGroup).toHaveAttribute("aria-required", "true");
 
-    const radios = screen.getAllByRole("radio");
+    const inputs = screen.getAllByRole("radio");
 
-    for (const radio of radios) {
-      expect(radio).not.toHaveAttribute("aria-required");
+    for (const input of inputs) {
+      expect(input).not.toHaveAttribute("aria-required");
     }
   });
 
@@ -446,11 +446,11 @@ describe("RadioGroup", () => {
 
     expect(radioGroup).toHaveAttribute("aria-disabled", "true");
 
-    const radios = screen.getAllByRole("radio") as HTMLInputElement[];
+    const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
-    expect(radios[0]).toHaveAttribute("disabled");
-    expect(radios[1]).toHaveAttribute("disabled");
-    expect(radios[2]).toHaveAttribute("disabled");
+    expect(inputs[0]).toHaveAttribute("disabled");
+    expect(inputs[1]).toHaveAttribute("disabled");
+    expect(inputs[2]).toHaveAttribute("disabled");
 
     const dragons = screen.getByLabelText("Dragons");
 
@@ -458,7 +458,7 @@ describe("RadioGroup", () => {
     await Promise.resolve();
 
     expect(groupOnChangeSpy).toHaveBeenCalledTimes(0);
-    expect(radios[2].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeFalsy();
   });
 
   it("can have a single disabled radio", async () => {
@@ -487,11 +487,11 @@ describe("RadioGroup", () => {
       </RadioGroup>
     ));
 
-    const radios = screen.getAllByRole("radio") as HTMLInputElement[];
+    const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
-    expect(radios[0]).not.toHaveAttribute("disabled");
-    expect(radios[1]).toHaveAttribute("disabled");
-    expect(radios[2]).not.toHaveAttribute("disabled");
+    expect(inputs[0]).not.toHaveAttribute("disabled");
+    expect(inputs[1]).toHaveAttribute("disabled");
+    expect(inputs[2]).not.toHaveAttribute("disabled");
 
     // have to click label or it won't work
     const dogsLabel = screen.getByLabelText("Dogs").parentElement as HTMLLabelElement;
@@ -500,21 +500,21 @@ describe("RadioGroup", () => {
     fireEvent.click(catsLabel);
     await Promise.resolve();
 
-    expect(radios[1].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeFalsy();
 
     expect(groupOnChangeSpy).toHaveBeenCalledTimes(0);
-    expect(radios[0].checked).toBeFalsy();
-    expect(radios[1].checked).toBeFalsy();
-    expect(radios[2].checked).toBeFalsy();
+    expect(inputs[0].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeFalsy();
 
     fireEvent.click(dogsLabel);
     await Promise.resolve();
 
     expect(groupOnChangeSpy).toHaveBeenCalledTimes(1);
     expect(groupOnChangeSpy).toHaveBeenCalledWith("dogs");
-    expect(radios[0].checked).toBeTruthy();
-    expect(radios[1].checked).toBeFalsy();
-    expect(radios[2].checked).toBeFalsy();
+    expect(inputs[0].checked).toBeTruthy();
+    expect(inputs[1].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeFalsy();
   });
 
   it("doesn't set 'aria-disabled' or make radios disabled by default", () => {
@@ -545,11 +545,11 @@ describe("RadioGroup", () => {
 
     expect(radioGroup).not.toHaveAttribute("aria-disabled");
 
-    const radios = screen.getAllByRole("radio") as HTMLInputElement[];
+    const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
-    expect(radios[0]).not.toHaveAttribute("disabled");
-    expect(radios[1]).not.toHaveAttribute("disabled");
-    expect(radios[2]).not.toHaveAttribute("disabled");
+    expect(inputs[0]).not.toHaveAttribute("disabled");
+    expect(inputs[1]).not.toHaveAttribute("disabled");
+    expect(inputs[2]).not.toHaveAttribute("disabled");
   });
 
   it("doesn't set 'aria-disabled' or make radios disabled when 'isDisabled' is false", () => {
@@ -580,11 +580,11 @@ describe("RadioGroup", () => {
 
     expect(radioGroup).not.toHaveAttribute("aria-disabled");
 
-    const radios = screen.getAllByRole("radio") as HTMLInputElement[];
+    const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
-    expect(radios[0]).not.toHaveAttribute("disabled");
-    expect(radios[1]).not.toHaveAttribute("disabled");
-    expect(radios[2]).not.toHaveAttribute("disabled");
+    expect(inputs[0]).not.toHaveAttribute("disabled");
+    expect(inputs[1]).not.toHaveAttribute("disabled");
+    expect(inputs[2]).not.toHaveAttribute("disabled");
   });
 
   it("sets 'aria-readonly=true' on radio group", async () => {
@@ -614,10 +614,10 @@ describe("RadioGroup", () => {
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
 
-    const radios = screen.getAllByRole("radio") as HTMLInputElement[];
+    const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
     expect(radioGroup).toHaveAttribute("aria-readonly", "true");
-    expect(radios[2].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeFalsy();
 
     const dragons = screen.getByLabelText("Dragons");
 
@@ -625,7 +625,7 @@ describe("RadioGroup", () => {
     await Promise.resolve();
 
     expect(groupOnChangeSpy).toHaveBeenCalledTimes(0);
-    expect(radios[2].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeFalsy();
   });
 
   it("should not update state for readonly radio group", async () => {
@@ -654,317 +654,14 @@ describe("RadioGroup", () => {
       </RadioGroup>
     ));
 
-    const radios = screen.getAllByRole("radio") as HTMLInputElement[];
+    const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
     const dragons = screen.getByLabelText("Dragons");
 
     fireEvent.click(dragons);
     await Promise.resolve();
 
     expect(groupOnChangeSpy).toHaveBeenCalledTimes(0);
-    expect(radios[2].checked).toBeFalsy();
-  });
-
-  describe("data-attributes", () => {
-    it("should have 'data-valid' attribute on radios when radio group is valid", async () => {
-      render(() => (
-        <RadioGroup validationState="valid">
-          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
-          <div>
-            <Radio data-testid="dogs-radio" value="dogs">
-              <Radio.Input data-testid="dogs-radio-input" />
-              <Radio.Control data-testid="dogs-radio-control" />
-              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
-            </Radio>
-            <Radio data-testid="cats-radio" value="cats">
-              <Radio.Input data-testid="cats-radio-input" />
-              <Radio.Control data-testid="cats-radio-control" />
-              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
-            </Radio>
-            <Radio data-testid="dragons-radio" value="dragons">
-              <Radio.Input data-testid="dragons-radio-input" />
-              <Radio.Control data-testid="dragons-radio-control" />
-              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
-            </Radio>
-          </div>
-        </RadioGroup>
-      ));
-
-      const radioElements = screen.getAllByTestId(/^(dogs|cats|dragons)/);
-
-      for (const el of radioElements) {
-        expect(el).toHaveAttribute("data-valid");
-      }
-    });
-
-    it("should have 'data-invalid' attribute on radios when radio group is invalid", async () => {
-      render(() => (
-        <RadioGroup validationState="invalid">
-          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
-          <div>
-            <Radio data-testid="dogs-radio" value="dogs">
-              <Radio.Input data-testid="dogs-radio-input" />
-              <Radio.Control data-testid="dogs-radio-control" />
-              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
-            </Radio>
-            <Radio data-testid="cats-radio" value="cats">
-              <Radio.Input data-testid="cats-radio-input" />
-              <Radio.Control data-testid="cats-radio-control" />
-              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
-            </Radio>
-            <Radio data-testid="dragons-radio" value="dragons">
-              <Radio.Input data-testid="dragons-radio-input" />
-              <Radio.Control data-testid="dragons-radio-control" />
-              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
-            </Radio>
-          </div>
-        </RadioGroup>
-      ));
-
-      const radioElements = screen.getAllByTestId(/^(dogs|cats|dragons)/);
-
-      for (const el of radioElements) {
-        expect(el).toHaveAttribute("data-invalid");
-      }
-    });
-
-    it("should have 'data-checked' attribute on checked radio", async () => {
-      render(() => (
-        <RadioGroup defaultValue="cats">
-          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
-          <div>
-            <Radio data-testid="dogs-radio" value="dogs">
-              <Radio.Input data-testid="dogs-radio-input" />
-              <Radio.Control data-testid="dogs-radio-control" />
-              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
-            </Radio>
-            <Radio data-testid="cats-radio" value="cats">
-              <Radio.Input data-testid="cats-radio-input" />
-              <Radio.Control data-testid="cats-radio-control" />
-              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
-            </Radio>
-            <Radio data-testid="dragons-radio" value="dragons">
-              <Radio.Input data-testid="dragons-radio-input" />
-              <Radio.Control data-testid="dragons-radio-control" />
-              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
-            </Radio>
-          </div>
-        </RadioGroup>
-      ));
-
-      const dogsElements = screen.getAllByTestId(/^dogs/);
-      const catsElements = screen.getAllByTestId(/^cats/);
-      const dragonsElements = screen.getAllByTestId(/^dragons/);
-
-      for (const el of dogsElements) {
-        expect(el).not.toHaveAttribute("data-checked");
-      }
-
-      for (const el of catsElements) {
-        expect(el).toHaveAttribute("data-checked");
-      }
-
-      for (const el of dragonsElements) {
-        expect(el).not.toHaveAttribute("data-checked");
-      }
-    });
-
-    it("should have 'data-disabled' attribute on radios when radio group is disabled", async () => {
-      render(() => (
-        <RadioGroup isDisabled>
-          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
-          <div>
-            <Radio data-testid="dogs-radio" value="dogs">
-              <Radio.Input data-testid="dogs-radio-input" />
-              <Radio.Control data-testid="dogs-radio-control" />
-              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
-            </Radio>
-            <Radio data-testid="cats-radio" value="cats">
-              <Radio.Input data-testid="cats-radio-input" />
-              <Radio.Control data-testid="cats-radio-control" />
-              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
-            </Radio>
-            <Radio data-testid="dragons-radio" value="dragons">
-              <Radio.Input data-testid="dragons-radio-input" />
-              <Radio.Control data-testid="dragons-radio-control" />
-              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
-            </Radio>
-          </div>
-        </RadioGroup>
-      ));
-
-      const radioElements = screen.getAllByTestId(/^(dogs|cats|dragons)/);
-
-      for (const el of radioElements) {
-        expect(el).toHaveAttribute("data-disabled");
-      }
-    });
-
-    it("should have 'data-disabled' attribute on single disabled radio", async () => {
-      render(() => (
-        <RadioGroup>
-          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
-          <div>
-            <Radio data-testid="dogs-radio" value="dogs">
-              <Radio.Input data-testid="dogs-radio-input" />
-              <Radio.Control data-testid="dogs-radio-control" />
-              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
-            </Radio>
-            <Radio data-testid="cats-radio" value="cats" isDisabled>
-              <Radio.Input data-testid="cats-radio-input" />
-              <Radio.Control data-testid="cats-radio-control" />
-              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
-            </Radio>
-            <Radio data-testid="dragons-radio" value="dragons">
-              <Radio.Input data-testid="dragons-radio-input" />
-              <Radio.Control data-testid="dragons-radio-control" />
-              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
-            </Radio>
-          </div>
-        </RadioGroup>
-      ));
-
-      const dogsElements = screen.getAllByTestId(/^dogs/);
-      const catsElements = screen.getAllByTestId(/^cats/);
-      const dragonsElements = screen.getAllByTestId(/^dragons/);
-
-      for (const el of dogsElements) {
-        expect(el).not.toHaveAttribute("data-disabled");
-      }
-
-      for (const el of catsElements) {
-        expect(el).toHaveAttribute("data-disabled");
-      }
-
-      for (const el of dragonsElements) {
-        expect(el).not.toHaveAttribute("data-disabled");
-      }
-    });
-
-    it("should have 'data-hover' attribute on hovered radio", async () => {
-      render(() => (
-        <RadioGroup>
-          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
-          <div>
-            <Radio data-testid="dogs-radio" value="dogs">
-              <Radio.Input data-testid="dogs-radio-input" />
-              <Radio.Control data-testid="dogs-radio-control" />
-              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
-            </Radio>
-            <Radio data-testid="cats-radio" value="cats">
-              <Radio.Input data-testid="cats-radio-input" />
-              <Radio.Control data-testid="cats-radio-control" />
-              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
-            </Radio>
-            <Radio data-testid="dragons-radio" value="dragons">
-              <Radio.Input data-testid="dragons-radio-input" />
-              <Radio.Control data-testid="dragons-radio-control" />
-              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
-            </Radio>
-          </div>
-        </RadioGroup>
-      ));
-
-      const catsRadioRoot = screen.getByTestId("cats-radio");
-      const catsElements = screen.getAllByTestId(/^cats/);
-
-      fireEvent(catsRadioRoot, createPointerEvent("pointerenter", { pointerType: "mouse" }));
-      await Promise.resolve();
-
-      for (const el of catsElements) {
-        expect(el).toHaveAttribute("data-hover");
-      }
-
-      fireEvent(catsRadioRoot, createPointerEvent("pointerleave", { pointerType: "mouse" }));
-      await Promise.resolve();
-
-      for (const el of catsElements) {
-        expect(el).not.toHaveAttribute("data-hover");
-      }
-    });
-
-    it("should have 'data-focus' attribute on focused radio", async () => {
-      render(() => (
-        <RadioGroup>
-          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
-          <div>
-            <Radio data-testid="dogs-radio" value="dogs">
-              <Radio.Input data-testid="dogs-radio-input" />
-              <Radio.Control data-testid="dogs-radio-control" />
-              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
-            </Radio>
-            <Radio data-testid="cats-radio" value="cats">
-              <Radio.Input data-testid="cats-radio-input" />
-              <Radio.Control data-testid="cats-radio-control" />
-              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
-            </Radio>
-            <Radio data-testid="dragons-radio" value="dragons">
-              <Radio.Input data-testid="dragons-radio-input" />
-              <Radio.Control data-testid="dragons-radio-control" />
-              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
-            </Radio>
-          </div>
-        </RadioGroup>
-      ));
-
-      const catsRadioInput = screen.getByTestId("cats-radio-input");
-      const catsElements = screen.getAllByTestId(/^cats/);
-
-      catsRadioInput.focus();
-      await Promise.resolve();
-
-      for (const el of catsElements) {
-        expect(el).toHaveAttribute("data-focus");
-      }
-
-      catsRadioInput.blur();
-      await Promise.resolve();
-
-      for (const el of catsElements) {
-        expect(el).not.toHaveAttribute("data-focus");
-      }
-    });
-
-    it.skip("should have 'data-focus-visible' attribute on keyboard focused radio", async () => {
-      render(() => (
-        <RadioGroup>
-          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
-          <div>
-            <Radio data-testid="dogs-radio" value="dogs">
-              <Radio.Input data-testid="dogs-radio-input" />
-              <Radio.Control data-testid="dogs-radio-control" />
-              <Radio.Label data-testid="dogs-radio-label">Dogs</Radio.Label>
-            </Radio>
-            <Radio data-testid="cats-radio" value="cats">
-              <Radio.Input data-testid="cats-radio-input" />
-              <Radio.Control data-testid="cats-radio-control" />
-              <Radio.Label data-testid="cats-radio-label">Cats</Radio.Label>
-            </Radio>
-            <Radio data-testid="dragons-radio" value="dragons">
-              <Radio.Input data-testid="dragons-radio-input" />
-              <Radio.Control data-testid="dragons-radio-control" />
-              <Radio.Label data-testid="dragons-radio-label">Dragons</Radio.Label>
-            </Radio>
-          </div>
-        </RadioGroup>
-      ));
-
-      const catsRadioInput = screen.getByTestId("cats-radio-input");
-      const catsElements = screen.getAllByTestId(/^cats/);
-
-      fireEvent.keyDown(catsRadioInput, { key: "Tab" });
-      await Promise.resolve();
-
-      for (const el of catsElements) {
-        expect(el).toHaveAttribute("data-focus-visible");
-      }
-
-      fireEvent(document.body, createPointerEvent("pointerdown", { pointerType: "mouse" }));
-      await Promise.resolve();
-
-      for (const el of catsElements) {
-        expect(el).not.toHaveAttribute("data-focus-visible");
-      }
-    });
+    expect(inputs[2].checked).toBeFalsy();
   });
 
   describe("Radio", () => {
@@ -1116,6 +813,170 @@ describe("RadioGroup", () => {
       const description = screen.getByTestId("description");
 
       expect(radio).toHaveAttribute("aria-describedby", `foo ${description.id}`);
+    });
+
+    describe("data-attributes", () => {
+      it("should have 'data-valid' attribute on radio elments when radio group is valid", async () => {
+        render(() => (
+          <RadioGroup validationState="valid" value="cats">
+            <Radio data-testid="radio-root" value="cats">
+              <Radio.Input data-testid="radio-input" />
+              <Radio.Control data-testid="radio-control">
+                <Radio.Indicator data-testid="radio-indicator" />
+              </Radio.Control>
+              <Radio.Label data-testid="radio-label">Cats</Radio.Label>
+            </Radio>
+          </RadioGroup>
+        ));
+
+        const elements = screen.getAllByTestId(/^radio/);
+
+        for (const el of elements) {
+          expect(el).toHaveAttribute("data-valid");
+        }
+      });
+
+      it("should have 'data-invalid' attribute on radios when radio group is invalid", async () => {
+        render(() => (
+          <RadioGroup validationState="invalid" value="cats">
+            <Radio data-testid="radio-root" value="cats">
+              <Radio.Input data-testid="radio-input" />
+              <Radio.Control data-testid="radio-control">
+                <Radio.Indicator data-testid="radio-indicator" />
+              </Radio.Control>
+              <Radio.Label data-testid="radio-label">Cats</Radio.Label>
+            </Radio>
+          </RadioGroup>
+        ));
+
+        const elements = screen.getAllByTestId(/^radio/);
+
+        for (const el of elements) {
+          expect(el).toHaveAttribute("data-invalid");
+        }
+      });
+
+      it("should have 'data-checked' attribute on checked radio", async () => {
+        render(() => (
+          <RadioGroup value="cats">
+            <Radio data-testid="radio-root" value="cats">
+              <Radio.Input data-testid="radio-input" />
+              <Radio.Control data-testid="radio-control">
+                <Radio.Indicator data-testid="radio-indicator" />
+              </Radio.Control>
+              <Radio.Label data-testid="radio-label">Cats</Radio.Label>
+            </Radio>
+          </RadioGroup>
+        ));
+
+        const elements = screen.getAllByTestId(/^radio/);
+
+        for (const el of elements) {
+          expect(el).toHaveAttribute("data-checked");
+        }
+      });
+
+      it("should have 'data-disabled' attribute on radios when radio group is disabled", async () => {
+        render(() => (
+          <RadioGroup isDisabled value="cats">
+            <Radio data-testid="radio-root" value="cats">
+              <Radio.Input data-testid="radio-input" />
+              <Radio.Control data-testid="radio-control">
+                <Radio.Indicator data-testid="radio-indicator" />
+              </Radio.Control>
+              <Radio.Label data-testid="radio-label">Cats</Radio.Label>
+            </Radio>
+          </RadioGroup>
+        ));
+
+        const elements = screen.getAllByTestId(/^radio/);
+
+        for (const el of elements) {
+          expect(el).toHaveAttribute("data-disabled");
+        }
+      });
+
+      it("should have 'data-disabled' attribute on single disabled radio", async () => {
+        render(() => (
+          <RadioGroup value="cats">
+            <Radio data-testid="radio-root" value="cats" isDisabled>
+              <Radio.Input data-testid="radio-input" />
+              <Radio.Control data-testid="radio-control">
+                <Radio.Indicator data-testid="radio-indicator" />
+              </Radio.Control>
+              <Radio.Label data-testid="radio-label">Cats</Radio.Label>
+            </Radio>
+          </RadioGroup>
+        ));
+
+        const elements = screen.getAllByTestId(/^radio/);
+
+        for (const el of elements) {
+          expect(el).toHaveAttribute("data-disabled");
+        }
+      });
+
+      it("should have 'data-hover' attribute on hovered radio", async () => {
+        render(() => (
+          <RadioGroup value="cats">
+            <Radio data-testid="radio-root" value="cats">
+              <Radio.Input data-testid="radio-input" />
+              <Radio.Control data-testid="radio-control">
+                <Radio.Indicator data-testid="radio-indicator" />
+              </Radio.Control>
+              <Radio.Label data-testid="radio-label">Cats</Radio.Label>
+            </Radio>
+          </RadioGroup>
+        ));
+
+        const radioRoot = screen.getByTestId("radio-root");
+        const elements = screen.getAllByTestId(/^radio/);
+
+        fireEvent(radioRoot, createPointerEvent("pointerenter", { pointerType: "mouse" }));
+        await Promise.resolve();
+
+        for (const el of elements) {
+          expect(el).toHaveAttribute("data-hover");
+        }
+
+        fireEvent(radioRoot, createPointerEvent("pointerleave", { pointerType: "mouse" }));
+        await Promise.resolve();
+
+        for (const el of elements) {
+          expect(el).not.toHaveAttribute("data-hover");
+        }
+      });
+
+      it("should have 'data-focus' attribute on focused radio", async () => {
+        render(() => (
+          <RadioGroup value="cats">
+            <Radio data-testid="radio-root" value="cats">
+              <Radio.Input data-testid="radio-input" />
+              <Radio.Control data-testid="radio-control">
+                <Radio.Indicator data-testid="radio-indicator" />
+              </Radio.Control>
+              <Radio.Label data-testid="radio-label">Cats</Radio.Label>
+            </Radio>
+          </RadioGroup>
+        ));
+
+        const radioInput = screen.getByTestId("radio-input");
+        const elements = screen.getAllByTestId(/^radio/);
+
+        radioInput.focus();
+        await Promise.resolve();
+
+        for (const el of elements) {
+          expect(el).toHaveAttribute("data-focus");
+        }
+
+        radioInput.blur();
+        await Promise.resolve();
+
+        for (const el of elements) {
+          expect(el).not.toHaveAttribute("data-focus");
+        }
+      });
     });
   });
 });
