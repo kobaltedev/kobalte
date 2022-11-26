@@ -1,1 +1,1 @@
-export * from "./watch-modals";
+export * from "./modal";
