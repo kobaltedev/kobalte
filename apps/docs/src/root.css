@@ -76,6 +76,9 @@ pre.shiki:hover .kb-copy-btn {
 }
 
 pre {
+  max-height: 600px;
+  overflow-y: auto;
+
   /* In theory shiki will overwrite these, but this is to make sure there are defaults regardless */
   background-color: white;
   color: black;

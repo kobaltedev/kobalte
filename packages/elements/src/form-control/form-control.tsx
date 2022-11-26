@@ -68,7 +68,6 @@ export const FormControl = createPolymorphicComponent<
 
   const [local, others] = splitProps(props, [
     "as",
-    "ref",
     "children",
     "name",
     "validationState",

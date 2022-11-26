@@ -13,7 +13,14 @@ import {
   mergeRefs,
   ValidationState,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
+import {
+  Accessor,
+  createEffect,
+  createMemo,
+  createSignal,
+  createUniqueId,
+  splitProps,
+} from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createFormResetListener, createHover, createToggleState } from "../primitives";
@@ -147,12 +154,12 @@ export const Switch = createPolymorphicComponent<"label", SwitchProps, SwitchCom
     ariaDescribedBy: () => local["aria-describedby"],
     ariaErrorMessage: () => local["aria-errormessage"],
     validationState: () => local.validationState,
-    isChecked: state.isSelected,
+    isChecked: () => state.isSelected(),
     isRequired: () => local.isRequired,
     isDisabled: () => local.isDisabled,
     isReadOnly: () => local.isReadOnly,
     generateId: part => `${others.id!}-${part}`,
-    setIsChecked: state.setIsSelected,
+    setIsChecked: isChecked => state.setIsSelected(isChecked),
     setIsFocused,
     setIsFocusVisible,
   };
@@ -160,9 +167,9 @@ export const Switch = createPolymorphicComponent<"label", SwitchProps, SwitchCom
   return (
     <Dynamic
       component={local.as}
-      ref={mergeRefs(el => (ref = el), local.ref)}
       {...context.dataset()}
       {...combineProps(others, hoverHandlers)}
+      ref={mergeRefs(el => (ref = el), local.ref)}
     >
       <SwitchContext.Provider value={context}>{local.children}</SwitchContext.Provider>
     </Dynamic>

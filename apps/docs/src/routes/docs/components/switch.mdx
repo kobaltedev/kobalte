@@ -1,31 +1,17 @@
-import { Switch } from "@kobalte/elements";
+import { For } from "solid-js";
 
 import { Preview } from "../../../components/preview";
 import { Kbd } from "../../../components/kbd";
-import { For } from "solid-js";
+import { Switch, ControlledExample, HTMLFormExample } from "../../../examples/switch";
 
 # Switch
 
 A control that allows users to choose one of two values: on or off.
 
-<Preview isCentered>
-  <Switch value="on" class="inline-flex items-center">
-    <Switch.Input />
-    <Switch.Label class="mr-3 text-sm text-zinc-900 dark:text-zinc-300">Airplane mode</Switch.Label>
-    <Switch.Control class="inline-flex transition items-center px-[2px] w-11 h-6 bg-zinc-200 outline-none ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:ring-blue-900/60 rounded-full dark:bg-zinc-700 dark:border-zinc-600 ui-checked:bg-blue-600 dark:ui-checked:bg-blue-600">
-      <Switch.Thumb class="ui-checked:translate-x-full ui-checked:border-white bg-white after:border-zinc-300 border rounded-full h-5 w-5 transition-all" />
-    </Switch.Control>
-  </Switch>
-</Preview>
+## Import
 
-```tsx
-<Switch value="on" class="inline-flex items-center">
-  <Switch.Input />
-  <Switch.Label class="mr-3 text-sm text-zinc-900 dark:text-zinc-300">Airplane mode</Switch.Label>
-  <Switch.Control class="inline-flex transition items-center px-[2px] w-11 h-6 bg-zinc-200 outline-none ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:ring-blue-900/60 rounded-full dark:bg-zinc-700 dark:border-zinc-600 ui-checked:bg-blue-600 dark:ui-checked:bg-blue-600">
-    <Switch.Thumb class="ui-checked:translate-x-full ui-checked:border-white bg-white after:border-zinc-300 border rounded-full h-5 w-5 transition-all" />
-  </Switch.Control>
-</Switch>
+```ts
+import { Switch } from "@kobalte/elements";
 ```
 
 ## Features
@@ -35,12 +21,6 @@ A control that allows users to choose one of two values: on or off.
 - Syncs with form reset events.
 - Labeling support for assistive technology.
 - Can be controlled or uncontrolled.
-
-## Import
-
-```ts
-import { Switch } from "@kobalte/elements";
-```
 
 ## Anatomy
 
@@ -62,38 +42,74 @@ The switch consists of:
 </Switch>
 ```
 
+## Example
+
+<Preview>
+  <Switch>Airplane mode</Switch>
+</Preview>
+
+```tsx
+import { Switch as SwitchPrimitive } from "@kobalte/elements";
+import { ComponentProps, splitProps } from "solid-js";
+
+function Switch(props: ComponentProps<typeof SwitchPrimitive>) {
+  const [local, others] = splitProps(props, ["children"]);
+
+  return (
+    <SwitchPrimitive class="inline-flex items-center ui-disabled:opacity-50" {...others}>
+      <SwitchPrimitive.Input />
+      <SwitchPrimitive.Label class="mr-3 text-sm text-zinc-900 dark:text-zinc-300">
+        {local.children}
+      </SwitchPrimitive.Label>
+      <SwitchPrimitive.Control class="inline-flex transition items-center px-[2px] w-11 h-6 bg-zinc-200 outline-none ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:ring-blue-900/60 rounded-full dark:bg-zinc-700 dark:border-zinc-600 ui-checked:bg-blue-600 dark:ui-checked:bg-blue-600">
+        <SwitchPrimitive.Thumb class="ui-checked:translate-x-full ui-checked:border-white bg-white after:border-zinc-300 border rounded-full h-5 w-5 transition-all" />
+      </SwitchPrimitive.Control>
+    </SwitchPrimitive>
+  );
+}
+
+function App() {
+  return <Switch>Airplane mode</Switch>;
+}
+```
+
 ## Usage
+
+The following examples show how to use the `Switch` component created in the above example.
 
 ### Default value
 
 Switches are not checked by default. The `defaultIsChecked` prop can be used to set the default state.
 
-```tsx {0}
-<Switch defaultIsChecked>
-  <Switch.Input />
-  <Switch.Label />
-  <Switch.Control>
-    <Switch.Thumb />
-  </Switch.Control>
-</Switch>
+<Preview>
+  <Switch defaultIsChecked>Airplane mode</Switch>
+</Preview>
+
+```tsx
+<Switch defaultIsChecked>Airplane mode</Switch>
 ```
 
 ### Controlled value
 
 The `isChecked` prop can be used to make the checked state controlled. The `onCheckedChange` event is fired when the user presses the switch, and receives the new value.
 
-```tsx {1,4}
-function Example() {
-  const [checked, setChecked] = createSignal<string>();
+<Preview>
+  <ControlledExample />
+</Preview>
+
+```tsx {3,7}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+  const [checked, setChecked] = createSignal(false);
 
   return (
-    <Switch isChecked={checked()} onCheckedChange={setChecked}>
-      <Switch.Input />
-      <Switch.Label />
-      <Switch.Control>
-        <Switch.Thumb />
-      </Switch.Control>
-    </Switch>
+    <>
+      <Switch isChecked={checked()} onCheckedChange={setChecked}>
+        Airplane mode
+      </Switch>
+      <p>Airplane mode is {checked() ? "active" : "inactive"}.</p>
+    </>
   );
 }
 ```
@@ -102,42 +118,36 @@ function Example() {
 
 Switches can be disabled using the `isDisabled` prop.
 
-```tsx {0}
-<Switch isDisabled>
-  <Switch.Input />
-  <Switch.Label />
-  <Switch.Control>
-    <Switch.Thumb />
-  </Switch.Control>
-</Switch>
+<Preview>
+  <Switch isDisabled>Airplane mode</Switch>
+</Preview>
+
+```tsx
+<Switch isDisabled>Airplane mode</Switch>
 ```
 
 ### Read only
 
 The `isReadOnly` prop makes the selection immutable. Unlike `isDisabled`, the switch remains focusable.
 
-```tsx {0}
-<Switch isReadOnly>
-  <Switch.Input />
-  <Switch.Label />
-  <Switch.Control>
-    <Switch.Thumb />
-  </Switch.Control>
-</Switch>
+<Preview>
+  <Switch isReadOnly>Airplane mode</Switch>
+</Preview>
+
+```tsx
+<Switch isReadOnly>Airplane mode</Switch>
 ```
 
 ### HTML forms
 
 Switch supports the `name` and `value` props for integration with HTML forms.
 
-```tsx {0}
-<Switch name="airplane-mode" value="on">
-  <Switch.Input />
-  <Switch.Label />
-  <Switch.Control>
-    <Switch.Thumb />
-  </Switch.Control>
-</Switch>
+<Preview>
+  <HTMLFormExample />
+</Preview>
+
+```tsx
+
 ```
 
 ## API Reference
