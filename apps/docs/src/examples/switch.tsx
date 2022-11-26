@@ -7,7 +7,7 @@ export function Switch(props: ComponentProps<typeof SwitchPrimitive>) {
   return (
     <SwitchPrimitive class="inline-flex items-center ui-disabled:opacity-50" {...others}>
       <SwitchPrimitive.Input />
-      <SwitchPrimitive.Label class="mr-3 text-sm text-zinc-900 dark:text-zinc-300">
+      <SwitchPrimitive.Label class="select-none mr-3 text-sm text-zinc-900 dark:text-zinc-300">
         {local.children}
       </SwitchPrimitive.Label>
       <SwitchPrimitive.Control class="inline-flex transition items-center px-[2px] w-11 h-6 bg-zinc-200 outline-none ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:ring-blue-900/60 rounded-full dark:bg-zinc-700 dark:border-zinc-600 ui-checked:bg-blue-600 dark:ui-checked:bg-blue-600">
