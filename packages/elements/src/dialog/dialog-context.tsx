@@ -8,6 +8,9 @@ export interface DialogDataSet {
 
 export interface DialogContextValue extends CreateDisclosureResult {
   dataset: Accessor<DialogDataSet>;
+  ariaLabel: Accessor<string | undefined>;
+  ariaLabelledBy: Accessor<string | undefined>;
+  ariaDescribedBy: Accessor<string | undefined>;
   panelId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;

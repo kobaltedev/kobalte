@@ -86,6 +86,10 @@ export interface DialogProps {
    * This value has priority over `restoreFocus`.
    */
   restoreFocusSelector?: string;
+
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
 }
 
 /**
@@ -126,6 +130,9 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
   const context: DialogContextValue = {
     ...state,
     dataset,
+    ariaLabel: () => props["aria-label"],
+    ariaLabelledBy: () => props["aria-labelledby"],
+    ariaDescribedBy: () => props["aria-describedby"],
     panelId,
     titleId,
     descriptionId,

@@ -27,12 +27,7 @@ export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(p
     props
   );
 
-  const [local, others] = splitProps(props, [
-    "id",
-    "forceMount",
-    "aria-labelledby",
-    "aria-describedby",
-  ]);
+  const [local, others] = splitProps(props, ["id", "forceMount"]);
 
   createEffect(() => onCleanup(context.registerPanel(local.id!)));
 
@@ -55,8 +50,11 @@ export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(p
         initialFocusSelector={context.initialFocusSelector()}
         restoreFocusSelector={context.restoreFocusSelector()}
         aria-modal="true"
-        aria-labelledby={local["aria-labelledby"] || context.titleId()}
-        aria-describedby={local["aria-describedby"] || context.descriptionId()}
+        aria-label={context.ariaLabel()}
+        aria-labelledby={
+          context.ariaLabel() ? undefined : context.ariaLabelledBy() || context.titleId()
+        }
+        aria-describedby={context.ariaDescribedBy() || context.descriptionId()}
         {...context.dataset()}
         {...others}
       />
