@@ -13,7 +13,7 @@ export interface DialogContainerProps {
 }
 
 /**
- * A container for the dialog panel. Useful for positioning the dialog panel on screen.
+ * The container for the dialog panel. Useful for positioning the dialog panel on screen.
  */
 export const DialogContainer = createPolymorphicComponent<"div", DialogContainerProps>(props => {
   const context = useDialogContext();

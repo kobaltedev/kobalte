@@ -13,7 +13,7 @@ export interface DialogBackdropProps {
 }
 
 /**
- * A layer that covers the inert portion of the view when the dialog is open.
+ * The layer that covers the inert portion of the view when the dialog is open.
  */
 export const DialogBackdrop = createPolymorphicComponent<"div", DialogBackdropProps>(props => {
   const context = useDialogContext();
