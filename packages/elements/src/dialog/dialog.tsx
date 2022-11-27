@@ -4,13 +4,13 @@ import { Accessor, createMemo, createSignal, createUniqueId, ParentComponent } f
 import { createDisclosure } from "../primitives";
 import { DialogBackdrop } from "./dialog-backdrop";
 import { DialogCloseButton } from "./dialog-close-button";
+import { DialogContainer } from "./dialog-container";
 import { DialogContext, DialogContextValue, DialogDataSet } from "./dialog-context";
 import { DialogDescription } from "./dialog-description";
 import { DialogPanel } from "./dialog-panel";
 import { DialogPortal } from "./dialog-portal";
 import { DialogTitle } from "./dialog-title";
 import { DialogTrigger } from "./dialog-trigger";
-import { DialogContainer } from "./dialog-container";
 
 type DialogComposite = {
   Trigger: typeof DialogTrigger;
@@ -142,6 +142,8 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
       setDescriptionId(id);
       return () => setDescriptionId(undefined);
     },
+
+    // Overlay related
     isModal: () => props.isModal,
     preventScroll: () => props.preventScroll,
     closeOnInteractOutside: () => props.closeOnInteractOutside,
@@ -149,6 +151,8 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
     shouldCloseOnInteractOutside: element => {
       return props.shouldCloseOnInteractOutside?.(element) ?? true;
     },
+
+    // FocusTrapRegion related
     trapFocus: () => props.trapFocus,
     autoFocus: () => props.autoFocus,
     restoreFocus: () => props.restoreFocus,

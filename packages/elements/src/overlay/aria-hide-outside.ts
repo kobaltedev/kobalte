@@ -96,7 +96,7 @@ export function ariaHideOutside(targets: Element[], root = document.body) {
       }
 
       // If the parent element of the added nodes is not within one of the targets,
-      // and not already inside a hidden node, hide all of the new children.
+      // and not already inside a hidden node, hide all the new children.
       if (![...visibleNodes, ...hiddenNodes].some(node => node.contains(change.target))) {
         for (const node of change.addedNodes) {
           if (

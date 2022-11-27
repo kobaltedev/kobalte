@@ -13,7 +13,8 @@ export interface DialogPanelProps {
 }
 
 /**
- * Contains content to be rendered in the open dialog.
+ * The element that visually represents a dialog.
+ * Contains the content to be rendered when the dialog is open.
  */
 export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(props => {
   const context = useDialogContext();
@@ -28,9 +29,9 @@ export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(p
 
   const [local, others] = splitProps(props, [
     "id",
+    "forceMount",
     "aria-labelledby",
     "aria-describedby",
-    "forceMount",
   ]);
 
   createEffect(() => onCleanup(context.registerPanel(local.id!)));
