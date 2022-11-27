@@ -26,7 +26,7 @@ describe("createDisclosure", () => {
 
       expect(state.isOpen()).toBeTruthy();
 
-      state.onToggle();
+      state.toggle();
 
       expect(state.isOpen()).toBeTruthy();
       expect(onChangeSpy).toHaveBeenCalledTimes(1);
@@ -42,7 +42,7 @@ describe("createDisclosure", () => {
 
       expect(state.isOpen()).toBeFalsy();
 
-      state.onOpen();
+      state.open();
 
       expect(state.isOpen()).toBeTruthy();
 
@@ -56,7 +56,7 @@ describe("createDisclosure", () => {
 
       expect(state.isOpen()).toBeTruthy();
 
-      state.onClose();
+      state.close();
 
       expect(state.isOpen()).toBeFalsy();
 
@@ -70,11 +70,11 @@ describe("createDisclosure", () => {
 
       expect(state.isOpen()).toBeFalsy();
 
-      state.onToggle();
+      state.toggle();
 
       expect(state.isOpen()).toBeTruthy();
 
-      state.onToggle();
+      state.toggle();
 
       expect(state.isOpen()).toBeFalsy();
 

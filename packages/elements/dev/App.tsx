@@ -1,53 +1,35 @@
-import { Portal } from "solid-js/web";
-
-import { createDisclosure, Modal, Underlay } from "../src";
-import { Show } from "solid-js";
+import { Dialog } from "../src";
+import { createSignal } from "solid-js";
 
 export default function App() {
-  const disc1 = createDisclosure();
-  const disc2 = createDisclosure();
+  const [opened, setOpened] = createSignal(false);
 
   return (
     <>
-      <Show when={disc1.isOpen()}>
-        <Portal>
-          <Underlay class="absolute top-0 left-0 h-full w-full bg-zinc-100/20" />
-          <div class="absolute top-0 left-0 flex items-center justify-center h-full w-full">
-            <Modal
-              isOpen={disc1.isOpen()}
-              onClose={disc1.onClose}
-              closeOnInteractOutside
-              closeOnEsc
-              autoFocus
-              restoreFocus
-              class="bg-zinc-800 p-4 rounded-md"
-            >
-              <p>Modal 1</p>
-              <button onClick={disc2.onOpen}>Open 2</button>
-            </Modal>
-          </div>
-        </Portal>
-      </Show>
-      <button onClick={disc1.onOpen}>Open</button>
-
-      <Show when={disc2.isOpen()}>
-        <Portal>
-          <Underlay class="absolute top-0 left-0 h-full w-full bg-zinc-100/20" />
-          <div class="absolute top-0 left-0 flex items-center justify-center h-full w-full">
-            <Modal
-              isOpen={disc2.isOpen()}
-              onClose={disc2.onClose}
-              closeOnInteractOutside
-              closeOnEsc
-              autoFocus
-              restoreFocus
-              class="bg-zinc-800 p-4 rounded-md"
-            >
-              <p>Modal 2</p>
-            </Modal>
-          </div>
-        </Portal>
-      </Show>
+      <Dialog isOpen={opened()} onOpenChange={setOpened}>
+        <Dialog.Trigger>Open</Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Backdrop class="fixed inset-0 bg-black bg-opacity-25" />
+          <Dialog.Container class="fixed inset-0 flex min-h-full items-center justify-center p-4 text-center">
+            <Dialog.Panel class="flex flex-col w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Title class="text-lg font-medium leading-6 text-gray-900">
+                Payment successful
+              </Dialog.Title>
+              <Dialog.Description class="mt-2 text-sm text-gray-500">
+                Your payment has been successfully submitted. We’ve sent you an email with all of
+                the details of your order.
+              </Dialog.Description>
+              <Dialog.CloseButton class="mt-4 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+                Got it, thanks!
+              </Dialog.CloseButton>
+            </Dialog.Panel>
+          </Dialog.Container>
+        </Dialog.Portal>
+      </Dialog>
+      <br />
+      <p>{opened() ? "opened" : "closed"}</p>
+      <br />
+      <button onClick={() => setOpened(true)}>Open</button>
       <br />
       <p>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam amet blanditiis cupiditate

@@ -10,6 +10,9 @@ import { callHandler, createPolymorphicComponent, mergeDefaultProps } from "@kob
 import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
+/**
+ * An element that sit behind an overlay (ex: a modal backdrop).
+ */
 export const Underlay = createPolymorphicComponent<"div">(props => {
   props = mergeDefaultProps({ as: "div" }, props);
 

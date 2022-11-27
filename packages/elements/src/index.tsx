@@ -6,9 +6,9 @@ export { createPolymorphicComponent } from "@kobalte/utils";
 // components
 export * from "./alert";
 export * from "./button";
+export * from "./dialog";
 export * from "./focus-trap";
 export * from "./form-control";
-export * from "./modal";
 export * from "./overlay";
 export * from "./radio-group";
 export * from "./switch";

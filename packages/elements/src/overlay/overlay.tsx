@@ -16,7 +16,8 @@ import {
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import { FocusTrapRegion, FocusTrapRegionProps } from "../focus-trap";
-import { createInteractOutside } from "../primitives";
+import { createInteractOutside, createPreventScroll } from "../primitives";
+import { ariaHideOutside } from "./aria-hide-outside";
 
 export interface OverlayProps extends FocusTrapRegionProps {
   /** Whether the overlay is currently open. */
@@ -24,6 +25,15 @@ export interface OverlayProps extends FocusTrapRegionProps {
 
   /** Handler that is called when the overlay should close. */
   onClose?: () => void;
+
+  /**
+   * Whether the overlay should block interaction with outside elements,
+   * and be the only visible content for screen readers.
+   */
+  isModal?: boolean;
+
+  /** Whether the scroll should be locked when the overlay is open. */
+  preventScroll?: boolean;
 
   /** Whether to close the overlay when the user interacts outside it. */
   closeOnInteractOutside?: boolean;
@@ -50,24 +60,18 @@ const visibleOverlays: Array<Element> = [];
 export const Overlay = createPolymorphicComponent<"div", OverlayProps>(props => {
   let ref: HTMLDivElement | undefined;
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      closeOnInteractOutside: false,
-      closeOnEsc: true,
-    },
-    props
-  );
+  props = mergeDefaultProps({ as: "div" }, props);
 
   const [local, others] = splitProps(props, [
     "ref",
     "isOpen",
     "onClose",
+    "isModal",
+    "preventScroll",
     "closeOnInteractOutside",
     "closeOnEsc",
     "shouldCloseOnInteractOutside",
     "onKeyDown",
-    "onFocusOut",
   ]);
 
   const isTopMostOverlay = () => {
@@ -124,9 +128,27 @@ export const Overlay = createPolymorphicComponent<"div", OverlayProps>(props => 
     () => ref
   );
 
+  // Handle prevent scroll when the overlay is open
+  createPreventScroll({
+    isDisabled: () => !(local.preventScroll && local.isOpen),
+  });
+
+  // Hides all elements in the DOM outside the given targets from screen readers when the overlay is an opened modal
+  createEffect(() => {
+    if (!ref) {
+      return;
+    }
+
+    if (local.isModal && local.isOpen) {
+      const cleanup = ariaHideOutside([ref]);
+
+      onCleanup(cleanup);
+    }
+  });
+
   // Add the overlay ref to the stack of visible overlays on mount, and remove on unmount.
   createEffect(() => {
-    if (local.isOpen && ref) {
+    if (ref && local.isOpen) {
       visibleOverlays.push(ref);
     }
 

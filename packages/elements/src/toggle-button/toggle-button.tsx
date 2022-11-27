@@ -67,8 +67,8 @@ export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonPro
   });
 
   const onPress: PressEvents["onPress"] = e => {
-    state.toggle();
     local.onPress?.(e);
+    state.toggle();
   };
 
   return (
