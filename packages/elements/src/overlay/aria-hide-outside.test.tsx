@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/test/ariaHideOutside.test.js
  */
 
-import { createSignal } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import { fireEvent, render, screen, waitFor } from "solid-testing-library";
 
 import { ariaHideOutside } from "./aria-hide-outside";
@@ -139,14 +139,27 @@ describe("ariaHideOutside", function () {
     expect(() => screen.getByRole("button")).not.toThrow();
   });
 
-  it.skip("should handle when a new element is added outside while active", async function () {
+  it("should handle when a new element is added outside while active", async function () {
     const Test = () => {
+      let toggleRef: any;
+      let revertRef: any;
+
       const [show, setShow] = createSignal(false);
+      let revert: () => void;
+
+      onMount(() => {
+        revert = ariaHideOutside([toggleRef, revertRef]);
+      });
 
       return (
         <>
           {show() && <input type="checkbox" />}
-          <button onClick={() => setShow(true)}>Button</button>
+          <button data-testid="toggle" ref={toggleRef} onClick={() => setShow(true)}>
+            Toggle
+          </button>
+          <button data-testid="revert" ref={revertRef} onClick={() => revert()}>
+            Revert
+          </button>
           {show() && <input type="checkbox" />}
         </>
       );
@@ -154,20 +167,21 @@ describe("ariaHideOutside", function () {
 
     render(() => <Test />);
 
-    const button = screen.getByRole("button");
+    const toggle = screen.getByTestId("toggle");
+    const revert = screen.getByTestId("revert");
     expect(() => screen.getAllByRole("checkbox")).toThrow();
 
-    const revert = ariaHideOutside([button]);
-
     // Toggle the show state
-    fireEvent.click(button);
+    fireEvent.click(toggle);
     await Promise.resolve();
 
     // MutationObserver is async
     await waitFor(() => expect(() => screen.getAllByRole("checkbox")).toThrow());
-    expect(() => screen.getByRole("button")).not.toThrow(); // fail here
+    expect(() => screen.getAllByRole("button")).not.toThrow();
 
-    revert();
+    // revert the 'ariaHideOutside'
+    fireEvent.click(revert);
+    await Promise.resolve();
 
     expect(screen.getAllByRole("checkbox")).toHaveLength(2);
   });
