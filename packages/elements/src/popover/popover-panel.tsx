@@ -1,10 +1,13 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, onCleanup, Show, splitProps } from "solid-js";
+import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { Overlay } from "../overlay";
-import { useDialogContext } from "./dialog-context";
+import { usePopoverContext } from "./popover-context";
 
-export interface DialogPanelProps {
+export interface PopoverPanelProps {
+  /** The HTML styles attribute (object form only). */
+  style?: JSX.CSSProperties;
+
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -13,11 +16,11 @@ export interface DialogPanelProps {
 }
 
 /**
- * The element that visually represents a dialog.
- * Contains the content to be rendered when the dialog is open.
+ * The element that visually represents a popover.
+ * Contains the content to be rendered when the popover is open.
  */
-export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(props => {
-  const context = useDialogContext();
+export const PopoverPanel = createPolymorphicComponent<"div", PopoverPanelProps>(props => {
+  const context = usePopoverContext();
 
   props = mergeDefaultProps(
     {
@@ -27,13 +30,14 @@ export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(p
     props
   );
 
-  const [local, others] = splitProps(props, ["id", "forceMount"]);
+  const [local, others] = splitProps(props, ["ref", "id", "style", "forceMount"]);
 
   createEffect(() => onCleanup(context.registerPanel(local.id!)));
 
   return (
     <Show when={local.forceMount || context.isOpen()}>
       <Overlay
+        ref={mergeRefs(context.setPanelRef, local.ref)}
         role="dialog"
         id={local.id}
         tabIndex={-1}
@@ -52,6 +56,7 @@ export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(p
         aria-label={context.ariaLabel()}
         aria-labelledby={context.ariaLabel() ? undefined : context.ariaLabelledBy()}
         aria-describedby={context.ariaDescribedBy()}
+        style={{ position: "relative", ...local.style }}
         {...context.dataset()}
         {...others}
       />

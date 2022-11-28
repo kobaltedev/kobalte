@@ -2,13 +2,13 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useDialogContext } from "./dialog-context";
+import { usePopoverContext } from "./popover-context";
 
 /**
- * An accessible title to be announced when the dialog is open.
+ * An accessible title to be announced when the popover is open.
  */
-export const DialogTitle = createPolymorphicComponent<"h2">(props => {
-  const context = useDialogContext();
+export const PopoverTitle = createPolymorphicComponent<"h2">(props => {
+  const context = usePopoverContext();
 
   props = mergeDefaultProps(
     {

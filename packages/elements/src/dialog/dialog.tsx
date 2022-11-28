@@ -130,12 +130,10 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
   const context: DialogContextValue = {
     ...state,
     dataset,
+    ariaControls: () => (state.isOpen() ? panelId() : undefined),
     ariaLabel: () => props["aria-label"],
-    ariaLabelledBy: () => props["aria-labelledby"],
-    ariaDescribedBy: () => props["aria-describedby"],
-    panelId,
-    titleId,
-    descriptionId,
+    ariaLabelledBy: () => props["aria-labelledby"] || titleId(),
+    ariaDescribedBy: () => props["aria-describedby"] || descriptionId(),
     generateId: part => `${props.id!}-${part}`,
     registerPanel: id => {
       setPanelId(id);

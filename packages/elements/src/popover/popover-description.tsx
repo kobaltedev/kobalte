@@ -2,25 +2,25 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useDialogContext } from "./dialog-context";
+import { usePopoverContext } from "./popover-context";
 
 /**
- * An accessible title to be announced when the dialog is open.
+ * An optional accessible description to be announced when the popover is open.
  */
-export const DialogTitle = createPolymorphicComponent<"h2">(props => {
-  const context = useDialogContext();
+export const PopoverDescription = createPolymorphicComponent<"p">(props => {
+  const context = usePopoverContext();
 
   props = mergeDefaultProps(
     {
-      as: "h2",
-      id: context.generateId("title"),
+      as: "p",
+      id: context.generateId("description"),
     },
     props
   );
 
   const [local, others] = splitProps(props, ["as", "id"]);
 
-  createEffect(() => onCleanup(context.registerTitle(local.id!)));
+  createEffect(() => onCleanup(context.registerDescription(local.id!)));
 
   return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
 });

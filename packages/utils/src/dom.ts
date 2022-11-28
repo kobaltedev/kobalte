@@ -4,16 +4,10 @@
  *
  * Credits to the Ariakit team:
  * https://github.com/ariakit/ariakit/blob/232bc79018ec20967fec1e097a9474aba3bb5be7/packages/ariakit-utils/src/dom.ts
- *
- * Portions of this file are based on code from chakra-ui.
- * MIT Licensed, Copyright (c) 2019 Segun Adebayo.
- *
- * Credits to the Chakra UI team:
- * https://github.com/chakra-ui/chakra-ui/blob/59391bb95b05a13feeb9fe84b0cdb027519460ce/packages/utilities/dom-utils/src/dom.ts
  */
 
 /**
- * Checks whether a `parent` element  is/or contains a `child` element.
+ * Similar to `Element.prototype.contains`, but a little faster when `element` is the same as `child`.
  */
 export function contains(parent: HTMLElement | undefined, child: HTMLElement) {
   if (!parent) {
@@ -23,18 +17,49 @@ export function contains(parent: HTMLElement | undefined, child: HTMLElement) {
   return parent === child || parent.contains(child);
 }
 
-export function getActiveElement(node?: HTMLElement) {
-  return getOwnerDocument(node)?.activeElement as HTMLElement;
+/**
+ * Returns `element.ownerDocument.activeElement`.
+ */
+export function getActiveElement(node?: Node | null, activeDescendant = false): HTMLElement | null {
+  const { activeElement } = getDocument(node);
+
+  if (!activeElement?.nodeName) {
+    // In IE11, activeElement might be an empty object if we're interacting
+    // with elements inside an iframe.
+    return null;
+  }
+
+  if (isFrame(activeElement) && activeElement.contentDocument) {
+    return getActiveElement(activeElement.contentDocument.body, activeDescendant);
+  }
+
+  if (activeDescendant) {
+    const id = activeElement.getAttribute("aria-activedescendant");
+
+    if (id) {
+      const element = getDocument(activeElement).getElementById(id);
+
+      if (element) {
+        return element;
+      }
+    }
+  }
+
+  return activeElement as HTMLElement | null;
 }
 
-export function getOwnerDocument(node?: Element | null): Document {
-  return isElement(node) ? node.ownerDocument ?? document : document;
+/**
+ * Returns `element.ownerDocument.defaultView || window`.
+ */
+export function getWindow(node?: Node | null): Window {
+  return getDocument(node).defaultView || window;
 }
 
-export function isElement(el: any): el is Element {
-  return (
-    el != null && typeof el == "object" && "nodeType" in el && el.nodeType === Node.ELEMENT_NODE
-  );
+/**
+ * Returns `element.ownerDocument || document`.
+ */
+export function getDocument(node?: Node | null): Document {
+  return node ? node.ownerDocument || (node as Document) : document;
 }
 
 /**

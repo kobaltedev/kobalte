@@ -1,17 +1,27 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
 import { CreateDisclosureResult } from "../primitives";
+import { Placement } from "./utils";
 
-export interface DialogDataSet {
+export interface PopoverDataSet {
   "data-open": string | undefined;
+  "data-placement": string | undefined;
 }
 
-export interface DialogContextValue extends CreateDisclosureResult {
-  dataset: Accessor<DialogDataSet>;
+export interface PopoverContextValue extends CreateDisclosureResult {
+  dataset: Accessor<PopoverDataSet>;
   ariaControls: Accessor<string | undefined>;
   ariaLabel: Accessor<string | undefined>;
   ariaLabelledBy: Accessor<string | undefined>;
   ariaDescribedBy: Accessor<string | undefined>;
+  currentPlacement: Accessor<Placement>;
+  positionerRef: Accessor<HTMLElement | undefined>;
+  panelRef: Accessor<HTMLElement | undefined>;
+  setAnchorRef: (el: HTMLElement) => void;
+  setTriggerRef: (el: HTMLElement) => void;
+  setPositionerRef: (el: HTMLElement) => void;
+  setPanelRef: (el: HTMLElement) => void;
+  setArrowRef: (el: HTMLElement) => void;
   generateId: (part: string) => string;
   registerPanel: (id: string) => () => void;
   registerTitle: (id: string) => () => void;
@@ -32,13 +42,13 @@ export interface DialogContextValue extends CreateDisclosureResult {
   restoreFocusSelector: Accessor<string | undefined>;
 }
 
-export const DialogContext = createContext<DialogContextValue>();
+export const PopoverContext = createContext<PopoverContextValue>();
 
-export function useDialogContext() {
-  const context = useContext(DialogContext);
+export function usePopoverContext() {
+  const context = useContext(PopoverContext);
 
   if (context === undefined) {
-    throw new Error("[kobalte]: `useDialogContext` must be used within a `Dialog` component");
+    throw new Error("[kobalte]: `usePopoverContext` must be used within a `Popover` component");
   }
 
   return context;

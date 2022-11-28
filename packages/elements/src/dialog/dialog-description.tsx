@@ -5,7 +5,7 @@ import { Dynamic } from "solid-js/web";
 import { useDialogContext } from "./dialog-context";
 
 /**
- * An optional accessible description to be announced when the dialog is opened.
+ * An optional accessible description to be announced when the dialog is open.
  */
 export const DialogDescription = createPolymorphicComponent<"p">(props => {
   const context = useDialogContext();
