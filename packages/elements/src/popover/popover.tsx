@@ -6,26 +6,6 @@
  * https://github.com/ariakit/ariakit/blob/232bc79018ec20967fec1e097a9474aba3bb5be7/packages/ariakit/src/popover/popover-state.ts
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
-import {
-  Accessor,
-  createEffect,
-  createMemo,
-  createSignal,
-  createUniqueId,
-  onCleanup,
-  ParentComponent,
-} from "solid-js";
-
-import { createDisclosure } from "../primitives";
-import { PopoverCloseButton } from "./popover-close-button";
-import { PopoverContext, PopoverContextValue, PopoverDataSet } from "./popover-context";
-import { PopoverDescription } from "./popover-description";
-import { PopoverPanel } from "./popover-panel";
-import { PopoverPortal } from "./popover-portal";
-import { PopoverTitle } from "./popover-title";
-import { PopoverTrigger } from "./popover-trigger";
-import { AnchorRect, BasePlacement, getAnchorElement, isValidPlacement, Placement } from "./utils";
 import {
   arrow,
   autoUpdate,
@@ -37,9 +17,30 @@ import {
   shift,
   size,
 } from "@floating-ui/dom";
-import { PopoverPositioner } from "./popover-positioner";
+import { mergeDefaultProps } from "@kobalte/utils";
+import {
+  Accessor,
+  createEffect,
+  createMemo,
+  createRenderEffect,
+  createSignal,
+  createUniqueId,
+  onCleanup,
+  ParentComponent,
+} from "solid-js";
+
+import { createDisclosure } from "../primitives";
 import { PopoverAnchor } from "./popover-anchor";
 import { PopoverArrow } from "./popover-arrow";
+import { PopoverCloseButton } from "./popover-close-button";
+import { PopoverContext, PopoverContextValue, PopoverDataSet } from "./popover-context";
+import { PopoverDescription } from "./popover-description";
+import { PopoverPanel } from "./popover-panel";
+import { PopoverPortal } from "./popover-portal";
+import { PopoverPositioner } from "./popover-positioner";
+import { PopoverTitle } from "./popover-title";
+import { PopoverTrigger } from "./popover-trigger";
+import { AnchorRect, BasePlacement, getAnchorElement, isValidPlacement, Placement } from "./utils";
 
 type PopoverComposite = {
   Anchor: typeof PopoverAnchor;
@@ -87,6 +88,12 @@ export interface PopoverProps {
   /** Whether the popover can overlap the anchor element when it overflows. */
   overlap?: boolean;
 
+  /** Whether the popover should hide when the anchor is not visible on screen. */
+  hide?: boolean;
+
+  /** The minimum padding before considering the popover anchor off-screen. */
+  hidePadding?: number;
+
   /**
    * Whether the popover should have the same width as the anchor element.
    * This will be exposed to CSS as `--kb-popover-anchor-width`.
@@ -95,8 +102,8 @@ export interface PopoverProps {
 
   /**
    * Whether the popover should fit the viewport. If this is set to true, the
-   * popover wrapper will have `maxWidth` and `maxHeight` set to the viewport size.
-   * This will be exposed to CSS as `--popover-available-width` and `--popover-available-height`.
+   * popover positioner will have `maxWidth` and `maxHeight` set to the viewport size.
+   * This will be exposed to CSS as `--kb-popover-available-width` and `--kb-popover-available-height`.
    */
   fitViewport?: boolean;
 
@@ -105,7 +112,7 @@ export interface PopoverProps {
 
   /**
    * The minimum padding between the popover and the viewport edge.
-   * This will be exposed to CSS as `--popover-overflow-padding`.
+   * This will be exposed to CSS as `--kb-popover-overflow-padding`.
    */
   overflowPadding?: number;
 
@@ -191,19 +198,20 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
       getAnchorRect: (anchor?: HTMLElement) => anchor?.getBoundingClientRect(),
       placement: "bottom",
       gutter: 0,
-      flip: true,
       shift: 0,
+      flip: true,
       slide: true,
       overlap: false,
+      hide: false,
       sameWidth: false,
       fitViewport: false,
+      hidePadding: 0,
       arrowPadding: 4,
       overflowPadding: 8,
       //
       id: defaultId,
       closeOnInteractOutside: true,
       closeOnEsc: true,
-      trapFocus: true,
       autoFocus: true,
       restoreFocus: true,
     },
@@ -247,14 +255,14 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
       return;
     }
 
-    // Virtual element doesn't work without this ¯\_(ツ)_/¯
-    referenceEl.getBoundingClientRect();
-
     const arrowOffset = (arrowEl?.clientHeight || 0) / 2;
     const finalGutter =
       typeof props.gutter === "number" ? props.gutter + arrowOffset : props.gutter ?? arrowOffset;
 
     floatingEl.style.setProperty("--kb-popover-overflow-padding", `${props.overflowPadding}px`);
+
+    // Virtual element doesn't work without this ¯\_(ツ)_/¯
+    referenceEl.getBoundingClientRect();
 
     const middleware: Middleware[] = [
       // https://floating-ui.com/docs/offset
@@ -265,8 +273,8 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
         const hasAlignment = !!placement.split("-")[1];
 
         return {
-          crossAxis: !hasAlignment ? props.shift : undefined,
           mainAxis: finalGutter,
+          crossAxis: !hasAlignment ? props.shift : undefined,
           alignmentAxis: props.shift,
         };
       }),
@@ -306,6 +314,8 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
         apply({ availableWidth, availableHeight, rects }) {
           const referenceWidth = Math.round(rects.reference.width);
 
+          console.log(availableWidth);
+
           availableWidth = Math.floor(availableWidth);
           availableHeight = Math.floor(availableHeight);
 
@@ -325,8 +335,13 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
       })
     );
 
+    // https://floating-ui.com/docs/hide
+    if (props.hide) {
+      middleware.push(hide({ padding: props.hidePadding }));
+    }
+
+    // https://floating-ui.com/docs/arrow
     if (arrowEl) {
-      // https://floating-ui.com/docs/arrow
       middleware.push(arrow({ element: arrowEl, padding: props.arrowPadding }));
     }
 
@@ -345,14 +360,24 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
       return;
     }
 
+    // TODO: expose transform origin as css custom property (with rtl support)
+    // floatingEl.style.setProperty("--kb-popover-transform-origin", getTransformOrigin(pos.placement));
+
     const x = Math.round(pos.x);
     const y = Math.round(pos.y);
+
+    let visibility: string | undefined;
+
+    if (props.hide) {
+      visibility = pos.middlewareData.hide?.referenceHidden ? "hidden" : "visible";
+    }
 
     // https://floating-ui.com/docs/misc#subpixel-and-accelerated-positioning
     Object.assign(floatingEl.style, {
       top: "0",
       left: "0",
       transform: `translate3d(${x}px, ${y}px, 0)`,
+      visibility,
     });
 
     // https://floating-ui.com/docs/arrow#usage
@@ -369,7 +394,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     }
   }
 
-  createEffect(() => {
+  createRenderEffect(() => {
     const referenceEl = anchorEl();
     const floatingEl = positionerRef();
 
@@ -377,12 +402,31 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
       return;
     }
 
+    // https://floating-ui.com/docs/autoUpdate
     const cleanupAutoUpdate = autoUpdate(referenceEl, floatingEl, updatePosition, {
       // JSDOM doesn't support ResizeObserver
       elementResize: typeof ResizeObserver === "function",
     });
 
     onCleanup(cleanupAutoUpdate);
+  });
+
+  // Makes sure the positioner element that's passed to popper has the same
+  // z-index as the popover panel element so users only need to set the z-index
+  // once.
+  createEffect(() => {
+    if (!state.isOpen()) {
+      return;
+    }
+
+    const positioner = positionerRef();
+    const panel = panelRef();
+
+    if (!positioner || !panel) {
+      return;
+    }
+
+    positioner.style.zIndex = getComputedStyle(panel).zIndex;
   });
 
   const context: PopoverContextValue = {

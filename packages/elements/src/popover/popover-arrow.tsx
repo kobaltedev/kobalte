@@ -13,14 +13,7 @@ import {
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import {
-  Accessor,
-  createEffect,
-  createRenderEffect,
-  createSignal,
-  JSX,
-  splitProps,
-} from "solid-js";
+import { Accessor, createEffect, createSignal, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { usePopoverContext } from "./popover-context";
@@ -110,7 +103,7 @@ export const PopoverArrow = createPolymorphicComponent<"div", PopoverArrowProps>
 function createComputedStyle(element: Accessor<Element | undefined>) {
   const [style, setStyle] = createSignal<CSSStyleDeclaration>();
 
-  createRenderEffect(() => {
+  createEffect(() => {
     const el = element();
     el && setStyle(getWindow(el).getComputedStyle(el));
   });

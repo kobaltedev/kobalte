@@ -103,10 +103,8 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
     {
       id: defaultId,
       isModal: true,
-      preventScroll: true,
       closeOnInteractOutside: true,
       closeOnEsc: true,
-      trapFocus: true,
       autoFocus: true,
       restoreFocus: true,
     },

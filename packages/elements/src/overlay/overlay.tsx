@@ -71,6 +71,7 @@ export const Overlay = createPolymorphicComponent<"div", OverlayProps>(props => 
     "closeOnInteractOutside",
     "closeOnEsc",
     "shouldCloseOnInteractOutside",
+    "trapFocus",
     "onKeyDown",
   ]);
 
@@ -130,7 +131,7 @@ export const Overlay = createPolymorphicComponent<"div", OverlayProps>(props => 
 
   // Handle prevent scroll when the overlay is open
   createPreventScroll({
-    isDisabled: () => !(local.preventScroll && local.isOpen),
+    isDisabled: () => !((local.preventScroll ?? local.isModal) && local.isOpen),
   });
 
   // Hides all elements in the DOM outside the given targets from screen readers when the overlay is an opened modal
@@ -168,6 +169,7 @@ export const Overlay = createPolymorphicComponent<"div", OverlayProps>(props => 
   return (
     <FocusTrapRegion
       ref={mergeRefs(el => (ref = el), local.ref)}
+      trapFocus={(local.trapFocus ?? local.isModal) && local.isOpen}
       onKeyDown={onKeyDown}
       {...others}
     />

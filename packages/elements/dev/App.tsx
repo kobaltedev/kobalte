@@ -3,8 +3,8 @@ import { Popover } from "../src";
 export default function App() {
   return (
     <>
-      <Popover>
-        <Popover.Trigger class="button">Open</Popover.Trigger>
+      <Popover isOpen slide={false} overlap={false} placement="bottom">
+        <Popover.Trigger class="button mx-auto">Open</Popover.Trigger>
         <Popover.Portal>
           <Popover.Positioner>
             <Popover.Panel class="popover">
