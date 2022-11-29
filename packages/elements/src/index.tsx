@@ -9,6 +9,7 @@ export * from "./button";
 export * from "./dialog";
 export * from "./focus-trap";
 export * from "./form-control";
+export * from "./i18n";
 export * from "./overlay";
 export * from "./popover";
 export * from "./radio-group";

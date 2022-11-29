@@ -93,6 +93,7 @@ export default function App() {
                 <Button class="button secondary">Bookmark</Button>
                 <Button class="button secondary">Edit</Button>
                 <Button class="button secondary">Share</Button>
+                <Popover.CloseButton>Button</Popover.CloseButton>
               </Popover.Panel>
             </Popover.Positioner>
           </Popover.Portal>
