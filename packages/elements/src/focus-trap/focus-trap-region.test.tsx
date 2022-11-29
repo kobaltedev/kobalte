@@ -30,7 +30,7 @@ describe("FocusTrapRegion", () => {
 
   it("should focus element with default 'initialFocusSelector' on mount", () => {
     render(() => (
-      <FocusTrapRegion>
+      <FocusTrapRegion trapFocus>
         <button>Button 1</button>
         <button data-autofocus>Button 2</button>
       </FocusTrapRegion>
@@ -41,7 +41,7 @@ describe("FocusTrapRegion", () => {
 
   it("should focus element with custom 'initialFocusSelector' on mount", () => {
     render(() => (
-      <FocusTrapRegion initialFocusSelector="#first">
+      <FocusTrapRegion trapFocus initialFocusSelector="#first">
         <button>Button 1</button>
         <button id="first">Button 2</button>
       </FocusTrapRegion>
@@ -52,7 +52,7 @@ describe("FocusTrapRegion", () => {
 
   it("should focus first focusable element on mount when 'autoFocus' is true", async () => {
     render(() => (
-      <FocusTrapRegion autoFocus>
+      <FocusTrapRegion trapFocus autoFocus>
         <button>Button</button>
       </FocusTrapRegion>
     ));
@@ -64,7 +64,7 @@ describe("FocusTrapRegion", () => {
     render(() => (
       <>
         <button>Before</button>
-        <FocusTrapRegion data-testid="focus-trap" />
+        <FocusTrapRegion trapFocus data-testid="focus-trap" />
         <button>After</button>
       </>
     ));
@@ -109,7 +109,7 @@ describe("FocusTrapRegion", () => {
         <>
           <button onClick={() => setIsOpen(true)}>Open</button>
           <Show when={isOpen()}>
-            <FocusTrapRegion restoreFocusSelector="#last" data-testid="focus-trap">
+            <FocusTrapRegion trapFocus restoreFocusSelector="#last" data-testid="focus-trap">
               <button onClick={() => setIsOpen(false)}>Close</button>
             </FocusTrapRegion>
           </Show>
@@ -152,7 +152,7 @@ describe("FocusTrapRegion", () => {
         <>
           <button onClick={() => setIsOpen(true)}>Open</button>
           <Show when={isOpen()}>
-            <FocusTrapRegion restoreFocus data-testid="focus-trap">
+            <FocusTrapRegion trapFocus restoreFocus data-testid="focus-trap">
               <button onClick={() => setIsOpen(false)}>Close</button>
             </FocusTrapRegion>
           </Show>
@@ -194,7 +194,12 @@ describe("FocusTrapRegion", () => {
         <>
           <button onClick={() => setIsOpen(true)}>Open</button>
           <Show when={isOpen()}>
-            <FocusTrapRegion restoreFocus restoreFocusSelector="#last" data-testid="focus-trap">
+            <FocusTrapRegion
+              trapFocus
+              restoreFocus
+              restoreFocusSelector="#last"
+              data-testid="focus-trap"
+            >
               <button onClick={() => setIsOpen(false)}>Close</button>
             </FocusTrapRegion>
           </Show>
