@@ -2,12 +2,13 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup, Show, splitProps } from "solid-js";
 
 import { Overlay } from "../overlay";
-import { useDialogContext } from "./dialog-context";
+import { useDialogContext, useDialogPortalContext } from "./dialog-context";
 
 export interface DialogPanelProps {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
+   * It inherits from `Dialog.Portal`.
    */
   forceMount?: boolean;
 }
@@ -18,6 +19,7 @@ export interface DialogPanelProps {
  */
 export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(props => {
   const context = useDialogContext();
+  const portalContext = useDialogPortalContext();
 
   props = mergeDefaultProps(
     {
@@ -32,7 +34,7 @@ export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(p
   createEffect(() => onCleanup(context.registerPanel(local.id!)));
 
   return (
-    <Show when={local.forceMount || context.isOpen()}>
+    <Show when={local.forceMount || portalContext?.forceMount() || context.isOpen()}>
       <Overlay
         role="dialog"
         id={local.id}

@@ -13,10 +13,12 @@ import { Button, ButtonProps } from "../button";
 import { PressEvents } from "../primitives";
 import { useDialogContext } from "./dialog-context";
 
+export interface DialogTriggerProps extends ButtonProps {}
+
 /**
  * The button that opens the dialog.
  */
-export const DialogTrigger = createPolymorphicComponent<"button", ButtonProps>(props => {
+export const DialogTrigger = createPolymorphicComponent<"button", DialogTriggerProps>(props => {
   const context = useDialogContext();
 
   const [local, others] = splitProps(props, ["onPress"]);

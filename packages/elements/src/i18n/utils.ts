@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/i18n/src/utils.ts
  */
 
-export type Direction = "rtl" | "ltr";
+export type ReadingDirection = "rtl" | "ltr";
 
 // https://en.wikipedia.org/wiki/Right-to-left
 const RTL_SCRIPTS = new Set([
@@ -64,6 +64,6 @@ export function isRTL(locale: string) {
   return RTL_LANGS.has(lang);
 }
 
-export function getReadingDirection(locale: string): Direction {
+export function getReadingDirection(locale: string): ReadingDirection {
   return isRTL(locale) ? "rtl" : "ltr";
 }

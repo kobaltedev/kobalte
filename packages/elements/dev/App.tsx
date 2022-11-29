@@ -1,109 +1,49 @@
-import { createEffect, createSignal, onCleanup } from "solid-js";
+import { createSignal, Show } from "solid-js";
 
-import { Button, Popover } from "../src";
-
-function hasSelectionWithin(element?: Element | null) {
-  const selection = element?.ownerDocument.getSelection();
-
-  if (!selection?.rangeCount) {
-    return false;
-  }
-
-  const range = selection.getRangeAt(0);
-
-  if (range.collapsed) {
-    return false;
-  }
-
-  return !!element?.contains(range.commonAncestorContainer);
-}
+import { createTransition, Popover } from "../src";
 
 export default function App() {
-  let popoverRef: any;
-  let paragraphRef: any;
+  const [show, setShow] = createSignal(false);
 
-  const [isOpen, setIsOpen] = createSignal(false);
-
-  createEffect(() => {
-    /*
-    if (!popoverRef) {
-      return;
-    }
-
-    if (!paragraphRef) {
-      return;
-    }
-    */
-
-    const doc = paragraphRef.ownerDocument || document;
-
-    const onMouseUp = () => {
-      if (!hasSelectionWithin(paragraphRef)) {
-        return;
-      }
-
-      setIsOpen(true);
-    };
-
-    const onSelect = () => {
-      if (popoverRef?.contains(doc.activeElement)) {
-        return;
-      }
-
-      if (hasSelectionWithin(paragraphRef)) {
-        return;
-      }
-
-      setIsOpen(false);
-    };
-
-    doc.addEventListener("mouseup", onMouseUp);
-    doc.addEventListener("selectionchange", onSelect);
-
-    onCleanup(() => {
-      doc.removeEventListener("mouseup", onMouseUp);
-      doc.removeEventListener("selectionchange", onSelect);
-    });
+  const popoverTransition = createTransition(show, {
+    transition: {
+      in: {
+        opacity: "1",
+        transform: "scale(1)",
+      },
+      out: {
+        opacity: "0",
+        transform: "scale(0.8)",
+      },
+    },
+    duration: 250,
+    easing: "ease-out",
+    exitEasing: "ease-in",
   });
 
   return (
     <>
-      <div>
-        <Popover
-          isOpen={isOpen()}
-          onOpenChange={setIsOpen}
-          placement="bottom"
-          getAnchorRect={() => {
-            const selection = paragraphRef?.ownerDocument.getSelection();
-
-            if (!selection?.rangeCount) {
-              return null;
-            }
-
-            const range = selection.getRangeAt(0);
-            return range.getBoundingClientRect();
-          }}
-          autoFocus={false}
-          shouldCloseOnInteractOutside={() => !hasSelectionWithin(paragraphRef)}
-        >
-          <Popover.Portal>
+      <Popover placement="top-start" isOpen={show()} onOpenChange={setShow}>
+        <Popover.Trigger class="button mx-auto mt-96">Accept invite</Popover.Trigger>
+        <Show when={popoverTransition.keepMounted()}>
+          <Popover.Portal forceMount>
             <Popover.Positioner>
-              <Popover.Panel ref={popoverRef} class="popover">
-                <Popover.Arrow size={24} class="arrow" />
-                <Button class="button secondary">Bookmark</Button>
-                <Button class="button secondary">Edit</Button>
-                <Button class="button secondary">Share</Button>
-                <Popover.CloseButton>Button</Popover.CloseButton>
+              <Popover.Panel class="popover" style={popoverTransition.style()}>
+                <Popover.Arrow class="arrow" />
+                <Popover.Title class="heading">Team meeting</Popover.Title>
+                <Popover.Description>
+                  We are going to discuss what we have achieved on the project.
+                </Popover.Description>
+                <div>
+                  <p>12 Jan 2022 18:00 to 19:00</p>
+                  <p>Alert 10 minutes before start</p>
+                </div>
+                <Popover.CloseButton class="button">Accept</Popover.CloseButton>
               </Popover.Panel>
             </Popover.Positioner>
           </Popover.Portal>
-        </Popover>
-        <p ref={paragraphRef}>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odio, sed fuga necessitatibus
-          aliquid expedita atque? Doloremque ea sequi totam laudantium laboriosam repellat quasi
-          commodi omnis aut nulla. Numquam, beatae maxime.
-        </p>
-      </div>
+        </Show>
+      </Popover>
     </>
   );
 }

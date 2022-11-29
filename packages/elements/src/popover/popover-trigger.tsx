@@ -9,32 +9,16 @@
 import { createPolymorphicComponent, mergeRefs } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
-import { Button, ButtonProps } from "../button";
-import { PressEvents } from "../primitives";
+import { DialogTrigger, DialogTriggerProps } from "../dialog/dialog-trigger";
 import { usePopoverContext } from "./popover-context";
 
 /**
  * The button that opens the popover.
  */
-export const PopoverTrigger = createPolymorphicComponent<"button", ButtonProps>(props => {
+export const PopoverTrigger = createPolymorphicComponent<"button", DialogTriggerProps>(props => {
   const context = usePopoverContext();
 
-  const [local, others] = splitProps(props, ["ref", "onPress"]);
+  const [local, others] = splitProps(props, ["ref"]);
 
-  const onPress: PressEvents["onPress"] = e => {
-    local.onPress?.(e);
-    context.toggle();
-  };
-
-  return (
-    <Button
-      ref={mergeRefs(context.setTriggerRef, local.ref)}
-      aria-haspopup="dialog"
-      aria-expanded={context.isOpen()}
-      aria-controls={context.ariaControls()}
-      onPress={onPress}
-      {...context.dataset()}
-      {...others}
-    />
-  );
+  return <DialogTrigger ref={mergeRefs(context.setTriggerRef, local.ref)} {...others} />;
 });

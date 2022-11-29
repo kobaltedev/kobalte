@@ -1,5 +1,4 @@
-import { Accessor, createRenderEffect, createSignal } from "solid-js";
-import { getWindow } from "@kobalte/utils";
+import { ReadingDirection } from "../i18n";
 
 export type BasePlacement = "top" | "bottom" | "left" | "right";
 
@@ -61,4 +60,34 @@ export function getAnchorElement(
 
 export function isValidPlacement(flip: string): flip is Placement {
   return /^(?:top|bottom|left|right)(?:-(?:start|end))?$/.test(flip);
+}
+
+const REVERSE_BASE_PLACEMENT = {
+  top: "bottom",
+  right: "left",
+  bottom: "top",
+  left: "right",
+};
+
+export function getTransformOrigin(placement: Placement, readingDirection: ReadingDirection) {
+  const [basePlacement, alignment] = placement.split("-") as [
+    BasePlacement,
+    "start" | "end" | undefined
+  ];
+
+  const reversePlacement = REVERSE_BASE_PLACEMENT[basePlacement];
+
+  if (!alignment) {
+    return `${reversePlacement} center`;
+  }
+
+  if (basePlacement === "left" || basePlacement === "right") {
+    return `${reversePlacement} ${alignment === "start" ? "top" : "bottom"}`;
+  }
+
+  if (alignment === "start") {
+    return `${reversePlacement} ${readingDirection === "rtl" ? "right" : "left"}`;
+  }
+
+  return `${reversePlacement} ${readingDirection === "rtl" ? "left" : "right"}`;
 }

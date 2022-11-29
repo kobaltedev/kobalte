@@ -9,14 +9,14 @@
 import { Accessor, createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { Direction, getReadingDirection } from "./utils";
+import { ReadingDirection, getReadingDirection } from "./utils";
 
 export interface Locale {
   /** The [BCP47](https://www.ietf.org/rfc/bcp/bcp47.txt) language code for the locale. */
   locale: string;
 
   /** The writing direction for the locale. */
-  direction: Direction;
+  direction: ReadingDirection;
 }
 
 /**

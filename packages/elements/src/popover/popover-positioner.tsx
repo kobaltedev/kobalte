@@ -1,7 +1,9 @@
 import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
 
+import { useDialogContext, useDialogPortalContext } from "../dialog";
 import { usePopoverContext } from "./popover-context";
+import { Dynamic } from "solid-js/web";
 
 export interface PopoverPositionerProps {
   /** The HTML styles attribute (object form only). */
@@ -10,6 +12,7 @@ export interface PopoverPositionerProps {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
+   * It inherits from `Popover.Portal`.
    */
   forceMount?: boolean;
 }
@@ -19,16 +22,19 @@ export interface PopoverPositionerProps {
  */
 export const PopoverPositioner = createPolymorphicComponent<"div", PopoverPositionerProps>(
   props => {
-    const context = usePopoverContext();
+    const dialogContext = useDialogContext();
+    const portalContext = useDialogPortalContext();
+    const popoverContext = usePopoverContext();
 
     props = mergeDefaultProps({ as: "div" }, props);
 
-    const [local, others] = splitProps(props, ["ref", "style", "forceMount"]);
+    const [local, others] = splitProps(props, ["as", "ref", "style", "forceMount"]);
 
     return (
-      <Show when={local.forceMount || context.isOpen()}>
-        <div
-          ref={mergeRefs(context.setPositionerRef, local.ref)}
+      <Show when={local.forceMount || portalContext?.forceMount() || dialogContext.isOpen()}>
+        <Dynamic
+          component={local.as}
+          ref={mergeRefs(popoverContext.setPositionerRef, local.ref)}
           role="presentation"
           style={{
             position: "absolute",
@@ -36,7 +42,7 @@ export const PopoverPositioner = createPolymorphicComponent<"div", PopoverPositi
             left: 0,
             ...local.style,
           }}
-          {...context.dataset()}
+          {...dialogContext.dataset()}
           {...others}
         />
       </Show>

@@ -43,3 +43,13 @@ export function useDialogContext() {
 
   return context;
 }
+
+export interface DialogPortalContextValue {
+  forceMount: Accessor<boolean | undefined>;
+}
+
+export const DialogPortalContext = createContext<DialogPortalContextValue>();
+
+export function useDialogPortalContext() {
+  return useContext(DialogPortalContext);
+}
