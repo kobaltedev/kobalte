@@ -14,6 +14,7 @@ import {
   hide,
   Middleware,
   offset,
+  platform,
   shift,
   size,
 } from "@floating-ui/dom";
@@ -34,6 +35,7 @@ import { DialogCloseButton } from "../dialog/dialog-close-button";
 import { DialogDescription } from "../dialog/dialog-description";
 import { DialogPortal } from "../dialog/dialog-portal";
 import { DialogTitle } from "../dialog/dialog-title";
+import { useLocale } from "../i18n";
 import { createControllableBooleanSignal } from "../primitives";
 import { PopoverAnchor } from "./popover-anchor";
 import { PopoverArrow } from "./popover-arrow";
@@ -49,7 +51,6 @@ import {
   isValidPlacement,
   Placement,
 } from "./utils";
-import { getReadingDirection, useLocale } from "../i18n";
 
 type PopoverComposite = {
   Trigger: typeof PopoverTrigger;
@@ -308,6 +309,10 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
       placement: local.placement,
       strategy: "absolute",
       middleware,
+      platform: {
+        ...platform,
+        isRTL: () => locale().direction === "rtl",
+      },
     });
 
     if (pos.placement !== currentPlacement()) {

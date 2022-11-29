@@ -1,6 +1,6 @@
 import { createSignal, Show } from "solid-js";
 
-import { createTransition, Popover } from "../src";
+import { createTransition, I18nProvider, Popover } from "../src";
 
 export default function App() {
   const [show, setShow] = createSignal(false);
@@ -22,8 +22,8 @@ export default function App() {
   });
 
   return (
-    <>
-      <Popover placement="top-start" isOpen={show()} onOpenChange={setShow}>
+    <I18nProvider>
+      <Popover placement="bottom-end" isOpen={show()} onOpenChange={setShow}>
         <Popover.Trigger class="button mx-auto mt-96">Accept invite</Popover.Trigger>
         <Show when={popoverTransition.keepMounted()}>
           <Popover.Portal forceMount>
@@ -44,6 +44,6 @@ export default function App() {
           </Popover.Portal>
         </Show>
       </Popover>
-    </>
+    </I18nProvider>
   );
 }
