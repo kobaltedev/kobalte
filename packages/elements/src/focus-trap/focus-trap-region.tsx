@@ -32,10 +32,15 @@ export interface FocusTrapRegionProps extends ParentProps {
   /** Whether the focus trap should be active. */
   trapFocus?: boolean;
 
+  /** Whether the first focusable element should be focused once `FocusTrapRegion` mounts. */
+  autoFocus?: boolean;
+
+  /** Whether focus should be restored to the element that triggered the `FocusTrapRegion` once it unmounts. */
+  restoreFocus?: boolean;
+
   /**
    * A query selector to retrieve the element that should receive focus once `FocusTrapRegion` mounts.
    * This value has priority over `autoFocus`.
-   * @default '[data-autofocus]'
    */
   initialFocusSelector?: string;
 
@@ -44,12 +49,6 @@ export interface FocusTrapRegionProps extends ParentProps {
    * This value has priority over `restoreFocus`.
    */
   restoreFocusSelector?: string;
-
-  /** Whether the first focusable element should be focused once `FocusTrapRegion` mounts. */
-  autoFocus?: boolean;
-
-  /** Whether focus should be restored to the element that triggered the `FocusTrapRegion` once it unmounts. */
-  restoreFocus?: boolean;
 }
 
 /**
@@ -62,7 +61,6 @@ export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegion
   props = mergeDefaultProps(
     {
       as: "div",
-      trapFocus: true,
       initialFocusSelector: "[data-autofocus]",
     },
     props
@@ -181,11 +179,9 @@ export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegion
       tabIndex={-1}
       {...others}
     >
-      <Show when={local.trapFocus}>
+      <Show when={local.trapFocus} fallback={props.children}>
         <FocusTrap onFocus={onTrapFocus} />
-      </Show>
-      {props.children}
-      <Show when={local.trapFocus}>
+        {props.children}
         <FocusTrap onFocus={onTrapFocus} />
       </Show>
     </Dynamic>

@@ -1,5 +1,5 @@
 import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { createEffect, createRenderEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
+import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { Overlay } from "../overlay";
 import { usePopoverContext } from "./popover-context";

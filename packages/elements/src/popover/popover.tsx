@@ -61,6 +61,12 @@ export interface PopoverProps {
    */
   getAnchorRect?: (anchor?: HTMLElement) => AnchorRect | undefined;
 
+  /**
+   * A ref for the anchor element.
+   * Useful if you want to use an element outside `Popover` as the popover anchor.
+   */
+  anchorRef?: Accessor<HTMLElement | undefined>;
+
   /** The placement of the popover. */
   placement?: Placement;
 
@@ -241,9 +247,12 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     "data-placement": props.placement,
   }));
 
-  // Floating UI reference element is `PopoverAnchor` or `PopoverTrigger` or a virtual element.
+  // Floating UI reference element.
   const anchorEl = () => {
-    return getAnchorElement(anchorRef() ?? triggerRef(), props.getAnchorRect!);
+    return getAnchorElement(
+      props.anchorRef?.() ?? anchorRef() ?? triggerRef(),
+      props.getAnchorRect!
+    );
   };
 
   async function updatePosition() {
@@ -313,8 +322,6 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
         padding: props.overflowPadding,
         apply({ availableWidth, availableHeight, rects }) {
           const referenceWidth = Math.round(rects.reference.width);
-
-          console.log(availableWidth);
 
           availableWidth = Math.floor(availableWidth);
           availableHeight = Math.floor(availableHeight);
