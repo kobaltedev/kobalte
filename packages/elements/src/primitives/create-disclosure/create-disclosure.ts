@@ -19,13 +19,13 @@ export interface CreateDisclosureResult {
   isOpen: Accessor<boolean>;
 
   /** A function to set the `isOpen` state to `true`. */
-  onOpen: () => void;
+  open: () => void;
 
   /** A function to set the `isOpen` state to `false`. */
-  onClose: () => void;
+  close: () => void;
 
   /** A function to toggle the `isOpen` state between `true` and `false`. */
-  onToggle: () => void;
+  toggle: () => void;
 }
 
 /**
@@ -39,22 +39,22 @@ export function createDisclosure(props: CreateDisclosureProps = {}): CreateDiscl
     onChange: value => props.onOpenChange?.(value),
   });
 
-  const onOpen = () => {
+  const open = () => {
     setIsOpen(true);
   };
 
-  const onClose = () => {
+  const close = () => {
     setIsOpen(false);
   };
 
-  const onToggle = () => {
-    isOpen() ? onClose() : onOpen();
+  const toggle = () => {
+    isOpen() ? close() : open();
   };
 
   return {
     isOpen,
-    onOpen,
-    onClose,
-    onToggle,
+    open,
+    close,
+    toggle,
   };
 }

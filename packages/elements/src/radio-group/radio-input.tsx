@@ -29,7 +29,13 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
   const radioGroupContext = useRadioGroupContext();
   const radioContext = useRadioContext();
 
-  props = mergeDefaultProps({ as: "input" }, props);
+  props = mergeDefaultProps(
+    {
+      as: "input",
+      id: radioContext.generateId("input"),
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, ["as", "onChange"]);
 
@@ -41,6 +47,28 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
     onFocusChange: value => radioContext.setIsFocused(value),
     onFocusVisibleChange: value => radioContext.setIsFocusVisible(value),
   });
+
+  const ariaLabelledBy = () => {
+    return (
+      [
+        radioContext.ariaLabelledBy(),
+        // If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
+        radioContext.ariaLabelledBy() != null && radioContext.ariaLabel() != null
+          ? others.id
+          : undefined,
+      ]
+        .filter(Boolean)
+        .join(" ") || undefined
+    );
+  };
+
+  const ariaDescribedBy = () => {
+    return (
+      [radioContext.ariaDescribedBy(), formControlContext.ariaDescribedBy()]
+        .filter(Boolean)
+        .join(" ") || undefined
+    );
+  };
 
   const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = e => {
     callHandler(e, local.onChange);
@@ -71,7 +99,9 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
       required={formControlContext.isRequired()}
       disabled={radioContext.isDisabled()}
       readonly={formControlContext.isReadOnly()}
-      aria-describedby={formControlContext.ariaDescribedBy()}
+      aria-label={radioContext.ariaLabel()}
+      aria-labelledby={ariaLabelledBy()}
+      aria-describedby={ariaDescribedBy()}
       onChange={onChange}
       {...radioContext.dataset()}
       {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers, focusRingHandlers)}

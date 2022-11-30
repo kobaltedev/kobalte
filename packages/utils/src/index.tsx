@@ -1,5 +1,6 @@
 export * from "./assertion";
 export * from "./create-global-listeners";
+export * from "./dom";
 export * from "./enums";
 export * from "./events";
 export * from "./external";
@@ -13,3 +14,4 @@ export * from "./polymorphic";
 export * from "./props";
 export * from "./run-after-transition";
 export * from "./styles";
+export * from "./tabbable";

@@ -13,12 +13,18 @@ export interface RadioIndicatorProps {
 }
 
 /**
- * A visual indicator rendered when the radio button is in a checked state.
+ * The visual indicator rendered when the radio button is in a checked state.
  */
 export const RadioIndicator = createPolymorphicComponent<"div", RadioIndicatorProps>(props => {
   const context = useRadioContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+  props = mergeDefaultProps(
+    {
+      as: "div",
+      id: context.generateId("indicator"),
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, ["as", "forceMount"]);
 

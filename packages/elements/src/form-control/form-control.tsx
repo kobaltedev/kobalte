@@ -68,9 +68,7 @@ export const FormControl = createPolymorphicComponent<
 
   const [local, others] = splitProps(props, [
     "as",
-    "ref",
     "children",
-    "id",
     "name",
     "validationState",
     "isRequired",
@@ -95,7 +93,7 @@ export const FormControl = createPolymorphicComponent<
           local["aria-labelledby"],
           labelId(),
           // If there is both an aria-label and aria-labelledby, add the field itself has an aria-labelledby
-          hasAriaLabelledBy && others["aria-label"] != null ? local.id : undefined,
+          hasAriaLabelledBy && others["aria-label"] != null ? others.id : undefined,
         ]
           .filter(Boolean)
           .join(" ") || undefined
@@ -132,7 +130,7 @@ export const FormControl = createPolymorphicComponent<
   }));
 
   const context: FormControlContextValue = {
-    name: () => local.name ?? local.id!,
+    name: () => local.name ?? others.id!,
     dataset,
     validationState: () => local.validationState,
     isRequired: () => local.isRequired,
@@ -143,7 +141,7 @@ export const FormControl = createPolymorphicComponent<
     descriptionId,
     errorMessageId,
     ariaDescribedBy,
-    generateId: part => `${local.id!}-${part}`,
+    generateId: part => `${others.id!}-${part}`,
     registerLabel: id => {
       setLabelId(id);
       return () => setLabelId(undefined);
@@ -165,7 +163,6 @@ export const FormControl = createPolymorphicComponent<
   return (
     <Dynamic
       component={local.as}
-      id={local.id}
       aria-labelledby={ariaLabelledBy()}
       aria-describedby={ariaDescribedBy()}
       {...dataset()}

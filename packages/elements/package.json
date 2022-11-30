@@ -51,7 +51,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.0.3",
+    "@floating-ui/dom": "^1.0.7",
+    "@internationalized/number": "^3.1.1",
+    "@internationalized/string": "^3.0.0",
     "@kobalte/utils": "^0.0.0"
   },
   "devDependencies": {

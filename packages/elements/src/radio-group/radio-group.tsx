@@ -39,7 +39,7 @@ export interface RadioGroupProps extends Omit<FormControlProps, "isField"> {
 }
 
 /**
- * A radio group is a set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time.
+ * A set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time.
  * This component is based on the [WAI-ARIA Radio Group Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radiobutton/)
  */
 export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, FormControlComposite>(
@@ -73,7 +73,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, For
 
     createFormResetListener(
       () => ref,
-      () => setSelected(undefined)
+      () => setSelected(local.defaultValue)
     );
 
     const context: RadioGroupContextValue = {

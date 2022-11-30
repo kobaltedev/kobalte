@@ -63,11 +63,12 @@ export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonPro
     isSelected: () => local.isPressed,
     defaultIsSelected: () => local.defaultIsPressed,
     onSelectedChange: selected => local.onPressedChange?.(selected),
+    isDisabled: () => others.isDisabled,
   });
 
   const onPress: PressEvents["onPress"] = e => {
-    state.toggle();
     local.onPress?.(e);
+    state.toggle();
   };
 
   return (

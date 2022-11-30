@@ -22,6 +22,9 @@ export interface CreateToggleStateProps {
   defaultIsSelected?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the selected state cannot be changed by the user. */
+  isDisabled?: MaybeAccessor<boolean | undefined>;
+
+  /** Whether the selected state cannot be changed by the user. */
   isReadOnly?: MaybeAccessor<boolean | undefined>;
 
   /** Event handler called when the selected state changes. */
@@ -33,7 +36,7 @@ export interface ToggleState {
   isSelected: Accessor<boolean>;
 
   /** Updates the selected state. */
-  setIsSelected: (selected: boolean) => void;
+  setIsSelected: (isSelected: boolean) => void;
 
   /** Toggle the selected state. */
   toggle: () => void;
@@ -50,13 +53,13 @@ export function createToggleState(props: CreateToggleStateProps = {}): ToggleSta
   });
 
   const setIsSelected = (value: boolean) => {
-    if (!access(props.isReadOnly)) {
+    if (!access(props.isReadOnly) && !access(props.isDisabled)) {
       _setIsSelected(value);
     }
   };
 
   const toggle = () => {
-    if (!access(props.isReadOnly)) {
+    if (!access(props.isReadOnly) && !access(props.isDisabled)) {
       _setIsSelected(!isSelected());
     }
   };

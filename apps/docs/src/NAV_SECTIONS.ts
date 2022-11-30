@@ -54,8 +54,16 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/button",
       },
       {
+        title: "Dialog",
+        href: "/docs/components/dialog",
+      },
+      {
         title: "Radio Group",
         href: "/docs/components/radio-group",
+      },
+      {
+        title: "Switch",
+        href: "/docs/components/switch",
       },
       {
         title: "Toggle Button",

@@ -1,0 +1,210 @@
+import { Preview } from "../../../components/preview";
+import { Kbd } from "../../../components/kbd";
+import { Switch, ControlledExample, HTMLFormExample } from "../../../examples/switch";
+
+# Switch
+
+A control that allows users to choose one of two values: on or off.
+
+## Import
+
+```ts
+import { Switch } from "@kobalte/elements";
+```
+
+## Features
+
+- Follow the [WAI ARIA Switch](https://www.w3.org/WAI/ARIA/apg/patterns/switch/) design pattern.
+- Built with a native HTML `<input>` element, which is visually hidden to allow custom styling.
+- Syncs with form reset events.
+- Labeling support for assistive technology.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The switch consists of:
+
+- **Switch**: The root container for a switch.
+- **Switch.Input**: The native html input that is visually hidden in the switch.
+- **Switch.Label**: The label that gives the user information on the switch.
+- **Switch.Control**: The element that visually represents a switch.
+- **Switch.Thumb**: The thumb that is used to visually indicate whether the switch is on or off.
+
+```tsx
+<Switch>
+  <Switch.Input />
+  <Switch.Label />
+  <Switch.Control>
+    <Switch.Thumb />
+  </Switch.Control>
+</Switch>
+```
+
+## Example
+
+<Preview>
+  <Switch>Airplane mode</Switch>
+</Preview>
+
+```tsx
+import { Switch as SwitchPrimitive } from "@kobalte/elements";
+import { ComponentProps, splitProps } from "solid-js";
+
+function Switch(props: ComponentProps<typeof SwitchPrimitive>) {
+  const [local, others] = splitProps(props, ["children"]);
+
+  return (
+    <SwitchPrimitive class="inline-flex items-center ui-disabled:opacity-50" {...others}>
+      <SwitchPrimitive.Input />
+      <SwitchPrimitive.Label class="select-none mr-3 text-sm text-zinc-900 dark:text-zinc-300">
+        {local.children}
+      </SwitchPrimitive.Label>
+      <SwitchPrimitive.Control class="inline-flex transition items-center px-[2px] w-11 h-6 bg-zinc-200 outline-none ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:ring-blue-900/60 rounded-full dark:bg-zinc-700 dark:border-zinc-600 ui-checked:bg-blue-600 dark:ui-checked:bg-blue-600">
+        <SwitchPrimitive.Thumb class="ui-checked:translate-x-full ui-checked:border-white bg-white after:border-zinc-300 border rounded-full h-5 w-5 transition-all" />
+      </SwitchPrimitive.Control>
+    </SwitchPrimitive>
+  );
+}
+
+function App() {
+  return <Switch>Airplane mode</Switch>;
+}
+```
+
+## Usage
+
+The following examples show how to use the `Switch` component created in the above example.
+
+### Default value
+
+Switches are not checked by default. The `defaultIsChecked` prop can be used to set the default state.
+
+<Preview>
+  <Switch defaultIsChecked>Airplane mode</Switch>
+</Preview>
+
+```tsx
+<Switch defaultIsChecked>Airplane mode</Switch>
+```
+
+### Controlled value
+
+The `isChecked` prop can be used to make the checked state controlled. The `onCheckedChange` event is fired when the user presses the switch, and receives the new value.
+
+<Preview>
+  <ControlledExample />
+</Preview>
+
+```tsx {3,7}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+  const [checked, setChecked] = createSignal(false);
+
+  return (
+    <>
+      <Switch isChecked={checked()} onCheckedChange={setChecked}>
+        Airplane mode
+      </Switch>
+      <p>Airplane mode is {checked() ? "active" : "inactive"}.</p>
+    </>
+  );
+}
+```
+
+### Disabled
+
+Switches can be disabled using the `isDisabled` prop.
+
+<Preview>
+  <Switch isDisabled>Airplane mode</Switch>
+</Preview>
+
+```tsx
+<Switch isDisabled>Airplane mode</Switch>
+```
+
+### Read only
+
+The `isReadOnly` prop makes the selection immutable. Unlike `isDisabled`, the switch remains focusable.
+
+<Preview>
+  <Switch isReadOnly>Airplane mode</Switch>
+</Preview>
+
+```tsx
+<Switch isReadOnly>Airplane mode</Switch>
+```
+
+### HTML forms
+
+Switch supports the `name` and `value` props for integration with HTML forms.
+
+<Preview>
+  <HTMLFormExample />
+</Preview>
+
+```tsx {14}
+function HTMLFormExample() {
+  let formRef: HTMLFormElement | undefined;
+
+  const onSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const formData = new FormData(formRef);
+
+    alert(JSON.stringify(Object.fromEntries(formData), null, 2));
+  };
+
+  return (
+    <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-start space-y-4">
+      <Switch name="airplane-mode" value="on">
+        Airplane mode
+      </Switch>
+      <div class="flex space-x-2">
+        <button type="reset" class="text-sm rounded border border-zinc-600 px-3">
+          Reset
+        </button>
+        <button class="text-sm rounded text-white bg-blue-600 px-3">Submit</button>
+      </div>
+    </form>
+  );
+}
+```
+
+## API Reference
+
+| Prop             | Type                           | Description                                                                                                                                              |
+| :--------------- | :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| isChecked        | `boolean`                      | The controlled checked state of the switch.                                                                                                              |
+| defaultIsChecked | `boolean`                      | The default checked state when initially rendered. Useful when you do not need to control the checked state.                                             |
+| onCheckedChange  | `(isChecked: boolean) => void` | Event handler called when the checked state of the switch changes.                                                                                       |
+| name             | `string`                       | The name of the switch, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).   |
+| value            | `string`                       | The value of the switch, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefvalue). |
+| validationState  | `'valid' \| 'invalid'`         | Whether the switch should display its "valid" or "invalid" visual styling.                                                                               |
+| isRequired       | `boolean`                      | Whether the user must check the switch before the owning form can be submitted.                                                                          |
+| isDisabled       | `boolean`                      | Whether the switch is disabled.                                                                                                                          |
+| isReadOnly       | `boolean`                      | Whether the switch can be checked but not changed by the user.                                                                                           |
+
+| Data attributes    | Description                                                           |
+| :----------------- | :-------------------------------------------------------------------- |
+| data-valid         | Present when the switch is valid according to the validation rules.   |
+| data-invalid       | Present when the switch is invalid according to the validation rules. |
+| data-checked       | Present when the switch is checked.                                   |
+| data-required      | Present when the switch is required.                                  |
+| data-disabled      | Present when the switch is disabled.                                  |
+| data-readonly      | Present when the switch is read only.                                 |
+| data-hover         | Present when the switch is hovered.                                   |
+| data-focus         | Present when the switch is focused.                                   |
+| data-focus-visible | Present when the switch is focused via keyboard.                      |
+
+`Switch.Input`, `Switch.Control`, `Switch.Thumb` and `Switch.Label` shares the same `data-*` attributes.
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description                    |
+| :--------------- | :----------------------------- |
+| <Kbd>Space</Kbd> | Toggles the switch on and off. |

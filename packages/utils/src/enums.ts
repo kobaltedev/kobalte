@@ -1,4 +1,5 @@
 export enum EventKey {
+  Escape = "Escape",
   Enter = "Enter",
   Tab = "Tab",
   Space = " ",

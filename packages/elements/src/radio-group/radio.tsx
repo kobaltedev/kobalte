@@ -7,7 +7,7 @@
  */
 
 import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, splitProps } from "solid-js";
+import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useFormControlContext } from "../form-control";
@@ -44,9 +44,25 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
   const formControlContext = useFormControlContext();
   const radioGroupContext = useRadioGroupContext();
 
-  props = mergeDefaultProps({ as: "label" }, props);
+  const defaultId = `kb-radio-${createUniqueId()}`;
 
-  const [local, others] = splitProps(props, ["as", "children", "value", "isDisabled"]);
+  props = mergeDefaultProps(
+    {
+      as: "label",
+      id: defaultId,
+    },
+    props
+  );
+
+  const [local, others] = splitProps(props, [
+    "as",
+    "children",
+    "value",
+    "isDisabled",
+    "aria-label",
+    "aria-labelledby",
+    "aria-describedby",
+  ]);
 
   const [isFocused, setIsFocused] = createSignal(false);
   const [isFocusVisible, setIsFocusVisible] = createSignal(false);
@@ -74,8 +90,12 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
   const context: RadioContextValue = {
     value: () => local.value,
     dataset,
+    ariaLabel: () => local["aria-label"],
+    ariaLabelledBy: () => local["aria-labelledby"],
+    ariaDescribedBy: () => local["aria-describedby"],
     isSelected,
     isDisabled,
+    generateId: part => `${others.id!}-${part}`,
     setIsFocused,
     setIsFocusVisible,
   };

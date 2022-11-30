@@ -17,12 +17,14 @@ import {
   combineProps,
   createPolymorphicComponent,
   mergeDefaultProps,
+  mergeRefs,
 } from "@kobalte/utils";
 import { createMemo, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
   CREATE_PRESS_PROP_NAMES,
+  createFocusRing,
   createPress,
   CreatePressProps,
   createTagName,
@@ -52,11 +54,13 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
 
   const [local, createPressProps, others] = splitProps(
     props,
-    ["as", "type", "isDisabled", "onClick"],
+    ["as", "ref", "type", "isDisabled", "onClick"],
     CREATE_PRESS_PROP_NAMES
   );
 
   const { isPressed, pressHandlers } = createPress<HTMLButtonElement>(createPressProps);
+
+  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
 
   const tagName = createTagName(
     () => ref,
@@ -98,7 +102,10 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       aria-disabled={!isNativeButton() && !isInput() && local.isDisabled ? true : undefined}
       data-active={isPressed() ? "" : undefined}
       data-disabled={local.isDisabled ? "" : undefined}
-      {...combineProps({ ref, onClick }, others, pressHandlers)}
+      data-focus={isFocused() ? "" : undefined}
+      data-focus-visible={isFocusVisible() ? "" : undefined}
+      {...combineProps({ onClick }, others, pressHandlers, focusRingHandlers)}
+      ref={mergeRefs(el => (ref = el), local.ref)}
     />
   );
 });
