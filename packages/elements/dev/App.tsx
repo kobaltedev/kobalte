@@ -1,11 +1,13 @@
-import { createSignal, Show } from "solid-js";
+import { ComponentProps, createSignal, Show, splitProps } from "solid-js";
 
-import { createTransition, I18nProvider, Popover } from "../src";
+import { createTransition, HoverCard, I18nProvider } from "../src";
 
-export default function App() {
+function Foo(props: ComponentProps<typeof HoverCard>) {
+  const [local, others] = splitProps(props, ["children"]);
+
   const [show, setShow] = createSignal(false);
 
-  const popoverTransition = createTransition(show, {
+  const hoverCardTransition = createTransition(show, {
     transition: {
       in: {
         opacity: "1",
@@ -22,28 +24,50 @@ export default function App() {
   });
 
   return (
+    <HoverCard
+      closeOnHoverOutside={false}
+      closeOnInteractOutside={false}
+      placement="bottom"
+      isOpen={show()}
+      onOpenChange={setShow}
+      {...others}
+    >
+      <HoverCard.Trigger class="button">Accept invite</HoverCard.Trigger>
+      <Show when={hoverCardTransition.keepMounted()}>
+        <HoverCard.Portal forceMount>
+          <HoverCard.Positioner>
+            <HoverCard.Panel class="popover" style={hoverCardTransition.style()}>
+              <HoverCard.Arrow class="arrow" />
+              <HoverCard.Title class="heading">Team meeting</HoverCard.Title>
+              <HoverCard.Description>
+                We are going to discuss what we have achieved on the project.
+              </HoverCard.Description>
+              <div>
+                <p>12 Jan 2022 18:00 to 19:00</p>
+                <p>Alert 10 minutes before start</p>
+              </div>
+              <HoverCard.CloseButton class="button">Accept</HoverCard.CloseButton>
+              {local.children}
+            </HoverCard.Panel>
+          </HoverCard.Positioner>
+        </HoverCard.Portal>
+      </Show>
+    </HoverCard>
+  );
+}
+
+export default function App() {
+  return (
     <I18nProvider>
-      <Popover placement="bottom-end" isOpen={show()} onOpenChange={setShow}>
-        <Popover.Trigger class="button mx-auto mt-96">Accept invite</Popover.Trigger>
-        <Show when={popoverTransition.keepMounted()}>
-          <Popover.Portal forceMount>
-            <Popover.Positioner>
-              <Popover.Panel class="popover" style={popoverTransition.style()}>
-                <Popover.Arrow class="arrow" />
-                <Popover.Title class="heading">Team meeting</Popover.Title>
-                <Popover.Description>
-                  We are going to discuss what we have achieved on the project.
-                </Popover.Description>
-                <div>
-                  <p>12 Jan 2022 18:00 to 19:00</p>
-                  <p>Alert 10 minutes before start</p>
-                </div>
-                <Popover.CloseButton class="button">Accept</Popover.CloseButton>
-              </Popover.Panel>
-            </Popover.Positioner>
-          </Popover.Portal>
-        </Show>
-      </Popover>
+      <Foo placement={"bottom"}>
+        <Foo placement={"right"}>
+          <Foo placement={"right"}>
+            <Foo placement={"right"}>
+              <Foo placement={"right"} />
+            </Foo>
+          </Foo>
+        </Foo>
+      </Foo>
     </I18nProvider>
   );
 }
