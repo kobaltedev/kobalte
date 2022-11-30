@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/src/useOverlayTrigger.ts
  */
 
-import { createPolymorphicComponent, mergeRefs } from "@kobalte/utils";
+import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import { DialogTrigger, DialogTriggerProps } from "../dialog/dialog-trigger";
@@ -17,6 +17,8 @@ import { usePopoverContext } from "./popover-context";
  */
 export const PopoverTrigger = createPolymorphicComponent<"button", DialogTriggerProps>(props => {
   const context = usePopoverContext();
+
+  props = mergeDefaultProps({ as: "button" }, props);
 
   const [local, others] = splitProps(props, ["ref"]);
 

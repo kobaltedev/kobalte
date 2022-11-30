@@ -4,11 +4,11 @@ import { Accessor, createMemo, createSignal, createUniqueId, ParentComponent } f
 import { createDisclosure } from "../primitives";
 import { DialogBackdrop } from "./dialog-backdrop";
 import { DialogCloseButton } from "./dialog-close-button";
-import { DialogContainer } from "./dialog-container";
 import { DialogContext, DialogContextValue, DialogDataSet } from "./dialog-context";
 import { DialogDescription } from "./dialog-description";
 import { DialogPanel } from "./dialog-panel";
 import { DialogPortal } from "./dialog-portal";
+import { DialogPositioner } from "./dialog-positioner";
 import { DialogTitle } from "./dialog-title";
 import { DialogTrigger } from "./dialog-trigger";
 
@@ -16,7 +16,7 @@ type DialogComposite = {
   Trigger: typeof DialogTrigger;
   Portal: typeof DialogPortal;
   Backdrop: typeof DialogBackdrop;
-  Container: typeof DialogContainer;
+  Positioner: typeof DialogPositioner;
   Panel: typeof DialogPanel;
   CloseButton: typeof DialogCloseButton;
   Title: typeof DialogTitle;
@@ -169,7 +169,7 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
 Dialog.Trigger = DialogTrigger;
 Dialog.Portal = DialogPortal;
 Dialog.Backdrop = DialogBackdrop;
-Dialog.Container = DialogContainer;
+Dialog.Positioner = DialogPositioner;
 Dialog.Panel = DialogPanel;
 Dialog.CloseButton = DialogCloseButton;
 Dialog.Title = DialogTitle;
