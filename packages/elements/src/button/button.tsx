@@ -78,7 +78,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
   });
 
   const isLink = createMemo(() => {
-    return tagName() === "a" && (props as any).href != null;
+    return tagName() === "a" && (others as any).href != null;
   });
 
   const isInput = createMemo(() => {

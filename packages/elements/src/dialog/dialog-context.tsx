@@ -3,7 +3,7 @@ import { Accessor, createContext, useContext } from "solid-js";
 import { CreateDisclosureResult } from "../primitives";
 
 export interface DialogDataSet {
-  "data-open": string | undefined;
+  "data-expanded": string | undefined;
 }
 
 export interface DialogContextValue extends CreateDisclosureResult {

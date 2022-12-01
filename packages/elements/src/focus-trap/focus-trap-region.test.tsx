@@ -30,7 +30,7 @@ describe("FocusTrapRegion", () => {
 
   it("should focus element with default 'initialFocusSelector' on mount", () => {
     render(() => (
-      <FocusTrapRegion trapFocus>
+      <FocusTrapRegion trapFocus autoFocus>
         <button>Button 1</button>
         <button data-autofocus>Button 2</button>
       </FocusTrapRegion>
@@ -41,7 +41,7 @@ describe("FocusTrapRegion", () => {
 
   it("should focus element with custom 'initialFocusSelector' on mount", () => {
     render(() => (
-      <FocusTrapRegion trapFocus initialFocusSelector="#first">
+      <FocusTrapRegion trapFocus autoFocus initialFocusSelector="#first">
         <button>Button 1</button>
         <button id="first">Button 2</button>
       </FocusTrapRegion>
@@ -109,7 +109,12 @@ describe("FocusTrapRegion", () => {
         <>
           <button onClick={() => setIsOpen(true)}>Open</button>
           <Show when={isOpen()}>
-            <FocusTrapRegion trapFocus restoreFocusSelector="#last" data-testid="focus-trap">
+            <FocusTrapRegion
+              trapFocus
+              restoreFocus
+              restoreFocusSelector="#last"
+              data-testid="focus-trap"
+            >
               <button onClick={() => setIsOpen(false)}>Close</button>
             </FocusTrapRegion>
           </Show>

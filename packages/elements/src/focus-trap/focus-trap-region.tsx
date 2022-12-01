@@ -32,22 +32,22 @@ export interface FocusTrapRegionProps extends ParentProps {
   /** Whether the focus trap should be active. */
   trapFocus?: boolean;
 
-  /** Whether the first focusable element should be focused once `FocusTrapRegion` mounts. */
+  /**
+   * Whether the first focusable element or the element targeted by `initialFocusSelector`
+   * should be focused once `FocusTrapRegion` mounts.
+   */
   autoFocus?: boolean;
 
-  /** Whether focus should be restored to the element that triggered the `FocusTrapRegion` once it unmounts. */
+  /**
+   * Whether focus should be restored to the element that triggered the `FocusTrapRegion`
+   * or the element targeted by `restoreFocusSelector` once it unmounts.
+   */
   restoreFocus?: boolean;
 
-  /**
-   * A query selector to retrieve the element that should receive focus once `FocusTrapRegion` mounts.
-   * This value has priority over `autoFocus`.
-   */
+  /** A query selector to retrieve the element that should receive focus once `FocusTrapRegion` mounts. */
   initialFocusSelector?: string;
 
-  /**
-   * A query selector to retrieve the element that should receive focus once `FocusTrapRegion` unmounts.
-   * This value has priority over `restoreFocus`.
-   */
+  /** A query selector to retrieve the element that should receive focus once `FocusTrapRegion` unmounts. */
   restoreFocusSelector?: string;
 }
 
@@ -77,7 +77,7 @@ export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegion
   ]);
 
   const focusInitialElement = () => {
-    if (!containerRef) {
+    if (!containerRef || !local.autoFocus) {
       return;
     }
 
@@ -91,13 +91,15 @@ export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegion
     }
 
     // fallback to first focusable element or container.
-    if (local.autoFocus) {
-      const first = getAllTabbableIn(containerRef)[0] ?? containerRef;
-      focusWithoutScrolling(first);
-    }
+    const first = getAllTabbableIn(containerRef)[0] ?? containerRef;
+    focusWithoutScrolling(first);
   };
 
   const setRestoreFocusElement = () => {
+    if (!local.restoreFocus) {
+      return;
+    }
+
     // get a reference to the requested restore focus element.
     if (local.restoreFocusSelector) {
       restoreFocusElement = document.querySelector(
@@ -107,9 +109,7 @@ export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegion
     }
 
     // get a reference to the previous active element to restore focus back.
-    if (local.restoreFocus) {
-      restoreFocusElement = getActiveElement();
-    }
+    restoreFocusElement = getActiveElement();
   };
 
   const preventRestoreFocus = () => {

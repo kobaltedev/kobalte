@@ -12,7 +12,7 @@
  * https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/focus/src/isElementVisible.ts
  */
 
-import { isFrame } from "./dom";
+import { contains, getActiveElement, isFrame } from "./dom";
 
 const FOCUSABLE_ELEMENT_SELECTOR =
   "input:not([type='hidden']):not([disabled]), select:not([disabled]), " +
@@ -120,4 +120,34 @@ function isAttributeVisible(element: Element, childElement?: Element) {
       ? element.hasAttribute("open")
       : true)
   );
+}
+
+/**
+ * Checks if `element` has focus within.
+ * Elements that are referenced by `aria-activedescendant` are also considered.
+ * @example
+ * hasFocusWithin(document.getElementById("id"));
+ */
+export function hasFocusWithin(element: Node | Element) {
+  const activeElement = getActiveElement(element);
+
+  if (!activeElement) {
+    return false;
+  }
+
+  if (!contains(element, activeElement)) {
+    const activeDescendant = activeElement.getAttribute("aria-activedescendant");
+    if (!activeDescendant) {
+      return false;
+    }
+    if (!("id" in element)) {
+      return false;
+    }
+    if (activeDescendant === element.id) {
+      return true;
+    }
+    return !!element.querySelector(`#${CSS.escape(activeDescendant)}`);
+  } else {
+    return true;
+  }
 }

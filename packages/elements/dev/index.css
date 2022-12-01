@@ -3,7 +3,7 @@
 }
 
 .button {
-  display: flex;
+  display: inline-flex;
   height: 2.5rem;
   align-items: center;
   justify-content: center;

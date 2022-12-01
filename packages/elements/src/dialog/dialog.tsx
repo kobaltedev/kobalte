@@ -4,26 +4,28 @@ import { Accessor, createMemo, createSignal, createUniqueId, ParentComponent } f
 import { createDisclosure } from "../primitives";
 import { DialogBackdrop } from "./dialog-backdrop";
 import { DialogCloseButton } from "./dialog-close-button";
-import { DialogContainer } from "./dialog-container";
 import { DialogContext, DialogContextValue, DialogDataSet } from "./dialog-context";
 import { DialogDescription } from "./dialog-description";
 import { DialogPanel } from "./dialog-panel";
 import { DialogPortal } from "./dialog-portal";
+import { DialogPositioner } from "./dialog-positioner";
 import { DialogTitle } from "./dialog-title";
 import { DialogTrigger } from "./dialog-trigger";
+import { FocusTrapRegionProps } from "../focus-trap";
+import { OverlayProps } from "../overlay";
 
 type DialogComposite = {
   Trigger: typeof DialogTrigger;
   Portal: typeof DialogPortal;
   Backdrop: typeof DialogBackdrop;
-  Container: typeof DialogContainer;
+  Positioner: typeof DialogPositioner;
   Panel: typeof DialogPanel;
   CloseButton: typeof DialogCloseButton;
   Title: typeof DialogTitle;
   Description: typeof DialogDescription;
 };
 
-export interface DialogProps {
+export interface DialogProps extends Omit<OverlayProps, "isOpen" | "onClose"> {
   /** The controlled open state of the dialog. */
   isOpen?: boolean;
 
@@ -42,50 +44,6 @@ export interface DialogProps {
    * If no id prop is provided, a generated id will be used.
    */
   id?: string;
-
-  /**
-   * Whether the dialog should block interaction with outside elements,
-   * and be the only visible content for screen readers.
-   */
-  isModal?: boolean;
-
-  /** Whether the scroll should be locked when the dialog is open. */
-  preventScroll?: boolean;
-
-  /** Whether to close the dialog when the user interacts outside it. */
-  closeOnInteractOutside?: boolean;
-
-  /** Whether pressing the escape key should close the dialog. */
-  closeOnEsc?: boolean;
-
-  /**
-   * When user interacts with the argument element outside the dialog ref,
-   * return true if the dialog should be closed. This gives you a chance to filter
-   * out interaction with elements that should not dismiss the dialog.
-   * By default, the dialog will always close on interaction outside.
-   */
-  shouldCloseOnInteractOutside?: (element: Element) => boolean;
-
-  /** Whether the focus should be locked inside the dialog. */
-  trapFocus?: boolean;
-
-  /** Whether the first focusable element should be focused once the `Dialog.Panel` mounts. */
-  autoFocus?: boolean;
-
-  /** Whether focus should be restored to the element that triggered the `Dialog` once  the `Dialog.Panel` unmounts. */
-  restoreFocus?: boolean;
-
-  /**
-   * A query selector to retrieve the element that should receive focus once the `Dialog.Panel` mounts.
-   * This value has priority over `autoFocus`.
-   */
-  initialFocusSelector?: string;
-
-  /**
-   * A query selector to retrieve the element that should receive focus once the `Dialog.Panel` unmounts.
-   * This value has priority over `restoreFocus`.
-   */
-  restoreFocusSelector?: string;
 
   "aria-label"?: string;
   "aria-labelledby"?: string;
@@ -122,7 +80,7 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
   });
 
   const dataset: Accessor<DialogDataSet> = createMemo(() => ({
-    "data-open": state.isOpen() ? "" : undefined,
+    "data-expanded": state.isOpen() ? "" : undefined,
   }));
 
   const context: DialogContextValue = {
@@ -169,7 +127,7 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
 Dialog.Trigger = DialogTrigger;
 Dialog.Portal = DialogPortal;
 Dialog.Backdrop = DialogBackdrop;
-Dialog.Container = DialogContainer;
+Dialog.Positioner = DialogPositioner;
 Dialog.Panel = DialogPanel;
 Dialog.CloseButton = DialogCloseButton;
 Dialog.Title = DialogTitle;

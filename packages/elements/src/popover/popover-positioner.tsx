@@ -1,20 +1,14 @@
 import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 
 import { useDialogContext, useDialogPortalContext } from "../dialog";
 import { usePopoverContext } from "./popover-context";
-import { Dynamic } from "solid-js/web";
+import { DialogPositioner, DialogPositionerProps } from "../dialog/dialog-positioner";
 
-export interface PopoverPositionerProps {
+export interface PopoverPositionerProps extends DialogPositionerProps {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
-
-  /**
-   * Used to force mounting when more control is needed.
-   * Useful when controlling animation with SolidJS animation libraries.
-   * It inherits from `Popover.Portal`.
-   */
-  forceMount?: boolean;
 }
 
 /**
@@ -22,30 +16,24 @@ export interface PopoverPositionerProps {
  */
 export const PopoverPositioner = createPolymorphicComponent<"div", PopoverPositionerProps>(
   props => {
-    const dialogContext = useDialogContext();
-    const portalContext = useDialogPortalContext();
     const popoverContext = usePopoverContext();
 
     props = mergeDefaultProps({ as: "div" }, props);
 
-    const [local, others] = splitProps(props, ["as", "ref", "style", "forceMount"]);
+    const [local, others] = splitProps(props, ["ref", "style"]);
 
     return (
-      <Show when={local.forceMount || portalContext?.forceMount() || dialogContext.isOpen()}>
-        <Dynamic
-          component={local.as}
-          ref={mergeRefs(popoverContext.setPositionerRef, local.ref)}
-          role="presentation"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            ...local.style,
-          }}
-          {...dialogContext.dataset()}
-          {...others}
-        />
-      </Show>
+      <DialogPositioner
+        ref={mergeRefs(popoverContext.setPositionerRef, local.ref)}
+        role="presentation"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          ...local.style,
+        }}
+        {...others}
+      />
     );
   }
 );
