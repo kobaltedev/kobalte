@@ -5,79 +5,20 @@
 html,
 body,
 #root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
 }
 
-.button {
+.collection {
   display: flex;
-  height: 2.5rem;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  white-space: nowrap;
-  border-style: none;
-  background-color: hsl(204 100% 40%);
-  padding-left: 1rem;
-  padding-right: 1rem;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  color: hsl(204 20% 100%);
-  text-decoration-line: none;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  border-radius: 9999px;
-  font-weight: 600;
-}
-
-.button:hover {
-  background-color: hsl(204 100% 32%);
-}
-
-.anchor {
-  font-weight: 500;
-  color: hsl(204 100% 35%);
-  text-decoration-line: underline;
-  text-underline-offset: 0.25em;
-  text-decoration-skip-ink: none;
-}
-
-.anchor:hover {
-  text-decoration-thickness: 3px;
-}
-
-.hovercard {
-  position: relative;
-  z-index: 50;
-  display: flex;
-  width: 310px;
+  min-width: 240px;
   flex-direction: column;
   gap: 0.5rem;
   border-radius: 0.5rem;
-  border-width: 1px;
-  border-style: solid;
-  border-color: hsl(204 20% 88%);
   background-color: hsl(204 20% 100%);
   padding: 1rem;
-  color: hsl(204 10% 10%);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-}
-
-.button:focus-visible,
-.button[data-focus-visible],
-.hovercard:focus-visible,
-.hovercard[data-focus-visible] {
-  outline: 2px solid hsl(204 100% 40%);
-  outline-offset: 2px;
-}
-
-.avatar {
-  width: 4rem;
-  border-radius: 9999px;
-}
-
-.username {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  font-weight: 600;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  color: #1a1a1a;
 }

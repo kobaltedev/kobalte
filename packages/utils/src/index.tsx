@@ -1,3 +1,4 @@
+export * from "./array";
 export * from "./assertion";
 export * from "./create-global-listeners";
 export * from "./dom";
@@ -5,10 +6,10 @@ export * from "./enums";
 export * from "./events";
 export * from "./external";
 export * from "./focus-without-scrolling";
-export * from "./function";
 export * from "./get-scroll-parent";
 export * from "./inputs";
 export * from "./is-virtual-event";
+export * from "./noop";
 export * from "./platform";
 export * from "./polymorphic";
 export * from "./props";

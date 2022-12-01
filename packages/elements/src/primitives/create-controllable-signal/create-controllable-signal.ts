@@ -45,7 +45,7 @@ export function createControllableSignal<T>(props: CreateControllableSignalProps
 }
 
 /**
- * Creates a simple reactive boolean state with a getter, setter and a fallback value of `false`,
+ * Creates a simple reactive Boolean state with a getter, setter and a fallback value of `false`,
  * that can be controlled with `value` and `onChange` props.
  */
 export function createControllableBooleanSignal(props: CreateControllableSignalProps<boolean>) {
@@ -57,13 +57,25 @@ export function createControllableBooleanSignal(props: CreateControllableSignalP
 }
 
 /**
- * Creates a simple reactive array state with a getter, setter and a fallback value of `[]`,
+ * Creates a simple reactive Array state with a getter, setter and a fallback value of `[]`,
  * that can be controlled with `value` and `onChange` props.
  */
 export function createControllableArraySignal<T>(props: CreateControllableSignalProps<Array<T>>) {
   const [_value, setValue] = createControllableSignal(props);
 
   const value: Accessor<Array<T>> = () => _value() ?? [];
+
+  return [value, setValue] as const;
+}
+
+/**
+ * Creates a simple reactive Set state with a getter, setter and a fallback value of `Set()`,
+ * that can be controlled with `value` and `onChange` props.
+ */
+export function createControllableSetSignal<T>(props: CreateControllableSignalProps<Set<T>>) {
+  const [_value, setValue] = createControllableSignal(props);
+
+  const value: Accessor<Set<T>> = () => _value() ?? new Set();
 
   return [value, setValue] as const;
 }
