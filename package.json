@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
+    "build:libs": "pnpm -F \\!docs build && pnpm i",
     "changeset": "changeset",
     "ci:release": "pnpm build && changeset publish",
     "ci:version": "changeset version && pnpm i --no-frozen-lockfile && git add .",

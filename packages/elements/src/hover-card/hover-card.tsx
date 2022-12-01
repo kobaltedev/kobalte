@@ -73,6 +73,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       closeOnHoverOutside: true,
       closeOnInteractOutside: true,
       closeOnEsc: true,
+      trapFocus: false,
       autoFocus: false,
       restoreFocus: false,
     },
@@ -102,16 +103,6 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     onChange: value => local.onOpenChange?.(value),
   });
 
-  const clearOpenTimeout = () => {
-    window.clearTimeout(openTimeoutId);
-    openTimeoutId = undefined;
-  };
-
-  const clearCloseTimeout = () => {
-    window.clearTimeout(closeTimeoutId);
-    closeTimeoutId = undefined;
-  };
-
   const openWithDelay = () => {
     openTimeoutId = window.setTimeout(() => {
       openTimeoutId = undefined;
@@ -124,6 +115,16 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       closeTimeoutId = undefined;
       setIsOpen(false);
     }, local.closeDelay);
+  };
+
+  const cancelOpening = () => {
+    window.clearTimeout(openTimeoutId);
+    openTimeoutId = undefined;
+  };
+
+  const cancelClosing = () => {
+    window.clearTimeout(closeTimeoutId);
+    closeTimeoutId = undefined;
   };
 
   const registerNestedHoverCard = (element: HTMLElement) => {
@@ -152,6 +153,12 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     onCleanup(parentContext.registerNestedHoverCard(panelEl));
   });
 
+  onCleanup(() => {
+    // cleanup all timeout on unmount.
+    cancelOpening();
+    cancelClosing();
+  });
+
   const context: HoverCardContextValue = {
     isOpen,
     closeOnHoverOutside: () => local.closeOnHoverOutside,
@@ -160,10 +167,11 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     closeTimeoutId: () => closeTimeoutId,
     openWithDelay,
     closeWithDelay,
-    close: () => setIsOpen(false),
-    clearOpenTimeout,
-    clearCloseTimeout,
+    closeImmediately: () => setIsOpen(false),
+    cancelOpening,
+    cancelClosing,
     registerNestedHoverCard,
+    panelRef,
     triggerRef,
     nestedHoverCardRefs,
     setTriggerRef,

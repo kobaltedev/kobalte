@@ -6,6 +6,8 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/__utils/polygon.ts
  */
 
+import { BasePlacement, Placement } from "../popover/utils";
+
 export type Point = [number, number];
 export type Polygon = Point[];
 
@@ -61,25 +63,35 @@ export function isPointInPolygon(point: Point, polygon: Polygon) {
   return inside;
 }
 
-function getEnterPointPlacement(enterPoint: Point, rect: DOMRect) {
-  const { top, right, bottom, left } = rect;
-  const [x, y] = enterPoint;
-  const placementX = x < left ? "left" : x > right ? "right" : null;
-  const placementY = y < top ? "top" : y > bottom ? "bottom" : null;
-  return [placementX, placementY] as const;
-}
+export function getElementPolygon(panelEl: Element, triggerEl: Element, placement: Placement) {
+  const basePlacement = placement.split("-")[0] as BasePlacement;
 
-export function getElementPolygon(element: Element, enterPoint: Point) {
-  const rect = element.getBoundingClientRect();
-  const { top, right, bottom, left } = rect;
-  const [x, y] = getEnterPointPlacement(enterPoint, rect);
-  const polygon = [enterPoint];
+  const panelRect = panelEl.getBoundingClientRect();
+  const triggerRect = triggerEl.getBoundingClientRect();
+
+  const { top, right, bottom, left } = panelRect;
+
+  const x = basePlacement === "left" ? "right" : basePlacement === "right" ? "left" : null;
+  const y = basePlacement === "top" ? "bottom" : basePlacement === "bottom" ? "top" : null;
+
+  const polygon: Polygon = [];
+
+  if (x) {
+    polygon.push([x === "right" ? triggerRect.left : triggerRect.right, triggerRect.top]);
+  }
+
+  if (y) {
+    polygon.push([triggerRect.left, y === "top" ? triggerRect.bottom : triggerRect.top]);
+  }
+
   if (x) {
     if (y !== "top") {
       polygon.push([x === "left" ? left : right, top]);
     }
+
     polygon.push([x === "left" ? right : left, top]);
     polygon.push([x === "left" ? right : left, bottom]);
+
     if (y !== "bottom") {
       polygon.push([x === "left" ? left : right, bottom]);
     }
@@ -94,5 +106,14 @@ export function getElementPolygon(element: Element, enterPoint: Point) {
     polygon.push([right, top]);
     polygon.push([right, bottom]);
   }
+
+  if (x) {
+    polygon.push([x === "right" ? triggerRect.left : triggerRect.right, triggerRect.bottom]);
+  }
+
+  if (y) {
+    polygon.push([triggerRect.right, y === "top" ? triggerRect.bottom : triggerRect.top]);
+  }
+
   return polygon;
 }

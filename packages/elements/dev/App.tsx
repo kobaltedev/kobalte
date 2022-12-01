@@ -24,28 +24,24 @@ function Foo(props: ComponentProps<typeof HoverCard>) {
   });
 
   return (
-    <HoverCard
-      closeOnHoverOutside={false}
-      closeOnInteractOutside={false}
-      placement="bottom"
-      isOpen={show()}
-      onOpenChange={setShow}
-      {...others}
-    >
-      <HoverCard.Trigger class="button">Accept invite</HoverCard.Trigger>
+    <HoverCard gutter={16} isOpen={show()} onOpenChange={setShow} {...others}>
+      <HoverCard.Trigger class="anchor" href="https://twitter.com/ariakitjs">
+        @ariakitjs
+      </HoverCard.Trigger>
       <Show when={hoverCardTransition.keepMounted()}>
         <HoverCard.Portal forceMount>
           <HoverCard.Positioner>
-            <HoverCard.Panel class="popover" style={hoverCardTransition.style()}>
-              <HoverCard.Arrow class="arrow" />
-              <HoverCard.Title class="heading">Team meeting</HoverCard.Title>
-              <HoverCard.Description>
-                We are going to discuss what we have achieved on the project.
-              </HoverCard.Description>
-              <div>
-                <p>12 Jan 2022 18:00 to 19:00</p>
-                <p>Alert 10 minutes before start</p>
-              </div>
+            <HoverCard.Panel class="hovercard" style={hoverCardTransition.style()}>
+              <img
+                src="https://pbs.twimg.com/profile_images/1547936373243490306/dSn6Am0o_400x400.jpg"
+                alt="Ariakit"
+                class="avatar"
+              />
+              <HoverCard.Title class="username">Ariakit</HoverCard.Title>
+              <p>Toolkit for building accessible web apps with React.</p>
+              <a href="https://twitter.com/ariakitjs" class="button">
+                Follow
+              </a>
               <HoverCard.CloseButton class="button">Accept</HoverCard.CloseButton>
               {local.children}
             </HoverCard.Panel>
@@ -59,15 +55,23 @@ function Foo(props: ComponentProps<typeof HoverCard>) {
 export default function App() {
   return (
     <I18nProvider>
-      <Foo placement={"bottom"}>
-        <Foo placement={"right"}>
+      <div class="h-full w-full flex flex-col items-center justify-evenly">
+        <Foo placement={"bottom"}>
           <Foo placement={"right"}>
             <Foo placement={"right"}>
-              <Foo placement={"right"} />
+              <Foo placement={"right"}>
+                <Foo placement={"right"} />
+              </Foo>
             </Foo>
           </Foo>
         </Foo>
-      </Foo>
+        <div class="flex items-center space-x-4">
+          <Foo placement="top" />
+          <Foo placement="right" />
+          <Foo placement="bottom" />
+          <Foo placement="left" />
+        </div>
+      </div>
     </I18nProvider>
   );
 }

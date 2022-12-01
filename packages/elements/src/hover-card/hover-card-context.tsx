@@ -8,10 +8,11 @@ export interface HoverCardContextValue {
   closeTimeoutId: Accessor<number | undefined>;
   openWithDelay: () => void;
   closeWithDelay: () => void;
-  close: () => void;
-  clearOpenTimeout: () => void;
-  clearCloseTimeout: () => void;
+  closeImmediately: () => void;
+  cancelOpening: () => void;
+  cancelClosing: () => void;
   triggerRef: Accessor<HTMLElement | undefined>;
+  panelRef: Accessor<HTMLElement | undefined>;
   nestedHoverCardRefs: Accessor<HTMLElement[]>;
   registerNestedHoverCard: (element: HTMLElement) => () => void;
   setTriggerRef: (el: HTMLElement) => void;

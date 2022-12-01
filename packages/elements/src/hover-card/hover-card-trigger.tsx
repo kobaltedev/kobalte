@@ -17,40 +17,106 @@ import { JSX, onCleanup, splitProps } from "solid-js";
 import { useDialogContext } from "../dialog";
 import { Link, LinkProps } from "../link";
 import { useHoverCardContext } from "./hover-card-context";
+import { isMovingOnHovercard } from "./utils";
 
 /**
  * The link that opens the hover card when hovered
  */
 export const HoverCardTrigger = createPolymorphicComponent<"a", LinkProps>(props => {
+  let ref: HTMLAnchorElement | undefined;
+
   const dialogContext = useDialogContext();
   const context = useHoverCardContext();
 
   props = mergeDefaultProps({ as: "a" }, props);
 
-  const [local, others] = splitProps(props, ["ref", "onPointerEnter", "onPointerLeave"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "onPointerEnter",
+    "onPointerLeave",
+    "onFocus",
+    "onBlur",
+    "onTouchStart",
+  ]);
 
   const onPointerEnter: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> = e => {
     callHandler(e, local.onPointerEnter);
 
-    if (others.isDisabled || e.defaultPrevented || context.openTimeoutId()) {
+    if (e.pointerType === "touch" || others.isDisabled || e.defaultPrevented) {
       return;
     }
 
-    context.openWithDelay();
+    context.cancelClosing();
+
+    if (!context.isOpen()) {
+      context.openWithDelay();
+    }
   };
 
   const onPointerLeave: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> = e => {
     callHandler(e, local.onPointerLeave);
-    context.clearOpenTimeout();
+
+    if (e.pointerType === "touch") {
+      return;
+    }
+
+    context.cancelOpening();
   };
 
-  onCleanup(context.clearOpenTimeout);
+  const onFocus: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = e => {
+    callHandler(e, local.onFocus);
+
+    if (others.isDisabled || e.defaultPrevented) {
+      return;
+    }
+
+    context.cancelClosing();
+
+    if (!context.isOpen()) {
+      context.openWithDelay();
+    }
+  };
+
+  const onBlur: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = e => {
+    callHandler(e, local.onBlur);
+
+    context.cancelOpening();
+
+    const relatedTarget = e.relatedTarget as Node | undefined;
+
+    const panelEl = context.panelRef();
+
+    // Don't close if the hovercard element (or nested ones) has focus within.
+    if (
+      panelEl &&
+      isMovingOnHovercard(relatedTarget, panelEl, ref, context.nestedHoverCardRefs())
+    ) {
+      return;
+    }
+
+    context.closeWithDelay();
+  };
+
+  const onTouchStart: JSX.EventHandlerUnion<HTMLAnchorElement, TouchEvent> = e => {
+    callHandler(e, local.onTouchStart);
+
+    // prevent focus event on touch devices
+    e.preventDefault();
+  };
+
+  onCleanup(context.cancelOpening);
 
   return (
     <Link
-      ref={mergeRefs(context.setTriggerRef, local.ref)}
+      ref={mergeRefs(el => {
+        ref = el;
+        context.setTriggerRef(el);
+      }, local.ref)}
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      onTouchStart={onTouchStart}
       {...dialogContext.dataset()}
       {...others}
     />
