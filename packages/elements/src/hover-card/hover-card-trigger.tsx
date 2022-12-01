@@ -17,14 +17,11 @@ import { JSX, onCleanup, splitProps } from "solid-js";
 import { useDialogContext } from "../dialog";
 import { Link, LinkProps } from "../link";
 import { useHoverCardContext } from "./hover-card-context";
-import { isMovingOnHovercard } from "./utils";
 
 /**
  * The link that opens the hover card when hovered
  */
 export const HoverCardTrigger = createPolymorphicComponent<"a", LinkProps>(props => {
-  let ref: HTMLAnchorElement | undefined;
-
   const dialogContext = useDialogContext();
   const context = useHoverCardContext();
 
@@ -84,13 +81,8 @@ export const HoverCardTrigger = createPolymorphicComponent<"a", LinkProps>(props
 
     const relatedTarget = e.relatedTarget as Node | undefined;
 
-    const panelEl = context.panelRef();
-
     // Don't close if the hovercard element (or nested ones) has focus within.
-    if (
-      panelEl &&
-      isMovingOnHovercard(relatedTarget, panelEl, ref, context.nestedHoverCardRefs())
-    ) {
+    if (context.isTargetOnHoverCard(relatedTarget)) {
       return;
     }
 
@@ -108,10 +100,7 @@ export const HoverCardTrigger = createPolymorphicComponent<"a", LinkProps>(props
 
   return (
     <Link
-      ref={mergeRefs(el => {
-        ref = el;
-        context.setTriggerRef(el);
-      }, local.ref)}
+      ref={mergeRefs(context.setTriggerRef, local.ref)}
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
       onFocus={onFocus}

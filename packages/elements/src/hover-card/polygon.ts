@@ -4,6 +4,7 @@
  *
  * Credits to the Ariakit team:
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/__utils/polygon.ts
+ * https://github.com/ariakit/ariakit/blob/f2a96973de523d67e41eec983263936c489ef3e2/packages/ariakit/src/hovercard/__utils/debug-polygon.ts
  */
 
 import { BasePlacement, Placement } from "../popover/utils";
@@ -69,51 +70,79 @@ export function getElementPolygon(panelEl: Element, triggerEl: Element, placemen
   const panelRect = panelEl.getBoundingClientRect();
   const triggerRect = triggerEl.getBoundingClientRect();
 
-  const { top, right, bottom, left } = panelRect;
-
-  const x = basePlacement === "left" ? "right" : basePlacement === "right" ? "left" : null;
-  const y = basePlacement === "top" ? "bottom" : basePlacement === "bottom" ? "top" : null;
-
   const polygon: Polygon = [];
 
-  if (x) {
-    polygon.push([x === "right" ? triggerRect.left : triggerRect.right, triggerRect.top]);
-  }
+  const triggerCenterX = triggerRect.left + triggerRect.width / 2;
+  const triggerCenterY = triggerRect.top + triggerRect.height / 2;
 
-  if (y) {
-    polygon.push([triggerRect.left, y === "top" ? triggerRect.bottom : triggerRect.top]);
-  }
-
-  if (x) {
-    if (y !== "top") {
-      polygon.push([x === "left" ? left : right, top]);
-    }
-
-    polygon.push([x === "left" ? right : left, top]);
-    polygon.push([x === "left" ? right : left, bottom]);
-
-    if (y !== "bottom") {
-      polygon.push([x === "left" ? left : right, bottom]);
-    }
-  } else if (y === "top") {
-    polygon.push([left, top]);
-    polygon.push([left, bottom]);
-    polygon.push([right, bottom]);
-    polygon.push([right, top]);
-  } else {
-    polygon.push([left, bottom]);
-    polygon.push([left, top]);
-    polygon.push([right, top]);
-    polygon.push([right, bottom]);
-  }
-
-  if (x) {
-    polygon.push([x === "right" ? triggerRect.left : triggerRect.right, triggerRect.bottom]);
-  }
-
-  if (y) {
-    polygon.push([triggerRect.right, y === "top" ? triggerRect.bottom : triggerRect.top]);
+  switch (basePlacement) {
+    case "top":
+      polygon.push([triggerRect.left, triggerCenterY]);
+      polygon.push([panelRect.left, panelRect.bottom]);
+      polygon.push([panelRect.left, panelRect.top]);
+      polygon.push([panelRect.right, panelRect.top]);
+      polygon.push([panelRect.right, panelRect.bottom]);
+      polygon.push([triggerRect.right, triggerCenterY]);
+      break;
+    case "right":
+      polygon.push([triggerCenterX, triggerRect.top]);
+      polygon.push([panelRect.left, panelRect.top]);
+      polygon.push([panelRect.right, panelRect.top]);
+      polygon.push([panelRect.right, panelRect.bottom]);
+      polygon.push([panelRect.left, panelRect.bottom]);
+      polygon.push([triggerCenterX, triggerRect.bottom]);
+      break;
+    case "bottom":
+      polygon.push([triggerRect.left, triggerCenterY]);
+      polygon.push([panelRect.left, panelRect.top]);
+      polygon.push([panelRect.left, panelRect.bottom]);
+      polygon.push([panelRect.right, panelRect.bottom]);
+      polygon.push([panelRect.right, panelRect.top]);
+      polygon.push([triggerRect.right, triggerCenterY]);
+      break;
+    case "left":
+      polygon.push([triggerCenterX, triggerRect.top]);
+      polygon.push([panelRect.right, panelRect.top]);
+      polygon.push([panelRect.left, panelRect.top]);
+      polygon.push([panelRect.left, panelRect.bottom]);
+      polygon.push([panelRect.right, panelRect.bottom]);
+      polygon.push([triggerCenterX, triggerRect.bottom]);
+      break;
   }
 
   return polygon;
+}
+
+//
+
+function getPolygon() {
+  const id = "debug-polygon";
+  const existingPolygon = document.getElementById(id);
+  if (existingPolygon) {
+    return existingPolygon;
+  }
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.style.top = "0";
+  svg.style.left = "0";
+  svg.style.width = "100%";
+  svg.style.height = "100%";
+  svg.style.fill = "green";
+  svg.style.opacity = "0.2";
+  svg.style.position = "fixed";
+  svg.style.pointerEvents = "none";
+  svg.style.zIndex = "999999";
+  const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+  polygon.setAttribute("id", id);
+  polygon.setAttribute("points", "0,0 0,0");
+  svg.appendChild(polygon);
+  document.body.appendChild(svg);
+  return polygon;
+}
+
+export function debugPolygon(polygon: Polygon) {
+  const polygonElement = getPolygon();
+  const points = polygon.map(point => point.join(",")).join(" ");
+  polygonElement.setAttribute("points", points);
+  // Return SVG element
+  return polygonElement.parentElement;
 }

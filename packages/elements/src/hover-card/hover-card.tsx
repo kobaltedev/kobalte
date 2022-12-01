@@ -6,9 +6,9 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard.tsx
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
+import { createGlobalListeners, EventKey, mergeDefaultProps } from "@kobalte/utils";
 import {
-  createRenderEffect,
+  createEffect,
   createSignal,
   createUniqueId,
   onCleanup,
@@ -20,9 +20,10 @@ import { DialogCloseButton } from "../dialog/dialog-close-button";
 import { DialogDescription } from "../dialog/dialog-description";
 import { DialogPortal } from "../dialog/dialog-portal";
 import { DialogTitle } from "../dialog/dialog-title";
-import { Popover, PopoverProps } from "../popover";
+import { Popover, PopoverFloatingProps } from "../popover";
 import { PopoverArrow } from "../popover/popover-arrow";
 import { PopoverPositioner } from "../popover/popover-positioner";
+import { Placement } from "../popover/utils";
 import { createControllableBooleanSignal } from "../primitives";
 import {
   HoverCardContext,
@@ -31,6 +32,8 @@ import {
 } from "./hover-card-context";
 import { HoverCardPanel } from "./hover-card-panel";
 import { HoverCardTrigger } from "./hover-card-trigger";
+import { getElementPolygon, getEventPoint, isPointInPolygon } from "./polygon";
+import { isMovingOnHoverCard } from "./utils";
 
 type HoverCardComposite = {
   Trigger: typeof HoverCardTrigger;
@@ -45,15 +48,40 @@ type HoverCardComposite = {
   Description: typeof DialogDescription;
 };
 
-export interface HoverCardProps extends Omit<PopoverProps, "getAnchorRect" | "anchorRef"> {
-  /** The duration from when the mouse enters the trigger until the hover card opens. */
+export interface HoverCardProps extends PopoverFloatingProps {
+  /** The controlled open state of the hovercard. */
+  isOpen?: boolean;
+
+  /**
+   * The default open state when initially rendered.
+   * Useful when you do not need to control the open state.
+   */
+  defaultIsOpen?: boolean;
+
+  /** Event handler called when the open state of the hovercard changes. */
+  onOpenChange?: (isOpen: boolean) => void;
+
+  /**
+   * A unique identifier for the component.
+   * The id is used to generate id attributes for nested components.
+   * If no id prop is provided, a generated id will be used.
+   */
+  id?: string;
+
+  /** The duration from when the mouse enters the trigger until the hovercard opens. */
   openDelay?: number;
 
-  /** The duration from when the mouse leaves the trigger or content until the hover card closes. */
+  /** The duration from when the mouse leaves the trigger or content until the hovercard closes. */
   closeDelay?: number;
 
-  /** Whether to close the hover card when the user cursor move outside it. */
+  /** Whether to close the hovercard when the user cursor move outside it. */
   closeOnHoverOutside?: boolean;
+
+  /** Whether pressing the escape key should close the hovercard. */
+  closeOnEsc?: boolean;
+
+  /** Whether to close the hover card even if the user cursor is inside the safe area between the trigger and hovercard. */
+  ignoreSafeArea?: boolean;
 }
 
 /**
@@ -69,13 +97,9 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       id: defaultId,
       openDelay: 700,
       closeDelay: 300,
-      isModal: false,
+      placement: "bottom",
       closeOnHoverOutside: true,
-      closeOnInteractOutside: true,
       closeOnEsc: true,
-      trapFocus: false,
-      autoFocus: false,
-      restoreFocus: false,
     },
     props
   );
@@ -88,6 +112,8 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     "openDelay",
     "closeDelay",
     "closeOnHoverOutside",
+    "closeOnEsc",
+    "ignoreSafeArea",
   ]);
 
   let openTimeoutId: number | undefined;
@@ -96,12 +122,15 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   const [nestedHoverCardRefs, setNestedHoverCardRefs] = createSignal<HTMLElement[]>([]);
   const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
   const [panelRef, setPanelRef] = createSignal<HTMLElement>();
+  const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(others.placement!);
 
   const [isOpen, setIsOpen] = createControllableBooleanSignal({
     value: () => local.isOpen,
     defaultValue: () => local.defaultIsOpen,
     onChange: value => local.onOpenChange?.(value),
   });
+
+  const { addGlobalListener, removeGlobalListener } = createGlobalListeners();
 
   const openWithDelay = () => {
     openTimeoutId = window.setTimeout(() => {
@@ -127,6 +156,21 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     closeTimeoutId = undefined;
   };
 
+  const isTargetOnHoverCard = (target: Node | undefined) => {
+    return isMovingOnHoverCard(target, panelRef(), triggerRef(), nestedHoverCardRefs());
+  };
+
+  const getPolygonSafeArea = (placement: Placement) => {
+    const triggerEl = triggerRef();
+    const panelEl = panelRef();
+
+    if (!triggerEl || !panelEl) {
+      return;
+    }
+
+    return getElementPolygon(panelEl, triggerEl, placement);
+  };
+
   const registerNestedHoverCard = (element: HTMLElement) => {
     setNestedHoverCardRefs(prevElements => [...prevElements, element]);
 
@@ -138,9 +182,52 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     };
   };
 
-  // Register the hover card as a nested hover card on the parent hover card if it's not a modal.
-  createRenderEffect(() => {
-    if (others.isModal || !isOpen()) {
+  const onGlobalEscapeKeyDown = (event: KeyboardEvent) => {
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    if (event.key === EventKey.Escape && local.closeOnEsc) {
+      setIsOpen(false);
+    }
+  };
+
+  const onGlobalPointerMove = (event: PointerEvent) => {
+    const target = event.target as Node | undefined;
+
+    // Don't close if the hovercard element has focus within or the mouse is moving through valid hovercard elements.
+    if (isTargetOnHoverCard(target)) {
+      cancelClosing();
+      return;
+    }
+
+    if (!local.ignoreSafeArea) {
+      const polygon = getPolygonSafeArea(currentPlacement());
+
+      //Don't close if the current's event mouse position is inside the polygon safe area.
+      if (polygon && isPointInPolygon(getEventPoint(event), polygon)) {
+        cancelClosing();
+        return;
+      }
+    }
+
+    if (!local.closeOnHoverOutside) {
+      cancelClosing();
+      return;
+    }
+
+    // If there's already a scheduled timeout to hide the hovercard, we do nothing.
+    if (closeTimeoutId) {
+      return;
+    }
+
+    // Otherwise, hide the hovercard after the close delay.
+    closeWithDelay();
+  };
+
+  // Register the hover card as a nested hover card on the parent hover card.
+  createEffect(() => {
+    if (!isOpen()) {
       return;
     }
 
@@ -153,6 +240,27 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     onCleanup(parentContext.registerNestedHoverCard(panelEl));
   });
 
+  createEffect(() => {
+    if (!isOpen()) {
+      return;
+    }
+
+    // Hide on Escape/Control. Popover already handles this, but only when the
+    // panel or the disclosure elements are focused. Since the
+    // hovercard, by default, does not receive focus when it's shown, we need to
+    // handle this globally here.
+    addGlobalListener(document, "keydown", onGlobalEscapeKeyDown);
+
+    // Checks whether the mouse is moving toward the hovercard.
+    // If not, hide the card after the close delay.
+    addGlobalListener(document, "pointermove", onGlobalPointerMove, true);
+
+    onCleanup(() => {
+      removeGlobalListener(document, "keydown", onGlobalEscapeKeyDown);
+      removeGlobalListener(document, "pointermove", onGlobalPointerMove, true);
+    });
+  });
+
   onCleanup(() => {
     // cleanup all timeout on unmount.
     cancelOpening();
@@ -161,25 +269,31 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
 
   const context: HoverCardContextValue = {
     isOpen,
-    closeOnHoverOutside: () => local.closeOnHoverOutside,
-    closeOnEsc: () => others.closeOnEsc,
-    openTimeoutId: () => openTimeoutId,
-    closeTimeoutId: () => closeTimeoutId,
     openWithDelay,
     closeWithDelay,
-    closeImmediately: () => setIsOpen(false),
     cancelOpening,
     cancelClosing,
+    isTargetOnHoverCard,
     registerNestedHoverCard,
-    panelRef,
-    triggerRef,
-    nestedHoverCardRefs,
     setTriggerRef,
     setPanelRef,
   };
 
   return (
-    <Popover isOpen={isOpen()} onOpenChange={setIsOpen} anchorRef={triggerRef} {...others}>
+    <Popover
+      isOpen={isOpen()}
+      onOpenChange={setIsOpen}
+      anchorRef={triggerRef}
+      onCurrentPlacementChange={setCurrentPlacement}
+      closeOnInteractOutside={local.closeOnHoverOutside}
+      closeOnEsc={local.closeOnEsc}
+      isModal={false}
+      preventScroll={false}
+      trapFocus={false}
+      autoFocus={false}
+      restoreFocus={false}
+      {...others}
+    >
       <HoverCardContext.Provider value={context}>{local.children}</HoverCardContext.Provider>
     </Popover>
   );

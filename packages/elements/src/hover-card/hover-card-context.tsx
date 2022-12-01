@@ -2,18 +2,11 @@ import { Accessor, createContext, useContext } from "solid-js";
 
 export interface HoverCardContextValue {
   isOpen: Accessor<boolean>;
-  closeOnEsc: Accessor<boolean | undefined>;
-  closeOnHoverOutside: Accessor<boolean | undefined>;
-  openTimeoutId: Accessor<number | undefined>;
-  closeTimeoutId: Accessor<number | undefined>;
   openWithDelay: () => void;
   closeWithDelay: () => void;
-  closeImmediately: () => void;
   cancelOpening: () => void;
   cancelClosing: () => void;
-  triggerRef: Accessor<HTMLElement | undefined>;
-  panelRef: Accessor<HTMLElement | undefined>;
-  nestedHoverCardRefs: Accessor<HTMLElement[]>;
+  isTargetOnHoverCard: (target: Node | undefined) => boolean;
   registerNestedHoverCard: (element: HTMLElement) => () => void;
   setTriggerRef: (el: HTMLElement) => void;
   setPanelRef: (el: HTMLElement) => void;
