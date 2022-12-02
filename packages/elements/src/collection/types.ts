@@ -8,7 +8,7 @@ export interface CollectionItem<ItemSource> {
   rawValue: ItemSource;
 
   /** A string value for the item, used for features like typeahead. */
-  textValue?: string;
+  textValue: string;
 }
 
 export interface CollectionSection<SectionSource, ItemSource> {
@@ -82,11 +82,11 @@ export interface CollectionNode<T> {
   /** The level of depth this node is at in the hierarchy. */
   level: number;
 
+  /** A string value for this node, used for features like typeahead. */
+  textValue: string;
+
   /** The function to render the contents of this node (e.g. JSX). */
   //render: () => JSX.Element;
-
-  /** A string value for this node, used for features like typeahead. */
-  textValue?: string;
 
   /** The index of this node within its parent. */
   index?: number;

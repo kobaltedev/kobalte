@@ -101,7 +101,7 @@ export interface SingleSelectionState extends FocusState {
   selectedKey: Accessor<string>;
 
   /** Sets the selected key in the collection. */
-  setSelectedKey(key: string): void;
+  setSelectedKey: (key: string) => void;
 }
 
 export interface MultipleSelectionState extends FocusState {
@@ -162,7 +162,7 @@ export interface MultipleSelectionManager extends FocusState {
   disabledBehavior: Accessor<DisabledBehavior>;
 
   /** Returns whether a key is selected. */
-  isSelected(key: string): boolean;
+  isSelected: (key: string) => boolean;
 
   /** Returns whether the current selection is equal to the given selection. */
   isSelectionEqual(selection: Set<string>): boolean;
@@ -171,10 +171,10 @@ export interface MultipleSelectionManager extends FocusState {
   extendSelection(toKey: string): void;
 
   /** Toggles whether the given key is selected. */
-  toggleSelection(key: string): void;
+  toggleSelection: (key: string) => void;
 
   /** Replaces the selection with only the given key. */
-  replaceSelection(key: string): void;
+  replaceSelection: (key: string) => void;
 
   /** Replaces the selection with the given keys. */
   setSelectedKeys(keys: Iterable<string>): void;
@@ -195,14 +195,43 @@ export interface MultipleSelectionManager extends FocusState {
   select(key: string, e?: PressEvent | PointerEvent): void;
 
   /** Returns whether the given key can be selected. */
-  canSelectItem(key: string): boolean;
+  canSelectItem: (key: string) => boolean;
 
   /**
    * Returns whether the given key is non-interactive,
    * i.e. both selection and actions are disabled.
    */
-  isDisabled(key: string): boolean;
+  isDisabled: (key: string) => boolean;
 
   /** Sets the selection behavior for the collection. */
-  setSelectionBehavior(selectionBehavior: SelectionBehavior): void;
+  setSelectionBehavior: (selectionBehavior: SelectionBehavior) => void;
+}
+
+export interface KeyboardDelegate {
+  /** Returns the key visually below the given one, or `undefined` for none. */
+  getKeyBelow?: (key: string) => string | undefined;
+
+  /** Returns the key visually above the given one, or `undefined` for none. */
+  getKeyAbove?: (key: string) => string | undefined;
+
+  /** Returns the key visually to the left of the given one, or `undefined` for none. */
+  getKeyLeftOf?: (key: string) => string | undefined;
+
+  /** Returns the key visually to the right of the given one, or `undefined` for none. */
+  getKeyRightOf?: (key: string) => string | undefined;
+
+  /** Returns the key visually one page below the given one, or `undefined` for none. */
+  getKeyPageBelow?: (key: string) => string | undefined;
+
+  /** Returns the key visually one page above the given one, or `undefined` for none. */
+  getKeyPageAbove?: (key: string) => string | undefined;
+
+  /** Returns the first key, or `undefined` for none. */
+  getFirstKey?: (key?: string, global?: boolean) => string | undefined;
+
+  /** Returns the last key, or `undefined` for none. */
+  getLastKey?: (key?: string, global?: boolean) => string | undefined;
+
+  /** Returns the next key after `fromKey` that matches the given search string, or `undefined` for none. */
+  getKeyForSearch?: (search: string, fromKey?: string) => string | undefined;
 }

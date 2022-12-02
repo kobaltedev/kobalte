@@ -53,8 +53,8 @@ function itemToNode<ItemSource>(
     key: item.key,
     rawValue: item.rawValue,
     level: level,
-    parentKey: parentKey,
     textValue: item.textValue,
+    parentKey: parentKey,
   };
 }
 
@@ -68,6 +68,7 @@ function sectionToNode<SectionSource, ItemSource>(
     key: section.key,
     rawValue: section.rawValue,
     level: level,
+    textValue: "",
     parentKey: parentKey,
   };
 }

@@ -14,5 +14,6 @@ export * from "./platform";
 export * from "./polymorphic";
 export * from "./props";
 export * from "./run-after-transition";
+export * from "./scroll-into-view";
 export * from "./styles";
 export * from "./tabbable";
