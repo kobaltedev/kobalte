@@ -6,14 +6,12 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableItem.ts
  */
 
-import { access, combineProps, MaybeAccessor } from "@kobalte/utils";
-import { Accessor, createEffect, createMemo, JSX, mergeProps, on } from "solid-js";
+import { access, MaybeAccessor } from "@kobalte/utils";
+import { Accessor, createEffect, createMemo, JSX, on } from "solid-js";
 
 import { createPress, CreatePressProps, focusSafely, PointerType, PressEvent } from "../primitives";
 import { MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
-
-// TODO: Create a component instead
 
 export interface CreateSelectableItemProps {
   /** An interface for reading and updating multiple selection state. */
@@ -81,11 +79,6 @@ export interface SelectableItemStates {
   hasAction: Accessor<boolean>;
 }
 
-export interface SelectableItemAria<T extends HTMLElement> extends SelectableItemStates {
-  /** Props to be spread on the item root node. */
-  itemProps: JSX.HTMLAttributes<T>;
-}
-
 /**
  * Handles interactions with an item in a selectable collection.
  * @param props Props for the item.
@@ -94,7 +87,7 @@ export interface SelectableItemAria<T extends HTMLElement> extends SelectableIte
 export function createSelectableItem<T extends HTMLElement>(
   props: CreateSelectableItemProps,
   ref: Accessor<T | undefined>
-): SelectableItemAria<T> {
+) {
   const manager = () => access(props.selectionManager);
   const key = () => access(props.key);
   const shouldUseVirtualFocus = () => access(props.shouldUseVirtualFocus);
@@ -266,31 +259,19 @@ export function createSelectableItem<T extends HTMLElement>(
     }
   };
 
-  const baseItemProps: JSX.HTMLAttributes<T> & { "data-key"?: string } = {
-    // Set tabIndex to 0 if the element is focused, or -1 otherwise so that only the last focused
-    // item is tabbable. If using virtual focus, don't set a tabIndex at all so that VoiceOver
-    // on iOS 14 doesn't try to move real DOM focus to the item anyway.
-    get tabIndex() {
-      if (shouldUseVirtualFocus()) {
-        return undefined;
-      }
+  // Set tabIndex to 0 if the element is focused, or -1 otherwise so that only the last focused
+  // item is tabbable. If using virtual focus, don't set a tabIndex at all so that VoiceOver
+  // on iOS 14 doesn't try to move real DOM focus to the item anyway.
+  const tabIndex = createMemo(() => {
+    if (shouldUseVirtualFocus()) {
+      return undefined;
+    }
 
-      return key() === manager().focusedKey() ? 0 : -1;
-    },
-    get "data-key"() {
-      return access(props.isVirtualized) ? undefined : key();
-    },
-  };
+    return key() === manager().focusedKey() ? 0 : -1;
+  });
 
-  const itemProps = createMemo(() => {
-    return combineProps(
-      baseItemProps,
-      allowsSelection() || hasPrimaryAction() ? pressHandlers : {},
-      {
-        onDblClick,
-        onFocus,
-      }
-    ) as JSX.HTMLAttributes<T>;
+  const dataKey = createMemo(() => {
+    return access(props.isVirtualized) ? undefined : key();
   });
 
   // Focus the associated DOM node when this item becomes the focusedKey
@@ -324,13 +305,25 @@ export function createSelectableItem<T extends HTMLElement>(
     )
   );
 
-  return {
-    itemProps: mergeProps(itemProps),
+  const state: SelectableItemStates = {
     isPressed,
     isSelected,
     isDisabled,
     allowsSelection,
     hasAction,
+  };
+
+  return {
+    state,
+    attrs: {
+      tabIndex,
+      dataKey,
+    },
+    handlers: {
+      ...pressHandlers,
+      onDblClick,
+      onFocus,
+    },
   };
 }
 

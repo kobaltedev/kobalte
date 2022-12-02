@@ -25,15 +25,10 @@ interface CreateTypeSelectProps {
   onTypeSelect?: (key: string) => void;
 }
 
-interface TypeSelectAria {
-  /** Props to be spread on the owner of the options. */
-  typeSelectProps: JSX.HTMLAttributes<any>;
-}
-
 /**
  * Handles typeahead interactions with collections.
  */
-export function createTypeSelect(props: CreateTypeSelectProps): TypeSelectAria {
+export function createTypeSelect(props: CreateTypeSelectProps) {
   const [search, setSearch] = createSignal("");
   const [timeoutId, setTimeoutId] = createSignal(-1);
 
@@ -85,7 +80,9 @@ export function createTypeSelect(props: CreateTypeSelectProps): TypeSelectAria {
   };
 
   return {
-    typeSelectProps: { onKeyDown },
+    handlers: {
+      onKeyDown,
+    },
   };
 }
 

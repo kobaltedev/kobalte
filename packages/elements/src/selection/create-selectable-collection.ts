@@ -8,20 +8,20 @@
 
 import {
   access,
-  combineProps,
+  callHandler,
   createEventListener,
   focusWithoutScrolling,
   getFocusableTreeWalker,
   MaybeAccessor,
   scrollIntoView,
 } from "@kobalte/utils";
-import { Accessor, createEffect, JSX, mergeProps, on, onMount } from "solid-js";
+import { Accessor, createEffect, createMemo, JSX, mergeProps, on, onMount } from "solid-js";
 
 import { useLocale } from "../i18n";
+import { focusSafely } from "../primitives";
 import { createTypeSelect } from "./create-type-select";
 import { FocusStrategy, KeyboardDelegate, MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
-import { focusSafely } from "../primitives";
 
 interface CreateSelectableCollectionProps {
   /** An interface for reading and updating multiple selection state. */
@@ -58,11 +58,6 @@ interface CreateSelectableCollectionProps {
   isVirtualized?: MaybeAccessor<boolean | undefined>;
 }
 
-interface SelectableCollectionAria {
-  /** Props for the collection element. */
-  collectionProps: JSX.HTMLAttributes<any>;
-}
-
 /**
  * Handles interactions with selectable collections.
  * @param props Props for the collection.
@@ -73,22 +68,22 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
   props: CreateSelectableCollectionProps,
   ref: Accessor<T | undefined>,
   scrollRef?: Accessor<U | undefined>
-): SelectableCollectionAria {
+) {
   const defaultProps: Partial<CreateSelectableCollectionProps> = {
     selectOnFocus: () => access(props.selectionManager).selectionBehavior() === "replace",
   };
 
   props = mergeProps(defaultProps, props);
 
-  const _scrollRef = () => (scrollRef ? scrollRef() : ref());
+  const finalScrollRef = () => (scrollRef ? scrollRef() : ref());
 
   const locale = useLocale();
 
   // Store the scroll position, so we can restore it later.
   let scrollPos = { top: 0, left: 0 };
 
-  createEventListener(_scrollRef, "scroll", () => {
-    const scrollEl = _scrollRef();
+  createEventListener(finalScrollRef, "scroll", () => {
+    const scrollEl = finalScrollRef();
 
     if (access(props.isVirtualized) || !scrollEl) {
       return;
@@ -100,7 +95,15 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     };
   });
 
+  const typeSelect = createTypeSelect({
+    isDisabled: () => access(props.disallowTypeAhead),
+    keyboardDelegate: () => access(props.keyboardDelegate),
+    selectionManager: () => access(props.selectionManager),
+  });
+
   const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = e => {
+    callHandler(e, typeSelect.handlers.onKeyDown);
+
     // Prevent option + tab from doing anything since it doesn't move focus to the cells, only buttons/checkboxes
     if (e.altKey && e.key === "Tab") {
       e.preventDefault();
@@ -343,7 +346,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
         navigateToFirstKey(manager.firstSelectedKey() ?? delegate.getFirstKey?.());
       }
     } else if (!access(props.isVirtualized)) {
-      const scrollEl = _scrollRef();
+      const scrollEl = finalScrollRef();
 
       if (scrollEl) {
         // Restore the scroll position to what it was before.
@@ -423,7 +426,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
   createEffect(
     on(
       [
-        _scrollRef,
+        finalScrollRef,
         () => access(props.isVirtualized),
         () => access(props.selectionManager).focusedKey(),
       ],
@@ -441,31 +444,27 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     )
   );
 
-  const { typeSelectProps } = createTypeSelect({
-    isDisabled: () => access(props.disallowTypeAhead),
-    keyboardDelegate: () => access(props.keyboardDelegate),
-    selectionManager: () => access(props.selectionManager),
+  // If nothing is focused within the collection, make the collection itself tabbable.
+  // This will be marshalled to either the first or last item depending on where focus came from.
+  // If using virtual focus, don't set a tabIndex at all so that VoiceOver on iOS 14 doesn't try
+  // to move real DOM focus to the element anyway.
+  const tabIndex = createMemo(() => {
+    if (access(props.shouldUseVirtualFocus)) {
+      return undefined;
+    }
+
+    return access(props.selectionManager).focusedKey() == null ? 0 : -1;
   });
 
-  const baseCollectionProps: JSX.HTMLAttributes<any> = {
-    onKeyDown,
-    onFocusIn,
-    onFocusOut,
-    onMouseDown,
-    // If nothing is focused within the collection, make the collection itself tabbable.
-    // This will be marshalled to either the first or last item depending on where focus came from.
-    // If using virtual focus, don't set a tabIndex at all so that VoiceOver on iOS 14 doesn't try
-    // to move real DOM focus to the element anyway.
-    get tabIndex() {
-      if (access(props.shouldUseVirtualFocus)) {
-        return undefined;
-      }
-
-      return access(props.selectionManager).focusedKey() == null ? 0 : -1;
+  return {
+    attrs: {
+      tabIndex,
+    },
+    handlers: {
+      onKeyDown,
+      onFocusIn,
+      onFocusOut,
+      onMouseDown,
     },
   };
-
-  const collectionProps = combineProps(typeSelectProps, baseCollectionProps);
-
-  return { collectionProps };
 }

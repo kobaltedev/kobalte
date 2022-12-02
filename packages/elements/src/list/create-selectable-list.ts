@@ -7,7 +7,7 @@
  */
 
 import { access, MaybeAccessor } from "@kobalte/utils";
-import { Accessor, createMemo, JSX } from "solid-js";
+import { Accessor, createMemo } from "solid-js";
 
 import { Collection, CollectionNode } from "../collection";
 import { createCollator } from "../i18n";
@@ -60,11 +60,6 @@ export interface CreateSelectableListProps<T> {
   allowsTabNavigation?: MaybeAccessor<boolean | undefined>;
 }
 
-interface SelectableListAria {
-  /** Props for the option element. */
-  listProps: JSX.HTMLAttributes<any>;
-}
-
 /**
  * Handles interactions with a selectable list.
  * @param props Props for the list.
@@ -73,7 +68,7 @@ interface SelectableListAria {
 export function createSelectableList<T extends HTMLElement, U>(
   props: CreateSelectableListProps<U>,
   ref: Accessor<T | undefined>
-): SelectableListAria {
+) {
   const collator = createCollator({ usage: "search", sensitivity: "base" });
 
   // By default, a KeyboardDelegate is provided which uses the DOM to query layout information (e.g. for page up/page down).
@@ -91,7 +86,7 @@ export function createSelectableList<T extends HTMLElement, U>(
     return new ListKeyboardDelegate(collection, disabledKeys, ref, collator());
   });
 
-  const { collectionProps: listProps } = createSelectableCollection(
+  return createSelectableCollection(
     {
       keyboardDelegate: delegate,
       selectionManager: () => access(props.selectionManager),
@@ -106,6 +101,4 @@ export function createSelectableList<T extends HTMLElement, U>(
     },
     ref
   );
-
-  return { listProps };
 }
