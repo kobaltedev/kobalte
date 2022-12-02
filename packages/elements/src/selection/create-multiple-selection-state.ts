@@ -7,7 +7,7 @@
  */
 
 import { access, MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, createMemo, createSignal, mergeProps, on } from "solid-js";
+import { createEffect, createMemo, createSignal } from "solid-js";
 
 import { createControllableSelectionSignal } from "./create-controllable-selection-signal";
 import {

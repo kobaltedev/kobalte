@@ -38,13 +38,15 @@ const getSection = (apiSection: APISection): CollectionSection<APISection, APIOp
 };
 
 export default function App() {
+  const [counter, setCounter] = createSignal(0);
   const [dataSource, setDataSource] = createSignal<Array<APISection | APIOption>>([]);
 
   const collection = createCollection({
-    source: dataSource,
-    itemMapper: getItem,
-    sectionMapper: getSection,
+    dataSource: dataSource,
+    getItem: getItem,
+    getSection: getSection,
     factory: nodes => new ListCollection(nodes as Iterable<CollectionNode<any>>),
+    deps: [counter],
   });
 
   const addItem = () => {
@@ -103,6 +105,7 @@ export default function App() {
     <I18nProvider>
       <button onClick={addItem}>Add item</button>
       <button onClick={addSection}>Add section</button>
+      <button onClick={() => setCounter(prev => prev + 1)}>Increment counter</button>
     </I18nProvider>
   );
 }

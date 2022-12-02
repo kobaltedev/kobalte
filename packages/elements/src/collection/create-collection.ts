@@ -12,8 +12,8 @@ import { Accessor, createEffect, createSignal } from "solid-js";
 import { Collection, CollectionItem, CollectionNode, CollectionSection } from "./types";
 import { buildNodes } from "./utils";
 
-type CollectionFactory<C extends Collection<CollectionNode<unknown>>> = (
-  node: Iterable<CollectionNode<unknown>>
+type CollectionFactory<C extends Collection<CollectionNode<any>>> = (
+  node: Iterable<CollectionNode<any>>
 ) => C;
 
 export interface CreateCollectionProps<
@@ -21,9 +21,9 @@ export interface CreateCollectionProps<
   ItemSource,
   C extends Collection<CollectionNode<SectionSource | ItemSource>>
 > {
-  source: MaybeAccessor<Array<SectionSource | ItemSource>>;
-  itemMapper: (source: ItemSource) => CollectionItem<ItemSource>;
-  sectionMapper: (source: SectionSource) => CollectionSection<SectionSource, ItemSource>;
+  dataSource: MaybeAccessor<Array<SectionSource | ItemSource>>;
+  getItem: (source: ItemSource) => CollectionItem<ItemSource>;
+  getSection: (source: SectionSource) => CollectionSection<SectionSource, ItemSource>;
   factory: CollectionFactory<C>;
   deps?: Array<Accessor<any>>;
 }
@@ -34,9 +34,9 @@ export function createCollection<
   C extends Collection<CollectionNode<SectionSource | ItemSource>>
 >(props: CreateCollectionProps<SectionSource, ItemSource, C>) {
   const initialNodes = buildNodes({
-    source: access(props.source),
-    itemMapper: props.itemMapper,
-    sectionMapper: props.sectionMapper,
+    dataSource: access(props.dataSource),
+    getItem: props.getItem,
+    getSection: props.getSection,
   });
 
   const [collection, setCollection] = createSignal<C>(props.factory(initialNodes));
@@ -46,9 +46,9 @@ export function createCollection<
     props.deps?.forEach(f => f());
 
     const nodes = buildNodes({
-      source: access(props.source),
-      itemMapper: props.itemMapper,
-      sectionMapper: props.sectionMapper,
+      dataSource: access(props.dataSource),
+      getItem: props.getItem,
+      getSection: props.getSection,
     });
 
     setCollection(() => props.factory(nodes));
