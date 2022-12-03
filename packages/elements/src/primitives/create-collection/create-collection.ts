@@ -22,9 +22,9 @@ export interface CreateCollectionProps<
   C extends Collection<CollectionNode<SectionSource | ItemSource>>
 > {
   dataSource: MaybeAccessor<Array<SectionSource | ItemSource>>;
-  getItem: (source: ItemSource) => CollectionItem<ItemSource>;
-  getSection: (source: SectionSource) => CollectionSection<SectionSource, ItemSource>;
   factory: CollectionFactory<C>;
+  getItem: (source: ItemSource) => CollectionItem<ItemSource>;
+  getSection?: (source: SectionSource) => CollectionSection<SectionSource, ItemSource>;
   deps?: Array<Accessor<any>>;
 }
 

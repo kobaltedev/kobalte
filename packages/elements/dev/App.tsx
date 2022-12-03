@@ -1,4 +1,4 @@
-import { I18nProvider, ListBox } from "../src";
+import { I18nProvider, ListBox, SelectionType } from "../src";
 import { createSignal } from "solid-js";
 
 interface Country {
@@ -27,16 +27,28 @@ const dataSource: Array<Continent | Country> = [
       { label: "France", id: "FR" },
       { label: "Germany", id: "DE" },
     ],
-  },*/
+  },
+  */
 ];
 
 export default function App() {
-  const [selectedKeys, setSelectedKeys] = createSignal(new Set<string>());
+  const [selectedKeys, setSelectedKeys] = createSignal<SelectionType>();
+
+  function performBulkAction() {
+    const selection = selectedKeys();
+
+    if (selection === "all") {
+      return "all";
+    } else {
+      return [...(selection ?? [])].join(", ");
+    }
+  }
 
   return (
     <I18nProvider>
-      <div>Selection: {[...selectedKeys().values()].join(", ")}</div>
+      <div>Selection: {performBulkAction()}.</div>
       <ListBox
+        selectionMode="multiple"
         selectedKeys={selectedKeys()}
         onSelectionChange={setSelectedKeys}
         class="listbox"

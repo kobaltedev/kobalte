@@ -20,7 +20,7 @@ import {
   SelectionType,
 } from "./types";
 
-export interface MultipleSelectionStateProps extends MultipleSelection {
+export interface CreateMultipleSelectionStateProps extends MultipleSelection {
   /** How multiple selection should behave in the collection. */
   selectionBehavior?: MaybeAccessor<SelectionBehavior | undefined>;
 
@@ -35,7 +35,7 @@ export interface MultipleSelectionStateProps extends MultipleSelection {
  * Manages state for multiple selection and focus in a collection.
  */
 export function createMultipleSelectionState(
-  props: MultipleSelectionStateProps
+  props: CreateMultipleSelectionStateProps
 ): MultipleSelectionState {
   props = mergeDefaultProps(
     {

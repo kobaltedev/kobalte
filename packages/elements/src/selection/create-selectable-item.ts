@@ -43,12 +43,6 @@ export interface CreateSelectableItemProps {
 
   /** Function to focus the item. */
   focus?: () => void;
-
-  /**
-   * Handler that is called when a user performs an action on the item.
-   * The exact user event depends on the collection's `selectionBehavior` prop and the interaction modality.
-   */
-  onAction?: () => void;
 }
 
 /**
@@ -102,27 +96,9 @@ export function createSelectableItem<T extends HTMLElement>(
 
   const allowsSelection = () => !isDisabled() && manager().canSelectItem(key());
 
-  const allowsActions = () => props.onAction != null && !isDisabled();
-
-  const hasPrimaryAction = () => {
-    return (
-      allowsActions() &&
-      (manager().selectionBehavior() === "replace" ? !allowsSelection() : manager().isEmpty())
-    );
-  };
-
-  const hasSecondaryAction = () => {
-    return allowsActions() && allowsSelection() && manager().selectionBehavior() === "replace";
-  };
-
-  const hasAction = () => hasPrimaryAction() || hasSecondaryAction();
-
   let modality: PointerType | null = null;
 
-  const longPressEnabled = () => hasAction() && allowsSelection();
-
   let longPressEnabledOnPressStart = false;
-  let hadPrimaryActionOnPressStart = false;
 
   // By default, selection occurs on pointer down. This can be strange if selecting an
   // item causes the UI to disappear immediately (e.g. menus).
@@ -134,29 +110,19 @@ export function createSelectableItem<T extends HTMLElement>(
   const itemPressProps: CreatePressProps = {
     onPressStart: e => {
       modality = e.pointerType;
-      longPressEnabledOnPressStart = longPressEnabled();
+      longPressEnabledOnPressStart = allowsSelection();
 
-      if (access(props.shouldSelectOnPressUp)) {
-        if (e.pointerType === "keyboard" && (!hasAction() || isSelectionKey())) {
-          onSelect(e);
-        }
-      } else {
-        hadPrimaryActionOnPressStart = hasPrimaryAction();
-
-        // Select on mouse down unless there is a primary action which will occur on mouse up.
-        // For keyboard, select on key down. If there is an action, the Space key selects on key down,
-        // and the Enter key performs onAction on key up.
-        if (
-          (e.pointerType === "mouse" && !hasPrimaryAction()) ||
-          (e.pointerType === "keyboard" && (!props.onAction || isSelectionKey()))
-        ) {
-          onSelect(e);
-        }
+      // Selection occurs on mouse down or key down (Enter or Space bar).
+      if (
+        (e.pointerType === "mouse" && !access(props.shouldSelectOnPressUp)) ||
+        (e.pointerType === "keyboard" && (isActionKey() || isSelectionKey()))
+      ) {
+        onSelect(e);
       }
     },
     onPressUp: e => {
-      // If allowsDifferentPressOrigin, make selection happen on pressUp (e.g. open menu on press down, selection on menu item happens on press up.)
-      // Otherwise, have selection happen onPress (prevents listview row selection when clicking on interactable elements in the row)
+      // If allowsDifferentPressOrigin, make selection happen on pressUp.
+      // Otherwise, have selection happen onPress
       if (
         access(props.shouldSelectOnPressUp) &&
         access(props.allowsDifferentPressOrigin) &&
@@ -167,44 +133,20 @@ export function createSelectableItem<T extends HTMLElement>(
     },
     onPress: e => {
       if (access(props.shouldSelectOnPressUp)) {
-        if (!access(props.allowsDifferentPressOrigin)) {
-          if (hasPrimaryAction() || (hasSecondaryAction() && e.pointerType !== "mouse")) {
-            if (e.pointerType === "keyboard" && !isActionKey()) {
-              return;
-            }
-
-            props.onAction?.();
-          } else if (e.pointerType !== "keyboard") {
-            onSelect(e);
-          }
-        } else {
-          if (hasPrimaryAction()) {
-            props.onAction?.();
-          }
+        if (!access(props.allowsDifferentPressOrigin) && e.pointerType !== "keyboard") {
+          onSelect(e);
         }
       } else {
-        // Selection occurs on touch up. Primary actions always occur on pointer up.
-        // Both primary and secondary actions occur on Enter key up. The only exception
-        // is secondary actions, which occur on double click with a mouse.
-        if (
-          e.pointerType === "touch" ||
-          e.pointerType === "pen" ||
-          e.pointerType === "virtual" ||
-          (e.pointerType === "keyboard" && hasAction() && isActionKey()) ||
-          (e.pointerType === "mouse" && hadPrimaryActionOnPressStart)
-        ) {
-          if (hasAction()) {
-            props.onAction?.();
-          } else {
-            onSelect(e);
-          }
+        // Selection occurs on touch up.
+        if (e.pointerType === "touch" || e.pointerType === "pen" || e.pointerType === "virtual") {
+          onSelect(e);
         }
       }
     },
   };
 
   const { pressHandlers, isPressed } = createPress({
-    isDisabled: () => !allowsSelection() && !hasPrimaryAction(),
+    isDisabled: () => !allowsSelection(),
     onPressStart: itemPressProps.onPressStart,
     onPressUp: itemPressProps.onPressUp,
     onPress: itemPressProps.onPress,
@@ -226,19 +168,6 @@ export function createSelectableItem<T extends HTMLElement>(
     }
   });
    */
-
-  // Double-clicking with a mouse with selectionBehavior = 'replace' performs an action.
-  const onDblClick = (e: Event) => {
-    if (!hasSecondaryAction()) {
-      return;
-    }
-
-    if (modality === "mouse") {
-      e.stopPropagation();
-      e.preventDefault();
-      props.onAction?.();
-    }
-  };
 
   // Prevent native drag and drop on long press if we also select on long press.
   // Once the user is in selection mode, they can long press again to drag.
@@ -271,6 +200,7 @@ export function createSelectableItem<T extends HTMLElement>(
     return key() === manager().focusedKey() ? 0 : -1;
   });
 
+  // data-attribute used in selection manager and keyboard delegate
   const dataKey = createMemo(() => {
     return access(props.isVirtualized) ? undefined : key();
   });
@@ -311,15 +241,12 @@ export function createSelectableItem<T extends HTMLElement>(
     isSelected,
     isDisabled,
     allowsSelection,
-    hasAction,
-    isPressEnabled: () => allowsSelection() || hasPrimaryAction(),
-    isLongPressEnabled: longPressEnabled,
     tabIndex,
     dataKey,
     handlers: {
       press: pressHandlers,
       //longPress: longPressHandlers,
-      others: { onDblClick, onDragStart, onFocus },
+      others: { onDragStart, onFocus },
     },
   };
 }

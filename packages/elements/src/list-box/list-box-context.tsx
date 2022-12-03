@@ -11,7 +11,6 @@ export interface ListBoxContextValue {
   shouldSelectOnPressUp: Accessor<boolean | undefined>;
   shouldFocusOnHover: Accessor<boolean | undefined>;
   isVirtualized: Accessor<boolean | undefined>;
-  onAction?: (key: string) => void;
 }
 
 export const ListBoxContext = createContext<ListBoxContextValue>();

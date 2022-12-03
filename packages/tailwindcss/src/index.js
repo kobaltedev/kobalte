@@ -19,7 +19,6 @@ const STATES = [
   "checked",
   "indeterminate",
   "selected",
-  "selectable",
   "pressed",
   "expanded",
   "hover",

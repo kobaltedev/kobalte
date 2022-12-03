@@ -71,12 +71,6 @@ export interface ListBoxProps<SectionSource, ItemSource>
   /** Whether options should be focused when the user hovers over them. */
   shouldFocusOnHover?: boolean;
 
-  /**
-   * Handler that is called when a user performs an action on an item. The exact user event depends on
-   * the collection's `selectionBehavior` prop and the interaction modality.
-   */
-  onAction?: (key: string) => void;
-
   /** Render prop that receives an item and index signals and returns a JSX-Element. */
   children?: (
     item: Accessor<CollectionNode<SectionSource | ItemSource>>,
@@ -114,7 +108,6 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps<any, any>, 
       "shouldUseVirtualFocus",
       "shouldSelectOnPressUp",
       "shouldFocusOnHover",
-      "onAction",
       "allowDuplicateSelectionEvents",
       "defaultSelectedKeys",
       "disabledBehavior",
@@ -126,7 +119,6 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps<any, any>, 
       "selectOnFocus",
       "disallowTypeAhead",
       "allowsTabNavigation",
-      "onAction",
       "dataSource",
       "onSelectionChange",
       "getItem",
@@ -178,7 +170,6 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps<any, any>, 
       shouldSelectOnPressUp: () => props.shouldSelectOnPressUp,
       shouldFocusOnHover: () => props.shouldFocusOnHover,
       isVirtualized: () => props.isVirtualized,
-      onAction: key => local.onAction?.(key),
     };
 
     return (

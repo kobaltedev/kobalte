@@ -45,14 +45,13 @@ body,
   outline: none !important;
 }
 
-.listbox-option[data-focus] {
-  background-color: hsl(204 100% 40%);
-  color: hsl(204 20% 100%);
+.listbox-option[data-focus-visible] {
+  color: hsl(204 100% 40%);
 }
 
 .listbox-option[data-selected] {
-  background-color: hsl(214, 44%, 93%);
-  color: hsl(204 100% 40%);
+  background-color: hsl(204 100% 40%);
+  color: hsl(204 20% 100%);
 }
 
 .listbox-option[data-disabled] {

@@ -3,7 +3,7 @@ import { CollectionItem, CollectionNode, CollectionSection } from "./types";
 interface BuildNodesParams<SectionSource, ItemSource> {
   dataSource: Array<SectionSource | ItemSource>;
   getItem: (source: ItemSource) => CollectionItem<ItemSource>;
-  getSection: (source: SectionSource) => CollectionSection<SectionSource, ItemSource>;
+  getSection?: (source: SectionSource) => CollectionSection<SectionSource, ItemSource>;
   startLevel?: number;
   parentKey?: string;
 }
@@ -17,25 +17,31 @@ export function buildNodes<SectionSource, ItemSource>(
   const startLevel = params.startLevel ?? 0;
   const nodes: Array<CollectionNode<SectionSource | ItemSource>> = [];
 
-  for (const item of params.dataSource) {
-    // try to parse it as a section
-    const section = params.getSection(item as SectionSource);
+  if (params.getSection) {
+    for (const item of params.dataSource) {
+      // try to parse it as a section
+      const section = params.getSection(item as SectionSource);
 
-    // if it has "items" it's a section
-    if (section.items != null) {
-      nodes.push(sectionToNode(section, startLevel, params.parentKey));
+      // if it has "items" it's a section
+      if (section.items != null) {
+        nodes.push(sectionToNode(section, startLevel, params.parentKey));
 
-      const items = buildNodes({
-        dataSource: section.items,
-        getItem: params.getItem,
-        getSection: params.getSection,
-        startLevel: startLevel + 1,
-        parentKey: section.key,
-      });
+        const items = buildNodes({
+          dataSource: section.items,
+          getItem: params.getItem,
+          getSection: params.getSection,
+          startLevel: startLevel + 1,
+          parentKey: section.key,
+        });
 
-      nodes.push(...items);
-    } else {
-      // otherwise it's an item
+        nodes.push(...items);
+      } else {
+        // otherwise it's an item
+        nodes.push(itemToNode(params.getItem(item as ItemSource), startLevel, params.parentKey));
+      }
+    }
+  } else {
+    for (const item of params.dataSource) {
       nodes.push(itemToNode(params.getItem(item as ItemSource), startLevel, params.parentKey));
     }
   }

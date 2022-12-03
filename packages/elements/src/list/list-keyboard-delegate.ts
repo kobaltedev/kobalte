@@ -135,7 +135,8 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
       return;
     }
 
-    let key = fromKey || this.getFirstKey();
+    // Prevent from getting the same key twice
+    let key = fromKey != null ? this.getKeyBelow(fromKey) : this.getFirstKey();
 
     while (key != null) {
       const item = this.collection.getItem(key);

@@ -94,7 +94,6 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
       isDisabled: () => {
         return local.isDisabled ?? listBoxContext.listState().disabledKeys().has(local.value);
       },
-      onAction: () => listBoxContext.onAction?.(local.value),
     },
     () => ref
   );
@@ -149,7 +148,6 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
   const dataset: Accessor<ListBoxOptionDataSet> = createMemo(() => ({
     "data-disabled": selectableItem.isDisabled() ? "" : undefined,
     "data-selected": selectableItem.isSelected() ? "" : undefined,
-    "data-selectable": manager().selectionMode() !== "none" ? "" : undefined,
     "data-hover": isHovered() && !listBoxContext.shouldFocusOnHover() ? "" : undefined,
     "data-focus": isFocused() ? "" : undefined,
     "data-focus-visible": isFocusVisible() ? "" : undefined,
@@ -187,8 +185,8 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
         {...dataset()}
         {...combineProps(
           others,
-          selectableItem.isPressEnabled() ? selectableItem.handlers.press : {},
-          // selectableItem.isLongPressEnabled() ? selectableItem.handlers.longPress : {},
+          selectableItem.allowsSelection() ? selectableItem.handlers.press : {},
+          // selectableItem.allowsSelection() ? selectableItem.handlers.longPress : {},
           selectableItem.handlers.others,
           hoverHandlers,
           focusRingHandlers

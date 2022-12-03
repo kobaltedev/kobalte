@@ -58,15 +58,22 @@ export function createTypeSelect(props: CreateTypeSelectProps) {
       e.stopPropagation();
     }
 
-    const newSearch = setSearch(prev => (prev += character));
+    let newSearch = setSearch(prev => (prev += character));
 
     // Use the delegate to find a key to focus.
     // Prioritize items after the currently focused item, falling back to searching the whole list.
-    let key = delegate.getKeyForSearch?.(newSearch, manager.focusedKey());
+    let key =
+      delegate.getKeyForSearch(newSearch, manager.focusedKey()) ??
+      delegate.getKeyForSearch(newSearch);
 
-    // If no key found, search from the top.
-    if (key == null) {
-      key = delegate.getKeyForSearch(newSearch);
+    // If not key found, and the search is multiple iterations of the same letter (e.g "aaa"),
+    // then cycle through first-letter matches
+    if (key == null && isAllSameLetter(newSearch)) {
+      newSearch = newSearch[0];
+
+      key =
+        delegate.getKeyForSearch(newSearch, manager.focusedKey()) ??
+        delegate.getKeyForSearch(newSearch);
     }
 
     if (key != null) {
@@ -86,7 +93,7 @@ export function createTypeSelect(props: CreateTypeSelectProps) {
   };
 }
 
-function getStringForKey(key: string) {
+function getStringForKey(key: string): string {
   // If the key is of length 1, it is an ASCII value.
   // Otherwise, if there are no ASCII characters in the key name,
   // it is a Unicode character.
@@ -96,4 +103,8 @@ function getStringForKey(key: string) {
   }
 
   return "";
+}
+
+function isAllSameLetter(search: string): boolean {
+  return search.split("").every(letter => letter === search[0]);
 }

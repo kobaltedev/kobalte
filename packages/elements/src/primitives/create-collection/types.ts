@@ -30,7 +30,7 @@ export interface CollectionBase<SectionSource, ItemSource> {
   getItem: (source: ItemSource) => CollectionItem<ItemSource>;
 
   /** A function to map a data source section to a collection section. */
-  getSection: (source: SectionSource) => CollectionSection<SectionSource, ItemSource>;
+  getSection?: (source: SectionSource) => CollectionSection<SectionSource, ItemSource>;
 
   /**
    * The item keys that are disabled.

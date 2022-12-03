@@ -12,14 +12,14 @@ import { Accessor, createComputed, createMemo } from "solid-js";
 import { Collection, CollectionBase, CollectionNode, createCollection } from "../primitives";
 import {
   createMultipleSelectionState,
-  MultipleSelectionStateProps,
+  CreateMultipleSelectionStateProps,
   SelectionManager,
 } from "../selection";
 import { ListCollection } from "./list-collection";
 
 export interface CreateListStateProps<SectionSource, ItemSource>
   extends CollectionBase<SectionSource, ItemSource>,
-    MultipleSelectionStateProps {
+    CreateMultipleSelectionStateProps {
   /** Filter function to generate a filtered list of nodes. */
   filter?: (
     nodes: Iterable<CollectionNode<SectionSource | ItemSource>>
@@ -57,9 +57,9 @@ export function createListState<SectionSource, ItemSource>(
 
   const collection = createCollection({
     dataSource: () => access(props.dataSource),
+    factory,
     getItem: props.getItem,
     getSection: props.getSection,
-    factory,
     deps: [() => props.filter],
   });
 
