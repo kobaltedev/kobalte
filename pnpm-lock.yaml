@@ -198,12 +198,14 @@ importers:
   packages/utils:
     specifiers:
       '@solid-primitives/event-listener': ^2.2.4
+      '@solid-primitives/keyed': ^1.1.4
       '@solid-primitives/media': ^2.0.4
       '@solid-primitives/props': ^3.0.1
       '@solid-primitives/refs': ^0.3.4
       '@solid-primitives/utils': ^4.0.0
     dependencies:
       '@solid-primitives/event-listener': 2.2.4_solid-js@1.6.2
+      '@solid-primitives/keyed': 1.1.4_solid-js@1.6.2
       '@solid-primitives/media': 2.0.4_solid-js@1.6.2
       '@solid-primitives/props': 3.0.1_solid-js@1.6.2
       '@solid-primitives/refs': 0.3.4_solid-js@1.6.2
@@ -3441,6 +3443,14 @@ packages:
       solid-js: ^1.6.0
     dependencies:
       '@solid-primitives/utils': 4.0.0_solid-js@1.6.2
+      solid-js: 1.6.2
+    dev: false
+
+  /@solid-primitives/keyed/1.1.4_solid-js@1.6.2:
+    resolution: {integrity: sha512-K4DR4qGYOh5pJXgKKWwPjBEsnEBF4Old3zo4ht9wGBEvv3UB82P+zExqJK1lFie+7dYLOkgKD+8iZle1wZSEzg==}
+    peerDependencies:
+      solid-js: ^1.6.0
+    dependencies:
       solid-js: 1.6.2
     dev: false
 

@@ -1,111 +1,63 @@
-import {
-  CollectionItem,
-  CollectionNode,
-  CollectionSection,
-  createCollection,
-  I18nProvider,
-  ListCollection,
-} from "../src";
-import { createEffect, createSignal } from "solid-js";
+import { I18nProvider, ListBox } from "../src";
+import { createSignal } from "solid-js";
 
-interface APIOption {
+interface Country {
   id: string;
   label: string;
-  disabled?: boolean;
 }
 
-interface APISection {
+interface Continent {
   id: string;
   label: string;
-  options: Array<APISection | APIOption>;
+  countries: Country[];
 }
 
-const getItem = (apiOption: APIOption): CollectionItem<APIOption> => {
-  return {
-    key: apiOption.id,
-    textValue: apiOption.label,
-    isDisabled: apiOption.disabled,
-    rawValue: apiOption,
-  };
-};
-
-const getSection = (apiSection: APISection): CollectionSection<APISection, APIOption> => {
-  return {
-    key: apiSection.id,
-    items: apiSection.options,
-    rawValue: apiSection,
-  };
-};
+const dataSource: Array<Continent | Country> = [
+  { label: "Nigeria", id: "NG" },
+  { label: "Japan", id: "JP" },
+  { label: "Korea", id: "KO" },
+  { label: "Kenya", id: "KE" },
+  { label: "United Kingdom", id: "UK" },
+  { label: "Ghana", id: "GH" },
+  { label: "Uganda", id: "UG" },
+  /*{
+    label: "Europe",
+    id: "EU",
+    countries: [
+      { label: "France", id: "FR" },
+      { label: "Germany", id: "DE" },
+    ],
+  },*/
+];
 
 export default function App() {
-  const [counter, setCounter] = createSignal(0);
-  const [dataSource, setDataSource] = createSignal<Array<APISection | APIOption>>([]);
-
-  const collection = createCollection({
-    dataSource: dataSource,
-    getItem: getItem,
-    getSection: getSection,
-    factory: nodes => new ListCollection(nodes as Iterable<CollectionNode<any>>),
-    deps: [counter],
-  });
-
-  const addItem = () => {
-    setDataSource(prev => [
-      ...prev,
-      {
-        id: String(prev.length),
-        label: `Item ${prev.length}`,
-      },
-    ]);
-  };
-
-  const addSection = () => {
-    setDataSource(prev => [
-      ...prev,
-      {
-        id: String(prev.length),
-        label: `Section ${prev.length}`,
-        options: [
-          {
-            id: `${prev.length}.1`,
-            label: `Item ${prev.length}.1`,
-          },
-          {
-            id: `${prev.length}.2`,
-            label: `Item Section ${prev.length}.2`,
-            options: [
-              {
-                id: `${prev.length}.2.1`,
-                label: `Item ${prev.length}.2.1`,
-              },
-              {
-                id: `${prev.length}.2.2`,
-                label: `Item ${prev.length}.2.2`,
-              },
-              {
-                id: `${prev.length}.2.3`,
-                label: `Item ${prev.length}.2.3`,
-              },
-            ],
-          },
-          {
-            id: `${prev.length}.3`,
-            label: `Item ${prev.length}.3`,
-          },
-        ],
-      },
-    ]);
-  };
-
-  createEffect(() => {
-    console.log(collection());
-  });
+  const [selectedKeys, setSelectedKeys] = createSignal(new Set<string>());
 
   return (
     <I18nProvider>
-      <button onClick={addItem}>Add item</button>
-      <button onClick={addSection}>Add section</button>
-      <button onClick={() => setCounter(prev => prev + 1)}>Increment counter</button>
+      <div>Selection: {[...selectedKeys().values()].join(", ")}</div>
+      <ListBox
+        selectedKeys={selectedKeys()}
+        onSelectionChange={setSelectedKeys}
+        class="listbox"
+        dataSource={dataSource}
+        getItem={(country: Country) => ({
+          key: country.id,
+          textValue: country.label,
+          rawValue: country,
+        })}
+        getSection={(continent: Continent) => ({
+          key: continent.id,
+          items: continent.countries,
+          rawValue: continent,
+        })}
+      >
+        {(item, index) => (
+          <ListBox.Option class="listbox-option" value={item().key} textValue={item().textValue}>
+            {item().textValue}
+          </ListBox.Option>
+        )}
+      </ListBox>
     </I18nProvider>
   );
 }

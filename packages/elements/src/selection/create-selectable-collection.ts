@@ -457,9 +457,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
   });
 
   return {
-    attrs: {
-      tabIndex,
-    },
+    tabIndex,
     handlers: {
       onKeyDown,
       onFocusIn,

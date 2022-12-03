@@ -9,8 +9,7 @@
 import { access } from "@kobalte/utils";
 import { Accessor, createMemo, mergeProps, splitProps } from "solid-js";
 
-import { CollectionBase, CollectionNode } from "../collection";
-import { createControllableSignal } from "../primitives";
+import { CollectionBase, CollectionNode, createControllableSignal } from "../primitives";
 import { SelectionType, SingleSelection } from "../selection";
 import { createListState, CreateListStateProps, ListState } from "./create-list-state";
 

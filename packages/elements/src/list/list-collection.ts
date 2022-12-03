@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/bfce84fee12a027d9cbc38b43e1747e3e4b4b169/packages/@react-stately/list/src/ListCollection.ts
  */
 
-import { Collection, CollectionNode } from "../collection";
+import { Collection, CollectionNode } from "../primitives";
 
 export class ListCollection<T> implements Collection<CollectionNode<T>> {
   private keyMap: Map<string, CollectionNode<T>> = new Map();

@@ -7,7 +7,7 @@
  */
 
 import { access, MaybeAccessor } from "@kobalte/utils";
-import { createSignal, JSX } from "solid-js";
+import { createSignal } from "solid-js";
 
 import { KeyboardDelegate, MultipleSelectionManager } from "./types";
 

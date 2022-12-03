@@ -7,7 +7,7 @@
  */
 
 import { access, MaybeAccessor } from "@kobalte/utils";
-import { Accessor, createEffect, createMemo, JSX, on } from "solid-js";
+import { Accessor, createEffect, createMemo, on } from "solid-js";
 
 import { createPress, CreatePressProps, focusSafely, PointerType, PressEvent } from "../primitives";
 import { MultipleSelectionManager } from "./types";
@@ -49,34 +49,6 @@ export interface CreateSelectableItemProps {
    * The exact user event depends on the collection's `selectionBehavior` prop and the interaction modality.
    */
   onAction?: () => void;
-}
-
-export interface SelectableItemStates {
-  /** Whether the item is currently in a pressed state. */
-  isPressed: Accessor<boolean>;
-
-  /** Whether the item is currently selected. */
-  isSelected: Accessor<boolean>;
-
-  /**
-   * Whether the item is non-interactive, i.e. both selection and actions are disabled and the item may
-   * not be focused. Dependent on `disabledKeys` and `disabledBehavior`.
-   */
-  isDisabled: Accessor<boolean>;
-
-  /**
-   * Whether the item may be selected,
-   * dependent on `selectionMode`, `disabledKeys`, and `disabledBehavior`.
-   */
-  allowsSelection: Accessor<boolean>;
-
-  /**
-   * Whether the item has an action, dependent on `onAction`, `disabledKeys`,
-   * and `disabledBehavior. It may also change depending on the current selection state
-   * of the list (e.g. when selection is primary). This can be used to enable or disable hover
-   * styles or other visual indications of interactivity.
-   */
-  hasAction: Accessor<boolean>;
 }
 
 /**
@@ -146,6 +118,10 @@ export function createSelectableItem<T extends HTMLElement>(
   const hasAction = () => hasPrimaryAction() || hasSecondaryAction();
 
   let modality: PointerType | null = null;
+
+  const longPressEnabled = () => hasAction() && allowsSelection();
+
+  let longPressEnabledOnPressStart = false;
   let hadPrimaryActionOnPressStart = false;
 
   // By default, selection occurs on pointer down. This can be strange if selecting an
@@ -158,6 +134,7 @@ export function createSelectableItem<T extends HTMLElement>(
   const itemPressProps: CreatePressProps = {
     onPressStart: e => {
       modality = e.pointerType;
+      longPressEnabledOnPressStart = longPressEnabled();
 
       if (access(props.shouldSelectOnPressUp)) {
         if (e.pointerType === "keyboard" && (!hasAction() || isSelectionKey())) {
@@ -234,6 +211,22 @@ export function createSelectableItem<T extends HTMLElement>(
     preventFocusOnPress: shouldUseVirtualFocus,
   });
 
+  // TODO: uncomment when create-long-press is ready
+  /*
+  // Long pressing an item with touch when selectionBehavior = 'replace' switches the selection behavior
+  // to 'toggle'. This changes the single tap behavior from performing an action (i.e. navigating) to
+  // selecting, and may toggle the appearance of a UI affordance like checkboxes on each item.
+  const { longPressHandlers } = createLongPress({
+    isDisabled: () => !longPressEnabled(),
+    onLongPress: e => {
+      if (e.pointerType === "touch") {
+        onSelect(e);
+        manager().setSelectionBehavior("toggle");
+      }
+    }
+  });
+   */
+
   // Double-clicking with a mouse with selectionBehavior = 'replace' performs an action.
   const onDblClick = (e: Event) => {
     if (!hasSecondaryAction()) {
@@ -244,6 +237,14 @@ export function createSelectableItem<T extends HTMLElement>(
       e.stopPropagation();
       e.preventDefault();
       props.onAction?.();
+    }
+  };
+
+  // Prevent native drag and drop on long press if we also select on long press.
+  // Once the user is in selection mode, they can long press again to drag.
+  const onDragStart = (e: Event) => {
+    if (modality === "touch" && longPressEnabledOnPressStart) {
+      e.preventDefault();
     }
   };
 
@@ -305,24 +306,20 @@ export function createSelectableItem<T extends HTMLElement>(
     )
   );
 
-  const state: SelectableItemStates = {
+  return {
     isPressed,
     isSelected,
     isDisabled,
     allowsSelection,
     hasAction,
-  };
-
-  return {
-    state,
-    attrs: {
-      tabIndex,
-      dataKey,
-    },
+    isPressEnabled: () => allowsSelection() || hasPrimaryAction(),
+    isLongPressEnabled: longPressEnabled,
+    tabIndex,
+    dataKey,
     handlers: {
-      ...pressHandlers,
-      onDblClick,
-      onFocus,
+      press: pressHandlers,
+      //longPress: longPressHandlers,
+      others: { onDblClick, onDragStart, onFocus },
     },
   };
 }

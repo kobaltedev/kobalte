@@ -9,8 +9,8 @@
 import { access, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createMemo } from "solid-js";
 
-import { Collection, CollectionNode } from "../collection";
 import { createCollator } from "../i18n";
+import { Collection, CollectionNode } from "../primitives";
 import {
   createSelectableCollection,
   FocusStrategy,

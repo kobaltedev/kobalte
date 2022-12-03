@@ -128,7 +128,7 @@ function setupGlobalFocusEvents() {
   hasSetupGlobalListeners = true;
 }
 
-export function isFocusVisible(): boolean {
+export function isKeyboardFocusVisible(): boolean {
   return currentModality !== "pointer";
 }
 
@@ -196,7 +196,7 @@ export interface CreateFocusVisibleResult {
  */
 export function createFocusVisible(props: CreateFocusVisibleProps = {}): CreateFocusVisibleResult {
   const [isFocusVisibleState, setIsFocusVisibleState] = createSignal(
-    access(props.autoFocus) || isFocusVisible()
+    access(props.autoFocus) || isKeyboardFocusVisible()
   );
 
   const isTextInput = () => !!access(props.isTextInput);
@@ -223,7 +223,7 @@ export function createFocusVisibleListener(
           return;
         }
 
-        fn(isFocusVisible());
+        fn(isKeyboardFocusVisible());
       };
 
       changeHandlers.add(handler);

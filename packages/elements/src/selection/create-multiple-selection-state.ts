@@ -137,14 +137,7 @@ export function createMultipleSelectionState(
   };
 }
 
-function convertSelection(
-  selection: "all" | Iterable<string>,
-  defaultValue?: Selection
-): "all" | Selection | undefined {
-  if (!selection) {
-    return defaultValue;
-  }
-
+function convertSelection(selection: "all" | Iterable<string>): "all" | Selection {
   return selection === "all" ? "all" : new Selection(selection);
 }
 

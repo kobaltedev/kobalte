@@ -9,7 +9,7 @@
 import { access } from "@kobalte/utils";
 import { Accessor, createComputed, createMemo } from "solid-js";
 
-import { Collection, CollectionBase, CollectionNode, createCollection } from "../collection";
+import { Collection, CollectionBase, CollectionNode, createCollection } from "../primitives";
 import {
   createMultipleSelectionState,
   MultipleSelectionStateProps,
