@@ -1,6 +1,7 @@
 export * from "./create-collection";
 export * from "./create-controllable-signal";
 export * from "./create-disclosure";
+export * from "./create-dom-collection";
 export * from "./create-focus-ring";
 export * from "./create-focus-visible";
 export * from "./create-form-reset-listener";
