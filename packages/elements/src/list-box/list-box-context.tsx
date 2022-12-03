@@ -5,7 +5,7 @@ export interface ListBoxDataSet {}
 
 export interface ListBoxContextValue {
   dataset: Accessor<ListBoxDataSet>;
-  listState: Accessor<ListState<any>>;
+  listState: Accessor<ListState>;
   generateId: (part: string) => string;
   shouldUseVirtualFocus: Accessor<boolean | undefined>;
   shouldSelectOnPressUp: Accessor<boolean | undefined>;

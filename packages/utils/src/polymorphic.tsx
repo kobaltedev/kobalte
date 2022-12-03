@@ -1,4 +1,4 @@
-import { Component, ComponentProps, JSX, ParentProps } from "solid-js";
+import { Component, ComponentProps, JSX } from "solid-js";
 
 /** All HTML and SVG elements. */
 export type DOMElements = keyof JSX.IntrinsicElements;
@@ -18,7 +18,7 @@ export type As<Props = any> = ElementType<Props>;
 /** Props object that includes the `as` prop. */
 export type PolymorphicProps<Type extends As = As, Props = {}> = OverrideProps<
   ComponentProps<Type>,
-  ParentProps<Props & { as?: Type }>
+  Props & { as?: Type }
 >;
 
 /** A component with the `as` prop. */

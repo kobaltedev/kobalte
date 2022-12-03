@@ -12,13 +12,13 @@ import { Collection, CollectionNode } from "../primitives";
 import { KeyboardDelegate } from "../selection";
 
 export class ListKeyboardDelegate implements KeyboardDelegate {
-  private collection: Collection<CollectionNode<any>>;
+  private collection: Collection<CollectionNode>;
   private disabledKeys: Set<string>;
   private ref?: Accessor<HTMLElement | undefined>;
   private collator?: Intl.Collator;
 
   constructor(
-    collection: Collection<CollectionNode<any>>,
+    collection: Collection<CollectionNode>,
     disabledKeys: Set<string>,
     ref?: Accessor<HTMLElement | undefined>,
     collator?: Intl.Collator

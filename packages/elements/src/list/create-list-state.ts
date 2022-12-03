@@ -17,18 +17,14 @@ import {
 } from "../selection";
 import { ListCollection } from "./list-collection";
 
-export interface CreateListStateProps<SectionSource, ItemSource>
-  extends CollectionBase<SectionSource, ItemSource>,
-    CreateMultipleSelectionStateProps {
+export interface CreateListStateProps extends CollectionBase, CreateMultipleSelectionStateProps {
   /** Filter function to generate a filtered list of nodes. */
-  filter?: (
-    nodes: Iterable<CollectionNode<SectionSource | ItemSource>>
-  ) => Iterable<CollectionNode<SectionSource | ItemSource>>;
+  filter?: (nodes: Iterable<CollectionNode>) => Iterable<CollectionNode>;
 }
 
-export interface ListState<T> {
+export interface ListState {
   /** A collection of items in the list. */
-  collection: Accessor<Collection<CollectionNode<T>>>;
+  collection: Accessor<Collection<CollectionNode>>;
 
   /** A set of items that are disabled. */
   disabledKeys: Accessor<Set<string>>;
@@ -41,9 +37,7 @@ export interface ListState<T> {
  * Provides state management for list-like components. Handles building a collection
  * of items from props, and manages multiple selection state.
  */
-export function createListState<SectionSource, ItemSource>(
-  props: CreateListStateProps<SectionSource, ItemSource>
-): ListState<SectionSource | ItemSource> {
+export function createListState(props: CreateListStateProps): ListState {
   const selectionState = createMultipleSelectionState(props);
 
   const disabledKeys = createMemo(() => {
@@ -51,7 +45,7 @@ export function createListState<SectionSource, ItemSource>(
     return disabledKeys ? new Set(disabledKeys) : new Set<string>();
   });
 
-  const factory = (nodes: Iterable<CollectionNode<SectionSource | ItemSource>>) => {
+  const factory = (nodes: Iterable<CollectionNode>) => {
     return props.filter ? new ListCollection(props.filter(nodes)) : new ListCollection(nodes);
   };
 

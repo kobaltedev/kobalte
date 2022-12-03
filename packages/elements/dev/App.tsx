@@ -1,5 +1,5 @@
 import { I18nProvider, ListBox, SelectionType } from "../src";
-import { createSignal } from "solid-js";
+import { createSignal, For } from "solid-js";
 
 interface Country {
   id: string;
@@ -12,7 +12,7 @@ interface Continent {
   countries: Country[];
 }
 
-const dataSource: Array<Continent | Country> = [
+const initalDataSource: Array<Continent | Country> = [
   { label: "Nigeria", id: "NG" },
   { label: "Japan", id: "JP" },
   { label: "Korea", id: "KO" },
@@ -32,6 +32,7 @@ const dataSource: Array<Continent | Country> = [
 ];
 
 export default function App() {
+  const [dataSource, setDataSource] = createSignal(initalDataSource);
   const [selectedKeys, setSelectedKeys] = createSignal<SelectionType>();
 
   function performBulkAction() {
@@ -44,9 +45,14 @@ export default function App() {
     }
   }
 
+  const addItem = () => {
+    setDataSource(prev => [...prev, { label: "Item" + prev.length, id: String(prev.length) }]);
+  };
+
   return (
     <I18nProvider>
-      <div>Selection: {performBulkAction()}.</div>
+      <button onClick={addItem}>Add item</button>
+      <div>Selection: {performBulkAction()}</div>
       <ListBox
         selectionMode="multiple"
         selectedKeys={selectedKeys()}
@@ -64,10 +70,14 @@ export default function App() {
           rawValue: continent,
         })}
       >
-        {(item, index) => (
-          <ListBox.Option class="listbox-option" value={item().key} textValue={item().textValue}>
-            {item().textValue}
-          </ListBox.Option>
+        {nodes => (
+          <For each={nodes}>
+            {node => (
+              <ListBox.Option class="listbox-option" value={node.key}>
+                {node.textValue}
+              </ListBox.Option>
+            )}
+          </For>
         )}
       </ListBox>
     </I18nProvider>

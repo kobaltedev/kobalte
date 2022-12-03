@@ -12,27 +12,21 @@ import { Accessor, createEffect, createSignal } from "solid-js";
 import { Collection, CollectionItem, CollectionNode, CollectionSection } from "./types";
 import { buildNodes } from "./utils";
 
-type CollectionFactory<C extends Collection<CollectionNode<any>>> = (
-  node: Iterable<CollectionNode<any>>
+type CollectionFactory<C extends Collection<CollectionNode>> = (
+  node: Iterable<CollectionNode>
 ) => C;
 
-export interface CreateCollectionProps<
-  SectionSource,
-  ItemSource,
-  C extends Collection<CollectionNode<SectionSource | ItemSource>>
-> {
-  dataSource: MaybeAccessor<Array<SectionSource | ItemSource>>;
+export interface CreateCollectionProps<C extends Collection<CollectionNode>> {
+  dataSource: MaybeAccessor<Array<any>>;
   factory: CollectionFactory<C>;
-  getItem: (source: ItemSource) => CollectionItem<ItemSource>;
-  getSection?: (source: SectionSource) => CollectionSection<SectionSource, ItemSource>;
+  getItem: (source: any) => CollectionItem;
+  getSection?: (source: any) => CollectionSection;
   deps?: Array<Accessor<any>>;
 }
 
-export function createCollection<
-  SectionSource,
-  ItemSource,
-  C extends Collection<CollectionNode<SectionSource | ItemSource>>
->(props: CreateCollectionProps<SectionSource, ItemSource, C>) {
+export function createCollection<C extends Collection<CollectionNode>>(
+  props: CreateCollectionProps<C>
+) {
   const initialNodes = buildNodes({
     dataSource: access(props.dataSource),
     getItem: props.getItem,

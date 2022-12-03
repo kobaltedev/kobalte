@@ -19,12 +19,12 @@ import {
 } from "../selection";
 import { ListKeyboardDelegate } from "./list-keyboard-delegate";
 
-export interface CreateSelectableListProps<T> {
+export interface CreateSelectableListProps {
   /** An interface for reading and updating multiple selection state. */
   selectionManager: MaybeAccessor<MultipleSelectionManager>;
 
   /** State of the collection. */
-  collection: MaybeAccessor<Collection<CollectionNode<T>>>;
+  collection: MaybeAccessor<Collection<CollectionNode>>;
 
   /**
    * The item keys that are disabled.
@@ -65,8 +65,8 @@ export interface CreateSelectableListProps<T> {
  * @param props Props for the list.
  * @param ref A ref to the list element.
  */
-export function createSelectableList<T extends HTMLElement, U>(
-  props: CreateSelectableListProps<U>,
+export function createSelectableList<T extends HTMLElement>(
+  props: CreateSelectableListProps,
   ref: Accessor<T | undefined>
 ) {
   const collator = createCollator({ usage: "search", sensitivity: "base" });

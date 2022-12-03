@@ -1,9 +1,9 @@
 import { CollectionItem, CollectionNode, CollectionSection } from "./types";
 
-interface BuildNodesParams<SectionSource, ItemSource> {
-  dataSource: Array<SectionSource | ItemSource>;
-  getItem: (source: ItemSource) => CollectionItem<ItemSource>;
-  getSection?: (source: SectionSource) => CollectionSection<SectionSource, ItemSource>;
+interface BuildNodesParams {
+  dataSource: Array<any>;
+  getItem: (source: any) => CollectionItem;
+  getSection?: (source: any) => CollectionSection;
   startLevel?: number;
   parentKey?: string;
 }
@@ -11,16 +11,14 @@ interface BuildNodesParams<SectionSource, ItemSource> {
 /**
  * Generate a flatted array of `CollectionNoe` from a custom data source.
  */
-export function buildNodes<SectionSource, ItemSource>(
-  params: BuildNodesParams<SectionSource, ItemSource>
-): Array<CollectionNode<SectionSource | ItemSource>> {
+export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
   const startLevel = params.startLevel ?? 0;
-  const nodes: Array<CollectionNode<SectionSource | ItemSource>> = [];
+  const nodes: Array<CollectionNode> = [];
 
   if (params.getSection) {
     for (const item of params.dataSource) {
       // try to parse it as a section
-      const section = params.getSection(item as SectionSource);
+      const section = params.getSection(item);
 
       // if it has "items" it's a section
       if (section.items != null) {
@@ -37,23 +35,19 @@ export function buildNodes<SectionSource, ItemSource>(
         nodes.push(...items);
       } else {
         // otherwise it's an item
-        nodes.push(itemToNode(params.getItem(item as ItemSource), startLevel, params.parentKey));
+        nodes.push(itemToNode(params.getItem(item), startLevel, params.parentKey));
       }
     }
   } else {
     for (const item of params.dataSource) {
-      nodes.push(itemToNode(params.getItem(item as ItemSource), startLevel, params.parentKey));
+      nodes.push(itemToNode(params.getItem(item), startLevel, params.parentKey));
     }
   }
 
   return nodes;
 }
 
-function itemToNode<ItemSource>(
-  item: CollectionItem<ItemSource>,
-  level: number,
-  parentKey?: string
-): CollectionNode<ItemSource> {
+function itemToNode(item: CollectionItem, level: number, parentKey?: string): CollectionNode {
   return {
     type: "item",
     key: item.key,
@@ -64,11 +58,11 @@ function itemToNode<ItemSource>(
   };
 }
 
-function sectionToNode<SectionSource, ItemSource>(
-  section: CollectionSection<SectionSource, ItemSource>,
+function sectionToNode(
+  section: CollectionSection,
   level: number,
   parentKey?: string
-): CollectionNode<SectionSource> {
+): CollectionNode {
   return {
     type: "section",
     key: section.key,

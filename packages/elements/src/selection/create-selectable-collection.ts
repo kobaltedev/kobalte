@@ -422,7 +422,6 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
   });
 
   // If not virtualized, scroll the focused element into view when the focusedKey changes.
-  // When virtualized, the Virtualizer should handle this internally.
   createEffect(
     on(
       [

@@ -8,13 +8,13 @@
 
 import { Collection, CollectionNode } from "../primitives";
 
-export class ListCollection<T> implements Collection<CollectionNode<T>> {
-  private keyMap: Map<string, CollectionNode<T>> = new Map();
-  private iterable: Iterable<CollectionNode<T>>;
+export class ListCollection implements Collection<CollectionNode> {
+  private keyMap: Map<string, CollectionNode> = new Map();
+  private iterable: Iterable<CollectionNode>;
   private firstKey?: string;
   private lastKey?: string;
 
-  constructor(nodes: Iterable<CollectionNode<T>>) {
+  constructor(nodes: Iterable<CollectionNode>) {
     this.iterable = nodes;
 
     for (const node of nodes) {
@@ -25,7 +25,7 @@ export class ListCollection<T> implements Collection<CollectionNode<T>> {
       return;
     }
 
-    let last!: CollectionNode<T>;
+    let last!: CollectionNode;
     let index = 0;
 
     for (const [key, node] of this.keyMap) {

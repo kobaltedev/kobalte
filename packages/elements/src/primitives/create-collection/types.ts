@@ -1,36 +1,36 @@
 import { MaybeAccessor } from "@kobalte/utils";
 
-export interface CollectionItem<ItemSource> {
+export interface CollectionItem {
   /** The unique key for the item. */
   key: string;
 
   /** The raw object value the item was created from. */
-  rawValue: ItemSource;
+  rawValue: any;
 
   /** A string value for the item, used for features like typeahead. */
   textValue: string;
 }
 
-export interface CollectionSection<SectionSource, ItemSource> {
+export interface CollectionSection {
   /** The unique key for the section. */
   key: string;
 
   /** A list of child item objects. */
-  items: Array<SectionSource | ItemSource>;
+  items: Array<any>;
 
   /** The raw object value the section was created from. */
-  rawValue: SectionSource;
+  rawValue: any;
 }
 
-export interface CollectionBase<SectionSource, ItemSource> {
+export interface CollectionBase {
   /** The data source to be managed by the collection. */
-  dataSource: MaybeAccessor<Array<SectionSource | ItemSource>>;
+  dataSource: MaybeAccessor<Array<any>>;
 
   /** A function to map a data source item to a collection item. */
-  getItem: (source: ItemSource) => CollectionItem<ItemSource>;
+  getItem: (source: any) => CollectionItem;
 
   /** A function to map a data source section to a collection section. */
-  getSection?: (source: SectionSource) => CollectionSection<SectionSource, ItemSource>;
+  getSection?: (source: any) => CollectionSection;
 
   /**
    * The item keys that are disabled.
@@ -69,7 +69,7 @@ export interface Collection<T> extends Iterable<T> {
   getLastKey: () => string | undefined;
 }
 
-export interface CollectionNode<T> {
+export interface CollectionNode {
   /** The type of item this node represents. */
   type: "item" | "section";
 
@@ -77,7 +77,7 @@ export interface CollectionNode<T> {
   key: string;
 
   /** The raw object value the node was created from. */
-  rawValue: T;
+  rawValue: any;
 
   /** The level of depth this node is at in the hierarchy. */
   level: number;

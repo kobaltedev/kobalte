@@ -17,30 +17,19 @@ import {
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
+import { createFocusRing, createHover, isKeyboardFocusVisible } from "../primitives";
+import { getItemCount } from "../primitives/create-collection/get-item-count";
+import { createSelectableItem } from "../selection";
 import { useListBoxContext } from "./list-box-context";
-
 import {
   ListBoxOptionContext,
   ListBoxOptionContextValue,
   ListBoxOptionDataSet,
 } from "./list-box-option-context";
-import { getItemCount } from "../primitives/create-collection/get-item-count";
-import { createSelectableItem } from "../selection";
-import { createFocusRing, createHover, isKeyboardFocusVisible } from "../primitives";
 
 export interface ListBoxOptionProps {
   /** The value of the option. */
   value: string;
-
-  /**
-   * Optional text used for typeahead purposes.
-   * By default, the typeahead behavior will use the .textContent of the ListBox.OptionLabel part.
-   * Use this when the content is complex, or you have non-textual content inside.
-   */
-  textValue?: string;
-
-  /** Whether the option is disabled. */
-  isDisabled?: boolean;
 }
 
 /**
@@ -65,8 +54,6 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
     "as",
     "ref",
     "value",
-    "textValue",
-    "isDisabled",
     "aria-label",
     "aria-labelledby",
     "aria-describedby",
@@ -91,9 +78,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
       },
       isVirtualized: listBoxContext.isVirtualized,
       shouldUseVirtualFocus: listBoxContext.shouldUseVirtualFocus,
-      isDisabled: () => {
-        return local.isDisabled ?? listBoxContext.listState().disabledKeys().has(local.value);
-      },
+      isDisabled: () => listBoxContext.listState().disabledKeys().has(local.value),
     },
     () => ref
   );

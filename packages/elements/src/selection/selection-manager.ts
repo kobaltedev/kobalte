@@ -22,11 +22,11 @@ import {
  * An interface for reading and updating multiple selection state.
  */
 export class SelectionManager implements MultipleSelectionManager {
-  private collection: Collection<CollectionNode<unknown>>;
+  private collection: Collection<CollectionNode>;
   private state: MultipleSelectionState;
   private _isSelectAll: boolean | null;
 
-  constructor(collection: Collection<CollectionNode<unknown>>, state: MultipleSelectionState) {
+  constructor(collection: Collection<CollectionNode>, state: MultipleSelectionState) {
     this.collection = collection;
     this.state = state;
     this._isSelectAll = null;
@@ -141,7 +141,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   firstSelectedKey(): string | undefined {
-    let first: CollectionNode<unknown> | undefined;
+    let first: CollectionNode | undefined;
 
     for (const key of this.state.selectedKeys()) {
       const item = this.collection.getItem(key);
@@ -158,7 +158,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   lastSelectedKey(): string | undefined {
-    let last: CollectionNode<unknown> | undefined;
+    let last: CollectionNode | undefined;
 
     for (const key of this.state.selectedKeys()) {
       const item = this.collection.getItem(key);

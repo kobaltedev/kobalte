@@ -13,18 +13,16 @@ import { CollectionBase, CollectionNode, createControllableSignal } from "../pri
 import { SelectionType, SingleSelection } from "../selection";
 import { createListState, CreateListStateProps, ListState } from "./create-list-state";
 
-export interface CreateSingleSelectListStateProps<SectionSource, ItemSource>
-  extends CollectionBase<SectionSource, ItemSource>,
+export interface CreateSingleSelectListStateProps
+  extends CollectionBase,
     Omit<SingleSelection, "disallowEmptySelection"> {
   /** Filter function to generate a filtered list of nodes. */
-  filter?: (
-    nodes: Iterable<CollectionNode<SectionSource | ItemSource>>
-  ) => Iterable<CollectionNode<SectionSource | ItemSource>>;
+  filter?: (nodes: Iterable<CollectionNode>) => Iterable<CollectionNode>;
 }
 
-export interface SingleSelectListState<T> extends ListState<T> {
+export interface SingleSelectListState extends ListState {
   /** The value of the currently selected item. */
-  selectedItem: Accessor<CollectionNode<T> | undefined>;
+  selectedItem: Accessor<CollectionNode | undefined>;
 
   /** The key for the currently selected item. */
   selectedKey: Accessor<string | undefined>;
@@ -37,9 +35,9 @@ export interface SingleSelectListState<T> extends ListState<T> {
  * Provides state management for list-like components with single selection.
  * Handles building a collection of items from props, and manages selection state.
  */
-export function createSingleSelectListState<SectionSource, ItemSource>(
-  props: CreateSingleSelectListStateProps<SectionSource, ItemSource>
-): SingleSelectListState<SectionSource | ItemSource> {
+export function createSingleSelectListState(
+  props: CreateSingleSelectListStateProps
+): SingleSelectListState {
   const [selectedKey, setSelectedKey] = createControllableSignal<string>({
     value: () => access(props.selectedKey),
     defaultValue: () => access(props.defaultSelectedKey),
@@ -70,7 +68,7 @@ export function createSingleSelectListState<SectionSource, ItemSource>(
 
       setSelectedKey(key);
     },
-  } as Partial<CreateListStateProps<SectionSource, ItemSource>>);
+  } as Partial<CreateListStateProps>);
 
   const { collection, disabledKeys, selectionManager } = createListState(createListStateProps);
 
