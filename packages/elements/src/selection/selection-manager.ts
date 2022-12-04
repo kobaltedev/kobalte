@@ -238,7 +238,7 @@ export class SelectionManager implements MultipleSelectionManager {
 
     while (key) {
       const item = this.collection().getItem(key);
-      if (item && item.type === "item") {
+      if (item) {
         keys.push(key);
       }
 
@@ -253,22 +253,9 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   private getKey(key: string) {
-    let item = this.collection().getItem(key);
+    const item = this.collection().getItem(key);
 
-    if (!item) {
-      return key;
-    }
-
-    // Find a parent item to select
-    while (item && item.type !== "item" && item.parentKey != null) {
-      item = this.collection().getItem(item.parentKey);
-    }
-
-    if (!item || item.type !== "item") {
-      return null;
-    }
-
-    return item.key;
+    return !item ? key : item.key;
   }
 
   /** Toggles whether the given key is selected. */
@@ -360,9 +347,7 @@ export class SelectionManager implements MultipleSelectionManager {
             continue;
           }
 
-          if (item.type === "item") {
-            keys.push(key);
-          }
+          keys.push(key);
         }
 
         key = this.collection().getKeyAfter(key);

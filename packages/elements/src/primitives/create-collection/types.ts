@@ -31,14 +31,8 @@ export interface Collection<T> extends Iterable<T> {
 }
 
 export interface CollectionNode {
-  /** The type of item this node represents. */
-  type: "item" | "section";
-
   /** The unique key for the node. */
   key: string;
-
-  /** The level of depth this node is at in the hierarchy. */
-  level: number;
 
   /** A string value for this node, used for features like typeahead. */
   textValue: string;
@@ -48,9 +42,6 @@ export interface CollectionNode {
 
   /** The index of this node within its parent. */
   index?: number;
-
-  /** The key of the parent node. */
-  parentKey?: string;
 
   /** The key of the node before this node. */
   prevKey?: string;

@@ -48,9 +48,6 @@ interface CreateSelectableCollectionProps {
   /** Whether typeahead is disabled. */
   disallowTypeAhead?: MaybeAccessor<boolean | undefined>;
 
-  /** Whether the collection items should use virtual focus instead of being focused directly. */
-  shouldUseVirtualFocus?: MaybeAccessor<boolean | undefined>;
-
   /** Whether navigation through tab key is enabled. */
   allowsTabNavigation?: MaybeAccessor<boolean | undefined>;
 
@@ -416,7 +413,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     const refEl = ref();
 
     // If no default focus key is selected, focus the collection itself.
-    if (refEl && focusedKey == null && !access(props.shouldUseVirtualFocus)) {
+    if (refEl && focusedKey == null) {
       focusSafely(refEl);
     }
   });
@@ -445,13 +442,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
   // If nothing is focused within the collection, make the collection itself tabbable.
   // This will be marshalled to either the first or last item depending on where focus came from.
-  // If using virtual focus, don't set a tabIndex at all so that VoiceOver on iOS 14 doesn't try
-  // to move real DOM focus to the element anyway.
   const tabIndex = createMemo(() => {
-    if (access(props.shouldUseVirtualFocus)) {
-      return undefined;
-    }
-
     return access(props.selectionManager).focusedKey() == null ? 0 : -1;
   });
 

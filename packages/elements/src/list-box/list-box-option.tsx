@@ -114,7 +114,6 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
         return listBoxContext.shouldSelectOnPressUp() && listBoxContext.shouldFocusOnHover();
       },
       isVirtualized: listBoxContext.isVirtualized,
-      shouldUseVirtualFocus: listBoxContext.shouldUseVirtualFocus,
       isDisabled: () => local.isDisabled,
     },
     () => ref

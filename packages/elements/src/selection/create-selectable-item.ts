@@ -35,9 +35,6 @@ export interface CreateSelectableItemProps {
   /** Whether the option is contained in a virtual scroller. */
   isVirtualized?: MaybeAccessor<boolean | undefined>;
 
-  /** Whether the option should use virtual focus instead of being focused directly. */
-  shouldUseVirtualFocus?: MaybeAccessor<boolean | undefined>;
-
   /** Whether the item is disabled. */
   isDisabled?: MaybeAccessor<boolean | undefined>;
 
@@ -56,7 +53,6 @@ export function createSelectableItem<T extends HTMLElement>(
 ) {
   const manager = () => access(props.selectionManager);
   const key = () => access(props.key);
-  const shouldUseVirtualFocus = () => access(props.shouldUseVirtualFocus);
 
   const onSelect = (e: PressEvent | PointerEvent) => {
     if (e.pointerType === "keyboard" && isNonContiguousSelectionModifier(e)) {
@@ -150,7 +146,6 @@ export function createSelectableItem<T extends HTMLElement>(
     onPressStart: itemPressProps.onPressStart,
     onPressUp: itemPressProps.onPressUp,
     onPress: itemPressProps.onPress,
-    preventFocusOnPress: shouldUseVirtualFocus,
   });
 
   // TODO: uncomment when create-long-press is ready
@@ -180,7 +175,7 @@ export function createSelectableItem<T extends HTMLElement>(
   const onFocus = (e: FocusEvent) => {
     const refEl = ref();
 
-    if (shouldUseVirtualFocus() || !refEl) {
+    if (!refEl) {
       return;
     }
 
@@ -189,14 +184,9 @@ export function createSelectableItem<T extends HTMLElement>(
     }
   };
 
-  // Set tabIndex to 0 if the element is focused, or -1 otherwise so that only the last focused
-  // item is tabbable. If using virtual focus, don't set a tabIndex at all so that VoiceOver
-  // on iOS 14 doesn't try to move real DOM focus to the item anyway.
+  // Set tabIndex to 0 if the element is focused, or -1 otherwise
+  // so that only the last focused item is tabbable.
   const tabIndex = createMemo(() => {
-    if (shouldUseVirtualFocus()) {
-      return undefined;
-    }
-
     return key() === manager().focusedKey() ? 0 : -1;
   });
 
@@ -211,21 +201,14 @@ export function createSelectableItem<T extends HTMLElement>(
       [
         ref,
         key,
-        shouldUseVirtualFocus,
         () => manager().focusedKey(),
         () => manager().isFocused(),
         () => manager().childFocusStrategy(),
       ],
       newValue => {
-        const [refEl, key, shouldUseVirtualFocus, focusedKey, isFocused] = newValue;
+        const [refEl, key, focusedKey, isFocused] = newValue;
 
-        if (
-          refEl &&
-          key === focusedKey &&
-          isFocused &&
-          !shouldUseVirtualFocus &&
-          document.activeElement !== refEl
-        ) {
+        if (refEl && key === focusedKey && isFocused && document.activeElement !== refEl) {
           if (props.focus) {
             props.focus();
           } else {

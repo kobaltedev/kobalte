@@ -6,6 +6,7 @@ interface Country {
   id: string;
   label: string;
   textValue: string;
+  disabled?: boolean;
 }
 
 const initialDataSource: Array<Country> = [
@@ -43,9 +44,25 @@ export default function App() {
     ]);
   };
 
+  const disableFrance = () => {
+    setDataSource(prev => {
+      return prev.map(item => {
+        if (item.id === "FR") {
+          return {
+            ...item,
+            disabled: true,
+          };
+        }
+
+        return item;
+      });
+    });
+  };
+
   return (
     <I18nProvider>
       <button onClick={addItem}>Add item</button>
+      <button onClick={disableFrance}>Disable France</button>
       <div>Selection: {performBulkAction()}</div>
       <ListBox selectionMode="multiple" value={value()} onValueChange={setValue} class="listbox">
         <For each={dataSource()}>
@@ -54,7 +71,7 @@ export default function App() {
               class="listbox-option"
               value={country.id}
               textValue={country.textValue}
-              isDisabled={country.id === "UK"}
+              isDisabled={country.disabled}
             >
               {country.label}
             </ListBox.Option>
