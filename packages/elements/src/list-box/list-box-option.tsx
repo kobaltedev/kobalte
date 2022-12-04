@@ -170,6 +170,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
   const context: ListBoxOptionContextValue = {
     dataset,
     setLabelRef,
+    isSelected: selectableItem.isSelected,
     generateId: part => `${others.id!}-${part}`,
     registerLabel: id => {
       setLabelId(id);

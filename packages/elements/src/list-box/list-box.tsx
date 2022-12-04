@@ -11,7 +11,6 @@ import {
   combineProps,
   createPolymorphicComponent,
   mergeDefaultProps,
-  mergeRefs,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -25,21 +24,23 @@ import {
 import { createDomCollection } from "../primitives";
 import { FocusStrategy, MultipleSelection, SelectionType } from "../selection";
 import { ListBoxContext, ListBoxContextValue, ListBoxDataSet } from "./list-box-context";
-import { ListBoxOption } from "./list-box-option";
-import { ListBoxOptionDescription } from "./list-box-option-description";
-import { ListBoxOptionLabel } from "./list-box-option-label";
-import { ListBoxItem } from "./types";
 import { ListBoxGroup } from "./list-box-group";
 import { ListBoxGroupLabel } from "./list-box-group-label";
 import { ListBoxGroupOptions } from "./list-box-group-options";
+import { ListBoxOption } from "./list-box-option";
+import { ListBoxOptionDescription } from "./list-box-option-description";
+import { ListBoxOptionIndicator } from "./list-box-option-indicator";
+import { ListBoxOptionLabel } from "./list-box-option-label";
+import { ListBoxItem } from "./types";
 
 type ListBoxComposite = {
-  Option: typeof ListBoxOption;
-  OptionLabel: typeof ListBoxOptionLabel;
-  OptionDescription: typeof ListBoxOptionDescription;
   Group: typeof ListBoxGroup;
   GroupLabel: typeof ListBoxGroupLabel;
   GroupOptions: typeof ListBoxGroupOptions;
+  Option: typeof ListBoxOption;
+  OptionLabel: typeof ListBoxOptionLabel;
+  OptionDescription: typeof ListBoxOptionDescription;
+  OptionIndicator: typeof ListBoxOptionIndicator;
 };
 
 export interface ListBoxProps
@@ -180,9 +181,10 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
   );
 });
 
-ListBox.Option = ListBoxOption;
-ListBox.OptionLabel = ListBoxOptionLabel;
-ListBox.OptionDescription = ListBoxOptionDescription;
 ListBox.Group = ListBoxGroup;
 ListBox.GroupLabel = ListBoxGroupLabel;
 ListBox.GroupOptions = ListBoxGroupOptions;
+ListBox.Option = ListBoxOption;
+ListBox.OptionLabel = ListBoxOptionLabel;
+ListBox.OptionDescription = ListBoxOptionDescription;
+ListBox.OptionIndicator = ListBoxOptionIndicator;

@@ -11,6 +11,7 @@ export interface ListBoxOptionDataSet {
 
 export interface ListBoxOptionContextValue {
   dataset: Accessor<ListBoxOptionDataSet>;
+  isSelected: Accessor<boolean>;
   setLabelRef: (el: HTMLElement) => void;
   generateId: (part: string) => string;
   registerLabel: (id: string) => () => void;

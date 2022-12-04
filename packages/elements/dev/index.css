@@ -57,8 +57,3 @@ body,
   background-color: hsl(204 100% 40%);
   color: hsl(204 20% 100%);
 }
-
-.listbox-item[data-selected] {
-  background-color: hsl(0, 100%, 40%);
-  color: hsl(204 20% 100%);
-}

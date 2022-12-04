@@ -58,12 +58,13 @@ export default function App() {
                 <For each={category.foods}>
                   {food => (
                     <ListBox.Option
-                      class="listbox-item"
+                      class="listbox-item flex items-center"
                       value={food.id}
                       textValue={food.textValue}
                       isDisabled={food.disabled}
                     >
-                      {food.label}
+                      <ListBox.OptionLabel>{food.label}</ListBox.OptionLabel>
+                      <ListBox.OptionIndicator class="ml-auto">✅</ListBox.OptionIndicator>
                     </ListBox.Option>
                   )}
                 </For>
