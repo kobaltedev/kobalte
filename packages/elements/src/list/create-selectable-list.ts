@@ -7,11 +7,16 @@
  */
 
 import { access, MaybeAccessor } from "@kobalte/utils";
-import { Accessor } from "solid-js";
+import { Accessor, createMemo } from "solid-js";
 
 import { createCollator } from "../i18n";
 import { Collection, CollectionNode } from "../primitives";
-import { createSelectableCollection, FocusStrategy, MultipleSelectionManager } from "../selection";
+import {
+  createSelectableCollection,
+  FocusStrategy,
+  KeyboardDelegate,
+  MultipleSelectionManager,
+} from "../selection";
 import { ListKeyboardDelegate } from "./list-keyboard-delegate";
 
 export interface CreateSelectableListProps {
@@ -20,6 +25,9 @@ export interface CreateSelectableListProps {
 
   /** An interface for reading and updating multiple selection state. */
   selectionManager: MaybeAccessor<MultipleSelectionManager>;
+
+  /** A delegate that returns collection item keys with respect to visual layout. */
+  keyboardDelegate?: MaybeAccessor<KeyboardDelegate | undefined>;
 
   /** Whether the collection or one of its items should be automatically focused upon render. */
   autoFocus?: MaybeAccessor<boolean | FocusStrategy | undefined>;
@@ -57,8 +65,16 @@ export function createSelectableList<T extends HTMLElement>(
 ) {
   const collator = createCollator({ usage: "search", sensitivity: "base" });
 
-  // A KeyboardDelegate which uses the DOM to query layout information (e.g. for page up/page down).
-  const delegate = new ListKeyboardDelegate(props.collection, ref, collator);
+  // By default, a KeyboardDelegate is provided which uses the DOM to query layout information (e.g. for page up/page down).
+  const delegate = createMemo(() => {
+    const keyboardDelegate = access(props.keyboardDelegate);
+
+    if (keyboardDelegate) {
+      return keyboardDelegate;
+    }
+
+    return new ListKeyboardDelegate(props.collection, ref, collator);
+  });
 
   return createSelectableCollection(
     {

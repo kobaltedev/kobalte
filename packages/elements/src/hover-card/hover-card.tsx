@@ -105,7 +105,6 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   );
 
   const [local, others] = splitProps(props, [
-    "children",
     "isOpen",
     "defaultIsOpen",
     "onOpenChange",
@@ -280,22 +279,22 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   };
 
   return (
-    <Popover
-      isOpen={isOpen()}
-      onOpenChange={setIsOpen}
-      anchorRef={triggerRef}
-      onCurrentPlacementChange={setCurrentPlacement}
-      closeOnInteractOutside={local.closeOnHoverOutside}
-      closeOnEsc={local.closeOnEsc}
-      isModal={false}
-      preventScroll={false}
-      trapFocus={false}
-      autoFocus={false}
-      restoreFocus={false}
-      {...others}
-    >
-      <HoverCardContext.Provider value={context}>{local.children}</HoverCardContext.Provider>
-    </Popover>
+    <HoverCardContext.Provider value={context}>
+      <Popover
+        isOpen={isOpen()}
+        onOpenChange={setIsOpen}
+        anchorRef={triggerRef}
+        onCurrentPlacementChange={setCurrentPlacement}
+        closeOnInteractOutside={local.closeOnHoverOutside}
+        closeOnEsc={local.closeOnEsc}
+        isModal={false}
+        preventScroll={false}
+        trapFocus={false}
+        autoFocus={false}
+        restoreFocus={false}
+        {...others}
+      />
+    </HoverCardContext.Provider>
   );
 };
 

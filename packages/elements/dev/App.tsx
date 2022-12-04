@@ -1,6 +1,4 @@
-import { For } from "solid-js";
-
-import { I18nProvider, ListBox } from "../src";
+import { I18nProvider } from "../src";
 
 interface Food {
   id: string;
@@ -14,7 +12,10 @@ interface Category {
   foods: Array<Food>;
 }
 
-const foods: Array<Category> = [
+const dataSource: Array<Category | Food> = [
+  { label: "🍔 Burger", textValue: "Burger", id: "burger" },
+  { label: "🍕 Pizza", textValue: "Pizza", id: "pizza" },
+  { label: "🌭 Hot dog", textValue: "Hot dog", id: "hotdog" },
   {
     label: "Fruits",
     foods: [
@@ -44,35 +45,20 @@ const foods: Array<Category> = [
   },
 ];
 
+function getNode(source: Category | Food) {
+  if (Object.hasOwn(source, "foods")) {
+    return {
+      type: "section",
+    };
+  } else {
+    return {
+      type: "item",
+    };
+  }
+}
+
+dataSource.forEach(source => console.log(getNode(source).type));
+
 export default function App() {
-  return (
-    <I18nProvider>
-      <ListBox class="listbox space-y-2">
-        <For each={foods}>
-          {category => (
-            <ListBox.Group class="group">
-              <ListBox.GroupLabel class="text-sm text-gray-500 px-2">
-                {category.label}
-              </ListBox.GroupLabel>
-              <ListBox.GroupOptions class="group-options">
-                <For each={category.foods}>
-                  {food => (
-                    <ListBox.Option
-                      class="listbox-item flex items-center"
-                      value={food.id}
-                      textValue={food.textValue}
-                      isDisabled={food.disabled}
-                    >
-                      <ListBox.OptionLabel>{food.label}</ListBox.OptionLabel>
-                      <ListBox.OptionIndicator class="ml-auto">✅</ListBox.OptionIndicator>
-                    </ListBox.Option>
-                  )}
-                </For>
-              </ListBox.GroupOptions>
-            </ListBox.Group>
-          )}
-        </For>
-      </ListBox>
-    </I18nProvider>
-  );
+  return <I18nProvider></I18nProvider>;
 }

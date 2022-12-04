@@ -12,7 +12,7 @@ import {
   createPolymorphicComponent,
   mergeDefaultProps,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
+import { Accessor, createMemo, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
@@ -20,9 +20,10 @@ import {
   CreateListStateProps,
   createSelectableList,
   CreateSelectableListProps,
+  ListState,
 } from "../list";
-import { createDomCollection } from "../primitives";
-import { FocusStrategy, MultipleSelection, SelectionType } from "../selection";
+import { createControllableArraySignal, createDomCollection } from "../primitives";
+import { FocusStrategy, KeyboardDelegate, MultipleSelection, SelectionType } from "../selection";
 import { ListBoxContext, ListBoxContextValue, ListBoxDataSet } from "./list-box-context";
 import { ListBoxGroup } from "./list-box-group";
 import { ListBoxGroupLabel } from "./list-box-group-label";
@@ -58,6 +59,18 @@ export interface ListBoxProps
 
   /** Event handler called when the value changes. */
   onValueChange?: (value: SelectionType) => void;
+
+  /** The controlled items state of the listbox. */
+  items?: Array<ListBoxItem>;
+
+  /** Event handler called when the items state of the listbox changes. */
+  onItemsChange?: (items: Array<ListBoxItem>) => void;
+
+  /** State for the listbox, as returned by `createListState`. */
+  listState?: ListState;
+
+  /** An optional keyboard delegate implementation for type to select, to override the default. */
+  keyboardDelegate?: KeyboardDelegate;
 
   /** Whether to autofocus the listbox or an option. */
   autoFocus?: boolean | FocusStrategy;
@@ -98,6 +111,10 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
     "value",
     "defaultValue",
     "onValueChange",
+    "items",
+    "onItemsChange",
+    "listState",
+    "keyboardDelegate",
     "autoFocus",
     "shouldFocusWrap",
     "shouldUseVirtualFocus",
@@ -112,28 +129,35 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
     "allowsTabNavigation",
   ]);
 
-  const [items, setItems] = createSignal<Array<ListBoxItem>>([]);
+  const [items, setItems] = createControllableArraySignal<ListBoxItem>({
+    value: () => local.items,
+    defaultValue: () => [],
+    onChange: value => local.onItemsChange?.(value),
+  });
 
   const { DomCollectionProvider } = createDomCollection({
     items,
     onItemsChange: setItems,
   });
 
-  const listState = createListState({
-    selectedKeys: () => local.value,
-    defaultSelectedKeys: () => local.defaultValue,
-    onSelectionChange: local.onValueChange,
-    allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
-    disallowEmptySelection: () => access(local.disallowEmptySelection),
-    selectionBehavior: () => access(local.selectionBehavior),
-    selectionMode: () => access(local.selectionMode),
-    dataSource: items,
-    getNode: (source: ListBoxItem) => ({
-      key: source.value,
-      textValue: source.textValue,
-      isDisabled: source.isDisabled,
-    }),
-  });
+  // TODO: refactor to keep reactivity
+  const listState =
+    local.listState ??
+    createListState({
+      selectedKeys: () => local.value,
+      defaultSelectedKeys: () => local.defaultValue,
+      onSelectionChange: local.onValueChange,
+      allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
+      disallowEmptySelection: () => access(local.disallowEmptySelection),
+      selectionBehavior: () => access(local.selectionBehavior),
+      selectionMode: () => access(local.selectionMode),
+      dataSource: items,
+      getNode: (source: ListBoxItem) => ({
+        key: source.value,
+        textValue: source.textValue,
+        isDisabled: source.isDisabled,
+      }),
+    });
 
   const selectableList = createSelectableList(
     {
@@ -141,6 +165,7 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
       collection: listState.collection,
       autoFocus: () => access(local.autoFocus),
       shouldFocusWrap: () => access(local.shouldFocusWrap),
+      keyboardDelegate: () => local.keyboardDelegate,
       disallowEmptySelection: () => access(local.disallowEmptySelection),
       selectOnFocus: () => access(local.selectOnFocus),
       disallowTypeAhead: () => access(local.disallowTypeAhead),
