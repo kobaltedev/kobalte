@@ -39,6 +39,9 @@ export interface CreateSelectableListProps {
   /** Whether typeahead is disabled. */
   disallowTypeAhead?: MaybeAccessor<boolean | undefined>;
 
+  /** Whether the collection items should use virtual focus instead of being focused directly. */
+  shouldUseVirtualFocus?: MaybeAccessor<boolean | undefined>;
+
   /** Whether navigation through tab key is enabled. */
   allowsTabNavigation?: MaybeAccessor<boolean | undefined>;
 }
@@ -66,6 +69,7 @@ export function createSelectableList<T extends HTMLElement>(
       disallowEmptySelection: () => access(props.disallowEmptySelection),
       selectOnFocus: () => access(props.selectOnFocus),
       disallowTypeAhead: () => access(props.disallowTypeAhead),
+      shouldUseVirtualFocus: () => access(props.shouldUseVirtualFocus),
       allowsTabNavigation: () => access(props.allowsTabNavigation),
       isVirtualized: () => access(props.isVirtualized),
     },

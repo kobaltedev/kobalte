@@ -23,7 +23,8 @@ export interface CreateCollectionProps<C extends Collection<CollectionNode>> {
 }
 
 export function createCollection<C extends Collection<CollectionNode>>(
-  props: CreateCollectionProps<C>
+  props: CreateCollectionProps<C>,
+  deps: Array<Accessor<any>> = []
 ) {
   const initialNodes = buildNodes({
     dataSource: access(props.dataSource),
@@ -34,7 +35,7 @@ export function createCollection<C extends Collection<CollectionNode>>(
 
   createEffect(
     on(
-      [() => access(props.dataSource), () => props.getNode, () => props.factory],
+      [() => access(props.dataSource), () => props.getNode, () => props.factory, ...deps],
       ([dataSource, getNode, factory]) => {
         const nodes = buildNodes({ dataSource, getNode });
 

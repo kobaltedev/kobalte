@@ -58,6 +58,9 @@ export interface ListBoxProps
   /** Whether focus should wrap around when the end/start is reached. */
   shouldFocusWrap?: boolean;
 
+  /** Whether the listbox items should use virtual focus instead of being focused directly. */
+  shouldUseVirtualFocus?: boolean;
+
   /** Whether selection should occur on press up instead of press down. */
   shouldSelectOnPressUp?: boolean;
 
@@ -91,6 +94,7 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
     "onValueChange",
     "autoFocus",
     "shouldFocusWrap",
+    "shouldUseVirtualFocus",
     "shouldSelectOnPressUp",
     "shouldFocusOnHover",
     "allowDuplicateSelectionEvents",
@@ -134,6 +138,7 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
       disallowEmptySelection: () => access(local.disallowEmptySelection),
       selectOnFocus: () => access(local.selectOnFocus),
       disallowTypeAhead: () => access(local.disallowTypeAhead),
+      shouldUseVirtualFocus: () => access(local.shouldUseVirtualFocus),
       allowsTabNavigation: () => access(local.allowsTabNavigation),
       isVirtualized: false,
     },
@@ -146,6 +151,7 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
     dataset,
     listState: () => listState,
     generateId: part => `${others.id!}-${part}`,
+    shouldUseVirtualFocus: () => props.shouldUseVirtualFocus,
     shouldSelectOnPressUp: () => props.shouldSelectOnPressUp,
     shouldFocusOnHover: () => props.shouldFocusOnHover,
     isVirtualized: () => false,
