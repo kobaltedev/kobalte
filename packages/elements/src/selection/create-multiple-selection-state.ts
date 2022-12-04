@@ -26,9 +26,6 @@ export interface CreateMultipleSelectionStateProps extends MultipleSelection {
 
   /** Whether onSelectionChange should fire even if the new set of keys is the same as the last. */
   allowDuplicateSelectionEvents?: MaybeAccessor<boolean | undefined>;
-
-  /** Whether `disabledKeys` applies to all interactions, or only selection. */
-  disabledBehavior?: MaybeAccessor<DisabledBehavior | undefined>;
 }
 
 /**
@@ -41,7 +38,6 @@ export function createMultipleSelectionState(
     {
       selectionMode: "none",
       selectionBehavior: "toggle",
-      disabledBehavior: "all",
     },
     props
   );
@@ -76,18 +72,12 @@ export function createMultipleSelectionState(
     onChange: value => props.onSelectionChange?.(value),
   });
 
-  const disabledKeysProp = createMemo(() => {
-    const disabledKeys = access(props.disabledKeys);
-    return disabledKeys ? new Set(disabledKeys) : new Set<string>();
-  });
-
   const [selectionBehavior, setSelectionBehavior] = createSignal<SelectionBehavior>(
     access(props.selectionBehavior)!
   );
 
   const selectionMode = () => access(props.selectionMode)!;
   const disallowEmptySelection = () => access(props.disallowEmptySelection) ?? false;
-  const disabledBehavior = () => access(props.disabledBehavior)!;
 
   const setFocusedKey = (key?: string, childFocusStrategy: FocusStrategy = "first") => {
     setChildFocusStrategy(childFocusStrategy);
@@ -123,7 +113,6 @@ export function createMultipleSelectionState(
   return {
     selectionMode,
     disallowEmptySelection,
-    disabledBehavior,
     selectionBehavior,
     setSelectionBehavior,
     isFocused,
@@ -133,7 +122,6 @@ export function createMultipleSelectionState(
     setFocusedKey,
     selectedKeys,
     setSelectedKeys,
-    disabledKeys: disabledKeysProp,
   };
 }
 

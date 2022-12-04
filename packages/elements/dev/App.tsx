@@ -1,42 +1,29 @@
-import { I18nProvider, ListBox, SelectionType } from "../src";
 import { createSignal, For } from "solid-js";
+
+import { I18nProvider, ListBox, SelectionType } from "../src";
 
 interface Country {
   id: string;
   label: string;
+  textValue: string;
 }
 
-interface Continent {
-  id: string;
-  label: string;
-  countries: Country[];
-}
-
-const initalDataSource: Array<Continent | Country> = [
-  { label: "Nigeria", id: "NG" },
-  { label: "Japan", id: "JP" },
-  { label: "Korea", id: "KO" },
-  { label: "Kenya", id: "KE" },
-  { label: "United Kingdom", id: "UK" },
-  { label: "Ghana", id: "GH" },
-  { label: "Uganda", id: "UG" },
-  /*{
-    label: "Europe",
-    id: "EU",
-    countries: [
-      { label: "France", id: "FR" },
-      { label: "Germany", id: "DE" },
-    ],
-  },
-  */
+const initialDataSource: Array<Country> = [
+  { label: "🇳🇬 Nigeria", textValue: "Nigeria", id: "NG" },
+  { label: "🇯🇵 Japan", textValue: "Japan", id: "JP" },
+  { label: "🇰🇷 Korea", textValue: "Korea", id: "KO" },
+  { label: "🇰🇪 Kenya", textValue: "Kenya", id: "KE" },
+  { label: "🇬🇧 United Kingdom", textValue: "United Kingdom", id: "UK" },
+  { label: "🇬🇭 Ghana", textValue: "Ghana", id: "GH" },
+  { label: "🇫🇷 France", textValue: "France", id: "FR" },
 ];
 
 export default function App() {
-  const [dataSource, setDataSource] = createSignal(initalDataSource);
-  const [selectedKeys, setSelectedKeys] = createSignal<SelectionType>();
+  const [dataSource, setDataSource] = createSignal(initialDataSource);
+  const [value, setValue] = createSignal<SelectionType>();
 
   function performBulkAction() {
-    const selection = selectedKeys();
+    const selection = value();
 
     if (selection === "all") {
       return "all";
@@ -46,39 +33,33 @@ export default function App() {
   }
 
   const addItem = () => {
-    setDataSource(prev => [...prev, { label: "Item" + prev.length, id: String(prev.length) }]);
+    setDataSource(prev => [
+      ...prev,
+      {
+        label: "🆕 Item" + prev.length,
+        textValue: String(prev.length),
+        id: String(prev.length),
+      },
+    ]);
   };
 
   return (
     <I18nProvider>
       <button onClick={addItem}>Add item</button>
       <div>Selection: {performBulkAction()}</div>
-      <ListBox
-        selectionMode="multiple"
-        selectedKeys={selectedKeys()}
-        onSelectionChange={setSelectedKeys}
-        class="listbox"
-        dataSource={dataSource}
-        getItem={(country: Country) => ({
-          key: country.id,
-          textValue: country.label,
-          rawValue: country,
-        })}
-        getSection={(continent: Continent) => ({
-          key: continent.id,
-          items: continent.countries,
-          rawValue: continent,
-        })}
-      >
-        {nodes => (
-          <For each={nodes}>
-            {node => (
-              <ListBox.Option class="listbox-option" value={node.key}>
-                {node.textValue}
-              </ListBox.Option>
-            )}
-          </For>
-        )}
+      <ListBox selectionMode="multiple" value={value()} onValueChange={setValue} class="listbox">
+        <For each={dataSource()}>
+          {country => (
+            <ListBox.Option
+              class="listbox-option"
+              value={country.id}
+              textValue={country.textValue}
+              isDisabled={country.id === "UK"}
+            >
+              {country.label}
+            </ListBox.Option>
+          )}
+        </For>
       </ListBox>
     </I18nProvider>
   );

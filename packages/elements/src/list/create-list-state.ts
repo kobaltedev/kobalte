@@ -7,7 +7,7 @@
  */
 
 import { access } from "@kobalte/utils";
-import { Accessor, createComputed, createMemo } from "solid-js";
+import { Accessor, createComputed } from "solid-js";
 
 import { Collection, CollectionBase, CollectionNode, createCollection } from "../primitives";
 import {
@@ -17,47 +17,30 @@ import {
 } from "../selection";
 import { ListCollection } from "./list-collection";
 
-export interface CreateListStateProps extends CollectionBase, CreateMultipleSelectionStateProps {
-  /** Filter function to generate a filtered list of nodes. */
-  filter?: (nodes: Iterable<CollectionNode>) => Iterable<CollectionNode>;
-}
+export interface CreateListStateProps extends CollectionBase, CreateMultipleSelectionStateProps {}
 
 export interface ListState {
   /** A collection of items in the list. */
   collection: Accessor<Collection<CollectionNode>>;
-
-  /** A set of items that are disabled. */
-  disabledKeys: Accessor<Set<string>>;
 
   /** A selection manager to read and update multiple selection state. */
   selectionManager: Accessor<SelectionManager>;
 }
 
 /**
- * Provides state management for list-like components. Handles building a collection
- * of items from props, and manages multiple selection state.
+ * Provides state management for list-like components.
+ * Handles building a collection of items from props, and manages multiple selection state.
  */
 export function createListState(props: CreateListStateProps): ListState {
   const selectionState = createMultipleSelectionState(props);
 
-  const disabledKeys = createMemo(() => {
-    const disabledKeys = access(props.disabledKeys);
-    return disabledKeys ? new Set(disabledKeys) : new Set<string>();
-  });
-
-  const factory = (nodes: Iterable<CollectionNode>) => {
-    return props.filter ? new ListCollection(props.filter(nodes)) : new ListCollection(nodes);
-  };
-
   const collection = createCollection({
     dataSource: () => access(props.dataSource),
-    factory,
-    getItem: props.getItem,
-    getSection: props.getSection,
-    deps: [() => props.filter],
+    factory: nodes => new ListCollection(nodes),
+    getNode: props.getNode,
   });
 
-  const selectionManager = createMemo(() => new SelectionManager(collection(), selectionState));
+  const selectionManager = new SelectionManager(collection, selectionState);
 
   // Reset focused key if that item is deleted from the collection.
   createComputed(() => {
@@ -70,7 +53,6 @@ export function createListState(props: CreateListStateProps): ListState {
 
   return {
     collection,
-    disabledKeys,
-    selectionManager,
+    selectionManager: () => selectionManager,
   };
 }

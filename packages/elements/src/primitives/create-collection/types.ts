@@ -1,44 +1,5 @@
 import { MaybeAccessor } from "@kobalte/utils";
 
-export interface CollectionItem {
-  /** The unique key for the item. */
-  key: string;
-
-  /** The raw object value the item was created from. */
-  rawValue: any;
-
-  /** A string value for the item, used for features like typeahead. */
-  textValue: string;
-}
-
-export interface CollectionSection {
-  /** The unique key for the section. */
-  key: string;
-
-  /** A list of child item objects. */
-  items: Array<any>;
-
-  /** The raw object value the section was created from. */
-  rawValue: any;
-}
-
-export interface CollectionBase {
-  /** The data source to be managed by the collection. */
-  dataSource: MaybeAccessor<Array<any>>;
-
-  /** A function to map a data source item to a collection item. */
-  getItem: (source: any) => CollectionItem;
-
-  /** A function to map a data source section to a collection section. */
-  getSection?: (source: any) => CollectionSection;
-
-  /**
-   * The item keys that are disabled.
-   * These items cannot be selected, focused, or otherwise interacted with.
-   */
-  disabledKeys?: MaybeAccessor<Iterable<string> | undefined>;
-}
-
 /**
  * A generic interface to access a readonly sequential
  * collection of unique keyed items.
@@ -76,17 +37,14 @@ export interface CollectionNode {
   /** The unique key for the node. */
   key: string;
 
-  /** The raw object value the node was created from. */
-  rawValue: any;
-
   /** The level of depth this node is at in the hierarchy. */
   level: number;
 
   /** A string value for this node, used for features like typeahead. */
   textValue: string;
 
-  /** The function to render the contents of this node (e.g. JSX). */
-  //render: () => JSX.Element;
+  /** Whether the node is disabled. */
+  isDisabled: boolean;
 
   /** The index of this node within its parent. */
   index?: number;
@@ -99,4 +57,12 @@ export interface CollectionNode {
 
   /** The key of the node after this node. */
   nextKey?: string;
+}
+
+export interface CollectionBase {
+  /** The data source to be managed by the collection. */
+  dataSource: MaybeAccessor<Array<any>>;
+
+  /** A function to map a data source item to a collection node. */
+  getNode: (source: any) => CollectionNode;
 }

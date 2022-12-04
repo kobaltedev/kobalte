@@ -12,74 +12,71 @@ import { Collection, CollectionNode } from "../primitives";
 import { KeyboardDelegate } from "../selection";
 
 export class ListKeyboardDelegate implements KeyboardDelegate {
-  private collection: Collection<CollectionNode>;
-  private disabledKeys: Set<string>;
+  private collection: Accessor<Collection<CollectionNode>>;
   private ref?: Accessor<HTMLElement | undefined>;
-  private collator?: Intl.Collator;
+  private collator?: Accessor<Intl.Collator | undefined>;
 
   constructor(
-    collection: Collection<CollectionNode>,
-    disabledKeys: Set<string>,
+    collection: Accessor<Collection<CollectionNode>>,
     ref?: Accessor<HTMLElement | undefined>,
-    collator?: Intl.Collator
+    collator?: Accessor<Intl.Collator | undefined>
   ) {
     this.collection = collection;
-    this.disabledKeys = disabledKeys;
     this.ref = ref;
     this.collator = collator;
   }
 
   getKeyBelow(key: string) {
-    let keyAfter = this.collection.getKeyAfter(key);
+    let keyAfter = this.collection().getKeyAfter(key);
 
     while (keyAfter != null) {
-      const item = this.collection.getItem(keyAfter);
-      if (item && item.type === "item" && !this.disabledKeys.has(keyAfter)) {
+      const item = this.collection().getItem(keyAfter);
+      if (item && item.type === "item" && !item.isDisabled) {
         return keyAfter;
       }
 
-      keyAfter = this.collection.getKeyAfter(keyAfter);
+      keyAfter = this.collection().getKeyAfter(keyAfter);
     }
   }
 
   getKeyAbove(key: string) {
-    let keyBefore = this.collection.getKeyBefore(key);
+    let keyBefore = this.collection().getKeyBefore(key);
 
     while (keyBefore != null) {
-      const item = this.collection.getItem(keyBefore);
-      if (item && item.type === "item" && !this.disabledKeys.has(keyBefore)) {
+      const item = this.collection().getItem(keyBefore);
+      if (item && item.type === "item" && !item.isDisabled) {
         return keyBefore;
       }
 
-      keyBefore = this.collection.getKeyBefore(keyBefore);
+      keyBefore = this.collection().getKeyBefore(keyBefore);
     }
   }
 
   getFirstKey() {
-    let key = this.collection.getFirstKey();
+    let key = this.collection().getFirstKey();
 
     while (key != null) {
-      const item = this.collection.getItem(key);
+      const item = this.collection().getItem(key);
 
-      if (item && item.type === "item" && !this.disabledKeys.has(key)) {
+      if (item && item.type === "item" && !item.isDisabled) {
         return key;
       }
 
-      key = this.collection.getKeyAfter(key);
+      key = this.collection().getKeyAfter(key);
     }
   }
 
   getLastKey() {
-    let key = this.collection.getLastKey();
+    let key = this.collection().getLastKey();
 
     while (key != null) {
-      const item = this.collection.getItem(key);
+      const item = this.collection().getItem(key);
 
-      if (item && item.type === "item" && !this.disabledKeys.has(key)) {
+      if (item && item.type === "item" && !item.isDisabled) {
         return key;
       }
 
-      key = this.collection.getKeyBefore(key);
+      key = this.collection().getKeyBefore(key);
     }
   }
 
@@ -131,7 +128,9 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
   }
 
   getKeyForSearch(search: string, fromKey?: string) {
-    if (!this.collator) {
+    const collator = this.collator?.();
+
+    if (!collator) {
       return;
     }
 
@@ -139,12 +138,12 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
     let key = fromKey != null ? this.getKeyBelow(fromKey) : this.getFirstKey();
 
     while (key != null) {
-      const item = this.collection.getItem(key);
+      const item = this.collection().getItem(key);
 
       if (item) {
         const substring = item.textValue.slice(0, search.length);
 
-        if (item.textValue && this.collator.compare(substring, search) === 0) {
+        if (item.textValue && collator.compare(substring, search) === 0) {
           return key;
         }
       }

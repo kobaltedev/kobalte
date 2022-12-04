@@ -1,18 +1,12 @@
 import { MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, createEffect, onCleanup } from "solid-js";
+import { createEffect, onCleanup } from "solid-js";
 
 import { useDomCollectionContext } from "./dom-collection-context";
 import { DomCollectionItem } from "./types";
 
 export interface CreateDomCollectionItemProps<T extends DomCollectionItem = DomCollectionItem> {
-  /** A ref for the element in the collection. */
-  ref: Accessor<Element | undefined>;
-
-  /**
-   * A function that returns props that will be passed along with the
-   * item when it gets registered to the collection.
-   */
-  getItem: (item: DomCollectionItem) => T;
+  /** A function to map a data source item to a dom collection item. */
+  getItem: () => T;
 
   /** Whether the item should be registered to the state. */
   shouldRegisterItem?: MaybeAccessor<boolean | undefined>;
@@ -30,9 +24,7 @@ export function createDomCollectionItem<T extends DomCollectionItem = DomCollect
       return;
     }
 
-    const item = props.getItem({ ref: props.ref });
-
-    const unregister = context.registerItem(item);
+    const unregister = context.registerItem(props.getItem());
 
     onCleanup(unregister);
   });

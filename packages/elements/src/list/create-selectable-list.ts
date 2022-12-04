@@ -7,33 +7,19 @@
  */
 
 import { access, MaybeAccessor } from "@kobalte/utils";
-import { Accessor, createMemo } from "solid-js";
+import { Accessor } from "solid-js";
 
 import { createCollator } from "../i18n";
 import { Collection, CollectionNode } from "../primitives";
-import {
-  createSelectableCollection,
-  FocusStrategy,
-  KeyboardDelegate,
-  MultipleSelectionManager,
-} from "../selection";
+import { createSelectableCollection, FocusStrategy, MultipleSelectionManager } from "../selection";
 import { ListKeyboardDelegate } from "./list-keyboard-delegate";
 
 export interface CreateSelectableListProps {
+  /** State of the collection. */
+  collection: Accessor<Collection<CollectionNode>>;
+
   /** An interface for reading and updating multiple selection state. */
   selectionManager: MaybeAccessor<MultipleSelectionManager>;
-
-  /** State of the collection. */
-  collection: MaybeAccessor<Collection<CollectionNode>>;
-
-  /**
-   * The item keys that are disabled.
-   * These items cannot be selected, focused, or otherwise interacted with.
-   */
-  disabledKeys: MaybeAccessor<Set<string>>;
-
-  /** A delegate that returns collection item keys with respect to visual layout. */
-  keyboardDelegate?: MaybeAccessor<KeyboardDelegate | undefined>;
 
   /** Whether the collection or one of its items should be automatically focused upon render. */
   autoFocus?: MaybeAccessor<boolean | FocusStrategy | undefined>;
@@ -71,20 +57,8 @@ export function createSelectableList<T extends HTMLElement>(
 ) {
   const collator = createCollator({ usage: "search", sensitivity: "base" });
 
-  // By default, a KeyboardDelegate is provided which uses the DOM to query layout information (e.g. for page up/page down).
-  // When virtualized, the layout object will be passed in as a prop and override this.
-  const delegate = createMemo(() => {
-    const keyboardDelegate = access(props.keyboardDelegate);
-
-    if (keyboardDelegate) {
-      return keyboardDelegate;
-    }
-
-    const collection = access(props.collection);
-    const disabledKeys = access(props.disabledKeys);
-
-    return new ListKeyboardDelegate(collection, disabledKeys, ref, collator());
-  });
+  // A KeyboardDelegate which uses the DOM to query layout information (e.g. for page up/page down).
+  const delegate = new ListKeyboardDelegate(props.collection, ref, collator);
 
   return createSelectableCollection(
     {

@@ -19,20 +19,6 @@ export type FocusStrategy = "first" | "last";
 export type DisabledBehavior = "selection" | "all";
 export type SelectionType = "all" | Set<string>;
 
-export interface SingleSelection {
-  /** Whether the collection allows empty selection. */
-  disallowEmptySelection?: MaybeAccessor<boolean | undefined>;
-
-  /** The currently selected key in the collection (controlled). */
-  selectedKey?: MaybeAccessor<string | undefined>;
-
-  /** The initial selected key in the collection (uncontrolled). */
-  defaultSelectedKey?: MaybeAccessor<string | undefined>;
-
-  /** Handler that is called when the selection changes. */
-  onSelectionChange?: (key: string) => any;
-}
-
 export interface MultipleSelection {
   /** The type of selection that is allowed in the collection. */
   selectionMode?: MaybeAccessor<SelectionMode | undefined>;
@@ -48,9 +34,6 @@ export interface MultipleSelection {
 
   /** Handler that is called when the selection changes. */
   onSelectionChange?: (keys: SelectionType) => any;
-
-  /** The currently disabled keys in the collection (controlled). */
-  disabledKeys?: MaybeAccessor<Iterable<string> | undefined>;
 }
 
 /**
@@ -93,17 +76,6 @@ export interface FocusState {
   setFocusedKey(key?: string, child?: FocusStrategy): void;
 }
 
-export interface SingleSelectionState extends FocusState {
-  /** Whether the collection allows empty selection. */
-  disallowEmptySelection: Accessor<boolean | undefined>;
-
-  /** The currently selected key in the collection. */
-  selectedKey: Accessor<string>;
-
-  /** Sets the selected key in the collection. */
-  setSelectedKey: (key: string) => void;
-}
-
 export interface MultipleSelectionState extends FocusState {
   /** The type of selection that is allowed in the collection. */
   selectionMode: Accessor<SelectionMode>;
@@ -122,12 +94,6 @@ export interface MultipleSelectionState extends FocusState {
 
   /** Sets the selected keys in the collection. */
   setSelectedKeys(keys: SelectionType): void;
-
-  /** The currently disabled keys in the collection. */
-  disabledKeys: Accessor<Set<string>>;
-
-  /** Whether `disabledKeys` applies to selection, actions, or both. */
-  disabledBehavior: Accessor<DisabledBehavior>;
 }
 
 export interface MultipleSelectionManager extends FocusState {
@@ -154,12 +120,6 @@ export interface MultipleSelectionManager extends FocusState {
 
   /** The last selected key in the collection. */
   lastSelectedKey: Accessor<string | undefined>;
-
-  /** The currently disabled keys in the collection. */
-  disabledKeys: Accessor<Set<string>>;
-
-  /** Whether `disabledKeys` applies to selection, actions, or both. */
-  disabledBehavior: Accessor<DisabledBehavior>;
 
   /** Returns whether a key is selected. */
   isSelected: (key: string) => boolean;
