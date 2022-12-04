@@ -126,7 +126,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
 
   const ariaSelected = () => {
     if (selectionManager().selectionMode() === "none") {
-      return false;
+      return undefined;
     }
 
     return selectableItem.isSelected();

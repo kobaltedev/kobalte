@@ -29,11 +29,17 @@ import { ListBoxOption } from "./list-box-option";
 import { ListBoxOptionDescription } from "./list-box-option-description";
 import { ListBoxOptionLabel } from "./list-box-option-label";
 import { ListBoxItem } from "./types";
+import { ListBoxGroup } from "./list-box-group";
+import { ListBoxGroupLabel } from "./list-box-group-label";
+import { ListBoxGroupOptions } from "./list-box-group-options";
 
 type ListBoxComposite = {
   Option: typeof ListBoxOption;
   OptionLabel: typeof ListBoxOptionLabel;
   OptionDescription: typeof ListBoxOptionDescription;
+  Group: typeof ListBoxGroup;
+  GroupLabel: typeof ListBoxGroupLabel;
+  GroupOptions: typeof ListBoxGroupOptions;
 };
 
 export interface ListBoxProps
@@ -179,3 +185,6 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
 ListBox.Option = ListBoxOption;
 ListBox.OptionLabel = ListBoxOptionLabel;
 ListBox.OptionDescription = ListBoxOptionDescription;
+ListBox.Group = ListBoxGroup;
+ListBox.GroupLabel = ListBoxGroupLabel;
+ListBox.GroupOptions = ListBoxGroupOptions;

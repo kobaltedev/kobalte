@@ -1,37 +1,74 @@
-import { createMemo, createSignal, For } from "solid-js";
+import { For } from "solid-js";
 
-import { I18nProvider, ListBox, Popover } from "../src";
+import { I18nProvider, ListBox } from "../src";
 
-interface Fruit {
+interface Food {
   id: string;
   label: string;
   textValue: string;
   disabled?: boolean;
 }
 
-const dataSource: Array<Fruit> = [
-  { label: "🍎 Apple", textValue: "Apple", id: "apple" },
-  { label: "🍇 Grape", textValue: "Grape", id: "grape" },
-  { label: "🍊 Orange", textValue: "Orange", id: "orange" },
-  { label: "🍓 Strawberry", textValue: "Strawberry", id: "strawberry" },
-  { label: "🍉 Watermelon", textValue: "Watermelon", id: "watermelon" },
+interface Category {
+  label: string;
+  foods: Array<Food>;
+}
+
+const foods: Array<Category> = [
+  {
+    label: "Fruits",
+    foods: [
+      { label: "🍎 Apple", textValue: "Apple", id: "apple" },
+      { label: "🍇 Grape", textValue: "Grape", id: "grape" },
+      { label: "🍊 Orange", textValue: "Orange", id: "orange" },
+      { label: "🍓 Strawberry", textValue: "Strawberry", id: "strawberry" },
+      { label: "🍉 Watermelon", textValue: "Watermelon", id: "watermelon" },
+    ],
+  },
+  {
+    label: "Meats",
+    foods: [
+      { label: "🥓 Bacon", textValue: "Bacon", id: "bacon" },
+      { label: "🍗 Chicken", textValue: "Chicken", id: "chicken" },
+      { label: "🥩 Steak", textValue: "Steak", id: "steak" },
+    ],
+  },
+  {
+    label: "Vegetables",
+    foods: [
+      { label: "🥕 Carrot", textValue: "Carrot", id: "carrot" },
+      { label: "🥬 Lettuce", textValue: "Lettuce", id: "lettuce" },
+      { label: "🥔 Potatoe", textValue: "Potatoe", id: "potatoe" },
+      { label: "🍅 Tomato", textValue: "Tomato", id: "tomato" },
+    ],
+  },
 ];
 
 export default function App() {
   return (
     <I18nProvider>
-      <ListBox class="popover" shouldFocusOnHover>
-        <For each={dataSource}>
-          {item => (
-            <ListBox.Option
-              class="combobox-item"
-              value={item.id}
-              textValue={item.textValue}
-              isDisabled={item.disabled}
-            >
-              <ListBox.OptionLabel>{item.label}</ListBox.OptionLabel>
-              <ListBox.OptionDescription>{item.id}</ListBox.OptionDescription>
-            </ListBox.Option>
+      <ListBox class="listbox space-y-2" disallowEmptySelection>
+        <For each={foods}>
+          {category => (
+            <ListBox.Group class="group">
+              <ListBox.GroupLabel class="text-sm text-gray-500 px-2">
+                {category.label}
+              </ListBox.GroupLabel>
+              <ListBox.GroupOptions class="group-options">
+                <For each={category.foods}>
+                  {food => (
+                    <ListBox.Option
+                      class="listbox-item"
+                      value={food.id}
+                      textValue={food.textValue}
+                      isDisabled={food.disabled}
+                    >
+                      {food.label}
+                    </ListBox.Option>
+                  )}
+                </For>
+              </ListBox.GroupOptions>
+            </ListBox.Group>
           )}
         </For>
       </ListBox>
