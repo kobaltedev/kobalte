@@ -94,7 +94,6 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
 
   const [local, others] = splitProps(props, [
     "as",
-    "ref",
     "value",
     "defaultValue",
     "onValueChange",
@@ -174,8 +173,7 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
             listState.selectionManager().selectionMode() === "multiple" ? true : undefined
           }
           {...dataset()}
-          {...combineProps(others, selectableList.handlers)}
-          ref={mergeRefs(el => (ref = el), local.ref)}
+          {...combineProps({ ref: el => (ref = el) }, others, selectableList.handlers)}
         />
       </ListBoxContext.Provider>
     </DomCollectionProvider>

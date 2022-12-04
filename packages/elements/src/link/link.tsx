@@ -40,7 +40,7 @@ export const Link = createPolymorphicComponent<"a", LinkProps>(props => {
 
   const [local, createPressProps, others] = splitProps(
     props,
-    ["as", "ref", "isDisabled", "onClick"],
+    ["as", "isDisabled", "onClick"],
     CREATE_PRESS_PROP_NAMES
   );
 
@@ -70,8 +70,12 @@ export const Link = createPolymorphicComponent<"a", LinkProps>(props => {
       data-disabled={local.isDisabled ? "" : undefined}
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
-      {...combineProps({ onClick }, others, pressHandlers, focusRingHandlers)}
-      ref={mergeRefs(el => (ref = el), local.ref)}
+      {...combineProps(
+        { ref: el => (ref = el), onClick },
+        others,
+        pressHandlers,
+        focusRingHandlers
+      )}
     />
   );
 });

@@ -69,7 +69,6 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
 
   const [local, others] = splitProps(props, [
     "as",
-    "ref",
     "value",
     "textValue",
     "isDisabled",
@@ -198,6 +197,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
         data-key={selectableItem.dataKey()}
         {...dataset()}
         {...combineProps(
+          { ref: el => (ref = el) },
           others,
           selectableItem.handlers.press,
           // selectableItem.handlers.longPress,
@@ -205,7 +205,6 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
           hoverHandlers,
           focusRingHandlers
         )}
-        ref={mergeRefs(el => (ref = el), local.ref)}
       />
     </ListBoxOptionContext.Provider>
   );

@@ -95,7 +95,6 @@ export const Switch = createPolymorphicComponent<"label", SwitchProps, SwitchCom
 
   const [local, others] = splitProps(props, [
     "as",
-    "ref",
     "children",
     "value",
     "isChecked",
@@ -168,8 +167,7 @@ export const Switch = createPolymorphicComponent<"label", SwitchProps, SwitchCom
     <Dynamic
       component={local.as}
       {...context.dataset()}
-      {...combineProps(others, hoverHandlers)}
-      ref={mergeRefs(el => (ref = el), local.ref)}
+      {...combineProps({ ref: el => (ref = el) }, others, hoverHandlers)}
     >
       <SwitchContext.Provider value={context}>{local.children}</SwitchContext.Provider>
     </Dynamic>

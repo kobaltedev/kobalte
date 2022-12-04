@@ -54,7 +54,7 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
 
   const [local, createPressProps, others] = splitProps(
     props,
-    ["as", "ref", "type", "isDisabled", "onClick"],
+    ["as", "type", "isDisabled", "onClick"],
     CREATE_PRESS_PROP_NAMES
   );
 
@@ -104,8 +104,12 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       data-disabled={local.isDisabled ? "" : undefined}
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
-      {...combineProps({ onClick }, others, pressHandlers, focusRingHandlers)}
-      ref={mergeRefs(el => (ref = el), local.ref)}
+      {...combineProps(
+        { ref: el => (ref = el), onClick },
+        others,
+        pressHandlers,
+        focusRingHandlers
+      )}
     />
   );
 });
