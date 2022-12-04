@@ -36,10 +36,7 @@ export function createListState(props: CreateListStateProps): ListState {
 
   const collection = createCollection({
     dataSource: () => access(props.dataSource),
-    factory: nodes => {
-      console.log("rerun", nodes);
-      return new ListCollection(nodes);
-    },
+    factory: nodes => new ListCollection(nodes),
     getNode: props.getNode,
   });
 

@@ -47,7 +47,7 @@ const foods: Array<Category> = [
 export default function App() {
   return (
     <I18nProvider>
-      <ListBox class="listbox space-y-2" disallowEmptySelection>
+      <ListBox class="listbox space-y-2">
         <For each={foods}>
           {category => (
             <ListBox.Group class="group">
