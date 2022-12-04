@@ -149,7 +149,7 @@ export interface PopoverProps extends PopoverFloatingProps, DialogProps {
  * This component is based on the [WAI-ARIA Dialog (Modal) Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/popovermodal/)
  */
 export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props => {
-  const defaultId = `kb-popover-${createUniqueId()}`;
+  const defaultId = `popover-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
@@ -195,13 +195,21 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     "overflowPadding",
   ]);
 
-  const [anchorRef, setAnchorRef] = createSignal<HTMLElement>();
+  const [defaultAnchorRef, setDefaultAnchorRef] = createSignal<HTMLElement>();
   const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
   const [positionerRef, setPositionerRef] = createSignal<HTMLElement>();
   const [panelRef, setPanelRef] = createSignal<HTMLElement>();
   const [arrowRef, setArrowRef] = createSignal<HTMLElement>();
 
   const [currentPlacement, setCurrentPlacement] = createSignal(local.placement!);
+
+  // Floating UI - reference element.
+  const anchorRef = () => {
+    return getAnchorElement(
+      local.anchorRef?.() ?? defaultAnchorRef() ?? triggerRef(),
+      local.getAnchorRect!
+    );
+  };
 
   const [isOpen, setIsOpen] = createControllableBooleanSignal({
     value: () => local.isOpen,
@@ -211,16 +219,8 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
   const locale = useLocale();
 
-  // Floating UI reference element.
-  const anchorEl = () => {
-    return getAnchorElement(
-      local.anchorRef?.() ?? anchorRef() ?? triggerRef(),
-      local.getAnchorRect!
-    );
-  };
-
   async function updatePosition() {
-    const referenceEl = anchorEl();
+    const referenceEl = anchorRef();
     const floatingEl = positionerRef();
     const arrowEl = arrowRef();
 
@@ -372,7 +372,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
   }
 
   createRenderEffect(() => {
-    const referenceEl = anchorEl();
+    const referenceEl = anchorRef();
     const floatingEl = positionerRef();
 
     if (!referenceEl || !floatingEl) {
@@ -408,9 +408,8 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
   const context: PopoverContextValue = {
     currentPlacement,
-    positionerRef,
     panelRef,
-    setAnchorRef,
+    setDefaultAnchorRef,
     setTriggerRef,
     setPositionerRef,
     setPanelRef,

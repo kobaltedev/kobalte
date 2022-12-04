@@ -90,7 +90,7 @@ body,
   background-color: hsl(204 100% 80% / 0.4);
 }
 
-.combobox-item[data-active-item] {
+.combobox-item[data-focus] {
   background-color: hsl(204 100% 40%);
   color: hsl(204 20% 100%);
 }

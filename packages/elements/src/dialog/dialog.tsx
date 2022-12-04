@@ -55,7 +55,7 @@ export interface DialogProps extends Omit<OverlayProps, "isOpen" | "onClose"> {
  * This component is based on the [WAI-ARIA Dialog (Modal) Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/)
  */
 export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
-  const defaultId = `kb-dialog-${createUniqueId()}`;
+  const defaultId = `dialog-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {

@@ -44,7 +44,7 @@ export const Radio = createPolymorphicComponent<"label", RadioProps, RadioCompos
   const formControlContext = useFormControlContext();
   const radioGroupContext = useRadioGroupContext();
 
-  const defaultId = `kb-radio-${createUniqueId()}`;
+  const defaultId = `${formControlContext.generateId("radio")}-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {

@@ -75,7 +75,7 @@ export interface ListBoxProps
 export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxComposite>(props => {
   let ref: HTMLUListElement | undefined;
 
-  const defaultId = `kb-listbox-${createUniqueId()}`;
+  const defaultId = `listbox-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {

@@ -46,7 +46,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, For
   props => {
     let ref: HTMLDivElement | undefined;
 
-    const defaultId = `kb-radiogroup-${createUniqueId()}`;
+    const defaultId = `radiogroup-${createUniqueId()}`;
 
     props = mergeDefaultProps(
       {

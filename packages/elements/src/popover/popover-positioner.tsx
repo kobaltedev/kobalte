@@ -1,10 +1,8 @@
 import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { JSX, Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { JSX, splitProps } from "solid-js";
 
-import { useDialogContext, useDialogPortalContext } from "../dialog";
-import { usePopoverContext } from "./popover-context";
 import { DialogPositioner, DialogPositionerProps } from "../dialog/dialog-positioner";
+import { usePopoverContext } from "./popover-context";
 
 export interface PopoverPositionerProps extends DialogPositionerProps {
   /** The HTML styles attribute (object form only). */

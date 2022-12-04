@@ -14,15 +14,7 @@ import {
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import {
-  Accessor,
-  createEffect,
-  createMemo,
-  createSignal,
-  createUniqueId,
-  onMount,
-  splitProps,
-} from "solid-js";
+import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
@@ -91,9 +83,9 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
 
   const [labelRef, setLabelRef] = createSignal<HTMLElement>();
 
-  const manager = () => listBoxContext.listState().selectionManager();
+  const selectionManager = () => listBoxContext.listState().selectionManager();
 
-  const isFocused = () => manager().focusedKey() === local.value;
+  const isFocused = () => selectionManager().focusedKey() === local.value;
 
   createDomCollectionItem<ListBoxItem>({
     getItem: () => ({
@@ -108,7 +100,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
   const selectableItem = createSelectableItem(
     {
       key: () => local.value,
-      selectionManager: manager,
+      selectionManager: selectionManager,
       shouldSelectOnPressUp: listBoxContext.shouldSelectOnPressUp,
       allowsDifferentPressOrigin: () => {
         return listBoxContext.shouldSelectOnPressUp() && listBoxContext.shouldFocusOnHover();
@@ -124,8 +116,8 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
     isDisabled: () => selectableItem.isDisabled(),
     onHoverStart: () => {
       if (!isKeyboardFocusVisible() && listBoxContext.shouldFocusOnHover()) {
-        manager().setFocused(true);
-        manager().setFocusedKey(local.value);
+        selectionManager().setFocused(true);
+        selectionManager().setFocusedKey(local.value);
       }
     },
   });
@@ -133,11 +125,11 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
   const { isFocusVisible, focusRingHandlers } = createFocusRing();
 
   const ariaSelected = () => {
-    if (manager().selectionMode() === "none") {
-      return undefined;
+    if (selectionManager().selectionMode() === "none") {
+      return false;
     }
 
-    return selectableItem.isSelected() ? true : undefined;
+    return selectableItem.isSelected();
   };
 
   // Safari with VoiceOver on macOS misreads options with aria-labelledby or aria-label as simply "text".
@@ -196,7 +188,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
         component={local.as}
         role="option"
         tabIndex={selectableItem.tabIndex()}
-        aria-disabled={selectableItem.isDisabled() ? true : undefined}
+        aria-disabled={selectableItem.isDisabled()}
         aria-selected={ariaSelected()}
         aria-label={ariaLabel()}
         aria-labelledby={ariaLabelledBy()}
@@ -209,8 +201,6 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
           others,
           selectableItem.handlers.press,
           // selectableItem.handlers.longPress,
-          // selectableItem.allowsSelection() ? selectableItem.handlers.press : {},
-          // selectableItem.allowsSelection() ? selectableItem.handlers.longPress : {},
           selectableItem.handlers.others,
           hoverHandlers,
           focusRingHandlers

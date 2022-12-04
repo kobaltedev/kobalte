@@ -88,7 +88,7 @@ export interface HoverCardProps extends PopoverFloatingProps {
  * A popover that allows sighted users to preview content available behind a link.
  */
 export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = props => {
-  const defaultId = `kb-hovercard-${createUniqueId()}`;
+  const defaultId = `hovercard-${createUniqueId()}`;
 
   const parentContext = useOptionalHoverCardContext();
 

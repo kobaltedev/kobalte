@@ -4,9 +4,8 @@ import { Placement } from "./utils";
 
 export interface PopoverContextValue {
   currentPlacement: Accessor<Placement>;
-  positionerRef: Accessor<HTMLElement | undefined>;
   panelRef: Accessor<HTMLElement | undefined>;
-  setAnchorRef: (el: HTMLElement) => void;
+  setDefaultAnchorRef: (el: HTMLElement) => void;
   setTriggerRef: (el: HTMLElement) => void;
   setPositionerRef: (el: HTMLElement) => void;
   setPanelRef: (el: HTMLElement) => void;

@@ -82,7 +82,7 @@ export interface SwitchProps {
 export const Switch = createPolymorphicComponent<"label", SwitchProps, SwitchComposite>(props => {
   let ref: HTMLLabelElement | undefined;
 
-  const defaultId = `kb-switch-${createUniqueId()}`;
+  const defaultId = `switch-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {

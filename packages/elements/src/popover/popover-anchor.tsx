@@ -20,7 +20,7 @@ export const PopoverAnchor = createPolymorphicComponent<"div">(props => {
   return (
     <Dynamic
       component={local.as}
-      ref={mergeRefs(popoverContext.setAnchorRef, local.ref)}
+      ref={mergeRefs(popoverContext.setDefaultAnchorRef, local.ref)}
       {...dialogContext.dataset()}
       {...others}
     />

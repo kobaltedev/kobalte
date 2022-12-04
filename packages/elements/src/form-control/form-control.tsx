@@ -56,7 +56,7 @@ export const FormControl = createPolymorphicComponent<
   FormControlProps,
   FormControlComposite
 >(props => {
-  const defaultId = `kb-form-control-${createUniqueId()}`;
+  const defaultId = `form-control-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {

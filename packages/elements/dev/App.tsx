@@ -20,7 +20,7 @@ const dataSource: Array<Fruit> = [
 export default function App() {
   return (
     <I18nProvider>
-      <ListBox class="popover">
+      <ListBox class="popover" shouldFocusOnHover>
         <For each={dataSource}>
           {item => (
             <ListBox.Option
@@ -29,7 +29,8 @@ export default function App() {
               textValue={item.textValue}
               isDisabled={item.disabled}
             >
-              {item.label}
+              <ListBox.OptionLabel>{item.label}</ListBox.OptionLabel>
+              <ListBox.OptionDescription>{item.id}</ListBox.OptionDescription>
             </ListBox.Option>
           )}
         </For>
