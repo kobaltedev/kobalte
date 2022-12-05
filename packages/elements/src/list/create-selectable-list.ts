@@ -35,9 +35,6 @@ export interface CreateSelectableListProps {
   /** Whether focus should wrap around when the end/start is reached. */
   shouldFocusWrap?: MaybeAccessor<boolean | undefined>;
 
-  /** Whether the option is contained in a virtual scroller. */
-  isVirtualized?: MaybeAccessor<boolean | undefined>;
-
   /** Whether the collection allows empty selection. */
   disallowEmptySelection?: MaybeAccessor<boolean | undefined>;
 
@@ -52,6 +49,12 @@ export interface CreateSelectableListProps {
 
   /** Whether navigation through tab key is enabled. */
   allowsTabNavigation?: MaybeAccessor<boolean | undefined>;
+
+  /** Whether the option is contained in a virtual scroller. */
+  isVirtualized?: MaybeAccessor<boolean | undefined>;
+
+  /** When virtualized, callback used to notify the virtual scroller to scrolls to the item of the index provided. */
+  scrollToIndex?: (index: number) => void;
 }
 
 /**
@@ -78,8 +81,9 @@ export function createSelectableList<T extends HTMLElement>(
 
   return createSelectableCollection(
     {
-      keyboardDelegate: delegate,
+      collection: () => access(props.collection),
       selectionManager: () => access(props.selectionManager),
+      keyboardDelegate: delegate,
       autoFocus: () => access(props.autoFocus),
       shouldFocusWrap: () => access(props.shouldFocusWrap),
       disallowEmptySelection: () => access(props.disallowEmptySelection),
@@ -88,6 +92,7 @@ export function createSelectableList<T extends HTMLElement>(
       shouldUseVirtualFocus: () => access(props.shouldUseVirtualFocus),
       allowsTabNavigation: () => access(props.allowsTabNavigation),
       isVirtualized: () => access(props.isVirtualized),
+      scrollToIndex: props.scrollToIndex,
     },
     ref
   );

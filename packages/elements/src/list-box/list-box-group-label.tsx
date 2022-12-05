@@ -31,13 +31,5 @@ export const ListBoxGroupLabel = createPolymorphicComponent<"span">(props => {
 
   createEffect(() => onCleanup(context.registerLabel(local.id!)));
 
-  return (
-    <Dynamic
-      component={local.as}
-      id={local.id}
-      aria-hidden="true"
-      {...context.dataset()}
-      {...others}
-    />
-  );
+  return <Dynamic component={local.as} id={local.id} aria-hidden="true" {...others} />;
 });

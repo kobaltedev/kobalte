@@ -10,7 +10,6 @@ import { Accessor } from "solid-js";
 
 import { Collection, CollectionNode, PressEvent } from "../primitives";
 import {
-  DisabledBehavior,
   FocusStrategy,
   MultipleSelectionManager,
   MultipleSelectionState,
@@ -363,6 +362,12 @@ export class SelectionManager implements MultipleSelectionManager {
 
           if (item.type === "item") {
             keys.push(key);
+          }
+
+          // Add child keys.
+          const childNodes = [...item.childNodes];
+          if (childNodes.length > 0) {
+            addKeys(childNodes[0].key);
           }
         }
 

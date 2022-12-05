@@ -18,12 +18,15 @@ import {
 import { Accessor, createEffect, createMemo, JSX, mergeProps, on, onMount } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { focusSafely } from "../primitives";
+import { Collection, CollectionNode, focusSafely } from "../primitives";
 import { createTypeSelect } from "./create-type-select";
 import { FocusStrategy, KeyboardDelegate, MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
 
 interface CreateSelectableCollectionProps {
+  /** State of the collection. */
+  collection: Accessor<Collection<CollectionNode>>;
+
   /** An interface for reading and updating multiple selection state. */
   selectionManager: MaybeAccessor<MultipleSelectionManager>;
 
@@ -56,6 +59,9 @@ interface CreateSelectableCollectionProps {
 
   /** Whether the collection items are contained in a virtual scroller. */
   isVirtualized?: MaybeAccessor<boolean | undefined>;
+
+  /** When virtualized, callback used to notify the virtual scroller to scrolls to the item of the index provided. */
+  scrollToIndex?: (index: number) => void;
 }
 
 /**
@@ -81,19 +87,22 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
   // Store the scroll position, so we can restore it later.
   let scrollPos = { top: 0, left: 0 };
+  createEventListener(
+    () => (!access(props.isVirtualized) ? finalScrollRef() : undefined),
+    "scroll",
+    () => {
+      const scrollEl = finalScrollRef();
 
-  createEventListener(finalScrollRef, "scroll", () => {
-    const scrollEl = finalScrollRef();
+      if (!scrollEl) {
+        return;
+      }
 
-    if (access(props.isVirtualized) || !scrollEl) {
-      return;
+      scrollPos = {
+        top: scrollEl.scrollTop,
+        left: scrollEl.scrollLeft,
+      };
     }
-
-    scrollPos = {
-      top: scrollEl.scrollTop,
-      left: scrollEl.scrollLeft,
-    };
-  });
+  );
 
   const typeSelect = createTypeSelect({
     isDisabled: () => access(props.disallowTypeAhead),
@@ -422,21 +431,39 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
   });
 
   // If not virtualized, scroll the focused element into view when the focusedKey changes.
+  // When virtualized, use the scrollToIndex callback.
   createEffect(
     on(
       [
         finalScrollRef,
         () => access(props.isVirtualized),
         () => access(props.selectionManager).focusedKey(),
+        () => access(props.collection),
       ],
       newValue => {
-        const [scrollEl, isVirtualized, focusedKey] = newValue;
+        const [scrollEl, isVirtualized, focusedKey, collection] = newValue;
 
-        if (!isVirtualized && focusedKey && scrollEl) {
-          const element = scrollEl.querySelector(`[data-key="${focusedKey}"]`);
+        if (focusedKey && scrollEl) {
+          if (isVirtualized) {
+            if (!props.scrollToIndex) {
+              throw new Error(
+                "[kobalte]: A `scrollToIndex` callback must be provided when using virtualized collection."
+              );
+            }
 
-          if (element) {
-            scrollIntoView(scrollEl, element as HTMLElement);
+            const focusedItemIndex = collection.getItem(focusedKey)?.index;
+
+            if (!focusedItemIndex) {
+              return;
+            }
+
+            props.scrollToIndex(focusedItemIndex);
+          } else {
+            const element = scrollEl.querySelector(`[data-key="${focusedKey}"]`);
+
+            if (element) {
+              scrollIntoView(scrollEl, element as HTMLElement);
+            }
           }
         }
       }

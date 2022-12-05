@@ -6,10 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/bfce84fee12a027d9cbc38b43e1747e3e4b4b169/packages/@react-stately/list/src/useListState.ts
  */
 
-import { access } from "@kobalte/utils";
+import { access, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createComputed } from "solid-js";
 
-import { Collection, CollectionBase, CollectionNode, createCollection } from "../primitives";
+import { Collection, CollectionDataSource, CollectionNode, createCollection } from "../primitives";
 import {
   createMultipleSelectionState,
   CreateMultipleSelectionStateProps,
@@ -17,7 +17,13 @@ import {
 } from "../selection";
 import { ListCollection } from "./list-collection";
 
-export interface CreateListStateProps extends CollectionBase, CreateMultipleSelectionStateProps {}
+export interface CreateListStateProps extends CreateMultipleSelectionStateProps {
+  /** The data source to be managed by the list state. */
+  dataSource: MaybeAccessor<CollectionDataSource<any, any>>;
+
+  /** Filter function to generate a filtered list of nodes. */
+  filter?: (nodes: Iterable<CollectionNode>) => Iterable<CollectionNode>;
+}
 
 export interface ListState {
   /** A collection of items in the list. */
@@ -34,11 +40,17 @@ export interface ListState {
 export function createListState(props: CreateListStateProps): ListState {
   const selectionState = createMultipleSelectionState(props);
 
-  const collection = createCollection({
-    dataSource: () => access(props.dataSource),
-    factory: nodes => new ListCollection(nodes),
-    getNode: props.getNode,
-  });
+  const factory = (nodes: Iterable<CollectionNode>) => {
+    return props.filter ? new ListCollection(props.filter(nodes)) : new ListCollection(nodes);
+  };
+
+  const collection = createCollection(
+    {
+      dataSource: () => access(props.dataSource),
+      factory,
+    },
+    [() => props.filter]
+  );
 
   const selectionManager = new SelectionManager(collection, selectionState);
 

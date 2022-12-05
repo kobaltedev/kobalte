@@ -7,15 +7,11 @@
  */
 
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
+import { createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useListBoxContext } from "./list-box-context";
-import {
-  ListBoxGroupContext,
-  ListBoxGroupContextValue,
-  ListBoxGroupDataSet,
-} from "./list-box-group-context";
+import { ListBoxGroupContext, ListBoxGroupContextValue } from "./list-box-group-context";
 
 /**
  * A container for a group of options in a listbox.
@@ -38,10 +34,7 @@ export const ListBoxGroup = createPolymorphicComponent<"li">(props => {
 
   const [labelId, setLabelId] = createSignal<string>();
 
-  const dataset: Accessor<ListBoxGroupDataSet> = createMemo(() => ({}));
-
   const context: ListBoxGroupContextValue = {
-    dataset,
     labelId,
     generateId: part => `${others.id!}-${part}`,
     registerLabel: id => {

@@ -12,7 +12,7 @@ import {
   createPolymorphicComponent,
   mergeDefaultProps,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createUniqueId, splitProps } from "solid-js";
+import { Accessor, createMemo, createUniqueId, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
@@ -20,9 +20,8 @@ import {
   CreateListStateProps,
   createSelectableList,
   CreateSelectableListProps,
-  ListState,
 } from "../list";
-import { createControllableArraySignal, createDomCollection } from "../primitives";
+import { Collection, CollectionDataSource, CollectionNode, createFocusRing } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, MultipleSelection, SelectionType } from "../selection";
 import { ListBoxContext, ListBoxContextValue, ListBoxDataSet } from "./list-box-context";
 import { ListBoxGroup } from "./list-box-group";
@@ -32,7 +31,6 @@ import { ListBoxOption } from "./list-box-option";
 import { ListBoxOptionDescription } from "./list-box-option-description";
 import { ListBoxOptionIndicator } from "./list-box-option-indicator";
 import { ListBoxOptionLabel } from "./list-box-option-label";
-import { ListBoxItem } from "./types";
 
 type ListBoxComposite = {
   Group: typeof ListBoxGroup;
@@ -45,7 +43,10 @@ type ListBoxComposite = {
 };
 
 export interface ListBoxProps
-  extends Pick<CreateListStateProps, "allowDuplicateSelectionEvents" | "selectionBehavior">,
+  extends Pick<
+      CreateListStateProps,
+      "allowDuplicateSelectionEvents" | "selectionBehavior" | "filter"
+    >,
     Pick<CreateSelectableListProps, "selectOnFocus" | "disallowTypeAhead" | "allowsTabNavigation">,
     Pick<MultipleSelection, "disallowEmptySelection" | "selectionMode"> {
   /** The controlled value of the listbox. */
@@ -60,14 +61,8 @@ export interface ListBoxProps
   /** Event handler called when the value changes. */
   onValueChange?: (value: SelectionType) => void;
 
-  /** The controlled items state of the listbox. */
-  items?: Array<ListBoxItem>;
-
-  /** Event handler called when the items state of the listbox changes. */
-  onItemsChange?: (items: Array<ListBoxItem>) => void;
-
-  /** State for the listbox, as returned by `createListState`. */
-  listState?: ListState;
+  /** The data source to be managed by the listbox. */
+  dataSource: CollectionDataSource<any, any>;
 
   /** An optional keyboard delegate implementation for type to select, to override the default. */
   keyboardDelegate?: KeyboardDelegate;
@@ -86,6 +81,15 @@ export interface ListBoxProps
 
   /** Whether options should be focused when the user hovers over them. */
   shouldFocusOnHover?: boolean;
+
+  /** Whether the listbox uses virtual scrolling. */
+  isVirtualized?: boolean;
+
+  /** When virtualized, callback used to notify the virtual scroller to scrolls to the option of the index provided. */
+  scrollToIndex?: (index: number) => void;
+
+  /** Render prop that receives the collection of nodes as an accessor and should return a JSX-Element. */
+  children: (collection: Accessor<Collection<CollectionNode>>) => JSX.Element;
 }
 
 /**
@@ -108,12 +112,11 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
 
   const [local, others] = splitProps(props, [
     "as",
+    "children",
     "value",
     "defaultValue",
     "onValueChange",
-    "items",
-    "onItemsChange",
-    "listState",
+    "dataSource",
     "keyboardDelegate",
     "autoFocus",
     "shouldFocusWrap",
@@ -127,37 +130,22 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
     "selectOnFocus",
     "disallowTypeAhead",
     "allowsTabNavigation",
+    "filter",
+    "isVirtualized",
+    "scrollToIndex",
   ]);
 
-  const [items, setItems] = createControllableArraySignal<ListBoxItem>({
-    value: () => local.items,
-    defaultValue: () => [],
-    onChange: value => local.onItemsChange?.(value),
+  const listState = createListState({
+    selectedKeys: () => local.value,
+    defaultSelectedKeys: () => local.defaultValue,
+    onSelectionChange: local.onValueChange,
+    allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
+    disallowEmptySelection: () => access(local.disallowEmptySelection),
+    selectionBehavior: () => access(local.selectionBehavior),
+    selectionMode: () => access(local.selectionMode),
+    dataSource: () => local.dataSource,
+    filter: local.filter,
   });
-
-  const { DomCollectionProvider } = createDomCollection({
-    items,
-    onItemsChange: setItems,
-  });
-
-  // TODO: refactor to keep reactivity
-  const listState =
-    local.listState ??
-    createListState({
-      selectedKeys: () => local.value,
-      defaultSelectedKeys: () => local.defaultValue,
-      onSelectionChange: local.onValueChange,
-      allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
-      disallowEmptySelection: () => access(local.disallowEmptySelection),
-      selectionBehavior: () => access(local.selectionBehavior),
-      selectionMode: () => access(local.selectionMode),
-      dataSource: items,
-      getNode: (source: ListBoxItem) => ({
-        key: source.value,
-        textValue: source.textValue,
-        isDisabled: source.isDisabled,
-      }),
-    });
 
   const selectableList = createSelectableList(
     {
@@ -171,12 +159,20 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
       disallowTypeAhead: () => access(local.disallowTypeAhead),
       shouldUseVirtualFocus: () => access(local.shouldUseVirtualFocus),
       allowsTabNavigation: () => access(local.allowsTabNavigation),
-      isVirtualized: false,
+      isVirtualized: () => local.isVirtualized,
+      scrollToIndex: local.scrollToIndex,
     },
     () => ref
   );
 
-  const dataset: Accessor<ListBoxDataSet> = createMemo(() => ({}));
+  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing({
+    within: true,
+  });
+
+  const dataset: Accessor<ListBoxDataSet> = createMemo(() => ({
+    "data-focus": isFocused() ? "" : undefined,
+    "data-focus-visible": isFocusVisible() ? "" : undefined,
+  }));
 
   const context: ListBoxContextValue = {
     dataset,
@@ -185,24 +181,29 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
     shouldUseVirtualFocus: () => props.shouldUseVirtualFocus,
     shouldSelectOnPressUp: () => props.shouldSelectOnPressUp,
     shouldFocusOnHover: () => props.shouldFocusOnHover,
-    isVirtualized: () => false,
+    isVirtualized: () => local.isVirtualized,
   };
 
   return (
-    <DomCollectionProvider>
-      <ListBoxContext.Provider value={context}>
-        <Dynamic
-          component={local.as}
-          role="listbox"
-          tabIndex={selectableList.tabIndex()}
-          aria-multiselectable={
-            listState.selectionManager().selectionMode() === "multiple" ? true : undefined
-          }
-          {...dataset()}
-          {...combineProps({ ref: el => (ref = el) }, others, selectableList.handlers)}
-        />
-      </ListBoxContext.Provider>
-    </DomCollectionProvider>
+    <ListBoxContext.Provider value={context}>
+      <Dynamic
+        component={local.as}
+        role="listbox"
+        tabIndex={selectableList.tabIndex()}
+        aria-multiselectable={
+          listState.selectionManager().selectionMode() === "multiple" ? true : undefined
+        }
+        {...dataset()}
+        {...combineProps(
+          { ref: el => (ref = el) },
+          others,
+          selectableList.handlers,
+          focusRingHandlers
+        )}
+      >
+        {local.children(listState.collection)}
+      </Dynamic>
+    </ListBoxContext.Provider>
   );
 });
 

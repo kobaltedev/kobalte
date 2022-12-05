@@ -10,7 +10,6 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useListBoxContext } from "./list-box-context";
 import { useListBoxOptionContext } from "./list-box-option-context";
 
 /**
@@ -18,28 +17,19 @@ import { useListBoxOptionContext } from "./list-box-option-context";
  * Useful for options that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
 export const ListBoxOptionDescription = createPolymorphicComponent<"div">(props => {
-  const listBoxContext = useListBoxContext();
-  const optionContext = useListBoxOptionContext();
+  const context = useListBoxOptionContext();
 
   props = mergeDefaultProps(
     {
       as: "div",
-      id: optionContext.generateId("description"),
+      id: context.generateId("description"),
     },
     props
   );
 
   const [local, others] = splitProps(props, ["as", "id"]);
 
-  createEffect(() => onCleanup(optionContext.registerDescription(local.id!)));
+  createEffect(() => onCleanup(context.registerDescription(local.id!)));
 
-  return (
-    <Dynamic
-      component={local.as}
-      id={local.id}
-      {...listBoxContext.dataset()}
-      {...optionContext.dataset()}
-      {...others}
-    />
-  );
+  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
 });

@@ -16,7 +16,6 @@ import { PressEvent } from "../primitives";
 export type SelectionMode = "none" | "single" | "multiple";
 export type SelectionBehavior = "toggle" | "replace";
 export type FocusStrategy = "first" | "last";
-export type DisabledBehavior = "selection" | "all";
 export type SelectionType = "all" | Set<string>;
 
 export interface MultipleSelection {

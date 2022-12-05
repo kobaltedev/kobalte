@@ -9,7 +9,7 @@
 import { access, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createEffect, createSignal, on } from "solid-js";
 
-import { Collection, CollectionNode } from "./types";
+import { Collection, CollectionDataSource, CollectionNode } from "./types";
 import { buildNodes } from "./utils";
 
 type CollectionFactory<C extends Collection<CollectionNode>> = (
@@ -17,9 +17,8 @@ type CollectionFactory<C extends Collection<CollectionNode>> = (
 ) => C;
 
 export interface CreateCollectionProps<C extends Collection<CollectionNode>> {
-  dataSource: MaybeAccessor<Array<any>>;
+  dataSource: MaybeAccessor<CollectionDataSource<any, any>>;
   factory: CollectionFactory<C>;
-  getNode: (source: any) => CollectionNode;
 }
 
 export function createCollection<C extends Collection<CollectionNode>>(
@@ -27,17 +26,29 @@ export function createCollection<C extends Collection<CollectionNode>>(
   deps: Array<Accessor<any>> = []
 ) {
   const initialNodes = buildNodes({
-    dataSource: access(props.dataSource),
-    getNode: props.getNode,
+    source: access(props.dataSource).data(),
+    getItem: access(props.dataSource).getItem,
+    getSection: access(props.dataSource).getSection,
   });
 
   const [collection, setCollection] = createSignal<C>(props.factory(initialNodes));
 
   createEffect(
     on(
-      [() => access(props.dataSource), () => props.getNode, () => props.factory, ...deps],
-      ([dataSource, getNode, factory]) => {
-        const nodes = buildNodes({ dataSource, getNode });
+      [
+        () => access(props.dataSource),
+        () => access(props.dataSource).data(),
+        () => access(props.dataSource).getItem,
+        () => access(props.dataSource).getSection,
+        () => props.factory,
+        ...deps,
+      ],
+      ([_, source, getItem, getSection, factory]) => {
+        const nodes = buildNodes({
+          source,
+          getItem,
+          getSection,
+        });
 
         setCollection(() => factory(nodes));
       },

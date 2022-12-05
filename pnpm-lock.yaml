@@ -170,11 +170,15 @@ importers:
       '@internationalized/string': ^3.0.0
       '@kobalte/tests': ^0.0.0
       '@kobalte/utils': ^0.0.0
+      '@tanstack/solid-virtual': 3.0.0-beta.6
+      '@tanstack/virtual-core': 3.0.0-alpha.1
     dependencies:
       '@floating-ui/dom': 1.0.7
       '@internationalized/number': 3.1.1
       '@internationalized/string': 3.0.0
       '@kobalte/utils': link:../utils
+      '@tanstack/solid-virtual': 3.0.0-beta.6
+      '@tanstack/virtual-core': 3.0.0-alpha.1
     devDependencies:
       '@kobalte/tests': link:../tests
 
@@ -3277,6 +3281,10 @@ packages:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
     dev: true
 
+  /@reach/observe-rect/1.2.0:
+    resolution: {integrity: sha512-Ba7HmkFgfQxZqqaeIWWkNK0rEhpxVQHIoVyW1YDSkGsGIXzcaW4deC8B0pZrNSSyLTdIk7y+5olKt5+g0GmFIQ==}
+    dev: false
+
   /@rollup/plugin-babel/5.3.1_opjstonlpkhafnz76jsxdwq25a:
     resolution: {integrity: sha512-WFfdLWU/xVWKeRQnKmIAQULUI7Il0gZnBIH/ZFO069wYIfPu+8zrfp/KMW0atmELoRDq8FbiP3VCss9MhCut7Q==}
     engines: {node: '>= 10.0.0'}
@@ -3527,6 +3535,20 @@ packages:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.2.4
     dev: true
+
+  /@tanstack/solid-virtual/3.0.0-beta.6:
+    resolution: {integrity: sha512-/HjeHZb4UZxxFSAkICUEWOozGwHQpKlvtnUoS5uSMSuLOz0XM5vFq6zR6ENwAczKWDtkh8ntddk+zXAhyXOlEw==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@reach/observe-rect': 1.2.0
+    dev: false
+
+  /@tanstack/virtual-core/3.0.0-alpha.1:
+    resolution: {integrity: sha512-Fa82aHSjxMVpqIg+yuxEj+mlSVadOjcqaMeD7uJ39JE8FHpGoO+53kyedIf+ypWD7zYlSWXB4ah/3W9NNHaI6g==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@reach/observe-rect': 1.2.0
+    dev: false
 
   /@testing-library/dom/7.31.2:
     resolution: {integrity: sha512-3UqjCpey6HiTZT92vODYLPxTBWlM8ZOOjr3LX5F37/VRipW2M1kX6I/Cm4VXzteZqfGfagg8yXywpcOgQBlNsQ==}

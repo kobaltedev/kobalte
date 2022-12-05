@@ -2,7 +2,10 @@ import { Accessor, createContext, useContext } from "solid-js";
 
 import { ListState } from "../list";
 
-export interface ListBoxDataSet {}
+export interface ListBoxDataSet {
+  "data-focus": string | undefined;
+  "data-focus-visible": string | undefined;
+}
 
 export interface ListBoxContextValue {
   dataset: Accessor<ListBoxDataSet>;

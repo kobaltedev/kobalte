@@ -1,4 +1,81 @@
-import { MaybeAccessor } from "@kobalte/utils";
+import { Accessor } from "solid-js";
+
+export interface CollectionDataSource<DataItem, DataSection> {
+  /** The data to be managed by the collection. */
+  data: Accessor<Array<DataItem | DataSection>>;
+
+  /** A function to map a data item to a collection item. */
+  getItem?: (dataItem: DataItem) => CollectionItem;
+
+  /** A function to map a data section to a collection section. */
+  getSection?: (dataSection: DataSection) => CollectionSection;
+}
+
+export interface CollectionItem {
+  /** A unique key for the item. */
+  id: string;
+
+  /** A label for the item. */
+  label: string;
+
+  /**
+   * A string value for the item, used for features like typeahead.
+   * If not provided, the label will be used.
+   */
+  textValue?: string;
+
+  /** Whether the item is disabled. */
+  disabled?: boolean;
+}
+
+export interface CollectionSection {
+  /** A unique key for the section. */
+  id: string;
+
+  /** A label for the section. */
+  label: string;
+
+  /** The items of the section. */
+  items: Array<any>;
+}
+
+export interface CollectionNode {
+  /** The type of item this node represents. */
+  type: "item" | "section";
+
+  /** The unique key for the node. */
+  key: string;
+
+  /** A label for the node. */
+  label: string;
+
+  /**
+   * A string value for the item, used for features like typeahead.
+   * If not provided, the label will be used.
+   */
+  textValue: string;
+
+  /** Whether the node is disabled. */
+  isDisabled: boolean;
+
+  /** The level of depth this node is at in the hierarchy. */
+  level: number;
+
+  /** The index of this node within its parent. */
+  index: number;
+
+  /** The children of this node. */
+  childNodes: Iterable<CollectionNode>;
+
+  /** The key of the parent node. */
+  parentKey?: string;
+
+  /** The key of the node before this node. */
+  prevKey?: string;
+
+  /** The key of the node after this node. */
+  nextKey?: string;
+}
 
 /**
  * A generic interface to access a readonly sequential
@@ -28,41 +105,4 @@ export interface Collection<T> extends Iterable<T> {
 
   /** Get the last key in the collection. */
   getLastKey: () => string | undefined;
-}
-
-export interface CollectionNode {
-  /** The type of item this node represents. */
-  type: "item" | "section";
-
-  /** The unique key for the node. */
-  key: string;
-
-  /** The level of depth this node is at in the hierarchy. */
-  level: number;
-
-  /** A string value for this node, used for features like typeahead. */
-  textValue: string;
-
-  /** Whether the node is disabled. */
-  isDisabled: boolean;
-
-  /** The index of this node within its parent. */
-  index?: number;
-
-  /** The key of the parent node. */
-  parentKey?: string;
-
-  /** The key of the node before this node. */
-  prevKey?: string;
-
-  /** The key of the node after this node. */
-  nextKey?: string;
-}
-
-export interface CollectionBase {
-  /** The data source to be managed by the collection. */
-  dataSource: MaybeAccessor<Array<any>>;
-
-  /** A function to map a data source item to a collection node. */
-  getNode: (source: any) => CollectionNode;
 }

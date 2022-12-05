@@ -17,8 +17,18 @@ export class ListCollection implements Collection<CollectionNode> {
   constructor(nodes: Iterable<CollectionNode>) {
     this.iterable = nodes;
 
-    for (const node of nodes) {
+    const visit = (node: CollectionNode) => {
       this.keyMap.set(node.key, node);
+
+      if (node.childNodes && node.type === "section") {
+        for (const child of node.childNodes) {
+          visit(child);
+        }
+      }
+    };
+
+    for (const node of nodes) {
+      visit(node);
     }
 
     if (this.keyMap.size === 0) {

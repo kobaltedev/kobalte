@@ -24,12 +24,6 @@ export const ListBoxGroupOptions = createPolymorphicComponent<"ul">(props => {
   const [local, others] = splitProps(props, ["as"]);
 
   return (
-    <Dynamic
-      component={local.as}
-      role="group"
-      aria-labelledby={context.labelId()}
-      {...context.dataset()}
-      {...others}
-    />
+    <Dynamic component={local.as} role="group" aria-labelledby={context.labelId()} {...others} />
   );
 });

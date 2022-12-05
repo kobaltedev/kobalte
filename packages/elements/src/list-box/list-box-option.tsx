@@ -12,13 +12,12 @@ import {
   isMac,
   isWebKit,
   mergeDefaultProps,
-  mergeRefs,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
-  createDomCollectionItem,
+  CollectionNode,
   createFocusRing,
   createHover,
   isKeyboardFocusVisible,
@@ -31,22 +30,10 @@ import {
   ListBoxOptionContextValue,
   ListBoxOptionDataSet,
 } from "./list-box-option-context";
-import { ListBoxItem } from "./types";
 
 export interface ListBoxOptionProps {
-  /** A unique value for the option. */
-  value: string;
-
-  /**
-   * Optional text used for typeahead purposes.
-   * By default, the typeahead behavior will use the .textContent of the ListBox.OptionLabel part
-   * if provided, or fallback to the .textContent of the ListBox.Option.
-   * Use this when the content is complex, or you have non-textual content inside.
-   */
-  textValue?: string;
-
-  /** Whether the option is disabled. */
-  isDisabled?: boolean;
+  /** The collection node to render. */
+  node: CollectionNode;
 }
 
 /**
@@ -69,9 +56,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
 
   const [local, others] = splitProps(props, [
     "as",
-    "value",
-    "textValue",
-    "isDisabled",
+    "node",
     "aria-label",
     "aria-labelledby",
     "aria-describedby",
@@ -80,25 +65,13 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
   const [labelId, setLabelId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
 
-  const [labelRef, setLabelRef] = createSignal<HTMLElement>();
-
   const selectionManager = () => listBoxContext.listState().selectionManager();
 
-  const isFocused = () => selectionManager().focusedKey() === local.value;
-
-  createDomCollectionItem<ListBoxItem>({
-    getItem: () => ({
-      ref: () => ref,
-      value: local.value,
-      textValue: local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
-      isDisabled: !!local.isDisabled,
-    }),
-    shouldRegisterItem: () => !local.isDisabled,
-  });
+  const isFocused = () => selectionManager().focusedKey() === local.node.key;
 
   const selectableItem = createSelectableItem(
     {
-      key: () => local.value,
+      key: () => local.node.key,
       selectionManager: selectionManager,
       shouldSelectOnPressUp: listBoxContext.shouldSelectOnPressUp,
       allowsDifferentPressOrigin: () => {
@@ -106,7 +79,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
       },
       isVirtualized: listBoxContext.isVirtualized,
       shouldUseVirtualFocus: listBoxContext.shouldUseVirtualFocus,
-      isDisabled: () => local.isDisabled,
+      isDisabled: () => local.node.isDisabled,
     },
     () => ref
   );
@@ -116,7 +89,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
     onHoverStart: () => {
       if (!isKeyboardFocusVisible() && listBoxContext.shouldFocusOnHover()) {
         selectionManager().setFocused(true);
-        selectionManager().setFocusedKey(local.value);
+        selectionManager().setFocusedKey(local.node.key);
       }
     },
   });
@@ -145,7 +118,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
       return undefined;
     }
 
-    const index = listBoxContext.listState().collection().getItem(local.value)?.index;
+    const index = listBoxContext.listState().collection().getItem(local.node.key)?.index;
 
     return index != null ? index + 1 : undefined;
   };
@@ -169,7 +142,6 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
 
   const context: ListBoxOptionContextValue = {
     dataset,
-    setLabelRef,
     isSelected: selectableItem.isSelected,
     generateId: part => `${others.id!}-${part}`,
     registerLabel: id => {

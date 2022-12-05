@@ -6,11 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/listbox/src/useOption.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useListBoxContext } from "./list-box-context";
 import { useListBoxOptionContext } from "./list-box-option-context";
 
 /**
@@ -18,29 +17,19 @@ import { useListBoxOptionContext } from "./list-box-option-context";
  * Useful for options that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
 export const ListBoxOptionLabel = createPolymorphicComponent<"div">(props => {
-  const listBoxContext = useListBoxContext();
-  const optionContext = useListBoxOptionContext();
+  const context = useListBoxOptionContext();
 
   props = mergeDefaultProps(
     {
       as: "div",
-      id: optionContext.generateId("label"),
+      id: context.generateId("label"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "id", "ref"]);
+  const [local, others] = splitProps(props, ["as", "id"]);
 
-  createEffect(() => onCleanup(optionContext.registerLabel(local.id!)));
+  createEffect(() => onCleanup(context.registerLabel(local.id!)));
 
-  return (
-    <Dynamic
-      component={local.as}
-      ref={mergeRefs(optionContext.setLabelRef, local.ref)}
-      id={local.id}
-      {...listBoxContext.dataset()}
-      {...optionContext.dataset()}
-      {...others}
-    />
-  );
+  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
 });

@@ -11,7 +11,6 @@ import { createEffect, createMemo, createSignal } from "solid-js";
 
 import { createControllableSelectionSignal } from "./create-controllable-selection-signal";
 import {
-  DisabledBehavior,
   FocusStrategy,
   MultipleSelection,
   MultipleSelectionState,

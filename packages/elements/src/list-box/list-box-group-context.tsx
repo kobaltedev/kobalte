@@ -1,9 +1,6 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-export interface ListBoxGroupDataSet {}
-
 export interface ListBoxGroupContextValue {
-  dataset: Accessor<ListBoxGroupDataSet>;
   labelId: Accessor<string | undefined>;
   generateId: (part: string) => string;
   registerLabel: (id: string) => () => void;
