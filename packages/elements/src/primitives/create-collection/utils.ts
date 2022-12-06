@@ -2,7 +2,7 @@ import {
   CollectionItemPropertyNames,
   CollectionNode,
   CollectionSectionPropertyNames,
-  Key,
+  CollectionKey,
 } from "./types";
 
 interface BuildNodesParams {
@@ -11,7 +11,7 @@ interface BuildNodesParams {
   sectionPropertyNames?: Partial<CollectionSectionPropertyNames>;
   startIndex?: number;
   startLevel?: number;
-  parentKey?: Key;
+  parentKey?: CollectionKey;
 }
 
 /**
@@ -42,6 +42,7 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
     if (isSection) {
       const sectionNode: CollectionNode = {
         type: "section",
+        rawValue: data,
         key: data[sectionPropertyNames.key] ?? getFallbackKey(index, params.parentKey),
         label: data[sectionPropertyNames.label],
         textValue: "",
@@ -71,6 +72,7 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
     } else {
       nodes.push({
         type: "item",
+        rawValue: data,
         key: data[itemPropertyNames.key] ?? getFallbackKey(index, params.parentKey),
         label: data[itemPropertyNames.label],
         textValue: data[itemPropertyNames.textValue] ?? data[itemPropertyNames.label],
@@ -88,6 +90,6 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
   return nodes;
 }
 
-function getFallbackKey(index: number, parentKey?: Key) {
+function getFallbackKey(index: number, parentKey?: CollectionKey) {
   return parentKey != null ? `${parentKey}.${index}` : `$.${index}`;
 }

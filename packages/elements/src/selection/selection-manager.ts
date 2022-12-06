@@ -8,7 +8,7 @@
 
 import { Accessor } from "solid-js";
 
-import { Collection, CollectionNode, Key, PressEvent } from "../primitives";
+import { Collection, CollectionNode, CollectionKey, PressEvent } from "../primitives";
 import {
   FocusStrategy,
   MultipleSelectionManager,
@@ -64,7 +64,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** The current focused key in the collection. */
-  focusedKey(): Key | undefined {
+  focusedKey(): CollectionKey | undefined {
     return this.state.focusedKey();
   }
 
@@ -74,14 +74,14 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** Sets the focused key. */
-  setFocusedKey(key?: Key, childFocusStrategy?: FocusStrategy) {
+  setFocusedKey(key?: CollectionKey, childFocusStrategy?: FocusStrategy) {
     if (key == null || this.collection().getItem(key)) {
       this.state.setFocusedKey(key, childFocusStrategy);
     }
   }
 
   /** The currently selected keys in the collection. */
-  selectedKeys(): Set<Key> {
+  selectedKeys(): Set<CollectionKey> {
     const selectedKeys = this.state.selectedKeys();
 
     return selectedKeys === "all" ? new Set(this.getSelectAllKeys()) : selectedKeys;
@@ -96,7 +96,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** Returns whether a key is selected. */
-  isSelected(key: Key) {
+  isSelected(key: CollectionKey) {
     if (this.state.selectionMode() === "none") {
       return false;
     }
@@ -141,7 +141,7 @@ export class SelectionManager implements MultipleSelectionManager {
     return this._isSelectAll;
   }
 
-  firstSelectedKey(): Key | undefined {
+  firstSelectedKey(): CollectionKey | undefined {
     let first: CollectionNode | undefined;
 
     for (const key of this.state.selectedKeys()) {
@@ -158,7 +158,7 @@ export class SelectionManager implements MultipleSelectionManager {
     return first?.key;
   }
 
-  lastSelectedKey(): Key | undefined {
+  lastSelectedKey(): CollectionKey | undefined {
     let last: CollectionNode | undefined;
 
     for (const key of this.state.selectedKeys()) {
@@ -175,7 +175,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** Extends the selection to the given key. */
-  extendSelection(toKey: Key) {
+  extendSelection(toKey: CollectionKey) {
     if (this.selectionMode() === "none") {
       return;
     }
@@ -216,7 +216,7 @@ export class SelectionManager implements MultipleSelectionManager {
     this.state.setSelectedKeys(selection);
   }
 
-  private getKeyRange(from: Key, to: Key) {
+  private getKeyRange(from: CollectionKey, to: CollectionKey) {
     const fromItem = this.collection().getItem(from);
     const toItem = this.collection().getItem(to);
 
@@ -231,9 +231,9 @@ export class SelectionManager implements MultipleSelectionManager {
     return [];
   }
 
-  private getKeyRangeInternal(from: Key, to: Key) {
-    const keys: Key[] = [];
-    let key: Key | undefined = from;
+  private getKeyRangeInternal(from: CollectionKey, to: CollectionKey) {
+    const keys: CollectionKey[] = [];
+    let key: CollectionKey | undefined = from;
 
     while (key) {
       const item = this.collection().getItem(key);
@@ -252,7 +252,7 @@ export class SelectionManager implements MultipleSelectionManager {
     return [];
   }
 
-  private getKey(key: Key) {
+  private getKey(key: CollectionKey) {
     let item = this.collection().getItem(key);
 
     if (!item) {
@@ -272,7 +272,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** Toggles whether the given key is selected. */
-  toggleSelection(key: Key) {
+  toggleSelection(key: CollectionKey) {
     if (this.selectionMode() === "none") {
       return;
     }
@@ -308,7 +308,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** Replaces the selection with only the given key. */
-  replaceSelection(key: Key) {
+  replaceSelection(key: CollectionKey) {
     if (this.selectionMode() === "none") {
       return;
     }
@@ -327,7 +327,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** Replaces the selection with the given keys. */
-  setSelectedKeys(keys: Iterable<Key>) {
+  setSelectedKeys(keys: Iterable<CollectionKey>) {
     if (this.selectionMode() === "none") {
       return;
     }
@@ -350,8 +350,8 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   private getSelectAllKeys() {
-    const keys: Key[] = [];
-    const addKeys = (key: Key | undefined) => {
+    const keys: CollectionKey[] = [];
+    const addKeys = (key: CollectionKey | undefined) => {
       while (key) {
         if (this.canSelectItem(key)) {
           const item = this.collection().getItem(key);
@@ -408,7 +408,7 @@ export class SelectionManager implements MultipleSelectionManager {
     }
   }
 
-  select(key: Key, e?: PressEvent | PointerEvent) {
+  select(key: CollectionKey, e?: PressEvent | PointerEvent) {
     if (this.selectionMode() === "none") {
       return;
     }
@@ -431,7 +431,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** Returns whether the current selection is equal to the given selection. */
-  isSelectionEqual(selection: Set<Key>) {
+  isSelectionEqual(selection: Set<CollectionKey>) {
     if (selection === this.state.selectedKeys()) {
       return true;
     }
@@ -457,7 +457,7 @@ export class SelectionManager implements MultipleSelectionManager {
     return true;
   }
 
-  canSelectItem(key: Key) {
+  canSelectItem(key: CollectionKey) {
     if (this.state.selectionMode() === "none") {
       return false;
     }
@@ -467,7 +467,7 @@ export class SelectionManager implements MultipleSelectionManager {
     return item != null && !item.isDisabled;
   }
 
-  isDisabled(key: Key) {
+  isDisabled(key: CollectionKey) {
     const item = this.collection().getItem(key);
 
     return !item || item.isDisabled;

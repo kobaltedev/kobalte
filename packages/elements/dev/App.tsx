@@ -1,4 +1,3 @@
-import { createVirtualizer } from "@tanstack/solid-virtual";
 import { createSignal, For } from "solid-js";
 
 import { I18nProvider, ListBox } from "../src";
@@ -101,13 +100,6 @@ function VirtualizedListBox() {
     textValue: String(idx),
   }));
 
-  const rowVirtualizer = createVirtualizer({
-    count: options.length,
-    getScrollElement: () => scrollRef,
-    estimateSize: () => 40,
-    overscan: 5,
-  });
-
   return (
     <>
       <div>Selected values: {[...value()].join(", ")}</div>
@@ -117,48 +109,8 @@ function VirtualizedListBox() {
         onValueChange={setValue}
         isVirtualized
         options={options}
-        scrollToIndex={rowVirtualizer.scrollToIndex}
         class="listbox"
-      >
-        {collection => (
-          <div
-            role="presentation"
-            style={{
-              height: `${rowVirtualizer.getTotalSize()}px`,
-              width: "100%",
-              position: "relative",
-            }}
-          >
-            <For each={rowVirtualizer.getVirtualItems()}>
-              {virtualRow => {
-                const node = collection().at(virtualRow.index);
-
-                if (!node) {
-                  return;
-                }
-
-                return (
-                  <ListBox.Option
-                    node={node}
-                    class="listbox-option"
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: `${virtualRow.size}px`,
-                      transform: `translateY(${virtualRow.start}px)`,
-                    }}
-                  >
-                    <ListBox.OptionLabel>{node.label}</ListBox.OptionLabel>
-                    <ListBox.OptionIndicator class="ml-auto">✅</ListBox.OptionIndicator>
-                  </ListBox.Option>
-                );
-              }}
-            </For>
-          </div>
-        )}
-      </ListBox>
+      ></ListBox>
     </>
   );
 }
@@ -166,7 +118,6 @@ function VirtualizedListBox() {
 export default function App() {
   return (
     <I18nProvider>
-      <NormalListBox />
       <VirtualizedListBox />
     </I18nProvider>
   );

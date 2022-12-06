@@ -12,7 +12,6 @@ body,
   max-height: 300px;
   min-width: 240px;
   overflow: auto;
-  overscroll-behavior: contain;
   border-radius: 0.5rem;
   border-width: 1px;
   border-style: solid;

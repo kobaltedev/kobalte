@@ -13,7 +13,7 @@ import {
   createPress,
   CreatePressProps,
   focusSafely,
-  Key,
+  CollectionKey,
   PointerType,
   PressEvent,
 } from "../primitives";
@@ -25,7 +25,7 @@ export interface CreateSelectableItemProps {
   selectionManager: MaybeAccessor<MultipleSelectionManager>;
 
   /** A unique key for the item. */
-  key: MaybeAccessor<Key>;
+  key: MaybeAccessor<CollectionKey>;
 
   /**
    * By default, selection occurs on pointer down. This can be strange if selecting an

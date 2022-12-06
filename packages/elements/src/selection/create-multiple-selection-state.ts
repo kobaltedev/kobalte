@@ -18,7 +18,7 @@ import {
   SelectionBehavior,
   SelectionType,
 } from "./types";
-import { Key } from "../primitives";
+import { CollectionKey } from "../primitives";
 
 export interface CreateMultipleSelectionStateProps extends MultipleSelection {
   /** How multiple selection should behave in the collection. */
@@ -43,7 +43,7 @@ export function createMultipleSelectionState(
   );
 
   const [isFocused, setFocused] = createSignal(false);
-  const [focusedKey, _setFocusedKey] = createSignal<Key>();
+  const [focusedKey, _setFocusedKey] = createSignal<CollectionKey>();
   const [childFocusStrategy, setChildFocusStrategy] = createSignal<FocusStrategy>("first");
 
   const selectedKeysProp = createMemo(() => {
@@ -79,7 +79,7 @@ export function createMultipleSelectionState(
   const selectionMode = () => access(props.selectionMode)!;
   const disallowEmptySelection = () => access(props.disallowEmptySelection) ?? false;
 
-  const setFocusedKey = (key?: Key, childFocusStrategy: FocusStrategy = "first") => {
+  const setFocusedKey = (key?: CollectionKey, childFocusStrategy: FocusStrategy = "first") => {
     setChildFocusStrategy(childFocusStrategy);
     _setFocusedKey(key);
   };
@@ -125,7 +125,7 @@ export function createMultipleSelectionState(
   };
 }
 
-function convertSelection(selection: "all" | Iterable<Key>): "all" | Selection {
+function convertSelection(selection: "all" | Iterable<CollectionKey>): "all" | Selection {
   return selection === "all" ? "all" : new Selection(selection);
 }
 

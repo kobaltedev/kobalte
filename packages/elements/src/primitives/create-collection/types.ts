@@ -1,10 +1,10 @@
 import { MaybeAccessor } from "@kobalte/utils";
 
-export type Key = string | number;
+export type CollectionKey = string | number;
 
 export interface CollectionItem {
   /** A unique key for the item. */
-  key: Key;
+  key: CollectionKey;
 
   /** A label for the item. */
   label: string;
@@ -21,7 +21,7 @@ export interface CollectionItem {
 
 export interface CollectionSection {
   /** A unique key for the section. */
-  key: Key;
+  key: CollectionKey;
 
   /** A label for the section. */
   label: string;
@@ -35,7 +35,10 @@ export interface CollectionNode {
   type: "item" | "section";
 
   /** The unique key for the node. */
-  key: Key;
+  key: CollectionKey;
+
+  /** The source object this node was created from. */
+  rawValue: any;
 
   /** A label for the node. */
   label: string;
@@ -59,13 +62,13 @@ export interface CollectionNode {
   childNodes: Iterable<CollectionNode>;
 
   /** The key of the parent node. */
-  parentKey?: Key;
+  parentKey?: CollectionKey;
 
   /** The key of the node before this node. */
-  prevKey?: Key;
+  prevKey?: CollectionKey;
 
   /** The key of the node after this node. */
-  nextKey?: Key;
+  nextKey?: CollectionKey;
 }
 
 export type CollectionItemPropertyNames = Record<keyof CollectionItem, string>;
@@ -91,23 +94,23 @@ export interface Collection<T> extends Iterable<T> {
   getSize: () => number;
 
   /** Iterate over all keys in the collection. */
-  getKeys: () => Iterable<Key>;
+  getKeys: () => Iterable<CollectionKey>;
 
   /** Get an item by its key. */
-  getItem: (key: Key) => T | undefined;
+  getItem: (key: CollectionKey) => T | undefined;
 
   /** Get an item by the index of its key. */
   at: (idx: number) => T | undefined;
 
   /** Get the key that comes before the given key in the collection. */
-  getKeyBefore: (key: Key) => Key | undefined;
+  getKeyBefore: (key: CollectionKey) => CollectionKey | undefined;
 
   /** Get the key that comes after the given key in the collection. */
-  getKeyAfter: (key: Key) => Key | undefined;
+  getKeyAfter: (key: CollectionKey) => CollectionKey | undefined;
 
   /** Get the first key in the collection. */
-  getFirstKey: () => Key | undefined;
+  getFirstKey: () => CollectionKey | undefined;
 
   /** Get the last key in the collection. */
-  getLastKey: () => Key | undefined;
+  getLastKey: () => CollectionKey | undefined;
 }

@@ -6,13 +6,13 @@
  * https://github.com/adobe/react-spectrum/blob/bfce84fee12a027d9cbc38b43e1747e3e4b4b169/packages/@react-stately/list/src/ListCollection.ts
  */
 
-import { Collection, CollectionNode, Key } from "../primitives";
+import { Collection, CollectionNode, CollectionKey } from "../primitives";
 
 export class ListCollection implements Collection<CollectionNode> {
-  private keyMap: Map<Key, CollectionNode> = new Map();
+  private keyMap: Map<CollectionKey, CollectionNode> = new Map();
   private iterable: Iterable<CollectionNode>;
-  private firstKey?: Key;
-  private lastKey?: Key;
+  private firstKey?: CollectionKey;
+  private lastKey?: CollectionKey;
 
   constructor(nodes: Iterable<CollectionNode>) {
     this.iterable = nodes;
@@ -73,11 +73,11 @@ export class ListCollection implements Collection<CollectionNode> {
     return this.keyMap.keys();
   }
 
-  getKeyBefore(key: Key) {
+  getKeyBefore(key: CollectionKey) {
     return this.keyMap.get(key)?.prevKey;
   }
 
-  getKeyAfter(key: Key) {
+  getKeyAfter(key: CollectionKey) {
     return this.keyMap.get(key)?.nextKey;
   }
 
@@ -89,7 +89,7 @@ export class ListCollection implements Collection<CollectionNode> {
     return this.lastKey;
   }
 
-  getItem(key: Key) {
+  getItem(key: CollectionKey) {
     return this.keyMap.get(key);
   }
 

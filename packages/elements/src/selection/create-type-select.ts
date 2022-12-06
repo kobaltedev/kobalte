@@ -9,7 +9,7 @@
 import { access, MaybeAccessor } from "@kobalte/utils";
 import { createSignal } from "solid-js";
 
-import { Key } from "../primitives";
+import { CollectionKey } from "../primitives";
 import { KeyboardDelegate, MultipleSelectionManager } from "./types";
 
 interface CreateTypeSelectProps {
@@ -23,7 +23,7 @@ interface CreateTypeSelectProps {
   selectionManager: MaybeAccessor<MultipleSelectionManager>;
 
   /** Called when an item is focused by typing. */
-  onTypeSelect?: (key: Key) => void;
+  onTypeSelect?: (key: CollectionKey) => void;
 }
 
 /**

@@ -21,7 +21,7 @@ import {
   createSelectableList,
   CreateSelectableListProps,
 } from "../list";
-import { Collection, CollectionNode, createFocusRing, Key } from "../primitives";
+import { Collection, CollectionNode, createFocusRing, CollectionKey } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, MultipleSelection, SelectionType } from "../selection";
 import { ListBoxContext, ListBoxContextValue, ListBoxDataSet } from "./list-box-context";
 import { ListBoxGroup } from "./list-box-group";
@@ -75,13 +75,13 @@ export interface ListBoxProps
     Pick<CreateSelectableListProps, "selectOnFocus" | "disallowTypeAhead" | "allowsTabNavigation">,
     Pick<MultipleSelection, "disallowEmptySelection" | "selectionMode"> {
   /** The controlled value of the listbox. */
-  value?: "all" | Iterable<Key>;
+  value?: "all" | Iterable<CollectionKey>;
 
   /**
    * The value of the listbox when initially rendered.
    * Useful when you do not need to control the state.
    */
-  defaultValue?: "all" | Iterable<Key>;
+  defaultValue?: "all" | Iterable<CollectionKey>;
 
   /** Event handler called when the value changes. */
   onValueChange?: (value: SelectionType) => void;
@@ -158,7 +158,7 @@ export interface ListBoxProps
   scrollToIndex?: (index: number) => void;
 
   /** Render prop that receives the collection of nodes as an accessor and should return a JSX-Element. */
-  children: (collection: Accessor<Collection<CollectionNode>>) => JSX.Element;
+  children?: (collection: Accessor<Collection<CollectionNode>>) => JSX.Element;
 }
 
 /**
@@ -283,7 +283,7 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
           focusRingHandlers
         )}
       >
-        {local.children(listState.collection)}
+        {local.children?.(listState.collection)}
       </Dynamic>
     </ListBoxContext.Provider>
   );
