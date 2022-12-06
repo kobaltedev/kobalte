@@ -18,7 +18,7 @@ import {
 import { Accessor, createEffect, createMemo, JSX, mergeProps, on, onMount } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { Collection, CollectionNode, focusSafely } from "../primitives";
+import { Collection, CollectionNode, focusSafely, Key } from "../primitives";
 import { createTypeSelect } from "./create-type-select";
 import { FocusStrategy, KeyboardDelegate, MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
@@ -129,7 +129,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     const manager = access(props.selectionManager);
     const selectOnFocus = access(props.selectOnFocus);
 
-    const navigateToKey = (key: string | undefined, childFocus?: FocusStrategy) => {
+    const navigateToKey = (key: Key | undefined, childFocus?: FocusStrategy) => {
       if (key != null) {
         manager.setFocusedKey(key, childFocus);
 
@@ -183,7 +183,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
           const isRTL = locale().direction === "rtl";
 
-          let nextKey: string | undefined;
+          let nextKey: Key | undefined;
 
           if (focusedKey != null) {
             nextKey = delegate.getKeyLeftOf(focusedKey);
@@ -201,7 +201,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
           const isRTL = locale().direction === "rtl";
 
-          let nextKey: string | undefined;
+          let nextKey: Key | undefined;
 
           if (focusedKey != null) {
             nextKey = delegate.getKeyRightOf(focusedKey);
@@ -330,7 +330,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     manager.setFocused(true);
 
     if (manager.focusedKey() == null) {
-      const navigateToFirstKey = (key: string | undefined) => {
+      const navigateToFirstKey = (key: Key | undefined) => {
         if (key == null) {
           return;
         }
@@ -401,7 +401,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     const manager = access(props.selectionManager);
     const delegate = access(props.keyboardDelegate);
 
-    let focusedKey: string | undefined;
+    let focusedKey: Key | undefined;
 
     // Check focus strategy to determine which item to focus
     if (autoFocus === "first") {

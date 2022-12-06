@@ -21,7 +21,7 @@ import {
   createSelectableList,
   CreateSelectableListProps,
 } from "../list";
-import { Collection, CollectionDataSource, CollectionNode, createFocusRing } from "../primitives";
+import { Collection, CollectionNode, createFocusRing, Key } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, MultipleSelection, SelectionType } from "../selection";
 import { ListBoxContext, ListBoxContextValue, ListBoxDataSet } from "./list-box-context";
 import { ListBoxGroup } from "./list-box-group";
@@ -42,6 +42,31 @@ type ListBoxComposite = {
   OptionIndicator: typeof ListBoxOptionIndicator;
 };
 
+export interface ListBoxOptionPropertyNames {
+  /** Property name that refers to the value of an option. */
+  value?: string;
+
+  /** Property name that refers to the label of an option. */
+  label?: string;
+
+  /** Property name that refers to the text value of an option, used for features like typeahead. */
+  textValue?: string;
+
+  /** Property name to use as the disabled flag of an option. */
+  disabled?: string;
+}
+
+export interface ListBoxOptionGroupPropertyNames {
+  /** Property name that refers to the unique id of an option group. */
+  id?: string;
+
+  /** Property name that refers to the label of an option group. */
+  label?: string;
+
+  /** Property name that refers to the children options of an option group. */
+  options?: string;
+}
+
 export interface ListBoxProps
   extends Pick<
       CreateListStateProps,
@@ -50,19 +75,63 @@ export interface ListBoxProps
     Pick<CreateSelectableListProps, "selectOnFocus" | "disallowTypeAhead" | "allowsTabNavigation">,
     Pick<MultipleSelection, "disallowEmptySelection" | "selectionMode"> {
   /** The controlled value of the listbox. */
-  value?: "all" | Iterable<string>;
+  value?: "all" | Iterable<Key>;
 
   /**
    * The value of the listbox when initially rendered.
    * Useful when you do not need to control the state.
    */
-  defaultValue?: "all" | Iterable<string>;
+  defaultValue?: "all" | Iterable<Key>;
 
   /** Event handler called when the value changes. */
   onValueChange?: (value: SelectionType) => void;
 
-  /** The data source to be managed by the listbox. */
-  dataSource: CollectionDataSource<any, any>;
+  /** An array of objects to display as the available options. */
+  options: Array<any>;
+
+  /**
+   * When using custom object as listbox options, property names used to map an object to a listbox option.
+   * @default { value: "value", label: "label", textValue: "textValue", disabled: "disabled" }
+   * @example
+   * const options = [{
+   *  id: "1",
+   *  name: "foo"
+   * }];
+   *
+   * <ListBox
+   *   options={options}
+   *   optionPropertyNames={{
+   *     value: "id",
+   *     label: "name",
+   *     textValue: "name",
+   *   }}
+   * />
+   */
+  optionPropertyNames?: ListBoxOptionPropertyNames;
+
+  /**
+   * When using custom object as listbox option groups, property names used to map an object to a listbox option group.
+   * @default { id: "id", label: "label", options: "options" }
+   * @example
+   * const groupedOptions = [{
+   *   code: "1",
+   *   name: "foo",
+   *   items: [{
+   *     id: "2",
+   *     name: "bar
+   *   }]
+   * }];
+   *
+   * <ListBox
+   *   options={groupedOptions}
+   *   optionGroupPropertyNames={{
+   *     id: "code",
+   *     label: "name",
+   *     options: "items"
+   *   }}
+   * />
+   */
+  optionGroupPropertyNames?: ListBoxOptionGroupPropertyNames;
 
   /** An optional keyboard delegate implementation for type to select, to override the default. */
   keyboardDelegate?: KeyboardDelegate;
@@ -115,8 +184,10 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
     "children",
     "value",
     "defaultValue",
+    "options",
     "onValueChange",
-    "dataSource",
+    "optionPropertyNames",
+    "optionGroupPropertyNames",
     "keyboardDelegate",
     "autoFocus",
     "shouldFocusWrap",
@@ -143,7 +214,18 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
     disallowEmptySelection: () => access(local.disallowEmptySelection),
     selectionBehavior: () => access(local.selectionBehavior),
     selectionMode: () => access(local.selectionMode),
-    dataSource: () => local.dataSource,
+    dataSource: () => local.options,
+    itemPropertyNames: () => ({
+      key: local.optionPropertyNames?.value ?? "value",
+      label: local.optionPropertyNames?.label ?? "label",
+      textValue: local.optionPropertyNames?.textValue ?? "textValue",
+      disabled: local.optionPropertyNames?.disabled ?? "disabled",
+    }),
+    sectionPropertyNames: () => ({
+      key: local.optionGroupPropertyNames?.id ?? "id",
+      label: local.optionGroupPropertyNames?.label ?? "label",
+      items: local.optionGroupPropertyNames?.options ?? "options",
+    }),
     filter: local.filter,
   });
 

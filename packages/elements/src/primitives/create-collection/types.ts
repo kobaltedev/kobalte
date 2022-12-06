@@ -1,19 +1,10 @@
-import { Accessor } from "solid-js";
+import { MaybeAccessor } from "@kobalte/utils";
 
-export interface CollectionDataSource<DataItem, DataSection> {
-  /** The data to be managed by the collection. */
-  data: Accessor<Array<DataItem | DataSection>>;
-
-  /** A function to map a data item to a collection item. */
-  getItem?: (dataItem: DataItem) => CollectionItem;
-
-  /** A function to map a data section to a collection section. */
-  getSection?: (dataSection: DataSection) => CollectionSection;
-}
+export type Key = string | number;
 
 export interface CollectionItem {
   /** A unique key for the item. */
-  id: string;
+  key: Key;
 
   /** A label for the item. */
   label: string;
@@ -30,12 +21,12 @@ export interface CollectionItem {
 
 export interface CollectionSection {
   /** A unique key for the section. */
-  id: string;
+  key: Key;
 
   /** A label for the section. */
   label: string;
 
-  /** The items of the section. */
+  /** The children items of the section. */
   items: Array<any>;
 }
 
@@ -44,7 +35,7 @@ export interface CollectionNode {
   type: "item" | "section";
 
   /** The unique key for the node. */
-  key: string;
+  key: Key;
 
   /** A label for the node. */
   label: string;
@@ -68,13 +59,27 @@ export interface CollectionNode {
   childNodes: Iterable<CollectionNode>;
 
   /** The key of the parent node. */
-  parentKey?: string;
+  parentKey?: Key;
 
   /** The key of the node before this node. */
-  prevKey?: string;
+  prevKey?: Key;
 
   /** The key of the node after this node. */
-  nextKey?: string;
+  nextKey?: Key;
+}
+
+export type CollectionItemPropertyNames = Record<keyof CollectionItem, string>;
+export type CollectionSectionPropertyNames = Record<keyof CollectionSection, string>;
+
+export interface CollectionBase {
+  /** The source data to be managed by the collection. */
+  dataSource: MaybeAccessor<Array<any>>;
+
+  /** Custom property names used to map an object to a collection item. */
+  itemPropertyNames?: MaybeAccessor<Partial<CollectionItemPropertyNames> | undefined>;
+
+  /** Custom property names used to map an object to a collection section. */
+  sectionPropertyNames?: MaybeAccessor<Partial<CollectionSectionPropertyNames> | undefined>;
 }
 
 /**
@@ -86,23 +91,23 @@ export interface Collection<T> extends Iterable<T> {
   getSize: () => number;
 
   /** Iterate over all keys in the collection. */
-  getKeys: () => Iterable<string>;
+  getKeys: () => Iterable<Key>;
 
   /** Get an item by its key. */
-  getItem: (key: string) => T | undefined;
+  getItem: (key: Key) => T | undefined;
 
   /** Get an item by the index of its key. */
   at: (idx: number) => T | undefined;
 
   /** Get the key that comes before the given key in the collection. */
-  getKeyBefore: (key: string) => string | undefined;
+  getKeyBefore: (key: Key) => Key | undefined;
 
   /** Get the key that comes after the given key in the collection. */
-  getKeyAfter: (key: string) => string | undefined;
+  getKeyAfter: (key: Key) => Key | undefined;
 
   /** Get the first key in the collection. */
-  getFirstKey: () => string | undefined;
+  getFirstKey: () => Key | undefined;
 
   /** Get the last key in the collection. */
-  getLastKey: () => string | undefined;
+  getLastKey: () => Key | undefined;
 }

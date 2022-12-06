@@ -1,7 +1,7 @@
-import { createVirtualizer, elementScroll, VirtualizerOptions } from "@tanstack/solid-virtual";
+import { createVirtualizer } from "@tanstack/solid-virtual";
 import { createSignal, For } from "solid-js";
 
-import { CollectionItem, createDataSource, I18nProvider, ListBox } from "../src";
+import { I18nProvider, ListBox } from "../src";
 
 interface Food {
   id: string;
@@ -11,7 +11,6 @@ interface Food {
 }
 
 interface Category {
-  id: string;
   label: string;
   items: Array<Food>;
 }
@@ -22,7 +21,6 @@ function NormalListBox() {
     { label: "🍕 Pizza", textValue: "Pizza", id: "pizza" },
     { label: "🌭 Hot dog", textValue: "Hot dog", id: "hotdog" },
     {
-      id: "fruits",
       label: "Fruits",
       items: [
         { label: "🍎 Apple", textValue: "Apple", id: "apple" },
@@ -34,7 +32,6 @@ function NormalListBox() {
     },
     { label: "🧀 Cheese", textValue: "Cheese", id: "cheese" },
     {
-      id: "meats",
       label: "Meats",
       items: [
         { label: "🥓 Bacon", textValue: "Bacon", id: "bacon" },
@@ -44,7 +41,6 @@ function NormalListBox() {
     },
     { label: "🍳 Eggs", textValue: "Eggs", id: "eggs" },
     {
-      id: "vegetables",
       label: "Vegetables",
       items: [
         { label: "🥕 Carrot", textValue: "Carrot", id: "carrot" },
@@ -57,25 +53,14 @@ function NormalListBox() {
 
   const [foods, setFoods] = createSignal(initialData);
 
-  const dataSource = createDataSource<Food, Category>({
-    data: foods,
-    getItem: food => ({
-      id: food.id,
-      label: food.label,
-      textValue: food.textValue,
-      disabled: food.disabled,
-    }),
-    getSection: category => ({
-      id: category.id,
-      label: category.label,
-      items: category.items,
-    }),
-  });
-
   return (
-    <ListBox dataSource={dataSource} class="listbox">
+    <ListBox
+      options={foods()}
+      optionPropertyNames={{ value: "id" }}
+      optionGroupPropertyNames={{ options: "items" }}
+      class="listbox"
+    >
       {collection => {
-        console.log(collection());
         return (
           <For each={[...collection()]}>
             {node =>
@@ -108,19 +93,16 @@ function NormalListBox() {
 function VirtualizedListBox() {
   let scrollRef: HTMLUListElement | undefined;
 
-  const [value, setValue] = createSignal<"all" | Set<string>>(new Set<string>([]));
+  const [value, setValue] = createSignal(new Set([4]));
 
-  const dataSource = createDataSource<CollectionItem>({
-    data: () =>
-      Array.from({ length: 100_000 }, (_, idx) => ({
-        id: String(idx),
-        label: `Item #${idx}`,
-        textValue: String(idx),
-      })),
-  });
+  const options = Array.from({ length: 100 }, (_, idx) => ({
+    value: idx,
+    label: `Item #${idx}`,
+    textValue: String(idx),
+  }));
 
   const rowVirtualizer = createVirtualizer({
-    count: dataSource.data().length,
+    count: options.length,
     getScrollElement: () => scrollRef,
     estimateSize: () => 40,
     overscan: 5,
@@ -128,14 +110,13 @@ function VirtualizedListBox() {
 
   return (
     <>
-      <div>Selected values: {value() === "all" ? "all" : [...value()].join(", ")}</div>
+      <div>Selected values: {[...value()].join(", ")}</div>
       <ListBox
         ref={scrollRef}
         value={value()}
         onValueChange={setValue}
-        selectionMode="multiple"
         isVirtualized
-        dataSource={dataSource}
+        options={options}
         scrollToIndex={rowVirtualizer.scrollToIndex}
         class="listbox"
       >
@@ -185,6 +166,7 @@ function VirtualizedListBox() {
 export default function App() {
   return (
     <I18nProvider>
+      <NormalListBox />
       <VirtualizedListBox />
     </I18nProvider>
   );

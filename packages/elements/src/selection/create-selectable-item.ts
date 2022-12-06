@@ -9,7 +9,14 @@
 import { access, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, on } from "solid-js";
 
-import { createPress, CreatePressProps, focusSafely, PointerType, PressEvent } from "../primitives";
+import {
+  createPress,
+  CreatePressProps,
+  focusSafely,
+  Key,
+  PointerType,
+  PressEvent,
+} from "../primitives";
 import { MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
 
@@ -18,7 +25,7 @@ export interface CreateSelectableItemProps {
   selectionManager: MaybeAccessor<MultipleSelectionManager>;
 
   /** A unique key for the item. */
-  key: MaybeAccessor<string>;
+  key: MaybeAccessor<Key>;
 
   /**
    * By default, selection occurs on pointer down. This can be strange if selecting an

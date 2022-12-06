@@ -1,12 +1,17 @@
-import { CollectionItem, CollectionNode, CollectionSection } from "./types";
+import {
+  CollectionItemPropertyNames,
+  CollectionNode,
+  CollectionSectionPropertyNames,
+  Key,
+} from "./types";
 
 interface BuildNodesParams {
-  source: Array<any>;
-  getItem?: (source: any) => CollectionItem;
-  getSection?: (source: any) => CollectionSection;
+  dataSource: Array<any>;
+  itemPropertyNames?: Partial<CollectionItemPropertyNames>;
+  sectionPropertyNames?: Partial<CollectionSectionPropertyNames>;
   startIndex?: number;
   startLevel?: number;
-  parentKey?: string;
+  parentKey?: Key;
 }
 
 /**
@@ -16,19 +21,31 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
   let index = params.startIndex ?? 0;
   const level = params.startLevel ?? 0;
 
+  const itemPropertyNames: CollectionItemPropertyNames = {
+    key: params.itemPropertyNames?.key ?? "key",
+    label: params.itemPropertyNames?.label ?? "label",
+    textValue: params.itemPropertyNames?.textValue ?? "textValue",
+    disabled: params.itemPropertyNames?.disabled ?? "disabled",
+  };
+
+  const sectionPropertyNames: CollectionSectionPropertyNames = {
+    key: params.sectionPropertyNames?.key ?? "key",
+    label: params.sectionPropertyNames?.label ?? "label",
+    items: params.sectionPropertyNames?.items ?? "items",
+  };
+
   const nodes: Array<CollectionNode> = [];
 
-  for (const data of params.source) {
-    // If getSection is undefined, let's assume "data" has same shape as CollectionSection.
-    const section = params.getSection?.(data) ?? (data as CollectionSection);
+  for (const data of params.dataSource) {
+    const isSection = sectionPropertyNames.label in data && sectionPropertyNames.items in data;
 
-    if (section.items != null) {
+    if (isSection) {
       const sectionNode: CollectionNode = {
         type: "section",
-        key: section.id,
-        label: section.label,
-        textValue: "", // safe fallback, as not relevant for section type nodes.
-        isDisabled: false, // safe fallback, as not relevant for section type nodes.
+        key: data[sectionPropertyNames.key] ?? getFallbackKey(index, params.parentKey),
+        label: data[sectionPropertyNames.label],
+        textValue: "",
+        isDisabled: false,
         level: level,
         index: index,
         childNodes: [],
@@ -38,9 +55,9 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
       index++;
 
       const childNodes = buildNodes({
-        source: section.items,
-        getItem: params.getItem,
-        getSection: params.getSection,
+        dataSource: data[sectionPropertyNames.items],
+        itemPropertyNames,
+        sectionPropertyNames,
         startIndex: index,
         startLevel: sectionNode.level + 1,
         parentKey: sectionNode.key,
@@ -52,10 +69,17 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
 
       index += childNodes.length;
     } else {
-      // If getItem is undefined, let's assume "data" has same shape as CollectionItem.
-      const item = params.getItem?.(data) ?? (data as CollectionItem);
-
-      nodes.push(itemToNode(item, level, index, params.parentKey));
+      nodes.push({
+        type: "item",
+        key: data[itemPropertyNames.key] ?? getFallbackKey(index, params.parentKey),
+        label: data[itemPropertyNames.label],
+        textValue: data[itemPropertyNames.textValue] ?? data[itemPropertyNames.label],
+        isDisabled: data[itemPropertyNames.disabled] ?? false,
+        level,
+        index,
+        childNodes: [],
+        parentKey: params.parentKey,
+      });
 
       index++;
     }
@@ -64,21 +88,6 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
   return nodes;
 }
 
-function itemToNode(
-  item: CollectionItem,
-  level: number,
-  index: number,
-  parentKey?: string
-): CollectionNode {
-  return {
-    type: "item",
-    key: item.id,
-    label: item.label,
-    textValue: item.textValue ?? item.label,
-    isDisabled: item.disabled ?? false,
-    level,
-    index,
-    childNodes: [],
-    parentKey,
-  };
+function getFallbackKey(index: number, parentKey?: Key) {
+  return parentKey != null ? `${parentKey}.${index}` : `$.${index}`;
 }

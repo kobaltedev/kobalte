@@ -6,10 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/bfce84fee12a027d9cbc38b43e1747e3e4b4b169/packages/@react-stately/list/src/useListState.ts
  */
 
-import { access, MaybeAccessor } from "@kobalte/utils";
+import { access } from "@kobalte/utils";
 import { Accessor, createComputed } from "solid-js";
 
-import { Collection, CollectionDataSource, CollectionNode, createCollection } from "../primitives";
+import { Collection, CollectionBase, CollectionNode, createCollection } from "../primitives";
 import {
   createMultipleSelectionState,
   CreateMultipleSelectionStateProps,
@@ -17,10 +17,7 @@ import {
 } from "../selection";
 import { ListCollection } from "./list-collection";
 
-export interface CreateListStateProps extends CreateMultipleSelectionStateProps {
-  /** The data source to be managed by the list state. */
-  dataSource: MaybeAccessor<CollectionDataSource<any, any>>;
-
+export interface CreateListStateProps extends CollectionBase, CreateMultipleSelectionStateProps {
   /** Filter function to generate a filtered list of nodes. */
   filter?: (nodes: Iterable<CollectionNode>) => Iterable<CollectionNode>;
 }
@@ -47,6 +44,8 @@ export function createListState(props: CreateListStateProps): ListState {
   const collection = createCollection(
     {
       dataSource: () => access(props.dataSource),
+      itemPropertyNames: () => access(props.itemPropertyNames),
+      sectionPropertyNames: () => access(props.sectionPropertyNames),
       factory,
     },
     [() => props.filter]

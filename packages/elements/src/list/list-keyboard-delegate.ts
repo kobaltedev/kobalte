@@ -8,7 +8,7 @@
 
 import { Accessor } from "solid-js";
 
-import { Collection, CollectionNode } from "../primitives";
+import { Collection, CollectionNode, Key } from "../primitives";
 import { KeyboardDelegate } from "../selection";
 
 export class ListKeyboardDelegate implements KeyboardDelegate {
@@ -26,7 +26,7 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
     this.collator = collator;
   }
 
-  getKeyBelow(key: string) {
+  getKeyBelow(key: Key) {
     let keyAfter = this.collection().getKeyAfter(key);
 
     while (keyAfter != null) {
@@ -39,7 +39,7 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
     }
   }
 
-  getKeyAbove(key: string) {
+  getKeyAbove(key: Key) {
     let keyBefore = this.collection().getKeyBefore(key);
 
     while (keyBefore != null) {
@@ -80,11 +80,11 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
     }
   }
 
-  private getItem(key: string): HTMLElement | null {
+  private getItem(key: Key): HTMLElement | null {
     return this.ref?.()?.querySelector(`[data-key="${key}"]`) ?? null;
   }
 
-  getKeyPageAbove(key: string) {
+  getKeyPageAbove(key: Key) {
     const menu = this.ref?.();
     let item = this.getItem(key);
 
@@ -94,7 +94,7 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
 
     const pageY = Math.max(0, item.offsetTop + item.offsetHeight - menu.offsetHeight);
 
-    let keyAbove: string | undefined = key;
+    let keyAbove: Key | undefined = key;
 
     while (keyAbove && item && item.offsetTop > pageY) {
       keyAbove = this.getKeyAbove(keyAbove);
@@ -104,7 +104,7 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
     return keyAbove;
   }
 
-  getKeyPageBelow(key: string) {
+  getKeyPageBelow(key: Key) {
     const menu = this.ref?.();
     let item = this.getItem(key);
 
@@ -117,7 +117,7 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
       item.offsetTop - item.offsetHeight + menu.offsetHeight
     );
 
-    let keyBelow: string | undefined = key;
+    let keyBelow: Key | undefined = key;
 
     while (keyBelow && item && item.offsetTop < pageY) {
       keyBelow = this.getKeyBelow(keyBelow);
@@ -127,7 +127,7 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
     return keyBelow;
   }
 
-  getKeyForSearch(search: string, fromKey?: string) {
+  getKeyForSearch(search: string, fromKey?: Key) {
     const collator = this.collator?.();
 
     if (!collator) {
