@@ -52,11 +52,12 @@ export interface FocusTrapRegionProps extends ParentProps {
 }
 
 /**
- * A component that traps focus within itself, it renders a `div` by default.
+ * A component that traps focus within itself.
+ * It renders a `<div>` by default.
  */
 export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegionProps>(props => {
   let restoreFocusElement: HTMLElement | null;
-  let containerRef: HTMLDivElement | undefined;
+  let ref: HTMLDivElement | undefined;
 
   props = mergeDefaultProps(
     {
@@ -70,18 +71,18 @@ export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegion
     "as",
     "ref",
     "trapFocus",
-    "initialFocusSelector",
-    "restoreFocusSelector",
     "autoFocus",
     "restoreFocus",
+    "initialFocusSelector",
+    "restoreFocusSelector",
   ]);
 
   const focusInitialElement = () => {
-    if (!containerRef || !local.autoFocus) {
+    if (!ref || !local.autoFocus) {
       return;
     }
 
-    const initialFocusElement = containerRef.querySelector(
+    const initialFocusElement = ref.querySelector(
       local.initialFocusSelector!
     ) as HTMLElement | null;
 
@@ -91,7 +92,7 @@ export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegion
     }
 
     // fallback to first focusable element or container.
-    const first = getAllTabbableIn(containerRef)[0] ?? containerRef;
+    const first = getAllTabbableIn(ref)[0] ?? ref;
     focusWithoutScrolling(first);
   };
 
@@ -113,17 +114,17 @@ export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegion
   };
 
   const preventRestoreFocus = () => {
-    if (!containerRef) {
+    if (!ref) {
       return false;
     }
 
-    const activeElement = getActiveElement(containerRef);
+    const activeElement = getActiveElement(ref);
 
     if (!activeElement) {
       return false;
     }
 
-    if (contains(containerRef, activeElement)) {
+    if (contains(ref, activeElement)) {
       return false;
     }
 
@@ -131,18 +132,18 @@ export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegion
     return isFocusable(activeElement);
   };
 
-  const onTrapFocus: JSX.EventHandlerUnion<HTMLSpanElement, FocusEvent> = event => {
-    if (!containerRef) {
+  const onFocus: JSX.EventHandlerUnion<HTMLSpanElement, FocusEvent> = event => {
+    if (!ref) {
       return;
     }
 
     // Because this function run only when focus trap is active,
     // we remove first and last element since they are `FocusTrap`.
-    const tabbables = getAllTabbableIn(containerRef).slice(1, -1);
+    const tabbables = getAllTabbableIn(ref).slice(1, -1);
 
     // Fallback to the container element
     if (!tabbables.length) {
-      focusWithoutScrolling(containerRef);
+      focusWithoutScrolling(ref);
       return;
     }
 
@@ -175,14 +176,14 @@ export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegion
   return (
     <Dynamic
       component={local.as}
-      ref={mergeRefs(el => (containerRef = el), local.ref)}
+      ref={mergeRefs(el => (ref = el), local.ref)}
       tabIndex={-1}
       {...others}
     >
       <Show when={local.trapFocus} fallback={props.children}>
-        <FocusTrap onFocus={onTrapFocus} />
+        <FocusTrap onFocus={onFocus} />
         {props.children}
-        <FocusTrap onFocus={onTrapFocus} />
+        <FocusTrap onFocus={onFocus} />
       </Show>
     </Dynamic>
   );
@@ -191,10 +192,10 @@ export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegion
 function FocusTrap(props: ComponentProps<"span">) {
   return (
     <span
-      data-focus-trap=""
       tabIndex={0}
-      aria-hidden="true"
       style={{ ...visuallyHiddenStyles, position: "fixed", top: "0", left: "0" }}
+      aria-hidden="true"
+      data-focus-trap=""
       {...props}
     />
   );

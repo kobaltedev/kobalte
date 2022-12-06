@@ -12,7 +12,7 @@ import {
   createPolymorphicComponent,
   mergeDefaultProps,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createUniqueId, JSX, splitProps } from "solid-js";
+import { Accessor, createMemo, createUniqueId, For, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
@@ -21,7 +21,7 @@ import {
   createSelectableList,
   CreateSelectableListProps,
 } from "../list";
-import { Collection, CollectionNode, createFocusRing, CollectionKey } from "../primitives";
+import { CollectionKey, CollectionNode, createFocusRing } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, MultipleSelection, SelectionType } from "../selection";
 import { ListBoxContext, ListBoxContextValue, ListBoxDataSet } from "./list-box-context";
 import { ListBoxGroup } from "./list-box-group";
@@ -157,8 +157,8 @@ export interface ListBoxProps
   /** When virtualized, callback used to notify the virtual scroller to scrolls to the option of the index provided. */
   scrollToIndex?: (index: number) => void;
 
-  /** Render prop that receives the collection of nodes as an accessor and should return a JSX-Element. */
-  children?: (collection: Accessor<Collection<CollectionNode>>) => JSX.Element;
+  /** Render prop that receives an option as collection node and should return a JSX-Element. */
+  children?: (node: CollectionNode) => JSX.Element;
 }
 
 /**
@@ -283,7 +283,7 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
           focusRingHandlers
         )}
       >
-        {local.children?.(listState.collection)}
+        <For each={[...listState.collection()]}>{node => local.children?.(node)}</For>
       </Dynamic>
     </ListBoxContext.Provider>
   );

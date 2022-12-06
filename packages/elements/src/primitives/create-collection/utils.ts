@@ -1,8 +1,8 @@
 import {
   CollectionItemPropertyNames,
+  CollectionKey,
   CollectionNode,
   CollectionSectionPropertyNames,
-  CollectionKey,
 } from "./types";
 
 interface BuildNodesParams {

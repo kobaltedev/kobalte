@@ -59,66 +59,34 @@ function NormalListBox() {
       optionGroupPropertyNames={{ options: "items" }}
       class="listbox"
     >
-      {collection => {
-        return (
-          <For each={[...collection()]}>
-            {node =>
-              node.type === "section" ? (
-                <ListBox.Group>
-                  <ListBox.GroupLabel>{node.label}</ListBox.GroupLabel>
-                  <ListBox.GroupOptions>
-                    <For each={[...node.childNodes]}>
-                      {childNode => (
-                        <ListBox.Option node={childNode} class="listbox-option">
-                          <ListBox.OptionLabel>{childNode.label}</ListBox.OptionLabel>
-                        </ListBox.Option>
-                      )}
-                    </For>
-                  </ListBox.GroupOptions>
-                </ListBox.Group>
-              ) : (
-                <ListBox.Option node={node} class="listbox-option">
-                  <ListBox.OptionLabel>{node.label}</ListBox.OptionLabel>
-                </ListBox.Option>
-              )
-            }
-          </For>
-        );
-      }}
+      {node =>
+        node.type === "section" ? (
+          <ListBox.Group>
+            <ListBox.GroupLabel>{node.label}</ListBox.GroupLabel>
+            <ListBox.GroupOptions>
+              <For each={[...node.childNodes]}>
+                {childNode => (
+                  <ListBox.Option node={childNode} class="listbox-option">
+                    <ListBox.OptionLabel>{childNode.label}</ListBox.OptionLabel>
+                  </ListBox.Option>
+                )}
+              </For>
+            </ListBox.GroupOptions>
+          </ListBox.Group>
+        ) : (
+          <ListBox.Option node={node} class="listbox-option">
+            <ListBox.OptionLabel>{node.label}</ListBox.OptionLabel>
+          </ListBox.Option>
+        )
+      }
     </ListBox>
-  );
-}
-
-function VirtualizedListBox() {
-  let scrollRef: HTMLUListElement | undefined;
-
-  const [value, setValue] = createSignal(new Set([4]));
-
-  const options = Array.from({ length: 100 }, (_, idx) => ({
-    value: idx,
-    label: `Item #${idx}`,
-    textValue: String(idx),
-  }));
-
-  return (
-    <>
-      <div>Selected values: {[...value()].join(", ")}</div>
-      <ListBox
-        ref={scrollRef}
-        value={value()}
-        onValueChange={setValue}
-        isVirtualized
-        options={options}
-        class="listbox"
-      ></ListBox>
-    </>
   );
 }
 
 export default function App() {
   return (
     <I18nProvider>
-      <VirtualizedListBox />
+      <NormalListBox />
     </I18nProvider>
   );
 }

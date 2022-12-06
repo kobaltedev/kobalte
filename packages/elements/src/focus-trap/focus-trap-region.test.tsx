@@ -101,54 +101,6 @@ describe("FocusTrapRegion", () => {
     expect(screen.getByText("After")).toHaveFocus();
   });
 
-  it("should focus element with 'restoreFocusSelector' on unmount", async () => {
-    const Example = () => {
-      const [isOpen, setIsOpen] = createSignal(false);
-
-      return (
-        <>
-          <button onClick={() => setIsOpen(true)}>Open</button>
-          <Show when={isOpen()}>
-            <FocusTrapRegion
-              trapFocus
-              restoreFocus
-              restoreFocusSelector="#last"
-              data-testid="focus-trap"
-            >
-              <button onClick={() => setIsOpen(false)}>Close</button>
-            </FocusTrapRegion>
-          </Show>
-          <button id="last">Last</button>
-        </>
-      );
-    };
-
-    render(() => <Example />);
-
-    expect(screen.queryByTestId("focus-trap")).toBeNull();
-
-    const openButton = screen.getByText("Open") as HTMLButtonElement;
-
-    await userEvent.tab();
-    expect(openButton).toHaveFocus();
-
-    fireEvent.click(openButton);
-    await Promise.resolve();
-
-    const focusTrap = screen.getByTestId("focus-trap");
-    expect(focusTrap).toBeInTheDocument();
-
-    const closeButton = screen.getByText("Close") as HTMLButtonElement;
-
-    await userEvent.tab();
-    expect(closeButton).toHaveFocus();
-
-    fireEvent.click(closeButton);
-    await Promise.resolve();
-
-    expect(screen.queryByText("Last")).toHaveFocus();
-  });
-
   it("should focus previous active element on unmount when 'restoreFocus' is true", async () => {
     const Example = () => {
       const [isOpen, setIsOpen] = createSignal(false);
@@ -191,7 +143,7 @@ describe("FocusTrapRegion", () => {
     expect(openButton).toHaveFocus();
   });
 
-  it("should ignore 'restoreFocus' when 'restoreFocusSelector' is set", async () => {
+  it("should focus element with 'restoreFocusSelector' on unmount", async () => {
     const Example = () => {
       const [isOpen, setIsOpen] = createSignal(false);
 
