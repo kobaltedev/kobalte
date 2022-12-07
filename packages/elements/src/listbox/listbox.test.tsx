@@ -3,12 +3,12 @@
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *
  * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-spectrum/listbox/test/ListBox.test.js
+ * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-spectrum/listbox/test/Listbox.test.js
  */
 
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { ListBox } from "./list-box";
+import { Listbox } from "./listbox";
 
 const dataSource = [
   { value: 1, label: "One" },
@@ -16,7 +16,7 @@ const dataSource = [
   { value: 3, label: "Three" },
 ];
 
-describe("ListBox", () => {
+describe("Listbox", () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.spyOn(window, "requestAnimationFrame").mockImplementation(cb => {
@@ -34,9 +34,9 @@ describe("ListBox", () => {
 
   it("renders properly", () => {
     render(() => (
-      <ListBox options={dataSource} selectionMode="single">
-        {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-      </ListBox>
+      <Listbox options={dataSource} selectionMode="single">
+        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+      </Listbox>
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -56,9 +56,9 @@ describe("ListBox", () => {
 
   it("allows user to change option focus via up/down arrow keys", async () => {
     render(() => (
-      <ListBox options={dataSource}>
-        {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-      </ListBox>
+      <Listbox options={dataSource}>
+        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+      </Listbox>
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -82,9 +82,9 @@ describe("ListBox", () => {
 
   it("wraps focus from first to last/last to first option if up/down arrow is pressed if shouldFocusWrap is true", async () => {
     render(() => (
-      <ListBox options={dataSource} shouldFocusWrap>
-        {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-      </ListBox>
+      <Listbox options={dataSource} shouldFocusWrap>
+        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+      </Listbox>
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -111,9 +111,9 @@ describe("ListBox", () => {
       const defaultValue = new Set([2]);
 
       render(() => (
-        <ListBox options={dataSource} selectionMode="single" defaultValue={defaultValue}>
-          {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-        </ListBox>
+        <Listbox options={dataSource} selectionMode="single" defaultValue={defaultValue}>
+          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        </Listbox>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -133,14 +133,14 @@ describe("ListBox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <ListBox
+        <Listbox
           options={dataSource}
           selectionMode="single"
           value={value}
           onValueChange={onValueChangeSpy}
         >
-          {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-        </ListBox>
+          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        </Listbox>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -172,9 +172,9 @@ describe("ListBox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <ListBox options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
-          {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-        </ListBox>
+        <Listbox options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
+          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        </Listbox>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -199,9 +199,9 @@ describe("ListBox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <ListBox options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
-          {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-        </ListBox>
+        <Listbox options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
+          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        </Listbox>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -232,9 +232,9 @@ describe("ListBox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <ListBox options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
-          {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-        </ListBox>
+        <Listbox options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
+          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        </Listbox>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -269,9 +269,9 @@ describe("ListBox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <ListBox options={dataSource} selectionMode="multiple" onValueChange={onValueChangeSpy}>
-          {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-        </ListBox>
+        <Listbox options={dataSource} selectionMode="multiple" onValueChange={onValueChangeSpy}>
+          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        </Listbox>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -299,14 +299,14 @@ describe("ListBox", () => {
       const defaultValue = new Set([1, 2]);
 
       render(() => (
-        <ListBox
+        <Listbox
           options={dataSource}
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
-          {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-        </ListBox>
+          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        </Listbox>
       ));
 
       const options = screen.getAllByRole("option");
@@ -336,14 +336,14 @@ describe("ListBox", () => {
       const value = new Set([1, 2]);
 
       render(() => (
-        <ListBox
+        <Listbox
           options={dataSource}
           selectionMode="multiple"
           value={value}
           onValueChange={onValueChangeSpy}
         >
-          {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-        </ListBox>
+          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        </Listbox>
       ));
 
       const options = screen.getAllByRole("option");
@@ -371,14 +371,14 @@ describe("ListBox", () => {
       const defaultValue = new Set([1, 2]);
 
       render(() => (
-        <ListBox
+        <Listbox
           options={dataSource}
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
-          {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-        </ListBox>
+          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        </Listbox>
       ));
 
       const options = screen.getAllByRole("option");
@@ -411,14 +411,14 @@ describe("ListBox", () => {
       const defaultValue = new Set([1, 2]);
 
       render(() => (
-        <ListBox
+        <Listbox
           options={dataSource}
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
-          {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-        </ListBox>
+          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        </Listbox>
       ));
 
       const options = screen.getAllByRole("option");
@@ -445,15 +445,15 @@ describe("ListBox", () => {
     const defaultValue = new Set([2]);
 
     render(() => (
-      <ListBox
+      <Listbox
         options={dataSource}
         selectionMode="single"
         defaultValue={defaultValue}
         onValueChange={onValueChangeSpy}
         disallowEmptySelection={false}
       >
-        {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-      </ListBox>
+        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+      </Listbox>
     ));
 
     const options = screen.getAllByRole("option");
@@ -474,9 +474,9 @@ describe("ListBox", () => {
 
   it("supports type to select", async () => {
     render(() => (
-      <ListBox options={dataSource}>
-        {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-      </ListBox>
+      <Listbox options={dataSource}>
+        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+      </Listbox>
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -502,9 +502,9 @@ describe("ListBox", () => {
 
   it("resets the search text after a timeout", async () => {
     render(() => (
-      <ListBox options={dataSource}>
-        {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-      </ListBox>
+      <Listbox options={dataSource}>
+        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+      </Listbox>
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -528,13 +528,13 @@ describe("ListBox", () => {
 
   it("supports aria-label on options", () => {
     render(() => (
-      <ListBox options={[{ value: "item", label: "Item" }]}>
+      <Listbox options={[{ value: "item", label: "Item" }]}>
         {node => (
-          <ListBox.Option node={node} aria-label="Option">
+          <Listbox.Option node={node} aria-label="Option">
             Item
-          </ListBox.Option>
+          </Listbox.Option>
         )}
-      </ListBox>
+      </Listbox>
     ));
 
     jest.runAllTimers();
@@ -548,14 +548,14 @@ describe("ListBox", () => {
 
   it("supports complex options with aria-labelledby and aria-describedby", async () => {
     render(() => (
-      <ListBox options={[{ value: "option", label: "Label", description: "Description" }]}>
+      <Listbox options={[{ value: "option", label: "Label", description: "Description" }]}>
         {node => (
-          <ListBox.Option node={node}>
-            <ListBox.OptionLabel>{node.label}</ListBox.OptionLabel>
-            <ListBox.OptionDescription>{node.rawValue.description}</ListBox.OptionDescription>
-          </ListBox.Option>
+          <Listbox.Option node={node}>
+            <Listbox.OptionLabel>{node.label}</Listbox.OptionLabel>
+            <Listbox.OptionDescription>{node.rawValue.description}</Listbox.OptionDescription>
+          </Listbox.Option>
         )}
-      </ListBox>
+      </Listbox>
     ));
 
     jest.runAllTimers();
@@ -570,9 +570,9 @@ describe("ListBox", () => {
 
   it("supports aria-label", () => {
     render(() => (
-      <ListBox options={dataSource} aria-label="Test">
-        {node => <ListBox.Option node={node}>{node.label}</ListBox.Option>}
-      </ListBox>
+      <Listbox options={dataSource} aria-label="Test">
+        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+      </Listbox>
     ));
 
     const listbox = screen.getByRole("listbox");

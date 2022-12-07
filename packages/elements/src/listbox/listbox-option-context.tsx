@@ -1,6 +1,6 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-export interface ListBoxOptionDataSet {
+export interface ListboxOptionDataSet {
   "data-disabled": string | undefined;
   "data-selected": string | undefined;
   "data-hover": string | undefined;
@@ -9,22 +9,22 @@ export interface ListBoxOptionDataSet {
   "data-active": string | undefined;
 }
 
-export interface ListBoxOptionContextValue {
-  dataset: Accessor<ListBoxOptionDataSet>;
+export interface ListboxOptionContextValue {
+  dataset: Accessor<ListboxOptionDataSet>;
   isSelected: Accessor<boolean>;
   generateId: (part: string) => string;
   registerLabel: (id: string) => () => void;
   registerDescription: (id: string) => () => void;
 }
 
-export const ListBoxOptionContext = createContext<ListBoxOptionContextValue>();
+export const ListboxOptionContext = createContext<ListboxOptionContextValue>();
 
-export function useListBoxOptionContext() {
-  const context = useContext(ListBoxOptionContext);
+export function useListboxOptionContext() {
+  const context = useContext(ListboxOptionContext);
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useListBoxOptionContext` must be used within a `ListBox.Option` component"
+      "[kobalte]: `useListboxOptionContext` must be used within a `Listbox.Option` component"
     );
   }
 

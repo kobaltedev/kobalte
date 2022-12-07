@@ -10,15 +10,21 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useListBoxContext } from "./list-box-context";
-import { ListBoxGroupContext, ListBoxGroupContextValue } from "./list-box-group-context";
+import { useListboxContext } from "./listbox-context";
+import { ListboxGroupContext, ListboxGroupContextValue } from "./listbox-group-context";
+import { CollectionNode } from "../primitives";
+
+export interface ListboxGroupProps {
+  /** The collection node to render. */
+  node: CollectionNode;
+}
 
 /**
  * A container for a group of options in a listbox.
  * It provides context for all ListBox.Group* related components.
  */
-export const ListBoxGroup = createPolymorphicComponent<"li">(props => {
-  const listBoxContext = useListBoxContext();
+export const ListboxGroup = createPolymorphicComponent<"li", ListboxGroupProps>(props => {
+  const listBoxContext = useListboxContext();
 
   const defaultId = `${listBoxContext.generateId("group")}-${createUniqueId()}`;
 
@@ -30,12 +36,13 @@ export const ListBoxGroup = createPolymorphicComponent<"li">(props => {
     props
   );
 
-  const [local, others] = splitProps(props, ["as"]);
+  const [local, others] = splitProps(props, ["as", "node"]);
 
   const [labelId, setLabelId] = createSignal<string>();
 
-  const context: ListBoxGroupContextValue = {
+  const context: ListboxGroupContextValue = {
     labelId,
+    childNodes: () => local.node.childNodes,
     generateId: part => `${others.id!}-${part}`,
     registerLabel: id => {
       setLabelId(id);
@@ -44,8 +51,8 @@ export const ListBoxGroup = createPolymorphicComponent<"li">(props => {
   };
 
   return (
-    <ListBoxGroupContext.Provider value={context}>
+    <ListboxGroupContext.Provider value={context}>
       <Dynamic component={local.as} role="presentation" {...others} />
-    </ListBoxGroupContext.Provider>
+    </ListboxGroupContext.Provider>
   );
 });

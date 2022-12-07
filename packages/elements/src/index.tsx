@@ -14,7 +14,7 @@ export * from "./form-control";
 export * from "./hover-card";
 export * from "./i18n";
 export * from "./link";
-export * from "./list-box";
+export * from "./listbox";
 export * from "./overlay";
 export * from "./popover";
 export * from "./radio-group";

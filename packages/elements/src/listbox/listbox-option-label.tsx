@@ -3,25 +3,25 @@
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *
  * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-aria/listbox/src/useListBoxSection.ts
+ * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/listbox/src/useOption.ts
  */
 
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useListBoxGroupContext } from "./list-box-group-context";
+import { useListboxOptionContext } from "./listbox-option-context";
 
 /**
- * A component used to render the label of a ListBox.GroupOptions.
- * It won't be focusable using arrow keys.
+ * An accessible label to be announced for the option.
+ * Useful for options that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
-export const ListBoxGroupLabel = createPolymorphicComponent<"span">(props => {
-  const context = useListBoxGroupContext();
+export const ListboxOptionLabel = createPolymorphicComponent<"div">(props => {
+  const context = useListboxOptionContext();
 
   props = mergeDefaultProps(
     {
-      as: "span",
+      as: "div",
       id: context.generateId("label"),
     },
     props
@@ -31,5 +31,5 @@ export const ListBoxGroupLabel = createPolymorphicComponent<"span">(props => {
 
   createEffect(() => onCleanup(context.registerLabel(local.id!)));
 
-  return <Dynamic component={local.as} id={local.id} aria-hidden="true" {...others} />;
+  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
 });

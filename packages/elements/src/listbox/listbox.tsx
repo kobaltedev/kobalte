@@ -10,9 +10,10 @@ import {
   access,
   combineProps,
   createPolymorphicComponent,
+  Key,
   mergeDefaultProps,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createUniqueId, For, JSX, splitProps } from "solid-js";
+import { Accessor, createMemo, createUniqueId, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
@@ -23,26 +24,26 @@ import {
 } from "../list";
 import { CollectionKey, CollectionNode, createFocusRing } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, MultipleSelection, SelectionType } from "../selection";
-import { ListBoxContext, ListBoxContextValue, ListBoxDataSet } from "./list-box-context";
-import { ListBoxGroup } from "./list-box-group";
-import { ListBoxGroupLabel } from "./list-box-group-label";
-import { ListBoxGroupOptions } from "./list-box-group-options";
-import { ListBoxOption } from "./list-box-option";
-import { ListBoxOptionDescription } from "./list-box-option-description";
-import { ListBoxOptionIndicator } from "./list-box-option-indicator";
-import { ListBoxOptionLabel } from "./list-box-option-label";
+import { ListboxContext, ListboxContextValue, ListboxDataSet } from "./listbox-context";
+import { ListboxGroup } from "./listbox-group";
+import { ListboxGroupLabel } from "./listbox-group-label";
+import { ListboxGroupOptions } from "./listbox-group-options";
+import { ListboxOption } from "./listbox-option";
+import { ListboxOptionDescription } from "./listbox-option-description";
+import { ListboxOptionIndicator } from "./listbox-option-indicator";
+import { ListboxOptionLabel } from "./listbox-option-label";
 
-type ListBoxComposite = {
-  Group: typeof ListBoxGroup;
-  GroupLabel: typeof ListBoxGroupLabel;
-  GroupOptions: typeof ListBoxGroupOptions;
-  Option: typeof ListBoxOption;
-  OptionLabel: typeof ListBoxOptionLabel;
-  OptionDescription: typeof ListBoxOptionDescription;
-  OptionIndicator: typeof ListBoxOptionIndicator;
+type ListboxComposite = {
+  Group: typeof ListboxGroup;
+  GroupLabel: typeof ListboxGroupLabel;
+  GroupOptions: typeof ListboxGroupOptions;
+  Option: typeof ListboxOption;
+  OptionLabel: typeof ListboxOptionLabel;
+  OptionDescription: typeof ListboxOptionDescription;
+  OptionIndicator: typeof ListboxOptionIndicator;
 };
 
-export interface ListBoxOptionPropertyNames {
+export interface ListboxOptionPropertyNames {
   /** Property name that refers to the value of an option. */
   value?: string;
 
@@ -56,7 +57,7 @@ export interface ListBoxOptionPropertyNames {
   disabled?: string;
 }
 
-export interface ListBoxOptionGroupPropertyNames {
+export interface ListboxOptionGroupPropertyNames {
   /** Property name that refers to the unique id of an option group. */
   id?: string;
 
@@ -67,7 +68,7 @@ export interface ListBoxOptionGroupPropertyNames {
   options?: string;
 }
 
-export interface ListBoxProps
+export interface ListboxProps
   extends Pick<
       CreateListStateProps,
       "allowDuplicateSelectionEvents" | "selectionBehavior" | "filter"
@@ -98,7 +99,7 @@ export interface ListBoxProps
    *  name: "foo"
    * }];
    *
-   * <ListBox
+   * <Listbox
    *   options={options}
    *   optionPropertyNames={{
    *     value: "id",
@@ -107,7 +108,7 @@ export interface ListBoxProps
    *   }}
    * />
    */
-  optionPropertyNames?: ListBoxOptionPropertyNames;
+  optionPropertyNames?: ListboxOptionPropertyNames;
 
   /**
    * When using custom object as listbox option groups, property names used to map an object to a listbox option group.
@@ -122,7 +123,7 @@ export interface ListBoxProps
    *   }]
    * }];
    *
-   * <ListBox
+   * <Listbox
    *   options={groupedOptions}
    *   optionGroupPropertyNames={{
    *     id: "code",
@@ -131,7 +132,7 @@ export interface ListBoxProps
    *   }}
    * />
    */
-  optionGroupPropertyNames?: ListBoxOptionGroupPropertyNames;
+  optionGroupPropertyNames?: ListboxOptionGroupPropertyNames;
 
   /** An optional keyboard delegate implementation for type to select, to override the default. */
   keyboardDelegate?: KeyboardDelegate;
@@ -157,15 +158,21 @@ export interface ListBoxProps
   /** When virtualized, callback used to notify the virtual scroller to scrolls to the option of the index provided. */
   scrollToIndex?: (index: number) => void;
 
-  /** Render prop that receives an option as collection node and should return a JSX-Element. */
-  children?: (node: CollectionNode) => JSX.Element;
+  /**
+   * A map function that receives a _collection node_ signal representing a listbox option,
+   * and an index signal and returns a JSX-Element.
+   */
+  children: (node: Accessor<CollectionNode>, index: Accessor<number>) => JSX.Element;
+
+  /** The fallback content to render when there is no option/option group. */
+  fallback?: JSX.Element;
 }
 
 /**
  * Listbox presents a list of options and allows a user to select one or more of them.
  * This component is based on the [WAI-ARIA Listbox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/)
  */
-export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxComposite>(props => {
+export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxComposite>(props => {
   let ref: HTMLUListElement | undefined;
 
   const defaultId = `listbox-${createUniqueId()}`;
@@ -182,6 +189,7 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
   const [local, others] = splitProps(props, [
     "as",
     "children",
+    "fallback",
     "value",
     "defaultValue",
     "options",
@@ -251,12 +259,12 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
     within: true,
   });
 
-  const dataset: Accessor<ListBoxDataSet> = createMemo(() => ({
+  const dataset: Accessor<ListboxDataSet> = createMemo(() => ({
     "data-focus": isFocused() ? "" : undefined,
     "data-focus-visible": isFocusVisible() ? "" : undefined,
   }));
 
-  const context: ListBoxContextValue = {
+  const context: ListboxContextValue = {
     dataset,
     listState: () => listState,
     generateId: part => `${others.id!}-${part}`,
@@ -267,7 +275,7 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
   };
 
   return (
-    <ListBoxContext.Provider value={context}>
+    <ListboxContext.Provider value={context}>
       <Dynamic
         component={local.as}
         role="listbox"
@@ -283,16 +291,18 @@ export const ListBox = createPolymorphicComponent<"ul", ListBoxProps, ListBoxCom
           focusRingHandlers
         )}
       >
-        <For each={[...listState.collection()]}>{node => local.children?.(node)}</For>
+        <Key each={[...listState.collection()]} by="key" fallback={local.fallback}>
+          {local.children}
+        </Key>
       </Dynamic>
-    </ListBoxContext.Provider>
+    </ListboxContext.Provider>
   );
 });
 
-ListBox.Group = ListBoxGroup;
-ListBox.GroupLabel = ListBoxGroupLabel;
-ListBox.GroupOptions = ListBoxGroupOptions;
-ListBox.Option = ListBoxOption;
-ListBox.OptionLabel = ListBoxOptionLabel;
-ListBox.OptionDescription = ListBoxOptionDescription;
-ListBox.OptionIndicator = ListBoxOptionIndicator;
+Listbox.Group = ListboxGroup;
+Listbox.GroupLabel = ListboxGroupLabel;
+Listbox.GroupOptions = ListboxGroupOptions;
+Listbox.Option = ListboxOption;
+Listbox.OptionLabel = ListboxOptionLabel;
+Listbox.OptionDescription = ListboxOptionDescription;
+Listbox.OptionIndicator = ListboxOptionIndicator;

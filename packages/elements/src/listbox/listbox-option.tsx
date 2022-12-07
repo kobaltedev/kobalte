@@ -24,14 +24,14 @@ import {
 } from "../primitives";
 import { getItemCount } from "../primitives/create-collection/get-item-count";
 import { createSelectableItem } from "../selection";
-import { useListBoxContext } from "./list-box-context";
 import {
-  ListBoxOptionContext,
-  ListBoxOptionContextValue,
-  ListBoxOptionDataSet,
-} from "./list-box-option-context";
+  ListboxOptionContext,
+  ListboxOptionContextValue,
+  ListboxOptionDataSet,
+} from "./listbox-option-context";
+import { useListboxContext } from "./listbox-context";
 
-export interface ListBoxOptionProps {
+export interface ListboxOptionProps {
   /** The collection node to render. */
   node: CollectionNode;
 }
@@ -39,10 +39,10 @@ export interface ListBoxOptionProps {
 /**
  * An option of the listbox.
  */
-export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps>(props => {
+export const ListboxOption = createPolymorphicComponent<"li", ListboxOptionProps>(props => {
   let ref: HTMLLIElement | undefined;
 
-  const listBoxContext = useListBoxContext();
+  const listBoxContext = useListboxContext();
 
   const defaultId = `${listBoxContext.generateId("option")}-${createUniqueId()}`;
 
@@ -131,7 +131,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
     return getItemCount(listBoxContext.listState().collection());
   };
 
-  const dataset: Accessor<ListBoxOptionDataSet> = createMemo(() => ({
+  const dataset: Accessor<ListboxOptionDataSet> = createMemo(() => ({
     "data-disabled": selectableItem.isDisabled() ? "" : undefined,
     "data-selected": selectableItem.isSelected() ? "" : undefined,
     "data-hover": isHovered() && !listBoxContext.shouldFocusOnHover() ? "" : undefined,
@@ -140,7 +140,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
     "data-active": selectableItem.isPressed() ? "" : undefined,
   }));
 
-  const context: ListBoxOptionContextValue = {
+  const context: ListboxOptionContextValue = {
     dataset,
     isSelected: selectableItem.isSelected,
     generateId: part => `${others.id!}-${part}`,
@@ -155,7 +155,7 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
   };
 
   return (
-    <ListBoxOptionContext.Provider value={context}>
+    <ListboxOptionContext.Provider value={context}>
       <Dynamic
         component={local.as}
         role="option"
@@ -179,6 +179,6 @@ export const ListBoxOption = createPolymorphicComponent<"li", ListBoxOptionProps
           focusRingHandlers
         )}
       />
-    </ListBoxOptionContext.Provider>
+    </ListboxOptionContext.Provider>
   );
 });

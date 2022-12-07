@@ -2,9 +2,9 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useListBoxOptionContext } from "./list-box-option-context";
+import { useListboxOptionContext } from "./listbox-option-context";
 
-export interface ListBoxOptionIndicatorProps {
+export interface ListboxOptionIndicatorProps {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -15,11 +15,11 @@ export interface ListBoxOptionIndicatorProps {
 /**
  * The visual indicator rendered when the option is selected.
  */
-export const ListBoxOptionIndicator = createPolymorphicComponent<
+export const ListboxOptionIndicator = createPolymorphicComponent<
   "div",
-  ListBoxOptionIndicatorProps
+  ListboxOptionIndicatorProps
 >(props => {
-  const context = useListBoxOptionContext();
+  const context = useListboxOptionContext();
 
   props = mergeDefaultProps(
     {

@@ -10,14 +10,14 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useListBoxOptionContext } from "./list-box-option-context";
+import { useListboxOptionContext } from "./listbox-option-context";
 
 /**
  * An optional accessible description to be announced for the option.
  * Useful for options that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
-export const ListBoxOptionDescription = createPolymorphicComponent<"div">(props => {
-  const context = useListBoxOptionContext();
+export const ListboxOptionDescription = createPolymorphicComponent<"div">(props => {
+  const context = useListboxOptionContext();
 
   props = mergeDefaultProps(
     {

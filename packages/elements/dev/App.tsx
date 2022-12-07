@@ -1,6 +1,6 @@
 import { createSignal, For } from "solid-js";
 
-import { I18nProvider, ListBox } from "../src";
+import { I18nProvider, Listbox } from "../src";
 
 interface Food {
   id: string;
@@ -14,7 +14,7 @@ interface Category {
   items: Array<Food>;
 }
 
-function NormalListBox() {
+function NormalListbox() {
   const initialData: Array<Category | Food> = [
     { label: "🍔 Burger", textValue: "Burger", id: "burger" },
     { label: "🍕 Pizza", textValue: "Pizza", id: "pizza" },
@@ -52,41 +52,52 @@ function NormalListBox() {
 
   const [foods, setFoods] = createSignal(initialData);
 
+  const addFood = () => {
+    setFoods(prev => [
+      ...prev,
+      {
+        label: "Pasty",
+        items: [{ label: "🍰 Cake", textValue: "Cake", id: "cake" }],
+      },
+    ]);
+  };
+
   return (
-    <ListBox
-      options={foods()}
-      optionPropertyNames={{ value: "id" }}
-      optionGroupPropertyNames={{ options: "items" }}
-      class="listbox"
-    >
-      {node =>
-        node.type === "section" ? (
-          <ListBox.Group>
-            <ListBox.GroupLabel>{node.label}</ListBox.GroupLabel>
-            <ListBox.GroupOptions>
-              <For each={[...node.childNodes]}>
+    <div>
+      <button onClick={addFood}>Add Food</button>
+      <Listbox
+        options={foods()}
+        optionPropertyNames={{ value: "id" }}
+        optionGroupPropertyNames={{ options: "items" }}
+        class="listbox"
+      >
+        {node =>
+          node().type === "section" ? (
+            <Listbox.Group node={node()}>
+              <Listbox.GroupLabel>{node().label}</Listbox.GroupLabel>
+              <Listbox.GroupOptions>
                 {childNode => (
-                  <ListBox.Option node={childNode} class="listbox-option">
-                    <ListBox.OptionLabel>{childNode.label}</ListBox.OptionLabel>
-                  </ListBox.Option>
+                  <Listbox.Option node={childNode()} class="listbox-option">
+                    <Listbox.OptionLabel>{childNode().label}</Listbox.OptionLabel>
+                  </Listbox.Option>
                 )}
-              </For>
-            </ListBox.GroupOptions>
-          </ListBox.Group>
-        ) : (
-          <ListBox.Option node={node} class="listbox-option">
-            <ListBox.OptionLabel>{node.label}</ListBox.OptionLabel>
-          </ListBox.Option>
-        )
-      }
-    </ListBox>
+              </Listbox.GroupOptions>
+            </Listbox.Group>
+          ) : (
+            <Listbox.Option node={node()} class="listbox-option">
+              <Listbox.OptionLabel>{node().label}</Listbox.OptionLabel>
+            </Listbox.Option>
+          )
+        }
+      </Listbox>
+    </div>
   );
 }
 
 export default function App() {
   return (
     <I18nProvider>
-      <NormalListBox />
+      <NormalListbox />
     </I18nProvider>
   );
 }
