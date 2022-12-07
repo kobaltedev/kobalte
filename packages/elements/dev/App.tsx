@@ -1,4 +1,4 @@
-import { createSignal, For } from "solid-js";
+import { createSignal } from "solid-js";
 
 import { I18nProvider, Listbox } from "../src";
 
@@ -52,45 +52,32 @@ function NormalListbox() {
 
   const [foods, setFoods] = createSignal(initialData);
 
-  const addFood = () => {
-    setFoods(prev => [
-      ...prev,
-      {
-        label: "Pasty",
-        items: [{ label: "🍰 Cake", textValue: "Cake", id: "cake" }],
-      },
-    ]);
-  };
-
   return (
-    <div>
-      <button onClick={addFood}>Add Food</button>
-      <Listbox
-        options={foods()}
-        optionPropertyNames={{ value: "id" }}
-        optionGroupPropertyNames={{ options: "items" }}
-        class="listbox"
-      >
-        {node =>
-          node().type === "section" ? (
-            <Listbox.Group node={node()}>
-              <Listbox.GroupLabel>{node().label}</Listbox.GroupLabel>
-              <Listbox.GroupOptions>
-                {childNode => (
-                  <Listbox.Option node={childNode()} class="listbox-option">
-                    <Listbox.OptionLabel>{childNode().label}</Listbox.OptionLabel>
-                  </Listbox.Option>
-                )}
-              </Listbox.GroupOptions>
-            </Listbox.Group>
-          ) : (
-            <Listbox.Option node={node()} class="listbox-option">
-              <Listbox.OptionLabel>{node().label}</Listbox.OptionLabel>
-            </Listbox.Option>
-          )
-        }
-      </Listbox>
-    </div>
+    <Listbox
+      options={foods()}
+      optionPropertyNames={{ value: "id" }}
+      optionGroupPropertyNames={{ options: "items" }}
+      class="listbox"
+    >
+      {node =>
+        node().type === "section" ? (
+          <Listbox.Group node={node()}>
+            <Listbox.GroupLabel>{node().label}</Listbox.GroupLabel>
+            <Listbox.GroupOptions>
+              {childNode => (
+                <Listbox.Option node={childNode()} class="listbox-option">
+                  <Listbox.OptionLabel>{childNode().label}</Listbox.OptionLabel>
+                </Listbox.Option>
+              )}
+            </Listbox.GroupOptions>
+          </Listbox.Group>
+        ) : (
+          <Listbox.Option node={node()} class="listbox-option">
+            <Listbox.OptionLabel>{node().label}</Listbox.OptionLabel>
+          </Listbox.Option>
+        )
+      }
+    </Listbox>
   );
 }
 

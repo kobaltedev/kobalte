@@ -35,7 +35,7 @@ describe("Listbox", () => {
   it("renders properly", () => {
     render(() => (
       <Listbox options={dataSource} selectionMode="single">
-        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
       </Listbox>
     ));
 
@@ -57,7 +57,7 @@ describe("Listbox", () => {
   it("allows user to change option focus via up/down arrow keys", async () => {
     render(() => (
       <Listbox options={dataSource}>
-        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
       </Listbox>
     ));
 
@@ -83,7 +83,7 @@ describe("Listbox", () => {
   it("wraps focus from first to last/last to first option if up/down arrow is pressed if shouldFocusWrap is true", async () => {
     render(() => (
       <Listbox options={dataSource} shouldFocusWrap>
-        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
       </Listbox>
     ));
 
@@ -112,7 +112,7 @@ describe("Listbox", () => {
 
       render(() => (
         <Listbox options={dataSource} selectionMode="single" defaultValue={defaultValue}>
-          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
 
@@ -139,7 +139,7 @@ describe("Listbox", () => {
           value={value}
           onValueChange={onValueChangeSpy}
         >
-          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
 
@@ -173,7 +173,7 @@ describe("Listbox", () => {
 
       render(() => (
         <Listbox options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
-          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
 
@@ -200,7 +200,7 @@ describe("Listbox", () => {
 
       render(() => (
         <Listbox options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
-          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
 
@@ -233,7 +233,7 @@ describe("Listbox", () => {
 
       render(() => (
         <Listbox options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
-          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
 
@@ -270,7 +270,7 @@ describe("Listbox", () => {
 
       render(() => (
         <Listbox options={dataSource} selectionMode="multiple" onValueChange={onValueChangeSpy}>
-          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
 
@@ -305,7 +305,7 @@ describe("Listbox", () => {
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
-          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
 
@@ -342,7 +342,7 @@ describe("Listbox", () => {
           value={value}
           onValueChange={onValueChangeSpy}
         >
-          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
 
@@ -377,7 +377,7 @@ describe("Listbox", () => {
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
-          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
 
@@ -417,7 +417,7 @@ describe("Listbox", () => {
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
-          {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
 
@@ -452,7 +452,7 @@ describe("Listbox", () => {
         onValueChange={onValueChangeSpy}
         disallowEmptySelection={false}
       >
-        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
       </Listbox>
     ));
 
@@ -475,7 +475,7 @@ describe("Listbox", () => {
   it("supports type to select", async () => {
     render(() => (
       <Listbox options={dataSource}>
-        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
       </Listbox>
     ));
 
@@ -503,7 +503,7 @@ describe("Listbox", () => {
   it("resets the search text after a timeout", async () => {
     render(() => (
       <Listbox options={dataSource}>
-        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
       </Listbox>
     ));
 
@@ -530,7 +530,7 @@ describe("Listbox", () => {
     render(() => (
       <Listbox options={[{ value: "item", label: "Item" }]}>
         {node => (
-          <Listbox.Option node={node} aria-label="Option">
+          <Listbox.Option node={node()} aria-label="Option">
             Item
           </Listbox.Option>
         )}
@@ -550,9 +550,9 @@ describe("Listbox", () => {
     render(() => (
       <Listbox options={[{ value: "option", label: "Label", description: "Description" }]}>
         {node => (
-          <Listbox.Option node={node}>
-            <Listbox.OptionLabel>{node.label}</Listbox.OptionLabel>
-            <Listbox.OptionDescription>{node.rawValue.description}</Listbox.OptionDescription>
+          <Listbox.Option node={node()}>
+            <Listbox.OptionLabel>{node().label}</Listbox.OptionLabel>
+            <Listbox.OptionDescription>{node().rawValue.description}</Listbox.OptionDescription>
           </Listbox.Option>
         )}
       </Listbox>
@@ -571,7 +571,7 @@ describe("Listbox", () => {
   it("supports aria-label", () => {
     render(() => (
       <Listbox options={dataSource} aria-label="Test">
-        {node => <Listbox.Option node={node}>{node.label}</Listbox.Option>}
+        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
       </Listbox>
     ));
 
