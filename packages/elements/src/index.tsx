@@ -18,5 +18,6 @@ export * from "./listbox";
 export * from "./overlay";
 export * from "./popover";
 export * from "./radio-group";
+export * from "./select";
 export * from "./switch";
 export * from "./toggle-button";

@@ -84,6 +84,7 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
     return this.ref?.()?.querySelector(`[data-key="${key}"]`) ?? null;
   }
 
+  // TODO: not working correctly
   getKeyPageAbove(key: CollectionKey) {
     const menu = this.ref?.();
     let item = this.getItem(key);
@@ -104,6 +105,7 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
     return keyAbove;
   }
 
+  // TODO: not working correctly
   getKeyPageBelow(key: CollectionKey) {
     const menu = this.ref?.();
     let item = this.getItem(key);

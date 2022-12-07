@@ -21,6 +21,7 @@ import {
   CreateListStateProps,
   createSelectableList,
   CreateSelectableListProps,
+  ListState,
 } from "../list";
 import { CollectionKey, CollectionNode, createFocusRing } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, MultipleSelection, SelectionType } from "../selection";
@@ -71,10 +72,13 @@ export interface ListboxOptionGroupPropertyNames {
 export interface ListboxProps
   extends Pick<
       CreateListStateProps,
-      "allowDuplicateSelectionEvents" | "selectionBehavior" | "filter"
+      | "filter"
+      | "allowDuplicateSelectionEvents"
+      | "disallowEmptySelection"
+      | "selectionBehavior"
+      | "selectionMode"
     >,
-    Pick<CreateSelectableListProps, "selectOnFocus" | "disallowTypeAhead" | "allowsTabNavigation">,
-    Pick<MultipleSelection, "disallowEmptySelection" | "selectionMode"> {
+    Pick<CreateSelectableListProps, "selectOnFocus" | "disallowTypeAhead" | "allowsTabNavigation"> {
   /** The controlled value of the listbox. */
   value?: "all" | Iterable<CollectionKey>;
 
@@ -87,8 +91,11 @@ export interface ListboxProps
   /** Event handler called when the value changes. */
   onValueChange?: (value: SelectionType) => void;
 
+  /** A controlled state for the listbox. */
+  state?: ListState;
+
   /** An array of objects to display as the available options. */
-  options: Array<any>;
+  options?: Array<any>;
 
   /**
    * When using custom object as listbox options, property names used to map an object to a listbox option.
@@ -192,6 +199,7 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
     "fallback",
     "value",
     "defaultValue",
+    "state",
     "options",
     "onValueChange",
     "optionPropertyNames",
@@ -214,33 +222,39 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
     "scrollToIndex",
   ]);
 
-  const listState = createListState({
-    selectedKeys: () => local.value,
-    defaultSelectedKeys: () => local.defaultValue,
-    onSelectionChange: local.onValueChange,
-    allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
-    disallowEmptySelection: () => access(local.disallowEmptySelection),
-    selectionBehavior: () => access(local.selectionBehavior),
-    selectionMode: () => access(local.selectionMode),
-    dataSource: () => local.options,
-    itemPropertyNames: () => ({
-      key: local.optionPropertyNames?.value ?? "value",
-      label: local.optionPropertyNames?.label ?? "label",
-      textValue: local.optionPropertyNames?.textValue ?? "textValue",
-      disabled: local.optionPropertyNames?.disabled ?? "disabled",
-    }),
-    sectionPropertyNames: () => ({
-      key: local.optionGroupPropertyNames?.id ?? "id",
-      label: local.optionGroupPropertyNames?.label ?? "label",
-      items: local.optionGroupPropertyNames?.options ?? "options",
-    }),
-    filter: local.filter,
+  const listState = createMemo(() => {
+    if (local.state) {
+      return local.state;
+    }
+
+    return createListState({
+      selectedKeys: () => local.value,
+      defaultSelectedKeys: () => local.defaultValue,
+      onSelectionChange: local.onValueChange,
+      allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
+      disallowEmptySelection: () => access(local.disallowEmptySelection),
+      selectionBehavior: () => access(local.selectionBehavior),
+      selectionMode: () => access(local.selectionMode),
+      dataSource: () => local.options ?? [],
+      itemPropertyNames: () => ({
+        key: local.optionPropertyNames?.value ?? "value",
+        label: local.optionPropertyNames?.label ?? "label",
+        textValue: local.optionPropertyNames?.textValue ?? "textValue",
+        disabled: local.optionPropertyNames?.disabled ?? "disabled",
+      }),
+      sectionPropertyNames: () => ({
+        key: local.optionGroupPropertyNames?.id ?? "id",
+        label: local.optionGroupPropertyNames?.label ?? "label",
+        items: local.optionGroupPropertyNames?.options ?? "options",
+      }),
+      filter: local.filter,
+    });
   });
 
   const selectableList = createSelectableList(
     {
-      selectionManager: listState.selectionManager,
-      collection: listState.collection,
+      selectionManager: () => listState().selectionManager(),
+      collection: () => listState().collection(),
       autoFocus: () => access(local.autoFocus),
       shouldFocusWrap: () => access(local.shouldFocusWrap),
       keyboardDelegate: () => local.keyboardDelegate,
@@ -266,7 +280,7 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
 
   const context: ListboxContextValue = {
     dataset,
-    listState: () => listState,
+    listState,
     generateId: part => `${others.id!}-${part}`,
     shouldUseVirtualFocus: () => props.shouldUseVirtualFocus,
     shouldSelectOnPressUp: () => props.shouldSelectOnPressUp,
@@ -281,17 +295,17 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
         role="listbox"
         tabIndex={selectableList.tabIndex()}
         aria-multiselectable={
-          listState.selectionManager().selectionMode() === "multiple" ? true : undefined
+          listState().selectionManager().selectionMode() === "multiple" ? true : undefined
         }
         {...dataset()}
         {...combineProps(
           { ref: el => (ref = el) },
           others,
-          selectableList.handlers,
+          selectableList.typeSelectHandlers,
           focusRingHandlers
         )}
       >
-        <Key each={[...listState.collection()]} by="key" fallback={local.fallback}>
+        <Key each={[...listState().collection()]} by="key" fallback={local.fallback}>
           {local.children}
         </Key>
       </Dynamic>

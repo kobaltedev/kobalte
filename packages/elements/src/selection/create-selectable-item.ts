@@ -160,7 +160,7 @@ export function createSelectableItem<T extends HTMLElement>(
     preventFocusOnPress: shouldUseVirtualFocus,
   });
 
-  // TODO: uncomment when create-long-press is ready
+  // TODO: uncomment when create-long-press is implemented
   /*
   // Long pressing an item with touch when selectionBehavior = 'replace' switches the selection behavior
   // to 'toggle'. This changes the single tap behavior from performing an action (i.e. navigating) to
@@ -251,7 +251,7 @@ export function createSelectableItem<T extends HTMLElement>(
     allowsSelection,
     tabIndex,
     dataKey,
-    handlers: {
+    typeSelectHandlers: {
       press: pressHandlers,
       //longPress: longPressHandlers,
       others: { onDragStart, onFocus },

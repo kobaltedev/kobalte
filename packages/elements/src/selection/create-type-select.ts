@@ -88,7 +88,7 @@ export function createTypeSelect(props: CreateTypeSelectProps) {
   };
 
   return {
-    handlers: {
+    typeSelectHandlers: {
       onKeyDown,
     },
   };

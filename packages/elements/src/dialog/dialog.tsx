@@ -11,7 +11,6 @@ import { DialogPortal } from "./dialog-portal";
 import { DialogPositioner } from "./dialog-positioner";
 import { DialogTitle } from "./dialog-title";
 import { DialogTrigger } from "./dialog-trigger";
-import { FocusTrapRegionProps } from "../focus-trap";
 import { OverlayProps } from "../overlay";
 
 type DialogComposite = {

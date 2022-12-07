@@ -18,7 +18,7 @@ import {
 import { Accessor, createEffect, createMemo, JSX, mergeProps, on, onMount } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { Collection, CollectionNode, focusSafely, CollectionKey } from "../primitives";
+import { Collection, CollectionKey, CollectionNode, focusSafely } from "../primitives";
 import { createTypeSelect } from "./create-type-select";
 import { FocusStrategy, KeyboardDelegate, MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
@@ -104,14 +104,14 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     }
   );
 
-  const typeSelect = createTypeSelect({
+  const { typeSelectHandlers } = createTypeSelect({
     isDisabled: () => access(props.disallowTypeAhead),
     keyboardDelegate: () => access(props.keyboardDelegate),
     selectionManager: () => access(props.selectionManager),
   });
 
   const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = e => {
-    callHandler(e, typeSelect.handlers.onKeyDown);
+    callHandler(e, typeSelectHandlers.onKeyDown);
 
     // Prevent option + tab from doing anything since it doesn't move focus to the cells, only buttons/checkboxes
     if (e.altKey && e.key === "Tab") {
@@ -484,7 +484,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
   return {
     tabIndex,
-    handlers: {
+    typeSelectHandlers: {
       onKeyDown,
       onFocusIn,
       onFocusOut,
