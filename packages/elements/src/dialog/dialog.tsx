@@ -1,7 +1,14 @@
-import { mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, createUniqueId, ParentComponent } from "solid-js";
+import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import {
+  Accessor,
+  createMemo,
+  createSignal,
+  createUniqueId,
+  ParentComponent,
+  splitProps,
+} from "solid-js";
 
-import { createDisclosure } from "../primitives";
+import { createDisclosure, createRegisterId } from "../primitives";
 import { DialogBackdrop } from "./dialog-backdrop";
 import { DialogCloseButton } from "./dialog-close-button";
 import { DialogContext, DialogContextValue, DialogDataSet } from "./dialog-context";
@@ -11,7 +18,6 @@ import { DialogPortal } from "./dialog-portal";
 import { DialogPositioner } from "./dialog-positioner";
 import { DialogTitle } from "./dialog-title";
 import { DialogTrigger } from "./dialog-trigger";
-import { OverlayProps } from "../overlay";
 
 type DialogComposite = {
   Trigger: typeof DialogTrigger;
@@ -24,7 +30,51 @@ type DialogComposite = {
   Description: typeof DialogDescription;
 };
 
-export interface DialogProps extends Omit<OverlayProps, "isOpen" | "onClose"> {
+export interface DialogOverlayProps {
+  /**
+   * Whether the dialog should block interaction with outside elements,
+   * and be the only visible content for screen readers.
+   */
+  isModal?: boolean;
+
+  /** Whether the scroll should be locked when the dialog is open. */
+  preventScroll?: boolean;
+
+  /** Whether to close the dialog when the user interacts outside it. */
+  closeOnInteractOutside?: boolean;
+
+  /** Whether pressing the escape key should close the dialog. */
+  closeOnEsc?: boolean;
+
+  /**
+   * When user interacts with the argument element outside the dialog panel,
+   * return `true` if the dialog should be closed. This gives you a chance to filter
+   * out interaction with elements that should not dismiss the dialog.
+   * By default, the dialog will always close on interaction outside the dialog panel.
+   */
+  shouldCloseOnInteractOutside?: (element: Element) => boolean;
+}
+
+export interface DialogFocusTrapRegionProps {
+  /** Whether focus should be locked inside the dialog panel. */
+  trapFocus?: boolean;
+
+  /**
+   * Whether focus should be set on a child element once the dialog is open.
+   * If `true` focus will be set to the first focusable element inside the dialog panel.
+   * If a `string` (query selector) is provided focus will be set to the target element.
+   */
+  autoFocus?: boolean;
+
+  /**
+   * Whether focus should be restored once the dialog close.
+   * If `true` focus will be restored to the element that triggered the dialog.
+   * If a `string` (query selector) is provided focus will be restored to the target element.
+   */
+  restoreFocus?: boolean;
+}
+
+export interface DialogProps extends DialogOverlayProps, DialogFocusTrapRegionProps {
   /** The controlled open state of the dialog. */
   isOpen?: boolean;
 
@@ -68,6 +118,18 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
     props
   );
 
+  const [overlayProps, focusTrapRegionProps] = splitProps(
+    props,
+    [
+      "isModal",
+      "preventScroll",
+      "closeOnInteractOutside",
+      "closeOnEsc",
+      "shouldCloseOnInteractOutside",
+    ],
+    ["trapFocus", "autoFocus", "restoreFocus"]
+  );
+
   const [panelId, setPanelId] = createSignal<string>();
   const [titleId, setTitleId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
@@ -89,35 +151,12 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
     ariaLabel: () => props["aria-label"],
     ariaLabelledBy: () => props["aria-labelledby"] || titleId(),
     ariaDescribedBy: () => props["aria-describedby"] || descriptionId(),
-    generateId: part => `${props.id!}-${part}`,
-    registerPanel: id => {
-      setPanelId(id);
-      return () => setPanelId(undefined);
-    },
-    registerTitle: id => {
-      setTitleId(id);
-      return () => setTitleId(undefined);
-    },
-    registerDescription: id => {
-      setDescriptionId(id);
-      return () => setDescriptionId(undefined);
-    },
-
-    // Overlay related
-    isModal: () => props.isModal,
-    preventScroll: () => props.preventScroll,
-    closeOnInteractOutside: () => props.closeOnInteractOutside,
-    closeOnEsc: () => props.closeOnEsc,
-    shouldCloseOnInteractOutside: element => {
-      return props.shouldCloseOnInteractOutside?.(element) ?? true;
-    },
-
-    // FocusTrapRegion related
-    trapFocus: () => props.trapFocus,
-    autoFocus: () => props.autoFocus,
-    restoreFocus: () => props.restoreFocus,
-    initialFocusSelector: () => props.initialFocusSelector,
-    restoreFocusSelector: () => props.restoreFocusSelector,
+    overlayProps: () => overlayProps,
+    focusTrapRegionProps: () => focusTrapRegionProps,
+    generateId: createGenerateId(() => props.id!),
+    registerPanel: createRegisterId(setPanelId),
+    registerTitle: createRegisterId(setTitleId),
+    registerDescription: createRegisterId(setDescriptionId),
   };
 
   return <DialogContext.Provider value={context}>{props.children}</DialogContext.Provider>;

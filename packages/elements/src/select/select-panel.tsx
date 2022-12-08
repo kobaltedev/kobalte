@@ -1,9 +1,15 @@
-import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import {
+  callHandler,
+  createPolymorphicComponent,
+  mergeDefaultProps,
+  mergeRefs,
+} from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 
 import { useDialogContext, useDialogPortalContext } from "../dialog";
-import { Overlay } from "../overlay";
 import { usePopoverContext } from "../popover/popover-context";
+import { createFocusTrapRegion, createOverlay } from "../primitives";
 
 export interface SelectPanelProps {
   /** The HTML styles attribute (object form only). */
@@ -21,6 +27,8 @@ export interface SelectPanelProps {
  * The element that contains the content to be rendered when the select is open.
  */
 export const SelectPanel = createPolymorphicComponent<"div", SelectPanelProps>(props => {
+  let ref: HTMLDivElement | undefined;
+
   const dialogContext = useDialogContext();
   const popoverContext = usePopoverContext();
   const portalContext = useDialogPortalContext();
@@ -32,25 +40,47 @@ export const SelectPanel = createPolymorphicComponent<"div", SelectPanelProps>(p
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "style", "forceMount"]);
+  const [local, others] = splitProps(props, ["as", "ref", "style", "forceMount", "onKeyDown"]);
+
+  const { overlayProps } = createOverlay(
+    {
+      isOpen: dialogContext.isOpen,
+      onClose: dialogContext.close,
+      isModal: false,
+      preventScroll: false,
+      closeOnInteractOutside: true,
+      closeOnEsc: true,
+    },
+    () => ref
+  );
+
+  const { FocusTrap } = createFocusTrapRegion(
+    {
+      isDisabled: false,
+      autoFocus: true,
+      restoreFocus: true,
+    },
+    () => ref
+  );
+
+  const onKeyDown: JSX.EventHandlerUnion<HTMLDivElement, KeyboardEvent> = e => {
+    callHandler(e, local.onKeyDown);
+    callHandler(e, overlayProps.onEscapeKeyDown);
+  };
 
   return (
     <Show when={local.forceMount || portalContext?.forceMount() || dialogContext.isOpen()}>
-      <Overlay
+      <FocusTrap />
+      <Dynamic
+        component={local.as}
         ref={mergeRefs(popoverContext.setPanelRef, local.ref)}
         style={{ position: "relative", ...local.style }}
-        isOpen={dialogContext.isOpen()}
-        onClose={dialogContext.close}
-        autoFocus
-        restoreFocus
-        closeOnEsc
-        closeOnInteractOutside
-        isModal={false}
-        trapFocus={false}
-        preventScroll={false}
+        tabIndex={-1}
+        onKeyDown={onKeyDown}
         {...dialogContext.dataset()}
         {...others}
       />
+      <FocusTrap />
     </Show>
   );
 });

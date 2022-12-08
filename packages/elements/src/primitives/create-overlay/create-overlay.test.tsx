@@ -7,11 +7,32 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
+import { ComponentProps, splitProps } from "solid-js";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { Overlay } from "./overlay";
+import { createOverlay, CreateOverlayProps } from "./create-overlay";
 
-describe("Overlay", () => {
+export function Overlay(props: ComponentProps<"div"> & CreateOverlayProps) {
+  let ref: HTMLDivElement | undefined;
+
+  const [local, others] = splitProps(props, [
+    "isOpen",
+    "onClose",
+    "isModal",
+    "preventScroll",
+    "closeOnInteractOutside",
+    "closeOnEsc",
+    "shouldCloseOnInteractOutside",
+    "onKeyDown",
+  ]);
+
+  const { overlayProps } = createOverlay(local, () => ref);
+
+  // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+  return <div ref={ref} onKeyDown={overlayProps.onEscapeKeyDown} {...others} />;
+}
+
+describe("createOverlay", () => {
   installPointerEvent();
 
   it("should hide the overlay when clicking outside if 'closeOnInteractOutside' is true", async () => {

@@ -1,5 +1,6 @@
 export * from "./array";
 export * from "./assertion";
+export * from "./create-generate-id";
 export * from "./create-global-listeners";
 export * from "./dom";
 export * from "./enums";

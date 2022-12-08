@@ -1,6 +1,7 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
 import { CreateDisclosureResult } from "../primitives";
+import { DialogFocusTrapRegionProps, DialogOverlayProps } from "./dialog";
 
 export interface DialogDataSet {
   "data-expanded": string | undefined;
@@ -12,24 +13,12 @@ export interface DialogContextValue extends CreateDisclosureResult {
   ariaLabel: Accessor<string | undefined>;
   ariaLabelledBy: Accessor<string | undefined>;
   ariaDescribedBy: Accessor<string | undefined>;
+  overlayProps: Accessor<DialogOverlayProps>;
+  focusTrapRegionProps: Accessor<DialogFocusTrapRegionProps>;
   generateId: (part: string) => string;
   registerPanel: (id: string) => () => void;
   registerTitle: (id: string) => () => void;
   registerDescription: (id: string) => () => void;
-
-  // Overlay related
-  isModal: Accessor<boolean | undefined>;
-  preventScroll: Accessor<boolean | undefined>;
-  closeOnInteractOutside: Accessor<boolean | undefined>;
-  closeOnEsc: Accessor<boolean | undefined>;
-  shouldCloseOnInteractOutside: (element: Element) => boolean;
-
-  // FocusTrapRegion related
-  trapFocus: Accessor<boolean | undefined>;
-  autoFocus: Accessor<boolean | undefined>;
-  restoreFocus: Accessor<boolean | undefined>;
-  initialFocusSelector: Accessor<string | undefined>;
-  restoreFocusSelector: Accessor<string | undefined>;
 }
 
 export const DialogContext = createContext<DialogContextValue>();
