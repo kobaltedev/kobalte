@@ -14,7 +14,7 @@ export interface PopoverPositionerProps extends DialogPositionerProps {
  */
 export const PopoverPositioner = createPolymorphicComponent<"div", PopoverPositionerProps>(
   props => {
-    const popoverContext = usePopoverContext();
+    const context = usePopoverContext();
 
     props = mergeDefaultProps({ as: "div" }, props);
 
@@ -22,14 +22,9 @@ export const PopoverPositioner = createPolymorphicComponent<"div", PopoverPositi
 
     return (
       <DialogPositioner
-        ref={mergeRefs(popoverContext.setPositionerRef, local.ref)}
+        ref={mergeRefs(context.setPositionerRef, local.ref)}
         role="presentation"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          ...local.style,
-        }}
+        style={{ position: "absolute", top: 0, left: 0, ...local.style }}
         {...others}
       />
     );

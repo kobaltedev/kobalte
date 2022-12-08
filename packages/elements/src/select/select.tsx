@@ -13,27 +13,22 @@ import { ListboxOptionDescription } from "../listbox/listbox-option-description"
 import { ListboxOptionIndicator } from "../listbox/listbox-option-indicator";
 import { ListboxOptionLabel } from "../listbox/listbox-option-label";
 import { Popover, PopoverFloatingProps } from "../popover";
-import { PopoverArrow } from "../popover/popover-arrow";
 import { PopoverPositioner } from "../popover/popover-positioner";
 import { CollectionKey, createDisclosure, createRegisterId } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, SelectionType } from "../selection";
 import { SelectContext, SelectContextValue } from "./select-context";
+import { SelectIcon } from "./select-icon";
 import { SelectMenu } from "./select-menu";
 import { SelectTrigger } from "./select-trigger";
 import { SelectValue } from "./select-value";
-import { SelectPanel } from "./select-panel";
-import { SelectIcon } from "./select-icon";
 
 type SelectComposite = {
   Trigger: typeof SelectTrigger;
   Value: typeof SelectValue;
   Icon: typeof SelectIcon;
-  Panel: typeof SelectPanel;
   Menu: typeof SelectMenu;
 
   Positioner: typeof PopoverPositioner;
-  Arrow: typeof PopoverArrow;
-
   Portal: typeof DialogPortal;
 
   Group: typeof ListboxGroup;
@@ -106,10 +101,6 @@ export interface SelectProps
 
   /** Whether the select is disabled. */
   isDisabled?: boolean;
-
-  "aria-label"?: string;
-  "aria-labelledby"?: string;
-  "aria-describedby"?: string;
 }
 
 export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
@@ -120,7 +111,8 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
       id: defaultId,
       selectionMode: "single",
       allowDuplicateSelectionEvents: true,
-      disallowEmptySelection: access(props.selectionMode) !== "multiple",
+      disallowEmptySelection:
+        access(props.selectionMode) == null || access(props.selectionMode) == "single",
     },
     props
   );
@@ -144,9 +136,6 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     "selectionBehavior",
     "selectionMode",
     "filter",
-    "aria-label",
-    "aria-labelledby",
-    "aria-describedby",
   ]);
 
   const [listboxId, setListboxId] = createSignal<string>();
@@ -168,10 +157,7 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     defaultSelectedKeys: () => local.defaultValue,
     onSelectionChange: keys => {
       local.onValueChange?.(keys);
-
-      if (isSingleSelectMode()) {
-        disclosureState.close();
-      }
+      isSingleSelectMode() && disclosureState.close();
     },
     allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
     disallowEmptySelection: () => access(local.disallowEmptySelection),
@@ -251,12 +237,9 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
 Select.Trigger = SelectTrigger;
 Select.Value = SelectValue;
 Select.Icon = SelectIcon;
-Select.Panel = SelectPanel;
 Select.Menu = SelectMenu;
 
 Select.Positioner = PopoverPositioner;
-Select.Arrow = PopoverArrow;
-
 Select.Portal = DialogPortal;
 
 Select.Group = ListboxGroup;
@@ -266,37 +249,3 @@ Select.Option = ListboxOption;
 Select.OptionLabel = ListboxOptionLabel;
 Select.OptionDescription = ListboxOptionDescription;
 Select.OptionIndicator = ListboxOptionIndicator;
-
-/*
-
-<Select options={options()}>
-  <div>
-    <Select.Label />
-    <Select.Trigger>
-      <Select.Value />
-      <Select.Icon />
-    </Select.Trigger>
-    <Select.Description />
-    <Select.ErrorMessage />
-  </div>
-  <Select.Portal>
-    <Select.Positioner>
-      <Select.Panel>
-        <Select.Menu>
-          {node => (
-            <Select.Option node={node()}>
-              <Select.OptionLabel>
-                {node().label}
-              </Select.OptionLabel>
-              <Select.OptionIndicator>
-                ✅
-              </Select.OptionIndicator>
-            </Select.Option>
-          )}
-        </Select.Menu>
-      </Select.Panel>
-    </Select.Positioner>
-  </Select.Portal>
-</Select>
-
-*/

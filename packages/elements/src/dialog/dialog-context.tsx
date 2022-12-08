@@ -9,10 +9,9 @@ export interface DialogDataSet {
 
 export interface DialogContextValue extends CreateDisclosureResult {
   dataset: Accessor<DialogDataSet>;
-  ariaControls: Accessor<string | undefined>;
-  ariaLabel: Accessor<string | undefined>;
-  ariaLabelledBy: Accessor<string | undefined>;
-  ariaDescribedBy: Accessor<string | undefined>;
+  panelId: Accessor<string | undefined>;
+  titleId: Accessor<string | undefined>;
+  descriptionId: Accessor<string | undefined>;
   overlayProps: Accessor<DialogOverlayProps>;
   focusTrapRegionProps: Accessor<DialogFocusTrapRegionProps>;
   generateId: (part: string) => string;

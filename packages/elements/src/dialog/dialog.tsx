@@ -93,10 +93,6 @@ export interface DialogProps extends DialogOverlayProps, DialogFocusTrapRegionPr
    * If no id prop is provided, a generated id will be used.
    */
   id?: string;
-
-  "aria-label"?: string;
-  "aria-labelledby"?: string;
-  "aria-describedby"?: string;
 }
 
 /**
@@ -147,10 +143,9 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
   const context: DialogContextValue = {
     ...state,
     dataset,
-    ariaControls: () => (state.isOpen() ? panelId() : undefined),
-    ariaLabel: () => props["aria-label"],
-    ariaLabelledBy: () => props["aria-labelledby"] || titleId(),
-    ariaDescribedBy: () => props["aria-describedby"] || descriptionId(),
+    panelId,
+    titleId,
+    descriptionId,
     overlayProps: () => overlayProps,
     focusTrapRegionProps: () => focusTrapRegionProps,
     generateId: createGenerateId(() => props.id!),

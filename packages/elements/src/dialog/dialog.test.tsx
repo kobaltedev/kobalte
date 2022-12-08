@@ -26,35 +26,6 @@ describe("Dialog", () => {
     expect(panel).toHaveAttribute("aria-labelledby", title.id);
   });
 
-  it("should use dialog 'aria-labelledby' over dialog title", function () {
-    render(() => (
-      <Dialog isOpen aria-labelledby="foo">
-        <Dialog.Panel>
-          <Dialog.Title>title</Dialog.Title>
-        </Dialog.Panel>
-      </Dialog>
-    ));
-
-    const panel = screen.getByRole("dialog");
-
-    expect(panel).toHaveAttribute("aria-labelledby", "foo");
-  });
-
-  it("should use dialog 'aria-label' over dialog title", function () {
-    render(() => (
-      <Dialog isOpen aria-label="Label">
-        <Dialog.Panel>
-          <Dialog.Title>title</Dialog.Title>
-        </Dialog.Panel>
-      </Dialog>
-    ));
-
-    const panel = screen.getByRole("dialog");
-
-    expect(panel).not.toHaveAttribute("aria-labelledby");
-    expect(panel).toHaveAttribute("aria-label", "Label");
-  });
-
   it("should be described by its dialog description", function () {
     render(() => (
       <Dialog isOpen>
@@ -68,19 +39,5 @@ describe("Dialog", () => {
     const description = screen.getByTestId("description");
 
     expect(panel).toHaveAttribute("aria-describedby", description.id);
-  });
-
-  it("should use dialog 'aria-describedby' over dialog description", function () {
-    render(() => (
-      <Dialog isOpen aria-describedby="foo">
-        <Dialog.Panel>
-          <Dialog.Description>description</Dialog.Description>
-        </Dialog.Panel>
-      </Dialog>
-    ));
-
-    const panel = screen.getByRole("dialog");
-
-    expect(panel).toHaveAttribute("aria-describedby", "foo");
   });
 });

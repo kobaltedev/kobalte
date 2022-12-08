@@ -10,8 +10,8 @@ import { usePopoverContext } from "./popover-context";
  * If this part is not used, the content will position alongside the `Popover.Trigger`.
  */
 export const PopoverAnchor = createPolymorphicComponent<"div">(props => {
-  const popoverContext = usePopoverContext();
   const dialogContext = useDialogContext();
+  const context = usePopoverContext();
 
   props = mergeDefaultProps({ as: "div" }, props);
 
@@ -20,7 +20,7 @@ export const PopoverAnchor = createPolymorphicComponent<"div">(props => {
   return (
     <Dynamic
       component={local.as}
-      ref={mergeRefs(popoverContext.setDefaultAnchorRef, local.ref)}
+      ref={mergeRefs(context.setDefaultAnchorRef, local.ref)}
       {...dialogContext.dataset()}
       {...others}
     />

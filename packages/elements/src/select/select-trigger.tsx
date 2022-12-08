@@ -8,8 +8,8 @@ import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import { Button, ButtonProps } from "../button";
 import { PressEvent } from "../primitives";
-import { useSelectContext } from "./select-context";
 import { createTypeSelect } from "../selection";
+import { useSelectContext } from "./select-context";
 
 export interface SelectTriggerProps extends ButtonProps {}
 
@@ -134,11 +134,11 @@ export const SelectTrigger = createPolymorphicComponent<"button", SelectTriggerP
     <Button
       ref={mergeRefs(context.setTriggerRef, local.ref)}
       id={local.id}
+      isDisabled={isDisabled()}
       aria-haspopup="listbox"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.listboxId() : undefined}
       //aria-labelledby={}
-      isDisabled={isDisabled()}
       onPressStart={onPressStart}
       onPress={onPress}
       onKeyDown={onKeyDown}

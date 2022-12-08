@@ -32,7 +32,7 @@ export const DialogTrigger = createPolymorphicComponent<"button", DialogTriggerP
     <Button
       aria-haspopup="dialog"
       aria-expanded={context.isOpen()}
-      aria-controls={context.ariaControls()}
+      aria-controls={context.isOpen() ? context.panelId() : undefined}
       onPress={onPress}
       {...context.dataset()}
       {...others}

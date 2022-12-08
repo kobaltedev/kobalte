@@ -33,6 +33,7 @@ function SingleSelect() {
       onValueChange={setValue}
       options={foods()}
       optionPropertyNames={{ value: "id" }}
+      gutter={8}
     >
       <Select.Trigger class="select">
         <Select.Value placeholder="Select an option" />
@@ -40,17 +41,14 @@ function SingleSelect() {
       </Select.Trigger>
       <Select.Portal>
         <Select.Positioner>
-          <Select.Panel class="popover">
-            <Select.Arrow />
-            <Select.Menu>
-              {node => (
-                <Select.Option node={node()} class="select-item">
-                  <Select.OptionLabel>{node().label}</Select.OptionLabel>
-                  <Select.OptionIndicator class="ml-auto">✓</Select.OptionIndicator>
-                </Select.Option>
-              )}
-            </Select.Menu>
-          </Select.Panel>
+          <Select.Menu class="popover">
+            {node => (
+              <Select.Option node={node()} class="select-item">
+                <Select.OptionLabel>{node().label}</Select.OptionLabel>
+                <Select.OptionIndicator class="ml-auto">✓</Select.OptionIndicator>
+              </Select.Option>
+            )}
+          </Select.Menu>
         </Select.Positioner>
       </Select.Portal>
     </Select>

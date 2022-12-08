@@ -1,5 +1,4 @@
 import {
-  access,
   callHandler,
   createPolymorphicComponent,
   mergeDefaultProps,
@@ -86,9 +85,8 @@ export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(p
         role="dialog"
         id={local.id}
         tabIndex={-1}
-        aria-label={context.ariaLabel()}
-        aria-labelledby={context.ariaLabel() ? undefined : context.ariaLabelledBy()}
-        aria-describedby={context.ariaDescribedBy()}
+        aria-labelledby={context.titleId()}
+        aria-describedby={context.descriptionId()}
         onKeyDown={onKeyDown}
         {...context.dataset()}
         {...others}
