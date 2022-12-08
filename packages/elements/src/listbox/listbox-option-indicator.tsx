@@ -33,7 +33,7 @@ export const ListboxOptionIndicator = createPolymorphicComponent<
 
   return (
     <Show when={local.forceMount || context.isSelected()}>
-      <Dynamic component={local.as} {...context.dataset()} {...others} />
+      <Dynamic component={local.as} aria-hidden="true" {...context.dataset()} {...others} />
     </Show>
   );
 });

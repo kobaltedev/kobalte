@@ -33,12 +33,7 @@ export const SelectPanel = createPolymorphicComponent<"div", SelectPanelProps>(p
   const popoverContext = usePopoverContext();
   const portalContext = useDialogPortalContext();
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-    },
-    props
-  );
+  props = mergeDefaultProps({ as: "div" }, props);
 
   const [local, others] = splitProps(props, ["as", "ref", "style", "forceMount", "onKeyDown"]);
 
@@ -56,7 +51,7 @@ export const SelectPanel = createPolymorphicComponent<"div", SelectPanelProps>(p
 
   const { FocusTrap } = createFocusTrapRegion(
     {
-      isDisabled: false,
+      isDisabled: () => !dialogContext.isOpen(),
       autoFocus: true,
       restoreFocus: true,
     },
@@ -73,9 +68,11 @@ export const SelectPanel = createPolymorphicComponent<"div", SelectPanelProps>(p
       <FocusTrap />
       <Dynamic
         component={local.as}
-        ref={mergeRefs(popoverContext.setPanelRef, local.ref)}
+        ref={mergeRefs(el => {
+          popoverContext.setPanelRef(el);
+          ref = el;
+        }, local.ref)}
         style={{ position: "relative", ...local.style }}
-        tabIndex={-1}
         onKeyDown={onKeyDown}
         {...dialogContext.dataset()}
         {...others}

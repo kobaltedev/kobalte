@@ -10,10 +10,10 @@ import { access, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, on } from "solid-js";
 
 import {
+  CollectionKey,
   createPress,
   CreatePressProps,
   focusSafely,
-  CollectionKey,
   PointerType,
   PressEvent,
 } from "../primitives";

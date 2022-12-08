@@ -171,7 +171,7 @@ importers:
       '@kobalte/tests': ^0.0.0
       '@kobalte/utils': ^0.0.0
     dependencies:
-      '@floating-ui/dom': 1.0.8
+      '@floating-ui/dom': 1.0.9
       '@internationalized/number': 3.1.1
       '@internationalized/string': 3.0.0
       '@kobalte/utils': link:../utils
@@ -204,12 +204,12 @@ importers:
       '@solid-primitives/refs': ^0.3.4
       '@solid-primitives/utils': ^4.0.0
     dependencies:
-      '@solid-primitives/event-listener': 2.2.4_solid-js@1.6.2
-      '@solid-primitives/keyed': 1.1.4_solid-js@1.6.2
-      '@solid-primitives/media': 2.0.4_solid-js@1.6.2
-      '@solid-primitives/props': 3.0.1_solid-js@1.6.2
-      '@solid-primitives/refs': 0.3.4_solid-js@1.6.2
-      '@solid-primitives/utils': 4.0.0_solid-js@1.6.2
+      '@solid-primitives/event-listener': 2.2.4_solid-js@1.6.3
+      '@solid-primitives/keyed': 1.1.4_solid-js@1.6.3
+      '@solid-primitives/media': 2.0.4_solid-js@1.6.3
+      '@solid-primitives/props': 3.0.1_solid-js@1.6.3
+      '@solid-primitives/refs': 0.3.4_solid-js@1.6.3
+      '@solid-primitives/utils': 4.0.0_solid-js@1.6.3
 
 packages:
 
@@ -2816,14 +2816,14 @@ packages:
       - supports-color
     dev: true
 
-  /@floating-ui/core/1.0.3:
-    resolution: {integrity: sha512-27FDAEVHrAEQI1UV+7FIjZrFK862gBoAG0USoPMU7RoBCmaTDt6bnKVW/J2uPnOPI6TWqiWGtS7RFN+tN/k+vQ==}
+  /@floating-ui/core/1.0.4:
+    resolution: {integrity: sha512-FPFLbg2b06MIw1dqk2SOEMAMX3xlrreGjcui5OTxfBDtaKTmh0kioOVjT8gcfl58juawL/yF+S+gnq8aUYQx/Q==}
     dev: false
 
-  /@floating-ui/dom/1.0.8:
-    resolution: {integrity: sha512-uUm1xYQ0xdmFLhtetKgjK9AtF4INwDVwuJZvpK19ENHg1wYn7T0w9phYyCL5+HEpgJtX4ZYG6HJkDbtd2yP6cg==}
+  /@floating-ui/dom/1.0.9:
+    resolution: {integrity: sha512-nF9P6/BoARdt+h+CdUW3td4EUVngeDONCGuzRgnZveRZiJETx63cxhinE0JaPPC2tbcdTY9IGZocS5/7ag3xRg==}
     dependencies:
-      '@floating-ui/core': 1.0.3
+      '@floating-ui/core': 1.0.4
     dev: false
 
   /@hapi/hoek/9.3.0:
@@ -3114,7 +3114,7 @@ packages:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
       '@types/node': 18.7.18
-      '@types/yargs': 17.0.16
+      '@types/yargs': 17.0.17
       chalk: 4.1.2
     dev: true
 
@@ -3126,7 +3126,7 @@ packages:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
       '@types/node': 18.7.18
-      '@types/yargs': 17.0.16
+      '@types/yargs': 17.0.17
       chalk: 4.1.2
     dev: true
 
@@ -3138,7 +3138,7 @@ packages:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
       '@types/node': 18.11.11
-      '@types/yargs': 17.0.16
+      '@types/yargs': 17.0.17
       chalk: 4.1.2
     dev: true
 
@@ -3428,78 +3428,78 @@ packages:
       '@sinonjs/commons': 1.8.6
     dev: true
 
-  /@solid-primitives/event-listener/2.2.4_solid-js@1.6.2:
+  /@solid-primitives/event-listener/2.2.4_solid-js@1.6.3:
     resolution: {integrity: sha512-O/ppM0SpXWtNC7AHv1bQA9Dy6pj3NUM06MhSV9xwVv4N06PmlNYhGLDSPT1Esesm6b0fDgCXB5V+AgCSEzQd/w==}
     peerDependencies:
       solid-js: ^1.6.0
     dependencies:
-      '@solid-primitives/utils': 4.0.0_solid-js@1.6.2
-      solid-js: 1.6.2
+      '@solid-primitives/utils': 4.0.0_solid-js@1.6.3
+      solid-js: 1.6.3
     dev: false
 
-  /@solid-primitives/immutable/0.1.4_solid-js@1.6.2:
+  /@solid-primitives/immutable/0.1.4_solid-js@1.6.3:
     resolution: {integrity: sha512-9oLK8ihIjG5FZv74KoXXyKErxgGxGZsdevsIKB0ugTreBBmozHPcYTjoYFL/sHoqs2ZNMlmfNQ3kduvrvKG2RQ==}
     peerDependencies:
       solid-js: ^1.6.0
     dependencies:
-      '@solid-primitives/utils': 4.0.0_solid-js@1.6.2
-      solid-js: 1.6.2
+      '@solid-primitives/utils': 4.0.0_solid-js@1.6.3
+      solid-js: 1.6.3
     dev: false
 
-  /@solid-primitives/keyed/1.1.4_solid-js@1.6.2:
+  /@solid-primitives/keyed/1.1.4_solid-js@1.6.3:
     resolution: {integrity: sha512-K4DR4qGYOh5pJXgKKWwPjBEsnEBF4Old3zo4ht9wGBEvv3UB82P+zExqJK1lFie+7dYLOkgKD+8iZle1wZSEzg==}
     peerDependencies:
       solid-js: ^1.6.0
     dependencies:
-      solid-js: 1.6.2
+      solid-js: 1.6.3
     dev: false
 
-  /@solid-primitives/media/2.0.4_solid-js@1.6.2:
+  /@solid-primitives/media/2.0.4_solid-js@1.6.3:
     resolution: {integrity: sha512-MZkdUlV3qJQts4b7ZfAldbFGB1neH64rwHsnTmIeF2Zj8gWjYcYtJ36SwkRs3NjHQ53uQliZ+DtMXiCeapNw/g==}
     peerDependencies:
       solid-js: ^1.6.0
     dependencies:
-      '@solid-primitives/event-listener': 2.2.4_solid-js@1.6.2
-      '@solid-primitives/rootless': 1.2.1_solid-js@1.6.2
-      '@solid-primitives/utils': 4.0.0_solid-js@1.6.2
-      solid-js: 1.6.2
+      '@solid-primitives/event-listener': 2.2.4_solid-js@1.6.3
+      '@solid-primitives/rootless': 1.2.1_solid-js@1.6.3
+      '@solid-primitives/utils': 4.0.0_solid-js@1.6.3
+      solid-js: 1.6.3
     dev: false
 
-  /@solid-primitives/props/3.0.1_solid-js@1.6.2:
+  /@solid-primitives/props/3.0.1_solid-js@1.6.3:
     resolution: {integrity: sha512-5v27ex4KxxnIbgze1lXPEXHO/ebbtEjL6idkhezH/7jHpjunl8PYabpDgoGO16tb8DawcZWOAXa7waWqWPAe/A==}
     peerDependencies:
       solid-js: ^1.6.0
     dependencies:
-      '@solid-primitives/utils': 4.0.0_solid-js@1.6.2
-      solid-js: 1.6.2
+      '@solid-primitives/utils': 4.0.0_solid-js@1.6.3
+      solid-js: 1.6.3
     dev: false
 
-  /@solid-primitives/refs/0.3.4_solid-js@1.6.2:
+  /@solid-primitives/refs/0.3.4_solid-js@1.6.3:
     resolution: {integrity: sha512-XqX5PRCMnCOuLQqTsx3tRYs/oAyQsTXtmkB+tBlYoaqxLrJFBebPRVT/kFWN2Jxb6eZYAXDB5zZejS8nizsd8Q==}
     peerDependencies:
       solid-js: ^1.6.0
     dependencies:
-      '@solid-primitives/immutable': 0.1.4_solid-js@1.6.2
-      '@solid-primitives/rootless': 1.2.1_solid-js@1.6.2
-      '@solid-primitives/utils': 4.0.0_solid-js@1.6.2
-      solid-js: 1.6.2
+      '@solid-primitives/immutable': 0.1.4_solid-js@1.6.3
+      '@solid-primitives/rootless': 1.2.1_solid-js@1.6.3
+      '@solid-primitives/utils': 4.0.0_solid-js@1.6.3
+      solid-js: 1.6.3
     dev: false
 
-  /@solid-primitives/rootless/1.2.1_solid-js@1.6.2:
+  /@solid-primitives/rootless/1.2.1_solid-js@1.6.3:
     resolution: {integrity: sha512-8RpdyS1e58PQbDjgjpyCh+IGoX3QEs/2LauMfl94eXJ5d/o1y/c6P61z9XqQm+Bx1Otdgx4nbFCoF7HPqa0mwg==}
     peerDependencies:
       solid-js: ^1.6.0
     dependencies:
-      '@solid-primitives/utils': 4.0.0_solid-js@1.6.2
-      solid-js: 1.6.2
+      '@solid-primitives/utils': 4.0.0_solid-js@1.6.3
+      solid-js: 1.6.3
     dev: false
 
-  /@solid-primitives/utils/4.0.0_solid-js@1.6.2:
+  /@solid-primitives/utils/4.0.0_solid-js@1.6.3:
     resolution: {integrity: sha512-fGsJy8Z8YiwogpiezD7TWjI62UCb0JAHJWdoXWGrggrn4bfToZotKkabiB0IVFMkWVE1ZcrkvZT3bkmqGnK0ng==}
     peerDependencies:
       solid-js: ^1.6.0
     dependencies:
-      solid-js: 1.6.2
+      solid-js: 1.6.3
     dev: false
 
   /@solidjs/meta/0.28.2_solid-js@1.6.1:
@@ -3838,8 +3838,8 @@ packages:
       '@types/yargs-parser': 21.0.0
     dev: true
 
-  /@types/yargs/17.0.16:
-    resolution: {integrity: sha512-Mh3OP0oh8X7O7F9m5AplC+XHYLBWuPKNkGVD3gIZFLFebBnuFI2Nz5Sf8WLvwGxECJ8YjifQvFdh79ubODkdug==}
+  /@types/yargs/17.0.17:
+    resolution: {integrity: sha512-72bWxFKTK6uwWJAVT+3rF6Jo6RTojiJ27FQo8Rf60AL+VZbzoVPnMFhKsUnbjR8A3BTCYQ7Mv3hnl8T0A+CX9g==}
     dependencies:
       '@types/yargs-parser': 21.0.0
     dev: true
@@ -3899,12 +3899,12 @@ packages:
       '@typescript-eslint/visitor-keys': 5.30.5
     dev: true
 
-  /@typescript-eslint/scope-manager/5.45.1:
-    resolution: {integrity: sha512-D6fCileR6Iai7E35Eb4Kp+k0iW7F1wxXYrOhX/3dywsOJpJAQ20Fwgcf+P/TDtvQ7zcsWsrJaglaQWDhOMsspQ==}
+  /@typescript-eslint/scope-manager/5.46.0:
+    resolution: {integrity: sha512-7wWBq9d/GbPiIM6SqPK9tfynNxVbfpihoY5cSFMer19OYUA3l4powA2uv0AV2eAZV6KoAh6lkzxv4PoxOLh1oA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
-      '@typescript-eslint/types': 5.45.1
-      '@typescript-eslint/visitor-keys': 5.45.1
+      '@typescript-eslint/types': 5.46.0
+      '@typescript-eslint/visitor-keys': 5.46.0
     dev: true
 
   /@typescript-eslint/type-utils/5.30.5_cglqs7bdoo3alqsht2x2xngibm:
@@ -3931,8 +3931,8 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@typescript-eslint/types/5.45.1:
-    resolution: {integrity: sha512-HEW3U0E5dLjUT+nk7b4lLbOherS1U4ap+b9pfu2oGsW3oPu7genRaY9dDv3nMczC1rbnRY2W/D7SN05wYoGImg==}
+  /@typescript-eslint/types/5.46.0:
+    resolution: {integrity: sha512-wHWgQHFB+qh6bu0IAPAJCdeCdI0wwzZnnWThlmHNY01XJ9Z97oKqKOzWYpR2I83QmshhQJl6LDM9TqMiMwJBTw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
@@ -3957,8 +3957,8 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/typescript-estree/5.45.1_typescript@4.8.3:
-    resolution: {integrity: sha512-76NZpmpCzWVrrb0XmYEpbwOz/FENBi+5W7ipVXAsG3OoFrQKJMiaqsBMbvGRyLtPotGqUfcY7Ur8j0dksDJDng==}
+  /@typescript-eslint/typescript-estree/5.46.0_typescript@4.8.3:
+    resolution: {integrity: sha512-kDLNn/tQP+Yp8Ro2dUpyyVV0Ksn2rmpPpB0/3MO874RNmXtypMwSeazjEN/Q6CTp8D7ExXAAekPEcCEB/vtJkw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       typescript: '*'
@@ -3966,8 +3966,8 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@typescript-eslint/types': 5.45.1
-      '@typescript-eslint/visitor-keys': 5.45.1
+      '@typescript-eslint/types': 5.46.0
+      '@typescript-eslint/visitor-keys': 5.46.0
       debug: 4.3.4
       globby: 11.1.0
       is-glob: 4.0.3
@@ -3996,17 +3996,17 @@ packages:
       - typescript
     dev: true
 
-  /@typescript-eslint/utils/5.45.1_cglqs7bdoo3alqsht2x2xngibm:
-    resolution: {integrity: sha512-rlbC5VZz68+yjAzQBc4I7KDYVzWG2X/OrqoZrMahYq3u8FFtmQYc+9rovo/7wlJH5kugJ+jQXV5pJMnofGmPRw==}
+  /@typescript-eslint/utils/5.46.0_cglqs7bdoo3alqsht2x2xngibm:
+    resolution: {integrity: sha512-4O+Ps1CRDw+D+R40JYh5GlKLQERXRKW5yIQoNDpmXPJ+C7kaPF9R7GWl+PxGgXjB3PQCqsaaZUpZ9dG4U6DO7g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
       '@types/json-schema': 7.0.11
       '@types/semver': 7.3.13
-      '@typescript-eslint/scope-manager': 5.45.1
-      '@typescript-eslint/types': 5.45.1
-      '@typescript-eslint/typescript-estree': 5.45.1_typescript@4.8.3
+      '@typescript-eslint/scope-manager': 5.46.0
+      '@typescript-eslint/types': 5.46.0
+      '@typescript-eslint/typescript-estree': 5.46.0_typescript@4.8.3
       eslint: 8.19.0
       eslint-scope: 5.1.1
       eslint-utils: 3.0.0_eslint@8.19.0
@@ -4024,11 +4024,11 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@typescript-eslint/visitor-keys/5.45.1:
-    resolution: {integrity: sha512-cy9ln+6rmthYWjH9fmx+5FU/JDpjQb586++x2FZlveq7GdGuLLW9a2Jcst2TGekH82bXpfmRNSwP9tyEs6RjvQ==}
+  /@typescript-eslint/visitor-keys/5.46.0:
+    resolution: {integrity: sha512-E13gBoIXmaNhwjipuvQg1ByqSAu/GbEpP/qzFihugJ+MomtoJtFAJG/+2DRPByf57B863m0/q7Zt16V9ohhANw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
-      '@typescript-eslint/types': 5.45.1
+      '@typescript-eslint/types': 5.46.0
       eslint-visitor-keys: 3.3.0
     dev: true
 
@@ -4302,7 +4302,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.4
-      es-abstract: 1.20.4
+      es-abstract: 1.20.5
       get-intrinsic: 1.1.3
       is-string: 1.0.7
     dev: true
@@ -4318,7 +4318,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.4
-      es-abstract: 1.20.4
+      es-abstract: 1.20.5
       es-shim-unscopables: 1.0.0
     dev: true
 
@@ -5483,8 +5483,8 @@ packages:
       is-arrayish: 0.2.1
     dev: true
 
-  /es-abstract/1.20.4:
-    resolution: {integrity: sha512-0UtvRN79eMe2L+UNEF1BwRe364sj/DXhQ/k5FmivgoSdpM90b8Jc0mDzKMGo7QS0BVbOP/bTwBKNnDc9rNzaPA==}
+  /es-abstract/1.20.5:
+    resolution: {integrity: sha512-7h8MM2EQhsCA7pU/Nv78qOXFpD8Rhqd12gYiSJVkrH9+e8VuA8JlPJK/hQjjlLv6pJvx/z1iRFKzYb0XT/RuAQ==}
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
@@ -5493,6 +5493,7 @@ packages:
       function.prototype.name: 1.1.5
       get-intrinsic: 1.1.3
       get-symbol-description: 1.0.0
+      gopd: 1.0.1
       has: 1.0.3
       has-property-descriptors: 1.0.0
       has-symbols: 1.0.3
@@ -6171,7 +6172,7 @@ packages:
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
-      '@typescript-eslint/utils': 5.45.1_cglqs7bdoo3alqsht2x2xngibm
+      '@typescript-eslint/utils': 5.46.0_cglqs7bdoo3alqsht2x2xngibm
       eslint: 8.19.0
       is-html: 2.0.0
       jsx-ast-utils: 3.3.3
@@ -6659,7 +6660,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.4
-      es-abstract: 1.20.4
+      es-abstract: 1.20.5
       functions-have-names: 1.2.3
     dev: true
 
@@ -9279,7 +9280,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.4
-      es-abstract: 1.20.4
+      es-abstract: 1.20.5
     dev: true
 
   /on-finished/2.3.0:
@@ -10154,8 +10155,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /rollup/3.6.0:
-    resolution: {integrity: sha512-qCgiBeSu2/AIOKWGFMiRkjPlGlcVwxAjwpGKQZOQYng+83Hip4PjrWHm7EQX1wnrvRqfTytEihRRfLHdX+hR4g==}
+  /rollup/3.7.0:
+    resolution: {integrity: sha512-FIJe0msW9P7L9BTfvaJyvn1U1BVCNTL3w8O+PKIrCyiMLg+rIUGb4MbcgVZ10Lnm1uWXOTOWRNARjfXC1+M12Q==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -10379,8 +10380,8 @@ packages:
     dependencies:
       csstype: 3.1.1
 
-  /solid-js/1.6.2:
-    resolution: {integrity: sha512-AZBsj+Yn1xliniTTeuQKG9V7VQVkQ8lZmSKvBjpcVSoZeF7nvt/N5f7Kcsx6QSufioa2YgvBjkIiA0cM0qhotw==}
+  /solid-js/1.6.3:
+    resolution: {integrity: sha512-YoieThdhAKt83O86+DjpKXNlVSU5JYdi21RdYqiEIsWxahOphiAfao8e/zRTLyZEM5ZgyZ3ZHPPgW1HO5537Rw==}
     dependencies:
       csstype: 3.1.1
     dev: false
@@ -10664,7 +10665,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.4
-      es-abstract: 1.20.4
+      es-abstract: 1.20.5
     dev: true
 
   /string.prototype.trimstart/1.0.6:
@@ -10672,7 +10673,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.4
-      es-abstract: 1.20.4
+      es-abstract: 1.20.5
     dev: true
 
   /string_decoder/1.3.0:
@@ -11112,7 +11113,7 @@ packages:
       postcss: 8.4.19
       postcss-load-config: 3.1.4_postcss@8.4.19
       resolve-from: 5.0.0
-      rollup: 3.6.0
+      rollup: 3.7.0
       source-map: 0.8.0-beta.0
       sucrase: 3.29.0
       tree-kill: 1.2.2

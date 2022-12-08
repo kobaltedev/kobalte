@@ -1,5 +1,4 @@
-import { JSX } from "solid-js";
-import Accessor = JSX.Accessor;
+import { Accessor } from "solid-js";
 
 /**
  * Create a function that generate an id from a `baseId` and `suffix`.

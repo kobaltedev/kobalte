@@ -1,4 +1,4 @@
-import { access, mergeDefaultProps } from "@kobalte/utils";
+import { access, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createMemo, createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
 import { DialogPortal } from "../dialog/dialog-portal";
@@ -15,7 +15,7 @@ import { ListboxOptionLabel } from "../listbox/listbox-option-label";
 import { Popover, PopoverFloatingProps } from "../popover";
 import { PopoverArrow } from "../popover/popover-arrow";
 import { PopoverPositioner } from "../popover/popover-positioner";
-import { CollectionKey, createDisclosure } from "../primitives";
+import { CollectionKey, createDisclosure, createRegisterId } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, SelectionType } from "../selection";
 import { SelectContext, SelectContextValue } from "./select-context";
 import { SelectMenu } from "./select-menu";
@@ -228,16 +228,10 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     listboxId,
     triggerId,
     toggle,
-    generateId: part => `${local.id!}-${part}`,
     setTriggerRef,
-    registerTrigger: id => {
-      setTriggerId(id);
-      return () => setTriggerId(undefined);
-    },
-    registerListbox: id => {
-      setListboxId(id);
-      return () => setListboxId(undefined);
-    },
+    generateId: createGenerateId(() => local.id!),
+    registerTrigger: createRegisterId(setTriggerId),
+    registerListbox: createRegisterId(setListboxId),
   };
 
   return (

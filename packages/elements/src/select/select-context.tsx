@@ -15,8 +15,8 @@ export interface SelectContextValue {
   listState: Accessor<ListState>;
   keyboardDelegate: Accessor<KeyboardDelegate>;
   toggle: (focusStrategy?: FocusStrategy) => void;
-  generateId: (part: string) => string;
   setTriggerRef: (el: HTMLButtonElement) => void;
+  generateId: (part: string) => string;
   registerTrigger: (id: string) => () => void;
   registerListbox: (id: string) => () => void;
 }
