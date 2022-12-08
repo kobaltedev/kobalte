@@ -10,8 +10,7 @@ export interface PopoverPanelProps extends DialogPanelProps {
 }
 
 /**
- * The element that visually represents a popover.
- * Contains the content to be rendered when the popover is open.
+ * The element that contains the content to be rendered when the popover is open.
  */
 export const PopoverPanel = createPolymorphicComponent<"div", PopoverPanelProps>(props => {
   const context = usePopoverContext();

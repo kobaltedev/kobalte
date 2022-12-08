@@ -1,5 +1,5 @@
-import { callHandler, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { createEffect, onCleanup, splitProps } from "solid-js";
 
 import { Listbox, ListboxProps } from "../listbox";
 import { useSelectContext } from "./select-context";
@@ -16,19 +16,9 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
     props
   );
 
-  const [local, others] = splitProps(props, ["id", "onFocusOut"]);
+  const [local, others] = splitProps(props, ["id"]);
 
   createEffect(() => onCleanup(context.registerListbox(local.id!)));
-
-  const onFocusOut: JSX.EventHandlerUnion<HTMLUListElement, FocusEvent> = e => {
-    callHandler(e, local.onFocusOut);
-
-    if (e.currentTarget.contains(e.relatedTarget as Node)) {
-      return;
-    }
-
-    callHandler(e, context.onListboxFocusOut);
-  };
 
   return (
     <Listbox
@@ -38,7 +28,6 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
       shouldSelectOnPressUp
       shouldFocusOnHover
       //aria-labelledby={}
-      onFocusOut={onFocusOut}
       {...others}
     />
   );

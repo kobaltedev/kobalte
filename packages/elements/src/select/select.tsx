@@ -1,36 +1,60 @@
-import { access, callHandler, mergeDefaultProps } from "@kobalte/utils";
-import {
-  createMemo,
-  createSignal,
-  createUniqueId,
-  JSX,
-  ParentComponent,
-  splitProps,
-} from "solid-js";
+import { access, mergeDefaultProps } from "@kobalte/utils";
+import { createMemo, createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
-import { createListState, CreateListStateProps, ListKeyboardDelegate } from "../list";
-import { SelectContext, SelectContextValue } from "./select-context";
-import { CollectionKey, createDisclosure } from "../primitives";
-import { createTypeSelect, FocusStrategy, KeyboardDelegate, SelectionType } from "../selection";
-import { ListboxOptionGroupPropertyNames, ListboxOptionPropertyNames } from "../listbox";
+import { DialogPortal } from "../dialog/dialog-portal";
 import { createCollator } from "../i18n";
-import { SelectTrigger } from "./select-trigger";
+import { createListState, CreateListStateProps, ListKeyboardDelegate } from "../list";
+import { ListboxOptionGroupPropertyNames, ListboxOptionPropertyNames } from "../listbox";
+import { ListboxGroup } from "../listbox/listbox-group";
+import { ListboxGroupLabel } from "../listbox/listbox-group-label";
+import { ListboxGroupOptions } from "../listbox/listbox-group-options";
+import { ListboxOption } from "../listbox/listbox-option";
+import { ListboxOptionDescription } from "../listbox/listbox-option-description";
+import { ListboxOptionIndicator } from "../listbox/listbox-option-indicator";
+import { ListboxOptionLabel } from "../listbox/listbox-option-label";
+import { Popover, PopoverFloatingProps } from "../popover";
+import { PopoverArrow } from "../popover/popover-arrow";
+import { PopoverPositioner } from "../popover/popover-positioner";
+import { CollectionKey, createDisclosure } from "../primitives";
+import { FocusStrategy, KeyboardDelegate, SelectionType } from "../selection";
+import { SelectContext, SelectContextValue } from "./select-context";
 import { SelectMenu } from "./select-menu";
+import { SelectTrigger } from "./select-trigger";
+import { SelectValue } from "./select-value";
+import { SelectPanel } from "./select-panel";
+import { SelectIcon } from "./select-icon";
 
 type SelectComposite = {
   Trigger: typeof SelectTrigger;
+  Value: typeof SelectValue;
+  Icon: typeof SelectIcon;
+  Panel: typeof SelectPanel;
   Menu: typeof SelectMenu;
+
+  Positioner: typeof PopoverPositioner;
+  Arrow: typeof PopoverArrow;
+
+  Portal: typeof DialogPortal;
+
+  Group: typeof ListboxGroup;
+  GroupLabel: typeof ListboxGroupLabel;
+  GroupOptions: typeof ListboxGroupOptions;
+  Option: typeof ListboxOption;
+  OptionLabel: typeof ListboxOptionLabel;
+  OptionDescription: typeof ListboxOptionDescription;
+  OptionIndicator: typeof ListboxOptionIndicator;
 };
 
 export interface SelectProps
   extends Pick<
-    CreateListStateProps,
-    | "filter"
-    | "allowDuplicateSelectionEvents"
-    | "disallowEmptySelection"
-    | "selectionBehavior"
-    | "selectionMode"
-  > {
+      CreateListStateProps,
+      | "filter"
+      | "allowDuplicateSelectionEvents"
+      | "disallowEmptySelection"
+      | "selectionBehavior"
+      | "selectionMode"
+    >,
+    PopoverFloatingProps {
   /** The controlled open state of the select. */
   isOpen?: boolean;
 
@@ -95,6 +119,8 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     {
       id: defaultId,
       selectionMode: "single",
+      allowDuplicateSelectionEvents: true,
+      disallowEmptySelection: access(props.selectionMode) !== "multiple",
     },
     props
   );
@@ -125,11 +151,11 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
 
   const [listboxId, setListboxId] = createSignal<string>();
   const [triggerId, setTriggerId] = createSignal<string>();
+  const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
 
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy>();
-  const [isFocused, setIsFocused] = createSignal(false);
 
-  const isSingleSelect = () => access(local.selectionMode) === "single";
+  const isSingleSelectMode = () => access(local.selectionMode) === "single";
 
   const disclosureState = createDisclosure({
     isOpen: () => local.isOpen,
@@ -143,7 +169,7 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     onSelectionChange: keys => {
       local.onValueChange?.(keys);
 
-      if (isSingleSelect()) {
+      if (isSingleSelectMode()) {
         disclosureState.close();
       }
     },
@@ -166,20 +192,9 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     filter: local.filter,
   });
 
-  const isCollectionEmpty = () => listState.collection().getSize() <= 0;
-
-  const open = (focusStrategy?: FocusStrategy) => {
-    // Don't open if the collection is empty.
-    if (isCollectionEmpty()) {
-      return;
-    }
-
-    setFocusStrategy(focusStrategy);
-    disclosureState.open();
-  };
-
   const toggle = (focusStrategy?: FocusStrategy) => {
-    if (isCollectionEmpty()) {
+    // Don't open if the collection is empty.
+    if (listState.collection().getSize() <= 0) {
       return;
     }
 
@@ -187,7 +202,6 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     disclosureState.toggle();
   };
 
-  // START - useSelect
   const collator = createCollator({ usage: "search", sensitivity: "base" });
 
   // By default, a KeyboardDelegate is provided which uses the DOM to query layout information (e.g. for page up/page down).
@@ -202,114 +216,20 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     return new ListKeyboardDelegate(listState.collection, undefined, collator);
   });
 
-  const { typeSelectHandlers } = createTypeSelect({
-    keyboardDelegate: delegate,
-    selectionManager: () => listState.selectionManager(),
-    onTypeSelect: key => listState.selectionManager().select(key),
-  });
-
-  const onTriggerKeyDown: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = e => {
-    if (local.isDisabled) {
-      return;
-    }
-
-    callHandler(e, typeSelectHandlers.onKeyDown);
-
-    switch (e.key) {
-      case "Enter":
-      case " ":
-      case "ArrowDown":
-        e.stopPropagation();
-        e.preventDefault();
-        context.toggle("first");
-        break;
-      case "ArrowUp":
-        e.stopPropagation();
-        e.preventDefault();
-        context.toggle("last");
-        break;
-      case "ArrowLeft": {
-        // prevent scrolling containers
-        e.preventDefault();
-
-        if (!isSingleSelect()) {
-          return;
-        }
-
-        const firstSelectedKey = listState.selectionManager().firstSelectedKey();
-
-        const key =
-          firstSelectedKey != null
-            ? delegate().getKeyAbove?.(firstSelectedKey)
-            : delegate().getFirstKey?.();
-
-        if (key) {
-          listState.selectionManager().select(key);
-        }
-
-        break;
-      }
-      case "ArrowRight": {
-        // prevent scrolling containers
-        e.preventDefault();
-
-        if (!isSingleSelect()) {
-          return;
-        }
-
-        const firstSelectedKey = listState.selectionManager().firstSelectedKey();
-
-        const key =
-          firstSelectedKey != null
-            ? delegate().getKeyBelow?.(firstSelectedKey)
-            : delegate().getFirstKey?.();
-
-        if (key) {
-          listState.selectionManager().select(key);
-        }
-
-        break;
-      }
-    }
-  };
-
   // TODO: handle label, description and errorMessage aria-*
-
-  const onTriggerFocus: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    if (isFocused()) {
-      return;
-    }
-
-    setIsFocused(true);
-  };
-
-  const onTriggerBlur: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    if (disclosureState.isOpen()) {
-      return;
-    }
-
-    setIsFocused(false);
-  };
-
-  const onListboxFocusOut = () => {
-    setIsFocused(false);
-  };
-
-  // END - useSelect
 
   const context: SelectContextValue = {
     isOpen: () => disclosureState.isOpen(),
     isDisabled: () => local.isDisabled ?? false,
+    isSingleSelectMode,
     autoFocus: () => focusStrategy() || true,
     listState: () => listState,
+    keyboardDelegate: delegate,
     listboxId,
     triggerId,
     toggle,
     generateId: part => `${local.id!}-${part}`,
-    onTriggerKeyDown,
-    onTriggerFocus,
-    onTriggerBlur,
-    onListboxFocusOut,
+    setTriggerRef,
     registerTrigger: id => {
       setTriggerId(id);
       return () => setTriggerId(undefined);
@@ -320,11 +240,38 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     },
   };
 
-  return <SelectContext.Provider value={context}>{props.children}</SelectContext.Provider>;
+  return (
+    <Popover
+      id={local.id}
+      isOpen={disclosureState.isOpen()}
+      onOpenChange={disclosureState.setIsOpen}
+      anchorRef={triggerRef}
+      sameWidth
+      {...others}
+    >
+      <SelectContext.Provider value={context}>{props.children}</SelectContext.Provider>
+    </Popover>
+  );
 };
 
 Select.Trigger = SelectTrigger;
+Select.Value = SelectValue;
+Select.Icon = SelectIcon;
+Select.Panel = SelectPanel;
 Select.Menu = SelectMenu;
+
+Select.Positioner = PopoverPositioner;
+Select.Arrow = PopoverArrow;
+
+Select.Portal = DialogPortal;
+
+Select.Group = ListboxGroup;
+Select.GroupLabel = ListboxGroupLabel;
+Select.GroupOptions = ListboxGroupOptions;
+Select.Option = ListboxOption;
+Select.OptionLabel = ListboxOptionLabel;
+Select.OptionDescription = ListboxOptionDescription;
+Select.OptionIndicator = ListboxOptionIndicator;
 
 /*
 

@@ -14,8 +14,7 @@ export interface DialogPanelProps {
 }
 
 /**
- * The element that visually represents a dialog.
- * Contains the content to be rendered when the dialog is open.
+ * The element that contains the content to be rendered when the dialog is open.
  */
 export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(props => {
   const context = useDialogContext();

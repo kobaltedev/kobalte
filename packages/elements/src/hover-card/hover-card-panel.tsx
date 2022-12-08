@@ -7,8 +7,7 @@ import { useHoverCardContext } from "./hover-card-context";
 export interface HoverCardPanelProps extends PopoverPanelProps {}
 
 /**
- * The element that visually represents a hover card.
- * Contains the content to be rendered when the hover card is open.
+ * The element that contains the content to be rendered when the hover card is open.
  */
 export const HoverCardPanel = createPolymorphicComponent<"div", HoverCardPanelProps>(props => {
   const context = useHoverCardContext();

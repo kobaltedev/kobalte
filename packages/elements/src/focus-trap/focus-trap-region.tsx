@@ -174,12 +174,7 @@ export const FocusTrapRegion = createPolymorphicComponent<"div", FocusTrapRegion
   });
 
   return (
-    <Dynamic
-      component={local.as}
-      ref={mergeRefs(el => (ref = el), local.ref)}
-      tabIndex={-1}
-      {...others}
-    >
+    <Dynamic component={local.as} ref={mergeRefs(el => (ref = el), local.ref)} {...others}>
       <Show when={local.trapFocus} fallback={props.children}>
         <FocusTrap onFocus={onFocus} />
         {props.children}

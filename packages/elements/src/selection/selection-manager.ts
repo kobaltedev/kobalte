@@ -8,7 +8,7 @@
 
 import { Accessor } from "solid-js";
 
-import { Collection, CollectionNode, CollectionKey, PressEvent } from "../primitives";
+import { Collection, CollectionKey, CollectionNode, PressEvent } from "../primitives";
 import {
   FocusStrategy,
   MultipleSelectionManager,
@@ -25,12 +25,10 @@ import {
 export class SelectionManager implements MultipleSelectionManager {
   private collection: Accessor<Collection<CollectionNode>>;
   private state: MultipleSelectionState;
-  private _isSelectAll: boolean | null;
 
   constructor(collection: Accessor<Collection<CollectionNode>>, state: MultipleSelectionState) {
     this.collection = collection;
     this.state = state;
-    this._isSelectAll = null;
   }
 
   /** The type of selection that is allowed in the collection. */
@@ -132,13 +130,7 @@ export class SelectionManager implements MultipleSelectionManager {
       return true;
     }
 
-    if (this._isSelectAll != null) {
-      return this._isSelectAll;
-    }
-
-    const allKeys = this.getSelectAllKeys();
-    this._isSelectAll = allKeys.every(k => selectedKeys.has(k));
-    return this._isSelectAll;
+    return this.getSelectAllKeys().every(k => selectedKeys.has(k));
   }
 
   firstSelectedKey(): CollectionKey | undefined {

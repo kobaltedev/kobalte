@@ -1,5 +1,5 @@
 import { access, MaybeAccessor } from "@kobalte/utils";
-import { Accessor } from "solid-js";
+import { Accessor, Setter } from "solid-js";
 
 import { createControllableBooleanSignal } from "../create-controllable-signal";
 
@@ -17,6 +17,9 @@ export interface CreateDisclosureProps {
 export interface CreateDisclosureResult {
   /** The open state. */
   isOpen: Accessor<boolean>;
+
+  /** A setter function to manually set the open state. */
+  setIsOpen: (next: boolean | ((prev: boolean) => boolean)) => void;
 
   /** A function to set the `isOpen` state to `true`. */
   open: () => void;
@@ -53,6 +56,7 @@ export function createDisclosure(props: CreateDisclosureProps = {}): CreateDiscl
 
   return {
     isOpen,
+    setIsOpen,
     open,
     close,
     toggle,

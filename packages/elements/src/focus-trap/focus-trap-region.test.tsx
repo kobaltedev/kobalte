@@ -64,7 +64,7 @@ describe("FocusTrapRegion", () => {
     render(() => (
       <>
         <button>Before</button>
-        <FocusTrapRegion trapFocus data-testid="focus-trap" />
+        <FocusTrapRegion trapFocus tabIndex={-1} data-testid="focus-trap" />
         <button>After</button>
       </>
     ));

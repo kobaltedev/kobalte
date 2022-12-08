@@ -36,7 +36,25 @@ describe("createDisclosure", () => {
     });
   });
 
-  it("should set 'isOpen' state to true when calling 'onOpen'", () => {
+  it("should set 'isOpen' state with the value from 'setIsOpen'", () => {
+    createRoot(dispose => {
+      const state = createDisclosure({ defaultIsOpen: false });
+
+      expect(state.isOpen()).toBeFalsy();
+
+      state.setIsOpen(true);
+
+      expect(state.isOpen()).toBeTruthy();
+
+      state.setIsOpen(false);
+
+      expect(state.isOpen()).toBeFalsy();
+
+      dispose();
+    });
+  });
+
+  it("should set 'isOpen' state to true when calling 'open'", () => {
     createRoot(dispose => {
       const state = createDisclosure({ defaultIsOpen: false });
 
@@ -50,7 +68,7 @@ describe("createDisclosure", () => {
     });
   });
 
-  it("should set 'isOpen' state to false when calling 'onClose'", () => {
+  it("should set 'isOpen' state to false when calling 'close'", () => {
     createRoot(dispose => {
       const state = createDisclosure({ defaultIsOpen: true });
 
@@ -64,7 +82,7 @@ describe("createDisclosure", () => {
     });
   });
 
-  it("should toggle 'isOpen' state when calling 'onToggle'", () => {
+  it("should toggle 'isOpen' state when calling 'toggle'", () => {
     createRoot(dispose => {
       const state = createDisclosure({ defaultIsOpen: false });
 

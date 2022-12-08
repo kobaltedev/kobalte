@@ -1,23 +1,22 @@
-import { Accessor, createContext, JSX, useContext } from "solid-js";
+import { Accessor, createContext, useContext } from "solid-js";
 
 import { ListState } from "../list";
-import { FocusStrategy } from "../selection";
+import { FocusStrategy, KeyboardDelegate } from "../selection";
 
 export interface SelectDataSet {}
 
 export interface SelectContextValue {
   isOpen: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
+  isSingleSelectMode: Accessor<boolean>;
   autoFocus: Accessor<FocusStrategy | boolean>;
   triggerId: Accessor<string | undefined>;
   listboxId: Accessor<string | undefined>;
   listState: Accessor<ListState>;
+  keyboardDelegate: Accessor<KeyboardDelegate>;
   toggle: (focusStrategy?: FocusStrategy) => void;
   generateId: (part: string) => string;
-  onTriggerKeyDown: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent>;
-  onTriggerFocus: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent>;
-  onTriggerBlur: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent>;
-  onListboxFocusOut: () => void;
+  setTriggerRef: (el: HTMLButtonElement) => void;
   registerTrigger: (id: string) => () => void;
   registerListbox: (id: string) => () => void;
 }

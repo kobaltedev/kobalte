@@ -1,9 +1,15 @@
-import { callHandler, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import {
+  callHandler,
+  createPolymorphicComponent,
+  mergeDefaultProps,
+  mergeRefs,
+} from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import { Button, ButtonProps } from "../button";
 import { PressEvent } from "../primitives";
 import { useSelectContext } from "./select-context";
+import { createTypeSelect } from "../selection";
 
 export interface SelectTriggerProps extends ButtonProps {}
 
@@ -18,16 +24,24 @@ export const SelectTrigger = createPolymorphicComponent<"button", SelectTriggerP
   );
 
   const [local, others] = splitProps(props, [
+    "ref",
     "id",
     "isDisabled",
     "onPressStart",
     "onPress",
     "onKeyDown",
-    "onFocus",
-    "onBlur",
   ]);
 
+  const selectionManager = () => context.listState().selectionManager();
+  const keyboardDelegate = () => context.keyboardDelegate();
+
   const isDisabled = () => local.isDisabled || context.isDisabled();
+
+  const { typeSelectHandlers } = createTypeSelect({
+    keyboardDelegate: keyboardDelegate,
+    selectionManager: selectionManager,
+    onTypeSelect: key => selectionManager().select(key),
+  });
 
   const onPressStart = (e: PressEvent) => {
     local.onPressStart?.(e);
@@ -49,23 +63,76 @@ export const SelectTrigger = createPolymorphicComponent<"button", SelectTriggerP
 
   const onKeyDown: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
-    callHandler(e, context.onTriggerKeyDown);
-  };
 
-  const onFocus: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    callHandler(e, local.onFocus);
-    callHandler(e, context.onTriggerFocus);
-  };
+    if (isDisabled()) {
+      return;
+    }
 
-  const onBlur: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    callHandler(e, local.onBlur);
-    callHandler(e, context.onTriggerBlur);
+    callHandler(e, typeSelectHandlers.onKeyDown);
+
+    switch (e.key) {
+      case "Enter":
+      case " ":
+      case "ArrowDown":
+        e.stopPropagation();
+        e.preventDefault();
+        context.toggle("first");
+        break;
+      case "ArrowUp":
+        e.stopPropagation();
+        e.preventDefault();
+        context.toggle("last");
+        break;
+      case "ArrowLeft": {
+        // prevent scrolling containers
+        e.preventDefault();
+
+        if (!context.isSingleSelectMode()) {
+          return;
+        }
+
+        const firstSelectedKey = selectionManager().firstSelectedKey();
+
+        const key =
+          firstSelectedKey != null
+            ? keyboardDelegate().getKeyAbove?.(firstSelectedKey)
+            : keyboardDelegate().getFirstKey?.();
+
+        if (key) {
+          selectionManager().select(key);
+        }
+
+        break;
+      }
+      case "ArrowRight": {
+        // prevent scrolling containers
+        e.preventDefault();
+
+        if (!context.isSingleSelectMode()) {
+          return;
+        }
+
+        const firstSelectedKey = selectionManager().firstSelectedKey();
+
+        const key =
+          firstSelectedKey != null
+            ? keyboardDelegate().getKeyBelow?.(firstSelectedKey)
+            : keyboardDelegate().getFirstKey?.();
+
+        if (key) {
+          selectionManager().select(key);
+        }
+
+        break;
+      }
+    }
   };
 
   createEffect(() => onCleanup(context.registerTrigger(local.id!)));
 
   return (
     <Button
+      ref={mergeRefs(context.setTriggerRef, local.ref)}
       id={local.id}
       aria-haspopup="listbox"
       aria-expanded={context.isOpen()}
@@ -75,8 +142,6 @@ export const SelectTrigger = createPolymorphicComponent<"button", SelectTriggerP
       onPressStart={onPressStart}
       onPress={onPress}
       onKeyDown={onKeyDown}
-      onFocus={onFocus}
-      onBlur={onBlur}
       {...others}
     />
   );
