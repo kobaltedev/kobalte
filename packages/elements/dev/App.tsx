@@ -29,10 +29,12 @@ function SingleSelect() {
 
   return (
     <Select
+      name="fruits"
       value={value()}
       onValueChange={setValue}
       options={foods()}
       optionPropertyNames={{ value: "id" }}
+      selectionMode="multiple"
       gutter={8}
     >
       <Select.Trigger class="select">
@@ -58,7 +60,10 @@ function SingleSelect() {
 export default function App() {
   return (
     <I18nProvider>
-      <SingleSelect />
+      <form method="get">
+        <SingleSelect />
+        <button>Submit</button>
+      </form>
     </I18nProvider>
   );
 }

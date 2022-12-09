@@ -14,13 +14,19 @@ import { ListboxOptionIndicator } from "../listbox/listbox-option-indicator";
 import { ListboxOptionLabel } from "../listbox/listbox-option-label";
 import { Popover, PopoverFloatingProps } from "../popover";
 import { PopoverPositioner } from "../popover/popover-positioner";
-import { CollectionKey, createDisclosure, createRegisterId } from "../primitives";
+import {
+  CollectionKey,
+  createDisclosure,
+  createFormResetListener,
+  createRegisterId,
+} from "../primitives";
 import { FocusStrategy, KeyboardDelegate, SelectionType } from "../selection";
 import { SelectContext, SelectContextValue } from "./select-context";
 import { SelectIcon } from "./select-icon";
 import { SelectMenu } from "./select-menu";
 import { SelectTrigger } from "./select-trigger";
 import { SelectValue } from "./select-value";
+import { HiddenSelect } from "./hidden-select";
 
 type SelectComposite = {
   Trigger: typeof SelectTrigger;
@@ -99,6 +105,15 @@ export interface SelectProps
    */
   id?: string;
 
+  /**
+   * Describes the type of autocomplete functionality the input should provide if any.
+   * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete).
+   */
+  autoComplete?: string;
+
+  /** HTML form input name. */
+  name?: string;
+
   /** Whether the select is disabled. */
   isDisabled?: boolean;
 }
@@ -131,6 +146,8 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     "optionGroupPropertyNames",
     "keyboardDelegate",
     "isDisabled",
+    "autoComplete",
+    "name",
     "allowDuplicateSelectionEvents",
     "disallowEmptySelection",
     "selectionBehavior",
@@ -176,6 +193,16 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
       items: local.optionGroupPropertyNames?.options ?? "options",
     }),
     filter: local.filter,
+  });
+
+  createFormResetListener(triggerRef, () => {
+    if (local.defaultValue === "all") {
+      listState.selectionManager().selectAll();
+    } else if (local.defaultValue != null) {
+      listState.selectionManager().setSelectedKeys(local.defaultValue);
+    } else {
+      listState.selectionManager().clearSelection();
+    }
   });
 
   const toggle = (focusStrategy?: FocusStrategy) => {
@@ -229,7 +256,18 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
       sameWidth
       {...others}
     >
-      <SelectContext.Provider value={context}>{props.children}</SelectContext.Provider>
+      <SelectContext.Provider value={context}>
+        <HiddenSelect
+          isOpen={disclosureState.isOpen()}
+          selectionManager={listState.selectionManager()}
+          collection={listState.collection()}
+          triggerRef={triggerRef}
+          autoComplete={local.autoComplete}
+          name={local.name}
+          isDisabled={local.isDisabled}
+        />
+        {props.children}
+      </SelectContext.Provider>
     </Popover>
   );
 };
