@@ -11,6 +11,7 @@ import { fireEvent, render, screen } from "solid-testing-library";
 
 import { Radio } from "./radio";
 import { RadioGroup } from "./radio-group";
+import { FormControlDescription, FormControlLabel } from "../form-control";
 
 describe("RadioGroup", () => {
   installPointerEvent();
@@ -200,7 +201,7 @@ describe("RadioGroup", () => {
     expect(inputs[2]).toHaveAttribute("name", "test-name");
   });
 
-  it("supports labeling", () => {
+  it("supports visible label", () => {
     render(() => (
       <RadioGroup>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
@@ -225,15 +226,69 @@ describe("RadioGroup", () => {
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const label = screen.getByText("Favorite Pet");
 
-    const labelId = radioGroup.getAttribute("aria-labelledby");
+    expect(radioGroup).toHaveAttribute("aria-labelledby", label.id);
+    expect(label).toBeInstanceOf(HTMLSpanElement);
+    expect(label).not.toHaveAttribute("for");
+  });
 
-    expect(labelId).toBeDefined();
+  it("supports 'aria-labelledby'", () => {
+    render(() => (
+      <RadioGroup aria-labelledby="foo">
+        <div>
+          <Radio value="dogs">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dogs</Radio.Label>
+          </Radio>
+          <Radio value="cats">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+          <Radio value="dragons">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dragons</Radio.Label>
+          </Radio>
+        </div>
+      </RadioGroup>
+    ));
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const label = document.getElementById(labelId!);
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
 
-    expect(label).toHaveTextContent("Favorite Pet");
+    expect(radioGroup).toHaveAttribute("aria-labelledby", "foo");
+  });
+
+  it("should combine 'aria-labelledby' if visible label is also provided", () => {
+    render(() => (
+      <RadioGroup aria-labelledby="foo">
+        <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+        <div>
+          <Radio value="dogs">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dogs</Radio.Label>
+          </Radio>
+          <Radio value="cats">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+          <Radio value="dragons">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dragons</Radio.Label>
+          </Radio>
+        </div>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const label = screen.getByText("Favorite Pet");
+
+    expect(radioGroup).toHaveAttribute("aria-labelledby", `foo ${label.id}`);
   });
 
   it("supports 'aria-label'", () => {
@@ -262,6 +317,353 @@ describe("RadioGroup", () => {
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
 
     expect(radioGroup).toHaveAttribute("aria-label", "My Favorite Pet");
+  });
+
+  it("should combine 'aria-labelledby' if visible label and 'aria-label' is also provided", () => {
+    render(() => (
+      <RadioGroup aria-label="bar" aria-labelledby="foo">
+        <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+        <div>
+          <Radio value="dogs">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dogs</Radio.Label>
+          </Radio>
+          <Radio value="cats">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+          <Radio value="dragons">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dragons</Radio.Label>
+          </Radio>
+        </div>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const label = screen.getByText("Favorite Pet");
+
+    expect(radioGroup).toHaveAttribute("aria-labelledby", `foo ${label.id} ${radioGroup.id}`);
+  });
+
+  it("supports visible description", () => {
+    render(() => (
+      <RadioGroup>
+        <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+        <div>
+          <Radio value="dogs">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dogs</Radio.Label>
+          </Radio>
+          <Radio value="cats">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+          <Radio value="dragons">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dragons</Radio.Label>
+          </Radio>
+        </div>
+        <RadioGroup.Description>Description</RadioGroup.Description>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const description = screen.getByText("Description");
+
+    expect(description.id).toBeDefined();
+    expect(radioGroup.id).toBeDefined();
+    expect(radioGroup).toHaveAttribute("aria-describedby", description.id);
+
+    // check that generated ids are unique
+    expect(description.id).not.toBe(radioGroup.id);
+  });
+
+  it("supports 'aria-describedby'", () => {
+    render(() => (
+      <RadioGroup aria-describedby="foo">
+        <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+        <div>
+          <Radio value="dogs">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dogs</Radio.Label>
+          </Radio>
+          <Radio value="cats">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+          <Radio value="dragons">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dragons</Radio.Label>
+          </Radio>
+        </div>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+
+    expect(radioGroup).toHaveAttribute("aria-describedby", "foo");
+  });
+
+  it("should combine 'aria-describedby' if visible description", () => {
+    render(() => (
+      <RadioGroup aria-describedby="foo">
+        <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+        <div>
+          <Radio value="dogs">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dogs</Radio.Label>
+          </Radio>
+          <Radio value="cats">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+          <Radio value="dragons">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dragons</Radio.Label>
+          </Radio>
+        </div>
+        <RadioGroup.Description>Description</RadioGroup.Description>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const description = screen.getByText("Description");
+
+    expect(radioGroup).toHaveAttribute("aria-describedby", `${description.id} foo`);
+  });
+
+  it("supports visible error message when invalid", () => {
+    render(() => (
+      <RadioGroup validationState="invalid">
+        <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+        <div>
+          <Radio value="dogs">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dogs</Radio.Label>
+          </Radio>
+          <Radio value="cats">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+          <Radio value="dragons">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dragons</Radio.Label>
+          </Radio>
+        </div>
+        <RadioGroup.ErrorMessage>ErrorMessage</RadioGroup.ErrorMessage>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const errorMessage = screen.getByText("ErrorMessage");
+
+    expect(errorMessage.id).toBeDefined();
+    expect(radioGroup.id).toBeDefined();
+    expect(radioGroup).toHaveAttribute("aria-describedby", errorMessage.id);
+
+    // check that generated ids are unique
+    expect(errorMessage.id).not.toBe(radioGroup.id);
+  });
+
+  it("should not be described by error message when not invalid", () => {
+    render(() => (
+      <RadioGroup>
+        <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+        <div>
+          <Radio value="dogs">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dogs</Radio.Label>
+          </Radio>
+          <Radio value="cats">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+          <Radio value="dragons">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dragons</Radio.Label>
+          </Radio>
+        </div>
+        <RadioGroup.ErrorMessage>ErrorMessage</RadioGroup.ErrorMessage>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+
+    expect(radioGroup).not.toHaveAttribute("aria-describedby");
+  });
+
+  it("should combine 'aria-describedby' if visible error message when invalid", () => {
+    render(() => (
+      <RadioGroup validationState="invalid" aria-describedby="foo">
+        <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+        <div>
+          <Radio value="dogs">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dogs</Radio.Label>
+          </Radio>
+          <Radio value="cats">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+          <Radio value="dragons">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dragons</Radio.Label>
+          </Radio>
+        </div>
+        <RadioGroup.ErrorMessage>ErrorMessage</RadioGroup.ErrorMessage>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const errorMessage = screen.getByText("ErrorMessage");
+
+    expect(radioGroup).toHaveAttribute("aria-describedby", `${errorMessage.id} foo`);
+  });
+
+  it("should combine 'aria-describedby' if visible description and error message when invalid", () => {
+    render(() => (
+      <RadioGroup validationState="invalid" aria-describedby="foo">
+        <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+        <div>
+          <Radio value="dogs">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dogs</Radio.Label>
+          </Radio>
+          <Radio value="cats">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Cats</Radio.Label>
+          </Radio>
+          <Radio value="dragons">
+            <Radio.Input />
+            <Radio.Control />
+            <Radio.Label>Dragons</Radio.Label>
+          </Radio>
+        </div>
+        <RadioGroup.Description>Description</RadioGroup.Description>
+        <RadioGroup.ErrorMessage>ErrorMessage</RadioGroup.ErrorMessage>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const description = screen.getByText("Description");
+    const errorMessage = screen.getByText("ErrorMessage");
+
+    expect(radioGroup).toHaveAttribute(
+      "aria-describedby",
+      `${description.id} ${errorMessage.id} foo`
+    );
+  });
+
+  it("should not have form control 'data-*' attributes by default", async () => {
+    render(() => (
+      <RadioGroup>
+        <Radio value="cats">
+          <Radio.Input />
+        </Radio>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+
+    expect(radioGroup).not.toHaveAttribute("data-valid");
+    expect(radioGroup).not.toHaveAttribute("data-invalid");
+    expect(radioGroup).not.toHaveAttribute("data-required");
+    expect(radioGroup).not.toHaveAttribute("data-disabled");
+    expect(radioGroup).not.toHaveAttribute("data-readonly");
+  });
+
+  it("should have 'data-valid' attribute when valid", async () => {
+    render(() => (
+      <RadioGroup validationState="valid">
+        <Radio value="cats">
+          <Radio.Input />
+        </Radio>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+
+    expect(radioGroup).toHaveAttribute("data-valid");
+  });
+
+  it("should have 'data-invalid' attribute when invalid", async () => {
+    render(() => (
+      <RadioGroup validationState="invalid">
+        <Radio value="cats">
+          <Radio.Input />
+        </Radio>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+
+    expect(radioGroup).toHaveAttribute("data-invalid");
+  });
+
+  it("should have 'data-required' attribute when required", async () => {
+    render(() => (
+      <RadioGroup isRequired>
+        <Radio value="cats">
+          <Radio.Input />
+        </Radio>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+
+    expect(radioGroup).toHaveAttribute("data-required");
+  });
+
+  it("should have 'data-disabled' attribute when disabled", async () => {
+    render(() => (
+      <RadioGroup isDisabled>
+        <Radio value="cats">
+          <Radio.Input />
+        </Radio>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+
+    expect(radioGroup).toHaveAttribute("data-disabled");
+  });
+
+  it("should have 'data-readonly' attribute when readonly", async () => {
+    render(() => (
+      <RadioGroup isReadOnly>
+        <Radio value="cats">
+          <Radio.Input />
+        </Radio>
+      </RadioGroup>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+
+    expect(radioGroup).toHaveAttribute("data-readonly");
   });
 
   it("sets 'aria-orientation' by default", () => {
@@ -816,7 +1218,7 @@ describe("RadioGroup", () => {
     });
 
     describe("data-attributes", () => {
-      it("should have 'data-valid' attribute on radio elments when radio group is valid", async () => {
+      it("should have 'data-valid' attribute on radio elements when radio group is valid", async () => {
         render(() => (
           <RadioGroup validationState="valid" value="cats">
             <Radio data-testid="radio-root" value="cats">
