@@ -1,10 +1,8 @@
 import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { JSX, Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { JSX, splitProps } from "solid-js";
 
-import { useDialogContext, useDialogPortalContext } from "../dialog";
-import { usePopoverContext } from "./popover-context";
 import { DialogPositioner, DialogPositionerProps } from "../dialog/dialog-positioner";
+import { usePopoverContext } from "./popover-context";
 
 export interface PopoverPositionerProps extends DialogPositionerProps {
   /** The HTML styles attribute (object form only). */
@@ -16,7 +14,7 @@ export interface PopoverPositionerProps extends DialogPositionerProps {
  */
 export const PopoverPositioner = createPolymorphicComponent<"div", PopoverPositionerProps>(
   props => {
-    const popoverContext = usePopoverContext();
+    const context = usePopoverContext();
 
     props = mergeDefaultProps({ as: "div" }, props);
 
@@ -24,14 +22,9 @@ export const PopoverPositioner = createPolymorphicComponent<"div", PopoverPositi
 
     return (
       <DialogPositioner
-        ref={mergeRefs(popoverContext.setPositionerRef, local.ref)}
+        ref={mergeRefs(context.setPositionerRef, local.ref)}
         role="presentation"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          ...local.style,
-        }}
+        style={{ position: "absolute", top: 0, left: 0, ...local.style }}
         {...others}
       />
     );

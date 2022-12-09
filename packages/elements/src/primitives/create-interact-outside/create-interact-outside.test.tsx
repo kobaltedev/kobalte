@@ -26,7 +26,7 @@ function pointerEvent(type: any, opts?: any) {
 }
 
 describe("createInteractOutside", () => {
-  // TODO: JSDOM doesn't yet support pointer events. Once they do, convert these tests.
+  // JSDOM doesn't yet support pointer events. Once they do, convert these tests.
   // https://github.com/jsdom/jsdom/issues/2527
   installPointerEvent();
 

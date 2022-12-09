@@ -1,73 +1,69 @@
-import { ComponentProps, createSignal, Show, splitProps } from "solid-js";
+import { createSignal } from "solid-js";
 
-import { createTransition, HoverCard, I18nProvider } from "../src";
+import { I18nProvider, Select } from "../src";
 
-function Foo(props: ComponentProps<typeof HoverCard>) {
-  const [local, others] = splitProps(props, ["children"]);
+interface Food {
+  id: string;
+  label: string;
+  textValue: string;
+  disabled?: boolean;
+}
 
-  const [show, setShow] = createSignal(false);
+interface Category {
+  label: string;
+  items: Array<Food>;
+}
 
-  const hoverCardTransition = createTransition(show, {
-    transition: {
-      in: {
-        opacity: "1",
-        transform: "scale(1)",
-      },
-      out: {
-        opacity: "0",
-        transform: "scale(0.8)",
-      },
-    },
-    duration: 250,
-    easing: "ease-out",
-    exitEasing: "ease-in",
-  });
+const FOODS_DATA: Array<Category | Food> = [
+  { label: "🍎 Apple", textValue: "Apple", id: "apple" },
+  { label: "🍇 Grape", textValue: "Grape", id: "grape" },
+  { label: "🍊 Orange", textValue: "Orange", id: "orange" },
+  { label: "🍓 Strawberry", textValue: "Strawberry", id: "strawberry" },
+  { label: "🍉 Watermelon", textValue: "Watermelon", id: "watermelon" },
+];
+
+function SingleSelect() {
+  const [foods, setFoods] = createSignal(FOODS_DATA);
+
+  const [value, setValue] = createSignal<Set<string>>(new Set([]));
 
   return (
-    <HoverCard
-      closeOnHoverOutside={false}
-      closeOnInteractOutside={false}
-      placement="bottom"
-      isOpen={show()}
-      onOpenChange={setShow}
-      {...others}
+    <Select
+      name="fruits"
+      value={value()}
+      onValueChange={setValue}
+      options={foods()}
+      optionPropertyNames={{ value: "id" }}
+      selectionMode="multiple"
+      gutter={8}
     >
-      <HoverCard.Trigger class="button">Accept invite</HoverCard.Trigger>
-      <Show when={hoverCardTransition.keepMounted()}>
-        <HoverCard.Portal forceMount>
-          <HoverCard.Positioner>
-            <HoverCard.Panel class="popover" style={hoverCardTransition.style()}>
-              <HoverCard.Arrow class="arrow" />
-              <HoverCard.Title class="heading">Team meeting</HoverCard.Title>
-              <HoverCard.Description>
-                We are going to discuss what we have achieved on the project.
-              </HoverCard.Description>
-              <div>
-                <p>12 Jan 2022 18:00 to 19:00</p>
-                <p>Alert 10 minutes before start</p>
-              </div>
-              <HoverCard.CloseButton class="button">Accept</HoverCard.CloseButton>
-              {local.children}
-            </HoverCard.Panel>
-          </HoverCard.Positioner>
-        </HoverCard.Portal>
-      </Show>
-    </HoverCard>
+      <Select.Trigger class="select">
+        <Select.Value placeholder="Select an option" />
+        <Select.Icon class="ml-auto" />
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Positioner>
+          <Select.Menu class="popover">
+            {node => (
+              <Select.Option node={node()} class="select-item">
+                <Select.OptionLabel>{node().label}</Select.OptionLabel>
+                <Select.OptionIndicator class="ml-auto">✓</Select.OptionIndicator>
+              </Select.Option>
+            )}
+          </Select.Menu>
+        </Select.Positioner>
+      </Select.Portal>
+    </Select>
   );
 }
 
 export default function App() {
   return (
     <I18nProvider>
-      <Foo placement={"bottom"}>
-        <Foo placement={"right"}>
-          <Foo placement={"right"}>
-            <Foo placement={"right"}>
-              <Foo placement={"right"} />
-            </Foo>
-          </Foo>
-        </Foo>
-      </Foo>
+      <form method="get">
+        <SingleSelect />
+        <button>Submit</button>
+      </form>
     </I18nProvider>
   );
 }

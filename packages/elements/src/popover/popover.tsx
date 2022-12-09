@@ -65,19 +65,8 @@ type PopoverComposite = {
   Description: typeof DialogDescription;
 };
 
-export interface PopoverProps extends DialogProps {
-  /**
-   * Function that returns the anchor element's DOMRect. If this is explicitly
-   * passed, it will override the anchor `getBoundingClientRect` method.
-   */
-  getAnchorRect?: (anchor?: HTMLElement) => AnchorRect | undefined;
-
-  /**
-   * A ref for the anchor element.
-   * Useful if you want to use an element outside `Popover` as the popover anchor.
-   */
-  anchorRef?: Accessor<HTMLElement | undefined>;
-
+// Props used in @floating-ui/dom middlewares
+export interface PopoverFloatingProps {
   /** The placement of the popover. */
   placement?: Placement;
 
@@ -105,12 +94,6 @@ export interface PopoverProps extends DialogProps {
   /** Whether the popover can overlap the anchor element when it overflows. */
   overlap?: boolean;
 
-  /** Whether the popover should hide when the anchor is not visible on screen. */
-  hide?: boolean;
-
-  /** The minimum padding before considering the popover anchor off-screen. */
-  hidePadding?: number;
-
   /**
    * Whether the popover should have the same width as the anchor element.
    * This will be exposed to CSS as `--kb-popover-anchor-width`.
@@ -124,6 +107,12 @@ export interface PopoverProps extends DialogProps {
    */
   fitViewport?: boolean;
 
+  /** Whether to hide the popover when the anchor element becomes occluded. */
+  hideWhenDetached?: boolean;
+
+  /** The minimum padding in order to consider the anchor element occluded. */
+  detachedPadding?: number;
+
   /** The minimum padding between the arrow and the popover corner. */
   arrowPadding?: number;
 
@@ -134,28 +123,50 @@ export interface PopoverProps extends DialogProps {
   overflowPadding?: number;
 }
 
+export interface PopoverProps extends PopoverFloatingProps, DialogProps {
+  /**
+   * Function that returns the anchor element's DOMRect. If this is explicitly
+   * passed, it will override the anchor `getBoundingClientRect` method.
+   */
+  getAnchorRect?: (anchor?: HTMLElement) => AnchorRect | undefined;
+
+  /**
+   * A ref for the anchor element.
+   * Useful if you want to use an element outside `Popover` as the popover anchor.
+   */
+  anchorRef?: Accessor<HTMLElement | undefined>;
+
+  /**
+   * Event handler called when the popover placement changes.
+   * It returns the current temporary placement of the popover.
+   * This may be different from the `placement` if the popover has needed to update its position on the fly.
+   */
+  onCurrentPlacementChange?: (currentPlacement: Placement) => void;
+}
+
 /**
  * A popover is a dialog positioned relative to an anchor element.
- * This component is based on the [WAI-ARIA Dialog (Modal) Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/popovermodal/)
+ * This component is based on the [WAI-ARIA Dialog Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/)
  */
 export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props => {
-  const defaultId = `kb-popover-${createUniqueId()}`;
+  const defaultId = `popover-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
       id: defaultId,
       isModal: false,
-      getAnchorRect: (anchor?: HTMLElement) => anchor?.getBoundingClientRect(),
+      trapFocus: true,
+      getAnchorRect: anchor => anchor?.getBoundingClientRect(),
       placement: "bottom",
+      gutter: 0,
+      shift: 0,
       flip: true,
       slide: true,
       overlap: false,
-      hide: false,
       sameWidth: false,
       fitViewport: false,
-      gutter: 0,
-      shift: 0,
-      hidePadding: 0,
+      hideWhenDetached: false,
+      detachedPadding: 0,
       arrowPadding: 4,
       overflowPadding: 8,
     },
@@ -163,33 +174,41 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
   );
 
   const [local, others] = splitProps(props, [
-    "children",
     "isOpen",
     "defaultIsOpen",
     "onOpenChange",
     "getAnchorRect",
     "anchorRef",
+    "onCurrentPlacementChange",
     "placement",
     "gutter",
     "shift",
     "flip",
     "slide",
     "overlap",
-    "hide",
-    "hidePadding",
+    "hideWhenDetached",
+    "detachedPadding",
     "sameWidth",
     "fitViewport",
     "arrowPadding",
     "overflowPadding",
   ]);
 
-  const [anchorRef, setAnchorRef] = createSignal<HTMLElement>();
+  const [defaultAnchorRef, setDefaultAnchorRef] = createSignal<HTMLElement>();
   const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
   const [positionerRef, setPositionerRef] = createSignal<HTMLElement>();
   const [panelRef, setPanelRef] = createSignal<HTMLElement>();
   const [arrowRef, setArrowRef] = createSignal<HTMLElement>();
 
   const [currentPlacement, setCurrentPlacement] = createSignal(local.placement!);
+
+  // Floating UI - reference element.
+  const anchorRef = () => {
+    return getAnchorElement(
+      local.anchorRef?.() ?? defaultAnchorRef() ?? triggerRef(),
+      local.getAnchorRect!
+    );
+  };
 
   const [isOpen, setIsOpen] = createControllableBooleanSignal({
     value: () => local.isOpen,
@@ -199,16 +218,8 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
   const locale = useLocale();
 
-  // Floating UI reference element.
-  const anchorEl = () => {
-    return getAnchorElement(
-      local.anchorRef?.() ?? anchorRef() ?? triggerRef(),
-      local.getAnchorRect!
-    );
-  };
-
   async function updatePosition() {
-    const referenceEl = anchorEl();
+    const referenceEl = anchorRef();
     const floatingEl = positionerRef();
     const arrowEl = arrowRef();
 
@@ -295,8 +306,8 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     );
 
     // https://floating-ui.com/docs/hide
-    if (local.hide) {
-      middleware.push(hide({ padding: local.hidePadding }));
+    if (local.hideWhenDetached) {
+      middleware.push(hide({ padding: local.detachedPadding }));
     }
 
     // https://floating-ui.com/docs/arrow
@@ -316,7 +327,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     });
 
     if (pos.placement !== currentPlacement()) {
-      setCurrentPlacement(pos.placement);
+      local.onCurrentPlacementChange?.(setCurrentPlacement(pos.placement));
     }
 
     if (!floatingEl) {
@@ -333,7 +344,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
     let visibility: string | undefined;
 
-    if (local.hide) {
+    if (local.hideWhenDetached) {
       visibility = pos.middlewareData.hide?.referenceHidden ? "hidden" : "visible";
     }
 
@@ -360,7 +371,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
   }
 
   createRenderEffect(() => {
-    const referenceEl = anchorEl();
+    const referenceEl = anchorRef();
     const floatingEl = positionerRef();
 
     if (!referenceEl || !floatingEl) {
@@ -396,9 +407,8 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
   const context: PopoverContextValue = {
     currentPlacement,
-    positionerRef,
     panelRef,
-    setAnchorRef,
+    setDefaultAnchorRef,
     setTriggerRef,
     setPositionerRef,
     setPanelRef,
@@ -406,9 +416,9 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
   };
 
   return (
-    <Dialog isOpen={isOpen()} onOpenChange={setIsOpen} {...others}>
-      <PopoverContext.Provider value={context}>{local.children}</PopoverContext.Provider>
-    </Dialog>
+    <PopoverContext.Provider value={context}>
+      <Dialog isOpen={isOpen()} onOpenChange={setIsOpen} {...others} />
+    </PopoverContext.Provider>
   );
 };
 

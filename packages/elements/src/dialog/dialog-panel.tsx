@@ -1,7 +1,13 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, onCleanup, Show, splitProps } from "solid-js";
+import {
+  callHandler,
+  createPolymorphicComponent,
+  mergeDefaultProps,
+  mergeRefs,
+} from "@kobalte/utils";
+import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 
-import { Overlay } from "../overlay";
+import { createFocusTrapRegion, createOverlay } from "../primitives";
 import { useDialogContext, useDialogPortalContext } from "./dialog-context";
 
 export interface DialogPanelProps {
@@ -14,10 +20,11 @@ export interface DialogPanelProps {
 }
 
 /**
- * The element that visually represents a dialog.
- * Contains the content to be rendered when the dialog is open.
+ * The element that contains the content to be rendered when the dialog is open.
  */
 export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(props => {
+  let ref: HTMLDivElement | undefined;
+
   const context = useDialogContext();
   const portalContext = useDialogPortalContext();
 
@@ -29,34 +36,62 @@ export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(p
     props
   );
 
-  const [local, others] = splitProps(props, ["id", "forceMount"]);
+  const [local, others] = splitProps(props, ["as", "ref", "id", "forceMount", "onKeyDown"]);
 
   createEffect(() => onCleanup(context.registerPanel(local.id!)));
 
+  const { overlayProps } = createOverlay(
+    {
+      isOpen: context.isOpen,
+      onClose: context.close,
+      isModal: () => context.overlayProps().isModal,
+      preventScroll: () => context.overlayProps().preventScroll,
+      closeOnInteractOutside: () => context.overlayProps().closeOnInteractOutside,
+      closeOnEsc: () => context.overlayProps().closeOnEsc,
+      shouldCloseOnInteractOutside: element => {
+        return context.overlayProps().shouldCloseOnInteractOutside?.(element) ?? true;
+      },
+    },
+    () => ref
+  );
+
+  const shouldTrapFocus = () => {
+    return (
+      (context.focusTrapRegionProps().trapFocus ?? context.overlayProps().isModal) &&
+      context.isOpen()
+    );
+  };
+
+  const { FocusTrap } = createFocusTrapRegion(
+    {
+      isDisabled: () => !shouldTrapFocus,
+      autoFocus: () => context.focusTrapRegionProps().autoFocus,
+      restoreFocus: () => context.focusTrapRegionProps().restoreFocus,
+    },
+    () => ref
+  );
+
+  const onKeyDown: JSX.EventHandlerUnion<HTMLDivElement, KeyboardEvent> = e => {
+    callHandler(e, local.onKeyDown);
+    callHandler(e, overlayProps.onEscapeKeyDown);
+  };
+
   return (
     <Show when={local.forceMount || portalContext?.forceMount() || context.isOpen()}>
-      <Overlay
+      <FocusTrap />
+      <Dynamic
+        component={local.as}
+        ref={mergeRefs(el => (ref = el), local.ref)}
         role="dialog"
         id={local.id}
         tabIndex={-1}
-        isOpen={context.isOpen()}
-        onClose={context.close}
-        isModal={context.isModal()}
-        preventScroll={context.preventScroll()}
-        closeOnInteractOutside={context.closeOnInteractOutside()}
-        closeOnEsc={context.closeOnEsc()}
-        shouldCloseOnInteractOutside={context.shouldCloseOnInteractOutside}
-        trapFocus={context.trapFocus()}
-        autoFocus={context.autoFocus()}
-        restoreFocus={context.restoreFocus()}
-        initialFocusSelector={context.initialFocusSelector()}
-        restoreFocusSelector={context.restoreFocusSelector()}
-        aria-label={context.ariaLabel()}
-        aria-labelledby={context.ariaLabel() ? undefined : context.ariaLabelledBy()}
-        aria-describedby={context.ariaDescribedBy()}
+        aria-labelledby={context.titleId()}
+        aria-describedby={context.descriptionId()}
+        onKeyDown={onKeyDown}
         {...context.dataset()}
         {...others}
       />
+      <FocusTrap />
     </Show>
   );
 });

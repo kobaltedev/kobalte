@@ -27,30 +27,85 @@ export const HoverCardTrigger = createPolymorphicComponent<"a", LinkProps>(props
 
   props = mergeDefaultProps({ as: "a" }, props);
 
-  const [local, others] = splitProps(props, ["ref", "onPointerEnter", "onPointerLeave"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "onPointerEnter",
+    "onPointerLeave",
+    "onFocus",
+    "onBlur",
+    "onTouchStart",
+  ]);
 
   const onPointerEnter: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> = e => {
     callHandler(e, local.onPointerEnter);
 
-    if (others.isDisabled || e.defaultPrevented || context.openTimeoutId()) {
+    if (e.pointerType === "touch" || others.isDisabled || e.defaultPrevented) {
       return;
     }
 
-    context.openWithDelay();
+    context.cancelClosing();
+
+    if (!context.isOpen()) {
+      context.openWithDelay();
+    }
   };
 
   const onPointerLeave: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> = e => {
     callHandler(e, local.onPointerLeave);
-    context.clearOpenTimeout();
+
+    if (e.pointerType === "touch") {
+      return;
+    }
+
+    context.cancelOpening();
   };
 
-  onCleanup(context.clearOpenTimeout);
+  const onFocus: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = e => {
+    callHandler(e, local.onFocus);
+
+    if (others.isDisabled || e.defaultPrevented) {
+      return;
+    }
+
+    context.cancelClosing();
+
+    if (!context.isOpen()) {
+      context.openWithDelay();
+    }
+  };
+
+  const onBlur: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = e => {
+    callHandler(e, local.onBlur);
+
+    context.cancelOpening();
+
+    const relatedTarget = e.relatedTarget as Node | undefined;
+
+    // Don't close if the hovercard element (or nested ones) has focus within.
+    if (context.isTargetOnHoverCard(relatedTarget)) {
+      return;
+    }
+
+    context.closeWithDelay();
+  };
+
+  const onTouchStart: JSX.EventHandlerUnion<HTMLAnchorElement, TouchEvent> = e => {
+    callHandler(e, local.onTouchStart);
+
+    // prevent focus event on touch devices
+    e.preventDefault();
+  };
+
+  onCleanup(context.cancelOpening);
 
   return (
     <Link
       ref={mergeRefs(context.setTriggerRef, local.ref)}
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      onTouchStart={onTouchStart}
       {...dialogContext.dataset()}
       {...others}
     />

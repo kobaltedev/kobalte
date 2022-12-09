@@ -54,9 +54,9 @@ describe("createPress", () => {
 
   afterEach(() => jest.runAllTimers());
 
-  // TODO: JSDOM doesn't yet support pointer events. Once they do, convert these tests.
-  // https://github.com/jsdom/jsdom/issues/2527
   describe("pointer events", () => {
+    // JSDOM doesn't yet support pointer events. Once they do, convert these tests.
+    // https://github.com/jsdom/jsdom/issues/2527
     installPointerEvent();
 
     it("should fire press events based on pointer events", async () => {

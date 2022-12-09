@@ -1,7 +1,7 @@
-import { createPolymorphicComponent } from "@kobalte/utils";
-import { Show, splitProps } from "solid-js";
+import { callHandler, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { JSX, Show, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 
-import { Underlay } from "../overlay";
 import { useDialogContext, useDialogPortalContext } from "./dialog-context";
 
 export interface DialogBackdropProps {
@@ -20,11 +20,27 @@ export const DialogBackdrop = createPolymorphicComponent<"div", DialogBackdropPr
   const context = useDialogContext();
   const portalContext = useDialogPortalContext();
 
-  const [local, others] = splitProps(props, ["forceMount"]);
+  props = mergeDefaultProps({ as: "div" }, props);
+
+  const [local, others] = splitProps(props, ["as", "forceMount", "onPointerDown"]);
+
+  const onPointerDown: JSX.EventHandlerUnion<HTMLDivElement, PointerEvent> = e => {
+    callHandler(e, local.onPointerDown);
+
+    // fixes a firefox issue that starts text selection https://bugzilla.mozilla.org/show_bug.cgi?id=1675846
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <Show when={local.forceMount || portalContext?.forceMount() || context.isOpen()}>
-      <Underlay {...context.dataset()} {...others} />
+      <Dynamic
+        component={local.as}
+        onPointerDown={onPointerDown}
+        {...context.dataset()}
+        {...others}
+      />
     </Show>
   );
 });

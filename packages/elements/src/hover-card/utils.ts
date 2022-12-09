@@ -8,14 +8,18 @@
 
 import { contains, hasFocusWithin } from "@kobalte/utils";
 
-export function isMovingOnHovercard(
+export function isMovingOnHoverCard(
   target: Node | undefined,
-  card: HTMLElement,
+  panel?: HTMLElement,
   trigger?: HTMLElement,
   nested?: HTMLElement[]
 ): boolean {
-  // The hovercard element has focus, so we should keep it visible.
-  if (hasFocusWithin(card)) {
+  if (!panel) {
+    return false;
+  }
+
+  // The hovercard panel element has focus, so we should keep it visible.
+  if (hasFocusWithin(panel)) {
     return true;
   }
 
@@ -24,7 +28,7 @@ export function isMovingOnHovercard(
   }
 
   // The mouse is moving on an element inside the hovercard.
-  if (contains(card, target)) {
+  if (contains(panel, target)) {
     return true;
   }
 
@@ -34,5 +38,5 @@ export function isMovingOnHovercard(
   }
 
   // The mouse is moving on an element inside a nested hovercard.
-  return !!nested?.some(card => isMovingOnHovercard(target, card, trigger));
+  return !!nested?.some(card => isMovingOnHoverCard(target, card, trigger));
 }
