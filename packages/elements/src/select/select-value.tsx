@@ -50,7 +50,7 @@ export const SelectValue = createPolymorphicComponent<"span", SelectValueProps>(
       {...formControlContext.dataset()}
       {...others}
     >
-      <Show when={!isSelectionEmpty()} fallback={<span>{local.placeholder}</span>}>
+      <Show when={!isSelectionEmpty()} fallback={local.placeholder}>
         <Show when={local.children} fallback={valueLabels()}>
           <Show when={isFunction(local.children)} fallback={local.children as JSX.Element}>
             {(local.children as SelectValueRenderProp)?.(selectionManager().rawSelection)}

@@ -19,7 +19,7 @@ import { Link, LinkProps } from "../link";
 import { useHoverCardContext } from "./hover-card-context";
 
 /**
- * The link that opens the hover card when hovered
+ * The link that opens the hover card when hovered.
  */
 export const HoverCardTrigger = createPolymorphicComponent<"a", LinkProps>(props => {
   const dialogContext = useDialogContext();

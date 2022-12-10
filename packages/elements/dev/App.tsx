@@ -3,7 +3,7 @@ import { createSignal } from "solid-js";
 import { I18nProvider, Select } from "../src";
 
 interface Food {
-  id: string;
+  id: string | number;
   label: string;
   textValue: string;
   disabled?: boolean;
@@ -15,11 +15,15 @@ interface Category {
 }
 
 const FOODS_DATA: Array<Category | Food> = [
+  /*
   { label: "🍎 Apple", textValue: "Apple", id: "apple" },
   { label: "🍇 Grape", textValue: "Grape", id: "grape" },
   { label: "🍊 Orange", textValue: "Orange", id: "orange" },
   { label: "🍓 Strawberry", textValue: "Strawberry", id: "strawberry" },
   { label: "🍉 Watermelon", textValue: "Watermelon", id: "watermelon" },
+  */
+  { label: "Zero", textValue: "Zero", id: 0 },
+  { label: "Empty", textValue: "Empty", id: "" },
 ];
 
 function SingleSelect() {
@@ -34,8 +38,6 @@ function SingleSelect() {
       onValueChange={setValue}
       options={foods()}
       optionPropertyNames={{ value: "id" }}
-      selectionMode="multiple"
-      gutter={8}
     >
       <div class="flex flex-col space-y-2">
         <Select.Label>Favorite fruit</Select.Label>

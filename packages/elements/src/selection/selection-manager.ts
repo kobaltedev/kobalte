@@ -227,7 +227,7 @@ export class SelectionManager implements MultipleSelectionManager {
     const keys: CollectionKey[] = [];
     let key: CollectionKey | undefined = from;
 
-    while (key) {
+    while (key != null) {
       const item = this.collection().getItem(key);
 
       if (item && item.type === "item") {
@@ -344,7 +344,7 @@ export class SelectionManager implements MultipleSelectionManager {
   private getSelectAllKeys() {
     const keys: CollectionKey[] = [];
     const addKeys = (key: CollectionKey | undefined) => {
-      while (key) {
+      while (key != null) {
         if (this.canSelectItem(key)) {
           const item = this.collection().getItem(key);
 

@@ -111,7 +111,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", SelectTriggerP
             ? keyboardDelegate().getKeyAbove?.(firstSelectedKey)
             : keyboardDelegate().getFirstKey?.();
 
-        if (key) {
+        if (key != null) {
           selectionManager().select(key);
         }
 
@@ -132,7 +132,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", SelectTriggerP
             ? keyboardDelegate().getKeyBelow?.(firstSelectedKey)
             : keyboardDelegate().getFirstKey?.();
 
-        if (key) {
+        if (key != null) {
           selectionManager().select(key);
         }
 

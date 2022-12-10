@@ -7,7 +7,7 @@
  */
 
 import { visuallyHiddenStyles } from "@kobalte/utils";
-import { For, Show } from "solid-js";
+import { For, Match, Show, Switch } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { createInteractionModality } from "../primitives";
@@ -57,9 +57,47 @@ export function HiddenSelect(props: HiddenSelectProps) {
   // use a hidden <select> element for this so that browser autofill will work.
   // Otherwise, use <input type="hidden" />.
   return (
-    <Show
-      when={selectionManager().selectionMode() === "single" && collection().getSize() <= 300}
-      fallback={
+    <Switch fallback={null}>
+      <Match
+        when={selectionManager().selectionMode() === "single" && collection().getSize() <= 300}
+      >
+        <div style={visuallyHiddenStyles} aria-hidden="true">
+          <input
+            type="text"
+            tabIndex={
+              modality() == null || selectionManager().isFocused() || context.isOpen() ? -1 : 0
+            }
+            style={{ "font-size": "16px" }}
+            required={formControlContext.isRequired()}
+            disabled={formControlContext.isDisabled()}
+            readOnly={formControlContext.isReadOnly()}
+            onFocus={() => context.triggerRef()?.focus()}
+          />
+          <select
+            tabIndex={-1}
+            autocomplete={props.autoComplete}
+            name={formControlContext.name()}
+            required={formControlContext.isRequired()}
+            disabled={formControlContext.isDisabled()}
+            size={collection().getSize()}
+            value={selectionManager().firstSelectedKey() ?? ""}
+            onChange={e =>
+              selectionManager().setSelectedKeys(new Set([(e.target as HTMLSelectElement).value]))
+            }
+          >
+            <option />
+            <For each={[...collection().getKeys()]}>
+              {key => {
+                const item = collection().getItem(key);
+                if (item && item.type === "item") {
+                  return <option value={item.key}>{item.label}</option>;
+                }
+              }}
+            </For>
+          </select>
+        </div>
+      </Match>
+      <Match when={formControlContext.name() != null}>
         <For each={[...selectionManager().selectedKeys()]}>
           {key => (
             // TODO: should it be <input type="hidden" value="all"/> when all selected ?
@@ -67,45 +105,14 @@ export function HiddenSelect(props: HiddenSelectProps) {
               type="hidden"
               autocomplete={props.autoComplete}
               name={formControlContext.name()}
+              required={formControlContext.isRequired()}
               disabled={formControlContext.isDisabled()}
+              readOnly={formControlContext.isReadOnly()}
               value={key}
             />
           )}
         </For>
-      }
-    >
-      <div style={visuallyHiddenStyles} aria-hidden="true">
-        <input
-          type="text"
-          tabIndex={
-            modality() == null || selectionManager().isFocused() || context.isOpen() ? -1 : 0
-          }
-          style={{ "font-size": "16px" }}
-          onFocus={() => context.triggerRef()?.focus()}
-          disabled={formControlContext.isDisabled()}
-        />
-        <select
-          tabIndex={-1}
-          autocomplete={props.autoComplete}
-          disabled={formControlContext.isDisabled()}
-          name={formControlContext.name()}
-          size={collection().getSize()}
-          value={selectionManager().firstSelectedKey() ?? ""}
-          onChange={e =>
-            selectionManager().setSelectedKeys(new Set([(e.target as HTMLSelectElement).value]))
-          }
-        >
-          <option />
-          <For each={[...collection().getKeys()]}>
-            {key => {
-              const item = collection().getItem(key);
-              if (item && item.type === "item") {
-                return <option value={item.key}>{item.label}</option>;
-              }
-            }}
-          </For>
-        </select>
-      </div>
-    </Show>
+      </Match>
+    </Switch>
   );
 }

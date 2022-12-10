@@ -7,14 +7,7 @@
  */
 
 import { access, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import {
-  createMemo,
-  createSignal,
-  createUniqueId,
-  ParentComponent,
-  Show,
-  splitProps,
-} from "solid-js";
+import { createMemo, createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
 import { DialogPortal } from "../dialog/dialog-portal";
 import {
@@ -144,6 +137,7 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
       allowDuplicateSelectionEvents: true,
       disallowEmptySelection:
         access(props.selectionMode) == null || access(props.selectionMode) == "single",
+      gutter: 8,
     },
     props
   );
@@ -282,9 +276,7 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
           sameWidth
           {...others}
         >
-          <Show when={formControlContext.name() != null}>
-            <HiddenSelect autoComplete={local.autoComplete} />
-          </Show>
+          <HiddenSelect autoComplete={local.autoComplete} />
           {props.children}
         </Popover>
       </SelectContext.Provider>
