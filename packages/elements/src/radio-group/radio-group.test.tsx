@@ -11,7 +11,6 @@ import { fireEvent, render, screen } from "solid-testing-library";
 
 import { Radio } from "./radio";
 import { RadioGroup } from "./radio-group";
-import { FormControlDescription, FormControlLabel } from "../form-control";
 
 describe("RadioGroup", () => {
   installPointerEvent();

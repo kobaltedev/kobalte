@@ -11,7 +11,6 @@ import {
   combineProps,
   createPolymorphicComponent,
   mergeDefaultProps,
-  mergeRefs,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";

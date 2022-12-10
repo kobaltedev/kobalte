@@ -7,6 +7,7 @@ import {
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { useDialogContext, useDialogPortalContext } from "../dialog";
+import { useFormControlContext } from "../form-control";
 import { Listbox, ListboxProps } from "../listbox";
 import { usePopoverContext } from "../popover/popover-context";
 import { createFocusTrapRegion, createOverlay } from "../primitives";
@@ -30,6 +31,7 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
   const dialogContext = useDialogContext();
   const popoverContext = usePopoverContext();
   const portalContext = useDialogPortalContext();
+  const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
   props = mergeDefaultProps(
@@ -84,9 +86,10 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
         shouldSelectOnPressUp
         shouldFocusOnHover
         style={{ position: "relative", ...local.style }}
+        aria-labelledby={context.menuAriaLabelledBy()}
         onKeyDown={onKeyDown}
-        //aria-labelledby={}
         {...dialogContext.dataset()}
+        {...formControlContext.dataset()}
         {...others}
       />
       <FocusTrap />

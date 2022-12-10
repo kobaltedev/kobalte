@@ -35,12 +35,8 @@ export interface FormControlContextValue {
 
 export const FormControlContext = createContext<FormControlContextValue>();
 
-export function useOptionalFormControlContext() {
-  return useContext(FormControlContext);
-}
-
 export function useFormControlContext() {
-  const context = useOptionalFormControlContext();
+  const context = useContext(FormControlContext);
 
   if (context === undefined) {
     throw new Error(

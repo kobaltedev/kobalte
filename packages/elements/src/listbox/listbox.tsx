@@ -24,7 +24,7 @@ import {
   ListState,
 } from "../list";
 import { CollectionKey, CollectionNode, createFocusRing } from "../primitives";
-import { FocusStrategy, KeyboardDelegate, MultipleSelection, SelectionType } from "../selection";
+import { FocusStrategy, KeyboardDelegate, SelectionType } from "../selection";
 import { ListboxContext, ListboxContextValue, ListboxDataSet } from "./listbox-context";
 import { ListboxGroup } from "./listbox-group";
 import { ListboxGroupLabel } from "./listbox-group-label";

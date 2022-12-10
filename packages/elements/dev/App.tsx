@@ -37,10 +37,15 @@ function SingleSelect() {
       selectionMode="multiple"
       gutter={8}
     >
-      <Select.Trigger class="select">
-        <Select.Value placeholder="Select an option" />
-        <Select.Icon class="ml-auto" />
-      </Select.Trigger>
+      <div class="flex flex-col space-y-2">
+        <Select.Label>Favorite fruit</Select.Label>
+        <Select.Trigger class="select">
+          <Select.Value placeholder="Select an option" />
+          <Select.Icon class="ml-auto" />
+        </Select.Trigger>
+        <Select.Description>Choose wisely.</Select.Description>
+        <Select.ErrorMessage>No !, you choose wrongly.</Select.ErrorMessage>
+      </div>
       <Select.Portal>
         <Select.Positioner>
           <Select.Menu class="popover">

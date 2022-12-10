@@ -1,11 +1,12 @@
 import { createPolymorphicComponent, isFunction, mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, createMemo, JSX, Show, splitProps } from "solid-js";
+import { Accessor, createEffect, createMemo, JSX, onCleanup, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createLocalizedStringFormatter } from "../i18n";
 import { SelectionType } from "../selection";
 import { SELECT_INTL_MESSAGES } from "./select.intl";
 import { useSelectContext } from "./select-context";
+import { useFormControlContext } from "../form-control";
 
 type SelectValueRenderProp = (selectedValues: Accessor<SelectionType>) => JSX.Element;
 
@@ -17,11 +18,12 @@ export interface SelectValueProps {
 }
 
 export const SelectValue = createPolymorphicComponent<"span", SelectValueProps>(props => {
+  const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
-  props = mergeDefaultProps({ as: "span" }, props);
+  props = mergeDefaultProps({ as: "span", id: context.generateId("value") }, props);
 
-  const [local, others] = splitProps(props, ["as", "children", "placeholder"]);
+  const [local, others] = splitProps(props, ["as", "id", "children", "placeholder"]);
 
   const stringFormatter = createLocalizedStringFormatter(() => SELECT_INTL_MESSAGES);
 
@@ -38,10 +40,14 @@ export const SelectValue = createPolymorphicComponent<"span", SelectValueProps>(
       .join(", ");
   });
 
+  createEffect(() => onCleanup(context.registerValue(local.id!)));
+
   return (
     <Dynamic
       component={local.as}
+      id={local.id}
       data-placeholder-shown={isSelectionEmpty() ? "" : undefined}
+      {...formControlContext.dataset()}
       {...others}
     >
       <Show when={!isSelectionEmpty()} fallback={<span>{local.placeholder}</span>}>

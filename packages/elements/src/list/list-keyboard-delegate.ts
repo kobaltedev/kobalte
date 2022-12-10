@@ -8,7 +8,7 @@
 
 import { Accessor } from "solid-js";
 
-import { Collection, CollectionNode, CollectionKey } from "../primitives";
+import { Collection, CollectionKey, CollectionNode } from "../primitives";
 import { KeyboardDelegate } from "../selection";
 
 export class ListKeyboardDelegate implements KeyboardDelegate {

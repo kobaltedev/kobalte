@@ -18,7 +18,6 @@ import {
   FormControlContext,
   FormControlDescription,
   FormControlErrorMessage,
-  FormControlLabel,
 } from "../form-control";
 import { createControllableSignal, createFormResetListener } from "../primitives";
 import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context";
