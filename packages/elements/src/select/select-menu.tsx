@@ -42,7 +42,14 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "id", "style", "forceMount", "onKeyDown"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "id",
+    "style",
+    "forceMount",
+    "onKeyDown",
+    "onFocusOut",
+  ]);
 
   const { overlayProps } = createOverlay(
     {
@@ -58,7 +65,7 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
 
   const { FocusTrap } = createFocusTrapRegion(
     {
-      isDisabled: () => !context.isOpen(),
+      trapFocus: () => context.isOpen(),
       autoFocus: true,
       restoreFocus: true,
     },
@@ -68,6 +75,16 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
   const onKeyDown: JSX.EventHandlerUnion<HTMLUListElement, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
     callHandler(e, overlayProps.onEscapeKeyDown);
+  };
+
+  const onFocusOut: JSX.EventHandlerUnion<HTMLUListElement, FocusEvent> = e => {
+    if (e.currentTarget.contains(e.relatedTarget as Node)) {
+      return;
+    }
+
+    callHandler(e, local.onFocusOut);
+
+    context.setIsFocused(false);
   };
 
   createEffect(() => onCleanup(context.registerListbox(local.id!)));
@@ -88,6 +105,7 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
         style={{ position: "relative", ...local.style }}
         aria-labelledby={context.menuAriaLabelledBy()}
         onKeyDown={onKeyDown}
+        onFocusOut={onFocusOut}
         {...dialogContext.dataset()}
         {...formControlContext.dataset()}
         {...others}

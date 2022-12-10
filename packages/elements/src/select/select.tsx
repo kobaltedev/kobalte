@@ -173,6 +173,7 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
 
   const [menuAriaLabelledBy, setMenuAriaLabelledBy] = createSignal<string>();
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy>();
+  const [isFocused, setIsFocused] = createSignal(false);
 
   const isSingleSelectMode = () => access(local.selectionMode) === "single";
 
@@ -255,7 +256,9 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     triggerId,
     valueId,
     listboxId,
+    isFocused,
     menuAriaLabelledBy,
+    setIsFocused,
     setMenuAriaLabelledBy,
     setTriggerRef,
     toggle,

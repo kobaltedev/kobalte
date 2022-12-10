@@ -7,7 +7,7 @@
  */
 
 import { visuallyHiddenStyles } from "@kobalte/utils";
-import { For, Match, Show, Switch } from "solid-js";
+import { createEffect, For, Match, Show, Switch } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { createInteractionModality } from "../primitives";

@@ -17,13 +17,14 @@ import {
   isFocusable,
   isString,
   MaybeAccessor,
+  mergeDefaultProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { Accessor, JSX, onCleanup, onMount, Show } from "solid-js";
 
 export interface CreateFocusTrapRegionProps {
-  /** Whether the focus trap is disabled. */
-  isDisabled?: MaybeAccessor<boolean | undefined>;
+  /** Whether the focus trap is active. */
+  trapFocus?: MaybeAccessor<boolean | undefined>;
 
   /**
    * Whether focus should be set on an element once the focus trap region mounts.
@@ -58,6 +59,8 @@ export function createFocusTrapRegion<T extends HTMLElement>(
   ref: Accessor<T | undefined>
 ) {
   let restoreFocusElement: HTMLElement | null;
+
+  props = mergeDefaultProps({ trapFocus: true }, props);
 
   const focusInitialElement = () => {
     const containerEl = ref();
@@ -162,7 +165,7 @@ export function createFocusTrapRegion<T extends HTMLElement>(
 
   const FocusTrap = () => {
     return (
-      <Show when={!access(props.isDisabled)}>
+      <Show when={access(props.trapFocus)}>
         <span
           tabIndex={0}
           style={{ ...visuallyHiddenStyles, position: "fixed", top: "0", left: "0" }}

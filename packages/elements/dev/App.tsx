@@ -15,15 +15,13 @@ interface Category {
 }
 
 const FOODS_DATA: Array<Category | Food> = [
-  /*
   { label: "🍎 Apple", textValue: "Apple", id: "apple" },
   { label: "🍇 Grape", textValue: "Grape", id: "grape" },
   { label: "🍊 Orange", textValue: "Orange", id: "orange" },
   { label: "🍓 Strawberry", textValue: "Strawberry", id: "strawberry" },
   { label: "🍉 Watermelon", textValue: "Watermelon", id: "watermelon" },
-  */
-  { label: "Zero", textValue: "Zero", id: 0 },
-  { label: "Empty", textValue: "Empty", id: "" },
+  { label: "Two", textValue: "Two", id: "two" },
+  { label: "Three", textValue: "Three", id: "three" },
 ];
 
 function SingleSelect() {
@@ -67,10 +65,7 @@ function SingleSelect() {
 export default function App() {
   return (
     <I18nProvider>
-      <form method="get">
-        <SingleSelect />
-        <button>Submit</button>
-      </form>
+      <SingleSelect />
     </I18nProvider>
   );
 }

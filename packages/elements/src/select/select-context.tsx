@@ -1,4 +1,4 @@
-import { Accessor, createContext, useContext } from "solid-js";
+import { Accessor, createContext, Setter, useContext } from "solid-js";
 
 import { ListState } from "../list";
 import { FocusStrategy, KeyboardDelegate } from "../selection";
@@ -12,10 +12,12 @@ export interface SelectContextValue {
   triggerId: Accessor<string | undefined>;
   valueId: Accessor<string | undefined>;
   listboxId: Accessor<string | undefined>;
+  isFocused: Accessor<boolean>;
   menuAriaLabelledBy: Accessor<string | undefined>;
   listState: Accessor<ListState>;
   keyboardDelegate: Accessor<KeyboardDelegate>;
-  setMenuAriaLabelledBy: (value: string | undefined) => void;
+  setIsFocused: Setter<boolean>;
+  setMenuAriaLabelledBy: Setter<string | undefined>;
   setTriggerRef: (el: HTMLButtonElement) => void;
   toggle: (focusStrategy?: FocusStrategy) => void;
   generateId: (part: string) => string;

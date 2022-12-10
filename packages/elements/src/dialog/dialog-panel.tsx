@@ -64,7 +64,7 @@ export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(p
 
   const { FocusTrap } = createFocusTrapRegion(
     {
-      isDisabled: () => !shouldTrapFocus,
+      trapFocus: shouldTrapFocus,
       autoFocus: () => context.focusTrapRegionProps().autoFocus,
       restoreFocus: () => context.focusTrapRegionProps().restoreFocus,
     },
