@@ -18,7 +18,7 @@ import { Link, LinkProps } from "../link";
 import { useHoverCardContext } from "./hover-card-context";
 
 /**
- * The link that opens the hover card when hovered.
+ * The link that opens the hovercard when hovered.
  */
 export const HoverCardTrigger = createPolymorphicComponent<"a", LinkProps>(props => {
   const context = useHoverCardContext();
@@ -99,12 +99,12 @@ export const HoverCardTrigger = createPolymorphicComponent<"a", LinkProps>(props
   return (
     <Link
       ref={mergeRefs(context.setTriggerRef, local.ref)}
+      data-expanded={context.isOpen() ? "" : undefined}
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
       onFocus={onFocus}
       onBlur={onBlur}
       onTouchStart={onTouchStart}
-      data-expanded={context.isOpen() ? "" : undefined}
       {...others}
     />
   );
