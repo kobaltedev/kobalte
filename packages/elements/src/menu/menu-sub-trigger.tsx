@@ -6,21 +6,13 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuSubTrigger.ts
  */
 
-import {
-  callHandler,
-  combineProps,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-} from "@kobalte/utils";
-import { createEffect, createMemo, JSX, onCleanup, splitProps } from "solid-js";
-
-import { createHoverCardTrigger } from "../hover-card/create-hover-card-trigger";
-import { createFocusRing, createHover, createPress, isKeyboardFocusVisible } from "../primitives";
-import { useMenuContext } from "./menu-context";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { MenuItemModel } from "./types";
-import { createSelectableItem } from "../selection";
+import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
+
+import { createFocusRing, createHover, createPress, isKeyboardFocusVisible } from "../primitives";
+import { createSelectableItem } from "../selection";
+import { useMenuContext } from "./menu-context";
 import { useMenuSubContext } from "./menu-sub-context";
 
 export interface MenuSubTriggerProps {
@@ -53,7 +45,6 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
 
   const selectionManager = () => menuSubContext.parentContext().listState().selectionManager();
 
-  const isDisabled = () => local.isDisabled || context.isDisabled();
   const isFocused = () => selectionManager().focusedKey() === menuSubContext.triggerKey();
 
   const {
@@ -67,26 +58,34 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       selectionManager: selectionManager,
       shouldSelectOnPressUp: true,
       allowsDifferentPressOrigin: true,
-      isDisabled,
+      isDisabled: () => local.isDisabled,
     },
     () => ref
   );
 
   const { pressHandlers, isPressed } = createPress({
-    isDisabled,
+    isDisabled: () => local.isDisabled,
     onPress: e => {
-      if (e.pointerType === "touch" && !context.isOpen() && !isDisabled()) {
+      if (e.pointerType === "touch" && !context.isOpen() && !local.isDisabled) {
         context.open();
       }
     },
   });
 
   const { hoverHandlers, isHovered } = createHover({
-    isDisabled,
-    onHoverStart: () => {
+    isDisabled: () => local.isDisabled,
+    onHoverStart: e => {
       if (!isKeyboardFocusVisible()) {
         selectionManager().setFocused(true);
         selectionManager().setFocusedKey(menuSubContext.triggerKey());
+      }
+
+      if (e.pointerType === "touch") {
+        return;
+      }
+
+      if (!context.isOpen()) {
+        context.open();
       }
     },
   });
@@ -100,7 +99,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       return;
     }
 
-    if (isDisabled()) {
+    if (local.isDisabled) {
       return;
     }
 
@@ -111,7 +110,11 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       case "ArrowRight":
         e.stopPropagation();
         e.preventDefault();
-        context.toggle("first");
+        if (context.isOpen()) {
+          context.focusInPanel();
+        } else {
+          context.open("first");
+        }
         break;
     }
   };
@@ -119,7 +122,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   createEffect(() => onCleanup(context.registerTrigger(local.id!)));
 
   createEffect(() => {
-    if (isDisabled()) {
+    if (local.isDisabled) {
       return;
     }
 
@@ -128,13 +131,11 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       key: menuSubContext.triggerKey(),
       label: local.textValue ?? ref?.textContent ?? "",
       textValue: local.textValue ?? ref?.textContent ?? "",
-      disabled: isDisabled(),
+      disabled: local.isDisabled,
     });
 
     onCleanup(unregister);
   });
-
-  //const { triggerHandlers: hoverCardTriggerHandlers } = createHoverCardTrigger({ isDisabled });
 
   return (
     <Dynamic
@@ -145,10 +146,10 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       aria-haspopup="true"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.panelId() : undefined}
-      aria-disabled={isDisabled()}
+      aria-disabled={local.isDisabled}
       data-key={dataKey()}
       data-expanded={context.isOpen() ? "" : undefined}
-      data-disabled={isDisabled() ? "" : undefined}
+      data-disabled={local.isDisabled ? "" : undefined}
       data-hover={isHovered() ? "" : undefined}
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
@@ -161,7 +162,6 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
           },
         },
         others,
-        //hoverCardTriggerHandlers,
         itemPressHandlers,
         itemOtherHandlers,
         pressHandlers,

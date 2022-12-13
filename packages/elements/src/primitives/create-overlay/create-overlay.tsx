@@ -19,10 +19,7 @@ export interface CreateOverlayProps {
   /** Handler that is called when the overlay should close. */
   onClose?: () => void;
 
-  /**
-   * Whether the overlay should block interaction with outside elements,
-   * and be the only visible content for screen readers.
-   */
+  /** Whether the overlay should be the only visible content for screen readers. */
   isModal?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the scroll should be locked when the overlay is open. */
@@ -111,8 +108,7 @@ export function createOverlay<T extends HTMLElement>(
 
   // Handle prevent scroll when the overlay is open
   createPreventScroll({
-    isDisabled: () =>
-      !((access(props.preventScroll) ?? access(props.isModal)) && access(props.isOpen)),
+    isDisabled: () => !(access(props.preventScroll) && access(props.isOpen)),
   });
 
   // Hides all elements in the DOM outside the given targets from screen readers when the overlay is an opened modal

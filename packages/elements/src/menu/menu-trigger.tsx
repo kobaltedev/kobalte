@@ -34,13 +34,11 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps
     "onKeyDown",
   ]);
 
-  const isDisabled = () => local.isDisabled || context.isDisabled();
-
   const onPressStart = (e: PressEvent) => {
     local.onPressStart?.(e);
 
     // For consistency with native, open the menu on mouse down, but touch up.
-    if (e.pointerType !== "touch" && e.pointerType !== "keyboard" && !isDisabled()) {
+    if (e.pointerType !== "touch" && e.pointerType !== "keyboard" && !local.isDisabled) {
       // If opened with a screen reader, autofocus the first item.
       // Otherwise, the menu itself will be focused.
       context.toggle(e.pointerType === "virtual" ? "first" : undefined);
@@ -49,7 +47,7 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps
   const onPress = (e: PressEvent) => {
     local.onPress?.(e);
 
-    if (e.pointerType === "touch" && !isDisabled()) {
+    if (e.pointerType === "touch" && !local.isDisabled) {
       context.toggle();
     }
   };
@@ -57,7 +55,7 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps
   const onKeyDown: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
 
-    if (isDisabled()) {
+    if (local.isDisabled) {
       return;
     }
 
@@ -84,7 +82,7 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps
     <Button
       ref={mergeRefs(context.setTriggerRef, local.ref)}
       id={local.id}
-      isDisabled={isDisabled()}
+      isDisabled={local.isDisabled}
       aria-haspopup="true"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.panelId() : undefined}

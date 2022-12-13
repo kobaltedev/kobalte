@@ -6,6 +6,7 @@ export interface HoverCardContextValue {
   closeWithDelay: () => void;
   cancelOpening: () => void;
   cancelClosing: () => void;
+  deepClose: () => void;
   isTargetOnHoverCard: (target: Node | undefined) => boolean;
   registerNestedHoverCard: (element: HTMLElement) => () => void;
   setTriggerRef: (el: HTMLElement) => void;

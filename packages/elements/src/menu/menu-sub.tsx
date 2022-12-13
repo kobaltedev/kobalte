@@ -25,6 +25,9 @@ export const MenuSub: ParentComponent<MenuSubProps> = props => {
     {
       id: defaultId,
       placement: "right-start",
+      trapFocus: false,
+      autoFocus: false,
+      restoreFocus: true,
       openDelay: 0,
       closeDelay: 0,
     },

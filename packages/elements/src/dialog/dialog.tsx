@@ -1,17 +1,10 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import {
-  Accessor,
-  createMemo,
-  createSignal,
-  createUniqueId,
-  ParentComponent,
-  splitProps,
-} from "solid-js";
+import { createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
 import { createDisclosure, createRegisterId } from "../primitives";
 import { DialogBackdrop } from "./dialog-backdrop";
 import { DialogCloseButton } from "./dialog-close-button";
-import { DialogContext, DialogContextValue, DialogDataSet } from "./dialog-context";
+import { DialogContext, DialogContextValue } from "./dialog-context";
 import { DialogDescription } from "./dialog-description";
 import { DialogPanel } from "./dialog-panel";
 import { DialogPortal } from "./dialog-portal";
@@ -106,8 +99,10 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
     {
       id: defaultId,
       isModal: true,
+      preventScroll: true,
       closeOnInteractOutside: true,
       closeOnEsc: true,
+      trapFocus: true,
       autoFocus: true,
       restoreFocus: true,
     },
@@ -136,13 +131,8 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
     onOpenChange: isOpen => props.onOpenChange?.(isOpen),
   });
 
-  const dataset: Accessor<DialogDataSet> = createMemo(() => ({
-    "data-expanded": state.isOpen() ? "" : undefined,
-  }));
-
   const context: DialogContextValue = {
     ...state,
-    dataset,
     panelId,
     titleId,
     descriptionId,

@@ -5,15 +5,16 @@ import { FocusStrategy } from "../selection";
 
 export interface MenuContextValue {
   isOpen: Accessor<boolean>;
-  isDisabled: Accessor<boolean>;
-  autoFocus: Accessor<FocusStrategy | boolean>;
+  autoFocus: Accessor<FocusStrategy | boolean | undefined>;
   listState: Accessor<ListState>;
   triggerId: Accessor<string | undefined>;
   panelId: Accessor<string | undefined>;
   setTriggerRef: (el: HTMLButtonElement) => void;
+  setPanelRef: (el: HTMLDivElement) => void;
   open: (focusStrategy?: FocusStrategy) => void;
-  close: () => void;
+  close: (deep?: boolean) => void;
   toggle: (focusStrategy?: FocusStrategy) => void;
+  focusInPanel: () => void;
   onAction: (key: string) => void;
   generateId: (part: string) => string;
   registerTrigger: (id: string) => () => void;

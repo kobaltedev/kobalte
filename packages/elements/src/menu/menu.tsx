@@ -3,11 +3,10 @@ import { createSignal, createUniqueId, ParentComponent, splitProps } from "solid
 
 import { DialogPortal } from "../dialog/dialog-portal";
 import { HoverCard, HoverCardProps } from "../hover-card";
-import { useOptionalHoverCardContext } from "../hover-card/hover-card-context";
 import { createListState } from "../list";
 import { PopoverArrow } from "../popover/popover-arrow";
 import { PopoverPositioner } from "../popover/popover-positioner";
-import { createDisclosure, createRegisterId } from "../primitives";
+import { createDisclosure, createRegisterId, focusSafely } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { FocusStrategy } from "../selection";
 import { MenuContext, MenuContextValue } from "./menu-context";
@@ -17,6 +16,7 @@ import { MenuSub } from "./menu-sub";
 import { MenuSubTrigger } from "./menu-sub-trigger";
 import { MenuTrigger } from "./menu-trigger";
 import { MenuItemModel } from "./types";
+import { useOptionalMenuSubContext } from "./menu-sub-context";
 
 type MenuComposite = {
   Trigger: typeof MenuTrigger;
@@ -30,21 +30,22 @@ type MenuComposite = {
   Arrow: typeof PopoverArrow;
 };
 
-export interface MenuProps extends HoverCardProps {
-  /** Whether the menu is disabled. */
-  isDisabled?: boolean;
-
+export interface MenuProps extends Omit<HoverCardProps, "closeOnHoverOutside" | ""> {
   /** Handler that is called when the user activates a menu item. */
   onAction?: (key: string) => void;
 }
 
 export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
+  const parentMenuSubContext = useOptionalMenuSubContext();
   const defaultId = `menu-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
       id: defaultId,
       placement: "bottom-start",
+      closeOnEsc: true,
+      trapFocus: false,
+      autoFocus: true,
       restoreFocus: true,
     },
     props
@@ -56,15 +57,15 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
     "isOpen",
     "defaultIsOpen",
     "onOpenChange",
-    "isDisabled",
     "onAction",
   ]);
 
   const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
+  const [panelRef, setPanelRef] = createSignal<HTMLButtonElement>();
   const [triggerId, setTriggerId] = createSignal<string>();
   const [panelId, setPanelId] = createSignal<string>();
 
-  const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy>();
+  const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean | undefined>(true);
 
   const [items, setItems] = createSignal<MenuItemModel[]>([]);
 
@@ -86,22 +87,43 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
     disclosureState.open();
   };
 
+  const close = (deep?: boolean) => {
+    disclosureState.close();
+
+    if (deep) {
+      parentMenuSubContext?.parentContext().close(deep);
+    }
+  };
+
   const toggle = (focusStrategy?: FocusStrategy) => {
-    setFocusStrategy(focusStrategy);
-    disclosureState.toggle();
+    if (disclosureState.isOpen()) {
+      close();
+    } else {
+      setFocusStrategy(focusStrategy);
+      open(focusStrategy);
+    }
+  };
+
+  const focusInPanel = () => {
+    const panel = panelRef();
+
+    if (panel) {
+      focusSafely(panel);
+    }
   };
 
   const context: MenuContextValue = {
     isOpen: () => disclosureState.isOpen(),
-    isDisabled: () => local.isDisabled ?? false,
-    autoFocus: () => focusStrategy() || true,
+    autoFocus: focusStrategy,
     listState: () => listState,
     triggerId,
     panelId,
     setTriggerRef,
+    setPanelRef,
     open,
-    close: disclosureState.close,
+    close,
     toggle,
+    focusInPanel,
     onAction: key => local.onAction?.(key),
     generateId: createGenerateId(() => local.id!),
     registerTrigger: createRegisterId(setTriggerId),

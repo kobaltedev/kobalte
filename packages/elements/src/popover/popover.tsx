@@ -155,6 +155,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     {
       id: defaultId,
       isModal: false,
+      preventScroll: false,
       trapFocus: true,
       getAnchorRect: anchor => anchor?.getBoundingClientRect(),
       placement: "bottom",

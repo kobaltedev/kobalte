@@ -7,7 +7,6 @@ import {
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useDialogContext } from "../dialog";
 import {
   createFocusRing,
   createHover,
@@ -17,8 +16,9 @@ import {
 } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
-import { useMenuContext, useOptionalMenuContext } from "./menu-context";
+import { useMenuContext } from "./menu-context";
 import { MenuItemContext, MenuItemContextValue, MenuItemDataSet } from "./menu-item.context";
+import { useOptionalMenuSubContext } from "./menu-sub-context";
 import { MenuItemModel } from "./types";
 
 export interface MenuItemProps {
@@ -44,7 +44,7 @@ export const MenuItem = createPolymorphicComponent<"div", MenuItemProps>(props =
   let ref: HTMLDivElement | undefined;
 
   const menuContext = useMenuContext();
-  const menuSubContext = useOptionalMenuContext();
+  const menuSubContext = useOptionalMenuSubContext();
 
   const defaultId = `${menuContext.generateId("item")}-${createUniqueId()}`;
 
@@ -113,7 +113,7 @@ export const MenuItem = createPolymorphicComponent<"div", MenuItemProps>(props =
 
         // Pressing a menu item should close by default, except if overridden by the closeOnSelect prop.
         if (local.closeOnSelect) {
-          menuContext.close();
+          menuContext.close(true);
         }
       }
     },
@@ -145,13 +145,13 @@ export const MenuItem = createPolymorphicComponent<"div", MenuItemProps>(props =
           selectionManager().selectionMode() === "none" &&
           local.closeOnSelect !== false
         ) {
-          menuContext.close();
+          menuContext.close(true);
         }
         break;
       case "Enter":
         // The Enter key should always close on select, except if overridden.
         if (!local.isDisabled && local.closeOnSelect !== false) {
-          menuContext.close();
+          menuContext.close(true);
         }
         break;
       case "ArrowLeft":

@@ -1,12 +1,10 @@
 import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
-import { useDialogContext, useDialogPortalContext } from "../dialog";
-import { createSelectableList } from "../list";
-import { createFocusRing, createFocusTrapRegion, createOverlay } from "../primitives";
-import { useMenuContext } from "./menu-context";
 import { HoverCardPanel } from "../hover-card/hover-card-panel";
+import { createSelectableList } from "../list";
+import { createFocusRing } from "../primitives";
+import { useMenuContext } from "./menu-context";
 
 export interface MenuPanelProps {
   /** The HTML styles attribute (object form only). */
@@ -40,8 +38,9 @@ export const MenuPanel = createPolymorphicComponent<"div", MenuPanelProps>(props
       selectionManager: context.listState().selectionManager,
       collection: context.listState().collection,
       autoFocus: context.autoFocus,
-      deferAutoFocus: true, // ensure all menu items are mounted and collection is not empty before trying to auto focus.
+      deferAutoFocus: true, // ensure all menu items are mounted and collection is not empty before trying to autofocus.
       shouldFocusWrap: true,
+      disallowTypeAhead: () => !context.listState().selectionManager().isFocused(),
     },
     () => ref
   );
@@ -49,6 +48,10 @@ export const MenuPanel = createPolymorphicComponent<"div", MenuPanelProps>(props
   const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing({
     within: true,
   });
+
+  const onPointerLeave = () => {
+    context.listState().selectionManager().setFocusedKey(undefined);
+  };
 
   createEffect(() => onCleanup(context.registerPanel(local.id!)));
 
@@ -61,8 +64,14 @@ export const MenuPanel = createPolymorphicComponent<"div", MenuPanelProps>(props
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
       {...combineProps(
-        { ref: el => (ref = el) },
+        {
+          ref: el => {
+            context.setPanelRef(el);
+            ref = el;
+          },
+        },
         others,
+        { onPointerLeave },
         selectableList.handlers,
         focusRingHandlers
       )}

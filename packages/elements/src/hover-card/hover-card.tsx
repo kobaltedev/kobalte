@@ -6,7 +6,7 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard.tsx
  */
 
-import { createGlobalListeners, EventKey, mergeDefaultProps } from "@kobalte/utils";
+import { access, createGlobalListeners, EventKey, mergeDefaultProps } from "@kobalte/utils";
 import {
   createEffect,
   createSignal,
@@ -23,8 +23,8 @@ import { DialogTitle } from "../dialog/dialog-title";
 import { Popover, PopoverProps } from "../popover";
 import { PopoverArrow } from "../popover/popover-arrow";
 import { PopoverPositioner } from "../popover/popover-positioner";
-import { getAnchorElement, Placement } from "../popover/utils";
-import { createControllableBooleanSignal } from "../primitives";
+import { Placement } from "../popover/utils";
+import { createControllableBooleanSignal, createInteractOutside } from "../primitives";
 import {
   HoverCardContext,
   HoverCardContextValue,
@@ -49,10 +49,7 @@ type HoverCardComposite = {
 };
 
 export interface HoverCardProps
-  extends Omit<
-    PopoverProps,
-    "onCurrentPlacementChange" | "closeOnInteractOutside" | "shouldCloseOnInteractOutside"
-  > {
+  extends Omit<PopoverProps, "onCurrentPlacementChange" | "shouldCloseOnInteractOutside"> {
   /** The duration from when the mouse enters the trigger until the hovercard opens. */
   openDelay?: number;
 
@@ -81,6 +78,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       closeDelay: 300,
       placement: "bottom",
       closeOnHoverOutside: true,
+      closeOnInteractOutside: true,
       closeOnEsc: true,
       isModal: false,
       preventScroll: false,
@@ -98,6 +96,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     "openDelay",
     "closeDelay",
     "closeOnHoverOutside",
+    "closeOnInteractOutside",
     "closeOnEsc",
     "ignoreSafeArea",
     "anchorRef",
@@ -120,6 +119,12 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   });
 
   const { addGlobalListener, removeGlobalListener } = createGlobalListeners();
+
+  // Close the hovercard and all parent hovercards.
+  const deepClose = () => {
+    setIsOpen(false);
+    parentContext?.deepClose();
+  };
 
   const openWithDelay = () => {
     openTimeoutId = window.setTimeout(() => {
@@ -172,13 +177,22 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   };
 
   const onGlobalEscapeKeyDown = (event: KeyboardEvent) => {
-    if (event.defaultPrevented) {
+    if (event.key === EventKey.Escape && local.closeOnEsc) {
+      deepClose();
+    }
+  };
+
+  // Handle clicking outside the hovercard to close it
+  const onGlobalPointerUp = (event: PointerEvent) => {
+    const target = event.target as Node | undefined;
+
+    // Don't close if the hovercard element has focus within or the mouse is moving through valid hovercard elements.
+    if (isTargetOnHoverCard(target)) {
       return;
     }
 
-    if (event.key === EventKey.Escape && local.closeOnEsc) {
-      setIsOpen(false);
-    }
+    // Otherwise, hide the hovercard and all its parent hovercards.
+    deepClose();
   };
 
   const onGlobalPointerMove = (event: PointerEvent) => {
@@ -243,10 +257,12 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     // Checks whether the mouse is moving toward the hovercard.
     // If not, hide the card after the close delay.
     addGlobalListener(document, "pointermove", onGlobalPointerMove, true);
+    addGlobalListener(document, "pointerup", onGlobalPointerUp, true);
 
     onCleanup(() => {
       removeGlobalListener(document, "keydown", onGlobalEscapeKeyDown);
       removeGlobalListener(document, "pointermove", onGlobalPointerMove, true);
+      removeGlobalListener(document, "pointerup", onGlobalPointerUp, true);
     });
   });
 
@@ -262,6 +278,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     closeWithDelay,
     cancelOpening,
     cancelClosing,
+    deepClose,
     isTargetOnHoverCard,
     registerNestedHoverCard,
     setTriggerRef,
@@ -275,8 +292,8 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
         onOpenChange={setIsOpen}
         anchorRef={anchorRef}
         onCurrentPlacementChange={setCurrentPlacement}
-        closeOnInteractOutside={local.closeOnHoverOutside}
-        closeOnEsc={local.closeOnEsc}
+        closeOnInteractOutside={false}
+        closeOnEsc={false}
         {...others}
       />
     </HoverCardContext.Provider>

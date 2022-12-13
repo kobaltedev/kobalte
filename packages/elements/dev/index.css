@@ -77,6 +77,11 @@ body,
   color: hsl(204 20% 100%);
 }
 
+.menu-item:not([data-focus])[data-expanded] {
+  background-color: hsl(204 10% 10% / 0.1);
+  color: currentColor;
+}
+
 .menu-item:active,
 .menu-item[data-active] {
   background-color: hsl(204 100% 32%);
@@ -84,9 +89,4 @@ body,
 
 .menu-item[data-disabled] {
   opacity: 0.25;
-}
-
-.menu-item[data-expanded] {
-  background-color: hsl(204 10% 10% / 0.1);
-  color: currentColor;
 }
