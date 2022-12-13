@@ -26,7 +26,7 @@ export const DialogPositioner = createPolymorphicComponent<"div", DialogPosition
 
   return (
     <Show when={local.forceMount || portalContext?.forceMount() || context.isOpen()}>
-      <Dynamic component={local.as} {...context.dataset()} {...others} />
+      <Dynamic component={local.as} {...others} />
     </Show>
   );
 });

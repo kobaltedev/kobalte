@@ -14,6 +14,7 @@ export * from "./hover-card";
 export * from "./i18n";
 export * from "./link";
 export * from "./listbox";
+export * from "./menu";
 export * from "./popover";
 export * from "./radio-group";
 export * from "./select";

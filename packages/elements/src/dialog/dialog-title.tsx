@@ -22,5 +22,5 @@ export const DialogTitle = createPolymorphicComponent<"h2">(props => {
 
   createEffect(() => onCleanup(context.registerTitle(local.id!)));
 
-  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
+  return <Dynamic component={local.as} id={local.id} {...others} />;
 });

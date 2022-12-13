@@ -25,7 +25,7 @@ import {
 } from "../list";
 import { CollectionKey, CollectionNode, createFocusRing } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, SelectionType } from "../selection";
-import { ListboxContext, ListboxContextValue, ListboxDataSet } from "./listbox-context";
+import { ListboxContext, ListboxContextValue } from "./listbox-context";
 import { ListboxGroup } from "./listbox-group";
 import { ListboxGroupLabel } from "./listbox-group-label";
 import { ListboxGroupOptions } from "./listbox-group-options";
@@ -162,9 +162,6 @@ export interface ListboxProps
   /** Whether the listbox uses virtual scrolling. */
   isVirtualized?: boolean;
 
-  /** When virtualized, callback used to notify the virtual scroller to scrolls to the option of the index provided. */
-  scrollToIndex?: (index: number) => void;
-
   /**
    * A map function that receives a _collection node_ signal representing a listbox option,
    * and an index signal and returns a JSX-Element.
@@ -219,7 +216,6 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
     "allowsTabNavigation",
     "filter",
     "isVirtualized",
-    "scrollToIndex",
   ]);
 
   const listState = createMemo(() => {
@@ -264,7 +260,6 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
       shouldUseVirtualFocus: () => access(local.shouldUseVirtualFocus),
       allowsTabNavigation: () => access(local.allowsTabNavigation),
       isVirtualized: () => local.isVirtualized,
-      scrollToIndex: local.scrollToIndex,
     },
     () => ref
   );
@@ -273,13 +268,7 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
     within: true,
   });
 
-  const dataset: Accessor<ListboxDataSet> = createMemo(() => ({
-    "data-focus": isFocused() ? "" : undefined,
-    "data-focus-visible": isFocusVisible() ? "" : undefined,
-  }));
-
   const context: ListboxContextValue = {
-    dataset,
     listState,
     generateId: part => `${others.id!}-${part}`,
     shouldUseVirtualFocus: () => props.shouldUseVirtualFocus,
@@ -297,11 +286,12 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
         aria-multiselectable={
           listState().selectionManager().selectionMode() === "multiple" ? true : undefined
         }
-        {...dataset()}
+        data-focus={isFocused() ? "" : undefined}
+        data-focus-visible={isFocusVisible() ? "" : undefined}
         {...combineProps(
           { ref: el => (ref = el) },
           others,
-          selectableList.typeSelectHandlers,
+          selectableList.handlers,
           focusRingHandlers
         )}
       >

@@ -261,6 +261,7 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     setIsFocused,
     setMenuAriaLabelledBy,
     setTriggerRef,
+    close: disclosureState.close,
     toggle,
     generateId: createGenerateId(() => access(formControlProps.id)!),
     registerTrigger: createRegisterId(setTriggerId),

@@ -40,7 +40,7 @@ export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(p
 
   createEffect(() => onCleanup(context.registerPanel(local.id!)));
 
-  const { overlayProps } = createOverlay(
+  const { overlayHandlers } = createOverlay(
     {
       isOpen: context.isOpen,
       onClose: context.close,
@@ -73,7 +73,7 @@ export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(p
 
   const onKeyDown: JSX.EventHandlerUnion<HTMLDivElement, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
-    callHandler(e, overlayProps.onEscapeKeyDown);
+    callHandler(e, overlayHandlers.onKeyDown);
   };
 
   return (
@@ -88,7 +88,6 @@ export const DialogPanel = createPolymorphicComponent<"div", DialogPanelProps>(p
         aria-labelledby={context.titleId()}
         aria-describedby={context.descriptionId()}
         onKeyDown={onKeyDown}
-        {...context.dataset()}
         {...others}
       />
       <FocusTrap />

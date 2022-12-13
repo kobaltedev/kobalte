@@ -1,71 +1,55 @@
-import { createSignal } from "solid-js";
+import { I18nProvider, Menu } from "../src";
 
-import { I18nProvider, Select } from "../src";
-
-interface Food {
-  id: string | number;
-  label: string;
-  textValue: string;
-  disabled?: boolean;
-}
-
-interface Category {
-  label: string;
-  items: Array<Food>;
-}
-
-const FOODS_DATA: Array<Category | Food> = [
-  { label: "🍎 Apple", textValue: "Apple", id: "apple" },
-  { label: "🍇 Grape", textValue: "Grape", id: "grape" },
-  { label: "🍊 Orange", textValue: "Orange", id: "orange" },
-  { label: "🍓 Strawberry", textValue: "Strawberry", id: "strawberry" },
-  { label: "🍉 Watermelon", textValue: "Watermelon", id: "watermelon" },
-  { label: "Two", textValue: "Two", id: "two" },
-  { label: "Three", textValue: "Three", id: "three" },
-];
-
-function SingleSelect() {
-  const [foods, setFoods] = createSignal(FOODS_DATA);
-
-  const [value, setValue] = createSignal<Set<string>>(new Set([]));
+function TestMenu() {
+  const handleAction = (key: string) => {
+    console.log(key);
+  };
 
   return (
-    <Select
-      name="fruits"
-      value={value()}
-      onValueChange={setValue}
-      options={foods()}
-      optionPropertyNames={{ value: "id" }}
-    >
-      <div class="flex flex-col space-y-2">
-        <Select.Label>Favorite fruit</Select.Label>
-        <Select.Trigger class="select">
-          <Select.Value placeholder="Select an option" />
-          <Select.Icon class="ml-auto" />
-        </Select.Trigger>
-        <Select.Description>Choose wisely.</Select.Description>
-        <Select.ErrorMessage>No !, you choose wrongly.</Select.ErrorMessage>
-      </div>
-      <Select.Portal>
-        <Select.Positioner>
-          <Select.Menu class="popover">
-            {node => (
-              <Select.Option node={node()} class="select-item">
-                <Select.OptionLabel>{node().label}</Select.OptionLabel>
-                <Select.OptionIndicator class="ml-auto">✓</Select.OptionIndicator>
-              </Select.Option>
-            )}
-          </Select.Menu>
-        </Select.Positioner>
-      </Select.Portal>
-    </Select>
+    <Menu onAction={handleAction}>
+      <Menu.Trigger class="button">Actions</Menu.Trigger>
+      <Menu.Portal>
+        <Menu.Positioner>
+          <Menu.Panel class="menu">
+            <Menu.Arrow />
+            <Menu.Item key="edit" class="menu-item">
+              Edit
+            </Menu.Item>
+            <Menu.Item key="share" class="menu-item">
+              Share
+            </Menu.Item>
+            <Menu.Item key="delete" isDisabled class="menu-item">
+              Delete
+            </Menu.Item>
+            <Menu.Item key="report" class="menu-item">
+              Report
+            </Menu.Item>
+            <Menu.Sub key="sub" gutter={8} shift={-9}>
+              <Menu.SubTrigger class="menu-item">Sub</Menu.SubTrigger>
+              <Menu.Portal>
+                <Menu.Positioner>
+                  <Menu.Panel class="menu">
+                    <Menu.Item key="foo" class="menu-item">
+                      Foo
+                    </Menu.Item>
+                    <Menu.Item key="Bar" class="menu-item">
+                      Bar
+                    </Menu.Item>
+                  </Menu.Panel>
+                </Menu.Positioner>
+              </Menu.Portal>
+            </Menu.Sub>
+          </Menu.Panel>
+        </Menu.Positioner>
+      </Menu.Portal>
+    </Menu>
   );
 }
 
 export default function App() {
   return (
     <I18nProvider>
-      <SingleSelect />
+      <TestMenu />
     </I18nProvider>
   );
 }

@@ -8,6 +8,7 @@
 
 import {
   combineProps,
+  createGenerateId,
   createPolymorphicComponent,
   isMac,
   isWebKit,
@@ -20,16 +21,17 @@ import {
   CollectionNode,
   createFocusRing,
   createHover,
+  createRegisterId,
   isKeyboardFocusVisible,
 } from "../primitives";
 import { getItemCount } from "../primitives/create-collection/get-item-count";
 import { createSelectableItem } from "../selection";
+import { useListboxContext } from "./listbox-context";
 import {
   ListboxOptionContext,
   ListboxOptionContextValue,
   ListboxOptionDataSet,
 } from "./listbox-option-context";
-import { useListboxContext } from "./listbox-context";
 
 export interface ListboxOptionProps {
   /** The collection node to render. */
@@ -143,15 +145,9 @@ export const ListboxOption = createPolymorphicComponent<"li", ListboxOptionProps
   const context: ListboxOptionContextValue = {
     dataset,
     isSelected: selectableItem.isSelected,
-    generateId: part => `${others.id!}-${part}`,
-    registerLabel: id => {
-      setLabelId(id);
-      return () => setLabelId(undefined);
-    },
-    registerDescription: id => {
-      setDescriptionId(id);
-      return () => setDescriptionId(undefined);
-    },
+    generateId: createGenerateId(() => others.id!),
+    registerLabel: createRegisterId(setLabelId),
+    registerDescription: createRegisterId(setDescriptionId),
   };
 
   return (
@@ -172,9 +168,9 @@ export const ListboxOption = createPolymorphicComponent<"li", ListboxOptionProps
         {...combineProps(
           { ref: el => (ref = el) },
           others,
-          selectableItem.typeSelectHandlers.press,
-          // selectableItem.handlers.longPress,
-          selectableItem.typeSelectHandlers.others,
+          selectableItem.pressHandlers,
+          // selectableItem.longPressHandlers,
+          selectableItem.otherHandlers,
           hoverHandlers,
           focusRingHandlers
         )}

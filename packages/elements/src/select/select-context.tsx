@@ -19,6 +19,7 @@ export interface SelectContextValue {
   setIsFocused: Setter<boolean>;
   setMenuAriaLabelledBy: Setter<string | undefined>;
   setTriggerRef: (el: HTMLButtonElement) => void;
+  close: () => void;
   toggle: (focusStrategy?: FocusStrategy) => void;
   generateId: (part: string) => string;
   registerTrigger: (id: string) => () => void;

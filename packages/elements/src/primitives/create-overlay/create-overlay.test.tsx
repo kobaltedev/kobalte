@@ -26,10 +26,10 @@ export function Overlay(props: ComponentProps<"div"> & CreateOverlayProps) {
     "onKeyDown",
   ]);
 
-  const { overlayProps } = createOverlay(local, () => ref);
+  const { overlayHandlers } = createOverlay(local, () => ref);
 
   // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-  return <div ref={ref} onKeyDown={overlayProps.onEscapeKeyDown} {...others} />;
+  return <div ref={ref} onKeyDown={overlayHandlers.onEscapeKeyDown} {...others} />;
 }
 
 describe("createOverlay", () => {

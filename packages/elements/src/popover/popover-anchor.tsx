@@ -2,7 +2,6 @@ import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobal
 import { splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useDialogContext } from "../dialog";
 import { usePopoverContext } from "./popover-context";
 
 /**
@@ -10,7 +9,6 @@ import { usePopoverContext } from "./popover-context";
  * If this part is not used, the content will position alongside the `Popover.Trigger`.
  */
 export const PopoverAnchor = createPolymorphicComponent<"div">(props => {
-  const dialogContext = useDialogContext();
   const context = usePopoverContext();
 
   props = mergeDefaultProps({ as: "div" }, props);
@@ -21,7 +19,6 @@ export const PopoverAnchor = createPolymorphicComponent<"div">(props => {
     <Dynamic
       component={local.as}
       ref={mergeRefs(context.setDefaultAnchorRef, local.ref)}
-      {...dialogContext.dataset()}
       {...others}
     />
   );

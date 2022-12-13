@@ -3,12 +3,7 @@ import { Accessor, createContext, useContext } from "solid-js";
 import { CreateDisclosureResult } from "../primitives";
 import { DialogFocusTrapRegionProps, DialogOverlayProps } from "./dialog";
 
-export interface DialogDataSet {
-  "data-expanded": string | undefined;
-}
-
 export interface DialogContextValue extends CreateDisclosureResult {
-  dataset: Accessor<DialogDataSet>;
   panelId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;

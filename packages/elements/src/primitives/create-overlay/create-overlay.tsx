@@ -91,7 +91,7 @@ export function createOverlay<T extends HTMLElement>(
   };
 
   // Handle the escape key
-  const onEscapeKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     if (e.key === EventKey.Escape && access(props.closeOnEsc)) {
       e.stopPropagation();
       e.preventDefault();
@@ -152,6 +152,8 @@ export function createOverlay<T extends HTMLElement>(
   });
 
   return {
-    overlayProps: { onEscapeKeyDown },
+    overlayHandlers: {
+      onKeyDown,
+    },
   };
 }

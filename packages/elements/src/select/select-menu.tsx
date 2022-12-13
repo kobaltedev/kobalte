@@ -6,7 +6,7 @@ import {
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
-import { useDialogContext, useDialogPortalContext } from "../dialog";
+import { useDialogPortalContext } from "../dialog";
 import { useFormControlContext } from "../form-control";
 import { Listbox, ListboxProps } from "../listbox";
 import { usePopoverContext } from "../popover/popover-context";
@@ -28,7 +28,6 @@ export interface SelectMenuProps extends ListboxProps {
 export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(props => {
   let ref: HTMLUListElement | undefined;
 
-  const dialogContext = useDialogContext();
   const popoverContext = usePopoverContext();
   const portalContext = useDialogPortalContext();
   const formControlContext = useFormControlContext();
@@ -51,10 +50,10 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
     "onFocusOut",
   ]);
 
-  const { overlayProps } = createOverlay(
+  const { overlayHandlers } = createOverlay(
     {
       isOpen: context.isOpen,
-      onClose: dialogContext.close,
+      onClose: context.close,
       isModal: false,
       preventScroll: false,
       closeOnInteractOutside: true,
@@ -66,7 +65,7 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
   const { FocusTrap } = createFocusTrapRegion(
     {
       trapFocus: () => context.isOpen(),
-      autoFocus: true,
+      autoFocus: false,
       restoreFocus: true,
     },
     () => ref
@@ -74,7 +73,7 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
 
   const onKeyDown: JSX.EventHandlerUnion<HTMLUListElement, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
-    callHandler(e, overlayProps.onEscapeKeyDown);
+    callHandler(e, overlayHandlers.onKeyDown);
   };
 
   const onFocusOut: JSX.EventHandlerUnion<HTMLUListElement, FocusEvent> = e => {
@@ -106,7 +105,6 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
         aria-labelledby={context.menuAriaLabelledBy()}
         onKeyDown={onKeyDown}
         onFocusOut={onFocusOut}
-        {...dialogContext.dataset()}
         {...formControlContext.dataset()}
         {...others}
       />

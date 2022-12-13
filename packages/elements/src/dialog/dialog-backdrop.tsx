@@ -35,12 +35,7 @@ export const DialogBackdrop = createPolymorphicComponent<"div", DialogBackdropPr
 
   return (
     <Show when={local.forceMount || portalContext?.forceMount() || context.isOpen()}>
-      <Dynamic
-        component={local.as}
-        onPointerDown={onPointerDown}
-        {...context.dataset()}
-        {...others}
-      />
+      <Dynamic component={local.as} onPointerDown={onPointerDown} {...others} />
     </Show>
   );
 });
