@@ -6,7 +6,11 @@ import { Menu, MenuProps } from "./menu";
 import { useMenuContext } from "./menu-context";
 import { MenuSubContext, MenuSubContextValue } from "./menu-sub-context";
 
-export interface MenuSubProps extends Omit<MenuProps, "onAction"> {
+export interface MenuSubProps
+  extends Omit<
+    MenuProps,
+    "onAction" | "isModal" | "preventScroll" | "trapFocus" | "autoFocus" | "restoreFocus"
+  > {
   /** A unique key for the sub menu trigger. */
   key: string;
 }
@@ -25,11 +29,6 @@ export const MenuSub: ParentComponent<MenuSubProps> = props => {
     {
       id: defaultId,
       placement: "right-start",
-      trapFocus: false,
-      autoFocus: false,
-      restoreFocus: true,
-      openDelay: 0,
-      closeDelay: 0,
     },
     props
   );
@@ -40,13 +39,21 @@ export const MenuSub: ParentComponent<MenuSubProps> = props => {
 
   const context: MenuSubContextValue = {
     triggerKey: () => local.key,
-    parentContext: () => parentMenuContext,
+    parentMenuContext: () => parentMenuContext,
     registerSubTriggerToParent: parentDomCollectionContext.registerItem,
   };
 
   return (
     <MenuSubContext.Provider value={context}>
-      <Menu onAction={parentMenuContext.onAction} {...others} />
+      <Menu
+        isModal={parentMenuContext.isModal()}
+        preventScroll={parentMenuContext.preventScroll()}
+        trapFocus={parentMenuContext.trapFocus()}
+        autoFocus={false}
+        restoreFocus={true}
+        onAction={parentMenuContext.onAction}
+        {...others}
+      />
     </MenuSubContext.Provider>
   );
 };

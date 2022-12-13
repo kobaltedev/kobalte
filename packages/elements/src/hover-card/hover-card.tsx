@@ -6,7 +6,7 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard.tsx
  */
 
-import { access, createGlobalListeners, EventKey, mergeDefaultProps } from "@kobalte/utils";
+import { createGlobalListeners, EventKey, mergeDefaultProps } from "@kobalte/utils";
 import {
   createEffect,
   createSignal,
@@ -24,7 +24,7 @@ import { Popover, PopoverProps } from "../popover";
 import { PopoverArrow } from "../popover/popover-arrow";
 import { PopoverPositioner } from "../popover/popover-positioner";
 import { Placement } from "../popover/utils";
-import { createControllableBooleanSignal, createInteractOutside } from "../primitives";
+import { createControllableBooleanSignal } from "../primitives";
 import {
   HoverCardContext,
   HoverCardContextValue,
@@ -120,7 +120,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
 
   const { addGlobalListener, removeGlobalListener } = createGlobalListeners();
 
-  // Close the hovercard and all parent hovercards.
+  // Close the hovercard and all its ancestors.
   const deepClose = () => {
     setIsOpen(false);
     parentContext?.deepClose();
@@ -191,7 +191,11 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       return;
     }
 
-    // Otherwise, hide the hovercard and all its parent hovercards.
+    if (!local.closeOnInteractOutside) {
+      return;
+    }
+
+    // Otherwise, hide the hovercard and all its ancestors.
     deepClose();
   };
 

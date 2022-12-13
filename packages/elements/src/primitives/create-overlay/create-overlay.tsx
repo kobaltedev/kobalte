@@ -63,10 +63,13 @@ export function createOverlay<T extends HTMLElement>(
   };
 
   const shouldCloseOnInteractOutside = (element: Element) => {
-    return (
-      !access(props.shouldCloseOnInteractOutside) ||
-      access(props.shouldCloseOnInteractOutside)?.(element)
-    );
+    const shouldCloseOnInteractOutside = access(props.shouldCloseOnInteractOutside);
+
+    if (shouldCloseOnInteractOutside == null) {
+      return true;
+    }
+
+    return shouldCloseOnInteractOutside(element);
   };
 
   const onInteractOutsideStart = (e: Event) => {

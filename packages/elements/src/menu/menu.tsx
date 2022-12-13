@@ -9,14 +9,14 @@ import { PopoverPositioner } from "../popover/popover-positioner";
 import { createDisclosure, createRegisterId, focusSafely } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { FocusStrategy } from "../selection";
-import { MenuContext, MenuContextValue } from "./menu-context";
+import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-context";
 import { MenuItem } from "./menu-item";
 import { MenuPanel } from "./menu-panel";
 import { MenuSub } from "./menu-sub";
+import { useOptionalMenuSubContext } from "./menu-sub-context";
 import { MenuSubTrigger } from "./menu-sub-trigger";
 import { MenuTrigger } from "./menu-trigger";
 import { MenuItemModel } from "./types";
-import { useOptionalMenuSubContext } from "./menu-sub-context";
 
 type MenuComposite = {
   Trigger: typeof MenuTrigger;
@@ -30,13 +30,17 @@ type MenuComposite = {
   Arrow: typeof PopoverArrow;
 };
 
-export interface MenuProps extends Omit<HoverCardProps, "closeOnHoverOutside" | ""> {
+export interface MenuProps
+  extends Omit<
+    HoverCardProps,
+    "closeOnHoverOutside" | "closeOnInteractOutside" | "closeDelay" | "openDelay"
+  > {
   /** Handler that is called when the user activates a menu item. */
   onAction?: (key: string) => void;
 }
 
 export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
-  const parentMenuSubContext = useOptionalMenuSubContext();
+  const parentMenuContext = useOptionalMenuContext();
   const defaultId = `menu-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -44,7 +48,9 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
       id: defaultId,
       placement: "bottom-start",
       closeOnEsc: true,
-      trapFocus: false,
+      isModal: parentMenuContext?.isModal() ?? true,
+      preventScroll: parentMenuContext?.preventScroll() ?? true,
+      trapFocus: parentMenuContext?.trapFocus() ?? true,
       autoFocus: true,
       restoreFocus: true,
     },
@@ -91,7 +97,7 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
     disclosureState.close();
 
     if (deep) {
-      parentMenuSubContext?.parentContext().close(deep);
+      parentMenuContext?.close(deep);
     }
   };
 
@@ -114,6 +120,10 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
 
   const context: MenuContextValue = {
     isOpen: () => disclosureState.isOpen(),
+    isRootMenu: () => parentMenuContext == null,
+    isModal: () => others.isModal!,
+    preventScroll: () => others.preventScroll!,
+    trapFocus: () => others.trapFocus!,
     autoFocus: focusStrategy,
     listState: () => listState,
     triggerId,
@@ -138,6 +148,10 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
           isOpen={disclosureState.isOpen()}
           onOpenChange={disclosureState.setIsOpen}
           anchorRef={triggerRef}
+          closeOnInteractOutside={true}
+          closeOnHoverOutside={true}
+          openDelay={0}
+          closeDelay={0}
           {...others}
         >
           {local.children}

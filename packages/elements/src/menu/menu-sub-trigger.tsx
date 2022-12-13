@@ -6,7 +6,12 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuSubTrigger.ts
  */
 
-import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import {
+  callHandler,
+  combineProps,
+  createPolymorphicComponent,
+  mergeDefaultProps,
+} from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
@@ -14,6 +19,7 @@ import { createFocusRing, createHover, createPress, isKeyboardFocusVisible } fro
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { useMenuSubContext } from "./menu-sub-context";
+import { useHoverCardContext } from "../hover-card/hover-card-context";
 
 export interface MenuSubTriggerProps {
   /**
@@ -30,22 +36,23 @@ export interface MenuSubTriggerProps {
 export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerProps>(props => {
   let ref: HTMLDivElement | undefined;
 
-  const context = useMenuContext();
-  const menuSubContext = useMenuSubContext();
+  const hoverCardContext = useHoverCardContext();
+  const menuContext = useMenuContext();
+  const context = useMenuSubContext();
 
   props = mergeDefaultProps(
     {
       as: "div",
-      id: context.generateId("sub-trigger"),
+      id: menuContext.generateId("sub-trigger"),
     },
     props
   );
 
   const [local, others] = splitProps(props, ["as", "id", "textValue", "isDisabled"]);
 
-  const selectionManager = () => menuSubContext.parentContext().listState().selectionManager();
+  const selectionManager = () => context.parentMenuContext().listState().selectionManager();
 
-  const isFocused = () => selectionManager().focusedKey() === menuSubContext.triggerKey();
+  const isFocused = () => selectionManager().focusedKey() === context.triggerKey();
 
   const {
     tabIndex,
@@ -54,7 +61,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     otherHandlers: itemOtherHandlers,
   } = createSelectableItem(
     {
-      key: menuSubContext.triggerKey,
+      key: context.triggerKey,
       selectionManager: selectionManager,
       shouldSelectOnPressUp: true,
       allowsDifferentPressOrigin: true,
@@ -66,8 +73,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   const { pressHandlers, isPressed } = createPress({
     isDisabled: () => local.isDisabled,
     onPress: e => {
-      if (e.pointerType === "touch" && !context.isOpen() && !local.isDisabled) {
-        context.open();
+      if (e.pointerType === "touch" && !menuContext.isOpen() && !local.isDisabled) {
+        menuContext.open();
       }
     },
   });
@@ -77,15 +84,15 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     onHoverStart: e => {
       if (!isKeyboardFocusVisible()) {
         selectionManager().setFocused(true);
-        selectionManager().setFocusedKey(menuSubContext.triggerKey());
+        selectionManager().setFocusedKey(context.triggerKey());
       }
 
       if (e.pointerType === "touch") {
         return;
       }
 
-      if (!context.isOpen()) {
-        context.open();
+      if (!menuContext.isOpen()) {
+        menuContext.open();
       }
     },
   });
@@ -110,25 +117,42 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       case "ArrowRight":
         e.stopPropagation();
         e.preventDefault();
-        if (context.isOpen()) {
-          context.focusInPanel();
+        if (menuContext.isOpen()) {
+          menuContext.focusInPanel();
         } else {
-          context.open("first");
+          menuContext.open("first");
+        }
+        break;
+      case "ArrowLeft":
+        // The Arrow Left key should always close if it's a sub menu.
+        if (!menuContext.isRootMenu()) {
+          menuContext.close();
         }
         break;
     }
   };
 
-  createEffect(() => onCleanup(context.registerTrigger(local.id!)));
+  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    const relatedTarget = e.relatedTarget as Node | undefined;
+
+    // Don't close if the hovercard element (or nested ones) has focus within.
+    if (hoverCardContext.isTargetOnHoverCard(relatedTarget)) {
+      return;
+    }
+
+    menuContext.close();
+  };
+
+  createEffect(() => onCleanup(menuContext.registerTrigger(local.id!)));
 
   createEffect(() => {
     if (local.isDisabled) {
       return;
     }
 
-    const unregister = menuSubContext.registerSubTriggerToParent({
+    const unregister = context.registerSubTriggerToParent({
       ref: () => ref,
-      key: menuSubContext.triggerKey(),
+      key: context.triggerKey(),
       label: local.textValue ?? ref?.textContent ?? "",
       textValue: local.textValue ?? ref?.textContent ?? "",
       disabled: local.isDisabled,
@@ -144,11 +168,11 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       role="menuitem"
       tabIndex={tabIndex()}
       aria-haspopup="true"
-      aria-expanded={context.isOpen()}
-      aria-controls={context.isOpen() ? context.panelId() : undefined}
+      aria-expanded={menuContext.isOpen()}
+      aria-controls={menuContext.isOpen() ? menuContext.panelId() : undefined}
       aria-disabled={local.isDisabled}
       data-key={dataKey()}
-      data-expanded={context.isOpen() ? "" : undefined}
+      data-expanded={menuContext.isOpen() ? "" : undefined}
       data-disabled={local.isDisabled ? "" : undefined}
       data-hover={isHovered() ? "" : undefined}
       data-focus={isFocused() ? "" : undefined}
@@ -157,7 +181,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       {...combineProps(
         {
           ref: el => {
-            context.setTriggerRef(el);
+            menuContext.setTriggerRef(el);
             ref = el;
           },
         },
@@ -167,7 +191,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
         pressHandlers,
         hoverHandlers,
         focusRingHandlers,
-        { onKeyDown }
+        { onKeyDown, onBlur }
       )}
     />
   );

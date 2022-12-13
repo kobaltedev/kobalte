@@ -5,7 +5,7 @@ import { MenuItemModel } from "./types";
 
 export interface MenuSubContextValue {
   triggerKey: Accessor<string>;
-  parentContext: Accessor<MenuContextValue>;
+  parentMenuContext: Accessor<MenuContextValue>;
   registerSubTriggerToParent: (item: MenuItemModel) => () => void;
 }
 

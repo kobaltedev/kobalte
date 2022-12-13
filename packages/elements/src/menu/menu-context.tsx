@@ -5,6 +5,10 @@ import { FocusStrategy } from "../selection";
 
 export interface MenuContextValue {
   isOpen: Accessor<boolean>;
+  isModal: Accessor<boolean>;
+  isRootMenu: Accessor<boolean>;
+  preventScroll: Accessor<boolean>;
+  trapFocus: Accessor<boolean>;
   autoFocus: Accessor<FocusStrategy | boolean | undefined>;
   listState: Accessor<ListState>;
   triggerId: Accessor<string | undefined>;

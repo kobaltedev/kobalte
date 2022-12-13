@@ -37,6 +37,26 @@ function TestMenu() {
                     <Menu.Item key="find-only" class="menu-item">
                       Find...
                     </Menu.Item>
+                    <Menu.Sub key="sub3" gutter={8} shift={-9}>
+                      <Menu.SubTrigger class="menu-item">
+                        <span>Sub 3</span>
+                        <span aria-hidden="true" class="ml-auto">
+                          »
+                        </span>
+                      </Menu.SubTrigger>
+                      <Menu.Portal>
+                        <Menu.Positioner>
+                          <Menu.Panel class="menu">
+                            <Menu.Item key="copy" class="menu-item">
+                              Copy
+                            </Menu.Item>
+                            <Menu.Item key="paste" class="menu-item">
+                              Paste
+                            </Menu.Item>
+                          </Menu.Panel>
+                        </Menu.Positioner>
+                      </Menu.Portal>
+                    </Menu.Sub>
                     <Menu.Item key="find-next" class="menu-item">
                       Find Next...
                     </Menu.Item>
