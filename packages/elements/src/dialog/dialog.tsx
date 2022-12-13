@@ -54,10 +54,7 @@ export interface DialogProps {
    */
   forceMount?: boolean;
 
-  /**
-   * Whether the dialog should block interaction with outside elements,
-   * and be the only visible content for screen readers.
-   */
+  /** Whether the dialog should be the only visible content for screen readers. */
   isModal?: boolean;
 
   /** Whether the scroll should be locked when the dialog is open. */
