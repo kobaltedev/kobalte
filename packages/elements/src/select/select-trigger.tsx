@@ -25,9 +25,7 @@ import { PressEvent } from "../primitives";
 import { createTypeSelect } from "../selection";
 import { useSelectContext } from "./select-context";
 
-export interface SelectTriggerProps extends ButtonProps {}
-
-export const SelectTrigger = createPolymorphicComponent<"button", SelectTriggerProps>(props => {
+export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(props => {
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
@@ -66,6 +64,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", SelectTriggerP
       context.toggle(e.pointerType === "virtual" ? "first" : undefined);
     }
   };
+
   const onPress = (e: PressEvent) => {
     local.onPress?.(e);
 

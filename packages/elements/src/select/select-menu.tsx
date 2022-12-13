@@ -6,7 +6,6 @@ import {
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
-import { useDialogPortalContext } from "../dialog";
 import { useFormControlContext } from "../form-control";
 import { Listbox, ListboxProps } from "../listbox";
 import { usePopoverContext } from "../popover/popover-context";
@@ -29,7 +28,6 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
   let ref: HTMLUListElement | undefined;
 
   const popoverContext = usePopoverContext();
-  const portalContext = useDialogPortalContext();
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
@@ -64,7 +62,7 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
 
   const { FocusTrap } = createFocusTrapRegion(
     {
-      trapFocus: () => context.isOpen(),
+      trapFocus: context.isOpen,
       autoFocus: true,
       restoreFocus: true,
     },
@@ -89,7 +87,7 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
   createEffect(() => onCleanup(context.registerListbox(local.id!)));
 
   return (
-    <Show when={local.forceMount || portalContext?.forceMount() || context.isOpen()}>
+    <Show when={popoverContext.shouldMount()}>
       <FocusTrap />
       <Listbox
         ref={mergeRefs(el => {

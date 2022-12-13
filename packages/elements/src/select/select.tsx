@@ -125,6 +125,12 @@ export interface SelectProps
    * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete).
    */
   autoComplete?: string;
+
+  /**
+   * Used to force mounting the select when more control is needed.
+   * Useful when controlling animation with SolidJS animation libraries.
+   */
+  forceMount?: boolean;
 }
 
 export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
@@ -246,7 +252,7 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
   });
 
   const context: SelectContextValue = {
-    isOpen: () => disclosureState.isOpen(),
+    isOpen: disclosureState.isOpen,
     isDisabled: () => formControlContext.isDisabled() ?? false,
     isSingleSelectMode,
     autoFocus: () => focusStrategy() || true,
