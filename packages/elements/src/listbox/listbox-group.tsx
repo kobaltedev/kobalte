@@ -10,9 +10,9 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
+import { CollectionNode } from "../primitives";
 import { useListboxContext } from "./listbox-context";
 import { ListboxGroupContext, ListboxGroupContextValue } from "./listbox-group-context";
-import { CollectionNode } from "../primitives";
 
 export interface ListboxGroupProps {
   /** The collection node to render. */

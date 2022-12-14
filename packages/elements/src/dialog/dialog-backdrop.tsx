@@ -2,27 +2,17 @@ import { callHandler, createPolymorphicComponent, mergeDefaultProps } from "@kob
 import { JSX, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useDialogContext, useDialogPortalContext } from "./dialog-context";
-
-export interface DialogBackdropProps {
-  /**
-   * Used to force mounting when more control is needed.
-   * Useful when controlling animation with SolidJS animation libraries.
-   * It inherits from `Dialog.Portal`.
-   */
-  forceMount?: boolean;
-}
+import { useDialogContext } from "./dialog-context";
 
 /**
  * The layer that covers the inert portion of the view when the dialog is open.
  */
-export const DialogBackdrop = createPolymorphicComponent<"div", DialogBackdropProps>(props => {
+export const DialogBackdrop = createPolymorphicComponent<"div">(props => {
   const context = useDialogContext();
-  const portalContext = useDialogPortalContext();
 
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, ["as", "forceMount", "onPointerDown"]);
+  const [local, others] = splitProps(props, ["as", "onPointerDown"]);
 
   const onPointerDown: JSX.EventHandlerUnion<HTMLDivElement, PointerEvent> = e => {
     callHandler(e, local.onPointerDown);
@@ -34,13 +24,8 @@ export const DialogBackdrop = createPolymorphicComponent<"div", DialogBackdropPr
   };
 
   return (
-    <Show when={local.forceMount || portalContext?.forceMount() || context.isOpen()}>
-      <Dynamic
-        component={local.as}
-        onPointerDown={onPointerDown}
-        {...context.dataset()}
-        {...others}
-      />
+    <Show when={context.shouldMount()}>
+      <Dynamic component={local.as} onPointerDown={onPointerDown} {...others} />
     </Show>
   );
 });

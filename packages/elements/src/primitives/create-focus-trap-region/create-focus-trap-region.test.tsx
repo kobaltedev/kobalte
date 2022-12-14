@@ -5,11 +5,11 @@ import { fireEvent, render, screen } from "solid-testing-library";
 import { createFocusTrapRegion, CreateFocusTrapRegionProps } from "./create-focus-trap-region";
 
 function FocusTrapRegion(
-  props: ComponentProps<"div"> & CreateFocusTrapRegionProps & { isDisabled?: boolean }
+  props: ComponentProps<"div"> & CreateFocusTrapRegionProps & { trapFocus?: boolean }
 ) {
   let containerRef: any;
 
-  const [local, others] = splitProps(props, ["isDisabled", "autoFocus", "restoreFocus"]);
+  const [local, others] = splitProps(props, ["trapFocus", "autoFocus", "restoreFocus"]);
 
   const { FocusTrap } = createFocusTrapRegion(local, () => containerRef);
 
@@ -68,7 +68,7 @@ describe("createFocusTrapRegion", () => {
     render(() => (
       <>
         <button>Before</button>
-        <FocusTrapRegion isDisabled>
+        <FocusTrapRegion trapFocus={false}>
           <button>Button</button>
         </FocusTrapRegion>
         <button>After</button>

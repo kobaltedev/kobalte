@@ -36,6 +36,9 @@ interface CreateSelectableCollectionProps {
   /** Whether the collection or one of its items should be automatically focused upon render. */
   autoFocus?: MaybeAccessor<boolean | FocusStrategy | undefined>;
 
+  /** Whether the autofocus should run on next tick. */
+  deferAutoFocus?: MaybeAccessor<boolean | undefined>;
+
   /** Whether focus should wrap around when the end/start is reached. */
   shouldFocusWrap?: MaybeAccessor<boolean | undefined>;
 
@@ -59,9 +62,6 @@ interface CreateSelectableCollectionProps {
 
   /** Whether the collection items are contained in a virtual scroller. */
   isVirtualized?: MaybeAccessor<boolean | undefined>;
-
-  /** When virtualized, callback used to notify the virtual scroller to scrolls to the item of the index provided. */
-  scrollToIndex?: (index: number) => void;
 }
 
 /**
@@ -391,7 +391,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     }
   };
 
-  onMount(() => {
+  const tryAutoFocus = () => {
     const autoFocus = access(props.autoFocus);
 
     if (!autoFocus) {
@@ -428,42 +428,33 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     if (refEl && focusedKey == null && !access(props.shouldUseVirtualFocus)) {
       focusSafely(refEl);
     }
+  };
+
+  onMount(() => {
+    if (props.deferAutoFocus) {
+      queueMicrotask(tryAutoFocus); // TODO: does this work EVERY time ?
+    } else {
+      tryAutoFocus();
+    }
   });
 
   // If not virtualized, scroll the focused element into view when the focusedKey changes.
-  // When virtualized, use the scrollToIndex callback.
+  // When virtualized, the Virtualizer should handle this.
   createEffect(
     on(
       [
         finalScrollRef,
         () => access(props.isVirtualized),
         () => access(props.selectionManager).focusedKey(),
-        () => access(props.collection),
       ],
       newValue => {
-        const [scrollEl, isVirtualized, focusedKey, collection] = newValue;
+        const [scrollEl, isVirtualized, focusedKey] = newValue;
 
-        if (focusedKey && scrollEl) {
-          if (isVirtualized) {
-            if (!props.scrollToIndex) {
-              throw new Error(
-                "[kobalte]: A `scrollToIndex` callback must be provided when using virtualized collection."
-              );
-            }
+        if (!isVirtualized && focusedKey && scrollEl) {
+          const element = scrollEl.querySelector(`[data-key="${focusedKey}"]`);
 
-            const focusedItemIndex = collection.getItem(focusedKey)?.index;
-
-            if (!focusedItemIndex) {
-              return;
-            }
-
-            props.scrollToIndex(focusedItemIndex);
-          } else {
-            const element = scrollEl.querySelector(`[data-key="${focusedKey}"]`);
-
-            if (element) {
-              scrollIntoView(scrollEl, element as HTMLElement);
-            }
+          if (element) {
+            scrollIntoView(scrollEl, element as HTMLElement);
           }
         }
       }
@@ -484,7 +475,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
   return {
     tabIndex,
-    typeSelectHandlers: {
+    handlers: {
       onKeyDown,
       onFocusIn,
       onFocusOut,

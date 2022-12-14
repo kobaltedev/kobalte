@@ -19,10 +19,7 @@ export interface CreateOverlayProps {
   /** Handler that is called when the overlay should close. */
   onClose?: () => void;
 
-  /**
-   * Whether the overlay should block interaction with outside elements,
-   * and be the only visible content for screen readers.
-   */
+  /** Whether the overlay should be the only visible content for screen readers. */
   isModal?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the scroll should be locked when the overlay is open. */
@@ -66,10 +63,13 @@ export function createOverlay<T extends HTMLElement>(
   };
 
   const shouldCloseOnInteractOutside = (element: Element) => {
-    return (
-      !access(props.shouldCloseOnInteractOutside) ||
-      access(props.shouldCloseOnInteractOutside)?.(element)
-    );
+    const shouldCloseOnInteractOutside = access(props.shouldCloseOnInteractOutside);
+
+    if (shouldCloseOnInteractOutside == null) {
+      return true;
+    }
+
+    return shouldCloseOnInteractOutside(element);
   };
 
   const onInteractOutsideStart = (e: Event) => {
@@ -91,7 +91,7 @@ export function createOverlay<T extends HTMLElement>(
   };
 
   // Handle the escape key
-  const onEscapeKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     if (e.key === EventKey.Escape && access(props.closeOnEsc)) {
       e.stopPropagation();
       e.preventDefault();
@@ -111,8 +111,7 @@ export function createOverlay<T extends HTMLElement>(
 
   // Handle prevent scroll when the overlay is open
   createPreventScroll({
-    isDisabled: () =>
-      !((access(props.preventScroll) ?? access(props.isModal)) && access(props.isOpen)),
+    isDisabled: () => !(access(props.preventScroll) && access(props.isOpen)),
   });
 
   // Hides all elements in the DOM outside the given targets from screen readers when the overlay is an opened modal
@@ -152,6 +151,8 @@ export function createOverlay<T extends HTMLElement>(
   });
 
   return {
-    overlayProps: { onEscapeKeyDown },
+    overlayHandlers: {
+      onKeyDown,
+    },
   };
 }

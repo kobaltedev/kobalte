@@ -18,7 +18,7 @@ import {
   shift,
   size,
 } from "@floating-ui/dom";
-import { mergeDefaultProps } from "@kobalte/utils";
+import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
   Accessor,
   createEffect,
@@ -27,21 +27,24 @@ import {
   createUniqueId,
   onCleanup,
   ParentComponent,
-  splitProps,
 } from "solid-js";
 
-import { Dialog, DialogProps } from "../dialog";
-import { DialogCloseButton } from "../dialog/dialog-close-button";
-import { DialogDescription } from "../dialog/dialog-description";
-import { DialogPortal } from "../dialog/dialog-portal";
-import { DialogTitle } from "../dialog/dialog-title";
 import { useLocale } from "../i18n";
-import { createControllableBooleanSignal } from "../primitives";
+import {
+  createDisclosure,
+  CreateFocusTrapRegionProps,
+  CreateOverlayProps,
+  createRegisterId,
+} from "../primitives";
 import { PopoverAnchor } from "./popover-anchor";
 import { PopoverArrow } from "./popover-arrow";
+import { PopoverCloseButton } from "./popover-close-button";
 import { PopoverContext, PopoverContextValue } from "./popover-context";
+import { PopoverDescription } from "./popover-description";
 import { PopoverPanel } from "./popover-panel";
+import { PopoverPortal } from "./popover-portal";
 import { PopoverPositioner } from "./popover-positioner";
+import { PopoverTitle } from "./popover-title";
 import { PopoverTrigger } from "./popover-trigger";
 import {
   AnchorRect,
@@ -55,14 +58,13 @@ import {
 type PopoverComposite = {
   Trigger: typeof PopoverTrigger;
   Anchor: typeof PopoverAnchor;
+  Portal: typeof PopoverPortal;
   Positioner: typeof PopoverPositioner;
   Panel: typeof PopoverPanel;
   Arrow: typeof PopoverArrow;
-
-  Portal: typeof DialogPortal;
-  CloseButton: typeof DialogCloseButton;
-  Title: typeof DialogTitle;
-  Description: typeof DialogDescription;
+  CloseButton: typeof PopoverCloseButton;
+  Title: typeof PopoverTitle;
+  Description: typeof PopoverDescription;
 };
 
 // Props used in @floating-ui/dom middlewares
@@ -123,7 +125,69 @@ export interface PopoverFloatingProps {
   overflowPadding?: number;
 }
 
-export interface PopoverProps extends PopoverFloatingProps, DialogProps {
+export interface PopoverProps extends PopoverFloatingProps {
+  /** The controlled open state of the popover. */
+  isOpen?: boolean;
+
+  /**
+   * The default open state when initially rendered.
+   * Useful when you do not need to control the open state.
+   */
+  defaultIsOpen?: boolean;
+
+  /** Event handler called when the open state of the popover changes. */
+  onOpenChange?: (isOpen: boolean) => void;
+
+  /**
+   * A unique identifier for the component.
+   * The id is used to generate id attributes for nested components.
+   * If no id prop is provided, a generated id will be used.
+   */
+  id?: string;
+
+  /**
+   * Used to force mounting the popover when more control is needed.
+   * Useful when controlling animation with SolidJS animation libraries.
+   */
+  forceMount?: boolean;
+
+  /** Whether the popover should be the only visible content for screen readers. */
+  isModal?: boolean;
+
+  /** Whether the scroll should be locked when the popover is open. */
+  preventScroll?: boolean;
+
+  /** Whether pressing the escape key should close the popover. */
+  closeOnEsc?: boolean;
+
+  /** Whether to close the popover when the user interacts outside it. */
+  closeOnInteractOutside?: boolean;
+
+  /**
+   * When user interacts with the argument element outside the popover panel,
+   * return `true` if the popover should be closed. This gives you a chance to filter
+   * out interaction with elements that should not dismiss the popover.
+   * By default, the popover will always close on interaction outside the popover panel.
+   */
+  shouldCloseOnInteractOutside?: (element: Element) => boolean;
+
+  /** Whether focus should be locked inside the popover panel. */
+  trapFocus?: boolean;
+
+  /**
+   * Whether focus should be set on a child element once the popover is open.
+   * If `true` focus will be set to the first focusable element inside the popover panel.
+   * If a `string` (query selector) is provided focus will be set to the target element.
+   */
+  autoFocus?: boolean;
+
+  /**
+   * Whether focus should be restored once the popover close.
+   * If `true` focus will be restored to the element that triggered the popover.
+   * If a `string` (query selector) is provided focus will be restored to the target element.
+   */
+  restoreFocus?: boolean;
+
   /**
    * Function that returns the anchor element's DOMRect. If this is explicitly
    * passed, it will override the anchor `getBoundingClientRect` method.
@@ -155,7 +219,12 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     {
       id: defaultId,
       isModal: false,
+      preventScroll: false,
+      closeOnEsc: true,
+      closeOnInteractOutside: true,
       trapFocus: true,
+      autoFocus: true,
+      restoreFocus: true,
       getAnchorRect: anchor => anchor?.getBoundingClientRect(),
       placement: "bottom",
       gutter: 0,
@@ -173,50 +242,51 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     props
   );
 
-  const [local, others] = splitProps(props, [
-    "isOpen",
-    "defaultIsOpen",
-    "onOpenChange",
-    "getAnchorRect",
-    "anchorRef",
-    "onCurrentPlacementChange",
-    "placement",
-    "gutter",
-    "shift",
-    "flip",
-    "slide",
-    "overlap",
-    "hideWhenDetached",
-    "detachedPadding",
-    "sameWidth",
-    "fitViewport",
-    "arrowPadding",
-    "overflowPadding",
-  ]);
-
   const [defaultAnchorRef, setDefaultAnchorRef] = createSignal<HTMLElement>();
   const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
   const [positionerRef, setPositionerRef] = createSignal<HTMLElement>();
   const [panelRef, setPanelRef] = createSignal<HTMLElement>();
   const [arrowRef, setArrowRef] = createSignal<HTMLElement>();
 
-  const [currentPlacement, setCurrentPlacement] = createSignal(local.placement!);
+  const [panelId, setPanelId] = createSignal<string>();
+  const [titleId, setTitleId] = createSignal<string>();
+  const [descriptionId, setDescriptionId] = createSignal<string>();
+
+  const [currentPlacement, setCurrentPlacement] = createSignal(props.placement!);
 
   // Floating UI - reference element.
   const anchorRef = () => {
     return getAnchorElement(
-      local.anchorRef?.() ?? defaultAnchorRef() ?? triggerRef(),
-      local.getAnchorRect!
+      props.anchorRef?.() ?? defaultAnchorRef() ?? triggerRef(),
+      props.getAnchorRect!
     );
   };
 
-  const [isOpen, setIsOpen] = createControllableBooleanSignal({
-    value: () => local.isOpen,
-    defaultValue: () => local.defaultIsOpen,
-    onChange: value => local.onOpenChange?.(value),
+  const disclosureState = createDisclosure({
+    isOpen: () => props.isOpen,
+    defaultIsOpen: () => props.defaultIsOpen,
+    onOpenChange: isOpen => props.onOpenChange?.(isOpen),
   });
 
   const locale = useLocale();
+
+  const createOverlayProps: CreateOverlayProps = {
+    isOpen: disclosureState.isOpen,
+    onClose: disclosureState.close,
+    isModal: () => props.isModal,
+    preventScroll: () => props.preventScroll,
+    closeOnInteractOutside: () => props.closeOnInteractOutside,
+    closeOnEsc: () => props.closeOnEsc,
+    shouldCloseOnInteractOutside: element => {
+      return props.shouldCloseOnInteractOutside?.(element) ?? true;
+    },
+  };
+
+  const createFocusTrapRegionProps: CreateFocusTrapRegionProps = {
+    trapFocus: () => props.trapFocus && disclosureState.isOpen(),
+    autoFocus: () => props.autoFocus,
+    restoreFocus: () => props.restoreFocus,
+  };
 
   async function updatePosition() {
     const referenceEl = anchorRef();
@@ -229,9 +299,9 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
     const arrowOffset = (arrowEl?.clientHeight || 0) / 2;
     const finalGutter =
-      typeof local.gutter === "number" ? local.gutter + arrowOffset : local.gutter ?? arrowOffset;
+      typeof props.gutter === "number" ? props.gutter + arrowOffset : props.gutter ?? arrowOffset;
 
-    floatingEl.style.setProperty("--kb-popover-overflow-padding", `${local.overflowPadding}px`);
+    floatingEl.style.setProperty("--kb-popover-overflow-padding", `${props.overflowPadding}px`);
 
     // Virtual element doesn't work without this ¯\_(ツ)_/¯
     referenceEl.getBoundingClientRect();
@@ -246,14 +316,14 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
         return {
           mainAxis: finalGutter,
-          crossAxis: !hasAlignment ? local.shift : undefined,
-          alignmentAxis: local.shift,
+          crossAxis: !hasAlignment ? props.shift : undefined,
+          alignmentAxis: props.shift,
         };
       }),
     ];
 
-    if (local.flip !== false) {
-      const fallbackPlacements = typeof local.flip === "string" ? local.flip.split(" ") : undefined;
+    if (props.flip !== false) {
+      const fallbackPlacements = typeof props.flip === "string" ? props.flip.split(" ") : undefined;
 
       if (fallbackPlacements !== undefined && !fallbackPlacements.every(isValidPlacement)) {
         throw new Error("`flip` expects a spaced-delimited list of placements");
@@ -262,19 +332,19 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
       // https://floating-ui.com/docs/flip
       middleware.push(
         flip({
-          padding: local.overflowPadding,
+          padding: props.overflowPadding,
           fallbackPlacements: fallbackPlacements,
         })
       );
     }
 
-    if (local.slide || local.overlap) {
+    if (props.slide || props.overlap) {
       // https://floating-ui.com/docs/shift
       middleware.push(
         shift({
-          mainAxis: local.slide,
-          crossAxis: local.overlap,
-          padding: local.overflowPadding,
+          mainAxis: props.slide,
+          crossAxis: props.overlap,
+          padding: props.overflowPadding,
         })
       );
     }
@@ -282,7 +352,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     // https://floating-ui.com/docs/size
     middleware.push(
       size({
-        padding: local.overflowPadding,
+        padding: props.overflowPadding,
         apply({ availableWidth, availableHeight, rects }) {
           const referenceWidth = Math.round(rects.reference.width);
 
@@ -293,11 +363,11 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
           floatingEl.style.setProperty("--kb-popover-available-width", `${availableWidth}px`);
           floatingEl.style.setProperty("--kb-popover-available-height", `${availableHeight}px`);
 
-          if (local.sameWidth) {
+          if (props.sameWidth) {
             floatingEl.style.width = `${referenceWidth}px`;
           }
 
-          if (local.fitViewport) {
+          if (props.fitViewport) {
             floatingEl.style.maxWidth = `${availableWidth}px`;
             floatingEl.style.maxHeight = `${availableHeight}px`;
           }
@@ -306,18 +376,18 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     );
 
     // https://floating-ui.com/docs/hide
-    if (local.hideWhenDetached) {
-      middleware.push(hide({ padding: local.detachedPadding }));
+    if (props.hideWhenDetached) {
+      middleware.push(hide({ padding: props.detachedPadding }));
     }
 
     // https://floating-ui.com/docs/arrow
     if (arrowEl) {
-      middleware.push(arrow({ element: arrowEl, padding: local.arrowPadding }));
+      middleware.push(arrow({ element: arrowEl, padding: props.arrowPadding }));
     }
 
     // https://floating-ui.com/docs/computePosition
     const pos = await computePosition(referenceEl, floatingEl, {
-      placement: local.placement,
+      placement: props.placement,
       strategy: "absolute",
       middleware,
       platform: {
@@ -327,7 +397,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     });
 
     if (pos.placement !== currentPlacement()) {
-      local.onCurrentPlacementChange?.(setCurrentPlacement(pos.placement));
+      props.onCurrentPlacementChange?.(setCurrentPlacement(pos.placement));
     }
 
     if (!floatingEl) {
@@ -344,7 +414,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
     let visibility: string | undefined;
 
-    if (local.hideWhenDetached) {
+    if (props.hideWhenDetached) {
       visibility = pos.middlewareData.hide?.referenceHidden ? "hidden" : "visible";
     }
 
@@ -391,7 +461,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
   // z-index as the popover panel element so users only need to set the z-index
   // once.
   createEffect(() => {
-    if (!isOpen()) {
+    if (!disclosureState.isOpen()) {
       return;
     }
 
@@ -406,29 +476,37 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
   });
 
   const context: PopoverContextValue = {
+    isOpen: disclosureState.isOpen,
+    shouldMount: () => props.forceMount || disclosureState.isOpen(),
     currentPlacement,
     panelRef,
+    panelId,
+    titleId,
+    descriptionId,
+    createOverlayProps,
+    createFocusTrapRegionProps,
     setDefaultAnchorRef,
     setTriggerRef,
     setPositionerRef,
     setPanelRef,
     setArrowRef,
+    close: disclosureState.close,
+    toggle: disclosureState.toggle,
+    generateId: createGenerateId(() => props.id!),
+    registerPanel: createRegisterId(setPanelId),
+    registerTitle: createRegisterId(setTitleId),
+    registerDescription: createRegisterId(setDescriptionId),
   };
 
-  return (
-    <PopoverContext.Provider value={context}>
-      <Dialog isOpen={isOpen()} onOpenChange={setIsOpen} {...others} />
-    </PopoverContext.Provider>
-  );
+  return <PopoverContext.Provider value={context}>{props.children}</PopoverContext.Provider>;
 };
 
 Popover.Trigger = PopoverTrigger;
 Popover.Anchor = PopoverAnchor;
+Popover.Portal = PopoverPortal;
 Popover.Positioner = PopoverPositioner;
 Popover.Panel = PopoverPanel;
 Popover.Arrow = PopoverArrow;
-
-Popover.Portal = DialogPortal;
-Popover.CloseButton = DialogCloseButton;
-Popover.Title = DialogTitle;
-Popover.Description = DialogDescription;
+Popover.CloseButton = PopoverCloseButton;
+Popover.Title = PopoverTitle;
+Popover.Description = PopoverDescription;

@@ -54,22 +54,17 @@ interface PressState {
   pointerType: PointerType | null;
 }
 
-const createPressPropNamesObject: Record<keyof CreatePressProps, true> = {
-  onPressStart: true,
-  onPressEnd: true,
-  onPressUp: true,
-  onPressChange: true,
-  onPress: true,
-  isDisabled: true,
-  preventFocusOnPress: true,
-  cancelOnPointerExit: true,
-  allowTextSelectionOnPress: true,
-};
-
-/** An array of `createPress` prop names for easier use in `splitProps`. */
-export const CREATE_PRESS_PROP_NAMES = Object.keys(createPressPropNamesObject) as Array<
-  keyof CreatePressProps
->;
+export const CREATE_PRESS_PROP_NAMES = [
+  "onPressStart",
+  "onPressEnd",
+  "onPressUp",
+  "onPressChange",
+  "onPress",
+  "isDisabled",
+  "preventFocusOnPress",
+  "cancelOnPointerExit",
+  "allowTextSelectionOnPress",
+] as const;
 
 /**
  * Handles press interactions across mouse, touch, keyboard, and screen readers.

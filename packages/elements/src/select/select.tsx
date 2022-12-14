@@ -1,7 +1,22 @@
+/*!
+ * Portions of this file are based on code from react-spectrum.
+ * Apache License Version 2.0, Copyright 2020 Adobe.
+ *
+ * Credits to the React Spectrum team:
+ * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/useSelect.ts
+ */
+
 import { access, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createMemo, createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
-import { DialogPortal } from "../dialog/dialog-portal";
+import {
+  createFormControl,
+  CreateFormControlProps,
+  FORM_CONTROL_PROP_NAMES,
+  FormControlContext,
+  FormControlDescription,
+  FormControlErrorMessage,
+} from "../form-control";
 import { createCollator } from "../i18n";
 import { createListState, CreateListStateProps, ListKeyboardDelegate } from "../list";
 import { ListboxOptionGroupPropertyNames, ListboxOptionPropertyNames } from "../listbox";
@@ -13,6 +28,7 @@ import { ListboxOptionDescription } from "../listbox/listbox-option-description"
 import { ListboxOptionIndicator } from "../listbox/listbox-option-indicator";
 import { ListboxOptionLabel } from "../listbox/listbox-option-label";
 import { Popover, PopoverFloatingProps } from "../popover";
+import { PopoverPortal } from "../popover/popover-portal";
 import { PopoverPositioner } from "../popover/popover-positioner";
 import {
   CollectionKey,
@@ -21,22 +37,24 @@ import {
   createRegisterId,
 } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, SelectionType } from "../selection";
+import { HiddenSelect } from "./hidden-select";
 import { SelectContext, SelectContextValue } from "./select-context";
 import { SelectIcon } from "./select-icon";
+import { SelectLabel } from "./select-label";
 import { SelectMenu } from "./select-menu";
 import { SelectTrigger } from "./select-trigger";
 import { SelectValue } from "./select-value";
-import { HiddenSelect } from "./hidden-select";
 
 type SelectComposite = {
+  Label: typeof SelectLabel;
+  Description: typeof FormControlDescription;
+  ErrorMessage: typeof FormControlErrorMessage;
   Trigger: typeof SelectTrigger;
   Value: typeof SelectValue;
   Icon: typeof SelectIcon;
-  Menu: typeof SelectMenu;
-
+  Portal: typeof PopoverPortal;
   Positioner: typeof PopoverPositioner;
-  Portal: typeof DialogPortal;
-
+  Menu: typeof SelectMenu;
   Group: typeof ListboxGroup;
   GroupLabel: typeof ListboxGroupLabel;
   GroupOptions: typeof ListboxGroupOptions;
@@ -49,13 +67,10 @@ type SelectComposite = {
 export interface SelectProps
   extends Pick<
       CreateListStateProps,
-      | "filter"
-      | "allowDuplicateSelectionEvents"
-      | "disallowEmptySelection"
-      | "selectionBehavior"
-      | "selectionMode"
+      "filter" | "allowDuplicateSelectionEvents" | "disallowEmptySelection" | "selectionBehavior"
     >,
-    PopoverFloatingProps {
+    PopoverFloatingProps,
+    CreateFormControlProps {
   /** The controlled open state of the select. */
   isOpen?: boolean;
 
@@ -80,6 +95,9 @@ export interface SelectProps
   /** Event handler called when the value changes. */
   onValueChange?: (value: SelectionType) => void;
 
+  /** Whether the select allow multi-selection. */
+  isMultiple?: boolean;
+
   /** An array of objects to display as the available options. */
   options: Array<any>;
 
@@ -99,23 +117,16 @@ export interface SelectProps
   keyboardDelegate?: KeyboardDelegate;
 
   /**
-   * A unique identifier for the component.
-   * The id is used to generate id attributes for nested components.
-   * If no id prop is provided, a generated id will be used.
-   */
-  id?: string;
-
-  /**
    * Describes the type of autocomplete functionality the input should provide if any.
    * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete).
    */
   autoComplete?: string;
 
-  /** HTML form input name. */
-  name?: string;
-
-  /** Whether the select is disabled. */
-  isDisabled?: boolean;
+  /**
+   * Used to force mounting the select when more control is needed.
+   * Useful when controlling animation with SolidJS animation libraries.
+   */
+  forceMount?: boolean;
 }
 
 export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
@@ -124,44 +135,45 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
   props = mergeDefaultProps(
     {
       id: defaultId,
-      selectionMode: "single",
+      isMultiple: false,
       allowDuplicateSelectionEvents: true,
-      disallowEmptySelection:
-        access(props.selectionMode) == null || access(props.selectionMode) == "single",
+      disallowEmptySelection: () => !props.isMultiple,
     },
     props
   );
 
-  const [local, others] = splitProps(props, [
-    "children",
-    "id",
-    "isOpen",
-    "defaultIsOpen",
-    "onOpenChange",
-    "value",
-    "defaultValue",
-    "options",
-    "onValueChange",
-    "optionPropertyNames",
-    "optionGroupPropertyNames",
-    "keyboardDelegate",
-    "isDisabled",
-    "autoComplete",
-    "name",
-    "allowDuplicateSelectionEvents",
-    "disallowEmptySelection",
-    "selectionBehavior",
-    "selectionMode",
-    "filter",
-  ]);
+  const [local, formControlProps, others] = splitProps(
+    props,
+    [
+      "children",
+      "isOpen",
+      "defaultIsOpen",
+      "onOpenChange",
+      "value",
+      "defaultValue",
+      "isMultiple",
+      "options",
+      "onValueChange",
+      "optionPropertyNames",
+      "optionGroupPropertyNames",
+      "keyboardDelegate",
+      "autoComplete",
+      "allowDuplicateSelectionEvents",
+      "disallowEmptySelection",
+      "selectionBehavior",
+      "filter",
+    ],
+    FORM_CONTROL_PROP_NAMES
+  );
 
-  const [listboxId, setListboxId] = createSignal<string>();
-  const [triggerId, setTriggerId] = createSignal<string>();
   const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
+  const [triggerId, setTriggerId] = createSignal<string>();
+  const [valueId, setValueId] = createSignal<string>();
+  const [listboxId, setListboxId] = createSignal<string>();
 
+  const [menuAriaLabelledBy, setMenuAriaLabelledBy] = createSignal<string>();
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy>();
-
-  const isSingleSelectMode = () => access(local.selectionMode) === "single";
+  const [isFocused, setIsFocused] = createSignal(false);
 
   const disclosureState = createDisclosure({
     isOpen: () => local.isOpen,
@@ -174,12 +186,12 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     defaultSelectedKeys: () => local.defaultValue,
     onSelectionChange: keys => {
       local.onValueChange?.(keys);
-      isSingleSelectMode() && disclosureState.close();
+      !local.isMultiple && disclosureState.close();
     },
     allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
     disallowEmptySelection: () => access(local.disallowEmptySelection),
     selectionBehavior: () => access(local.selectionBehavior),
-    selectionMode: () => access(local.selectionMode),
+    selectionMode: () => (local.isMultiple ? "multiple" : "single"),
     dataSource: () => local.options,
     itemPropertyNames: () => ({
       key: local.optionPropertyNames?.value ?? "value",
@@ -194,6 +206,8 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     }),
     filter: local.filter,
   });
+
+  const { formControlContext } = createFormControl(formControlProps);
 
   createFormResetListener(triggerRef, () => {
     if (local.defaultValue === "all") {
@@ -229,57 +243,58 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     return new ListKeyboardDelegate(listState.collection, undefined, collator);
   });
 
-  // TODO: handle label, description and errorMessage aria-*
-
   const context: SelectContextValue = {
-    isOpen: () => disclosureState.isOpen(),
-    isDisabled: () => local.isDisabled ?? false,
-    isSingleSelectMode,
+    isOpen: disclosureState.isOpen,
+    isDisabled: () => formControlContext.isDisabled() ?? false,
+    isMultiple: () => local.isMultiple ?? false,
     autoFocus: () => focusStrategy() || true,
+    triggerRef,
     listState: () => listState,
     keyboardDelegate: delegate,
-    listboxId,
     triggerId,
-    toggle,
+    valueId,
+    listboxId,
+    isFocused,
+    menuAriaLabelledBy,
+    setIsFocused,
+    setMenuAriaLabelledBy,
     setTriggerRef,
-    generateId: createGenerateId(() => local.id!),
+    close: disclosureState.close,
+    toggle,
+    generateId: createGenerateId(() => access(formControlProps.id)!),
     registerTrigger: createRegisterId(setTriggerId),
+    registerValue: createRegisterId(setValueId),
     registerListbox: createRegisterId(setListboxId),
   };
 
   return (
-    <Popover
-      id={local.id}
-      isOpen={disclosureState.isOpen()}
-      onOpenChange={disclosureState.setIsOpen}
-      anchorRef={triggerRef}
-      sameWidth
-      {...others}
-    >
+    <FormControlContext.Provider value={formControlContext}>
       <SelectContext.Provider value={context}>
-        <HiddenSelect
+        <Popover
+          id={access(formControlProps.id)}
           isOpen={disclosureState.isOpen()}
-          selectionManager={listState.selectionManager()}
-          collection={listState.collection()}
-          triggerRef={triggerRef}
-          autoComplete={local.autoComplete}
-          name={local.name}
-          isDisabled={local.isDisabled}
-        />
-        {props.children}
+          onOpenChange={disclosureState.setIsOpen}
+          anchorRef={triggerRef}
+          sameWidth
+          {...others}
+        >
+          <HiddenSelect autoComplete={local.autoComplete} />
+          {props.children}
+        </Popover>
       </SelectContext.Provider>
-    </Popover>
+    </FormControlContext.Provider>
   );
 };
 
+Select.Label = SelectLabel;
+Select.Description = FormControlDescription;
+Select.ErrorMessage = FormControlErrorMessage;
 Select.Trigger = SelectTrigger;
 Select.Value = SelectValue;
 Select.Icon = SelectIcon;
+Select.Portal = PopoverPortal;
 Select.Menu = SelectMenu;
-
 Select.Positioner = PopoverPositioner;
-Select.Portal = DialogPortal;
-
 Select.Group = ListboxGroup;
 Select.GroupLabel = ListboxGroupLabel;
 Select.GroupOptions = ListboxGroupOptions;

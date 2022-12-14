@@ -34,7 +34,7 @@ describe("Listbox", () => {
 
   it("renders properly", () => {
     render(() => (
-      <Listbox options={dataSource} selectionMode="single">
+      <Listbox options={dataSource}>
         {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
       </Listbox>
     ));
@@ -111,7 +111,7 @@ describe("Listbox", () => {
       const defaultValue = new Set([2]);
 
       render(() => (
-        <Listbox options={dataSource} selectionMode="single" defaultValue={defaultValue}>
+        <Listbox options={dataSource} defaultValue={defaultValue}>
           {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
@@ -133,12 +133,7 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox
-          options={dataSource}
-          selectionMode="single"
-          value={value}
-          onValueChange={onValueChangeSpy}
-        >
+        <Listbox options={dataSource} value={value} onValueChange={onValueChangeSpy}>
           {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
@@ -172,7 +167,7 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
+        <Listbox options={dataSource} onValueChange={onValueChangeSpy}>
           {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
@@ -199,7 +194,7 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
+        <Listbox options={dataSource} onValueChange={onValueChangeSpy}>
           {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
@@ -232,7 +227,7 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
+        <Listbox options={dataSource} onValueChange={onValueChangeSpy}>
           {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
@@ -269,7 +264,7 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox options={dataSource} selectionMode="multiple" onValueChange={onValueChangeSpy}>
+        <Listbox options={dataSource} isMultiple onValueChange={onValueChangeSpy}>
           {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
@@ -301,7 +296,7 @@ describe("Listbox", () => {
       render(() => (
         <Listbox
           options={dataSource}
-          selectionMode="multiple"
+          isMultiple
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
@@ -336,12 +331,7 @@ describe("Listbox", () => {
       const value = new Set([1, 2]);
 
       render(() => (
-        <Listbox
-          options={dataSource}
-          selectionMode="multiple"
-          value={value}
-          onValueChange={onValueChangeSpy}
-        >
+        <Listbox options={dataSource} isMultiple value={value} onValueChange={onValueChangeSpy}>
           {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
         </Listbox>
       ));
@@ -373,7 +363,7 @@ describe("Listbox", () => {
       render(() => (
         <Listbox
           options={dataSource}
-          selectionMode="multiple"
+          isMultiple
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
@@ -413,7 +403,7 @@ describe("Listbox", () => {
       render(() => (
         <Listbox
           options={dataSource}
-          selectionMode="multiple"
+          isMultiple
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
@@ -447,7 +437,6 @@ describe("Listbox", () => {
     render(() => (
       <Listbox
         options={dataSource}
-        selectionMode="single"
         defaultValue={defaultValue}
         onValueChange={onValueChangeSpy}
         disallowEmptySelection={false}

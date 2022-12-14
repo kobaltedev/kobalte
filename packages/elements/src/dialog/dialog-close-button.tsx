@@ -26,7 +26,6 @@ export const DialogCloseButton = createPolymorphicComponent<"button", ButtonProp
     <Button
       aria-label={local["aria-label"] || stringFormatter().format("dismiss")}
       onPress={onPress}
-      {...context.dataset()}
       {...others}
     />
   );

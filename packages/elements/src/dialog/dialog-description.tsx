@@ -22,5 +22,5 @@ export const DialogDescription = createPolymorphicComponent<"p">(props => {
 
   createEffect(() => onCleanup(context.registerDescription(local.id!)));
 
-  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
+  return <Dynamic component={local.as} id={local.id} {...others} />;
 });

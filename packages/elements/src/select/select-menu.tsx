@@ -6,7 +6,7 @@ import {
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
-import { useDialogContext, useDialogPortalContext } from "../dialog";
+import { useFormControlContext } from "../form-control";
 import { Listbox, ListboxProps } from "../listbox";
 import { usePopoverContext } from "../popover/popover-context";
 import { createFocusTrapRegion, createOverlay } from "../primitives";
@@ -27,9 +27,8 @@ export interface SelectMenuProps extends ListboxProps {
 export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(props => {
   let ref: HTMLUListElement | undefined;
 
-  const dialogContext = useDialogContext();
   const popoverContext = usePopoverContext();
-  const portalContext = useDialogPortalContext();
+  const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
   props = mergeDefaultProps(
@@ -40,12 +39,19 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "id", "style", "forceMount", "onKeyDown"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "id",
+    "style",
+    "forceMount",
+    "onKeyDown",
+    "onFocusOut",
+  ]);
 
-  const { overlayProps } = createOverlay(
+  const { overlayHandlers } = createOverlay(
     {
       isOpen: context.isOpen,
-      onClose: dialogContext.close,
+      onClose: context.close,
       isModal: false,
       preventScroll: false,
       closeOnInteractOutside: true,
@@ -56,8 +62,8 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
 
   const { FocusTrap } = createFocusTrapRegion(
     {
-      isDisabled: () => !context.isOpen(),
-      autoFocus: true,
+      trapFocus: context.isOpen,
+      autoFocus: false, // Handled by the listbox itself
       restoreFocus: true,
     },
     () => ref
@@ -65,13 +71,23 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
 
   const onKeyDown: JSX.EventHandlerUnion<HTMLUListElement, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
-    callHandler(e, overlayProps.onEscapeKeyDown);
+    callHandler(e, overlayHandlers.onKeyDown);
+  };
+
+  const onFocusOut: JSX.EventHandlerUnion<HTMLUListElement, FocusEvent> = e => {
+    if (e.currentTarget.contains(e.relatedTarget as Node)) {
+      return;
+    }
+
+    callHandler(e, local.onFocusOut);
+
+    context.setIsFocused(false);
   };
 
   createEffect(() => onCleanup(context.registerListbox(local.id!)));
 
   return (
-    <Show when={local.forceMount || portalContext?.forceMount() || context.isOpen()}>
+    <Show when={popoverContext.shouldMount()}>
       <FocusTrap />
       <Listbox
         ref={mergeRefs(el => {
@@ -84,9 +100,10 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
         shouldSelectOnPressUp
         shouldFocusOnHover
         style={{ position: "relative", ...local.style }}
+        aria-labelledby={context.menuAriaLabelledBy()}
         onKeyDown={onKeyDown}
-        //aria-labelledby={}
-        {...dialogContext.dataset()}
+        onFocusOut={onFocusOut}
+        {...formControlContext.dataset()}
         {...others}
       />
       <FocusTrap />

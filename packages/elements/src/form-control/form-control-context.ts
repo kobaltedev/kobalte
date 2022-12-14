@@ -20,7 +20,12 @@ export interface FormControlContextValue {
   fieldId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;
   errorMessageId: Accessor<string | undefined>;
-  ariaDescribedBy: Accessor<string | undefined>;
+  getAriaLabelledBy: (
+    fieldId: string | undefined,
+    fieldAriaLabel: string | undefined,
+    fieldAriaLabelledBy: string | undefined
+  ) => string | undefined;
+  getAriaDescribedBy: (fieldAriaDescribedBy: string | undefined) => string | undefined;
   generateId: (part: string) => string;
   registerLabel: (id: string) => () => void;
   registerField: (id: string) => () => void;
@@ -30,16 +35,12 @@ export interface FormControlContextValue {
 
 export const FormControlContext = createContext<FormControlContextValue>();
 
-export function useOptionalFormControlContext() {
-  return useContext(FormControlContext);
-}
-
 export function useFormControlContext() {
-  const context = useOptionalFormControlContext();
+  const context = useContext(FormControlContext);
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useFormControlContext` must be used within a `FormControl` component"
+      "[kobalte]: `useFormControlContext` must be used within a `FormControlContext.Provider` component"
     );
   }
 

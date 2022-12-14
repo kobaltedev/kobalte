@@ -64,7 +64,7 @@ export const RadioInput = createPolymorphicComponent<"input">(props => {
 
   const ariaDescribedBy = () => {
     return (
-      [radioContext.ariaDescribedBy(), formControlContext.ariaDescribedBy()]
+      [radioContext.ariaDescribedBy(), radioGroupContext.ariaDescribedBy()]
         .filter(Boolean)
         .join(" ") || undefined
     );

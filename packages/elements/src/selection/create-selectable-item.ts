@@ -251,11 +251,9 @@ export function createSelectableItem<T extends HTMLElement>(
     allowsSelection,
     tabIndex,
     dataKey,
-    typeSelectHandlers: {
-      press: pressHandlers,
-      //longPress: longPressHandlers,
-      others: { onDragStart, onFocus },
-    },
+    pressHandlers,
+    // longPressHandlers,
+    otherHandlers: { onDragStart, onFocus },
   };
 }
 

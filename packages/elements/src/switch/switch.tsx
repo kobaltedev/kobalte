@@ -10,17 +10,9 @@ import {
   combineProps,
   createPolymorphicComponent,
   mergeDefaultProps,
-  mergeRefs,
   ValidationState,
 } from "@kobalte/utils";
-import {
-  Accessor,
-  createEffect,
-  createMemo,
-  createSignal,
-  createUniqueId,
-  splitProps,
-} from "solid-js";
+import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createFormResetListener, createHover, createToggleState } from "../primitives";

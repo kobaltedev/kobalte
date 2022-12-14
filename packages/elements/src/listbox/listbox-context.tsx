@@ -2,13 +2,7 @@ import { Accessor, createContext, useContext } from "solid-js";
 
 import { ListState } from "../list";
 
-export interface ListboxDataSet {
-  "data-focus": string | undefined;
-  "data-focus-visible": string | undefined;
-}
-
 export interface ListboxContextValue {
-  dataset: Accessor<ListboxDataSet>;
   listState: Accessor<ListState>;
   generateId: (part: string) => string;
   shouldUseVirtualFocus: Accessor<boolean | undefined>;

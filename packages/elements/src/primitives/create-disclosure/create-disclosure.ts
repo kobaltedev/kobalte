@@ -1,5 +1,5 @@
 import { access, MaybeAccessor } from "@kobalte/utils";
-import { Accessor, Setter } from "solid-js";
+import { Accessor } from "solid-js";
 
 import { createControllableBooleanSignal } from "../create-controllable-signal";
 

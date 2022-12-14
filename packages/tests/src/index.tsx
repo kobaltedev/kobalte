@@ -1,4 +1,5 @@
 export * from "./check-accessibility";
+export * from "./events";
 export * from "./it-has-semantic-class";
 export * from "./it-is-polymorphic";
 export * from "./it-renders-children";

@@ -1,19 +1,17 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { CreateDisclosureResult } from "../primitives";
-import { DialogFocusTrapRegionProps, DialogOverlayProps } from "./dialog";
+import { CreateFocusTrapRegionProps, CreateOverlayProps } from "../primitives";
 
-export interface DialogDataSet {
-  "data-expanded": string | undefined;
-}
-
-export interface DialogContextValue extends CreateDisclosureResult {
-  dataset: Accessor<DialogDataSet>;
+export interface DialogContextValue {
+  isOpen: Accessor<boolean>;
+  shouldMount: Accessor<boolean>;
   panelId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;
-  overlayProps: Accessor<DialogOverlayProps>;
-  focusTrapRegionProps: Accessor<DialogFocusTrapRegionProps>;
+  createOverlayProps: CreateOverlayProps;
+  createFocusTrapRegionProps: CreateFocusTrapRegionProps;
+  close: () => void;
+  toggle: () => void;
   generateId: (part: string) => string;
   registerPanel: (id: string) => () => void;
   registerTitle: (id: string) => () => void;
@@ -30,14 +28,4 @@ export function useDialogContext() {
   }
 
   return context;
-}
-
-export interface DialogPortalContextValue {
-  forceMount: Accessor<boolean | undefined>;
-}
-
-export const DialogPortalContext = createContext<DialogPortalContextValue>();
-
-export function useDialogPortalContext() {
-  return useContext(DialogPortalContext);
 }

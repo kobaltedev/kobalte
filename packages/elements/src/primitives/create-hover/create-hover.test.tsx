@@ -46,10 +46,10 @@ describe("createHover", () => {
 
     const el = screen.getByText("test");
 
-    fireEvent.mouseEnter(el);
+    fireEvent(el, createPointerEvent("pointerenter", { pointerType: "mouse" }));
     await Promise.resolve();
 
-    fireEvent.mouseLeave(el);
+    fireEvent(el, createPointerEvent("pointerleave", { pointerType: "mouse" }));
     await Promise.resolve();
 
     expect(events).toEqual([]);

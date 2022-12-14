@@ -1,0 +1,29 @@
+import { Accessor, createContext, useContext } from "solid-js";
+
+export interface MenuItemDataSet {
+  "data-disabled": string | undefined;
+  "data-hover": string | undefined;
+  "data-focus": string | undefined;
+  "data-focus-visible": string | undefined;
+  "data-active": string | undefined;
+}
+
+export interface MenuItemContextValue {
+  dataset: Accessor<MenuItemDataSet>;
+  setLabelRef: (el: HTMLElement) => void;
+  generateId: (part: string) => string;
+  registerLabel: (id: string) => () => void;
+  registerDescription: (id: string) => () => void;
+}
+
+export const MenuItemContext = createContext<MenuItemContextValue>();
+
+export function useMenuItemContext() {
+  const context = useContext(MenuItemContext);
+
+  if (context === undefined) {
+    throw new Error("[kobalte]: `useMenuItemContext` must be used within a `Menu.Item` component");
+  }
+
+  return context;
+}

@@ -4,12 +4,10 @@ import { splitProps } from "solid-js";
 import { PopoverPanel, PopoverPanelProps } from "../popover/popover-panel";
 import { useHoverCardContext } from "./hover-card-context";
 
-export interface HoverCardPanelProps extends PopoverPanelProps {}
-
 /**
- * The element that contains the content to be rendered when the hover card is open.
+ * The element that contains the content to be rendered when the hovercard is open.
  */
-export const HoverCardPanel = createPolymorphicComponent<"div", HoverCardPanelProps>(props => {
+export const HoverCardPanel = createPolymorphicComponent<"div", PopoverPanelProps>(props => {
   const context = useHoverCardContext();
 
   const [local, others] = splitProps(props, ["ref"]);

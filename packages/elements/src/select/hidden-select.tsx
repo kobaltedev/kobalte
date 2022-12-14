@@ -7,35 +7,18 @@
  */
 
 import { visuallyHiddenStyles } from "@kobalte/utils";
-import { Accessor, For, Match, Switch } from "solid-js";
+import { createEffect, For, Match, Show, Switch } from "solid-js";
 
-import { Collection, CollectionNode, createInteractionModality } from "../primitives";
-import { SelectionManager } from "../selection";
+import { useFormControlContext } from "../form-control";
+import { createInteractionModality } from "../primitives";
+import { useSelectContext } from "./select-context";
 
 export interface HiddenSelectProps {
-  /** Whether the `Select` is open. */
-  isOpen: boolean;
-
-  /** The `Select` selection manager. */
-  selectionManager: SelectionManager;
-
-  /** The collection of nodes managed by the `Select`. */
-  collection: Collection<CollectionNode>;
-
-  /** A ref to the `Select.Trigger` element. */
-  triggerRef: Accessor<HTMLElement | undefined>;
-
   /**
    * Describes the type of autocomplete functionality the input should provide if any.
    * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete).
    */
   autoComplete?: string;
-
-  /** HTML form input name. */
-  name?: string;
-
-  /** Sets the disabled state of the select and input. */
-  isDisabled?: boolean;
 }
 
 // In Safari, the <select> cannot have `display: none` or `hidden` for autofill to work.
@@ -61,63 +44,51 @@ export interface HiddenSelectProps {
  * form autofill, mobile form navigation, and native form submission.
  */
 export function HiddenSelect(props: HiddenSelectProps) {
+  const formControlContext = useFormControlContext();
+  const context = useSelectContext();
+
   const modality = createInteractionModality();
 
+  const selectionManager = () => context.listState().selectionManager();
+  const collection = () => context.listState().collection();
+
   // If used in a <form>, use hidden inputs so the value can be submitted to a server.
-  // If no name is provided, do nothing.
   // If single selection mode and the collection isn't too big,
   // use a hidden <select> element for this so that browser autofill will work.
   // Otherwise, use <input type="hidden" />.
   return (
-    <Switch
-      fallback={
-        <For each={[...props.selectionManager.selectedKeys()]}>
-          {key => (
-            // TODO: should it be <input type="hidden" value="all"/> when all selected ?
-            <input
-              type="hidden"
-              autocomplete={props.autoComplete}
-              name={props.name}
-              disabled={props.isDisabled}
-              value={key}
-            />
-          )}
-        </For>
-      }
-    >
-      <Match when={props.name == null}>{null}</Match>
+    <Switch fallback={null}>
       <Match
-        when={
-          props.selectionManager.selectionMode() === "single" && props.collection.getSize() <= 300
-        }
+        when={selectionManager().selectionMode() === "single" && collection().getSize() <= 300}
       >
         <div style={visuallyHiddenStyles} aria-hidden="true">
           <input
             type="text"
             tabIndex={
-              modality() == null || props.selectionManager.isFocused() || props.isOpen ? -1 : 0
+              modality() == null || selectionManager().isFocused() || context.isOpen() ? -1 : 0
             }
             style={{ "font-size": "16px" }}
-            onFocus={() => props.triggerRef()?.focus()}
-            disabled={props.isDisabled}
+            required={formControlContext.isRequired()}
+            disabled={formControlContext.isDisabled()}
+            readOnly={formControlContext.isReadOnly()}
+            onFocus={() => context.triggerRef()?.focus()}
           />
           <select
             tabIndex={-1}
             autocomplete={props.autoComplete}
-            disabled={props.isDisabled}
-            name={props.name}
-            size={props.collection.getSize()}
-            value={props.selectionManager.firstSelectedKey() ?? ""}
+            name={formControlContext.name()}
+            required={formControlContext.isRequired()}
+            disabled={formControlContext.isDisabled()}
+            size={collection().getSize()}
+            value={selectionManager().firstSelectedKey() ?? ""}
             onChange={e =>
-              props.selectionManager.setSelectedKeys(
-                new Set([(e.target as HTMLSelectElement).value])
-              )
+              selectionManager().setSelectedKeys(new Set([(e.target as HTMLSelectElement).value]))
             }
           >
             <option />
-            <For each={[...props.collection.getKeys()]}>
+            <For each={[...collection().getKeys()]}>
               {key => {
-                const item = props.collection.getItem(key);
+                const item = collection().getItem(key);
                 if (item && item.type === "item") {
                   return <option value={item.key}>{item.label}</option>;
                 }
@@ -125,6 +96,22 @@ export function HiddenSelect(props: HiddenSelectProps) {
             </For>
           </select>
         </div>
+      </Match>
+      <Match when={formControlContext.name() != null}>
+        <For each={[...selectionManager().selectedKeys()]}>
+          {key => (
+            // TODO: should it be <input type="hidden" value="all"/> when all selected ?
+            <input
+              type="hidden"
+              autocomplete={props.autoComplete}
+              name={formControlContext.name()}
+              required={formControlContext.isRequired()}
+              disabled={formControlContext.isDisabled()}
+              readOnly={formControlContext.isReadOnly()}
+              value={key}
+            />
+          )}
+        </For>
       </Match>
     </Switch>
   );
