@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableItem.ts
  */
 
-import { access, MaybeAccessor } from "@kobalte/utils";
+import { access, isActionKey, isSelectionKey, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, on } from "solid-js";
 
 import {
@@ -255,14 +255,4 @@ export function createSelectableItem<T extends HTMLElement>(
     // longPressHandlers,
     otherHandlers: { onDragStart, onFocus },
   };
-}
-
-function isActionKey() {
-  const event = window.event as KeyboardEvent;
-  return event?.key === "Enter";
-}
-
-function isSelectionKey() {
-  const event = window.event as KeyboardEvent;
-  return event?.key === " " || event?.code === "Space";
 }

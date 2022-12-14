@@ -1,4 +1,9 @@
-import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import {
+  combineProps,
+  contains,
+  createPolymorphicComponent,
+  mergeDefaultProps,
+} from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import { HoverCardPanel } from "../hover-card/hover-card-panel";
@@ -49,8 +54,10 @@ export const MenuPanel = createPolymorphicComponent<"div", MenuPanelProps>(props
     within: true,
   });
 
-  const onPointerLeave = () => {
-    context.listState().selectionManager().setFocusedKey(undefined);
+  const onFocusOut: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    if (!e.currentTarget.contains(e.relatedTarget as HTMLElement)) {
+      context.listState().selectionManager().setFocusedKey(undefined);
+    }
   };
 
   createEffect(() => onCleanup(context.registerPanel(local.id!)));
@@ -71,7 +78,7 @@ export const MenuPanel = createPolymorphicComponent<"div", MenuPanelProps>(props
           },
         },
         others,
-        { onPointerLeave },
+        { onFocusOut },
         selectableList.handlers,
         focusRingHandlers
       )}

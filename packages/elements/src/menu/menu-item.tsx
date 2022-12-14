@@ -2,6 +2,8 @@ import {
   combineProps,
   createGenerateId,
   createPolymorphicComponent,
+  isActionKey,
+  isSelectionKey,
   mergeDefaultProps,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
@@ -18,7 +20,6 @@ import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { MenuItemContext, MenuItemContextValue, MenuItemDataSet } from "./menu-item.context";
-import { useOptionalMenuSubContext } from "./menu-sub-context";
 import { MenuItemModel } from "./types";
 
 export interface MenuItemProps {
@@ -44,7 +45,6 @@ export const MenuItem = createPolymorphicComponent<"div", MenuItemProps>(props =
   let ref: HTMLDivElement | undefined;
 
   const menuContext = useMenuContext();
-  const menuSubContext = useOptionalMenuSubContext();
 
   const defaultId = `${menuContext.generateId("item")}-${createUniqueId()}`;
 
@@ -103,7 +103,8 @@ export const MenuItem = createPolymorphicComponent<"div", MenuItemProps>(props =
   const { pressHandlers, isPressed } = createPress({
     isDisabled: () => local.isDisabled,
     onPressStart: e => {
-      if (e.pointerType === "keyboard") {
+      // For consistency with native, trigger the action on keydown, but mouse/touch up.
+      if (e.pointerType === "keyboard" && (isActionKey() || isSelectionKey())) {
         menuContext.onAction(local.key);
       }
     },
@@ -138,25 +139,21 @@ export const MenuItem = createPolymorphicComponent<"div", MenuItemProps>(props =
       return;
     }
 
+    if (local.isDisabled) {
+      return;
+    }
+
     switch (e.key) {
       case " ":
-        if (
-          !local.isDisabled &&
-          selectionManager().selectionMode() === "none" &&
-          local.closeOnSelect !== false
-        ) {
-          menuContext.close(true);
-        }
-        break;
       case "Enter":
-        // The Enter key should always close on select, except if overridden.
-        if (!local.isDisabled && local.closeOnSelect !== false) {
+        // The Space and Enter key should always close on select, except if overridden.
+        if (local.closeOnSelect !== false) {
           menuContext.close(true);
         }
         break;
       case "ArrowLeft":
-        // The Arrow Left key should always close if it's a sub menu.
-        if (!local.isDisabled && menuSubContext !== undefined) {
+        // The Arrow Left key should always close only that menu, if it's a sub menu.
+        if (menuContext.parentMenuContext() != null) {
           menuContext.close();
         }
         break;

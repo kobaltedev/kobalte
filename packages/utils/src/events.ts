@@ -33,3 +33,13 @@ export function chainHandlers<T, E extends Event>(
     callHandler(event, callback);
   }
 }
+
+export function isActionKey() {
+  const event = window.event as KeyboardEvent;
+  return event?.key === "Enter";
+}
+
+export function isSelectionKey() {
+  const event = window.event as KeyboardEvent;
+  return event?.key === " " || event?.code === "Space";
+}

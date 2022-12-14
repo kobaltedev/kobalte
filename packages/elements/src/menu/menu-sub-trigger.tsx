@@ -6,22 +6,22 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuSubTrigger.ts
  */
 
-import {
-  callHandler,
-  combineProps,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-} from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { createEffect, createMemo, JSX, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
+import { useHoverCardContext } from "../hover-card/hover-card-context";
 import { createFocusRing, createHover, createPress, isKeyboardFocusVisible } from "../primitives";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
-import { useMenuSubContext } from "./menu-sub-context";
-import { useHoverCardContext } from "../hover-card/hover-card-context";
 
 export interface MenuSubTriggerProps {
+  /**
+   * A unique key for the sub menu trigger.
+   * This is needed since the sub menu trigger is also a menu item of its parent menu.
+   */
+  key: string;
+
   /**
    * Optional text used for typeahead purposes.
    * By default, the typeahead behavior will use the .textContent of the Menu.SubTrigger.
@@ -29,7 +29,7 @@ export interface MenuSubTriggerProps {
    */
   textValue?: string;
 
-  /** Whether the menu sub trigger is disabled. */
+  /** Whether the sub menu trigger is disabled. */
   isDisabled?: boolean;
 }
 
@@ -37,22 +37,29 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   let ref: HTMLDivElement | undefined;
 
   const hoverCardContext = useHoverCardContext();
-  const menuContext = useMenuContext();
-  const context = useMenuSubContext();
+  const context = useMenuContext();
 
   props = mergeDefaultProps(
     {
       as: "div",
-      id: menuContext.generateId("sub-trigger"),
+      id: context.generateId("sub-trigger"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "id", "textValue", "isDisabled"]);
+  const [local, others] = splitProps(props, ["as", "id", "key", "textValue", "isDisabled"]);
 
-  const selectionManager = () => context.parentMenuContext().listState().selectionManager();
+  const selectionManager = createMemo(() => {
+    const parentMenuContext = context.parentMenuContext();
 
-  const isFocused = () => selectionManager().focusedKey() === context.triggerKey();
+    if (parentMenuContext == null) {
+      throw new Error("[kobalte]: `Menu.SubTrigger` must be used within a `Menu.Sub` component");
+    }
+
+    return parentMenuContext.listState().selectionManager();
+  });
+
+  const isFocused = () => selectionManager().focusedKey() === local.key;
 
   const {
     tabIndex,
@@ -61,7 +68,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     otherHandlers: itemOtherHandlers,
   } = createSelectableItem(
     {
-      key: context.triggerKey,
+      key: () => local.key,
       selectionManager: selectionManager,
       shouldSelectOnPressUp: true,
       allowsDifferentPressOrigin: true,
@@ -73,8 +80,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   const { pressHandlers, isPressed } = createPress({
     isDisabled: () => local.isDisabled,
     onPress: e => {
-      if (e.pointerType === "touch" && !menuContext.isOpen() && !local.isDisabled) {
-        menuContext.open();
+      if (e.pointerType === "touch" && !context.isOpen() && !local.isDisabled) {
+        context.open();
       }
     },
   });
@@ -84,15 +91,15 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     onHoverStart: e => {
       if (!isKeyboardFocusVisible()) {
         selectionManager().setFocused(true);
-        selectionManager().setFocusedKey(context.triggerKey());
+        selectionManager().setFocusedKey(local.key);
       }
 
       if (e.pointerType === "touch") {
         return;
       }
 
-      if (!menuContext.isOpen()) {
-        menuContext.open();
+      if (!context.isOpen()) {
+        context.open();
       }
     },
   });
@@ -117,16 +124,16 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       case "ArrowRight":
         e.stopPropagation();
         e.preventDefault();
-        if (menuContext.isOpen()) {
-          menuContext.focusInPanel();
+        if (context.isOpen()) {
+          context.focusInPanel();
         } else {
-          menuContext.open("first");
+          context.open("first");
         }
         break;
       case "ArrowLeft":
-        // The Arrow Left key should always close if it's a sub menu.
-        if (!menuContext.isRootMenu()) {
-          menuContext.close();
+        // The Arrow Left key should always close if the sub menu trigger is itself in a sub menu.
+        if (context.parentMenuContext()?.parentMenuContext() != null) {
+          context.parentMenuContext()?.close();
         }
         break;
     }
@@ -135,24 +142,31 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
     const relatedTarget = e.relatedTarget as Node | undefined;
 
-    // Don't close if the hovercard element (or nested ones) has focus within.
+    // Don't close if the menu panel (hovercard element) or nested ones has focus within.
     if (hoverCardContext.isTargetOnHoverCard(relatedTarget)) {
       return;
     }
 
-    menuContext.close();
+    context.close();
   };
 
-  createEffect(() => onCleanup(menuContext.registerTrigger(local.id!)));
+  createEffect(() => onCleanup(context.registerTrigger(local.id!)));
 
   createEffect(() => {
     if (local.isDisabled) {
       return;
     }
 
-    const unregister = context.registerSubTriggerToParent({
+    // Not able to register the trigger as a menu item on parent menu means
+    // `Menu.SubTrigger` is not used in the correct place, so throw an error.
+    if (context.registerItemToParentDomCollection == null) {
+      throw new Error("[kobalte]: `Menu.SubTrigger` must be used within a `Menu.Sub` component");
+    }
+
+    // Register the item trigger on the parent menu that contains it.
+    const unregister = context.registerItemToParentDomCollection({
       ref: () => ref,
-      key: context.triggerKey(),
+      key: local.key,
       label: local.textValue ?? ref?.textContent ?? "",
       textValue: local.textValue ?? ref?.textContent ?? "",
       disabled: local.isDisabled,
@@ -168,11 +182,11 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       role="menuitem"
       tabIndex={tabIndex()}
       aria-haspopup="true"
-      aria-expanded={menuContext.isOpen()}
-      aria-controls={menuContext.isOpen() ? menuContext.panelId() : undefined}
+      aria-expanded={context.isOpen()}
+      aria-controls={context.isOpen() ? context.panelId() : undefined}
       aria-disabled={local.isDisabled}
       data-key={dataKey()}
-      data-expanded={menuContext.isOpen() ? "" : undefined}
+      data-expanded={context.isOpen() ? "" : undefined}
       data-disabled={local.isDisabled ? "" : undefined}
       data-hover={isHovered() ? "" : undefined}
       data-focus={isFocused() ? "" : undefined}
@@ -181,7 +195,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       {...combineProps(
         {
           ref: el => {
-            menuContext.setTriggerRef(el);
+            context.setTriggerRef(el);
             ref = el;
           },
         },

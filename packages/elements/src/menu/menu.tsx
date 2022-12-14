@@ -1,13 +1,14 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
-import { DialogPortal } from "../dialog/dialog-portal";
 import { HoverCard, HoverCardProps } from "../hover-card";
 import { createListState } from "../list";
 import { PopoverArrow } from "../popover/popover-arrow";
+import { PopoverPortal } from "../popover/popover-portal";
 import { PopoverPositioner } from "../popover/popover-positioner";
 import { createDisclosure, createRegisterId, focusSafely } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
+import { useOptionalDomCollectionContext } from "../primitives/create-dom-collection/dom-collection-context";
 import { FocusStrategy } from "../selection";
 import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-context";
 import { MenuItem } from "./menu-item";
@@ -19,14 +20,13 @@ import { MenuItemModel } from "./types";
 
 type MenuComposite = {
   Trigger: typeof MenuTrigger;
+  Portal: typeof PopoverPortal;
+  Positioner: typeof PopoverPositioner;
   Panel: typeof MenuPanel;
+  Arrow: typeof PopoverArrow;
   Item: typeof MenuItem;
   Sub: typeof MenuSub;
   SubTrigger: typeof MenuSubTrigger;
-
-  Portal: typeof DialogPortal;
-  Positioner: typeof PopoverPositioner;
-  Arrow: typeof PopoverArrow;
 };
 
 export interface MenuProps
@@ -39,6 +39,7 @@ export interface MenuProps
 }
 
 export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
+  const parentDomCollectionContext = useOptionalDomCollectionContext();
   const parentMenuContext = useOptionalMenuContext();
   const defaultId = `menu-${createUniqueId()}`;
 
@@ -119,12 +120,12 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
 
   const context: MenuContextValue = {
     isOpen: () => disclosureState.isOpen(),
-    isRootMenu: () => parentMenuContext == null,
     isModal: () => others.isModal!,
     preventScroll: () => others.preventScroll!,
     trapFocus: () => others.trapFocus!,
     autoFocus: focusStrategy,
     listState: () => listState,
+    parentMenuContext: () => parentMenuContext,
     triggerId,
     panelId,
     setTriggerRef,
@@ -134,6 +135,7 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
     toggle,
     focusInPanel,
     onAction: key => local.onAction?.(key),
+    registerItemToParentDomCollection: parentDomCollectionContext?.registerItem,
     generateId: createGenerateId(() => local.id!),
     registerTrigger: createRegisterId(setTriggerId),
     registerPanel: createRegisterId(setPanelId),
@@ -161,11 +163,10 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
 };
 
 Menu.Trigger = MenuTrigger;
+Menu.Portal = PopoverPortal;
+Menu.Positioner = PopoverPositioner;
 Menu.Panel = MenuPanel;
+Menu.Arrow = PopoverArrow;
 Menu.Item = MenuItem;
 Menu.Sub = MenuSub;
 Menu.SubTrigger = MenuSubTrigger;
-
-Menu.Portal = DialogPortal;
-Menu.Positioner = PopoverPositioner;
-Menu.Arrow = PopoverArrow;

@@ -1,4 +1,4 @@
-import { I18nProvider, Menu, Select } from "../src";
+import { I18nProvider, Menu } from "../src";
 
 function TestMenu() {
   const handleAction = (key: string) => {
@@ -21,8 +21,8 @@ function TestMenu() {
             <Menu.Item key="delete" isDisabled class="menu-item">
               Delete
             </Menu.Item>
-            <Menu.Sub key="find" gutter={8} shift={-9}>
-              <Menu.SubTrigger class="menu-item">
+            <Menu.Sub gutter={16} shift={-9}>
+              <Menu.SubTrigger key="find" class="menu-item">
                 <span>Find</span>
                 <span aria-hidden="true" class="ml-auto">
                   »
@@ -37,9 +37,9 @@ function TestMenu() {
                     <Menu.Item key="find-only" class="menu-item">
                       Find...
                     </Menu.Item>
-                    <Menu.Sub key="sub3" gutter={8} shift={-9}>
-                      <Menu.SubTrigger class="menu-item">
-                        <span>Sub 3</span>
+                    <Menu.Sub gutter={16} shift={-9}>
+                      <Menu.SubTrigger key="sub3" class="menu-item">
+                        <span>Sub3</span>
                         <span aria-hidden="true" class="ml-auto">
                           »
                         </span>

@@ -2,15 +2,16 @@ import { Accessor, createContext, useContext } from "solid-js";
 
 import { ListState } from "../list";
 import { FocusStrategy } from "../selection";
+import { MenuItemModel } from "./types";
 
 export interface MenuContextValue {
   isOpen: Accessor<boolean>;
   isModal: Accessor<boolean>;
-  isRootMenu: Accessor<boolean>;
   preventScroll: Accessor<boolean>;
   trapFocus: Accessor<boolean>;
   autoFocus: Accessor<FocusStrategy | boolean | undefined>;
   listState: Accessor<ListState>;
+  parentMenuContext: Accessor<MenuContextValue | undefined>;
   triggerId: Accessor<string | undefined>;
   panelId: Accessor<string | undefined>;
   setTriggerRef: (el: HTMLButtonElement) => void;
@@ -20,6 +21,7 @@ export interface MenuContextValue {
   toggle: (focusStrategy?: FocusStrategy) => void;
   focusInPanel: () => void;
   onAction: (key: string) => void;
+  registerItemToParentDomCollection: ((item: MenuItemModel) => () => void) | undefined;
   generateId: (part: string) => string;
   registerTrigger: (id: string) => () => void;
   registerPanel: (id: string) => () => void;
