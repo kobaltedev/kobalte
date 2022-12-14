@@ -7,7 +7,10 @@ function TestMenu() {
 
   return (
     <Menu onAction={handleAction}>
-      <Menu.Trigger class="button">Actions</Menu.Trigger>
+      <Menu.Trigger class="button">
+        <span>Actions</span>
+        <Menu.Icon class="ml-2" />
+      </Menu.Trigger>
       <Menu.Portal>
         <Menu.Positioner>
           <Menu.Panel class="menu">
@@ -39,7 +42,7 @@ function TestMenu() {
                     </Menu.Item>
                     <Menu.Sub gutter={16} shift={-9}>
                       <Menu.SubTrigger key="sub3" class="menu-item">
-                        <span>Sub3</span>
+                        <span>Nested</span>
                         <span aria-hidden="true" class="ml-auto">
                           »
                         </span>

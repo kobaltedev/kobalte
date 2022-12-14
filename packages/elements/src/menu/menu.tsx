@@ -11,6 +11,7 @@ import { createDomCollection } from "../primitives/create-dom-collection";
 import { useOptionalDomCollectionContext } from "../primitives/create-dom-collection/dom-collection-context";
 import { FocusStrategy } from "../selection";
 import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-context";
+import { MenuIcon } from "./menu-icon";
 import { MenuItem } from "./menu-item";
 import { MenuPanel } from "./menu-panel";
 import { MenuSub } from "./menu-sub";
@@ -20,6 +21,7 @@ import { MenuItemModel } from "./types";
 
 type MenuComposite = {
   Trigger: typeof MenuTrigger;
+  Icon: typeof MenuIcon;
   Portal: typeof PopoverPortal;
   Positioner: typeof PopoverPositioner;
   Panel: typeof MenuPanel;
@@ -163,6 +165,7 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
 };
 
 Menu.Trigger = MenuTrigger;
+Menu.Icon = MenuIcon;
 Menu.Portal = PopoverPortal;
 Menu.Positioner = PopoverPositioner;
 Menu.Panel = MenuPanel;
