@@ -1,6 +1,8 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
 export interface MenuItemDataSet {
+  "data-indeterminate": string | undefined;
+  "data-checked": string | undefined;
   "data-disabled": string | undefined;
   "data-hover": string | undefined;
   "data-focus": string | undefined;
@@ -9,6 +11,7 @@ export interface MenuItemDataSet {
 }
 
 export interface MenuItemContextValue {
+  isChecked: Accessor<boolean | undefined>;
   dataset: Accessor<MenuItemDataSet>;
   setLabelRef: (el: HTMLElement) => void;
   generateId: (part: string) => string;

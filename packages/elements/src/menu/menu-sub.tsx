@@ -10,6 +10,9 @@ export interface MenuSubProps
     "onAction" | "isModal" | "preventScroll" | "trapFocus" | "autoFocus" | "restoreFocus"
   > {}
 
+/**
+ * Contains all the parts of a submenu.
+ */
 export const MenuSub: ParentComponent<MenuSubProps> = props => {
   const parentMenuContext = useMenuContext();
 

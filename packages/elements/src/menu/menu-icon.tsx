@@ -6,7 +6,7 @@ import { useMenuContext } from "./menu-context";
 
 /**
  * A small icon often displayed inside the menu trigger as a visual affordance for the fact it can be open.
- * It renders a `▼` by default, but you can use your own icon `children`.
+ * It renders a `▼` by default, but you can use your own icon by providing a `children`.
  */
 export const MenuIcon = createPolymorphicComponent<"div">(props => {
   const context = useMenuContext();

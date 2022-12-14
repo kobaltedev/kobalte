@@ -15,7 +15,13 @@ import { MenuGroup } from "./menu-group";
 import { MenuGroupLabel } from "./menu-group-label";
 import { MenuIcon } from "./menu-icon";
 import { MenuItem } from "./menu-item";
+import { MenuItemCheckbox } from "./menu-item-checkbox";
+import { MenuItemDescription } from "./menu-item-description";
+import { MenuItemIndicator } from "./menu-item-indicator";
+import { MenuItemLabel } from "./menu-item-label";
+import { MenuItemRadio } from "./menu-item-radio";
 import { MenuPanel } from "./menu-panel";
+import { MenuRadioGroup } from "./menu-radio-group";
 import { MenuSub } from "./menu-sub";
 import { MenuSubTrigger } from "./menu-sub-trigger";
 import { MenuTrigger } from "./menu-trigger";
@@ -28,9 +34,15 @@ type MenuComposite = {
   Positioner: typeof PopoverPositioner;
   Panel: typeof MenuPanel;
   Arrow: typeof PopoverArrow;
-  Item: typeof MenuItem;
   Group: typeof MenuGroup;
   GroupLabel: typeof MenuGroupLabel;
+  Item: typeof MenuItem;
+  ItemLabel: typeof MenuItemLabel;
+  ItemDescription: typeof MenuItemDescription;
+  ItemIndicator: typeof MenuItemIndicator;
+  RadioGroup: typeof MenuRadioGroup;
+  ItemRadio: typeof MenuItemRadio;
+  ItemCheckbox: typeof MenuItemCheckbox;
   Sub: typeof MenuSub;
   SubTrigger: typeof MenuSubTrigger;
 };
@@ -44,6 +56,10 @@ export interface MenuProps
   onAction?: (key: string) => void;
 }
 
+/**
+ * A menu displays a menu to the user—such as a set of actions or functions—triggered by a button.
+ * `Menu` contains all the parts of a dropdown menu and provide context for its children.
+ */
 export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
   const parentDomCollectionContext = useOptionalDomCollectionContext();
   const parentMenuContext = useOptionalMenuContext();
@@ -174,8 +190,14 @@ Menu.Portal = PopoverPortal;
 Menu.Positioner = PopoverPositioner;
 Menu.Panel = MenuPanel;
 Menu.Arrow = PopoverArrow;
-Menu.Item = MenuItem;
 Menu.Group = MenuGroup;
 Menu.GroupLabel = MenuGroupLabel;
+Menu.Item = MenuItem;
+Menu.ItemLabel = MenuItemLabel;
+Menu.ItemDescription = MenuItemDescription;
+Menu.ItemIndicator = MenuItemIndicator;
+Menu.RadioGroup = MenuRadioGroup;
+Menu.ItemRadio = MenuItemRadio;
+Menu.ItemCheckbox = MenuItemCheckbox;
 Menu.Sub = MenuSub;
 Menu.SubTrigger = MenuSubTrigger;

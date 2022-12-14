@@ -1,0 +1,22 @@
+import { Accessor, createContext, useContext } from "solid-js";
+
+export interface MenuRadioGroupContextValue {
+  name: Accessor<string>;
+  isDisabled: Accessor<boolean | undefined>;
+  isSelectedValue: (value: string) => boolean;
+  setSelectedValue: (value: string | undefined) => void;
+}
+
+export const MenuRadioGroupContext = createContext<MenuRadioGroupContextValue>();
+
+export function useMenuRadioGroupContext() {
+  const context = useContext(MenuRadioGroupContext);
+
+  if (context === undefined) {
+    throw new Error(
+      "[kobalte]: `useMenuRadioGroupContext` must be used within a `Menu.RadioGroup` component"
+    );
+  }
+
+  return context;
+}

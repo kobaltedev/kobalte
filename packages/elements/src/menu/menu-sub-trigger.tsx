@@ -33,6 +33,9 @@ export interface MenuSubTriggerProps {
   isDisabled?: boolean;
 }
 
+/**
+ * An item that opens a submenu.
+ */
 export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerProps>(props => {
   let ref: HTMLDivElement | undefined;
 

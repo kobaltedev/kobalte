@@ -71,19 +71,11 @@ function TestMenu() {
               </Menu.Portal>
             </Menu.Sub>
             <Menu.Group>
-              <Menu.GroupLabel>People</Menu.GroupLabel>
+              <Menu.GroupLabel class="menu-group-label">People</Menu.GroupLabel>
               <Menu.Item key="pedro" class="menu-item">
                 Pedro Duarte
               </Menu.Item>
               <Menu.Item key="colm" class="menu-item">
-                Colm Tuite
-              </Menu.Item>
-            </Menu.Group>
-            <Menu.Group>
-              <Menu.Item key="pedro2" class="menu-item">
-                Pedro Duarte
-              </Menu.Item>
-              <Menu.Item key="colm2" class="menu-item">
                 Colm Tuite
               </Menu.Item>
             </Menu.Group>

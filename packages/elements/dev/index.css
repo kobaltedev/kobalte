@@ -90,3 +90,12 @@ body,
 .menu-item[data-disabled] {
   opacity: 0.25;
 }
+
+.menu-group-label {
+  cursor: default;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  opacity: 0.6;
+}
