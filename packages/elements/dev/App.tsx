@@ -1,4 +1,4 @@
-import { I18nProvider, Menu } from "../src";
+import { I18nProvider, Menu, Select } from "../src";
 
 function TestMenu() {
   const handleAction = (key: string) => {

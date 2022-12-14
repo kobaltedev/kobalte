@@ -13,7 +13,6 @@ import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-co
 import { MenuItem } from "./menu-item";
 import { MenuPanel } from "./menu-panel";
 import { MenuSub } from "./menu-sub";
-import { useOptionalMenuSubContext } from "./menu-sub-context";
 import { MenuSubTrigger } from "./menu-sub-trigger";
 import { MenuTrigger } from "./menu-trigger";
 import { MenuItemModel } from "./types";

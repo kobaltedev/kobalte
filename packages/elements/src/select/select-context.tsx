@@ -6,7 +6,7 @@ import { FocusStrategy, KeyboardDelegate } from "../selection";
 export interface SelectContextValue {
   isOpen: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
-  isSingleSelectMode: Accessor<boolean>;
+  isMultiple: Accessor<boolean>;
   autoFocus: Accessor<FocusStrategy | boolean>;
   triggerRef: Accessor<HTMLButtonElement | undefined>;
   triggerId: Accessor<string | undefined>;

@@ -9,7 +9,6 @@
 import { access, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createMemo, createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
-import { DialogPortal } from "../dialog/dialog-portal";
 import {
   createFormControl,
   CreateFormControlProps,
@@ -29,6 +28,7 @@ import { ListboxOptionDescription } from "../listbox/listbox-option-description"
 import { ListboxOptionIndicator } from "../listbox/listbox-option-indicator";
 import { ListboxOptionLabel } from "../listbox/listbox-option-label";
 import { Popover, PopoverFloatingProps } from "../popover";
+import { PopoverPortal } from "../popover/popover-portal";
 import { PopoverPositioner } from "../popover/popover-positioner";
 import {
   CollectionKey,
@@ -47,17 +47,14 @@ import { SelectValue } from "./select-value";
 
 type SelectComposite = {
   Label: typeof SelectLabel;
+  Description: typeof FormControlDescription;
+  ErrorMessage: typeof FormControlErrorMessage;
   Trigger: typeof SelectTrigger;
   Value: typeof SelectValue;
   Icon: typeof SelectIcon;
-  Menu: typeof SelectMenu;
-
-  Description: typeof FormControlDescription;
-  ErrorMessage: typeof FormControlErrorMessage;
-
+  Portal: typeof PopoverPortal;
   Positioner: typeof PopoverPositioner;
-  Portal: typeof DialogPortal;
-
+  Menu: typeof SelectMenu;
   Group: typeof ListboxGroup;
   GroupLabel: typeof ListboxGroupLabel;
   GroupOptions: typeof ListboxGroupOptions;
@@ -70,11 +67,7 @@ type SelectComposite = {
 export interface SelectProps
   extends Pick<
       CreateListStateProps,
-      | "filter"
-      | "allowDuplicateSelectionEvents"
-      | "disallowEmptySelection"
-      | "selectionBehavior"
-      | "selectionMode"
+      "filter" | "allowDuplicateSelectionEvents" | "disallowEmptySelection" | "selectionBehavior"
     >,
     PopoverFloatingProps,
     CreateFormControlProps {
@@ -101,6 +94,9 @@ export interface SelectProps
 
   /** Event handler called when the value changes. */
   onValueChange?: (value: SelectionType) => void;
+
+  /** Whether the select allow multi-selection. */
+  isMultiple?: boolean;
 
   /** An array of objects to display as the available options. */
   options: Array<any>;
@@ -139,11 +135,9 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
   props = mergeDefaultProps(
     {
       id: defaultId,
-      selectionMode: "single",
+      isMultiple: false,
       allowDuplicateSelectionEvents: true,
-      disallowEmptySelection:
-        access(props.selectionMode) == null || access(props.selectionMode) == "single",
-      gutter: 8,
+      disallowEmptySelection: () => !props.isMultiple,
     },
     props
   );
@@ -157,6 +151,7 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
       "onOpenChange",
       "value",
       "defaultValue",
+      "isMultiple",
       "options",
       "onValueChange",
       "optionPropertyNames",
@@ -166,7 +161,6 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
       "allowDuplicateSelectionEvents",
       "disallowEmptySelection",
       "selectionBehavior",
-      "selectionMode",
       "filter",
     ],
     FORM_CONTROL_PROP_NAMES
@@ -181,8 +175,6 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy>();
   const [isFocused, setIsFocused] = createSignal(false);
 
-  const isSingleSelectMode = () => access(local.selectionMode) === "single";
-
   const disclosureState = createDisclosure({
     isOpen: () => local.isOpen,
     defaultIsOpen: () => local.defaultIsOpen,
@@ -194,12 +186,12 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
     defaultSelectedKeys: () => local.defaultValue,
     onSelectionChange: keys => {
       local.onValueChange?.(keys);
-      isSingleSelectMode() && disclosureState.close();
+      !local.isMultiple && disclosureState.close();
     },
     allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
     disallowEmptySelection: () => access(local.disallowEmptySelection),
     selectionBehavior: () => access(local.selectionBehavior),
-    selectionMode: () => access(local.selectionMode),
+    selectionMode: () => (local.isMultiple ? "multiple" : "single"),
     dataSource: () => local.options,
     itemPropertyNames: () => ({
       key: local.optionPropertyNames?.value ?? "value",
@@ -254,7 +246,7 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
   const context: SelectContextValue = {
     isOpen: disclosureState.isOpen,
     isDisabled: () => formControlContext.isDisabled() ?? false,
-    isSingleSelectMode,
+    isMultiple: () => local.isMultiple ?? false,
     autoFocus: () => focusStrategy() || true,
     triggerRef,
     listState: () => listState,
@@ -295,17 +287,14 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
 };
 
 Select.Label = SelectLabel;
+Select.Description = FormControlDescription;
+Select.ErrorMessage = FormControlErrorMessage;
 Select.Trigger = SelectTrigger;
 Select.Value = SelectValue;
 Select.Icon = SelectIcon;
+Select.Portal = PopoverPortal;
 Select.Menu = SelectMenu;
-
-Select.Description = FormControlDescription;
-Select.ErrorMessage = FormControlErrorMessage;
-
 Select.Positioner = PopoverPositioner;
-Select.Portal = DialogPortal;
-
 Select.Group = ListboxGroup;
 Select.GroupLabel = ListboxGroupLabel;
 Select.GroupOptions = ListboxGroupOptions;

@@ -29,7 +29,7 @@ export function Overlay(props: ComponentProps<"div"> & CreateOverlayProps) {
   const { overlayHandlers } = createOverlay(local, () => ref);
 
   // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-  return <div ref={ref} onKeyDown={overlayHandlers.onEscapeKeyDown} {...others} />;
+  return <div ref={ref} onKeyDown={overlayHandlers.onKeyDown} {...others} />;
 }
 
 describe("createOverlay", () => {

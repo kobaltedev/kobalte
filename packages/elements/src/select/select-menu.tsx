@@ -63,7 +63,7 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
   const { FocusTrap } = createFocusTrapRegion(
     {
       trapFocus: context.isOpen,
-      autoFocus: true,
+      autoFocus: false, // Handled by the listbox itself
       restoreFocus: true,
     },
     () => ref

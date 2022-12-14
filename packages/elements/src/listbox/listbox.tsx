@@ -72,11 +72,7 @@ export interface ListboxOptionGroupPropertyNames {
 export interface ListboxProps
   extends Pick<
       CreateListStateProps,
-      | "filter"
-      | "allowDuplicateSelectionEvents"
-      | "disallowEmptySelection"
-      | "selectionBehavior"
-      | "selectionMode"
+      "filter" | "allowDuplicateSelectionEvents" | "disallowEmptySelection" | "selectionBehavior"
     >,
     Pick<CreateSelectableListProps, "selectOnFocus" | "disallowTypeAhead" | "allowsTabNavigation"> {
   /** The controlled value of the listbox. */
@@ -90,6 +86,9 @@ export interface ListboxProps
 
   /** Event handler called when the value changes. */
   onValueChange?: (value: SelectionType) => void;
+
+  /** Whether the listbox allow multi-selection. */
+  isMultiple?: boolean;
 
   /** A controlled state for the listbox. */
   state?: ListState;
@@ -185,7 +184,7 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
     {
       as: "ul",
       id: defaultId,
-      selectionMode: "single",
+      isMultiple: false,
     },
     props
   );
@@ -196,6 +195,7 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
     "fallback",
     "value",
     "defaultValue",
+    "isMultiple",
     "state",
     "options",
     "onValueChange",
@@ -210,7 +210,6 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
     "allowDuplicateSelectionEvents",
     "disallowEmptySelection",
     "selectionBehavior",
-    "selectionMode",
     "selectOnFocus",
     "disallowTypeAhead",
     "allowsTabNavigation",
@@ -230,7 +229,7 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
       allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
       disallowEmptySelection: () => access(local.disallowEmptySelection),
       selectionBehavior: () => access(local.selectionBehavior),
-      selectionMode: () => access(local.selectionMode),
+      selectionMode: () => (local.isMultiple ? "multiple" : "single"),
       dataSource: () => local.options ?? [],
       itemPropertyNames: () => ({
         key: local.optionPropertyNames?.value ?? "value",

@@ -6,30 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-spectrum/picker/test/Picker.test.js
  */
 
-import userEvent from "@testing-library/user-event";
+import { createPointerEvent, installPointerEvent, triggerPress } from "@kobalte/tests";
 import { fireEvent, render, screen, within } from "solid-testing-library";
 
 import { Select } from "./select";
-import { createPointerEvent, installPointerEvent, triggerPress } from "@kobalte/tests";
-
-/*
-<Select options={DATA}>
-  <Select.Label>Label</Select.Label>
-  <Select.Trigger>
-    <Select.Value placeholder="Placeholder" />
-    <Select.Icon />
-  </Select.Trigger>
-  <Select.Description>Description</Select.Description>
-  <Select.ErrorMessage>ErrorMessage</Select.ErrorMessage>
-  <Select.Portal>
-    <Select.Positioner>
-      <Select.Menu>
-        {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-      </Select.Menu>
-    </Select.Positioner>
-  </Select.Portal>
-</Select>
-*/
 
 const DATA = [
   { label: "One", value: "one" },
@@ -83,6 +63,81 @@ describe("Select", () => {
 
     expect(label).toBeVisible();
     expect(value).toBeVisible();
+  });
+
+  it("supports custom option and group object shape", async () => {
+    const CUSTOM_DATA = [
+      {
+        key: "fruits",
+        name: "Fruits",
+        items: [
+          {
+            id: 1,
+            name: "Apple",
+            typeAheadValue: "apple",
+            isDisabled: true,
+          },
+        ],
+      },
+    ];
+
+    render(() => (
+      <Select
+        options={CUSTOM_DATA}
+        optionPropertyNames={{
+          value: "id",
+          label: "name",
+          textValue: "typeAheadValue",
+          disabled: "isDisabled",
+        }}
+        optionGroupPropertyNames={{
+          id: "key",
+          label: "name",
+          options: "items",
+        }}
+      >
+        <Select.Label>Label</Select.Label>
+        <Select.Trigger>
+          <Select.Value placeholder="Placeholder" />
+          <Select.Icon />
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Positioner>
+            <Select.Menu>
+              {node => (
+                <Select.Group node={node()}>
+                  <Select.GroupLabel data-testid="group-label">{node().label}</Select.GroupLabel>
+                  <Select.GroupOptions>
+                    {childNode => (
+                      <Select.Option node={childNode()}>{childNode().label}</Select.Option>
+                    )}
+                  </Select.GroupOptions>
+                </Select.Group>
+              )}
+            </Select.Menu>
+          </Select.Positioner>
+        </Select.Portal>
+      </Select>
+    ));
+
+    const trigger = screen.getByRole("button");
+    expect(trigger).toHaveTextContent("Placeholder");
+
+    await triggerPress(trigger);
+    jest.runAllTimers();
+
+    const listbox = screen.getByRole("listbox");
+
+    const groupLabel = within(listbox).getByTestId("group-label");
+
+    expect(groupLabel).toHaveTextContent("Fruits");
+
+    const items = within(listbox).getAllByRole("option");
+
+    expect(items.length).toBe(1);
+    expect(items[0]).toHaveTextContent("Apple");
+    expect(items[0]).toHaveAttribute("data-key", "1");
+    expect(items[0]).toHaveAttribute("aria-disabled", "true");
   });
 
   describe("opening", () => {
@@ -221,6 +276,8 @@ describe("Select", () => {
       fireEvent.keyUp(trigger, { key: " " });
       await Promise.resolve();
 
+      jest.runAllTimers();
+
       const listbox = screen.getByRole("listbox");
 
       expect(listbox).toBeVisible();
@@ -267,6 +324,8 @@ describe("Select", () => {
       fireEvent.keyDown(trigger, { key: "Enter" });
       fireEvent.keyUp(trigger, { key: "Enter" });
       await Promise.resolve();
+
+      jest.runAllTimers();
 
       const listbox = screen.getByRole("listbox");
 
@@ -315,6 +374,8 @@ describe("Select", () => {
       fireEvent.keyUp(trigger, { key: "ArrowDown" });
       await Promise.resolve();
 
+      jest.runAllTimers();
+
       const listbox = screen.getByRole("listbox");
 
       expect(listbox).toBeVisible();
@@ -362,6 +423,8 @@ describe("Select", () => {
       fireEvent.keyUp(trigger, { key: "ArrowUp" });
       await Promise.resolve();
 
+      jest.runAllTimers();
+
       const listbox = screen.getByRole("listbox");
 
       expect(listbox).toBeVisible();
@@ -408,6 +471,8 @@ describe("Select", () => {
       fireEvent.keyDown(trigger, { key: "ArrowDown" });
       fireEvent.keyUp(trigger, { key: "ArrowDown" });
       await Promise.resolve();
+
+      jest.runAllTimers();
 
       const listbox = screen.getByRole("listbox");
 
@@ -466,6 +531,8 @@ describe("Select", () => {
         </Select>
       ));
 
+      jest.runAllTimers();
+
       const listbox = screen.getByRole("listbox");
 
       expect(listbox).toBeVisible();
@@ -506,6 +573,8 @@ describe("Select", () => {
           </Select.Portal>
         </Select>
       ));
+
+      jest.runAllTimers();
 
       const listbox = screen.getByRole("listbox");
 
@@ -1796,6 +1865,186 @@ describe("Select", () => {
 
       expect(onValueChange).toHaveBeenCalledTimes(6);
       expect(trigger).toHaveTextContent("Two");
+    });
+  });
+
+  describe("multi selection", () => {
+    it("supports selecting multiple options", async () => {
+      render(() => (
+        <Select options={DATA} isMultiple onValueChange={onValueChange}>
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value placeholder="Placeholder" />
+            <Select.Icon />
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Positioner>
+              <Select.Menu>
+                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
+              </Select.Menu>
+            </Select.Positioner>
+          </Select.Portal>
+        </Select>
+      ));
+
+      const trigger = screen.getByRole("button");
+      expect(trigger).toHaveTextContent("Placeholder");
+
+      await triggerPress(trigger);
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+      const items = within(listbox).getAllByRole("option");
+
+      expect(listbox).toHaveAttribute("aria-multiselectable", "true");
+
+      expect(items.length).toBe(4);
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[2]).toHaveTextContent("Three");
+      expect(items[3]).toHaveTextContent("Four");
+
+      expect(document.activeElement).toBe(items[0]);
+
+      await triggerPress(items[0]);
+      await triggerPress(items[2]);
+
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      expect(items[2]).toHaveAttribute("aria-selected", "true");
+
+      expect(onValueChange).toBeCalledTimes(2);
+      expect(onValueChange.mock.calls[0][0].has("one")).toBeTruthy();
+      expect(onValueChange.mock.calls[1][0].has("three")).toBeTruthy();
+
+      // Does not close on multi-select
+      expect(listbox).toBeInTheDocument();
+
+      expect(trigger).toHaveTextContent("One, Three");
+    });
+
+    it("supports multiple defaultValue (uncontrolled)", async () => {
+      const defaultValue = new Set(["one", "two"]);
+
+      render(() => (
+        <Select options={DATA} isMultiple defaultValue={defaultValue} onValueChange={onValueChange}>
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value placeholder="Placeholder" />
+            <Select.Icon />
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Positioner>
+              <Select.Menu>
+                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
+              </Select.Menu>
+            </Select.Positioner>
+          </Select.Portal>
+        </Select>
+      ));
+
+      const trigger = screen.getByRole("button");
+
+      await triggerPress(trigger);
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      expect(items[1]).toHaveAttribute("aria-selected", "true");
+
+      // Select a different option
+      fireEvent.click(items[2]);
+      await Promise.resolve();
+
+      expect(items[2]).toHaveAttribute("aria-selected", "true");
+
+      expect(onValueChange).toBeCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0].has("one")).toBeTruthy();
+      expect(onValueChange.mock.calls[0][0].has("two")).toBeTruthy();
+      expect(onValueChange.mock.calls[0][0].has("three")).toBeTruthy();
+    });
+
+    it("supports multiple value (controlled)", async () => {
+      const value = new Set(["one", "two"]);
+
+      render(() => (
+        <Select options={DATA} isMultiple value={value} onValueChange={onValueChange}>
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value placeholder="Placeholder" />
+            <Select.Icon />
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Positioner>
+              <Select.Menu>
+                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
+              </Select.Menu>
+            </Select.Positioner>
+          </Select.Portal>
+        </Select>
+      ));
+
+      const trigger = screen.getByRole("button");
+
+      await triggerPress(trigger);
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      expect(items[1]).toHaveAttribute("aria-selected", "true");
+
+      // Select a different option
+      fireEvent.click(items[2]);
+      await Promise.resolve();
+
+      expect(items[2]).toHaveAttribute("aria-selected", "false");
+
+      expect(onValueChange).toBeCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0].has("three")).toBeTruthy();
+    });
+
+    it("supports deselection", async () => {
+      const defaultValue = new Set(["one", "two"]);
+
+      render(() => (
+        <Select options={DATA} isMultiple defaultValue={defaultValue} onValueChange={onValueChange}>
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value placeholder="Placeholder" />
+            <Select.Icon />
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Positioner>
+              <Select.Menu>
+                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
+              </Select.Menu>
+            </Select.Positioner>
+          </Select.Portal>
+        </Select>
+      ));
+
+      const trigger = screen.getByRole("button");
+
+      await triggerPress(trigger);
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      expect(items[1]).toHaveAttribute("aria-selected", "true");
+
+      // Deselect first option
+      await triggerPress(items[0]);
+
+      expect(items[0]).toHaveAttribute("aria-selected", "false");
+
+      expect(onValueChange).toBeCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0].has("one")).toBeFalsy();
+      expect(onValueChange.mock.calls[0][0].has("two")).toBeTruthy();
     });
   });
 

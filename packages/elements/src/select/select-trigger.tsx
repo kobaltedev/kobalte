@@ -99,7 +99,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
         // prevent scrolling containers
         e.preventDefault();
 
-        if (!context.isSingleSelectMode()) {
+        if (context.isMultiple()) {
           return;
         }
 
@@ -120,7 +120,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
         // prevent scrolling containers
         e.preventDefault();
 
-        if (!context.isSingleSelectMode()) {
+        if (context.isMultiple()) {
           return;
         }
 
