@@ -14,7 +14,7 @@ export interface MenuContextValue {
   parentMenuContext: Accessor<MenuContextValue | undefined>;
   triggerId: Accessor<string | undefined>;
   panelId: Accessor<string | undefined>;
-  setTriggerRef: (el: HTMLButtonElement) => void;
+  setTriggerRef: (el: HTMLElement) => void;
   setPanelRef: (el: HTMLDivElement) => void;
   open: (focusStrategy?: FocusStrategy) => void;
   close: (deep?: boolean) => void;

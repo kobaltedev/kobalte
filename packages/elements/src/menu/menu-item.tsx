@@ -12,7 +12,13 @@ export interface MenuItemProps
 export const MenuItem = createPolymorphicComponent<"div", MenuItemProps>(props => {
   const context = useMenuContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+  props = mergeDefaultProps(
+    {
+      as: "div",
+      closeOnSelect: true,
+    },
+    props
+  );
 
   return <MenuItemBase role="menuitem" onAction={context.onAction} {...props} />;
 });

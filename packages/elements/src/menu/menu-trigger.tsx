@@ -44,6 +44,7 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps
       context.toggle(e.pointerType === "virtual" ? "first" : undefined);
     }
   };
+
   const onPress = (e: PressEvent) => {
     local.onPress?.(e);
 

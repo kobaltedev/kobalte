@@ -8,6 +8,7 @@ export { createPolymorphicComponent } from "@kobalte/utils";
 // components
 export * from "./alert";
 export * from "./button";
+export * from "./context-menu";
 export * from "./dialog";
 export * from "./form-control";
 export * from "./hover-card";

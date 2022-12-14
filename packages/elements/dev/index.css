@@ -7,6 +7,21 @@ body,
   align-items: center;
   height: 100%;
 }
+
+.context-menu-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border-width: 2px;
+  border-style: dashed;
+  border-color: hsl(204 20% 88%);
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
+
 .button {
   display: flex;
   height: 2.5rem;

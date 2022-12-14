@@ -19,7 +19,13 @@ export interface MenuItemRadioProps
 export const MenuItemRadio = createPolymorphicComponent<"div", MenuItemRadioProps>(props => {
   const context = useMenuRadioGroupContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+  props = mergeDefaultProps(
+    {
+      as: "div",
+      closeOnSelect: false,
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, ["value"]);
 

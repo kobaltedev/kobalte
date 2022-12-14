@@ -2,8 +2,6 @@ import {
   combineProps,
   createGenerateId,
   createPolymorphicComponent,
-  isActionKey,
-  isSelectionKey,
   mergeDefaultProps,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
@@ -71,7 +69,6 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
     {
       as: "div",
       id: defaultId,
-      closeOnSelect: true,
     },
     props
   );
@@ -124,17 +121,10 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
 
   const { pressHandlers, isPressed } = createPress({
     isDisabled: () => local.isDisabled,
-    onPressStart: e => {
-      // For consistency with native, trigger the action on keydown, but mouse/touch up.
-      if (e.pointerType === "keyboard" && (isActionKey() || isSelectionKey())) {
-        local.onAction(local.key);
-      }
-    },
     onPressUp: e => {
       if (e.pointerType !== "keyboard") {
         local.onAction(local.key);
 
-        // Pressing a menu item should close by default, except if overridden by the closeOnSelect prop.
         if (local.closeOnSelect) {
           menuContext.close(true);
         }
@@ -170,13 +160,12 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
       case "Enter":
         local.onAction(local.key);
 
-        // The Space and Enter key should always close on select, except if overridden.
-        if (local.closeOnSelect !== false) {
+        if (local.closeOnSelect) {
           menuContext.close(true);
         }
         break;
       case "ArrowLeft":
-        // The Arrow Left key should always close only that menu, if it's a sub menu.
+        // The Arrow Left key close only that menu if it's a sub menu.
         if (menuContext.parentMenuContext() != null) {
           menuContext.close();
         }

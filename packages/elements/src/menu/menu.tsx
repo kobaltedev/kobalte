@@ -27,7 +27,7 @@ import { MenuSubTrigger } from "./menu-sub-trigger";
 import { MenuTrigger } from "./menu-trigger";
 import { MenuItemModel } from "./types";
 
-type MenuComposite = {
+export type MenuComposite = {
   Trigger: typeof MenuTrigger;
   Icon: typeof MenuIcon;
   Portal: typeof PopoverPortal;
@@ -88,8 +88,8 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
     "onAction",
   ]);
 
-  const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
-  const [panelRef, setPanelRef] = createSignal<HTMLButtonElement>();
+  const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
+  const [panelRef, setPanelRef] = createSignal<HTMLDivElement>();
   const [triggerId, setTriggerId] = createSignal<string>();
   const [panelId, setPanelId] = createSignal<string>();
 

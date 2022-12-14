@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/listbox/src/useOption.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
@@ -27,9 +27,17 @@ export const MenuItemLabel = createPolymorphicComponent<"div">(props => {
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "id"]);
+  const [local, others] = splitProps(props, ["as", "ref", "id"]);
 
   createEffect(() => onCleanup(context.registerLabel(local.id!)));
 
-  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
+  return (
+    <Dynamic
+      component={local.as}
+      ref={mergeRefs(context.setLabelRef, local.ref)}
+      id={local.id}
+      {...context.dataset()}
+      {...others}
+    />
+  );
 });

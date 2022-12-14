@@ -6,7 +6,7 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard.tsx
  */
 
-import { createGlobalListeners, EventKey, mergeDefaultProps } from "@kobalte/utils";
+import { access, createGlobalListeners, EventKey, mergeDefaultProps } from "@kobalte/utils";
 import {
   createEffect,
   createSignal,
@@ -89,6 +89,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     "closeDelay",
     "closeOnHoverOutside",
     "closeOnInteractOutside",
+    "shouldCloseOnInteractOutside",
     "closeOnEsc",
     "ignoreSafeArea",
     "anchorRef",
@@ -169,6 +170,14 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     };
   };
 
+  const shouldCloseOnInteractOutside = (element: Element) => {
+    if (local.shouldCloseOnInteractOutside == null) {
+      return true;
+    }
+
+    return local.shouldCloseOnInteractOutside(element);
+  };
+
   const onEscapeKeyDown = (event: KeyboardEvent) => {
     if (event.key === EventKey.Escape && local.closeOnEsc) {
       deepClose();
@@ -184,6 +193,10 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     }
 
     if (!local.closeOnInteractOutside) {
+      return;
+    }
+
+    if (!shouldCloseOnInteractOutside(target as Element)) {
       return;
     }
 

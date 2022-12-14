@@ -22,7 +22,13 @@ export interface MenuItemCheckboxProps extends Omit<MenuItemBaseProps, "isChecke
  * An item that can be controlled and rendered like a checkbox.
  */
 export const MenuItemCheckbox = createPolymorphicComponent<"div", MenuItemCheckboxProps>(props => {
-  props = mergeDefaultProps({ as: "div" }, props);
+  props = mergeDefaultProps(
+    {
+      as: "div",
+      closeOnSelect: false,
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, ["isChecked", "defaultIsChecked", "onCheckedChange"]);
 
