@@ -6,11 +6,11 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-aria/listbox/src/useListBoxSection.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { createGenerateId, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { CollectionNode } from "../primitives";
+import { CollectionNode, createRegisterId } from "../primitives";
 import { useListboxContext } from "./listbox-context";
 import { ListboxGroupContext, ListboxGroupContextValue } from "./listbox-group-context";
 
@@ -43,11 +43,8 @@ export const ListboxGroup = createPolymorphicComponent<"li", ListboxGroupProps>(
   const context: ListboxGroupContextValue = {
     labelId,
     childNodes: () => local.node.childNodes,
-    generateId: part => `${others.id!}-${part}`,
-    registerLabel: id => {
-      setLabelId(id);
-      return () => setLabelId(undefined);
-    },
+    generateId: createGenerateId(() => others.id!),
+    registerLabel: createRegisterId(setLabelId),
   };
 
   return (
