@@ -10,23 +10,24 @@ import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@ko
 import { createEffect, on, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
+import { createFocusRing, createHover } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useTabsContext } from "./tabs-context";
 import { TabsItemModel } from "./types";
 
-export interface TabsTriggerProps {
-  /** The unique key that associates the trigger with a panel. */
-  key: string;
+export interface TabProps {
+  /** The unique key that associates the tab with a tab panel. */
+  value: string;
 
   /** Whether the tab should be disabled. */
   isDisabled?: boolean;
 }
 
 /**
- * The button that activates its associated tabs panel.
+ * The button that activates its associated tab panel.
  */
-export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerProps>(props => {
+export const Tab = createPolymorphicComponent<"button", TabProps>(props => {
   let ref: HTMLButtonElement | undefined;
 
   const context = useTabsContext();
@@ -34,22 +35,23 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerProps
   props = mergeDefaultProps(
     {
       as: "button",
+      type: "button",
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "key", "id", "isDisabled"]);
+  const [local, others] = splitProps(props, ["as", "id", "value", "isDisabled"]);
 
-  const id = () => local.id ?? context.generateTabId(local.key);
+  const id = () => local.id ?? context.generateTabId(local.value);
+
+  const isFocused = () => context.listState().selectionManager().focusedKey() === local.value;
 
   const isDisabled = () => local.isDisabled || context.isDisabled();
 
   createDomCollectionItem<TabsItemModel>({
     getItem: () => ({
       ref: () => ref,
-      key: local.key,
-      label: ref?.textContent ?? "",
-      textValue: ref?.textContent ?? "",
+      value: local.value,
       disabled: isDisabled(),
     }),
   });
@@ -58,21 +60,28 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerProps
     tabIndex,
     dataKey,
     isSelected,
+    isPressed,
     pressHandlers: itemPressHandlers,
     longPressHandlers: itemLongPressHandlers,
     otherHandlers: itemOtherHandlers,
   } = createSelectableItem(
     {
-      key: () => local.key,
+      key: () => local.value,
       selectionManager: () => context.listState().selectionManager(),
       isDisabled,
     },
     () => ref
   );
 
+  const { isHovered, hoverHandlers } = createHover({
+    isDisabled,
+  });
+
+  const { isFocusVisible, focusRingHandlers } = createFocusRing();
+
   createEffect(
-    on([() => local.key, id], ([key, id]) => {
-      context.tabsIdsMap().set(key, id);
+    on([() => local.value, id], ([value, id]) => {
+      context.tabIdsMap().set(value, id);
     })
   );
 
@@ -82,16 +91,26 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerProps
       id={id()}
       role="tab"
       tabIndex={!isDisabled() ? tabIndex() : undefined}
+      disabled={isDisabled()}
       aria-selected={isSelected()}
       aria-disabled={isDisabled() || undefined}
-      aria-controls={isSelected() ? context.tabPanelsIdsMap().get(local.key) : undefined}
+      aria-controls={isSelected() ? context.tabPanelIdsMap().get(local.value) : undefined}
       data-key={dataKey()}
+      data-orientation={context.orientation()}
+      data-selected={isSelected() ? "" : undefined}
+      data-disabled={isDisabled() ? "" : undefined}
+      data-hover={isHovered() ? "" : undefined}
+      data-focus={isFocused() ? "" : undefined}
+      data-focus-visible={isFocusVisible() ? "" : undefined}
+      data-active={isPressed() ? "" : undefined}
       {...combineProps(
         { ref: el => (ref = el) },
         others,
         itemPressHandlers,
         itemLongPressHandlers,
-        itemOtherHandlers
+        itemOtherHandlers,
+        hoverHandlers,
+        focusRingHandlers
       )}
     />
   );

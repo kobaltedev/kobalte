@@ -8,11 +8,11 @@ export interface TabsContextValue {
   isDisabled: Accessor<boolean>;
   orientation: Accessor<Orientation>;
   activationMode: Accessor<TabsActivationMode>;
-  tabsIdsMap: Accessor<Map<string, string>>;
-  tabPanelsIdsMap: Accessor<Map<string, string>>;
+  tabIdsMap: Accessor<Map<string, string>>;
+  tabPanelIdsMap: Accessor<Map<string, string>>;
   listState: Accessor<SingleSelectListState>;
-  generateTabId: (key: string) => string;
-  generateTabPanelId: (key: string) => string;
+  generateTabId: (value: string) => string;
+  generateTabPanelId: (value: string) => string;
 }
 
 export const TabsContext = createContext<TabsContextValue>();

@@ -1,3 +1,5 @@
+import { isString } from "@kobalte/utils";
+
 import {
   CollectionItemPropertyNames,
   CollectionKey,
@@ -37,6 +39,26 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
   const nodes: Array<CollectionNode> = [];
 
   for (const data of params.dataSource) {
+    // If it's just a string assume it's an item.
+    if (isString(data)) {
+      nodes.push({
+        type: "item",
+        rawValue: data,
+        key: data,
+        label: data,
+        textValue: data,
+        isDisabled: false,
+        level,
+        index,
+        childNodes: [],
+        parentKey: params.parentKey,
+      });
+
+      index++;
+
+      continue;
+    }
+
     const isSection = sectionPropertyNames.label in data && sectionPropertyNames.items in data;
 
     if (isSection) {
@@ -44,7 +66,7 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
         type: "section",
         rawValue: data,
         key: data[sectionPropertyNames.key] ?? getFallbackKey(index, params.parentKey),
-        label: data[sectionPropertyNames.label],
+        label: data[sectionPropertyNames.label] ?? "",
         textValue: "",
         isDisabled: false,
         level: level,
@@ -74,8 +96,8 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
         type: "item",
         rawValue: data,
         key: data[itemPropertyNames.key] ?? getFallbackKey(index, params.parentKey),
-        label: data[itemPropertyNames.label],
-        textValue: data[itemPropertyNames.textValue] ?? data[itemPropertyNames.label],
+        label: data[itemPropertyNames.label] ?? "",
+        textValue: data[itemPropertyNames.textValue] ?? data[itemPropertyNames.label] ?? "",
         isDisabled: data[itemPropertyNames.disabled] ?? false,
         level,
         index,

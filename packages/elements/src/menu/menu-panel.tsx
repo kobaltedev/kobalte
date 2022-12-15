@@ -1,29 +1,13 @@
-import {
-  combineProps,
-  contains,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-} from "@kobalte/utils";
+import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import { HoverCardPanel } from "../hover-card/hover-card-panel";
 import { createSelectableList } from "../list";
+import { PopoverPanelProps } from "../popover/popover-panel";
 import { createFocusRing } from "../primitives";
 import { useMenuContext } from "./menu-context";
 
-export interface MenuPanelProps {
-  /** The HTML styles attribute (object form only). */
-  style?: JSX.CSSProperties;
-
-  /**
-   * Used to force mounting when more control is needed.
-   * Useful when controlling animation with SolidJS animation libraries.
-   * It inherits from `Select.Portal`.
-   */
-  forceMount?: boolean;
-}
-
-export const MenuPanel = createPolymorphicComponent<"div", MenuPanelProps>(props => {
+export const MenuPanel = createPolymorphicComponent<"div", PopoverPanelProps>(props => {
   let ref: HTMLDivElement | undefined;
 
   const context = useMenuContext();
@@ -36,7 +20,7 @@ export const MenuPanel = createPolymorphicComponent<"div", MenuPanelProps>(props
     props
   );
 
-  const [local, others] = splitProps(props, ["id", "forceMount"]);
+  const [local, others] = splitProps(props, ["id"]);
 
   const selectableList = createSelectableList(
     {

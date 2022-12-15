@@ -8,21 +8,21 @@
  */
 
 import { createPolymorphicComponent, mergeDefaultProps, Orientation } from "@kobalte/utils";
-import { createEffect, createSignal, createUniqueId, splitProps } from "solid-js";
+import { createEffect, createSignal, createUniqueId, on, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createSingleSelectListState } from "../list";
 import { createDomCollection } from "../primitives/create-dom-collection";
+import { Tab } from "./tab";
+import { TabList } from "./tab-list";
+import { TabPanel } from "./tab-panel";
 import { TabsContext, TabsContextValue } from "./tabs-context";
-import { TabsList } from "./tabs-list";
-import { TabsPanel } from "./tabs-panel";
-import { TabsTrigger } from "./tabs-trigger";
 import { TabsActivationMode, TabsItemModel } from "./types";
 
 type TabsComposite = {
-  List: typeof TabsList;
-  Trigger: typeof TabsTrigger;
-  Panel: typeof TabsPanel;
+  TabList: typeof TabList;
+  Tab: typeof Tab;
+  TabPanel: typeof TabPanel;
 };
 
 export interface TabsProps {
@@ -84,76 +84,86 @@ export const Tabs = createPolymorphicComponent<"div", TabsProps, TabsComposite>(
     defaultSelectedKey: () => local.defaultValue,
     onSelectionChange: key => local.onValueChange?.(String(key)),
     dataSource: items,
+    itemPropertyNames: {
+      key: "value",
+    },
   });
 
   let lastSelectedKey = listState.selectedKey();
 
-  createEffect(() => {
-    const selectionManager = listState.selectionManager();
-    const collection = listState.collection();
-    let selectedKey = listState.selectedKey();
+  createEffect(
+    on(
+      [
+        () => listState.selectionManager(),
+        () => listState.collection(),
+        () => listState.selectedKey(),
+      ],
+      ([selectionManager, collection, currentSelectedKey]) => {
+        let selectedKey = currentSelectedKey;
 
-    // Ensure a tab is always selected (in case no selected key was specified or if selected item was deleted from collection)
-    if (selectionManager.isEmpty() || selectedKey == null || !collection.getItem(selectedKey)) {
-      selectedKey = collection.getFirstKey();
+        // Ensure a tab is always selected (in case no selected key was specified or if selected item was deleted from collection)
+        if (selectionManager.isEmpty() || selectedKey == null || !collection.getItem(selectedKey)) {
+          selectedKey = collection.getFirstKey();
 
-      let selectedItem = selectedKey != null ? collection.getItem(selectedKey) : undefined;
+          let selectedItem = selectedKey != null ? collection.getItem(selectedKey) : undefined;
 
-      // loop over tabs until we find one that isn't disabled and select that
-      while (selectedItem?.isDisabled && selectedItem.key !== collection.getLastKey()) {
-        selectedKey = collection.getKeyAfter(selectedItem.key);
-        selectedItem = selectedKey != null ? collection.getItem(selectedKey) : undefined;
+          // loop over tabs until we find one that isn't disabled and select that
+          while (selectedItem?.isDisabled && selectedItem.key !== collection.getLastKey()) {
+            selectedKey = collection.getKeyAfter(selectedItem.key);
+            selectedItem = selectedKey != null ? collection.getItem(selectedKey) : undefined;
+          }
+
+          // if this check is true, then every item is disabled, it makes more sense to default to the first key than the last
+          if (selectedItem?.isDisabled && selectedKey === collection.getLastKey()) {
+            selectedKey = collection.getFirstKey();
+          }
+
+          // directly set selection because replace/toggle selection won't consider disabled keys
+          if (selectedKey != null) {
+            selectionManager.setSelectedKeys([selectedKey]);
+          }
+        }
+
+        // If there isn't a focused key yet or the tabs doesn't have focus and the selected key changes,
+        // change focused key to the selected key if it exists.
+        if (
+          selectionManager.focusedKey() == null ||
+          (!selectionManager.isFocused() && selectedKey !== lastSelectedKey)
+        ) {
+          selectionManager.setFocusedKey(selectedKey);
+        }
+
+        lastSelectedKey = selectedKey;
       }
+    )
+  );
 
-      // if this check is true, then every item is disabled, it makes more sense to default to the first key than the last
-      if (selectedItem?.isDisabled && selectedKey === collection.getLastKey()) {
-        selectedKey = collection.getFirstKey();
-      }
+  // associated value/tab ids
+  const tabIdsMap = new Map<string, string>();
 
-      // directly set selection because replace/toggle selection won't consider disabled keys
-      if (selectedKey != null) {
-        selectionManager.setSelectedKeys([selectedKey]);
-      }
-    }
-
-    // If there isn't a focused key yet or the tabs doesn't have focus and the selected key changes,
-    // change focused key to the selected key if it exists.
-    if (
-      selectionManager.focusedKey() == null ||
-      (!selectionManager.isFocused() && selectedKey !== lastSelectedKey)
-    ) {
-      selectionManager.setFocusedKey(selectedKey);
-    }
-
-    lastSelectedKey = selectedKey;
-  });
-
-  // associated key/tab ids
-  const tabsIdsMap = new Map<string, string>();
-
-  // associated key/tab panel ids
-  const tabPanelsIdsMap = new Map<string, string>();
+  // associated value/tab panel ids
+  const tabPanelIdsMap = new Map<string, string>();
 
   const context: TabsContextValue = {
     isDisabled: () => local.isDisabled ?? false,
     orientation: () => local.orientation!,
     activationMode: () => local.activationMode!,
-    tabsIdsMap: () => tabsIdsMap,
-    tabPanelsIdsMap: () => tabPanelsIdsMap,
+    tabIdsMap: () => tabIdsMap,
+    tabPanelIdsMap: () => tabPanelIdsMap,
     listState: () => listState,
-    generateTabId: key => `${others.id!}-tab-${key}`,
-    generateTabPanelId: key => `${others.id!}-tabpanel-${key}`,
+    generateTabId: value => `${others.id!}-tab-${value}`,
+    generateTabPanelId: value => `${others.id!}-tabpanel-${value}`,
   };
 
   return (
     <DomCollectionProvider>
       <TabsContext.Provider value={context}>
-        <Dynamic component={local.as} {...others} />
+        <Dynamic component={local.as} data-orientation={context.orientation()} {...others} />
       </TabsContext.Provider>
     </DomCollectionProvider>
   );
 });
 
-Tabs.List = TabsList;
-Tabs.Trigger = TabsTrigger;
-Tabs.Panel = TabsPanel;
+Tabs.TabList = TabList;
+Tabs.Tab = Tab;
+Tabs.TabPanel = TabPanel;

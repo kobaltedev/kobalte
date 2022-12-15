@@ -2,11 +2,9 @@ import { createPolymorphicComponent, isFunction, mergeDefaultProps } from "@koba
 import { Accessor, createEffect, createMemo, JSX, onCleanup, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createLocalizedStringFormatter } from "../i18n";
-import { SelectionType } from "../selection";
-import { SELECT_INTL_MESSAGES } from "./select.intl";
-import { useSelectContext } from "./select-context";
 import { useFormControlContext } from "../form-control";
+import { SelectionType } from "../selection";
+import { useSelectContext } from "./select-context";
 
 type SelectValueRenderProp = (selectedValues: Accessor<SelectionType>) => JSX.Element;
 
@@ -25,16 +23,10 @@ export const SelectValue = createPolymorphicComponent<"span", SelectValueProps>(
 
   const [local, others] = splitProps(props, ["as", "id", "children", "placeholder"]);
 
-  const stringFormatter = createLocalizedStringFormatter(() => SELECT_INTL_MESSAGES);
-
   const selectionManager = () => context.listState().selectionManager();
   const isSelectionEmpty = () => selectionManager().isEmpty();
 
   const valueLabels = createMemo(() => {
-    if (selectionManager().isSelectAll()) {
-      return stringFormatter().format("all");
-    }
-
     return [...selectionManager().selectedKeys()]
       .map(key => context.listState().collection().getItem(key)?.label ?? key)
       .join(", ");

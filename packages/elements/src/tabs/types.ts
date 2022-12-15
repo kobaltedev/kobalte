@@ -1,10 +1,10 @@
 import { DomCollectionItem } from "../primitives/create-dom-collection";
 
 export interface TabsItemModel extends DomCollectionItem {
-  /** A unique key for the item. */
-  key: string;
+  /** A unique key for the tab. */
+  value: string;
 
-  /** Whether the item is disabled. */
+  /** Whether the tab is disabled. */
   disabled?: boolean;
 }
 
