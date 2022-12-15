@@ -2,6 +2,24 @@ import { createSignal } from "solid-js";
 
 import { ContextMenu, I18nProvider, Menu } from "../src";
 
+function DotFilledIcon(props: any) {
+  return (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M9.875 7.5C9.875 8.81168 8.81168 9.875 7.5 9.875C6.18832 9.875 5.125 8.81168 5.125 7.5C5.125 6.18832 6.18832 5.125 7.5 5.125C8.81168 5.125 9.875 6.18832 9.875 7.5Z"
+        fill="currentColor"
+      ></path>
+    </svg>
+  );
+}
+
 function TestMenu() {
   const [bookmarksChecked, setBookmarksChecked] = createSignal(true);
   const [urlsChecked, setUrlsChecked] = createSignal(false);
@@ -102,13 +120,13 @@ function TestMenu() {
               <Menu.GroupLabel class="menu-group-label">People</Menu.GroupLabel>
               <Menu.ItemRadio value="pedro" class="menu-item">
                 <Menu.ItemIndicator forceMount class="opacity-0 data-[checked]:opacity-100">
-                  ✓
+                  <DotFilledIcon />
                 </Menu.ItemIndicator>
                 <Menu.ItemLabel>Pedro Duarte</Menu.ItemLabel>
               </Menu.ItemRadio>
               <Menu.ItemRadio value="colm" class="menu-item">
                 <Menu.ItemIndicator forceMount class="opacity-0 data-[checked]:opacity-100">
-                  ✓
+                  <DotFilledIcon />
                 </Menu.ItemIndicator>
                 <Menu.ItemLabel>Colm Tuite</Menu.ItemLabel>
               </Menu.ItemRadio>
@@ -218,13 +236,13 @@ function TestContextMenu() {
               <ContextMenu.GroupLabel class="menu-group-label">People</ContextMenu.GroupLabel>
               <ContextMenu.ItemRadio value="pedro" class="menu-item">
                 <ContextMenu.ItemIndicator forceMount class="opacity-0 data-[checked]:opacity-100">
-                  ✓
+                  <DotFilledIcon />
                 </ContextMenu.ItemIndicator>
                 <ContextMenu.ItemLabel>Pedro Duarte</ContextMenu.ItemLabel>
               </ContextMenu.ItemRadio>
               <ContextMenu.ItemRadio value="colm" class="menu-item">
                 <ContextMenu.ItemIndicator forceMount class="opacity-0 data-[checked]:opacity-100">
-                  ✓
+                  <DotFilledIcon />
                 </ContextMenu.ItemIndicator>
                 <ContextMenu.ItemLabel>Colm Tuite</ContextMenu.ItemLabel>
               </ContextMenu.ItemRadio>

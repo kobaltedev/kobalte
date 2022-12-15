@@ -82,14 +82,14 @@ export interface DialogProps {
    * If `true` focus will be set to the first focusable element inside the dialog panel.
    * If a `string` (query selector) is provided focus will be set to the target element.
    */
-  autoFocus?: boolean;
+  autoFocus?: boolean | string;
 
   /**
    * Whether focus should be restored once the dialog close.
    * If `true` focus will be restored to the element that triggered the dialog.
    * If a `string` (query selector) is provided focus will be restored to the target element.
    */
-  restoreFocus?: boolean;
+  restoreFocus?: boolean | string;
 }
 
 /**

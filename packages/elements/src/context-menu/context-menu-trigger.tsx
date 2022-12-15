@@ -6,13 +6,13 @@ import { useMenuContext } from "../menu/menu-context";
 import { useContextMenuContext } from "./context-menu-context";
 
 export const ContextMenuTrigger = createPolymorphicComponent<"div">(props => {
-  const contextMenuContext = useContextMenuContext();
-  const context = useMenuContext();
+  const menuContext = useMenuContext();
+  const context = useContextMenuContext();
 
   props = mergeDefaultProps(
     {
       as: "div",
-      id: context.generateId("trigger"),
+      id: menuContext.generateId("trigger"),
     },
     props
   );
@@ -22,15 +22,23 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div">(props => {
   const onContextMenu: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     e.preventDefault();
 
-    contextMenuContext.setAnchorRect({ x: e.clientX, y: e.clientY });
-    contextMenuContext.open();
+    context.setAnchorRect({ x: e.clientX, y: e.clientY });
+
+    if (menuContext.isOpen()) {
+      // If the menu is already open, focus the menu itself.
+      menuContext.focusPanel();
+      menuContext.listState().selectionManager().setFocused(true);
+      menuContext.listState().selectionManager().setFocusedKey(undefined);
+    } else {
+      menuContext.open();
+    }
   };
 
   return (
     <Dynamic
       component={local.as}
-      ref={mergeRefs(context.setTriggerRef, local.ref)}
-      data-expanded={context.isOpen() ? "" : undefined}
+      ref={mergeRefs(menuContext.setTriggerRef, local.ref)}
+      data-expanded={menuContext.isOpen() ? "" : undefined}
       onContextMenu={onContextMenu}
       {...others}
     />

@@ -1,7 +1,6 @@
 import { createContext, Setter, useContext } from "solid-js";
 
 export interface ContextMenuContextValue {
-  open: () => void;
   setAnchorRect: Setter<{ x: number; y: number }>;
 }
 

@@ -2,26 +2,9 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
 import { Menu, MenuComposite, MenuProps } from "../menu";
-import { MenuGroup } from "../menu/menu-group";
-import { MenuGroupLabel } from "../menu/menu-group-label";
-import { MenuIcon } from "../menu/menu-icon";
-import { MenuItem } from "../menu/menu-item";
-import { MenuItemCheckbox } from "../menu/menu-item-checkbox";
-import { MenuItemDescription } from "../menu/menu-item-description";
-import { MenuItemIndicator } from "../menu/menu-item-indicator";
-import { MenuItemLabel } from "../menu/menu-item-label";
-import { MenuItemRadio } from "../menu/menu-item-radio";
-import { MenuPanel } from "../menu/menu-panel";
-import { MenuRadioGroup } from "../menu/menu-radio-group";
-import { MenuSub } from "../menu/menu-sub";
-import { MenuSubTrigger } from "../menu/menu-sub-trigger";
-import { PopoverArrow } from "../popover/popover-arrow";
-import { PopoverPortal } from "../popover/popover-portal";
-import { PopoverPositioner } from "../popover/popover-positioner";
 import { createDisclosure } from "../primitives";
 import { ContextMenuContext, ContextMenuContextValue } from "./context-menu-context";
 import { ContextMenuTrigger } from "./context-menu-trigger";
-import { Separator } from "../separator";
 
 type ContextMenuComposite = {
   Trigger: typeof ContextMenuTrigger;
@@ -54,7 +37,6 @@ export const ContextMenu: ParentComponent<ContextMenuProps> & ContextMenuComposi
   });
 
   const context: ContextMenuContextValue = {
-    open: disclosureState.open,
     setAnchorRect,
   };
 
@@ -71,20 +53,20 @@ export const ContextMenu: ParentComponent<ContextMenuProps> & ContextMenuComposi
 };
 
 ContextMenu.Trigger = ContextMenuTrigger;
-ContextMenu.Icon = MenuIcon;
-ContextMenu.Portal = PopoverPortal;
-ContextMenu.Positioner = PopoverPositioner;
-ContextMenu.Panel = MenuPanel;
-ContextMenu.Arrow = PopoverArrow;
-ContextMenu.Separator = Separator;
-ContextMenu.Group = MenuGroup;
-ContextMenu.GroupLabel = MenuGroupLabel;
-ContextMenu.Item = MenuItem;
-ContextMenu.ItemLabel = MenuItemLabel;
-ContextMenu.ItemDescription = MenuItemDescription;
-ContextMenu.ItemIndicator = MenuItemIndicator;
-ContextMenu.RadioGroup = MenuRadioGroup;
-ContextMenu.ItemRadio = MenuItemRadio;
-ContextMenu.ItemCheckbox = MenuItemCheckbox;
-ContextMenu.Sub = MenuSub;
-ContextMenu.SubTrigger = MenuSubTrigger;
+ContextMenu.Icon = Menu.Icon;
+ContextMenu.Portal = Menu.Portal;
+ContextMenu.Positioner = Menu.Positioner;
+ContextMenu.Panel = Menu.Panel;
+ContextMenu.Arrow = Menu.Arrow;
+ContextMenu.Separator = Menu.Separator;
+ContextMenu.Group = Menu.Group;
+ContextMenu.GroupLabel = Menu.GroupLabel;
+ContextMenu.Item = Menu.Item;
+ContextMenu.ItemLabel = Menu.ItemLabel;
+ContextMenu.ItemDescription = Menu.ItemDescription;
+ContextMenu.ItemIndicator = Menu.ItemIndicator;
+ContextMenu.RadioGroup = Menu.RadioGroup;
+ContextMenu.ItemRadio = Menu.ItemRadio;
+ContextMenu.ItemCheckbox = Menu.ItemCheckbox;
+ContextMenu.Sub = Menu.Sub;
+ContextMenu.SubTrigger = Menu.SubTrigger;

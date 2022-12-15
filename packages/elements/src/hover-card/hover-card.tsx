@@ -6,7 +6,7 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard.tsx
  */
 
-import { access, createGlobalListeners, EventKey, mergeDefaultProps } from "@kobalte/utils";
+import { createGlobalListeners, EventKey, mergeDefaultProps } from "@kobalte/utils";
 import {
   createEffect,
   createSignal,
@@ -17,12 +17,6 @@ import {
 } from "solid-js";
 
 import { Popover, PopoverProps } from "../popover";
-import { PopoverArrow } from "../popover/popover-arrow";
-import { PopoverCloseButton } from "../popover/popover-close-button";
-import { PopoverDescription } from "../popover/popover-description";
-import { PopoverPortal } from "../popover/popover-portal";
-import { PopoverPositioner } from "../popover/popover-positioner";
-import { PopoverTitle } from "../popover/popover-title";
 import { Placement } from "../popover/utils";
 import { createDisclosure } from "../primitives";
 import {
@@ -31,19 +25,20 @@ import {
   useOptionalHoverCardContext,
 } from "./hover-card-context";
 import { HoverCardPanel } from "./hover-card-panel";
+import { HoverCardPositioner } from "./hover-card-positioner";
 import { HoverCardTrigger } from "./hover-card-trigger";
 import { getElementPolygon, getEventPoint, isPointInPolygon } from "./polygon";
 import { isMovingOnHoverCard } from "./utils";
 
 type HoverCardComposite = {
   Trigger: typeof HoverCardTrigger;
-  Portal: typeof PopoverPortal;
-  Positioner: typeof PopoverPositioner;
+  Portal: typeof Popover.Portal;
+  Positioner: typeof HoverCardPositioner;
   Panel: typeof HoverCardPanel;
-  Arrow: typeof PopoverArrow;
-  CloseButton: typeof PopoverCloseButton;
-  Title: typeof PopoverTitle;
-  Description: typeof PopoverDescription;
+  Arrow: typeof Popover.Arrow;
+  CloseButton: typeof Popover.CloseButton;
+  Title: typeof Popover.Title;
+  Description: typeof Popover.Description;
 };
 
 export interface HoverCardProps extends Omit<PopoverProps, "onCurrentPlacementChange"> {
@@ -100,6 +95,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
 
   const [nestedHoverCardRefs, setNestedHoverCardRefs] = createSignal<HTMLElement[]>([]);
   const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
+  const [positionerRef, setPositionerRef] = createSignal<HTMLElement>();
   const [panelRef, setPanelRef] = createSignal<HTMLElement>();
 
   const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(others.placement!);
@@ -145,7 +141,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   };
 
   const isTargetOnHoverCard = (target: Node | undefined) => {
-    return isMovingOnHoverCard(target, panelRef(), anchorRef(), nestedHoverCardRefs());
+    return isMovingOnHoverCard(target, positionerRef(), anchorRef(), nestedHoverCardRefs());
   };
 
   const getPolygonSafeArea = (placement: Placement) => {
@@ -184,7 +180,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     }
   };
 
-  const onInteractOutside = (event: PointerEvent) => {
+  const onInteractOutside = (event: PointerEvent | MouseEvent) => {
     const target = event.target as Node | undefined;
 
     // Don't close if the hovercard element has focus within or the mouse is moving through valid hovercard elements.
@@ -243,13 +239,14 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       return;
     }
 
-    const panelEl = panelRef();
+    // Register the positioner instead of the panel because it's the top most element (excluding Portal).
+    const positionerEl = positionerRef();
 
-    if (!panelEl || !parentContext) {
+    if (!positionerEl || !parentContext) {
       return;
     }
 
-    onCleanup(parentContext.registerNestedHoverCard(panelEl));
+    onCleanup(parentContext.registerNestedHoverCard(positionerEl));
   });
 
   createEffect(() => {
@@ -270,11 +267,13 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     // Checks whether the user is interacting outside the hovercard.
     // If yes, hide the card immediately.
     addGlobalListener(document, "pointerup", onInteractOutside, true);
+    addGlobalListener(document, "contextmenu", onInteractOutside, true);
 
     onCleanup(() => {
       removeGlobalListener(document, "keydown", onEscapeKeyDown);
       removeGlobalListener(document, "pointermove", onHoverOutside, true);
       removeGlobalListener(document, "pointerup", onInteractOutside, true);
+      removeGlobalListener(document, "contextmenu", onInteractOutside, true);
     });
   });
 
@@ -294,6 +293,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     isTargetOnHoverCard,
     registerNestedHoverCard,
     setTriggerRef,
+    setPositionerRef,
     setPanelRef,
   };
 
@@ -313,10 +313,10 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
 };
 
 HoverCard.Trigger = HoverCardTrigger;
-HoverCard.Portal = PopoverPortal;
-HoverCard.Positioner = PopoverPositioner;
+HoverCard.Portal = Popover.Portal;
+HoverCard.Positioner = HoverCardPositioner;
 HoverCard.Panel = HoverCardPanel;
-HoverCard.Arrow = PopoverArrow;
-HoverCard.CloseButton = PopoverCloseButton;
-HoverCard.Title = PopoverTitle;
-HoverCard.Description = PopoverDescription;
+HoverCard.Arrow = Popover.Arrow;
+HoverCard.CloseButton = Popover.CloseButton;
+HoverCard.Title = Popover.Title;
+HoverCard.Description = Popover.Description;

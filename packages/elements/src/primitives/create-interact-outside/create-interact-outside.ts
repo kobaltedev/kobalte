@@ -44,7 +44,7 @@ export function createInteractOutside(
       }
     };
 
-    const onPointerUp = (e: PointerEvent) => {
+    const onPointerUp = (e: PointerEvent | MouseEvent) => {
       if (isPointerDown() && isInteractOutsideEvent(e, ref())) {
         setIsPointerDown(false);
         props.onInteractOutside?.(e);

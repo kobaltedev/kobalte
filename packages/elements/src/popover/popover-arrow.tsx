@@ -13,7 +13,7 @@ import {
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { Accessor, createEffect, createSignal, JSX, splitProps } from "solid-js";
+import { Accessor, createEffect, createSignal, JSX, on, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { usePopoverContext } from "./popover-context";

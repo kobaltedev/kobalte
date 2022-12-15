@@ -52,7 +52,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
 
   const [local, others] = splitProps(props, ["as", "id", "key", "textValue", "isDisabled"]);
 
-  const selectionManager = createMemo(() => {
+  const parentSelectionManager = () => {
     const parentMenuContext = context.parentMenuContext();
 
     if (parentMenuContext == null) {
@@ -60,9 +60,12 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     }
 
     return parentMenuContext.listState().selectionManager();
-  });
+  };
 
-  const isFocused = () => selectionManager().focusedKey() === local.key;
+  const selectionManager = () => context.listState().selectionManager();
+  const collection = () => context.listState().collection();
+
+  const isFocused = () => parentSelectionManager().focusedKey() === local.key;
 
   const {
     tabIndex,
@@ -72,7 +75,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   } = createSelectableItem(
     {
       key: () => local.key,
-      selectionManager: selectionManager,
+      selectionManager: parentSelectionManager,
       shouldSelectOnPressUp: true,
       allowsDifferentPressOrigin: true,
       isDisabled: () => local.isDisabled,
@@ -93,8 +96,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     isDisabled: () => local.isDisabled,
     onHoverStart: e => {
       if (!isKeyboardFocusVisible()) {
-        selectionManager().setFocused(true);
-        selectionManager().setFocusedKey(local.key);
+        parentSelectionManager().setFocused(true);
+        parentSelectionManager().setFocusedKey(local.key);
       }
 
       if (e.pointerType === "touch") {
@@ -128,7 +131,10 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
         e.stopPropagation();
         e.preventDefault();
         if (context.isOpen()) {
-          context.focusInPanel();
+          // If the sub menu is already open (ex: by hovering), focus the first item.
+          context.focusPanel();
+          selectionManager().setFocused(true);
+          selectionManager().setFocusedKey(collection().getFirstKey(), "first");
         } else {
           context.open("first");
         }

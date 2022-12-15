@@ -179,14 +179,14 @@ export interface PopoverProps extends PopoverFloatingProps {
    * If `true` focus will be set to the first focusable element inside the popover panel.
    * If a `string` (query selector) is provided focus will be set to the target element.
    */
-  autoFocus?: boolean;
+  autoFocus?: boolean | string;
 
   /**
    * Whether focus should be restored once the popover close.
    * If `true` focus will be restored to the element that triggered the popover.
    * If a `string` (query selector) is provided focus will be restored to the target element.
    */
-  restoreFocus?: boolean;
+  restoreFocus?: boolean | string;
 
   /**
    * Function that returns the anchor element's DOMRect. If this is explicitly

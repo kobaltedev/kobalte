@@ -3,9 +3,6 @@ import { createSignal, createUniqueId, ParentComponent, splitProps } from "solid
 
 import { HoverCard, HoverCardProps } from "../hover-card";
 import { createListState } from "../list";
-import { PopoverArrow } from "../popover/popover-arrow";
-import { PopoverPortal } from "../popover/popover-portal";
-import { PopoverPositioner } from "../popover/popover-positioner";
 import { createDisclosure, createRegisterId, focusSafely } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { useOptionalDomCollectionContext } from "../primitives/create-dom-collection/dom-collection-context";
@@ -31,10 +28,10 @@ import { MenuItemModel } from "./types";
 export type MenuComposite = {
   Trigger: typeof MenuTrigger;
   Icon: typeof MenuIcon;
-  Portal: typeof PopoverPortal;
-  Positioner: typeof PopoverPositioner;
+  Portal: typeof HoverCard.Portal;
+  Positioner: typeof HoverCard.Positioner;
   Panel: typeof MenuPanel;
-  Arrow: typeof PopoverArrow;
+  Arrow: typeof HoverCard.Arrow;
   Separator: typeof Separator;
   Group: typeof MenuGroup;
   GroupLabel: typeof MenuGroupLabel;
@@ -134,7 +131,7 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
     }
   };
 
-  const focusInPanel = () => {
+  const focusPanel = () => {
     const panel = panelRef();
 
     if (panel) {
@@ -157,7 +154,7 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
     open,
     close,
     toggle,
-    focusInPanel,
+    focusPanel,
     onAction: key => local.onAction?.(key),
     registerItemToParentDomCollection: parentDomCollectionContext?.registerItem,
     generateId: createGenerateId(() => local.id!),
@@ -174,7 +171,7 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
           onOpenChange={disclosureState.setIsOpen}
           anchorRef={triggerRef}
           closeOnInteractOutside={true}
-          closeOnHoverOutside={true}
+          closeOnHoverOutside={parentMenuContext != null}
           openDelay={0}
           closeDelay={0}
           {...others}
@@ -188,10 +185,10 @@ export const Menu: ParentComponent<MenuProps> & MenuComposite = props => {
 
 Menu.Trigger = MenuTrigger;
 Menu.Icon = MenuIcon;
-Menu.Portal = PopoverPortal;
-Menu.Positioner = PopoverPositioner;
+Menu.Portal = HoverCard.Portal;
+Menu.Positioner = HoverCard.Positioner;
 Menu.Panel = MenuPanel;
-Menu.Arrow = PopoverArrow;
+Menu.Arrow = HoverCard.Arrow;
 Menu.Separator = Separator;
 Menu.Group = MenuGroup;
 Menu.GroupLabel = MenuGroupLabel;

@@ -19,7 +19,7 @@ export interface MenuContextValue {
   open: (focusStrategy?: FocusStrategy) => void;
   close: (deep?: boolean) => void;
   toggle: (focusStrategy?: FocusStrategy) => void;
-  focusInPanel: () => void;
+  focusPanel: () => void;
   onAction: (key: string) => void;
   registerItemToParentDomCollection: ((item: MenuItemModel) => () => void) | undefined;
   generateId: (part: string) => string;

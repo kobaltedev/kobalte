@@ -19,17 +19,8 @@ import {
 } from "../form-control";
 import { createCollator } from "../i18n";
 import { createListState, CreateListStateProps, ListKeyboardDelegate } from "../list";
-import { ListboxOptionGroupPropertyNames, ListboxOptionPropertyNames } from "../listbox";
-import { ListboxGroup } from "../listbox/listbox-group";
-import { ListboxGroupLabel } from "../listbox/listbox-group-label";
-import { ListboxGroupOptions } from "../listbox/listbox-group-options";
-import { ListboxOption } from "../listbox/listbox-option";
-import { ListboxOptionDescription } from "../listbox/listbox-option-description";
-import { ListboxOptionIndicator } from "../listbox/listbox-option-indicator";
-import { ListboxOptionLabel } from "../listbox/listbox-option-label";
+import { Listbox, ListboxOptionGroupPropertyNames, ListboxOptionPropertyNames } from "../listbox";
 import { Popover, PopoverFloatingProps } from "../popover";
-import { PopoverPortal } from "../popover/popover-portal";
-import { PopoverPositioner } from "../popover/popover-positioner";
 import {
   CollectionKey,
   createDisclosure,
@@ -37,6 +28,7 @@ import {
   createRegisterId,
 } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, SelectionType } from "../selection";
+import { Separator } from "../separator";
 import { HiddenSelect } from "./hidden-select";
 import { SelectContext, SelectContextValue } from "./select-context";
 import { SelectIcon } from "./select-icon";
@@ -52,16 +44,17 @@ type SelectComposite = {
   Trigger: typeof SelectTrigger;
   Value: typeof SelectValue;
   Icon: typeof SelectIcon;
-  Portal: typeof PopoverPortal;
-  Positioner: typeof PopoverPositioner;
+  Portal: typeof Popover.Portal;
+  Positioner: typeof Popover.Positioner;
   Menu: typeof SelectMenu;
-  Group: typeof ListboxGroup;
-  GroupLabel: typeof ListboxGroupLabel;
-  GroupOptions: typeof ListboxGroupOptions;
-  Option: typeof ListboxOption;
-  OptionLabel: typeof ListboxOptionLabel;
-  OptionDescription: typeof ListboxOptionDescription;
-  OptionIndicator: typeof ListboxOptionIndicator;
+  Separator: typeof Separator;
+  Group: typeof Listbox.Group;
+  GroupLabel: typeof Listbox.GroupLabel;
+  GroupOptions: typeof Listbox.GroupOptions;
+  Option: typeof Listbox.Option;
+  OptionLabel: typeof Listbox.OptionLabel;
+  OptionDescription: typeof Listbox.OptionDescription;
+  OptionIndicator: typeof Listbox.OptionIndicator;
 };
 
 export interface SelectProps
@@ -292,13 +285,14 @@ Select.ErrorMessage = FormControlErrorMessage;
 Select.Trigger = SelectTrigger;
 Select.Value = SelectValue;
 Select.Icon = SelectIcon;
-Select.Portal = PopoverPortal;
+Select.Portal = Popover.Portal;
 Select.Menu = SelectMenu;
-Select.Positioner = PopoverPositioner;
-Select.Group = ListboxGroup;
-Select.GroupLabel = ListboxGroupLabel;
-Select.GroupOptions = ListboxGroupOptions;
-Select.Option = ListboxOption;
-Select.OptionLabel = ListboxOptionLabel;
-Select.OptionDescription = ListboxOptionDescription;
-Select.OptionIndicator = ListboxOptionIndicator;
+Select.Positioner = Popover.Positioner;
+Select.Separator = Separator;
+Select.Group = Listbox.Group;
+Select.GroupLabel = Listbox.GroupLabel;
+Select.GroupOptions = Listbox.GroupOptions;
+Select.Option = Listbox.Option;
+Select.OptionLabel = Listbox.OptionLabel;
+Select.OptionDescription = Listbox.OptionDescription;
+Select.OptionIndicator = Listbox.OptionIndicator;
