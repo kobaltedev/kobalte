@@ -7,6 +7,7 @@ export * from "./create-focus-visible";
 export * from "./create-form-reset-listener";
 export * from "./create-hover";
 export * from "./create-interact-outside";
+export * from "./create-long-press";
 export * from "./create-overlay";
 export * from "./create-press";
 export * from "./create-prevent-scroll";
