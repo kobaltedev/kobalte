@@ -11,6 +11,7 @@ import { Accessor, createEffect, createMemo, on } from "solid-js";
 
 import {
   CollectionKey,
+  createLongPress,
   createPress,
   CreatePressProps,
   focusSafely,
@@ -19,6 +20,7 @@ import {
 } from "../primitives";
 import { MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
+import { LongPressEvent } from "../primitives/create-long-press/types";
 
 export interface CreateSelectableItemProps {
   /** An interface for reading and updating multiple selection state. */
@@ -65,7 +67,7 @@ export function createSelectableItem<T extends HTMLElement>(
   const key = () => access(props.key);
   const shouldUseVirtualFocus = () => access(props.shouldUseVirtualFocus);
 
-  const onSelect = (e: PressEvent | PointerEvent) => {
+  const onSelect = (e: PressEvent | LongPressEvent | PointerEvent) => {
     if (e.pointerType === "keyboard" && isNonContiguousSelectionModifier(e)) {
       manager().toggleSelection(key());
     } else {
@@ -160,21 +162,18 @@ export function createSelectableItem<T extends HTMLElement>(
     preventFocusOnPress: shouldUseVirtualFocus,
   });
 
-  // TODO: uncomment when create-long-press is implemented
-  /*
   // Long pressing an item with touch when selectionBehavior = 'replace' switches the selection behavior
   // to 'toggle'. This changes the single tap behavior from performing an action (i.e. navigating) to
   // selecting, and may toggle the appearance of a UI affordance like checkboxes on each item.
   const { longPressHandlers } = createLongPress({
-    isDisabled: () => !longPressEnabled(),
+    isDisabled: () => !allowsSelection(),
     onLongPress: e => {
       if (e.pointerType === "touch") {
         onSelect(e);
         manager().setSelectionBehavior("toggle");
       }
-    }
+    },
   });
-   */
 
   // Prevent native drag and drop on long press if we also select on long press.
   // Once the user is in selection mode, they can long press again to drag.
@@ -252,7 +251,7 @@ export function createSelectableItem<T extends HTMLElement>(
     tabIndex,
     dataKey,
     pressHandlers,
-    // longPressHandlers,
+    longPressHandlers,
     otherHandlers: { onDragStart, onFocus },
   };
 }

@@ -169,7 +169,7 @@ export const ListboxOption = createPolymorphicComponent<"li", ListboxOptionProps
           { ref: el => (ref = el) },
           others,
           selectableItem.pressHandlers,
-          // selectableItem.longPressHandlers,
+          selectableItem.longPressHandlers,
           selectableItem.otherHandlers,
           hoverHandlers,
           focusRingHandlers

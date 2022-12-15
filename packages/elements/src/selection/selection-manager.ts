@@ -9,6 +9,7 @@
 import { Accessor } from "solid-js";
 
 import { Collection, CollectionKey, CollectionNode, PressEvent } from "../primitives";
+import { LongPressEvent } from "../primitives/create-long-press/types";
 import {
   FocusStrategy,
   MultipleSelectionManager,
@@ -400,7 +401,7 @@ export class SelectionManager implements MultipleSelectionManager {
     }
   }
 
-  select(key: CollectionKey, e?: PressEvent | PointerEvent) {
+  select(key: CollectionKey, e?: PressEvent | LongPressEvent | PointerEvent) {
     if (this.selectionMode() === "none") {
       return;
     }

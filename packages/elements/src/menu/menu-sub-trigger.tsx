@@ -71,6 +71,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     tabIndex,
     dataKey,
     pressHandlers: itemPressHandlers,
+    longPressHandlers: itemLongPressHandlers,
     otherHandlers: itemOtherHandlers,
   } = createSelectableItem(
     {
@@ -210,6 +211,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
         },
         others,
         itemPressHandlers,
+        itemLongPressHandlers,
         itemOtherHandlers,
         pressHandlers,
         hoverHandlers,

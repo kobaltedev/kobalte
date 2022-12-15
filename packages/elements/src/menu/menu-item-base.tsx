@@ -107,6 +107,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
     tabIndex,
     dataKey,
     pressHandlers: itemPressHandlers,
+    longPressHandlers: itemLongPressHandlers,
     otherHandlers: itemOtherHandlers,
   } = createSelectableItem(
     {
@@ -219,6 +220,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
           { ref: el => (ref = el) },
           others,
           itemPressHandlers,
+          itemLongPressHandlers,
           itemOtherHandlers,
           pressHandlers,
           hoverHandlers,
