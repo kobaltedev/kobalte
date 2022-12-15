@@ -18,15 +18,12 @@ import {
 import { Accessor, createEffect, createMemo, JSX, mergeProps, on, onMount } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { Collection, CollectionKey, CollectionNode, focusSafely } from "../primitives";
+import { CollectionKey, focusSafely } from "../primitives";
 import { createTypeSelect } from "./create-type-select";
 import { FocusStrategy, KeyboardDelegate, MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
 
 interface CreateSelectableCollectionProps {
-  /** State of the collection. */
-  collection: Accessor<Collection<CollectionNode>>;
-
   /** An interface for reading and updating multiple selection state. */
   selectionManager: MaybeAccessor<MultipleSelectionManager>;
 

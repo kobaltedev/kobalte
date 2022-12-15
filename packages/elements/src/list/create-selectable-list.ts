@@ -82,7 +82,6 @@ export function createSelectableList<T extends HTMLElement>(
 
   return createSelectableCollection(
     {
-      collection: () => access(props.collection),
       selectionManager: () => access(props.selectionManager),
       keyboardDelegate: delegate,
       autoFocus: () => access(props.autoFocus),

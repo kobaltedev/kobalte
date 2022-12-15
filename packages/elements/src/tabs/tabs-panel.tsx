@@ -1,0 +1,86 @@
+/*!
+ * Portions of this file are based on code from react-spectrum.
+ * Apache License Version 2.0, Copyright 2020 Adobe.
+ *
+ * Credits to the React Spectrum team:
+ * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabPanel.ts
+ */
+
+import {
+  createPolymorphicComponent,
+  getFocusableTreeWalker,
+  mergeDefaultProps,
+  mergeRefs,
+} from "@kobalte/utils";
+import { createEffect, createSignal, on, onCleanup, Show, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
+
+import { useTabsContext } from "./tabs-context";
+
+export interface TabsPanelProps {
+  /** The unique key that associates the panel with a trigger. */
+  key: string;
+}
+
+/**
+ * Contains the content associated with tabs trigger.
+ */
+export const TabsPanel = createPolymorphicComponent<"div", TabsPanelProps>(props => {
+  let ref: HTMLElement | undefined;
+
+  const context = useTabsContext();
+
+  props = mergeDefaultProps({ as: "div" }, props);
+
+  const [local, others] = splitProps(props, ["as", "id", "key", "ref"]);
+
+  const [tabIndex, setTabIndex] = createSignal<number | undefined>(0);
+
+  const id = () => local.id ?? context.generateTabPanelId(local.key);
+
+  createEffect(
+    on(
+      () => ref,
+      ref => {
+        if (ref == null) {
+          return;
+        }
+
+        const update = () => {
+          // Detect if there are any tabbable elements and update the tabIndex accordingly.
+          const walker = getFocusableTreeWalker(ref, { tabbable: true });
+          setTabIndex(walker.nextNode() ? undefined : 0);
+        };
+
+        update();
+
+        // Update when new elements are inserted, or the tabIndex/disabled attribute updates.
+        const observer = new MutationObserver(update);
+        observer.observe(ref, {
+          subtree: true,
+          childList: true,
+          attributes: true,
+          attributeFilter: ["tabIndex", "disabled"],
+        });
+
+        onCleanup(() => {
+          observer.disconnect();
+        });
+      }
+    )
+  );
+
+  return (
+    <Show when={context.listState().selectedKey() === local.key}>
+      <Dynamic
+        component={local.as}
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        id={id()}
+        role="tabpanel"
+        tabIndex={tabIndex()}
+        aria-labelledby={context.tabsIdsMap().get(local.key)}
+        {...others}
+      />
+    </Show>
+  );
+});

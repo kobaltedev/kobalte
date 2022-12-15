@@ -22,3 +22,4 @@ export * from "./select";
 export * from "./separator";
 export * from "./switch";
 export * from "./toggle-button";
+export * from "./tabs";

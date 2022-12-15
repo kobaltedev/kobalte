@@ -210,7 +210,6 @@ export interface PopoverProps extends PopoverFloatingProps {
 
 /**
  * A popover is a dialog positioned relative to an anchor element.
- * This component is based on the [WAI-ARIA Dialog Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/)
  */
 export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props => {
   const defaultId = `popover-${createUniqueId()}`;

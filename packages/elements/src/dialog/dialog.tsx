@@ -94,7 +94,6 @@ export interface DialogProps {
 
 /**
  * A dialog is a window overlaid on either the primary window or another dialog window.
- * This component is based on the [WAI-ARIA Dialog (Modal) Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/)
  */
 export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
   const defaultId = `dialog-${createUniqueId()}`;

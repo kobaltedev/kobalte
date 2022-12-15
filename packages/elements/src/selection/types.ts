@@ -18,6 +18,20 @@ export type SelectionBehavior = "toggle" | "replace";
 export type FocusStrategy = "first" | "last";
 export type SelectionType = "all" | Set<CollectionKey>;
 
+export interface SingleSelection {
+  /** Whether the collection allows empty selection. */
+  disallowEmptySelection?: MaybeAccessor<boolean | undefined>;
+
+  /** The currently selected key in the collection (controlled). */
+  selectedKey?: MaybeAccessor<CollectionKey | undefined>;
+
+  /** The initial selected key in the collection (uncontrolled). */
+  defaultSelectedKey?: MaybeAccessor<CollectionKey | undefined>;
+
+  /** Handler that is called when the selection changes. */
+  onSelectionChange?: (key: CollectionKey) => any;
+}
+
 export interface MultipleSelection {
   /** The type of selection that is allowed in the collection. */
   selectionMode?: MaybeAccessor<SelectionMode | undefined>;
@@ -77,6 +91,17 @@ export interface FocusState {
    * whether the first or last child of that key should receive focus.
    */
   setFocusedKey(key?: CollectionKey, child?: FocusStrategy): void;
+}
+
+export interface SingleSelectionState extends FocusState {
+  /** Whether the collection allows empty selection. */
+  disallowEmptySelection: Accessor<boolean | undefined>;
+
+  /** The currently selected key in the collection. */
+  selectedKey: Accessor<CollectionKey>;
+
+  /** Sets the selected key in the collection. */
+  setSelectedKey: (key: CollectionKey) => void;
 }
 
 export interface MultipleSelectionState extends FocusState {
