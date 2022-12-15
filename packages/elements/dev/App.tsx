@@ -190,6 +190,7 @@ function TestContextMenu() {
                 </ContextMenu.Positioner>
               </ContextMenu.Portal>
             </ContextMenu.Sub>
+            <ContextMenu.Separator />
             <ContextMenu.ItemCheckbox
               key="bookmarks"
               isChecked={bookmarksChecked()}
@@ -212,6 +213,7 @@ function TestContextMenu() {
               </ContextMenu.ItemIndicator>
               <ContextMenu.ItemLabel>Show Full URLs</ContextMenu.ItemLabel>
             </ContextMenu.ItemCheckbox>
+            <ContextMenu.Separator />
             <ContextMenu.RadioGroup value={person()} onValueChange={setPerson}>
               <ContextMenu.GroupLabel class="menu-group-label">People</ContextMenu.GroupLabel>
               <ContextMenu.ItemRadio value="pedro" class="menu-item">

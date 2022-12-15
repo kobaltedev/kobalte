@@ -114,3 +114,12 @@ body,
   font-weight: 500;
   opacity: 0.6;
 }
+
+.separator {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  height: 0px;
+  width: 100%;
+  border-top-width: 1px;
+  border-color: hsl(204 20% 88%);
+}

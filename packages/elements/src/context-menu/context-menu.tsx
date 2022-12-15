@@ -21,6 +21,7 @@ import { PopoverPositioner } from "../popover/popover-positioner";
 import { createDisclosure } from "../primitives";
 import { ContextMenuContext, ContextMenuContextValue } from "./context-menu-context";
 import { ContextMenuTrigger } from "./context-menu-trigger";
+import { Separator } from "../separator";
 
 type ContextMenuComposite = {
   Trigger: typeof ContextMenuTrigger;
@@ -75,6 +76,7 @@ ContextMenu.Portal = PopoverPortal;
 ContextMenu.Positioner = PopoverPositioner;
 ContextMenu.Panel = MenuPanel;
 ContextMenu.Arrow = PopoverArrow;
+ContextMenu.Separator = Separator;
 ContextMenu.Group = MenuGroup;
 ContextMenu.GroupLabel = MenuGroupLabel;
 ContextMenu.Item = MenuItem;
