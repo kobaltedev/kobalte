@@ -3,7 +3,7 @@ import { Accessor } from "solid-js";
 
 import { createControllableBooleanSignal } from "../create-controllable-signal";
 
-export interface CreateDisclosureProps {
+export interface CreateDisclosureStateProps {
   /** The value to be used, in controlled mode. */
   isOpen?: MaybeAccessor<boolean | undefined>;
 
@@ -14,7 +14,7 @@ export interface CreateDisclosureProps {
   onOpenChange?: (isOpen: boolean) => void;
 }
 
-export interface CreateDisclosureResult {
+export interface CreateDisclosureStateResult {
   /** The open state. */
   isOpen: Accessor<boolean>;
 
@@ -35,7 +35,9 @@ export interface CreateDisclosureResult {
  * Provides state management for open, close and toggle scenarios.
  * Used to control the "open state" of components like Modal, Drawer, etc.
  */
-export function createDisclosure(props: CreateDisclosureProps = {}): CreateDisclosureResult {
+export function createDisclosureState(
+  props: CreateDisclosureStateProps = {}
+): CreateDisclosureStateResult {
   const [isOpen, setIsOpen] = createControllableBooleanSignal({
     value: () => access(props.isOpen),
     defaultValue: () => !!access(props.defaultIsOpen),
