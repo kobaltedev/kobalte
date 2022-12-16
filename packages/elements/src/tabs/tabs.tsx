@@ -14,6 +14,7 @@ import { Dynamic } from "solid-js/web";
 import { createSingleSelectListState } from "../list";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { Tab } from "./tab";
+import { TabIndicator } from "./tab-indicator";
 import { TabList } from "./tab-list";
 import { TabPanel } from "./tab-panel";
 import { TabsContext, TabsContextValue } from "./tabs-context";
@@ -22,6 +23,7 @@ import { TabsActivationMode, TabsItemModel } from "./types";
 type TabsComposite = {
   TabList: typeof TabList;
   Tab: typeof Tab;
+  TabIndicator: typeof TabIndicator;
   TabPanel: typeof TabPanel;
 };
 
@@ -76,6 +78,7 @@ export const Tabs = createPolymorphicComponent<"div", TabsProps, TabsComposite>(
   ]);
 
   const [items, setItems] = createSignal<TabsItemModel[]>([]);
+  const [selectedTab, setSelectedTab] = createSignal<HTMLElement>();
 
   const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
 
@@ -151,6 +154,8 @@ export const Tabs = createPolymorphicComponent<"div", TabsProps, TabsComposite>(
     tabIdsMap: () => tabIdsMap,
     tabPanelIdsMap: () => tabPanelIdsMap,
     listState: () => listState,
+    selectedTab,
+    setSelectedTab,
     generateTabId: value => `${others.id!}-tab-${value}`,
     generateTabPanelId: value => `${others.id!}-tabpanel-${value}`,
   };
@@ -166,4 +171,5 @@ export const Tabs = createPolymorphicComponent<"div", TabsProps, TabsComposite>(
 
 Tabs.TabList = TabList;
 Tabs.Tab = Tab;
+Tabs.TabIndicator = TabIndicator;
 Tabs.TabPanel = TabPanel;

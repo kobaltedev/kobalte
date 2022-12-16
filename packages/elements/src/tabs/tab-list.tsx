@@ -7,11 +7,10 @@
  */
 
 import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { createEffect, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useLocale } from "../i18n";
-import { createFocusRing } from "../primitives";
 import { createSelectableCollection } from "../selection";
 import { useTabsContext } from "./tabs-context";
 import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate";
@@ -47,8 +46,18 @@ export const TabList = createPolymorphicComponent<"div">(props => {
     () => ref
   );
 
-  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing({
-    within: true,
+  createEffect(() => {
+    if (ref == null) {
+      return;
+    }
+
+    const selectedTab = ref.querySelector(
+      `[data-key="${context.listState().selectedKey()}"]`
+    ) as HTMLElement | null;
+
+    if (selectedTab != null) {
+      context.setSelectedTab(selectedTab);
+    }
   });
 
   return (
@@ -57,14 +66,7 @@ export const TabList = createPolymorphicComponent<"div">(props => {
       role="tablist"
       aria-orientation={context.orientation()}
       data-orientation={context.orientation()}
-      data-focus={isFocused() ? "" : undefined}
-      data-focus-visible={isFocusVisible() ? "" : undefined}
-      {...combineProps(
-        { ref: el => (ref = el) },
-        others,
-        selectableCollection.handlers,
-        focusRingHandlers
-      )}
+      {...combineProps({ ref: el => (ref = el) }, others, selectableCollection.handlers)}
     />
   );
 });

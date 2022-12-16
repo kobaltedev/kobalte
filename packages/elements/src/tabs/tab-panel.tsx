@@ -7,6 +7,7 @@
  */
 
 import {
+  combineProps,
   createPolymorphicComponent,
   getFocusableTreeWalker,
   mergeDefaultProps,
@@ -16,6 +17,7 @@ import { createEffect, createSignal, on, onCleanup, Show, splitProps } from "sol
 import { Dynamic } from "solid-js/web";
 
 import { useTabsContext } from "./tabs-context";
+import { createFocusRing } from "../primitives";
 
 export interface TabPanelProps {
   /** The unique key that associates the tab panel with a tab. */
@@ -38,7 +40,7 @@ export const TabPanel = createPolymorphicComponent<"div", TabPanelProps>(props =
 
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, ["as", "ref", "id", "value", "forceMount"]);
+  const [local, others] = splitProps(props, ["as", "id", "value", "forceMount"]);
 
   const [tabIndex, setTabIndex] = createSignal<number | undefined>(0);
 
@@ -58,6 +60,8 @@ export const TabPanel = createPolymorphicComponent<"div", TabPanelProps>(props =
   };
 
   const observer = new MutationObserver(updateTabIndex);
+
+  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
 
   createEffect(
     on([() => ref, shouldMount], ([ref, shouldMount]) => {
@@ -91,13 +95,14 @@ export const TabPanel = createPolymorphicComponent<"div", TabPanelProps>(props =
     <Show when={shouldMount()}>
       <Dynamic
         component={local.as}
-        ref={mergeRefs(el => (ref = el), local.ref)}
         id={id()}
         role="tabpanel"
         tabIndex={tabIndex()}
         aria-labelledby={context.tabIdsMap().get(local.value)}
         data-orientation={context.orientation()}
-        {...others}
+        data-focus={isFocused() ? "" : undefined}
+        data-focus-visible={isFocusVisible() ? "" : undefined}
+        {...combineProps({ ref: el => (ref = el) }, others, focusRingHandlers)}
       />
     </Show>
   );

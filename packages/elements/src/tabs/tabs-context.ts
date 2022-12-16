@@ -1,5 +1,5 @@
 import { Orientation } from "@kobalte/utils";
-import { Accessor, createContext, useContext } from "solid-js";
+import { Accessor, createContext, Setter, useContext } from "solid-js";
 
 import { SingleSelectListState } from "../list";
 import { TabsActivationMode } from "./types";
@@ -11,6 +11,8 @@ export interface TabsContextValue {
   tabIdsMap: Accessor<Map<string, string>>;
   tabPanelIdsMap: Accessor<Map<string, string>>;
   listState: Accessor<SingleSelectListState>;
+  selectedTab: Accessor<HTMLElement | undefined>;
+  setSelectedTab: Setter<HTMLElement | undefined>;
   generateTabId: (value: string) => string;
   generateTabPanelId: (value: string) => string;
 }
