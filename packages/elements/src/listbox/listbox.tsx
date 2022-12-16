@@ -263,9 +263,7 @@ export const Listbox = createPolymorphicComponent<"ul", ListboxProps, ListboxCom
     () => ref
   );
 
-  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing({
-    within: true,
-  });
+  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
 
   const context: ListboxContextValue = {
     listState,

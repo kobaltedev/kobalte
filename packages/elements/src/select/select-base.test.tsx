@@ -9,7 +9,7 @@
 import { createPointerEvent, installPointerEvent, triggerPress } from "@kobalte/tests";
 import { fireEvent, render, screen, within } from "solid-testing-library";
 
-import { Select } from "./select";
+import { SelectBase } from "./select-base";
 
 const DATA = [
   { label: "One", value: "one" },
@@ -18,7 +18,7 @@ const DATA = [
   { label: "Four", value: "four" },
 ];
 
-describe("Select", () => {
+describe("SelectBase", () => {
   installPointerEvent();
 
   const onValueChange = jest.fn();
@@ -34,20 +34,20 @@ describe("Select", () => {
 
   it("renders correctly", () => {
     render(() => (
-      <Select options={DATA}>
-        <Select.Label>Label</Select.Label>
-        <Select.Trigger>
-          <Select.Value placeholder="Placeholder" />
-          <Select.Icon />
-        </Select.Trigger>
-        <Select.Portal>
-          <Select.Positioner>
-            <Select.Menu>
-              {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-            </Select.Menu>
-          </Select.Positioner>
-        </Select.Portal>
-      </Select>
+      <SelectBase options={DATA}>
+        <SelectBase.Label>Label</SelectBase.Label>
+        <SelectBase.Trigger>
+          <SelectBase.Value placeholder="Placeholder" />
+          <SelectBase.Icon />
+        </SelectBase.Trigger>
+        <SelectBase.Portal>
+          <SelectBase.Positioner>
+            <SelectBase.Menu>
+              {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+            </SelectBase.Menu>
+          </SelectBase.Positioner>
+        </SelectBase.Portal>
+      </SelectBase>
     ));
 
     const select = screen.getByRole("textbox", { hidden: true });
@@ -82,7 +82,7 @@ describe("Select", () => {
     ];
 
     render(() => (
-      <Select
+      <SelectBase
         options={CUSTOM_DATA}
         optionPropertyNames={{
           value: "id",
@@ -96,28 +96,30 @@ describe("Select", () => {
           options: "items",
         }}
       >
-        <Select.Label>Label</Select.Label>
-        <Select.Trigger>
-          <Select.Value placeholder="Placeholder" />
-          <Select.Icon />
-        </Select.Trigger>
-        <Select.Portal>
-          <Select.Positioner>
-            <Select.Menu>
+        <SelectBase.Label>Label</SelectBase.Label>
+        <SelectBase.Trigger>
+          <SelectBase.Value placeholder="Placeholder" />
+          <SelectBase.Icon />
+        </SelectBase.Trigger>
+        <SelectBase.Portal>
+          <SelectBase.Positioner>
+            <SelectBase.Menu>
               {node => (
-                <Select.Group node={node()}>
-                  <Select.GroupLabel data-testid="group-label">{node().label}</Select.GroupLabel>
-                  <Select.GroupOptions>
+                <SelectBase.Group node={node()}>
+                  <SelectBase.GroupLabel data-testid="group-label">
+                    {node().label}
+                  </SelectBase.GroupLabel>
+                  <SelectBase.GroupOptions>
                     {childNode => (
-                      <Select.Option node={childNode()}>{childNode().label}</Select.Option>
+                      <SelectBase.Option node={childNode()}>{childNode().label}</SelectBase.Option>
                     )}
-                  </Select.GroupOptions>
-                </Select.Group>
+                  </SelectBase.GroupOptions>
+                </SelectBase.Group>
               )}
-            </Select.Menu>
-          </Select.Positioner>
-        </Select.Portal>
-      </Select>
+            </SelectBase.Menu>
+          </SelectBase.Positioner>
+        </SelectBase.Portal>
+      </SelectBase>
     ));
 
     const trigger = screen.getByRole("button");
@@ -145,20 +147,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -191,20 +193,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -252,20 +254,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -301,20 +303,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -350,20 +352,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -399,20 +401,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -448,20 +450,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -515,20 +517,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} isOpen onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} isOpen onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       jest.runAllTimers();
@@ -558,20 +560,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} defaultIsOpen onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} defaultIsOpen onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       jest.runAllTimers();
@@ -603,20 +605,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -650,20 +652,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -695,20 +697,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -741,20 +743,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} isOpen onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} isOpen onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       jest.runAllTimers();
@@ -783,20 +785,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} defaultIsOpen onOpenChange={onOpenChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} defaultIsOpen onOpenChange={onOpenChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       jest.runAllTimers();
@@ -827,20 +829,20 @@ describe("Select", () => {
   describe("labeling", () => {
     it("focuses on the trigger when you click the label", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const label = screen.getAllByText("Label")[0];
@@ -855,20 +857,20 @@ describe("Select", () => {
 
     it("supports labeling with a visible label", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -892,19 +894,19 @@ describe("Select", () => {
 
     it("supports labeling via aria-label", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Trigger aria-label="foo">
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Trigger aria-label="foo">
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -926,19 +928,19 @@ describe("Select", () => {
 
     it("supports labeling via aria-labelledby", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Trigger aria-labelledby="foo">
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Trigger aria-labelledby="foo">
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -959,19 +961,19 @@ describe("Select", () => {
 
     it("supports labeling via aria-label and aria-labelledby", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Trigger aria-label="bar" aria-labelledby="foo">
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Trigger aria-label="bar" aria-labelledby="foo">
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -994,21 +996,21 @@ describe("Select", () => {
   describe("help text", () => {
     it("supports description", () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Description>Description</Select.Description>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Description>Description</SelectBase.Description>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       jest.runAllTimers();
@@ -1022,21 +1024,21 @@ describe("Select", () => {
 
     it("supports error message", () => {
       render(() => (
-        <Select options={DATA} validationState="invalid" onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.ErrorMessage>ErrorMessage</Select.ErrorMessage>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} validationState="invalid" onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.ErrorMessage>ErrorMessage</SelectBase.ErrorMessage>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       jest.runAllTimers();
@@ -1052,20 +1054,20 @@ describe("Select", () => {
   describe("selection", () => {
     it("can select items on press", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1108,20 +1110,20 @@ describe("Select", () => {
       ];
 
       render(() => (
-        <Select options={FALSY_KEY_DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={FALSY_KEY_DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1179,20 +1181,20 @@ describe("Select", () => {
 
     it("can select items with the Space key", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1242,20 +1244,20 @@ describe("Select", () => {
 
     it("can select items with the Enter key", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1308,20 +1310,20 @@ describe("Select", () => {
 
     it("focuses items on hover", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1380,20 +1382,20 @@ describe("Select", () => {
     it("does not clear selection on escape closing the listbox", async () => {
       const onOpenChangeSpy = jest.fn();
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange} onOpenChange={onOpenChangeSpy}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange} onOpenChange={onOpenChangeSpy}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1456,20 +1458,20 @@ describe("Select", () => {
 
     it("supports controlled selection", async () => {
       render(() => (
-        <Select options={DATA} value={["two"]} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} value={["two"]} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1521,20 +1523,20 @@ describe("Select", () => {
 
     it("supports default selection", async () => {
       render(() => (
-        <Select options={DATA} defaultValue={["two"]} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} defaultValue={["two"]} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1592,20 +1594,20 @@ describe("Select", () => {
       ];
 
       render(() => (
-        <Select options={WITH_DISABLED_DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={WITH_DISABLED_DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1655,20 +1657,20 @@ describe("Select", () => {
 
     it("supports type to select", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1757,20 +1759,20 @@ describe("Select", () => {
 
     it("does not deselect when pressing an already selected item", async () => {
       render(() => (
-        <Select options={DATA} defaultValue={["two"]} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} defaultValue={["two"]} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1802,20 +1804,20 @@ describe("Select", () => {
 
     it("move selection on Arrow-Left/Right", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1871,20 +1873,20 @@ describe("Select", () => {
   describe("multi selection", () => {
     it("supports selecting multiple options", async () => {
       render(() => (
-        <Select options={DATA} isMultiple onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} isMultiple onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1926,20 +1928,25 @@ describe("Select", () => {
       const defaultValue = new Set(["one", "two"]);
 
       render(() => (
-        <Select options={DATA} isMultiple defaultValue={defaultValue} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase
+          options={DATA}
+          isMultiple
+          defaultValue={defaultValue}
+          onValueChange={onValueChange}
+        >
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1953,7 +1960,7 @@ describe("Select", () => {
       expect(items[0]).toHaveAttribute("aria-selected", "true");
       expect(items[1]).toHaveAttribute("aria-selected", "true");
 
-      // Select a different option
+      // SelectBase a different option
       fireEvent.click(items[2]);
       await Promise.resolve();
 
@@ -1969,20 +1976,20 @@ describe("Select", () => {
       const value = new Set(["one", "two"]);
 
       render(() => (
-        <Select options={DATA} isMultiple value={value} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} isMultiple value={value} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1996,7 +2003,7 @@ describe("Select", () => {
       expect(items[0]).toHaveAttribute("aria-selected", "true");
       expect(items[1]).toHaveAttribute("aria-selected", "true");
 
-      // Select a different option
+      // SelectBase a different option
       fireEvent.click(items[2]);
       await Promise.resolve();
 
@@ -2010,20 +2017,25 @@ describe("Select", () => {
       const defaultValue = new Set(["one", "two"]);
 
       render(() => (
-        <Select options={DATA} isMultiple defaultValue={defaultValue} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase
+          options={DATA}
+          isMultiple
+          defaultValue={defaultValue}
+          onValueChange={onValueChange}
+        >
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -2051,20 +2063,20 @@ describe("Select", () => {
   describe("type to select", () => {
     it("supports focusing items by typing letters in rapid succession without opening the menu", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -2097,20 +2109,20 @@ describe("Select", () => {
 
     it("resets the search text after a timeout", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -2144,20 +2156,20 @@ describe("Select", () => {
 
     it("wraps around when no items past the current one match", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -2198,20 +2210,24 @@ describe("Select", () => {
       ];
 
       render(() => (
-        <Select options={ADDRESS_DATA} autoComplete="address-level1" onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase
+          options={ADDRESS_DATA}
+          autoComplete="address-level1"
+          onValueChange={onValueChange}
+        >
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const trigger = screen.getByRole("button");
@@ -2226,12 +2242,12 @@ describe("Select", () => {
       //   which says "The listbox role is used for lists from which a user may select one or more items which are static and, unlike HTML <select> elements, may contain images."
       //   Also, this test in react testing library seems to indicate something about size which we do not currently have, probably a bug
       //   https://github.com/testing-library/dom-testing-library/blob/master/src/__tests__/element-queries.js#L548
-      const hiddenSelect = screen.getByRole("listbox", { hidden: true });
+      const hiddenSelectBase = screen.getByRole("listbox", { hidden: true });
 
-      expect(hiddenSelect).toHaveAttribute("tabIndex", "-1");
-      expect(hiddenSelect).toHaveAttribute("autocomplete", "address-level1");
+      expect(hiddenSelectBase).toHaveAttribute("tabIndex", "-1");
+      expect(hiddenSelectBase).toHaveAttribute("autocomplete", "address-level1");
 
-      const options = within(hiddenSelect).getAllByRole("option", { hidden: true });
+      const options = within(hiddenSelectBase).getAllByRole("option", { hidden: true });
 
       expect(options.length).toBe(4);
 
@@ -2240,7 +2256,7 @@ describe("Select", () => {
           index > 0 && expect(option).toHaveTextContent(ADDRESS_DATA[index - 1].label)
       );
 
-      fireEvent.change(hiddenSelect, { target: { value: "FR" } });
+      fireEvent.change(hiddenSelectBase, { target: { value: "FR" } });
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
@@ -2251,20 +2267,20 @@ describe("Select", () => {
     // TODO: failing, don't know why.
     it.skip("should have a hidden input to marshall focus to the button", async () => {
       render(() => (
-        <Select options={DATA} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const hiddenInput = screen.getByRole("textbox", { hidden: true }); // get the hidden ones
@@ -2291,20 +2307,20 @@ describe("Select", () => {
   describe("disabled", () => {
     it("disables the hidden select when isDisabled is true", async () => {
       render(() => (
-        <Select options={DATA} isDisabled onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} isDisabled onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       const select = screen.getByRole("textbox", { hidden: true });
@@ -2316,20 +2332,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select options={DATA} isDisabled onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} isDisabled onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -2349,20 +2365,20 @@ describe("Select", () => {
     it("does not open on Space key press when isDisabled is true", async () => {
       const onOpenChange = jest.fn();
       render(() => (
-        <Select options={DATA} isDisabled onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Menu>
-                {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-              </Select.Menu>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select>
+        <SelectBase options={DATA} isDisabled onValueChange={onValueChange}>
+          <SelectBase.Label>Label</SelectBase.Label>
+          <SelectBase.Trigger>
+            <SelectBase.Value placeholder="Placeholder" />
+            <SelectBase.Icon />
+          </SelectBase.Trigger>
+          <SelectBase.Portal>
+            <SelectBase.Positioner>
+              <SelectBase.Menu>
+                {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+              </SelectBase.Menu>
+            </SelectBase.Positioner>
+          </SelectBase.Portal>
+        </SelectBase>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -2398,20 +2414,20 @@ describe("Select", () => {
 
       render(() => (
         <form data-testid="form" onSubmit={onSubmit}>
-          <Select name="test" options={DATA}>
-            <Select.Label>Label</Select.Label>
-            <Select.Trigger autofocus>
-              <Select.Value placeholder="Placeholder" />
-              <Select.Icon />
-            </Select.Trigger>
-            <Select.Portal>
-              <Select.Positioner>
-                <Select.Menu>
-                  {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-                </Select.Menu>
-              </Select.Positioner>
-            </Select.Portal>
-          </Select>
+          <SelectBase name="test" options={DATA}>
+            <SelectBase.Label>Label</SelectBase.Label>
+            <SelectBase.Trigger autofocus>
+              <SelectBase.Value placeholder="Placeholder" />
+              <SelectBase.Icon />
+            </SelectBase.Trigger>
+            <SelectBase.Portal>
+              <SelectBase.Positioner>
+                <SelectBase.Menu>
+                  {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+                </SelectBase.Menu>
+              </SelectBase.Positioner>
+            </SelectBase.Portal>
+          </SelectBase>
           <button type="submit" data-testid="submit">
             submit
           </button>
@@ -2436,20 +2452,20 @@ describe("Select", () => {
 
       render(() => (
         <form data-testid="form" onSubmit={onSubmit}>
-          <Select name="test" defaultValue={["one"]} options={DATA}>
-            <Select.Label>Label</Select.Label>
-            <Select.Trigger autofocus>
-              <Select.Value placeholder="Placeholder" />
-              <Select.Icon />
-            </Select.Trigger>
-            <Select.Portal>
-              <Select.Positioner>
-                <Select.Menu>
-                  {node => <Select.Option node={node()}>{node().label}</Select.Option>}
-                </Select.Menu>
-              </Select.Positioner>
-            </Select.Portal>
-          </Select>
+          <SelectBase name="test" defaultValue={["one"]} options={DATA}>
+            <SelectBase.Label>Label</SelectBase.Label>
+            <SelectBase.Trigger autofocus>
+              <SelectBase.Value placeholder="Placeholder" />
+              <SelectBase.Icon />
+            </SelectBase.Trigger>
+            <SelectBase.Portal>
+              <SelectBase.Positioner>
+                <SelectBase.Menu>
+                  {node => <SelectBase.Option node={node()}>{node().label}</SelectBase.Option>}
+                </SelectBase.Menu>
+              </SelectBase.Positioner>
+            </SelectBase.Portal>
+          </SelectBase>
         </form>
       ));
 

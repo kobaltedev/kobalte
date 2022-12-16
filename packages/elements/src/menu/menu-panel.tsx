@@ -34,9 +34,7 @@ export const MenuPanel = createPolymorphicComponent<"div", PopoverPanelProps>(pr
     () => ref
   );
 
-  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing({
-    within: true,
-  });
+  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
 
   const onFocusOut: JSX.EventHandlerUnion<any, FocusEvent> = e => {
     if (!e.currentTarget.contains(e.relatedTarget as HTMLElement)) {
