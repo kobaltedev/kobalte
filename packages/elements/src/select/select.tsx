@@ -23,11 +23,11 @@ import { Listbox, ListboxOptionGroupPropertyNames, ListboxOptionPropertyNames } 
 import { Popover, PopoverFloatingProps } from "../popover";
 import {
   CollectionKey,
-  createDisclosure,
+  createDisclosureState,
   createFormResetListener,
   createRegisterId,
 } from "../primitives";
-import { FocusStrategy, KeyboardDelegate, SelectionType } from "../selection";
+import { FocusStrategy, KeyboardDelegate } from "../selection";
 import { Separator } from "../separator";
 import { HiddenSelect } from "./hidden-select";
 import { SelectContext, SelectContextValue } from "./select-context";
@@ -77,16 +77,16 @@ export interface SelectProps
   onOpenChange?: (isOpen: boolean) => void;
 
   /** The controlled value of the select. */
-  value?: "all" | Iterable<CollectionKey>;
+  value?: Iterable<CollectionKey>;
 
   /**
    * The value of the select when initially rendered.
    * Useful when you do not need to control the state.
    */
-  defaultValue?: "all" | Iterable<CollectionKey>;
+  defaultValue?: Iterable<CollectionKey>;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: SelectionType) => void;
+  onValueChange?: (value: Set<CollectionKey>) => void;
 
   /** Whether the select allow multi-selection. */
   isMultiple?: boolean;
@@ -168,7 +168,7 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy>();
   const [isFocused, setIsFocused] = createSignal(false);
 
-  const disclosureState = createDisclosure({
+  const disclosureState = createDisclosureState({
     isOpen: () => local.isOpen,
     defaultIsOpen: () => local.defaultIsOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
@@ -203,9 +203,7 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
   const { formControlContext } = createFormControl(formControlProps);
 
   createFormResetListener(triggerRef, () => {
-    if (local.defaultValue === "all") {
-      listState.selectionManager().selectAll();
-    } else if (local.defaultValue != null) {
+    if (local.defaultValue != null) {
       listState.selectionManager().setSelectedKeys(local.defaultValue);
     } else {
       listState.selectionManager().clearSelection();

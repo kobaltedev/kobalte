@@ -31,7 +31,7 @@ import {
 
 import { useLocale } from "../i18n";
 import {
-  createDisclosure,
+  createDisclosureState,
   CreateFocusTrapRegionProps,
   CreateOverlayProps,
   createRegisterId,
@@ -261,7 +261,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     );
   };
 
-  const disclosureState = createDisclosure({
+  const disclosureState = createDisclosureState({
     isOpen: () => props.isOpen,
     defaultIsOpen: () => props.defaultIsOpen,
     onOpenChange: isOpen => props.onOpenChange?.(isOpen),

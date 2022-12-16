@@ -1,8 +1,9 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
-import { Menu, MenuComposite, MenuProps } from "../menu";
-import { createDisclosure } from "../primitives";
+import { Menu, MenuComposite } from "../menu";
+import { MenuBaseProps } from "../menu/menu-base";
+import { createDisclosureState } from "../primitives";
 import { ContextMenuContext, ContextMenuContextValue } from "./context-menu-context";
 import { ContextMenuTrigger } from "./context-menu-trigger";
 
@@ -11,7 +12,7 @@ type ContextMenuComposite = {
 } & Omit<MenuComposite, "Trigger">;
 
 export interface ContextMenuProps
-  extends Omit<MenuProps, "isOpen" | "defaultIsOpen" | "getAnchorRect"> {}
+  extends Omit<MenuBaseProps, "isOpen" | "defaultIsOpen" | "getAnchorRect"> {}
 
 /**
  * Displays a menu located at the pointer, triggered by a right-click or a long-press.
@@ -31,7 +32,7 @@ export const ContextMenu: ParentComponent<ContextMenuProps> & ContextMenuComposi
 
   const [anchorRect, setAnchorRect] = createSignal({ x: 0, y: 0 });
 
-  const disclosureState = createDisclosure({
+  const disclosureState = createDisclosureState({
     defaultIsOpen: false,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });

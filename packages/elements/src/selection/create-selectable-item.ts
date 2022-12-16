@@ -18,9 +18,9 @@ import {
   PointerType,
   PressEvent,
 } from "../primitives";
+import { LongPressEvent } from "../primitives/create-long-press/types";
 import { MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
-import { LongPressEvent } from "../primitives/create-long-press/types";
 
 export interface CreateSelectableItemProps {
   /** An interface for reading and updating multiple selection state. */

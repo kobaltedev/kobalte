@@ -3,15 +3,16 @@ import { Accessor, createEffect, createMemo, JSX, onCleanup, Show, splitProps } 
 import { Dynamic } from "solid-js/web";
 
 import { useFormControlContext } from "../form-control";
-import { SelectionType } from "../selection";
 import { useSelectContext } from "./select-context";
+import { CollectionKey } from "../primitives";
 
-type SelectValueRenderProp = (selectedValues: Accessor<SelectionType>) => JSX.Element;
+type SelectValueRenderProp = (selectedValues: Accessor<Set<CollectionKey>>) => JSX.Element;
 
 export interface SelectValueProps {
   /** The content that will be rendered when no value or defaultValue is set. */
   placeholder?: JSX.Element;
 
+  /** The content that will be rendered when a value is set. */
   children?: SelectValueRenderProp | JSX.Element;
 }
 
@@ -45,7 +46,7 @@ export const SelectValue = createPolymorphicComponent<"span", SelectValueProps>(
       <Show when={!isSelectionEmpty()} fallback={local.placeholder}>
         <Show when={local.children} fallback={valueLabels()}>
           <Show when={isFunction(local.children)} fallback={local.children as JSX.Element}>
-            {(local.children as SelectValueRenderProp)?.(selectionManager().rawSelection)}
+            {(local.children as SelectValueRenderProp)?.(selectionManager().selectedKeys)}
           </Show>
         </Show>
       </Show>

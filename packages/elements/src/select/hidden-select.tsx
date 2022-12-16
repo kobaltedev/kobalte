@@ -7,7 +7,7 @@
  */
 
 import { visuallyHiddenStyles } from "@kobalte/utils";
-import { createEffect, For, Match, Show, Switch } from "solid-js";
+import { For, Match, Switch } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { createInteractionModality } from "../primitives";
@@ -100,7 +100,6 @@ export function HiddenSelect(props: HiddenSelectProps) {
       <Match when={formControlContext.name() != null}>
         <For each={[...selectionManager().selectedKeys()]}>
           {key => (
-            // TODO: should it be <input type="hidden" value="all"/> when all selected ?
             <input
               type="hidden"
               autocomplete={props.autoComplete}

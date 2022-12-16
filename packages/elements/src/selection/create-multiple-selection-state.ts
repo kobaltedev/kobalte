@@ -9,6 +9,7 @@
 import { access, MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, createMemo, createSignal } from "solid-js";
 
+import { CollectionKey } from "../primitives";
 import { createControllableSelectionSignal } from "./create-controllable-selection-signal";
 import {
   FocusStrategy,
@@ -16,9 +17,7 @@ import {
   MultipleSelectionState,
   Selection,
   SelectionBehavior,
-  SelectionType,
 } from "./types";
-import { CollectionKey } from "../primitives";
 
 export interface CreateMultipleSelectionStateProps extends MultipleSelection {
   /** How multiple selection should behave in the collection. */
@@ -84,7 +83,7 @@ export function createMultipleSelectionState(
     _setFocusedKey(key);
   };
 
-  const setSelectedKeys = (keys: SelectionType) => {
+  const setSelectedKeys = (keys: Set<CollectionKey>) => {
     if (access(props.allowDuplicateSelectionEvents) || !isSameSelection(keys, selectedKeys())) {
       _setSelectedKeys(keys);
     }
@@ -125,11 +124,11 @@ export function createMultipleSelectionState(
   };
 }
 
-function convertSelection(selection: "all" | Iterable<CollectionKey>): "all" | Selection {
-  return selection === "all" ? "all" : new Selection(selection);
+function convertSelection(selection: Iterable<CollectionKey>): Selection {
+  return new Selection(selection);
 }
 
-function equalSets(setA: Set<any>, setB: Set<any>) {
+function isSameSelection(setA: Set<CollectionKey>, setB: Set<CollectionKey>): boolean {
   if (setA.size !== setB.size) {
     return false;
   }
@@ -141,15 +140,4 @@ function equalSets(setA: Set<any>, setB: Set<any>) {
   }
 
   return true;
-}
-
-function isSameSelection(a: SelectionType, b: SelectionType): boolean {
-  if (a === "all" && b === "all") {
-    return true;
-  }
-
-  const isASet = typeof a === "object";
-  const isBSet = typeof b === "object";
-
-  return isASet && isBSet && equalSets(a, b);
 }

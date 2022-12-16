@@ -16,7 +16,6 @@ import { CollectionKey, PressEvent } from "../primitives";
 export type SelectionMode = "none" | "single" | "multiple";
 export type SelectionBehavior = "toggle" | "replace";
 export type FocusStrategy = "first" | "last";
-export type SelectionType = "all" | Set<CollectionKey>;
 
 export interface SingleSelection {
   /** Whether the collection allows empty selection. */
@@ -40,13 +39,13 @@ export interface MultipleSelection {
   disallowEmptySelection?: MaybeAccessor<boolean | undefined>;
 
   /** The currently selected keys in the collection (controlled). */
-  selectedKeys?: MaybeAccessor<"all" | Iterable<CollectionKey> | undefined>;
+  selectedKeys?: MaybeAccessor<Iterable<CollectionKey> | undefined>;
 
   /** The initial selected keys in the collection (uncontrolled). */
-  defaultSelectedKeys?: MaybeAccessor<"all" | Iterable<CollectionKey> | undefined>;
+  defaultSelectedKeys?: MaybeAccessor<Iterable<CollectionKey> | undefined>;
 
   /** Handler that is called when the selection changes. */
-  onSelectionChange?: (keys: SelectionType) => any;
+  onSelectionChange?: (keys: Set<CollectionKey>) => any;
 }
 
 /**
@@ -118,10 +117,10 @@ export interface MultipleSelectionState extends FocusState {
   disallowEmptySelection: Accessor<boolean>;
 
   /** The currently selected keys in the collection. */
-  selectedKeys: Accessor<SelectionType>;
+  selectedKeys: Accessor<Set<CollectionKey>>;
 
   /** Sets the selected keys in the collection. */
-  setSelectedKeys(keys: SelectionType): void;
+  setSelectedKeys(keys: Set<CollectionKey>): void;
 }
 
 export interface MultipleSelectionManager extends FocusState {

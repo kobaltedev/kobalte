@@ -24,7 +24,7 @@ import {
   ListState,
 } from "../list";
 import { CollectionKey, CollectionNode, createFocusRing } from "../primitives";
-import { FocusStrategy, KeyboardDelegate, SelectionType } from "../selection";
+import { FocusStrategy, KeyboardDelegate } from "../selection";
 import { ListboxContext, ListboxContextValue } from "./listbox-context";
 import { ListboxGroup } from "./listbox-group";
 import { ListboxGroupLabel } from "./listbox-group-label";
@@ -76,16 +76,16 @@ export interface ListboxProps
     >,
     Pick<CreateSelectableListProps, "selectOnFocus" | "disallowTypeAhead" | "allowsTabNavigation"> {
   /** The controlled value of the listbox. */
-  value?: "all" | Iterable<CollectionKey>;
+  value?: Iterable<CollectionKey>;
 
   /**
    * The value of the listbox when initially rendered.
    * Useful when you do not need to control the state.
    */
-  defaultValue?: "all" | Iterable<CollectionKey>;
+  defaultValue?: Iterable<CollectionKey>;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: SelectionType) => void;
+  onValueChange?: (value: Set<CollectionKey>) => void;
 
   /** Whether the listbox allow multi-selection. */
   isMultiple?: boolean;

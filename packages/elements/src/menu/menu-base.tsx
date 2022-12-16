@@ -3,7 +3,7 @@ import { createSignal, createUniqueId, ParentProps, splitProps } from "solid-js"
 
 import { HoverCard, HoverCardProps } from "../hover-card";
 import { createListState } from "../list";
-import { createDisclosure, createRegisterId, focusSafely } from "../primitives";
+import { createDisclosureState, createRegisterId, focusSafely } from "../primitives";
 import {
   createDomCollection,
   useOptionalDomCollectionContext,
@@ -63,7 +63,7 @@ export function MenuBase(props: ParentProps<MenuBaseProps>) {
 
   const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
 
-  const disclosureState = createDisclosure({
+  const disclosureState = createDisclosureState({
     isOpen: () => local.isOpen,
     defaultIsOpen: () => local.defaultIsOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),

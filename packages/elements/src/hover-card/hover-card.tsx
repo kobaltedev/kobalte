@@ -18,7 +18,7 @@ import {
 
 import { Popover, PopoverProps } from "../popover";
 import { Placement } from "../popover/utils";
-import { createDisclosure } from "../primitives";
+import { createDisclosureState } from "../primitives";
 import {
   HoverCardContext,
   HoverCardContextValue,
@@ -102,7 +102,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
 
   const anchorRef = () => local.anchorRef?.() ?? triggerRef();
 
-  const disclosureState = createDisclosure({
+  const disclosureState = createDisclosureState({
     isOpen: () => local.isOpen,
     defaultIsOpen: () => local.defaultIsOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),

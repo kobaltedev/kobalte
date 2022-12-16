@@ -2,7 +2,7 @@ import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentComponent } from "solid-js";
 
 import {
-  createDisclosure,
+  createDisclosureState,
   CreateFocusTrapRegionProps,
   CreateOverlayProps,
   createRegisterId,
@@ -116,7 +116,7 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
   const [titleId, setTitleId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
 
-  const disclosureState = createDisclosure({
+  const disclosureState = createDisclosureState({
     isOpen: () => props.isOpen,
     defaultIsOpen: () => props.defaultIsOpen,
     onOpenChange: isOpen => props.onOpenChange?.(isOpen),

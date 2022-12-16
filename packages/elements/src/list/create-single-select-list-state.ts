@@ -15,7 +15,7 @@ import {
   CollectionNode,
   createControllableSignal,
 } from "../primitives";
-import { SelectionType, SingleSelection } from "../selection";
+import { SingleSelection } from "../selection";
 import { createListState, CreateListStateProps, ListState } from "./create-list-state";
 
 export interface CreateSingleSelectListStateProps
@@ -61,8 +61,7 @@ export function createSingleSelectListState(
     disallowEmptySelection: true,
     allowDuplicateSelectionEvents: true,
     selectedKeys,
-    onSelectionChange: (keys: SelectionType) => {
-      // keys cannot be "all" because selectionMode is "single".
+    onSelectionChange: (keys: Set<CollectionKey>) => {
       const key = (keys as Set<string>).values().next().value;
 
       // Always fire onSelectionChange, even if the key is the same
