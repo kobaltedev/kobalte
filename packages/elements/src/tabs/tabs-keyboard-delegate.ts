@@ -17,18 +17,15 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
   private collection: Accessor<Collection<CollectionNode>>;
   private direction: Accessor<ReadingDirection>;
   private orientation: Accessor<Orientation>;
-  private loop: Accessor<boolean>;
 
   constructor(
     collection: Accessor<Collection<CollectionNode>>,
     direction: Accessor<ReadingDirection>,
-    orientation: Accessor<Orientation>,
-    loop: Accessor<boolean>
+    orientation: Accessor<Orientation>
   ) {
     this.collection = collection;
     this.direction = direction;
     this.orientation = orientation;
-    this.loop = loop;
   }
 
   private flipDirection() {
@@ -112,11 +109,7 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
     let nextItem: CollectionNode | undefined;
 
     do {
-      if (this.loop()) {
-        nextKey = this.collection().getKeyAfter(nextKey) ?? this.collection().getFirstKey();
-      } else {
-        nextKey = this.collection().getKeyAfter(nextKey);
-      }
+      nextKey = this.collection().getKeyAfter(nextKey) ?? this.collection().getFirstKey();
 
       if (nextKey == null) {
         return;
@@ -137,11 +130,7 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
     let previousItem: CollectionNode | undefined;
 
     do {
-      if (this.loop()) {
-        previousKey = this.collection().getKeyBefore(previousKey) ?? this.collection().getLastKey();
-      } else {
-        previousKey = this.collection().getKeyBefore(previousKey);
-      }
+      previousKey = this.collection().getKeyBefore(previousKey) ?? this.collection().getLastKey();
 
       if (previousKey == null) {
         return;

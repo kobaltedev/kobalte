@@ -33,8 +33,7 @@ export const TabList = createPolymorphicComponent<"div">(props => {
   const delegate = new TabsKeyboardDelegate(
     () => context.listState().collection(),
     () => locale().direction,
-    () => context.orientation(),
-    () => context.loop()
+    () => context.orientation()
   );
 
   const selectableCollection = createSelectableCollection(
