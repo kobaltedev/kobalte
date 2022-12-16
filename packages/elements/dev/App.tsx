@@ -4,7 +4,7 @@ function Demo() {
   return (
     <Tabs class="wrapper">
       <Tabs.TabList class="tab-list" aria-label="Groceries">
-        <Tabs.Tab value="fruits" class="tab" isDisabled>
+        <Tabs.Tab value="fruits" class="tab">
           Fruits
         </Tabs.Tab>
         <Tabs.Tab value="vegetables" class="tab">

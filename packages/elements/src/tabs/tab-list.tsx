@@ -33,7 +33,8 @@ export const TabList = createPolymorphicComponent<"div">(props => {
   const delegate = new TabsKeyboardDelegate(
     () => context.listState().collection(),
     () => locale().direction,
-    () => context.orientation()
+    () => context.orientation(),
+    () => context.loop()
   );
 
   const selectableCollection = createSelectableCollection(
@@ -41,6 +42,7 @@ export const TabList = createPolymorphicComponent<"div">(props => {
       selectionManager: () => context.listState().selectionManager(),
       keyboardDelegate: () => delegate,
       selectOnFocus: () => context.activationMode() === "automatic",
+      shouldFocusWrap: false, // handled by the keyboard delegate
       disallowEmptySelection: true,
     },
     () => ref

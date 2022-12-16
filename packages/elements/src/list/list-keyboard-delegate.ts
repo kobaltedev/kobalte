@@ -31,6 +31,7 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
 
     while (keyAfter != null) {
       const item = this.collection().getItem(keyAfter);
+
       if (item && item.type === "item" && !item.isDisabled) {
         return keyAfter;
       }
@@ -44,6 +45,7 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
 
     while (keyBefore != null) {
       const item = this.collection().getItem(keyBefore);
+
       if (item && item.type === "item" && !item.isDisabled) {
         return keyBefore;
       }

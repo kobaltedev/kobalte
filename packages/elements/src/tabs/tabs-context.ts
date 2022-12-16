@@ -8,6 +8,7 @@ export interface TabsContextValue {
   isDisabled: Accessor<boolean>;
   orientation: Accessor<Orientation>;
   activationMode: Accessor<TabsActivationMode>;
+  loop: Accessor<boolean>;
   tabIdsMap: Accessor<Map<string, string>>;
   tabPanelIdsMap: Accessor<Map<string, string>>;
   listState: Accessor<SingleSelectListState>;

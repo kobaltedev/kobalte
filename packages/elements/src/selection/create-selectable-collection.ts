@@ -148,8 +148,13 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
         if (delegate.getKeyBelow) {
           e.preventDefault();
 
-          let nextKey =
-            focusedKey != null ? delegate.getKeyBelow(focusedKey) : delegate.getFirstKey?.();
+          let nextKey: CollectionKey | undefined;
+
+          if (focusedKey != null) {
+            nextKey = delegate.getKeyBelow(focusedKey);
+          } else {
+            nextKey = delegate.getFirstKey?.();
+          }
 
           if (nextKey == null && shouldFocusWrap) {
             nextKey = delegate.getFirstKey?.(focusedKey);
@@ -163,8 +168,13 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
         if (delegate.getKeyAbove) {
           e.preventDefault();
 
-          let nextKey =
-            focusedKey != null ? delegate.getKeyAbove(focusedKey) : delegate.getLastKey?.();
+          let nextKey: CollectionKey | undefined;
+
+          if (focusedKey != null) {
+            nextKey = delegate.getKeyAbove(focusedKey);
+          } else {
+            nextKey = delegate.getLastKey?.();
+          }
 
           if (nextKey == null && shouldFocusWrap) {
             nextKey = delegate.getLastKey?.(focusedKey);

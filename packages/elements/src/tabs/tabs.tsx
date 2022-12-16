@@ -44,6 +44,9 @@ export interface TabsProps {
   /** Whether tabs are activated automatically on focus or manually. */
   activationMode?: TabsActivationMode;
 
+  /** Whether keyboard navigation should loop from last tab to first, and vice versa. */
+  loop?: boolean;
+
   /** Whether the tabs are disabled. */
   isDisabled?: boolean;
 }
@@ -61,6 +64,7 @@ export const Tabs = createPolymorphicComponent<"div", TabsProps, TabsComposite>(
       id: defaultId,
       orientation: "horizontal",
       activationMode: "automatic",
+      loop: true,
     },
     props
   );
@@ -72,6 +76,7 @@ export const Tabs = createPolymorphicComponent<"div", TabsProps, TabsComposite>(
     "onValueChange",
     "orientation",
     "activationMode",
+    "loop",
     "isDisabled",
   ]);
 
@@ -148,6 +153,7 @@ export const Tabs = createPolymorphicComponent<"div", TabsProps, TabsComposite>(
     isDisabled: () => local.isDisabled ?? false,
     orientation: () => local.orientation!,
     activationMode: () => local.activationMode!,
+    loop: () => local.loop ?? true,
     tabIdsMap: () => tabIdsMap,
     tabPanelIdsMap: () => tabPanelIdsMap,
     listState: () => listState,
