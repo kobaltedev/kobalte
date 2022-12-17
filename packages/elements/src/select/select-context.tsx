@@ -15,14 +15,15 @@ export interface SelectContextValue {
   listboxId: Accessor<string | undefined>;
   items: Accessor<CollectionItem[]>;
   setItems: (items: CollectionItem[]) => void;
-  menuAriaLabelledBy: Accessor<string | undefined>;
+  listboxAriaLabelledBy: Accessor<string | undefined>;
   listState: Accessor<ListState>;
   keyboardDelegate: Accessor<KeyboardDelegate>;
-  setMenuAriaLabelledBy: Setter<string | undefined>;
+  setListboxAriaLabelledBy: Setter<string | undefined>;
   setTriggerRef: (el: HTMLButtonElement) => void;
   setListboxRef: (el: HTMLDivElement) => void;
   open: (focusStrategy?: FocusStrategy) => void;
   close: (focusStrategy?: FocusStrategy) => void;
+  toggle: (focusStrategy?: FocusStrategy) => void;
   generateId: (part: string) => string;
   registerTrigger: (id: string) => () => void;
   registerValue: (id: string) => () => void;

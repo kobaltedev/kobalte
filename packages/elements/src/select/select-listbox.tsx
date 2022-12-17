@@ -25,10 +25,10 @@ export const SelectListbox = createPolymorphicComponent<"div">(props => {
       id={local.id}
       items={context.items()}
       state={context.listState()}
-      autoFocus={context.autoFocus()}
+      autoFocus={context.isOpen() ? context.autoFocus() : false}
       shouldSelectOnPressUp
       shouldFocusOnHover
-      aria-labelledby={context.menuAriaLabelledBy()}
+      aria-labelledby={context.listboxAriaLabelledBy()}
       onItemsChange={context.setItems}
       {...others}
     />

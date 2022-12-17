@@ -8,7 +8,7 @@ body,
   height: 100%;
 }
 
-.select {
+.trigger {
   display: flex;
   height: 2.5rem;
   width: 200px;
@@ -28,7 +28,7 @@ body,
   line-height: 1.5rem;
 }
 
-.popover {
+.panel {
   z-index: 50;
   display: flex;
   max-height: 300px;
@@ -43,12 +43,16 @@ body,
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-.select[data-focus-visible],
-.popover[data-focus-visible] {
+.listbox {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.trigger[data-focus-visible] {
   outline: 2px solid hsl(204 100% 40%);
 }
 
-.select-item {
+.option {
   display: flex;
   cursor: default;
   scroll-margin: 0.5rem;
@@ -59,11 +63,11 @@ body,
   outline: none !important;
 }
 
-.select-item[data-focus] {
+.option[data-focus] {
   background-color: hsl(204 100% 40%);
   color: hsl(204 20% 100%);
 }
 
-.select-item[data-disabled] {
+.option[data-disabled] {
   opacity: 0.5;
 }

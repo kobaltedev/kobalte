@@ -12,7 +12,7 @@ import {
   createPolymorphicComponent,
   mergeDefaultProps,
 } from "@kobalte/utils";
-import { createMemo, createUniqueId, splitProps } from "solid-js";
+import { createEffect, createMemo, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
@@ -174,8 +174,6 @@ export const Listbox = createPolymorphicComponent<"div", ListboxProps, ListboxCo
     () => ref
   );
 
-  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
-
   const context: ListboxContextValue = {
     listState,
     generateId: part => `${others.id!}-${part}`,
@@ -194,14 +192,8 @@ export const Listbox = createPolymorphicComponent<"div", ListboxProps, ListboxCo
           aria-multiselectable={
             listState().selectionManager().selectionMode() === "multiple" ? true : undefined
           }
-          data-focus={isFocused() ? "" : undefined}
-          data-focus-visible={isFocusVisible() ? "" : undefined}
-          {...combineProps(
-            { ref: el => (ref = el) },
-            others,
-            selectableList.handlers,
-            focusRingHandlers
-          )}
+          data-focus={listState().selectionManager().isFocused() ? "" : undefined}
+          {...combineProps({ ref: el => (ref = el) }, others, selectableList.handlers)}
         />
       </ListboxContext.Provider>{" "}
     </DomCollectionProvider>

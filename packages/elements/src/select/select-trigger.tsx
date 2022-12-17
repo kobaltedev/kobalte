@@ -52,7 +52,9 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
   });
 
   const ariaLabelledBy = () => {
-    return [context.menuAriaLabelledBy(), context.valueId()].filter(Boolean).join(" ") || undefined;
+    return (
+      [context.listboxAriaLabelledBy(), context.valueId()].filter(Boolean).join(" ") || undefined
+    );
   };
 
   const onPressStart = (e: PressEvent) => {
@@ -62,7 +64,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
     if (e.pointerType !== "touch" && e.pointerType !== "keyboard" && !isDisabled()) {
       // If opened with a screen reader, autofocus the first item.
       // Otherwise, the menu itself will be focused.
-      context.open(e.pointerType === "virtual" ? "first" : undefined);
+      context.toggle(e.pointerType === "virtual" ? "first" : undefined);
     }
   };
 
@@ -70,7 +72,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
     local.onPress?.(e);
 
     if (e.pointerType === "touch" && !isDisabled()) {
-      context.open();
+      context.toggle();
     }
   };
 
@@ -89,12 +91,12 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
       case "ArrowDown":
         e.stopPropagation();
         e.preventDefault();
-        context.open("first");
+        context.toggle("first");
         break;
       case "ArrowUp":
         e.stopPropagation();
         e.preventDefault();
-        context.open("last");
+        context.toggle("last");
         break;
       case "ArrowLeft": {
         // prevent scrolling containers
@@ -144,7 +146,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
   createEffect(() => onCleanup(context.registerTrigger(fieldProps.id()!)));
 
   createEffect(() => {
-    context.setMenuAriaLabelledBy(
+    context.setListboxAriaLabelledBy(
       [
         fieldProps.ariaLabelledBy(),
         fieldProps.ariaLabel() && !fieldProps.ariaLabelledBy() ? fieldProps.id() : null,

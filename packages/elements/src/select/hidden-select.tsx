@@ -89,8 +89,8 @@ export function HiddenSelect(props: HiddenSelectProps) {
             <For each={[...collection().getKeys()]}>
               {key => {
                 const item = collection().getItem(key);
-                if (item && item.type === "item") {
-                  return <option value={item.key}>{item.label}</option>;
+                if (item) {
+                  return <option value={item.key}>{item.textValue}</option>;
                 }
               }}
             </For>
