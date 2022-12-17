@@ -19,55 +19,51 @@ import {
 } from "../form-control";
 import { createCollator } from "../i18n";
 import { createListState, CreateListStateProps, ListKeyboardDelegate } from "../list";
-import { ListboxOptionGroupPropertyNames, ListboxOptionPropertyNames } from "../listbox";
-import { ListboxGroup } from "../listbox/listbox-group";
-import { ListboxGroupLabel } from "../listbox/listbox-group-label";
-import { ListboxGroupOptions } from "../listbox/listbox-group-options";
-import { ListboxOption } from "../listbox/listbox-option";
-import { ListboxOptionDescription } from "../listbox/listbox-option-description";
-import { ListboxOptionIndicator } from "../listbox/listbox-option-indicator";
-import { ListboxOptionLabel } from "../listbox/listbox-option-label";
+import { Listbox } from "../listbox";
 import { Popover, PopoverFloatingProps } from "../popover";
-import { PopoverPortal } from "../popover/popover-portal";
-import { PopoverPositioner } from "../popover/popover-positioner";
 import {
-  CollectionKey,
-  createDisclosure,
+  CollectionItem,
+  createDisclosureState,
   createFormResetListener,
   createRegisterId,
+  focusSafely,
 } from "../primitives";
-import { FocusStrategy, KeyboardDelegate, SelectionType } from "../selection";
+import { FocusStrategy, KeyboardDelegate, SelectionMode } from "../selection";
+import { Separator } from "../separator";
 import { HiddenSelect } from "./hidden-select";
 import { SelectContext, SelectContextValue } from "./select-context";
 import { SelectIcon } from "./select-icon";
 import { SelectLabel } from "./select-label";
-import { SelectMenu } from "./select-menu";
+import { SelectListbox } from "./select-listbox";
+import { SelectPanel } from "./select-panel";
 import { SelectTrigger } from "./select-trigger";
 import { SelectValue } from "./select-value";
 
-type SelectComposite = {
+export type SelectBaseComposite = {
   Label: typeof SelectLabel;
   Description: typeof FormControlDescription;
   ErrorMessage: typeof FormControlErrorMessage;
   Trigger: typeof SelectTrigger;
   Value: typeof SelectValue;
   Icon: typeof SelectIcon;
-  Portal: typeof PopoverPortal;
-  Positioner: typeof PopoverPositioner;
-  Menu: typeof SelectMenu;
-  Group: typeof ListboxGroup;
-  GroupLabel: typeof ListboxGroupLabel;
-  GroupOptions: typeof ListboxGroupOptions;
-  Option: typeof ListboxOption;
-  OptionLabel: typeof ListboxOptionLabel;
-  OptionDescription: typeof ListboxOptionDescription;
-  OptionIndicator: typeof ListboxOptionIndicator;
+  Portal: typeof Popover.Portal;
+  Positioner: typeof Popover.Positioner;
+  Arrow: typeof Popover.Arrow;
+  Panel: typeof SelectPanel;
+  Listbox: typeof SelectListbox;
+  Separator: typeof Separator;
+  Group: typeof Listbox.Group;
+  GroupLabel: typeof Listbox.GroupLabel;
+  Option: typeof Listbox.Option;
+  OptionLabel: typeof Listbox.OptionLabel;
+  OptionDescription: typeof Listbox.OptionDescription;
+  OptionIndicator: typeof Listbox.OptionIndicator;
 };
 
 export interface SelectProps
   extends Pick<
       CreateListStateProps,
-      "filter" | "allowDuplicateSelectionEvents" | "disallowEmptySelection" | "selectionBehavior"
+      "allowDuplicateSelectionEvents" | "disallowEmptySelection" | "selectionBehavior"
     >,
     PopoverFloatingProps,
     CreateFormControlProps {
@@ -84,60 +80,39 @@ export interface SelectProps
   onOpenChange?: (isOpen: boolean) => void;
 
   /** The controlled value of the select. */
-  value?: "all" | Iterable<CollectionKey>;
+  value?: Iterable<string>;
 
   /**
    * The value of the select when initially rendered.
    * Useful when you do not need to control the state.
    */
-  defaultValue?: "all" | Iterable<CollectionKey>;
+  defaultValue?: Iterable<string>;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: SelectionType) => void;
-
-  /** Whether the select allow multi-selection. */
-  isMultiple?: boolean;
-
-  /** An array of objects to display as the available options. */
-  options: Array<any>;
-
-  /**
-   * When using custom object as select options,
-   * property names used to map an object to a select option.
-   */
-  optionPropertyNames?: ListboxOptionPropertyNames;
-
-  /**
-   * When using custom object as select option groups,
-   * property names used to map an object to a select option group.
-   */
-  optionGroupPropertyNames?: ListboxOptionGroupPropertyNames;
+  onValueChange?: (value: Set<string>) => void;
 
   /** An optional keyboard delegate implementation for type to select, to override the default. */
   keyboardDelegate?: KeyboardDelegate;
+
+  /** The type of selection that is allowed in the select. */
+  selectionMode?: Exclude<SelectionMode, "none">;
 
   /**
    * Describes the type of autocomplete functionality the input should provide if any.
    * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete).
    */
   autoComplete?: string;
-
-  /**
-   * Used to force mounting the select when more control is needed.
-   * Useful when controlling animation with SolidJS animation libraries.
-   */
-  forceMount?: boolean;
 }
 
-export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
+export const Select: ParentComponent<SelectProps> & SelectBaseComposite = props => {
   const defaultId = `select-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
       id: defaultId,
-      isMultiple: false,
+      selectionMode: "single",
       allowDuplicateSelectionEvents: true,
-      disallowEmptySelection: () => !props.isMultiple,
+      disallowEmptySelection: props.selectionMode !== "multiple",
     },
     props
   );
@@ -151,83 +126,117 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
       "onOpenChange",
       "value",
       "defaultValue",
-      "isMultiple",
-      "options",
       "onValueChange",
-      "optionPropertyNames",
-      "optionGroupPropertyNames",
       "keyboardDelegate",
       "autoComplete",
       "allowDuplicateSelectionEvents",
       "disallowEmptySelection",
       "selectionBehavior",
-      "filter",
+      "selectionMode",
     ],
     FORM_CONTROL_PROP_NAMES
   );
 
-  const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
   const [triggerId, setTriggerId] = createSignal<string>();
   const [valueId, setValueId] = createSignal<string>();
   const [listboxId, setListboxId] = createSignal<string>();
 
-  const [menuAriaLabelledBy, setMenuAriaLabelledBy] = createSignal<string>();
-  const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy>();
-  const [isFocused, setIsFocused] = createSignal(false);
+  const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
+  const [listboxRef, setListboxRef] = createSignal<HTMLDivElement>();
 
-  const disclosureState = createDisclosure({
+  const [listboxAriaLabelledBy, setListboxAriaLabelledBy] = createSignal<string>();
+  const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy>();
+
+  const [items, setItems] = createSignal<CollectionItem[]>([]);
+
+  const disclosureState = createDisclosureState({
     isOpen: () => local.isOpen,
     defaultIsOpen: () => local.defaultIsOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
-  const listState = createListState({
-    selectedKeys: () => local.value,
-    defaultSelectedKeys: () => local.defaultValue,
-    onSelectionChange: keys => {
-      local.onValueChange?.(keys);
-      !local.isMultiple && disclosureState.close();
-    },
-    allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
-    disallowEmptySelection: () => access(local.disallowEmptySelection),
-    selectionBehavior: () => access(local.selectionBehavior),
-    selectionMode: () => (local.isMultiple ? "multiple" : "single"),
-    dataSource: () => local.options,
-    itemPropertyNames: () => ({
-      key: local.optionPropertyNames?.value ?? "value",
-      label: local.optionPropertyNames?.label ?? "label",
-      textValue: local.optionPropertyNames?.textValue ?? "textValue",
-      disabled: local.optionPropertyNames?.disabled ?? "disabled",
-    }),
-    sectionPropertyNames: () => ({
-      key: local.optionGroupPropertyNames?.id ?? "id",
-      label: local.optionGroupPropertyNames?.label ?? "label",
-      items: local.optionGroupPropertyNames?.options ?? "options",
-    }),
-    filter: local.filter,
-  });
+  const focusTrigger = () => {
+    const triggerEl = triggerRef();
 
-  const { formControlContext } = createFormControl(formControlProps);
-
-  createFormResetListener(triggerRef, () => {
-    if (local.defaultValue === "all") {
-      listState.selectionManager().selectAll();
-    } else if (local.defaultValue != null) {
-      listState.selectionManager().setSelectedKeys(local.defaultValue);
-    } else {
-      listState.selectionManager().clearSelection();
+    if (triggerEl) {
+      focusSafely(triggerEl);
     }
-  });
+  };
 
-  const toggle = (focusStrategy?: FocusStrategy) => {
+  const focusListbox = () => {
+    const listboxEl = listboxRef();
+
+    if (listboxEl) {
+      focusSafely(listboxEl);
+    }
+  };
+
+  const open = (focusStrategy?: FocusStrategy) => {
     // Don't open if the collection is empty.
     if (listState.collection().getSize() <= 0) {
       return;
     }
 
     setFocusStrategy(focusStrategy);
-    disclosureState.toggle();
+    disclosureState.open();
+
+    let focusedKey = listState.selectionManager().firstSelectedKey();
+
+    if (focusedKey == null) {
+      focusedKey =
+        focusStrategy === "last"
+          ? listState.collection().getLastKey()
+          : listState.collection().getFirstKey();
+    }
+
+    focusListbox();
+    listState.selectionManager().setFocused(true);
+    listState.selectionManager().setFocusedKey(focusedKey, focusStrategy);
   };
+
+  const close = (focusStrategy?: FocusStrategy) => {
+    setFocusStrategy(focusStrategy);
+    disclosureState.close();
+
+    focusTrigger();
+    listState.selectionManager().setFocused(false);
+    listState.selectionManager().setFocusedKey(undefined);
+  };
+
+  const toggle = (focusStrategy?: FocusStrategy) => {
+    if (disclosureState.isOpen()) {
+      close(focusStrategy);
+    } else {
+      open(focusStrategy);
+    }
+  };
+
+  const listState = createListState({
+    selectedKeys: () => local.value,
+    defaultSelectedKeys: () => local.defaultValue,
+    onSelectionChange: keys => {
+      local.onValueChange?.(keys);
+
+      if (local.selectionMode === "single") {
+        close();
+      }
+    },
+    allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
+    disallowEmptySelection: () => access(local.disallowEmptySelection),
+    selectionBehavior: () => access(local.selectionBehavior),
+    selectionMode: () => local.selectionMode,
+    dataSource: items,
+  });
+
+  const { formControlContext } = createFormControl(formControlProps);
+
+  createFormResetListener(triggerRef, () => {
+    if (local.defaultValue != null) {
+      listState.selectionManager().setSelectedKeys(local.defaultValue);
+    } else {
+      listState.selectionManager().clearSelection();
+    }
+  });
 
   const collator = createCollator({ usage: "search", sensitivity: "base" });
 
@@ -246,20 +255,22 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
   const context: SelectContextValue = {
     isOpen: disclosureState.isOpen,
     isDisabled: () => formControlContext.isDisabled() ?? false,
-    isMultiple: () => local.isMultiple ?? false,
+    isMultiple: () => access(local.selectionMode) === "multiple",
     autoFocus: () => focusStrategy() || true,
     triggerRef,
     listState: () => listState,
     keyboardDelegate: delegate,
+    items,
+    setItems,
     triggerId,
     valueId,
     listboxId,
-    isFocused,
-    menuAriaLabelledBy,
-    setIsFocused,
-    setMenuAriaLabelledBy,
+    listboxAriaLabelledBy,
+    setListboxAriaLabelledBy,
     setTriggerRef,
-    close: disclosureState.close,
+    setListboxRef,
+    open,
+    close,
     toggle,
     generateId: createGenerateId(() => access(formControlProps.id)!),
     registerTrigger: createRegisterId(setTriggerId),
@@ -276,6 +287,7 @@ export const Select: ParentComponent<SelectProps> & SelectComposite = props => {
           onOpenChange={disclosureState.setIsOpen}
           anchorRef={triggerRef}
           sameWidth
+          forceMount
           {...others}
         >
           <HiddenSelect autoComplete={local.autoComplete} />
@@ -292,13 +304,15 @@ Select.ErrorMessage = FormControlErrorMessage;
 Select.Trigger = SelectTrigger;
 Select.Value = SelectValue;
 Select.Icon = SelectIcon;
-Select.Portal = PopoverPortal;
-Select.Menu = SelectMenu;
-Select.Positioner = PopoverPositioner;
-Select.Group = ListboxGroup;
-Select.GroupLabel = ListboxGroupLabel;
-Select.GroupOptions = ListboxGroupOptions;
-Select.Option = ListboxOption;
-Select.OptionLabel = ListboxOptionLabel;
-Select.OptionDescription = ListboxOptionDescription;
-Select.OptionIndicator = ListboxOptionIndicator;
+Select.Portal = Popover.Portal;
+Select.Positioner = Popover.Positioner;
+Select.Arrow = Popover.Arrow;
+Select.Panel = SelectPanel;
+Select.Listbox = SelectListbox;
+Select.Separator = Separator;
+Select.Group = Listbox.Group;
+Select.GroupLabel = Listbox.GroupLabel;
+Select.Option = Listbox.Option;
+Select.OptionLabel = Listbox.OptionLabel;
+Select.OptionDescription = Listbox.OptionDescription;
+Select.OptionIndicator = Listbox.OptionIndicator;

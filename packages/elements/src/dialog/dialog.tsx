@@ -2,7 +2,7 @@ import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentComponent } from "solid-js";
 
 import {
-  createDisclosure,
+  createDisclosureState,
   CreateFocusTrapRegionProps,
   CreateOverlayProps,
   createRegisterId,
@@ -82,19 +82,18 @@ export interface DialogProps {
    * If `true` focus will be set to the first focusable element inside the dialog panel.
    * If a `string` (query selector) is provided focus will be set to the target element.
    */
-  autoFocus?: boolean;
+  autoFocus?: boolean | string;
 
   /**
    * Whether focus should be restored once the dialog close.
    * If `true` focus will be restored to the element that triggered the dialog.
    * If a `string` (query selector) is provided focus will be restored to the target element.
    */
-  restoreFocus?: boolean;
+  restoreFocus?: boolean | string;
 }
 
 /**
  * A dialog is a window overlaid on either the primary window or another dialog window.
- * This component is based on the [WAI-ARIA Dialog (Modal) Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/)
  */
 export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
   const defaultId = `dialog-${createUniqueId()}`;
@@ -117,7 +116,7 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
   const [titleId, setTitleId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
 
-  const disclosureState = createDisclosure({
+  const disclosureState = createDisclosureState({
     isOpen: () => props.isOpen,
     defaultIsOpen: () => props.defaultIsOpen,
     onOpenChange: isOpen => props.onOpenChange?.(isOpen),

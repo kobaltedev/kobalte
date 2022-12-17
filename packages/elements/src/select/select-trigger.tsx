@@ -22,7 +22,7 @@ import {
   useFormControlContext,
 } from "../form-control";
 import { PressEvent } from "../primitives";
-import { createTypeSelect } from "../selection";
+import { createTypeSelect, FocusStrategy } from "../selection";
 import { useSelectContext } from "./select-context";
 
 export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(props => {
@@ -33,11 +33,12 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
-    ["ref", "isDisabled", "onPressStart", "onPress", "onKeyDown", "onFocus", "onBlur"],
+    ["ref", "isDisabled", "onPressStart", "onPress", "onKeyDown"],
     FORM_CONTROL_FIELD_PROP_NAMES
   );
 
   const selectionManager = () => context.listState().selectionManager();
+  const collection = () => context.listState().collection();
   const keyboardDelegate = () => context.keyboardDelegate();
 
   const isDisabled = () => local.isDisabled || context.isDisabled();
@@ -51,7 +52,9 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
   });
 
   const ariaLabelledBy = () => {
-    return [context.menuAriaLabelledBy(), context.valueId()].filter(Boolean).join(" ") || undefined;
+    return (
+      [context.listboxAriaLabelledBy(), context.valueId()].filter(Boolean).join(" ") || undefined
+    );
   };
 
   const onPressStart = (e: PressEvent) => {
@@ -140,30 +143,10 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
     }
   };
 
-  const onFocus: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    if (context.isFocused()) {
-      return;
-    }
-
-    callHandler(e, local.onFocus);
-
-    context.setIsFocused(true);
-  };
-
-  const onBlur: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    if (context.isOpen()) {
-      return;
-    }
-
-    callHandler(e, local.onBlur);
-
-    context.setIsFocused(false);
-  };
-
   createEffect(() => onCleanup(context.registerTrigger(fieldProps.id()!)));
 
   createEffect(() => {
-    context.setMenuAriaLabelledBy(
+    context.setListboxAriaLabelledBy(
       [
         fieldProps.ariaLabelledBy(),
         fieldProps.ariaLabel() && !fieldProps.ariaLabelledBy() ? fieldProps.id() : null,
@@ -188,8 +171,6 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
       onPressStart={onPressStart}
       onPress={onPress}
       onKeyDown={onKeyDown}
-      onFocus={onFocus}
-      onBlur={onBlur}
       {...formControlContext.dataset()}
       {...others}
     />

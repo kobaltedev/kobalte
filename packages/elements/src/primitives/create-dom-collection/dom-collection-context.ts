@@ -8,8 +8,12 @@ export interface DomCollectionContextValue<T extends DomCollectionItem = DomColl
 
 export const DomCollectionContext = createContext<DomCollectionContextValue>();
 
+export function useOptionalDomCollectionContext() {
+  return useContext(DomCollectionContext);
+}
+
 export function useDomCollectionContext<T extends DomCollectionItem = DomCollectionItem>() {
-  const context = useContext(DomCollectionContext);
+  const context = useOptionalDomCollectionContext();
 
   if (context === undefined) {
     throw new Error(

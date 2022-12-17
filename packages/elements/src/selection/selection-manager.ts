@@ -8,7 +8,8 @@
 
 import { Accessor } from "solid-js";
 
-import { Collection, CollectionKey, CollectionNode, PressEvent } from "../primitives";
+import { Collection, CollectionNode, PressEvent } from "../primitives";
+import { LongPressEvent } from "../primitives/create-long-press/types";
 import {
   FocusStrategy,
   MultipleSelectionManager,
@@ -16,7 +17,6 @@ import {
   Selection,
   SelectionBehavior,
   SelectionMode,
-  SelectionType,
 } from "./types";
 
 /**
@@ -62,7 +62,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** The current focused key in the collection. */
-  focusedKey(): CollectionKey | undefined {
+  focusedKey(): string | undefined {
     return this.state.focusedKey();
   }
 
@@ -72,29 +72,19 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** Sets the focused key. */
-  setFocusedKey(key?: CollectionKey, childFocusStrategy?: FocusStrategy) {
+  setFocusedKey(key?: string, childFocusStrategy?: FocusStrategy) {
     if (key == null || this.collection().getItem(key)) {
       this.state.setFocusedKey(key, childFocusStrategy);
     }
   }
 
   /** The currently selected keys in the collection. */
-  selectedKeys(): Set<CollectionKey> {
-    const selectedKeys = this.state.selectedKeys();
-
-    return selectedKeys === "all" ? new Set(this.getSelectAllKeys()) : selectedKeys;
-  }
-
-  /**
-   * The raw selection value for the collection.
-   * Either 'all' for select all, or a set of keys.
-   */
-  rawSelection(): SelectionType {
+  selectedKeys(): Set<string> {
     return this.state.selectedKeys();
   }
 
   /** Returns whether a key is selected. */
-  isSelected(key: CollectionKey) {
+  isSelected(key: string) {
     if (this.state.selectionMode() === "none") {
       return false;
     }
@@ -105,17 +95,12 @@ export class SelectionManager implements MultipleSelectionManager {
       return false;
     }
 
-    const selectedKeys = this.state.selectedKeys();
-
-    return selectedKeys === "all"
-      ? this.canSelectItem(retrievedKey)
-      : selectedKeys.has(retrievedKey);
+    return this.state.selectedKeys().has(retrievedKey);
   }
 
   /** Whether the selection is empty. */
   isEmpty(): boolean {
-    const selectedKeys = this.state.selectedKeys();
-    return selectedKeys !== "all" && selectedKeys.size === 0;
+    return this.state.selectedKeys().size === 0;
   }
 
   /** Whether all items in the collection are selected. */
@@ -126,14 +111,10 @@ export class SelectionManager implements MultipleSelectionManager {
 
     const selectedKeys = this.state.selectedKeys();
 
-    if (selectedKeys === "all") {
-      return true;
-    }
-
-    return this.getSelectAllKeys().every(k => selectedKeys.has(k));
+    return this.getAllSelectableKeys().every(k => selectedKeys.has(k));
   }
 
-  firstSelectedKey(): CollectionKey | undefined {
+  firstSelectedKey(): string | undefined {
     let first: CollectionNode | undefined;
 
     for (const key of this.state.selectedKeys()) {
@@ -150,7 +131,7 @@ export class SelectionManager implements MultipleSelectionManager {
     return first?.key;
   }
 
-  lastSelectedKey(): CollectionKey | undefined {
+  lastSelectedKey(): string | undefined {
     let last: CollectionNode | undefined;
 
     for (const key of this.state.selectedKeys()) {
@@ -167,7 +148,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** Extends the selection to the given key. */
-  extendSelection(toKey: CollectionKey) {
+  extendSelection(toKey: string) {
     if (this.selectionMode() === "none") {
       return;
     }
@@ -183,32 +164,25 @@ export class SelectionManager implements MultipleSelectionManager {
       return;
     }
 
-    let selection: Selection;
+    const selectedKeys = this.state.selectedKeys() as Selection;
+    const anchorKey = selectedKeys.anchorKey || retrievedToKey;
 
-    // Only select the one key if coming from a select all.
-    if (this.state.selectedKeys() === "all") {
-      selection = new Selection([retrievedToKey], retrievedToKey, retrievedToKey);
-    } else {
-      const selectedKeys = this.state.selectedKeys() as Selection;
-      const anchorKey = selectedKeys.anchorKey || retrievedToKey;
+    const selection = new Selection(selectedKeys, anchorKey, retrievedToKey);
 
-      selection = new Selection(selectedKeys, anchorKey, retrievedToKey);
+    for (const key of this.getKeyRange(anchorKey, selectedKeys.currentKey || retrievedToKey)) {
+      selection.delete(key);
+    }
 
-      for (const key of this.getKeyRange(anchorKey, selectedKeys.currentKey || retrievedToKey)) {
-        selection.delete(key);
-      }
-
-      for (const key of this.getKeyRange(retrievedToKey, anchorKey)) {
-        if (this.canSelectItem(key)) {
-          selection.add(key);
-        }
+    for (const key of this.getKeyRange(retrievedToKey, anchorKey)) {
+      if (this.canSelectItem(key)) {
+        selection.add(key);
       }
     }
 
     this.state.setSelectedKeys(selection);
   }
 
-  private getKeyRange(from: CollectionKey, to: CollectionKey) {
+  private getKeyRange(from: string, to: string) {
     const fromItem = this.collection().getItem(from);
     const toItem = this.collection().getItem(to);
 
@@ -223,14 +197,14 @@ export class SelectionManager implements MultipleSelectionManager {
     return [];
   }
 
-  private getKeyRangeInternal(from: CollectionKey, to: CollectionKey) {
-    const keys: CollectionKey[] = [];
-    let key: CollectionKey | undefined = from;
+  private getKeyRangeInternal(from: string, to: string) {
+    const keys: string[] = [];
+    let key: string | undefined = from;
 
     while (key != null) {
       const item = this.collection().getItem(key);
 
-      if (item && item.type === "item") {
+      if (item) {
         keys.push(key);
       }
 
@@ -244,27 +218,18 @@ export class SelectionManager implements MultipleSelectionManager {
     return [];
   }
 
-  private getKey(key: CollectionKey) {
-    let item = this.collection().getItem(key);
+  private getKey(key: string) {
+    const item = this.collection().getItem(key);
 
     if (!item) {
       return key;
-    }
-
-    // Find a parent item to select
-    while (item && item.type !== "item" && item.parentKey != null) {
-      item = this.collection().getItem(item.parentKey);
-    }
-
-    if (!item || item.type !== "item") {
-      return null;
     }
 
     return item.key;
   }
 
   /** Toggles whether the given key is selected. */
-  toggleSelection(key: CollectionKey) {
+  toggleSelection(key: string) {
     if (this.selectionMode() === "none") {
       return;
     }
@@ -280,9 +245,7 @@ export class SelectionManager implements MultipleSelectionManager {
       return;
     }
 
-    const selectedKeys = this.state.selectedKeys();
-
-    const keys = new Selection(selectedKeys === "all" ? this.getSelectAllKeys() : selectedKeys);
+    const keys = new Selection(this.state.selectedKeys());
 
     if (keys.has(retrievedKey)) {
       keys.delete(retrievedKey);
@@ -300,7 +263,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** Replaces the selection with only the given key. */
-  replaceSelection(key: CollectionKey) {
+  replaceSelection(key: string) {
     if (this.selectionMode() === "none") {
       return;
     }
@@ -319,7 +282,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** Replaces the selection with the given keys. */
-  setSelectedKeys(keys: Iterable<CollectionKey>) {
+  setSelectedKeys(keys: Iterable<string>) {
     if (this.selectionMode() === "none") {
       return;
     }
@@ -341,40 +304,10 @@ export class SelectionManager implements MultipleSelectionManager {
     this.state.setSelectedKeys(selection);
   }
 
-  private getSelectAllKeys() {
-    const keys: CollectionKey[] = [];
-    const addKeys = (key: CollectionKey | undefined) => {
-      while (key != null) {
-        if (this.canSelectItem(key)) {
-          const item = this.collection().getItem(key);
-
-          if (!item) {
-            continue;
-          }
-
-          if (item.type === "item") {
-            keys.push(key);
-          }
-
-          // Add child keys.
-          const childNodes = [...item.childNodes];
-          if (childNodes.length > 0) {
-            addKeys(childNodes[0].key);
-          }
-        }
-
-        key = this.collection().getKeyAfter(key);
-      }
-    };
-
-    addKeys(this.collection().getFirstKey());
-    return keys;
-  }
-
   /** Selects all items in the collection. */
   selectAll() {
     if (this.selectionMode() === "multiple") {
-      this.state.setSelectedKeys("all");
+      this.state.setSelectedKeys(new Set(this.getAllSelectableKeys()));
     }
   }
 
@@ -384,7 +317,7 @@ export class SelectionManager implements MultipleSelectionManager {
   clearSelection() {
     const selectedKeys = this.state.selectedKeys();
 
-    if (!this.disallowEmptySelection && (selectedKeys === "all" || selectedKeys.size > 0)) {
+    if (!this.disallowEmptySelection && selectedKeys.size > 0) {
       this.state.setSelectedKeys(new Selection());
     }
   }
@@ -400,7 +333,7 @@ export class SelectionManager implements MultipleSelectionManager {
     }
   }
 
-  select(key: CollectionKey, e?: PressEvent | PointerEvent) {
+  select(key: string, e?: PressEvent | LongPressEvent | PointerEvent) {
     if (this.selectionMode() === "none") {
       return;
     }
@@ -423,7 +356,7 @@ export class SelectionManager implements MultipleSelectionManager {
   }
 
   /** Returns whether the current selection is equal to the given selection. */
-  isSelectionEqual(selection: Set<CollectionKey>) {
+  isSelectionEqual(selection: Set<string>) {
     if (selection === this.state.selectedKeys()) {
       return true;
     }
@@ -449,7 +382,7 @@ export class SelectionManager implements MultipleSelectionManager {
     return true;
   }
 
-  canSelectItem(key: CollectionKey) {
+  canSelectItem(key: string) {
     if (this.state.selectionMode() === "none") {
       return false;
     }
@@ -459,9 +392,33 @@ export class SelectionManager implements MultipleSelectionManager {
     return item != null && !item.isDisabled;
   }
 
-  isDisabled(key: CollectionKey) {
+  isDisabled(key: string) {
     const item = this.collection().getItem(key);
 
     return !item || item.isDisabled;
+  }
+
+  private getAllSelectableKeys() {
+    const keys: string[] = [];
+
+    const addKeys = (key: string | undefined) => {
+      while (key != null) {
+        if (this.canSelectItem(key)) {
+          const item = this.collection().getItem(key);
+
+          if (!item) {
+            continue;
+          }
+
+          keys.push(key);
+        }
+
+        key = this.collection().getKeyAfter(key);
+      }
+    };
+
+    addKeys(this.collection().getFirstKey());
+
+    return keys;
   }
 }

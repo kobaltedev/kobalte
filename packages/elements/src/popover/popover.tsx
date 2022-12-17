@@ -31,7 +31,7 @@ import {
 
 import { useLocale } from "../i18n";
 import {
-  createDisclosure,
+  createDisclosureState,
   CreateFocusTrapRegionProps,
   CreateOverlayProps,
   createRegisterId,
@@ -179,14 +179,14 @@ export interface PopoverProps extends PopoverFloatingProps {
    * If `true` focus will be set to the first focusable element inside the popover panel.
    * If a `string` (query selector) is provided focus will be set to the target element.
    */
-  autoFocus?: boolean;
+  autoFocus?: boolean | string;
 
   /**
    * Whether focus should be restored once the popover close.
    * If `true` focus will be restored to the element that triggered the popover.
    * If a `string` (query selector) is provided focus will be restored to the target element.
    */
-  restoreFocus?: boolean;
+  restoreFocus?: boolean | string;
 
   /**
    * Function that returns the anchor element's DOMRect. If this is explicitly
@@ -210,7 +210,6 @@ export interface PopoverProps extends PopoverFloatingProps {
 
 /**
  * A popover is a dialog positioned relative to an anchor element.
- * This component is based on the [WAI-ARIA Dialog Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/)
  */
 export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props => {
   const defaultId = `popover-${createUniqueId()}`;
@@ -262,7 +261,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     );
   };
 
-  const disclosureState = createDisclosure({
+  const disclosureState = createDisclosureState({
     isOpen: () => props.isOpen,
     defaultIsOpen: () => props.defaultIsOpen,
     onOpenChange: isOpen => props.onOpenChange?.(isOpen),

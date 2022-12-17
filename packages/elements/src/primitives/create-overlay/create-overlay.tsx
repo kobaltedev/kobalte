@@ -9,7 +9,8 @@
 import { access, EventKey, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createEffect, JSX, onCleanup } from "solid-js";
 
-import { createInteractOutside, createPreventScroll } from "../index";
+import { createInteractOutside } from "../create-interact-outside";
+import { createPreventScroll } from "../create-prevent-scroll";
 import { ariaHideOutside } from "./aria-hide-outside";
 
 export interface CreateOverlayProps {

@@ -1,11 +1,11 @@
 import { createRoot } from "solid-js";
 
-import { createDisclosure } from "./create-disclosure";
+import { createDisclosureState } from "./create-disclosure-state";
 
-describe("createDisclosure", () => {
+describe("createDisclosureState", () => {
   it("can be default 'open' (uncontrolled)", () => {
     createRoot(dispose => {
-      const state = createDisclosure({
+      const state = createDisclosureState({
         defaultIsOpen: true,
       });
 
@@ -19,7 +19,7 @@ describe("createDisclosure", () => {
     createRoot(dispose => {
       const onChangeSpy = jest.fn();
 
-      const state = createDisclosure({
+      const state = createDisclosureState({
         isOpen: true,
         onOpenChange: onChangeSpy,
       });
@@ -38,7 +38,7 @@ describe("createDisclosure", () => {
 
   it("should set 'isOpen' state with the value from 'setIsOpen'", () => {
     createRoot(dispose => {
-      const state = createDisclosure({ defaultIsOpen: false });
+      const state = createDisclosureState({ defaultIsOpen: false });
 
       expect(state.isOpen()).toBeFalsy();
 
@@ -56,7 +56,7 @@ describe("createDisclosure", () => {
 
   it("should set 'isOpen' state to true when calling 'open'", () => {
     createRoot(dispose => {
-      const state = createDisclosure({ defaultIsOpen: false });
+      const state = createDisclosureState({ defaultIsOpen: false });
 
       expect(state.isOpen()).toBeFalsy();
 
@@ -70,7 +70,7 @@ describe("createDisclosure", () => {
 
   it("should set 'isOpen' state to false when calling 'close'", () => {
     createRoot(dispose => {
-      const state = createDisclosure({ defaultIsOpen: true });
+      const state = createDisclosureState({ defaultIsOpen: true });
 
       expect(state.isOpen()).toBeTruthy();
 
@@ -84,7 +84,7 @@ describe("createDisclosure", () => {
 
   it("should toggle 'isOpen' state when calling 'toggle'", () => {
     createRoot(dispose => {
-      const state = createDisclosure({ defaultIsOpen: false });
+      const state = createDisclosureState({ defaultIsOpen: false });
 
       expect(state.isOpen()).toBeFalsy();
 

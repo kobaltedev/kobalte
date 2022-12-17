@@ -6,17 +6,18 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableItem.ts
  */
 
-import { access, MaybeAccessor } from "@kobalte/utils";
+import { access, isActionKey, isSelectionKey, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, on } from "solid-js";
 
 import {
-  CollectionKey,
+  createLongPress,
   createPress,
   CreatePressProps,
   focusSafely,
   PointerType,
   PressEvent,
 } from "../primitives";
+import { LongPressEvent } from "../primitives/create-long-press/types";
 import { MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
 
@@ -25,7 +26,7 @@ export interface CreateSelectableItemProps {
   selectionManager: MaybeAccessor<MultipleSelectionManager>;
 
   /** A unique key for the item. */
-  key: MaybeAccessor<CollectionKey>;
+  key: MaybeAccessor<string>;
 
   /**
    * By default, selection occurs on pointer down. This can be strange if selecting an
@@ -65,7 +66,7 @@ export function createSelectableItem<T extends HTMLElement>(
   const key = () => access(props.key);
   const shouldUseVirtualFocus = () => access(props.shouldUseVirtualFocus);
 
-  const onSelect = (e: PressEvent | PointerEvent) => {
+  const onSelect = (e: PressEvent | LongPressEvent | PointerEvent) => {
     if (e.pointerType === "keyboard" && isNonContiguousSelectionModifier(e)) {
       manager().toggleSelection(key());
     } else {
@@ -160,21 +161,18 @@ export function createSelectableItem<T extends HTMLElement>(
     preventFocusOnPress: shouldUseVirtualFocus,
   });
 
-  // TODO: uncomment when create-long-press is implemented
-  /*
   // Long pressing an item with touch when selectionBehavior = 'replace' switches the selection behavior
   // to 'toggle'. This changes the single tap behavior from performing an action (i.e. navigating) to
   // selecting, and may toggle the appearance of a UI affordance like checkboxes on each item.
   const { longPressHandlers } = createLongPress({
-    isDisabled: () => !longPressEnabled(),
+    isDisabled: () => !allowsSelection(),
     onLongPress: e => {
       if (e.pointerType === "touch") {
         onSelect(e);
         manager().setSelectionBehavior("toggle");
       }
-    }
+    },
   });
-   */
 
   // Prevent native drag and drop on long press if we also select on long press.
   // Once the user is in selection mode, they can long press again to drag.
@@ -252,17 +250,7 @@ export function createSelectableItem<T extends HTMLElement>(
     tabIndex,
     dataKey,
     pressHandlers,
-    // longPressHandlers,
+    longPressHandlers,
     otherHandlers: { onDragStart, onFocus },
   };
-}
-
-function isActionKey() {
-  const event = window.event as KeyboardEvent;
-  return event?.key === "Enter";
-}
-
-function isSelectionKey() {
-  const event = window.event as KeyboardEvent;
-  return event?.key === " " || event?.code === "Space";
 }

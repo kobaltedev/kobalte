@@ -29,7 +29,7 @@ export function createFilter(options?: Intl.CollatorOptions): Filter {
     ...options,
   });
 
-  // TODO(later): these methods don't currently support the ignorePunctuation option.
+  // TODO: these methods don't currently support the ignorePunctuation option.
 
   const startsWith = (str: string, substr: string) => {
     if (substr.length === 0) {

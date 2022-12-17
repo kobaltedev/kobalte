@@ -2,18 +2,16 @@ import { createPolymorphicComponent, isFunction, mergeDefaultProps } from "@koba
 import { Accessor, createEffect, createMemo, JSX, onCleanup, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createLocalizedStringFormatter } from "../i18n";
-import { SelectionType } from "../selection";
-import { SELECT_INTL_MESSAGES } from "./select.intl";
-import { useSelectContext } from "./select-context";
 import { useFormControlContext } from "../form-control";
+import { useSelectContext } from "./select-context";
 
-type SelectValueRenderProp = (selectedValues: Accessor<SelectionType>) => JSX.Element;
+type SelectValueRenderProp = (selectedValues: Accessor<Set<string>>) => JSX.Element;
 
 export interface SelectValueProps {
   /** The content that will be rendered when no value or defaultValue is set. */
   placeholder?: JSX.Element;
 
+  /** The content that will be rendered when a value is set. */
   children?: SelectValueRenderProp | JSX.Element;
 }
 
@@ -25,16 +23,10 @@ export const SelectValue = createPolymorphicComponent<"span", SelectValueProps>(
 
   const [local, others] = splitProps(props, ["as", "id", "children", "placeholder"]);
 
-  const stringFormatter = createLocalizedStringFormatter(() => SELECT_INTL_MESSAGES);
-
   const selectionManager = () => context.listState().selectionManager();
   const isSelectionEmpty = () => selectionManager().isEmpty();
 
   const valueLabels = createMemo(() => {
-    if (selectionManager().isSelectAll()) {
-      return stringFormatter().format("all");
-    }
-
     return [...selectionManager().selectedKeys()]
       .map(key => context.listState().collection().getItem(key)?.label ?? key)
       .join(", ");
@@ -53,7 +45,7 @@ export const SelectValue = createPolymorphicComponent<"span", SelectValueProps>(
       <Show when={!isSelectionEmpty()} fallback={local.placeholder}>
         <Show when={local.children} fallback={valueLabels()}>
           <Show when={isFunction(local.children)} fallback={local.children as JSX.Element}>
-            {(local.children as SelectValueRenderProp)?.(selectionManager().rawSelection)}
+            {(local.children as SelectValueRenderProp)?.(selectionManager().selectedKeys)}
           </Show>
         </Show>
       </Show>

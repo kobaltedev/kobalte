@@ -18,13 +18,13 @@ import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "
 import { Dynamic } from "solid-js/web";
 
 import {
-  CollectionNode,
+  CollectionItem,
   createFocusRing,
   createHover,
   createRegisterId,
   isKeyboardFocusVisible,
 } from "../primitives";
-import { getItemCount } from "../primitives/create-collection/get-item-count";
+import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useListboxContext } from "./listbox-context";
 import {
@@ -34,15 +34,26 @@ import {
 } from "./listbox-option-context";
 
 export interface ListboxOptionProps {
-  /** The collection node to render. */
-  node: CollectionNode;
+  /** A unique value for the option. */
+  value: string;
+
+  /**
+   * Optional text used for typeahead purposes.
+   * By default, the typeahead behavior will use the .textContent of the `ListBox.OptionLabel` part
+   * if provided, or fallback to the .textContent of the `ListBox.Option`.
+   * Use this when the content is complex, or you have non-textual content inside.
+   */
+  textValue?: string;
+
+  /** Whether the option is disabled. */
+  isDisabled?: boolean;
 }
 
 /**
  * An option of the listbox.
  */
-export const ListboxOption = createPolymorphicComponent<"li", ListboxOptionProps>(props => {
-  let ref: HTMLLIElement | undefined;
+export const ListboxOption = createPolymorphicComponent<"div", ListboxOptionProps>(props => {
+  let ref: HTMLElement | undefined;
 
   const listBoxContext = useListboxContext();
 
@@ -50,7 +61,7 @@ export const ListboxOption = createPolymorphicComponent<"li", ListboxOptionProps
 
   props = mergeDefaultProps(
     {
-      as: "li",
+      as: "div",
       id: defaultId,
     },
     props
@@ -58,7 +69,9 @@ export const ListboxOption = createPolymorphicComponent<"li", ListboxOptionProps
 
   const [local, others] = splitProps(props, [
     "as",
-    "node",
+    "value",
+    "textValue",
+    "isDisabled",
     "aria-label",
     "aria-labelledby",
     "aria-describedby",
@@ -67,21 +80,32 @@ export const ListboxOption = createPolymorphicComponent<"li", ListboxOptionProps
   const [labelId, setLabelId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
 
+  const [labelRef, setLabelRef] = createSignal<HTMLElement>();
+
   const selectionManager = () => listBoxContext.listState().selectionManager();
 
-  const isFocused = () => selectionManager().focusedKey() === local.node.key;
+  const isFocused = () => selectionManager().focusedKey() === local.value;
+
+  createDomCollectionItem<CollectionItem>({
+    getItem: () => ({
+      ref: () => ref,
+      key: local.value,
+      label: labelRef()?.textContent ?? ref?.textContent ?? "",
+      textValue: local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
+      isDisabled: local.isDisabled ?? false,
+    }),
+  });
 
   const selectableItem = createSelectableItem(
     {
-      key: () => local.node.key,
+      key: () => local.value,
       selectionManager: selectionManager,
       shouldSelectOnPressUp: listBoxContext.shouldSelectOnPressUp,
       allowsDifferentPressOrigin: () => {
         return listBoxContext.shouldSelectOnPressUp() && listBoxContext.shouldFocusOnHover();
       },
-      isVirtualized: listBoxContext.isVirtualized,
       shouldUseVirtualFocus: listBoxContext.shouldUseVirtualFocus,
-      isDisabled: () => local.node.isDisabled,
+      isDisabled: () => local.isDisabled,
     },
     () => ref
   );
@@ -91,7 +115,7 @@ export const ListboxOption = createPolymorphicComponent<"li", ListboxOptionProps
     onHoverStart: () => {
       if (!isKeyboardFocusVisible() && listBoxContext.shouldFocusOnHover()) {
         selectionManager().setFocused(true);
-        selectionManager().setFocusedKey(local.node.key);
+        selectionManager().setFocusedKey(local.value);
       }
     },
   });
@@ -115,24 +139,6 @@ export const ListboxOption = createPolymorphicComponent<"li", ListboxOptionProps
   const ariaLabelledBy = () => (isNotSafariMacOS() ? labelId() : undefined);
   const ariaDescribedBy = () => (isNotSafariMacOS() ? descriptionId() : undefined);
 
-  const ariaPosInSet = () => {
-    if (!listBoxContext.isVirtualized()) {
-      return undefined;
-    }
-
-    const index = listBoxContext.listState().collection().getItem(local.node.key)?.index;
-
-    return index != null ? index + 1 : undefined;
-  };
-
-  const ariaSetSize = () => {
-    if (!listBoxContext.isVirtualized()) {
-      return undefined;
-    }
-
-    return getItemCount(listBoxContext.listState().collection());
-  };
-
   const dataset: Accessor<ListboxOptionDataSet> = createMemo(() => ({
     "data-disabled": selectableItem.isDisabled() ? "" : undefined,
     "data-selected": selectableItem.isSelected() ? "" : undefined,
@@ -143,8 +149,9 @@ export const ListboxOption = createPolymorphicComponent<"li", ListboxOptionProps
   }));
 
   const context: ListboxOptionContextValue = {
-    dataset,
     isSelected: selectableItem.isSelected,
+    dataset,
+    setLabelRef,
     generateId: createGenerateId(() => others.id!),
     registerLabel: createRegisterId(setLabelId),
     registerDescription: createRegisterId(setDescriptionId),
@@ -161,15 +168,13 @@ export const ListboxOption = createPolymorphicComponent<"li", ListboxOptionProps
         aria-label={ariaLabel()}
         aria-labelledby={ariaLabelledBy()}
         aria-describedby={ariaDescribedBy()}
-        aria-posinset={ariaPosInSet()}
-        aria-setsize={ariaSetSize()}
         data-key={selectableItem.dataKey()}
         {...dataset()}
         {...combineProps(
           { ref: el => (ref = el) },
           others,
           selectableItem.pressHandlers,
-          // selectableItem.longPressHandlers,
+          selectableItem.longPressHandlers,
           selectableItem.otherHandlers,
           hoverHandlers,
           focusRingHandlers

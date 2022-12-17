@@ -1,83 +1,76 @@
-import { I18nProvider, Menu, Select } from "../src";
+import { For } from "solid-js";
 
-function TestMenu() {
-  const handleAction = (key: string) => {
-    console.log(key);
-  };
+import { I18nProvider, Select } from "../src";
 
+const data = [
+  "Apple",
+  "Bacon",
+  "Banana",
+  "Broccoli",
+  "Burger",
+  "Cake",
+  "Candy",
+  "Carrot",
+  "Cherry",
+  "Chocolate",
+  "Cookie",
+  "Cucumber",
+  "Donut",
+  "Fish",
+  "Fries",
+  "Grape",
+  "Green apple",
+  "Hot dog",
+  "Ice cream",
+  "Kiwi",
+  "Lemon",
+  "Lollipop",
+  "Onion",
+  "Orange",
+  "Pasta",
+  "Pineapple",
+  "Pizza",
+  "Potato",
+  "Salad",
+  "Sandwich",
+  "Steak",
+  "Strawberry",
+  "Tomato",
+  "Watermelon",
+];
+
+function SelectDemo() {
   return (
-    <Menu onAction={handleAction}>
-      <Menu.Trigger class="button">Actions</Menu.Trigger>
-      <Menu.Portal>
-        <Menu.Positioner>
-          <Menu.Panel class="menu">
-            <Menu.Arrow />
-            <Menu.Item key="edit" class="menu-item">
-              Edit
-            </Menu.Item>
-            <Menu.Item key="share" class="menu-item">
-              Share
-            </Menu.Item>
-            <Menu.Item key="delete" isDisabled class="menu-item">
-              Delete
-            </Menu.Item>
-            <Menu.Sub key="find" gutter={8} shift={-9}>
-              <Menu.SubTrigger class="menu-item">
-                <span>Find</span>
-                <span aria-hidden="true" class="ml-auto">
-                  »
-                </span>
-              </Menu.SubTrigger>
-              <Menu.Portal>
-                <Menu.Positioner>
-                  <Menu.Panel class="menu">
-                    <Menu.Item key="find-web" class="menu-item">
-                      Search the Web...
-                    </Menu.Item>
-                    <Menu.Item key="find-only" class="menu-item">
-                      Find...
-                    </Menu.Item>
-                    <Menu.Sub key="sub3" gutter={8} shift={-9}>
-                      <Menu.SubTrigger class="menu-item">
-                        <span>Sub 3</span>
-                        <span aria-hidden="true" class="ml-auto">
-                          »
-                        </span>
-                      </Menu.SubTrigger>
-                      <Menu.Portal>
-                        <Menu.Positioner>
-                          <Menu.Panel class="menu">
-                            <Menu.Item key="copy" class="menu-item">
-                              Copy
-                            </Menu.Item>
-                            <Menu.Item key="paste" class="menu-item">
-                              Paste
-                            </Menu.Item>
-                          </Menu.Panel>
-                        </Menu.Positioner>
-                      </Menu.Portal>
-                    </Menu.Sub>
-                    <Menu.Item key="find-next" class="menu-item">
-                      Find Next...
-                    </Menu.Item>
-                    <Menu.Item key="find-previous" class="menu-item">
-                      Find Previous...
-                    </Menu.Item>
-                  </Menu.Panel>
-                </Menu.Positioner>
-              </Menu.Portal>
-            </Menu.Sub>
-          </Menu.Panel>
-        </Menu.Positioner>
-      </Menu.Portal>
-    </Menu>
+    <Select>
+      <Select.Trigger class="trigger">
+        <Select.Value placeholder="Select a fruit" />
+        <Select.Icon />
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Positioner>
+          <Select.Panel class="panel">
+            <Select.Arrow />
+            <Select.Listbox class="listbox">
+              <For each={data}>
+                {item => (
+                  <Select.Option value={item} isDisabled={item === "Grape"} class="option">
+                    <Select.OptionLabel>{item}</Select.OptionLabel>
+                    <Select.OptionIndicator>X</Select.OptionIndicator>
+                  </Select.Option>
+                )}
+              </For>
+            </Select.Listbox>
+          </Select.Panel>
+        </Select.Positioner>
+      </Select.Portal>
+    </Select>
   );
 }
 
 export default function App() {
   return (
     <I18nProvider>
-      <TestMenu />
+      <SelectDemo />
     </I18nProvider>
   );
 }

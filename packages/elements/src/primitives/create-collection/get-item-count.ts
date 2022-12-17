@@ -16,12 +16,7 @@ export function getItemCount(collection: Iterable<CollectionNode>): number {
     return count;
   }
 
-  count = 0;
-  for (const item of collection) {
-    if (item.type === "item") {
-      count++;
-    }
-  }
+  count = [...collection].length;
 
   cache.set(collection, count);
   return count;

@@ -7,48 +7,31 @@ body,
   align-items: center;
   height: 100%;
 }
-.button {
+
+.trigger {
   display: flex;
   height: 2.5rem;
+  width: 200px;
+  cursor: default;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 0.25rem;
   white-space: nowrap;
-  border-radius: 0.5rem;
-  border-style: none;
-  background-color: hsl(204 100% 40%);
+  border-radius: 0.375rem;
+  border-width: 1px;
+  border-style: solid;
+  border-color: hsl(204 20% 88%);
+  background-color: hsl(204 20% 100%);
   padding-left: 1rem;
   padding-right: 1rem;
   font-size: 1rem;
   line-height: 1.5rem;
-  color: hsl(204 20% 100%);
-  text-decoration-line: none;
 }
 
-.button:hover {
-  background-color: hsl(204 100% 32%);
-}
-
-.button:focus-visible,
-.button[data-focus-visible] {
-  outline: 2px solid hsl(204 100% 40%);
-  outline-offset: 2px;
-}
-
-.separator {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  height: 0px;
-  width: 100%;
-  border-top-width: 1px;
-  border-color: hsl(204 20% 88%);
-}
-
-.menu {
-  position: relative;
+.panel {
   z-index: 50;
   display: flex;
-  min-width: 180px;
+  max-height: 300px;
   flex-direction: column;
   border-radius: 0.5rem;
   border-width: 1px;
@@ -58,10 +41,18 @@ body,
   padding: 0.5rem;
   color: hsl(204 10% 10%);
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  outline: none !important;
 }
 
-.menu-item {
+.listbox {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.trigger[data-focus-visible] {
+  outline: 2px solid hsl(204 100% 40%);
+}
+
+.option {
   display: flex;
   cursor: default;
   scroll-margin: 0.5rem;
@@ -72,21 +63,11 @@ body,
   outline: none !important;
 }
 
-.menu-item[data-focus] {
+.option[data-focus] {
   background-color: hsl(204 100% 40%);
   color: hsl(204 20% 100%);
 }
 
-.menu-item:not([data-focus])[data-expanded] {
-  background-color: hsl(204 10% 10% / 0.1);
-  color: currentColor;
-}
-
-.menu-item:active,
-.menu-item[data-active] {
-  background-color: hsl(204 100% 32%);
-}
-
-.menu-item[data-disabled] {
-  opacity: 0.25;
+.option[data-disabled] {
+  opacity: 0.5;
 }

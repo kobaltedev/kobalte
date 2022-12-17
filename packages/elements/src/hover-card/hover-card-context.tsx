@@ -10,6 +10,7 @@ export interface HoverCardContextValue {
   isTargetOnHoverCard: (target: Node | undefined) => boolean;
   registerNestedHoverCard: (element: HTMLElement) => () => void;
   setTriggerRef: (el: HTMLElement) => void;
+  setPositionerRef: (el: HTMLElement) => void;
   setPanelRef: (el: HTMLElement) => void;
 }
 

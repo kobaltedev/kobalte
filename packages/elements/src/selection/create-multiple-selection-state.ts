@@ -16,9 +16,7 @@ import {
   MultipleSelectionState,
   Selection,
   SelectionBehavior,
-  SelectionType,
 } from "./types";
-import { CollectionKey } from "../primitives";
 
 export interface CreateMultipleSelectionStateProps extends MultipleSelection {
   /** How multiple selection should behave in the collection. */
@@ -43,7 +41,7 @@ export function createMultipleSelectionState(
   );
 
   const [isFocused, setFocused] = createSignal(false);
-  const [focusedKey, _setFocusedKey] = createSignal<CollectionKey>();
+  const [focusedKey, _setFocusedKey] = createSignal<string>();
   const [childFocusStrategy, setChildFocusStrategy] = createSignal<FocusStrategy>("first");
 
   const selectedKeysProp = createMemo(() => {
@@ -79,12 +77,12 @@ export function createMultipleSelectionState(
   const selectionMode = () => access(props.selectionMode)!;
   const disallowEmptySelection = () => access(props.disallowEmptySelection) ?? false;
 
-  const setFocusedKey = (key?: CollectionKey, childFocusStrategy: FocusStrategy = "first") => {
+  const setFocusedKey = (key?: string, childFocusStrategy: FocusStrategy = "first") => {
     setChildFocusStrategy(childFocusStrategy);
     _setFocusedKey(key);
   };
 
-  const setSelectedKeys = (keys: SelectionType) => {
+  const setSelectedKeys = (keys: Set<string>) => {
     if (access(props.allowDuplicateSelectionEvents) || !isSameSelection(keys, selectedKeys())) {
       _setSelectedKeys(keys);
     }
@@ -125,11 +123,11 @@ export function createMultipleSelectionState(
   };
 }
 
-function convertSelection(selection: "all" | Iterable<CollectionKey>): "all" | Selection {
-  return selection === "all" ? "all" : new Selection(selection);
+function convertSelection(selection: Iterable<string>): Selection {
+  return new Selection(selection);
 }
 
-function equalSets(setA: Set<any>, setB: Set<any>) {
+function isSameSelection(setA: Set<string>, setB: Set<string>): boolean {
   if (setA.size !== setB.size) {
     return false;
   }
@@ -141,15 +139,4 @@ function equalSets(setA: Set<any>, setB: Set<any>) {
   }
 
   return true;
-}
-
-function isSameSelection(a: SelectionType, b: SelectionType): boolean {
-  if (a === "all" && b === "all") {
-    return true;
-  }
-
-  const isASet = typeof a === "object";
-  const isBSet = typeof b === "object";
-
-  return isASet && isBSet && equalSets(a, b);
 }

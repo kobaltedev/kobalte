@@ -1,25 +1,27 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
 import { ListState } from "../list";
+import { CollectionItem } from "../primitives";
 import { FocusStrategy } from "../selection";
 
 export interface MenuContextValue {
   isOpen: Accessor<boolean>;
   isModal: Accessor<boolean>;
-  isRootMenu: Accessor<boolean>;
   preventScroll: Accessor<boolean>;
   trapFocus: Accessor<boolean>;
   autoFocus: Accessor<FocusStrategy | boolean | undefined>;
   listState: Accessor<ListState>;
+  parentMenuContext: Accessor<MenuContextValue | undefined>;
   triggerId: Accessor<string | undefined>;
   panelId: Accessor<string | undefined>;
-  setTriggerRef: (el: HTMLButtonElement) => void;
+  setTriggerRef: (el: HTMLElement) => void;
   setPanelRef: (el: HTMLDivElement) => void;
   open: (focusStrategy?: FocusStrategy) => void;
   close: (deep?: boolean) => void;
   toggle: (focusStrategy?: FocusStrategy) => void;
-  focusInPanel: () => void;
+  focusPanel: () => void;
   onAction: (key: string) => void;
+  registerItemToParentDomCollection: ((item: CollectionItem) => () => void) | undefined;
   generateId: (part: string) => string;
   registerTrigger: (id: string) => () => void;
   registerPanel: (id: string) => () => void;

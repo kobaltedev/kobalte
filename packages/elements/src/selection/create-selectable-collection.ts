@@ -18,15 +18,12 @@ import {
 import { Accessor, createEffect, createMemo, JSX, mergeProps, on, onMount } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { Collection, CollectionKey, CollectionNode, focusSafely } from "../primitives";
+import { focusSafely } from "../primitives";
 import { createTypeSelect } from "./create-type-select";
 import { FocusStrategy, KeyboardDelegate, MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
 
 interface CreateSelectableCollectionProps {
-  /** State of the collection. */
-  collection: Accessor<Collection<CollectionNode>>;
-
   /** An interface for reading and updating multiple selection state. */
   selectionManager: MaybeAccessor<MultipleSelectionManager>;
 
@@ -129,7 +126,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     const manager = access(props.selectionManager);
     const selectOnFocus = access(props.selectOnFocus);
 
-    const navigateToKey = (key: CollectionKey | undefined, childFocus?: FocusStrategy) => {
+    const navigateToKey = (key: string | undefined, childFocus?: FocusStrategy) => {
       if (key != null) {
         manager.setFocusedKey(key, childFocus);
 
@@ -151,8 +148,13 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
         if (delegate.getKeyBelow) {
           e.preventDefault();
 
-          let nextKey =
-            focusedKey != null ? delegate.getKeyBelow(focusedKey) : delegate.getFirstKey?.();
+          let nextKey: string | undefined;
+
+          if (focusedKey != null) {
+            nextKey = delegate.getKeyBelow(focusedKey);
+          } else {
+            nextKey = delegate.getFirstKey?.();
+          }
 
           if (nextKey == null && shouldFocusWrap) {
             nextKey = delegate.getFirstKey?.(focusedKey);
@@ -166,8 +168,13 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
         if (delegate.getKeyAbove) {
           e.preventDefault();
 
-          let nextKey =
-            focusedKey != null ? delegate.getKeyAbove(focusedKey) : delegate.getLastKey?.();
+          let nextKey: string | undefined;
+
+          if (focusedKey != null) {
+            nextKey = delegate.getKeyAbove(focusedKey);
+          } else {
+            nextKey = delegate.getLastKey?.();
+          }
 
           if (nextKey == null && shouldFocusWrap) {
             nextKey = delegate.getLastKey?.(focusedKey);
@@ -183,7 +190,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
           const isRTL = locale().direction === "rtl";
 
-          let nextKey: CollectionKey | undefined;
+          let nextKey: string | undefined;
 
           if (focusedKey != null) {
             nextKey = delegate.getKeyLeftOf(focusedKey);
@@ -201,7 +208,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
           const isRTL = locale().direction === "rtl";
 
-          let nextKey: CollectionKey | undefined;
+          let nextKey: string | undefined;
 
           if (focusedKey != null) {
             nextKey = delegate.getKeyRightOf(focusedKey);
@@ -330,7 +337,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     manager.setFocused(true);
 
     if (manager.focusedKey() == null) {
-      const navigateToFirstKey = (key: CollectionKey | undefined) => {
+      const navigateToFirstKey = (key: string | undefined) => {
         if (key == null) {
           return;
         }
@@ -401,7 +408,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     const manager = access(props.selectionManager);
     const delegate = access(props.keyboardDelegate);
 
-    let focusedKey: CollectionKey | undefined;
+    let focusedKey: string | undefined;
 
     // Check focus strategy to determine which item to focus
     if (autoFocus === "first") {
