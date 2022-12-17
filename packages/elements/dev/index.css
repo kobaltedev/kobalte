@@ -33,8 +33,6 @@ body,
   display: flex;
   max-height: 300px;
   flex-direction: column;
-  overflow: auto;
-  overscroll-behavior: contain;
   border-radius: 0.5rem;
   border-width: 1px;
   border-style: solid;

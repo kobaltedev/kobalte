@@ -5,9 +5,10 @@ import {
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
+import { useFormControlContext } from "../form-control";
+import { Listbox } from "../listbox";
 import { usePopoverContext } from "../popover/popover-context";
 import { createFocusTrapRegion, createOverlay } from "../primitives";
 import { useSelectContext } from "./select-context";
@@ -27,18 +28,18 @@ export const SelectPanel = createPolymorphicComponent<"div", SelectPanelProps>(p
   let ref: HTMLElement | undefined;
 
   const popoverContext = usePopoverContext();
+  const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+  props = mergeDefaultProps(
+    {
+      as: "div",
+      id: context.generateId("listbox"),
+    },
+    props
+  );
 
-  const [local, others] = splitProps(props, [
-    "as",
-    "ref",
-    "id",
-    "style",
-    "keepVisible",
-    "onKeyDown",
-  ]);
+  const [local, others] = splitProps(props, ["ref", "id", "style", "keepVisible", "onKeyDown"]);
 
   const keepVisible = () => local.keepVisible || context.isOpen();
 
@@ -48,9 +49,11 @@ export const SelectPanel = createPolymorphicComponent<"div", SelectPanelProps>(p
       onClose: context.close,
       isModal: false,
       preventScroll: false,
-      closeOnEsc: true,
       closeOnInteractOutside: true,
-      shouldCloseOnInteractOutside: element => !contains(context.triggerRef(), element),
+      closeOnEsc: true,
+      shouldCloseOnInteractOutside: element => {
+        return !contains(context.triggerRef(), element);
+      },
     },
     () => ref
   );
@@ -58,7 +61,7 @@ export const SelectPanel = createPolymorphicComponent<"div", SelectPanelProps>(p
   const { FocusTrap } = createFocusTrapRegion(
     {
       trapFocus: context.isOpen,
-      autoFocus: false, // Handled by the select listbox.
+      autoFocus: false, // Handled by the listbox itself
       restoreFocus: false, // Handled by the select
     },
     () => ref
@@ -69,22 +72,33 @@ export const SelectPanel = createPolymorphicComponent<"div", SelectPanelProps>(p
     callHandler(e, overlayHandlers.onKeyDown);
   };
 
+  createEffect(() => onCleanup(context.registerListbox(local.id!)));
+
   return (
     <>
       <FocusTrap />
-      <Dynamic
+      <Listbox
         ref={mergeRefs(el => {
           popoverContext.setPanelRef(el);
+          context.setPanelRef(el);
           ref = el;
         }, local.ref)}
-        component={local.as}
         hidden={!keepVisible()}
+        items={context.items()}
+        id={local.id}
+        state={context.listState()}
+        autoFocus={context.autoFocus()}
+        shouldSelectOnPressUp
+        shouldFocusOnHover
         style={{
           position: "relative",
           display: !keepVisible() ? "none" : undefined,
           ...local.style,
         }}
+        aria-labelledby={context.menuAriaLabelledBy()}
+        onItemsChange={context.setItems}
         onKeyDown={onKeyDown}
+        {...formControlContext.dataset()}
         {...others}
       />
       <FocusTrap />

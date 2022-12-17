@@ -10,18 +10,21 @@ function SelectDemo() {
       <Select.Portal>
         <Select.Positioner>
           <Select.Panel class="popover">
-            <Select.Option value="apple" class="select-item">
-              Apple
-            </Select.Option>
-            <Select.Option value="banana" class="select-item">
-              Banana
-            </Select.Option>
-            <Select.Option value="grape" class="select-item" isDisabled>
-              Grape
-            </Select.Option>
-            <Select.Option value="orange" class="select-item">
-              Orange
-            </Select.Option>
+            <Select.Arrow />
+            <Select.Listbox>
+              <Select.Option value="apple" class="select-item">
+                Apple
+              </Select.Option>
+              <Select.Option value="banana" class="select-item">
+                Banana
+              </Select.Option>
+              <Select.Option value="grape" class="select-item" isDisabled>
+                Grape
+              </Select.Option>
+              <Select.Option value="orange" class="select-item">
+                Orange
+              </Select.Option>
+            </Select.Listbox>
           </Select.Panel>
         </Select.Positioner>
       </Select.Portal>

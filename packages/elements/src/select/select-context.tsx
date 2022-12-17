@@ -20,11 +20,9 @@ export interface SelectContextValue {
   keyboardDelegate: Accessor<KeyboardDelegate>;
   setMenuAriaLabelledBy: Setter<string | undefined>;
   setTriggerRef: (el: HTMLButtonElement) => void;
-  setPanelRef: (el: HTMLDivElement) => void;
+  setListboxRef: (el: HTMLDivElement) => void;
   open: (focusStrategy?: FocusStrategy) => void;
   close: (focusStrategy?: FocusStrategy) => void;
-  toggle: (focusStrategy?: FocusStrategy) => void;
-  focusPanel: () => void;
   generateId: (part: string) => string;
   registerTrigger: (id: string) => () => void;
   registerValue: (id: string) => () => void;

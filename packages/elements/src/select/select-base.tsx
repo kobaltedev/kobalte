@@ -37,6 +37,7 @@ import { SelectLabel } from "./select-label";
 import { SelectPanel } from "./select-panel";
 import { SelectTrigger } from "./select-trigger";
 import { SelectValue } from "./select-value";
+import { SelectListbox } from "./select-listbox";
 
 export type SelectBaseComposite = {
   Label: typeof SelectLabel;
@@ -47,7 +48,9 @@ export type SelectBaseComposite = {
   Icon: typeof SelectIcon;
   Portal: typeof Popover.Portal;
   Positioner: typeof Popover.Positioner;
+  Arrow: typeof Popover.Arrow;
   Panel: typeof SelectPanel;
+  Listbox: typeof SelectListbox;
   Separator: typeof Separator;
   Group: typeof Listbox.Group;
   GroupLabel: typeof Listbox.GroupLabel;
@@ -138,7 +141,7 @@ export const SelectBase: ParentComponent<SelectBaseProps> & SelectBaseComposite 
   const [listboxId, setListboxId] = createSignal<string>();
 
   const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
-  const [panelRef, setPanelRef] = createSignal<HTMLDivElement>();
+  const [listboxRef, setListboxRef] = createSignal<HTMLDivElement>();
 
   const [menuAriaLabelledBy, setMenuAriaLabelledBy] = createSignal<string>();
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy>();
@@ -178,6 +181,22 @@ export const SelectBase: ParentComponent<SelectBaseProps> & SelectBaseComposite 
     }
   });
 
+  const focusTrigger = () => {
+    const trigger = triggerRef();
+
+    if (trigger) {
+      focusSafely(trigger);
+    }
+  };
+
+  const focusListbox = () => {
+    const listbox = listboxRef();
+
+    if (listbox) {
+      focusSafely(listbox);
+    }
+  };
+
   const open = (focusStrategy?: FocusStrategy) => {
     // Don't open if the collection is empty.
     if (listState.collection().getSize() <= 0) {
@@ -186,29 +205,25 @@ export const SelectBase: ParentComponent<SelectBaseProps> & SelectBaseComposite 
 
     setFocusStrategy(focusStrategy);
     disclosureState.open();
+
+    let focusedKey = listState.selectionManager().firstSelectedKey();
+
+    if (focusedKey == null) {
+      focusedKey =
+        focusStrategy === "last"
+          ? listState.collection().getLastKey()
+          : listState.collection().getFirstKey();
+    }
+
+    focusListbox();
+    listState.selectionManager().setFocusedKey(focusedKey, focusStrategy);
   };
 
   const close = (focusStrategy?: FocusStrategy) => {
     setFocusStrategy(focusStrategy);
     disclosureState.close();
-  };
 
-  const toggle = (focusStrategy?: FocusStrategy) => {
-    // Don't open if the collection is empty.
-    if (listState.collection().getSize() <= 0) {
-      return;
-    }
-
-    setFocusStrategy(focusStrategy);
-    disclosureState.toggle();
-  };
-
-  const focusPanel = () => {
-    const panel = panelRef();
-
-    if (panel) {
-      focusSafely(panel);
-    }
+    focusTrigger();
   };
 
   const collator = createCollator({ usage: "search", sensitivity: "base" });
@@ -241,11 +256,9 @@ export const SelectBase: ParentComponent<SelectBaseProps> & SelectBaseComposite 
     menuAriaLabelledBy,
     setMenuAriaLabelledBy,
     setTriggerRef,
-    setPanelRef,
+    setListboxRef,
     open,
     close,
-    toggle,
-    focusPanel,
     generateId: createGenerateId(() => access(formControlProps.id)!),
     registerTrigger: createRegisterId(setTriggerId),
     registerValue: createRegisterId(setValueId),
@@ -280,7 +293,9 @@ SelectBase.Value = SelectValue;
 SelectBase.Icon = SelectIcon;
 SelectBase.Portal = Popover.Portal;
 SelectBase.Positioner = Popover.Positioner;
+SelectBase.Arrow = Popover.Arrow;
 SelectBase.Panel = SelectPanel;
+SelectBase.Listbox = SelectListbox;
 SelectBase.Separator = Separator;
 SelectBase.Group = Listbox.Group;
 SelectBase.GroupLabel = Listbox.GroupLabel;
