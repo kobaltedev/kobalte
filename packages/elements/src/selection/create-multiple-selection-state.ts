@@ -9,7 +9,6 @@
 import { access, MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, createMemo, createSignal } from "solid-js";
 
-import { CollectionKey } from "../primitives";
 import { createControllableSelectionSignal } from "./create-controllable-selection-signal";
 import {
   FocusStrategy,
@@ -42,7 +41,7 @@ export function createMultipleSelectionState(
   );
 
   const [isFocused, setFocused] = createSignal(false);
-  const [focusedKey, _setFocusedKey] = createSignal<CollectionKey>();
+  const [focusedKey, _setFocusedKey] = createSignal<string>();
   const [childFocusStrategy, setChildFocusStrategy] = createSignal<FocusStrategy>("first");
 
   const selectedKeysProp = createMemo(() => {
@@ -78,12 +77,12 @@ export function createMultipleSelectionState(
   const selectionMode = () => access(props.selectionMode)!;
   const disallowEmptySelection = () => access(props.disallowEmptySelection) ?? false;
 
-  const setFocusedKey = (key?: CollectionKey, childFocusStrategy: FocusStrategy = "first") => {
+  const setFocusedKey = (key?: string, childFocusStrategy: FocusStrategy = "first") => {
     setChildFocusStrategy(childFocusStrategy);
     _setFocusedKey(key);
   };
 
-  const setSelectedKeys = (keys: Set<CollectionKey>) => {
+  const setSelectedKeys = (keys: Set<string>) => {
     if (access(props.allowDuplicateSelectionEvents) || !isSameSelection(keys, selectedKeys())) {
       _setSelectedKeys(keys);
     }
@@ -124,11 +123,11 @@ export function createMultipleSelectionState(
   };
 }
 
-function convertSelection(selection: Iterable<CollectionKey>): Selection {
+function convertSelection(selection: Iterable<string>): Selection {
   return new Selection(selection);
 }
 
-function isSameSelection(setA: Set<CollectionKey>, setB: Set<CollectionKey>): boolean {
+function isSameSelection(setA: Set<string>, setB: Set<string>): boolean {
   if (setA.size !== setB.size) {
     return false;
   }

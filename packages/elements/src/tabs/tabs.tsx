@@ -12,13 +12,14 @@ import { createEffect, createSignal, createUniqueId, on, splitProps } from "soli
 import { Dynamic } from "solid-js/web";
 
 import { createSingleSelectListState } from "../list";
+import { CollectionItem } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { Tab } from "./tab";
 import { TabIndicator } from "./tab-indicator";
 import { TabList } from "./tab-list";
 import { TabPanel } from "./tab-panel";
 import { TabsContext, TabsContextValue } from "./tabs-context";
-import { TabsActivationMode, TabsItemModel } from "./types";
+import { TabsActivationMode } from "./types";
 
 type TabsComposite = {
   TabList: typeof TabList;
@@ -77,7 +78,7 @@ export const Tabs = createPolymorphicComponent<"div", TabsProps, TabsComposite>(
     "isDisabled",
   ]);
 
-  const [items, setItems] = createSignal<TabsItemModel[]>([]);
+  const [items, setItems] = createSignal<CollectionItem[]>([]);
   const [selectedTab, setSelectedTab] = createSignal<HTMLElement>();
 
   const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
@@ -87,9 +88,6 @@ export const Tabs = createPolymorphicComponent<"div", TabsProps, TabsComposite>(
     defaultSelectedKey: () => local.defaultValue,
     onSelectionChange: key => local.onValueChange?.(String(key)),
     dataSource: items,
-    itemPropertyNames: {
-      key: "value",
-    },
   });
 
   let lastSelectedKey = listState.selectedKey();

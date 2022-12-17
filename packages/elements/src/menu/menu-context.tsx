@@ -1,8 +1,8 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
 import { ListState } from "../list";
+import { CollectionItem } from "../primitives";
 import { FocusStrategy } from "../selection";
-import { MenuItemModel } from "./types";
 
 export interface MenuContextValue {
   isOpen: Accessor<boolean>;
@@ -21,7 +21,7 @@ export interface MenuContextValue {
   toggle: (focusStrategy?: FocusStrategy) => void;
   focusPanel: () => void;
   onAction: (key: string) => void;
-  registerItemToParentDomCollection: ((item: MenuItemModel) => () => void) | undefined;
+  registerItemToParentDomCollection: ((item: CollectionItem) => () => void) | undefined;
   generateId: (part: string) => string;
   registerTrigger: (id: string) => () => void;
   registerPanel: (id: string) => () => void;

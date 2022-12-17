@@ -20,7 +20,7 @@ import {
   mergeDefaultProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { Accessor, JSX, onCleanup, onMount, Show } from "solid-js";
+import { Accessor, ComponentProps, JSX, onCleanup, onMount, Show } from "solid-js";
 
 export interface CreateFocusTrapRegionProps {
   /** Whether the focus trap is active. */

@@ -10,7 +10,7 @@ import { Orientation } from "@kobalte/utils";
 import { Accessor } from "solid-js";
 
 import { ReadingDirection } from "../i18n";
-import { Collection, CollectionKey, CollectionNode } from "../primitives";
+import { Collection, CollectionNode } from "../primitives";
 import { KeyboardDelegate } from "../selection";
 
 export class TabsKeyboardDelegate implements KeyboardDelegate {
@@ -32,7 +32,7 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
     return this.direction() === "rtl" && this.orientation() === "horizontal";
   }
 
-  getKeyLeftOf(key: CollectionKey) {
+  getKeyLeftOf(key: string) {
     if (this.flipDirection()) {
       return this.getNextKey(key);
     } else {
@@ -44,7 +44,7 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
     }
   }
 
-  getKeyRightOf(key: CollectionKey) {
+  getKeyRightOf(key: string) {
     if (this.flipDirection()) {
       return this.getPreviousKey(key);
     } else {
@@ -56,7 +56,7 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
     }
   }
 
-  getKeyAbove(key: CollectionKey) {
+  getKeyAbove(key: string) {
     if (this.orientation() === "vertical") {
       return this.getPreviousKey(key);
     }
@@ -64,7 +64,7 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
     return undefined;
   }
 
-  getKeyBelow(key: CollectionKey) {
+  getKeyBelow(key: string) {
     if (this.orientation() === "vertical") {
       return this.getNextKey(key);
     }
@@ -104,8 +104,8 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
     return key;
   }
 
-  getNextKey(key: CollectionKey) {
-    let nextKey: CollectionKey | undefined = key;
+  getNextKey(key: string) {
+    let nextKey: string | undefined = key;
     let nextItem: CollectionNode | undefined;
 
     do {
@@ -125,8 +125,8 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
     return nextKey;
   }
 
-  getPreviousKey(key: CollectionKey) {
-    let previousKey: CollectionKey | undefined = key;
+  getPreviousKey(key: string) {
+    let previousKey: string | undefined = key;
     let previousItem: CollectionNode | undefined;
 
     do {

@@ -7,7 +7,7 @@
  */
 
 import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, createMemo, JSX, onCleanup, splitProps } from "solid-js";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useHoverCardContext } from "../hover-card/hover-card-context";
@@ -163,10 +163,6 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   createEffect(() => onCleanup(context.registerTrigger(local.id!)));
 
   createEffect(() => {
-    if (local.isDisabled) {
-      return;
-    }
-
     // Not able to register the trigger as a menu item on parent menu means
     // `Menu.SubTrigger` is not used in the correct place, so throw an error.
     if (context.registerItemToParentDomCollection == null) {
@@ -177,9 +173,9 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     const unregister = context.registerItemToParentDomCollection({
       ref: () => ref,
       key: local.key,
-      label: local.textValue ?? ref?.textContent ?? "",
+      label: "", // not applicable here
       textValue: local.textValue ?? ref?.textContent ?? "",
-      disabled: local.isDisabled,
+      isDisabled: local.isDisabled ?? false,
     });
 
     onCleanup(unregister);

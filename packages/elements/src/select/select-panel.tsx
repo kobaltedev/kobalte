@@ -4,21 +4,27 @@ import {
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { Listbox, ListboxProps } from "../listbox";
+import { Listbox } from "../listbox";
 import { usePopoverContext } from "../popover/popover-context";
 import { createFocusTrapRegion, createOverlay } from "../primitives";
 import { useSelectContext } from "./select-context";
 
-export interface SelectMenuProps extends ListboxProps {
+export interface SelectPanelProps {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
+
+  /**
+   * Used to force keeping the panel visible when more control is needed.
+   * Useful when controlling animation with SolidJS animation libraries.
+   */
+  keepVisible?: boolean;
 }
 
-export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(props => {
-  let ref: HTMLUListElement | undefined;
+export const SelectPanel = createPolymorphicComponent<"div", SelectPanelProps>(props => {
+  let ref: HTMLElement | undefined;
 
   const popoverContext = usePopoverContext();
   const formControlContext = useFormControlContext();
@@ -26,13 +32,15 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
 
   props = mergeDefaultProps(
     {
-      as: "ul",
+      as: "div",
       id: context.generateId("listbox"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "id", "style", "onKeyDown", "onFocusOut"]);
+  const [local, others] = splitProps(props, ["ref", "id", "style", "keepVisible", "onKeyDown"]);
+
+  const keepVisible = () => local.keepVisible || context.isOpen();
 
   const { overlayHandlers } = createOverlay(
     {
@@ -50,49 +58,46 @@ export const SelectMenu = createPolymorphicComponent<"ul", SelectMenuProps>(prop
     {
       trapFocus: context.isOpen,
       autoFocus: false, // Handled by the listbox itself
-      restoreFocus: true,
+      restoreFocus: false, // Handled by the select
     },
     () => ref
   );
 
-  const onKeyDown: JSX.EventHandlerUnion<HTMLUListElement, KeyboardEvent> = e => {
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
     callHandler(e, overlayHandlers.onKeyDown);
-  };
-
-  const onFocusOut: JSX.EventHandlerUnion<HTMLUListElement, FocusEvent> = e => {
-    if (e.currentTarget.contains(e.relatedTarget as Node)) {
-      return;
-    }
-
-    callHandler(e, local.onFocusOut);
-
-    context.setIsFocused(false);
   };
 
   createEffect(() => onCleanup(context.registerListbox(local.id!)));
 
   return (
-    <Show when={popoverContext.shouldMount()}>
+    <>
       <FocusTrap />
       <Listbox
         ref={mergeRefs(el => {
           popoverContext.setPanelRef(el);
+          context.setPanelRef(el);
           ref = el;
         }, local.ref)}
+        hidden={!keepVisible()}
+        items={context.items()}
         id={local.id}
         state={context.listState()}
         autoFocus={context.autoFocus()}
         shouldSelectOnPressUp
         shouldFocusOnHover
-        style={{ position: "relative", ...local.style }}
+        style={{
+          position: "relative",
+          display: !keepVisible() ? "none" : undefined,
+          ...local.style,
+        }}
         aria-labelledby={context.menuAriaLabelledBy()}
+        onItemsChange={context.setItems}
         onKeyDown={onKeyDown}
-        onFocusOut={onFocusOut}
         {...formControlContext.dataset()}
         {...others}
       />
       <FocusTrap />
-    </Show>
+    </>
   );
 });

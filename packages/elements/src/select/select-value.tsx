@@ -4,9 +4,8 @@ import { Dynamic } from "solid-js/web";
 
 import { useFormControlContext } from "../form-control";
 import { useSelectContext } from "./select-context";
-import { CollectionKey } from "../primitives";
 
-type SelectValueRenderProp = (selectedValues: Accessor<Set<CollectionKey>>) => JSX.Element;
+type SelectValueRenderProp = (selectedValues: Accessor<Set<string>>) => JSX.Element;
 
 export interface SelectValueProps {
   /** The content that will be rendered when no value or defaultValue is set. */

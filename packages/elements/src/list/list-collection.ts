@@ -6,29 +6,19 @@
  * https://github.com/adobe/react-spectrum/blob/bfce84fee12a027d9cbc38b43e1747e3e4b4b169/packages/@react-stately/list/src/ListCollection.ts
  */
 
-import { Collection, CollectionKey, CollectionNode } from "../primitives";
+import { Collection, CollectionNode } from "../primitives";
 
 export class ListCollection implements Collection<CollectionNode> {
-  private keyMap: Map<CollectionKey, CollectionNode> = new Map();
+  private keyMap: Map<string, CollectionNode> = new Map();
   private iterable: Iterable<CollectionNode>;
-  private firstKey?: CollectionKey;
-  private lastKey?: CollectionKey;
+  private firstKey?: string;
+  private lastKey?: string;
 
   constructor(nodes: Iterable<CollectionNode>) {
     this.iterable = nodes;
 
-    const visit = (node: CollectionNode) => {
-      this.keyMap.set(node.key, node);
-
-      if (node.childNodes && node.type === "section") {
-        for (const child of node.childNodes) {
-          visit(child);
-        }
-      }
-    };
-
     for (const node of nodes) {
-      visit(node);
+      this.keyMap.set(node.key, node);
     }
 
     if (this.keyMap.size === 0) {
@@ -47,9 +37,7 @@ export class ListCollection implements Collection<CollectionNode> {
         node.prevKey = undefined;
       }
 
-      if (node.type === "item") {
-        node.index = index++;
-      }
+      node.index = index++;
 
       last = node;
 
@@ -73,11 +61,11 @@ export class ListCollection implements Collection<CollectionNode> {
     return this.keyMap.keys();
   }
 
-  getKeyBefore(key: CollectionKey) {
+  getKeyBefore(key: string) {
     return this.keyMap.get(key)?.prevKey;
   }
 
-  getKeyAfter(key: CollectionKey) {
+  getKeyAfter(key: string) {
     return this.keyMap.get(key)?.nextKey;
   }
 
@@ -89,7 +77,7 @@ export class ListCollection implements Collection<CollectionNode> {
     return this.lastKey;
   }
 
-  getItem(key: CollectionKey) {
+  getItem(key: string) {
     return this.keyMap.get(key);
   }
 

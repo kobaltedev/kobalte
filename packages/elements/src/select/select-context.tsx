@@ -2,6 +2,7 @@ import { Accessor, createContext, Setter, useContext } from "solid-js";
 
 import { ListState } from "../list";
 import { FocusStrategy, KeyboardDelegate } from "../selection";
+import { CollectionItem } from "../primitives";
 
 export interface SelectContextValue {
   isOpen: Accessor<boolean>;
@@ -12,15 +13,18 @@ export interface SelectContextValue {
   triggerId: Accessor<string | undefined>;
   valueId: Accessor<string | undefined>;
   listboxId: Accessor<string | undefined>;
-  isFocused: Accessor<boolean>;
+  items: Accessor<CollectionItem[]>;
+  setItems: (items: CollectionItem[]) => void;
   menuAriaLabelledBy: Accessor<string | undefined>;
   listState: Accessor<ListState>;
   keyboardDelegate: Accessor<KeyboardDelegate>;
-  setIsFocused: Setter<boolean>;
   setMenuAriaLabelledBy: Setter<string | undefined>;
   setTriggerRef: (el: HTMLButtonElement) => void;
-  close: () => void;
+  setPanelRef: (el: HTMLDivElement) => void;
+  open: (focusStrategy?: FocusStrategy) => void;
+  close: (focusStrategy?: FocusStrategy) => void;
   toggle: (focusStrategy?: FocusStrategy) => void;
+  focusPanel: () => void;
   generateId: (part: string) => string;
   registerTrigger: (id: string) => () => void;
   registerValue: (id: string) => () => void;

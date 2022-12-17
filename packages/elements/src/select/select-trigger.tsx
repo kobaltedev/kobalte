@@ -22,7 +22,7 @@ import {
   useFormControlContext,
 } from "../form-control";
 import { PressEvent } from "../primitives";
-import { createTypeSelect } from "../selection";
+import { createTypeSelect, FocusStrategy } from "../selection";
 import { useSelectContext } from "./select-context";
 
 export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(props => {
@@ -33,14 +33,32 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
-    ["ref", "isDisabled", "onPressStart", "onPress", "onKeyDown", "onFocus", "onBlur"],
+    ["ref", "isDisabled", "onPressStart", "onPress", "onKeyDown"],
     FORM_CONTROL_FIELD_PROP_NAMES
   );
 
   const selectionManager = () => context.listState().selectionManager();
+  const collection = () => context.listState().collection();
   const keyboardDelegate = () => context.keyboardDelegate();
 
   const isDisabled = () => local.isDisabled || context.isDisabled();
+
+  const togglePanel = (focusStrategy?: FocusStrategy) => {
+    let focusedKey = selectionManager().firstSelectedKey();
+
+    if (focusedKey == null) {
+      focusedKey =
+        focusStrategy === "last" ? collection().getLastKey() : collection().getFirstKey();
+    }
+
+    if (context.isOpen()) {
+      context.close(focusStrategy);
+    } else {
+      context.open(focusStrategy);
+      context.focusPanel();
+      selectionManager().setFocusedKey(focusedKey, focusStrategy);
+    }
+  };
 
   const { fieldProps } = createFormControlField(formControlFieldProps);
 
@@ -61,7 +79,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
     if (e.pointerType !== "touch" && e.pointerType !== "keyboard" && !isDisabled()) {
       // If opened with a screen reader, autofocus the first item.
       // Otherwise, the menu itself will be focused.
-      context.toggle(e.pointerType === "virtual" ? "first" : undefined);
+      togglePanel(e.pointerType === "virtual" ? "first" : undefined);
     }
   };
 
@@ -69,7 +87,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
     local.onPress?.(e);
 
     if (e.pointerType === "touch" && !isDisabled()) {
-      context.toggle();
+      togglePanel();
     }
   };
 
@@ -88,12 +106,12 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
       case "ArrowDown":
         e.stopPropagation();
         e.preventDefault();
-        context.toggle("first");
+        togglePanel("first");
         break;
       case "ArrowUp":
         e.stopPropagation();
         e.preventDefault();
-        context.toggle("last");
+        togglePanel("last");
         break;
       case "ArrowLeft": {
         // prevent scrolling containers
@@ -140,26 +158,6 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
     }
   };
 
-  const onFocus: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    if (context.isFocused()) {
-      return;
-    }
-
-    callHandler(e, local.onFocus);
-
-    context.setIsFocused(true);
-  };
-
-  const onBlur: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    if (context.isOpen()) {
-      return;
-    }
-
-    callHandler(e, local.onBlur);
-
-    context.setIsFocused(false);
-  };
-
   createEffect(() => onCleanup(context.registerTrigger(fieldProps.id()!)));
 
   createEffect(() => {
@@ -188,8 +186,6 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
       onPressStart={onPressStart}
       onPress={onPress}
       onKeyDown={onKeyDown}
-      onFocus={onFocus}
-      onBlur={onBlur}
       {...formControlContext.dataset()}
       {...others}
     />

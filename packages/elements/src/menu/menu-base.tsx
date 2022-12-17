@@ -3,14 +3,18 @@ import { createSignal, createUniqueId, ParentProps, splitProps } from "solid-js"
 
 import { HoverCard, HoverCardProps } from "../hover-card";
 import { createListState } from "../list";
-import { createDisclosureState, createRegisterId, focusSafely } from "../primitives";
+import {
+  CollectionItem,
+  createDisclosureState,
+  createRegisterId,
+  focusSafely,
+} from "../primitives";
 import {
   createDomCollection,
   useOptionalDomCollectionContext,
 } from "../primitives/create-dom-collection";
 import { FocusStrategy } from "../selection";
 import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-context";
-import { MenuItemModel } from "./types";
 
 export interface MenuBaseProps
   extends Omit<
@@ -52,14 +56,15 @@ export function MenuBase(props: ParentProps<MenuBaseProps>) {
     "onAction",
   ]);
 
-  const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
-  const [panelRef, setPanelRef] = createSignal<HTMLDivElement>();
   const [triggerId, setTriggerId] = createSignal<string>();
   const [panelId, setPanelId] = createSignal<string>();
 
+  const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
+  const [panelRef, setPanelRef] = createSignal<HTMLDivElement>();
+
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean | undefined>(true);
 
-  const [items, setItems] = createSignal<MenuItemModel[]>([]);
+  const [items, setItems] = createSignal<CollectionItem[]>([]);
 
   const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
 

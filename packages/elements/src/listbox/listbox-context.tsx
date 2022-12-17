@@ -8,7 +8,6 @@ export interface ListboxContextValue {
   shouldUseVirtualFocus: Accessor<boolean | undefined>;
   shouldSelectOnPressUp: Accessor<boolean | undefined>;
   shouldFocusOnHover: Accessor<boolean | undefined>;
-  isVirtualized: Accessor<boolean | undefined>;
 }
 
 export const ListboxContext = createContext<ListboxContextValue>();

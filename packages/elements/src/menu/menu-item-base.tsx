@@ -8,6 +8,7 @@ import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } f
 import { Dynamic } from "solid-js/web";
 
 import {
+  CollectionItem,
   createFocusRing,
   createHover,
   createPress,
@@ -18,7 +19,6 @@ import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { MenuItemContext, MenuItemContextValue, MenuItemDataSet } from "./menu-item.context";
-import { MenuItemModel } from "./types";
 
 export interface MenuItemBaseProps {
   /**
@@ -93,23 +93,17 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
 
   const isFocused = () => selectionManager().focusedKey() === local.key;
 
-  createDomCollectionItem<MenuItemModel>({
+  createDomCollectionItem<CollectionItem>({
     getItem: () => ({
       ref: () => ref,
       key: local.key,
-      label: local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
+      label: "", // not applicable here
       textValue: local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
-      disabled: local.isDisabled,
+      isDisabled: local.isDisabled ?? false,
     }),
   });
 
-  const {
-    tabIndex,
-    dataKey,
-    pressHandlers: itemPressHandlers,
-    longPressHandlers: itemLongPressHandlers,
-    otherHandlers: itemOtherHandlers,
-  } = createSelectableItem(
+  const selectableItem = createSelectableItem(
     {
       key: () => local.key,
       selectionManager: selectionManager,
@@ -209,19 +203,19 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
     <MenuItemContext.Provider value={context}>
       <Dynamic
         component={local.as}
-        tabIndex={tabIndex()}
+        tabIndex={selectableItem.tabIndex()}
         aria-checked={ariaChecked()}
         aria-disabled={local.isDisabled}
         aria-labelledby={labelId()}
         aria-describedby={descriptionId()}
-        data-key={dataKey()}
+        data-key={selectableItem.dataKey()}
         {...dataset()}
         {...combineProps(
           { ref: el => (ref = el) },
           others,
-          itemPressHandlers,
-          itemLongPressHandlers,
-          itemOtherHandlers,
+          selectableItem.pressHandlers,
+          selectableItem.longPressHandlers,
+          selectableItem.otherHandlers,
           pressHandlers,
           hoverHandlers,
           focusRingHandlers,

@@ -9,12 +9,7 @@
 import { access } from "@kobalte/utils";
 import { Accessor, createMemo, mergeProps, splitProps } from "solid-js";
 
-import {
-  CollectionBase,
-  CollectionKey,
-  CollectionNode,
-  createControllableSignal,
-} from "../primitives";
+import { CollectionBase, CollectionNode, createControllableSignal } from "../primitives";
 import { SingleSelection } from "../selection";
 import { createListState, CreateListStateProps, ListState } from "./create-list-state";
 
@@ -30,10 +25,10 @@ export interface SingleSelectListState extends ListState {
   selectedItem: Accessor<CollectionNode | undefined>;
 
   /** The key for the currently selected item. */
-  selectedKey: Accessor<CollectionKey | undefined>;
+  selectedKey: Accessor<string | undefined>;
 
   /** Sets the selected key. */
-  setSelectedKey(key: CollectionKey): void;
+  setSelectedKey(key: string): void;
 }
 
 /**
@@ -43,7 +38,7 @@ export interface SingleSelectListState extends ListState {
 export function createSingleSelectListState(
   props: CreateSingleSelectListStateProps
 ): SingleSelectListState {
-  const [selectedKey, setSelectedKey] = createControllableSignal<CollectionKey>({
+  const [selectedKey, setSelectedKey] = createControllableSignal<string>({
     value: () => access(props.selectedKey),
     defaultValue: () => access(props.defaultSelectedKey),
     onChange: value => props.onSelectionChange?.(value),
@@ -61,7 +56,7 @@ export function createSingleSelectListState(
     disallowEmptySelection: true,
     allowDuplicateSelectionEvents: true,
     selectedKeys,
-    onSelectionChange: (keys: Set<CollectionKey>) => {
+    onSelectionChange: (keys: Set<string>) => {
       const key = (keys as Set<string>).values().next().value;
 
       // Always fire onSelectionChange, even if the key is the same

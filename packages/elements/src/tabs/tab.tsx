@@ -10,11 +10,10 @@ import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@ko
 import { createEffect, on, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createFocusRing, createHover } from "../primitives";
+import { CollectionItem, createFocusRing, createHover } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useTabsContext } from "./tabs-context";
-import { TabsItemModel } from "./types";
 
 export interface TabProps {
   /** The unique key that associates the tab with a tab panel. */
@@ -48,11 +47,13 @@ export const Tab = createPolymorphicComponent<"button", TabProps>(props => {
 
   const isDisabled = () => local.isDisabled || context.isDisabled();
 
-  createDomCollectionItem<TabsItemModel>({
+  createDomCollectionItem<CollectionItem>({
     getItem: () => ({
       ref: () => ref,
-      value: local.value,
-      disabled: isDisabled(),
+      key: local.value,
+      label: "", // not applicable here
+      textValue: "", // not applicable here
+      isDisabled: isDisabled(),
     }),
   });
 

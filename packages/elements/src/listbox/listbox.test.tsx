@@ -10,12 +10,6 @@ import { fireEvent, render, screen } from "solid-testing-library";
 
 import { Listbox } from "./listbox";
 
-const dataSource = [
-  { value: 1, label: "One" },
-  { value: 2, label: "Two" },
-  { value: 3, label: "Three" },
-];
-
 describe("Listbox", () => {
   beforeEach(() => {
     jest.useFakeTimers();
@@ -34,8 +28,10 @@ describe("Listbox", () => {
 
   it("renders properly", () => {
     render(() => (
-      <Listbox options={dataSource}>
-        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+      <Listbox selectionMode="single">
+        <Listbox.Option value="1">One</Listbox.Option>
+        <Listbox.Option value="2">Two</Listbox.Option>
+        <Listbox.Option value="3">Three</Listbox.Option>
       </Listbox>
     ));
 
@@ -56,8 +52,10 @@ describe("Listbox", () => {
 
   it("allows user to change option focus via up/down arrow keys", async () => {
     render(() => (
-      <Listbox options={dataSource}>
-        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+      <Listbox>
+        <Listbox.Option value="1">One</Listbox.Option>
+        <Listbox.Option value="2">Two</Listbox.Option>
+        <Listbox.Option value="3">Three</Listbox.Option>
       </Listbox>
     ));
 
@@ -82,8 +80,10 @@ describe("Listbox", () => {
 
   it("wraps focus from first to last/last to first option if up/down arrow is pressed if shouldFocusWrap is true", async () => {
     render(() => (
-      <Listbox options={dataSource} shouldFocusWrap>
-        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+      <Listbox shouldFocusWrap>
+        <Listbox.Option value="1">One</Listbox.Option>
+        <Listbox.Option value="2">Two</Listbox.Option>
+        <Listbox.Option value="3">Three</Listbox.Option>
       </Listbox>
     ));
 
@@ -108,11 +108,13 @@ describe("Listbox", () => {
 
   describe("supports single selection", () => {
     it("supports defaultValue (uncontrolled)", async () => {
-      const defaultValue = new Set([2]);
+      const defaultValue = new Set(["2"]);
 
       render(() => (
-        <Listbox options={dataSource} defaultValue={defaultValue}>
-          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+        <Listbox selectionMode="single" defaultValue={defaultValue}>
+          <Listbox.Option value="1">One</Listbox.Option>
+          <Listbox.Option value="2">Two</Listbox.Option>
+          <Listbox.Option value="3">Three</Listbox.Option>
         </Listbox>
       ));
 
@@ -129,12 +131,14 @@ describe("Listbox", () => {
     });
 
     it("supports value (controlled)", async () => {
-      const value = new Set([2]);
+      const value = new Set(["2"]);
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox options={dataSource} value={value} onValueChange={onValueChangeSpy}>
-          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+        <Listbox selectionMode="single" value={value} onValueChange={onValueChangeSpy}>
+          <Listbox.Option value="1">One</Listbox.Option>
+          <Listbox.Option value="2">Two</Listbox.Option>
+          <Listbox.Option value="3">Three</Listbox.Option>
         </Listbox>
       ));
 
@@ -160,15 +164,17 @@ describe("Listbox", () => {
       expect(selectedOption).toHaveAttribute("aria-selected", "true");
 
       expect(onValueChangeSpy).toBeCalledTimes(1);
-      expect(onValueChangeSpy.mock.calls[0][0].has(3)).toBeTruthy();
+      expect(onValueChangeSpy.mock.calls[0][0].has("3")).toBeTruthy();
     });
 
     it("supports using space key to change option selection", async () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox options={dataSource} onValueChange={onValueChangeSpy}>
-          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+        <Listbox selectionMode="single" onValueChange={onValueChangeSpy}>
+          <Listbox.Option value="1">One</Listbox.Option>
+          <Listbox.Option value="2">Two</Listbox.Option>
+          <Listbox.Option value="3">Three</Listbox.Option>
         </Listbox>
       ));
 
@@ -187,15 +193,17 @@ describe("Listbox", () => {
       expect(nextSelectedOption).toHaveAttribute("aria-selected", "true");
 
       expect(onValueChangeSpy).toBeCalledTimes(1);
-      expect(onValueChangeSpy.mock.calls[0][0].has(3)).toBeTruthy();
+      expect(onValueChangeSpy.mock.calls[0][0].has("3")).toBeTruthy();
     });
 
     it("supports using click to change option selection", async () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox options={dataSource} onValueChange={onValueChangeSpy}>
-          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+        <Listbox selectionMode="single" onValueChange={onValueChangeSpy}>
+          <Listbox.Option value="1">One</Listbox.Option>
+          <Listbox.Option value="2">Two</Listbox.Option>
+          <Listbox.Option value="3">Three</Listbox.Option>
         </Listbox>
       ));
 
@@ -214,21 +222,19 @@ describe("Listbox", () => {
       expect(nextSelectedOption).toHaveAttribute("aria-selected", "true");
 
       expect(onValueChangeSpy).toBeCalledTimes(1);
-      expect(onValueChangeSpy.mock.calls[0][0].has(3)).toBeTruthy();
+      expect(onValueChangeSpy.mock.calls[0][0].has("3")).toBeTruthy();
     });
 
     it("supports disabled options", async () => {
-      const dataSource = [
-        { value: 1, label: "One" },
-        { value: 2, label: "Two", disabled: true },
-        { value: 3, label: "Three" },
-      ];
-
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox options={dataSource} onValueChange={onValueChangeSpy}>
-          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+        <Listbox selectionMode="single" onValueChange={onValueChangeSpy}>
+          <Listbox.Option value="1">One</Listbox.Option>
+          <Listbox.Option value="2" isDisabled>
+            Two
+          </Listbox.Option>
+          <Listbox.Option value="3">Three</Listbox.Option>
         </Listbox>
       ));
 
@@ -264,8 +270,10 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox options={dataSource} isMultiple onValueChange={onValueChangeSpy}>
-          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+        <Listbox selectionMode="multiple" onValueChange={onValueChangeSpy}>
+          <Listbox.Option value="1">One</Listbox.Option>
+          <Listbox.Option value="2">Two</Listbox.Option>
+          <Listbox.Option value="3">Three</Listbox.Option>
         </Listbox>
       ));
 
@@ -284,23 +292,24 @@ describe("Listbox", () => {
       expect(options[2]).toHaveAttribute("aria-selected", "true");
 
       expect(onValueChangeSpy).toBeCalledTimes(2);
-      expect(onValueChangeSpy.mock.calls[0][0].has(1)).toBeTruthy();
-      expect(onValueChangeSpy.mock.calls[1][0].has(3)).toBeTruthy();
+      expect(onValueChangeSpy.mock.calls[0][0].has("1")).toBeTruthy();
+      expect(onValueChangeSpy.mock.calls[1][0].has("3")).toBeTruthy();
     });
 
     it("supports multiple defaultValue (uncontrolled)", async () => {
       const onValueChangeSpy = jest.fn();
 
-      const defaultValue = new Set([1, 2]);
+      const defaultValue = new Set(["1", "2"]);
 
       render(() => (
         <Listbox
-          options={dataSource}
-          isMultiple
+          selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
-          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+          <Listbox.Option value="1">One</Listbox.Option>
+          <Listbox.Option value="2">Two</Listbox.Option>
+          <Listbox.Option value="3">Three</Listbox.Option>
         </Listbox>
       ));
 
@@ -320,19 +329,21 @@ describe("Listbox", () => {
       expect(thirdOption).toHaveAttribute("aria-selected", "true");
 
       expect(onValueChangeSpy).toBeCalledTimes(1);
-      expect(onValueChangeSpy.mock.calls[0][0].has(1)).toBeTruthy();
-      expect(onValueChangeSpy.mock.calls[0][0].has(2)).toBeTruthy();
-      expect(onValueChangeSpy.mock.calls[0][0].has(3)).toBeTruthy();
+      expect(onValueChangeSpy.mock.calls[0][0].has("1")).toBeTruthy();
+      expect(onValueChangeSpy.mock.calls[0][0].has("2")).toBeTruthy();
+      expect(onValueChangeSpy.mock.calls[0][0].has("3")).toBeTruthy();
     });
 
     it("supports multiple value (controlled)", async () => {
       const onValueChangeSpy = jest.fn();
 
-      const value = new Set([1, 2]);
+      const value = new Set(["1", "2"]);
 
       render(() => (
-        <Listbox options={dataSource} isMultiple value={value} onValueChange={onValueChangeSpy}>
-          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+        <Listbox selectionMode="multiple" value={value} onValueChange={onValueChangeSpy}>
+          <Listbox.Option value="1">One</Listbox.Option>
+          <Listbox.Option value="2">Two</Listbox.Option>
+          <Listbox.Option value="3">Three</Listbox.Option>
         </Listbox>
       ));
 
@@ -352,22 +363,23 @@ describe("Listbox", () => {
       expect(thirdOption).toHaveAttribute("aria-selected", "false");
 
       expect(onValueChangeSpy).toBeCalledTimes(1);
-      expect(onValueChangeSpy.mock.calls[0][0].has(3)).toBeTruthy();
+      expect(onValueChangeSpy.mock.calls[0][0].has("3")).toBeTruthy();
     });
 
     it("supports deselection", async () => {
       const onValueChangeSpy = jest.fn();
 
-      const defaultValue = new Set([1, 2]);
+      const defaultValue = new Set(["1", "2"]);
 
       render(() => (
         <Listbox
-          options={dataSource}
-          isMultiple
+          selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
-          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+          <Listbox.Option value="1">One</Listbox.Option>
+          <Listbox.Option value="2">Two</Listbox.Option>
+          <Listbox.Option value="3">Three</Listbox.Option>
         </Listbox>
       ));
 
@@ -386,28 +398,25 @@ describe("Listbox", () => {
       expect(firstOption).toHaveAttribute("aria-selected", "false");
 
       expect(onValueChangeSpy).toBeCalledTimes(1);
-      expect(onValueChangeSpy.mock.calls[0][0].has(2)).toBeTruthy();
+      expect(onValueChangeSpy.mock.calls[0][0].has("2")).toBeTruthy();
     });
 
     it("supports disabled options", async () => {
-      const dataSource = [
-        { value: 1, label: "One" },
-        { value: 2, label: "Two" },
-        { value: 3, label: "Three", disabled: true },
-      ];
-
       const onValueChangeSpy = jest.fn();
 
-      const defaultValue = new Set([1, 2]);
+      const defaultValue = new Set(["1", "2"]);
 
       render(() => (
         <Listbox
-          options={dataSource}
-          isMultiple
+          selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
-          {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+          <Listbox.Option value="1">One</Listbox.Option>
+          <Listbox.Option value="2">Two</Listbox.Option>
+          <Listbox.Option value="3" isDisabled>
+            Three
+          </Listbox.Option>
         </Listbox>
       ));
 
@@ -432,16 +441,18 @@ describe("Listbox", () => {
   it("supports empty selection when disallowEmptySelection is false", async () => {
     const onValueChangeSpy = jest.fn();
 
-    const defaultValue = new Set([2]);
+    const defaultValue = new Set(["2"]);
 
     render(() => (
       <Listbox
-        options={dataSource}
+        selectionMode="single"
         defaultValue={defaultValue}
         onValueChange={onValueChangeSpy}
         disallowEmptySelection={false}
       >
-        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+        <Listbox.Option value="1">One</Listbox.Option>
+        <Listbox.Option value="2">Two</Listbox.Option>
+        <Listbox.Option value="3">Three</Listbox.Option>
       </Listbox>
     ));
 
@@ -463,8 +474,10 @@ describe("Listbox", () => {
 
   it("supports type to select", async () => {
     render(() => (
-      <Listbox options={dataSource}>
-        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+      <Listbox>
+        <Listbox.Option value="1">One</Listbox.Option>
+        <Listbox.Option value="2">Two</Listbox.Option>
+        <Listbox.Option value="3">Three</Listbox.Option>
       </Listbox>
     ));
 
@@ -491,8 +504,10 @@ describe("Listbox", () => {
 
   it("resets the search text after a timeout", async () => {
     render(() => (
-      <Listbox options={dataSource}>
-        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+      <Listbox>
+        <Listbox.Option value="1">One</Listbox.Option>
+        <Listbox.Option value="2">Two</Listbox.Option>
+        <Listbox.Option value="3">Three</Listbox.Option>
       </Listbox>
     ));
 
@@ -517,12 +532,10 @@ describe("Listbox", () => {
 
   it("supports aria-label on options", () => {
     render(() => (
-      <Listbox options={[{ value: "item", label: "Item" }]}>
-        {node => (
-          <Listbox.Option node={node()} aria-label="Option">
-            Item
-          </Listbox.Option>
-        )}
+      <Listbox>
+        <Listbox.Option value="option" aria-label="Option">
+          Item
+        </Listbox.Option>
       </Listbox>
     ));
 
@@ -537,13 +550,11 @@ describe("Listbox", () => {
 
   it("supports complex options with aria-labelledby and aria-describedby", async () => {
     render(() => (
-      <Listbox options={[{ value: "option", label: "Label", description: "Description" }]}>
-        {node => (
-          <Listbox.Option node={node()}>
-            <Listbox.OptionLabel>{node().label}</Listbox.OptionLabel>
-            <Listbox.OptionDescription>{node().rawValue.description}</Listbox.OptionDescription>
-          </Listbox.Option>
-        )}
+      <Listbox>
+        <Listbox.Option value="option">
+          <Listbox.OptionLabel>Label</Listbox.OptionLabel>
+          <Listbox.OptionDescription>Description</Listbox.OptionDescription>
+        </Listbox.Option>
       </Listbox>
     ));
 
@@ -559,8 +570,10 @@ describe("Listbox", () => {
 
   it("supports aria-label", () => {
     render(() => (
-      <Listbox options={dataSource} aria-label="Test">
-        {node => <Listbox.Option node={node()}>{node().label}</Listbox.Option>}
+      <Listbox aria-label="Test">
+        <Listbox.Option value="1">One</Listbox.Option>
+        <Listbox.Option value="2">Two</Listbox.Option>
+        <Listbox.Option value="3">Three</Listbox.Option>
       </Listbox>
     ));
 

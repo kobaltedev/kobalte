@@ -11,7 +11,7 @@
 import { MaybeAccessor } from "@kobalte/utils";
 import { Accessor } from "solid-js";
 
-import { CollectionKey, PressEvent } from "../primitives";
+import { PressEvent } from "../primitives";
 
 export type SelectionMode = "none" | "single" | "multiple";
 export type SelectionBehavior = "toggle" | "replace";
@@ -22,13 +22,13 @@ export interface SingleSelection {
   disallowEmptySelection?: MaybeAccessor<boolean | undefined>;
 
   /** The currently selected key in the collection (controlled). */
-  selectedKey?: MaybeAccessor<CollectionKey | undefined>;
+  selectedKey?: MaybeAccessor<string | undefined>;
 
   /** The initial selected key in the collection (uncontrolled). */
-  defaultSelectedKey?: MaybeAccessor<CollectionKey | undefined>;
+  defaultSelectedKey?: MaybeAccessor<string | undefined>;
 
   /** Handler that is called when the selection changes. */
-  onSelectionChange?: (key: CollectionKey) => any;
+  onSelectionChange?: (key: string) => any;
 }
 
 export interface MultipleSelection {
@@ -39,28 +39,24 @@ export interface MultipleSelection {
   disallowEmptySelection?: MaybeAccessor<boolean | undefined>;
 
   /** The currently selected keys in the collection (controlled). */
-  selectedKeys?: MaybeAccessor<Iterable<CollectionKey> | undefined>;
+  selectedKeys?: MaybeAccessor<Iterable<string> | undefined>;
 
   /** The initial selected keys in the collection (uncontrolled). */
-  defaultSelectedKeys?: MaybeAccessor<Iterable<CollectionKey> | undefined>;
+  defaultSelectedKeys?: MaybeAccessor<Iterable<string> | undefined>;
 
   /** Handler that is called when the selection changes. */
-  onSelectionChange?: (keys: Set<CollectionKey>) => any;
+  onSelectionChange?: (keys: Set<string>) => any;
 }
 
 /**
  * A Selection is a special Set containing Keys, which also has an anchor
  * and current selected key for use when range selecting.
  */
-export class Selection extends Set<CollectionKey> {
-  anchorKey?: CollectionKey;
-  currentKey?: CollectionKey;
+export class Selection extends Set<string> {
+  anchorKey?: string;
+  currentKey?: string;
 
-  constructor(
-    keys?: Iterable<CollectionKey> | Selection,
-    anchorKey?: CollectionKey,
-    currentKey?: CollectionKey
-  ) {
+  constructor(keys?: Iterable<string> | Selection, anchorKey?: string, currentKey?: string) {
     super(keys);
     if (keys instanceof Selection) {
       this.anchorKey = anchorKey || keys.anchorKey;
@@ -77,7 +73,7 @@ export interface FocusState {
   isFocused: Accessor<boolean>;
 
   /** The current focused key in the collection. */
-  focusedKey: Accessor<CollectionKey | undefined>;
+  focusedKey: Accessor<string | undefined>;
 
   /** Whether the first or last child of the focused key should receive focus. */
   childFocusStrategy: Accessor<FocusStrategy>;
@@ -89,7 +85,7 @@ export interface FocusState {
    * Sets the focused key, and optionally,
    * whether the first or last child of that key should receive focus.
    */
-  setFocusedKey(key?: CollectionKey, child?: FocusStrategy): void;
+  setFocusedKey(key?: string, child?: FocusStrategy): void;
 }
 
 export interface SingleSelectionState extends FocusState {
@@ -97,10 +93,10 @@ export interface SingleSelectionState extends FocusState {
   disallowEmptySelection: Accessor<boolean | undefined>;
 
   /** The currently selected key in the collection. */
-  selectedKey: Accessor<CollectionKey>;
+  selectedKey: Accessor<string>;
 
   /** Sets the selected key in the collection. */
-  setSelectedKey: (key: CollectionKey) => void;
+  setSelectedKey: (key: string) => void;
 }
 
 export interface MultipleSelectionState extends FocusState {
@@ -117,10 +113,10 @@ export interface MultipleSelectionState extends FocusState {
   disallowEmptySelection: Accessor<boolean>;
 
   /** The currently selected keys in the collection. */
-  selectedKeys: Accessor<Set<CollectionKey>>;
+  selectedKeys: Accessor<Set<string>>;
 
   /** Sets the selected keys in the collection. */
-  setSelectedKeys(keys: Set<CollectionKey>): void;
+  setSelectedKeys(keys: Set<string>): void;
 }
 
 export interface MultipleSelectionManager extends FocusState {
@@ -134,7 +130,7 @@ export interface MultipleSelectionManager extends FocusState {
   disallowEmptySelection: Accessor<boolean | undefined>;
 
   /** The currently selected keys in the collection. */
-  selectedKeys: Accessor<Set<CollectionKey>>;
+  selectedKeys: Accessor<Set<string>>;
 
   /** Whether the selection is empty. */
   isEmpty: Accessor<boolean>;
@@ -143,28 +139,28 @@ export interface MultipleSelectionManager extends FocusState {
   isSelectAll: Accessor<boolean>;
 
   /** The first selected key in the collection. */
-  firstSelectedKey: Accessor<CollectionKey | undefined>;
+  firstSelectedKey: Accessor<string | undefined>;
 
   /** The last selected key in the collection. */
-  lastSelectedKey: Accessor<CollectionKey | undefined>;
+  lastSelectedKey: Accessor<string | undefined>;
 
   /** Returns whether a key is selected. */
-  isSelected: (key: CollectionKey) => boolean;
+  isSelected: (key: string) => boolean;
 
   /** Returns whether the current selection is equal to the given selection. */
-  isSelectionEqual(selection: Set<CollectionKey>): boolean;
+  isSelectionEqual(selection: Set<string>): boolean;
 
   /** Extends the selection to the given key. */
-  extendSelection(toKey: CollectionKey): void;
+  extendSelection(toKey: string): void;
 
   /** Toggles whether the given key is selected. */
-  toggleSelection: (key: CollectionKey) => void;
+  toggleSelection: (key: string) => void;
 
   /** Replaces the selection with only the given key. */
-  replaceSelection: (key: CollectionKey) => void;
+  replaceSelection: (key: string) => void;
 
   /** Replaces the selection with the given keys. */
-  setSelectedKeys(keys: Iterable<CollectionKey>): void;
+  setSelectedKeys(keys: Iterable<string>): void;
 
   /** Selects all items in the collection. */
   selectAll(): void;
@@ -179,16 +175,16 @@ export interface MultipleSelectionManager extends FocusState {
    * Toggles, replaces, or extends selection to the given key depending
    * on the pointer event and collection's selection mode.
    */
-  select(key: CollectionKey, e?: PressEvent | PointerEvent): void;
+  select(key: string, e?: PressEvent | PointerEvent): void;
 
   /** Returns whether the given key can be selected. */
-  canSelectItem: (key: CollectionKey) => boolean;
+  canSelectItem: (key: string) => boolean;
 
   /**
    * Returns whether the given key is non-interactive,
    * i.e. both selection and actions are disabled.
    */
-  isDisabled: (key: CollectionKey) => boolean;
+  isDisabled: (key: string) => boolean;
 
   /** Sets the selection behavior for the collection. */
   setSelectionBehavior: (selectionBehavior: SelectionBehavior) => void;
@@ -196,29 +192,29 @@ export interface MultipleSelectionManager extends FocusState {
 
 export interface KeyboardDelegate {
   /** Returns the key visually below the given one, or `undefined` for none. */
-  getKeyBelow?: (key: CollectionKey) => CollectionKey | undefined;
+  getKeyBelow?: (key: string) => string | undefined;
 
   /** Returns the key visually above the given one, or `undefined` for none. */
-  getKeyAbove?: (key: CollectionKey) => CollectionKey | undefined;
+  getKeyAbove?: (key: string) => string | undefined;
 
   /** Returns the key visually to the left of the given one, or `undefined` for none. */
-  getKeyLeftOf?: (key: CollectionKey) => CollectionKey | undefined;
+  getKeyLeftOf?: (key: string) => string | undefined;
 
   /** Returns the key visually to the right of the given one, or `undefined` for none. */
-  getKeyRightOf?: (key: CollectionKey) => CollectionKey | undefined;
+  getKeyRightOf?: (key: string) => string | undefined;
 
   /** Returns the key visually one page below the given one, or `undefined` for none. */
-  getKeyPageBelow?: (key: CollectionKey) => CollectionKey | undefined;
+  getKeyPageBelow?: (key: string) => string | undefined;
 
   /** Returns the key visually one page above the given one, or `undefined` for none. */
-  getKeyPageAbove?: (key: CollectionKey) => CollectionKey | undefined;
+  getKeyPageAbove?: (key: string) => string | undefined;
 
   /** Returns the first key, or `undefined` for none. */
-  getFirstKey?: (key?: CollectionKey, global?: boolean) => CollectionKey | undefined;
+  getFirstKey?: (key?: string, global?: boolean) => string | undefined;
 
   /** Returns the last key, or `undefined` for none. */
-  getLastKey?: (key?: CollectionKey, global?: boolean) => CollectionKey | undefined;
+  getLastKey?: (key?: string, global?: boolean) => string | undefined;
 
   /** Returns the next key after `fromKey` that matches the given search string, or `undefined` for none. */
-  getKeyForSearch?: (search: string, fromKey?: CollectionKey) => CollectionKey | undefined;
+  getKeyForSearch?: (search: string, fromKey?: string) => string | undefined;
 }

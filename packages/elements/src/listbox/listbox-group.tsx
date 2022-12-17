@@ -10,46 +10,38 @@ import { createGenerateId, createPolymorphicComponent, mergeDefaultProps } from 
 import { createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { CollectionNode, createRegisterId } from "../primitives";
+import { createRegisterId } from "../primitives";
 import { useListboxContext } from "./listbox-context";
 import { ListboxGroupContext, ListboxGroupContextValue } from "./listbox-group-context";
 
-export interface ListboxGroupProps {
-  /** The collection node to render. */
-  node: CollectionNode;
-}
-
 /**
- * A container for a group of options in a listbox.
- * It provides context for all ListBox.Group* related components.
+ * A container used to group multiple `Listbox.Option`s.
  */
-export const ListboxGroup = createPolymorphicComponent<"li", ListboxGroupProps>(props => {
+export const ListboxGroup = createPolymorphicComponent<"div">(props => {
   const listBoxContext = useListboxContext();
 
   const defaultId = `${listBoxContext.generateId("group")}-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
-      as: "li",
+      as: "div",
       id: defaultId,
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "node"]);
+  const [local, others] = splitProps(props, ["as"]);
 
   const [labelId, setLabelId] = createSignal<string>();
 
   const context: ListboxGroupContextValue = {
-    labelId,
-    childNodes: () => local.node.childNodes,
     generateId: createGenerateId(() => others.id!),
     registerLabel: createRegisterId(setLabelId),
   };
 
   return (
     <ListboxGroupContext.Provider value={context}>
-      <Dynamic component={local.as} role="presentation" {...others} />
+      <Dynamic component={local.as} role="group" aria-labelledby={labelId()} {...others} />
     </ListboxGroupContext.Provider>
   );
 });

@@ -1,9 +1,6 @@
-import { Accessor, createContext, useContext } from "solid-js";
-import { CollectionNode } from "../primitives";
+import { createContext, useContext } from "solid-js";
 
 export interface ListboxGroupContextValue {
-  labelId: Accessor<string | undefined>;
-  childNodes: Accessor<Iterable<CollectionNode>>;
   generateId: (part: string) => string;
   registerLabel: (id: string) => () => void;
 }

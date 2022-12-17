@@ -10,7 +10,6 @@ import { access, isActionKey, isSelectionKey, MaybeAccessor } from "@kobalte/uti
 import { Accessor, createEffect, createMemo, on } from "solid-js";
 
 import {
-  CollectionKey,
   createLongPress,
   createPress,
   CreatePressProps,
@@ -27,7 +26,7 @@ export interface CreateSelectableItemProps {
   selectionManager: MaybeAccessor<MultipleSelectionManager>;
 
   /** A unique key for the item. */
-  key: MaybeAccessor<CollectionKey>;
+  key: MaybeAccessor<string>;
 
   /**
    * By default, selection occurs on pointer down. This can be strange if selecting an

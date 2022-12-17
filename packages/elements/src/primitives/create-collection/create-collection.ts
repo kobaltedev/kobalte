@@ -25,29 +25,15 @@ export function createCollection<C extends Collection<CollectionNode>>(
   props: CreateCollectionProps<C>,
   deps: Array<Accessor<any>> = []
 ) {
-  const initialNodes = buildNodes({
-    dataSource: access(props.dataSource),
-    itemPropertyNames: access(props.itemPropertyNames),
-    sectionPropertyNames: access(props.sectionPropertyNames),
-  });
+  const initialNodes = buildNodes(access(props.dataSource));
 
   const [collection, setCollection] = createSignal<C>(props.factory(initialNodes));
 
   createEffect(
     on(
-      [
-        () => access(props.dataSource),
-        () => access(props.itemPropertyNames),
-        () => access(props.sectionPropertyNames),
-        () => props.factory,
-        ...deps,
-      ],
-      ([dataSource, itemPropertyNames, sectionPropertyNames, factory]) => {
-        const nodes = buildNodes({
-          dataSource,
-          itemPropertyNames,
-          sectionPropertyNames,
-        });
+      [() => access(props.dataSource), () => props.factory, ...deps],
+      ([dataSource, factory]) => {
+        const nodes = buildNodes(dataSource);
 
         setCollection(() => factory(nodes));
       },
