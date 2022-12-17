@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/useSelect.ts
  */
 
-import { access, createGenerateId, MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
+import { access, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createMemo, createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
 import {
@@ -60,7 +60,7 @@ export type SelectBaseComposite = {
   OptionIndicator: typeof Listbox.OptionIndicator;
 };
 
-export interface SelectBaseProps
+export interface SelectProps
   extends Pick<
       CreateListStateProps,
       "allowDuplicateSelectionEvents" | "disallowEmptySelection" | "selectionBehavior"
@@ -104,7 +104,7 @@ export interface SelectBaseProps
   autoComplete?: string;
 }
 
-export const Select: ParentComponent<SelectBaseProps> & SelectBaseComposite = props => {
+export const Select: ParentComponent<SelectProps> & SelectBaseComposite = props => {
   const defaultId = `select-${createUniqueId()}`;
 
   props = mergeDefaultProps(
