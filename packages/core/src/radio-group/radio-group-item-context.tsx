@@ -1,0 +1,38 @@
+import { Accessor, createContext, useContext } from "solid-js";
+
+export interface RadioGroupItemDataSet {
+  "data-valid": string | undefined;
+  "data-invalid": string | undefined;
+  "data-checked": string | undefined;
+  "data-disabled": string | undefined;
+  "data-hover": string | undefined;
+  "data-focus": string | undefined;
+  "data-focus-visible": string | undefined;
+}
+
+export interface RadioGroupItemContextValue {
+  value: Accessor<string>;
+  dataset: Accessor<RadioGroupItemDataSet>;
+  ariaLabel: Accessor<string | undefined>;
+  ariaLabelledBy: Accessor<string | undefined>;
+  ariaDescribedBy: Accessor<string | undefined>;
+  isSelected: Accessor<boolean>;
+  isDisabled: Accessor<boolean>;
+  generateId: (part: string) => string;
+  setIsFocused: (isFocused: boolean) => void;
+  setIsFocusVisible: (isFocusVisible: boolean) => void;
+}
+
+export const RadioGroupItemContext = createContext<RadioGroupItemContextValue>();
+
+export function useRadioGroupItemContext() {
+  const context = useContext(RadioGroupItemContext);
+
+  if (context === undefined) {
+    throw new Error(
+      "[kobalte]: `useRadioGroupItemContext` must be used within a `RadioGroup.Item` component"
+    );
+  }
+
+  return context;
+}
