@@ -1,0 +1,152 @@
+import { Preview } from "../../../components/preview";
+import { Kbd } from "../../../components/kbd";
+import { Checkbox, ControlledExample, HTMLFormExample } from "../../../examples/checkbox";
+
+# Checkbox
+
+A control that allows the user to toggle between checked and not checked.
+
+## Import
+
+```ts
+import { Checkbox } from "@kobalte/core";
+```
+
+## Features
+
+- Built with a native HTML `<input>` element, which is visually hidden to allow custom styling.
+- Syncs with form reset events.
+- Labeling support for assistive technology.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The checkbox consists of:
+
+- **Checkbox**: The root container for a checkbox.
+- **Checkbox.Input**: The native html input that is visually hidden in the checkbox.
+- **Checkbox.Control**: The element that visually represents a checkbox.
+- **Checkbox.Indicator**: The indicator that is used to visually indicate whether the checkbox is on or off.
+- **Checkbox.Label**: The label that gives the user information on the checkbox.
+
+```tsx
+<Checkbox>
+  <Checkbox.Input />
+  <Checkbox.Control>
+    <Checkbox.Indicator />
+  </Checkbox.Control>
+  <Checkbox.Label />
+</Checkbox>
+```
+
+## Example
+
+<Preview>
+  <Checkbox>Subscribe</Checkbox>
+</Preview>
+
+```tsx
+
+```
+
+## Usage
+
+The following examples show how to use the `Checkbox` component created in the above example.
+
+### Default value
+
+Checkboxes are not checked by default. The `defaultIsChecked` prop can be used to set the default state.
+
+<Preview>
+  <Checkbox defaultIsChecked>Subscribe</Checkbox>
+</Preview>
+
+```tsx
+<Checkbox defaultIsChecked>Subscribe</Checkbox>
+```
+
+### Controlled value
+
+The `isChecked` prop can be used to make the checked state controlled. The `onCheckedChange` event is fired when the user presses the checkbox, and receives the new value.
+
+<Preview>
+  <ControlledExample />
+</Preview>
+
+```tsx {3,7}
+
+```
+
+### Disabled
+
+Checkboxes can be disabled using the `isDisabled` prop.
+
+<Preview>
+  <Checkbox isDisabled>Subscribe</Checkbox>
+</Preview>
+
+```tsx
+<Checkbox isDisabled>Subscribe</Checkbox>
+```
+
+### Read only
+
+The `isReadOnly` prop makes the selection immutable. Unlike `isDisabled`, the checkbox remains focusable.
+
+<Preview>
+  <Checkbox isReadOnly>Subscribe</Checkbox>
+</Preview>
+
+```tsx
+<Checkbox isReadOnly>Subscribe</Checkbox>
+```
+
+### HTML forms
+
+Checkbox supports the `name` and `value` props for integration with HTML forms.
+
+<Preview>
+  <HTMLFormExample />
+</Preview>
+
+```tsx {14}
+
+```
+
+## API Reference
+
+| Prop             | Type                           | Description                                                                                                                                                |
+| :--------------- | :----------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| isChecked        | `boolean`                      | The controlled checked state of the checkbox.                                                                                                              |
+| defaultIsChecked | `boolean`                      | The default checked state when initially rendered. Useful when you do not need to control the checked state.                                               |
+| onCheckedChange  | `(isChecked: boolean) => void` | Event handler called when the checked state of the checkbox changes.                                                                                       |
+| isIndeterminate  | `boolean`                      | Whether the checkbox is in an indeterminate state.                                                                                                         |
+| name             | `string`                       | The name of the checkbox, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).   |
+| value            | `string`                       | The value of the checkbox, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefvalue). |
+| validationState  | `'valid' \| 'invalid'`         | Whether the checkbox should display its "valid" or "invalid" visual styling.                                                                               |
+| isRequired       | `boolean`                      | Whether the user must check the checkbox before the owning form can be submitted.                                                                          |
+| isDisabled       | `boolean`                      | Whether the checkbox is disabled.                                                                                                                          |
+| isReadOnly       | `boolean`                      | Whether the checkbox can be checked but not changed by the user.                                                                                           |
+
+| Data attributes    | Description                                                             |
+| :----------------- | :---------------------------------------------------------------------- |
+| data-valid         | Present when the checkbox is valid according to the validation rules.   |
+| data-invalid       | Present when the checkbox is invalid according to the validation rules. |
+| data-checked       | Present when the checkbox is checked.                                   |
+| data-indeterminate | Present when the checkbox is in an indeterminate state.                 |
+| data-required      | Present when the checkbox is required.                                  |
+| data-disabled      | Present when the checkbox is disabled.                                  |
+| data-readonly      | Present when the checkbox is read only.                                 |
+| data-hover         | Present when the checkbox is hovered.                                   |
+| data-focus         | Present when the checkbox is focused.                                   |
+| data-focus-visible | Present when the checkbox is focused via keyboard.                      |
+
+`Checkbox.Input`, `Checkbox.Control`, `Checkbox.Indicator` and `Checkbox.Label` shares the same `data-*` attributes.
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description                      |
+| :--------------- | :------------------------------- |
+| <Kbd>Space</Kbd> | Toggles the checkbox on and off. |

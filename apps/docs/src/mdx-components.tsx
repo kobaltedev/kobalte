@@ -1,4 +1,4 @@
-import { Button } from "@kobalte/elements";
+import { Button } from "@kobalte/core";
 import { Title as MetaTitle } from "@solidjs/meta";
 import { clsx } from "clsx";
 import { ComponentProps, createSignal, Show, splitProps } from "solid-js";

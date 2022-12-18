@@ -1,4 +1,4 @@
-import { Switch as SwitchPrimitive } from "@kobalte/elements";
+import { Switch as SwitchPrimitive } from "@kobalte/core";
 import { ComponentProps, createSignal, splitProps } from "solid-js";
 
 export function Switch(props: ComponentProps<typeof SwitchPrimitive>) {

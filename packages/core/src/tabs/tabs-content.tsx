@@ -48,18 +48,6 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentProps>(p
   const isSelected = () => context.listState().selectedKey() === local.value;
   const shouldMount = () => local.forceMount || isSelected();
 
-  const updateTabIndex = () => {
-    if (ref == null || !shouldMount()) {
-      return;
-    }
-
-    // Detect if there are any tabbable elements and update the tabIndex accordingly.
-    const walker = getFocusableTreeWalker(ref, { tabbable: true });
-    setTabIndex(walker.nextNode() ? undefined : 0);
-  };
-
-  const observer = new MutationObserver(updateTabIndex);
-
   const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
 
   createEffect(
@@ -68,7 +56,15 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentProps>(p
         return;
       }
 
+      const updateTabIndex = () => {
+        // Detect if there are any tabbable elements and update the tabIndex accordingly.
+        const walker = getFocusableTreeWalker(ref, { tabbable: true });
+        setTabIndex(walker.nextNode() ? undefined : 0);
+      };
+
       updateTabIndex();
+
+      const observer = new MutationObserver(updateTabIndex);
 
       // Update when new elements are inserted, or the tabIndex/disabled attribute updates.
       observer.observe(ref, {

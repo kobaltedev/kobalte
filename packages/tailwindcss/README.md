@@ -36,7 +36,7 @@ module.exports = {
 Style your component:
 
 ```tsx
-import { Popover } from "@kobalte/elements";
+import { Popover } from "@kobalte/core";
 
 export const MyPopover = () => (
   <Popover>

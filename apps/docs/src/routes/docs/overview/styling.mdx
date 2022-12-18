@@ -1,36 +1,55 @@
-import { Callout } from "../../../components/callout";
+import { Callout, TabsSnippets } from "../../../components";
 
 # Styling
 
-Kobalte Elements are unstyled, allowing you to completely customize the look and feel. Bring your preferred styling solution (vanilla CSS, Tailwind, CSS-in-JS libraries, etc...).
+Kobalte components are unstyled, allowing you to completely customize the look and feel. Bring your preferred styling solution (vanilla CSS, Tailwind, CSS-in-JS libraries, etc...).
 
 ## Styling a component part
 
 All components and their parts accept a `class` prop. This class will be passed through to the DOM element. You can style a component part by targeting the `class` that you provide.
 
-```tsx
-import { Popover } from "@kobalte/elements";
-import "./styles.css";
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  <TabsSnippets.Content value="tsx">
+    {/* <!-- prettier-ignore-start --> */}
+    ```tsx
+    import { Popover as PopoverPrimitive } from "@kobalte/core";
+    import "./style.css";
 
-export const MyPopover = () => (
-  <Popover>
-    <Popover.Trigger class="my-popover__trigger">Open</Popover.Trigger>
-    <Popover.Content class="my-popover__content">...</Popover.Content>
-  </Popover>
-);
-```
+    export const Popover = () => {
+      return (
+        <PopoverPrimitive>
+          <PopoverPrimitive.Trigger class="popover__trigger">
+            Open
+          </PopoverPrimitive.Trigger>
+          <PopoverPrimitive.Content class="popover__content">
+            ...
+          </PopoverPrimitive.Content>
+        </PopoverPrimitive>
+      );
+    };
+    ```
+    {/* <!-- prettier-ignore-end --> */}
 
-```css
-/* styles.css */
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="css">
+    {/* <!-- prettier-ignore-start --> */}
+    ```css
+    .popover__trigger {
+      border-radius: 6px;
+    }
 
-.my-popover__trigger {
-  border-radius: 6px;
-}
+    .popover__content {
+      border: 1px solid slategrey;
+    }
+    ```
+    {/* <!-- prettier-ignore-end --> */}
 
-.my-popover__content {
-  border: 1px solid slategrey;
-}
-```
+  </TabsSnippets.Content>
+</TabsSnippets>
 
 ## Styling a state
 
@@ -41,14 +60,21 @@ When a component or its parts can have multiple states, we automatically attach 
 
 You can style a component state by targeting the `data-*` attributes added by Kobalte.
 
-```css
-/* styles.css */
-
-.my-popover__trigger[data-disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-```
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  <TabsSnippets.Content value="css">
+    {/* <!-- prettier-ignore-start --> */}
+    ```css
+    .popover__trigger[data-disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    ```
+    {/* <!-- prettier-ignore-end --> */}
+  </TabsSnippets.Content>
+</TabsSnippets>
 
 ## Using the TailwindCSS plugin
 
@@ -56,17 +82,34 @@ If you are using [TailwindCSS](https://tailwindcss.com/), you can use the `@koba
 
 ### Installation
 
-```bash
-npm install @kobalte/tailwindcss
-```
-
-```bash
-yarn add @kobalte/tailwindcss
-```
-
-```bash
-pnpm add @kobalte/tailwindcss
-```
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="npm">npm</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="yarn">yarn</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="pnpm">pnpm</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  <TabsSnippets.Content value="npm">
+    {/* <!-- prettier-ignore-start --> */}
+    ```bash
+    npm install @kobalte/tailwindcss
+    ```
+    {/* <!-- prettier-ignore-end --> */}
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="yarn">
+    {/* <!-- prettier-ignore-start --> */}
+    ```bash
+    yarn add @kobalte/tailwindcss
+    ```
+    {/* <!-- prettier-ignore-end --> */}
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="pnpm">
+    {/* <!-- prettier-ignore-start --> */}
+    ```bash
+    pnpm add @kobalte/tailwindcss
+    ```
+    {/* <!-- prettier-ignore-end --> */}
+  </TabsSnippets.Content>
+</TabsSnippets>
 
 ### Usage
 
@@ -92,13 +135,13 @@ module.exports = {
 Style your component:
 
 ```tsx
-import { Popover } from "@kobalte/elements";
+import { Popover as PopoverPrimitive } from "@kobalte/core";
 
-export const MyPopover = () => (
-  <Popover>
-    <Popover.Trigger class="ui-disabled:bg-slate-100">Open</Popover.Trigger>
-    <Popover.Content class="ui-expanded:shadow-md">...</Popover.Content>
-  </Popover>
+export const Popover = () => (
+  <PopoverPrimitive>
+    <PopoverPrimitive.Trigger class="ui-disabled:bg-slate-100">Open</PopoverPrimitive.Trigger>
+    <PopoverPrimitive.Content class="ui-expanded:shadow-md">...</PopoverPrimitive.Content>
+  </PopoverPrimitive>
 );
 ```
 
@@ -123,19 +166,16 @@ You can use the following modifiers:
 
 It's also possible to use _inverse modifiers_ in the form of `ui-not-*`.
 
-<Callout type="note">
-  All examples in the documentation are styled using TailwindCSS and the Kobalte plugin.
-</Callout>
-
 ## Extending a component
 
 Extending a component is done the same way you extend any SolidJS component.
 
 ```tsx
-import { Popover, PopoverTriggerProps } from "@kobalte/elements";
+import { Popover as PopoverPrimitive } from "@kobalte/core";
+import { ComponentProps } from "solid-js";
 
-export const MyPopoverTrigger = (props: PopoverTriggerProps) => {
-  return <Popover.Trigger {...props} />;
+export const PopoverTrigger = (props: ComponentProps<typeof PopoverPrimitive.Trigger>) => {
+  return <PopoverPrimitive.Trigger {...props} />;
 };
 ```
 
@@ -146,15 +186,15 @@ Kobalte Elements are polymorphic, meaning you can use the `as` prop to change th
 For example, you can use a custom button called `MyButton` as the trigger for a `Popover.Trigger` like below:
 
 ```tsx
-import { Popover } from "@kobalte/elements";
+import { Popover as PopoverPrimitive } from "@kobalte/core";
 import { MyButton } from "./my-button";
 
-export default () => {
+export const Popover = () => {
   return (
-    <Popover>
-      <Popover.Trigger as={MyButton}>Open</Popover.Trigger>
-      <Popover.Content>...</Popover.Content>
-    </Popover>
+    <PopoverPrimitive>
+      <PopoverPrimitive.Trigger as={MyButton}>Open</PopoverPrimitive.Trigger>
+      <PopoverPrimitive.Content>...</PopoverPrimitive.Content>
+    </PopoverPrimitive>
   );
 };
 ```

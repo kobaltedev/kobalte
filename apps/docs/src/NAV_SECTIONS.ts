@@ -54,6 +54,10 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/button",
       },
       {
+        title: "Checkbox",
+        href: "/docs/components/checkbox",
+      },
+      {
         title: "Dialog",
         href: "/docs/components/dialog",
       },

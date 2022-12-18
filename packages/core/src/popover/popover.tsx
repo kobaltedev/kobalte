@@ -395,6 +395,9 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
       },
     });
 
+    // TODO: fix popover arrow placement
+    setCurrentPlacement(pos.placement);
+
     if (pos.placement !== currentPlacement()) {
       props.onCurrentPlacementChange?.(setCurrentPlacement(pos.placement));
     }
@@ -465,13 +468,13 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     }
 
     const positioner = positionerRef();
-    const panel = contentRef();
+    const content = contentRef();
 
-    if (!positioner || !panel) {
+    if (!positioner || !content) {
       return;
     }
 
-    positioner.style.zIndex = getComputedStyle(panel).zIndex;
+    positioner.style.zIndex = getComputedStyle(content).zIndex;
   });
 
   const context: PopoverContextValue = {

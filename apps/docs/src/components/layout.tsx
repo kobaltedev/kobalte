@@ -2,11 +2,11 @@ import { Link, useLocation } from "@solidjs/router";
 import { ParentProps, Show } from "solid-js";
 
 import { NAV_SECTIONS } from "../NAV_SECTIONS";
+import { Footer } from "./footer";
 import { Header } from "./header";
 import { Navigation } from "./navigation";
 import { Prose } from "./prose";
 import { TableOfContents } from "./table-of-contents";
-import { Footer } from "./footer";
 
 export function Layout(props: ParentProps) {
   const location = useLocation();

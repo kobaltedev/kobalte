@@ -1,7 +1,7 @@
 // @refresh reload
 import "./root.css";
 
-import { ColorModeProvider, ColorModeScript, cookieStorageManagerSSR } from "@kobalte/elements";
+import { ColorModeProvider, ColorModeScript, cookieStorageManagerSSR } from "@kobalte/core";
 import { Suspense, useContext } from "solid-js";
 import { isServer } from "solid-js/web";
 import { MDXProvider } from "solid-mdx";
