@@ -3,7 +3,7 @@
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *
  * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/switch/src/useSwitch.ts
+ * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/checkbox/src/useCheckbox.ts
  */
 
 import { combineProps, mergeDefaultProps, ValidationState } from "@kobalte/utils";
@@ -18,21 +18,21 @@ import {
 } from "solid-js";
 
 import { createFormResetListener, createHover, createToggleState } from "../primitives";
-import { SwitchContext, SwitchContextValue, SwitchDataSet } from "./switch-context";
-import { SwitchControl } from "./switch-control";
-import { SwitchInput } from "./switch-input";
-import { SwitchLabel } from "./switch-label";
-import { SwitchThumb } from "./switch-thumb";
+import { CheckboxContext, CheckboxContextValue, CheckboxDataSet } from "./checkbox-context";
+import { CheckboxControl } from "./checkbox-control";
+import { CheckboxIndicator } from "./checkbox-indicator";
+import { CheckboxInput } from "./checkbox-input";
+import { CheckboxLabel } from "./checkbox-label";
 
-type SwitchComposite = {
-  Label: typeof SwitchLabel;
-  Input: typeof SwitchInput;
-  Control: typeof SwitchControl;
-  Thumb: typeof SwitchThumb;
+type CheckboxComposite = {
+  Label: typeof CheckboxLabel;
+  Input: typeof CheckboxInput;
+  Control: typeof CheckboxControl;
+  Indicator: typeof CheckboxIndicator;
 };
 
-export interface SwitchProps {
-  /** The controlled checked state of the switch. */
+export interface CheckboxProps {
+  /** The controlled checked state of the checkbox. */
   isChecked?: boolean;
 
   /**
@@ -41,42 +41,49 @@ export interface SwitchProps {
    */
   defaultIsChecked?: boolean;
 
-  /** Event handler called when the checked state of the switch changes. */
+  /** Event handler called when the checked state of the checkbox changes. */
   onCheckedChange?: (isChecked: boolean) => void;
 
   /**
-   * The name of the switch, used when submitting an HTML form.
+   * The name of the checkbox, used when submitting an HTML form.
    * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).
    */
   name?: string;
 
   /**
-   * The value of the switch, used when submitting an HTML form.
+   * The value of the checkbox, used when submitting an HTML form.
    * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefvalue).
    */
   value?: string;
 
-  /** Whether the switch should display its "valid" or "invalid" visual styling. */
+  /** Whether the checkbox should display its "valid" or "invalid" visual styling. */
   validationState?: ValidationState;
 
-  /** Whether the user must check the switch before the owning form can be submitted. */
+  /** Whether the user must check the checkbox before the owning form can be submitted. */
   isRequired?: boolean;
 
-  /** Whether the switch is disabled. */
+  /** Whether the checkbox is disabled. */
   isDisabled?: boolean;
 
-  /** Whether the switch is read only. */
+  /** Whether the checkbox is read only. */
   isReadOnly?: boolean;
+
+  /**
+   * Whether the checkbox is in an indeterminate state.
+   * Indeterminism is presentational only.
+   * The indeterminate visual representation remains regardless of user interaction.
+   */
+  isIndeterminate?: boolean;
 }
 
 /**
- * A control that allows users to choose one of two values: on or off.
+ * A control that allows the user to toggle between checked and not checked.
  */
-export const Switch: ParentComponent<ComponentProps<"label"> & SwitchProps> &
-  SwitchComposite = props => {
+export const Checkbox: ParentComponent<ComponentProps<"label"> & CheckboxProps> &
+  CheckboxComposite = props => {
   let ref: HTMLLabelElement | undefined;
 
-  const defaultId = `switch-${createUniqueId()}`;
+  const defaultId = `checkbox-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
@@ -101,6 +108,7 @@ export const Switch: ParentComponent<ComponentProps<"label"> & SwitchProps> &
     "isRequired",
     "isDisabled",
     "isReadOnly",
+    "isIndeterminate",
   ]);
 
   const [isFocused, setIsFocused] = createSignal(false);
@@ -123,10 +131,11 @@ export const Switch: ParentComponent<ComponentProps<"label"> & SwitchProps> &
     isDisabled: () => local.isDisabled,
   });
 
-  const dataset: Accessor<SwitchDataSet> = createMemo(() => ({
+  const dataset: Accessor<CheckboxDataSet> = createMemo(() => ({
     "data-valid": local.validationState === "valid" ? "" : undefined,
     "data-invalid": local.validationState === "invalid" ? "" : undefined,
     "data-checked": state.isSelected() ? "" : undefined,
+    "data-indeterminate": local.isIndeterminate ? "" : undefined,
     "data-required": local.isRequired ? "" : undefined,
     "data-disabled": local.isDisabled ? "" : undefined,
     "data-readonly": local.isReadOnly ? "" : undefined,
@@ -135,7 +144,7 @@ export const Switch: ParentComponent<ComponentProps<"label"> & SwitchProps> &
     "data-focus-visible": isFocusVisible() ? "" : undefined,
   }));
 
-  const context: SwitchContextValue = {
+  const context: CheckboxContextValue = {
     name: () => local.name ?? others.id!,
     value: () => local.value!,
     dataset,
@@ -148,6 +157,7 @@ export const Switch: ParentComponent<ComponentProps<"label"> & SwitchProps> &
     isRequired: () => local.isRequired,
     isDisabled: () => local.isDisabled,
     isReadOnly: () => local.isReadOnly,
+    isIndeterminate: () => local.isIndeterminate,
     generateId: part => `${others.id!}-${part}`,
     setIsChecked: isChecked => state.setIsSelected(isChecked),
     setIsFocused,
@@ -155,16 +165,16 @@ export const Switch: ParentComponent<ComponentProps<"label"> & SwitchProps> &
   };
 
   return (
-    <SwitchContext.Provider value={context}>
+    <CheckboxContext.Provider value={context}>
       <label
         {...context.dataset()}
         {...combineProps({ ref: el => (ref = el) }, others, hoverHandlers)}
       />
-    </SwitchContext.Provider>
+    </CheckboxContext.Provider>
   );
 };
 
-Switch.Label = SwitchLabel;
-Switch.Input = SwitchInput;
-Switch.Control = SwitchControl;
-Switch.Thumb = SwitchThumb;
+Checkbox.Label = CheckboxLabel;
+Checkbox.Input = CheckboxInput;
+Checkbox.Control = CheckboxControl;
+Checkbox.Indicator = CheckboxIndicator;

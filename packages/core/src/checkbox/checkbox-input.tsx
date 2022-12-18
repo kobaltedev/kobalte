@@ -3,20 +3,22 @@
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *
  * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useSwitch.ts
+ * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useCheckbox.ts
  */
 
 import { callHandler, combineProps, mergeDefaultProps, visuallyHiddenStyles } from "@kobalte/utils";
-import { ComponentProps, JSX, splitProps } from "solid-js";
+import { ComponentProps, createEffect, JSX, on, splitProps } from "solid-js";
 
 import { createFocusRing, createPress } from "../primitives";
-import { useSwitchContext } from "./switch-context";
+import { useCheckboxContext } from "./checkbox-context";
 
 /**
- * The native html input that is visually hidden in the switch.
+ * The native html input that is visually hidden in the checkbox.
  */
-export function SwitchInput(props: ComponentProps<"input">) {
-  const context = useSwitchContext();
+export function CheckboxInput(props: ComponentProps<"input">) {
+  let ref: HTMLInputElement | undefined;
+
+  const context = useCheckboxContext();
 
   props = mergeDefaultProps({ id: context.generateId("input") }, props);
 
@@ -62,10 +64,22 @@ export function SwitchInput(props: ComponentProps<"input">) {
     target.checked = context.isChecked();
   };
 
+  // indeterminate is a property, but it can only be set via javascript
+  // https://css-tricks.com/indeterminate-checkboxes/
+  // Unlike in React, inputs `indeterminate` state can be out of sync with our.
+  // Clicking on the input will change its internal `indeterminate` state.
+  // To prevent this, we need to force the input `indeterminate` state to be in sync with our.
+  createEffect(
+    on([() => ref, () => context.isChecked()], ([ref]) => {
+      if (ref) {
+        ref.indeterminate = context.isIndeterminate() || false;
+      }
+    })
+  );
+
   return (
     <input
       type="checkbox"
-      role="switch"
       name={context.name()}
       value={context.value()}
       checked={context.isChecked()}
@@ -82,7 +96,12 @@ export function SwitchInput(props: ComponentProps<"input">) {
       aria-readonly={context.isReadOnly() || undefined}
       onChange={onChange}
       {...context.dataset()}
-      {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers, focusRingHandlers)}
+      {...combineProps(
+        { ref: el => (ref = el), style: visuallyHiddenStyles },
+        others,
+        pressHandlers,
+        focusRingHandlers
+      )}
     />
   );
 }

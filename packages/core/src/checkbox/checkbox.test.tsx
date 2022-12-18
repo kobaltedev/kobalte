@@ -1,0 +1,552 @@
+/*!
+ * Portions of this file are based on code from react-spectrum.
+ * Apache License Version 2.0, Copyright 2020 Adobe.
+ *
+ * Credits to the React Spectrum team:
+ * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-spectrum/checkbox/test/Checkbox.test.js
+ */
+
+import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
+import { fireEvent, render, screen } from "solid-testing-library";
+
+import { Checkbox } from "./checkbox";
+
+describe("Checkbox", () => {
+  installPointerEvent();
+
+  const onChangeSpy = jest.fn();
+
+  afterEach(() => {
+    onChangeSpy.mockClear();
+  });
+
+  it("should generate default ids", () => {
+    render(() => (
+      <Checkbox data-testid="checkbox">
+        <Checkbox.Input data-testid="input" />
+        <Checkbox.Control data-testid="control">
+          <Checkbox.Indicator data-testid="indicator" />
+        </Checkbox.Control>
+        <Checkbox.Label data-testid="label">Label</Checkbox.Label>
+      </Checkbox>
+    ));
+
+    const checkboxRoot = screen.getByTestId("checkbox");
+    const input = screen.getByTestId("input");
+    const control = screen.getByTestId("control");
+    const indicator = screen.getByTestId("indicator");
+    const label = screen.getByTestId("label");
+
+    expect(checkboxRoot.id).toBeDefined();
+    expect(input.id).toBe(`${checkboxRoot.id}-input`);
+    expect(control.id).toBe(`${checkboxRoot.id}-control`);
+    expect(indicator.id).toBe(`${checkboxRoot.id}-indicator`);
+    expect(label.id).toBe(`${checkboxRoot.id}-label`);
+  });
+
+  it("should generate ids based on checkbox id", () => {
+    render(() => (
+      <Checkbox data-testid="checkbox" id="foo">
+        <Checkbox.Input data-testid="input" />
+        <Checkbox.Control data-testid="control">
+          <Checkbox.Indicator data-testid="indicator" />
+        </Checkbox.Control>
+        <Checkbox.Label data-testid="label">Label</Checkbox.Label>
+      </Checkbox>
+    ));
+
+    const checkboxRoot = screen.getByTestId("checkbox");
+    const input = screen.getByTestId("input");
+    const control = screen.getByTestId("control");
+    const indicator = screen.getByTestId("indicator");
+    const label = screen.getByTestId("label");
+
+    expect(checkboxRoot.id).toBe("foo");
+    expect(input.id).toBe("foo-input");
+    expect(control.id).toBe("foo-control");
+    expect(indicator.id).toBe("foo-indicator");
+    expect(label.id).toBe("foo-label");
+  });
+
+  it("supports custom ids", () => {
+    render(() => (
+      <Checkbox data-testid="checkbox" id="custom-checkbox-id">
+        <Checkbox.Input data-testid="input" id="custom-input-id" />
+        <Checkbox.Control data-testid="control" id="custom-control-id">
+          <Checkbox.Indicator data-testid="indicator" id="custom-indicator-id" />
+        </Checkbox.Control>
+        <Checkbox.Label data-testid="label" id="custom-label-id">
+          Label
+        </Checkbox.Label>
+      </Checkbox>
+    ));
+
+    const checkboxRoot = screen.getByTestId("checkbox");
+    const input = screen.getByTestId("input");
+    const control = screen.getByTestId("control");
+    const indicator = screen.getByTestId("indicator");
+    const label = screen.getByTestId("label");
+
+    expect(checkboxRoot.id).toBe("custom-checkbox-id");
+    expect(input.id).toBe("custom-input-id");
+    expect(control.id).toBe("custom-control-id");
+    expect(indicator.id).toBe("custom-indicator-id");
+    expect(label.id).toBe("custom-label-id");
+  });
+
+  it("should set input type to checkbox", async () => {
+    render(() => (
+      <Checkbox>
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox");
+
+    expect(input).toHaveAttribute("type", "checkbox");
+  });
+
+  it("should have default value of 'on'", async () => {
+    render(() => (
+      <Checkbox>
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+  });
+
+  it("supports custom value", async () => {
+    render(() => (
+      <Checkbox value="custom">
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("custom");
+  });
+
+  it("ensure default unchecked can be checked", async () => {
+    render(() => (
+      <Checkbox onCheckedChange={onChangeSpy}>
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input.checked).toBeFalsy();
+    expect(onChangeSpy).not.toHaveBeenCalled();
+
+    fireEvent.click(input);
+    await Promise.resolve();
+
+    expect(input.checked).toBeTruthy();
+    expect(onChangeSpy.mock.calls[0][0]).toBe(true);
+
+    fireEvent.click(input);
+    await Promise.resolve();
+
+    expect(onChangeSpy.mock.calls[1][0]).toBe(false);
+  });
+
+  it("can be default checked", async () => {
+    render(() => (
+      <Checkbox defaultIsChecked onCheckedChange={onChangeSpy}>
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input.checked).toBeTruthy();
+
+    fireEvent.click(input);
+    await Promise.resolve();
+
+    expect(input.checked).toBeFalsy();
+    expect(onChangeSpy.mock.calls[0][0]).toBe(false);
+  });
+
+  it("can be controlled checked", async () => {
+    render(() => (
+      <Checkbox isChecked onCheckedChange={onChangeSpy}>
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input.checked).toBeTruthy();
+
+    fireEvent.click(input);
+    await Promise.resolve();
+
+    expect(input.checked).toBeTruthy();
+    expect(onChangeSpy.mock.calls[0][0]).toBe(false);
+  });
+
+  it("can be controlled unchecked", async () => {
+    render(() => (
+      <Checkbox isChecked={false} onCheckedChange={onChangeSpy}>
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input.checked).toBeFalsy();
+
+    fireEvent.click(input);
+    await Promise.resolve();
+
+    expect(input.checked).toBeFalsy();
+    expect(onChangeSpy.mock.calls[0][0]).toBe(true);
+  });
+
+  it("can be indeterminate", async () => {
+    render(() => (
+      <Checkbox isIndeterminate onCheckedChange={onChangeSpy}>
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input.indeterminate).toBeTruthy();
+    expect(input.checked).toBeFalsy();
+
+    fireEvent.click(input);
+    await Promise.resolve();
+
+    expect(input.indeterminate).toBeTruthy();
+    expect(input.checked).toBeTruthy();
+    expect(onChangeSpy).toHaveBeenCalled();
+    expect(onChangeSpy.mock.calls[0][0]).toBe(true);
+
+    fireEvent.click(input);
+    await Promise.resolve();
+
+    expect(input.indeterminate).toBeTruthy();
+    expect(input.checked).toBeFalsy();
+    expect(onChangeSpy.mock.calls[1][0]).toBe(false);
+  });
+
+  it("can be disabled", async () => {
+    render(() => (
+      <Checkbox isDisabled onCheckedChange={onChangeSpy}>
+        <Checkbox.Input />
+        <Checkbox.Label data-testid="label">Label</Checkbox.Label>
+      </Checkbox>
+    ));
+
+    const label = screen.getByTestId("label");
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input.disabled).toBeTruthy();
+    expect(input.checked).toBeFalsy();
+
+    // I don't know why but `fireEvent` on the input fire the click even if the input is disabled.
+    fireEvent.click(label);
+    await Promise.resolve();
+
+    expect(input.checked).toBeFalsy();
+    expect(onChangeSpy).not.toHaveBeenCalled();
+  });
+
+  it("can be invalid", async () => {
+    render(() => (
+      <Checkbox validationState="invalid" onCheckedChange={onChangeSpy}>
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input).toHaveAttribute("aria-invalid", "true");
+  });
+
+  it("passes through 'aria-errormessage'", async () => {
+    render(() => (
+      <Checkbox validationState="invalid" aria-errormessage="test" onCheckedChange={onChangeSpy}>
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("aria-errormessage", "test");
+  });
+
+  it("supports 'aria-label'", () => {
+    render(() => (
+      <Checkbox aria-label="Label">
+        <Checkbox.Input />
+        <Checkbox.Control />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input).toHaveAttribute("aria-label", "Label");
+  });
+
+  it("supports 'aria-labelledby'", () => {
+    render(() => (
+      <Checkbox aria-labelledby="foo">
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input).toHaveAttribute("aria-labelledby", "foo");
+  });
+
+  it("should combine 'aria-label' and 'aria-labelledby'", () => {
+    render(() => (
+      <Checkbox aria-label="Label" aria-labelledby="foo">
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input).toHaveAttribute("aria-labelledby", `foo ${input.id}`);
+  });
+
+  it("supports 'aria-describedby'", () => {
+    render(() => (
+      <Checkbox aria-describedby="foo">
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input).toHaveAttribute("aria-describedby", "foo");
+  });
+
+  it("can be read only", async () => {
+    render(() => (
+      <Checkbox isChecked isReadOnly onCheckedChange={onChangeSpy}>
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input.checked).toBeTruthy();
+    expect(input).toHaveAttribute("aria-readonly", "true");
+
+    fireEvent.click(input);
+    await Promise.resolve();
+
+    expect(input.checked).toBeTruthy();
+    expect(onChangeSpy).not.toHaveBeenCalled();
+  });
+
+  it("supports uncontrolled read only", async () => {
+    render(() => (
+      <Checkbox isReadOnly onCheckedChange={onChangeSpy}>
+        <Checkbox.Input />
+      </Checkbox>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input.checked).toBeFalsy();
+
+    fireEvent.click(input);
+    await Promise.resolve();
+
+    expect(input.checked).toBeFalsy();
+    expect(onChangeSpy).not.toHaveBeenCalled();
+  });
+
+  describe("data-attributes", () => {
+    it("should have 'data-valid' attribute when checkbox is valid", async () => {
+      render(() => (
+        <Checkbox data-testid="checkbox-root" validationState="valid">
+          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
+          <Checkbox.Control data-testid="checkbox-control">
+            <Checkbox.Indicator data-testid="checkbox-indicator" />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      const elements = screen.getAllByTestId(/^checkbox/);
+
+      for (const el of elements) {
+        expect(el).toHaveAttribute("data-valid");
+      }
+    });
+
+    it("should have 'data-invalid' attribute when checkbox is invalid", async () => {
+      render(() => (
+        <Checkbox data-testid="checkbox-root" validationState="invalid">
+          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
+          <Checkbox.Control data-testid="checkbox-control">
+            <Checkbox.Indicator data-testid="checkbox-indicator" />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      const elements = screen.getAllByTestId(/^checkbox/);
+
+      for (const el of elements) {
+        expect(el).toHaveAttribute("data-invalid");
+      }
+    });
+
+    it("should have 'data-checked' attribute when checkbox is checked", async () => {
+      render(() => (
+        <Checkbox data-testid="checkbox-root" isChecked>
+          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
+          <Checkbox.Control data-testid="checkbox-control">
+            <Checkbox.Indicator data-testid="checkbox-indicator" />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      const elements = screen.getAllByTestId(/^checkbox/);
+
+      for (const el of elements) {
+        expect(el).toHaveAttribute("data-checked");
+      }
+    });
+
+    it("should have 'data-required' attribute when checkbox is required", async () => {
+      render(() => (
+        <Checkbox data-testid="checkbox-root" isRequired>
+          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
+          <Checkbox.Control data-testid="checkbox-control">
+            <Checkbox.Indicator data-testid="checkbox-indicator" />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      const elements = screen.getAllByTestId(/^checkbox/);
+
+      for (const el of elements) {
+        expect(el).toHaveAttribute("data-required");
+      }
+    });
+
+    it("should have 'data-disabled' attribute when checkbox is disabled", async () => {
+      render(() => (
+        <Checkbox data-testid="checkbox-root" isDisabled>
+          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
+          <Checkbox.Control data-testid="checkbox-control">
+            <Checkbox.Indicator data-testid="checkbox-indicator" />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      const elements = screen.getAllByTestId(/^checkbox/);
+
+      for (const el of elements) {
+        expect(el).toHaveAttribute("data-disabled");
+      }
+    });
+
+    it("should have 'data-readonly' attribute when checkbox is read only", async () => {
+      render(() => (
+        <Checkbox data-testid="checkbox-root" isReadOnly>
+          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
+          <Checkbox.Control data-testid="checkbox-control">
+            <Checkbox.Indicator data-testid="checkbox-indicator" />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      const elements = screen.getAllByTestId(/^checkbox/);
+
+      for (const el of elements) {
+        expect(el).toHaveAttribute("data-readonly");
+      }
+    });
+
+    it("should have 'data-hover' attribute when checkbox is hovered", async () => {
+      render(() => (
+        <Checkbox data-testid="checkbox-root">
+          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
+          <Checkbox.Control data-testid="checkbox-control">
+            <Checkbox.Indicator data-testid="checkbox-indicator" />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      const checkboxRoot = screen.getByTestId("checkbox-root");
+      const elements = screen.getAllByTestId(/^checkbox/);
+
+      fireEvent(checkboxRoot, createPointerEvent("pointerenter", { pointerType: "mouse" }));
+      await Promise.resolve();
+
+      for (const el of elements) {
+        expect(el).toHaveAttribute("data-hover");
+      }
+
+      fireEvent(checkboxRoot, createPointerEvent("pointerleave", { pointerType: "mouse" }));
+      await Promise.resolve();
+
+      for (const el of elements) {
+        expect(el).not.toHaveAttribute("data-hover");
+      }
+    });
+
+    it("should have 'data-focus' attribute on focused checkbox", async () => {
+      render(() => (
+        <Checkbox data-testid="checkbox-root">
+          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
+          <Checkbox.Control data-testid="checkbox-control">
+            <Checkbox.Indicator data-testid="checkbox-indicator" />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      const checkboxInput = screen.getByTestId("checkbox-input");
+      const elements = screen.getAllByTestId(/^checkbox/);
+
+      checkboxInput.focus();
+      await Promise.resolve();
+
+      for (const el of elements) {
+        expect(el).toHaveAttribute("data-focus");
+      }
+
+      checkboxInput.blur();
+      await Promise.resolve();
+
+      for (const el of elements) {
+        expect(el).not.toHaveAttribute("data-focus");
+      }
+    });
+  });
+});

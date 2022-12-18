@@ -106,6 +106,42 @@ describe("Switch", () => {
     expect(input).toHaveAttribute("type", "checkbox");
   });
 
+  it("should set input role to switch", async () => {
+    render(() => (
+      <Switch>
+        <Switch.Input />
+      </Switch>
+    ));
+
+    const input = screen.getByRole("switch");
+
+    expect(input).toHaveAttribute("role", "switch");
+  });
+
+  it("should have default value of 'on'", async () => {
+    render(() => (
+      <Switch>
+        <Switch.Input />
+      </Switch>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+  });
+
+  it("supports custom value", async () => {
+    render(() => (
+      <Switch value="custom">
+        <Switch.Input />
+      </Switch>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+
+    expect(input.value).toBe("custom");
+  });
+
   it("ensure default unchecked can be checked", async () => {
     render(() => (
       <Switch onCheckedChange={onChangeSpy}>
@@ -115,6 +151,7 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
+    expect(input.value).toBe("on");
     expect(input.checked).toBeFalsy();
     expect(onChangeSpy).not.toHaveBeenCalled();
 
@@ -139,6 +176,7 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
+    expect(input.value).toBe("on");
     expect(input.checked).toBeTruthy();
 
     fireEvent.click(input);
@@ -157,6 +195,7 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
+    expect(input.value).toBe("on");
     expect(input.checked).toBeTruthy();
 
     fireEvent.click(input);
@@ -175,6 +214,7 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
+    expect(input.value).toBe("on");
     expect(input.checked).toBeFalsy();
 
     fireEvent.click(input);
@@ -182,31 +222,6 @@ describe("Switch", () => {
 
     expect(input.checked).toBeFalsy();
     expect(onChangeSpy.mock.calls[0][0]).toBe(true);
-  });
-
-  it("can be invalid", async () => {
-    render(() => (
-      <Switch validationState="invalid" onCheckedChange={onChangeSpy}>
-        <Switch.Input />
-      </Switch>
-    ));
-
-    const input = screen.getByRole("switch") as HTMLInputElement;
-
-    expect(input).toHaveAttribute("aria-invalid", "true");
-  });
-
-  it("passes through 'aria-errormessage'", async () => {
-    render(() => (
-      <Switch validationState="invalid" aria-errormessage="test" onCheckedChange={onChangeSpy}>
-        <Switch.Input />
-      </Switch>
-    ));
-
-    const input = screen.getByRole("switch") as HTMLInputElement;
-
-    expect(input).toHaveAttribute("aria-invalid", "true");
-    expect(input).toHaveAttribute("aria-errormessage", "test");
   });
 
   it("can be disabled", async () => {
@@ -220,6 +235,7 @@ describe("Switch", () => {
     const label = screen.getByTestId("label");
     const input = screen.getByRole("switch") as HTMLInputElement;
 
+    expect(input.value).toBe("on");
     expect(input.disabled).toBeTruthy();
     expect(input.checked).toBeFalsy();
 
@@ -232,6 +248,33 @@ describe("Switch", () => {
     expect(onChangeSpy).not.toHaveBeenCalled();
   });
 
+  it("can be invalid", async () => {
+    render(() => (
+      <Switch validationState="invalid" onCheckedChange={onChangeSpy}>
+        <Switch.Input />
+      </Switch>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input).toHaveAttribute("aria-invalid", "true");
+  });
+
+  it("passes through 'aria-errormessage'", async () => {
+    render(() => (
+      <Switch validationState="invalid" aria-errormessage="test" onCheckedChange={onChangeSpy}>
+        <Switch.Input />
+      </Switch>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+
+    expect(input.value).toBe("on");
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("aria-errormessage", "test");
+  });
+
   it("supports 'aria-label'", () => {
     render(() => (
       <Switch aria-label="Label">
@@ -242,6 +285,7 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
+    expect(input.value).toBe("on");
     expect(input).toHaveAttribute("aria-label", "Label");
   });
 
@@ -254,6 +298,7 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
+    expect(input.value).toBe("on");
     expect(input).toHaveAttribute("aria-labelledby", "foo");
   });
 
@@ -266,6 +311,7 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
+    expect(input.value).toBe("on");
     expect(input).toHaveAttribute("aria-labelledby", `foo ${input.id}`);
   });
 
@@ -278,6 +324,7 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
+    expect(input.value).toBe("on");
     expect(input).toHaveAttribute("aria-describedby", "foo");
   });
 
@@ -290,6 +337,7 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
+    expect(input.value).toBe("on");
     expect(input.checked).toBeTruthy();
     expect(input).toHaveAttribute("aria-readonly", "true");
 
@@ -309,6 +357,7 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
+    expect(input.value).toBe("on");
     expect(input.checked).toBeFalsy();
 
     fireEvent.click(input);
