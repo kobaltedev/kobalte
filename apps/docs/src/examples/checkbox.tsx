@@ -1,13 +1,5 @@
 import { Checkbox as CheckboxBase } from "@kobalte/core";
-import {
-  ComponentProps,
-  createSignal,
-  ParentProps,
-  Show,
-  Switch,
-  Match,
-  splitProps,
-} from "solid-js";
+import { ComponentProps, createSignal, Match, ParentProps, splitProps, Switch } from "solid-js";
 
 import { CheckIcon, DividerHorizontalIcon } from "../components";
 
@@ -24,14 +16,16 @@ export function Checkbox(props: CheckboxProps) {
         <>
           <CheckboxBase.Input />
           <CheckboxBase.Control class="w-4 h-4 bg-zinc-200 rounded border-zinc-300 ui-checked:bg-blue-600 ui-checked:ui-indeterminate:bg-zinc-200 ui-focus:ring ui-focus:ring-blue-200 dark:ui-focus:ring-blue-500/30 dark:bg-zinc-700 dark:border-zinc-600 dark:ui-checked:bg-blue-600">
-            <Switch>
-              <Match when={state.isChecked()}>
-                <CheckIcon />
-              </Match>
-              <Match when={state.isIndeterminate()}>
-                <DividerHorizontalIcon />
-              </Match>
-            </Switch>
+            <CheckboxBase.Indicator>
+              <Switch>
+                <Match when={state.isIndeterminate()}>
+                  <DividerHorizontalIcon class="text-zinc-500" />
+                </Match>
+                <Match when={state.isChecked() && !state.isIndeterminate()}>
+                  <CheckIcon class="text-white" />
+                </Match>
+              </Switch>
+            </CheckboxBase.Indicator>
           </CheckboxBase.Control>
           <CheckboxBase.Label class="select-none ml-2 text-sm text-zinc-900 dark:text-zinc-300">
             {local.children}

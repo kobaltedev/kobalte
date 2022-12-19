@@ -26,7 +26,7 @@ The checkbox consists of:
 - **Checkbox**: The root container for a checkbox.
 - **Checkbox.Input**: The native html input that is visually hidden in the checkbox.
 - **Checkbox.Control**: The element that visually represents a checkbox.
-- **Checkbox.Indicator**: The indicator rendered when the checkbox is in a checked or indeterminate state.
+- **Checkbox.Indicator**: The visual indicator rendered when the checkbox is in a checked or indeterminate state.
 - **Checkbox.Label**: The label that gives the user information on the checkbox.
 
 ```tsx
@@ -47,7 +47,8 @@ The checkbox consists of:
 
 ```tsx
 import { Checkbox as CheckboxBase } from "@kobalte/core";
-import { ComponentProps, ParentProps, splitProps } from "solid-js";
+import { ComponentProps, createSignal, Match, ParentProps, splitProps, Switch } from "solid-js";
+import { CheckIcon, DividerHorizontalIcon } from "some-icon-library";
 
 type CheckboxBaseProps = ComponentProps<typeof CheckboxBase>;
 
@@ -62,16 +63,16 @@ export function Checkbox(props: CheckboxProps) {
         <>
           <CheckboxBase.Input />
           <CheckboxBase.Control class="w-4 h-4 bg-zinc-200 rounded border-zinc-300 ui-checked:bg-blue-600 ui-checked:ui-indeterminate:bg-zinc-200 ui-focus:ring ui-focus:ring-blue-200 dark:ui-focus:ring-blue-500/30 dark:bg-zinc-700 dark:border-zinc-600 dark:ui-checked:bg-blue-600">
-            <Show
-              when={state.isIndeterminate()}
-              fallback={
-                <CheckboxBase.Indicator class="text-white">
-                  <CheckIcon />
-                </CheckboxBase.Indicator>
-              }
-            >
-              <MinusIcon />
-            </Show>
+            <CheckboxBase.Indicator>
+              <Switch>
+                <Match when={state.isIndeterminate()}>
+                  <DividerHorizontalIcon class="text-zinc-500" />
+                </Match>
+                <Match when={state.isChecked() && !state.isIndeterminate()}>
+                  <CheckIcon class="text-white" />
+                </Match>
+              </Switch>
+            </CheckboxBase.Indicator>
           </CheckboxBase.Control>
           <CheckboxBase.Label class="select-none ml-2 text-sm text-zinc-900 dark:text-zinc-300">
             {local.children}
@@ -203,18 +204,21 @@ function HTMLFormExample() {
 
 ## API Reference
 
-| Prop             | Type                           | Description                                                                                                                                                |
-| :--------------- | :----------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| isChecked        | `boolean`                      | The controlled checked state of the checkbox.                                                                                                              |
-| defaultIsChecked | `boolean`                      | The default checked state when initially rendered. Useful when you do not need to control the checked state.                                               |
-| onCheckedChange  | `(isChecked: boolean) => void` | Event handler called when the checked state of the checkbox changes.                                                                                       |
-| isIndeterminate  | `boolean`                      | Whether the checkbox is in an indeterminate state.                                                                                                         |
-| name             | `string`                       | The name of the checkbox, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).   |
-| value            | `string`                       | The value of the checkbox, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefvalue). |
-| validationState  | `'valid' \| 'invalid'`         | Whether the checkbox should display its "valid" or "invalid" visual styling.                                                                               |
-| isRequired       | `boolean`                      | Whether the user must check the checkbox before the owning form can be submitted.                                                                          |
-| isDisabled       | `boolean`                      | Whether the checkbox is disabled.                                                                                                                          |
-| isReadOnly       | `boolean`                      | Whether the checkbox can be checked but not changed by the user.                                                                                           |
+### Checkbox
+
+| Prop             | Description                                                                                                                                                                   |
+| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| isChecked        | `boolean` <br/> The controlled checked state of the checkbox.                                                                                                                 |
+| defaultIsChecked | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                                  |
+| onCheckedChange  | `(isChecked: boolean) => void` <br/> Event handler called when the checked state of the checkbox changes.                                                                     |
+| isIndeterminate  | `boolean` <br/> Whether the checkbox is in an indeterminate state.                                                                                                            |
+| name             | `string` <br/> The name of the checkbox, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).       |
+| value            | `string` <br/> The value of the checkbox, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefvalue).     |
+| validationState  | `'valid' \| 'invalid'` <br/> Whether the checkbox should display its "valid" or "invalid" visual styling.                                                                     |
+| isRequired       | `boolean` <br/> Whether the user must check the checkbox before the owning form can be submitted.                                                                             |
+| isDisabled       | `boolean` <br/> Whether the checkbox is disabled.                                                                                                                             |
+| isReadOnly       | `boolean` <br/> Whether the checkbox can be checked but not changed by the user.                                                                                              |
+| children         | `JSX.Element \| (state: CheckboxState) => JSX.Element` <br/> The children of the checkbox. Can be a `JSX.Element` or a _render prop_ for having access to the internal state. |
 
 | Data attribute     | Description                                                             |
 | :----------------- | :---------------------------------------------------------------------- |
@@ -230,6 +234,12 @@ function HTMLFormExample() {
 | data-focus-visible | Present when the checkbox is focused via keyboard.                      |
 
 `Checkbox.Control`, `Checkbox.Indicator` and `Checkbox.Label` shares the same `data-*` attributes.
+
+### Checkbox.Indicator
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
 ## Accessibility
 
