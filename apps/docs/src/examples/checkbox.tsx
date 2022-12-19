@@ -1,19 +1,34 @@
-import { Checkbox as CheckboxPrimitive } from "@kobalte/core";
-import { ComponentProps, createSignal, splitProps } from "solid-js";
+import { Checkbox as CheckboxBase } from "@kobalte/core";
+import { ComponentProps, createSignal, Show, splitProps } from "solid-js";
 
-export function Checkbox(props: ComponentProps<typeof CheckboxPrimitive>) {
+import { CheckIcon, MinusIcon } from "../components";
+
+export function Checkbox(props: ComponentProps<typeof CheckboxBase>) {
   const [local, others] = splitProps(props, ["children"]);
 
   return (
-    <CheckboxPrimitive class="inline-flex items-center" {...others}>
-      <CheckboxPrimitive.Input />
-      <CheckboxPrimitive.Control class="w-4 h-4 text-blue-600 bg-zinc-200 rounded border-zinc-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-zinc-800 focus:ring-2 dark:bg-zinc-700 dark:border-zinc-600">
-        <CheckboxPrimitive.Indicator class="" />
-      </CheckboxPrimitive.Control>
-      <CheckboxPrimitive.Label class="select-none ml-2 text-sm text-zinc-900 dark:text-zinc-300">
-        {local.children}
-      </CheckboxPrimitive.Label>
-    </CheckboxPrimitive>
+    <CheckboxBase class="inline-flex items-center ui-disabled:opacity-40" {...others}>
+      {state => (
+        <>
+          <CheckboxBase.Input />
+          <CheckboxBase.Control class="w-4 h-4 bg-zinc-200 rounded border-zinc-300 ui-checked:bg-blue-600 ui-checked:ui-indeterminate:bg-zinc-200 ui-focus:ring ui-focus:ring-blue-200 dark:ui-focus:ring-blue-500/30 dark:bg-zinc-700 dark:border-zinc-600 dark:ui-checked:bg-blue-600">
+            <Show
+              when={state.isIndeterminate()}
+              fallback={
+                <CheckboxBase.Indicator class="text-white">
+                  <CheckIcon />
+                </CheckboxBase.Indicator>
+              }
+            >
+              <MinusIcon />
+            </Show>
+          </CheckboxBase.Control>
+          <CheckboxBase.Label class="select-none ml-2 text-sm text-zinc-900 dark:text-zinc-300">
+            {local.children}
+          </CheckboxBase.Label>
+        </>
+      )}
+    </CheckboxBase>
   );
 }
 

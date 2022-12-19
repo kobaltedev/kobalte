@@ -1,22 +1,16 @@
-import { Button } from "@kobalte/core";
-
 import { Preview } from "../../../components/preview";
 import { Kbd } from "../../../components/kbd";
+
+import { Button, EventsExample } from "../../../examples/button";
 
 # Button
 
 Enables users to trigger an action or event, such as submitting a form, opening a dialog, canceling an action, or performing a delete operation.
 
-<Preview isCentered>
-  <Button class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30">
-    Button
-  </Button>
-</Preview>
+## Import
 
-```tsx
-<Button class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30">
-  Button
-</Button>
+```ts
+import { Button } from "@kobalte/core";
 ```
 
 ## Features
@@ -26,10 +20,100 @@ Enables users to trigger an action or event, such as submitting a form, opening 
 - Mouse and touch event handling, and press state management.
 - Keyboard event support for <Kbd>Space</Kbd> and <Kbd>Enter</Kbd> keys.
 
-## Import
+## Anatomy
 
-```ts
-import { Button } from "@kobalte/core";
+The button constsits of:
+
+- **Button:** The root container for a button.
+
+```tsx
+<Button></Button>
+```
+
+## Example
+
+<Preview>
+  <Button>Press me</Button>
+</Preview>
+
+```tsx
+import { Button as ButtonBase } from "@kobalte/core";
+import { ComponentProps } from "solid-js";
+
+function Button(props: ComponentProps<typeof ButtonBase>) {
+  return (
+    <ButtonBase
+      class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30"
+      {...props}
+    />
+  );
+}
+
+function App() {
+  return <Button>Press me</Button>;
+}
+```
+
+## Usage
+
+The following examples show how to use the `Button` component created in the above example.
+
+### Events
+
+Button supports user interactions via mouse, keyboard, and touch. You can handle all of these via the `onPress` prop. This is similar to the standard `onClick` event, but normalized to support all interaction methods equally.
+
+In addition, the `onPressStart`, `onPressEnd`, and `onPressChange` events are fired as the user interacts with the button.
+
+Each of these _press handlers_ receives a `PressEvent`, which exposes information about the target and the type of event that triggered the interaction.
+
+| Name        | Type                                                     | Description                                                          |
+| :---------- | :------------------------------------------------------- | :------------------------------------------------------------------- |
+| type        | `'press' \| 'pressstart' \| 'pressend' \| 'pressup'`     | The type of press event being fired.                                 |
+| pointerType | `'mouse' \| 'pen' \| 'touch' \| 'keyboard' \| 'virtual'` | The pointer type that triggered the press event.                     |
+| target      | `Element`                                                | The target element of the press event.                               |
+| shiftKey    | `boolean`                                                | Whether the shift keyboard modifier was held during the press event. |
+| ctrlKey     | `boolean`                                                | Whether the ctrl keyboard modifier was held during the press event.  |
+| metaKey     | `boolean`                                                | Whether the meta keyboard modifier was held during the press event.  |
+| altKey      | `boolean`                                                | Whether the alt keyboard modifier was held during the press event.   |
+
+<Preview>
+  <EventsExample />
+</Preview>
+
+```tsx {3,8-9}
+import { createSignal, Show } from "solid-js";
+
+export function EventsExample() {
+  const [pointerType, setPointerType] = createSignal<string>();
+
+  return (
+    <>
+      <Button
+        onPressStart={e => setPointerType(e.pointerType)}
+        onPressEnd={() => setPointerType(undefined)}
+      >
+        Press me
+      </Button>
+      <p>
+        <Show when={pointerType()} fallback="Ready to be pressed.">
+          You are pressing the button with a {pointerType()}!
+        </Show>
+      </p>
+    </>
+  );
+}
+```
+
+### Disabled
+
+Button can be disabled using the `isDisabled` prop.
+
+<Preview>
+  <Button isDisabled>Press me</Button>
+</Preview>
+
+```tsx
+<Button isDisabled>Press me</Button>
 ```
 
 ## API Reference
@@ -44,24 +128,12 @@ import { Button } from "@kobalte/core";
 | onPressUp           | `(event: PressEvent) => void`  | Handler that is called when a press is released over the target, regardless of whether it started on the target or not. |
 | onPressChange       | `(isPressed: boolean) => void` | Handler that is called when the press state changes.                                                                    |
 
-| Data attributes    | Description                                                                         |
+| Data attribute     | Description                                                                         |
 | :----------------- | :---------------------------------------------------------------------------------- |
 | data-active        | Present when the button is activated by a pointer down (mouse, touch, pen, etc...). |
 | data-disabled      | Present when the button is disabled.                                                |
 | data-focus         | Present when the button is focused.                                                 |
 | data-focus-visible | Present when the button is focused via keyboard.                                    |
-
-Each of the _press handlers_ above are fired with a `PressEvent`, which exposes information about the target and the type of event that triggered the interaction.
-
-| Name        | Type                                                     | Description                                                          |
-| :---------- | :------------------------------------------------------- | :------------------------------------------------------------------- |
-| type        | `'press' \| 'pressstart' \| 'pressend' \| 'pressup'`     | The type of press event being fired.                                 |
-| pointerType | `'mouse' \| 'pen' \| 'touch' \| 'keyboard' \| 'virtual'` | The pointer type that triggered the press event.                     |
-| target      | `Element`                                                | The target element of the press event.                               |
-| shiftKey    | `boolean`                                                | Whether the shift keyboard modifier was held during the press event. |
-| ctrlKey     | `boolean`                                                | Whether the ctrl keyboard modifier was held during the press event.  |
-| metaKey     | `boolean`                                                | Whether the meta keyboard modifier was held during the press event.  |
-| altKey      | `boolean`                                                | Whether the alt keyboard modifier was held during the press event.   |
 
 ## Accessibility
 

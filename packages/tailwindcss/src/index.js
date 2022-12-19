@@ -30,8 +30,12 @@ const STATES = [
 module.exports = plugin.withOptions(({ prefix = "ui" } = {}) => {
   return ({ addVariant }) => {
     for (let state of STATES) {
-      addVariant(`${prefix}-${state}`, [`&[data-${state}]`]);
-      addVariant(`${prefix}-not-${state}`, [`&:not([data-${state}])`]);
+      addVariant(`${prefix}-${state}`, [`&[data-${state}]`, `:where([data-${state}]) &`]);
+
+      addVariant(`${prefix}-not-${state}`, [
+        `&:not([data-${state}])`,
+        `:where(:not([data-${state}])) &`,
+      ]);
     }
   };
 });

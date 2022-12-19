@@ -1,4 +1,4 @@
-import { ReadingDirection } from "../i18n";
+import { Direction } from "../i18n";
 
 export type BasePlacement = "top" | "bottom" | "left" | "right";
 
@@ -69,7 +69,7 @@ const REVERSE_BASE_PLACEMENT = {
   left: "right",
 };
 
-export function getTransformOrigin(placement: Placement, readingDirection: ReadingDirection) {
+export function getTransformOrigin(placement: Placement, readingDirection: Direction) {
   const [basePlacement, alignment] = placement.split("-") as [
     BasePlacement,
     "start" | "end" | undefined

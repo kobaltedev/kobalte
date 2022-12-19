@@ -24,10 +24,10 @@ export interface CheckboxContextValue {
   ariaErrorMessage: Accessor<string | undefined>;
   validationState: Accessor<ValidationState | undefined>;
   isChecked: Accessor<boolean>;
-  isRequired: Accessor<boolean | undefined>;
-  isDisabled: Accessor<boolean | undefined>;
-  isReadOnly: Accessor<boolean | undefined>;
-  isIndeterminate: Accessor<boolean | undefined>;
+  isRequired: Accessor<boolean>;
+  isDisabled: Accessor<boolean>;
+  isReadOnly: Accessor<boolean>;
+  isIndeterminate: Accessor<boolean>;
   generateId: (part: string) => string;
   setIsChecked: (isChecked: boolean) => void;
   setIsFocused: (isFocused: boolean) => void;

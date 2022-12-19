@@ -6,14 +6,16 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/checkbox/src/useCheckbox.ts
  */
 
-import { combineProps, mergeDefaultProps, ValidationState } from "@kobalte/utils";
+import { combineProps, isFunction, mergeDefaultProps, ValidationState } from "@kobalte/utils";
 import {
   Accessor,
+  Component,
   ComponentProps,
   createMemo,
   createSignal,
   createUniqueId,
-  ParentComponent,
+  JSX,
+  Show,
   splitProps,
 } from "solid-js";
 
@@ -31,6 +33,16 @@ type CheckboxComposite = {
   Indicator: typeof CheckboxIndicator;
 };
 
+export interface CheckboxState {
+  /** Whether the checkbox is checked or not. */
+  isChecked: Accessor<boolean>;
+
+  /** Whether the checkbox is in an indeterminate state. */
+  isIndeterminate: Accessor<boolean>;
+}
+
+type CheckboxRenderProp = (state: CheckboxState) => JSX.Element;
+
 export interface CheckboxProps {
   /** The controlled checked state of the checkbox. */
   isChecked?: boolean;
@@ -43,6 +55,13 @@ export interface CheckboxProps {
 
   /** Event handler called when the checked state of the checkbox changes. */
   onCheckedChange?: (isChecked: boolean) => void;
+
+  /**
+   * Whether the checkbox is in an indeterminate state.
+   * Indeterminism is presentational only.
+   * The indeterminate visual representation remains regardless of user interaction.
+   */
+  isIndeterminate?: boolean;
 
   /**
    * The name of the checkbox, used when submitting an HTML form.
@@ -69,17 +88,16 @@ export interface CheckboxProps {
   isReadOnly?: boolean;
 
   /**
-   * Whether the checkbox is in an indeterminate state.
-   * Indeterminism is presentational only.
-   * The indeterminate visual representation remains regardless of user interaction.
+   * The children of the checkbox.
+   * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
    */
-  isIndeterminate?: boolean;
+  children?: JSX.Element | CheckboxRenderProp;
 }
 
 /**
  * A control that allows the user to toggle between checked and not checked.
  */
-export const Checkbox: ParentComponent<ComponentProps<"label"> & CheckboxProps> &
+export const Checkbox: Component<ComponentProps<"label"> & CheckboxProps> &
   CheckboxComposite = props => {
   let ref: HTMLLabelElement | undefined;
 
@@ -94,6 +112,7 @@ export const Checkbox: ParentComponent<ComponentProps<"label"> & CheckboxProps> 
   );
 
   const [local, others] = splitProps(props, [
+    "children",
     "value",
     "isChecked",
     "defaultIsChecked",
@@ -154,10 +173,10 @@ export const Checkbox: ParentComponent<ComponentProps<"label"> & CheckboxProps> 
     ariaErrorMessage: () => local["aria-errormessage"],
     validationState: () => local.validationState,
     isChecked: () => state.isSelected(),
-    isRequired: () => local.isRequired,
-    isDisabled: () => local.isDisabled,
-    isReadOnly: () => local.isReadOnly,
-    isIndeterminate: () => local.isIndeterminate,
+    isRequired: () => local.isRequired ?? false,
+    isDisabled: () => local.isDisabled ?? false,
+    isReadOnly: () => local.isReadOnly ?? false,
+    isIndeterminate: () => local.isIndeterminate ?? false,
     generateId: part => `${others.id!}-${part}`,
     setIsChecked: isChecked => state.setIsSelected(isChecked),
     setIsFocused,
@@ -169,7 +188,14 @@ export const Checkbox: ParentComponent<ComponentProps<"label"> & CheckboxProps> 
       <label
         {...context.dataset()}
         {...combineProps({ ref: el => (ref = el) }, others, hoverHandlers)}
-      />
+      >
+        <Show when={isFunction(local.children)} fallback={local.children as JSX.Element}>
+          {(local.children as CheckboxRenderProp)?.({
+            isChecked: context.isChecked,
+            isIndeterminate: context.isIndeterminate,
+          })}
+        </Show>
+      </label>
     </CheckboxContext.Provider>
   );
 };

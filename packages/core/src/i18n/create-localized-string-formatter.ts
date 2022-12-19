@@ -40,9 +40,9 @@ export function createLocalizedStringFormatter<
   K extends string = string,
   T extends LocalizedString = string
 >(strings: Accessor<LocalizedStrings<K, T>>): Accessor<LocalizedStringFormatter<K, T>> {
-  const locale = useLocale();
+  const { locale } = useLocale();
 
   return createMemo(() => {
-    return new LocalizedStringFormatter<K, T>(locale().locale, getCachedDictionary(strings()));
+    return new LocalizedStringFormatter<K, T>(locale(), getCachedDictionary(strings()));
   });
 }

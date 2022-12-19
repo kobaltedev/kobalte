@@ -36,7 +36,7 @@ export const TabsIndicator = createPolymorphicComponent<"div", TabsIndicatorProp
 
   let isFirstLoad = true;
 
-  const locale = useLocale();
+  const { direction } = useLocale();
 
   const computeStyle = () => {
     const selectedTab = context.selectedTab();
@@ -54,7 +54,7 @@ export const TabsIndicator = createPolymorphicComponent<"div", TabsIndicatorProp
     // In RTL, calculate the transform from the right edge of the tab list
     // so that resizing the window doesn't break the TabIndicator position due to offsetLeft changes
     const offset =
-      locale().direction === "rtl"
+      direction() === "rtl"
         ? -1 *
           ((selectedTab.offsetParent as HTMLElement)?.offsetWidth -
             selectedTab.offsetWidth -
@@ -77,7 +77,7 @@ export const TabsIndicator = createPolymorphicComponent<"div", TabsIndicatorProp
 
   createEffect(
     on(
-      [context.selectedTab, context.orientation, locale],
+      [context.selectedTab, context.orientation, direction],
       () => {
         // For the first run, wait for all tabs to be mounted and registered in tabs DOM collection
         // before computing the style.

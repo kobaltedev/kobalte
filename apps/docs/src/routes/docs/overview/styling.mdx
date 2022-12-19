@@ -16,19 +16,19 @@ All components and their parts accept a `class` prop. This class will be passed 
   <TabsSnippets.Content value="tsx">
     {/* <!-- prettier-ignore-start --> */}
     ```tsx
-    import { Popover as PopoverPrimitive } from "@kobalte/core";
+    import { Popover as PopoverBase } from "@kobalte/core";
     import "./style.css";
 
     export const Popover = () => {
       return (
-        <PopoverPrimitive>
-          <PopoverPrimitive.Trigger class="popover__trigger">
+        <PopoverBase>
+          <PopoverBase.Trigger class="popover__trigger">
             Open
-          </PopoverPrimitive.Trigger>
-          <PopoverPrimitive.Content class="popover__content">
+          </PopoverBase.Trigger>
+          <PopoverBase.Content class="popover__content">
             ...
-          </PopoverPrimitive.Content>
-        </PopoverPrimitive>
+          </PopoverBase.Content>
+        </PopoverBase>
       );
     };
     ```
@@ -39,11 +39,11 @@ All components and their parts accept a `class` prop. This class will be passed 
     {/* <!-- prettier-ignore-start --> */}
     ```css
     .popover__trigger {
-      border-radius: 6px;
+      /* The popover trigger style. */
     }
 
     .popover__content {
-      border: 1px solid slategrey;
+      /* The popover content style. */
     }
     ```
     {/* <!-- prettier-ignore-end --> */}
@@ -68,8 +68,7 @@ You can style a component state by targeting the `data-*` attributes added by Ko
     {/* <!-- prettier-ignore-start --> */}
     ```css
     .popover__trigger[data-disabled] {
-      opacity: 0.5;
-      cursor: not-allowed;
+      /* The popover trigger style when disabled. */
     }
     ```
     {/* <!-- prettier-ignore-end --> */}
@@ -135,47 +134,55 @@ module.exports = {
 Style your component:
 
 ```tsx
-import { Popover as PopoverPrimitive } from "@kobalte/core";
+import { Popover as PopoverBase } from "@kobalte/core";
 
 export const Popover = () => (
-  <PopoverPrimitive>
-    <PopoverPrimitive.Trigger class="ui-disabled:bg-slate-100">Open</PopoverPrimitive.Trigger>
-    <PopoverPrimitive.Content class="ui-expanded:shadow-md">...</PopoverPrimitive.Content>
-  </PopoverPrimitive>
+  <PopoverBase>
+    <PopoverBase.Trigger class="inline-flex px-4 py-2 rounded ui-disabled:bg-slate-100">
+      Open
+    </PopoverBase.Trigger>
+    <PopoverBase.Content class="flex p-4 rounded bg-white ui-expanded:shadow-md">
+      ...
+    </PopoverBase.Content>
+  </PopoverBase>
 );
 ```
 
 You can use the following modifiers:
 
-| Modifier           | CSS Selector            |
-| :----------------- | :---------------------- |
-| `ui-valid`         | `&[data-valid]`         |
-| `ui-invalid`       | `&[data-invalid]`       |
-| `ui-required`      | `&[data-required]`      |
-| `ui-disabled`      | `&[data-disabled]`      |
-| `ui-readonly`      | `&[data-readonly]`      |
-| `ui-checked`       | `&[data-checked]`       |
-| `ui-indeterminate` | `&[data-indeterminate]` |
-| `ui-selected`      | `&[data-selected]`      |
-| `ui-pressed`       | `&[data-pressed]`       |
-| `ui-expanded`      | `&[data-expanded]`      |
-| `ui-hover`         | `&[data-hover]`         |
-| `ui-focus`         | `&[data-focus]`         |
-| `ui-focus-visible` | `&[data-focus-visible]` |
-| `ui-active`        | `&[data-active]`        |
+| Modifier           | CSS Selector                                            |
+| :----------------- | :------------------------------------------------------ |
+| `ui-valid`         | `&[data-valid], :where([data-valid]) &`                 |
+| `ui-invalid`       | `&[data-invalid], :where([data-invalid]) &`             |
+| `ui-required`      | `&[data-required], :where([data-required]) &`           |
+| `ui-disabled`      | `&[data-disabled], :where([data-disabled]) &`           |
+| `ui-readonly`      | `&[data-readonly], :where([data-readonly]) &`           |
+| `ui-checked`       | `&[data-checked], :where([data-checked]) &`             |
+| `ui-indeterminate` | `&[data-indeterminate], :where([data-indeterminate]) &` |
+| `ui-selected`      | `&[data-selected], :where([data-selected]) &`           |
+| `ui-pressed`       | `&[data-pressed], :where([data-pressed]) &`             |
+| `ui-expanded`      | `&[data-expanded], :where([data-expanded]) &`           |
+| `ui-hover`         | `&[data-hover], :where([data-hover]) &`                 |
+| `ui-focus`         | `&[data-focus], :where([data-focus]) &`                 |
+| `ui-focus-visible` | `&[data-focus-visible], :where([data-focus-visible]) &` |
+| `ui-active`        | `&[data-active], :where([data-active]) &`               |
 
 It's also possible to use _inverse modifiers_ in the form of `ui-not-*`.
+
+<Callout type="note">
+  All examples in the documentation are styled using TailwindCSS and the Kobalte plugin.
+</Callout>
 
 ## Extending a component
 
 Extending a component is done the same way you extend any SolidJS component.
 
 ```tsx
-import { Popover as PopoverPrimitive } from "@kobalte/core";
+import { Popover as PopoverBase } from "@kobalte/core";
 import { ComponentProps } from "solid-js";
 
-export const PopoverTrigger = (props: ComponentProps<typeof PopoverPrimitive.Trigger>) => {
-  return <PopoverPrimitive.Trigger {...props} />;
+export const PopoverTrigger = (props: ComponentProps<typeof PopoverBase.Trigger>) => {
+  return <PopoverBase.Trigger {...props} />;
 };
 ```
 
@@ -186,15 +193,15 @@ Kobalte Elements are polymorphic, meaning you can use the `as` prop to change th
 For example, you can use a custom button called `MyButton` as the trigger for a `Popover.Trigger` like below:
 
 ```tsx
-import { Popover as PopoverPrimitive } from "@kobalte/core";
+import { Popover as PopoverBase } from "@kobalte/core";
 import { MyButton } from "./my-button";
 
 export const Popover = () => {
   return (
-    <PopoverPrimitive>
-      <PopoverPrimitive.Trigger as={MyButton}>Open</PopoverPrimitive.Trigger>
-      <PopoverPrimitive.Content>...</PopoverPrimitive.Content>
-    </PopoverPrimitive>
+    <PopoverBase>
+      <PopoverBase.Trigger as={MyButton}>Open</PopoverBase.Trigger>
+      <PopoverBase.Content>...</PopoverBase.Content>
+    </PopoverBase>
   );
 };
 ```

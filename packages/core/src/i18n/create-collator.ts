@@ -18,11 +18,11 @@ const cache = new Map<string, Intl.Collator>();
  * @param options - Collator options.
  */
 export function createCollator(options?: Intl.CollatorOptions): Accessor<Intl.Collator> {
-  const locale = useLocale();
+  const { locale } = useLocale();
 
   const cacheKey = createMemo(() => {
     return (
-      locale().locale +
+      locale() +
       (options
         ? Object.entries(options)
             .sort((a, b) => (a[0] < b[0] ? -1 : 1))
@@ -40,7 +40,7 @@ export function createCollator(options?: Intl.CollatorOptions): Accessor<Intl.Co
     }
 
     if (!collator) {
-      collator = new Intl.Collator(locale().locale, options);
+      collator = new Intl.Collator(locale(), options);
       cache.set(key, collator);
     }
 

@@ -8,8 +8,8 @@
 
 import { Accessor, createContext, createMemo, JSX, useContext } from "solid-js";
 
-import { createDefaultLocale, Locale } from "./create-default-locale";
-import { getReadingDirection } from "./utils";
+import { createDefaultLocale } from "./create-default-locale";
+import { getReadingDirection, Direction } from "./utils";
 
 interface I18nProviderProps {
   /** Contents that should have the locale applied. */
@@ -19,7 +19,15 @@ interface I18nProviderProps {
   locale?: string;
 }
 
-const I18nContext = createContext<Accessor<Locale>>();
+interface I18nContextValue {
+  /** The [BCP47](https://www.ietf.org/rfc/bcp/bcp47.txt) language code for the locale. */
+  locale: Accessor<string>;
+
+  /** The writing direction for the locale. */
+  direction: Accessor<Direction>;
+}
+
+const I18nContext = createContext<I18nContextValue>();
 
 /**
  * Provides the locale for the application to all child components.
@@ -27,27 +35,21 @@ const I18nContext = createContext<Accessor<Locale>>();
 export function I18nProvider(props: I18nProviderProps) {
   const defaultLocale = createDefaultLocale();
 
-  const value = createMemo(() => {
-    if (props.locale) {
-      return {
-        locale: props.locale,
-        direction: getReadingDirection(props.locale),
-      } as Locale;
-    }
+  const context: I18nContextValue = {
+    locale: () => props.locale ?? defaultLocale.locale(),
+    direction: () => (props.locale ? getReadingDirection(props.locale) : defaultLocale.direction()),
+  };
 
-    return defaultLocale();
-  });
-
-  return <I18nContext.Provider value={value}>{props.children}</I18nContext.Provider>;
+  return <I18nContext.Provider value={context}>{props.children}</I18nContext.Provider>;
 }
 
 /**
  * Returns an accessor for the current locale and layout direction.
  */
-export function useLocale(): Accessor<Locale> {
+export function useLocale() {
   const defaultLocale = createDefaultLocale();
 
   const context = useContext(I18nContext);
 
-  return () => context?.() || defaultLocale();
+  return context || defaultLocale;
 }

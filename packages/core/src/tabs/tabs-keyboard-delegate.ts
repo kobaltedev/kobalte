@@ -9,18 +9,18 @@
 import { Orientation } from "@kobalte/utils";
 import { Accessor } from "solid-js";
 
-import { ReadingDirection } from "../i18n";
+import { Direction } from "../i18n";
 import { Collection, CollectionNode } from "../primitives";
 import { KeyboardDelegate } from "../selection";
 
 export class TabsKeyboardDelegate implements KeyboardDelegate {
   private collection: Accessor<Collection<CollectionNode>>;
-  private direction: Accessor<ReadingDirection>;
+  private direction: Accessor<Direction>;
   private orientation: Accessor<Orientation>;
 
   constructor(
     collection: Accessor<Collection<CollectionNode>>,
-    direction: Accessor<ReadingDirection>,
+    direction: Accessor<Direction>,
     orientation: Accessor<Orientation>
   ) {
     this.collection = collection;

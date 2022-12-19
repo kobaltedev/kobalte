@@ -80,7 +80,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
   const finalScrollRef = () => (scrollRef ? scrollRef() : ref());
 
-  const locale = useLocale();
+  const { direction } = useLocale();
 
   // Store the scroll position, so we can restore it later.
   let scrollPos = { top: 0, left: 0 };
@@ -188,7 +188,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
         if (delegate.getKeyLeftOf) {
           e.preventDefault();
 
-          const isRTL = locale().direction === "rtl";
+          const isRTL = direction() === "rtl";
 
           let nextKey: string | undefined;
 
@@ -206,7 +206,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
         if (delegate.getKeyRightOf) {
           e.preventDefault();
 
-          const isRTL = locale().direction === "rtl";
+          const isRTL = direction() === "rtl";
 
           let nextKey: string | undefined;
 

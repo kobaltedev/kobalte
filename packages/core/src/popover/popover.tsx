@@ -267,7 +267,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     onOpenChange: isOpen => props.onOpenChange?.(isOpen),
   });
 
-  const locale = useLocale();
+  const { direction } = useLocale();
 
   const createOverlayProps: CreateOverlayProps = {
     isOpen: disclosureState.isOpen,
@@ -391,7 +391,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
       middleware,
       platform: {
         ...platform,
-        isRTL: () => locale().direction === "rtl",
+        isRTL: () => direction() === "rtl",
       },
     });
 
@@ -405,7 +405,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
     floatingEl.style.setProperty(
       "--kb-popover-transform-origin",
-      getTransformOrigin(pos.placement, locale().direction)
+      getTransformOrigin(pos.placement, direction())
     );
 
     const x = Math.round(pos.x);

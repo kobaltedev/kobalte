@@ -386,7 +386,7 @@ describe("Checkbox", () => {
     it("should have 'data-valid' attribute when checkbox is valid", async () => {
       render(() => (
         <Checkbox data-testid="checkbox-root" validationState="valid">
-          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
@@ -404,7 +404,7 @@ describe("Checkbox", () => {
     it("should have 'data-invalid' attribute when checkbox is invalid", async () => {
       render(() => (
         <Checkbox data-testid="checkbox-root" validationState="invalid">
-          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
@@ -422,7 +422,7 @@ describe("Checkbox", () => {
     it("should have 'data-checked' attribute when checkbox is checked", async () => {
       render(() => (
         <Checkbox data-testid="checkbox-root" isChecked>
-          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
@@ -437,10 +437,28 @@ describe("Checkbox", () => {
       }
     });
 
+    it("should have 'data-indeterminate' attribute when checkbox is indeterminate", async () => {
+      render(() => (
+        <Checkbox data-testid="checkbox-root" isIndeterminate>
+          <Checkbox.Input />
+          <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
+          <Checkbox.Control data-testid="checkbox-control">
+            <Checkbox.Indicator data-testid="checkbox-indicator" />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      const elements = screen.getAllByTestId(/^checkbox/);
+
+      for (const el of elements) {
+        expect(el).toHaveAttribute("data-indeterminate");
+      }
+    });
+
     it("should have 'data-required' attribute when checkbox is required", async () => {
       render(() => (
         <Checkbox data-testid="checkbox-root" isRequired>
-          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
@@ -458,7 +476,7 @@ describe("Checkbox", () => {
     it("should have 'data-disabled' attribute when checkbox is disabled", async () => {
       render(() => (
         <Checkbox data-testid="checkbox-root" isDisabled>
-          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
@@ -476,7 +494,7 @@ describe("Checkbox", () => {
     it("should have 'data-readonly' attribute when checkbox is read only", async () => {
       render(() => (
         <Checkbox data-testid="checkbox-root" isReadOnly>
-          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
@@ -494,7 +512,7 @@ describe("Checkbox", () => {
     it("should have 'data-hover' attribute when checkbox is hovered", async () => {
       render(() => (
         <Checkbox data-testid="checkbox-root">
-          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
@@ -523,7 +541,7 @@ describe("Checkbox", () => {
     it("should have 'data-focus' attribute on focused checkbox", async () => {
       render(() => (
         <Checkbox data-testid="checkbox-root">
-          <Checkbox.Input data-testid="checkbox-input" />
+          <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
@@ -531,7 +549,7 @@ describe("Checkbox", () => {
         </Checkbox>
       ));
 
-      const checkboxInput = screen.getByTestId("checkbox-input");
+      const checkboxInput = screen.getByRole("checkbox");
       const elements = screen.getAllByTestId(/^checkbox/);
 
       checkboxInput.focus();

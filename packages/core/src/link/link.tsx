@@ -30,7 +30,6 @@ export interface LinkProps extends CreatePressProps {
 
 /**
  * Link allows a user to navigate to another page or resource within a web page or application.
- * This component is based on the [WAI-ARIA Link Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/link/)
  */
 export const Link = createPolymorphicComponent<"a", LinkProps>(props => {
   let ref: HTMLAnchorElement | undefined;

@@ -46,7 +46,32 @@ The checkbox consists of:
 </Preview>
 
 ```tsx
+import { Checkbox as CheckboxBase } from "@kobalte/core";
+import { ComponentProps, splitProps } from "solid-js";
 
+import { CheckIcon } from "../components";
+
+function Checkbox(props: ComponentProps<typeof CheckboxBase>) {
+  const [local, others] = splitProps(props, ["children"]);
+
+  return (
+    <CheckboxBase class="inline-flex items-center ui-disabled:opacity-40" {...others}>
+      <CheckboxBase.Input />
+      <CheckboxBase.Control class="w-4 h-4 bg-zinc-200 rounded border-zinc-300 ui-checked:text-white ui-checked:bg-blue-600 ui-focus:ring ui-focus:ring-blue-200 dark:ui-focus:ring-blue-500/30 dark:bg-zinc-700 dark:border-zinc-600 dark:ui-checked:bg-blue-600">
+        <CheckboxBase.Indicator>
+          <CheckIcon />
+        </CheckboxBase.Indicator>
+      </CheckboxBase.Control>
+      <CheckboxBase.Label class="select-none ml-2 text-sm text-zinc-900 dark:text-zinc-300">
+        {local.children}
+      </CheckboxBase.Label>
+    </CheckboxBase>
+  );
+}
+
+function App() {
+  return <Checkbox>Subscribe</Checkbox>;
+}
 ```
 
 ## Usage
@@ -74,7 +99,32 @@ The `isChecked` prop can be used to make the checked state controlled. The `onCh
 </Preview>
 
 ```tsx {3,7}
+import { createSignal } from "solid-js";
 
+function ControlledExample() {
+  const [checked, setChecked] = createSignal(false);
+
+  return (
+    <>
+      <Checkbox isChecked={checked()} onCheckedChange={setChecked}>
+        Subscribe
+      </Checkbox>
+      <p>You are {checked() ? "subscribed" : "unsubscribed"}.</p>
+    </>
+  );
+}
+```
+
+### Indeterminate
+
+Checkboxes can be in an indeterminate state using the `isIndeterminate` prop. The Checkbox will remain indeterminate until the `isIndeterminate` prop is set to false, regardless of user interaction.
+
+<Preview>
+  <Checkbox isIndeterminate>Subscribe</Checkbox>
+</Preview>
+
+```tsx
+<Checkbox isIndeterminate>Subscribe</Checkbox>
 ```
 
 ### Disabled
@@ -110,7 +160,32 @@ Checkbox supports the `name` and `value` props for integration with HTML forms.
 </Preview>
 
 ```tsx {14}
+function HTMLFormExample() {
+  let formRef: HTMLFormElement | undefined;
 
+  const onSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const formData = new FormData(formRef);
+
+    alert(JSON.stringify(Object.fromEntries(formData), null, 2));
+  };
+
+  return (
+    <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-start space-y-4">
+      <Checkbox name="newsletter" value="subscribe">
+        Subscribe
+      </Checkbox>
+      <div class="flex space-x-2">
+        <button type="reset" class="text-sm rounded border border-zinc-600 px-3">
+          Reset
+        </button>
+        <button class="text-sm rounded text-white bg-blue-600 px-3">Submit</button>
+      </div>
+    </form>
+  );
+}
 ```
 
 ## API Reference
@@ -128,7 +203,7 @@ Checkbox supports the `name` and `value` props for integration with HTML forms.
 | isDisabled       | `boolean`                      | Whether the checkbox is disabled.                                                                                                                          |
 | isReadOnly       | `boolean`                      | Whether the checkbox can be checked but not changed by the user.                                                                                           |
 
-| Data attributes    | Description                                                             |
+| Data attribute     | Description                                                             |
 | :----------------- | :---------------------------------------------------------------------- |
 | data-valid         | Present when the checkbox is valid according to the validation rules.   |
 | data-invalid       | Present when the checkbox is invalid according to the validation rules. |
@@ -141,7 +216,7 @@ Checkbox supports the `name` and `value` props for integration with HTML forms.
 | data-focus         | Present when the checkbox is focused.                                   |
 | data-focus-visible | Present when the checkbox is focused via keyboard.                      |
 
-`Checkbox.Input`, `Checkbox.Control`, `Checkbox.Indicator` and `Checkbox.Label` shares the same `data-*` attributes.
+`Checkbox.Control`, `Checkbox.Indicator` and `Checkbox.Label` shares the same `data-*` attributes.
 
 ## Accessibility
 

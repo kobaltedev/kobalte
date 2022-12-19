@@ -93,7 +93,6 @@ export interface ListboxProps
 
 /**
  * Listbox presents a list of options and allows a user to select one or more of them.
- * This component is based on the [WAI-ARIA Listbox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/)
  */
 export const Listbox = createPolymorphicComponent<"div", ListboxProps, ListboxComposite>(props => {
   let ref: HTMLElement | undefined;

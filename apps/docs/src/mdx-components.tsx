@@ -3,7 +3,7 @@ import { Title as MetaTitle } from "@solidjs/meta";
 import { clsx } from "clsx";
 import { ComponentProps, createSignal, Show, splitProps } from "solid-js";
 
-import { CheckIcon, CopyIcon } from "./components/icons";
+import { CheckIcon, CopyIcon } from "./components";
 
 export const mdxComponents = {
   h1: (props: ComponentProps<"h1">) => {
@@ -11,7 +11,7 @@ export const mdxComponents = {
 
     return (
       <h1 {...others}>
-        <MetaTitle>{local.children + " | Kobalte"}</MetaTitle>
+        <MetaTitle>{local.children + " – Kobalte"}</MetaTitle>
         {local.children}
       </h1>
     );

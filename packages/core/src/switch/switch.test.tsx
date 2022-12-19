@@ -371,7 +371,7 @@ describe("Switch", () => {
     it("should have 'data-valid' attribute when switch is valid", async () => {
       render(() => (
         <Switch data-testid="switch-root" validationState="valid">
-          <Switch.Input data-testid="switch-input" />
+          <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
@@ -389,7 +389,7 @@ describe("Switch", () => {
     it("should have 'data-invalid' attribute when switch is invalid", async () => {
       render(() => (
         <Switch data-testid="switch-root" validationState="invalid">
-          <Switch.Input data-testid="switch-input" />
+          <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
@@ -407,7 +407,7 @@ describe("Switch", () => {
     it("should have 'data-checked' attribute when switch is checked", async () => {
       render(() => (
         <Switch data-testid="switch-root" isChecked>
-          <Switch.Input data-testid="switch-input" />
+          <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
@@ -425,7 +425,7 @@ describe("Switch", () => {
     it("should have 'data-required' attribute when switch is required", async () => {
       render(() => (
         <Switch data-testid="switch-root" isRequired>
-          <Switch.Input data-testid="switch-input" />
+          <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
@@ -443,7 +443,7 @@ describe("Switch", () => {
     it("should have 'data-disabled' attribute when switch is disabled", async () => {
       render(() => (
         <Switch data-testid="switch-root" isDisabled>
-          <Switch.Input data-testid="switch-input" />
+          <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
@@ -461,7 +461,7 @@ describe("Switch", () => {
     it("should have 'data-readonly' attribute when switch is read only", async () => {
       render(() => (
         <Switch data-testid="switch-root" isReadOnly>
-          <Switch.Input data-testid="switch-input" />
+          <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
@@ -479,7 +479,7 @@ describe("Switch", () => {
     it("should have 'data-hover' attribute when switch is hovered", async () => {
       render(() => (
         <Switch data-testid="switch-root">
-          <Switch.Input data-testid="switch-input" />
+          <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
@@ -508,7 +508,7 @@ describe("Switch", () => {
     it("should have 'data-focus' attribute on focused switch", async () => {
       render(() => (
         <Switch data-testid="switch-root">
-          <Switch.Input data-testid="switch-input" />
+          <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
@@ -516,7 +516,7 @@ describe("Switch", () => {
         </Switch>
       ));
 
-      const switchInput = screen.getByTestId("switch-input");
+      const switchInput = screen.getByRole("switch");
       const elements = screen.getAllByTestId(/^switch/);
 
       switchInput.focus();

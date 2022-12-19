@@ -58,20 +58,60 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/checkbox",
       },
       {
+        title: "Context Menu",
+        href: "/docs/components/context-menu",
+      },
+      {
         title: "Dialog",
         href: "/docs/components/dialog",
+      },
+      {
+        title: "Dropdown Menu",
+        href: "/docs/components/dropdown-menu",
+      },
+      {
+        title: "Hover Card",
+        href: "/docs/components/hover-card",
+      },
+      {
+        title: "Link",
+        href: "/docs/components/link",
+      },
+      {
+        title: "Listbox",
+        href: "/docs/components/listbox",
+      },
+      {
+        title: "Popover",
+        href: "/docs/components/popover",
       },
       {
         title: "Radio Group",
         href: "/docs/components/radio-group",
       },
       {
+        title: "Select",
+        href: "/docs/components/select",
+      },
+      {
+        title: "Separator",
+        href: "/docs/components/separator",
+      },
+      {
         title: "Switch",
         href: "/docs/components/switch",
       },
       {
+        title: "Tabs",
+        href: "/docs/components/tabs",
+      },
+      {
         title: "Toggle Button",
         href: "/docs/components/toggle-button",
+      },
+      {
+        title: "I18nProvider",
+        href: "/docs/components/i18n-provider",
       },
     ],
   },

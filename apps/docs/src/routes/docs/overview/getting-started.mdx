@@ -1,5 +1,5 @@
 import { Preview, TabsSnippets } from "../../../components";
-import { PopoverDemo } from "../../../examples/tutorial";
+import { PopoverDemo } from "../../../examples/getting-started";
 
 # Getting started
 
@@ -36,134 +36,41 @@ Install Kobalte by running either of the following:
   </TabsSnippets.Content>
 </TabsSnippets>
 
-## Implementing a Popover
+## Using the components
 
-In this quick tutorial, we will create a Popover component.
+The example below demonstrate how to create a Popover component with Kobalte and styled with [TailwindCSS](https://tailwindcss.com/).
 
-### 1. Import the parts
-
-Import and structure the parts.
-
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="tsx">index.tsx</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  <TabsSnippets.Content value="tsx">
-    {/* <!-- prettier-ignore-start --> */}
-    ```tsx
-    import { Popover } from '@kobalte/core';
-
-    export const PopoverDemo = () => (
-      <Popover>
-        <Popover.Trigger>More info</Popover.Trigger>
-        <Popover.Portal>
-          <Popover.Positioner>
-            <Popover.Content>
-              <Popover.Arrow />
-              Some more info…
-            </Popover.Content>
-          </Popover.Positioner>
-        </Popover.Portal>
-      </Popover>
-    );
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-
-  </TabsSnippets.Content>
-</TabsSnippets>
-
-### 2. Add your styles
-
-Add styles where desired.
-
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  <TabsSnippets.Content value="tsx">
-    {/* <!-- prettier-ignore-start --> */}
-    ```tsx
-    import { Popover } from '@kobalte/core';
-    import "./style.css";
-
-    export const PopoverDemo = () => (
-      <Popover>
-        <Popover.Trigger class="popover__trigger">More info</Popover.Trigger>
-        <Popover.Portal>
-          <Popover.Positioner>
-            <Popover.Content class="popover__content">
-              <Popover.Arrow class="popover__arrow" />
-              Some more info…
-            </Popover.Content>
-          </Popover.Positioner>
-        </Popover.Portal>
-      </Popover>
-    );
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="css">
-    {/* <!-- prettier-ignore-start --> */}
-    ```css
-    .popover__trigger {
-      display: inline-flex;
-      height: 2.5rem;
-      align-items: center;
-      justify-content: center;
-      gap: 0.25rem;
-      white-space: nowrap;
-      border-radius: 0.5rem;
-      border-style: none;
-      background-color: hsl(204 100% 40%);
-      padding-left: 1rem;
-      padding-right: 1rem;
-      font-size: 1rem;
-      line-height: 1.5rem;
-      color: hsl(204 20% 100%);
-      text-decoration-line: none;
-    }
-
-    .popover__content {
-      z-index: 50;
-      display: flex;
-      max-width: min(calc(100vw - 16px),320px);
-      flex-direction: column;
-      gap: 1rem;
-      border-radius: 0.5rem;
-      border: 1px solid hsl(204 20% 88%);
-      background-color: hsl(204 20% 100%);
-      padding: 1rem;
-      color: hsl(204 10% 10%);
-      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    }
-
-    .popover__arrow > svg {
-      fill: hsl(204 20% 100%);
-      stroke: hsl(204 20% 88%);
-    }
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-
-  </TabsSnippets.Content>
-</TabsSnippets>
-
-<Preview isCentered isRounded>
+<Preview isCentered>
   <PopoverDemo />
 </Preview>
 
-## Summary
+```tsx
+import { Popover } from "@kobalte/core";
 
-The steps above outline briefly what's involved in using a Kobalte component in your application.
+export const PopoverDemo = () => (
+  <Popover>
+    <Popover.Trigger class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30">
+      Learn more
+    </Popover.Trigger>
+    <Popover.Portal>
+      <Popover.Positioner>
+        <Popover.Content class="z-10 outline-none w-72 p-4 shadow-md border border-zinc-200 rounded-md bg-white dark:bg-zinc-800 dark:border-zinc-700">
+          <Popover.Arrow />
+          <p>
+            Kobalte is a UI toolkit for building accessible web apps and design systems with
+            SolidJS.
+          </p>
+        </Popover.Content>
+      </Popover.Positioner>
+    </Popover.Portal>
+  </Popover>
+);
+```
 
-These components are low-level enough to give you control over how you want to wrap them. You're free to introduce your own high-level API to better suit the needs of your team and product.
+In a few lines of code, we've implemented a fully accessible Popover component that :
 
-In a few simple steps, we've implemented a fully accessible Popover component, without having to worry about many of its complexities.
-
-- Adheres to WAI-ARIA design pattern.
+- Adheres to [WAI-ARIA Dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/) design pattern.
 - Can be controlled or uncontrolled.
-- Customize side, alignment, offsets, collision handling.
+- Customize side, alignment, offsets.
 - Optionally render a pointing arrow.
-- Focus is fully managed and customizable.
-- Dismissing and layering behavior is highly customizable.
+- Has focus fully managed and customizable.

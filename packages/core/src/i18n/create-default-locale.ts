@@ -6,17 +6,17 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/i18n/src/useDefaultLocale.ts
  */
 
-import { Accessor, createMemo, createSignal, onCleanup, onMount } from "solid-js";
+import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { getReadingDirection, ReadingDirection } from "./utils";
+import { Direction, getReadingDirection } from "./utils";
 
-export interface Locale {
+interface Locale {
   /** The [BCP47](https://www.ietf.org/rfc/bcp/bcp47.txt) language code for the locale. */
   locale: string;
 
   /** The writing direction for the locale. */
-  direction: ReadingDirection;
+  direction: Direction;
 }
 
 /**
@@ -53,7 +53,7 @@ function updateLocale() {
 /**
  * Returns an accessor for the current browser/system language, and updates when it changes.
  */
-export function createDefaultLocale(): Accessor<Locale> {
+export function createDefaultLocale() {
   // We cannot determine the browser's language on the server, so default to en-US.
   // This will be updated after hydration on the client to the correct value.
   const defaultSSRLocale: Locale = {
@@ -81,5 +81,8 @@ export function createDefaultLocale(): Accessor<Locale> {
     });
   });
 
-  return defaultLocale;
+  return {
+    locale: () => defaultLocale().locale,
+    direction: () => defaultLocale().direction,
+  };
 }

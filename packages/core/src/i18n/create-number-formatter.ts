@@ -19,7 +19,7 @@ import { useLocale } from "./i18n-provider";
 export function createNumberFormatter(
   options: Accessor<NumberFormatOptions>
 ): Accessor<Intl.NumberFormat> {
-  const locale = useLocale();
+  const { locale } = useLocale();
 
-  return createMemo(() => new NumberFormatter(locale().locale, options()));
+  return createMemo(() => new NumberFormatter(locale(), options()));
 }

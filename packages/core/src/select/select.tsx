@@ -104,6 +104,9 @@ export interface SelectProps
   autoComplete?: string;
 }
 
+/**
+ * Displays a list of options for the user to pick from — triggered by a button.
+ */
 export const Select: ParentComponent<SelectProps> & SelectBaseComposite = props => {
   const defaultId = `select-${createUniqueId()}`;
 

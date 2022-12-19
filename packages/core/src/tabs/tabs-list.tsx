@@ -27,12 +27,12 @@ export const TabsList = createPolymorphicComponent<"div">(props => {
 
   const [local, others] = splitProps(props, ["as"]);
 
-  const locale = useLocale();
+  const { direction } = useLocale();
 
   const delegate = new TabsKeyboardDelegate(
     () => context.listState().collection(),
-    () => locale().direction,
-    () => context.orientation()
+    direction,
+    context.orientation
   );
 
   const selectableCollection = createSelectableCollection(

@@ -96,7 +96,6 @@ export function CheckboxInput(props: ComponentProps<"input">) {
       aria-disabled={context.isDisabled() || undefined}
       aria-readonly={context.isReadOnly() || undefined}
       onChange={onChange}
-      {...context.dataset()}
       {...combineProps(
         { ref: el => (ref = el), style: visuallyHiddenStyles },
         others,

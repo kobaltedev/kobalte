@@ -5,11 +5,11 @@ import { createDefaultLocale } from "./create-default-locale";
 import { I18nProvider, useLocale } from "./i18n-provider";
 
 function Example() {
-  const locale = useLocale();
+  const { locale, direction } = useLocale();
   return (
     <>
-      <span data-testid="locale">{locale().locale}</span>
-      <span data-testid="direction">{locale().direction}</span>
+      <span data-testid="locale">{locale()}</span>
+      <span data-testid="direction">{direction()}</span>
     </>
   );
 }
@@ -47,10 +47,10 @@ describe("I18nProvider", () => {
 describe("createDefaultLocale", () => {
   it("should use en-US locale by default", () => {
     createRoot(dispose => {
-      const locale = createDefaultLocale();
+      const { locale, direction } = createDefaultLocale();
 
-      expect(locale().locale).toBe("en-US");
-      expect(locale().direction).toBe("ltr");
+      expect(locale()).toBe("en-US");
+      expect(direction()).toBe("ltr");
 
       dispose();
     });

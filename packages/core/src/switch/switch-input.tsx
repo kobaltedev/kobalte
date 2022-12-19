@@ -82,7 +82,6 @@ export function SwitchInput(props: ComponentProps<"input">) {
       aria-disabled={context.isDisabled() || undefined}
       aria-readonly={context.isReadOnly() || undefined}
       onChange={onChange}
-      {...context.dataset()}
       {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers, focusRingHandlers)}
     />
   );
