@@ -395,12 +395,9 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
       },
     });
 
-    // TODO: fix popover arrow placement
+    // Sync the new updated placement of floating-ui with our current placement and notify parent.
     setCurrentPlacement(pos.placement);
-
-    if (pos.placement !== currentPlacement()) {
-      props.onCurrentPlacementChange?.(setCurrentPlacement(pos.placement));
-    }
+    props.onCurrentPlacementChange?.(pos.placement);
 
     if (!floatingEl) {
       return;
@@ -442,7 +439,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     }
   }
 
-  createRenderEffect(() => {
+  createEffect(() => {
     const referenceEl = anchorRef();
     const floatingEl = positionerRef();
 

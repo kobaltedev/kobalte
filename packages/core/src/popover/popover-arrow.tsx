@@ -22,14 +22,12 @@ import { BasePlacement } from "./utils";
 const DEFAULT_SIZE = 30;
 const HALF_DEFAULT_SIZE = DEFAULT_SIZE / 2;
 
-const VIEWBOX = `0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`;
-
-const ROTATE_MAP = {
-  top: `rotate(180 ${HALF_DEFAULT_SIZE} ${HALF_DEFAULT_SIZE})`,
-  right: `rotate(-90 ${HALF_DEFAULT_SIZE} ${HALF_DEFAULT_SIZE})`,
-  bottom: `rotate(0 ${HALF_DEFAULT_SIZE} ${HALF_DEFAULT_SIZE})`,
-  left: `rotate(90 ${HALF_DEFAULT_SIZE} ${HALF_DEFAULT_SIZE})`,
-};
+const ROTATION_DEG = {
+  top: 180,
+  right: -90,
+  bottom: 0,
+  left: 90,
+} as const;
 
 export const ARROW_PATH =
   "M23,27.8c1.1,1.2,3.4,2.2,5,2.2h2H0h2c1.7,0,3.9-1,5-2.2l6.6-7.2c0.7-0.8,2-0.8,2.7,0L23,27.8L23,27.8z";
@@ -60,13 +58,15 @@ export const PopoverArrow = createPolymorphicComponent<"div", PopoverArrowProps>
   const [local, others] = splitProps(props, ["as", "ref", "style", "children", "size"]);
 
   const dir = () => context.currentPlacement().split("-")[0] as BasePlacement;
-
   const contentStyle = createComputedStyle(context.contentRef);
   const fill = () => contentStyle()?.getPropertyValue("background-color") || "none";
   const stroke = () => contentStyle()?.getPropertyValue(`border-${dir()}-color`) || "none";
   const borderWidth = () => contentStyle()?.getPropertyValue(`border-${dir()}-width`) || "0px";
   const strokeWidth = () => {
     return parseInt(borderWidth()) * 2 * (DEFAULT_SIZE / local.size!);
+  };
+  const rotate = () => {
+    return `rotate(${ROTATION_DEG[dir()]} ${HALF_DEFAULT_SIZE} ${HALF_DEFAULT_SIZE})`;
   };
 
   return (
@@ -90,8 +90,8 @@ export const PopoverArrow = createPolymorphicComponent<"div", PopoverArrowProps>
       }
       {...others}
     >
-      <svg display="block" viewBox={VIEWBOX}>
-        <g transform={ROTATE_MAP[dir()]}>
+      <svg display="block" viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}>
+        <g transform={rotate()}>
           <path fill="none" d={ARROW_PATH} />
           <path stroke="none" d={ARROW_PATH} />
         </g>
