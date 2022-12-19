@@ -13,7 +13,8 @@ export interface ListboxItemIndicatorProps {
 }
 
 /**
- * The visual indicator rendered when the option is selected.
+ * The visual indicator rendered when the item is selected.
+ * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
 export const ListboxItemIndicator = createPolymorphicComponent<"div", ListboxItemIndicatorProps>(
   props => {

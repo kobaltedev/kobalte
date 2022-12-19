@@ -18,7 +18,7 @@ import { Accessor, JSX, Show, splitProps } from "solid-js";
 import { Button, ButtonProps } from "../button";
 import { createToggleState, PressEvents } from "../primitives";
 
-export interface ToggleButtonState {
+interface ToggleButtonState {
   /** Whether the toggle button is on (pressed) or off (not pressed). */
   isPressed: Accessor<boolean>;
 }

@@ -26,7 +26,7 @@ The checkbox consists of:
 - **Checkbox**: The root container for a checkbox.
 - **Checkbox.Input**: The native html input that is visually hidden in the checkbox.
 - **Checkbox.Control**: The element that visually represents a checkbox.
-- **Checkbox.Indicator**: The indicator that is used to visually indicate whether the checkbox is on or off.
+- **Checkbox.Indicator**: The indicator rendered when the checkbox is in a checked or indeterminate state.
 - **Checkbox.Label**: The label that gives the user information on the checkbox.
 
 ```tsx
@@ -47,24 +47,37 @@ The checkbox consists of:
 
 ```tsx
 import { Checkbox as CheckboxBase } from "@kobalte/core";
-import { ComponentProps, splitProps } from "solid-js";
+import { ComponentProps, ParentProps, splitProps } from "solid-js";
 
-import { CheckIcon } from "../components";
+type CheckboxBaseProps = ComponentProps<typeof CheckboxBase>;
 
-function Checkbox(props: ComponentProps<typeof CheckboxBase>) {
+type CheckboxProps = ParentProps<Omit<CheckboxBaseProps, "children">>;
+
+export function Checkbox(props: CheckboxProps) {
   const [local, others] = splitProps(props, ["children"]);
 
   return (
     <CheckboxBase class="inline-flex items-center ui-disabled:opacity-40" {...others}>
-      <CheckboxBase.Input />
-      <CheckboxBase.Control class="w-4 h-4 bg-zinc-200 rounded border-zinc-300 ui-checked:text-white ui-checked:bg-blue-600 ui-focus:ring ui-focus:ring-blue-200 dark:ui-focus:ring-blue-500/30 dark:bg-zinc-700 dark:border-zinc-600 dark:ui-checked:bg-blue-600">
-        <CheckboxBase.Indicator>
-          <CheckIcon />
-        </CheckboxBase.Indicator>
-      </CheckboxBase.Control>
-      <CheckboxBase.Label class="select-none ml-2 text-sm text-zinc-900 dark:text-zinc-300">
-        {local.children}
-      </CheckboxBase.Label>
+      {state => (
+        <>
+          <CheckboxBase.Input />
+          <CheckboxBase.Control class="w-4 h-4 bg-zinc-200 rounded border-zinc-300 ui-checked:bg-blue-600 ui-checked:ui-indeterminate:bg-zinc-200 ui-focus:ring ui-focus:ring-blue-200 dark:ui-focus:ring-blue-500/30 dark:bg-zinc-700 dark:border-zinc-600 dark:ui-checked:bg-blue-600">
+            <Show
+              when={state.isIndeterminate()}
+              fallback={
+                <CheckboxBase.Indicator class="text-white">
+                  <CheckIcon />
+                </CheckboxBase.Indicator>
+              }
+            >
+              <MinusIcon />
+            </Show>
+          </CheckboxBase.Control>
+          <CheckboxBase.Label class="select-none ml-2 text-sm text-zinc-900 dark:text-zinc-300">
+            {local.children}
+          </CheckboxBase.Label>
+        </>
+      )}
     </CheckboxBase>
   );
 }

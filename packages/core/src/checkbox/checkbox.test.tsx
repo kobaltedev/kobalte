@@ -25,7 +25,7 @@ describe("Checkbox", () => {
       <Checkbox data-testid="checkbox">
         <Checkbox.Input data-testid="input" />
         <Checkbox.Control data-testid="control">
-          <Checkbox.Indicator data-testid="indicator" />
+          <Checkbox.Indicator data-testid="indicator" forceMount />
         </Checkbox.Control>
         <Checkbox.Label data-testid="label">Label</Checkbox.Label>
       </Checkbox>
@@ -49,7 +49,7 @@ describe("Checkbox", () => {
       <Checkbox data-testid="checkbox" id="foo">
         <Checkbox.Input data-testid="input" />
         <Checkbox.Control data-testid="control">
-          <Checkbox.Indicator data-testid="indicator" />
+          <Checkbox.Indicator data-testid="indicator" forceMount />
         </Checkbox.Control>
         <Checkbox.Label data-testid="label">Label</Checkbox.Label>
       </Checkbox>
@@ -73,7 +73,7 @@ describe("Checkbox", () => {
       <Checkbox data-testid="checkbox" id="custom-checkbox-id">
         <Checkbox.Input data-testid="input" id="custom-input-id" />
         <Checkbox.Control data-testid="control" id="custom-control-id">
-          <Checkbox.Indicator data-testid="indicator" id="custom-indicator-id" />
+          <Checkbox.Indicator data-testid="indicator" id="custom-indicator-id" forceMount />
         </Checkbox.Control>
         <Checkbox.Label data-testid="label" id="custom-label-id">
           Label
@@ -380,6 +380,75 @@ describe("Checkbox", () => {
 
     expect(input.checked).toBeFalsy();
     expect(onChangeSpy).not.toHaveBeenCalled();
+  });
+
+  describe("indicator", () => {
+    it("should not display indicator by default", async () => {
+      render(() => (
+        <Checkbox>
+          <Checkbox.Input />
+          <Checkbox.Control>
+            <Checkbox.Indicator data-testid="indicator" />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      expect(screen.queryByTestId("indicator")).toBeNull();
+    });
+
+    it("should display indicator when 'checked'", async () => {
+      render(() => (
+        <Checkbox>
+          <Checkbox.Input />
+          <Checkbox.Control>
+            <Checkbox.Indicator data-testid="indicator" />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+      expect(input.checked).toBeFalsy();
+      expect(screen.queryByTestId("indicator")).toBeNull();
+
+      fireEvent.click(input);
+      await Promise.resolve();
+
+      expect(input.checked).toBeTruthy();
+      expect(screen.getByTestId("indicator")).toBeInTheDocument();
+
+      fireEvent.click(input);
+      await Promise.resolve();
+
+      expect(input.checked).toBeFalsy();
+      expect(screen.queryByTestId("indicator")).toBeNull();
+    });
+
+    it("should display indicator when 'indeterminate'", async () => {
+      render(() => (
+        <Checkbox isIndeterminate>
+          <Checkbox.Input />
+          <Checkbox.Control>
+            <Checkbox.Indicator data-testid="indicator" />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      expect(screen.getByTestId("indicator")).toBeInTheDocument();
+    });
+
+    it("should display indicator when 'forceMount'", async () => {
+      render(() => (
+        <Checkbox>
+          <Checkbox.Input />
+          <Checkbox.Control>
+            <Checkbox.Indicator data-testid="indicator" forceMount />
+          </Checkbox.Control>
+        </Checkbox>
+      ));
+
+      expect(screen.getByTestId("indicator")).toBeInTheDocument();
+    });
   });
 
   describe("data-attributes", () => {

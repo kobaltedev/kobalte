@@ -13,7 +13,8 @@ export interface MenuItemIndicatorProps {
 }
 
 /**
- * The visual indicator rendered when the menu item radio/checkbox is in a checked state.
+ * The visual indicator rendered when the parent menu `CheckboxItem` or `RadioItem` is checked.
+ * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
 export const MenuItemIndicator = createPolymorphicComponent<"div", MenuItemIndicatorProps>(
   props => {

@@ -13,7 +13,8 @@ export interface CheckboxIndicatorProps {
 }
 
 /**
- * The indicator that is used to visually indicate whether the checkbox is checked or not.
+ * The visual indicator rendered when the checkbox is in a checked or indeterminate state.
+ * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
 export const CheckboxIndicator = createPolymorphicComponent<"div", CheckboxIndicatorProps>(
   props => {
@@ -30,7 +31,7 @@ export const CheckboxIndicator = createPolymorphicComponent<"div", CheckboxIndic
     const [local, others] = splitProps(props, ["as", "forceMount"]);
 
     return (
-      <Show when={local.forceMount || context.isChecked()}>
+      <Show when={local.forceMount || context.isIndeterminate() || context.isChecked()}>
         <Dynamic component={local.as} {...context.dataset()} {...others} />
       </Show>
     );

@@ -19,8 +19,8 @@ export interface TabsIndicatorProps {
 }
 
 /**
- * A line commonly displayed at the bottom of the tab list to visually indicate the selected tab.
- * It provides the base style needed to display a smooth translation to the new selected tab.
+ * The visual indicator displayed at the bottom of the tab list to indicate the selected tab.
+ * It provides the base style needed to display a smooth transition to the new selected tab.
  */
 export const TabsIndicator = createPolymorphicComponent<"div", TabsIndicatorProps>(props => {
   const context = useTabsContext();

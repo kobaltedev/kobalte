@@ -6,7 +6,13 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/checkbox/src/useCheckbox.ts
  */
 
-import { combineProps, isFunction, mergeDefaultProps, ValidationState } from "@kobalte/utils";
+import {
+  combineProps,
+  isFunction,
+  mergeDefaultProps,
+  OverrideProps,
+  ValidationState,
+} from "@kobalte/utils";
 import {
   Accessor,
   Component,
@@ -97,7 +103,7 @@ export interface CheckboxProps {
 /**
  * A control that allows the user to toggle between checked and not checked.
  */
-export const Checkbox: Component<ComponentProps<"label"> & CheckboxProps> &
+export const Checkbox: Component<OverrideProps<ComponentProps<"label">, CheckboxProps>> &
   CheckboxComposite = props => {
   let ref: HTMLLabelElement | undefined;
 

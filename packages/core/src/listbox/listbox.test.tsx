@@ -581,4 +581,51 @@ describe("Listbox", () => {
 
     expect(listbox).toHaveAttribute("aria-label", "Test");
   });
+
+  describe("item indicator", () => {
+    it("should not display item indicator by default", async () => {
+      render(() => (
+        <Listbox>
+          <Listbox.Item value="1">One</Listbox.Item>
+          <Listbox.Item value="2">
+            <Listbox.ItemLabel>Two</Listbox.ItemLabel>
+            <Listbox.ItemIndicator data-testid="indicator" />
+          </Listbox.Item>
+          <Listbox.Item value="3">Three</Listbox.Item>
+        </Listbox>
+      ));
+
+      expect(screen.queryByTestId("indicator")).toBeNull();
+    });
+
+    it("should display item indicator when 'selected'", async () => {
+      render(() => (
+        <Listbox value={["2"]}>
+          <Listbox.Item value="1">One</Listbox.Item>
+          <Listbox.Item value="2">
+            <Listbox.ItemLabel>Two</Listbox.ItemLabel>
+            <Listbox.ItemIndicator data-testid="indicator" />
+          </Listbox.Item>
+          <Listbox.Item value="3">Three</Listbox.Item>
+        </Listbox>
+      ));
+
+      expect(screen.getByTestId("indicator")).toBeInTheDocument();
+    });
+
+    it("should display item indicator when 'forceMount'", async () => {
+      render(() => (
+        <Listbox>
+          <Listbox.Item value="1">One</Listbox.Item>
+          <Listbox.Item value="2">
+            <Listbox.ItemLabel>Two</Listbox.ItemLabel>
+            <Listbox.ItemIndicator data-testid="indicator" forceMount />
+          </Listbox.Item>
+          <Listbox.Item value="3">Three</Listbox.Item>
+        </Listbox>
+      ));
+
+      expect(screen.getByTestId("indicator")).toBeInTheDocument();
+    });
+  });
 });

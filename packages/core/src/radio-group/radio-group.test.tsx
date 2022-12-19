@@ -1215,6 +1215,62 @@ describe("RadioGroup", () => {
       expect(radio).toHaveAttribute("aria-describedby", `foo ${description.id}`);
     });
 
+    describe("indicator", () => {
+      it("should not display indicator by default", async () => {
+        render(() => (
+          <RadioGroup>
+            <RadioGroup.Item value="cats">
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl>
+                <RadioGroup.ItemIndicator data-testid="indicator" />
+              </RadioGroup.ItemControl>
+            </RadioGroup.Item>
+          </RadioGroup>
+        ));
+
+        expect(screen.queryByTestId("indicator")).toBeNull();
+      });
+
+      it("should display indicator when 'selected'", async () => {
+        render(() => (
+          <RadioGroup>
+            <RadioGroup.Item value="cats">
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl>
+                <RadioGroup.ItemIndicator data-testid="indicator" />
+              </RadioGroup.ItemControl>
+            </RadioGroup.Item>
+          </RadioGroup>
+        ));
+
+        const input = screen.getByRole("radio") as HTMLInputElement;
+
+        expect(input.checked).toBeFalsy();
+        expect(screen.queryByTestId("indicator")).toBeNull();
+
+        fireEvent.click(input);
+        await Promise.resolve();
+
+        expect(input.checked).toBeTruthy();
+        expect(screen.getByTestId("indicator")).toBeInTheDocument();
+      });
+
+      it("should display indicator when 'forceMount'", async () => {
+        render(() => (
+          <RadioGroup>
+            <RadioGroup.Item value="cats">
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl>
+                <RadioGroup.ItemIndicator data-testid="indicator" forceMount />
+              </RadioGroup.ItemControl>
+            </RadioGroup.Item>
+          </RadioGroup>
+        ));
+
+        expect(screen.getByTestId("indicator")).toBeInTheDocument();
+      });
+    });
+
     describe("data-attributes", () => {
       it("should have 'data-valid' attribute on radio elements when radio group is valid", async () => {
         render(() => (
