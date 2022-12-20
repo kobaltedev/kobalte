@@ -49,7 +49,7 @@ export interface DialogProps {
   id?: string;
 
   /**
-   * Used to force mounting the dialog when more control is needed.
+   * Used to force mounting the dialog (portal, overlay, positioner and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
    */
   forceMount?: boolean;
@@ -67,19 +67,19 @@ export interface DialogProps {
   closeOnInteractOutside?: boolean;
 
   /**
-   * When user interacts with the argument element outside the dialog panel,
+   * When user interacts with the argument element outside the dialog content,
    * return `true` if the dialog should be closed. This gives you a chance to filter
    * out interaction with elements that should not dismiss the dialog.
-   * By default, the dialog will always close on interaction outside the dialog panel.
+   * By default, the dialog will always close on interaction outside the dialog content.
    */
   shouldCloseOnInteractOutside?: (element: Element) => boolean;
 
-  /** Whether focus should be locked inside the dialog panel. */
+  /** Whether focus should be locked inside the dialog content. */
   trapFocus?: boolean;
 
   /**
    * Whether focus should be set on a child element once the dialog is open.
-   * If `true` focus will be set to the first focusable element inside the dialog panel.
+   * If `true` focus will be set to the first focusable element inside the dialog content.
    * If a `string` (query selector) is provided focus will be set to the target element.
    */
   autoFocus?: boolean | string;

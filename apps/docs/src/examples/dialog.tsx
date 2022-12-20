@@ -51,10 +51,10 @@ export function DialogCloseButton(props: ComponentProps<typeof DialogBase.CloseB
 export function BasicExample(props: ComponentProps<typeof DialogBase>) {
   return (
     <Dialog {...props}>
-      <DialogTrigger>Learn more</DialogTrigger>
+      <DialogTrigger>Open dialog</DialogTrigger>
       <DialogContent>
         <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-zinc-600">
-          <DialogTitle>Kobalte</DialogTitle>
+          <DialogTitle>About Kobalte</DialogTitle>
           <DialogCloseButton />
         </div>
         <div class="p-6 space-y-6 max-w-lg">
@@ -63,6 +63,15 @@ export function BasicExample(props: ComponentProps<typeof DialogBase>) {
             SolidJS. It provides a set of low-level UI components and primitives which can be the
             foundation for your design system implementation.
           </p>
+        </div>
+        <div class="flex items-center justify-end p-4 border-t border-zinc-200 rounded-b dark:border-zinc-600">
+          <button
+            id="ok-button"
+            type="button"
+            class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30"
+          >
+            OK
+          </button>
         </div>
       </DialogContent>
     </Dialog>
