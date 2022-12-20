@@ -1,4 +1,4 @@
-import { createPolymorphicComponent } from "@kobalte/elements";
+import { createPolymorphicComponent } from "@kobalte/core";
 import { clsx } from "clsx";
 import { splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";

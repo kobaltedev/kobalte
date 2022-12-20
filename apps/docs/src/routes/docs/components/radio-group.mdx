@@ -1,4 +1,4 @@
-import { RadioGroup, Radio } from "@kobalte/elements";
+import { RadioGroup } from "@kobalte/core";
 
 import { Preview } from "../../../components/preview";
 import { Kbd } from "../../../components/kbd";
@@ -16,15 +16,15 @@ A set of checkable buttons, known as radio buttons, where no more than one of th
     <div class="flex space-x-4">
       <For each={["solid", "svelte", "qwik"]}>
         {library => (
-          <Radio value={library} class="flex items-center">
-            <Radio.Input />
-            <Radio.Control class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus-visible:border-blue-500 ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:border-blue-600 dark:ui-focus-visible:ring-blue-900/60">
-              <Radio.Indicator class="h-2.5 w-2.5 rounded-full bg-blue-500" />
-            </Radio.Control>
-            <Radio.Label class="text-sm text-zinc-900 dark:text-white/90 first-letter:uppercase">
+          <RadioGroup.Item value={library} class="flex items-center">
+            <RadioGroup.ItemInput />
+            <RadioGroup.ItemControl class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus-visible:border-blue-500 ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:border-blue-600 dark:ui-focus-visible:ring-blue-900/60">
+              <RadioGroup.ItemIndicator class="h-2.5 w-2.5 rounded-full bg-blue-500" />
+            </RadioGroup.ItemControl>
+            <RadioGroup.ItemLabel class="text-sm text-zinc-900 dark:text-white/90 first-letter:uppercase">
               {library}
-            </Radio.Label>
-          </Radio>
+            </RadioGroup.ItemLabel>
+          </RadioGroup.Item>
         )}
       </For>
     </div>
@@ -42,15 +42,15 @@ A set of checkable buttons, known as radio buttons, where no more than one of th
   <div class="flex space-x-4">
     <For each={["solid", "svelte", "qwik"]}>
       {library => (
-        <Radio value={library} class="flex items-center">
-          <Radio.Input />
-          <Radio.Control class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus-visible:border-blue-500 ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:border-blue-600 dark:ui-focus-visible:ring-blue-900/60">
-            <Radio.Indicator class="h-2.5 w-2.5 rounded-full bg-blue-500" />
-          </Radio.Control>
-          <Radio.Label class="text-sm text-zinc-900 dark:text-white/90 first-letter:uppercase">
+        <RadioGroup.Item value={library} class="flex items-center">
+          <RadioGroup.ItemInput />
+          <RadioGroup.ItemControl class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus-visible:border-blue-500 ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:border-blue-600 dark:ui-focus-visible:ring-blue-900/60">
+            <RadioGroup.ItemIndicator class="h-2.5 w-2.5 rounded-full bg-blue-500" />
+          </RadioGroup.ItemControl>
+          <RadioGroup.ItemLabel class="text-sm text-zinc-900 dark:text-white/90 first-letter:uppercase">
             {library}
-          </Radio.Label>
-        </Radio>
+          </RadioGroup.ItemLabel>
+        </RadioGroup.Item>
       )}
     </For>
   </div>
@@ -71,7 +71,7 @@ A set of checkable buttons, known as radio buttons, where no more than one of th
 ## Import
 
 ```ts
-import { RadioGroup, Radio } from "@kobalte/elements";
+import { RadioGroup, Radio } from "@kobalte/core";
 ```
 
 ## Anatomy
@@ -82,23 +82,23 @@ The radio group consists of:
 - **RadioGroup.Label**: The label that gives the user information on the radio group.
 - **RadioGroup.Description**: The description that gives the user more information on the radio group.
 - **RadioGroup.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the radio group.
-- **Radio**: The root container for a radio button.
-- **Radio.Input**: The native html input that is visually hidden in the radio button.
-- **Radio.Control**: The element that visually represents a radio button.
-- **Radio.Indicator**: The visual indicator rendered when the radio button is in a checked state.
-- **Radio.Label**: The label that gives the user information on the radio button.
+- **RadioGroup.Item**: The root container for a radio button.
+- **RadioGroup.ItemInput**: The native html input that is visually hidden in the radio button.
+- **RadioGroup.ItemControl**: The element that visually represents a radio button.
+- **RadioGroup.ItemIndicator**: The visual indicator rendered when the radio button is in a checked state.
+- **RadioGroup.ItemLabel**: The label that gives the user information on the radio button.
 
 ```tsx
 <RadioGroup>
   <RadioGroup.Label />
 
-  <Radio>
-    <Radio.Input />
-    <Radio.Control>
-      <Radio.Indicator />
-    </Radio.Control>
-    <Radio.Label />
-  </Radio>
+  <RadioGroup.Item>
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl>
+      <RadioGroup.ItemIndicator />
+    </RadioGroup.ItemControl>
+    <RadioGroup.ItemLabel />
+  </RadioGroup.Item>
 
   <RadioGroup.Description />
   <RadioGroup.ErrorMessage />
@@ -114,16 +114,16 @@ An initial, uncontrolled value can be provided to the radio group using the `def
 ```tsx {0}
 <RadioGroup defaultValue="solid">
   <RadioGroup.Label>Favorite library</RadioGroup.Label>
-  <Radio value="solid">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Solid</Radio.Label>
-  </Radio>
-  <Radio value="svelte">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Svelte</Radio.Label>
-  </Radio>
+  <RadioGroup.Item value="solid">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Solid</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
+  <RadioGroup.Item value="svelte">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Svelte</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
 </RadioGroup>
 ```
 
@@ -138,16 +138,16 @@ function Example() {
   return (
     <RadioGroup value={selected} onValueChange={setSelected}>
       <RadioGroup.Label>Favorite library</RadioGroup.Label>
-      <Radio value="solid">
-        <Radio.Input />
-        <Radio.Control />
-        <Radio.Label>Solid</Radio.Label>
-      </Radio>
-      <Radio value="svelte">
-        <Radio.Input />
-        <Radio.Control />
-        <Radio.Label>Svelte</Radio.Label>
-      </Radio>
+      <RadioGroup.Item value="solid">
+        <RadioGroup.ItemInput />
+        <RadioGroup.ItemControl />
+        <RadioGroup.ItemLabel>Solid</RadioGroup.ItemLabel>
+      </RadioGroup.Item>
+      <RadioGroup.Item value="svelte">
+        <RadioGroup.ItemInput />
+        <RadioGroup.ItemControl />
+        <RadioGroup.ItemLabel>Svelte</RadioGroup.ItemLabel>
+      </RadioGroup.Item>
     </RadioGroup>
   );
 }
@@ -160,16 +160,16 @@ The `RadioGroup.Description` component can be used to associate additional help 
 ```tsx {12}
 <RadioGroup>
   <RadioGroup.Label>Favorite library</RadioGroup.Label>
-  <Radio value="solid">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Solid</Radio.Label>
-  </Radio>
-  <Radio value="svelte">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Svelte</Radio.Label>
-  </Radio>
+  <RadioGroup.Item value="solid">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Solid</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
+  <RadioGroup.Item value="svelte">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Svelte</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
   <RadioGroup.Description>Choose wisely.</RadioGroup.Description>
 </RadioGroup>
 ```
@@ -183,16 +183,16 @@ By default `RadioGroup.ErrorMessage` will render only when the radio group is _i
 ```tsx {0,12}
 <RadioGroup validationState="invalid">
   <RadioGroup.Label>Favorite library</RadioGroup.Label>
-  <Radio value="solid">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Solid</Radio.Label>
-  </Radio>
-  <Radio value="svelte">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Svelte</Radio.Label>
-  </Radio>
+  <RadioGroup.Item value="solid">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Solid</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
+  <RadioGroup.Item value="svelte">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Svelte</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
   <RadioGroup.ErrorMessage>No, you choose wrong</RadioGroup.ErrorMessage>
 </RadioGroup>
 ```
@@ -204,16 +204,16 @@ The entire radio group can be disabled with the `isDisabled` prop.
 ```tsx {0}
 <RadioGroup isDisabled>
   <RadioGroup.Label>Favorite library</RadioGroup.Label>
-  <Radio value="solid">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Solid</Radio.Label>
-  </Radio>
-  <Radio value="svelte">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Svelte</Radio.Label>
-  </Radio>
+  <RadioGroup.Item value="solid">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Solid</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
+  <RadioGroup.Item value="svelte">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Svelte</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
 </RadioGroup>
 ```
 
@@ -222,16 +222,16 @@ To disable an individual radio, pass `isDisabled` to the radio instead.
 ```tsx {7}
 <RadioGroup>
   <RadioGroup.Label>Favorite library</RadioGroup.Label>
-  <Radio value="solid">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Solid</Radio.Label>
-  </Radio>
-  <Radio value="svelte" isDisabled>
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Svelte</Radio.Label>
-  </Radio>
+  <RadioGroup.Item value="solid">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Solid</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
+  <RadioGroup.Item value="svelte" isDisabled>
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Svelte</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
 </RadioGroup>
 ```
 
@@ -242,16 +242,16 @@ The `isReadOnly` prop makes the radio group selection immutable while remaining 
 ```tsx {0}
 <RadioGroup isReadOnly>
   <RadioGroup.Label>Favorite library</RadioGroup.Label>
-  <Radio value="solid">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Solid</Radio.Label>
-  </Radio>
-  <Radio value="svelte">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Svelte</Radio.Label>
-  </Radio>
+  <RadioGroup.Item value="solid">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Solid</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
+  <RadioGroup.Item value="svelte">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Svelte</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
 </RadioGroup>
 ```
 
@@ -262,16 +262,16 @@ The radio group supports the `name` prop, paired with the radio `value` prop, fo
 ```tsx {0}
 <RadioGroup name="framework">
   <RadioGroup.Label>Favorite library</RadioGroup.Label>
-  <Radio value="solid">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Solid</Radio.Label>
-  </Radio>
-  <Radio value="svelte">
-    <Radio.Input />
-    <Radio.Control />
-    <Radio.Label>Svelte</Radio.Label>
-  </Radio>
+  <RadioGroup.Item value="solid">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Solid</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
+  <RadioGroup.Item value="svelte">
+    <RadioGroup.ItemInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemLabel>Svelte</RadioGroup.ItemLabel>
+  </RadioGroup.Item>
 </RadioGroup>
 ```
 
@@ -279,17 +279,17 @@ The radio group supports the `name` prop, paired with the radio `value` prop, fo
 
 ### RadioGroup
 
-| Prop            | Type                         | Description                                                                                                                                          |
-| :-------------- | :--------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value           | `string`                     | The controlled value of the radio button to check.                                                                                                   |
-| defaultValue    | `string`                     | The value of the radio button that should be checked when initially rendered. Useful when you do not need to control the state of the radio buttons. |
-| onValueChange   | `(value?: string) => void`   | Event handler called when the value changes.                                                                                                         |
-| name            | `string`                     | The name of the radio group. Submitted with its owning form as part of a name/value pair.                                                            |
-| orientation     | `'horizontal' \| 'vertical'` | The axis the radio group items should align with.                                                                                                    |
-| validationState | `'valid' \| 'invalid'`       | Whether the radio group should display its "valid" or "invalid" visual styling.                                                                      |
-| isRequired      | `boolean`                    | Whether the user must check a radio group item before the owning form can be submitted.                                                              |
-| isDisabled      | `boolean`                    | Whether the radio group is disabled.                                                                                                                 |
-| isReadOnly      | `boolean`                    | Whether the radio group items can be selected but not changed by the user.                                                                           |
+| Prop            | Description                                                                                                                                                         |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| value           | `string` <br/> The controlled value of the radio button to check.                                                                                                   |
+| defaultValue    | `string` <br/> The value of the radio button that should be checked when initially rendered. Useful when you do not need to control the state of the radio buttons. |
+| onValueChange   | `(value?: string) => void` <br/> Event handler called when the value changes.                                                                                       |
+| name            | `string` <br/> The name of the radio group. Submitted with its owning form as part of a name/value pair.                                                            |
+| orientation     | `'horizontal' \| 'vertical'` <br/> The axis the radio group items should align with.                                                                                |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the radio group should display its "valid" or "invalid" visual styling.                                                        |
+| isRequired      | `boolean` <br/> Whether the user must check a radio group item before the owning form can be submitted.                                                             |
+| isDisabled      | `boolean` <br/> Whether the radio group is disabled.                                                                                                                |
+| isReadOnly      | `boolean` <br/> Whether the radio group items can be selected but not changed by the user.                                                                          |
 
 | Data attributes | Description                                                                                  |
 | :-------------- | :------------------------------------------------------------------------------------------- |
@@ -303,16 +303,16 @@ The radio group supports the `name` prop, paired with the radio `value` prop, fo
 
 ### RadioGroup.ErrorMessage
 
-| Prop       | Type      | Description                                                                                                             |
-| :--------- | :-------- | :---------------------------------------------------------------------------------------------------------------------- |
-| forceMount | `boolean` | Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
-### Radio
+### RadioGroup.Item
 
-| Prop       | Type      | Description                                                                                                                                               |
-| :--------- | :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value      | `string`  | The value of the radio button, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio#Value). |
-| isDisabled | `boolean` | Whether the radio button is disabled or not.                                                                                                              |
+| Prop       | Description                                                                                                                                                              |
+| :--------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value      | `string` <br/> The value of the radio button, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio#Value). |
+| isDisabled | `boolean` <br/> Whether the radio button is disabled or not.                                                                                                             |
 
 | Data attributes    | Description                                                                       |
 | :----------------- | :-------------------------------------------------------------------------------- |
@@ -324,13 +324,13 @@ The radio group supports the `name` prop, paired with the radio `value` prop, fo
 | data-focus         | Present when the radio is focused.                                                |
 | data-focus-visible | Present when the radio is focused via keyboard.                                   |
 
-`Radio.Input`, `Radio.Control`, `Radio.Indicator` and `Radio.Label` shares the same `data-*` attributes.
+`RadioGroup.ItemControl`, `RadioGroup.ItemIndicator` and `RadioGroup.ItemLabel` shares the same `data-*` attributes.
 
-### Radio.Indicator
+### RadioGroup.ItemIndicator
 
-| Prop       | Type      | Description                                                                                                             |
-| :--------- | :-------- | :---------------------------------------------------------------------------------------------------------------------- |
-| forceMount | `boolean` | Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
 ## Accessibility
 

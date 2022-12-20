@@ -1,19 +1,19 @@
-import { Switch as SwitchPrimitive } from "@kobalte/elements";
+import { Switch as SwitchBase } from "@kobalte/core";
 import { ComponentProps, createSignal, splitProps } from "solid-js";
 
-export function Switch(props: ComponentProps<typeof SwitchPrimitive>) {
+export function Switch(props: ComponentProps<typeof SwitchBase>) {
   const [local, others] = splitProps(props, ["children"]);
 
   return (
-    <SwitchPrimitive class="inline-flex items-center ui-disabled:opacity-50" {...others}>
-      <SwitchPrimitive.Input />
-      <SwitchPrimitive.Label class="select-none mr-3 text-sm text-zinc-900 dark:text-zinc-300">
+    <SwitchBase class="inline-flex items-center ui-disabled:opacity-50" {...others}>
+      <SwitchBase.Input />
+      <SwitchBase.Label class="select-none mr-3 text-sm text-zinc-900 dark:text-zinc-300">
         {local.children}
-      </SwitchPrimitive.Label>
-      <SwitchPrimitive.Control class="inline-flex transition items-center px-[2px] w-11 h-6 bg-zinc-200 outline-none ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:ring-blue-900/60 rounded-full dark:bg-zinc-700 dark:border-zinc-600 ui-checked:bg-blue-600 dark:ui-checked:bg-blue-600">
-        <SwitchPrimitive.Thumb class="ui-checked:translate-x-full ui-checked:border-white bg-white after:border-zinc-300 border rounded-full h-5 w-5 transition-all" />
-      </SwitchPrimitive.Control>
-    </SwitchPrimitive>
+      </SwitchBase.Label>
+      <SwitchBase.Control class="inline-flex transition items-center px-[2px] w-11 h-6 bg-zinc-200 outline-none ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:ring-blue-900/60 rounded-full dark:bg-zinc-700 dark:border-zinc-600 ui-checked:bg-blue-600 dark:ui-checked:bg-blue-600">
+        <SwitchBase.Thumb class="ui-checked:translate-x-full ui-checked:border-white bg-white after:border-zinc-300 border rounded-full h-5 w-5 transition-all" />
+      </SwitchBase.Control>
+    </SwitchBase>
   );
 }
 

@@ -8,7 +8,7 @@ A window overlaid on either the primary window or another dialog window. Content
 ## Import
 
 ```ts
-import { Dialog } from "@kobalte/elements";
+import { Dialog } from "@kobalte/core";
 ```
 
 ## Features
@@ -28,9 +28,9 @@ The dialog consists of:
 - **Dialog**: Contains all the parts of a dialog.
 - **Dialog.Trigger**: The button that opens the dialog.
 - **Dialog.Portal**: Portals its children into the `body` when the dialog is open.
-- **Dialog.Backdrop**: The layer that covers the inert portion of the view when the dialog is open.
-- **Dialog.Container**: The container for the dialog panel. Useful for positioning the dialog panel on screen.
-- **Dialog.Panel**: The element that visually represents a dialog. Contains the content to be rendered when the dialog is open.
+- **Dialog.Overlay**: The layer that covers the inert portion of the view when the dialog is open.
+- **Dialog.Positioner**: A wrapper component to help positioning the dialog panel on screen.
+- **Dialog.Content**: Contains the content to be rendered when the dialog is open.
 - **Dialog.CloseButton**: The button that closes the dialog.
 - **Dialog.Title**: An accessible title to be announced when the dialog is opened.
 - **Dialog.Description**: An optional accessible description to be announced when the dialog is opened.
@@ -40,14 +40,14 @@ The dialog consists of:
   <Dialog.Trigger />
 
   <Dialog.Portal>
-    <Dialog.Backdrop />
-    <Dialog.Container>
-      <Dialog.Panel>
+    <Dialog.Overlay />
+    <Dialog.Positioner>
+      <Dialog.Content>
         <Dialog.CloseButton />
         <Dialog.Title />
         <Dialog.Description />
-      </Dialog.Panel>
-    </Dialog.Container>
+      </Dialog.Content>
+    </Dialog.Positioner>
   </Dialog.Portal>
 </Dialog>
 ```

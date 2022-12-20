@@ -31,6 +31,7 @@ module.exports = plugin.withOptions(({ prefix = "ui" } = {}) => {
   return ({ addVariant }) => {
     for (let state of STATES) {
       addVariant(`${prefix}-${state}`, [`&[data-${state}]`]);
+
       addVariant(`${prefix}-not-${state}`, [`&:not([data-${state}])`]);
     }
   };

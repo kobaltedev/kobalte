@@ -43,7 +43,14 @@
   }
 
   .kb-table .kb-code {
-    @apply bg-transparent dark:bg-transparent p-0;
+    @apply bg-transparent dark:bg-transparent p-0 text-sky-700;
+  }
+
+  .kb-tabs-snippets pre.shiki {
+    margin: 0;
+    border: none;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
   }
 }
 

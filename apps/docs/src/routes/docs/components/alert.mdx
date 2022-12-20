@@ -1,31 +1,55 @@
-import { Alert } from "@kobalte/elements";
+import { Alert } from "@kobalte/core";
 
-import { Preview } from "../../../components/preview";
+import { Preview } from "../../../components";
 
 # Alert
 
 Display a brief, important message in a way that attracts the user's attention without interrupting the user's task.
 
-<Preview isCentered>
-  <Alert class="px-4 py-3 rounded-md text-blue-700 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20">
-    Kobalte is going live on January 10, get ready!
-  </Alert>
-</Preview>
+## Import
 
-```tsx
-<Alert class="px-4 py-3 rounded-md text-blue-700 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20">
-  Kobalte is going live on January 10, get ready!
-</Alert>
+```ts
+import { Alert } from "@kobalte/core";
 ```
 
 ## Features
 
 - Adhere to the [WAI ARIA Alert](https://www.w3.org/WAI/ARIA/apg/patterns/alert/) design pattern.
 
-## Import
+## Anatomy
 
-```ts
-import { Alert } from "@kobalte/elements";
+The alert consists of :
+
+- **Alert:** The root container for an alert.
+
+```tsx
+<Alert></Alert>
+```
+
+## Example
+
+<Preview>
+  <Alert class="px-4 py-3 rounded-md text-blue-700 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20">
+    Kobalte is going live soon, get ready!
+  </Alert>
+</Preview>
+
+```tsx
+import { Alert as AlertBase } from "@kobalte/core";
+import { ComponentProps } from "solid-js";
+
+function Alert(props: ComponentProps<typeof AlertBase>) {
+  return (
+    <AlertBase
+      class="px-4 py-3 rounded-md text-blue-700 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20"
+      {...props}
+    />
+  );
+}
+
+function App() {
+  return <Alert>Kobalte is going live soon, get ready!</Alert>;
+}
 ```
 
 ## API reference

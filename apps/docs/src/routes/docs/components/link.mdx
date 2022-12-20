@@ -1,0 +1,127 @@
+import { Preview } from "../../../components/preview";
+import { Kbd } from "../../../components/kbd";
+import { Link } from "../../../examples/link";
+
+# Link
+
+Allows a user to navigate to another page or resource within a web page or application.
+
+## Import
+
+```ts
+import { Link } from "@kobalte/core";
+```
+
+## Features
+
+- Native HTML `<a>` support.
+- Custom element type support via the [WAI ARIA Link](https://www.w3.org/WAI/ARIA/apg/patterns/link/) design pattern.
+- Support for mouse, touch, and keyboard interactions.
+- Support for disabled links.
+
+## Anatomy
+
+The link consists of:
+
+- **Link:** The root container for a link.
+
+```tsx
+<Link></Link>
+```
+
+## Example
+
+<Preview>
+  <Link href="https://kobalte.dev" target="_blank">
+    <span>Kobalte</span>
+  </Link>
+</Preview>
+
+```tsx
+import { Link as LinkBase } from "@kobalte/core";
+import { ComponentProps } from "solid-js";
+
+export function Link(props: ComponentProps<typeof LinkBase>) {
+  return (
+    <LinkBase
+      class="text-blue-600 dark:text-blue-500 hover:underline ui-disabled:cursor-not-allowed ui-disabled:opacity-40 ui-disabled:hover:no-underline"
+      {...props}
+    />
+  );
+}
+
+function App() {
+  return (
+    <Link href="https://kobalte.dev" target="_blank">
+      Kobalte
+    </Link>
+  );
+}
+```
+
+## Usage
+
+The following examples show how to use the `Link` component created in the above example.
+
+### Events
+
+Link supports `PressEvent` like described in the [Button](/docs/components/button#events) documentation.
+
+### Client handled links
+
+This example shows a client handled link using press events. It renders a `<span>`, and Kobalte returns the proper ARIA attributes to expose the element as a link to assistive technology.
+
+<Preview>
+  <Link as="span" onPress={() => alert("Pressed link")}>
+    <span>Kobalte</span>
+  </Link>
+</Preview>
+
+```tsx
+<Link as="span" onPress={() => alert("Pressed link")}>
+  Kobalte
+</Link>
+```
+
+### Disabled
+
+Link can be disabled using the `isDisabled` prop. Native navigation will be disabled, and the link will be exposed as disabled to assistive technology with ARIA.
+
+<Preview>
+  <Link href="https://kobalte.dev" isDisabled>
+    <span>Kobalte</span>
+  </Link>
+</Preview>
+
+```tsx
+<Link href="https://kobalte.dev" isDisabled>
+  Kobalte
+</Link>
+```
+
+## API Reference
+
+| Prop                | Description                                                                                                                                             |
+| :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| isDisabled          | `boolean` <br/> Whether the link is disabled.                                                                                                           |
+| preventFocusOnPress | `boolean` <br/> Whether the link should not receive focus on press.                                                                                     |
+| onPress             | `(event: PressEvent) => void` <br/> Handler that is called when the press is released over the link.                                                    |
+| onPressStart        | `(event: PressEvent) => void` <br/> Handler that is called when a press interaction starts.                                                             |
+| onPressEnd          | `(event: PressEvent) => void` <br/> Handler that is called when a press interaction ends, either over the link or when the pointer leaves the link.     |
+| onPressUp           | `(event: PressEvent) => void` <br/> Handler that is called when a press is released over the link, regardless of whether it started on the link or not. |
+| onPressChange       | `(isPressed: boolean) => void` <br/> Handler that is called when the press state changes.                                                               |
+
+| Data attribute     | Description                                                                       |
+| :----------------- | :-------------------------------------------------------------------------------- |
+| data-active        | Present when the link is activated by a pointer down (mouse, touch, pen, etc...). |
+| data-disabled      | Present when the link is disabled.                                                |
+| data-focus         | Present when the link is focused.                                                 |
+| data-focus-visible | Present when the link is focused via keyboard.                                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description         |
+| :--------------- | :------------------ |
+| <Kbd>Enter</Kbd> | Activates the link. |
