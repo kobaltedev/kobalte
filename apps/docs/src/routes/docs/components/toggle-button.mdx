@@ -1,38 +1,18 @@
-import { ToggleButton } from "@kobalte/core";
 import { Show } from "solid-js";
 
 import { Preview } from "../../../components/preview";
 import { VolumeOnIcon, VolumeOffIcon } from "../../../components/icons";
 import { Kbd } from "../../../components/kbd";
+import { ControlledExample, ToggleButton } from "../../../examples/toggle-button";
 
 # Toggle Button
 
 A two-state button that can be either on (pressed) or off (not pressed).
 
-<Preview isCentered>
-  <ToggleButton
-    aria-label="mute"
-    class="appearance-none outline-none h-10 w-10 flex items-center justify-center rounded-md text-white bg-blue-600 dark:text-white/90 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30 ui-pressed:bg-red-600"
-  >
-    {({ isPressed }) => (
-      <Show when={isPressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
-        <VolumeOffIcon class="h-6 w-6" />
-      </Show>
-    )}
-  </ToggleButton>
-</Preview>
+## Import
 
-```tsx
-<ToggleButton
-  aria-label="mute"
-  class="appearance-none outline-none h-10 w-10 flex items-center justify-center rounded-md text-white bg-blue-600 dark:text-white/90 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30 ui-pressed:bg-red-600"
->
-  {({ isPressed }) => (
-    <Show when={isPressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
-      <VolumeOffIcon class="h-6 w-6" />
-    </Show>
-  )}
-</ToggleButton>
+```ts
+import { ToggleButton } from "@kobalte/core";
 ```
 
 ## Features
@@ -43,31 +23,114 @@ A two-state button that can be either on (pressed) or off (not pressed).
 - Keyboard event support for <Kbd>Space</Kbd> and <Kbd>Enter</Kbd> keys.
 - Can be controlled or uncontrolled.
 
-## Import
+## Anatomy
 
-```ts
-import { ToggleButton } from "@kobalte/core";
+The toggle button consists of:
+
+- **ToggleButton:** the root container for a toggle button.
+
+## Example
+
+<Preview>
+  <ToggleButton
+    aria-label="Mute"
+    onIcon={<VolumeOffIcon class="h-6 w-6" />}
+    offIcon={<VolumeOnIcon class="h-6 w-6" />}
+  />
+</Preview>
+
+```tsx
+import { ToggleButton as ToggleButtonBase } from "@kobalte/core";
+import { ComponentProps, JSX, Show, splitProps } from "solid-js";
+import { VolumeOffIcon, VolumeOnIcon } from "some-icon-library";
+
+type ToggleButtonBaseProps = ComponentProps<typeof ToggleButtonBase>;
+
+interface ToggleButtonProps extends Omit<ToggleButtonBaseProps, "children"> {
+  onIcon: JSX.Element;
+  offIcon: JSX.Element;
+}
+
+export function ToggleButton(props: ToggleButtonProps) {
+  const [local, others] = splitProps(props, ["onIcon", "offIcon"]);
+
+  return (
+    <ToggleButtonBase
+      class="appearance-none outline-none h-10 w-10 flex items-center justify-center rounded-md text-white bg-blue-600 dark:text-white/90 ui-disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30 ui-pressed:bg-red-600"
+      {...others}
+    >
+      {state => (
+        <Show when={state.isPressed()} fallback={local.offIcon}>
+          {local.onIcon}
+        </Show>
+      )}
+    </ToggleButtonBase>
+  );
+}
+
+function App() {
+  return (
+    <ToggleButton
+      aria-label="Mute"
+      onIcon={<VolumeOffIcon class="h-6 w-6" />}
+      offIcon={<VolumeOnIcon class="h-6 w-6" />}
+    />
+  );
+}
 ```
 
 ## Usage
+
+The following examples show how to use the `ToggleButton` component created in the above example.
 
 ### Default value
 
 An initial, uncontrolled value can be provided to the ToggleButton using the `defaultIsPressed` prop.
 
-```tsx
-<ToggleButton defaultIsPressed />
+<Preview>
+  <ToggleButton
+    defaultIsPressed
+    aria-label="Mute"
+    onIcon={<VolumeOffIcon class="h-6 w-6" />}
+    offIcon={<VolumeOnIcon class="h-6 w-6" />}
+  />
+</Preview>
+
+```tsx {1}
+<ToggleButton
+  defaultIsPressed
+  aria-label="Mute"
+  onIcon={<VolumeOffIcon class="h-6 w-6" />}
+  offIcon={<VolumeOnIcon class="h-6 w-6" />}
+/>
 ```
 
 ### Controlled value
 
 A controlled value can be provided using the `isPressed` prop. The `onPressedChange` event is fired when the user toggle the button.
 
-```tsx
-function Example() {
+<Preview>
+  <ControlledExample />
+</Preview>
+
+```tsx {3,8-9}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
   const [pressed, setPressed] = createSignal(false);
 
-  return <ToggleButton isPressed={pressed} onPressedChange={setPressed} />;
+  return (
+    <>
+      <ToggleButton
+        isPressed={pressed()}
+        onPressedChange={setPressed}
+        aria-label="Mute"
+        onIcon={<VolumeOffIcon class="h-6 w-6" />}
+        offIcon={<VolumeOnIcon class="h-6 w-6" />}
+      />
+      <p>The microphone is {pressed() ? "muted" : "active"}.</p>
+    </>
+  );
 }
 ```
 
@@ -75,22 +138,22 @@ function Example() {
 
 The ToggleButton can be disabled with the `isDisabled` prop.
 
-```tsx
-<ToggleButton isDisabled />
-```
+<Preview>
+  <ToggleButton
+    isDisabled
+    aria-label="Mute"
+    onIcon={<VolumeOffIcon class="h-6 w-6" />}
+    offIcon={<VolumeOnIcon class="h-6 w-6" />}
+  />
+</Preview>
 
-### Accessing internal state
-
-The internal state of the ToggleButton can be accessed by using a function as children (_render prop_).
-
-```tsx
-<ToggleButton aria-label="mute">
-  {state => (
-    <Show when={state.isPressed()} fallback={<VolumeOnIcon />}>
-      <VolumeOffIcon />
-    </Show>
-  )}
-</ToggleButton>
+```tsx {1}
+<ToggleButton
+  isDisabled
+  aria-label="Mute"
+  onIcon={<VolumeOffIcon class="h-6 w-6" />}
+  offIcon={<VolumeOnIcon class="h-6 w-6" />}
+/>
 ```
 
 ## API Reference
@@ -103,6 +166,10 @@ The internal state of the ToggleButton can be accessed by using a function as ch
 | defaultIsPressed | `boolean` <br/> The default pressed state when initially rendered. Useful when you do not need to control the pressed state.                                                                                       |
 | onPressedChange  | `(isPressed: boolean) => void` <br/> Event handler called when the pressed state of the toggle button changes. This handler is different from the button `onPressChange` handler which is related to `PressEvent`. |
 | children         | `JSX.Element \| (state: ToggleButtonState) => JSX.Element` <br/> The children of the toggle button. Can be a `JSX.Element` or a _render prop_ for having access to the internal state.                             |
+
+| Render Prop | Description                                                                               |
+| :---------- | :---------------------------------------------------------------------------------------- |
+| isPressed   | `Accessor<boolean>` <br/> Whether the toggle button is on (pressed) or off (not pressed). |
 
 | Data attributes | Description                                     |
 | :-------------- | :---------------------------------------------- |
