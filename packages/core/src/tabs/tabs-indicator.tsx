@@ -97,6 +97,7 @@ export const TabsIndicator = createPolymorphicComponent<"div", TabsIndicatorProp
       component={local.as}
       role="presentation"
       style={{ ...style(), ...local.style }}
+      data-orientation={context.orientation()}
       {...others}
     />
   );

@@ -1,5 +1,11 @@
-import { Preview } from "../../../components";
-import { BasicExample, ControlledExample } from "../../../examples/tabs";
+import { Preview, Kbd } from "../../../components";
+import {
+  BasicExample,
+  ControlledExample,
+  DisabledTabExample,
+  DynamicContentExample,
+  FocusableContentExample,
+} from "../../../examples/tabs";
 
 # Tabs
 
@@ -53,7 +59,7 @@ import { Tabs as TabsBase } from "@kobalte/core";
 import { ComponentProps, splitProps } from "solid-js";
 
 function Tabs(props: ComponentProps<typeof TabsBase>) {
-  return <TabsBase class="w-full" {...props} />;
+  return <TabsBase class="w-full data-[orientation='vertical']:flex" {...props} />;
 }
 
 function TabList(props: ComponentProps<typeof TabsBase.List>) {
@@ -61,11 +67,11 @@ function TabList(props: ComponentProps<typeof TabsBase.List>) {
 
   return (
     <TabsBase.List
-      class="relative flex items-center border-b border-zinc-300 dark:border-zinc-700"
+      class="relative flex items-center data-[orientation='horizontal']:border-b data-[orientation='vertical']:flex-col data-[orientation='vertical']:items-stretch data-[orientation='vertical']:border-r border-zinc-300 dark:border-zinc-700"
       {...others}
     >
       {local.children}
-      <TabsBase.Indicator class="absolute bottom-[-1px] h-0.5 bg-blue-600 transition-all" />
+      <TabsBase.Indicator class="absolute data-[orientation='horizontal']:bottom-[-1px] data-[orientation='vertical']:right-[-1px] data-[orientation='horizontal']:h-0.5 data-[orientation='vertical']:w-0.5 bg-blue-600 transition-all" />
     </TabsBase.List>
   );
 }
@@ -73,7 +79,7 @@ function TabList(props: ComponentProps<typeof TabsBase.List>) {
 function Tab(props: ComponentProps<typeof TabsBase.Trigger>) {
   return (
     <TabsBase.Trigger
-      class="inline-block px-4 py-2 outline-none ui-focus:bg-zinc-100 ui-hover:text-zinc-600 ui-hover:bg-zinc-50 dark:ui-hover:bg-zinc-800 dark:ui-hover:text-zinc-300 dark:ui-focus:bg-zinc-800 ui-disabled:opacity-40 ui-disabled:ui-hover:bg-transparent"
+      class="inline-block px-4 py-2 outline-none ui-focus-visible:bg-zinc-100 ui-hover:text-zinc-600 ui-hover:bg-zinc-50 dark:ui-hover:bg-zinc-800 dark:ui-hover:text-zinc-300 dark:ui-focus-visible:bg-zinc-800 ui-disabled:opacity-40 ui-disabled:ui-hover:bg-transparent"
       {...props}
     />
   );
@@ -164,10 +170,241 @@ function ControlledExample() {
 
 ### Focusable content
 
+When the tab content doesn't contain any focusable content, the entire content is given a `tabIndex=0` so that the content can be navigated to with the keyboard.
+
+When the tab content contains focusable content, such as an `<input>`, then the `tabIndex` is omitted because the content itself can receive focus.
+
+This example uses the same Tabs components from above. Try navigating from the tabs to each content using the keyboard.
+
+<Preview>
+  <FocusableContentExample />
+</Preview>
+
+```tsx {10}
+function FocusableContentExample() {
+  return (
+    <Tabs>
+      <TabList>
+        <Tab value="profile">Profile</Tab>
+        <Tab value="dashboard">Dashboard</Tab>
+        <Tab value="settings">Settings</Tab>
+        <Tab value="contact">Contact</Tab>
+      </TabList>
+      <TabPanel value="profile">
+        <input placeholder="Change password" />
+      </TabPanel>
+      <TabPanel value="dashboard">Dashboard details</TabPanel>
+      <TabPanel value="settings">Settings details</TabPanel>
+      <TabPanel value="contact">Contact details</TabPanel>
+    </Tabs>
+  );
+}
+```
+
 ### Dynamic tabs
+
+Tabs can be added/removed dynamically by using a signal and SolidJS `For`.
+
+<Preview>
+  <DynamicContentExample />
+</Preview>
+
+```tsx {3-7,32,34}
+import { createSignal } from "solid-js";
+
+function DynamicContentExample() {
+  const [tabs, setTabs] = createSignal([
+    { id: "1", title: "Tab 1", content: "Tab body 1" },
+    { id: "2", title: "Tab 2", content: "Tab body 2" },
+    { id: "3", title: "Tab 3", content: "Tab body 3" },
+  ]);
+
+  const addTab = () => {
+    setTabs(prev => [
+      ...prev,
+      {
+        id: String(prev.length + 1),
+        title: `Tab ${prev.length + 1}`,
+        content: `Tab Body ${prev.length + 1}`,
+      },
+    ]);
+  };
+
+  const removeTab = () => {
+    if (tabs().length > 1) {
+      setTabs(prev => prev.slice(0, -1));
+    }
+  };
+
+  return (
+    <>
+      <button onClick={addTab}>Add tab</button>
+      <button onClick={removeTab}>Remove tab</button>
+      <Tabs>
+        <TabList>
+          <For each={tabs()}>{tab => <Tab value={tab.id}>{tab.title}</Tab>}</For>
+        </TabList>
+        <For each={tabs()}>{tab => <TabPanel value={tab.id}>{tab.content}</TabPanel>}</For>
+      </Tabs>
+    </>
+  );
+}
+```
 
 ### Activation mode
 
+By default, pressing the arrow keys while focus is on a Tab will switch selection to the adjacent Tab in that direction, updating the content displayed accordingly.
+
+If you would like to prevent selection change from happening automatically you can set the `activationMode` prop to `manual`. This will prevent tab selection from changing on arrow key press, requiring a subsequent <Kbd>Enter</Kbd> or <Kbd>Space</Kbd> key press to confirm tab selection.
+
+<Preview>
+  <BasicExample activationMode="manual" />
+</Preview>
+
+```tsx {0}
+<Tabs activationMode="manual">
+  <TabList>
+    <Tab value="profile">Profile</Tab>
+    <Tab value="dashboard">Dashboard</Tab>
+    <Tab value="settings">Settings</Tab>
+    <Tab value="contact">Contact</Tab>
+  </TabList>
+  <TabPanel value="profile">Profile details</TabPanel>
+  <TabPanel value="dashboard">Dashboard details</TabPanel>
+  <TabPanel value="settings">Settings details</TabPanel>
+  <TabPanel value="contact">Contact details</TabPanel>
+</Tabs>
+```
+
 ### Orientation
 
+By default, tabs are horizontally oriented. The `orientation` prop can be set to `vertical` to change this. This affects keyboard navigation. You are responsible for styling your tabs accordingly.
+
+<Preview>
+  <BasicExample orientation="vertical" />
+</Preview>
+
+```tsx {0}
+<Tabs orientation="vertical">
+  <TabList>
+    <Tab value="profile">Profile</Tab>
+    <Tab value="dashboard">Dashboard</Tab>
+    <Tab value="settings">Settings</Tab>
+    <Tab value="contact">Contact</Tab>
+  </TabList>
+  <TabPanel value="profile">Profile details</TabPanel>
+  <TabPanel value="dashboard">Dashboard details</TabPanel>
+  <TabPanel value="settings">Settings details</TabPanel>
+  <TabPanel value="contact">Contact details</TabPanel>
+</Tabs>
+```
+
 ### Disabled
+
+All tabs can be disabled using the `isDisabled` prop.
+
+<Preview>
+  <BasicExample isDisabled />
+</Preview>
+
+```tsx {0}
+<Tabs isDisabled>
+  <TabList>
+    <Tab value="profile">Profile</Tab>
+    <Tab value="dashboard">Dashboard</Tab>
+    <Tab value="settings">Settings</Tab>
+    <Tab value="contact">Contact</Tab>
+  </TabList>
+  <TabPanel value="profile">Profile details</TabPanel>
+  <TabPanel value="dashboard">Dashboard details</TabPanel>
+  <TabPanel value="settings">Settings details</TabPanel>
+  <TabPanel value="contact">Contact details</TabPanel>
+</Tabs>
+```
+
+Individual tab can be disabled using the `isDisabled` prop on the tab itself.
+
+<Preview>
+  <DisabledTabExample />
+</Preview>
+
+```tsx {4}
+<Tabs>
+  <TabList>
+    <Tab value="profile">Profile</Tab>
+    <Tab value="dashboard">Dashboard</Tab>
+    <Tab value="settings" isDisabled>
+      Settings
+    </Tab>
+    <Tab value="contact">Contact</Tab>
+  </TabList>
+  <TabPanel value="profile">Profile details</TabPanel>
+  <TabPanel value="dashboard">Dashboard details</TabPanel>
+  <TabPanel value="settings">Settings details</TabPanel>
+  <TabPanel value="contact">Contact details</TabPanel>
+</Tabs>
+```
+
+## API Reference
+
+### Tabs
+
+| Prop           | Description                                                                                                                          |
+| :------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
+| value          | `string` <br/> The controlled value of the tab to activate.                                                                          |
+| defaultValue   | `string` <br/> The value of the tab that should be active when initially rendered. Useful when you do not need to control the state. |
+| onValueChange  | `(value: string) => void` <br/> Event handler called when the value changes.                                                         |
+| orientation    | `'horizontal' \| 'vertical'` <br/> The orientation of the tabs.                                                                      |
+| activationMode | `'automatic' \| 'manual'` <br/> Whether tabs are activated automatically on focus or manually.                                       |
+| isDisabled     | `boolean` <br/> Whether the tabs are disabled.                                                                                       |
+
+| Data attribute                | Description                                            |
+| :---------------------------- | :----------------------------------------------------- |
+| data-orientation='horizontal' | Present when the separator has horizontal orientation. |
+| data-orientation='vertical'   | Present when the separator has vertical orientation.   |
+
+`Tabs.List`, `Tabs.Trigger`, `Tabs.Indicator` and `Tabs.Content` shares the same data-attributes.
+
+### Tabs.Trigger
+
+| Prop       | Description                                                             |
+| :--------- | :---------------------------------------------------------------------- |
+| value      | `string` <br/> The unique key that associates the tab with a tab panel. |
+| isDisabled | `boolean` <br/> Whether the tab should be disabled.                     |
+
+| Data attribute     | Description                                                                          |
+| :----------------- | :----------------------------------------------------------------------------------- |
+| data-selected      | Present when the trigger is seleceted.                                               |
+| data-disabled      | Present when the trigger is disabled.                                                |
+| data-hover         | Present when the trigger is hovered.                                                 |
+| data-focus         | Present when the trigger is focused.                                                 |
+| data-focus-visible | Present when the trigger is focused via keyboard.                                    |
+| data-active        | Present when the trigger is activated by a pointer down (mouse, touch, pen, etc...). |
+
+### Tabs.Content
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| value      | `string` <br/> The unique key that associates the tab panel with a tab.                                                                 |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+| Data attribute     | Description                                              |
+| :----------------- | :------------------------------------------------------- |
+| data-focus         | Present when the content itself is focused.              |
+| data-focus-visible | Present when the content itself is focused via keyboard. |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                                                                                               |
+| :-------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+| <Kbd>Tab</Kbd>        | When focus moves onto the tabs, focuses the active trigger. When a trigger is focused, moves focus to the active content. |
+| <Kbd>ArrowRight</Kbd> | Moves focus to the next trigger in horizontal orientation and activates its associated content.                           |
+| <Kbd>ArrowLeft</Kbd>  | Moves focus to the previous trigger in horizontal orientation and activates its associated content.                       |
+| <Kbd>ArrowDown</Kbd>  | Moves focus to the next trigger in vertical orientation and activates its associated content.                             |
+| <Kbd>ArrowUp</Kbd>    | Moves focus to the previous trigger in vertical orientation and activates its associated content.                         |
+| <Kbd>Home</Kbd>       | Moves focus to the first trigger and activates its associated content.                                                    |
+| <Kbd>End</Kbd>        | Moves focus to the last trigger and activates its associated content.                                                     |
+| <Kbd>Enter</Kbd>      | In manual mode, when a trigger is focused, moves focus to its associated content.                                         |
+| <Kbd>Space</Kbd>      | In manual mode, when a trigger is focused, moves focus to its associated content.                                         |
