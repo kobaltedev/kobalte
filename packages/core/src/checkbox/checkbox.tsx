@@ -15,13 +15,13 @@ import {
 } from "@kobalte/utils";
 import {
   Accessor,
+  children,
   Component,
   ComponentProps,
   createMemo,
   createSignal,
   createUniqueId,
   JSX,
-  Show,
   splitProps,
 } from "solid-js";
 
@@ -32,14 +32,7 @@ import { CheckboxIndicator } from "./checkbox-indicator";
 import { CheckboxInput } from "./checkbox-input";
 import { CheckboxLabel } from "./checkbox-label";
 
-type CheckboxComposite = {
-  Label: typeof CheckboxLabel;
-  Input: typeof CheckboxInput;
-  Control: typeof CheckboxControl;
-  Indicator: typeof CheckboxIndicator;
-};
-
-export interface CheckboxState {
+interface CheckboxState {
   /** Whether the checkbox is checked or not. */
   isChecked: Accessor<boolean>;
 
@@ -47,7 +40,12 @@ export interface CheckboxState {
   isIndeterminate: Accessor<boolean>;
 }
 
-type CheckboxRenderProp = (state: CheckboxState) => JSX.Element;
+type CheckboxComposite = {
+  Label: typeof CheckboxLabel;
+  Input: typeof CheckboxInput;
+  Control: typeof CheckboxControl;
+  Indicator: typeof CheckboxIndicator;
+};
 
 export interface CheckboxProps {
   /** The controlled checked state of the checkbox. */
@@ -97,7 +95,7 @@ export interface CheckboxProps {
    * The children of the checkbox.
    * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
    */
-  children?: JSX.Element | CheckboxRenderProp;
+  children?: JSX.Element | ((state: CheckboxState) => JSX.Element);
 }
 
 /**
@@ -195,12 +193,7 @@ export const Checkbox: Component<OverrideProps<ComponentProps<"label">, Checkbox
         {...context.dataset()}
         {...combineProps({ ref: el => (ref = el) }, others, hoverHandlers)}
       >
-        <Show when={isFunction(local.children)} fallback={local.children as JSX.Element}>
-          {(local.children as CheckboxRenderProp)?.({
-            isChecked: context.isChecked,
-            isIndeterminate: context.isIndeterminate,
-          })}
-        </Show>
+        <CheckboxChild state={context} children={local.children} />
       </label>
     </CheckboxContext.Provider>
   );
@@ -210,3 +203,13 @@ Checkbox.Label = CheckboxLabel;
 Checkbox.Input = CheckboxInput;
 Checkbox.Control = CheckboxControl;
 Checkbox.Indicator = CheckboxIndicator;
+
+interface CheckboxChildProps extends Pick<CheckboxProps, "children"> {
+  state: CheckboxState;
+}
+
+function CheckboxChild(props: CheckboxChildProps) {
+  return children(() => {
+    return isFunction(props.children) ? props.children(props.state) : props.children;
+  });
+}

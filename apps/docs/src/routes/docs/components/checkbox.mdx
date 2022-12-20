@@ -1,6 +1,11 @@
 import { Preview } from "../../../components/preview";
 import { Kbd } from "../../../components/kbd";
-import { Checkbox, ControlledExample, HTMLFormExample } from "../../../examples/checkbox";
+import {
+  Checkbox,
+  ControlledExample,
+  HTMLFormExample,
+  IndeterminateExample,
+} from "../../../examples/checkbox";
 
 # Checkbox
 
@@ -134,11 +139,44 @@ function ControlledExample() {
 Checkboxes can be in an indeterminate state using the `isIndeterminate` prop. The Checkbox will remain indeterminate until the `isIndeterminate` prop is set to false, regardless of user interaction.
 
 <Preview>
-  <Checkbox isIndeterminate>Subscribe</Checkbox>
+  <IndeterminateExample />
 </Preview>
 
-```tsx
-<Checkbox isIndeterminate>Subscribe</Checkbox>
+```tsx {6,12}
+import { createSignal } from "solid-js";
+
+function IndeterminateExample() {
+  const [checkedItems, setCheckedItems] = createSignal([false, false]);
+
+  const allChecked = () => checkedItems().every(Boolean);
+  const isIndeterminate = () => checkedItems().some(Boolean) && !allChecked();
+
+  return (
+    <>
+      <Checkbox
+        isChecked={allChecked()}
+        isIndeterminate={isIndeterminate()}
+        onCheckedChange={isChecked => setCheckedItems([isChecked, isChecked])}
+      >
+        Parent Checkbox
+      </Checkbox>
+      <div class="flex flex-col items-start pl-6 mt-1 space-y-1">
+        <Checkbox
+          isChecked={checkedItems()[0]}
+          onCheckedChange={isChecked => setCheckedItems([isChecked, checkedItems()[1]])}
+        >
+          Child Checkbox 1
+        </Checkbox>
+        <Checkbox
+          isChecked={checkedItems()[1]}
+          onCheckedChange={isChecked => setCheckedItems([checkedItems()[0], isChecked])}
+        >
+          Child Checkbox 2
+        </Checkbox>
+      </div>
+    </>
+  );
+}
 ```
 
 ### Disabled
@@ -220,6 +258,11 @@ function HTMLFormExample() {
 | isReadOnly       | `boolean` <br/> Whether the checkbox can be checked but not changed by the user.                                                                                              |
 | children         | `JSX.Element \| (state: CheckboxState) => JSX.Element` <br/> The children of the checkbox. Can be a `JSX.Element` or a _render prop_ for having access to the internal state. |
 
+| Render Prop     | Description                                                                  |
+| :-------------- | :--------------------------------------------------------------------------- |
+| isChecked       | `Accessor<boolean>` <br/> Whether the checkbox is checked or not.            |
+| isIndeterminate | `Accessor<boolean>` <br/> Whether the checkbox is in an indeterminate state. |
+
 | Data attribute     | Description                                                             |
 | :----------------- | :---------------------------------------------------------------------- |
 | data-valid         | Present when the checkbox is valid according to the validation rules.   |
@@ -233,7 +276,7 @@ function HTMLFormExample() {
 | data-focus         | Present when the checkbox is focused.                                   |
 | data-focus-visible | Present when the checkbox is focused via keyboard.                      |
 
-`Checkbox.Control`, `Checkbox.Indicator` and `Checkbox.Label` shares the same `data-*` attributes.
+`Checkbox.Control`, `Checkbox.Indicator` and `Checkbox.Label` shares the same data-attributes.
 
 ### Checkbox.Indicator
 

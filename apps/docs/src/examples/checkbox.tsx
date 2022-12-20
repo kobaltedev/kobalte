@@ -49,6 +49,39 @@ export function ControlledExample() {
   );
 }
 
+export function IndeterminateExample() {
+  const [checkedItems, setCheckedItems] = createSignal([false, false]);
+
+  const allChecked = () => checkedItems().every(Boolean);
+  const isIndeterminate = () => checkedItems().some(Boolean) && !allChecked();
+
+  return (
+    <>
+      <Checkbox
+        isChecked={allChecked()}
+        isIndeterminate={isIndeterminate()}
+        onCheckedChange={isChecked => setCheckedItems([isChecked, isChecked])}
+      >
+        Parent Checkbox
+      </Checkbox>
+      <div class="flex flex-col items-start pl-6 mt-1 space-y-1">
+        <Checkbox
+          isChecked={checkedItems()[0]}
+          onCheckedChange={isChecked => setCheckedItems([isChecked, checkedItems()[1]])}
+        >
+          Child Checkbox 1
+        </Checkbox>
+        <Checkbox
+          isChecked={checkedItems()[1]}
+          onCheckedChange={isChecked => setCheckedItems([checkedItems()[0], isChecked])}
+        >
+          Child Checkbox 2
+        </Checkbox>
+      </div>
+    </>
+  );
+}
+
 export function HTMLFormExample() {
   let formRef: HTMLFormElement | undefined;
 

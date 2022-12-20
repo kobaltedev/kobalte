@@ -13,7 +13,7 @@
  */
 
 import { createPolymorphicComponent, isFunction } from "@kobalte/utils";
-import { Accessor, JSX, Show, splitProps } from "solid-js";
+import { Accessor, children, JSX, splitProps } from "solid-js";
 
 import { Button, ButtonProps } from "../button";
 import { createToggleState, PressEvents } from "../primitives";
@@ -22,8 +22,6 @@ interface ToggleButtonState {
   /** Whether the toggle button is on (pressed) or off (not pressed). */
   isPressed: Accessor<boolean>;
 }
-
-type ToggleButtonRenderProp = (state: ToggleButtonState) => JSX.Element;
 
 export interface ToggleButtonProps extends ButtonProps {
   /** The controlled pressed state of the toggle button. */
@@ -45,7 +43,7 @@ export interface ToggleButtonProps extends ButtonProps {
    * The children of the toggle button.
    * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
    */
-  children?: JSX.Element | ToggleButtonRenderProp;
+  children?: JSX.Element | ((state: ToggleButtonState) => JSX.Element);
 }
 
 /**
@@ -80,9 +78,17 @@ export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonPro
       onPress={onPress}
       {...others}
     >
-      <Show when={isFunction(local.children)} fallback={local.children as JSX.Element}>
-        {(local.children as ToggleButtonRenderProp)?.({ isPressed: state.isSelected })}
-      </Show>
+      <ToggleButtonChild state={{ isPressed: state.isSelected }} children={local.children} />
     </Button>
   );
 });
+
+interface ToggleButtonChildProps extends Pick<ToggleButtonProps, "children"> {
+  state: ToggleButtonState;
+}
+
+function ToggleButtonChild(props: ToggleButtonChildProps) {
+  return children(() => {
+    return isFunction(props.children) ? props.children(props.state) : props.children;
+  });
+}
