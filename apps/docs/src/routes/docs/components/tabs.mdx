@@ -1,3 +1,173 @@
+import { Preview } from "../../../components";
+import { BasicExample, ControlledExample } from "../../../examples/tabs";
+
 # Tabs
 
 A set of layered sections of content, known as tab panels, that display one panel of content at a time.
+
+## Import
+
+```ts
+import { Tabs } from "@kobalte/core";
+```
+
+## Features
+
+- Follow the [WAI ARIA Tabs](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/) design pattern, semantically linking tabs and their associated tab panels.
+- Support for mouse, touch, and keyboard interactions on tabs.
+- Support for LTR and RTL keyboard navigation.
+- Support for disabled tabs.
+- Supports horizontal/vertical orientation.
+- Supports automatic/manual activation.
+- Focus management for tab panels without any focusable children.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The tabs consist of:
+
+- **Tabs:** The root container for tabs and tab contents.
+- **Tabs.List:** Contains the tabs that are aligned along the edge of the active tab content.
+- **Tabs.Trigger:** The button that activates its associated tab content.
+- **Tabs.Indicator:** The visual indicator displayed at the bottom of the tab list to indicate the selected tab.
+- **Tabs.Content:** Contains the content associated with a tab trigger.
+
+```tsx
+<Tabs>
+  <Tabs.List>
+    <Tabs.Trigger />
+    <Tabs.Indicator />
+  </Tabs.List>
+  <Tabs.Content />
+</Tabs>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+```tsx
+import { Tabs as TabsBase } from "@kobalte/core";
+import { ComponentProps, splitProps } from "solid-js";
+
+function Tabs(props: ComponentProps<typeof TabsBase>) {
+  return <TabsBase class="w-full" {...props} />;
+}
+
+function TabList(props: ComponentProps<typeof TabsBase.List>) {
+  const [local, others] = splitProps(props, ["children"]);
+
+  return (
+    <TabsBase.List
+      class="relative flex items-center border-b border-zinc-300 dark:border-zinc-700"
+      {...others}
+    >
+      {local.children}
+      <TabsBase.Indicator class="absolute bottom-[-1px] h-0.5 bg-blue-600 transition-all" />
+    </TabsBase.List>
+  );
+}
+
+function Tab(props: ComponentProps<typeof TabsBase.Trigger>) {
+  return (
+    <TabsBase.Trigger
+      class="inline-block px-4 py-2 outline-none ui-focus:bg-zinc-100 ui-hover:text-zinc-600 ui-hover:bg-zinc-50 dark:ui-hover:bg-zinc-800 dark:ui-hover:text-zinc-300 dark:ui-focus:bg-zinc-800 ui-disabled:opacity-40 ui-disabled:ui-hover:bg-transparent"
+      {...props}
+    />
+  );
+}
+
+function TabPanel(props: ComponentProps<typeof TabsBase.Content>) {
+  return <TabsBase.Content class="p-4" {...props} />;
+}
+
+function App() {
+  return (
+    <Tabs>
+      <TabList>
+        <Tab value="profile">Profile</Tab>
+        <Tab value="dashboard">Dashboard</Tab>
+        <Tab value="settings">Settings</Tab>
+        <Tab value="contact">Contact</Tab>
+      </TabList>
+      <TabPanel value="profile">Profile details</TabPanel>
+      <TabPanel value="dashboard">Dashboard details</TabPanel>
+      <TabPanel value="settings">Settings details</TabPanel>
+      <TabPanel value="contact">Contact details</TabPanel>
+    </Tabs>
+  );
+}
+```
+
+## Usage
+
+The following examples show how to use the `Tabs` components created in the above example.
+
+### Default value
+
+A default selected tab can be provided using the `defaultValue` prop, which should correspond to the `value` prop provided to each tab.
+
+<Preview>
+  <BasicExample defaultValue="dashboard" />
+</Preview>
+
+```tsx {0}
+<Tabs defaultValue="dashboard">
+  <TabList>
+    <Tab value="profile">Profile</Tab>
+    <Tab value="dashboard">Dashboard</Tab>
+    <Tab value="settings">Settings</Tab>
+    <Tab value="contact">Contact</Tab>
+  </TabList>
+  <TabPanel value="profile">Profile details</TabPanel>
+  <TabPanel value="dashboard">Dashboard details</TabPanel>
+  <TabPanel value="settings">Settings details</TabPanel>
+  <TabPanel value="contact">Contact details</TabPanel>
+</Tabs>
+```
+
+### Controlled value
+
+Selected tab can be controlled using the `value` prop, paired with the `onValueChange` event. The `value` prop from the selected tab will be passed into the callback when the tab is selected, allowing you to update state accordingly.
+
+<Preview>
+  <ControlledExample />
+</Preview>
+
+```tsx {3,7}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+  const [selectedTab, setSelectedTab] = createSignal("settings");
+
+  return (
+    <>
+      <Tabs value={selectedTab()} onValueChange={setSelectedTab}>
+        <TabList>
+          <Tab value="profile">Profile</Tab>
+          <Tab value="dashboard">Dashboard</Tab>
+          <Tab value="settings">Settings</Tab>
+          <Tab value="contact">Contact</Tab>
+        </TabList>
+        <TabPanel value="profile">Profile details</TabPanel>
+        <TabPanel value="dashboard">Dashboard details</TabPanel>
+        <TabPanel value="settings">Settings details</TabPanel>
+        <TabPanel value="contact">Contact details</TabPanel>
+      </Tabs>
+      <p>Selected tab: {selectedTab()}</p>
+    </>
+  );
+}
+```
+
+### Focusable content
+
+### Dynamic tabs
+
+### Activation mode
+
+### Orientation
+
+### Disabled
