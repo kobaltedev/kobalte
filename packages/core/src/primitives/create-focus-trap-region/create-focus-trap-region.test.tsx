@@ -1,3 +1,4 @@
+import { installPointerEvent, triggerPress } from "@kobalte/tests";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps, createSignal, Show, splitProps } from "solid-js";
 import { fireEvent, render, screen } from "solid-testing-library";
@@ -23,6 +24,8 @@ function FocusTrapRegion(
 }
 
 describe("createFocusTrapRegion", () => {
+  installPointerEvent();
+
   it("should focus first focusable element on mount when 'autoFocus' is true", async () => {
     render(() => (
       <FocusTrapRegion autoFocus>
@@ -168,5 +171,20 @@ describe("createFocusTrapRegion", () => {
     await Promise.resolve();
 
     expect(screen.queryByText("Last")).toHaveFocus();
+  });
+
+  it("should bring back focus in container when interacting outside", async () => {
+    render(() => (
+      <>
+        <FocusTrapRegion>
+          <button>Inside</button>
+        </FocusTrapRegion>
+        <button>Outside</button>
+      </>
+    ));
+
+    await triggerPress(screen.getByText("Outside"));
+
+    expect(screen.getByText("Inside")).toHaveFocus();
   });
 });

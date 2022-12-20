@@ -21,6 +21,7 @@ import {
   visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { Accessor, ComponentProps, JSX, onCleanup, onMount, Show } from "solid-js";
+import { createInteractOutside } from "../create-interact-outside";
 
 export interface CreateFocusTrapRegionProps {
   /** Whether the focus trap is active. */
@@ -146,6 +147,25 @@ export function createFocusTrapRegion<T extends HTMLElement>(
       focusWithoutScrolling(first);
     }
   };
+
+  // If user interact outside the focus trap region, force focus to go back in the container.
+  createInteractOutside(
+    {
+      isDisabled: () => !access(props.trapFocus),
+      onInteractOutside: () => {
+        const containerEl = ref();
+
+        if (!containerEl) {
+          return;
+        }
+
+        // fallback to first focusable element or container.
+        const first = getAllTabbableIn(containerEl)[0] ?? containerEl;
+        focusWithoutScrolling(first);
+      },
+    },
+    ref
+  );
 
   onMount(() => {
     // should run first to get the previous active element in case of restoreFocus,

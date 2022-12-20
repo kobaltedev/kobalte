@@ -7,11 +7,11 @@ import {
   CreateOverlayProps,
   createRegisterId,
 } from "../primitives";
-import { DialogOverlay } from "./dialog-overlay";
 import { DialogCloseButton } from "./dialog-close-button";
 import { DialogContent } from "./dialog-content";
 import { DialogContext, DialogContextValue } from "./dialog-context";
 import { DialogDescription } from "./dialog-description";
+import { DialogOverlay } from "./dialog-overlay";
 import { DialogPortal } from "./dialog-portal";
 import { DialogPositioner } from "./dialog-positioner";
 import { DialogTitle } from "./dialog-title";
