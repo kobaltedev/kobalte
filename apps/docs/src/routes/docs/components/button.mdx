@@ -22,7 +22,7 @@ import { Button } from "@kobalte/core";
 
 ## Anatomy
 
-The button constsits of:
+The button consists of:
 
 - **Button:** The root container for a button.
 
@@ -121,11 +121,11 @@ Button can be disabled using the `isDisabled` prop.
 | Prop                | Description                                                                                                                                                 |
 | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | isDisabled          | `boolean` <br/> Whether the button is disabled.                                                                                                             |
-| preventFocusOnPress | `boolean` <br/> Whether the target should not receive focus on press.                                                                                       |
-| onPress             | `(event: PressEvent) => void` <br/> Handler that is called when the press is released over the target.                                                      |
+| preventFocusOnPress | `boolean` <br/> Whether the button should not receive focus on press.                                                                                       |
+| onPress             | `(event: PressEvent) => void` <br/> Handler that is called when the press is released over the button.                                                      |
 | onPressStart        | `(event: PressEvent) => void` <br/> Handler that is called when a press interaction starts.                                                                 |
-| onPressEnd          | `(event: PressEvent) => void` <br/> Handler that is called when a press interaction ends, either over the target or when the pointer leaves the target.     |
-| onPressUp           | `(event: PressEvent) => void` <br/> Handler that is called when a press is released over the target, regardless of whether it started on the target or not. |
+| onPressEnd          | `(event: PressEvent) => void` <br/> Handler that is called when a press interaction ends, either over the button or when the pointer leaves the button.     |
+| onPressUp           | `(event: PressEvent) => void` <br/> Handler that is called when a press is released over the button, regardless of whether it started on the button or not. |
 | onPressChange       | `(isPressed: boolean) => void` <br/> Handler that is called when the press state changes.                                                                   |
 
 | Data attribute     | Description                                                                         |
