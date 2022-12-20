@@ -254,8 +254,8 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       return;
     }
 
-    // Hide on Escape/Control. Popover already handles this, but only when the
-    // panel or the disclosure elements are focused. Since the
+    // Hide on Escape. Popover already handles this, but only when the
+    // content or the trigger elements are focused. Since the
     // hovercard, by default, does not receive focus when it's shown, we need to
     // handle this globally here.
     addGlobalListener(document, "keydown", onEscapeKeyDown);
