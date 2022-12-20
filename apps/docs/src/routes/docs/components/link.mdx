@@ -14,7 +14,7 @@ import { Link } from "@kobalte/core";
 
 ## Features
 
-- Native HTML `<a>` support.
+- Native HTML `<a>` element support.
 - Custom element type support via the [WAI ARIA Link](https://www.w3.org/WAI/ARIA/apg/patterns/link/) design pattern.
 - Support for mouse, touch, and keyboard interactions.
 - Support for disabled links.
@@ -26,7 +26,7 @@ The link consists of:
 - **Link:** The root container for a link.
 
 ```tsx
-<Link></Link>
+<Link />
 ```
 
 ## Example
@@ -113,10 +113,10 @@ Link can be disabled using the `isDisabled` prop. Native navigation will be disa
 
 | Data attribute     | Description                                                                       |
 | :----------------- | :-------------------------------------------------------------------------------- |
-| data-active        | Present when the link is activated by a pointer down (mouse, touch, pen, etc...). |
 | data-disabled      | Present when the link is disabled.                                                |
 | data-focus         | Present when the link is focused.                                                 |
 | data-focus-visible | Present when the link is focused via keyboard.                                    |
+| data-active        | Present when the link is activated by a pointer down (mouse, touch, pen, etc...). |
 
 ## Accessibility
 

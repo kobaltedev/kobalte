@@ -14,10 +14,10 @@ import { Dynamic } from "solid-js/web";
 import { createSingleSelectListState } from "../list";
 import { CollectionItem } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
+import { TabsContent } from "./tabs-content";
 import { TabsContext, TabsContextValue } from "./tabs-context";
 import { TabsIndicator } from "./tabs-indicator";
 import { TabsList } from "./tabs-list";
-import { TabsContent } from "./tabs-content";
 import { TabsTrigger } from "./tabs-trigger";
 import { TabsActivationMode } from "./types";
 

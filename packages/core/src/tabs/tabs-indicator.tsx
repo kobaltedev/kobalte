@@ -7,7 +7,7 @@
  */
 
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, createSignal, JSX, on, splitProps } from "solid-js";
+import { createEffect, createSignal, JSX, on, onMount, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useLocale } from "../i18n";
@@ -33,8 +33,6 @@ export const TabsIndicator = createPolymorphicComponent<"div", TabsIndicatorProp
     width: undefined,
     height: undefined,
   });
-
-  let isFirstLoad = true;
 
   const { direction } = useLocale();
 
@@ -75,21 +73,19 @@ export const TabsIndicator = createPolymorphicComponent<"div", TabsIndicatorProp
     setStyle(styleObj);
   };
 
+  // For the first run, wait for all tabs to be mounted and registered in tabs DOM collection
+  // before computing the style.
+  onMount(() => {
+    queueMicrotask(() => {
+      computeStyle();
+    });
+  });
+
+  // Compute style normally for subsequent runs.
   createEffect(
     on(
       [context.selectedTab, context.orientation, direction],
       () => {
-        // For the first run, wait for all tabs to be mounted and registered in tabs DOM collection
-        // before computing the style.
-        if (isFirstLoad) {
-          queueMicrotask(() => {
-            computeStyle();
-          });
-          isFirstLoad = false;
-          return;
-        }
-
-        // Compute style normally for subsequent runs.
         computeStyle();
       },
       { defer: true }
@@ -101,6 +97,7 @@ export const TabsIndicator = createPolymorphicComponent<"div", TabsIndicatorProp
       component={local.as}
       role="presentation"
       style={{ ...style(), ...local.style }}
+      data-orientation={context.orientation()}
       {...others}
     />
   );

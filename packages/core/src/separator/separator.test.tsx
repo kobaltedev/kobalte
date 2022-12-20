@@ -51,4 +51,20 @@ describe("Separator", () => {
     expect(separator).toBeInstanceOf(HTMLSpanElement);
     expect(separator).toHaveAttribute("role", "separator");
   });
+
+  it("should have 'data-orientation=horizontal' when 'orientation=horizontal'", () => {
+    render(() => <Separator orientation="horizontal" />);
+
+    const separator = screen.getByRole("separator");
+
+    expect(separator).toHaveAttribute("data-orientation", "horizontal");
+  });
+
+  it("should have 'data-orientation=vertical' when 'orientation=vertical'", () => {
+    render(() => <Separator orientation="vertical" />);
+
+    const separator = screen.getByRole("separator");
+
+    expect(separator).toHaveAttribute("data-orientation", "vertical");
+  });
 });

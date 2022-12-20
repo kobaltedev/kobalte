@@ -3,11 +3,11 @@ import { ComponentProps, createSignal } from "solid-js";
 
 import { CrossIcon } from "../components";
 
-export function Dialog(props: ComponentProps<typeof DialogBase>) {
+function Dialog(props: ComponentProps<typeof DialogBase>) {
   return <DialogBase {...props} />;
 }
 
-export function DialogTrigger(props: ComponentProps<typeof DialogBase.Trigger>) {
+function DialogTrigger(props: ComponentProps<typeof DialogBase.Trigger>) {
   return (
     <DialogBase.Trigger
       class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30"
@@ -16,7 +16,7 @@ export function DialogTrigger(props: ComponentProps<typeof DialogBase.Trigger>) 
   );
 }
 
-export function DialogContent(props: ComponentProps<typeof DialogBase.Content>) {
+function DialogContent(props: ComponentProps<typeof DialogBase.Content>) {
   return (
     <DialogBase.Portal>
       <DialogBase.Overlay class="z-50 fixed inset-0 bg-black/20" />
@@ -30,13 +30,13 @@ export function DialogContent(props: ComponentProps<typeof DialogBase.Content>) 
   );
 }
 
-export function DialogTitle(props: ComponentProps<typeof DialogBase.Title>) {
+function DialogTitle(props: ComponentProps<typeof DialogBase.Title>) {
   return (
     <DialogBase.Title class="text-xl font-semibold text-zinc-900 dark:text-white" {...props} />
   );
 }
 
-export function DialogCloseButton(props: ComponentProps<typeof DialogBase.CloseButton>) {
+function DialogCloseButton(props: ComponentProps<typeof DialogBase.CloseButton>) {
   return (
     <DialogBase.CloseButton
       aria-label="Close dialog"

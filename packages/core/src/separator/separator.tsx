@@ -49,6 +49,7 @@ export const Separator = createPolymorphicComponent<"hr", SeparatorProps>(props 
       ref={mergeRefs(el => (ref = el), local.ref)}
       role={tagName() !== "hr" ? "separator" : undefined}
       aria-orientation={local.orientation === "vertical" ? "vertical" : undefined}
+      data-orientation={local.orientation}
       {...others}
     />
   );

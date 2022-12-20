@@ -15,7 +15,7 @@ import { Button } from "@kobalte/core";
 
 ## Features
 
-- Native HTML `<button>` support.
+- Native HTML `<button>` element support.
 - `<a>` and custom element type support via the [WAI ARIA Button](https://www.w3.org/WAI/ARIA/apg/patterns/button/) design pattern.
 - Mouse and touch event handling, and press state management.
 - Keyboard event support for <Kbd>Space</Kbd> and <Kbd>Enter</Kbd> keys.
@@ -27,7 +27,7 @@ The button consists of:
 - **Button:** The root container for a button.
 
 ```tsx
-<Button></Button>
+<Button />
 ```
 
 ## Example
@@ -130,10 +130,10 @@ Button can be disabled using the `isDisabled` prop.
 
 | Data attribute     | Description                                                                         |
 | :----------------- | :---------------------------------------------------------------------------------- |
-| data-active        | Present when the button is activated by a pointer down (mouse, touch, pen, etc...). |
 | data-disabled      | Present when the button is disabled.                                                |
 | data-focus         | Present when the button is focused.                                                 |
 | data-focus-visible | Present when the button is focused via keyboard.                                    |
+| data-active        | Present when the button is activated by a pointer down (mouse, touch, pen, etc...). |
 
 ## Accessibility
 
