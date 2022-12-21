@@ -78,10 +78,6 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/link",
       },
       {
-        title: "Listbox",
-        href: "/docs/components/listbox",
-      },
-      {
         title: "Popover",
         href: "/docs/components/popover",
       },

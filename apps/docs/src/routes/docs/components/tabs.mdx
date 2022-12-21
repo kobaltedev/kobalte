@@ -91,7 +91,7 @@ function TabPanel(props: ComponentProps<typeof TabsBase.Content>) {
 
 function App() {
   return (
-    <Tabs>
+    <Tabs aria-label="Main navigation">
       <TabList>
         <Tab value="profile">Profile</Tab>
         <Tab value="dashboard">Dashboard</Tab>
@@ -119,19 +119,8 @@ A default selected tab can be provided using the `defaultValue` prop, which shou
   <BasicExample defaultValue="dashboard" />
 </Preview>
 
-```tsx {0}
-<Tabs defaultValue="dashboard">
-  <TabList>
-    <Tab value="profile">Profile</Tab>
-    <Tab value="dashboard">Dashboard</Tab>
-    <Tab value="settings">Settings</Tab>
-    <Tab value="contact">Contact</Tab>
-  </TabList>
-  <TabPanel value="profile">Profile details</TabPanel>
-  <TabPanel value="dashboard">Dashboard details</TabPanel>
-  <TabPanel value="settings">Settings details</TabPanel>
-  <TabPanel value="contact">Contact details</TabPanel>
-</Tabs>
+```tsx
+<Tabs defaultValue="dashboard">...</Tabs>
 ```
 
 ### Controlled value
@@ -261,19 +250,8 @@ If you would like to prevent selection change from happening automatically you c
   <BasicExample activationMode="manual" />
 </Preview>
 
-```tsx {0}
-<Tabs activationMode="manual">
-  <TabList>
-    <Tab value="profile">Profile</Tab>
-    <Tab value="dashboard">Dashboard</Tab>
-    <Tab value="settings">Settings</Tab>
-    <Tab value="contact">Contact</Tab>
-  </TabList>
-  <TabPanel value="profile">Profile details</TabPanel>
-  <TabPanel value="dashboard">Dashboard details</TabPanel>
-  <TabPanel value="settings">Settings details</TabPanel>
-  <TabPanel value="contact">Contact details</TabPanel>
-</Tabs>
+```tsx
+<Tabs activationMode="manual">...</Tabs>
 ```
 
 ### Orientation
@@ -284,19 +262,8 @@ By default, tabs are horizontally oriented. The `orientation` prop can be set to
   <BasicExample orientation="vertical" />
 </Preview>
 
-```tsx {0}
-<Tabs orientation="vertical">
-  <TabList>
-    <Tab value="profile">Profile</Tab>
-    <Tab value="dashboard">Dashboard</Tab>
-    <Tab value="settings">Settings</Tab>
-    <Tab value="contact">Contact</Tab>
-  </TabList>
-  <TabPanel value="profile">Profile details</TabPanel>
-  <TabPanel value="dashboard">Dashboard details</TabPanel>
-  <TabPanel value="settings">Settings details</TabPanel>
-  <TabPanel value="contact">Contact details</TabPanel>
-</Tabs>
+```tsx
+<Tabs orientation="vertical">...</Tabs>
 ```
 
 ### Disabled
@@ -307,19 +274,8 @@ All tabs can be disabled using the `isDisabled` prop.
   <BasicExample isDisabled />
 </Preview>
 
-```tsx {0}
-<Tabs isDisabled>
-  <TabList>
-    <Tab value="profile">Profile</Tab>
-    <Tab value="dashboard">Dashboard</Tab>
-    <Tab value="settings">Settings</Tab>
-    <Tab value="contact">Contact</Tab>
-  </TabList>
-  <TabPanel value="profile">Profile details</TabPanel>
-  <TabPanel value="dashboard">Dashboard details</TabPanel>
-  <TabPanel value="settings">Settings details</TabPanel>
-  <TabPanel value="contact">Contact details</TabPanel>
-</Tabs>
+```tsx
+<Tabs isDisabled>...</Tabs>
 ```
 
 Individual tab can be disabled using the `isDisabled` prop on the tab itself.
@@ -338,10 +294,7 @@ Individual tab can be disabled using the `isDisabled` prop on the tab itself.
     </Tab>
     <Tab value="contact">Contact</Tab>
   </TabList>
-  <TabPanel value="profile">Profile details</TabPanel>
-  <TabPanel value="dashboard">Dashboard details</TabPanel>
-  <TabPanel value="settings">Settings details</TabPanel>
-  <TabPanel value="contact">Contact details</TabPanel>
+  ...
 </Tabs>
 ```
 
@@ -400,10 +353,10 @@ Individual tab can be disabled using the `isDisabled` prop on the tab itself.
 | Key                   | Description                                                                                                               |
 | :-------------------- | :------------------------------------------------------------------------------------------------------------------------ |
 | <Kbd>Tab</Kbd>        | When focus moves onto the tabs, focuses the active trigger. When a trigger is focused, moves focus to the active content. |
-| <Kbd>ArrowRight</Kbd> | Moves focus to the next trigger in horizontal orientation and activates its associated content.                           |
-| <Kbd>ArrowLeft</Kbd>  | Moves focus to the previous trigger in horizontal orientation and activates its associated content.                       |
 | <Kbd>ArrowDown</Kbd>  | Moves focus to the next trigger in vertical orientation and activates its associated content.                             |
+| <Kbd>ArrowRight</Kbd> | Moves focus to the next trigger in horizontal orientation and activates its associated content.                           |
 | <Kbd>ArrowUp</Kbd>    | Moves focus to the previous trigger in vertical orientation and activates its associated content.                         |
+| <Kbd>ArrowLeft</Kbd>  | Moves focus to the previous trigger in horizontal orientation and activates its associated content.                       |
 | <Kbd>Home</Kbd>       | Moves focus to the first trigger and activates its associated content.                                                    |
 | <Kbd>End</Kbd>        | Moves focus to the last trigger and activates its associated content.                                                     |
 | <Kbd>Enter</Kbd>      | In manual mode, when a trigger is focused, moves focus to its associated content.                                         |

@@ -1276,7 +1276,7 @@ describe("RadioGroup", () => {
         render(() => (
           <RadioGroup validationState="valid" value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
-              <RadioGroup.ItemInput data-testid="radio-input" />
+              <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
                 <RadioGroup.ItemIndicator data-testid="radio-indicator" />
               </RadioGroup.ItemControl>
@@ -1296,7 +1296,7 @@ describe("RadioGroup", () => {
         render(() => (
           <RadioGroup validationState="invalid" value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
-              <RadioGroup.ItemInput data-testid="radio-input" />
+              <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
                 <RadioGroup.ItemIndicator data-testid="radio-indicator" />
               </RadioGroup.ItemControl>
@@ -1316,7 +1316,7 @@ describe("RadioGroup", () => {
         render(() => (
           <RadioGroup value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
-              <RadioGroup.ItemInput data-testid="radio-input" />
+              <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
                 <RadioGroup.ItemIndicator data-testid="radio-indicator" />
               </RadioGroup.ItemControl>
@@ -1336,7 +1336,7 @@ describe("RadioGroup", () => {
         render(() => (
           <RadioGroup isDisabled value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
-              <RadioGroup.ItemInput data-testid="radio-input" />
+              <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
                 <RadioGroup.ItemIndicator data-testid="radio-indicator" />
               </RadioGroup.ItemControl>
@@ -1356,7 +1356,7 @@ describe("RadioGroup", () => {
         render(() => (
           <RadioGroup value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats" isDisabled>
-              <RadioGroup.ItemInput data-testid="radio-input" />
+              <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
                 <RadioGroup.ItemIndicator data-testid="radio-indicator" />
               </RadioGroup.ItemControl>
@@ -1376,7 +1376,7 @@ describe("RadioGroup", () => {
         render(() => (
           <RadioGroup value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
-              <RadioGroup.ItemInput data-testid="radio-input" />
+              <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
                 <RadioGroup.ItemIndicator data-testid="radio-indicator" />
               </RadioGroup.ItemControl>
@@ -1407,7 +1407,7 @@ describe("RadioGroup", () => {
         render(() => (
           <RadioGroup value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
-              <RadioGroup.ItemInput data-testid="radio-input" />
+              <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
                 <RadioGroup.ItemIndicator data-testid="radio-indicator" />
               </RadioGroup.ItemControl>
@@ -1416,7 +1416,7 @@ describe("RadioGroup", () => {
           </RadioGroup>
         ));
 
-        const radioInput = screen.getByTestId("radio-input");
+        const radioInput = screen.getByRole("radio");
         const elements = screen.getAllByTestId(/^radio/);
 
         radioInput.focus();
