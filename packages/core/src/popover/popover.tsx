@@ -22,7 +22,6 @@ import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
   Accessor,
   createEffect,
-  createRenderEffect,
   createSignal,
   createUniqueId,
   onCleanup,
@@ -146,7 +145,7 @@ export interface PopoverProps extends PopoverFloatingProps {
   id?: string;
 
   /**
-   * Used to force mounting the popover when more control is needed.
+   * Used to force mounting the popover (portal, positioner and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
    */
   forceMount?: boolean;
@@ -164,19 +163,19 @@ export interface PopoverProps extends PopoverFloatingProps {
   closeOnInteractOutside?: boolean;
 
   /**
-   * When user interacts with the argument element outside the popover panel,
+   * When user interacts with the argument element outside the popover content,
    * return `true` if the popover should be closed. This gives you a chance to filter
    * out interaction with elements that should not dismiss the popover.
-   * By default, the popover will always close on interaction outside the popover panel.
+   * By default, the popover will always close on interaction outside the popover content.
    */
   shouldCloseOnInteractOutside?: (element: Element) => boolean;
 
-  /** Whether focus should be locked inside the popover panel. */
+  /** Whether focus should be locked inside the popover content. */
   trapFocus?: boolean;
 
   /**
    * Whether focus should be set on a child element once the popover is open.
-   * If `true` focus will be set to the first focusable element inside the popover panel.
+   * If `true` focus will be set to the first focusable element inside the popover content.
    * If a `string` (query selector) is provided focus will be set to the target element.
    */
   autoFocus?: boolean | string;
@@ -457,7 +456,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
   });
 
   // Makes sure the positioner element that's passed to popper has the same
-  // z-index as the popover panel element so users only need to set the z-index
+  // z-index as the popover content element so users only need to set the z-index
   // once.
   createEffect(() => {
     if (!disclosureState.isOpen()) {
