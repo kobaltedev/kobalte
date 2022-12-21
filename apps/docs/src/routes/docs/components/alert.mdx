@@ -1,6 +1,5 @@
-import { Alert } from "@kobalte/core";
-
-import { Preview } from "../../../components";
+import { Preview, TabsSnippets } from "../../../components";
+import { BasicExample } from "../../../examples/alert";
 
 # Alert
 
@@ -29,28 +28,43 @@ The alert consists of :
 ## Example
 
 <Preview>
-  <Alert class="px-4 py-3 rounded-md text-blue-700 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20">
-    Kobalte is going live soon, get ready!
-  </Alert>
+  <BasicExample />
 </Preview>
 
-```tsx
-import { Alert as AlertBase } from "@kobalte/core";
-import { ComponentProps } from "solid-js";
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Alert } from "@kobalte/core";
+    import "./style.css";
 
-function Alert(props: ComponentProps<typeof AlertBase>) {
-  return (
-    <AlertBase
-      class="px-4 py-3 rounded-md text-blue-700 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20"
-      {...props}
-    />
-  );
-}
+    function App() {
+      return (
+        <Alert class="alert">
+          Kobalte is going live soon, get ready!
+        </Alert>
+      );
+    }
+    ```
 
-function App() {
-  return <Alert>Kobalte is going live soon, get ready!</Alert>;
-}
-```
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .alert {
+      border-radius: 6px;
+      padding: 12px 16px;
+      background-color: hsl(204 100% 97%);
+      color: hsl(201 96% 32%);
+      font-size: 16px;
+    }
+    ```
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
 
 ## API reference
 

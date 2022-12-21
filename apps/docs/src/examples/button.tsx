@@ -1,31 +1,32 @@
-import { Button as ButtonBase } from "@kobalte/core";
-import { ComponentProps, createSignal, Show } from "solid-js";
+import { Button } from "@kobalte/core";
+import { createSignal, Show } from "solid-js";
 
-export function Button(props: ComponentProps<typeof ButtonBase>) {
-  return (
-    <ButtonBase
-      class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30"
-      {...props}
-    />
-  );
+import style from "./button.module.css";
+
+export function BasicExample() {
+  return <Button class={style["button"]}>Press me</Button>;
 }
 
 export function EventsExample() {
   const [pointerType, setPointerType] = createSignal<string>();
 
   return (
-    <>
-      <Button
-        onPressStart={e => setPointerType(e.pointerType)}
-        onPressEnd={() => setPointerType(undefined)}
-      >
-        Press me
-      </Button>
-      <p class="not-prose text-sm mt-2">
-        <Show when={pointerType()} fallback="Ready to be pressed.">
-          You are pressing the button with a {pointerType()}!
-        </Show>
-      </p>
-    </>
+    <Button
+      class={style["button"]}
+      onPressStart={e => setPointerType(e.pointerType)}
+      onPressEnd={() => setPointerType(undefined)}
+    >
+      <Show when={pointerType()} fallback="Press me">
+        You are pressing the button with a {pointerType()}!
+      </Show>
+    </Button>
+  );
+}
+
+export function DisabledExample() {
+  return (
+    <Button class={style["button"]} isDisabled>
+      Press me
+    </Button>
   );
 }

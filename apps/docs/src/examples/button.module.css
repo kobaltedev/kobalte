@@ -1,0 +1,49 @@
+.button {
+  appearance: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: auto;
+  outline: none;
+  border: 1px solid hsl(240 5% 84%);
+  border-radius: 6px;
+  padding: 0 16px;
+  background-color: transparent;
+  color: hsl(240 6% 10%);
+  font-size: 16px;
+  line-height: 0;
+  transition: background-color;
+}
+
+.button[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button[data-hover] {
+  background-color: hsl(0 0% 98%);
+}
+
+.button[data-focus-visible] {
+  outline: 2px solid hsl(200 98% 39%);
+  outline-offset: 2px;
+}
+
+.button[data-active] {
+  background-color: hsl(240 6% 90%);
+}
+
+[data-kb-theme="dark"] .button {
+  border-color: transparent;
+  background-color: hsl(240 4% 16%);
+  color: hsla(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .button[data-hover] {
+  background-color: hsl(240 5% 34%);
+}
+
+[data-kb-theme="dark"] .button[data-active] {
+  background-color: hsl(240 4% 46%);
+}

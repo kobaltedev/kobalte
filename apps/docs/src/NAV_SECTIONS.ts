@@ -29,16 +29,20 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/overview/introduction",
       },
       {
-        title: "Getting started",
+        title: "Getting started ❌",
         href: "/docs/overview/getting-started",
       },
       {
-        title: "Styling",
+        title: "Styling ❌",
         href: "/docs/overview/styling",
       },
       {
         title: "Server side rendering",
         href: "/docs/overview/ssr",
+      },
+      {
+        title: "Press interactions",
+        href: "/docs/overview/press-interactions",
       },
     ],
   },
@@ -50,63 +54,63 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/alert",
       },
       {
-        title: "Button",
+        title: "Button 🚧",
         href: "/docs/components/button",
       },
       {
-        title: "Checkbox",
+        title: "Checkbox ❌",
         href: "/docs/components/checkbox",
       },
       {
-        title: "Context Menu",
+        title: "Context Menu ❌",
         href: "/docs/components/context-menu",
       },
       {
-        title: "Dialog",
+        title: "Dialog ❌",
         href: "/docs/components/dialog",
       },
       {
-        title: "Dropdown Menu",
+        title: "Dropdown Menu ❌",
         href: "/docs/components/dropdown-menu",
       },
       {
-        title: "Hover Card",
+        title: "Hover Card ❌",
         href: "/docs/components/hover-card",
       },
       {
-        title: "Link",
+        title: "Link ❌",
         href: "/docs/components/link",
       },
       {
-        title: "Popover",
+        title: "Popover ❌",
         href: "/docs/components/popover",
       },
       {
-        title: "Radio Group",
+        title: "Radio Group ❌",
         href: "/docs/components/radio-group",
       },
       {
-        title: "Select",
+        title: "Select ❌",
         href: "/docs/components/select",
       },
       {
-        title: "Separator",
+        title: "Separator ❌",
         href: "/docs/components/separator",
       },
       {
-        title: "Switch",
+        title: "Switch ❌",
         href: "/docs/components/switch",
       },
       {
-        title: "Tabs",
+        title: "Tabs ❌",
         href: "/docs/components/tabs",
       },
       {
-        title: "Toggle Button",
+        title: "Toggle Button ❌",
         href: "/docs/components/toggle-button",
       },
       {
-        title: "I18nProvider",
+        title: "I18nProvider ❌",
         href: "/docs/components/i18n-provider",
       },
     ],

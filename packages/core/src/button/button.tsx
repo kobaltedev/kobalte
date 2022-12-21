@@ -24,6 +24,7 @@ import { Dynamic } from "solid-js/web";
 import {
   CREATE_PRESS_PROP_NAMES,
   createFocusRing,
+  createHover,
   createPress,
   CreatePressProps,
   createTagName,
@@ -58,6 +59,10 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
   );
 
   const { isPressed, pressHandlers } = createPress<HTMLButtonElement>(createPressProps);
+
+  const { isHovered, hoverHandlers } = createHover({
+    isDisabled: () => local.isDisabled,
+  });
 
   const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
 
@@ -99,14 +104,16 @@ export const Button = createPolymorphicComponent<"button", ButtonProps>(props =>
       tabIndex={!isNativeButton() && !isLink() && !local.isDisabled ? 0 : undefined}
       disabled={isNativeButton() || isInput() ? local.isDisabled : undefined}
       aria-disabled={!isNativeButton() && !isInput() && local.isDisabled ? true : undefined}
-      data-active={isPressed() ? "" : undefined}
       data-disabled={local.isDisabled ? "" : undefined}
+      data-hover={isHovered() ? "" : undefined}
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
+      data-active={isPressed() ? "" : undefined}
       {...combineProps(
         { ref: el => (ref = el), onClick },
         others,
         pressHandlers,
+        hoverHandlers,
         focusRingHandlers
       )}
     />
