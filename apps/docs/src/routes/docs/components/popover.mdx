@@ -1,5 +1,5 @@
 import { Preview, Kbd, Callout } from "../../../components";
-import { BasicExample, ControlledExample } from "../../..//examples/popover";
+import { BasicExample, ControlledExample } from "../../../examples/popover";
 
 # Popover
 
@@ -30,7 +30,7 @@ The popover consists of:
 - **Popover.Trigger:** The button that opens the popover.
 - **Popover.Anchor:** An optional element to position the `Popover.Content` against.
 - **Popover.Portal:** Portals its children into the `body` when the popover is open.
-- **Popover.Positioner:** A wrapper component to help positioning the popover panel on screen.
+- **Popover.Positioner:** A wrapper component to help positioning the popover content on screen.
 - **Popover.Content:** Contains the content to be rendered when the popover is open.
 - **Popover.Arrow:** An optional arrow element to render alongside the popover.
 - **Popover.CloseButton:** The button that closes the popover.
@@ -365,9 +365,15 @@ Set the `restoreFocus` prop to `true` or any CSS selector to restore focus when 
 
 ### Popover.Trigger
 
-| Data attribute | Description                      |
-| :------------- | :------------------------------- |
-| data-expanded  | Present when the dialog is open. |
+| Data attribute | Description                       |
+| :------------- | :-------------------------------- |
+| data-expanded  | Present when the popover is open. |
+
+### Popover.Arrow
+
+| Prop | Description                           |
+| :--- | :------------------------------------ |
+| size | `number` <br/> The size of the arrow. |
 
 ## Accessibility
 

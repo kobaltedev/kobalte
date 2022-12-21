@@ -39,6 +39,7 @@ function PopoverTitle(props: ComponentProps<typeof PopoverBase.Title>) {
     <PopoverBase.Title class="text-base font-semibold text-zinc-900 dark:text-white" {...props} />
   );
 }
+
 function PopoverCloseButton(props: ComponentProps<typeof PopoverBase.CloseButton>) {
   return (
     <PopoverBase.CloseButton
