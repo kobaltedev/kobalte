@@ -5,7 +5,7 @@ import { Dynamic } from "solid-js/web";
 import { usePopoverContext } from "./popover-context";
 
 /**
- * An optional element to position the `Popover.Panel` against.
+ * An optional element to position the `Popover.Content` against.
  * If this part is not used, the content will position alongside the `Popover.Trigger`.
  */
 export const PopoverAnchor = createPolymorphicComponent<"div">(props => {

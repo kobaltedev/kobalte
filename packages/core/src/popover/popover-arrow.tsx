@@ -42,7 +42,7 @@ export interface PopoverArrowProps {
 
 /**
  * An optional arrow element to render alongside the popover.
- * Must be rendered inside `Popover.Panel`.
+ * Must be rendered inside `Popover.Content`.
  */
 export const PopoverArrow = createPolymorphicComponent<"div", PopoverArrowProps>(props => {
   const context = usePopoverContext();
