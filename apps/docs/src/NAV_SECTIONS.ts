@@ -54,7 +54,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/alert",
       },
       {
-        title: "Button 🚧",
+        title: "Button",
         href: "/docs/components/button",
       },
       {
@@ -78,7 +78,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/hover-card",
       },
       {
-        title: "Link ❌",
+        title: "Link",
         href: "/docs/components/link",
       },
       {
@@ -94,7 +94,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/select",
       },
       {
-        title: "Separator ❌",
+        title: "Separator",
         href: "/docs/components/separator",
       },
       {
@@ -106,11 +106,11 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/tabs",
       },
       {
-        title: "Toggle Button ❌",
+        title: "Toggle Button",
         href: "/docs/components/toggle-button",
       },
       {
-        title: "I18nProvider ❌",
+        title: "I18nProvider",
         href: "/docs/components/i18n-provider",
       },
     ],

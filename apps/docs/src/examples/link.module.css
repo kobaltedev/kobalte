@@ -1,0 +1,18 @@
+.link {
+  font-weight: 600;
+  color: hsl(201 96% 32%);
+  cursor: pointer;
+}
+
+.link:not([data-disabled])[data-hover] {
+  text-decoration: underline;
+}
+
+.link[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+[data-kb-theme="dark"] .link {
+  color: hsl(198 93% 60%);
+}

@@ -1,6 +1,6 @@
 import { Preview, Kbd, TabsSnippets } from "../../../components";
 
-import { BasicExample, EventsExample, DisabledExample } from "../../../examples/button";
+import { BasicExample } from "../../../examples/button";
 
 # Button
 
@@ -46,7 +46,7 @@ The button consists of:
     import { Button } from "@kobalte/core";
     import "./style.css";
 
-    export function BasicExample() {
+    function App() {
       return <Button class="button">Press me</Button>;
     }
     ```
@@ -95,25 +95,9 @@ The button consists of:
   {/* <!-- prettier-ignore-end -->*/}
 </TabsSnippets>
 
-## Usage
-
-### Events
-
-Button supports `PressEvent` like described in the [Press interactions](/docs/overview/press-interactions) documentation.
-
-### Disabled
-
-Button can be disabled using the `isDisabled` prop.
-
-<Preview>
-  <DisabledExample />
-</Preview>
-
-```tsx
-<Button isDisabled>Press me</Button>
-```
-
 ## API Reference
+
+Button supports `PressEvent` as described in the [Press interactions](/docs/overview/press-interactions) documentation.
 
 | Prop                | Description                                                                                                                                                 |
 | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -128,6 +112,7 @@ Button can be disabled using the `isDisabled` prop.
 | Data attribute     | Description                                                                         |
 | :----------------- | :---------------------------------------------------------------------------------- |
 | data-disabled      | Present when the button is disabled.                                                |
+| data-hover         | Present when the button is hovered.                                                 |
 | data-focus         | Present when the button is focused.                                                 |
 | data-focus-visible | Present when the button is focused via keyboard.                                    |
 | data-active        | Present when the button is activated by a pointer down (mouse, touch, pen, etc...). |

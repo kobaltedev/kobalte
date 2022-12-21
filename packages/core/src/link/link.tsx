@@ -18,13 +18,17 @@ import { Dynamic } from "solid-js/web";
 import {
   CREATE_PRESS_PROP_NAMES,
   createFocusRing,
+  createHover,
   createPress,
   CreatePressProps,
   createTagName,
 } from "../primitives";
 
 export interface LinkProps extends CreatePressProps {
-  /** Whether the link is disabled. */
+  /**
+   * Whether the link is disabled.
+   * Native navigation will be disabled, and the link will be exposed as disabled to assistive technology.
+   */
   isDisabled?: boolean;
 }
 
@@ -43,6 +47,10 @@ export const Link = createPolymorphicComponent<"a", LinkProps>(props => {
   );
 
   const { isPressed, pressHandlers } = createPress<HTMLAnchorElement>(createPressProps);
+
+  const { isHovered, hoverHandlers } = createHover({
+    isDisabled: () => local.isDisabled,
+  });
 
   const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
 
@@ -64,14 +72,16 @@ export const Link = createPolymorphicComponent<"a", LinkProps>(props => {
       role={tagName() !== "a" ? "link" : undefined}
       tabIndex={tagName() !== "a" && !local.isDisabled ? 0 : undefined}
       aria-disabled={local.isDisabled ? true : undefined}
-      data-active={isPressed() ? "" : undefined}
       data-disabled={local.isDisabled ? "" : undefined}
+      data-hover={isHovered() ? "" : undefined}
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
+      data-active={isPressed() ? "" : undefined}
       {...combineProps(
         { ref: el => (ref = el), onClick },
         others,
         pressHandlers,
+        hoverHandlers,
         focusRingHandlers
       )}
     />

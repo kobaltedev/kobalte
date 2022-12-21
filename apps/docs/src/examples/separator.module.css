@@ -1,0 +1,18 @@
+.separator {
+  border: none;
+  background-color: hsl(240 5% 84%);
+}
+
+.separator[data-orientation="horizontal"] {
+  height: 1px;
+  width: 100%;
+}
+
+.separator[data-orientation="vertical"] {
+  height: 100%;
+  width: 1px;
+}
+
+[data-kb-theme="dark"] .separator {
+  background-color: hsl(240 5% 26%);
+}
