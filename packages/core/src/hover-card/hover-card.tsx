@@ -15,6 +15,7 @@ import {
   ParentComponent,
   splitProps,
 } from "solid-js";
+import { isServer } from "solid-js/web";
 
 import { Popover, PopoverProps } from "../popover";
 import { Placement } from "../popover/utils";
@@ -69,6 +70,8 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       openDelay: 700,
       closeDelay: 300,
       closeOnHoverOutside: true,
+      closeOnInteractOutside: true,
+      closeOnEsc: true,
       trapFocus: false,
       autoFocus: false,
       restoreFocus: false,
@@ -117,6 +120,10 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   };
 
   const openWithDelay = () => {
+    if (isServer) {
+      return;
+    }
+
     openTimeoutId = window.setTimeout(() => {
       openTimeoutId = undefined;
       disclosureState.open();
@@ -124,6 +131,10 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   };
 
   const closeWithDelay = () => {
+    if (isServer) {
+      return;
+    }
+
     closeTimeoutId = window.setTimeout(() => {
       closeTimeoutId = undefined;
       disclosureState.close();
@@ -131,11 +142,19 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   };
 
   const cancelOpening = () => {
+    if (isServer) {
+      return;
+    }
+
     window.clearTimeout(openTimeoutId);
     openTimeoutId = undefined;
   };
 
   const cancelClosing = () => {
+    if (isServer) {
+      return;
+    }
+
     window.clearTimeout(closeTimeoutId);
     closeTimeoutId = undefined;
   };
