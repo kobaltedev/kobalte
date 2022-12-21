@@ -7,7 +7,13 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-stately/radio/src/useRadioGroupState.ts
  */
 
-import { access, createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import {
+  access,
+  createPolymorphicComponent,
+  mergeDefaultProps,
+  mergeRefs,
+  Orientation,
+} from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
@@ -20,13 +26,13 @@ import {
   FormControlErrorMessage,
 } from "../form-control";
 import { createControllableSignal, createFormResetListener } from "../primitives";
+import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context";
 import { RadioGroupItem } from "./radio-group-item";
 import { RadioGroupItemControl } from "./radio-group-item-control";
-import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context";
-import { RadioGroupLabel } from "./radio-group-label";
 import { RadioGroupItemIndicator } from "./radio-group-item-indicator";
 import { RadioGroupItemInput } from "./radio-group-item-input";
 import { RadioGroupItemLabel } from "./radio-group-item-label";
+import { RadioGroupLabel } from "./radio-group-label";
 
 type RadioGroupComposite = {
   Label: typeof RadioGroupLabel;
@@ -50,10 +56,10 @@ export interface RadioGroupProps extends CreateFormControlProps {
   defaultValue?: string;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string | undefined) => void;
+  onValueChange?: (value: string) => void;
 
   /** The axis the radio group items should align with. */
-  orientation?: "horizontal" | "vertical";
+  orientation?: Orientation;
 }
 
 /**
@@ -90,7 +96,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
       FORM_CONTROL_PROP_NAMES
     );
 
-    const [selected, setSelected] = createControllableSignal<string | undefined>({
+    const [selected, setSelected] = createControllableSignal<string>({
       value: () => local.value,
       defaultValue: () => local.defaultValue,
       onChange: value => local.onValueChange?.(value),
@@ -100,7 +106,7 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, Rad
 
     createFormResetListener(
       () => ref,
-      () => setSelected(local.defaultValue)
+      () => setSelected(local.defaultValue ?? "")
     );
 
     const ariaLabelledBy = () => {

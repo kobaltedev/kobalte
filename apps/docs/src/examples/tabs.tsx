@@ -34,7 +34,7 @@ function TabPanel(props: ComponentProps<typeof TabsBase.Content>) {
 
 export function BasicExample(props: ComponentProps<typeof TabsBase>) {
   return (
-    <Tabs {...props}>
+    <Tabs aria-label="Main navigation" {...props}>
       <TabList>
         <Tab value="profile">Profile</Tab>
         <Tab value="dashboard">Dashboard</Tab>

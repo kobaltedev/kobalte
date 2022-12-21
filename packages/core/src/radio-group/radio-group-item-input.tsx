@@ -94,7 +94,6 @@ export function RadioGroupItemInput(props: ComponentProps<"input">) {
       aria-labelledby={ariaLabelledBy()}
       aria-describedby={ariaDescribedBy()}
       onChange={onChange}
-      {...radioContext.dataset()}
       {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers, focusRingHandlers)}
     />
   );
