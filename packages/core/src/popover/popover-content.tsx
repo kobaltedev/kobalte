@@ -37,7 +37,7 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentPr
 
   const { FocusTrap } = createFocusTrapRegion(context.createFocusTrapRegionProps, () => ref);
 
-  const onKeyDown: JSX.EventHandlerUnion<HTMLDivElement, KeyboardEvent> = e => {
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
     callHandler(e, overlayHandlers.onKeyDown);
   };

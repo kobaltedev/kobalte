@@ -73,24 +73,6 @@ export function createOverlay<T extends HTMLElement>(
     return shouldCloseOnInteractOutside(element);
   };
 
-  const onInteractOutsideStart = (e: Event) => {
-    if (shouldCloseOnInteractOutside(e.target as Element) && isTopMostOverlay()) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
-  };
-
-  const onInteractOutside = (e: Event) => {
-    if (shouldCloseOnInteractOutside(e.target as Element)) {
-      if (isTopMostOverlay()) {
-        e.stopPropagation();
-        e.preventDefault();
-      }
-
-      onHide();
-    }
-  };
-
   // Handle the escape key
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     if (e.key === EventKey.Escape && access(props.closeOnEsc)) {
@@ -104,8 +86,11 @@ export function createOverlay<T extends HTMLElement>(
   createInteractOutside(
     {
       isDisabled: () => !access(props.closeOnInteractOutside),
-      onInteractOutsideStart,
-      onInteractOutside,
+      onInteractOutside: e => {
+        if (shouldCloseOnInteractOutside(e.target as Element) && isTopMostOverlay()) {
+          onHide();
+        }
+      },
     },
     ref
   );

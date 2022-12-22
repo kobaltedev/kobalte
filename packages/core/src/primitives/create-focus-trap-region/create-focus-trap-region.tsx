@@ -20,7 +20,8 @@ import {
   mergeDefaultProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { Accessor, ComponentProps, JSX, onCleanup, onMount, Show } from "solid-js";
+import { Accessor, JSX, onCleanup, onMount, Show } from "solid-js";
+
 import { createInteractOutside } from "../create-interact-outside";
 
 export interface CreateFocusTrapRegionProps {
@@ -65,9 +66,21 @@ export function createFocusTrapRegion<T extends HTMLElement>(
 
   const focusInitialElement = () => {
     const containerEl = ref();
+
+    if (!containerEl) {
+      return;
+    }
+
+    const autoFocusableElement = containerEl.querySelector("[autofocus]") as HTMLElement | null;
+
+    if (autoFocusableElement) {
+      focusWithoutScrolling(autoFocusableElement);
+      return;
+    }
+
     const autoFocus = access(props.autoFocus);
 
-    if (!containerEl || autoFocus == null || autoFocus === false) {
+    if (autoFocus == null || autoFocus === false) {
       return;
     }
 
@@ -176,7 +189,7 @@ export function createFocusTrapRegion<T extends HTMLElement>(
   });
 
   onCleanup(() => {
-    if (!restoreFocusElement || preventRestoreFocus()) {
+    if (preventRestoreFocus() || !restoreFocusElement) {
       return;
     }
 
