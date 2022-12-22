@@ -1,5 +1,5 @@
 import { Preview, Kbd, TabsSnippets } from "../../../components";
-import { BasicExample } from "../../../examples/link";
+import { BasicExample, ClientHandledExample } from "../../../examples/link";
 
 # Link
 
@@ -60,16 +60,10 @@ The link consists of:
     .link {
       font-weight: 600;
       color: hsl(201 96% 32%);
-      cursor: pointer;
     }
 
-    .link:not([data-disabled])[data-hover] {
+    .link[data-hover] {
       text-decoration: underline;
-    }
-
-    .link[data-disabled] {
-      opacity: 0.4;
-      cursor: not-allowed;
     }
     ```
 
@@ -77,9 +71,29 @@ The link consists of:
   {/* <!-- prettier-ignore-end -->*/}
 </TabsSnippets>
 
-## API Reference
+## Usage
 
-Link supports `PressEvent` as described in the [Press interactions](/docs/overview/press-interactions) documentation.
+### Client handled links
+
+Link supports user interactions via mouse, keyboard, and touch. You can handle all of these via the `onPress` prop. This is similar to the standard `onClick` event, but normalized to support all interaction methods equally.
+
+In addition, the `onPressStart`, `onPressEnd`, and `onPressChange` events are fired as the user interacts with the link.
+
+This example shows a client handled link using press events. It renders a `<span>`, and expose the element as a link to assistive technology.
+
+<Preview>
+  <ClientHandledExample />
+</Preview>
+
+```tsx
+<Link as="span" onPress={() => alert("Pressed link")}>
+  Kobalte
+</Link>
+```
+
+To learn more about _press interactions_ in Kobalte, check out the [documentation](/docs/overview/press-interactions).
+
+## API Reference
 
 | Prop                | Description                                                                                                                                             |
 | :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------ |

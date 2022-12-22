@@ -1,7 +1,11 @@
 import { Show } from "solid-js";
 
 import { Preview, TabsSnippets, Kbd } from "../../../components";
-import { BasicExample } from "../../../examples/toggle-button";
+import {
+  BasicExample,
+  ControlledExample,
+  DefaultPressedExample,
+} from "../../../examples/toggle-button";
 
 # Toggle Button
 
@@ -81,11 +85,6 @@ The toggle button consists of:
       line-height: 0;
     }
 
-    .toggle-button[data-disabled] {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
     .toggle-button[data-focus-visible] {
       outline: 2px solid hsl(200 98% 39%);
       outline-offset: 2px;
@@ -99,6 +98,47 @@ The toggle button consists of:
   </TabsSnippets.Content>
   {/* <!-- prettier-ignore-end -->*/}
 </TabsSnippets>
+
+## Usage
+
+The following examples are styled like the above example.
+
+### Default pressed
+
+An initial, uncontrolled value can be provided using the `defaultIsPressed` prop.
+
+<Preview>
+  <DefaultPressedExample />
+</Preview>
+
+```tsx
+<ToggleButton defaultIsPressed>...</ToggleButton>
+```
+
+### Controlled pressed
+
+The `isPressed` prop can be used to make the pressed state controlled. The `onPressedChange` event is fired when the user toggle the button, and receives the new value.
+
+<Preview>
+  <ControlledExample />
+</Preview>
+
+```tsx {3,7,10}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+  const [pressed, setPressed] = createSignal(false);
+
+  return (
+    <>
+      <ToggleButton isPressed={pressed()} onPressedChange={setPressed}>
+        ...
+      </ToggleButton>
+      <p>The microphone is {pressed() ? "muted" : "active"}.</p>
+    </>
+  );
+}
+```
 
 ## API Reference
 
@@ -115,9 +155,9 @@ The toggle button consists of:
 | :---------- | :---------------------------------------------------------------------------------------- |
 | isPressed   | `Accessor<boolean>` <br/> Whether the toggle button is on (pressed) or off (not pressed). |
 
-| Data attributes | Description                                     |
-| :-------------- | :---------------------------------------------- |
-| data-pressed    | Present when the toggle button is on (pressed). |
+| Data attribute | Description                                     |
+| :------------- | :---------------------------------------------- |
+| data-pressed   | Present when the toggle button is on (pressed). |
 
 ## Accessibility
 

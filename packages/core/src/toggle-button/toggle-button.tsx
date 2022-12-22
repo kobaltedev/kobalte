@@ -89,6 +89,7 @@ interface ToggleButtonChildProps extends Pick<ToggleButtonProps, "children"> {
 
 function ToggleButtonChild(props: ToggleButtonChildProps) {
   return children(() => {
-    return isFunction(props.children) ? props.children(props.state) : props.children;
+    const body = props.children;
+    return isFunction(body) ? body(props.state) : body;
   });
 }

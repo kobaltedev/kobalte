@@ -1,6 +1,6 @@
 import { Preview, Kbd, TabsSnippets } from "../../../components";
 
-import { BasicExample } from "../../../examples/button";
+import { BasicExample, PressInteractionExample } from "../../../examples/button";
 
 # Button
 
@@ -62,23 +62,17 @@ The button consists of:
       height: 40px;
       width: auto;
       outline: none;
-      border: 1px solid hsl(240 5% 84%);
       border-radius: 6px;
-      padding: 0 20px;
-      background-color: transparent;
-      color: hsl(240 6% 10%);
+      padding: 0 16px;
+      background-color: hsl(200 98% 39%);
+      color: white;
       font-size: 16px;
       line-height: 0;
-      transition: background-color;
-    }
-
-    .button[data-disabled] {
-      opacity: 0.5;
-      cursor: not-allowed;
+      transition: 250ms background-color;
     }
 
     .button[data-hover] {
-      background-color: hsl(0 0% 98%);
+      background-color: hsl(201 96% 32%);
     }
 
     .button[data-focus-visible] {
@@ -87,7 +81,7 @@ The button consists of:
     }
 
     .button[data-active] {
-      background-color: hsl(240 6% 90%);
+      background-color: hsl(201 90% 27%);
     }
     ```
 
@@ -95,9 +89,45 @@ The button consists of:
   {/* <!-- prettier-ignore-end -->*/}
 </TabsSnippets>
 
-## API Reference
+## Usage
 
-Button supports `PressEvent` as described in the [Press interactions](/docs/overview/press-interactions) documentation.
+### Press interactions
+
+Button supports user interactions via mouse, keyboard, and touch. You can handle all of these via the `onPress` prop. This is similar to the standard `onClick` event, but normalized to support all interaction methods equally.
+
+In addition, the `onPressStart`, `onPressEnd`, and `onPressChange` events are fired as the user interacts with the button.
+
+<Preview>
+  <PressInteractionExample />
+</Preview>
+
+```tsx {3,8-9}
+import { createSignal } from "solid-js";
+
+function PressInteractionExample() {
+  const [pointerType, setPointerType] = createSignal<string>();
+
+  return (
+    <>
+      <Button
+        onPressStart={e => setPointerType(e.pointerType)}
+        onPressEnd={() => setPointerType(undefined)}
+      >
+        Press me
+      </Button>
+      <p>
+        <Show when={pointerType()} fallback="Ready to be pressed.">
+          You are pressing the button with a {pointerType()}!
+        </Show>
+      </p>
+    </>
+  );
+}
+```
+
+To learn more about _press interactions_ in Kobalte, check out the [documentation](/docs/overview/press-interactions).
+
+## API Reference
 
 | Prop                | Description                                                                                                                                                 |
 | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
