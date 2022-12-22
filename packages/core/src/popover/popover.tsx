@@ -18,7 +18,7 @@ import {
   shift,
   size,
 } from "@floating-ui/dom";
-import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import { contains, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
   Accessor,
   createEffect,
@@ -276,6 +276,13 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     closeOnInteractOutside: () => props.closeOnInteractOutside,
     closeOnEsc: () => props.closeOnEsc,
     shouldCloseOnInteractOutside: element => {
+      // Don't close if the trigger contains the element,
+      // because the press event fired on the trigger will re-open the popover.
+      // Instead, let the trigger's "toggle" behavior handle closing the popover.
+      if (contains(triggerRef(), element)) {
+        return false;
+      }
+
       return props.shouldCloseOnInteractOutside?.(element) ?? true;
     },
   };

@@ -1,4 +1,4 @@
-import { Preview, Kbd, Callout } from "../../../components";
+import { Preview, TabsSnippets, Kbd, Callout } from "../../../components";
 import { BasicExample, ControlledExample } from "../../../examples/popover";
 
 # Popover
@@ -60,274 +60,23 @@ The popover consists of:
   <BasicExample />
 </Preview>
 
-```tsx
-import { Popover as PopoverBase } from "@kobalte/core";
-import { ComponentProps, createSignal, splitProps } from "solid-js";
-import { CrossIcon } from "some-icon-library";
-
-function Popover(props: ComponentProps<typeof PopoverBase>) {
-  return <PopoverBase {...props} />;
-}
-
-function PopoverTrigger(props: ComponentProps<typeof PopoverBase.Trigger>) {
-  return (
-    <PopoverBase.Trigger
-      class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30"
-      {...props}
-    />
-  );
-}
-
-function PopoverContent(props: ComponentProps<typeof PopoverBase.Content>) {
-  const [local, others] = splitProps(props, ["children"]);
-
-  return (
-    <PopoverBase.Portal>
-      <PopoverBase.Positioner>
-        <PopoverBase.Content
-          class="z-10 outline-none shadow-md border border-zinc-200 rounded-md bg-white dark:bg-zinc-800 dark:border-zinc-700"
-          {...others}
-        >
-          <PopoverBase.Arrow />
-          {local.children}
-        </PopoverBase.Content>
-      </PopoverBase.Positioner>
-    </PopoverBase.Portal>
-  );
-}
-
-function PopoverTitle(props: ComponentProps<typeof PopoverBase.Title>) {
-  return (
-    <PopoverBase.Title class="text-base font-semibold text-zinc-900 dark:text-white" {...props} />
-  );
-}
-function PopoverCloseButton(props: ComponentProps<typeof PopoverBase.CloseButton>) {
-  return (
-    <PopoverBase.CloseButton
-      aria-label="Close popover"
-      class="text-zinc-400 bg-transparent hover:bg-zinc-200 hover:text-zinc-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-zinc-600 dark:hover:text-white"
-      {...props}
-    >
-      <CrossIcon class="w-4 h-4" />
-    </PopoverBase.CloseButton>
-  );
-}
-
-function App() {
-  return (
-    <Popover>
-      <PopoverTrigger>Open popover</PopoverTrigger>
-      <PopoverContent>
-        <div class="flex items-start justify-between px-4 py-3 border-b rounded-t dark:border-zinc-600">
-          <PopoverTitle>About Kobalte</PopoverTitle>
-          <PopoverCloseButton />
-        </div>
-        <div class="p-4 space-y-4 w-72">
-          <p class="text-base leading-relaxed text-zinc-500 dark:text-zinc-400">
-            Kobalte is a UI toolkit for building accessible web apps and design systems with
-            SolidJS.
-          </p>
-        </div>
-        <div class="flex items-center justify-end px-4 py-3 border-t border-zinc-200 rounded-b dark:border-zinc-600">
-          <button
-            id="ok-button"
-            type="button"
-            class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30"
-          >
-            OK
-          </button>
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-}
-```
-
 ## Usage
 
-The following examples show how to use the `Popover` component created in the above example.
+### Default open
 
-### Default open state
-
-Popover is not open by default. The `defaultIsOpen` prop can be used to set the default state.
+An initial, uncontrolled value can be provided using the `defaultIsOpen` prop.
 
 ```tsx
 <Popover defaultIsOpen>...</Popover>
 ```
 
-### Controlled open state
+### Controlled open
 
 The `isOpen` prop can be used to make the open state controlled. The `onOpenChange` event is fired when the user presses the trigger, close button or interact outside, and receives the new value.
 
 <Preview>
   <ControlledExample />
 </Preview>
-
-```tsx {3,7}
-import { createSignal } from "solid-js";
-
-function ControlledExample() {
-  const [open, setOpen] = createSignal(false);
-
-  return (
-    <>
-      <Popover isOpen={open()} onOpenChange={setOpen} placement="top">
-        ...
-      </Popover>
-      <p>The popover is {open() ? "opened" : "closed"}.</p>
-    </>
-  );
-}
-```
-
-### Modal mode
-
-Use the `isModal` prop to make the popover the only visible content for screen readers and hides everything behind it from assistive technologies.
-
-<Preview>
-  <BasicExample isModal={true} />
-</Preview>
-
-```tsx
-<Popover isModal={true}>...</Popover>
-```
-
-<Callout type="note">
-  <span>
-    If you inspect the DOM you will see that all elements outside the popover have the `aria-hidden`
-    attribute.
-  </span>
-</Callout>
-
-### Prevent scroll
-
-Set the `preventScroll` prop to `true` to block the scroll when popover is open.
-
-<Preview>
-  <BasicExample preventScroll={true} />
-</Preview>
-
-```tsx
-<Popover preventScroll={true}>...</Popover>
-```
-
-### Close on escape
-
-Popover closes when the `Esc` key is pressed, setting the `closeOnEsc` prop to `false` disables this behavior.
-
-<Preview>
-  <BasicExample closeOnEsc={false} />
-</Preview>
-
-```tsx
-<Popover closeOnEsc={false}>...</Popover>
-```
-
-### Close on interact outside
-
-Set the `closeOnInteractOutside` prop to `false` to prevent the popover to be closed when the user interact outside it.
-
-<Preview>
-  <BasicExample closeOnInteractOutside={false} />
-</Preview>
-
-```tsx
-<Popover closeOnInteractOutside={false}>...</Popover>
-```
-
-### Placement
-
-The popover's placement with respect to its trigger (or anchor) element can be adjusted using the `placement` prop.
-
-<Preview>
-  <div class="flex space-x-2">
-    <BasicExample placement="top" label="top" />
-    <BasicExample placement="right" label="right" />
-    <BasicExample placement="bottom" label="bottom" />
-    <BasicExample placement="left" label="left" />
-  </div>
-</Preview>
-
-```tsx
-<Popover placement="top">...</Popover>
-<Popover placement="right">...</Popover>
-<Popover placement="bottom">...</Popover>
-<Popover placement="left">...</Popover>
-```
-
-<Callout type="note">
-  <span>Each placement also have a `-start` and `-end` variant.</span>
-</Callout>
-
-### Origin-aware animations
-
-Popover expose a CSS custom property `--kb-popover-transform-origin` which can be used to animate the `Popover.Content` enter/hide transition.
-
-```css
-.popover__content {
-  transform-origin: var(--kb-popover-transform-origin);
-  animation: scaleIn 0.5s ease-out;
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-```
-
-## Focus management
-
-### Trap focus
-
-By default, focus is locked inside the popover when open. You can set the `trapFocus` prop to `false` to disabled this behavior.
-
-<Preview>
-  <BasicExample trapFocus={false} />
-</Preview>
-
-```tsx
-<Popover trapFocus={false}>...</Popover>
-```
-
-### Auto focus
-
-Set the `autoFocus` prop to `true` or any CSS selector to focus the target element when the popover open. If set to `true`, focus will be on the first focusable element inside the popover content or fallback to the content itself.
-
-<Preview>
-  <BasicExample autoFocus="#ok-button" />
-</Preview>
-
-```tsx
-<Popover autoFocus="#ok-button">...</Popover>
-```
-
-### Restore focus
-
-Set the `restoreFocus` prop to `true` or any CSS selector to restore focus when the popover close. If set to `true`, focus will be restored to the popover trigger element when the popover closes unless another focusable element has taken focus.
-
-<Preview>
-  <div class="flex items-center space-x-2">
-    <BasicExample restoreFocus="#restore-focus-target" />
-    <button
-      id="restore-focus-target"
-      type="button"
-      class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30"
-    >
-      Restore focus target
-    </button>
-  </div>
-</Preview>
-
-```tsx
-  <Popover restoreFocus="#restore-focus-target">...</Popover>
-  <button id="restore-focus-target">Restore focus target</button>
-```
 
 ## API Reference
 

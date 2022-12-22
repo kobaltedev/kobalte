@@ -82,7 +82,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/link",
       },
       {
-        title: "Popover ❌",
+        title: "Popover 🚧",
         href: "/docs/components/popover",
       },
       {
