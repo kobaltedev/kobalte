@@ -7,7 +7,7 @@ export function PressInteractionExample() {
   return (
     <>
       <Button
-        class="kb-button"
+        class="kb-button-primary"
         onPressStart={e => setEvents(prev => [...prev, `press start with ${e.pointerType}`])}
         onPressEnd={e => setEvents(prev => [...prev, `press end with ${e.pointerType}`])}
         onPress={e => setEvents(prev => [...prev, `press with ${e.pointerType}`])}

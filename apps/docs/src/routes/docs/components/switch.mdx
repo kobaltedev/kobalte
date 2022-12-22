@@ -1,6 +1,10 @@
-import { Preview } from "../../../components/preview";
-import { Kbd } from "../../../components/kbd";
-import { Switch, ControlledExample, HTMLFormExample } from "../../../examples/switch";
+import { Preview, TabsSnippets, Kbd } from "../../../components";
+import {
+  BasicExample,
+  ControlledExample,
+  DefaultCheckedExample,
+  HTMLFormExample,
+} from "../../../examples/switch";
 
 # Switch
 
@@ -43,130 +47,147 @@ The switch consists of:
 ## Example
 
 <Preview>
-  <Switch>Airplane mode</Switch>
+  <BasicExample />
 </Preview>
 
-```tsx
-import { Switch as SwitchBase } from "@kobalte/core";
-import { ComponentProps, splitProps } from "solid-js";
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Switch } from "@kobalte/core";
+    import "./style.css";
 
-function Switch(props: ComponentProps<typeof SwitchBase>) {
-  const [local, others] = splitProps(props, ["children"]);
+    function App() {
+      return (
+        <Switch class="switch">
+          <Switch.Input />
+          <Switch.Label class="switch__label">Airplane mode</Switch.Label>
+          <Switch.Control class="switch__control">
+            <Switch.Thumb class="switch__thumb" />
+          </Switch.Control>
+        </Switch>
+      );
+    }
+    ```
 
-  return (
-    <SwitchBase class="inline-flex items-center ui-disabled:opacity-50" {...others}>
-      <SwitchBase.Input />
-      <SwitchBase.Label class="select-none mr-3 text-sm text-zinc-900 dark:text-zinc-300">
-        {local.children}
-      </SwitchBase.Label>
-      <SwitchBase.Control class="inline-flex transition items-center px-[2px] w-11 h-6 bg-zinc-200 outline-none ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:ring-blue-900/60 rounded-full dark:bg-zinc-700 dark:border-zinc-600 ui-checked:bg-blue-600 dark:ui-checked:bg-blue-600">
-        <SwitchBase.Thumb class="ui-checked:translate-x-full ui-checked:border-white bg-white after:border-zinc-300 border rounded-full h-5 w-5 transition-all" />
-      </SwitchBase.Control>
-    </SwitchBase>
-  );
-}
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .switch {
+      display: inline-flex;
+      align-items: center;
+    }
 
-function App() {
-  return <Switch>Airplane mode</Switch>;
-}
-```
+    .switch__control {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      width: 44px;
+      border: 1px solid hsl(240 5% 84%);
+      border-radius: 12px;
+      padding: 0 2px;
+      background-color: hsl(240 6% 90%);
+      transition: 250ms background-color;
+    }
+
+    .switch__control[data-focus-visible] {
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+    }
+
+    .switch__control[data-checked] {
+      border-color: hsl(200 98% 39%);
+      background-color: hsl(200 98% 39%);
+    }
+
+    .switch__thumb {
+      height: 20px;
+      width: 20px;
+      border-radius: 10px;
+      background-color: white;
+      transition: 250ms transform;
+    }
+
+    .switch__thumb[data-checked] {
+      transform: translateX(calc(100% - 1px));
+    }
+
+    .switch__label {
+      margin-right: 6px;
+      color: hsl(240 6% 10%);
+      font-size: 14px;
+      user-select: none;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
 
 ## Usage
 
-The following examples show how to use the `Switch` component created in the above example.
+### Default checked
 
-### Default checked state
-
-Switches are not checked by default. The `defaultIsChecked` prop can be used to set the default state.
+An initial, uncontrolled value can be provided using the `defaultIsChecked` prop.
 
 <Preview>
-  <Switch defaultIsChecked>Airplane mode</Switch>
+  <DefaultCheckedExample />
 </Preview>
 
 ```tsx
-<Switch defaultIsChecked>Airplane mode</Switch>
+<Switch defaultIsChecked>...</Switch>
 ```
 
-### Controlled checked state
+### Controlled checked
 
-The `isChecked` prop can be used to make the checked state controlled. The `onCheckedChange` event is fired when the user presses the switch, and receives the new value.
+The `isChecked` prop can be used to make the checked state controlled. The `onCheckedChange` event is fired when the user toggle the switch, and receives the new value.
 
 <Preview>
   <ControlledExample />
 </Preview>
 
-```tsx {3,7}
+```tsx {3,7,10}
 import { createSignal } from "solid-js";
 
-function ControlledExample() {
+export function ControlledExample() {
   const [checked, setChecked] = createSignal(false);
 
   return (
     <>
       <Switch isChecked={checked()} onCheckedChange={setChecked}>
-        Airplane mode
+        ...
       </Switch>
-      <p>Airplane mode is {checked() ? "active" : "inactive"}.</p>
+      <p>Airplane mode is {checked() ? "active" : "disabled"}.</p>
     </>
   );
 }
 ```
 
-### Disabled
-
-Switches can be disabled using the `isDisabled` prop.
-
-<Preview>
-  <Switch isDisabled>Airplane mode</Switch>
-</Preview>
-
-```tsx
-<Switch isDisabled>Airplane mode</Switch>
-```
-
-### Read only
-
-The `isReadOnly` prop makes the selection immutable. Unlike `isDisabled`, the switch remains focusable.
-
-<Preview>
-  <Switch isReadOnly>Airplane mode</Switch>
-</Preview>
-
-```tsx
-<Switch isReadOnly>Airplane mode</Switch>
-```
-
 ### HTML forms
 
-Switch supports the `name` and `value` props for integration with HTML forms.
+The `name` and `value` props can be used for integration with HTML forms.
 
 <Preview>
   <HTMLFormExample />
 </Preview>
 
-```tsx {14}
+```tsx {6}
 function HTMLFormExample() {
-  let formRef: HTMLFormElement | undefined;
-
   const onSubmit = (e: SubmitEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const formData = new FormData(formRef);
-
-    alert(JSON.stringify(Object.fromEntries(formData), null, 2));
+    // handle form submission.
   };
-
   return (
-    <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-start space-y-4">
+    <form onSubmit={onSubmit}>
       <Switch name="airplane-mode" value="on">
-        Airplane mode
+        ...
       </Switch>
-      <div class="flex space-x-2">
-        <button type="reset" class="text-sm rounded border border-zinc-600 px-3">
-          Reset
-        </button>
-        <button class="text-sm rounded text-white bg-blue-600 px-3">Submit</button>
+      <div>
+        <button type="reset">Reset</button>
+        <button>Submit</button>
       </div>
     </form>
   );

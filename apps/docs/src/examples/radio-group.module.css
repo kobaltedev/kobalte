@@ -1,0 +1,107 @@
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radio-group__label {
+  color: hsl(240 6% 10%);
+  font-size: 14px;
+  font-weight: 500;
+  user-select: none;
+}
+
+.radio-group__description {
+  color: hsl(240 5% 26%);
+  font-size: 12px;
+  user-select: none;
+}
+
+.radio-group__error-message {
+  color: hsl(0 72% 51%);
+  font-size: 12px;
+  user-select: none;
+}
+
+.radio-group__items {
+  display: flex;
+  gap: 16px;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+}
+
+.radio__control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  border: 1px solid hsl(240 5% 84%);
+  background-color: hsl(240 6% 90%);
+}
+
+.radio__control[data-focus-visible] {
+  outline: 2px solid hsl(200 98% 39%);
+  outline-offset: 2px;
+}
+
+.radio__control[data-checked] {
+  border-color: hsl(200 98% 39%);
+  background-color: hsl(200 98% 39%);
+}
+
+.radio__control[data-checked][data-invalid] {
+  border-color: hsl(0 72% 51%);
+  background-color: hsl(0 72% 51%);
+}
+
+.radio__indicator {
+  height: 10px;
+  width: 10px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.radio__label {
+  margin-left: 6px;
+  color: hsl(240 6% 10%);
+  font-size: 14px;
+  user-select: none;
+}
+
+[data-kb-theme="dark"] .radio-group__label {
+  color: hsl(240 5% 84%);
+}
+
+[data-kb-theme="dark"] .radio-group__description {
+  color: hsl(240 5% 65%);
+}
+
+[data-kb-theme="dark"] .radio__control {
+  border-color: hsl(240 5% 34%);
+  background-color: hsl(240 5% 26%);
+}
+
+[data-kb-theme="dark"] .radio__control[data-checked] {
+  border-color: hsl(200 98% 39%);
+  background-color: hsl(200 98% 39%);
+  color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .radio__control[data-checked][data-invalid] {
+  border-color: hsl(0 72% 51%);
+  background-color: hsl(0 72% 51%);
+  color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .radio__indicator {
+  background-color: hsl(240 4% 16%);
+}
+
+[data-kb-theme="dark"] .radio__label {
+  color: hsl(240 5% 84%);
+}

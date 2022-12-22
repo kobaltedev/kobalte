@@ -86,7 +86,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/popover",
       },
       {
-        title: "Radio Group ❌",
+        title: "Radio Group",
         href: "/docs/components/radio-group",
       },
       {
@@ -98,7 +98,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/separator",
       },
       {
-        title: "Switch ❌",
+        title: "Switch",
         href: "/docs/components/switch",
       },
       {
