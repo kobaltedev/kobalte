@@ -45,7 +45,7 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentProp
 
   const keepVisible = () => local.keepVisible || context.isOpen();
 
-  const { overlayHandlers } = createOverlay(
+  const { dismissableLayerHandlers } = createOverlay(
     {
       isOpen: context.isOpen,
       onClose: context.close,
@@ -69,7 +69,7 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentProp
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
-    callHandler(e, overlayHandlers.onKeyDown);
+    callHandler(e, dismissableLayerHandlers.onKeyDown);
   };
 
   return (

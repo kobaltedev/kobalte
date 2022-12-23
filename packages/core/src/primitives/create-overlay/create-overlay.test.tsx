@@ -19,17 +19,14 @@ export function Overlay(props: ComponentProps<"div"> & CreateOverlayProps) {
     "isOpen",
     "onClose",
     "isModal",
-    "preventScroll",
-    "closeOnInteractOutside",
     "closeOnEsc",
+    "closeOnInteractOutside",
     "shouldCloseOnInteractOutside",
-    "onKeyDown",
   ]);
 
-  const { overlayHandlers } = createOverlay(local, () => ref);
+  createOverlay(local, () => ref);
 
-  // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-  return <div ref={ref} onKeyDown={overlayHandlers.onKeyDown} {...others} />;
+  return <div ref={ref} {...others} />;
 }
 
 describe("createOverlay", () => {

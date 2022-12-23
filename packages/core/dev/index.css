@@ -1,0 +1,90 @@
+.button {
+  display: flex;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  border-style: none;
+  background-color: hsl(204 100% 40%);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: hsl(204 20% 100%);
+  text-decoration-line: none;
+}
+
+.button:hover {
+  background-color: hsl(204 100% 32%);
+}
+
+.button[aria-disabled="true"] {
+  opacity: 0.5;
+}
+
+.secondary {
+  background-color: transparent;
+  color: currentColor;
+}
+
+.secondary:hover {
+  background-color: hsl(204 10% 10% / 0.05);
+}
+
+.dark .secondary {
+  background-color: transparent;
+}
+
+.dark .secondary:hover {
+  background-color: hsl(204 20% 100% / 0.05);
+}
+
+.popover {
+  z-index: 50;
+  display: flex;
+  max-width: min(calc(100vw - 16px), 320px);
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 0.5rem;
+  border-width: 1px;
+  border-style: solid;
+  border-color: hsl(204 20% 88%);
+  background-color: hsl(204 20% 100%);
+  padding: 1rem;
+  color: hsl(204 10% 10%);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.button:focus-visible,
+.button[data-focus-visible],
+.popover:focus-visible,
+.popover[data-focus-visible] {
+  outline: 2px solid hsl(204 100% 40%);
+  outline-offset: 2px;
+}
+
+.dark .popover {
+  border-color: hsl(204 3% 26%);
+  background-color: hsl(204 3% 18%);
+  color: hsl(204 20% 100%);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.25), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.arrow > svg {
+  fill: hsl(204 20% 100%);
+  stroke: hsl(204 20% 88%);
+}
+
+.dark .arrow > svg {
+  fill: hsl(204 3% 18%);
+  stroke: hsl(204 3% 26%);
+}
+
+.heading {
+  margin: 0px;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+}

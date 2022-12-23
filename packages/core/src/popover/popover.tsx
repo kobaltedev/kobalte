@@ -153,9 +153,6 @@ export interface PopoverProps extends PopoverFloatingProps {
   /** Whether the popover should be the only visible content for screen readers. */
   isModal?: boolean;
 
-  /** Whether the scroll should be locked when the popover is open. */
-  preventScroll?: boolean;
-
   /** Whether pressing the escape key should close the popover. */
   closeOnEsc?: boolean;
 
@@ -217,7 +214,6 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     {
       id: defaultId,
       isModal: false,
-      preventScroll: false,
       closeOnEsc: true,
       closeOnInteractOutside: true,
       trapFocus: true,
@@ -272,17 +268,9 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     isOpen: disclosureState.isOpen,
     onClose: disclosureState.close,
     isModal: () => props.isModal,
-    preventScroll: () => props.preventScroll,
-    closeOnInteractOutside: () => props.closeOnInteractOutside,
     closeOnEsc: () => props.closeOnEsc,
+    closeOnInteractOutside: () => props.closeOnInteractOutside,
     shouldCloseOnInteractOutside: element => {
-      // Don't close if the trigger contains the element,
-      // because the press event fired on the trigger will re-open the popover.
-      // Instead, let the trigger's "toggle" behavior handle closing the popover.
-      if (contains(triggerRef(), element)) {
-        return false;
-      }
-
       return props.shouldCloseOnInteractOutside?.(element) ?? true;
     },
   };

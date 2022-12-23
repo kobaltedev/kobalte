@@ -28,13 +28,13 @@ export const DialogContent = createPolymorphicComponent<"div">(props => {
 
   const [local, others] = splitProps(props, ["as", "ref", "id", "onKeyDown"]);
 
-  const { overlayHandlers } = createOverlay(context.createOverlayProps, () => ref);
+  const { dismissableLayerHandlers } = createOverlay(context.createOverlayProps, () => ref);
 
   const { FocusTrap } = createFocusTrapRegion(context.createFocusTrapRegionProps, () => ref);
 
   const onKeyDown: JSX.EventHandlerUnion<HTMLDivElement, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
-    callHandler(e, overlayHandlers.onKeyDown);
+    callHandler(e, dismissableLayerHandlers.onKeyDown);
   };
 
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
