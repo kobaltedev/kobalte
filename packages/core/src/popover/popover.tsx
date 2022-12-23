@@ -18,7 +18,7 @@ import {
   shift,
   size,
 } from "@floating-ui/dom";
-import { contains, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
   Accessor,
   createEffect,
@@ -29,12 +29,7 @@ import {
 } from "solid-js";
 
 import { useLocale } from "../i18n";
-import {
-  createDisclosureState,
-  CreateFocusTrapRegionProps,
-  CreateOverlayProps,
-  createRegisterId,
-} from "../primitives";
+import { createDisclosureState, createRegisterId } from "../primitives";
 import { PopoverAnchor } from "./popover-anchor";
 import { PopoverArrow } from "./popover-arrow";
 import { PopoverCloseButton } from "./popover-close-button";
@@ -264,23 +259,6 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
   const { direction } = useLocale();
 
-  const createOverlayProps: CreateOverlayProps = {
-    isOpen: disclosureState.isOpen,
-    onClose: disclosureState.close,
-    isModal: () => props.isModal,
-    closeOnEsc: () => props.closeOnEsc,
-    closeOnInteractOutside: () => props.closeOnInteractOutside,
-    shouldCloseOnInteractOutside: element => {
-      return props.shouldCloseOnInteractOutside?.(element) ?? true;
-    },
-  };
-
-  const createFocusTrapRegionProps: CreateFocusTrapRegionProps = {
-    trapFocus: () => props.trapFocus && disclosureState.isOpen(),
-    autoFocus: () => props.autoFocus,
-    restoreFocus: () => props.restoreFocus,
-  };
-
   async function updatePosition() {
     const referenceEl = anchorRef();
     const floatingEl = positionerRef();
@@ -476,8 +454,15 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     contentId,
     titleId,
     descriptionId,
-    createOverlayProps,
-    createFocusTrapRegionProps,
+    isModal: () => props.isModal!,
+    closeOnEsc: () => props.closeOnEsc!,
+    closeOnInteractOutside: () => props.closeOnInteractOutside!,
+    shouldCloseOnInteractOutside: (element: Element) => {
+      return props.shouldCloseOnInteractOutside?.(element) ?? true;
+    },
+    trapFocus: () => props.trapFocus! && disclosureState.isOpen(),
+    autoFocus: () => props.autoFocus,
+    restoreFocus: () => props.restoreFocus,
     setDefaultAnchorRef,
     setTriggerRef,
     setPositionerRef,

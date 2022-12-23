@@ -9,7 +9,7 @@ import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { usePopoverContext } from "../popover/popover-context";
-import { createFocusTrapRegion, createOverlay } from "../primitives";
+import { createDismissableLayer, createFocusScope } from "../primitives";
 import { useSelectContext } from "./select-context";
 
 export interface SelectContentProps {
@@ -40,17 +40,16 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentProp
     "id",
     "style",
     "keepVisible",
-    "onKeyDown",
+    "onFocusOut",
   ]);
 
   const keepVisible = () => local.keepVisible || context.isOpen();
 
-  const { dismissableLayerHandlers } = createOverlay(
+  const dismissableLayer = createDismissableLayer(
     {
       isOpen: context.isOpen,
       onClose: context.close,
       isModal: false,
-      preventScroll: false,
       closeOnEsc: true,
       closeOnInteractOutside: true,
       shouldCloseOnInteractOutside: element => !contains(context.triggerRef(), element),
@@ -58,7 +57,7 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentProp
     () => ref
   );
 
-  const { FocusTrap } = createFocusTrapRegion(
+  const { FocusTrap } = createFocusScope(
     {
       trapFocus: context.isOpen,
       autoFocus: false, // Handled by the select listbox.
@@ -67,9 +66,9 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentProp
     () => ref
   );
 
-  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
-    callHandler(e, local.onKeyDown);
-    callHandler(e, dismissableLayerHandlers.onKeyDown);
+  const onFocusOut: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onFocusOut);
+    callHandler(e, dismissableLayer.onFocusOut);
   };
 
   return (
@@ -87,7 +86,7 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentProp
           display: !keepVisible() ? "none" : undefined,
           ...local.style,
         }}
-        onKeyDown={onKeyDown}
+        onFocusOut={onFocusOut}
         {...others}
       />
       <FocusTrap />

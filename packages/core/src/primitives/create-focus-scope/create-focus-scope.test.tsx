@@ -3,16 +3,16 @@ import userEvent from "@testing-library/user-event";
 import { ComponentProps, createSignal, Show, splitProps } from "solid-js";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { createFocusTrapRegion, CreateFocusTrapRegionProps } from "./create-focus-trap-region";
+import { createFocusScope, CreateFocusScopeProps } from "./create-focus-scope";
 
-function FocusTrapRegion(
-  props: ComponentProps<"div"> & CreateFocusTrapRegionProps & { trapFocus?: boolean }
+function FocusScope(
+  props: ComponentProps<"div"> & CreateFocusScopeProps & { trapFocus?: boolean }
 ) {
   let containerRef: any;
 
   const [local, others] = splitProps(props, ["trapFocus", "autoFocus", "restoreFocus"]);
 
-  const { FocusTrap } = createFocusTrapRegion(local, () => containerRef);
+  const { FocusTrap } = createFocusScope(local, () => containerRef);
 
   return (
     <>
@@ -23,14 +23,14 @@ function FocusTrapRegion(
   );
 }
 
-describe("createFocusTrapRegion", () => {
+describe("createFocusScope", () => {
   installPointerEvent();
 
   it("should focus first focusable element on mount when 'autoFocus' is true", async () => {
     render(() => (
-      <FocusTrapRegion autoFocus>
+      <FocusScope autoFocus>
         <button>Button</button>
-      </FocusTrapRegion>
+      </FocusScope>
     ));
 
     expect(screen.getByText("Button")).toHaveFocus();
@@ -38,10 +38,10 @@ describe("createFocusTrapRegion", () => {
 
   it("should focus element targeted with 'autoFocus' on mount", () => {
     render(() => (
-      <FocusTrapRegion autoFocus="#first">
+      <FocusScope autoFocus="#first">
         <button>Button 1</button>
         <button id="first">Button 2</button>
-      </FocusTrapRegion>
+      </FocusScope>
     ));
 
     expect(screen.getByText("Button 2")).toHaveFocus();
@@ -51,7 +51,7 @@ describe("createFocusTrapRegion", () => {
     render(() => (
       <>
         <button>Before</button>
-        <FocusTrapRegion tabIndex={-1} data-testid="focus-trap" />
+        <FocusScope tabIndex={-1} data-testid="focus-trap" />
         <button>After</button>
       </>
     ));
@@ -71,9 +71,9 @@ describe("createFocusTrapRegion", () => {
     render(() => (
       <>
         <button>Before</button>
-        <FocusTrapRegion trapFocus={false}>
+        <FocusScope trapFocus={false}>
           <button>Button</button>
-        </FocusTrapRegion>
+        </FocusScope>
         <button>After</button>
       </>
     ));
@@ -96,9 +96,9 @@ describe("createFocusTrapRegion", () => {
         <>
           <button onClick={() => setIsOpen(true)}>Open</button>
           <Show when={isOpen()}>
-            <FocusTrapRegion restoreFocus data-testid="focus-trap">
+            <FocusScope restoreFocus data-testid="focus-trap">
               <button onClick={() => setIsOpen(false)}>Close</button>
-            </FocusTrapRegion>
+            </FocusScope>
           </Show>
         </>
       );
@@ -138,9 +138,9 @@ describe("createFocusTrapRegion", () => {
         <>
           <button onClick={() => setIsOpen(true)}>Open</button>
           <Show when={isOpen()}>
-            <FocusTrapRegion restoreFocus="#last" data-testid="focus-trap">
+            <FocusScope restoreFocus="#last" data-testid="focus-trap">
               <button onClick={() => setIsOpen(false)}>Close</button>
-            </FocusTrapRegion>
+            </FocusScope>
           </Show>
           <button id="last">Last</button>
         </>
@@ -176,9 +176,9 @@ describe("createFocusTrapRegion", () => {
   it("should bring back focus in container when interacting outside", async () => {
     render(() => (
       <>
-        <FocusTrapRegion>
+        <FocusScope>
           <button>Inside</button>
-        </FocusTrapRegion>
+        </FocusScope>
         <button>Outside</button>
       </>
     ));

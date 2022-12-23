@@ -22,7 +22,7 @@ import {
 } from "@kobalte/utils";
 import { Accessor, JSX, onCleanup, onMount, Show } from "solid-js";
 
-export interface CreateFocusTrapRegionProps {
+export interface CreateFocusScopeProps {
   /** Whether the focus trap is active. */
   trapFocus?: MaybeAccessor<boolean | undefined>;
 
@@ -46,7 +46,7 @@ export interface CreateFocusTrapRegionProps {
  * @example
  * let containerRef: any;
  *
- * const { FocusTrap } = createFocusTrapRegion(options, () => containerRef);
+ * const { FocusTrap } = createFocusScope(options, () => containerRef);
  *
  * <>
  *   <FocusTrap />
@@ -54,8 +54,8 @@ export interface CreateFocusTrapRegionProps {
  *   <FocusTrap />
  * </>
  */
-export function createFocusTrapRegion<T extends HTMLElement>(
-  props: CreateFocusTrapRegionProps,
+export function createFocusScope<T extends HTMLElement>(
+  props: CreateFocusScopeProps,
   ref: Accessor<T | undefined>
 ) {
   let restoreFocusElement: HTMLElement | null;

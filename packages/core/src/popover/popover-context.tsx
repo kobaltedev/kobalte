@@ -1,6 +1,5 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { CreateFocusTrapRegionProps, CreateOverlayProps } from "../primitives";
 import { Placement } from "./utils";
 
 export interface PopoverContextValue {
@@ -11,8 +10,13 @@ export interface PopoverContextValue {
   contentId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;
-  createOverlayProps: CreateOverlayProps;
-  createFocusTrapRegionProps: CreateFocusTrapRegionProps;
+  isModal: Accessor<boolean>;
+  closeOnEsc: Accessor<boolean>;
+  closeOnInteractOutside: Accessor<boolean>;
+  shouldCloseOnInteractOutside: (element: Element) => boolean;
+  trapFocus: Accessor<boolean>;
+  autoFocus: Accessor<boolean | string | undefined>;
+  restoreFocus: Accessor<boolean | string | undefined>;
   setDefaultAnchorRef: (el: HTMLElement) => void;
   setTriggerRef: (el: HTMLElement) => void;
   setPositionerRef: (el: HTMLElement) => void;

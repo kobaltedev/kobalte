@@ -13,54 +13,43 @@
  */
 
 import { access, contains, getDocument, MaybeAccessor } from "@kobalte/utils";
-import {
-  Accessor,
-  createComponent,
-  createEffect,
-  createMemo,
-  createSignal,
-  FlowComponent,
-  JSX,
-  on,
-  onCleanup,
-} from "solid-js";
+import { Accessor, createEffect, createMemo, createSignal, JSX, on, onCleanup } from "solid-js";
 
 import { createEscapeKeyDown } from "../create-escape-key-down";
 import { createInteractOutside } from "../create-interact-outside";
 import { createPreventScroll } from "../create-prevent-scroll";
 import { ariaHideOutside } from "./aria-hide-outside";
 import {
-  DismissableLayerContext,
   DismissableLayerContextValue,
   useOptionalDismissableLayerContext,
 } from "./dismissable-layer-context";
 
-export interface CreateOverlayProps {
-  /** Whether the overlay is currently open. */
+export interface CreateDismissableLayerProps {
+  /** Whether the _dismissable layer_ is currently open. */
   isOpen?: MaybeAccessor<boolean | undefined>;
 
   /**
-   * Whether the overlay should be the only visible content for screen readers.
-   * If its `true`, when the overlay is open:
-   * - every element outside the overlay will be hidden for screen readers.
-   * - scroll will be locked.
-   * - hover/focus/click interactions will be disabled on elements outside
-   *   the overlay. Users will need to click twice on outside elements to
-   *   interact with them: once to close the overlay, and again to trigger the element.
+   * Whether the _dismissable layer_ should be the only visible content for screen readers.
+   * If `true`, when the _dismissable layer_ is open:
+   * - Every element outside the _dismissable layer_ will be hidden for screen readers.
+   * - Scroll will be locked.
+   * - Hover/focus/click interactions will be disabled on elements outside
+   *   the _dismissable layer_. Users will need to click twice on outside elements to
+   *   interact with them: once to close the _dismissable layer_, and again to trigger the element.
    */
   isModal?: MaybeAccessor<boolean | undefined>;
 
-  /** Whether pressing the escape key should close the overlay. */
+  /** Whether pressing the escape key should close the _dismissable layer_. */
   closeOnEsc?: MaybeAccessor<boolean | undefined>;
 
-  /** Whether to close the overlay when the user interacts outside it. */
+  /** Whether to close the _dismissable layer_ when the user interacts outside it. */
   closeOnInteractOutside?: MaybeAccessor<boolean | undefined>;
 
   /**
-   * When user interacts with the argument element outside the overlay ref,
-   * return true if onClose should be called. This gives you a chance to filter
-   * out interaction with elements that should not dismiss the overlay.
-   * By default, onClose will always be called on interaction outside the overlay ref.
+   * When user interacts with the argument element outside the _dismissable layer_,
+   * return true if `onClose` should be called. This gives you a chance to filter
+   * out interaction with elements that should not dismiss the _layer_.
+   * By default, `onClose` will always be called on interaction outside the _dismissable layer_.
    */
   shouldCloseOnInteractOutside?: (element: Element) => boolean;
 
@@ -78,40 +67,46 @@ const [visibleModalLayers, setVisibleModalLayers] = createSignal<HTMLElement[]>(
  * Hides the layer when the user interacts outside, focus outside or when the Escape key is pressed.
  * Support nested layers, modal and non-modal mode.
  */
-export function createOverlay<T extends HTMLElement>(
-  props: CreateOverlayProps,
+export function createDismissableLayer<T extends HTMLElement>(
+  props: CreateDismissableLayerProps,
   ref: Accessor<T | undefined>
 ) {
   const parentContext = useOptionalDismissableLayerContext();
 
-  const nestedLayers = new Set<HTMLElement>([]);
+  const nestedLayers = new Set<Element>([]);
 
-  const [index, setIndex] = createSignal(-1);
+  //const [index, setIndex] = createSignal(-1);
 
   const ownerDocument = createMemo(() => getDocument(ref()));
 
   const isPointerEventsEnabled = createMemo(() => {
-    const modals = visibleModalLayers();
-    const topMostVisibleModal = modals[modals.length - 1];
+    const modalLayers = visibleModalLayers();
+    const topMostModalLayer = modalLayers[modalLayers.length - 1];
 
-    return index() >= visibleLayers().indexOf(topMostVisibleModal);
+    const refEl = ref();
+
+    const currentIndex = refEl ? visibleLayers().indexOf(refEl) : -1;
+
+    return currentIndex >= visibleLayers().indexOf(topMostModalLayer);
   });
 
-  const cssPointerEventsValue: Accessor<JSX.CSSProperties["pointer-events"]> = createMemo(() => {
+  const style = createMemo(() => {
     const isBodyPointerEventsDisabled = visibleModalLayers().length > 0;
 
-    if (isBodyPointerEventsDisabled) {
-      return isPointerEventsEnabled() ? "auto" : "none";
-    }
-
-    return undefined;
+    return {
+      "pointer-events": isBodyPointerEventsDisabled
+        ? isPointerEventsEnabled()
+          ? "auto"
+          : "none"
+        : undefined,
+    } as JSX.CSSProperties;
   });
 
-  const isElementInDismissableLayerTree = (element: Node) => {
+  const isElementInLayerTree = (element: Node) => {
     return [ref(), ...nestedLayers].some(layer => contains(layer, element));
   };
 
-  const registerNestedDismissableLayer = (element: HTMLElement) => {
+  const registerNestedDismissableLayer = (element: Element) => {
     nestedLayers.add(element);
 
     const parentUnregister = parentContext?.registerNestedDismissableLayer(element);
@@ -128,6 +123,11 @@ export function createOverlay<T extends HTMLElement>(
   };
 
   const shouldCloseOnInteractWith = (element: Element) => {
+    // Do not close if element is in a nested layer (e.g. menu inside a dialog).
+    if (isElementInLayerTree(element)) {
+      return false;
+    }
+
     const shouldCloseOnInteractOutside = access(props.shouldCloseOnInteractOutside);
 
     if (shouldCloseOnInteractOutside == null) {
@@ -137,21 +137,10 @@ export function createOverlay<T extends HTMLElement>(
     return shouldCloseOnInteractOutside(element);
   };
 
-  // Handle hide the overlay when the user focus outside it.
   const onFocusOut: JSX.EventHandlerUnion<any, FocusEvent> = e => {
     const relatedTarget = e.relatedTarget as HTMLElement | null;
 
-    if (relatedTarget == null) {
-      return;
-    }
-
-    // If focus is moving into a nested overlay (e.g. menu inside a dialog)
-    // or an element that should not close the overlay (e.g. a popover trigger),
-    // do not close the outer overlay.
-    if (
-      isElementInDismissableLayerTree(relatedTarget) ||
-      !shouldCloseOnInteractWith(relatedTarget)
-    ) {
+    if (!relatedTarget || !shouldCloseOnInteractWith(relatedTarget)) {
       return;
     }
 
@@ -160,7 +149,6 @@ export function createOverlay<T extends HTMLElement>(
     }
   };
 
-  // Handle hide the overlay when the user interact outside it.
   createInteractOutside(
     {
       isDisabled: () => !(access(props.isOpen) && access(props.closeOnInteractOutside)),
@@ -172,11 +160,7 @@ export function createOverlay<T extends HTMLElement>(
 
         const target = e.target as HTMLElement | null;
 
-        if (target == null) {
-          return;
-        }
-
-        if (isElementInDismissableLayerTree(target) || !shouldCloseOnInteractWith(target)) {
+        if (!target || !shouldCloseOnInteractWith(target)) {
           return;
         }
 
@@ -186,7 +170,6 @@ export function createOverlay<T extends HTMLElement>(
     ref
   );
 
-  // Handle hide the overlay when the escape key is pressed.
   createEscapeKeyDown({
     isDisabled: () => !(access(props.isOpen) && access(props.closeOnEsc)),
     ownerDocument,
@@ -200,12 +183,11 @@ export function createOverlay<T extends HTMLElement>(
     },
   });
 
-  // Handle prevent scroll when the overlay is modal and opened.
   createPreventScroll({
     isDisabled: () => !(access(props.isOpen) && access(props.isModal)),
   });
 
-  // Hides all elements in the DOM outside the given targets from screen readers when the overlay is modal an opened
+  // Hides all elements in the DOM outside the given targets from screen readers.
   createEffect(() => {
     const refEl = ref();
 
@@ -220,7 +202,7 @@ export function createOverlay<T extends HTMLElement>(
     }
   });
 
-  // Register as nested in the parent overlay.
+  // Register to parent layer if any.
   createEffect(() => {
     if (!access(props.isOpen)) {
       return;
@@ -234,12 +216,10 @@ export function createOverlay<T extends HTMLElement>(
 
     const unregister = parentContext.registerNestedDismissableLayer(refEl);
 
-    onCleanup(() => {
-      unregister();
-    });
+    onCleanup(unregister);
   });
 
-  // Add layer to visible layers and disabled pointer events if needed.
+  // Add to visible layers and disabled pointer events if needed.
   createEffect(
     on(
       [ref, ownerDocument, () => access(props.isOpen), () => access(props.isModal)],
@@ -249,13 +229,14 @@ export function createOverlay<T extends HTMLElement>(
         }
 
         if (isOpen) {
-          setVisibleLayers(prev => [...prev, ref]);
+          const visibleLayers = setVisibleLayers(prev => [...prev, ref]);
 
-          setIndex(visibleLayers().indexOf(ref));
+          //setIndex(visibleLayers.indexOf(ref));
 
           if (isModal) {
             const visibleModalLayers = setVisibleModalLayers(prev => [...prev, ref]);
 
+            // The first modal in the layer stack disable pointer-events on body.
             if (visibleModalLayers.length === 1) {
               originalBodyPointerEvents = ownerDocument.body.style.pointerEvents;
               ownerDocument.body.style.pointerEvents = "none";
@@ -264,10 +245,14 @@ export function createOverlay<T extends HTMLElement>(
         }
 
         onCleanup(() => {
-          setIndex(-1);
-          setVisibleLayers(prev => prev.filter(el => el !== ref));
-          const visibleModalLayers = setVisibleModalLayers(prev => prev.filter(el => el !== ref));
+          setVisibleLayers(prev => prev.filter(layer => layer !== ref));
+          //setIndex(-1);
 
+          const visibleModalLayers = setVisibleModalLayers(prev =>
+            prev.filter(layer => layer !== ref)
+          );
+
+          // Restore original body pointer-events when there is no modal in the layer stack.
           if (visibleModalLayers.length === 0) {
             ownerDocument.body.style.pointerEvents = originalBodyPointerEvents;
           }
@@ -277,22 +262,12 @@ export function createOverlay<T extends HTMLElement>(
   );
 
   const context: DismissableLayerContextValue = {
-    isElementInDismissableLayerTree,
     registerNestedDismissableLayer,
   };
 
-  const DismissableLayerProvider: FlowComponent = props => {
-    return createComponent(DismissableLayerContext.Provider, {
-      value: context,
-      get children() {
-        return props.children;
-      },
-    });
-  };
-
   return {
-    DismissableLayerProvider,
-    dismissableLayerProps: { cssPointerEventsValue },
-    dismissableLayerHandlers: { onFocusOut },
+    context,
+    style,
+    onFocusOut,
   };
 }

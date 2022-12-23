@@ -7,7 +7,7 @@ import {
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createFocusTrapRegion, createOverlay } from "../primitives";
+import { createDismissableLayer, createFocusScope } from "../primitives";
 import { useDialogContext } from "./dialog-context";
 
 /**
@@ -26,15 +26,15 @@ export const DialogContent = createPolymorphicComponent<"div">(props => {
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "ref", "id", "onKeyDown"]);
+  const [local, others] = splitProps(props, ["as", "ref", "id", "onFocusOut"]);
 
-  const { dismissableLayerHandlers } = createOverlay(context.createOverlayProps, () => ref);
+  const dismissableLayer = createDismissableLayer(context.createDismissableLayerProps, () => ref);
 
-  const { FocusTrap } = createFocusTrapRegion(context.createFocusTrapRegionProps, () => ref);
+  const { FocusTrap } = createFocusScope(context.createFocusScopeProps, () => ref);
 
-  const onKeyDown: JSX.EventHandlerUnion<HTMLDivElement, KeyboardEvent> = e => {
-    callHandler(e, local.onKeyDown);
-    callHandler(e, dismissableLayerHandlers.onKeyDown);
+  const onFocusOut: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onFocusOut);
+    callHandler(e, dismissableLayer.onFocusOut);
   };
 
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
@@ -50,7 +50,7 @@ export const DialogContent = createPolymorphicComponent<"div">(props => {
         tabIndex={-1}
         aria-labelledby={context.titleId()}
         aria-describedby={context.descriptionId()}
-        onKeyDown={onKeyDown}
+        onFocusOut={onFocusOut}
         {...others}
       />
       <FocusTrap />

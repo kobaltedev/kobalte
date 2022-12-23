@@ -1,6 +1,6 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { CreateFocusTrapRegionProps, CreateOverlayProps } from "../primitives";
+import { CreateFocusScopeProps, CreateDismissableLayerProps } from "../primitives";
 
 export interface DialogContextValue {
   isOpen: Accessor<boolean>;
@@ -8,8 +8,8 @@ export interface DialogContextValue {
   contentId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;
-  createOverlayProps: CreateOverlayProps;
-  createFocusTrapRegionProps: CreateFocusTrapRegionProps;
+  createDismissableLayerProps: CreateDismissableLayerProps;
+  createFocusScopeProps: CreateFocusScopeProps;
   close: () => void;
   toggle: () => void;
   generateId: (part: string) => string;

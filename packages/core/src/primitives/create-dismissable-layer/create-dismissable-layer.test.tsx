@@ -3,16 +3,16 @@
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *
  * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/test/useOverlay.test.js
+ * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/test/useDismissableLayer.test.js
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { ComponentProps, splitProps } from "solid-js";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { createOverlay, CreateOverlayProps } from "./create-overlay";
+import { createDismissableLayer, CreateDismissableLayerProps } from "./create-dismissable-layer";
 
-export function Overlay(props: ComponentProps<"div"> & CreateOverlayProps) {
+export function DismissableLayer(props: ComponentProps<"div"> & CreateDismissableLayerProps) {
   let ref: HTMLDivElement | undefined;
 
   const [local, others] = splitProps(props, [
@@ -24,18 +24,18 @@ export function Overlay(props: ComponentProps<"div"> & CreateOverlayProps) {
     "shouldCloseOnInteractOutside",
   ]);
 
-  createOverlay(local, () => ref);
+  createDismissableLayer(local, () => ref);
 
   return <div ref={ref} {...others} />;
 }
 
-describe("createOverlay", () => {
+describe("createDismissableLayer", () => {
   installPointerEvent();
 
   it("should hide the overlay when clicking outside if 'closeOnInteractOutside' is true", async () => {
     const onClose = jest.fn();
 
-    render(() => <Overlay isOpen onClose={onClose} closeOnInteractOutside />);
+    render(() => <DismissableLayer isOpen onClose={onClose} closeOnInteractOutside />);
 
     fireEvent(document.body, createPointerEvent("pointerdown", { pointerType: "mouse" }));
     await Promise.resolve();
@@ -49,7 +49,7 @@ describe("createOverlay", () => {
   it("should not hide the overlay when clicking outside if 'closeOnInteractOutside' is false", async () => {
     const onClose = jest.fn();
 
-    render(() => <Overlay isOpen onClose={onClose} closeOnInteractOutside={false} />);
+    render(() => <DismissableLayer isOpen onClose={onClose} closeOnInteractOutside={false} />);
 
     fireEvent(document.body, createPointerEvent("pointerdown", { pointerType: "mouse" }));
     await Promise.resolve();
@@ -64,7 +64,7 @@ describe("createOverlay", () => {
     const onClose = jest.fn();
 
     render(() => (
-      <Overlay
+      <DismissableLayer
         isOpen
         onClose={onClose}
         closeOnInteractOutside
@@ -85,7 +85,7 @@ describe("createOverlay", () => {
     const onClose = jest.fn();
 
     render(() => (
-      <Overlay
+      <DismissableLayer
         isOpen
         onClose={onClose}
         closeOnInteractOutside
@@ -106,8 +106,10 @@ describe("createOverlay", () => {
     const onCloseFirst = jest.fn();
     const onCloseSecond = jest.fn();
 
-    render(() => <Overlay isOpen onClose={onCloseFirst} closeOnInteractOutside />);
-    const second = render(() => <Overlay isOpen onClose={onCloseSecond} closeOnInteractOutside />);
+    render(() => <DismissableLayer isOpen onClose={onCloseFirst} closeOnInteractOutside />);
+    const second = render(() => (
+      <DismissableLayer isOpen onClose={onCloseSecond} closeOnInteractOutside />
+    ));
 
     fireEvent(document.body, createPointerEvent("pointerdown", { pointerType: "mouse" }));
     await Promise.resolve();
@@ -132,7 +134,7 @@ describe("createOverlay", () => {
   it("should hide the overlay when pressing the escape key when 'closeOnEsc' is true", async () => {
     const onClose = jest.fn();
 
-    render(() => <Overlay data-testid="test" isOpen onClose={onClose} closeOnEsc />);
+    render(() => <DismissableLayer data-testid="test" isOpen onClose={onClose} closeOnEsc />);
 
     const el = screen.getByTestId("test");
 
@@ -146,7 +148,7 @@ describe("createOverlay", () => {
     const onClose = jest.fn();
 
     render(() => (
-      <Overlay
+      <DismissableLayer
         data-testid="test"
         isOpen
         onClose={onClose}

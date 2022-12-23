@@ -40,7 +40,6 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
       placement: "bottom-start",
       closeOnEsc: true,
       isModal: parentMenuContext?.isModal() ?? true,
-      preventScroll: parentMenuContext?.preventScroll() ?? true,
       trapFocus: parentMenuContext?.trapFocus() ?? true,
       autoFocus: true,
       restoreFocus: true,
@@ -113,7 +112,6 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
   const context: MenuContextValue = {
     isOpen: () => disclosureState.isOpen(),
     isModal: () => others.isModal!,
-    preventScroll: () => others.preventScroll!,
     trapFocus: () => others.trapFocus!,
     autoFocus: focusStrategy,
     listState: () => listState,

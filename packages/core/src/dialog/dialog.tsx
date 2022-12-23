@@ -3,8 +3,8 @@ import { createSignal, createUniqueId, ParentComponent } from "solid-js";
 
 import {
   createDisclosureState,
-  CreateFocusTrapRegionProps,
-  CreateOverlayProps,
+  CreateFocusScopeProps,
+  CreateDismissableLayerProps,
   createRegisterId,
 } from "../primitives";
 import { DialogCloseButton } from "./dialog-close-button";
@@ -122,7 +122,7 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
     onOpenChange: isOpen => props.onOpenChange?.(isOpen),
   });
 
-  const createOverlayProps: CreateOverlayProps = {
+  const createDismissableLayerProps: CreateDismissableLayerProps = {
     isOpen: disclosureState.isOpen,
     onClose: disclosureState.close,
     isModal: () => props.isModal,
@@ -134,7 +134,7 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
     },
   };
 
-  const createFocusTrapRegionProps: CreateFocusTrapRegionProps = {
+  const createFocusScopeProps: CreateFocusScopeProps = {
     trapFocus: () => props.trapFocus && disclosureState.isOpen(),
     autoFocus: () => props.autoFocus,
     restoreFocus: () => props.restoreFocus,
@@ -146,8 +146,8 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
     contentId,
     titleId,
     descriptionId,
-    createOverlayProps,
-    createFocusTrapRegionProps,
+    createDismissableLayerProps,
+    createFocusScopeProps,
     close: disclosureState.close,
     toggle: disclosureState.toggle,
     generateId: createGenerateId(() => props.id!),
