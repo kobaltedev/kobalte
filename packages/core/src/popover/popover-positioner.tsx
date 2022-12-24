@@ -2,7 +2,6 @@ import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobal
 import { JSX, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
-import { FocusScope } from "../focus-scope";
 import { usePopoverContext } from "./popover-context";
 
 export interface PopoverPositionerProps {
@@ -23,29 +22,18 @@ export const PopoverPositioner = createPolymorphicComponent<"div", PopoverPositi
 
     return (
       <Show when={context.shouldMount()}>
-        <FocusScope
-          trapFocus={context.trapFocus()}
-          autoFocus={context.autoFocus()}
-          restoreFocus={context.restoreFocus()}
-        >
-          {setContainerRef => (
-            <DismissableLayer
-              ref={mergeRefs(el => {
-                context.setPositionerRef(el);
-                setContainerRef(el);
-              }, local.ref)}
-              isOpen={context.isOpen()}
-              isModal={context.isModal()}
-              closeOnEsc={context.closeOnEsc()}
-              closeOnInteractOutside={context.closeOnInteractOutside()}
-              shouldCloseOnInteractOutside={context.shouldCloseOnInteractOutside}
-              onClose={context.close}
-              role="presentation"
-              style={{ position: "absolute", top: 0, left: 0, ...local.style }}
-              {...others}
-            />
-          )}
-        </FocusScope>
+        <DismissableLayer
+          ref={mergeRefs(context.setPositionerRef, local.ref)}
+          isOpen={context.isOpen()}
+          isModal={context.isModal()}
+          closeOnEsc={context.closeOnEsc()}
+          closeOnInteractOutside={context.closeOnInteractOutside()}
+          shouldCloseOnInteractOutside={context.shouldCloseOnInteractOutside}
+          onClose={context.close}
+          role="presentation"
+          style={{ position: "absolute", top: 0, left: 0, ...local.style }}
+          {...others}
+        />
       </Show>
     );
   }

@@ -13,11 +13,12 @@
  */
 
 import {
-  combineProps,
+  composeEventHandlers,
   contains,
   createPolymorphicComponent,
   getDocument,
   mergeDefaultProps,
+  mergeRefs,
 } from "@kobalte/utils";
 import { createEffect, createSignal, JSX, on, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -61,6 +62,9 @@ export interface DismissableLayerProps {
 
   /** Handler that is called when the overlay should close. */
   onClose?: () => void;
+
+  /** The HTML styles attribute (object form only). */
+  style?: JSX.CSSProperties;
 }
 
 let originalBodyPointerEvents: string;
@@ -69,7 +73,9 @@ const [visibleLayers, setVisibleLayers] = createSignal<HTMLElement[]>([]);
 const [visibleModalLayers, setVisibleModalLayers] = createSignal<HTMLElement[]>([]);
 
 export const DismissableLayer = createPolymorphicComponent<"div", DismissableLayerProps>(props => {
-  let ref: HTMLDivElement | undefined;
+  let ref: HTMLElement | undefined;
+
+  const nestedLayers = new Set<Element>([]);
 
   const parentContext = useOptionalDismissableLayerContext();
 
@@ -77,15 +83,16 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
 
   const [local, others] = splitProps(props, [
     "as",
+    "ref",
+    "style",
     "isOpen",
     "isModal",
     "closeOnEsc",
     "closeOnInteractOutside",
     "shouldCloseOnInteractOutside",
     "onClose",
+    "onFocusOut",
   ]);
-
-  const nestedLayers = new Set<Element>([]);
 
   const isBodyPointerEventsDisabled = () => visibleModalLayers().length > 0;
 
@@ -97,7 +104,7 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
     return currentIndex >= visibleLayers().indexOf(topMostModalLayer);
   };
 
-  const isElementInLayerTree = (element: Node) => {
+  const isElementInLayerTree = (element: Element) => {
     return [ref, ...nestedLayers].some(layer => contains(layer, element));
   };
 
@@ -208,7 +215,7 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
     onCleanup(unregister);
   });
 
-  // Add to visible layers and disabled pointer events if needed.
+  // Add to visible layers and disabled pointer-events if needed.
   createEffect(
     on([() => ref, () => local.isOpen, () => local.isModal], ([ref, isOpen, isModal]) => {
       if (!ref) {
@@ -254,22 +261,17 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
     <DismissableLayerContext.Provider value={context}>
       <Dynamic
         component={local.as}
-        {...combineProps(
-          {
-            ref: el => (ref = el),
-          },
-          others,
-          {
-            style: {
-              "pointer-events": isBodyPointerEventsDisabled()
-                ? isPointerEventsEnabled()
-                  ? "auto"
-                  : "none"
-                : undefined,
-            },
-            onFocusOut,
-          }
-        )}
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        style={{
+          "pointer-events": isBodyPointerEventsDisabled()
+            ? isPointerEventsEnabled()
+              ? "auto"
+              : "none"
+            : undefined,
+          ...local.style,
+        }}
+        onFocusOut={composeEventHandlers([local.onFocusOut, onFocusOut])}
+        {...others}
       />
     </DismissableLayerContext.Provider>
   );

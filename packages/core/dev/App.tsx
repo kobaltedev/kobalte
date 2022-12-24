@@ -35,14 +35,14 @@ export default function App() {
   return (
     <I18nProvider>
       <div class="flex items-center space-x-4 p-4">
-        <MyPopover placement="bottom">
-          <MyPopover placement="right-start">
-            <MyPopover placement="right-start" />
+        <MyPopover id="poppover-1" placement="bottom">
+          <MyPopover id="poppover-2" placement="right-start">
+            <MyPopover id="poppover-3" placement="right-start" />
           </MyPopover>
         </MyPopover>
-        <MyPopover isModal placement="bottom">
-          <MyPopover isModal placement="right-start">
-            <MyPopover isModal placement="right-start" />
+        <MyPopover id="modal-1" isModal placement="bottom">
+          <MyPopover id="modal-2" isModal placement="right-start">
+            <MyPopover id="modal-3" isModal placement="right-start" />
           </MyPopover>
         </MyPopover>
         <button class="button" onClick={() => console.log("external button triggered")}>

@@ -1,6 +1,7 @@
 import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
+import { FocusScope } from "../focus-scope";
 
 import { usePopoverContext } from "./popover-context";
 
@@ -27,17 +28,29 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentPr
 
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
+  // TODO: restore focus not working correctly (modal, non modal)
   return (
-    <Dynamic
-      component={local.as}
-      ref={mergeRefs(context.setContentRef, local.ref)}
-      id={local.id}
-      role="dialog"
-      tabIndex={-1}
-      style={{ position: "relative", ...local.style }}
-      aria-labelledby={context.titleId()}
-      aria-describedby={context.descriptionId()}
-      {...others}
-    />
+    <FocusScope
+      trapFocus={context.trapFocus()}
+      autoFocus={context.autoFocus()}
+      restoreFocus={context.restoreFocus()}
+    >
+      {setContainerRef => (
+        <Dynamic
+          component={local.as}
+          ref={mergeRefs(el => {
+            context.setContentRef(el);
+            setContainerRef(el);
+          }, local.ref)}
+          id={local.id}
+          role="dialog"
+          tabIndex={-1}
+          style={{ position: "relative", ...local.style }}
+          aria-labelledby={context.titleId()}
+          aria-describedby={context.descriptionId()}
+          {...others}
+        />
+      )}
+    </FocusScope>
   );
 });
