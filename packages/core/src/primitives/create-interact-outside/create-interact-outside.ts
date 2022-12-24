@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/interactions/src/useInteractOutside.ts
  */
 
-import { access, MaybeAccessor } from "@kobalte/utils";
+import { access, getDocument, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
 
 export interface CreateInteractOutsideProps {
@@ -72,7 +72,7 @@ function isInteractOutsideEvent(event: any, element: Element | undefined) {
 
   // if the event target is no longer in the document
   if (event.target) {
-    const ownerDocument = event.target.ownerDocument;
+    const ownerDocument = getDocument(event.target);
 
     if (!ownerDocument || !ownerDocument.documentElement.contains(event.target)) {
       return false;

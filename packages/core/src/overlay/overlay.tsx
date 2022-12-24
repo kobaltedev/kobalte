@@ -25,38 +25,34 @@ import { Dynamic } from "solid-js/web";
 
 import { createEscapeKeyDown, createInteractOutside, createPreventScroll } from "../primitives";
 import { ariaHideOutside } from "./aria-hide-outside";
-import {
-  DismissableLayerContext,
-  DismissableLayerContextValue,
-  useOptionalDismissableLayerContext,
-} from "./dismissable-layer-context";
+import { OverlayContext, OverlayContextValue, useOptionalOverlayContext } from "./overlay-context";
 
-export interface DismissableLayerProps {
-  /** Whether the `DismissableLayer` is currently open. */
+export interface OverlayProps {
+  /** Whether the overlay is currently open. */
   isOpen?: boolean;
 
   /**
-   * Whether the `DismissableLayer` should be the only visible content for screen readers.
-   * If `true`, when the `DismissableLayer` is open:
-   * - Every element outside the `DismissableLayer` will be hidden for screen readers.
+   * Whether the overlay should be the only visible content for screen readers.
+   * If `true`, when the overlay is open:
+   * - Every element outside the overlay will be hidden for screen readers.
    * - Scroll will be locked.
    * - Hover/focus/click interactions will be disabled on elements outside
-   *   the `DismissableLayer`. Users will need to click twice on outside elements to
-   *   interact with them: once to close the `DismissableLayer`, and again to trigger the element.
+   *   the overlay. Users will need to click twice on outside elements to
+   *   interact with them: once to close the overlay, and again to trigger the element.
    */
   isModal?: boolean;
 
-  /** Whether pressing the escape key should close the `DismissableLayer`. */
+  /** Whether pressing the escape key should close the overlay. */
   closeOnEsc?: boolean;
 
-  /** Whether to close the `DismissableLayer` when the user interacts outside it. */
+  /** Whether to close the overlay when the user interacts outside it. */
   closeOnInteractOutside?: boolean;
 
   /**
-   * When user interacts with the argument element outside the `DismissableLayer`,
+   * When user interacts with the argument element outside the overlay,
    * return true if `onClose` should be called. This gives you a chance to filter
-   * out interaction with elements that should not dismiss the _layer_.
-   * By default, `onClose` will always be called on interaction outside the `DismissableLayer`.
+   * out interaction with elements that should not dismiss the overlay.
+   * By default, `onClose` will always be called on interaction outside the overlay.
    */
   shouldCloseOnInteractOutside?: (element: Element) => boolean;
 
@@ -69,15 +65,20 @@ export interface DismissableLayerProps {
 
 let originalBodyPointerEvents: string;
 
-const [visibleLayers, setVisibleLayers] = createSignal<HTMLElement[]>([]);
-const [visibleModalLayers, setVisibleModalLayers] = createSignal<HTMLElement[]>([]);
+const [visibleOverlays, setVisibleOverlays] = createSignal<HTMLElement[]>([]);
+const [visibleModalOverlays, setVisibleModalOverlays] = createSignal<HTMLElement[]>([]);
 
-export const DismissableLayer = createPolymorphicComponent<"div", DismissableLayerProps>(props => {
+/**
+ * A dismissable layer such as dialogs, popovers, and menus.
+ * Hides when the user interacts outside it, the Escape key is pressed, or optionally, on blur.
+ * Supports modal and non-modal mode.
+ */
+export const Overlay = createPolymorphicComponent<"div", OverlayProps>(props => {
   let ref: HTMLElement | undefined;
 
-  const nestedLayers = new Set<Element>([]);
+  const nestedOverlays = new Set<Element>([]);
 
-  const parentContext = useOptionalDismissableLayerContext();
+  const parentContext = useOptionalOverlayContext();
 
   props = mergeDefaultProps({ as: "div" }, props);
 
@@ -94,39 +95,39 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
     "onFocusOut",
   ]);
 
-  const isBodyPointerEventsDisabled = () => visibleModalLayers().length > 0;
+  const isBodyPointerEventsDisabled = () => visibleModalOverlays().length > 0;
 
   const isPointerEventsEnabled = () => {
-    const modalLayers = visibleModalLayers();
-    const topMostModalLayer = modalLayers[modalLayers.length - 1];
-    const currentIndex = ref ? visibleLayers().indexOf(ref) : -1;
+    const modalOverlays = visibleModalOverlays();
+    const topMostModalLayer = modalOverlays[modalOverlays.length - 1];
+    const currentIndex = ref ? visibleOverlays().indexOf(ref) : -1;
 
-    return currentIndex >= visibleLayers().indexOf(topMostModalLayer);
+    return currentIndex >= visibleOverlays().indexOf(topMostModalLayer);
   };
 
-  const isElementInLayerTree = (element: Element) => {
-    return [ref, ...nestedLayers].some(layer => contains(layer, element));
+  const isElementInOverlayTree = (element: Element) => {
+    return [ref, ...nestedOverlays].some(overlay => contains(overlay, element));
   };
 
-  const isTopMostLayer = () => {
-    const layers = visibleLayers();
-    return layers[layers.length - 1] === ref;
+  const isTopMostOverlay = () => {
+    const overlays = visibleOverlays();
+    return overlays[overlays.length - 1] === ref;
   };
 
-  const registerNestedDismissableLayer = (element: Element) => {
-    nestedLayers.add(element);
+  const registerNestedOverlay = (element: Element) => {
+    nestedOverlays.add(element);
 
-    const parentUnregister = parentContext?.registerNestedDismissableLayer(element);
+    const parentUnregister = parentContext?.registerNestedOverlay(element);
 
     return () => {
-      nestedLayers.delete(element);
+      nestedOverlays.delete(element);
       parentUnregister?.();
     };
   };
 
   const shouldCloseOnInteractWith = (element: Element) => {
-    // Do not close if element is in a nested layer (e.g. menu inside a dialog).
-    if (isElementInLayerTree(element)) {
+    // Do not close if element is in a nested overlay (e.g. menu inside a dialog).
+    if (isElementInOverlayTree(element)) {
       return false;
     }
 
@@ -144,6 +145,11 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
       return;
     }
 
+    // TODO: hack for FocusScope trap, change later
+    if (Object.hasOwn(relatedTarget.dataset, "focusTrap")) {
+      return;
+    }
+
     if (local.isOpen && local.closeOnInteractOutside) {
       local.onClose?.();
     }
@@ -152,15 +158,11 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
   createInteractOutside(
     {
       isDisabled: () => !(local.isOpen && local.closeOnInteractOutside),
-      // Listens for `start` interaction outside to mimic layer dismissing behaviour present in OS.
+      // Listens for `start` interaction outside to mimic overlay dismissing behaviour present in OS.
       onInteractOutsideStart: e => {
-        if (local.isModal && !isTopMostLayer()) {
-          return;
-        }
-
         const target = e.target as HTMLElement | null;
 
-        if (!target || !shouldCloseOnInteractWith(target)) {
+        if (!target || !isPointerEventsEnabled() || !shouldCloseOnInteractWith(target)) {
           return;
         }
 
@@ -174,7 +176,7 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
     isDisabled: () => !(local.isOpen && local.closeOnEsc),
     ownerDocument: () => getDocument(ref),
     onEscapeKeyDown: e => {
-      if (!isTopMostLayer()) {
+      if (!isTopMostOverlay()) {
         return;
       }
 
@@ -189,33 +191,19 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
 
   // Hides all elements in the DOM outside the given targets from screen readers.
   createEffect(() => {
-    if (!ref) {
-      return;
-    }
-
-    if (local.isOpen && local.isModal) {
-      const cleanup = ariaHideOutside([ref]);
-
-      onCleanup(cleanup);
+    if (ref && local.isOpen && local.isModal) {
+      onCleanup(ariaHideOutside([ref]));
     }
   });
 
-  // Register to parent layer if any.
+  // Register to parent overlay if any.
   createEffect(() => {
-    if (!local.isOpen) {
-      return;
+    if (ref && local.isOpen && parentContext) {
+      onCleanup(parentContext.registerNestedOverlay(ref));
     }
-
-    if (!ref || !parentContext) {
-      return;
-    }
-
-    const unregister = parentContext.registerNestedDismissableLayer(ref);
-
-    onCleanup(unregister);
   });
 
-  // Add to visible layers and disabled pointer-events if needed.
+  // Add to visible overlays and disabled pointer-events if needed.
   createEffect(
     on([() => ref, () => local.isOpen, () => local.isModal], ([ref, isOpen, isModal]) => {
       if (!ref) {
@@ -225,13 +213,13 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
       const ownerDocument = getDocument(ref);
 
       if (isOpen) {
-        setVisibleLayers(prev => [...prev, ref]);
+        setVisibleOverlays(prev => [...prev, ref]);
 
         if (isModal) {
-          const visibleModalLayers = setVisibleModalLayers(prev => [...prev, ref]);
+          const visibleModalOverlays = setVisibleModalOverlays(prev => [...prev, ref]);
 
-          // The first modal in the layer stack disable pointer-events on body.
-          if (visibleModalLayers.length === 1) {
+          // The first modal in the stack disable pointer-events on body.
+          if (visibleModalOverlays.length === 1) {
             originalBodyPointerEvents = ownerDocument.body.style.pointerEvents;
             ownerDocument.body.style.pointerEvents = "none";
           }
@@ -239,26 +227,26 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
       }
 
       onCleanup(() => {
-        setVisibleLayers(prev => prev.filter(layer => layer !== ref));
+        setVisibleOverlays(prev => prev.filter(overlay => overlay !== ref));
 
-        const visibleModalLayers = setVisibleModalLayers(prev =>
-          prev.filter(layer => layer !== ref)
+        const visibleModalOverlays = setVisibleModalOverlays(prev =>
+          prev.filter(overlay => overlay !== ref)
         );
 
-        // Restore original body pointer-events when there is no modal in the layer stack.
-        if (visibleModalLayers.length === 0) {
+        // Restore original body pointer-events when there is no modal in the stack.
+        if (visibleModalOverlays.length === 0) {
           ownerDocument.body.style.pointerEvents = originalBodyPointerEvents;
         }
       });
     })
   );
 
-  const context: DismissableLayerContextValue = {
-    registerNestedDismissableLayer,
+  const context: OverlayContextValue = {
+    registerNestedOverlay: registerNestedOverlay,
   };
 
   return (
-    <DismissableLayerContext.Provider value={context}>
+    <OverlayContext.Provider value={context}>
       <Dynamic
         component={local.as}
         ref={mergeRefs(el => (ref = el), local.ref)}
@@ -273,6 +261,6 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
         onFocusOut={composeEventHandlers([local.onFocusOut, onFocusOut])}
         {...others}
       />
-    </DismissableLayerContext.Provider>
+    </OverlayContext.Provider>
   );
 });

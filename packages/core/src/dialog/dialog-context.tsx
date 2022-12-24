@@ -1,15 +1,15 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { CreateFocusScopeProps, CreateDismissableLayerProps } from "../primitives";
-
 export interface DialogContextValue {
   isOpen: Accessor<boolean>;
   shouldMount: Accessor<boolean>;
   contentId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;
-  createDismissableLayerProps: CreateDismissableLayerProps;
-  createFocusScopeProps: CreateFocusScopeProps;
+  isModal: Accessor<boolean>;
+  closeOnEsc: Accessor<boolean>;
+  closeOnInteractOutside: Accessor<boolean>;
+  shouldCloseOnInteractOutside: (element: Element) => boolean;
   close: () => void;
   toggle: () => void;
   generateId: (part: string) => string;

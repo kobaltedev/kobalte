@@ -13,20 +13,18 @@ import {
 import { JSX, onCleanup, onMount, Show } from "solid-js";
 
 export interface FocusScopeProps {
-  /** Whether the focus trap is active. */
+  /**
+   * Whether to contain focus inside the scope, so users cannot move focus outside,
+   * for example in a modal dialog.
+   */
   trapFocus?: boolean;
 
-  /**
-   * Whether focus should be set on an element once the focus trap region mounts.
-   * If `true` focus will be set to the first focusable element inside the focus trap region.
-   * If a `string` (query selector) is provided focus will be set to the target element.
-   */
-  autoFocus?: boolean | string;
+  /** Whether to autofocus the first focusable element in the focus scope on mount. */
+  autoFocus?: boolean;
 
   /**
-   * Whether focus should be restored once the focus trap region unmounts.
-   * If `true` focus will be restored to the element that triggered the focus trap region.
-   * If a `string` (query selector) is provided focus will be restored to the target element.
+   * Whether to restore focus back to the element that was focused when the focus scope mounted,
+   * after the focus scope unmounts.
    */
   restoreFocus?: boolean | string;
 
@@ -55,36 +53,21 @@ export function FocusScope(props: FocusScopeProps) {
       return;
     }
 
-    const autoFocus = access(props.autoFocus);
-
-    if (autoFocus == null || autoFocus === false) {
+    if (!access(props.autoFocus)) {
       return;
-    }
-
-    if (isString(autoFocus)) {
-      const initialFocusElement = containerRef.querySelector(autoFocus) as HTMLElement | null;
-
-      if (initialFocusElement) {
-        focusWithoutScrolling(initialFocusElement);
-        return;
-      }
     }
 
     // fallback to first focusable element or container.
     const first = getAllTabbableIn(containerRef)[0] ?? containerRef;
-    focusWithoutScrolling(first);
+    console.log("first focusable el -", first);
+
+    queueMicrotask(() => {
+      focusWithoutScrolling(first);
+    });
   };
 
   const setRestoreFocusElement = () => {
-    const restoreFocus = access(props.restoreFocus);
-
-    if (restoreFocus == null || restoreFocus === false) {
-      return;
-    }
-
-    // get a reference to the requested restore focus element.
-    if (isString(restoreFocus)) {
-      restoreFocusElement = document.querySelector(restoreFocus) as HTMLElement | null;
+    if (!access(props.restoreFocus)) {
       return;
     }
 

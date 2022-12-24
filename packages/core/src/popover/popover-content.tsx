@@ -1,8 +1,8 @@
 import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
-import { FocusScope } from "../focus-scope";
+import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
+import { FocusScope } from "../focus-scope";
+import { Overlay } from "../overlay";
 import { usePopoverContext } from "./popover-context";
 
 export interface PopoverContentProps {
@@ -24,29 +24,35 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentPr
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "ref", "id", "style"]);
+  const [local, others] = splitProps(props, ["ref", "id", "style"]);
 
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
-  // TODO: restore focus not working correctly (modal, non modal)
   return (
-    <FocusScope trapFocus={context.isOpen() && context.isModal()} autoFocus restoreFocus>
-      {setContainerRef => (
-        <Dynamic
-          component={local.as}
-          ref={mergeRefs(el => {
-            context.setContentRef(el);
-            setContainerRef(el);
-          }, local.ref)}
-          id={local.id}
-          role="dialog"
-          tabIndex={-1}
-          style={{ position: "relative", ...local.style }}
-          aria-labelledby={context.titleId()}
-          aria-describedby={context.descriptionId()}
-          {...others}
-        />
-      )}
-    </FocusScope>
+    <Show when={context.shouldMount()}>
+      <FocusScope trapFocus={context.isOpen() && context.isModal()} autoFocus restoreFocus>
+        {setContainerRef => (
+          <Overlay
+            ref={mergeRefs(el => {
+              context.setContentRef(el);
+              setContainerRef(el);
+            }, local.ref)}
+            role="dialog"
+            id={local.id}
+            tabIndex={-1}
+            style={{ position: "relative", ...local.style }}
+            isOpen={context.isOpen()}
+            isModal={context.isModal()}
+            closeOnEsc={context.closeOnEsc()}
+            closeOnInteractOutside={context.closeOnInteractOutside()}
+            shouldCloseOnInteractOutside={context.shouldCloseOnInteractOutside}
+            onClose={context.close}
+            aria-labelledby={context.titleId()}
+            aria-describedby={context.descriptionId()}
+            {...others}
+          />
+        )}
+      </FocusScope>
+    </Show>
   );
 });

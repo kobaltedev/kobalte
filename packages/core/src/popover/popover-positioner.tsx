@@ -1,7 +1,7 @@
 import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 
-import { DismissableLayer } from "../dismissable-layer";
 import { usePopoverContext } from "./popover-context";
 
 export interface PopoverPositionerProps {
@@ -18,18 +18,13 @@ export const PopoverPositioner = createPolymorphicComponent<"div", PopoverPositi
 
     props = mergeDefaultProps({ as: "div" }, props);
 
-    const [local, others] = splitProps(props, ["ref", "style"]);
+    const [local, others] = splitProps(props, ["as", "ref", "style"]);
 
     return (
       <Show when={context.shouldMount()}>
-        <DismissableLayer
+        <Dynamic
+          component={local.as}
           ref={mergeRefs(context.setPositionerRef, local.ref)}
-          isOpen={context.isOpen()}
-          isModal={context.isModal()}
-          closeOnEsc={context.closeOnEsc()}
-          closeOnInteractOutside={context.closeOnInteractOutside()}
-          shouldCloseOnInteractOutside={context.shouldCloseOnInteractOutside}
-          onClose={context.close}
           role="presentation"
           style={{ position: "absolute", top: 0, left: 0, ...local.style }}
           {...others}

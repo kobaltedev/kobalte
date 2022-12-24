@@ -5,7 +5,7 @@ import { Dynamic } from "solid-js/web";
 import { useDialogContext } from "./dialog-context";
 
 /**
- * A wrapper component to help positioning the dialog panel on screen.
+ * A wrapper component to help positioning the dialog content on screen.
  */
 export const DialogPositioner = createPolymorphicComponent<"div">(props => {
   const context = useDialogContext();
