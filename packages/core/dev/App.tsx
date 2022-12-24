@@ -7,7 +7,7 @@ function MyPopover(props: ComponentProps<typeof Popover>) {
 
   return (
     <Popover {...others}>
-      <Popover.Trigger class="button">
+      <Popover.Trigger class="button" id={`${others.id}-trigger`}>
         {others.isModal ? "Open Modal" : "Open Popover"}
       </Popover.Trigger>
       <Popover.Portal>

@@ -30,11 +30,7 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentPr
 
   // TODO: restore focus not working correctly (modal, non modal)
   return (
-    <FocusScope
-      trapFocus={context.trapFocus()}
-      autoFocus={context.autoFocus()}
-      restoreFocus={context.restoreFocus()}
-    >
+    <FocusScope trapFocus={context.isOpen() && context.isModal()} autoFocus restoreFocus>
       {setContainerRef => (
         <Dynamic
           component={local.as}

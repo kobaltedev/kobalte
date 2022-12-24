@@ -14,9 +14,6 @@ export interface PopoverContextValue {
   closeOnEsc: Accessor<boolean>;
   closeOnInteractOutside: Accessor<boolean>;
   shouldCloseOnInteractOutside: (element: Element) => boolean;
-  trapFocus: Accessor<boolean>;
-  autoFocus: Accessor<boolean | string | undefined>;
-  restoreFocus: Accessor<boolean | string | undefined>;
   setDefaultAnchorRef: (el: HTMLElement) => void;
   setTriggerRef: (el: HTMLElement) => void;
   setPositionerRef: (el: HTMLElement) => void;

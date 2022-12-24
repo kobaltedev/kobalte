@@ -57,10 +57,8 @@
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-.button:focus-visible,
-.button[data-focus-visible],
-.popover:focus-visible,
-.popover[data-focus-visible] {
+.button[data-focus],
+.popover[data-focus] {
   outline: 2px solid hsl(204 100% 40%);
   outline-offset: 2px;
 }

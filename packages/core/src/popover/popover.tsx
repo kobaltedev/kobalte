@@ -162,23 +162,6 @@ export interface PopoverProps extends PopoverFloatingProps {
    */
   shouldCloseOnInteractOutside?: (element: Element) => boolean;
 
-  /** Whether focus should be locked inside the popover content. */
-  trapFocus?: boolean;
-
-  /**
-   * Whether focus should be set on a child element once the popover is open.
-   * If `true` focus will be set to the first focusable element inside the popover content.
-   * If a `string` (query selector) is provided focus will be set to the target element.
-   */
-  autoFocus?: boolean | string;
-
-  /**
-   * Whether focus should be restored once the popover close.
-   * If `true` focus will be restored to the element that triggered the popover.
-   * If a `string` (query selector) is provided focus will be restored to the target element.
-   */
-  restoreFocus?: boolean | string;
-
   /**
    * Function that returns the anchor element's DOMRect. If this is explicitly
    * passed, it will override the anchor `getBoundingClientRect` method.
@@ -211,9 +194,6 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
       isModal: false,
       closeOnEsc: true,
       closeOnInteractOutside: true,
-      trapFocus: true,
-      autoFocus: true,
-      restoreFocus: true,
       getAnchorRect: anchor => anchor?.getBoundingClientRect(),
       placement: "bottom",
       gutter: 0,
@@ -467,9 +447,6 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
       return props.shouldCloseOnInteractOutside?.(element) ?? true;
     },
-    trapFocus: () => props.trapFocus! && disclosureState.isOpen(),
-    autoFocus: () => props.autoFocus,
-    restoreFocus: () => props.restoreFocus,
     setDefaultAnchorRef,
     setTriggerRef,
     setPositionerRef,
