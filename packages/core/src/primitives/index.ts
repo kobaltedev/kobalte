@@ -3,6 +3,7 @@ export * from "./create-controllable-signal";
 export * from "./create-disclosure-state";
 export * from "./create-escape-key-down";
 export * from "./create-focus-ring";
+export * from "./create-focus-scope";
 export * from "./create-focus-visible";
 export * from "./create-form-reset-listener";
 export * from "./create-hover";

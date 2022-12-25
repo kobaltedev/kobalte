@@ -9,7 +9,7 @@
 /**
  * Similar to `Element.prototype.contains`, but a little faster when `element` is the same as `child`.
  */
-export function contains(parent: Node | undefined, child: Node) {
+export function contains(parent: Node | undefined, child: Node | null) {
   if (!parent) {
     return false;
   }
