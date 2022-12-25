@@ -1,6 +1,7 @@
 import { JSX } from "solid-js";
 
 import { isFunction } from "./assertion";
+import { isMac } from "../dist/types";
 
 /** Call a JSX.EventHandlerUnion with the event. */
 export function callHandler<T, E extends Event>(
@@ -37,4 +38,12 @@ export function isActionKey() {
 export function isSelectionKey() {
   const event = window.event as KeyboardEvent;
   return event?.key === " " || event?.code === "Space";
+}
+
+export function isCtrlKey(e: Pick<KeyboardEvent, "ctrlKey" | "metaKey">) {
+  if (isMac()) {
+    return e.metaKey && !e.ctrlKey;
+  }
+
+  return e.ctrlKey && !e.metaKey;
 }

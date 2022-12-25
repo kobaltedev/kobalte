@@ -10,7 +10,7 @@ export * from "./alert";
 export * from "./button";
 export * from "./checkbox";
 //export * from "./context-menu";
-//export * from "./dialog";
+export * from "./dialog";
 //export * from "./dropdown-menu";
 export * from "./form-control";
 //export * from "./hover-card";

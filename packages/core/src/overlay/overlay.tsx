@@ -145,11 +145,6 @@ export const Overlay = createPolymorphicComponent<"div", OverlayProps>(props => 
       return;
     }
 
-    // TODO: hack for FocusScope trap, change later
-    if (Object.hasOwn(relatedTarget.dataset, "focusTrap")) {
-      return;
-    }
-
     if (local.isOpen && local.closeOnInteractOutside) {
       local.onClose?.();
     }
@@ -236,6 +231,10 @@ export const Overlay = createPolymorphicComponent<"div", OverlayProps>(props => 
         // Restore original body pointer-events when there is no modal in the stack.
         if (visibleModalOverlays.length === 0) {
           ownerDocument.body.style.pointerEvents = originalBodyPointerEvents;
+
+          if (ownerDocument.body.style.length === 0) {
+            ownerDocument.body.removeAttribute("style");
+          }
         }
       });
     })

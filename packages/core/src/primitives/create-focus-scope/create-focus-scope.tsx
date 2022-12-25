@@ -24,10 +24,10 @@ import {
   removeItemFromArray,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { Accessor, createEffect, createMemo, createSignal, onCleanup } from "solid-js";
+import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
 
-const AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
-const AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
+const AUTOFOCUS_ON_MOUNT_EVENT = "focusScope.autoFocusOnMount";
+const AUTOFOCUS_ON_UNMOUNT_EVENT = "focusScope.autoFocusOnUnmount";
 const EVENT_OPTIONS = { bubbles: false, cancelable: true };
 
 interface FocusScopeAPI {
@@ -36,14 +36,8 @@ interface FocusScopeAPI {
 }
 
 export interface CreateFocusScopeProps {
-  /**
-   * Whether tabbing from last item will focus first tabbable
-   * and shift+tab from first item will focus last tababble.
-   */
-  loop?: MaybeAccessor<boolean | undefined>;
-
   /** Whether focus cannot escape the focus scope via keyboard, pointer, or a programmatic focus. */
-  contains?: MaybeAccessor<boolean | undefined>;
+  trapFocus?: MaybeAccessor<boolean | undefined>;
 
   /**
    * Event handler called when autofocusing on mount.
@@ -108,7 +102,7 @@ export function createFocusScope<T extends HTMLElement>(
     return element;
   };
 
-  const tabbables = createMemo(() => {
+  const tabbables = () => {
     const container = ref();
 
     if (!container) {
@@ -117,23 +111,23 @@ export function createFocusScope<T extends HTMLElement>(
 
     // Get all tabbable in container excluding focus scope sentinels
     return getAllTabbableIn(container, true).filter(el => !el.hasAttribute("data-focus-trap"));
-  });
+  };
 
-  const firstTabbable = createMemo(() => {
+  const firstTabbable = () => {
     const items = tabbables();
     return items.length > 0 ? items[0] : null;
-  });
+  };
 
-  const lastTabbable = createMemo(() => {
+  const lastTabbable = () => {
     const items = tabbables();
     return items.length > 0 ? items[items.length - 1] : null;
-  });
+  };
 
   // Handle containing focus if a child unmount.
   createEffect(() => {
     const container = ref();
 
-    if (!container || !access(props.contains)) {
+    if (!container || !access(props.trapFocus)) {
       return;
     }
 
@@ -158,7 +152,7 @@ export function createFocusScope<T extends HTMLElement>(
   createEffect(() => {
     const container = ref();
 
-    if (!container || !access(props.contains) || isPaused()) {
+    if (!container || !access(props.trapFocus) || isPaused()) {
       return;
     }
 
@@ -181,12 +175,12 @@ export function createFocusScope<T extends HTMLElement>(
       }
     };
 
-    document.addEventListener("focusin", onFocusIn);
-    document.addEventListener("focusout", onFocusOut);
+    ownerDocument().addEventListener("focusin", onFocusIn);
+    ownerDocument().addEventListener("focusout", onFocusOut);
 
     onCleanup(() => {
-      document.removeEventListener("focusin", onFocusIn);
-      document.removeEventListener("focusout", onFocusOut);
+      ownerDocument().removeEventListener("focusin", onFocusIn);
+      ownerDocument().removeEventListener("focusout", onFocusOut);
     });
   });
 
@@ -204,9 +198,9 @@ export function createFocusScope<T extends HTMLElement>(
     const hasFocusedCandidate = contains(container, previouslyFocusedElement);
 
     if (!hasFocusedCandidate) {
-      const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS);
+      const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT_EVENT, EVENT_OPTIONS);
 
-      container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
+      container.addEventListener(AUTOFOCUS_ON_MOUNT_EVENT, onMountAutoFocus);
       container.dispatchEvent(mountEvent);
 
       if (!mountEvent.defaultPrevented) {
@@ -219,12 +213,12 @@ export function createFocusScope<T extends HTMLElement>(
     }
 
     onCleanup(() => {
-      container.removeEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
+      container.removeEventListener(AUTOFOCUS_ON_MOUNT_EVENT, onMountAutoFocus);
 
       setTimeout(() => {
-        const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS);
+        const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT_EVENT, EVENT_OPTIONS);
 
-        container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus);
+        container.addEventListener(AUTOFOCUS_ON_UNMOUNT_EVENT, onUnmountAutoFocus);
         container.dispatchEvent(unmountEvent);
 
         if (!unmountEvent.defaultPrevented) {
@@ -232,7 +226,7 @@ export function createFocusScope<T extends HTMLElement>(
         }
 
         // We need to remove the listener after we `dispatchEvent`.
-        container.removeEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus);
+        container.removeEventListener(AUTOFOCUS_ON_UNMOUNT_EVENT, onUnmountAutoFocus);
 
         focusScopeStack.remove(focusScope);
       }, 0);
@@ -243,7 +237,7 @@ export function createFocusScope<T extends HTMLElement>(
   createEffect(() => {
     const container = ref();
 
-    if (!container || (!access(props.loop) && !access(props.contains)) || isPaused()) {
+    if (!container || !access(props.trapFocus) || isPaused()) {
       return;
     }
 

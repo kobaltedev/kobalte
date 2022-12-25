@@ -1,83 +1,197 @@
 /*!
- * Portions of this file are based on code from react-spectrum.
- * Apache License Version 2.0, Copyright 2020 Adobe.
+ * Portions of this file are based on code from radix-ui-primitives.
+ * MIT Licensed, Copyright (c) 2022 WorkOS.
  *
- * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/interactions/src/useInteractOutside.ts
+ * Credits to the Radix UI team:
+ * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/dismissable-layer/src/DismissableLayer.tsx
+ *
+ * Portions of this file are based on code from zag.
+ * MIT Licensed, Copyright (c) 2021 Chakra UI.
+ *
+ * Credits to the Chakra UI team:
+ * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/interact-outside/src/index.ts
  */
 
-import { access, getDocument, MaybeAccessor } from "@kobalte/utils";
-import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
+import {
+  composeEventHandlers,
+  contains,
+  getDocument,
+  isCtrlKey,
+  isFocusable,
+  noop,
+} from "@kobalte/utils";
+import { Accessor, createEffect, onCleanup } from "solid-js";
+
+type EventDetails<T> = {
+  originalEvent: T;
+  contextmenu: boolean;
+  focusable: boolean;
+};
+
+type PointerDownOutsideEvent = CustomEvent<EventDetails<PointerEvent>>;
+type FocusOutsideEvent = CustomEvent<EventDetails<FocusEvent>>;
+type InteractOutsideEvent = PointerDownOutsideEvent | FocusOutsideEvent;
 
 export interface CreateInteractOutsideProps {
-  /** Whether the interact outside events should be disabled. */
-  isDisabled?: MaybeAccessor<boolean | undefined>;
+  /**
+   * When user interacts with the argument element outside the ref,
+   * return `true` if the interaction should not trigger the "interact outside" handlers.
+   */
+  shouldExcludeElement?: (element: HTMLElement) => boolean;
 
-  /** Handler that is called when an interaction outside the `ref` element start. */
-  onInteractOutsideStart?: (e: Event) => void;
+  /**
+   * Event handler called when a `pointerdown` event happens outside the ref.
+   * Can be prevented.
+   */
+  onPointerDownOutside?: (event: PointerDownOutsideEvent) => void;
 
-  /** Handler that is called when interaction outside the `ref` element end. */
-  onInteractOutside?: (e: Event) => void;
+  /**
+   * Event handler called when the focus moves outside the ref.
+   * Can be prevented.
+   */
+  onFocusOutside?: (event: FocusOutsideEvent) => void;
+
+  /**
+   * Event handler called when an interaction happens outside the ref.
+   * Specifically, when a `pointerdown` event happens outside or focus moves outside of it.
+   * Can be prevented.
+   */
+  onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-/**
- * Handles interaction outside a given element.
- * Used in components like Dialogs and Popovers, so they can close when a user clicks outside them.
- * @param props - Props of the primitive.
- * @param ref - A ref for the HTML element.
- */
-export function createInteractOutside(
-  props: CreateInteractOutsideProps,
-  ref: Accessor<Element | undefined>
-) {
-  const [isPointerDown, setIsPointerDown] = createSignal(false);
+const POINTER_DOWN_OUTSIDE_EVENT = "interactOutside.pointerDownOutside";
+const FOCUS_OUTSIDE_EVENT = "interactOutside.focusOutside";
 
-  createEffect(() => {
-    if (access(props.isDisabled)) {
+export function createInteractOutside<T extends HTMLElement>(
+  props: CreateInteractOutsideProps,
+  ref: Accessor<T | undefined>
+) {
+  let pointerDownTimeoutId: number | undefined;
+  let clickHandler = noop;
+
+  const ownerDocument = () => getDocument(ref());
+  const onPointerDownOutside = (e: PointerDownOutsideEvent) => props.onPointerDownOutside?.(e);
+  const onFocusOutside = (e: FocusOutsideEvent) => props.onFocusOutside?.(e);
+  const onInteractOutside = (e: InteractOutsideEvent) => props.onInteractOutside?.(e);
+
+  const isEventOutside = (e: Event) => {
+    const target = e.target as HTMLElement | null;
+
+    if (!(target instanceof HTMLElement)) {
+      return false;
+    }
+
+    if (!contains(ownerDocument(), target)) {
+      return false;
+    }
+
+    if (contains(ref(), target)) {
+      return false;
+    }
+
+    return !props.shouldExcludeElement?.(target);
+  };
+
+  const onPointerDown = (e: PointerEvent) => {
+    function handler() {
+      const container = ref();
+
+      if (!container || !isEventOutside(e)) {
+        return;
+      }
+
+      const handler = composeEventHandlers([
+        onPointerDownOutside,
+        onInteractOutside,
+      ]) as EventListener;
+      container.addEventListener(POINTER_DOWN_OUTSIDE_EVENT, handler, { once: true });
+
+      const target = e.target as HTMLElement | null;
+
+      const pointerDownOutsideEvent = new CustomEvent(POINTER_DOWN_OUTSIDE_EVENT, {
+        bubbles: false,
+        cancelable: true,
+        detail: {
+          originalEvent: e,
+          contextmenu: e.button === 2 || (isCtrlKey(e) && e.button === 0),
+          focusable: target && isFocusable(target),
+        },
+      });
+
+      container.dispatchEvent(pointerDownOutsideEvent);
+    }
+
+    /**
+     * On touch devices, we need to wait for a click event because browsers implement
+     * a ~350ms delay between the time the user stops touching the display and when the
+     * browser executes events. We need to ensure we don't reactivate pointer-events within
+     * this timeframe otherwise the browser may execute events that should have been prevented.
+     *
+     * Additionally, this also lets us deal automatically with cancellations when a click event
+     * isn't raised because the page was considered scrolled/drag-scrolled, long-pressed, etc.
+     *
+     * This is why we also continuously remove the previous listener, because we cannot be
+     * certain that it was raised, and therefore cleaned-up.
+     */
+    if (e.pointerType === "touch") {
+      ownerDocument().removeEventListener("click", handler);
+      clickHandler = handler;
+      ownerDocument().addEventListener("click", handler, { once: true });
+    } else {
+      handler();
+    }
+  };
+
+  const onFocusIn = (e: FocusEvent) => {
+    const container = ref();
+
+    if (!container || !isEventOutside(e)) {
       return;
     }
 
-    const onPointerDown = (e: PointerEvent) => {
-      if (isInteractOutsideEvent(e, ref())) {
-        props.onInteractOutsideStart?.(e);
-        setIsPointerDown(true);
-      }
-    };
+    const handler = composeEventHandlers([onFocusOutside, onInteractOutside]) as EventListener;
+    container.addEventListener(FOCUS_OUTSIDE_EVENT, handler, { once: true });
 
-    const onPointerUp = (e: PointerEvent | MouseEvent) => {
-      if (isPointerDown() && isInteractOutsideEvent(e, ref())) {
-        setIsPointerDown(false);
-        props.onInteractOutside?.(e);
-      }
-    };
+    const target = e.target as HTMLElement | null;
 
-    document.addEventListener("pointerdown", onPointerDown, true);
-    document.addEventListener("pointerup", onPointerUp, true);
+    const focusOutsideEvent = new CustomEvent(FOCUS_OUTSIDE_EVENT, {
+      bubbles: false,
+      cancelable: true,
+      detail: {
+        originalEvent: e,
+        contextmenu: false,
+        focusable: target && isFocusable(target),
+      },
+    });
+
+    container.dispatchEvent(focusOutsideEvent);
+  };
+
+  createEffect(() => {
+    /**
+     * if this primitive executes in a component that mounts via a `pointerdown` event, the event
+     * would bubble up to the document and trigger a `pointerDownOutside` event. We avoid
+     * this by delaying the event listener registration on the document.
+     * ```
+     * button.addEventListener('pointerdown', () => {
+     *   console.log('I will log');
+     *   document.addEventListener('pointerdown', () => {
+     *     console.log('I will also log');
+     *   })
+     * });
+     */
+    pointerDownTimeoutId = window.setTimeout(() => {
+      ownerDocument().addEventListener("pointerdown", onPointerDown, true);
+    }, 0);
+
+    ownerDocument().addEventListener("focusin", onFocusIn, true);
 
     onCleanup(() => {
-      document.removeEventListener("pointerdown", onPointerDown, true);
-      document.removeEventListener("pointerup", onPointerUp, true);
+      window.clearTimeout(pointerDownTimeoutId);
+
+      ownerDocument().removeEventListener("click", clickHandler);
+      ownerDocument().removeEventListener("pointerdown", onPointerDown, true);
+      ownerDocument().removeEventListener("focusin", onFocusIn, true);
     });
   });
-}
-
-/**
- * Returns whether the event is a valid interact outside event
- * (e.g. the event target is outside the element).
- */
-function isInteractOutsideEvent(event: any, element: Element | undefined) {
-  if (event.button > 0) {
-    return false;
-  }
-
-  // if the event target is no longer in the document
-  if (event.target) {
-    const ownerDocument = getDocument(event.target);
-
-    if (!ownerDocument || !ownerDocument.documentElement.contains(event.target)) {
-      return false;
-    }
-  }
-
-  return !element?.contains(event.target);
 }
