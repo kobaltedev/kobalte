@@ -1,7 +1,7 @@
 import { JSX } from "solid-js";
 
 import { isFunction } from "./assertion";
-import { isMac } from "../dist/types";
+import { isMac } from "./platform";
 
 /** Call a JSX.EventHandlerUnion with the event. */
 export function callHandler<T, E extends Event>(

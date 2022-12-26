@@ -43,28 +43,23 @@ export interface DialogProps {
    */
   id?: string;
 
-  /**
-   * Used to force mounting the dialog (portal, overlay, positioner and content) when more control is needed.
-   * Useful when controlling animation with SolidJS animation libraries.
-   */
-  forceMount?: boolean;
-
   /** Whether the dialog should be the only visible content for screen readers. */
   isModal?: boolean;
 
   /** Whether pressing the escape key should close the dialog. */
   closeOnEsc?: boolean;
 
-  /** Whether to close the dialog when the user interacts outside it. */
+  /**
+   * Whether to close the dialog when the user interacts outside it.
+   * Specifically, when a `pointerdown` event happens outside or focus moves outside of it.
+   */
   closeOnInteractOutside?: boolean;
 
   /**
-   * When user interacts with the argument element outside the dialog content,
-   * return `true` if the dialog should be closed. This gives you a chance to filter
-   * out interaction with elements that should not dismiss the dialog.
-   * By default, the dialog will always close on interaction outside the dialog content.
+   * Used to force mounting the dialog (portal, overlay, positioner and content) when more control is needed.
+   * Useful when controlling animation with SolidJS animation libraries.
    */
-  shouldCloseOnInteractOutside?: (element: Element) => boolean;
+  forceMount?: boolean;
 }
 
 /**
@@ -87,6 +82,8 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
   const [titleId, setTitleId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
 
+  const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
+
   const disclosureState = createDisclosureState({
     isOpen: () => props.isOpen,
     defaultIsOpen: () => props.defaultIsOpen,
@@ -99,14 +96,13 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
     contentId,
     titleId,
     descriptionId,
+    triggerRef,
     isModal: () => props.isModal!,
     closeOnEsc: () => props.closeOnEsc!,
     closeOnInteractOutside: () => props.closeOnInteractOutside!,
-    shouldCloseOnInteractOutside: element => {
-      return props.shouldCloseOnInteractOutside?.(element) ?? true;
-    },
     close: disclosureState.close,
     toggle: disclosureState.toggle,
+    setTriggerRef,
     generateId: createGenerateId(() => props.id!),
     registerContentId: createRegisterId(setContentId),
     registerTitleId: createRegisterId(setTitleId),

@@ -21,8 +21,6 @@ export interface LayerModel {
   dismiss?: VoidFunction;
 }
 
-let originalBodyPointerEvents: string;
-
 const [layers, setLayers] = createSignal<LayerModel[]>([]);
 const [branches, setBranches] = createSignal<HTMLElement[]>([]);
 
@@ -36,10 +34,6 @@ const topMostPointerBlockingLayer = createMemo(() => {
 
 function indexOfLayer(node: HTMLElement | undefined) {
   return layers().findIndex(layer => layer.node === node);
-}
-
-function hasPointerBlockingLayer() {
-  return pointerBlockingLayers().length > 0;
 }
 
 function isBelowPointerBlockingLayer(node: HTMLElement) {
@@ -115,33 +109,13 @@ function updateLayersPointerEvent() {
   });
 }
 
-function disablePointerEventsOutside(node: HTMLElement) {
-  const ownerDocument = getDocument(node);
-
-  if (hasPointerBlockingLayer()) {
-    originalBodyPointerEvents = document.body.style.pointerEvents;
-    ownerDocument.body.style.pointerEvents = "none";
-  }
-
-  return () => {
-    if (hasPointerBlockingLayer()) {
-      return;
-    }
-
-    ownerDocument.body.style.pointerEvents = originalBodyPointerEvents;
-
-    if (ownerDocument.body.style.length === 0) {
-      ownerDocument.body.removeAttribute("style");
-    }
-  };
-}
-
 function clearPointerEvent(node: HTMLElement) {
   node.style.pointerEvents = "";
 }
 
 export const layerStack = {
   layers,
+  pointerBlockingLayers,
   addLayer,
   removeLayer,
   isTopMostLayer,
@@ -149,6 +123,5 @@ export const layerStack = {
   isInBranch,
   isInNestedLayer,
   updateLayersPointerEvent,
-  disablePointerEventsOutside,
   clearPointerEvent,
 };

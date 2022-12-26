@@ -24,7 +24,7 @@ import {
   removeItemFromArray,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
+import { Accessor, createEffect, createSignal, JSX, onCleanup, splitProps } from "solid-js";
 
 const AUTOFOCUS_ON_MOUNT_EVENT = "focusScope.autoFocusOnMount";
 const AUTOFOCUS_ON_UNMOUNT_EVENT = "focusScope.autoFocusOnUnmount";
@@ -286,4 +286,18 @@ export function createFocusScope<T extends HTMLElement>(
       observer.disconnect();
     });
   });
+}
+
+export interface FocusScopeProps extends CreateFocusScopeProps {
+  children: (setRef: (el: HTMLElement) => void) => JSX.Element;
+}
+
+export function FocusScope(props: FocusScopeProps) {
+  let ref: HTMLElement | undefined;
+
+  const [local, others] = splitProps(props, ["children"]);
+
+  createFocusScope(others, () => ref);
+
+  return <>{local.children(el => (ref = el))}</>;
 }

@@ -37,7 +37,7 @@ export interface DismissableLayerProps {
    * the layer. Users will need to click twice on outside elements to
    * interact with them: once to close the layer, and again to trigger the element.
    */
-  isPointerBlockingLayer?: boolean;
+  disableOutsidePointerEvents?: boolean;
 
   /** A list of elements that should not dismiss the layer when interacted with. */
   excludedElements?: Accessor<Array<HTMLElement | undefined>>;
@@ -71,6 +71,8 @@ export interface DismissableLayerProps {
   onDismiss?: () => void;
 }
 
+let originalBodyPointerEvents: string;
+
 export const DismissableLayer = createPolymorphicComponent<"div", DismissableLayerProps>(props => {
   let ref: HTMLElement | undefined;
 
@@ -79,7 +81,7 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
   const [local, others] = splitProps(props, [
     "as",
     "ref",
-    "isPointerBlockingLayer",
+    "disableOutsidePointerEvents",
     "excludedElements",
     "onEscapeKeyDown",
     "onPointerDownOutside",
@@ -160,15 +162,47 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
 
   createEffect(
     on(
-      [() => ref, () => props.isPointerBlockingLayer, () => props.onDismiss],
-      ([ref, isPointerBlockingLayer, onDismiss]) => {
+      [() => ref, () => props.disableOutsidePointerEvents],
+      ([ref, disableOutsidePointerEvents]) => {
+        if (!ref || !disableOutsidePointerEvents) {
+          return;
+        }
+
+        const ownerDocument = getDocument(ref);
+
+        // It's the first pointer blocking layer to be added in the stack,
+        // so disable pointer-events on body.
+        if (layerStack.pointerBlockingLayers().length === 0) {
+          originalBodyPointerEvents = document.body.style.pointerEvents;
+          ownerDocument.body.style.pointerEvents = "none";
+        }
+
+        onCleanup(() => {
+          // It's the last pointer blocking layer in the stack,
+          // so restore original body pointer-events.
+          if (layerStack.pointerBlockingLayers().length === 1) {
+            ownerDocument.body.style.pointerEvents = originalBodyPointerEvents;
+
+            if (ownerDocument.body.style.length === 0) {
+              ownerDocument.body.removeAttribute("style");
+            }
+          }
+        });
+      }
+    )
+  );
+
+  createEffect(
+    on(
+      [() => ref, () => props.disableOutsidePointerEvents, () => props.onDismiss],
+      ([ref, disableOutsidePointerEvents, onDismiss]) => {
         if (!ref) {
           return;
         }
 
         layerStack.addLayer({
           node: ref,
-          isPointerBlocking: isPointerBlockingLayer,
+          isPointerBlocking: disableOutsidePointerEvents,
           dismiss: onDismiss,
         });
 
@@ -186,14 +220,6 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
         });
       }
     )
-  );
-
-  createEffect(
-    on([() => ref, () => props.isPointerBlockingLayer], ([ref, isPointerBlockingLayer]) => {
-      if (ref && isPointerBlockingLayer) {
-        onCleanup(layerStack.disablePointerEventsOutside(ref));
-      }
-    })
   );
 
   return <Dynamic component={local.as} ref={mergeRefs(el => (ref = el), local.ref)} {...others} />;

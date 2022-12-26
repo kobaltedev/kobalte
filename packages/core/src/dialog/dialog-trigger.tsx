@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/src/useOverlayTrigger.ts
  */
 
-import { createPolymorphicComponent } from "@kobalte/utils";
+import { createPolymorphicComponent, mergeRefs } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import { Button, ButtonProps } from "../button";
@@ -19,7 +19,7 @@ import { useDialogContext } from "./dialog-context";
 export const DialogTrigger = createPolymorphicComponent<"button", ButtonProps>(props => {
   const context = useDialogContext();
 
-  const [local, others] = splitProps(props, ["onPress"]);
+  const [local, others] = splitProps(props, ["ref", "onPress"]);
 
   const onPress: PressEvents["onPress"] = e => {
     local.onPress?.(e);
@@ -28,6 +28,7 @@ export const DialogTrigger = createPolymorphicComponent<"button", ButtonProps>(p
 
   return (
     <Button
+      ref={mergeRefs(context.setTriggerRef, local.ref)}
       aria-haspopup="dialog"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.contentId() : undefined}

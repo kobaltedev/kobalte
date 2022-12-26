@@ -1,4 +1,4 @@
-import { Accessor, createContext, useContext } from "solid-js";
+import { Accessor, createContext, Setter, useContext } from "solid-js";
 
 export interface DialogContextValue {
   isOpen: Accessor<boolean>;
@@ -6,12 +6,13 @@ export interface DialogContextValue {
   contentId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;
+  triggerRef: Accessor<HTMLElement | undefined>;
   isModal: Accessor<boolean>;
   closeOnEsc: Accessor<boolean>;
   closeOnInteractOutside: Accessor<boolean>;
-  shouldCloseOnInteractOutside: (element: Element) => boolean;
   close: () => void;
   toggle: () => void;
+  setTriggerRef: Setter<HTMLElement>;
   generateId: (part: string) => string;
   registerContentId: (id: string) => () => void;
   registerTitleId: (id: string) => () => void;
