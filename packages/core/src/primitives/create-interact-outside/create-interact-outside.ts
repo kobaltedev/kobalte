@@ -28,9 +28,9 @@ type EventDetails<T> = {
   focusable: boolean;
 };
 
-type PointerDownOutsideEvent = CustomEvent<EventDetails<PointerEvent>>;
-type FocusOutsideEvent = CustomEvent<EventDetails<FocusEvent>>;
-type InteractOutsideEvent = PointerDownOutsideEvent | FocusOutsideEvent;
+export type PointerDownOutsideEvent = CustomEvent<EventDetails<PointerEvent>>;
+export type FocusOutsideEvent = CustomEvent<EventDetails<FocusEvent>>;
+export type InteractOutsideEvent = PointerDownOutsideEvent | FocusOutsideEvent;
 
 export interface CreateInteractOutsideProps {
   /**

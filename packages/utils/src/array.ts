@@ -17,7 +17,7 @@ export function addItemToArray<T extends any[]>(array: T, item: T[number], index
 }
 
 /**
- * Immutably removes an item to an array.
+ * Immutably removes an item from an array.
  */
 export function removeItemFromArray<T>(array: T[], item: T) {
   const updatedArray = [...array];

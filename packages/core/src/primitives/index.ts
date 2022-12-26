@@ -6,6 +6,7 @@ export * from "./create-focus-ring";
 export * from "./create-focus-scope";
 export * from "./create-focus-visible";
 export * from "./create-form-reset-listener";
+export * from "./create-hide-outside";
 export * from "./create-hover";
 export * from "./create-interact-outside";
 export * from "./create-long-press";
