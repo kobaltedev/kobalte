@@ -12,17 +12,16 @@
  * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/dismissable/src/layer-stack.ts
  */
 
-import { contains, getDocument, removeItemFromArray } from "@kobalte/utils";
-import { createMemo, createSignal } from "solid-js";
+import { contains, removeItemFromArray } from "@kobalte/utils";
+import { Accessor, createMemo, createSignal } from "solid-js";
 
 export interface LayerModel {
-  node: HTMLElement;
-  isPointerBlocking?: boolean;
-  dismiss?: VoidFunction;
+  node: Accessor<HTMLElement | undefined>;
+  isPointerBlocking: Accessor<boolean | undefined>;
+  dismiss: VoidFunction;
 }
 
 const [layers, setLayers] = createSignal<LayerModel[]>([]);
-const [branches, setBranches] = createSignal<HTMLElement[]>([]);
 
 const pointerBlockingLayers = createMemo(() => {
   return layers().filter(layer => layer.isPointerBlocking);
@@ -33,17 +32,17 @@ const topMostPointerBlockingLayer = createMemo(() => {
 });
 
 function indexOfLayer(node: HTMLElement | undefined) {
-  return layers().findIndex(layer => layer.node === node);
+  return layers().findIndex(layer => layer.node() === node);
 }
 
 function isBelowPointerBlockingLayer(node: HTMLElement) {
-  const highestBlockingIndex = indexOfLayer(topMostPointerBlockingLayer()?.node);
+  const highestBlockingIndex = indexOfLayer(topMostPointerBlockingLayer()?.node());
   return indexOfLayer(node) < highestBlockingIndex;
 }
 
 function isTopMostLayer(node: HTMLElement | null) {
   const items = layers();
-  return items[items.length - 1].node === node;
+  return items[items.length - 1].node() === node;
 }
 
 function getNestedLayers(node: HTMLElement) {
@@ -51,7 +50,7 @@ function getNestedLayers(node: HTMLElement) {
 }
 
 function isInNestedLayer(node: HTMLElement, target: Node | null) {
-  return getNestedLayers(node).some(layer => contains(layer.node, target));
+  return getNestedLayers(node).some(layer => contains(layer.node(), target));
 }
 
 function addLayer(layer: LayerModel) {
@@ -75,44 +74,6 @@ function removeLayer(node: HTMLElement) {
   setLayers(prev => removeItemFromArray(prev, prev[index]));
 }
 
-function dismissLayer(node: HTMLElement) {
-  layers()[indexOfLayer(node)]?.dismiss?.();
-}
-
-function isInBranch(target: Node | null) {
-  return Array.from(branches()).some(branch => contains(branch, target));
-}
-
-function addBranch(node: HTMLElement) {
-  setBranches(prev => [...prev, node]);
-}
-
-function removeBranch(node: HTMLElement) {
-  const index = branches().indexOf(node);
-
-  if (index >= 0) {
-    setBranches(prev => removeItemFromArray(prev, prev[index]));
-  }
-}
-
-function clearLayerStack() {
-  const firstLayerNode = layers()[0]?.node;
-
-  if (firstLayerNode) {
-    removeLayer(firstLayerNode);
-  }
-}
-
-function updateLayersPointerEvent() {
-  layers().forEach(({ node }) => {
-    node.style.pointerEvents = isBelowPointerBlockingLayer(node) ? "none" : "auto";
-  });
-}
-
-function clearPointerEvent(node: HTMLElement) {
-  node.style.pointerEvents = "";
-}
-
 export const layerStack = {
   layers,
   pointerBlockingLayers,
@@ -120,8 +81,5 @@ export const layerStack = {
   removeLayer,
   isTopMostLayer,
   isBelowPointerBlockingLayer,
-  isInBranch,
   isInNestedLayer,
-  updateLayersPointerEvent,
-  clearPointerEvent,
 };
