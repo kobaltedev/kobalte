@@ -40,7 +40,7 @@ export interface DismissableLayerProps {
   disableOutsidePointerEvents?: boolean;
 
   /** A list of elements that should not dismiss the layer when interacted with. */
-  excludedElements?: Accessor<Array<HTMLElement | undefined>>;
+  excludedElements?: Array<Accessor<HTMLElement | undefined>>;
 
   /**
    * Event handler called when the escape key is down.
@@ -94,7 +94,7 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
     }
 
     return (
-      props.excludedElements?.().some(node => contains(node, element)) ||
+      props.excludedElements?.some(node => contains(node(), element)) ||
       layerStack.isInNestedLayer(ref, element)
     );
   };

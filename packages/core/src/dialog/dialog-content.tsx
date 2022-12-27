@@ -7,20 +7,19 @@
  */
 
 import {
-  contains,
   createPolymorphicComponent,
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
+import { createEffect, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
 import {
+  createFocusScope,
   createHideOutside,
   createPreventScroll,
   FocusOutsideEvent,
-  FocusScope,
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives";
@@ -62,9 +61,6 @@ export interface DialogContentProps {
    * It can be prevented by calling `event.preventDefault`.
    */
   onInteractOutside?: (event: InteractOutsideEvent) => void;
-
-  /** The HTML styles attribute (object form only). */
-  style?: JSX.CSSProperties;
 }
 
 /**
@@ -133,7 +129,7 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentProp
 
     // If the event is a right-click, we shouldn't close because
     // it is effectively as if we right-clicked the `Overlay`.
-    if (context.isModal() && e.detail.contextmenu) {
+    if (context.isModal() && e.detail.isContextMenu) {
       e.preventDefault();
     }
   };
@@ -159,22 +155,8 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentProp
       e.preventDefault();
     }
 
-    if (!context.isModal()) {
-      if (!e.defaultPrevented) {
-        hasInteractedOutside = true;
-      }
-
-      // Prevent dismissing when clicking the trigger.
-      // As the trigger is already setup to close, without doing so would
-      // cause it to close and immediately open.
-      //
-      // We use `onInteractOutside` as some browsers also
-      // focus on pointer down, creating the same issue.
-      const target = e.target as HTMLElement | null;
-
-      if (contains(context.triggerRef(), target)) {
-        e.preventDefault();
-      }
+    if (!context.isModal() && !e.defaultPrevented) {
+      hasInteractedOutside = true;
     }
   };
 
@@ -188,6 +170,15 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentProp
     isDisabled: () => !(context.isOpen() && context.isModal()),
   });
 
+  createFocusScope(
+    {
+      trapFocus: () => context.isOpen() && context.isModal(),
+      onMountAutoFocus: local.onOpenAutoFocus,
+      onUnmountAutoFocus: onCloseAutoFocus,
+    },
+    () => ref
+  );
+
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
   return (
@@ -198,6 +189,7 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentProp
         id={local.id}
         tabIndex={-1}
         disableOutsidePointerEvents={context.isOpen() && context.isModal()}
+        excludedElements={[context.triggerRef]}
         aria-labelledby={context.titleId()}
         aria-describedby={context.descriptionId()}
         onEscapeKeyDown={onEscapeKeyDown}
@@ -207,37 +199,6 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentProp
         onDismiss={context.close}
         {...others}
       />
-    </Show>
-  );
-
-  return (
-    <Show when={context.shouldMount()}>
-      <FocusScope
-        trapFocus={context.isOpen() && context.isModal()}
-        onMountAutoFocus={local.onOpenAutoFocus}
-        onUnmountAutoFocus={onCloseAutoFocus}
-      >
-        {setRef => (
-          <DismissableLayer
-            ref={mergeRefs(el => {
-              setRef(el);
-              ref = el;
-            }, local.ref)}
-            role="dialog"
-            id={local.id}
-            tabIndex={-1}
-            disableOutsidePointerEvents={context.isOpen() && context.isModal()}
-            aria-labelledby={context.titleId()}
-            aria-describedby={context.descriptionId()}
-            onEscapeKeyDown={onEscapeKeyDown}
-            onPointerDownOutside={onPointerDownOutside}
-            onFocusOutside={onFocusOutside}
-            onInteractOutside={onInteractOutside}
-            onDismiss={context.close}
-            {...others}
-          />
-        )}
-      </FocusScope>
     </Show>
   );
 });

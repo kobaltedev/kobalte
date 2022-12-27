@@ -12,20 +12,12 @@
  * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/interact-outside/src/index.ts
  */
 
-import {
-  composeEventHandlers,
-  contains,
-  getDocument,
-  isCtrlKey,
-  isFocusable,
-  noop,
-} from "@kobalte/utils";
+import { composeEventHandlers, contains, getDocument, isCtrlKey, noop } from "@kobalte/utils";
 import { Accessor, createEffect, onCleanup } from "solid-js";
 
 type EventDetails<T> = {
   originalEvent: T;
-  contextmenu: boolean;
-  focusable: boolean;
+  isContextMenu: boolean;
 };
 
 export type PointerDownOutsideEvent = CustomEvent<EventDetails<PointerEvent>>;
@@ -95,8 +87,9 @@ export function createInteractOutside<T extends HTMLElement>(
   const onPointerDown = (e: PointerEvent) => {
     function handler() {
       const container = ref();
+      const target = e.target as HTMLElement | null;
 
-      if (!container || !isEventOutside(e)) {
+      if (!container || !target || !isEventOutside(e)) {
         return;
       }
 
@@ -104,21 +97,19 @@ export function createInteractOutside<T extends HTMLElement>(
         onPointerDownOutside,
         onInteractOutside,
       ]) as EventListener;
-      container.addEventListener(POINTER_DOWN_OUTSIDE_EVENT, handler, { once: true });
 
-      const target = e.target as HTMLElement | null;
+      target.addEventListener(POINTER_DOWN_OUTSIDE_EVENT, handler, { once: true });
 
       const pointerDownOutsideEvent = new CustomEvent(POINTER_DOWN_OUTSIDE_EVENT, {
         bubbles: false,
         cancelable: true,
         detail: {
           originalEvent: e,
-          contextmenu: e.button === 2 || (isCtrlKey(e) && e.button === 0),
-          focusable: target && isFocusable(target),
-        },
+          isContextMenu: e.button === 2 || (isCtrlKey(e) && e.button === 0),
+        } as EventDetails<PointerEvent>,
       });
 
-      container.dispatchEvent(pointerDownOutsideEvent);
+      target.dispatchEvent(pointerDownOutsideEvent);
     }
 
     /**
@@ -144,27 +135,26 @@ export function createInteractOutside<T extends HTMLElement>(
 
   const onFocusIn = (e: FocusEvent) => {
     const container = ref();
+    const target = e.target as HTMLElement | null;
 
-    if (!container || !isEventOutside(e)) {
+    if (!container || !target || !isEventOutside(e)) {
       return;
     }
 
     const handler = composeEventHandlers([onFocusOutside, onInteractOutside]) as EventListener;
-    container.addEventListener(FOCUS_OUTSIDE_EVENT, handler, { once: true });
 
-    const target = e.target as HTMLElement | null;
+    target.addEventListener(FOCUS_OUTSIDE_EVENT, handler, { once: true });
 
     const focusOutsideEvent = new CustomEvent(FOCUS_OUTSIDE_EVENT, {
       bubbles: false,
       cancelable: true,
       detail: {
         originalEvent: e,
-        contextmenu: false,
-        focusable: target && isFocusable(target),
-      },
+        isContextMenu: false,
+      } as EventDetails<FocusEvent>,
     });
 
-    container.dispatchEvent(focusOutsideEvent);
+    target.dispatchEvent(focusOutsideEvent);
   };
 
   createEffect(() => {
