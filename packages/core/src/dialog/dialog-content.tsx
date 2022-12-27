@@ -13,7 +13,7 @@ import {
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, onCleanup, Show, splitProps } from "solid-js";
+import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
 import {
@@ -62,6 +62,9 @@ export interface DialogContentProps {
    * It can be prevented by calling `event.preventDefault`.
    */
   onInteractOutside?: (event: InteractOutsideEvent) => void;
+
+  /** The HTML styles attribute (object form only). */
+  style?: JSX.CSSProperties;
 }
 
 /**
@@ -190,9 +193,7 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentProp
   return (
     <Show when={context.shouldMount()}>
       <DismissableLayer
-        ref={mergeRefs(el => {
-          ref = el;
-        }, local.ref)}
+        ref={mergeRefs(el => (ref = el), local.ref)}
         role="dialog"
         id={local.id}
         tabIndex={-1}

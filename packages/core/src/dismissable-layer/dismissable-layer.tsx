@@ -19,7 +19,7 @@ import {
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { Accessor, createEffect, JSX, on, onCleanup, onMount, splitProps } from "solid-js";
+import { Accessor, createEffect, on, onCleanup, onMount, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
@@ -69,12 +69,7 @@ export interface DismissableLayerProps {
 
   /** Handler called when the layer should be dismissed. */
   onDismiss?: () => void;
-
-  /** The HTML styles attribute (object form only). */
-  style?: JSX.CSSProperties;
 }
-
-let originalBodyPointerEvents: string;
 
 export const DismissableLayer = createPolymorphicComponent<"div", DismissableLayerProps>(props => {
   let ref: HTMLElement | undefined;
@@ -84,7 +79,6 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
   const [local, others] = splitProps(props, [
     "as",
     "ref",
-    "style",
     "disableOutsidePointerEvents",
     "excludedElements",
     "onEscapeKeyDown",
@@ -93,10 +87,6 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
     "onInteractOutside",
     "onDismiss",
   ]);
-
-  const isBodyPointerEventsDisabled = () => layerStack.pointerBlockingLayers().length > 0;
-
-  const isPointerEventsDisabled = () => !ref || layerStack.isBelowPointerBlockingLayer(ref);
 
   const shouldExcludeElement = (element: Element) => {
     if (!ref) {
@@ -157,66 +147,65 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
   });
 
   onMount(() => {
-    if (ref) {
-      layerStack.addLayer({
-        node: () => ref,
-        isPointerBlocking: () => props.disableOutsidePointerEvents,
-        dismiss: () => props.onDismiss?.(),
-      });
+    if (!ref) {
+      return;
     }
+
+    layerStack.addLayer({
+      node: ref,
+      isPointerBlocking: props.disableOutsidePointerEvents,
+      dismiss: props.onDismiss,
+    });
+
+    layerStack.assignPointerEventToLayers();
+
+    layerStack.disableBodyPointerEvents(ref);
   });
 
   onCleanup(() => {
-    if (ref) {
-      layerStack.removeLayer(ref);
+    if (!ref) {
+      return;
     }
+
+    layerStack.removeLayer(ref);
+
+    // Re-assign pointer event to remaining layers.
+    layerStack.assignPointerEventToLayers();
+
+    layerStack.restoreBodyPointerEvents(ref);
   });
 
   createEffect(
     on(
       [() => ref, () => props.disableOutsidePointerEvents],
       ([ref, disableOutsidePointerEvents]) => {
-        if (!ref || !disableOutsidePointerEvents) {
+        if (!ref) {
           return;
         }
 
-        const ownerDocument = getDocument(ref);
+        const layer = layerStack.find(ref);
 
-        // It's the first pointer blocking layer to be added in the stack,
-        // so disable pointer-events on body.
-        if (layerStack.pointerBlockingLayers().length === 1) {
-          originalBodyPointerEvents = document.body.style.pointerEvents;
-          ownerDocument.body.style.pointerEvents = "none";
+        if (layer && layer.isPointerBlocking !== disableOutsidePointerEvents) {
+          // Keep layer in sync with the prop.
+          layer.isPointerBlocking = disableOutsidePointerEvents;
+
+          // Update layers pointer-events since this layer "isPointerBlocking" has changed.
+          layerStack.assignPointerEventToLayers();
+        }
+
+        if (disableOutsidePointerEvents) {
+          layerStack.disableBodyPointerEvents(ref);
         }
 
         onCleanup(() => {
-          // It's the last pointer blocking layer in the stack,
-          // so restore original body pointer-events.
-          if (layerStack.pointerBlockingLayers().length === 0) {
-            ownerDocument.body.style.pointerEvents = originalBodyPointerEvents;
-
-            if (ownerDocument.body.style.length === 0) {
-              ownerDocument.body.removeAttribute("style");
-            }
-          }
+          layerStack.restoreBodyPointerEvents(ref);
         });
+      },
+      {
+        defer: true,
       }
     )
   );
 
-  return (
-    <Dynamic
-      component={local.as}
-      ref={mergeRefs(el => (ref = el), local.ref)}
-      style={{
-        "pointer-events": isBodyPointerEventsDisabled()
-          ? isPointerEventsDisabled()
-            ? "none"
-            : "auto"
-          : undefined,
-        ...local.style,
-      }}
-      {...others}
-    />
-  );
+  return <Dynamic component={local.as} ref={mergeRefs(el => (ref = el), local.ref)} {...others} />;
 });
