@@ -12,7 +12,7 @@
  * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/dismissable/src/layer-stack.ts
  */
 
-import { contains, getDocument, removeItemFromArray } from "@kobalte/utils";
+import { getDocument } from "@kobalte/utils";
 
 export interface LayerModel {
   node: HTMLElement;
@@ -23,7 +23,7 @@ export interface LayerModel {
 let originalBodyPointerEvents: string;
 let hasDisabledBodyPointerEvents = false;
 
-let layers: Array<LayerModel> = [];
+const layers: Array<LayerModel> = [];
 
 function indexOf(node: HTMLElement | undefined) {
   return layers.findIndex(layer => layer.node === node);
@@ -54,14 +54,6 @@ function isBelowPointerBlockingLayer(node: HTMLElement) {
   return indexOf(node) < highestBlockingIndex;
 }
 
-function getNestedLayers(node: HTMLElement) {
-  return Array.from(layers).slice(indexOf(node) + 1);
-}
-
-function isInNestedLayer(node: HTMLElement, target: Node | null) {
-  return getNestedLayers(node).some(layer => contains(layer.node, target));
-}
-
 function addLayer(layer: LayerModel) {
   layers.push(layer);
 }
@@ -73,14 +65,7 @@ function removeLayer(node: HTMLElement) {
     return;
   }
 
-  // dismiss nested layers
-  if (index < layers.length - 1) {
-    const nestedLayers = getNestedLayers(node);
-    nestedLayers.forEach(layer => layer.dismiss?.());
-  }
-
-  // remove this layer
-  layers = removeItemFromArray(layers, layers[index]);
+  layers.splice(index, 1);
 }
 
 function assignPointerEventToLayers() {
@@ -128,7 +113,6 @@ export const layerStack = {
   isTopMostLayer,
   hasPointerBlockingLayer,
   isBelowPointerBlockingLayer,
-  isInNestedLayer,
   addLayer,
   removeLayer,
   indexOf,

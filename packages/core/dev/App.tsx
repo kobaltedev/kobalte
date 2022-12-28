@@ -33,7 +33,7 @@ function MyDialog(props: ComponentProps<typeof Dialog> & { level: number }) {
 export default function App() {
   return (
     <I18nProvider>
-      <div class="flex items-center space-x-4 p-4">
+      <div>
         <MyDialog id="non-modal-1" isModal={false} level={1}>
           <MyDialog id="non-modal-2" isModal={false} level={2}>
             <MyDialog id="non-modal-3" isModal={false} level={3} />

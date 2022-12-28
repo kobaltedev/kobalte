@@ -123,6 +123,60 @@ export function createFocusScope<T extends HTMLElement>(
     return items.length > 0 ? items[items.length - 1] : null;
   };
 
+  // Handle dispatching mount and unmount autofocus events.
+  createEffect(() => {
+    const container = ref();
+
+    if (!container) {
+      return;
+    }
+
+    focusScopeStack.add(focusScope);
+
+    const previouslyFocusedElement = getActiveElement(container) as HTMLElement | null;
+    const hasFocusedCandidate = contains(container, previouslyFocusedElement);
+
+    if (!hasFocusedCandidate) {
+      const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT_EVENT, EVENT_OPTIONS);
+
+      container.addEventListener(AUTOFOCUS_ON_MOUNT_EVENT, onMountAutoFocus);
+      container.dispatchEvent(mountEvent);
+
+      if (!mountEvent.defaultPrevented) {
+        // Delay the focusing because it may run before a `DismissableLayer` is added to the layer stack,
+        // so it cause nested dismissable layer to open then close instantly.
+        setTimeout(() => {
+          focusWithoutScrolling(firstTabbable());
+
+          if (getActiveElement(container) === previouslyFocusedElement) {
+            focusWithoutScrolling(container);
+          }
+        }, 0);
+      }
+    }
+
+    onCleanup(() => {
+      container.removeEventListener(AUTOFOCUS_ON_MOUNT_EVENT, onMountAutoFocus);
+
+      setTimeout(() => {
+        const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT_EVENT, EVENT_OPTIONS);
+
+        container.addEventListener(AUTOFOCUS_ON_UNMOUNT_EVENT, onUnmountAutoFocus);
+        container.dispatchEvent(unmountEvent);
+
+        if (!unmountEvent.defaultPrevented) {
+          focusWithoutScrolling(previouslyFocusedElement ?? ownerDocument().body);
+        }
+
+        // We need to remove the listener after we `dispatchEvent`.
+        container.removeEventListener(AUTOFOCUS_ON_UNMOUNT_EVENT, onUnmountAutoFocus);
+
+        focusScopeStack.remove(focusScope);
+      }, 0);
+    });
+  });
+
+  /*
   // Handle containing focus if a child unmount.
   createEffect(() => {
     const container = ref();
@@ -137,6 +191,7 @@ export function createFocusScope<T extends HTMLElement>(
       }
 
       if (getActiveElement(container) === ownerDocument().body) {
+        console.log("fired");
         focusWithoutScrolling(container);
       }
     });
@@ -147,6 +202,7 @@ export function createFocusScope<T extends HTMLElement>(
       observer.disconnect();
     });
   });
+  */
 
   // Handle containing focus if focus is moved outside.
   createEffect(() => {
@@ -181,58 +237,6 @@ export function createFocusScope<T extends HTMLElement>(
     onCleanup(() => {
       ownerDocument().removeEventListener("focusin", onFocusIn);
       ownerDocument().removeEventListener("focusout", onFocusOut);
-    });
-  });
-
-  // Handle dispatching mount and unmount autofocus events.
-  createEffect(() => {
-    const container = ref();
-
-    if (!container) {
-      return;
-    }
-
-    focusScopeStack.add(focusScope);
-
-    const previouslyFocusedElement = getActiveElement(container) as HTMLElement | null;
-    const hasFocusedCandidate = contains(container, previouslyFocusedElement);
-
-    if (!hasFocusedCandidate) {
-      const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT_EVENT, EVENT_OPTIONS);
-
-      container.addEventListener(AUTOFOCUS_ON_MOUNT_EVENT, onMountAutoFocus);
-      container.dispatchEvent(mountEvent);
-
-      if (!mountEvent.defaultPrevented) {
-        // TODO: adding a microtask here seem to fix dismissable layer bug
-        // The problem is focusing run before a dismissable layer is added to the stack,
-        // so it cause nested dismiaable layer to open then close instantly
-        focusWithoutScrolling(firstTabbable());
-
-        if (getActiveElement(container) === previouslyFocusedElement) {
-          focusWithoutScrolling(container);
-        }
-      }
-    }
-
-    onCleanup(() => {
-      container.removeEventListener(AUTOFOCUS_ON_MOUNT_EVENT, onMountAutoFocus);
-
-      setTimeout(() => {
-        const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT_EVENT, EVENT_OPTIONS);
-
-        container.addEventListener(AUTOFOCUS_ON_UNMOUNT_EVENT, onUnmountAutoFocus);
-        container.dispatchEvent(unmountEvent);
-
-        if (!unmountEvent.defaultPrevented) {
-          focusWithoutScrolling(previouslyFocusedElement ?? ownerDocument().body);
-        }
-
-        // We need to remove the listener after we `dispatchEvent`.
-        container.removeEventListener(AUTOFOCUS_ON_UNMOUNT_EVENT, onUnmountAutoFocus);
-
-        focusScopeStack.remove(focusScope);
-      }, 0);
     });
   });
 

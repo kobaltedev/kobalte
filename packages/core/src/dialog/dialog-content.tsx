@@ -92,26 +92,6 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentProp
 
   let hasInteractedOutside = false;
 
-  const onCloseAutoFocus = (e: Event) => {
-    local.onCloseAutoFocus?.(e);
-
-    if (context.isModal()) {
-      e.preventDefault();
-      focusWithoutScrolling(context.triggerRef());
-    } else {
-      if (!e.defaultPrevented) {
-        if (!hasInteractedOutside) {
-          focusWithoutScrolling(context.triggerRef());
-        }
-
-        // Always prevent autofocus because we either focus manually or want user agent focus
-        e.preventDefault();
-      }
-
-      hasInteractedOutside = false;
-    }
-  };
-
   const onEscapeKeyDown = (e: KeyboardEvent) => {
     local.onEscapeKeyDown?.(e);
 
@@ -157,6 +137,26 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentProp
 
     if (!context.isModal() && !e.defaultPrevented) {
       hasInteractedOutside = true;
+    }
+  };
+
+  const onCloseAutoFocus = (e: Event) => {
+    local.onCloseAutoFocus?.(e);
+
+    if (context.isModal()) {
+      e.preventDefault();
+      focusWithoutScrolling(context.triggerRef());
+    } else {
+      if (!e.defaultPrevented) {
+        if (!hasInteractedOutside) {
+          focusWithoutScrolling(context.triggerRef());
+        }
+
+        // Always prevent autofocus because we either focus manually or want user agent focus
+        e.preventDefault();
+      }
+
+      hasInteractedOutside = false;
     }
   };
 

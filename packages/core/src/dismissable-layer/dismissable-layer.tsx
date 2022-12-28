@@ -29,6 +29,11 @@ import {
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives";
+import {
+  DismissableLayerContext,
+  DismissableLayerContextValue,
+  useOptionalDismissableLayerContext,
+} from "./dismissable-layer-context";
 import { layerStack } from "./layer-stack";
 
 export interface DismissableLayerProps {
@@ -74,6 +79,10 @@ export interface DismissableLayerProps {
 export const DismissableLayer = createPolymorphicComponent<"div", DismissableLayerProps>(props => {
   let ref: HTMLElement | undefined;
 
+  const nestedLayers = new Set<Element>([]);
+
+  const parentContext = useOptionalDismissableLayerContext();
+
   props = mergeDefaultProps({ as: "div" }, props);
 
   const [local, others] = splitProps(props, [
@@ -88,14 +97,25 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
     "onDismiss",
   ]);
 
+  const registerNestedLayer = (element: Element) => {
+    nestedLayers.add(element);
+
+    const parentUnregister = parentContext?.registerNestedLayer(element);
+
+    return () => {
+      nestedLayers.delete(element);
+      parentUnregister?.();
+    };
+  };
+
   const shouldExcludeElement = (element: Element) => {
     if (!ref) {
       return false;
     }
 
     return (
-      props.excludedElements?.some(node => contains(node(), element)) ||
-      layerStack.isInNestedLayer(ref, element)
+      local.excludedElements?.some(node => contains(node(), element)) ||
+      [...nestedLayers].some(layer => contains(layer, element))
     );
   };
 
@@ -104,20 +124,20 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
       return;
     }
 
-    props.onPointerDownOutside?.(e);
-    props.onInteractOutside?.(e);
+    local.onPointerDownOutside?.(e);
+    local.onInteractOutside?.(e);
 
     if (!e.defaultPrevented) {
-      props.onDismiss?.();
+      local.onDismiss?.();
     }
   };
 
   const onFocusOutside = (e: FocusOutsideEvent) => {
-    props.onFocusOutside?.(e);
-    props.onInteractOutside?.(e);
+    local.onFocusOutside?.(e);
+    local.onInteractOutside?.(e);
 
     if (!e.defaultPrevented) {
-      props.onDismiss?.();
+      local.onDismiss?.();
     }
   };
 
@@ -137,11 +157,11 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
         return;
       }
 
-      props.onEscapeKeyDown?.(e);
+      local.onEscapeKeyDown?.(e);
 
-      if (!e.defaultPrevented && props.onDismiss) {
+      if (!e.defaultPrevented && local.onDismiss) {
         e.preventDefault();
-        props.onDismiss();
+        local.onDismiss();
       }
     },
   });
@@ -153,31 +173,35 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
 
     layerStack.addLayer({
       node: ref,
-      isPointerBlocking: props.disableOutsidePointerEvents,
-      dismiss: props.onDismiss,
+      isPointerBlocking: local.disableOutsidePointerEvents,
+      dismiss: local.onDismiss,
     });
+
+    const unregisterFromParentLayer = parentContext?.registerNestedLayer(ref);
 
     layerStack.assignPointerEventToLayers();
 
     layerStack.disableBodyPointerEvents(ref);
-  });
 
-  onCleanup(() => {
-    if (!ref) {
-      return;
-    }
+    onCleanup(() => {
+      if (!ref) {
+        return;
+      }
 
-    layerStack.removeLayer(ref);
+      layerStack.removeLayer(ref);
 
-    // Re-assign pointer event to remaining layers.
-    layerStack.assignPointerEventToLayers();
+      unregisterFromParentLayer?.();
 
-    layerStack.restoreBodyPointerEvents(ref);
+      // Re-assign pointer event to remaining layers.
+      layerStack.assignPointerEventToLayers();
+
+      layerStack.restoreBodyPointerEvents(ref);
+    });
   });
 
   createEffect(
     on(
-      [() => ref, () => props.disableOutsidePointerEvents],
+      [() => ref, () => local.disableOutsidePointerEvents],
       ([ref, disableOutsidePointerEvents]) => {
         if (!ref) {
           return;
@@ -207,5 +231,13 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
     )
   );
 
-  return <Dynamic component={local.as} ref={mergeRefs(el => (ref = el), local.ref)} {...others} />;
+  const context: DismissableLayerContextValue = {
+    registerNestedLayer,
+  };
+
+  return (
+    <DismissableLayerContext.Provider value={context}>
+      <Dynamic component={local.as} ref={mergeRefs(el => (ref = el), local.ref)} {...others} />
+    </DismissableLayerContext.Provider>
+  );
 });
