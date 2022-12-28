@@ -43,17 +43,15 @@ export interface DialogProps {
    */
   id?: string;
 
-  /** Whether the dialog should be the only visible content for screen readers. */
-  isModal?: boolean;
-
-  /** Whether pressing the escape key should close the dialog. */
-  closeOnEsc?: boolean;
-
   /**
-   * Whether to close the dialog when the user interacts outside it.
-   * Specifically, when a `pointerdown` event happens outside or focus moves outside of it.
+   * Whether the dialog should be the only visible content for screen readers.
+   * When set to `true`:
+   * - interaction with outside elements will be disabled.
+   * - scroll will be locked.
+   * - focus will be locked inside the dialog content.
+   * - elements outside the dialog content will not be visible for screen readers.
    */
-  closeOnInteractOutside?: boolean;
+  isModal?: boolean;
 
   /**
    * Used to force mounting the dialog (portal, overlay, positioner and content) when more control is needed.
@@ -72,8 +70,6 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
     {
       id: defaultId,
       isModal: true,
-      closeOnEsc: true,
-      closeOnInteractOutside: true,
     },
     props
   );
@@ -92,14 +88,12 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
 
   const context: DialogContextValue = {
     isOpen: disclosureState.isOpen,
+    isModal: () => props.isModal!,
     shouldMount: () => props.forceMount || disclosureState.isOpen(),
     contentId,
     titleId,
     descriptionId,
     triggerRef,
-    isModal: () => props.isModal!,
-    closeOnEsc: () => props.closeOnEsc!,
-    closeOnInteractOutside: () => props.closeOnInteractOutside!,
     close: disclosureState.close,
     toggle: disclosureState.toggle,
     setTriggerRef,

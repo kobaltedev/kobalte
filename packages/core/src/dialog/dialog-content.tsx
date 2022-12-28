@@ -92,20 +92,8 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentProp
 
   let hasInteractedOutside = false;
 
-  const onEscapeKeyDown = (e: KeyboardEvent) => {
-    local.onEscapeKeyDown?.(e);
-
-    if (!context.closeOnEsc()) {
-      e.preventDefault();
-    }
-  };
-
   const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
     local.onPointerDownOutside?.(e);
-
-    if (!context.closeOnInteractOutside()) {
-      e.preventDefault();
-    }
 
     // If the event is a right-click, we shouldn't close because
     // it is effectively as if we right-clicked the `Overlay`.
@@ -117,10 +105,6 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentProp
   const onFocusOutside = (e: FocusOutsideEvent) => {
     local.onFocusOutside?.(e);
 
-    if (!context.closeOnInteractOutside()) {
-      e.preventDefault();
-    }
-
     // When focus is trapped, a `focusout` event may still happen.
     // We make sure we don't trigger our `onDismiss` in such case.
     if (context.isModal()) {
@@ -130,10 +114,6 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentProp
 
   const onInteractOutside = (e: InteractOutsideEvent) => {
     local.onInteractOutside?.(e);
-
-    if (!context.closeOnInteractOutside()) {
-      e.preventDefault();
-    }
 
     if (!context.isModal() && !e.defaultPrevented) {
       hasInteractedOutside = true;
@@ -192,7 +172,7 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentProp
         excludedElements={[context.triggerRef]}
         aria-labelledby={context.titleId()}
         aria-describedby={context.descriptionId()}
-        onEscapeKeyDown={onEscapeKeyDown}
+        onEscapeKeyDown={local.onEscapeKeyDown}
         onPointerDownOutside={onPointerDownOutside}
         onFocusOutside={onFocusOutside}
         onInteractOutside={onInteractOutside}
