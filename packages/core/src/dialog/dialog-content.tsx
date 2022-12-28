@@ -25,7 +25,7 @@ import {
 } from "../primitives";
 import { useDialogContext } from "./dialog-context";
 
-export interface DialogContentProps {
+export interface DialogContentOptions {
   /**
    * Event handler called when focus moves into the component after opening.
    * It can be prevented by calling `event.preventDefault`.
@@ -66,7 +66,7 @@ export interface DialogContentProps {
 /**
  * Contains the content to be rendered when the dialog is open.
  */
-export const DialogContent = createPolymorphicComponent<"div", DialogContentProps>(props => {
+export const DialogContent = createPolymorphicComponent<"div", DialogContentOptions>(props => {
   let ref: HTMLElement | undefined;
 
   const context = useDialogContext();

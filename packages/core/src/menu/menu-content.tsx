@@ -3,11 +3,11 @@ import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import { HoverCardContent } from "../hover-card/hover-card-content";
 import { createSelectableList } from "../list";
-import { PopoverContentProps } from "../popover/popover-content";
+import { PopoverContentOptions } from "../popover/popover-content";
 import { createFocusRing } from "../primitives";
 import { useMenuContext } from "./menu-context";
 
-export const MenuContent = createPolymorphicComponent<"div", PopoverContentProps>(props => {
+export const MenuContent = createPolymorphicComponent<"div", PopoverContentOptions>(props => {
   let ref: HTMLDivElement | undefined;
 
   const context = useMenuContext();

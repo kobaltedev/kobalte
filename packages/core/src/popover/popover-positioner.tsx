@@ -26,7 +26,14 @@ export const PopoverPositioner = createPolymorphicComponent<"div", PopoverPositi
           component={local.as}
           ref={mergeRefs(context.setPositionerRef, local.ref)}
           role="presentation"
-          style={{ position: "absolute", top: 0, left: 0, ...local.style }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            // We re-enable pointer-events prevented by `Popover.Content` to allow scrolling.
+            "pointer-events": "auto",
+            ...local.style,
+          }}
           {...others}
         />
       </Show>

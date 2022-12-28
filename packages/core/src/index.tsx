@@ -17,7 +17,7 @@ export * from "./form-control";
 export * from "./i18n";
 export * from "./link";
 export * from "./listbox";
-//export * from "./popover";
+export * from "./popover";
 export * from "./radio-group";
 //export * from "./select";
 export * from "./separator";

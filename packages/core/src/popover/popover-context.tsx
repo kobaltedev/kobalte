@@ -4,16 +4,14 @@ import { Placement } from "./utils";
 
 export interface PopoverContextValue {
   isOpen: Accessor<boolean>;
+  isModal: Accessor<boolean>;
   shouldMount: Accessor<boolean>;
   currentPlacement: Accessor<Placement>;
+  triggerRef: Accessor<HTMLElement | undefined>;
   contentRef: Accessor<HTMLElement | undefined>;
   contentId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;
-  isModal: Accessor<boolean>;
-  closeOnEsc: Accessor<boolean>;
-  closeOnInteractOutside: Accessor<boolean>;
-  shouldCloseOnInteractOutside: (element: Element) => boolean;
   setDefaultAnchorRef: (el: HTMLElement) => void;
   setTriggerRef: (el: HTMLElement) => void;
   setPositionerRef: (el: HTMLElement) => void;

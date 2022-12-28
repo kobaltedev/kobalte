@@ -140,27 +140,20 @@ export interface PopoverProps extends PopoverFloatingProps {
   id?: string;
 
   /**
+   * Whether the popover should be the only visible content for screen readers.
+   * When set to `true`:
+   * - interaction with outside elements will be disabled.
+   * - scroll will be locked.
+   * - focus will be locked inside the popover content.
+   * - elements outside the popover content will not be visible for screen readers.
+   */
+  isModal?: boolean;
+
+  /**
    * Used to force mounting the popover (portal, positioner and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
    */
   forceMount?: boolean;
-
-  /** Whether the popover should be the only visible content for screen readers. */
-  isModal?: boolean;
-
-  /** Whether pressing the escape key should close the popover. */
-  closeOnEsc?: boolean;
-
-  /** Whether to close the popover when the user interacts outside it. */
-  closeOnInteractOutside?: boolean;
-
-  /**
-   * When user interacts with the argument element outside the popover content,
-   * return `true` if the popover should be closed. This gives you a chance to filter
-   * out interaction with elements that should not dismiss the popover.
-   * By default, the popover will always close on interaction outside the popover content.
-   */
-  shouldCloseOnInteractOutside?: (element: Element) => boolean;
 
   /**
    * Function that returns the anchor element's DOMRect. If this is explicitly
@@ -192,8 +185,6 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     {
       id: defaultId,
       isModal: false,
-      closeOnEsc: true,
-      closeOnInteractOutside: true,
       getAnchorRect: anchor => anchor?.getBoundingClientRect(),
       placement: "bottom",
       gutter: 0,
@@ -428,25 +419,14 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
   const context: PopoverContextValue = {
     isOpen: disclosureState.isOpen,
+    isModal: () => props.isModal!,
     shouldMount: () => props.forceMount || disclosureState.isOpen(),
     currentPlacement,
+    triggerRef,
     contentRef,
     contentId,
     titleId,
     descriptionId,
-    isModal: () => props.isModal!,
-    closeOnEsc: () => props.closeOnEsc!,
-    closeOnInteractOutside: () => props.closeOnInteractOutside!,
-    shouldCloseOnInteractOutside: (element: Element) => {
-      // Prevent dismissing when clicking the trigger.
-      // As the trigger is already setup to close, without doing so would
-      // cause it to close and immediately open.
-      if (contains(triggerRef(), element)) {
-        return false;
-      }
-
-      return props.shouldCloseOnInteractOutside?.(element) ?? true;
-    },
     setDefaultAnchorRef,
     setTriggerRef,
     setPositionerRef,

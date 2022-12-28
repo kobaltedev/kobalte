@@ -1,32 +1,32 @@
 import { ComponentProps, splitProps } from "solid-js";
 
-import { Button, Dialog, I18nProvider } from "../src";
+import { Button, Popover, I18nProvider } from "../src";
 
-function MyDialog(props: ComponentProps<typeof Dialog> & { level: number }) {
+function MyPopover(props: ComponentProps<typeof Popover> & { level: number }) {
   const [local, others] = splitProps(props, ["children", "level"]);
 
   return (
-    <Dialog {...others}>
-      <Dialog.Trigger class="button" id={`${others.id}-trigger`}>
+    <Popover {...others}>
+      <Popover.Trigger class="button" id={`${others.id}-trigger`}>
         {others.isModal ? "Open Modal" : "Open Non Modal"} {local.level}
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <Dialog.Positioner style={{ overflow: "auto", "max-height": "500px" }}>
-          <Dialog.Content class="popover">
-            <Dialog.Title class="heading">Team meeting</Dialog.Title>
-            <Dialog.Description>
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Positioner style={{ overflow: "auto", "max-height": "500px" }}>
+          <Popover.Content class="popover">
+            <Popover.Title class="heading">Team meeting</Popover.Title>
+            <Popover.Description>
               We are going to discuss what we have achieved on the project.
-            </Dialog.Description>
+            </Popover.Description>
             <div>
               <p>12 Jan 2022 18:00 to 19:00</p>
               <p>Alert 10 minutes before start</p>
             </div>
             <Button class="button">Accept {local.level}</Button>
             {local.children}
-          </Dialog.Content>
-        </Dialog.Positioner>
-      </Dialog.Portal>
-    </Dialog>
+          </Popover.Content>
+        </Popover.Positioner>
+      </Popover.Portal>
+    </Popover>
   );
 }
 
@@ -34,12 +34,12 @@ export default function App() {
   return (
     <I18nProvider>
       <div>
-        <MyDialog id="non-modal-1" isModal={false} level={1}>
-          <MyDialog id="non-modal-2" isModal={false} level={2}>
-            <MyDialog id="non-modal-3" isModal={false} level={3} />
-          </MyDialog>
-        </MyDialog>
-        <MyDialog id="modal-1" isModal={true} level={1}>
+        <MyPopover id="non-modal-1" isModal={false} level={1}>
+          <MyPopover id="non-modal-2" isModal={false} level={2}>
+            <MyPopover id="non-modal-3" isModal={false} level={3} />
+          </MyPopover>
+        </MyPopover>
+        <MyPopover id="modal-1" isModal={true} level={1}>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem dicta facere inventore
             nihil repudiandae. At hic incidunt neque quas ut! Accusamus atque deserunt dolore, earum
@@ -131,10 +131,10 @@ export default function App() {
             id itaque labore laudantium magnam maxime molestias nemo omnis optio placeat repellendus
             rerum sed sequi sit, sunt suscipit ut veritatis vitae voluptas.
           </p>
-          <MyDialog id="modal-2" isModal={true} level={2}>
-            <MyDialog id="modal-3" isModal={true} level={3} />
-          </MyDialog>
-        </MyDialog>
+          <MyPopover id="modal-2" isModal={true} level={2}>
+            <MyPopover id="modal-3" isModal={true} level={3} />
+          </MyPopover>
+        </MyPopover>
         <button class="button" onClick={() => console.log("external button triggered")}>
           Outside
         </button>
