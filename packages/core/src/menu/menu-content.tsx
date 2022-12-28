@@ -1,10 +1,9 @@
 import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { HoverCardContent } from "../hover-card/hover-card-content";
 import { createSelectableList } from "../list";
-import { PopoverContentOptions } from "../popover/popover-content";
-import { createFocusRing } from "../primitives";
+import { PopoverContent, PopoverContentOptions } from "../popover/popover-content";
+import { createFocusRing, FocusOutsideEvent } from "../primitives";
 import { useMenuContext } from "./menu-context";
 
 export const MenuContent = createPolymorphicComponent<"div", PopoverContentOptions>(props => {
@@ -36,22 +35,31 @@ export const MenuContent = createPolymorphicComponent<"div", PopoverContentOptio
 
   const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
 
-  const onFocusOut: JSX.EventHandlerUnion<any, FocusEvent> = e => {
-    if (!e.currentTarget.contains(e.relatedTarget as HTMLElement)) {
-      context.listState().selectionManager().setFocusedKey(undefined);
+  const onFocusOutside = (e: FocusOutsideEvent) => {
+    context.listState().selectionManager().setFocusedKey(undefined);
+
+    if (context.parentMenuContext() != null) {
+      if (e.target !== context.triggerRef()) {
+        context.close();
+      }
+    } else {
+      if (context.isModal()) {
+        e.preventDefault();
+      }
     }
   };
 
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
   return (
-    <HoverCardContent
+    <PopoverContent
       id={local.id}
       role="menu"
       tabIndex={selectableList.tabIndex()}
       aria-labelledby={context.triggerId()}
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
+      onEscapeKeyDown={() => context.close(true)}
       {...combineProps(
         {
           ref: el => {
@@ -60,7 +68,7 @@ export const MenuContent = createPolymorphicComponent<"div", PopoverContentOptio
           },
         },
         others,
-        { onFocusOut },
+        { onFocusOutside },
         selectableList.handlers,
         focusRingHandlers
       )}

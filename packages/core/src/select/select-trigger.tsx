@@ -22,7 +22,7 @@ import {
   useFormControlContext,
 } from "../form-control";
 import { PressEvent } from "../primitives";
-import { createTypeSelect, FocusStrategy } from "../selection";
+import { createTypeSelect } from "../selection";
 import { useSelectContext } from "./select-context";
 
 export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(props => {
@@ -38,7 +38,6 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
   );
 
   const selectionManager = () => context.listState().selectionManager();
-  const collection = () => context.listState().collection();
   const keyboardDelegate = () => context.keyboardDelegate();
 
   const isDisabled = () => local.isDisabled || context.isDisabled();

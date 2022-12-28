@@ -1,8 +1,8 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
 
-import { HoverCard, HoverCardProps } from "../hover-card";
 import { createListState } from "../list";
+import { Popover, PopoverProps } from "../popover";
 import {
   CollectionItem,
   createDisclosureState,
@@ -16,11 +16,7 @@ import {
 import { FocusStrategy } from "../selection";
 import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-context";
 
-export interface MenuRootProps
-  extends Omit<
-    HoverCardProps,
-    "closeOnHoverOutside" | "closeOnInteractOutside" | "closeDelay" | "openDelay"
-  > {
+export interface MenuRootProps extends Omit<PopoverProps, "onCurrentPlacementChange"> {
   /** Handler that is called when the user activates a menu item. */
   onAction?: (key: string) => void;
 }
@@ -38,11 +34,7 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
     {
       id: defaultId,
       placement: "bottom-start",
-      closeOnEsc: true,
       isModal: parentMenuContext?.isModal() ?? true,
-      trapFocus: parentMenuContext?.trapFocus() ?? true,
-      autoFocus: true,
-      restoreFocus: true,
     },
     props
   );
@@ -112,10 +104,10 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
   const context: MenuContextValue = {
     isOpen: () => disclosureState.isOpen(),
     isModal: () => others.isModal!,
-    trapFocus: () => others.trapFocus!,
     autoFocus: focusStrategy,
     listState: () => listState,
     parentMenuContext: () => parentMenuContext,
+    triggerRef,
     triggerId,
     contentId,
     setTriggerRef,
@@ -134,19 +126,15 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
   return (
     <DomCollectionProvider>
       <MenuContext.Provider value={context}>
-        <HoverCard
+        <Popover
           id={local.id}
           isOpen={disclosureState.isOpen()}
           onOpenChange={disclosureState.setIsOpen}
           anchorRef={triggerRef}
-          closeOnInteractOutside={true}
-          closeOnHoverOutside={parentMenuContext != null}
-          openDelay={0}
-          closeDelay={0}
           {...others}
         >
           {local.children}
-        </HoverCard>
+        </Popover>
       </MenuContext.Provider>
     </DomCollectionProvider>
   );

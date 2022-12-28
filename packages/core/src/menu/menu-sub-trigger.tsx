@@ -10,7 +10,6 @@ import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@ko
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useHoverCardContext } from "../hover-card/hover-card-context";
 import { createFocusRing, createHover, createPress, isKeyboardFocusVisible } from "../primitives";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
@@ -39,7 +38,6 @@ export interface MenuSubTriggerProps {
 export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerProps>(props => {
   let ref: HTMLDivElement | undefined;
 
-  const hoverCardContext = useHoverCardContext();
   const context = useMenuContext();
 
   props = mergeDefaultProps(
@@ -153,9 +151,9 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     const relatedTarget = e.relatedTarget as Node | undefined;
 
     // Don't close if the menu panel (hovercard element) or nested ones has focus within.
-    if (hoverCardContext.isTargetOnHoverCard(relatedTarget)) {
-      return;
-    }
+    //if (hoverCardContext.isTargetOnHoverCard(relatedTarget)) {
+    //  return;
+    //}
 
     context.close();
   };

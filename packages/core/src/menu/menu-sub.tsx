@@ -1,8 +1,8 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { createUniqueId, ParentComponent } from "solid-js";
 
-import { MenuRoot, MenuRootProps } from "./menu-root";
 import { useMenuContext } from "./menu-context";
+import { MenuRoot, MenuRootProps } from "./menu-root";
 
 export interface MenuSubProps
   extends Omit<
@@ -33,10 +33,6 @@ export const MenuSub: ParentComponent<MenuSubProps> = props => {
   return (
     <MenuRoot
       isModal={parentMenuContext.isModal()}
-      preventScroll={parentMenuContext.preventScroll()}
-      trapFocus={parentMenuContext.trapFocus()}
-      autoFocus={false}
-      restoreFocus={true}
       onAction={parentMenuContext.onAction}
       {...props}
     />

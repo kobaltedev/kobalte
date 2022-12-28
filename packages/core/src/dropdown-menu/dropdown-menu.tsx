@@ -1,6 +1,5 @@
 import { createUniqueId, ParentComponent } from "solid-js";
 
-import { HoverCard } from "../hover-card";
 import {
   MenuCheckboxItem,
   MenuContent,
@@ -21,14 +20,15 @@ import {
 } from "../menu";
 import { Separator } from "../separator";
 import { mergeDefaultProps } from "@kobalte/utils";
+import { Popover } from "../popover";
 
 export type DropdownMenuComposite = {
   Trigger: typeof MenuTrigger;
   Icon: typeof MenuIcon;
-  Portal: typeof HoverCard.Portal;
-  Positioner: typeof HoverCard.Positioner;
+  Portal: typeof Popover.Portal;
+  Positioner: typeof Popover.Positioner;
   Content: typeof MenuContent;
-  Arrow: typeof HoverCard.Arrow;
+  Arrow: typeof Popover.Arrow;
   Separator: typeof Separator;
   Group: typeof MenuGroup;
   GroupLabel: typeof MenuGroupLabel;
@@ -56,10 +56,10 @@ export const DropdownMenu: ParentComponent<MenuRootProps> & DropdownMenuComposit
 
 DropdownMenu.Trigger = MenuTrigger;
 DropdownMenu.Icon = MenuIcon;
-DropdownMenu.Portal = HoverCard.Portal;
-DropdownMenu.Positioner = HoverCard.Positioner;
+DropdownMenu.Portal = Popover.Portal;
+DropdownMenu.Positioner = Popover.Positioner;
 DropdownMenu.Content = MenuContent;
-DropdownMenu.Arrow = HoverCard.Arrow;
+DropdownMenu.Arrow = Popover.Arrow;
 DropdownMenu.Separator = Separator;
 DropdownMenu.Group = MenuGroup;
 DropdownMenu.GroupLabel = MenuGroupLabel;

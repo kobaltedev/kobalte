@@ -1,7 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
-import { HoverCard } from "../hover-card";
 import {
   MenuCheckboxItem,
   MenuContent,
@@ -23,14 +22,15 @@ import { createDisclosureState } from "../primitives";
 import { Separator } from "../separator";
 import { ContextMenuContext, ContextMenuContextValue } from "./context-menu-context";
 import { ContextMenuTrigger } from "./context-menu-trigger";
+import { Popover } from "../popover";
 
 type ContextMenuComposite = {
   Trigger: typeof ContextMenuTrigger;
   Icon: typeof MenuIcon;
-  Portal: typeof HoverCard.Portal;
-  Positioner: typeof HoverCard.Positioner;
+  Portal: typeof Popover.Portal;
+  Positioner: typeof Popover.Positioner;
   Content: typeof MenuContent;
-  Arrow: typeof HoverCard.Arrow;
+  Arrow: typeof Popover.Arrow;
   Separator: typeof Separator;
   Group: typeof MenuGroup;
   GroupLabel: typeof MenuGroupLabel;
@@ -89,10 +89,10 @@ export const ContextMenu: ParentComponent<ContextMenuProps> & ContextMenuComposi
 
 ContextMenu.Trigger = ContextMenuTrigger;
 ContextMenu.Icon = MenuIcon;
-ContextMenu.Portal = HoverCard.Portal;
-ContextMenu.Positioner = HoverCard.Positioner;
+ContextMenu.Portal = Popover.Portal;
+ContextMenu.Positioner = Popover.Positioner;
 ContextMenu.Content = MenuContent;
-ContextMenu.Arrow = HoverCard.Arrow;
+ContextMenu.Arrow = Popover.Arrow;
 ContextMenu.Separator = Separator;
 ContextMenu.Group = MenuGroup;
 ContextMenu.GroupLabel = MenuGroupLabel;

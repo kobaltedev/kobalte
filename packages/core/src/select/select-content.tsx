@@ -1,15 +1,15 @@
 import {
-  callHandler,
-  contains,
   createPolymorphicComponent,
+  focusWithoutScrolling,
+  getDocument,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { DismissableLayer } from "../dismissable-layer";
 import { usePopoverContext } from "../popover/popover-context";
-import { createDismissableLayer, createFocusScope } from "../primitives";
+import { createEscapeKeyDown, createFocusScope } from "../primitives";
 import { useSelectContext } from "./select-context";
 
 export interface SelectContentProps {
@@ -34,62 +34,48 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentProp
 
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, [
-    "as",
-    "ref",
-    "id",
-    "style",
-    "keepVisible",
-    "onFocusOut",
-  ]);
+  const [local, others] = splitProps(props, ["ref", "id", "style", "keepVisible"]);
 
   const keepVisible = () => local.keepVisible || context.isOpen();
 
-  const dismissableLayer = createDismissableLayer(
-    {
-      isOpen: context.isOpen,
-      onClose: context.close,
-      isModal: false,
-      closeOnEsc: true,
-      closeOnInteractOutside: true,
-      shouldCloseOnInteractOutside: element => !contains(context.triggerRef(), element),
-    },
-    () => ref
-  );
+  createEscapeKeyDown({
+    ownerDocument: () => getDocument(ref),
+    onEscapeKeyDown: () => context.close(),
+  });
 
-  const { FocusTrap } = createFocusScope(
+  createFocusScope(
     {
       trapFocus: context.isOpen,
-      autoFocus: false, // Handled by the select listbox.
-      restoreFocus: false, // Handled by the select
+      onMountAutoFocus: e => {
+        // We prevent open autofocus because it's handled by the `Listbox`.
+        e.preventDefault();
+      },
+      onUnmountAutoFocus: e => {
+        focusWithoutScrolling(context.triggerRef());
+        e.preventDefault();
+      },
     },
     () => ref
   );
 
-  const onFocusOut: JSX.EventHandlerUnion<any, FocusEvent> = e => {
-    callHandler(e, local.onFocusOut);
-    callHandler(e, dismissableLayer.onFocusOut);
-  };
-
   return (
-    <>
-      <FocusTrap />
-      <Dynamic
-        component={local.as}
-        ref={mergeRefs(el => {
-          popoverContext.setContentRef(el);
-          ref = el;
-        }, local.ref)}
-        hidden={!keepVisible()}
-        style={{
-          position: "relative",
-          display: !keepVisible() ? "none" : undefined,
-          ...local.style,
-        }}
-        onFocusOut={onFocusOut}
-        {...others}
-      />
-      <FocusTrap />
-    </>
+    <DismissableLayer
+      ref={mergeRefs(el => {
+        popoverContext.setContentRef(el);
+        ref = el;
+      }, local.ref)}
+      hidden={!keepVisible()}
+      style={{
+        position: "relative",
+        display: !keepVisible() ? "none" : undefined,
+        ...local.style,
+      }}
+      disableOutsidePointerEvents={false}
+      excludedElements={[context.triggerRef]}
+      onEscapeKeyDown={e => e.preventDefault()}
+      onFocusOutside={e => e.preventDefault()}
+      onDismiss={context.close}
+      {...others}
+    />
   );
 });
