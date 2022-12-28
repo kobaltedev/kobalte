@@ -1,18 +1,20 @@
-import { createPolymorphicComponent, mergeRefs } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { createPolymorphicComponent } from "@kobalte/utils";
+import { Show } from "solid-js";
 
-import { PopoverPositioner, PopoverPositionerProps } from "../popover/popover-positioner";
+import { PopperPositioner, PopperPositionerProps } from "../popper/popper-positioner";
 import { useHoverCardContext } from "./hover-card-context";
 
 /**
- * A wrapper component to help positioning the hovercard panel on screen.
+ * A wrapper component to help positioning the hovercard content on screen.
  */
-export const HoverCardPositioner = createPolymorphicComponent<"div", PopoverPositionerProps>(
+export const HoverCardPositioner = createPolymorphicComponent<"div", PopperPositionerProps>(
   props => {
     const context = useHoverCardContext();
 
-    const [local, others] = splitProps(props, ["ref"]);
-
-    return <PopoverPositioner ref={mergeRefs(context.setPositionerRef, local.ref)} {...others} />;
+    return (
+      <Show when={context.shouldMount()}>
+        <PopperPositioner {...props} />
+      </Show>
+    );
   }
 );

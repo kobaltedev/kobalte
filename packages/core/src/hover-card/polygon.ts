@@ -7,7 +7,7 @@
  * https://github.com/ariakit/ariakit/blob/f2a96973de523d67e41eec983263936c489ef3e2/packages/ariakit/src/hovercard/__utils/debug-polygon.ts
  */
 
-import { BasePlacement, Placement } from "../popover/utils";
+import { BasePlacement, Placement } from "../popper/utils";
 
 export type Point = [number, number];
 export type Polygon = Point[];
@@ -64,49 +64,49 @@ export function isPointInPolygon(point: Point, polygon: Polygon) {
   return inside;
 }
 
-export function getElementPolygon(contentEl: Element, triggerEl: Element, placement: Placement) {
+export function getElementPolygon(placement: Placement, anchorEl: Element, contentEl: Element) {
   const basePlacement = placement.split("-")[0] as BasePlacement;
 
-  const panelRect = contentEl.getBoundingClientRect();
-  const triggerRect = triggerEl.getBoundingClientRect();
+  const anchorRect = anchorEl.getBoundingClientRect();
+  const contentRect = contentEl.getBoundingClientRect();
 
   const polygon: Polygon = [];
 
-  const triggerCenterX = triggerRect.left + triggerRect.width / 2;
-  const triggerCenterY = triggerRect.top + triggerRect.height / 2;
+  const anchorCenterX = anchorRect.left + anchorRect.width / 2;
+  const anchorCenterY = anchorRect.top + anchorRect.height / 2;
 
   switch (basePlacement) {
     case "top":
-      polygon.push([triggerRect.left, triggerCenterY]);
-      polygon.push([panelRect.left, panelRect.bottom]);
-      polygon.push([panelRect.left, panelRect.top]);
-      polygon.push([panelRect.right, panelRect.top]);
-      polygon.push([panelRect.right, panelRect.bottom]);
-      polygon.push([triggerRect.right, triggerCenterY]);
+      polygon.push([anchorRect.left, anchorCenterY]);
+      polygon.push([contentRect.left, contentRect.bottom]);
+      polygon.push([contentRect.left, contentRect.top]);
+      polygon.push([contentRect.right, contentRect.top]);
+      polygon.push([contentRect.right, contentRect.bottom]);
+      polygon.push([anchorRect.right, anchorCenterY]);
       break;
     case "right":
-      polygon.push([triggerCenterX, triggerRect.top]);
-      polygon.push([panelRect.left, panelRect.top]);
-      polygon.push([panelRect.right, panelRect.top]);
-      polygon.push([panelRect.right, panelRect.bottom]);
-      polygon.push([panelRect.left, panelRect.bottom]);
-      polygon.push([triggerCenterX, triggerRect.bottom]);
+      polygon.push([anchorCenterX, anchorRect.top]);
+      polygon.push([contentRect.left, contentRect.top]);
+      polygon.push([contentRect.right, contentRect.top]);
+      polygon.push([contentRect.right, contentRect.bottom]);
+      polygon.push([contentRect.left, contentRect.bottom]);
+      polygon.push([anchorCenterX, anchorRect.bottom]);
       break;
     case "bottom":
-      polygon.push([triggerRect.left, triggerCenterY]);
-      polygon.push([panelRect.left, panelRect.top]);
-      polygon.push([panelRect.left, panelRect.bottom]);
-      polygon.push([panelRect.right, panelRect.bottom]);
-      polygon.push([panelRect.right, panelRect.top]);
-      polygon.push([triggerRect.right, triggerCenterY]);
+      polygon.push([anchorRect.left, anchorCenterY]);
+      polygon.push([contentRect.left, contentRect.top]);
+      polygon.push([contentRect.left, contentRect.bottom]);
+      polygon.push([contentRect.right, contentRect.bottom]);
+      polygon.push([contentRect.right, contentRect.top]);
+      polygon.push([anchorRect.right, anchorCenterY]);
       break;
     case "left":
-      polygon.push([triggerCenterX, triggerRect.top]);
-      polygon.push([panelRect.right, panelRect.top]);
-      polygon.push([panelRect.left, panelRect.top]);
-      polygon.push([panelRect.left, panelRect.bottom]);
-      polygon.push([panelRect.right, panelRect.bottom]);
-      polygon.push([triggerCenterX, triggerRect.bottom]);
+      polygon.push([anchorCenterX, anchorRect.top]);
+      polygon.push([contentRect.right, contentRect.top]);
+      polygon.push([contentRect.left, contentRect.top]);
+      polygon.push([contentRect.left, contentRect.bottom]);
+      polygon.push([contentRect.right, contentRect.bottom]);
+      polygon.push([anchorCenterX, anchorRect.bottom]);
       break;
   }
 

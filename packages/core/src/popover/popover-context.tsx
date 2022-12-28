@@ -8,7 +8,9 @@ export interface PopoverContextValue {
   contentId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;
+  setDefaultAnchorRef: (el: HTMLElement) => void;
   setTriggerRef: (el: HTMLElement) => void;
+  setContentRef: (el: HTMLElement) => void;
   close: () => void;
   toggle: () => void;
   generateId: (part: string) => string;

@@ -43,6 +43,9 @@ export interface PopperOptions {
   /** A ref for the anchor element. */
   anchorRef: Accessor<HTMLElement | undefined>;
 
+  /** A ref for the content element. */
+  contentRef: Accessor<HTMLElement | undefined>;
+
   /**
    * Function that returns the anchor element's DOMRect. If this is explicitly
    * passed, it will override the anchor `getBoundingClientRect` method.
@@ -112,6 +115,9 @@ export interface PopperOptions {
   overflowPadding?: number;
 }
 
+/**
+ * Display a floating content relative to an anchor element with an optional arrow.
+ */
 export const Popper: ParentComponent<PopperOptions> & PopperComposite = props => {
   props = mergeDefaultProps(
     {
@@ -133,7 +139,6 @@ export const Popper: ParentComponent<PopperOptions> & PopperComposite = props =>
   );
 
   const [positionerRef, setPositionerRef] = createSignal<HTMLElement>();
-  const [contentRef, setContentRef] = createSignal<HTMLElement>();
   const [arrowRef, setArrowRef] = createSignal<HTMLElement>();
 
   const [currentPlacement, setCurrentPlacement] = createSignal(props.placement!);
@@ -317,7 +322,7 @@ export const Popper: ParentComponent<PopperOptions> & PopperComposite = props =>
   // once.
   createEffect(() => {
     const positioner = positionerRef();
-    const content = contentRef();
+    const content = props.contentRef();
 
     if (!positioner || !content) {
       return;
@@ -328,9 +333,8 @@ export const Popper: ParentComponent<PopperOptions> & PopperComposite = props =>
 
   const context: PopperContextValue = {
     currentPlacement,
-    contentRef,
+    contentRef: () => props.contentRef(),
     setPositionerRef,
-    setContentRef,
     setArrowRef,
   };
 

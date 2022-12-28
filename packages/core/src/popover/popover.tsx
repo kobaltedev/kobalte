@@ -7,10 +7,11 @@
  */
 
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
+import { Accessor, createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
 import { Popper, PopperOptions } from "../popper";
 import { createDisclosureState, createRegisterId } from "../primitives";
+import { PopoverAnchor } from "./popover-anchor";
 import { PopoverCloseButton } from "./popover-close-button";
 import { PopoverContent } from "./popover-content";
 import { PopoverContext, PopoverContextValue } from "./popover-context";
@@ -32,7 +33,13 @@ type PopoverComposite = {
   Description: typeof PopoverDescription;
 };
 
-export interface PopoverProps extends PopperOptions {
+export interface PopoverProps extends Omit<PopperOptions, "anchorRef" | "contentRef"> {
+  /**
+   * A ref for the anchor element.
+   * Useful if you want to use an element outside `Popover` as the popover anchor.
+   */
+  anchorRef?: Accessor<HTMLElement | undefined>;
+
   /** The controlled open state of the popover. */
   isOpen?: boolean;
 
@@ -94,30 +101,38 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
     "anchorRef",
   ]);
 
+  const [defaultAnchorRef, setDefaultAnchorRef] = createSignal<HTMLElement>();
   const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
+  const [contentRef, setContentRef] = createSignal<HTMLElement>();
 
   const [contentId, setContentId] = createSignal<string>();
   const [titleId, setTitleId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
 
   const disclosureState = createDisclosureState({
-    isOpen: () => props.isOpen,
-    defaultIsOpen: () => props.defaultIsOpen,
-    onOpenChange: isOpen => props.onOpenChange?.(isOpen),
+    isOpen: () => local.isOpen,
+    defaultIsOpen: () => local.defaultIsOpen,
+    onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
+
+  const anchorRef = () => {
+    return local.anchorRef?.() ?? defaultAnchorRef() ?? triggerRef();
+  };
 
   const context: PopoverContextValue = {
     isOpen: disclosureState.isOpen,
-    isModal: () => props.isModal!,
-    shouldMount: () => props.forceMount || disclosureState.isOpen(),
+    isModal: () => local.isModal!,
+    shouldMount: () => local.forceMount || disclosureState.isOpen(),
     triggerRef,
     contentId,
     titleId,
     descriptionId,
+    setDefaultAnchorRef,
     setTriggerRef,
+    setContentRef,
     close: disclosureState.close,
     toggle: disclosureState.toggle,
-    generateId: createGenerateId(() => props.id!),
+    generateId: createGenerateId(() => local.id!),
     registerContentId: createRegisterId(setContentId),
     registerTitleId: createRegisterId(setTitleId),
     registerDescriptionId: createRegisterId(setDescriptionId),
@@ -125,7 +140,9 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
   return (
     <PopoverContext.Provider value={context}>
-      <Popper {...others}>{local.children}</Popper>
+      <Popper anchorRef={anchorRef} contentRef={contentRef} {...others}>
+        {local.children}
+      </Popper>
     </PopoverContext.Provider>
   );
 };

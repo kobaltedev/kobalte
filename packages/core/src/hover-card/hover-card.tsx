@@ -6,7 +6,7 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard.tsx
  */
 
-import { createGlobalListeners, mergeDefaultProps } from "@kobalte/utils";
+import { contains, createGlobalListeners, mergeDefaultProps } from "@kobalte/utils";
 import {
   createEffect,
   createSignal,
@@ -17,32 +17,44 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { Popover, PopoverProps } from "../popover";
-import { Placement } from "../popover/utils";
+import { Popper, PopperOptions } from "../popper";
+import { Placement } from "../popper/utils";
 import { createDisclosureState } from "../primitives";
 import { HoverCardContent } from "./hover-card-content";
-import {
-  HoverCardContext,
-  HoverCardContextValue,
-  useOptionalHoverCardContext,
-} from "./hover-card-context";
+import { HoverCardContext, HoverCardContextValue } from "./hover-card-context";
+import { HoverCardPortal } from "./hover-card-portal";
 import { HoverCardPositioner } from "./hover-card-positioner";
 import { HoverCardTrigger } from "./hover-card-trigger";
 import { getElementPolygon, getEventPoint, isPointInPolygon } from "./polygon";
-import { isMovingOnHoverCard } from "./utils";
 
 type HoverCardComposite = {
   Trigger: typeof HoverCardTrigger;
-  Portal: typeof Popover.Portal;
+  Portal: typeof HoverCardPortal;
   Positioner: typeof HoverCardPositioner;
   Content: typeof HoverCardContent;
-  Arrow: typeof Popover.Arrow;
-  CloseButton: typeof Popover.CloseButton;
-  Title: typeof Popover.Title;
-  Description: typeof Popover.Description;
+  Arrow: typeof Popper.Arrow;
 };
 
-export interface HoverCardProps extends Omit<PopoverProps, "isModal" | "onCurrentPlacementChange"> {
+export interface HoverCardProps extends Omit<PopperOptions, "anchorRef" | "contentRef"> {
+  /** The controlled open state of the hovercard. */
+  isOpen?: boolean;
+
+  /**
+   * The default open state when initially rendered.
+   * Useful when you do not need to control the open state.
+   */
+  defaultIsOpen?: boolean;
+
+  /** Event handler called when the open state of the hovercard changes. */
+  onOpenChange?: (isOpen: boolean) => void;
+
+  /**
+   * A unique identifier for the component.
+   * The id is used to generate id attributes for nested components.
+   * If no id prop is provided, a generated id will be used.
+   */
+  id?: string;
+
   /** The duration from when the mouse enters the trigger until the hovercard opens. */
   openDelay?: number;
 
@@ -51,6 +63,12 @@ export interface HoverCardProps extends Omit<PopoverProps, "isModal" | "onCurren
 
   /** Whether to close the hover card even if the user cursor is inside the safe area between the trigger and hovercard. */
   ignoreSafeArea?: boolean;
+
+  /**
+   * Used to force mounting the hovercard (portal, positioner and content) when more control is needed.
+   * Useful when controlling animation with SolidJS animation libraries.
+   */
+  forceMount?: boolean;
 }
 
 /**
@@ -58,8 +76,6 @@ export interface HoverCardProps extends Omit<PopoverProps, "isModal" | "onCurren
  */
 export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = props => {
   const defaultId = `hovercard-${createUniqueId()}`;
-
-  const parentContext = useOptionalHoverCardContext();
 
   props = mergeDefaultProps(
     {
@@ -71,26 +87,23 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   );
 
   const [local, others] = splitProps(props, [
+    "id",
     "isOpen",
     "defaultIsOpen",
     "onOpenChange",
     "openDelay",
     "closeDelay",
     "ignoreSafeArea",
-    "anchorRef",
+    "forceMount",
   ]);
 
   let openTimeoutId: number | undefined;
   let closeTimeoutId: number | undefined;
-  const nestedHoverCards = new Set<HTMLElement>();
 
   const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
-  const [positionerRef, setPositionerRef] = createSignal<HTMLElement>();
   const [contentRef, setContentRef] = createSignal<HTMLElement>();
 
   const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(others.placement!);
-
-  const anchorRef = () => local.anchorRef?.() ?? triggerRef();
 
   const disclosureState = createDisclosureState({
     isOpen: () => local.isOpen,
@@ -99,12 +112,6 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   });
 
   const { addGlobalListener, removeGlobalListener } = createGlobalListeners();
-
-  // Close the hovercard and all its ancestors.
-  const deepClose = () => {
-    disclosureState.close();
-    parentContext?.deepClose();
-  };
 
   const openWithDelay = () => {
     if (isServer) {
@@ -146,36 +153,25 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     closeTimeoutId = undefined;
   };
 
-  const isTargetOnHoverCard = (target: Node | undefined) => {
-    return isMovingOnHoverCard(target, positionerRef(), anchorRef(), [...nestedHoverCards]);
+  const isTargetOnHoverCard = (target: Node | null) => {
+    return contains(triggerRef(), target) || contains(contentRef(), target);
   };
 
   const getPolygonSafeArea = (placement: Placement) => {
-    const anchorEl = anchorRef();
-    const panelEl = contentRef();
+    const triggerEl = triggerRef();
+    const contentEl = contentRef();
 
-    if (!anchorEl || !panelEl) {
+    if (!triggerEl || !contentEl) {
       return;
     }
 
-    return getElementPolygon(panelEl, anchorEl, placement);
-  };
-
-  const registerNestedHoverCard = (element: HTMLElement) => {
-    nestedHoverCards.add(element);
-
-    const parentUnregister = parentContext?.registerNestedHoverCard(element);
-
-    return () => {
-      nestedHoverCards.delete(element);
-      parentUnregister?.();
-    };
+    return getElementPolygon(placement, triggerEl, contentEl);
   };
 
   const onHoverOutside = (event: PointerEvent) => {
-    const target = event.target as Node | undefined;
+    const target = event.target as Node | null;
 
-    // Don't close if the hovercard element has focus within or the mouse is moving through valid hovercard elements.
+    // Don't close if the mouse is moving through valid hovercard element.
     if (isTargetOnHoverCard(target)) {
       cancelClosing();
       return;
@@ -200,22 +196,6 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     closeWithDelay();
   };
 
-  // Register the hover card as a nested hover card on the parent hover card.
-  createEffect(() => {
-    if (!disclosureState.isOpen()) {
-      return;
-    }
-
-    // Register the positioner instead of the content because it's the top most element (excluding Portal).
-    const positionerEl = positionerRef();
-
-    if (!positionerEl || !parentContext) {
-      return;
-    }
-
-    onCleanup(parentContext.registerNestedHoverCard(positionerEl));
-  });
-
   createEffect(() => {
     if (!disclosureState.isOpen()) {
       return;
@@ -238,25 +218,22 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
 
   const context: HoverCardContextValue = {
     isOpen: disclosureState.isOpen,
+    shouldMount: () => local.forceMount || disclosureState.isOpen(),
     openWithDelay,
     closeWithDelay,
     cancelOpening,
     cancelClosing,
-    deepClose,
+    close: disclosureState.close,
     isTargetOnHoverCard,
-    registerNestedHoverCard,
     setTriggerRef,
-    setPositionerRef,
     setContentRef,
   };
 
   return (
     <HoverCardContext.Provider value={context}>
-      <Popover
-        isOpen={disclosureState.isOpen()}
-        isModal={false}
-        anchorRef={anchorRef}
-        onOpenChange={disclosureState.setIsOpen}
+      <Popper
+        anchorRef={triggerRef}
+        contentRef={contentRef}
         onCurrentPlacementChange={setCurrentPlacement}
         {...others}
       />
@@ -265,10 +242,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
 };
 
 HoverCard.Trigger = HoverCardTrigger;
-HoverCard.Portal = Popover.Portal;
+HoverCard.Portal = HoverCardPortal;
 HoverCard.Positioner = HoverCardPositioner;
 HoverCard.Content = HoverCardContent;
-HoverCard.Arrow = Popover.Arrow;
-HoverCard.CloseButton = Popover.CloseButton;
-HoverCard.Title = Popover.Title;
-HoverCard.Description = Popover.Description;
+HoverCard.Arrow = Popper.Arrow;

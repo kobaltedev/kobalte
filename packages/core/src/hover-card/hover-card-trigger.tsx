@@ -77,9 +77,8 @@ export const HoverCardTrigger = createPolymorphicComponent<"a", LinkProps>(props
 
     context.cancelOpening();
 
-    const relatedTarget = e.relatedTarget as Node | undefined;
+    const relatedTarget = e.relatedTarget as Node | null;
 
-    // Don't close if the hovercard element (or nested ones) has focus within.
     if (context.isTargetOnHoverCard(relatedTarget)) {
       return;
     }

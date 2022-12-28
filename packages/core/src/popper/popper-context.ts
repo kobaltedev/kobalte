@@ -6,7 +6,6 @@ export interface PopperContextValue {
   currentPlacement: Accessor<Placement>;
   contentRef: Accessor<HTMLElement | undefined>;
   setPositionerRef: (el: HTMLElement) => void;
-  setContentRef: (el: HTMLElement) => void;
   setArrowRef: (el: HTMLElement) => void;
 }
 

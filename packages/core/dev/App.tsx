@@ -1,4 +1,4 @@
-import { DropdownMenu, I18nProvider, Select } from "../src";
+import { DropdownMenu, I18nProvider, HoverCard, Select } from "../src";
 
 function MySelect(props: any) {
   return (
@@ -78,9 +78,5 @@ function MyMenu(props: any) {
 }
 
 export default function App() {
-  return (
-    <I18nProvider>
-      <MyMenu />
-    </I18nProvider>
-  );
+  return <I18nProvider></I18nProvider>;
 }

@@ -7,7 +7,6 @@ import {
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
-import { usePopperContext } from "../popper/popper-context";
 import {
   createFocusScope,
   createHideOutside,
@@ -65,7 +64,6 @@ export interface PopoverContentOptions {
 export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOptions>(props => {
   let ref: HTMLElement | undefined;
 
-  const popperContext = usePopperContext();
   const context = usePopoverContext();
 
   props = mergeDefaultProps(
@@ -165,7 +163,7 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
     <Show when={context.shouldMount()}>
       <DismissableLayer
         ref={mergeRefs(el => {
-          popperContext.setContentRef(el);
+          context.setContentRef(el);
           ref = el;
         }, local.ref)}
         role="dialog"
