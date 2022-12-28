@@ -6,7 +6,7 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard.tsx
  */
 
-import { createGlobalListeners, EventKey, mergeDefaultProps } from "@kobalte/utils";
+import { createGlobalListeners, mergeDefaultProps } from "@kobalte/utils";
 import {
   createEffect,
   createSignal,
@@ -42,15 +42,12 @@ type HoverCardComposite = {
   Description: typeof Popover.Description;
 };
 
-export interface HoverCardProps extends Omit<PopoverProps, "onCurrentPlacementChange"> {
+export interface HoverCardProps extends Omit<PopoverProps, "isModal" | "onCurrentPlacementChange"> {
   /** The duration from when the mouse enters the trigger until the hovercard opens. */
   openDelay?: number;
 
   /** The duration from when the mouse leaves the trigger or content until the hovercard closes. */
   closeDelay?: number;
-
-  /** Whether to close the hovercard when the user cursor move outside it. */
-  closeOnHoverOutside?: boolean;
 
   /** Whether to close the hover card even if the user cursor is inside the safe area between the trigger and hovercard. */
   ignoreSafeArea?: boolean;
@@ -69,12 +66,6 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       id: defaultId,
       openDelay: 700,
       closeDelay: 300,
-      closeOnHoverOutside: true,
-      closeOnInteractOutside: true,
-      closeOnEsc: true,
-      trapFocus: false,
-      autoFocus: false,
-      restoreFocus: false,
     },
     props
   );
@@ -85,18 +76,14 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     "onOpenChange",
     "openDelay",
     "closeDelay",
-    "closeOnHoverOutside",
-    "closeOnInteractOutside",
-    "shouldCloseOnInteractOutside",
-    "closeOnEsc",
     "ignoreSafeArea",
     "anchorRef",
   ]);
 
   let openTimeoutId: number | undefined;
   let closeTimeoutId: number | undefined;
+  const nestedHoverCards = new Set<HTMLElement>();
 
-  const [nestedHoverCardRefs, setNestedHoverCardRefs] = createSignal<HTMLElement[]>([]);
   const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
   const [positionerRef, setPositionerRef] = createSignal<HTMLElement>();
   const [contentRef, setContentRef] = createSignal<HTMLElement>();
@@ -160,7 +147,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   };
 
   const isTargetOnHoverCard = (target: Node | undefined) => {
-    return isMovingOnHoverCard(target, positionerRef(), anchorRef(), nestedHoverCardRefs());
+    return isMovingOnHoverCard(target, positionerRef(), anchorRef(), [...nestedHoverCards]);
   };
 
   const getPolygonSafeArea = (placement: Placement) => {
@@ -175,48 +162,14 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
   };
 
   const registerNestedHoverCard = (element: HTMLElement) => {
-    setNestedHoverCardRefs(prevElements => [...prevElements, element]);
+    nestedHoverCards.add(element);
 
     const parentUnregister = parentContext?.registerNestedHoverCard(element);
 
     return () => {
-      setNestedHoverCardRefs(prevElements => prevElements.filter(item => item !== element));
+      nestedHoverCards.delete(element);
       parentUnregister?.();
     };
-  };
-
-  const shouldCloseOnInteractOutside = (element: Element) => {
-    if (local.shouldCloseOnInteractOutside == null) {
-      return true;
-    }
-
-    return local.shouldCloseOnInteractOutside(element);
-  };
-
-  const onEscapeKeyDown = (event: KeyboardEvent) => {
-    if (event.key === EventKey.Escape && local.closeOnEsc) {
-      deepClose();
-    }
-  };
-
-  const onInteractOutside = (event: PointerEvent | MouseEvent) => {
-    const target = event.target as Node | undefined;
-
-    // Don't close if the hovercard element has focus within or the mouse is moving through valid hovercard elements.
-    if (isTargetOnHoverCard(target)) {
-      return;
-    }
-
-    if (!local.closeOnInteractOutside) {
-      return;
-    }
-
-    if (!shouldCloseOnInteractOutside(target as Element)) {
-      return;
-    }
-
-    // Otherwise, hide the hovercard and all its ancestors.
-    deepClose();
   };
 
   const onHoverOutside = (event: PointerEvent) => {
@@ -238,11 +191,6 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       }
     }
 
-    if (!local.closeOnHoverOutside) {
-      cancelClosing();
-      return;
-    }
-
     // If there's already a scheduled timeout to hide the hovercard, we do nothing.
     if (closeTimeoutId) {
       return;
@@ -258,7 +206,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       return;
     }
 
-    // Register the positioner instead of the panel because it's the top most element (excluding Portal).
+    // Register the positioner instead of the content because it's the top most element (excluding Portal).
     const positionerEl = positionerRef();
 
     if (!positionerEl || !parentContext) {
@@ -273,26 +221,12 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       return;
     }
 
-    // Hide on Escape. Popover already handles this, but only when the
-    // content or the trigger elements are focused. Since the
-    // hovercard, by default, does not receive focus when it's shown, we need to
-    // handle this globally here.
-    addGlobalListener(document, "keydown", onEscapeKeyDown);
-
     // Checks whether the mouse is moving outside the hovercard.
     // If yes, hide the card after the close delay.
     addGlobalListener(document, "pointermove", onHoverOutside, true);
 
-    // Checks whether the user is interacting outside the hovercard.
-    // If yes, hide the card immediately.
-    addGlobalListener(document, "pointerup", onInteractOutside, true);
-    addGlobalListener(document, "contextmenu", onInteractOutside, true);
-
     onCleanup(() => {
-      removeGlobalListener(document, "keydown", onEscapeKeyDown);
       removeGlobalListener(document, "pointermove", onHoverOutside, true);
-      removeGlobalListener(document, "pointerup", onInteractOutside, true);
-      removeGlobalListener(document, "contextmenu", onInteractOutside, true);
     });
   });
 
@@ -320,11 +254,10 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
     <HoverCardContext.Provider value={context}>
       <Popover
         isOpen={disclosureState.isOpen()}
-        onOpenChange={disclosureState.setIsOpen}
+        isModal={false}
         anchorRef={anchorRef}
+        onOpenChange={disclosureState.setIsOpen}
         onCurrentPlacementChange={setCurrentPlacement}
-        closeOnInteractOutside={false}
-        closeOnEsc={false}
         {...others}
       />
     </HoverCardContext.Provider>

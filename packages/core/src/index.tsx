@@ -13,7 +13,7 @@ export * from "./checkbox";
 export * from "./dialog";
 //export * from "./dropdown-menu";
 export * from "./form-control";
-//export * from "./hover-card";
+export * from "./hover-card";
 export * from "./i18n";
 export * from "./link";
 export * from "./listbox";

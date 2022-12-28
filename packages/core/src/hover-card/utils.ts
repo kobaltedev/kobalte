@@ -18,11 +18,6 @@ export function isMovingOnHoverCard(
     return false;
   }
 
-  // The hovercard positioner element has focus within, so we should keep it visible.
-  if (hasFocusWithin(positioner)) {
-    return true;
-  }
-
   if (!target) {
     return false;
   }
