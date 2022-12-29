@@ -17,7 +17,6 @@ import { PopoverContent } from "./popover-content";
 import { PopoverContext, PopoverContextValue } from "./popover-context";
 import { PopoverDescription } from "./popover-description";
 import { PopoverPortal } from "./popover-portal";
-import { PopoverPositioner } from "./popover-positioner";
 import { PopoverTitle } from "./popover-title";
 import { PopoverTrigger } from "./popover-trigger";
 
@@ -25,7 +24,6 @@ type PopoverComposite = {
   Trigger: typeof PopoverTrigger;
   Anchor: typeof PopoverAnchor;
   Portal: typeof PopoverPortal;
-  Positioner: typeof PopoverPositioner;
   Content: typeof PopoverContent;
   Arrow: typeof Popper.Arrow;
   CloseButton: typeof PopoverCloseButton;
@@ -33,7 +31,8 @@ type PopoverComposite = {
   Description: typeof PopoverDescription;
 };
 
-export interface PopoverProps extends Omit<PopperOptions, "anchorRef" | "contentRef"> {
+export interface PopoverProps
+  extends Omit<PopperOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /**
    * A ref for the anchor element.
    * Useful if you want to use an element outside `Popover` as the popover anchor.
@@ -91,7 +90,6 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
   );
 
   const [local, others] = splitProps(props, [
-    "children",
     "id",
     "isOpen",
     "defaultIsOpen",
@@ -140,9 +138,7 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 
   return (
     <PopoverContext.Provider value={context}>
-      <Popper anchorRef={anchorRef} contentRef={contentRef} {...others}>
-        {local.children}
-      </Popper>
+      <Popper anchorRef={anchorRef} contentRef={contentRef} {...others} />
     </PopoverContext.Provider>
   );
 };
@@ -150,7 +146,6 @@ export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props =
 Popover.Trigger = PopoverTrigger;
 Popover.Anchor = PopoverAnchor;
 Popover.Portal = PopoverPortal;
-Popover.Positioner = PopoverPositioner;
 Popover.Content = PopoverContent;
 Popover.Arrow = Popper.Arrow;
 Popover.CloseButton = PopoverCloseButton;

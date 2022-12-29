@@ -7,7 +7,7 @@
  * https://github.com/ariakit/ariakit/blob/f2a96973de523d67e41eec983263936c489ef3e2/packages/ariakit/src/hovercard/__utils/debug-polygon.ts
  */
 
-import { BasePlacement, Placement } from "../popper/utils";
+import { BasePlacement, Placement } from "./utils";
 
 export type Point = [number, number];
 export type Polygon = Point[];
@@ -64,11 +64,14 @@ export function isPointInPolygon(point: Point, polygon: Polygon) {
   return inside;
 }
 
-export function getElementPolygon(placement: Placement, anchorEl: Element, contentEl: Element) {
+/**
+ * Construct a polygon based on the floating element placement relative to the anchor.
+ */
+export function getElementPolygon(placement: Placement, anchorEl: Element, floatingEl: Element) {
   const basePlacement = placement.split("-")[0] as BasePlacement;
 
   const anchorRect = anchorEl.getBoundingClientRect();
-  const contentRect = contentEl.getBoundingClientRect();
+  const floatingRect = floatingEl.getBoundingClientRect();
 
   const polygon: Polygon = [];
 
@@ -78,34 +81,34 @@ export function getElementPolygon(placement: Placement, anchorEl: Element, conte
   switch (basePlacement) {
     case "top":
       polygon.push([anchorRect.left, anchorCenterY]);
-      polygon.push([contentRect.left, contentRect.bottom]);
-      polygon.push([contentRect.left, contentRect.top]);
-      polygon.push([contentRect.right, contentRect.top]);
-      polygon.push([contentRect.right, contentRect.bottom]);
+      polygon.push([floatingRect.left, floatingRect.bottom]);
+      polygon.push([floatingRect.left, floatingRect.top]);
+      polygon.push([floatingRect.right, floatingRect.top]);
+      polygon.push([floatingRect.right, floatingRect.bottom]);
       polygon.push([anchorRect.right, anchorCenterY]);
       break;
     case "right":
       polygon.push([anchorCenterX, anchorRect.top]);
-      polygon.push([contentRect.left, contentRect.top]);
-      polygon.push([contentRect.right, contentRect.top]);
-      polygon.push([contentRect.right, contentRect.bottom]);
-      polygon.push([contentRect.left, contentRect.bottom]);
+      polygon.push([floatingRect.left, floatingRect.top]);
+      polygon.push([floatingRect.right, floatingRect.top]);
+      polygon.push([floatingRect.right, floatingRect.bottom]);
+      polygon.push([floatingRect.left, floatingRect.bottom]);
       polygon.push([anchorCenterX, anchorRect.bottom]);
       break;
     case "bottom":
       polygon.push([anchorRect.left, anchorCenterY]);
-      polygon.push([contentRect.left, contentRect.top]);
-      polygon.push([contentRect.left, contentRect.bottom]);
-      polygon.push([contentRect.right, contentRect.bottom]);
-      polygon.push([contentRect.right, contentRect.top]);
+      polygon.push([floatingRect.left, floatingRect.top]);
+      polygon.push([floatingRect.left, floatingRect.bottom]);
+      polygon.push([floatingRect.right, floatingRect.bottom]);
+      polygon.push([floatingRect.right, floatingRect.top]);
       polygon.push([anchorRect.right, anchorCenterY]);
       break;
     case "left":
       polygon.push([anchorCenterX, anchorRect.top]);
-      polygon.push([contentRect.right, contentRect.top]);
-      polygon.push([contentRect.left, contentRect.top]);
-      polygon.push([contentRect.left, contentRect.bottom]);
-      polygon.push([contentRect.right, contentRect.bottom]);
+      polygon.push([floatingRect.right, floatingRect.top]);
+      polygon.push([floatingRect.left, floatingRect.top]);
+      polygon.push([floatingRect.left, floatingRect.bottom]);
+      polygon.push([floatingRect.right, floatingRect.bottom]);
       polygon.push([anchorCenterX, anchorRect.bottom]);
       break;
   }
@@ -113,7 +116,9 @@ export function getElementPolygon(placement: Placement, anchorEl: Element, conte
   return polygon;
 }
 
-//
+/* -------------------------------------------------------------------------------------------------
+ * Debug polygon
+ * -----------------------------------------------------------------------------------------------*/
 
 function getPolygon() {
   const id = "debug-polygon";

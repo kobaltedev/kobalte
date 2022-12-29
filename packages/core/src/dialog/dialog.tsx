@@ -8,7 +8,6 @@ import { DialogContext, DialogContextValue } from "./dialog-context";
 import { DialogDescription } from "./dialog-description";
 import { DialogOverlay } from "./dialog-overlay";
 import { DialogPortal } from "./dialog-portal";
-import { DialogPositioner } from "./dialog-positioner";
 import { DialogTitle } from "./dialog-title";
 import { DialogTrigger } from "./dialog-trigger";
 
@@ -16,7 +15,6 @@ type DialogComposite = {
   Trigger: typeof DialogTrigger;
   Portal: typeof DialogPortal;
   Overlay: typeof DialogOverlay;
-  Positioner: typeof DialogPositioner;
   Content: typeof DialogContent;
   CloseButton: typeof DialogCloseButton;
   Title: typeof DialogTitle;
@@ -109,7 +107,6 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
 Dialog.Trigger = DialogTrigger;
 Dialog.Portal = DialogPortal;
 Dialog.Overlay = DialogOverlay;
-Dialog.Positioner = DialogPositioner;
 Dialog.Content = DialogContent;
 Dialog.CloseButton = DialogCloseButton;
 Dialog.Title = DialogTitle;

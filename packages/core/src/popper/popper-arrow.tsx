@@ -81,7 +81,7 @@ export const PopperArrow = createPolymorphicComponent<"div", PopperArrowProps>(p
           "font-size": `${local.size!}px`,
           width: "1em",
           height: "1em",
-          pointerEvents: "none",
+          "pointer-events": "none",
           fill: fill(),
           stroke: stroke(),
           "stroke-width": strokeWidth(),

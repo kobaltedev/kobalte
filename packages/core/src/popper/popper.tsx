@@ -55,7 +55,7 @@ export interface PopperOptions {
   /**
    * Event handler called when the popper placement changes.
    * It returns the current temporary placement of the popper.
-   * This may be different from the `placement` if the popper has needed to update its position on the fly.
+   * This may be different from the `placement` prop if the popper has needed to update its position on the fly.
    */
   onCurrentPlacementChange?: (currentPlacement: Placement) => void;
 
@@ -95,7 +95,7 @@ export interface PopperOptions {
   /**
    * Whether the popper should fit the viewport. If this is set to true, the
    * popper positioner will have `maxWidth` and `maxHeight` set to the viewport size.
-   * This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`.
+   * This will be exposed to CSS as `--kb-popper-content-available-width` and `--kb-popper-content-available-height`.
    */
   fitViewport?: boolean;
 
@@ -110,7 +110,7 @@ export interface PopperOptions {
 
   /**
    * The minimum padding between the popper and the viewport edge.
-   * This will be exposed to CSS as `--kb-popper-overflow-padding`.
+   * This will be exposed to CSS as `--kb-popper-content-overflow-padding`.
    */
   overflowPadding?: number;
 }
@@ -161,7 +161,10 @@ export const Popper: ParentComponent<PopperOptions> & PopperComposite = props =>
     const finalGutter =
       typeof props.gutter === "number" ? props.gutter + arrowOffset : props.gutter ?? arrowOffset;
 
-    floatingEl.style.setProperty("--kb-popper-overflow-padding", `${props.overflowPadding}px`);
+    floatingEl.style.setProperty(
+      "--kb-popper-content-overflow-padding",
+      `${props.overflowPadding}px`
+    );
 
     // Virtual element doesn't work without this ¯\_(ツ)_/¯
     referenceEl.getBoundingClientRect();
@@ -220,8 +223,14 @@ export const Popper: ParentComponent<PopperOptions> & PopperComposite = props =>
           availableHeight = Math.floor(availableHeight);
 
           floatingEl.style.setProperty("--kb-popper-anchor-width", `${referenceWidth}px`);
-          floatingEl.style.setProperty("--kb-popper-available-width", `${availableWidth}px`);
-          floatingEl.style.setProperty("--kb-popper-available-height", `${availableHeight}px`);
+          floatingEl.style.setProperty(
+            "--kb-popper-content-available-width",
+            `${availableWidth}px`
+          );
+          floatingEl.style.setProperty(
+            "--kb-popper-content-available-height",
+            `${availableHeight}px`
+          );
 
           if (props.sameWidth) {
             floatingEl.style.width = `${referenceWidth}px`;
@@ -265,7 +274,7 @@ export const Popper: ParentComponent<PopperOptions> & PopperComposite = props =>
     }
 
     floatingEl.style.setProperty(
-      "--kb-popper-transform-origin",
+      "--kb-popper-content-transform-origin",
       getTransformOrigin(pos.placement, direction())
     );
 
@@ -317,9 +326,8 @@ export const Popper: ParentComponent<PopperOptions> & PopperComposite = props =>
     onCleanup(cleanupAutoUpdate);
   });
 
-  // Makes sure the positioner element that's passed to popper has the same
-  // z-index as the popper content element so users only need to set the z-index
-  // once.
+  // Makes sure the positioner element has the same z-index as the popper content element,
+  // so users only need to set the z-index once.
   createEffect(() => {
     const positioner = positionerRef();
     const content = props.contentRef();

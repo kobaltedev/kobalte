@@ -1,3 +1,4 @@
+import { mergeDefaultProps } from "@kobalte/utils";
 import { createUniqueId, ParentComponent } from "solid-js";
 
 import {
@@ -18,17 +19,18 @@ import {
   MenuSubTrigger,
   MenuTrigger,
 } from "../menu";
+import { MenuPortal } from "../menu/menu-portal";
+import { MenuPositioner } from "../menu/menu-positioner";
+import { Popper } from "../popper";
 import { Separator } from "../separator";
-import { mergeDefaultProps } from "@kobalte/utils";
-import { Popover } from "../popover";
 
 export type DropdownMenuComposite = {
   Trigger: typeof MenuTrigger;
   Icon: typeof MenuIcon;
-  Portal: typeof Popover.Portal;
-  Positioner: typeof Popover.Positioner;
+  Portal: typeof MenuPortal;
+  Positioner: typeof MenuPositioner;
   Content: typeof MenuContent;
-  Arrow: typeof Popover.Arrow;
+  Arrow: typeof Popper.Arrow;
   Separator: typeof Separator;
   Group: typeof MenuGroup;
   GroupLabel: typeof MenuGroupLabel;
@@ -56,10 +58,10 @@ export const DropdownMenu: ParentComponent<MenuRootProps> & DropdownMenuComposit
 
 DropdownMenu.Trigger = MenuTrigger;
 DropdownMenu.Icon = MenuIcon;
-DropdownMenu.Portal = Popover.Portal;
-DropdownMenu.Positioner = Popover.Positioner;
+DropdownMenu.Portal = MenuPortal;
+DropdownMenu.Positioner = MenuPositioner;
 DropdownMenu.Content = MenuContent;
-DropdownMenu.Arrow = Popover.Arrow;
+DropdownMenu.Arrow = Popper.Arrow;
 DropdownMenu.Separator = Separator;
 DropdownMenu.Group = MenuGroup;
 DropdownMenu.GroupLabel = MenuGroupLabel;

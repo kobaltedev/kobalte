@@ -18,24 +18,23 @@ import {
 import { isServer } from "solid-js/web";
 
 import { Popper, PopperOptions } from "../popper";
+import { getElementPolygon, getEventPoint, isPointInPolygon } from "../popper/polygon";
 import { Placement } from "../popper/utils";
 import { createDisclosureState } from "../primitives";
 import { HoverCardContent } from "./hover-card-content";
 import { HoverCardContext, HoverCardContextValue } from "./hover-card-context";
 import { HoverCardPortal } from "./hover-card-portal";
-import { HoverCardPositioner } from "./hover-card-positioner";
 import { HoverCardTrigger } from "./hover-card-trigger";
-import { getElementPolygon, getEventPoint, isPointInPolygon } from "./polygon";
 
 type HoverCardComposite = {
   Trigger: typeof HoverCardTrigger;
   Portal: typeof HoverCardPortal;
-  Positioner: typeof HoverCardPositioner;
   Content: typeof HoverCardContent;
   Arrow: typeof Popper.Arrow;
 };
 
-export interface HoverCardProps extends Omit<PopperOptions, "anchorRef" | "contentRef"> {
+export interface HoverCardProps
+  extends Omit<PopperOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the hovercard. */
   isOpen?: boolean;
 
@@ -243,6 +242,5 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
 
 HoverCard.Trigger = HoverCardTrigger;
 HoverCard.Portal = HoverCardPortal;
-HoverCard.Positioner = HoverCardPositioner;
 HoverCard.Content = HoverCardContent;
 HoverCard.Arrow = Popper.Arrow;

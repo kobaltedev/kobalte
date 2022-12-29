@@ -7,6 +7,7 @@ import { FocusStrategy } from "../selection";
 export interface MenuContextValue {
   isOpen: Accessor<boolean>;
   isModal: Accessor<boolean>;
+  shouldMount: Accessor<boolean>;
   autoFocus: Accessor<FocusStrategy | boolean | undefined>;
   listState: Accessor<ListState>;
   parentMenuContext: Accessor<MenuContextValue | undefined>;

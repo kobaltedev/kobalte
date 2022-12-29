@@ -150,7 +150,6 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
     const relatedTarget = e.relatedTarget as Node | undefined;
 
-    // Don't close if the menu panel (hovercard element) or nested ones has focus within.
     //if (hoverCardContext.isTargetOnHoverCard(relatedTarget)) {
     //  return;
     //}

@@ -23,8 +23,14 @@ export const PopperPositioner = createPolymorphicComponent<"div", PopperPosition
     <Dynamic
       component={local.as}
       ref={mergeRefs(context.setPositionerRef, local.ref)}
-      role="presentation"
-      style={{ position: "absolute", top: 0, left: 0, ...local.style }}
+      data-popper-positioner=""
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        "min-width": "max-content",
+        ...local.style,
+      }}
       {...others}
     />
   );

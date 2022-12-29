@@ -78,5 +78,9 @@ function MyMenu(props: any) {
 }
 
 export default function App() {
-  return <I18nProvider></I18nProvider>;
+  return (
+    <I18nProvider>
+      <MyMenu />
+    </I18nProvider>
+  );
 }

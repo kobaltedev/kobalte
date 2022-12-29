@@ -7,6 +7,7 @@ import {
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
+import { PopperPositioner } from "../popper/popper-positioner";
 import {
   createFocusScope,
   createHideOutside,
@@ -161,26 +162,28 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
 
   return (
     <Show when={context.shouldMount()}>
-      <DismissableLayer
-        ref={mergeRefs(el => {
-          context.setContentRef(el);
-          ref = el;
-        }, local.ref)}
-        role="dialog"
-        id={local.id}
-        tabIndex={-1}
-        disableOutsidePointerEvents={context.isOpen() && context.isModal()}
-        excludedElements={[context.triggerRef]}
-        style={{ position: "relative", ...local.style }}
-        aria-labelledby={context.titleId()}
-        aria-describedby={context.descriptionId()}
-        onEscapeKeyDown={local.onEscapeKeyDown}
-        onPointerDownOutside={onPointerDownOutside}
-        onFocusOutside={onFocusOutside}
-        onInteractOutside={onInteractOutside}
-        onDismiss={context.close}
-        {...others}
-      />
+      <PopperPositioner>
+        <DismissableLayer
+          ref={mergeRefs(el => {
+            context.setContentRef(el);
+            ref = el;
+          }, local.ref)}
+          role="dialog"
+          id={local.id}
+          tabIndex={-1}
+          disableOutsidePointerEvents={context.isOpen() && context.isModal()}
+          excludedElements={[context.triggerRef]}
+          style={{ position: "relative", ...local.style }}
+          aria-labelledby={context.titleId()}
+          aria-describedby={context.descriptionId()}
+          onEscapeKeyDown={local.onEscapeKeyDown}
+          onPointerDownOutside={onPointerDownOutside}
+          onFocusOutside={onFocusOutside}
+          onInteractOutside={onInteractOutside}
+          onDismiss={context.close}
+          {...others}
+        />
+      </PopperPositioner>
     </Show>
   );
 });

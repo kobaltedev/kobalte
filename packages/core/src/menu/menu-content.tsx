@@ -51,6 +51,7 @@ export const MenuContent = createPolymorphicComponent<"div", PopoverContentOptio
 
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
+  // TODO: replace by DismissableLayer
   return (
     <PopoverContent
       id={local.id}

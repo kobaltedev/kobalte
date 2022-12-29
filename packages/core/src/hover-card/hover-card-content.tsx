@@ -2,6 +2,7 @@ import { createPolymorphicComponent, mergeRefs } from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
+import { PopperPositioner } from "../popper/popper-positioner";
 import { useHoverCardContext } from "./hover-card-context";
 
 export interface HoverCardContentOptions {
@@ -20,14 +21,16 @@ export const HoverCardContent = createPolymorphicComponent<"div", HoverCardConte
 
     return (
       <Show when={context.shouldMount()}>
-        <DismissableLayer
-          ref={mergeRefs(context.setContentRef, local.ref)}
-          disableOutsidePointerEvents={false}
-          style={{ position: "relative", ...local.style }}
-          onFocusOutside={e => e.preventDefault()}
-          onDismiss={context.close}
-          {...others}
-        />
+        <PopperPositioner>
+          <DismissableLayer
+            ref={mergeRefs(context.setContentRef, local.ref)}
+            disableOutsidePointerEvents={false}
+            style={{ position: "relative", ...local.style }}
+            onFocusOutside={e => e.preventDefault()}
+            onDismiss={context.close}
+            {...others}
+          />
+        </PopperPositioner>
       </Show>
     );
   }

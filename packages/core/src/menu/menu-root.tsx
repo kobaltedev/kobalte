@@ -1,8 +1,7 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
+import { Accessor, createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
 
 import { createListState } from "../list";
-import { Popover, PopoverProps } from "../popover";
 import {
   CollectionItem,
   createDisclosureState,
@@ -15,8 +14,45 @@ import {
 } from "../primitives/create-dom-collection";
 import { FocusStrategy } from "../selection";
 import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-context";
+import { Popper, PopperOptions } from "../popper";
 
-export interface MenuRootProps extends Omit<PopoverProps, "onCurrentPlacementChange"> {
+export interface MenuRootProps
+  extends Omit<PopperOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
+  /** The controlled open state of the menu. */
+  isOpen?: boolean;
+
+  /**
+   * The default open state when initially rendered.
+   * Useful when you do not need to control the open state.
+   */
+  defaultIsOpen?: boolean;
+
+  /** Event handler called when the open state of the menu changes. */
+  onOpenChange?: (isOpen: boolean) => void;
+
+  /**
+   * A unique identifier for the component.
+   * The id is used to generate id attributes for nested components.
+   * If no id prop is provided, a generated id will be used.
+   */
+  id?: string;
+
+  /**
+   * Whether the menu should be the only visible content for screen readers.
+   * When set to `true`:
+   * - interaction with outside elements will be disabled.
+   * - scroll will be locked.
+   * - focus will be locked inside the menu content.
+   * - elements outside the menu content will not be visible for screen readers.
+   */
+  isModal?: boolean;
+
+  /**
+   * Used to force mounting the menu (portal, positioner and content) when more control is needed.
+   * Useful when controlling animation with SolidJS animation libraries.
+   */
+  forceMount?: boolean;
+
   /** Handler that is called when the user activates a menu item. */
   onAction?: (key: string) => void;
 }
@@ -41,11 +77,12 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
 
   const [local, others] = splitProps(props, [
     "id",
-    "children",
     "isOpen",
+    "isModal",
     "defaultIsOpen",
     "onOpenChange",
     "onAction",
+    "forceMount",
   ]);
 
   const [triggerId, setTriggerId] = createSignal<string>();
@@ -103,7 +140,8 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
 
   const context: MenuContextValue = {
     isOpen: () => disclosureState.isOpen(),
-    isModal: () => others.isModal!,
+    isModal: () => local.isModal!,
+    shouldMount: () => local.forceMount || disclosureState.isOpen(),
     autoFocus: focusStrategy,
     listState: () => listState,
     parentMenuContext: () => parentMenuContext,
@@ -126,15 +164,7 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
   return (
     <DomCollectionProvider>
       <MenuContext.Provider value={context}>
-        <Popover
-          id={local.id}
-          isOpen={disclosureState.isOpen()}
-          onOpenChange={disclosureState.setIsOpen}
-          anchorRef={triggerRef}
-          {...others}
-        >
-          {local.children}
-        </Popover>
+        <Popper anchorRef={triggerRef} contentRef={contentRef} {...others} />
       </MenuContext.Provider>
     </DomCollectionProvider>
   );

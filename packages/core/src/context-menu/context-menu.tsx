@@ -18,19 +18,21 @@ import {
   MenuSub,
   MenuSubTrigger,
 } from "../menu";
+import { MenuPortal } from "../menu/menu-portal";
+import { MenuPositioner } from "../menu/menu-positioner";
+import { Popper } from "../popper";
 import { createDisclosureState } from "../primitives";
 import { Separator } from "../separator";
 import { ContextMenuContext, ContextMenuContextValue } from "./context-menu-context";
 import { ContextMenuTrigger } from "./context-menu-trigger";
-import { Popover } from "../popover";
 
 type ContextMenuComposite = {
   Trigger: typeof ContextMenuTrigger;
   Icon: typeof MenuIcon;
-  Portal: typeof Popover.Portal;
-  Positioner: typeof Popover.Positioner;
+  Portal: typeof MenuPortal;
+  Positioner: typeof MenuPositioner;
   Content: typeof MenuContent;
-  Arrow: typeof Popover.Arrow;
+  Arrow: typeof Popper.Arrow;
   Separator: typeof Separator;
   Group: typeof MenuGroup;
   GroupLabel: typeof MenuGroupLabel;
@@ -89,10 +91,10 @@ export const ContextMenu: ParentComponent<ContextMenuProps> & ContextMenuComposi
 
 ContextMenu.Trigger = ContextMenuTrigger;
 ContextMenu.Icon = MenuIcon;
-ContextMenu.Portal = Popover.Portal;
-ContextMenu.Positioner = Popover.Positioner;
+ContextMenu.Portal = MenuPortal;
+ContextMenu.Positioner = MenuPositioner;
 ContextMenu.Content = MenuContent;
-ContextMenu.Arrow = Popover.Arrow;
+ContextMenu.Arrow = Popper.Arrow;
 ContextMenu.Separator = Separator;
 ContextMenu.Group = MenuGroup;
 ContextMenu.GroupLabel = MenuGroupLabel;

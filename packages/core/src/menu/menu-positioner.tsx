@@ -2,13 +2,13 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 
 import { PopperPositioner, PopperPositionerProps } from "../popper/popper-positioner";
-import { usePopoverContext } from "./popover-context";
+import { useMenuContext } from "./menu-context";
 
 /**
- * A wrapper component to help positioning the popover content on screen.
+ * A wrapper component to help positioning the menu content on screen.
  */
-export const PopoverPositioner = createPolymorphicComponent<"div", PopperPositionerProps>(props => {
-  const context = usePopoverContext();
+export const MenuPositioner = createPolymorphicComponent<"div", PopperPositionerProps>(props => {
+  const context = useMenuContext();
 
   props = mergeDefaultProps({ as: "div" }, props);
 
@@ -17,7 +17,7 @@ export const PopoverPositioner = createPolymorphicComponent<"div", PopperPositio
   return (
     <Show when={context.shouldMount()}>
       <PopperPositioner
-        // We re-enable pointer-events prevented by `Popover.Content` to allow scrolling.
+        // We re-enable pointer-events prevented by `Menu.Content` to allow scrolling.
         style={{ "pointer-events": "auto", ...local.style }}
         {...others}
       />
