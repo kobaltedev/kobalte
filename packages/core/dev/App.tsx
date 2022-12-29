@@ -47,7 +47,7 @@ function MyMenu(props: any) {
             Redo
           </DropdownMenu.Item>
           <DropdownMenu.Sub>
-            <DropdownMenu.SubTrigger class="menu-item" key="find-trigger">
+            <DropdownMenu.SubTrigger class="menu-item-trigger" key="find-trigger">
               Find
             </DropdownMenu.SubTrigger>
             <DropdownMenu.Portal>

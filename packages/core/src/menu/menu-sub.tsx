@@ -1,40 +1,13 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { createUniqueId, ParentComponent } from "solid-js";
+import { ParentProps } from "solid-js";
 
-import { useMenuContext } from "./menu-context";
-import { MenuRoot, MenuRootProps } from "./menu-root";
-
-export interface MenuSubProps
-  extends Omit<
-    MenuRootProps,
-    "onAction" | "isModal" | "preventScroll" | "trapFocus" | "autoFocus" | "restoreFocus"
-  > {}
+import { Menu, MenuProps } from "./menu";
 
 /**
- * Contains all the parts of a submenu.
+ * Root container for a sub menu, provide context for its children.
  */
-export const MenuSub: ParentComponent<MenuSubProps> = props => {
-  const parentMenuContext = useMenuContext();
+export function MenuSub(props: ParentProps<MenuProps>) {
+  props = mergeDefaultProps({ placement: "right-start" }, props);
 
-  if (parentMenuContext === undefined) {
-    throw new Error("[kobalte]: `Menu.Sub` must be used within a `Menu` component");
-  }
-
-  const defaultId = `menu-sub-${createUniqueId()}`;
-
-  props = mergeDefaultProps(
-    {
-      id: defaultId,
-      placement: "right-start",
-    },
-    props
-  );
-
-  return (
-    <MenuRoot
-      isModal={parentMenuContext.isModal()}
-      onAction={parentMenuContext.onAction}
-      {...props}
-    />
-  );
-};
+  return <Menu {...props} />;
+}

@@ -10,16 +10,16 @@ import {
   MenuItemDescription,
   MenuItemIndicator,
   MenuItemLabel,
+  MenuPortal,
   MenuRadioGroup,
   MenuRadioItem,
   MenuRoot,
   MenuRootProps,
   MenuSub,
+  MenuSubContent,
   MenuSubTrigger,
   MenuTrigger,
 } from "../menu";
-import { MenuPortal } from "../menu/menu-portal";
-import { MenuSubContent } from "../menu/menu-sub-content";
 import { Popper } from "../popper";
 import { Separator } from "../separator";
 import { DropdownMenuContent } from "./dropdown-menu-content";
@@ -45,10 +45,12 @@ export type DropdownMenuComposite = {
   SubTrigger: typeof MenuSubTrigger;
 };
 
+export interface DropdownMenuOptions extends MenuRootProps {}
+
 /**
  * Displays a menu to the user —such as a set of actions or functions— triggered by a button.
  */
-export const DropdownMenu: ParentComponent<MenuRootProps> & DropdownMenuComposite = props => {
+export const DropdownMenu: ParentComponent<DropdownMenuOptions> & DropdownMenuComposite = props => {
   const defaultId = `dropdownmenu-${createUniqueId()}`;
 
   props = mergeDefaultProps({ id: defaultId }, props);

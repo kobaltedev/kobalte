@@ -6,7 +6,6 @@ import { FocusStrategy } from "../selection";
 
 export interface MenuContextValue {
   isOpen: Accessor<boolean>;
-  isModal: Accessor<boolean>;
   shouldMount: Accessor<boolean>;
   autoFocus: Accessor<FocusStrategy | boolean | undefined>;
   listState: Accessor<ListState>;
@@ -17,13 +16,11 @@ export interface MenuContextValue {
   contentId: Accessor<string | undefined>;
   setTriggerRef: (el: HTMLElement) => void;
   setContentRef: (el: HTMLDivElement) => void;
-  open: (focusStrategy?: FocusStrategy) => void;
-  close: (deep?: boolean) => void;
-  toggle: (focusStrategy?: FocusStrategy) => void;
+  open: (focusStrategy: FocusStrategy | undefined) => void;
+  close: () => void;
+  toggle: (focusStrategy: FocusStrategy | undefined) => void;
   focusContent: () => void;
-  onAction: (key: string) => void;
   registerItemToParentDomCollection: ((item: CollectionItem) => () => void) | undefined;
-  generateId: (part: string) => string;
   registerTriggerId: (id: string) => () => void;
   registerContentId: (id: string) => () => void;
 }

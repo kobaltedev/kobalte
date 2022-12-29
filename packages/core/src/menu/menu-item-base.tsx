@@ -2,6 +2,7 @@ import {
   combineProps,
   createGenerateId,
   createPolymorphicComponent,
+  focusWithoutScrolling,
   mergeDefaultProps,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
@@ -19,6 +20,7 @@ import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { MenuItemContext, MenuItemContextValue, MenuItemDataSet } from "./menu-item.context";
+import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuItemBaseProps {
   /**
@@ -61,9 +63,10 @@ export interface MenuItemBaseProps {
 export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>(props => {
   let ref: HTMLDivElement | undefined;
 
+  const rootContext = useMenuRootContext();
   const menuContext = useMenuContext();
 
-  const defaultId = `${menuContext.generateId("item")}-${createUniqueId()}`;
+  const defaultId = `${rootContext.generateId("item")}-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
@@ -121,7 +124,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
         local.onAction(local.key);
 
         if (local.closeOnSelect) {
-          menuContext.close(true);
+          rootContext.close();
         }
       }
     },
@@ -156,14 +159,9 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
         local.onAction(local.key);
 
         if (local.closeOnSelect) {
-          menuContext.close(true);
+          rootContext.close();
         }
-        break;
-      case "ArrowLeft":
-        // The Arrow Left key close only that menu if it's a sub menu.
-        if (menuContext.parentMenuContext() != null) {
-          menuContext.close();
-        }
+
         break;
     }
   };

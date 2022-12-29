@@ -11,7 +11,7 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
 
 import { createControllableSignal } from "../primitives";
-import { useMenuContext } from "./menu-context";
+import { useMenuRootContext } from "./menu-root-context";
 import { MenuGroup } from "./menu-group";
 import { MenuRadioGroupContext, MenuRadioGroupContextValue } from "./menu-radio-group-context";
 
@@ -43,9 +43,9 @@ export interface MenuRadioGroupProps {
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
 export const MenuRadioGroup = createPolymorphicComponent<"div", MenuRadioGroupProps>(props => {
-  const menuContext = useMenuContext();
+  const rootContext = useMenuRootContext();
 
-  const defaultId = menuContext.generateId(`radiogroup-${createUniqueId()}`);
+  const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);
 
   props = mergeDefaultProps(
     {

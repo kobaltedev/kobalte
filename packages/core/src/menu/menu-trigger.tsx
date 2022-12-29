@@ -16,14 +16,21 @@ import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import { Button, ButtonProps } from "../button";
 import { PressEvent } from "../primitives";
+import { useMenuRootContext } from "./menu-root-context";
 import { useMenuContext } from "./menu-context";
 
 export interface MenuTriggerProps extends ButtonProps {}
 
 export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps>(props => {
+  const rootContext = useMenuRootContext();
   const context = useMenuContext();
 
-  props = mergeDefaultProps({ id: context.generateId("trigger") }, props);
+  props = mergeDefaultProps(
+    {
+      id: rootContext.generateId("trigger"),
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, [
     "ref",
@@ -49,7 +56,7 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps
     local.onPress?.(e);
 
     if (e.pointerType === "touch" && !local.isDisabled) {
-      context.toggle();
+      context.toggle(undefined);
     }
   };
 

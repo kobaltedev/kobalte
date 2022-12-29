@@ -2,11 +2,13 @@ import { createPolymorphicComponent, focusWithoutScrolling } from "@kobalte/util
 import { splitProps } from "solid-js";
 
 import { MenuContent, MenuContentOptions } from "../menu";
+import { useMenuRootContext } from "../menu/menu-root-context";
 import { useMenuContext } from "../menu/menu-context";
 import { InteractOutsideEvent } from "../primitives";
 
 export const DropdownMenuContent = createPolymorphicComponent<"div", MenuContentOptions>(props => {
-  const context = useMenuContext();
+  const rootContext = useMenuRootContext();
+  const subContext = useMenuContext();
 
   const [local, others] = splitProps(props, ["onCloseAutoFocus", "onInteractOutside"]);
 
@@ -16,7 +18,7 @@ export const DropdownMenuContent = createPolymorphicComponent<"div", MenuContent
     local.onCloseAutoFocus?.(e);
 
     if (!hasInteractedOutside) {
-      focusWithoutScrolling(context.triggerRef());
+      focusWithoutScrolling(subContext.triggerRef());
     }
 
     hasInteractedOutside = false;
@@ -28,7 +30,7 @@ export const DropdownMenuContent = createPolymorphicComponent<"div", MenuContent
   const onInteractOutside = (e: InteractOutsideEvent) => {
     local.onInteractOutside?.(e);
 
-    if (!context.isModal() || e.detail.isContextMenu) {
+    if (!rootContext.isModal() || e.detail.isContextMenu) {
       hasInteractedOutside = true;
     }
   };

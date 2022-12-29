@@ -1,4 +1,4 @@
-export * from "./menu-root";
+export * from "./menu";
 export * from "./menu-checkbox-item";
 export * from "./menu-content";
 export * from "./menu-group";
@@ -8,8 +8,11 @@ export * from "./menu-item";
 export * from "./menu-item-description";
 export * from "./menu-item-indicator";
 export * from "./menu-item-label";
+export * from "./menu-portal";
 export * from "./menu-radio-group";
 export * from "./menu-radio-item";
+export * from "./menu-root";
 export * from "./menu-sub";
+export * from "./menu-sub-content";
 export * from "./menu-sub-trigger";
 export * from "./menu-trigger";

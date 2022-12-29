@@ -1,35 +1,11 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
+import { createUniqueId, ParentProps, splitProps } from "solid-js";
 
-import { createListState } from "../list";
-import {
-  CollectionItem,
-  createDisclosureState,
-  createRegisterId,
-  focusSafely,
-} from "../primitives";
-import {
-  createDomCollection,
-  useOptionalDomCollectionContext,
-} from "../primitives/create-dom-collection";
-import { FocusStrategy } from "../selection";
-import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-context";
-import { Popper, PopperOptions } from "../popper";
+import { Menu, MenuProps } from "./menu";
+import { MenuRootContext, MenuRootContextValue } from "./menu-root-context";
+import { createDisclosureState } from "../primitives";
 
-export interface MenuRootProps
-  extends Omit<PopperOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
-  /** The controlled open state of the menu. */
-  isOpen?: boolean;
-
-  /**
-   * The default open state when initially rendered.
-   * Useful when you do not need to control the open state.
-   */
-  defaultIsOpen?: boolean;
-
-  /** Event handler called when the open state of the menu changes. */
-  onOpenChange?: (isOpen: boolean) => void;
-
+export interface MenuRootProps extends MenuProps {
   /**
    * A unique identifier for the component.
    * The id is used to generate id attributes for nested components.
@@ -58,44 +34,31 @@ export interface MenuRootProps
 }
 
 /**
- * Base component for a menu, provide context for its children.
+ * Root component for a menu, provide context for its children.
  * Used to build dropdown menu, context menu and menubar.
  */
 export function MenuRoot(props: ParentProps<MenuRootProps>) {
-  const parentDomCollectionContext = useOptionalDomCollectionContext();
-  const parentMenuContext = useOptionalMenuContext();
   const defaultId = `menu-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
       id: defaultId,
-      placement: "bottom-start",
-      isModal: parentMenuContext?.isModal() ?? true,
+      isModal: true,
     },
     props
   );
 
   const [local, others] = splitProps(props, [
     "id",
-    "isOpen",
     "isModal",
+    "forceMount",
+    "onAction",
+    "isOpen",
     "defaultIsOpen",
     "onOpenChange",
-    "onAction",
-    "forceMount",
   ]);
 
-  const [triggerId, setTriggerId] = createSignal<string>();
-  const [contentId, setContentId] = createSignal<string>();
-
-  const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
-  const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
-
-  const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean | undefined>(true);
-
-  const [items, setItems] = createSignal<CollectionItem[]>([]);
-
-  const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
+  const nestedMenus = new Set<Element>([]);
 
   const disclosureState = createDisclosureState({
     isOpen: () => local.isOpen,
@@ -103,70 +66,21 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
-  const listState = createListState({
-    selectionMode: "none",
-    dataSource: items,
-  });
-
-  const open = (focusStrategy?: FocusStrategy) => {
-    setFocusStrategy(focusStrategy);
-    disclosureState.open();
-  };
-
-  const close = (deep?: boolean) => {
-    disclosureState.close();
-
-    if (deep) {
-      parentMenuContext?.close(deep);
-    }
-  };
-
-  const toggle = (focusStrategy?: FocusStrategy) => {
-    if (disclosureState.isOpen()) {
-      close();
-    } else {
-      setFocusStrategy(focusStrategy);
-      open(focusStrategy);
-    }
-  };
-
-  const focusContent = () => {
-    const content = contentRef();
-
-    if (content) {
-      focusSafely(content);
-    }
-  };
-
-  const context: MenuContextValue = {
-    isOpen: () => disclosureState.isOpen(),
-    isModal: () => local.isModal!,
-    shouldMount: () => local.forceMount || disclosureState.isOpen(),
-    autoFocus: focusStrategy,
-    listState: () => listState,
-    parentMenuContext: () => parentMenuContext,
-    triggerRef,
-    contentRef,
-    triggerId,
-    contentId,
-    setTriggerRef,
-    setContentRef,
-    open,
-    close,
-    toggle,
-    focusContent,
+  const context: MenuRootContextValue = {
+    isModal: () => local.isModal ?? true,
+    forceMount: () => local.forceMount ?? false,
+    close: disclosureState.close,
     onAction: key => local.onAction?.(key),
-    registerItemToParentDomCollection: parentDomCollectionContext?.registerItem,
     generateId: createGenerateId(() => local.id!),
-    registerTriggerId: createRegisterId(setTriggerId),
-    registerContentId: createRegisterId(setContentId),
   };
 
   return (
-    <DomCollectionProvider>
-      <MenuContext.Provider value={context}>
-        <Popper anchorRef={triggerRef} contentRef={contentRef} {...others} />
-      </MenuContext.Provider>
-    </DomCollectionProvider>
+    <MenuRootContext.Provider value={context}>
+      <Menu
+        isOpen={disclosureState.isOpen()}
+        onOpenChange={disclosureState.setIsOpen}
+        {...others}
+      />
+    </MenuRootContext.Provider>
   );
 }

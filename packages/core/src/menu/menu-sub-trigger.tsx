@@ -6,12 +6,18 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuSubTrigger.ts
  */
 
-import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import {
+  combineProps,
+  createPolymorphicComponent,
+  focusWithoutScrolling,
+  mergeDefaultProps,
+} from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createFocusRing, createHover, createPress, isKeyboardFocusVisible } from "../primitives";
 import { createSelectableItem } from "../selection";
+import { useMenuRootContext } from "./menu-root-context";
 import { useMenuContext } from "./menu-context";
 
 export interface MenuSubTriggerProps {
@@ -38,12 +44,13 @@ export interface MenuSubTriggerProps {
 export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerProps>(props => {
   let ref: HTMLDivElement | undefined;
 
+  const rootContext = useMenuRootContext();
   const context = useMenuContext();
 
   props = mergeDefaultProps(
     {
       as: "div",
-      id: context.generateId("sub-trigger"),
+      id: rootContext.generateId("sub-trigger"),
     },
     props
   );
@@ -86,7 +93,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     isDisabled: () => local.isDisabled,
     onPress: e => {
       if (e.pointerType === "touch" && !context.isOpen() && !local.isDisabled) {
-        context.open();
+        context.open(undefined);
       }
     },
   });
@@ -104,7 +111,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       }
 
       if (!context.isOpen()) {
-        context.open();
+        context.open(undefined);
       }
     },
   });
@@ -129,20 +136,16 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       case "ArrowRight":
         e.stopPropagation();
         e.preventDefault();
+
+        // We focus manually because we prevented it in MenuSubContent's `onOpenAutoFocus`.
         if (context.isOpen()) {
-          // If the sub menu is already open (ex: by hovering), focus the first item.
           context.focusContent();
           selectionManager().setFocused(true);
           selectionManager().setFocusedKey(collection().getFirstKey(), "first");
         } else {
           context.open("first");
         }
-        break;
-      case "ArrowLeft":
-        // The Arrow Left key should always close if the sub menu trigger is itself in a sub menu.
-        if (context.parentMenuContext()?.parentMenuContext() != null) {
-          context.parentMenuContext()?.close();
-        }
+
         break;
     }
   };
@@ -154,7 +157,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     //  return;
     //}
 
-    //context.close();
+    //subContext.close();
   };
 
   createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
