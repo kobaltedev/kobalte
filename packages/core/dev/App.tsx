@@ -1,4 +1,4 @@
-import { DropdownMenu, I18nProvider, HoverCard, Select } from "../src";
+import { DropdownMenu, I18nProvider, Select } from "../src";
 
 function MySelect(props: any) {
   return (
@@ -39,39 +39,35 @@ function MyMenu(props: any) {
     <DropdownMenu>
       <DropdownMenu.Trigger class="button">Edit</DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Positioner>
-          <DropdownMenu.Content class="menu">
-            <DropdownMenu.Item class="menu-item" key="undo">
-              Undo
-            </DropdownMenu.Item>
-            <DropdownMenu.Item class="menu-item" key="redo">
-              Redo
-            </DropdownMenu.Item>
-            <DropdownMenu.Sub>
-              <DropdownMenu.SubTrigger class="menu-item" key="find-trigger">
-                Find
-              </DropdownMenu.SubTrigger>
-              <DropdownMenu.Portal>
-                <DropdownMenu.Positioner>
-                  <DropdownMenu.Content class="menu">
-                    <DropdownMenu.Item class="menu-item" key="search-web">
-                      Search the web...
-                    </DropdownMenu.Item>
-                    <DropdownMenu.Item class="menu-item" key="find">
-                      Find...
-                    </DropdownMenu.Item>
-                    <DropdownMenu.Item class="menu-item" key="find-next">
-                      Find next...
-                    </DropdownMenu.Item>
-                    <DropdownMenu.Item class="menu-item" key="find-previous">
-                      Find previous...
-                    </DropdownMenu.Item>
-                  </DropdownMenu.Content>
-                </DropdownMenu.Positioner>
-              </DropdownMenu.Portal>
-            </DropdownMenu.Sub>
-          </DropdownMenu.Content>
-        </DropdownMenu.Positioner>
+        <DropdownMenu.Content class="menu">
+          <DropdownMenu.Item class="menu-item" key="undo">
+            Undo
+          </DropdownMenu.Item>
+          <DropdownMenu.Item class="menu-item" key="redo">
+            Redo
+          </DropdownMenu.Item>
+          <DropdownMenu.Sub>
+            <DropdownMenu.SubTrigger class="menu-item" key="find-trigger">
+              Find
+            </DropdownMenu.SubTrigger>
+            <DropdownMenu.Portal>
+              <DropdownMenu.SubContent class="menu">
+                <DropdownMenu.Item class="menu-item" key="search-web">
+                  Search the web...
+                </DropdownMenu.Item>
+                <DropdownMenu.Item class="menu-item" key="find">
+                  Find...
+                </DropdownMenu.Item>
+                <DropdownMenu.Item class="menu-item" key="find-next">
+                  Find next...
+                </DropdownMenu.Item>
+                <DropdownMenu.Item class="menu-item" key="find-previous">
+                  Find previous...
+                </DropdownMenu.Item>
+              </DropdownMenu.SubContent>
+            </DropdownMenu.Portal>
+          </DropdownMenu.Sub>
+        </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu>
   );

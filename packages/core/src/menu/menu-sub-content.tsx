@@ -1,40 +1,31 @@
 import {
   composeEventHandlers,
+  contains,
   createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
-import { DismissableLayer } from "../dismissable-layer";
-import { createSelectableList } from "../list";
-import { PopperPositioner } from "../popper/popper-positioner";
+import { MenuContent, MenuContentOptions } from "../menu";
 import {
   createFocusRing,
   createFocusScope,
   createHideOutside,
   createPreventScroll,
   FocusOutsideEvent,
+  focusSafely,
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives";
 import { useMenuContext } from "./menu-context";
+import { createSelectableList } from "../list";
+import { PopperPositioner } from "../popper/popper-positioner";
+import { DismissableLayer } from "../dismissable-layer";
 
-export interface MenuContentOptions {
+export interface MenuSubContentOptions {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
-
-  /**
-   * Event handler called when focus moves into the component after opening.
-   * It can be prevented by calling `event.preventDefault`.
-   */
-  onOpenAutoFocus?: (event: Event) => void;
-
-  /**
-   * Event handler called when focus moves to the trigger after closing.
-   * It can be prevented by calling `event.preventDefault`.
-   */
-  onCloseAutoFocus?: (event: Event) => void;
 
   /**
    * Event handler called when the escape key is down.
@@ -61,7 +52,7 @@ export interface MenuContentOptions {
   onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export const MenuContent = createPolymorphicComponent<"div", MenuContentOptions>(props => {
+export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOptions>(props => {
   let ref: HTMLElement | undefined;
 
   const context = useMenuContext();
@@ -78,8 +69,6 @@ export const MenuContent = createPolymorphicComponent<"div", MenuContentOptions>
     "ref",
     "id",
     "style",
-    "onOpenAutoFocus",
-    "onCloseAutoFocus",
     "onEscapeKeyDown",
     "onFocusOutside",
     "onKeyDown",
@@ -94,11 +83,19 @@ export const MenuContent = createPolymorphicComponent<"div", MenuContentOptions>
     // `createSelectableList` prevent escape key down,
     // which prevent our `onDismiss` in `DismissableLayer` to run,
     // so we force "close on escape" here.
-    context.close();
+    context.close(true);
   };
 
   const onFocusOutside = (e: FocusOutsideEvent) => {
     local.onFocusOutside?.(e);
+
+    const target = e.target as HTMLElement | null;
+
+    // We prevent closing when the trigger is focused to avoid triggering a re-open animation
+    // on pointer interaction.
+    if (!contains(context.triggerRef(), target)) {
+      context.close();
+    }
 
     if (context.isModal()) {
       // When focus is trapped, a `focusout` event may still happen.
@@ -143,15 +140,9 @@ export const MenuContent = createPolymorphicComponent<"div", MenuContentOptions>
     },
   });
 
-  createPreventScroll({
-    isDisabled: () => !(context.isOpen() && context.isModal()),
-  });
-
   createFocusScope(
     {
       trapFocus: () => context.isOpen() && context.isModal(),
-      onMountAutoFocus: local.onOpenAutoFocus,
-      onUnmountAutoFocus: local.onCloseAutoFocus,
     },
     () => ref
   );
@@ -169,7 +160,7 @@ export const MenuContent = createPolymorphicComponent<"div", MenuContentOptions>
           role="menu"
           id={local.id}
           tabIndex={selectableList.tabIndex()}
-          disableOutsidePointerEvents={context.isOpen() && context.isModal()}
+          disableOutsidePointerEvents={false}
           excludedElements={[context.triggerRef]}
           style={{ position: "relative", ...local.style }}
           aria-labelledby={context.triggerId()}

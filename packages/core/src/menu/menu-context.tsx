@@ -12,6 +12,7 @@ export interface MenuContextValue {
   listState: Accessor<ListState>;
   parentMenuContext: Accessor<MenuContextValue | undefined>;
   triggerRef: Accessor<HTMLElement | undefined>;
+  contentRef: Accessor<HTMLElement | undefined>;
   triggerId: Accessor<string | undefined>;
   contentId: Accessor<string | undefined>;
   setTriggerRef: (el: HTMLElement) => void;

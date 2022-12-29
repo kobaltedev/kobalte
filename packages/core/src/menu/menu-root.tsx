@@ -146,6 +146,7 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
     listState: () => listState,
     parentMenuContext: () => parentMenuContext,
     triggerRef,
+    contentRef,
     triggerId,
     contentId,
     setTriggerRef,

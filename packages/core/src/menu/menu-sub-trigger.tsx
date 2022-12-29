@@ -154,7 +154,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     //  return;
     //}
 
-    context.close();
+    //context.close();
   };
 
   createEffect(() => onCleanup(context.registerTriggerId(local.id!)));

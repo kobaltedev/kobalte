@@ -81,7 +81,6 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
     "style",
     "onOpenAutoFocus",
     "onCloseAutoFocus",
-    "onEscapeKeyDown",
     "onPointerDownOutside",
     "onFocusOutside",
     "onInteractOutside",
@@ -89,6 +88,29 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
 
   let isRightClickOutside = false;
   let hasInteractedOutside = false;
+
+  const onCloseAutoFocus = (e: Event) => {
+    local.onCloseAutoFocus?.(e);
+
+    if (context.isModal()) {
+      e.preventDefault();
+
+      if (!isRightClickOutside) {
+        focusWithoutScrolling(context.triggerRef());
+      }
+    } else {
+      if (!e.defaultPrevented) {
+        if (!hasInteractedOutside) {
+          focusWithoutScrolling(context.triggerRef());
+        }
+
+        // Always prevent autofocus because we either focus manually or want user agent focus
+        e.preventDefault();
+      }
+
+      hasInteractedOutside = false;
+    }
+  };
 
   const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
     local.onPointerDownOutside?.(e);
@@ -113,29 +135,6 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
 
     if (!context.isModal() && !e.defaultPrevented) {
       hasInteractedOutside = true;
-    }
-  };
-
-  const onCloseAutoFocus = (e: Event) => {
-    local.onCloseAutoFocus?.(e);
-
-    if (context.isModal()) {
-      e.preventDefault();
-
-      if (!isRightClickOutside) {
-        focusWithoutScrolling(context.triggerRef());
-      }
-    } else {
-      if (!e.defaultPrevented) {
-        if (!hasInteractedOutside) {
-          focusWithoutScrolling(context.triggerRef());
-        }
-
-        // Always prevent autofocus because we either focus manually or want user agent focus
-        e.preventDefault();
-      }
-
-      hasInteractedOutside = false;
     }
   };
 
@@ -176,7 +175,6 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
           style={{ position: "relative", ...local.style }}
           aria-labelledby={context.titleId()}
           aria-describedby={context.descriptionId()}
-          onEscapeKeyDown={local.onEscapeKeyDown}
           onPointerDownOutside={onPointerDownOutside}
           onFocusOutside={onFocusOutside}
           onInteractOutside={onInteractOutside}
