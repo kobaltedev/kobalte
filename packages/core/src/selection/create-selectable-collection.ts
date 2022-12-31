@@ -126,9 +126,9 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     const manager = access(props.selectionManager);
     const selectOnFocus = access(props.selectOnFocus);
 
-    const navigateToKey = (key: string | undefined, childFocus?: FocusStrategy) => {
+    const navigateToKey = (key: string | undefined) => {
       if (key != null) {
-        manager.setFocusedKey(key, childFocus);
+        manager.setFocusedKey(key);
 
         if (e.shiftKey && manager.selectionMode() === "multiple") {
           manager.extendSelection(key);
@@ -198,7 +198,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
             nextKey = isRTL ? delegate.getFirstKey?.() : delegate.getLastKey?.();
           }
 
-          navigateToKey(nextKey, isRTL ? "first" : "last");
+          navigateToKey(nextKey);
         }
         break;
       }
@@ -216,7 +216,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
             nextKey = isRTL ? delegate.getLastKey?.() : delegate.getFirstKey?.();
           }
 
-          navigateToKey(nextKey, isRTL ? "last" : "first");
+          navigateToKey(nextKey);
         }
         break;
       }
@@ -424,10 +424,8 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
       focusedKey = selectedKeys.values().next().value;
     }
 
-    if (focusedKey != null) {
-      manager.setFocused(true);
-      manager.setFocusedKey(focusedKey);
-    }
+    manager.setFocused(true);
+    manager.setFocusedKey(focusedKey);
 
     const refEl = ref();
 

@@ -1,9 +1,9 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { createUniqueId, ParentProps, splitProps } from "solid-js";
+import { createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
 
+import { createDisclosureState } from "../primitives";
 import { Menu, MenuProps } from "./menu";
 import { MenuRootContext, MenuRootContextValue } from "./menu-root-context";
-import { createDisclosureState } from "../primitives";
 
 export interface MenuRootProps extends MenuProps {
   /**
@@ -57,8 +57,6 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
     "defaultIsOpen",
     "onOpenChange",
   ]);
-
-  const nestedMenus = new Set<Element>([]);
 
   const disclosureState = createDisclosureState({
     isOpen: () => local.isOpen,

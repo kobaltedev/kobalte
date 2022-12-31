@@ -3,6 +3,7 @@ import {
   createGenerateId,
   createPolymorphicComponent,
   focusWithoutScrolling,
+  getActiveElement,
   mergeDefaultProps,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
@@ -66,12 +67,10 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
   const rootContext = useMenuRootContext();
   const menuContext = useMenuContext();
 
-  const defaultId = `${rootContext.generateId("item")}-${createUniqueId()}`;
-
   props = mergeDefaultProps(
     {
       as: "div",
-      id: defaultId,
+      id: rootContext.generateId(`item-${createUniqueId()}`),
     },
     props
   );
@@ -142,6 +141,24 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
 
   const { isFocusVisible, focusRingHandlers } = createFocusRing();
 
+  const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    if (e.pointerType !== "mouse") {
+      return;
+    }
+
+    if (local.isDisabled) {
+      // Focus the menu itself if it's not focused yet.
+      if (getActiveElement(ref) !== menuContext.contentRef()) {
+        menuContext.focusContent();
+      }
+    } else {
+      // For consistency with native menu implementation re-focus when the mouse wiggles.
+      if (!e.defaultPrevented && selectionManager().focusedKey() !== local.key) {
+        selectionManager().setFocusedKey(local.key);
+      }
+    }
+  };
+
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     // Ignore repeating events, which may have started on the menu trigger before moving
     // focus to the menu item. We want to wait for a second complete key press sequence.
@@ -154,8 +171,8 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
     }
 
     switch (e.key) {
-      case " ":
       case "Enter":
+      case " ":
         local.onAction(local.key);
 
         if (local.closeOnSelect) {
@@ -217,7 +234,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
           pressHandlers,
           hoverHandlers,
           focusRingHandlers,
-          { onKeyDown }
+          { onPointerMove, onKeyDown }
         )}
       />
     </MenuItemContext.Provider>

@@ -75,17 +75,11 @@ export interface FocusState {
   /** The current focused key in the collection. */
   focusedKey: Accessor<string | undefined>;
 
-  /** Whether the first or last child of the focused key should receive focus. */
-  childFocusStrategy: Accessor<FocusStrategy>;
-
   /** Sets whether the collection is focused. */
   setFocused(isFocused: boolean): void;
 
-  /**
-   * Sets the focused key, and optionally,
-   * whether the first or last child of that key should receive focus.
-   */
-  setFocusedKey(key?: string, child?: FocusStrategy): void;
+  /** Sets the focused key */
+  setFocusedKey(key?: string): void;
 }
 
 export interface SingleSelectionState extends FocusState {

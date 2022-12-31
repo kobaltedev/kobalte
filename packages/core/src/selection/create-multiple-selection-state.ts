@@ -116,7 +116,6 @@ export function createMultipleSelectionState(
     isFocused,
     setFocused,
     focusedKey,
-    childFocusStrategy,
     setFocusedKey,
     selectedKeys,
     setSelectedKeys,

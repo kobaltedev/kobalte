@@ -16,10 +16,13 @@ export interface MenuContextValue {
   contentId: Accessor<string | undefined>;
   setTriggerRef: (el: HTMLElement) => void;
   setContentRef: (el: HTMLDivElement) => void;
-  open: (focusStrategy: FocusStrategy | undefined) => void;
+  open: (focusStrategy: FocusStrategy | boolean) => void;
   close: () => void;
-  toggle: (focusStrategy: FocusStrategy | undefined) => void;
-  focusContent: () => void;
+  toggle: (focusStrategy: FocusStrategy | boolean) => void;
+  focusContent: (key?: string | undefined) => void;
+  isPointInSafeArea: (e: PointerEvent) => boolean;
+  isTargetInNestedMenu: (target: Element) => boolean;
+  registerNestedMenu: (element: Element) => () => void;
   registerItemToParentDomCollection: ((item: CollectionItem) => () => void) | undefined;
   registerTriggerId: (id: string) => () => void;
   registerContentId: (id: string) => () => void;

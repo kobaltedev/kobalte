@@ -1,12 +1,13 @@
 import {
   callHandler,
+  composeEventHandlers,
   contains,
   createPolymorphicComponent,
   focusWithoutScrolling,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { FocusOutsideEvent } from "../primitives";
+import { createHover, FocusOutsideEvent } from "../primitives";
 import { MenuContentBase, MenuContentBaseOptions } from "./menu-content-base";
 import { useMenuContext } from "./menu-context";
 
@@ -16,7 +17,18 @@ export interface MenuSubContentOptions
 export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOptions>(props => {
   const context = useMenuContext();
 
-  const [local, others] = splitProps(props, ["onFocusOutside", "onKeyDown"]);
+  const [local, others] = splitProps(props, [
+    "onFocusOutside",
+    "onPointerEnter",
+    "onPointerLeave",
+    "onKeyDown",
+  ]);
+
+  const { hoverHandlers } = createHover({
+    isDisabled: () => !context.isOpen(),
+    onHoverStart: () => {},
+    onHoverEnd: () => {},
+  });
 
   const onOpenAutoFocus = (e: Event) => {
     // when opening a submenu, focus content for keyboard users only (handled by `MenuSubTrigger`).
@@ -62,6 +74,8 @@ export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOp
       onCloseAutoFocus={onCloseAutoFocus}
       onFocusOutside={onFocusOutside}
       onKeyDown={onKeyDown}
+      onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
+      onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
       {...others}
     />
   );

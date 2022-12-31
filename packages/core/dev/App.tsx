@@ -36,7 +36,7 @@ function MySelect(props: any) {
 
 function MyMenu(props: any) {
   return (
-    <DropdownMenu>
+    <DropdownMenu gutter={8}>
       <DropdownMenu.Trigger class="button">Edit</DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content class="menu">
@@ -46,7 +46,10 @@ function MyMenu(props: any) {
           <DropdownMenu.Item class="menu-item" key="redo">
             Redo
           </DropdownMenu.Item>
-          <DropdownMenu.Sub>
+          <DropdownMenu.Item class="menu-item" key="do" isDisabled>
+            Do
+          </DropdownMenu.Item>
+          <DropdownMenu.Sub gutter={8}>
             <DropdownMenu.SubTrigger class="menu-item-trigger" key="find-trigger">
               Find
             </DropdownMenu.SubTrigger>
@@ -64,6 +67,27 @@ function MyMenu(props: any) {
                 <DropdownMenu.Item class="menu-item" key="find-previous">
                   Find previous...
                 </DropdownMenu.Item>
+                <DropdownMenu.Sub gutter={8}>
+                  <DropdownMenu.SubTrigger class="menu-item-trigger" key="find-trigger-2">
+                    Find 2
+                  </DropdownMenu.SubTrigger>
+                  <DropdownMenu.Portal>
+                    <DropdownMenu.SubContent class="menu">
+                      <DropdownMenu.Item class="menu-item" key="search-web-2">
+                        Search the web 2...
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item class="menu-item" key="find-2">
+                        Find 2...
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item class="menu-item" key="find-next-2">
+                        Find next 2...
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item class="menu-item" key="find-previous-2">
+                        Find previous 2...
+                      </DropdownMenu.Item>
+                    </DropdownMenu.SubContent>
+                  </DropdownMenu.Portal>
+                </DropdownMenu.Sub>
               </DropdownMenu.SubContent>
             </DropdownMenu.Portal>
           </DropdownMenu.Sub>

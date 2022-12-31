@@ -4,7 +4,7 @@ import {
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
+import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
 import { createSelectableList } from "../list";
@@ -70,7 +70,7 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
   props = mergeDefaultProps(
     {
       as: "div",
-      id: rootContext.generateId("content"),
+      id: rootContext.generateId(`content-${createUniqueId()}`),
     },
     props
   );

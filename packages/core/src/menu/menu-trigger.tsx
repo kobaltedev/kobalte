@@ -48,7 +48,7 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps
     if (e.pointerType !== "touch" && e.pointerType !== "keyboard" && !local.isDisabled) {
       // If opened with a screen reader, autofocus the first item.
       // Otherwise, the menu itself will be focused.
-      context.toggle(e.pointerType === "virtual" ? "first" : undefined);
+      context.toggle(e.pointerType === "virtual" ? "first" : true);
     }
   };
 
@@ -56,7 +56,7 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps
     local.onPress?.(e);
 
     if (e.pointerType === "touch" && !local.isDisabled) {
-      context.toggle(undefined);
+      context.toggle(true);
     }
   };
 

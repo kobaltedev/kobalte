@@ -6,19 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuSubTrigger.ts
  */
 
-import {
-  combineProps,
-  createPolymorphicComponent,
-  focusWithoutScrolling,
-  mergeDefaultProps,
-} from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { createEffect, createUniqueId, JSX, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createFocusRing, createHover, createPress, isKeyboardFocusVisible } from "../primitives";
 import { createSelectableItem } from "../selection";
-import { useMenuRootContext } from "./menu-root-context";
 import { useMenuContext } from "./menu-context";
+import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuSubTriggerProps {
   /**
@@ -50,7 +45,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   props = mergeDefaultProps(
     {
       as: "div",
-      id: rootContext.generateId("sub-trigger"),
+      id: rootContext.generateId(`sub-trigger-${createUniqueId()}`),
     },
     props
   );
@@ -67,7 +62,6 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     return parentMenuContext.listState().selectionManager();
   };
 
-  const selectionManager = () => context.listState().selectionManager();
   const collection = () => context.listState().collection();
 
   const isFocused = () => parentSelectionManager().focusedKey() === local.key;
@@ -93,30 +87,51 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     isDisabled: () => local.isDisabled,
     onPress: e => {
       if (e.pointerType === "touch" && !context.isOpen() && !local.isDisabled) {
-        context.open(undefined);
+        context.open(true);
       }
     },
   });
 
   const { hoverHandlers, isHovered } = createHover({
     isDisabled: () => local.isDisabled,
-    onHoverStart: e => {
+    onHoverStart: () => {
       if (!isKeyboardFocusVisible()) {
         parentSelectionManager().setFocused(true);
         parentSelectionManager().setFocusedKey(local.key);
       }
 
-      if (e.pointerType === "touch") {
-        return;
-      }
-
+      // TODO: on subTrigger hoverstart
       if (!context.isOpen()) {
-        context.open(undefined);
+        context.open(false);
       }
     },
   });
 
   const { isFocusVisible, focusRingHandlers } = createFocusRing();
+
+  const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    if (e.pointerType !== "mouse") {
+      return;
+    }
+
+    // For consistency with native menu implementation re-focus when the mouse wiggles.
+    if (parentSelectionManager().focusedKey() !== local.key) {
+      parentSelectionManager().setFocusedKey(local.key);
+    }
+
+    // TODO: on subTrigger pointermove
+    if (!context.isOpen() && !local.isDisabled) {
+      context.open(false);
+    }
+  };
+
+  const onPointerLeave: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    if (e.pointerType !== "mouse") {
+      return;
+    }
+
+    // TODO: on subTrigger pointerleave
+  };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     // Ignore repeating events, which may have started on the menu trigger before moving
@@ -139,9 +154,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
 
         // We focus manually because we prevented it in MenuSubContent's `onOpenAutoFocus`.
         if (context.isOpen()) {
-          context.focusContent();
-          selectionManager().setFocused(true);
-          selectionManager().setFocusedKey(collection().getFirstKey(), "first");
+          context.focusContent(collection().getFirstKey());
         } else {
           context.open("first");
         }
@@ -149,18 +162,6 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
         break;
     }
   };
-
-  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
-    const relatedTarget = e.relatedTarget as Node | undefined;
-
-    //if (hoverCardContext.isTargetOnHoverCard(relatedTarget)) {
-    //  return;
-    //}
-
-    //subContext.close();
-  };
-
-  createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
 
   createEffect(() => {
     // Not able to register the trigger as a menu item on parent menu means
@@ -180,6 +181,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
 
     onCleanup(unregister);
   });
+
+  createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
 
   return (
     <Dynamic
@@ -212,7 +215,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
         pressHandlers,
         hoverHandlers,
         focusRingHandlers,
-        { onKeyDown, onBlur }
+        { onPointerMove, onPointerLeave, onKeyDown }
       )}
     />
   );

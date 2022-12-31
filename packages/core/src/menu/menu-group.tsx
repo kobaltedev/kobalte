@@ -20,12 +20,10 @@ import { MenuGroupContext, MenuGroupContextValue } from "./menu-group-context";
 export const MenuGroup = createPolymorphicComponent<"div">(props => {
   const rootContext = useMenuRootContext();
 
-  const defaultId = `${rootContext.generateId("group")}-${createUniqueId()}`;
-
   props = mergeDefaultProps(
     {
       as: "div",
-      id: defaultId,
+      id: rootContext.generateId(`group-${createUniqueId()}`),
     },
     props
   );

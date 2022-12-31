@@ -2,6 +2,7 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import { createUniqueId, ParentComponent } from "solid-js";
 
 import {
+  Menu,
   MenuCheckboxItem,
   MenuGroup,
   MenuGroupLabel,
@@ -15,7 +16,6 @@ import {
   MenuRadioItem,
   MenuRoot,
   MenuRootProps,
-  MenuSub,
   MenuSubContent,
   MenuSubTrigger,
   MenuTrigger,
@@ -40,7 +40,7 @@ export type DropdownMenuComposite = {
   RadioGroup: typeof MenuRadioGroup;
   RadioItem: typeof MenuRadioItem;
   CheckboxItem: typeof MenuCheckboxItem;
-  Sub: typeof MenuSub;
+  Sub: typeof Menu;
   SubContent: typeof MenuSubContent;
   SubTrigger: typeof MenuSubTrigger;
 };
@@ -73,6 +73,6 @@ DropdownMenu.ItemIndicator = MenuItemIndicator;
 DropdownMenu.RadioGroup = MenuRadioGroup;
 DropdownMenu.RadioItem = MenuRadioItem;
 DropdownMenu.CheckboxItem = MenuCheckboxItem;
-DropdownMenu.Sub = MenuSub;
+DropdownMenu.Sub = Menu;
 DropdownMenu.SubContent = MenuSubContent;
 DropdownMenu.SubTrigger = MenuSubTrigger;
