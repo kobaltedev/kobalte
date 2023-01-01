@@ -1,9 +1,17 @@
+/*!
+ * Portions of this file are based on code from radix-ui-primitives.
+ * MIT Licensed, Copyright (c) 2022 WorkOS.
+ *
+ * Credits to the Radix UI team:
+ * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/context-menu/src/ContextMenu.tsx
+ */
+
 import { mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
 import {
+  Menu,
   MenuCheckboxItem,
-  MenuContent,
   MenuGroup,
   MenuGroupLabel,
   MenuIcon,
@@ -11,18 +19,18 @@ import {
   MenuItemDescription,
   MenuItemIndicator,
   MenuItemLabel,
+  MenuPortal,
   MenuRadioGroup,
   MenuRadioItem,
   MenuRoot,
   MenuRootProps,
-  MenuSub,
+  MenuSubContent,
   MenuSubTrigger,
 } from "../menu";
-import { MenuPortal } from "../menu/menu-portal";
-import { MenuPositioner } from "../menu/menu-positioner";
 import { Popper } from "../popper";
 import { createDisclosureState } from "../primitives";
 import { Separator } from "../separator";
+import { ContextMenuContent } from "./context-menu-content";
 import { ContextMenuContext, ContextMenuContextValue } from "./context-menu-context";
 import { ContextMenuTrigger } from "./context-menu-trigger";
 
@@ -30,8 +38,7 @@ type ContextMenuComposite = {
   Trigger: typeof ContextMenuTrigger;
   Icon: typeof MenuIcon;
   Portal: typeof MenuPortal;
-  Positioner: typeof MenuPositioner;
-  Content: typeof MenuContent;
+  Content: typeof ContextMenuContent;
   Arrow: typeof Popper.Arrow;
   Separator: typeof Separator;
   Group: typeof MenuGroup;
@@ -43,7 +50,8 @@ type ContextMenuComposite = {
   RadioGroup: typeof MenuRadioGroup;
   RadioItem: typeof MenuRadioItem;
   CheckboxItem: typeof MenuCheckboxItem;
-  Sub: typeof MenuSub;
+  Sub: typeof Menu;
+  SubContent: typeof MenuSubContent;
   SubTrigger: typeof MenuSubTrigger;
 };
 
@@ -59,7 +67,9 @@ export const ContextMenu: ParentComponent<ContextMenuProps> & ContextMenuComposi
   props = mergeDefaultProps(
     {
       id: defaultId,
-      placement: "bottom-start",
+      placement: "right-start",
+      gutter: 2,
+      shift: 2,
     },
     props
   );
@@ -92,8 +102,7 @@ export const ContextMenu: ParentComponent<ContextMenuProps> & ContextMenuComposi
 ContextMenu.Trigger = ContextMenuTrigger;
 ContextMenu.Icon = MenuIcon;
 ContextMenu.Portal = MenuPortal;
-ContextMenu.Positioner = MenuPositioner;
-ContextMenu.Content = MenuContent;
+ContextMenu.Content = ContextMenuContent;
 ContextMenu.Arrow = Popper.Arrow;
 ContextMenu.Separator = Separator;
 ContextMenu.Group = MenuGroup;
@@ -105,5 +114,6 @@ ContextMenu.ItemIndicator = MenuItemIndicator;
 ContextMenu.RadioGroup = MenuRadioGroup;
 ContextMenu.RadioItem = MenuRadioItem;
 ContextMenu.CheckboxItem = MenuCheckboxItem;
-ContextMenu.Sub = MenuSub;
+ContextMenu.Sub = Menu;
+ContextMenu.SubContent = MenuSubContent;
 ContextMenu.SubTrigger = MenuSubTrigger;

@@ -1,10 +1,12 @@
 import {
   composeEventHandlers,
   createPolymorphicComponent,
+  getActiveElement,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "solid-js";
+import { isServer } from "solid-js/web";
 
 import { DismissableLayer } from "../dismissable-layer";
 import { createSelectableList } from "../list";
@@ -18,9 +20,9 @@ import {
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives";
+import { MENU_TIMEOUT_DELAY } from "./menu";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { isServer } from "solid-js/web";
 
 export interface MenuContentBaseOptions {
   /** The HTML styles attribute (object form only). */
@@ -93,15 +95,15 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     "onPointerLeave",
   ]);
 
-  let focusTimeoutId: number | undefined;
+  let updateParentIsPointerInNestedMenuTimeoutId: number | undefined;
 
-  const clearFocusTimeout = () => {
+  const clearUpdateParentIsPointerInNestedMenuTimeout = () => {
     if (isServer) {
       return;
     }
 
-    window.clearTimeout(focusTimeoutId);
-    focusTimeoutId = undefined;
+    window.clearTimeout(updateParentIsPointerInNestedMenuTimeoutId);
+    updateParentIsPointerInNestedMenuTimeoutId = undefined;
   };
 
   const onEscapeKeyDown = (e: KeyboardEvent) => {
@@ -138,33 +140,30 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
   const { hoverHandlers } = createHover({
     isDisabled: () => !(context.isOpen() && rootContext.isModal()),
     onHoverStart: () => {
+      clearUpdateParentIsPointerInNestedMenuTimeout();
+
+      // Cancel the closing attempt initiated by `MenuSubTrigger` pointer leave.
+      context.clearCloseTimeout();
+
+      // Don't focus the parent menu content.
+      context.parentMenuContext()?.clearFocusContentTimeout();
+
       context.parentMenuContext()?.setIsPointerInNestedMenu(true);
       context.setIsPointerInNestedMenu(false);
 
       // Remove the grace polygon created when leaving the `MenuSubTrigger`.
       context.setPointerGracePolygon(null);
-
-      // Cancel the closing attempt initiated by `MenuSubTrigger` pointer leave.
-      context.clearCloseTimeout();
-
-      clearFocusTimeout();
     },
     onHoverEnd: () => {
       context.listState().selectionManager().setFocused(false);
       context.listState().selectionManager().setFocusedKey(undefined);
 
-      focusTimeoutId = window.setTimeout(() => {
-        const isPointerInNestedMenu = context.isPointerInNestedMenu();
+      updateParentIsPointerInNestedMenuTimeoutId = window.setTimeout(() => {
+        // If pointer is in a sub menu of this menu, it's also considered in a sub menu of the parent menu.
+        context.parentMenuContext()?.setIsPointerInNestedMenu(context.isPointerInNestedMenu());
 
-        // If it's in a sub menu of this menu, it's also considered in a sub menu of the parent menu.
-        context.parentMenuContext()?.setIsPointerInNestedMenu(isPointerInNestedMenu);
-
-        if (!isPointerInNestedMenu) {
-          context.focusContent();
-        }
-
-        clearFocusTimeout();
-      }, 100);
+        clearUpdateParentIsPointerInNestedMenuTimeout();
+      }, MENU_TIMEOUT_DELAY);
     },
   });
 
@@ -202,7 +201,7 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
   onCleanup(() => {
-    clearFocusTimeout();
+    clearUpdateParentIsPointerInNestedMenuTimeout();
   });
 
   return (

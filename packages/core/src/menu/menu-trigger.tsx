@@ -16,8 +16,8 @@ import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import { Button, ButtonProps } from "../button";
 import { PressEvent } from "../primitives";
-import { useMenuRootContext } from "./menu-root-context";
 import { useMenuContext } from "./menu-context";
+import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuTriggerProps extends ButtonProps {}
 

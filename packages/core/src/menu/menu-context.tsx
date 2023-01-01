@@ -29,6 +29,8 @@ export interface MenuContextValue {
   clearCloseTimeout: () => void;
   toggle: (focusStrategy: FocusStrategy | boolean) => void;
   focusContent: (key?: string | undefined) => void;
+  focusContentWithDelay: (key?: string, delay?: number) => void;
+  clearFocusContentTimeout: () => void;
   suspendPointer: () => void;
   isTargetInNestedMenu: (target: Element) => boolean;
   registerNestedMenu: (element: Element) => () => void;

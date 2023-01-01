@@ -130,6 +130,8 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
   const { hoverHandlers, isHovered } = createHover({
     isDisabled: () => local.isDisabled,
     onHoverStart: () => {
+      menuContext.clearFocusContentTimeout();
+
       if (menuContext.isPointerSuspended()) {
         return;
       }
@@ -141,7 +143,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
         return;
       }
 
-      menuContext.focusContent(undefined);
+      menuContext.focusContentWithDelay(undefined);
     },
   });
 
@@ -153,20 +155,13 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
       return;
     }
 
-    if (e.pointerType !== "mouse") {
+    if (e.pointerType !== "mouse" || local.isDisabled) {
       return;
     }
 
-    if (local.isDisabled) {
-      // Focus the menu itself if it's not focused yet.
-      if (getActiveElement(ref) !== menuContext.contentRef()) {
-        menuContext.focusContent(undefined);
-      }
-    } else {
-      // For consistency with native menu implementation re-focus when the mouse wiggles.
-      if (selectionManager().focusedKey() !== local.key) {
-        selectionManager().setFocusedKey(local.key);
-      }
+    // For consistency with native menu implementation re-focus when the mouse wiggles.
+    if (selectionManager().focusedKey() !== local.key) {
+      selectionManager().setFocusedKey(local.key);
     }
   };
 

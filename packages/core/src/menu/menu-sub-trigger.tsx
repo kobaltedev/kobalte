@@ -101,6 +101,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   const { hoverHandlers, isHovered } = createHover({
     isDisabled: () => local.isDisabled,
     onHoverStart: () => {
+      context.parentMenuContext()?.clearFocusContentTimeout();
+
       context.parentMenuContext()?.focusContent(local.key);
       context.clearCloseTimeout();
 
@@ -112,31 +114,24 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       }
     },
     onHoverEnd: () => {
-      context.parentMenuContext()?.focusContent(undefined);
+      context.parentMenuContext()?.focusContentWithDelay(undefined);
     },
   });
 
   const { isFocusVisible, focusRingHandlers } = createFocusRing();
 
   const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
-    if (e.pointerType !== "mouse") {
+    if (e.pointerType !== "mouse" || local.isDisabled) {
       return;
     }
 
-    if (local.isDisabled) {
-      // Focus the parent menu itself if it's not focused yet.
-      if (getActiveElement(ref) !== context.parentMenuContext()?.contentRef()) {
-        context.parentMenuContext()?.focusContent(undefined);
-      }
-    } else {
-      // For consistency with native menu implementation re-focus when the mouse wiggles.
-      if (parentSelectionManager().focusedKey() !== local.key) {
-        parentSelectionManager().setFocusedKey(local.key);
-      }
+    // For consistency with native menu implementation re-focus when the mouse wiggles.
+    if (parentSelectionManager().focusedKey() !== local.key) {
+      parentSelectionManager().setFocusedKey(local.key);
+    }
 
-      if (!context.isOpen()) {
-        context.open(false);
-      }
+    if (!context.isOpen()) {
+      context.open(false);
     }
   };
 

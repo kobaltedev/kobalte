@@ -191,7 +191,6 @@ export function createFocusScope<T extends HTMLElement>(
       }
 
       if (getActiveElement(container) === ownerDocument().body) {
-        console.log("fired");
         focusWithoutScrolling(container);
       }
     });

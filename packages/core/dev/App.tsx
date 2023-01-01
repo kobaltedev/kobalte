@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 
-import { DropdownMenu, I18nProvider } from "../src";
+import { ContextMenu, DropdownMenu, I18nProvider } from "../src";
 
 function HamburgerMenuIcon(props: any) {
   return (
@@ -74,7 +74,7 @@ function DropdownMenuDemo() {
           <DropdownMenu.Item key="new-private-window" class="DropdownMenuItem" isDisabled>
             New Private Window <div class="RightSlot">⇧+⌘+N</div>
           </DropdownMenu.Item>
-          <DropdownMenu.Sub gutter={10}>
+          <DropdownMenu.Sub gutter={2} shift={-5}>
             <DropdownMenu.SubTrigger key="more-tools" class="DropdownMenuSubTrigger">
               More Tools
               <div class="RightSlot">
@@ -96,6 +96,31 @@ function DropdownMenuDemo() {
                 <DropdownMenu.Item key="developer-tools" class="DropdownMenuItem">
                   Developer Tools
                 </DropdownMenu.Item>
+                <DropdownMenu.Sub gutter={2} shift={-5}>
+                  <DropdownMenu.SubTrigger key="more-tools-2" class="DropdownMenuSubTrigger">
+                    More Tools
+                    <div class="RightSlot">
+                      <ChevronRightIcon />
+                    </div>
+                  </DropdownMenu.SubTrigger>
+                  <DropdownMenu.Portal>
+                    <DropdownMenu.SubContent class="DropdownMenuSubContent">
+                      <DropdownMenu.Item key="save-page-as-2" class="DropdownMenuItem">
+                        Save Page As… <div class="RightSlot">⌘+S</div>
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item key="create-shortcut-2" class="DropdownMenuItem">
+                        Create Shortcut…
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item key="name-window-2" class="DropdownMenuItem">
+                        Name Window…
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Separator class="DropdownMenu.Separator" />
+                      <DropdownMenu.Item key="developer-tools-2" class="DropdownMenuItem">
+                        Developer Tools
+                      </DropdownMenu.Item>
+                    </DropdownMenu.SubContent>
+                  </DropdownMenu.Portal>
+                </DropdownMenu.Sub>
               </DropdownMenu.SubContent>
             </DropdownMenu.Portal>
           </DropdownMenu.Sub>
@@ -152,10 +177,109 @@ function DropdownMenuDemo() {
   );
 }
 
+function ContextMenuDemo() {
+  const [bookmarksChecked, setBookmarksChecked] = createSignal(true);
+  const [urlsChecked, setUrlsChecked] = createSignal(false);
+  const [person, setPerson] = createSignal("pedro");
+
+  return (
+    <ContextMenu>
+      <ContextMenu.Trigger class="ContextMenuTrigger" aria-label="Customise options">
+        Right click here.
+      </ContextMenu.Trigger>
+
+      <ContextMenu.Portal>
+        <ContextMenu.Content class="DropdownMenuContent">
+          <ContextMenu.Item key="new-tab" class="DropdownMenuItem">
+            New Tab <div class="RightSlot">⌘+T</div>
+          </ContextMenu.Item>
+          <ContextMenu.Item key="new-window" class="DropdownMenuItem">
+            New Window <div class="RightSlot">⌘+N</div>
+          </ContextMenu.Item>
+          <ContextMenu.Item key="new-private-window" class="DropdownMenuItem" isDisabled>
+            New Private Window <div class="RightSlot">⇧+⌘+N</div>
+          </ContextMenu.Item>
+          <ContextMenu.Sub gutter={2} shift={-5}>
+            <ContextMenu.SubTrigger key="more-tools" class="DropdownMenuSubTrigger">
+              More Tools
+              <div class="RightSlot">
+                <ChevronRightIcon />
+              </div>
+            </ContextMenu.SubTrigger>
+            <ContextMenu.Portal>
+              <ContextMenu.SubContent class="DropdownMenuSubContent">
+                <ContextMenu.Item key="save-page-as" class="DropdownMenuItem">
+                  Save Page As… <div class="RightSlot">⌘+S</div>
+                </ContextMenu.Item>
+                <ContextMenu.Item key="create-shortcut" class="DropdownMenuItem">
+                  Create Shortcut…
+                </ContextMenu.Item>
+                <ContextMenu.Item key="name-window" class="DropdownMenuItem">
+                  Name Window…
+                </ContextMenu.Item>
+                <ContextMenu.Separator class="DropdownMenu.Separator" />
+                <ContextMenu.Item key="developer-tools" class="DropdownMenuItem">
+                  Developer Tools
+                </ContextMenu.Item>
+              </ContextMenu.SubContent>
+            </ContextMenu.Portal>
+          </ContextMenu.Sub>
+
+          <ContextMenu.Separator class="DropdownMenuSeparator" />
+
+          <ContextMenu.CheckboxItem
+            key="show-bookmarks"
+            class="DropdownMenuCheckboxItem"
+            isChecked={bookmarksChecked()}
+            onCheckedChange={setBookmarksChecked}
+          >
+            <ContextMenu.ItemIndicator class="DropdownMenuItemIndicator">
+              <CheckIcon />
+            </ContextMenu.ItemIndicator>
+            Show Bookmarks <div class="RightSlot">⌘+B</div>
+          </ContextMenu.CheckboxItem>
+          <ContextMenu.CheckboxItem
+            key="show-full-url"
+            class="DropdownMenuCheckboxItem"
+            isChecked={urlsChecked()}
+            onCheckedChange={setUrlsChecked}
+          >
+            <ContextMenu.ItemIndicator class="DropdownMenuItemIndicator">
+              <CheckIcon />
+            </ContextMenu.ItemIndicator>
+            Show Full URLs
+          </ContextMenu.CheckboxItem>
+
+          <ContextMenu.Separator class="DropdownMenuSeparator" />
+
+          <ContextMenu.Group>
+            <ContextMenu.GroupLabel class="DropdownMenuLabel">People</ContextMenu.GroupLabel>
+            <ContextMenu.RadioGroup value={person()} onValueChange={setPerson}>
+              <ContextMenu.RadioItem class="DropdownMenuRadioItem" value="pedro">
+                <ContextMenu.ItemIndicator class="DropdownMenuItemIndicator">
+                  <DotFilledIcon />
+                </ContextMenu.ItemIndicator>
+                Pedro Duarte
+              </ContextMenu.RadioItem>
+              <ContextMenu.RadioItem class="DropdownMenuRadioItem" value="colm">
+                <ContextMenu.ItemIndicator class="DropdownMenuItemIndicator">
+                  <DotFilledIcon />
+                </ContextMenu.ItemIndicator>
+                Colm Tuite
+              </ContextMenu.RadioItem>
+            </ContextMenu.RadioGroup>
+          </ContextMenu.Group>
+        </ContextMenu.Content>
+      </ContextMenu.Portal>
+    </ContextMenu>
+  );
+}
+
 export default function App() {
   return (
     <I18nProvider>
       <DropdownMenuDemo />
+      <ContextMenuDemo />
     </I18nProvider>
   );
 }

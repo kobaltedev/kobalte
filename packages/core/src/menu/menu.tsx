@@ -1,6 +1,5 @@
 import {
   contains,
-  getActiveElement,
   getDocument,
   getEventPoint,
   isPointInPolygon,
@@ -42,6 +41,8 @@ export interface MenuProps
   onOpenChange?: (isOpen: boolean) => void;
 }
 
+export const MENU_TIMEOUT_DELAY = 300;
+
 /**
  * Container for menu items and nested menu, provide context for its children.
  */
@@ -62,6 +63,7 @@ export function Menu(props: ParentProps<MenuProps>) {
   const nestedMenus = new Set<Element>([]);
 
   let closeTimeoutId: number | undefined;
+  let focusContentTimeoutId: number | undefined;
   let resumePointerTimeoutId: number | undefined;
 
   const [triggerId, setTriggerId] = createSignal<string>();
@@ -108,7 +110,7 @@ export function Menu(props: ParentProps<MenuProps>) {
     closeTimeoutId = window.setTimeout(() => {
       close();
       closeTimeoutId = undefined;
-    }, 3000);
+    }, MENU_TIMEOUT_DELAY);
   };
 
   const clearCloseTimeout = () => {
@@ -128,12 +130,29 @@ export function Menu(props: ParentProps<MenuProps>) {
   const focusContent = (key?: string) => {
     const content = contentRef();
 
-    if (content && !contains(content, getActiveElement())) {
+    if (content) {
       focusSafely(content);
     }
 
     listState.selectionManager().setFocused(true);
     listState.selectionManager().setFocusedKey(key);
+  };
+
+  // Use a shorter delay here because moving outside the menu should focus it "instantly" by default.
+  const focusContentWithDelay = (key?: string, delay = 100) => {
+    focusContentTimeoutId = window.setTimeout(() => {
+      focusContent(key);
+      focusContentTimeoutId = undefined;
+    }, delay);
+  };
+
+  const clearFocusContentTimeout = () => {
+    if (isServer) {
+      return;
+    }
+
+    window.clearTimeout(focusContentTimeoutId);
+    focusContentTimeoutId = undefined;
   };
 
   const registerNestedMenu = (element: Element) => {
@@ -155,6 +174,10 @@ export function Menu(props: ParentProps<MenuProps>) {
     // Cancel the previous closing attempt.
     clearCloseTimeout();
 
+    // Cancel the previous attempt to focus the parent menu content,
+    // so leaving the sub menu trigger don't bring back focus the parent menu content.
+    parentMenuContext?.clearFocusContentTimeout();
+
     const polygon = pointerGracePolygon();
 
     // If no polygon, user is already on the menu content or didn't go to it, so do nothing.
@@ -165,11 +188,16 @@ export function Menu(props: ParentProps<MenuProps>) {
     if (isPointInPolygon(getEventPoint(e), polygon)) {
       // Plan a closing attempt in case the user doesn't move to the menu content.
       closeWithDelay();
+
+      // Plan restoring focus to parent in case the user doesn't move to the menu content.
+      // Use same delay as `closeWithDelay` and `suspendPointer` so it doesn't run before them.
+      parentMenuContext?.focusContentWithDelay(undefined, MENU_TIMEOUT_DELAY);
     } else {
-      // User isn't moving to the menu content, close it.
+      // User isn't moving to the menu content, close it and restore focus to parent menu.
       setPointerGracePolygon(null);
-      parentMenuContext?.setIsPointerSuspended(false);
       close();
+      parentMenuContext?.setIsPointerSuspended(false);
+      parentMenuContext?.focusContent(undefined);
     }
   };
 
@@ -187,7 +215,7 @@ export function Menu(props: ParentProps<MenuProps>) {
 
     getDocument().addEventListener("pointermove", trackPointerMove);
 
-    resumePointerTimeoutId = window.setTimeout(resumePointer, 300);
+    resumePointerTimeoutId = window.setTimeout(resumePointer, MENU_TIMEOUT_DELAY);
   };
 
   const clearResumePointerTimeout = () => {
@@ -215,6 +243,7 @@ export function Menu(props: ParentProps<MenuProps>) {
 
   onCleanup(() => {
     clearCloseTimeout();
+    clearFocusContentTimeout();
     clearResumePointerTimeout();
     resumePointer();
   });
@@ -242,6 +271,8 @@ export function Menu(props: ParentProps<MenuProps>) {
     clearCloseTimeout,
     toggle,
     focusContent,
+    focusContentWithDelay,
+    clearFocusContentTimeout,
     suspendPointer,
     isTargetInNestedMenu,
     registerNestedMenu,
