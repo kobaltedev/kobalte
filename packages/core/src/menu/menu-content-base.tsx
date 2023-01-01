@@ -106,6 +106,13 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     updateParentIsPointerInNestedMenuTimeoutId = undefined;
   };
 
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    // Prevent shift + tab from doing anything when focus should be trapped.
+    if (context.isOpen() && rootContext.isModal() && e.shiftKey && e.key === "Tab") {
+      e.preventDefault();
+    }
+  };
+
   const onEscapeKeyDown = (e: KeyboardEvent) => {
     local.onEscapeKeyDown?.(e);
 
@@ -223,7 +230,11 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           onEscapeKeyDown={onEscapeKeyDown}
           onFocusOutside={onFocusOutside}
           onDismiss={context.close}
-          onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.handlers.onKeyDown])}
+          onKeyDown={composeEventHandlers([
+            local.onKeyDown,
+            selectableList.handlers.onKeyDown,
+            onKeyDown,
+          ])}
           onFocusIn={composeEventHandlers([
             local.onFocusIn,
             selectableList.handlers.onFocusIn,
