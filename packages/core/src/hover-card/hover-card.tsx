@@ -6,7 +6,13 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard.tsx
  */
 
-import { contains, createGlobalListeners, mergeDefaultProps } from "@kobalte/utils";
+import {
+  contains,
+  createGlobalListeners,
+  getEventPoint,
+  isPointInPolygon,
+  mergeDefaultProps,
+} from "@kobalte/utils";
 import {
   createEffect,
   createSignal,
@@ -18,13 +24,13 @@ import {
 import { isServer } from "solid-js/web";
 
 import { Popper, PopperOptions } from "../popper";
-import { getElementPolygon, getEventPoint, isPointInPolygon } from "../popper/polygon";
 import { Placement } from "../popper/utils";
 import { createDisclosureState } from "../primitives";
 import { HoverCardContent } from "./hover-card-content";
 import { HoverCardContext, HoverCardContextValue } from "./hover-card-context";
 import { HoverCardPortal } from "./hover-card-portal";
 import { HoverCardTrigger } from "./hover-card-trigger";
+import { getHoverCardSafeArea } from "./utils";
 
 type HoverCardComposite = {
   Trigger: typeof HoverCardTrigger;
@@ -164,7 +170,7 @@ export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = p
       return;
     }
 
-    return getElementPolygon(placement, triggerEl, contentEl);
+    return getHoverCardSafeArea(placement, triggerEl, contentEl);
   };
 
   const onHoverOutside = (event: PointerEvent) => {

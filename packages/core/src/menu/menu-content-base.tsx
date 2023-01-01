@@ -13,12 +13,14 @@ import {
   createFocusRing,
   createFocusScope,
   createHideOutside,
+  createHover,
   FocusOutsideEvent,
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
+import { isServer } from "solid-js/web";
 
 export interface MenuContentBaseOptions {
   /** The HTML styles attribute (object form only). */
@@ -87,7 +89,20 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     "onFocusIn",
     "onFocusOut",
     "onMouseDown",
+    "onPointerEnter",
+    "onPointerLeave",
   ]);
+
+  let focusTimeoutId: number | undefined;
+
+  const clearFocusTimeout = () => {
+    if (isServer) {
+      return;
+    }
+
+    window.clearTimeout(focusTimeoutId);
+    focusTimeoutId = undefined;
+  };
 
   const onEscapeKeyDown = (e: KeyboardEvent) => {
     local.onEscapeKeyDown?.(e);
@@ -119,6 +134,39 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     },
     () => ref
   );
+
+  const { hoverHandlers } = createHover({
+    isDisabled: () => !(context.isOpen() && rootContext.isModal()),
+    onHoverStart: () => {
+      context.parentMenuContext()?.setIsPointerInNestedMenu(true);
+      context.setIsPointerInNestedMenu(false);
+
+      // Remove the grace polygon created when leaving the `MenuSubTrigger`.
+      context.setPointerGracePolygon(null);
+
+      // Cancel the closing attempt initiated by `MenuSubTrigger` pointer leave.
+      context.clearCloseTimeout();
+
+      clearFocusTimeout();
+    },
+    onHoverEnd: () => {
+      context.listState().selectionManager().setFocused(false);
+      context.listState().selectionManager().setFocusedKey(undefined);
+
+      focusTimeoutId = window.setTimeout(() => {
+        const isPointerInNestedMenu = context.isPointerInNestedMenu();
+
+        // If it's in a sub menu of this menu, it's also considered in a sub menu of the parent menu.
+        context.parentMenuContext()?.setIsPointerInNestedMenu(isPointerInNestedMenu);
+
+        if (!isPointerInNestedMenu) {
+          context.focusContent();
+        }
+
+        clearFocusTimeout();
+      }, 100);
+    },
+  });
 
   const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
 
@@ -153,6 +201,10 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
 
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
+  onCleanup(() => {
+    clearFocusTimeout();
+  });
+
   return (
     <Show when={context.shouldMount()}>
       <PopperPositioner>
@@ -186,6 +238,14 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           onMouseDown={composeEventHandlers([
             local.onMouseDown,
             selectableList.handlers.onMouseDown,
+          ])}
+          onPointerEnter={composeEventHandlers([
+            local.onPointerEnter,
+            hoverHandlers.onPointerEnter,
+          ])}
+          onPointerLeave={composeEventHandlers([
+            local.onPointerLeave,
+            hoverHandlers.onPointerLeave,
           ])}
           {...others}
         />

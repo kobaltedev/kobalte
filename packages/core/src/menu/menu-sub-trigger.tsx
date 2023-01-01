@@ -6,14 +6,20 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuSubTrigger.ts
  */
 
-import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import {
+  combineProps,
+  createPolymorphicComponent,
+  getActiveElement,
+  mergeDefaultProps,
+} from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createFocusRing, createHover, createPress, isKeyboardFocusVisible } from "../primitives";
+import { createFocusRing, createHover, createPress } from "../primitives";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
+import { getPointerGracePolygon } from "./utils";
 
 export interface MenuSubTriggerProps {
   /**
@@ -95,15 +101,18 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   const { hoverHandlers, isHovered } = createHover({
     isDisabled: () => local.isDisabled,
     onHoverStart: () => {
-      if (!isKeyboardFocusVisible()) {
-        parentSelectionManager().setFocused(true);
-        parentSelectionManager().setFocusedKey(local.key);
-      }
+      context.parentMenuContext()?.focusContent(local.key);
+      context.clearCloseTimeout();
 
-      // TODO: on subTrigger hoverstart
-      if (!context.isOpen()) {
+      if (context.isOpen()) {
+        context.listState().selectionManager().setFocused(false);
+        context.listState().selectionManager().setFocusedKey(undefined);
+      } else {
         context.open(false);
       }
+    },
+    onHoverEnd: () => {
+      context.parentMenuContext()?.focusContent(undefined);
     },
   });
 
@@ -114,14 +123,20 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       return;
     }
 
-    // For consistency with native menu implementation re-focus when the mouse wiggles.
-    if (parentSelectionManager().focusedKey() !== local.key) {
-      parentSelectionManager().setFocusedKey(local.key);
-    }
+    if (local.isDisabled) {
+      // Focus the parent menu itself if it's not focused yet.
+      if (getActiveElement(ref) !== context.parentMenuContext()?.contentRef()) {
+        context.parentMenuContext()?.focusContent(undefined);
+      }
+    } else {
+      // For consistency with native menu implementation re-focus when the mouse wiggles.
+      if (parentSelectionManager().focusedKey() !== local.key) {
+        parentSelectionManager().setFocusedKey(local.key);
+      }
 
-    // TODO: on subTrigger pointermove
-    if (!context.isOpen() && !local.isDisabled) {
-      context.open(false);
+      if (!context.isOpen()) {
+        context.open(false);
+      }
     }
   };
 
@@ -130,7 +145,17 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       return;
     }
 
-    // TODO: on subTrigger pointerleave
+    const contentEl = context.contentRef();
+
+    if (!contentEl) {
+      return;
+    }
+
+    context.setPointerGracePolygon(
+      getPointerGracePolygon(context.currentPlacement(), e, contentEl)
+    );
+
+    context.suspendPointer();
   };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
@@ -151,6 +176,10 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       case "ArrowRight":
         e.stopPropagation();
         e.preventDefault();
+
+        // Clear focus on parent menu (e.g. the menu containing the trigger).
+        parentSelectionManager().setFocused(false);
+        parentSelectionManager().setFocusedKey(undefined);
 
         // We focus manually because we prevented it in MenuSubContent's `onOpenAutoFocus`.
         if (context.isOpen()) {

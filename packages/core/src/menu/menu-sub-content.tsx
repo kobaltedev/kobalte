@@ -22,6 +22,7 @@ export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOp
     "onPointerEnter",
     "onPointerLeave",
     "onKeyDown",
+    "onFocusOut",
   ]);
 
   const { hoverHandlers } = createHover({
@@ -68,12 +69,28 @@ export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOp
     }
   };
 
+  const onFocusOut: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onFocusOut);
+
+    const relatedTarget = e.relatedTarget as HTMLElement | null;
+
+    if (
+      !relatedTarget ||
+      (!contains(context.triggerRef(), relatedTarget) &&
+        !contains(context.contentRef(), relatedTarget) &&
+        !context.isTargetInNestedMenu(relatedTarget))
+    ) {
+      context.close();
+    }
+  };
+
   return (
     <MenuContentBase
       onOpenAutoFocus={onOpenAutoFocus}
       onCloseAutoFocus={onCloseAutoFocus}
       onFocusOutside={onFocusOutside}
       onKeyDown={onKeyDown}
+      onFocusOut={onFocusOut}
       onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
       onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
       {...others}

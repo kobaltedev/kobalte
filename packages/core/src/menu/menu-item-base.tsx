@@ -2,7 +2,6 @@ import {
   combineProps,
   createGenerateId,
   createPolymorphicComponent,
-  focusWithoutScrolling,
   getActiveElement,
   mergeDefaultProps,
 } from "@kobalte/utils";
@@ -15,7 +14,6 @@ import {
   createHover,
   createPress,
   createRegisterId,
-  isKeyboardFocusVisible,
 } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -132,16 +130,29 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
   const { hoverHandlers, isHovered } = createHover({
     isDisabled: () => local.isDisabled,
     onHoverStart: () => {
-      if (!isKeyboardFocusVisible()) {
-        selectionManager().setFocused(true);
-        selectionManager().setFocusedKey(local.key);
+      if (menuContext.isPointerSuspended()) {
+        return;
       }
+
+      menuContext.focusContent(local.key);
+    },
+    onHoverEnd: () => {
+      if (menuContext.isPointerSuspended()) {
+        return;
+      }
+
+      menuContext.focusContent(undefined);
     },
   });
 
   const { isFocusVisible, focusRingHandlers } = createFocusRing();
 
   const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    if (menuContext.isPointerSuspended()) {
+      e.preventDefault();
+      return;
+    }
+
     if (e.pointerType !== "mouse") {
       return;
     }
@@ -149,11 +160,11 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
     if (local.isDisabled) {
       // Focus the menu itself if it's not focused yet.
       if (getActiveElement(ref) !== menuContext.contentRef()) {
-        menuContext.focusContent();
+        menuContext.focusContent(undefined);
       }
     } else {
       // For consistency with native menu implementation re-focus when the mouse wiggles.
-      if (!e.defaultPrevented && selectionManager().focusedKey() !== local.key) {
+      if (selectionManager().focusedKey() !== local.key) {
         selectionManager().setFocusedKey(local.key);
       }
     }

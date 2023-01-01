@@ -1,15 +1,17 @@
-import { contains, mergeDefaultProps } from "@kobalte/utils";
+import {
+  contains,
+  getActiveElement,
+  getDocument,
+  getEventPoint,
+  isPointInPolygon,
+  mergeDefaultProps,
+  Polygon,
+} from "@kobalte/utils";
 import { createEffect, createSignal, onCleanup, ParentProps, splitProps } from "solid-js";
+import { isServer } from "solid-js/web";
 
 import { createListState } from "../list";
 import { Popper, PopperOptions } from "../popper";
-import {
-  debugPolygon,
-  getElementPolygon,
-  getEventPoint,
-  isPointInPolygon,
-  Polygon,
-} from "../popper/polygon";
 import { Placement } from "../popper/utils";
 import {
   CollectionItem,
@@ -24,7 +26,6 @@ import {
 import { FocusStrategy } from "../selection";
 import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { isServer } from "solid-js/web";
 
 export interface MenuProps
   extends Omit<PopperOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
@@ -60,6 +61,9 @@ export function Menu(props: ParentProps<MenuProps>) {
 
   const nestedMenus = new Set<Element>([]);
 
+  let closeTimeoutId: number | undefined;
+  let resumePointerTimeoutId: number | undefined;
+
   const [triggerId, setTriggerId] = createSignal<string>();
   const [contentId, setContentId] = createSignal<string>();
 
@@ -67,8 +71,10 @@ export function Menu(props: ParentProps<MenuProps>) {
   const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
 
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(true);
-
   const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(others.placement!);
+  const [isPointerInNestedMenu, setIsPointerInNestedMenu] = createSignal(false);
+  const [isPointerSuspended, setIsPointerSuspended] = createSignal(false);
+  const [pointerGracePolygon, setPointerGracePolygon] = createSignal<Polygon | null>(null);
 
   const [items, setItems] = createSignal<CollectionItem[]>([]);
 
@@ -94,6 +100,26 @@ export function Menu(props: ParentProps<MenuProps>) {
     disclosureState.close();
   };
 
+  const closeWithDelay = () => {
+    if (isServer) {
+      return;
+    }
+
+    closeTimeoutId = window.setTimeout(() => {
+      close();
+      closeTimeoutId = undefined;
+    }, 3000);
+  };
+
+  const clearCloseTimeout = () => {
+    if (isServer) {
+      return;
+    }
+
+    window.clearTimeout(closeTimeoutId);
+    closeTimeoutId = undefined;
+  };
+
   const toggle = (focusStrategy: FocusStrategy | boolean) => {
     setFocusStrategy(focusStrategy);
     disclosureState.toggle();
@@ -102,11 +128,12 @@ export function Menu(props: ParentProps<MenuProps>) {
   const focusContent = (key?: string) => {
     const content = contentRef();
 
-    if (content) {
+    if (content && !contains(content, getActiveElement())) {
       focusSafely(content);
-      listState.selectionManager().setFocused(true);
-      listState.selectionManager().setFocusedKey(key);
     }
+
+    listState.selectionManager().setFocused(true);
+    listState.selectionManager().setFocusedKey(key);
   };
 
   const registerNestedMenu = (element: Element) => {
@@ -124,17 +151,52 @@ export function Menu(props: ParentProps<MenuProps>) {
     return [...nestedMenus].some(menu => contains(menu, target));
   };
 
-  const isPointInSafeArea = (e: PointerEvent) => {
-    const triggerEl = triggerRef();
-    const contentEl = contentRef();
+  const trackPointerMove = (e: PointerEvent) => {
+    // Cancel the previous closing attempt.
+    clearCloseTimeout();
 
-    if (!triggerEl || !contentEl) {
-      return false;
+    const polygon = pointerGracePolygon();
+
+    // If no polygon, user is already on the menu content or didn't go to it, so do nothing.
+    if (!polygon) {
+      return;
     }
 
-    const polygon = getElementPolygon(currentPlacement(), triggerEl, contentEl);
+    if (isPointInPolygon(getEventPoint(e), polygon)) {
+      // Plan a closing attempt in case the user doesn't move to the menu content.
+      closeWithDelay();
+    } else {
+      // User isn't moving to the menu content, close it.
+      setPointerGracePolygon(null);
+      parentMenuContext?.setIsPointerSuspended(false);
+      close();
+    }
+  };
 
-    return isPointInPolygon(getEventPoint(e), polygon);
+  const resumePointer = () => {
+    setPointerGracePolygon(null);
+    parentMenuContext?.setIsPointerSuspended(false);
+    getDocument().removeEventListener("pointermove", trackPointerMove);
+  };
+
+  const suspendPointer = () => {
+    // In case of this menu is a sub menu, suspend pointer on parent menu,
+    // so hovering quickly a parent menu item
+    // while moving to the sub menu content doesn't close the sub menu.
+    parentMenuContext?.setIsPointerSuspended(true);
+
+    getDocument().addEventListener("pointermove", trackPointerMove);
+
+    resumePointerTimeoutId = window.setTimeout(resumePointer, 300);
+  };
+
+  const clearResumePointerTimeout = () => {
+    if (isServer) {
+      return;
+    }
+
+    window.clearTimeout(resumePointerTimeoutId);
+    resumePointerTimeoutId = undefined;
   };
 
   createEffect(() => {
@@ -151,9 +213,18 @@ export function Menu(props: ParentProps<MenuProps>) {
     });
   });
 
+  onCleanup(() => {
+    clearCloseTimeout();
+    clearResumePointerTimeout();
+    resumePointer();
+  });
+
   const context: MenuContextValue = {
     isOpen: disclosureState.isOpen,
     shouldMount: () => rootContext.forceMount() || disclosureState.isOpen(),
+    currentPlacement,
+    isPointerInNestedMenu,
+    isPointerSuspended,
     autoFocus: focusStrategy,
     listState: () => listState,
     parentMenuContext: () => parentMenuContext,
@@ -163,11 +234,15 @@ export function Menu(props: ParentProps<MenuProps>) {
     contentId,
     setTriggerRef,
     setContentRef,
+    setIsPointerInNestedMenu,
+    setIsPointerSuspended,
+    setPointerGracePolygon,
     open,
     close,
+    clearCloseTimeout,
     toggle,
     focusContent,
-    isPointInSafeArea,
+    suspendPointer,
     isTargetInNestedMenu,
     registerNestedMenu,
     registerItemToParentDomCollection: parentDomCollectionContext?.registerItem,
