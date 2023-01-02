@@ -19,7 +19,7 @@ import {
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { Accessor, createEffect, on, onCleanup, onMount, splitProps } from "solid-js";
+import { Accessor, createEffect, on, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
@@ -37,6 +37,9 @@ import {
 import { layerStack } from "./layer-stack";
 
 export interface DismissableLayerProps {
+  /** Whether the layer is dismissed or not. */
+  isDismissed: boolean;
+
   /**
    * When `true`, hover/focus/click interactions will be disabled on elements outside
    * the layer. Users will need to click twice on outside elements to
@@ -79,8 +82,6 @@ export interface DismissableLayerProps {
 export const DismissableLayer = createPolymorphicComponent<"div", DismissableLayerProps>(props => {
   let ref: HTMLElement | undefined;
 
-  const nestedLayers = new Set<Element>([]);
-
   const parentContext = useOptionalDismissableLayerContext();
 
   props = mergeDefaultProps({ as: "div" }, props);
@@ -88,6 +89,7 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
   const [local, others] = splitProps(props, [
     "as",
     "ref",
+    "isDismissed",
     "disableOutsidePointerEvents",
     "excludedElements",
     "onEscapeKeyDown",
@@ -96,6 +98,8 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
     "onInteractOutside",
     "onDismiss",
   ]);
+
+  const nestedLayers = new Set<Element>([]);
 
   const registerNestedLayer = (element: Element) => {
     nestedLayers.add(element);
@@ -143,6 +147,7 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
 
   createInteractOutside(
     {
+      isDisabled: () => local.isDismissed,
       shouldExcludeElement,
       onPointerDownOutside,
       onFocusOutside,
@@ -151,6 +156,7 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
   );
 
   createEscapeKeyDown({
+    isDisabled: () => local.isDismissed,
     ownerDocument: () => getDocument(ref),
     onEscapeKeyDown: e => {
       if (!ref || !layerStack.isTopMostLayer(ref)) {
@@ -166,44 +172,46 @@ export const DismissableLayer = createPolymorphicComponent<"div", DismissableLay
     },
   });
 
-  onMount(() => {
-    if (!ref) {
-      return;
-    }
-
-    layerStack.addLayer({
-      node: ref,
-      isPointerBlocking: local.disableOutsidePointerEvents,
-      dismiss: local.onDismiss,
-    });
-
-    const unregisterFromParentLayer = parentContext?.registerNestedLayer(ref);
-
-    layerStack.assignPointerEventToLayers();
-
-    layerStack.disableBodyPointerEvents(ref);
-
-    onCleanup(() => {
-      if (!ref) {
+  createEffect(
+    on([() => ref, () => local.isDismissed], ([ref, isDismissed]) => {
+      if (!ref || isDismissed) {
         return;
       }
 
-      layerStack.removeLayer(ref);
+      layerStack.addLayer({
+        node: ref,
+        isPointerBlocking: local.disableOutsidePointerEvents,
+        dismiss: local.onDismiss,
+      });
 
-      unregisterFromParentLayer?.();
+      const unregisterFromParentLayer = parentContext?.registerNestedLayer(ref);
 
-      // Re-assign pointer event to remaining layers.
       layerStack.assignPointerEventToLayers();
 
-      layerStack.restoreBodyPointerEvents(ref);
-    });
-  });
+      layerStack.disableBodyPointerEvents(ref);
+
+      onCleanup(() => {
+        if (!ref) {
+          return;
+        }
+
+        layerStack.removeLayer(ref);
+
+        unregisterFromParentLayer?.();
+
+        // Re-assign pointer event to remaining layers.
+        layerStack.assignPointerEventToLayers();
+
+        layerStack.restoreBodyPointerEvents(ref);
+      });
+    })
+  );
 
   createEffect(
     on(
-      [() => ref, () => local.disableOutsidePointerEvents],
-      ([ref, disableOutsidePointerEvents]) => {
-        if (!ref) {
+      [() => ref, () => local.isDismissed, () => local.disableOutsidePointerEvents],
+      ([ref, isDismissed, disableOutsidePointerEvents]) => {
+        if (!ref || isDismissed) {
           return;
         }
 

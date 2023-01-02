@@ -1,7 +1,6 @@
 import {
   composeEventHandlers,
   createPolymorphicComponent,
-  getActiveElement,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
@@ -14,7 +13,6 @@ import { PopperPositioner } from "../popper/popper-positioner";
 import {
   createFocusRing,
   createFocusScope,
-  createHideOutside,
   createHover,
   FocusOutsideEvent,
   InteractOutsideEvent,
@@ -207,6 +205,7 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           role="menu"
           id={local.id}
           tabIndex={selectableList.tabIndex()}
+          isDismissed={!context.isOpen()}
           disableOutsidePointerEvents={isPointerBlocking()}
           excludedElements={[context.triggerRef]}
           style={{

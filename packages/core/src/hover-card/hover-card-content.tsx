@@ -24,6 +24,7 @@ export const HoverCardContent = createPolymorphicComponent<"div", HoverCardConte
         <PopperPositioner>
           <DismissableLayer
             ref={mergeRefs(context.setContentRef, local.ref)}
+            isDismissed={!context.isOpen()}
             disableOutsidePointerEvents={false}
             style={{ position: "relative", ...local.style }}
             onFocusOutside={e => e.preventDefault()}

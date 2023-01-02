@@ -64,14 +64,15 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentProp
         popoverContext.setContentRef(el);
         ref = el;
       }, local.ref)}
+      isDismissed={!context.isOpen()}
+      disableOutsidePointerEvents={false}
+      excludedElements={[context.triggerRef]}
       hidden={!keepVisible()}
       style={{
         position: "relative",
         display: !keepVisible() ? "none" : undefined,
         ...local.style,
       }}
-      disableOutsidePointerEvents={false}
-      excludedElements={[context.triggerRef]}
       onEscapeKeyDown={e => e.preventDefault()}
       onFocusOutside={e => e.preventDefault()}
       onDismiss={context.close}

@@ -170,6 +170,7 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
           role="dialog"
           id={local.id}
           tabIndex={-1}
+          isDismissed={!context.isOpen()}
           disableOutsidePointerEvents={context.isOpen() && context.isModal()}
           excludedElements={[context.triggerRef]}
           style={{ position: "relative", ...local.style }}

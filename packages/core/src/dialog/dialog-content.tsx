@@ -168,6 +168,7 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentOpti
         role="dialog"
         id={local.id}
         tabIndex={-1}
+        isDismissed={!context.isOpen()}
         disableOutsidePointerEvents={context.isOpen() && context.isModal()}
         excludedElements={[context.triggerRef]}
         aria-labelledby={context.titleId()}

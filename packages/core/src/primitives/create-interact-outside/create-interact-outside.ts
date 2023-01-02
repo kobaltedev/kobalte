@@ -12,7 +12,15 @@
  * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/interact-outside/src/index.ts
  */
 
-import { composeEventHandlers, contains, getDocument, isCtrlKey, noop } from "@kobalte/utils";
+import {
+  access,
+  composeEventHandlers,
+  contains,
+  getDocument,
+  isCtrlKey,
+  MaybeAccessor,
+  noop,
+} from "@kobalte/utils";
 import { Accessor, createEffect, onCleanup } from "solid-js";
 
 type EventDetails<T> = {
@@ -25,6 +33,9 @@ export type FocusOutsideEvent = CustomEvent<EventDetails<FocusEvent>>;
 export type InteractOutsideEvent = PointerDownOutsideEvent | FocusOutsideEvent;
 
 export interface CreateInteractOutsideProps {
+  /** Whether the interact outside events should be listened or not. */
+  isDisabled?: MaybeAccessor<boolean | undefined>;
+
   /**
    * When user interacts with the argument element outside the ref,
    * return `true` if the interaction should not trigger the "interact outside" handlers.
@@ -158,6 +169,10 @@ export function createInteractOutside<T extends HTMLElement>(
   };
 
   createEffect(() => {
+    if (access(props.isDisabled)) {
+      return;
+    }
+
     /**
      * if this primitive executes in a component that mounts via a `pointerdown` event, the event
      * would bubble up to the document and trigger a `pointerDownOutside` event. We avoid
