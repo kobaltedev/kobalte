@@ -192,10 +192,7 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           isDismissed={!context.isOpen()}
           disableOutsidePointerEvents={isPointerBlocking()}
           excludedElements={[context.triggerRef]}
-          style={{
-            position: "relative",
-            ...local.style,
-          }}
+          style={{ position: "relative", ...local.style }}
           aria-labelledby={context.triggerId()}
           data-focus={isFocused() ? "" : undefined}
           data-focus-visible={isFocusVisible() ? "" : undefined}

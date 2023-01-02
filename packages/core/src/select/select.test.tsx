@@ -34,15 +34,13 @@ describe("Select", () => {
           <Select.Value placeholder="Placeholder" />
         </Select.Trigger>
         <Select.Portal>
-          <Select.Positioner>
-            <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
-            </Select.Content>
-          </Select.Positioner>
+          <Select.Content>
+            <Select.Listbox>
+              <Select.Item value="1">One</Select.Item>
+              <Select.Item value="2">Two</Select.Item>
+              <Select.Item value="3">Three</Select.Item>
+            </Select.Listbox>
+          </Select.Content>
         </Select.Portal>
       </Select>
     ));
@@ -73,15 +71,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -120,15 +116,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -181,15 +175,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -230,15 +222,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -279,15 +269,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -328,15 +316,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -377,15 +363,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -444,15 +428,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -464,7 +446,7 @@ describe("Select", () => {
       expect(listbox).toBeVisible();
       expect(onOpenChange).not.toBeCalled();
 
-      const trigger = screen.getByRole("button");
+      const trigger = screen.getByRole("button", { hidden: true });
 
       expect(trigger).toHaveAttribute("aria-expanded", "true");
       expect(trigger).toHaveAttribute("aria-controls", listbox.id);
@@ -476,7 +458,7 @@ describe("Select", () => {
       expect(items[1]).toHaveTextContent("Two");
       expect(items[2]).toHaveTextContent("Three");
 
-      expect(document.activeElement).toBe(items[0]);
+      expect(document.activeElement).toBe(listbox);
     });
 
     it("supports default open state", async () => {
@@ -489,15 +471,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -509,7 +489,7 @@ describe("Select", () => {
       expect(listbox).toBeVisible();
       expect(onOpenChange).not.toBeCalled();
 
-      const trigger = screen.getByRole("button");
+      const trigger = screen.getByRole("button", { hidden: true });
 
       expect(trigger).toHaveAttribute("aria-expanded", "true");
       expect(trigger).toHaveAttribute("aria-controls", listbox.id);
@@ -521,7 +501,7 @@ describe("Select", () => {
       expect(items[1]).toHaveTextContent("Two");
       expect(items[2]).toHaveTextContent("Three");
 
-      expect(document.activeElement).toBe(items[0]);
+      expect(document.activeElement).toBe(listbox);
     });
   });
 
@@ -536,15 +516,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -555,6 +533,8 @@ describe("Select", () => {
 
       await triggerPress(trigger);
 
+      jest.runAllTimers();
+
       const listbox = screen.getByRole("listbox");
 
       expect(listbox).toBeVisible();
@@ -564,6 +544,8 @@ describe("Select", () => {
       expect(trigger).toHaveAttribute("aria-controls", listbox.id);
 
       await triggerPress(trigger);
+
+      jest.runAllTimers();
 
       expect(listbox).not.toBeVisible();
       expect(trigger).toHaveAttribute("aria-expanded", "false");
@@ -584,15 +566,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -603,6 +583,8 @@ describe("Select", () => {
 
       await triggerPress(trigger);
 
+      jest.runAllTimers();
+
       const listbox = screen.getByRole("listbox");
 
       expect(listbox).toBeVisible();
@@ -612,6 +594,8 @@ describe("Select", () => {
       expect(trigger).toHaveAttribute("aria-controls", listbox.id);
 
       await triggerPress(document.body);
+
+      jest.runAllTimers();
 
       expect(listbox).not.toBeVisible();
       expect(trigger).toHaveAttribute("aria-expanded", "false");
@@ -630,15 +614,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -679,15 +661,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -721,15 +701,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -765,15 +743,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -796,15 +772,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -834,15 +808,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -870,15 +842,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -905,15 +875,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -944,15 +912,13 @@ describe("Select", () => {
           </Select.Trigger>
           <Select.Description>Description</Select.Description>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -973,15 +939,13 @@ describe("Select", () => {
           </Select.Trigger>
           <Select.ErrorMessage>ErrorMessage</Select.ErrorMessage>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1003,15 +967,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1053,15 +1015,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1071,6 +1031,8 @@ describe("Select", () => {
 
       await triggerPress(trigger);
 
+      jest.runAllTimers();
+
       const listbox = screen.getByRole("listbox");
       const items = within(listbox).getAllByRole("option");
 
@@ -1079,7 +1041,7 @@ describe("Select", () => {
       expect(items[1]).toHaveTextContent("Two");
       expect(items[2]).toHaveTextContent("Three");
 
-      expect(document.activeElement).toBe(items[0]);
+      expect(document.activeElement).toBe(listbox);
 
       fireEvent.keyDown(listbox, { key: "ArrowDown" });
       await Promise.resolve();
@@ -1087,7 +1049,7 @@ describe("Select", () => {
       fireEvent.keyUp(listbox, { key: "ArrowDown" });
       await Promise.resolve();
 
-      expect(document.activeElement).toBe(items[1]);
+      expect(document.activeElement).toBe(items[0]);
 
       fireEvent.keyDown(document.activeElement!, { key: " " });
       await Promise.resolve();
@@ -1096,7 +1058,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0].has("2")).toBeTruthy();
+      expect(onValueChange.mock.calls[0][0].has("1")).toBeTruthy();
 
       expect(listbox).not.toBeVisible();
 
@@ -1104,7 +1066,7 @@ describe("Select", () => {
       jest.runAllTimers();
 
       expect(document.activeElement).toBe(trigger);
-      expect(trigger).toHaveTextContent("Two");
+      expect(trigger).toHaveTextContent("One");
     });
 
     it("can select items with the Enter key", async () => {
@@ -1115,15 +1077,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1179,15 +1139,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1246,15 +1204,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1319,15 +1275,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1383,15 +1337,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1447,17 +1399,15 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2" isDisabled>
-                    Two
-                  </Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2" isDisabled>
+                  Two
+                </Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1467,6 +1417,8 @@ describe("Select", () => {
 
       await triggerPress(trigger);
 
+      jest.runAllTimers();
+
       const listbox = screen.getByRole("listbox");
       const items = within(listbox).getAllByRole("option");
 
@@ -1475,8 +1427,14 @@ describe("Select", () => {
       expect(items[1]).toHaveTextContent("Two");
       expect(items[2]).toHaveTextContent("Three");
 
-      expect(document.activeElement).toBe(items[0]);
+      expect(document.activeElement).toBe(listbox);
       expect(items[1]).toHaveAttribute("aria-disabled", "true");
+
+      fireEvent.keyDown(listbox, { key: "ArrowDown" });
+      await Promise.resolve();
+
+      fireEvent.keyUp(listbox, { key: "ArrowDown" });
+      await Promise.resolve();
 
       fireEvent.keyDown(listbox, { key: "ArrowDown" });
       await Promise.resolve();
@@ -1512,16 +1470,14 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                  <Select.Item value="4">Four</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+                <Select.Item value="4">Four</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1611,15 +1567,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1656,15 +1610,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1720,15 +1672,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1776,15 +1726,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1821,15 +1769,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1864,15 +1810,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1907,15 +1851,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -1956,15 +1898,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -2008,15 +1948,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -2067,15 +2005,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <For each={ADDRESS_DATA}>
-                    {data => <Select.Item value={data.value}>{data.label}</Select.Item>}
-                  </For>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <For each={ADDRESS_DATA}>
+                  {data => <Select.Item value={data.value}>{data.label}</Select.Item>}
+                </For>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -2115,15 +2051,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -2158,15 +2092,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -2186,15 +2118,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -2221,15 +2151,13 @@ describe("Select", () => {
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
           <Select.Portal>
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
-              </Select.Content>
-            </Select.Positioner>
+            <Select.Content>
+              <Select.Listbox>
+                <Select.Item value="1">One</Select.Item>
+                <Select.Item value="2">Two</Select.Item>
+                <Select.Item value="3">Three</Select.Item>
+              </Select.Listbox>
+            </Select.Content>
           </Select.Portal>
         </Select>
       ));
@@ -2271,15 +2199,13 @@ describe("Select", () => {
               <Select.Value placeholder="Placeholder" />
             </Select.Trigger>
             <Select.Portal>
-              <Select.Positioner>
-                <Select.Content>
-                  <Select.Listbox>
-                    <Select.Item value="1">One</Select.Item>
-                    <Select.Item value="2">Two</Select.Item>
-                    <Select.Item value="3">Three</Select.Item>
-                  </Select.Listbox>
-                </Select.Content>
-              </Select.Positioner>
+              <Select.Content>
+                <Select.Listbox>
+                  <Select.Item value="1">One</Select.Item>
+                  <Select.Item value="2">Two</Select.Item>
+                  <Select.Item value="3">Three</Select.Item>
+                </Select.Listbox>
+              </Select.Content>
             </Select.Portal>
           </Select>
           <button type="submit" data-testid="submit">
@@ -2312,15 +2238,13 @@ describe("Select", () => {
               <Select.Value placeholder="Placeholder" />
             </Select.Trigger>
             <Select.Portal>
-              <Select.Positioner>
-                <Select.Content>
-                  <Select.Listbox>
-                    <Select.Item value="1">One</Select.Item>
-                    <Select.Item value="2">Two</Select.Item>
-                    <Select.Item value="3">Three</Select.Item>
-                  </Select.Listbox>
-                </Select.Content>
-              </Select.Positioner>
+              <Select.Content>
+                <Select.Listbox>
+                  <Select.Item value="1">One</Select.Item>
+                  <Select.Item value="2">Two</Select.Item>
+                  <Select.Item value="3">Three</Select.Item>
+                </Select.Listbox>
+              </Select.Content>
             </Select.Portal>
           </Select>
         </form>

@@ -1,7 +1,6 @@
-import { createSignal } from "solid-js";
+import { ComponentProps, createSignal, splitProps } from "solid-js";
 
-import { ContextMenu, DropdownMenu, I18nProvider } from "../src";
-import { Portal } from "solid-js/web";
+import { ContextMenu, DropdownMenu, I18nProvider, Select } from "../src";
 
 function HamburgerMenuIcon(props: any) {
   return (
@@ -276,11 +275,70 @@ function ContextMenuDemo() {
   );
 }
 
+const SelectDemo = () => (
+  <Select>
+    <Select.Trigger class="SelectTrigger" aria-label="Food">
+      <Select.Value placeholder="Select a fruit…" />
+      <Select.Icon class="SelectIcon" />
+    </Select.Trigger>
+    <Select.Portal>
+      <Select.Content class="SelectContent">
+        <Select.Arrow class="DropdownMenuArrow" />
+        <Select.Listbox>
+          <Select.Group>
+            <Select.GroupLabel class="SelectLabel">Fruits</Select.GroupLabel>
+            <SelectItem value="apple">Apple</SelectItem>
+            <SelectItem value="banana">Banana</SelectItem>
+            <SelectItem value="blueberry">Blueberry</SelectItem>
+            <SelectItem value="grapes">Grapes</SelectItem>
+            <SelectItem value="pineapple">Pineapple</SelectItem>
+          </Select.Group>
+
+          <Select.Separator class="SelectSeparator" />
+
+          <Select.Group>
+            <Select.GroupLabel class="SelectLabel">Vegetables</Select.GroupLabel>
+            <SelectItem value="aubergine">Aubergine</SelectItem>
+            <SelectItem value="broccoli">Broccoli</SelectItem>
+            <SelectItem value="carrot" isDisabled>
+              Carrot
+            </SelectItem>
+            <SelectItem value="courgette">Courgette</SelectItem>
+            <SelectItem value="leek">leek</SelectItem>
+          </Select.Group>
+
+          <Select.Separator class="SelectSeparator" />
+
+          <Select.Group>
+            <Select.GroupLabel class="SelectLabel">Meat</Select.GroupLabel>
+            <SelectItem value="beef">Beef</SelectItem>
+            <SelectItem value="chicken">Chicken</SelectItem>
+            <SelectItem value="lamb">Lamb</SelectItem>
+            <SelectItem value="pork">Pork</SelectItem>
+          </Select.Group>
+        </Select.Listbox>
+      </Select.Content>
+    </Select.Portal>
+  </Select>
+);
+
+const SelectItem = (props: ComponentProps<typeof Select.Item>) => {
+  const [local, others] = splitProps(props, ["class", "children"]);
+
+  return (
+    <Select.Item class={["SelectItem", local.class].filter(Boolean).join(" ")} {...others}>
+      <Select.ItemLabel>{local.children}</Select.ItemLabel>
+      <Select.ItemIndicator class="SelectItemIndicator">
+        <CheckIcon />
+      </Select.ItemIndicator>
+    </Select.Item>
+  );
+};
+
 export default function App() {
   return (
     <I18nProvider>
-      <ContextMenuDemo />
-      <DropdownMenuDemo />
+      <SelectDemo />
     </I18nProvider>
   );
 }

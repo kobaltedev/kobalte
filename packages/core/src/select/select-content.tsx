@@ -1,15 +1,19 @@
 import {
   createPolymorphicComponent,
   focusWithoutScrolling,
-  getDocument,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
-import { usePopoverContext } from "../popover/popover-context";
-import { createEscapeKeyDown, createFocusScope } from "../primitives";
+import { PopperPositioner } from "../popper/popper-positioner";
+import {
+  createFocusScope,
+  createHideOutside,
+  createPreventScroll,
+  FocusOutsideEvent,
+} from "../primitives";
 import { useSelectContext } from "./select-context";
 
 export interface SelectContentProps {
@@ -29,7 +33,6 @@ export interface SelectContentProps {
 export const SelectContent = createPolymorphicComponent<"div", SelectContentProps>(props => {
   let ref: HTMLElement | undefined;
 
-  const popoverContext = usePopoverContext();
   const context = useSelectContext();
 
   props = mergeDefaultProps({ as: "div" }, props);
@@ -38,9 +41,27 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentProp
 
   const keepVisible = () => local.keepVisible || context.isOpen();
 
-  createEscapeKeyDown({
-    ownerDocument: () => getDocument(ref),
-    onEscapeKeyDown: () => context.close(),
+  const onEscapeKeyDown = (e: KeyboardEvent) => {
+    // `createSelectableList` prevent escape key down,
+    // which prevent our `onDismiss` in `DismissableLayer` to run,
+    // so we force "close on escape" here.
+    context.close();
+  };
+
+  const onFocusOutside = (e: FocusOutsideEvent) => {
+    // When focus is trapped, a `focusout` event may still happen.
+    // We make sure we don't trigger our `onDismiss` in such case.
+    e.preventDefault();
+  };
+
+  // aria-hide everything except the content (better supported equivalent to setting aria-modal)
+  createHideOutside({
+    isDisabled: () => !context.isOpen(),
+    targets: () => (ref ? [ref] : []),
+  });
+
+  createPreventScroll({
+    isDisabled: () => !context.isOpen(),
   });
 
   createFocusScope(
@@ -59,24 +80,26 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentProp
   );
 
   return (
-    <DismissableLayer
-      ref={mergeRefs(el => {
-        popoverContext.setContentRef(el);
-        ref = el;
-      }, local.ref)}
-      isDismissed={!context.isOpen()}
-      disableOutsidePointerEvents={false}
-      excludedElements={[context.triggerRef]}
-      hidden={!keepVisible()}
-      style={{
-        position: "relative",
-        display: !keepVisible() ? "none" : undefined,
-        ...local.style,
-      }}
-      onEscapeKeyDown={e => e.preventDefault()}
-      onFocusOutside={e => e.preventDefault()}
-      onDismiss={context.close}
-      {...others}
-    />
+    <PopperPositioner>
+      <DismissableLayer
+        ref={mergeRefs(el => {
+          context.setContentRef(el);
+          ref = el;
+        }, local.ref)}
+        isDismissed={!context.isOpen()}
+        disableOutsidePointerEvents={context.isOpen()}
+        excludedElements={[context.triggerRef]}
+        hidden={!keepVisible()}
+        style={{
+          position: "relative",
+          display: !keepVisible() ? "none" : undefined,
+          ...local.style,
+        }}
+        onEscapeKeyDown={onEscapeKeyDown}
+        onFocusOutside={onFocusOutside}
+        onDismiss={context.close}
+        {...others}
+      />
+    </PopperPositioner>
   );
 });

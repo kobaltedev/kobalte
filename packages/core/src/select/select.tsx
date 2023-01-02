@@ -8,6 +8,7 @@
 
 import { access, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createMemo, createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
+import { Portal } from "solid-js/web";
 
 import {
   createFormControl,
@@ -20,7 +21,7 @@ import {
 import { createCollator } from "../i18n";
 import { createListState, CreateListStateProps, ListKeyboardDelegate } from "../list";
 import { Listbox } from "../listbox";
-import { Popover, PopoverFloatingProps } from "../popover";
+import { Popper, PopperOptions } from "../popper";
 import {
   CollectionItem,
   createDisclosureState,
@@ -46,10 +47,9 @@ export type SelectBaseComposite = {
   Trigger: typeof SelectTrigger;
   Value: typeof SelectValue;
   Icon: typeof SelectIcon;
-  Portal: typeof Popover.Portal;
-  Positioner: typeof Popover.Positioner;
+  Portal: typeof Portal;
   Content: typeof SelectContent;
-  Arrow: typeof Popover.Arrow;
+  Arrow: typeof Popper.Arrow;
   Listbox: typeof SelectListbox;
   Separator: typeof Separator;
   Group: typeof Listbox.Group;
@@ -65,7 +65,7 @@ export interface SelectProps
       CreateListStateProps,
       "allowDuplicateSelectionEvents" | "disallowEmptySelection" | "selectionBehavior"
     >,
-    PopoverFloatingProps,
+    Omit<PopperOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange">,
     CreateFormControlProps {
   /** The controlled open state of the select. */
   isOpen?: boolean;
@@ -145,10 +145,11 @@ export const Select: ParentComponent<SelectProps> & SelectBaseComposite = props 
   const [listboxId, setListboxId] = createSignal<string>();
 
   const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
+  const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
   const [listboxRef, setListboxRef] = createSignal<HTMLDivElement>();
 
   const [listboxAriaLabelledBy, setListboxAriaLabelledBy] = createSignal<string>();
-  const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy>();
+  const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(true);
 
   const [items, setItems] = createSignal<CollectionItem[]>([]);
 
@@ -174,7 +175,7 @@ export const Select: ParentComponent<SelectProps> & SelectBaseComposite = props 
     }
   };
 
-  const open = (focusStrategy?: FocusStrategy) => {
+  const open = (focusStrategy: FocusStrategy | boolean) => {
     // Don't open if the collection is empty.
     if (listState.collection().getSize() <= 0) {
       return;
@@ -186,29 +187,29 @@ export const Select: ParentComponent<SelectProps> & SelectBaseComposite = props 
     let focusedKey = listState.selectionManager().firstSelectedKey();
 
     if (focusedKey == null) {
-      focusedKey =
-        focusStrategy === "last"
-          ? listState.collection().getLastKey()
-          : listState.collection().getFirstKey();
+      if (focusStrategy === "first") {
+        focusedKey = listState.collection().getFirstKey();
+      } else if (focusStrategy === "last") {
+        focusedKey = listState.collection().getLastKey();
+      }
     }
 
     focusListbox();
     listState.selectionManager().setFocused(true);
-    listState.selectionManager().setFocusedKey(focusedKey, focusStrategy);
+    listState.selectionManager().setFocusedKey(focusedKey);
   };
 
-  const close = (focusStrategy?: FocusStrategy) => {
-    setFocusStrategy(focusStrategy);
+  const close = () => {
     disclosureState.close();
 
-    focusTrigger();
     listState.selectionManager().setFocused(false);
     listState.selectionManager().setFocusedKey(undefined);
+    focusTrigger();
   };
 
-  const toggle = (focusStrategy?: FocusStrategy) => {
+  const toggle = (focusStrategy: FocusStrategy | boolean) => {
     if (disclosureState.isOpen()) {
-      close(focusStrategy);
+      close();
     } else {
       open(focusStrategy);
     }
@@ -259,7 +260,7 @@ export const Select: ParentComponent<SelectProps> & SelectBaseComposite = props 
     isOpen: disclosureState.isOpen,
     isDisabled: () => formControlContext.isDisabled() ?? false,
     isMultiple: () => access(local.selectionMode) === "multiple",
-    autoFocus: () => focusStrategy() || true,
+    autoFocus: focusStrategy,
     triggerRef,
     listState: () => listState,
     keyboardDelegate: delegate,
@@ -271,6 +272,7 @@ export const Select: ParentComponent<SelectProps> & SelectBaseComposite = props 
     listboxAriaLabelledBy,
     setListboxAriaLabelledBy,
     setTriggerRef,
+    setContentRef,
     setListboxRef,
     open,
     close,
@@ -284,18 +286,10 @@ export const Select: ParentComponent<SelectProps> & SelectBaseComposite = props 
   return (
     <FormControlContext.Provider value={formControlContext}>
       <SelectContext.Provider value={context}>
-        <Popover
-          id={access(formControlProps.id)}
-          isOpen={disclosureState.isOpen()}
-          onOpenChange={disclosureState.setIsOpen}
-          anchorRef={triggerRef}
-          sameWidth
-          forceMount
-          {...others}
-        >
+        <Popper anchorRef={triggerRef} contentRef={contentRef} sameWidth {...others}>
           <HiddenSelect autoComplete={local.autoComplete} />
-          {props.children}
-        </Popover>
+          {local.children}
+        </Popper>
       </SelectContext.Provider>
     </FormControlContext.Provider>
   );
@@ -307,9 +301,8 @@ Select.ErrorMessage = FormControlErrorMessage;
 Select.Trigger = SelectTrigger;
 Select.Value = SelectValue;
 Select.Icon = SelectIcon;
-Select.Portal = Popover.Portal;
-Select.Positioner = Popover.Positioner;
-Select.Arrow = Popover.Arrow;
+Select.Portal = Portal;
+Select.Arrow = Popper.Arrow;
 Select.Content = SelectContent;
 Select.Listbox = SelectListbox;
 Select.Separator = Separator;
