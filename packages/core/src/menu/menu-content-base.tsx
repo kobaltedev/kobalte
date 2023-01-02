@@ -1,9 +1,4 @@
-import {
-  composeEventHandlers,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
+import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
@@ -78,19 +73,12 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
   );
 
   const [local, others] = splitProps(props, [
-    "ref",
     "id",
     "style",
     "onOpenAutoFocus",
     "onCloseAutoFocus",
     "onEscapeKeyDown",
     "onFocusOutside",
-    "onKeyDown",
-    "onFocusIn",
-    "onFocusOut",
-    "onMouseDown",
-    "onPointerEnter",
-    "onPointerLeave",
   ]);
 
   let updateParentIsPointerInNestedMenuTimeoutId: number | undefined;
@@ -198,10 +186,6 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     <Show when={context.shouldMount()}>
       <PopperPositioner>
         <DismissableLayer
-          ref={mergeRefs(el => {
-            context.setContentRef(el);
-            ref = el;
-          }, local.ref)}
           role="menu"
           id={local.id}
           tabIndex={selectableList.tabIndex()}
@@ -218,34 +202,19 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           onEscapeKeyDown={onEscapeKeyDown}
           onFocusOutside={onFocusOutside}
           onDismiss={context.close}
-          onKeyDown={composeEventHandlers([
-            local.onKeyDown,
-            selectableList.handlers.onKeyDown,
-            onKeyDown,
-          ])}
-          onFocusIn={composeEventHandlers([
-            local.onFocusIn,
-            selectableList.handlers.onFocusIn,
-            focusRingHandlers.onFocusIn,
-          ])}
-          onFocusOut={composeEventHandlers([
-            local.onFocusOut,
-            selectableList.handlers.onFocusOut,
-            focusRingHandlers.onFocusOut,
-          ])}
-          onMouseDown={composeEventHandlers([
-            local.onMouseDown,
-            selectableList.handlers.onMouseDown,
-          ])}
-          onPointerEnter={composeEventHandlers([
-            local.onPointerEnter,
-            hoverHandlers.onPointerEnter,
-          ])}
-          onPointerLeave={composeEventHandlers([
-            local.onPointerLeave,
-            hoverHandlers.onPointerLeave,
-          ])}
-          {...others}
+          {...combineProps(
+            {
+              ref: el => {
+                context.setContentRef(el);
+                ref = el;
+              },
+            },
+            others,
+            selectableList.handlers,
+            { onKeyDown },
+            hoverHandlers,
+            focusRingHandlers
+          )}
         />
       </PopperPositioner>
     </Show>

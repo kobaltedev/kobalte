@@ -8,6 +8,7 @@
 
 import {
   callHandler,
+  combineProps,
   createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
@@ -69,11 +70,10 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
       }
     };
 
-    // TODO: pass props to component (without combine props).
     const { longPressHandlers } = createLongPress({
       isDisabled: () => local.isDisabled,
       threshold: 700,
-      onLongPressStart: e => {
+      onLongPress: e => {
         if (e.pointerType === "touch" || e.pointerType === "pen") {
           menuContext.open(false);
         }
@@ -92,7 +92,7 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
         data-expanded={menuContext.isOpen() ? "" : undefined}
         data-disabled={local.isDisabled ? "" : undefined}
         onContextMenu={onContextMenu}
-        {...others}
+        {...combineProps(others, longPressHandlers)}
       />
     );
   }
