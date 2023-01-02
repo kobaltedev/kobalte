@@ -59,7 +59,7 @@ function DropdownMenuDemo() {
   const [person, setPerson] = createSignal("pedro");
 
   return (
-    <DropdownMenu>
+    <DropdownMenu isModal={false}>
       <DropdownMenu.Trigger class="IconButton" aria-label="Customise options">
         <HamburgerMenuIcon />
       </DropdownMenu.Trigger>

@@ -122,7 +122,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
 
     // For consistency with native menu implementation re-focus when the mouse wiggles.
     if (parentSelectionManager().focusedKey() !== local.key) {
-      parentSelectionManager().setFocusedKey(local.key);
+      context.parentMenuContext()?.focusContent(local.key);
     }
 
     if (!context.isOpen() && context.openTimeoutId() == null) {

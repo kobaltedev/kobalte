@@ -110,8 +110,8 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
   };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
-    // Prevent shift + tab from doing anything when focus should be trapped.
-    if (context.isOpen() && rootContext.isModal() && e.shiftKey && e.key === "Tab") {
+    // Prevent shift + tab from doing anything when focus should be trapped (opened and modal).
+    if (e.shiftKey && e.key === "Tab" && context.isOpen() && rootContext.isModal()) {
       e.preventDefault();
     }
   };
@@ -148,7 +148,7 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
   );
 
   const { hoverHandlers } = createHover({
-    isDisabled: () => !(context.isOpen() && rootContext.isModal()),
+    isDisabled: () => !context.isOpen(),
     onHoverStart: () => {
       clearUpdateParentIsPointerInNestedMenuTimeout();
 

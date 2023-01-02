@@ -161,7 +161,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
 
     // For consistency with native menu implementation re-focus when the mouse wiggles.
     if (selectionManager().focusedKey() !== local.key) {
-      selectionManager().setFocusedKey(local.key);
+      menuContext.focusContent(local.key);
     }
   };
 
