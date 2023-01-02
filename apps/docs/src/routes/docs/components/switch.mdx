@@ -150,7 +150,7 @@ The `isChecked` prop can be used to make the checked state controlled. The `onCh
   <ControlledExample />
 </Preview>
 
-```tsx {3,7,10}
+```tsx {3,7}
 import { createSignal } from "solid-js";
 
 export function ControlledExample() {
@@ -161,7 +161,7 @@ export function ControlledExample() {
       <Switch isChecked={checked()} onCheckedChange={setChecked}>
         ...
       </Switch>
-      <p>Airplane mode is {checked() ? "active" : "disabled"}.</p>
+      <p>Airplane mode is {checked() ? "active" : "inactive"}.</p>
     </>
   );
 }

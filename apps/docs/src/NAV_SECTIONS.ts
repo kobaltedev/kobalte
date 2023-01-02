@@ -29,11 +29,11 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/overview/introduction",
       },
       {
-        title: "Getting started ❌",
+        title: "Getting started",
         href: "/docs/overview/getting-started",
       },
       {
-        title: "Styling ❌",
+        title: "Styling",
         href: "/docs/overview/styling",
       },
       {
@@ -66,7 +66,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/context-menu",
       },
       {
-        title: "Dialog ❌",
+        title: "Dialog",
         href: "/docs/components/dialog",
       },
       {
@@ -82,7 +82,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/link",
       },
       {
-        title: "Popover 🚧",
+        title: "Popover",
         href: "/docs/components/popover",
       },
       {
@@ -90,7 +90,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/radio-group",
       },
       {
-        title: "Select ❌",
+        title: "Select 🚧",
         href: "/docs/components/select",
       },
       {

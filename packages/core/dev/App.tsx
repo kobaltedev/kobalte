@@ -336,9 +336,5 @@ const SelectItem = (props: ComponentProps<typeof Select.Item>) => {
 };
 
 export default function App() {
-  return (
-    <I18nProvider>
-      <SelectDemo />
-    </I18nProvider>
-  );
+  return <I18nProvider></I18nProvider>;
 }

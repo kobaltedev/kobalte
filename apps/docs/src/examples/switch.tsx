@@ -39,7 +39,7 @@ export function ControlledExample() {
           <Switch.Thumb class={style["switch__thumb"]} />
         </Switch.Control>
       </Switch>
-      <p class="not-prose text-sm mt-2">Airplane mode is {checked() ? "active" : "disabled"}.</p>
+      <p class="not-prose text-sm mt-2">Airplane mode is {checked() ? "active" : "inactive"}.</p>
     </>
   );
 }

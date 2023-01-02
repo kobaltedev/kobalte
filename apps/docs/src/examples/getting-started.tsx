@@ -1,20 +1,24 @@
 import { Popover } from "@kobalte/core";
 
+import { CrossIcon } from "../components";
+import style from "./popover.module.css";
+
 export const PopoverDemo = () => (
   <Popover>
-    <Popover.Trigger class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30">
-      Learn more
-    </Popover.Trigger>
+    <Popover.Trigger class={style["popover__trigger"]}>Learn more</Popover.Trigger>
     <Popover.Portal>
-      <Popover.Positioner>
-        <Popover.Content class="z-10 outline-none w-72 p-4 shadow-md border border-zinc-200 rounded-md bg-white dark:bg-zinc-800 dark:border-zinc-700">
-          <Popover.Arrow />
-          <p>
-            Kobalte is a UI toolkit for building accessible web apps and design systems with
-            SolidJS.
-          </p>
-        </Popover.Content>
-      </Popover.Positioner>
+      <Popover.Content class={style["popover__content"]}>
+        <Popover.Arrow />
+        <div class={style["popover__header"]}>
+          <Popover.Title class={style["popover__title"]}>About Kobalte</Popover.Title>
+          <Popover.CloseButton class={style["popover__close-button"]}>
+            <CrossIcon />
+          </Popover.CloseButton>
+        </div>
+        <Popover.Description class={style["popover__description"]}>
+          A UI toolkit for building accessible web apps and design systems with SolidJS.
+        </Popover.Description>
+      </Popover.Content>
     </Popover.Portal>
   </Popover>
 );
