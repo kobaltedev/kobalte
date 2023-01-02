@@ -24,12 +24,15 @@ export interface MenuContextValue {
   setIsPointerInNestedMenu: Setter<boolean>;
   setIsPointerSuspended: Setter<boolean>;
   setPointerGracePolygon: Setter<Polygon | null>;
+  openTimeoutId: Accessor<number | undefined>;
   open: (focusStrategy: FocusStrategy | boolean) => void;
+  openWithDelay: (focusStrategy: FocusStrategy | boolean) => void;
+  clearOpenTimeout: () => void;
   close: () => void;
   clearCloseTimeout: () => void;
   toggle: (focusStrategy: FocusStrategy | boolean) => void;
   focusContent: (key?: string | undefined) => void;
-  focusContentWithDelay: (key?: string, delay?: number) => void;
+  focusContentWithDelay: (key?: string) => void;
   clearFocusContentTimeout: () => void;
   suspendPointer: () => void;
   isTargetInNestedMenu: (target: Element) => boolean;

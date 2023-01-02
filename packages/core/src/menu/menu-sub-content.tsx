@@ -45,7 +45,7 @@ export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOp
     callHandler(e, local.onKeyDown);
 
     // Submenu key events bubble through portals. We only care about keys in this menu.
-    const isKeyDownInside = contains(e.currentTarget, e.target as HTMLElement);
+    const isKeyDownInside = contains(e.currentTarget, e.target);
     const isCloseKey = e.key === "ArrowLeft" && context.parentMenuContext() != null;
 
     if (isKeyDownInside && isCloseKey) {
@@ -60,6 +60,11 @@ export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOp
     callHandler(e, local.onFocusOut);
 
     const relatedTarget = e.relatedTarget as HTMLElement | null;
+
+    // Submenu focus out events bubble through portals. We only care about blur from inside this menu.
+    if (!contains(e.currentTarget, e.target)) {
+      return;
+    }
 
     if (
       !relatedTarget ||

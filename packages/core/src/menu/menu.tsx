@@ -5,6 +5,7 @@ import {
   isPointInPolygon,
   mergeDefaultProps,
   Polygon,
+  removeItemFromArray,
 } from "@kobalte/utils";
 import { createEffect, createSignal, onCleanup, ParentProps, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
@@ -15,6 +16,7 @@ import { Placement } from "../popper/utils";
 import {
   CollectionItem,
   createDisclosureState,
+  createHideOutside,
   createRegisterId,
   focusSafely,
 } from "../primitives";
@@ -41,7 +43,7 @@ export interface MenuProps
   onOpenChange?: (isOpen: boolean) => void;
 }
 
-export const MENU_TIMEOUT_DELAY = 300;
+export const MENU_TIMEOUT_DELAY = 100;
 
 /**
  * Container for menu items and nested menu, provide context for its children.
@@ -60,8 +62,7 @@ export function Menu(props: ParentProps<MenuProps>) {
 
   const [local, others] = splitProps(props, ["isOpen", "defaultIsOpen", "onOpenChange"]);
 
-  const nestedMenus = new Set<Element>([]);
-
+  let openTimeoutId: number | undefined;
   let closeTimeoutId: number | undefined;
   let focusContentTimeoutId: number | undefined;
   let resumePointerTimeoutId: number | undefined;
@@ -74,9 +75,10 @@ export function Menu(props: ParentProps<MenuProps>) {
 
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(true);
   const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(others.placement!);
-  const [isPointerInNestedMenu, setIsPointerInNestedMenu] = createSignal(false);
   const [isPointerSuspended, setIsPointerSuspended] = createSignal(false);
   const [pointerGracePolygon, setPointerGracePolygon] = createSignal<Polygon | null>(null);
+  const [isPointerInNestedMenu, setIsPointerInNestedMenu] = createSignal(false);
+  const [nestedMenus, setNestedMenus] = createSignal<Element[]>([]);
 
   const [items, setItems] = createSignal<CollectionItem[]>([]);
 
@@ -96,6 +98,26 @@ export function Menu(props: ParentProps<MenuProps>) {
   const open = (focusStrategy: FocusStrategy | boolean) => {
     setFocusStrategy(focusStrategy);
     disclosureState.open();
+  };
+
+  const openWithDelay = (focusStrategy: FocusStrategy | boolean) => {
+    if (isServer) {
+      return;
+    }
+
+    openTimeoutId = window.setTimeout(() => {
+      open(focusStrategy);
+      openTimeoutId = undefined;
+    }, MENU_TIMEOUT_DELAY);
+  };
+
+  const clearOpenTimeout = () => {
+    if (isServer) {
+      return;
+    }
+
+    window.clearTimeout(openTimeoutId);
+    openTimeoutId = undefined;
   };
 
   const close = () => {
@@ -138,12 +160,11 @@ export function Menu(props: ParentProps<MenuProps>) {
     listState.selectionManager().setFocusedKey(key);
   };
 
-  // Use a shorter delay here because moving outside the menu should focus it "instantly" by default.
-  const focusContentWithDelay = (key?: string, delay = 100) => {
+  const focusContentWithDelay = (key?: string) => {
     focusContentTimeoutId = window.setTimeout(() => {
       focusContent(key);
       focusContentTimeoutId = undefined;
-    }, delay);
+    }, MENU_TIMEOUT_DELAY);
   };
 
   const clearFocusContentTimeout = () => {
@@ -153,21 +174,6 @@ export function Menu(props: ParentProps<MenuProps>) {
 
     window.clearTimeout(focusContentTimeoutId);
     focusContentTimeoutId = undefined;
-  };
-
-  const registerNestedMenu = (element: Element) => {
-    nestedMenus.add(element);
-
-    const parentUnregister = parentMenuContext?.registerNestedMenu(element);
-
-    return () => {
-      nestedMenus.delete(element);
-      parentUnregister?.();
-    };
-  };
-
-  const isTargetInNestedMenu = (target: Element) => {
-    return [...nestedMenus].some(menu => contains(menu, target));
   };
 
   const trackPointerMove = (e: PointerEvent) => {
@@ -191,7 +197,7 @@ export function Menu(props: ParentProps<MenuProps>) {
 
       // Plan restoring focus to parent in case the user doesn't move to the menu content.
       // Use same delay as `closeWithDelay` and `suspendPointer` so it doesn't run before them.
-      parentMenuContext?.focusContentWithDelay(undefined, MENU_TIMEOUT_DELAY);
+      parentMenuContext?.focusContentWithDelay(undefined);
     } else {
       // User isn't moving to the menu content, close it and restore focus to parent menu.
       setPointerGracePolygon(null);
@@ -227,6 +233,30 @@ export function Menu(props: ParentProps<MenuProps>) {
     resumePointerTimeoutId = undefined;
   };
 
+  const registerNestedMenu = (element: Element) => {
+    setNestedMenus(prev => [...prev, element]);
+
+    const parentUnregister = parentMenuContext?.registerNestedMenu(element);
+
+    return () => {
+      setNestedMenus(prev => removeItemFromArray(prev, element));
+      parentUnregister?.();
+    };
+  };
+
+  const isTargetInNestedMenu = (target: Element) => {
+    return [...nestedMenus()].some(menu => contains(menu, target));
+  };
+
+  // aria-hide everything except the content (better supported equivalent to setting aria-modal)
+  createHideOutside({
+    isDisabled: () => {
+      // Apply only on root menu when opened and modal.
+      return !(parentMenuContext == null && disclosureState.isOpen() && rootContext.isModal());
+    },
+    targets: () => [contentRef(), ...nestedMenus()].filter(Boolean) as Element[],
+  });
+
   createEffect(() => {
     const contentEl = contentRef();
 
@@ -242,6 +272,7 @@ export function Menu(props: ParentProps<MenuProps>) {
   });
 
   onCleanup(() => {
+    clearOpenTimeout();
     clearCloseTimeout();
     clearFocusContentTimeout();
     clearResumePointerTimeout();
@@ -266,7 +297,10 @@ export function Menu(props: ParentProps<MenuProps>) {
     setIsPointerInNestedMenu,
     setIsPointerSuspended,
     setPointerGracePolygon,
+    openTimeoutId: () => openTimeoutId,
     open,
+    openWithDelay,
+    clearOpenTimeout,
     close,
     clearCloseTimeout,
     toggle,

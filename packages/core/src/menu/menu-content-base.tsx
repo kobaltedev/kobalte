@@ -106,6 +106,11 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     updateParentIsPointerInNestedMenuTimeoutId = undefined;
   };
 
+  const isPointerBlocking = () => {
+    // Only the root menu is pointer blocking when opened and modal.
+    return context.parentMenuContext() == null && context.isOpen() && rootContext.isModal();
+  };
+
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     // Prevent shift + tab from doing anything when focus should be trapped.
     if (context.isOpen() && rootContext.isModal() && e.shiftKey && e.key === "Tab") {
@@ -176,26 +181,6 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
 
   const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
 
-  // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-  createHideOutside({
-    isDisabled: () => !(context.isOpen() && rootContext.isModal()),
-    targets: () => {
-      const keepVisible = [];
-
-      const parentMenuContent = context.parentMenuContext()?.contentRef();
-
-      if (parentMenuContent) {
-        keepVisible.push(parentMenuContent);
-      }
-
-      if (ref) {
-        keepVisible.push(ref);
-      }
-
-      return keepVisible;
-    },
-  });
-
   createFocusScope(
     {
       trapFocus: () => context.isOpen() && rootContext.isModal(),
@@ -222,8 +207,12 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           role="menu"
           id={local.id}
           tabIndex={selectableList.tabIndex()}
+          disableOutsidePointerEvents={isPointerBlocking()}
           excludedElements={[context.triggerRef]}
-          style={{ position: "relative", ...local.style }}
+          style={{
+            position: "relative",
+            ...local.style,
+          }}
           aria-labelledby={context.triggerId()}
           data-focus={isFocused() ? "" : undefined}
           data-focus-visible={isFocusVisible() ? "" : undefined}

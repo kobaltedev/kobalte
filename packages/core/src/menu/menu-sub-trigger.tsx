@@ -101,19 +101,14 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   const { hoverHandlers, isHovered } = createHover({
     isDisabled: () => local.isDisabled,
     onHoverStart: () => {
-      context.parentMenuContext()?.clearFocusContentTimeout();
-
-      context.parentMenuContext()?.focusContent(local.key);
       context.clearCloseTimeout();
+      context.clearFocusContentTimeout();
 
-      if (context.isOpen()) {
-        context.listState().selectionManager().setFocused(false);
-        context.listState().selectionManager().setFocusedKey(undefined);
-      } else {
-        context.open(false);
-      }
+      context.parentMenuContext()?.clearFocusContentTimeout();
+      context.parentMenuContext()?.focusContent(local.key);
     },
     onHoverEnd: () => {
+      context.clearOpenTimeout();
       context.parentMenuContext()?.focusContentWithDelay(undefined);
     },
   });
@@ -130,13 +125,13 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       parentSelectionManager().setFocusedKey(local.key);
     }
 
-    if (!context.isOpen()) {
-      context.open(false);
+    if (!context.isOpen() && context.openTimeoutId() == null) {
+      context.openWithDelay(false);
     }
   };
 
   const onPointerLeave: JSX.EventHandlerUnion<any, PointerEvent> = e => {
-    if (e.pointerType !== "mouse") {
+    if (e.pointerType !== "mouse" || local.isDisabled) {
       return;
     }
 
@@ -207,6 +202,12 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
   });
 
   createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
+
+  onCleanup(() => {
+    context.clearOpenTimeout();
+    context.clearCloseTimeout();
+    context.clearFocusContentTimeout();
+  });
 
   return (
     <Dynamic

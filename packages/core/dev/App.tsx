@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 
 import { ContextMenu, DropdownMenu, I18nProvider } from "../src";
+import { Portal } from "solid-js/web";
 
 function HamburgerMenuIcon(props: any) {
   return (
@@ -82,7 +83,7 @@ function DropdownMenuDemo() {
               </div>
             </DropdownMenu.SubTrigger>
             <DropdownMenu.Portal>
-              <DropdownMenu.SubContent class="DropdownMenuSubContent">
+              <DropdownMenu.SubContent id="foo" class="DropdownMenuSubContent">
                 <DropdownMenu.Item key="save-page-as" class="DropdownMenuItem">
                   Save Page As… <div class="RightSlot">⌘+S</div>
                 </DropdownMenu.Item>
@@ -104,7 +105,7 @@ function DropdownMenuDemo() {
                     </div>
                   </DropdownMenu.SubTrigger>
                   <DropdownMenu.Portal>
-                    <DropdownMenu.SubContent class="DropdownMenuSubContent">
+                    <DropdownMenu.SubContent id="bar" class="DropdownMenuSubContent">
                       <DropdownMenu.Item key="save-page-as-2" class="DropdownMenuItem">
                         Save Page As… <div class="RightSlot">⌘+S</div>
                       </DropdownMenu.Item>
@@ -278,8 +279,8 @@ function ContextMenuDemo() {
 export default function App() {
   return (
     <I18nProvider>
-      <DropdownMenuDemo />
       <ContextMenuDemo />
+      <DropdownMenuDemo />
     </I18nProvider>
   );
 }
