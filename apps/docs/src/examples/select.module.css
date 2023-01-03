@@ -107,7 +107,7 @@
 
 .select__separator {
   height: 1px;
-  background-color: hsl(240 5% 84%);
+  border-top: 1px solid hsl(240 6% 90%);
   margin: 6px;
 }
 
@@ -119,4 +119,45 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+[data-kb-theme="dark"] .select__trigger {
+  background-color: hsl(240 4% 16%);
+  border: 1px solid hsl(240 5% 34%);
+  color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .select__trigger[data-hover] {
+  border-color: hsl(240 4% 46%);
+}
+
+[data-kb-theme="dark"] .select__trigger[data-invalid] {
+  border-color: hsl(0 72% 51%);
+  color: hsl(0 72% 51%);
+}
+
+[data-kb-theme="dark"] .select__value[data-placeholder-shown] {
+  color: hsl(0 100% 100% / 0.5);
+}
+
+[data-kb-theme="dark"] .select__content {
+  border: 1px solid hsl(240 5% 26%);
+  background-color: hsl(240 4% 16%);
+  box-shadow: none;
+}
+
+[data-kb-theme="dark"] .select__group-label {
+  color: hsl(0 100% 100% / 0.7);
+}
+
+[data-kb-theme="dark"] .select__item {
+  color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .select__separator {
+  border-color: hsl(240 5% 34%);
+}
+
+[data-kb-theme="dark"] .select__description {
+  color: hsl(0 100% 100% / 0.7);
 }

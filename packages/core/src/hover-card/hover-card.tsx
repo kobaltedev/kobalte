@@ -70,7 +70,7 @@ export interface HoverCardProps
   ignoreSafeArea?: boolean;
 
   /**
-   * Used to force mounting the hovercard (portal, positioner and content) when more control is needed.
+   * Used to force mounting the hovercard (portal and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
    */
   forceMount?: boolean;

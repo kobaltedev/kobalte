@@ -74,7 +74,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/dropdown-menu",
       },
       {
-        title: "Hover Card ❌",
+        title: "Hover Card",
         href: "/docs/components/hover-card",
       },
       {
