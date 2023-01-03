@@ -61,10 +61,12 @@ export interface CreateSelectableListProps {
  * Handles interactions with a selectable list.
  * @param props Props for the list.
  * @param ref A ref to the list element.
+ * @param scrollRef The ref attached to the scrollable body. Used to provide automatic scrolling on item focus for non-virtualized collections. If not provided, defaults to the collection ref.
  */
-export function createSelectableList<T extends HTMLElement>(
+export function createSelectableList<T extends HTMLElement, U extends HTMLElement = T>(
   props: CreateSelectableListProps,
-  ref: Accessor<T | undefined>
+  ref: Accessor<T | undefined>,
+  scrollRef?: Accessor<U | undefined>
 ) {
   const collator = createCollator({ usage: "search", sensitivity: "base" });
 
@@ -94,6 +96,7 @@ export function createSelectableList<T extends HTMLElement>(
       allowsTabNavigation: () => access(props.allowsTabNavigation),
       isVirtualized: () => access(props.isVirtualized),
     },
-    ref
+    ref,
+    scrollRef
   );
 }

@@ -78,7 +78,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
   props = mergeProps(defaultProps, props);
 
-  const finalScrollRef = () => (scrollRef ? scrollRef() : ref());
+  const finalScrollRef = () => scrollRef?.() ?? ref();
 
   const { direction } = useLocale();
 

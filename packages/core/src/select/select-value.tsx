@@ -1,20 +1,40 @@
 import { createPolymorphicComponent, isFunction, mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, createEffect, createMemo, JSX, onCleanup, Show, splitProps } from "solid-js";
+import {
+  Accessor,
+  children,
+  createEffect,
+  createMemo,
+  JSX,
+  onCleanup,
+  Show,
+  splitProps,
+} from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useFormControlContext } from "../form-control";
 import { useSelectContext } from "./select-context";
 
-type SelectValueRenderProp = (selectedValues: Accessor<Set<string>>) => JSX.Element;
+interface SelectValueState {
+  /**
+   * The selected values of the select.
+   * It will always be of type `Set<string>` even for single selection.
+   */
+  selectedValues: Accessor<Set<string>>;
+}
 
 export interface SelectValueProps {
   /** The content that will be rendered when no value or defaultValue is set. */
   placeholder?: JSX.Element;
 
   /** The content that will be rendered when a value is set. */
-  children?: SelectValueRenderProp | JSX.Element;
+  children?: ((state: SelectValueState) => JSX.Element) | JSX.Element;
 }
 
+/**
+ * The part that reflects the selected value. By default, the selected item's text will be rendered.
+ * If you require more control, you can instead control the select and pass your own children.
+ * An optional placeholder prop is also available for when the select has no value.
+ */
 export const SelectValue = createPolymorphicComponent<"span", SelectValueProps>(props => {
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
@@ -26,11 +46,11 @@ export const SelectValue = createPolymorphicComponent<"span", SelectValueProps>(
   const selectionManager = () => context.listState().selectionManager();
   const isSelectionEmpty = () => selectionManager().isEmpty();
 
-  const valueLabels = createMemo(() => {
+  const valueLabels = () => {
     return [...selectionManager().selectedKeys()]
       .map(key => context.listState().collection().getItem(key)?.label ?? key)
       .join(", ");
-  });
+  };
 
   createEffect(() => onCleanup(context.registerValueId(local.id!)));
 
@@ -44,11 +64,23 @@ export const SelectValue = createPolymorphicComponent<"span", SelectValueProps>(
     >
       <Show when={!isSelectionEmpty()} fallback={local.placeholder}>
         <Show when={local.children} fallback={valueLabels()}>
-          <Show when={isFunction(local.children)} fallback={local.children as JSX.Element}>
-            {(local.children as SelectValueRenderProp)?.(selectionManager().selectedKeys)}
-          </Show>
+          <SelectValueChild
+            state={{ selectedValues: () => selectionManager().selectedKeys() }}
+            children={local.children}
+          />
         </Show>
       </Show>
     </Dynamic>
   );
 });
+
+interface SelectValueChildProps extends Pick<SelectValueProps, "children"> {
+  state: SelectValueState;
+}
+
+function SelectValueChild(props: SelectValueChildProps) {
+  return children(() => {
+    const body = props.children;
+    return isFunction(body) ? body(props.state) : body;
+  });
+}

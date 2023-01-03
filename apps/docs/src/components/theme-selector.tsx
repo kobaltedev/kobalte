@@ -1,4 +1,4 @@
-import { ConfigColorMode, Select, SelectProps, useColorMode } from "@kobalte/core";
+import { ConfigColorMode, Select, useColorMode } from "@kobalte/core";
 import { clsx } from "clsx";
 import { ComponentProps, Show, splitProps } from "solid-js";
 
@@ -18,13 +18,13 @@ function Item(props: ComponentProps<typeof Select.Item>) {
   );
 }
 
-export function ThemeSelector(props: Omit<SelectProps, "options">) {
+export function ThemeSelector(props: ComponentProps<typeof Select>) {
   const { colorMode, setColorMode } = useColorMode();
 
   return (
     <Select
       defaultValue={colorMode()}
-      onValueChange={value => setColorMode(value.values().next().value as ConfigColorMode)}
+      onValueChange={value => setColorMode(value as ConfigColorMode)}
       gutter={8}
       sameWidth={false}
       placement="bottom"

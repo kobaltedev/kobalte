@@ -70,7 +70,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/dialog",
       },
       {
-        title: "Dropdown Menu ❌",
+        title: "Dropdown Menu 🚧",
         href: "/docs/components/dropdown-menu",
       },
       {
@@ -90,7 +90,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/radio-group",
       },
       {
-        title: "Select 🚧",
+        title: "Select",
         href: "/docs/components/select",
       },
       {

@@ -275,8 +275,21 @@ function ContextMenuDemo() {
   );
 }
 
+const SelectItem = (props: ComponentProps<typeof Select.Item>) => {
+  const [local, others] = splitProps(props, ["class", "children"]);
+
+  return (
+    <Select.Item class={["SelectItem", local.class].filter(Boolean).join(" ")} {...others}>
+      <Select.ItemLabel>{local.children}</Select.ItemLabel>
+      <Select.ItemIndicator class="SelectItemIndicator">
+        <CheckIcon />
+      </Select.ItemIndicator>
+    </Select.Item>
+  );
+};
+
 const SelectDemo = () => (
-  <Select>
+  <Select name="fruit" disallowEmptySelection={false}>
     <Select.Trigger class="SelectTrigger" aria-label="Food">
       <Select.Value placeholder="Select a fruit…" />
       <Select.Icon class="SelectIcon" />
@@ -322,19 +335,25 @@ const SelectDemo = () => (
   </Select>
 );
 
-const SelectItem = (props: ComponentProps<typeof Select.Item>) => {
-  const [local, others] = splitProps(props, ["class", "children"]);
+export default function App() {
+  let formRef: HTMLFormElement | undefined;
+
+  const onSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const formData = new FormData(formRef);
+
+    alert(JSON.stringify(Object.fromEntries(formData), null, 2));
+  };
 
   return (
-    <Select.Item class={["SelectItem", local.class].filter(Boolean).join(" ")} {...others}>
-      <Select.ItemLabel>{local.children}</Select.ItemLabel>
-      <Select.ItemIndicator class="SelectItemIndicator">
-        <CheckIcon />
-      </Select.ItemIndicator>
-    </Select.Item>
+    <I18nProvider>
+      <form ref={formRef} onSubmit={onSubmit}>
+        <SelectDemo />
+        <button type="reset">Reset</button>
+        <button>Submit</button>
+      </form>
+    </I18nProvider>
   );
-};
-
-export default function App() {
-  return <I18nProvider></I18nProvider>;
 }

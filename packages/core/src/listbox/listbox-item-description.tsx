@@ -13,8 +13,8 @@ import { Dynamic } from "solid-js/web";
 import { useListboxItemContext } from "./listbox-item-context";
 
 /**
- * An optional accessible description to be announced for the option.
- * Useful for options that have more complex content (e.g. icons, multiple lines of text, etc.)
+ * An optional accessible description to be announced for the item.
+ * Useful for items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
 export const ListboxItemDescription = createPolymorphicComponent<"div">(props => {
   const context = useListboxItemContext();

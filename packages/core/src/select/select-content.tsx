@@ -24,7 +24,7 @@ export interface SelectContentProps {
    * Used to force keeping the content visible when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
    */
-  keepVisible?: boolean;
+  forceMount?: boolean;
 }
 
 /**
@@ -37,9 +37,9 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentProp
 
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, ["ref", "id", "style", "keepVisible"]);
+  const [local, others] = splitProps(props, ["ref", "id", "style", "forceMount"]);
 
-  const keepVisible = () => local.keepVisible || context.isOpen();
+  const forceMount = () => local.forceMount || context.isOpen();
 
   const onEscapeKeyDown = (e: KeyboardEvent) => {
     // `createSelectableList` prevent escape key down,
@@ -89,10 +89,10 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentProp
         isDismissed={!context.isOpen()}
         disableOutsidePointerEvents={context.isOpen()}
         excludedElements={[context.triggerRef]}
-        hidden={!keepVisible()}
+        hidden={!forceMount()}
         style={{
           position: "relative",
-          display: !keepVisible() ? "none" : undefined,
+          display: !forceMount() ? "none" : undefined,
           ...local.style,
         }}
         onEscapeKeyDown={onEscapeKeyDown}

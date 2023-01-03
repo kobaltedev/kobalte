@@ -311,7 +311,7 @@ export class SelectionManager implements MultipleSelectionManager {
   clearSelection() {
     const selectedKeys = this.state.selectedKeys();
 
-    if (!this.disallowEmptySelection && selectedKeys.size > 0) {
+    if (!this.disallowEmptySelection() && selectedKeys.size > 0) {
       this.state.setSelectedKeys(new Selection());
     }
   }
@@ -333,7 +333,7 @@ export class SelectionManager implements MultipleSelectionManager {
     }
 
     if (this.selectionMode() === "single") {
-      if (this.isSelected(key) && !this.disallowEmptySelection) {
+      if (this.isSelected(key) && !this.disallowEmptySelection()) {
         this.toggleSelection(key);
       } else {
         this.replaceSelection(key);

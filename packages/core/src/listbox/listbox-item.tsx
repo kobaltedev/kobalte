@@ -34,23 +34,23 @@ import {
 } from "./listbox-item-context";
 
 export interface ListboxItemProps {
-  /** A unique value for the option. */
+  /** A unique value for the item. */
   value: string;
 
   /**
    * Optional text used for typeahead purposes.
-   * By default, the typeahead behavior will use the .textContent of the `ListBox.ItemLabel` part
-   * if provided, or fallback to the .textContent of the `ListBox.Item`.
+   * By default, the typeahead behavior will use the .textContent of the `Listbox.ItemLabel` part
+   * if provided, or fallback to the .textContent of the `Listbox.Item`.
    * Use this when the content is complex, or you have non-textual content inside.
    */
   textValue?: string;
 
-  /** Whether the option is disabled. */
+  /** Whether the item is disabled. */
   isDisabled?: boolean;
 }
 
 /**
- * An option of the listbox.
+ * An item of the listbox.
  */
 export const ListboxItem = createPolymorphicComponent<"div", ListboxItemProps>(props => {
   let ref: HTMLElement | undefined;
