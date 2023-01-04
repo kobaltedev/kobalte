@@ -5,15 +5,13 @@
 [workflow-badge]: https://img.shields.io/github/workflow/status/fabien-ml/kobalte/CI
 [license-badge]: https://img.shields.io/github/license/fabien-ml/kobalte
 
-> :warning: This project is not available yet on npm.
-
 A UI toolkit for building accessible web apps and design systems with SolidJS.
 
 ## Packages
 
 | Name                                          |                                 Version                                  | Description                                                                                                          |
 | :-------------------------------------------- | :----------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------- |
-| [@kobalte/core](/packages/elements)           |        [![core-npm]](https://www.npmjs.com/package/@kobalte/core)        | Unstyled components and primitives for building accessible web apps and design systems.                              |
+| [@kobalte/core](/packages/core)               |        [![core-npm]](https://www.npmjs.com/package/@kobalte/core)        | Unstyled components and primitives for building accessible web apps and design systems.                              |
 | [@kobalte/tailwindcss](/packages/tailwindcss) | [![tailwindcss-npm]](https://www.npmjs.com/package/@kobalte/tailwindcss) | A TailwindCSS plugin for styling Kobalte components with `data-*` attributes by using modifiers like `ui-expanded:*` |
 
 [core-npm]: https://img.shields.io/npm/v/@kobalte/core

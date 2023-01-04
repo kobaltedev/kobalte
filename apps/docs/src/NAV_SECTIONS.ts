@@ -102,7 +102,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/switch",
       },
       {
-        title: "Tabs 🚧",
+        title: "Tabs",
         href: "/docs/components/tabs",
       },
       {
