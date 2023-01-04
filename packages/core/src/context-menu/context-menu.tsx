@@ -32,6 +32,7 @@ import { Separator } from "../separator";
 import { ContextMenuContent } from "./context-menu-content";
 import { ContextMenuContext, ContextMenuContextValue } from "./context-menu-context";
 import { ContextMenuTrigger } from "./context-menu-trigger";
+import { useLocale } from "../i18n";
 
 type ContextMenuComposite = {
   Trigger: typeof ContextMenuTrigger;
@@ -62,10 +63,12 @@ export interface ContextMenuProps
 export const ContextMenu: ParentComponent<ContextMenuProps> & ContextMenuComposite = props => {
   const defaultId = `contextmenu-${createUniqueId()}`;
 
+  const { direction } = useLocale();
+
   props = mergeDefaultProps(
     {
       id: defaultId,
-      placement: "right-start",
+      placement: direction() === "rtl" ? "left-start" : "right-start",
       gutter: 2,
       shift: 2,
     },

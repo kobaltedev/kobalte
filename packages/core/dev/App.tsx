@@ -348,7 +348,7 @@ export default function App() {
   };
 
   return (
-    <I18nProvider>
+    <I18nProvider locale="ar-AR">
       <DropdownMenuDemo />
     </I18nProvider>
   );

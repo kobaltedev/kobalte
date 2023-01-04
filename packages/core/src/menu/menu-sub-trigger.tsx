@@ -16,6 +16,7 @@ import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@ko
 import { createEffect, createUniqueId, JSX, on, onCleanup, splitProps } from "solid-js";
 import { Dynamic, isServer } from "solid-js/web";
 
+import { Direction, useLocale } from "../i18n";
 import { createFocusRing, createHover, createPress, focusSafely } from "../primitives";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
@@ -39,6 +40,12 @@ export interface MenuSubTriggerProps {
   /** Whether the sub menu trigger is disabled. */
   isDisabled?: boolean;
 }
+
+const SELECTION_KEYS = ["Enter", " "];
+const SUB_OPEN_KEYS: Record<Direction, string[]> = {
+  ltr: [...SELECTION_KEYS, "ArrowRight"],
+  rtl: [...SELECTION_KEYS, "ArrowLeft"],
+};
 
 /**
  * An item that opens a submenu.
@@ -72,6 +79,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
 
     openTimeoutId = null;
   };
+
+  const { direction } = useLocale();
 
   const parentSelectionManager = () => {
     const parentMenuContext = context.parentMenuContext();
@@ -213,27 +222,22 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     }
 
     // For consistency with native, open the menu on key down.
-    switch (e.key) {
-      case "Enter":
-      case " ":
-      case "ArrowRight":
-        e.stopPropagation();
-        e.preventDefault();
+    if (SUB_OPEN_KEYS[direction()].includes(e.key)) {
+      e.stopPropagation();
+      e.preventDefault();
 
-        // Clear focus on parent menu (e.g. the menu containing the trigger).
-        parentSelectionManager().setFocused(false);
-        parentSelectionManager().setFocusedKey(undefined);
+      // Clear focus on parent menu (e.g. the menu containing the trigger).
+      parentSelectionManager().setFocused(false);
+      parentSelectionManager().setFocusedKey(undefined);
 
-        // We focus manually because we prevented it in MenuSubContent's `onOpenAutoFocus`.
-        if (context.isOpen()) {
-          context.focusContent();
-          context.listState().selectionManager().setFocused(true);
-          context.listState().selectionManager().setFocusedKey(collection().getFirstKey());
-        } else {
-          context.open("first");
-        }
-
-        break;
+      // We focus manually because we prevented it in MenuSubContent's `onOpenAutoFocus`.
+      if (context.isOpen()) {
+        context.focusContent();
+        context.listState().selectionManager().setFocused(true);
+        context.listState().selectionManager().setFocusedKey(collection().getFirstKey());
+      } else {
+        context.open("first");
+      }
     }
   };
 
