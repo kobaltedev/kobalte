@@ -28,7 +28,7 @@ type TabsComposite = {
   Content: typeof TabsContent;
 };
 
-export interface TabsProps {
+export interface TabsOptions {
   /** The controlled value of the tab to activate. */
   value?: string;
 
@@ -55,7 +55,7 @@ export interface TabsProps {
  * A set of layered sections of content, known as tab panels, that display one panel of content at a time.
  * `Tabs` contains all the parts of a tabs component and provide context for its children.
  */
-export const Tabs = createPolymorphicComponent<"div", TabsProps, TabsComposite>(props => {
+export const Tabs = createPolymorphicComponent<"div", TabsOptions, TabsComposite>(props => {
   const defaultId = `tabs-${createUniqueId()}`;
 
   props = mergeDefaultProps(

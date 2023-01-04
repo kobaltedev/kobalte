@@ -21,7 +21,7 @@ type DialogComposite = {
   Description: typeof DialogDescription;
 };
 
-export interface DialogProps {
+export interface DialogOptions {
   /** The controlled open state of the dialog. */
   isOpen?: boolean;
 
@@ -61,7 +61,7 @@ export interface DialogProps {
 /**
  * A dialog is a window overlaid on either the primary window or another dialog window.
  */
-export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
+export const Dialog: ParentComponent<DialogOptions> & DialogComposite = props => {
   const defaultId = `dialog-${createUniqueId()}`;
 
   props = mergeDefaultProps(

@@ -31,7 +31,7 @@ import {
 } from "../primitives";
 import { isButton } from "./is-button";
 
-export interface ButtonProps extends CreatePressProps {
+export interface ButtonOptions extends CreatePressProps {
   /** Whether the button is disabled. */
   isDisabled?: boolean;
 }
@@ -41,7 +41,7 @@ export interface ButtonProps extends CreatePressProps {
  * opening a dialog, canceling an action, or performing a delete operation.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export const Button = createPolymorphicComponent<"button", ButtonProps>(props => {
+export const Button = createPolymorphicComponent<"button", ButtonOptions>(props => {
   let ref: HTMLButtonElement | undefined;
 
   props = mergeDefaultProps(

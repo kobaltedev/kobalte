@@ -18,7 +18,7 @@ import { Dynamic } from "solid-js/web";
 import { createFocusRing } from "../primitives";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsContentProps {
+export interface TabsContentOptions {
   /** The unique key that associates the tab panel with a tab. */
   value: string;
 
@@ -32,7 +32,7 @@ export interface TabsContentProps {
 /**
  * Contains the content associated with a tab trigger.
  */
-export const TabsContent = createPolymorphicComponent<"div", TabsContentProps>(props => {
+export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>(props => {
   let ref!: HTMLElement;
 
   const context = useTabsContext();

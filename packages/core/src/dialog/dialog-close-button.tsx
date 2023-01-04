@@ -1,7 +1,7 @@
 import { createPolymorphicComponent } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
-import { Button, ButtonProps } from "../button";
+import { Button, ButtonOptions } from "../button";
 import { COMMON_INTL_MESSAGES, createLocalizedStringFormatter } from "../i18n";
 import { PressEvents } from "../primitives";
 import { useDialogContext } from "./dialog-context";
@@ -9,7 +9,7 @@ import { useDialogContext } from "./dialog-context";
 /**
  * The button that closes the dialog.
  */
-export const DialogCloseButton = createPolymorphicComponent<"button", ButtonProps>(props => {
+export const DialogCloseButton = createPolymorphicComponent<"button", ButtonOptions>(props => {
   const context = useDialogContext();
 
   const [local, others] = splitProps(props, ["onPress", "aria-label"]);

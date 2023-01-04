@@ -2,9 +2,9 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import { createToggleState } from "../primitives";
-import { MenuItemBase, MenuItemBaseProps } from "./menu-item-base";
+import { MenuItemBase, MenuItemBaseOptions } from "./menu-item-base";
 
-export interface MenuCheckboxItemProps extends Omit<MenuItemBaseProps, "isChecked"> {
+export interface MenuCheckboxItemOptions extends Omit<MenuItemBaseOptions, "isChecked"> {
   /** The controlled checked state of the menu item checkbox. */
   isChecked?: boolean;
 
@@ -21,40 +21,42 @@ export interface MenuCheckboxItemProps extends Omit<MenuItemBaseProps, "isChecke
 /**
  * An item that can be controlled and rendered like a checkbox.
  */
-export const MenuCheckboxItem = createPolymorphicComponent<"div", MenuCheckboxItemProps>(props => {
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      closeOnSelect: false,
-    },
-    props
-  );
+export const MenuCheckboxItem = createPolymorphicComponent<"div", MenuCheckboxItemOptions>(
+  props => {
+    props = mergeDefaultProps(
+      {
+        as: "div",
+        closeOnSelect: false,
+      },
+      props
+    );
 
-  const [local, others] = splitProps(props, [
-    "isChecked",
-    "defaultIsChecked",
-    "onCheckedChange",
-    "onSelect",
-  ]);
+    const [local, others] = splitProps(props, [
+      "isChecked",
+      "defaultIsChecked",
+      "onCheckedChange",
+      "onSelect",
+    ]);
 
-  const state = createToggleState({
-    isSelected: () => local.isChecked,
-    defaultIsSelected: () => local.defaultIsChecked,
-    onSelectedChange: checked => local.onCheckedChange?.(checked),
-    isDisabled: () => others.isDisabled,
-  });
+    const state = createToggleState({
+      isSelected: () => local.isChecked,
+      defaultIsSelected: () => local.defaultIsChecked,
+      onSelectedChange: checked => local.onCheckedChange?.(checked),
+      isDisabled: () => others.isDisabled,
+    });
 
-  const onSelect = () => {
-    local.onSelect?.();
-    state.toggle();
-  };
+    const onSelect = () => {
+      local.onSelect?.();
+      state.toggle();
+    };
 
-  return (
-    <MenuItemBase
-      role="menuitemcheckbox"
-      isChecked={state.isSelected()}
-      onSelect={onSelect}
-      {...others}
-    />
-  );
-});
+    return (
+      <MenuItemBase
+        role="menuitemcheckbox"
+        isChecked={state.isSelected()}
+        onSelect={onSelect}
+        {...others}
+      />
+    );
+  }
+);

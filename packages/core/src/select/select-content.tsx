@@ -16,7 +16,7 @@ import {
 } from "../primitives";
 import { useSelectContext } from "./select-context";
 
-export interface SelectContentProps {
+export interface SelectContentOptions {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 
@@ -30,7 +30,7 @@ export interface SelectContentProps {
 /**
  * The component that pops out when the select is open.
  */
-export const SelectContent = createPolymorphicComponent<"div", SelectContentProps>(props => {
+export const SelectContent = createPolymorphicComponent<"div", SelectContentOptions>(props => {
   let ref: HTMLElement | undefined;
 
   const context = useSelectContext();

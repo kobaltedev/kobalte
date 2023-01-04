@@ -4,7 +4,7 @@ import { Dynamic } from "solid-js/web";
 
 import { useListboxItemContext } from "./listbox-item-context";
 
-export interface ListboxItemIndicatorProps {
+export interface ListboxItemIndicatorOptions {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -16,7 +16,7 @@ export interface ListboxItemIndicatorProps {
  * The visual indicator rendered when the item is selected.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export const ListboxItemIndicator = createPolymorphicComponent<"div", ListboxItemIndicatorProps>(
+export const ListboxItemIndicator = createPolymorphicComponent<"div", ListboxItemIndicatorOptions>(
   props => {
     const context = useListboxItemContext();
 

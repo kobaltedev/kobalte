@@ -13,7 +13,7 @@ import { Dynamic } from "solid-js/web";
 import { useLocale } from "../i18n";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsIndicatorProps {
+export interface TabsIndicatorOptions {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }
@@ -22,7 +22,7 @@ export interface TabsIndicatorProps {
  * The visual indicator displayed at the bottom of the tab list to indicate the selected tab.
  * It provides the base style needed to display a smooth transition to the new selected tab.
  */
-export const TabsIndicator = createPolymorphicComponent<"div", TabsIndicatorProps>(props => {
+export const TabsIndicator = createPolymorphicComponent<"div", TabsIndicatorOptions>(props => {
   const context = useTabsContext();
 
   props = mergeDefaultProps({ as: "div" }, props);

@@ -1,14 +1,5 @@
 import { createPolymorphicComponent, isFunction, mergeDefaultProps } from "@kobalte/utils";
-import {
-  Accessor,
-  children,
-  createEffect,
-  createMemo,
-  JSX,
-  onCleanup,
-  Show,
-  splitProps,
-} from "solid-js";
+import { Accessor, children, createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useFormControlContext } from "../form-control";
@@ -22,7 +13,7 @@ interface SelectValueState {
   selectedValues: Accessor<Set<string>>;
 }
 
-export interface SelectValueProps {
+export interface SelectValueOptions {
   /** The content that will be rendered when no value or defaultValue is set. */
   placeholder?: JSX.Element;
 
@@ -35,7 +26,7 @@ export interface SelectValueProps {
  * If you require more control, you can instead control the select and pass your own children.
  * An optional placeholder prop is also available for when the select has no value.
  */
-export const SelectValue = createPolymorphicComponent<"span", SelectValueProps>(props => {
+export const SelectValue = createPolymorphicComponent<"span", SelectValueOptions>(props => {
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
@@ -74,7 +65,7 @@ export const SelectValue = createPolymorphicComponent<"span", SelectValueProps>(
   );
 });
 
-interface SelectValueChildProps extends Pick<SelectValueProps, "children"> {
+interface SelectValueChildProps extends Pick<SelectValueOptions, "children"> {
   state: SelectValueState;
 }
 

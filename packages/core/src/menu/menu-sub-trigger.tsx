@@ -23,7 +23,7 @@ import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 import { getPointerGraceArea, Side } from "./utils";
 
-export interface MenuSubTriggerProps {
+export interface MenuSubTriggerOptions {
   /**
    * Optional text used for typeahead purposes.
    * By default, the typeahead behavior will use the .textContent of the Menu.SubTrigger.
@@ -44,7 +44,7 @@ const SUB_OPEN_KEYS: Record<Direction, string[]> = {
 /**
  * An item that opens a submenu.
  */
-export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerProps>(props => {
+export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOptions>(props => {
   let ref: HTMLDivElement | undefined;
 
   const rootContext = useMenuRootContext();

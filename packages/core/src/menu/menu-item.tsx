@@ -1,13 +1,14 @@
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 
-import { MenuItemBase, MenuItemBaseProps } from "./menu-item-base";
+import { MenuItemBase, MenuItemBaseOptions } from "./menu-item-base";
 
-export interface MenuItemProps extends Omit<MenuItemBaseProps, "isChecked" | "isIndeterminate"> {}
+export interface MenuItemOptions
+  extends Omit<MenuItemBaseOptions, "isChecked" | "isIndeterminate"> {}
 
 /**
  * An item of the menu.
  */
-export const MenuItem = createPolymorphicComponent<"div", MenuItemProps>(props => {
+export const MenuItem = createPolymorphicComponent<"div", MenuItemOptions>(props => {
   props = mergeDefaultProps(
     {
       as: "div",

@@ -39,7 +39,7 @@ type HoverCardComposite = {
   Arrow: typeof Popper.Arrow;
 };
 
-export interface HoverCardProps
+export interface HoverCardOptions
   extends Omit<PopperOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the hovercard. */
   isOpen?: boolean;
@@ -79,7 +79,7 @@ export interface HoverCardProps
 /**
  * A popover that allows sighted users to preview content available behind a link.
  */
-export const HoverCard: ParentComponent<HoverCardProps> & HoverCardComposite = props => {
+export const HoverCard: ParentComponent<HoverCardOptions> & HoverCardComposite = props => {
   const defaultId = `hovercard-${createUniqueId()}`;
 
   props = mergeDefaultProps(

@@ -4,7 +4,7 @@ import { Dynamic } from "solid-js/web";
 
 import { useMenuItemContext } from "./menu-item.context";
 
-export interface MenuItemIndicatorProps {
+export interface MenuItemIndicatorOptions {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -16,7 +16,7 @@ export interface MenuItemIndicatorProps {
  * The visual indicator rendered when the parent menu `CheckboxItem` or `RadioItem` is checked.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export const MenuItemIndicator = createPolymorphicComponent<"div", MenuItemIndicatorProps>(
+export const MenuItemIndicator = createPolymorphicComponent<"div", MenuItemIndicatorOptions>(
   props => {
     const context = useMenuItemContext();
 

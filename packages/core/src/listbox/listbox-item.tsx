@@ -33,7 +33,7 @@ import {
   ListboxItemDataSet,
 } from "./listbox-item-context";
 
-export interface ListboxItemProps {
+export interface ListboxItemOptions {
   /** A unique value for the item. */
   value: string;
 
@@ -52,7 +52,7 @@ export interface ListboxItemProps {
 /**
  * An item of the listbox.
  */
-export const ListboxItem = createPolymorphicComponent<"div", ListboxItemProps>(props => {
+export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>(props => {
   let ref: HTMLElement | undefined;
 
   const listBoxContext = useListboxContext();

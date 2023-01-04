@@ -15,7 +15,7 @@ import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsTriggerProps {
+export interface TabsTriggerOptions {
   /** The unique key that associates the tab with a tab panel. */
   value: string;
 
@@ -26,7 +26,7 @@ export interface TabsTriggerProps {
 /**
  * The button that activates its associated tab panel.
  */
-export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerProps>(props => {
+export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptions>(props => {
   let ref: HTMLButtonElement | undefined;
 
   const context = useTabsContext();

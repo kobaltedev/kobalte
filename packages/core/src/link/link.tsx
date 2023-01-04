@@ -24,7 +24,7 @@ import {
   createTagName,
 } from "../primitives";
 
-export interface LinkProps extends CreatePressProps {
+export interface LinkOptions extends CreatePressProps {
   /**
    * Whether the link is disabled.
    * Native navigation will be disabled, and the link will be exposed as disabled to assistive technology.
@@ -35,7 +35,7 @@ export interface LinkProps extends CreatePressProps {
 /**
  * Link allows a user to navigate to another page or resource within a web page or application.
  */
-export const Link = createPolymorphicComponent<"a", LinkProps>(props => {
+export const Link = createPolymorphicComponent<"a", LinkOptions>(props => {
   let ref: HTMLAnchorElement | undefined;
 
   props = mergeDefaultProps({ as: "a" }, props);

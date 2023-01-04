@@ -29,7 +29,7 @@ import { useMenuContext } from "./menu-context";
 import { MenuItemContext, MenuItemContextValue, MenuItemDataSet } from "./menu-item.context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuItemBaseProps {
+export interface MenuItemBaseOptions {
   /**
    * Optional text used for typeahead purposes.
    * By default, the typeahead behavior will use the .textContent of the Menu.ItemLabel part
@@ -61,7 +61,7 @@ export interface MenuItemBaseProps {
 /**
  * Base component for a menu item.
  */
-export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>(props => {
+export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOptions>(props => {
   let ref: HTMLDivElement | undefined;
 
   const rootContext = useMenuRootContext();

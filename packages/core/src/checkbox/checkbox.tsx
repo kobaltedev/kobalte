@@ -47,7 +47,7 @@ type CheckboxComposite = {
   Indicator: typeof CheckboxIndicator;
 };
 
-export interface CheckboxProps {
+export interface CheckboxOptions {
   /** The controlled checked state of the checkbox. */
   isChecked?: boolean;
 
@@ -101,7 +101,7 @@ export interface CheckboxProps {
 /**
  * A control that allows the user to toggle between checked and not checked.
  */
-export const Checkbox: Component<OverrideProps<ComponentProps<"label">, CheckboxProps>> &
+export const Checkbox: Component<OverrideProps<ComponentProps<"label">, CheckboxOptions>> &
   CheckboxComposite = props => {
   let ref: HTMLLabelElement | undefined;
 
@@ -204,7 +204,7 @@ Checkbox.Input = CheckboxInput;
 Checkbox.Control = CheckboxControl;
 Checkbox.Indicator = CheckboxIndicator;
 
-interface CheckboxChildProps extends Pick<CheckboxProps, "children"> {
+interface CheckboxChildProps extends Pick<CheckboxOptions, "children"> {
   state: CheckboxState;
 }
 

@@ -10,9 +10,9 @@ import {
 } from "@kobalte/tests";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { Button, ButtonProps } from "./button";
+import { Button, ButtonOptions } from "./button";
 
-const defaultProps: ButtonProps = {};
+const defaultProps: ButtonOptions = {};
 
 describe("Button", () => {
   installPointerEvent();

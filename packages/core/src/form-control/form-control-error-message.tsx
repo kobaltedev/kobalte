@@ -4,7 +4,7 @@ import { Dynamic } from "solid-js/web";
 
 import { useFormControlContext } from "./form-control-context";
 
-export interface FormControlErrorMessageProps {
+export interface FormControlErrorMessageOptions {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -17,7 +17,7 @@ export interface FormControlErrorMessageProps {
  */
 export const FormControlErrorMessage = createPolymorphicComponent<
   "div",
-  FormControlErrorMessageProps
+  FormControlErrorMessageOptions
 >(props => {
   const context = useFormControlContext();
 

@@ -10,9 +10,9 @@ import {
 } from "@kobalte/tests";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { Link, LinkProps } from "./link";
+import { Link, LinkOptions } from "./link";
 
-const defaultProps: LinkProps = {};
+const defaultProps: LinkOptions = {};
 
 describe("Link", () => {
   installPointerEvent();
