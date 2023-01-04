@@ -65,17 +65,17 @@ function DropdownMenuDemo() {
 
       <DropdownMenu.Portal>
         <DropdownMenu.Content class="DropdownMenuContent">
-          <DropdownMenu.Item key="new-tab" class="DropdownMenuItem">
+          <DropdownMenu.Item class="DropdownMenuItem">
             New Tab <div class="RightSlot">⌘+T</div>
           </DropdownMenu.Item>
-          <DropdownMenu.Item key="new-window" class="DropdownMenuItem">
+          <DropdownMenu.Item class="DropdownMenuItem">
             New Window <div class="RightSlot">⌘+N</div>
           </DropdownMenu.Item>
-          <DropdownMenu.Item key="new-private-window" class="DropdownMenuItem" isDisabled>
+          <DropdownMenu.Item class="DropdownMenuItem" isDisabled>
             New Private Window <div class="RightSlot">⇧+⌘+N</div>
           </DropdownMenu.Item>
           <DropdownMenu.Sub gutter={2} shift={-5}>
-            <DropdownMenu.SubTrigger key="more-tools" class="DropdownMenuSubTrigger">
+            <DropdownMenu.SubTrigger class="DropdownMenuSubTrigger">
               More Tools
               <div class="RightSlot">
                 <ChevronRightIcon />
@@ -83,21 +83,15 @@ function DropdownMenuDemo() {
             </DropdownMenu.SubTrigger>
             <DropdownMenu.Portal>
               <DropdownMenu.SubContent id="foo" class="DropdownMenuSubContent">
-                <DropdownMenu.Item key="save-page-as" class="DropdownMenuItem">
+                <DropdownMenu.Item class="DropdownMenuItem">
                   Save Page As… <div class="RightSlot">⌘+S</div>
                 </DropdownMenu.Item>
-                <DropdownMenu.Item key="create-shortcut" class="DropdownMenuItem">
-                  Create Shortcut…
-                </DropdownMenu.Item>
-                <DropdownMenu.Item key="name-window" class="DropdownMenuItem">
-                  Name Window…
-                </DropdownMenu.Item>
+                <DropdownMenu.Item class="DropdownMenuItem">Create Shortcut…</DropdownMenu.Item>
+                <DropdownMenu.Item class="DropdownMenuItem">Name Window…</DropdownMenu.Item>
                 <DropdownMenu.Separator class="DropdownMenu.Separator" />
-                <DropdownMenu.Item key="developer-tools" class="DropdownMenuItem">
-                  Developer Tools
-                </DropdownMenu.Item>
+                <DropdownMenu.Item class="DropdownMenuItem">Developer Tools</DropdownMenu.Item>
                 <DropdownMenu.Sub gutter={2} shift={-5}>
-                  <DropdownMenu.SubTrigger key="more-tools-2" class="DropdownMenuSubTrigger">
+                  <DropdownMenu.SubTrigger class="DropdownMenuSubTrigger">
                     More Tools
                     <div class="RightSlot">
                       <ChevronRightIcon />
@@ -105,17 +99,18 @@ function DropdownMenuDemo() {
                   </DropdownMenu.SubTrigger>
                   <DropdownMenu.Portal>
                     <DropdownMenu.SubContent id="bar" class="DropdownMenuSubContent">
-                      <DropdownMenu.Item key="save-page-as-2" class="DropdownMenuItem">
+                      <DropdownMenu.Item class="DropdownMenuItem">
                         Save Page As… <div class="RightSlot">⌘+S</div>
                       </DropdownMenu.Item>
-                      <DropdownMenu.Item key="create-shortcut-2" class="DropdownMenuItem">
+                      <DropdownMenu.Item
+                        class="DropdownMenuItem"
+                        onSelect={() => console.log("create-shortcut")}
+                      >
                         Create Shortcut…
                       </DropdownMenu.Item>
-                      <DropdownMenu.Item key="name-window-2" class="DropdownMenuItem">
-                        Name Window…
-                      </DropdownMenu.Item>
+                      <DropdownMenu.Item class="DropdownMenuItem">Name Window…</DropdownMenu.Item>
                       <DropdownMenu.Separator class="DropdownMenu.Separator" />
-                      <DropdownMenu.Item key="developer-tools-2" class="DropdownMenuItem">
+                      <DropdownMenu.Item class="DropdownMenuItem">
                         Developer Tools
                       </DropdownMenu.Item>
                     </DropdownMenu.SubContent>
@@ -128,7 +123,6 @@ function DropdownMenuDemo() {
           <DropdownMenu.Separator class="DropdownMenuSeparator" />
 
           <DropdownMenu.CheckboxItem
-            key="show-bookmarks"
             class="DropdownMenuCheckboxItem"
             isChecked={bookmarksChecked()}
             onCheckedChange={setBookmarksChecked}
@@ -139,7 +133,6 @@ function DropdownMenuDemo() {
             Show Bookmarks <div class="RightSlot">⌘+B</div>
           </DropdownMenu.CheckboxItem>
           <DropdownMenu.CheckboxItem
-            key="show-full-url"
             class="DropdownMenuCheckboxItem"
             isChecked={urlsChecked()}
             onCheckedChange={setUrlsChecked}
@@ -190,17 +183,17 @@ function ContextMenuDemo() {
 
       <ContextMenu.Portal>
         <ContextMenu.Content class="DropdownMenuContent">
-          <ContextMenu.Item key="new-tab" class="DropdownMenuItem">
+          <ContextMenu.Item class="DropdownMenuItem">
             New Tab <div class="RightSlot">⌘+T</div>
           </ContextMenu.Item>
-          <ContextMenu.Item key="new-window" class="DropdownMenuItem">
+          <ContextMenu.Item class="DropdownMenuItem">
             New Window <div class="RightSlot">⌘+N</div>
           </ContextMenu.Item>
-          <ContextMenu.Item key="new-private-window" class="DropdownMenuItem" isDisabled>
+          <ContextMenu.Item class="DropdownMenuItem" isDisabled>
             New Private Window <div class="RightSlot">⇧+⌘+N</div>
           </ContextMenu.Item>
           <ContextMenu.Sub gutter={2} shift={-5}>
-            <ContextMenu.SubTrigger key="more-tools" class="DropdownMenuSubTrigger">
+            <ContextMenu.SubTrigger class="DropdownMenuSubTrigger">
               More Tools
               <div class="RightSlot">
                 <ChevronRightIcon />
@@ -208,19 +201,13 @@ function ContextMenuDemo() {
             </ContextMenu.SubTrigger>
             <ContextMenu.Portal>
               <ContextMenu.SubContent class="DropdownMenuSubContent">
-                <ContextMenu.Item key="save-page-as" class="DropdownMenuItem">
+                <ContextMenu.Item class="DropdownMenuItem">
                   Save Page As… <div class="RightSlot">⌘+S</div>
                 </ContextMenu.Item>
-                <ContextMenu.Item key="create-shortcut" class="DropdownMenuItem">
-                  Create Shortcut…
-                </ContextMenu.Item>
-                <ContextMenu.Item key="name-window" class="DropdownMenuItem">
-                  Name Window…
-                </ContextMenu.Item>
+                <ContextMenu.Item class="DropdownMenuItem">Create Shortcut…</ContextMenu.Item>
+                <ContextMenu.Item class="DropdownMenuItem">Name Window…</ContextMenu.Item>
                 <ContextMenu.Separator class="DropdownMenu.Separator" />
-                <ContextMenu.Item key="developer-tools" class="DropdownMenuItem">
-                  Developer Tools
-                </ContextMenu.Item>
+                <ContextMenu.Item class="DropdownMenuItem">Developer Tools</ContextMenu.Item>
               </ContextMenu.SubContent>
             </ContextMenu.Portal>
           </ContextMenu.Sub>
@@ -228,7 +215,6 @@ function ContextMenuDemo() {
           <ContextMenu.Separator class="DropdownMenuSeparator" />
 
           <ContextMenu.CheckboxItem
-            key="show-bookmarks"
             class="DropdownMenuCheckboxItem"
             isChecked={bookmarksChecked()}
             onCheckedChange={setBookmarksChecked}
@@ -239,7 +225,6 @@ function ContextMenuDemo() {
             Show Bookmarks <div class="RightSlot">⌘+B</div>
           </ContextMenu.CheckboxItem>
           <ContextMenu.CheckboxItem
-            key="show-full-url"
             class="DropdownMenuCheckboxItem"
             isChecked={urlsChecked()}
             onCheckedChange={setUrlsChecked}
@@ -336,19 +321,9 @@ const SelectDemo = () => (
 );
 
 export default function App() {
-  let formRef: HTMLFormElement | undefined;
-
-  const onSubmit = (e: SubmitEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const formData = new FormData(formRef);
-
-    alert(JSON.stringify(Object.fromEntries(formData), null, 2));
-  };
-
   return (
-    <I18nProvider locale="ar-AR">
+    <I18nProvider>
+      <ContextMenuDemo />
       <DropdownMenuDemo />
     </I18nProvider>
   );

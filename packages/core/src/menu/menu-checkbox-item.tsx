@@ -4,7 +4,7 @@ import { splitProps } from "solid-js";
 import { createToggleState } from "../primitives";
 import { MenuItemBase, MenuItemBaseProps } from "./menu-item-base";
 
-export interface MenuCheckboxItemProps extends Omit<MenuItemBaseProps, "isChecked" | "onAction"> {
+export interface MenuCheckboxItemProps extends Omit<MenuItemBaseProps, "isChecked"> {
   /** The controlled checked state of the menu item checkbox. */
   isChecked?: boolean;
 
@@ -30,7 +30,12 @@ export const MenuCheckboxItem = createPolymorphicComponent<"div", MenuCheckboxIt
     props
   );
 
-  const [local, others] = splitProps(props, ["isChecked", "defaultIsChecked", "onCheckedChange"]);
+  const [local, others] = splitProps(props, [
+    "isChecked",
+    "defaultIsChecked",
+    "onCheckedChange",
+    "onSelect",
+  ]);
 
   const state = createToggleState({
     isSelected: () => local.isChecked,
@@ -39,11 +44,16 @@ export const MenuCheckboxItem = createPolymorphicComponent<"div", MenuCheckboxIt
     isDisabled: () => others.isDisabled,
   });
 
+  const onSelect = () => {
+    local.onSelect?.();
+    state.toggle();
+  };
+
   return (
     <MenuItemBase
       role="menuitemcheckbox"
       isChecked={state.isSelected()}
-      onAction={state.toggle}
+      onSelect={onSelect}
       {...others}
     />
   );

@@ -31,12 +31,6 @@ import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuItemBaseProps {
   /**
-   * A unique key for the menu item.
-   * It must be unique across the entire `Menu` tree (including sub menus, checkbox and radios).
-   */
-  key: string;
-
-  /**
    * Optional text used for typeahead purposes.
    * By default, the typeahead behavior will use the .textContent of the Menu.ItemLabel part
    * if provided, or fallback to the .textContent of the Menu.Item.
@@ -50,8 +44,8 @@ export interface MenuItemBaseProps {
   /** Whether the menu should close when the menu item is activated/selected. */
   closeOnSelect?: boolean;
 
-  /** Handler that is called when the user activates the menu item. */
-  onAction: (key: string) => void;
+  /** Event handler called when the user selects an item (via mouse or keyboard). */
+  onSelect?: () => void;
 
   /** Whether the menu item is checked (item radio or item checkbox). */
   isChecked?: boolean;
@@ -83,11 +77,10 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
 
   const [local, others] = splitProps(props, [
     "as",
-    "key",
     "textValue",
     "isDisabled",
     "closeOnSelect",
-    "onAction",
+    "onSelect",
     "isChecked",
     "isIndeterminate",
   ]);
@@ -99,12 +92,22 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
 
   const selectionManager = () => menuContext.listState().selectionManager();
 
-  const isFocused = () => selectionManager().focusedKey() === local.key;
+  const key = () => others.id!;
+
+  const isFocused = () => selectionManager().focusedKey() === key();
+
+  const onSelect = () => {
+    local.onSelect?.();
+
+    if (local.closeOnSelect) {
+      rootContext.close();
+    }
+  };
 
   createDomCollectionItem<CollectionItem>({
     getItem: () => ({
       ref: () => ref,
-      key: local.key,
+      key: key(),
       label: "", // not applicable here
       textValue: local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
       isDisabled: local.isDisabled ?? false,
@@ -113,7 +116,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
 
   const selectableItem = createSelectableItem(
     {
-      key: () => local.key,
+      key,
       selectionManager: selectionManager,
       shouldSelectOnPressUp: true,
       allowsDifferentPressOrigin: true,
@@ -128,11 +131,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
     isDisabled: () => local.isDisabled,
     onPressUp: e => {
       if (e.pointerType !== "keyboard") {
-        local.onAction(local.key);
-
-        if (local.closeOnSelect) {
-          rootContext.close();
-        }
+        onSelect();
       }
     },
   });
@@ -165,7 +164,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
       if (!e.defaultPrevented) {
         focusSafely(e.currentTarget);
         menuContext.listState().selectionManager().setFocused(true);
-        menuContext.listState().selectionManager().setFocusedKey(local.key);
+        menuContext.listState().selectionManager().setFocusedKey(key());
       }
     }
   };
@@ -192,12 +191,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
     switch (e.key) {
       case "Enter":
       case " ":
-        local.onAction(local.key);
-
-        if (local.closeOnSelect) {
-          rootContext.close();
-        }
-
+        onSelect();
         break;
     }
   };

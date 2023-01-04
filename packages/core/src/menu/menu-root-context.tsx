@@ -4,7 +4,6 @@ export interface MenuRootContextValue {
   isModal: Accessor<boolean>;
   forceMount: Accessor<boolean>;
   close: () => void;
-  onAction: (key: string) => void;
   generateId: (part: string) => string;
 }
 

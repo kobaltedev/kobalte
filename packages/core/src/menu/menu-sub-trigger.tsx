@@ -25,12 +25,6 @@ import { getPointerGraceArea, Side } from "./utils";
 
 export interface MenuSubTriggerProps {
   /**
-   * A unique key for the sub menu trigger.
-   * This is needed since the sub menu trigger is also a menu item of its parent menu.
-   */
-  key: string;
-
-  /**
    * Optional text used for typeahead purposes.
    * By default, the typeahead behavior will use the .textContent of the Menu.SubTrigger.
    * Use this when the content is complex, or you have non-textual content inside.
@@ -64,7 +58,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "id", "key", "textValue", "isDisabled"]);
+  const [local, others] = splitProps(props, ["as", "id", "textValue", "isDisabled"]);
 
   let openTimeoutId: number | null = null;
 
@@ -82,6 +76,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
 
   const { direction } = useLocale();
 
+  const key = () => local.id!;
+
   const parentSelectionManager = () => {
     const parentMenuContext = context.parentMenuContext();
 
@@ -94,7 +90,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
 
   const collection = () => context.listState().collection();
 
-  const isFocused = () => parentSelectionManager().focusedKey() === local.key;
+  const isFocused = () => parentSelectionManager().focusedKey() === key();
 
   const {
     tabIndex,
@@ -104,7 +100,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     otherHandlers: itemOtherHandlers,
   } = createSelectableItem(
     {
-      key: () => local.key,
+      key,
       selectionManager: parentSelectionManager,
       shouldSelectOnPressUp: true,
       allowsDifferentPressOrigin: true,
@@ -167,7 +163,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
       // Restore visual focus to parent menu content.
       focusSafely(e.currentTarget);
       parentMenuContext?.listState().selectionManager().setFocused(true);
-      parentMenuContext?.listState().selectionManager().setFocusedKey(local.key);
+      parentMenuContext?.listState().selectionManager().setFocusedKey(key());
     }
   };
 
@@ -251,7 +247,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     // Register the item trigger on the parent menu that contains it.
     const unregister = context.registerItemToParentDomCollection({
       ref: () => ref,
-      key: local.key,
+      key: key(),
       label: "", // not applicable here
       textValue: local.textValue ?? ref?.textContent ?? "",
       isDisabled: local.isDisabled ?? false,
