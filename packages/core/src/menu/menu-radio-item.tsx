@@ -6,10 +6,7 @@ import { useMenuRadioGroupContext } from "./menu-radio-group-context";
 
 export interface MenuRadioItemProps
   extends Omit<MenuItemBaseProps, "isChecked" | "isIndeterminate"> {
-  /**
-   * The value of the menu item radio.
-   * It also acts as a unique key for the item radio in its parent `Menu`.
-   */
+  /** The value of the menu item radio. */
   value: string;
 }
 

@@ -41,12 +41,6 @@ export interface MenuItemBaseProps {
   /** Whether the menu item is disabled. */
   isDisabled?: boolean;
 
-  /** Whether the menu should close when the menu item is activated/selected. */
-  closeOnSelect?: boolean;
-
-  /** Event handler called when the user selects an item (via mouse or keyboard). */
-  onSelect?: () => void;
-
   /** Whether the menu item is checked (item radio or item checkbox). */
   isChecked?: boolean;
 
@@ -56,6 +50,12 @@ export interface MenuItemBaseProps {
    * The indeterminate visual representation remains regardless of user interaction.
    */
   isIndeterminate?: boolean;
+
+  /** Whether the menu should close when the menu item is activated/selected. */
+  closeOnSelect?: boolean;
+
+  /** Event handler called when the user selects an item (via mouse or keyboard). */
+  onSelect?: () => void;
 }
 
 /**

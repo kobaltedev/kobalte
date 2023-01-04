@@ -9,28 +9,24 @@ export function BasicExample() {
   const [showHistory, setShowHistory] = createSignal(false);
   const [branch, setBranch] = createSignal("main");
 
-  const handleAction = (key: string) => {
-    alert(key);
-  };
-
   return (
-    <ContextMenu onAction={handleAction}>
+    <ContextMenu>
       <ContextMenu.Trigger class={style["context-menu__trigger"]}>
         Right click here.
       </ContextMenu.Trigger>
       <ContextMenu.Portal>
         <ContextMenu.Content class={style["context-menu__content"]}>
-          <ContextMenu.Item key="commit" class={style["context-menu__item"]}>
+          <ContextMenu.Item class={style["context-menu__item"]}>
             Commit <div class={style["context-menu__item-right-slot"]}>⌘+K</div>
           </ContextMenu.Item>
-          <ContextMenu.Item key="push" class={style["context-menu__item"]}>
+          <ContextMenu.Item class={style["context-menu__item"]}>
             Push <div class={style["context-menu__item-right-slot"]}>⇧+⌘+K</div>
           </ContextMenu.Item>
-          <ContextMenu.Item key="update-project" class={style["context-menu__item"]} isDisabled>
+          <ContextMenu.Item class={style["context-menu__item"]} isDisabled>
             Update Project <div class={style["context-menu__item-right-slot"]}>⌘+T</div>
           </ContextMenu.Item>
           <ContextMenu.Sub gutter={4} shift={-8}>
-            <ContextMenu.SubTrigger key="github" class={style["context-menu__sub-trigger"]}>
+            <ContextMenu.SubTrigger class={style["context-menu__sub-trigger"]}>
               GitHub
               <div class={style["context-menu__item-right-slot"]}>
                 <ChevronRightIcon width={20} height={20} />
@@ -38,17 +34,15 @@ export function BasicExample() {
             </ContextMenu.SubTrigger>
             <ContextMenu.Portal>
               <ContextMenu.SubContent class={style["context-menu__sub-content"]}>
-                <ContextMenu.Item key="create-pull-request" class={style["context-menu__item"]}>
+                <ContextMenu.Item class={style["context-menu__item"]}>
                   Create Pull Request…
                 </ContextMenu.Item>
-                <ContextMenu.Item key="view-pull-requests" class={style["context-menu__item"]}>
+                <ContextMenu.Item class={style["context-menu__item"]}>
                   View Pull Requests
                 </ContextMenu.Item>
-                <ContextMenu.Item key="sync-fork" class={style["context-menu__item"]}>
-                  Sync Fork
-                </ContextMenu.Item>
+                <ContextMenu.Item class={style["context-menu__item"]}>Sync Fork</ContextMenu.Item>
                 <ContextMenu.Separator class={style["context-menu__separator"]} />
-                <ContextMenu.Item key="open-on-github" class={style["context-menu__item"]}>
+                <ContextMenu.Item class={style["context-menu__item"]}>
                   Open on GitHub
                 </ContextMenu.Item>
               </ContextMenu.SubContent>
@@ -58,7 +52,6 @@ export function BasicExample() {
           <ContextMenu.Separator class={style["context-menu__separator"]} />
 
           <ContextMenu.CheckboxItem
-            key="show-git-log"
             class={style["context-menu__checkbox-item"]}
             isChecked={showGitLog()}
             onCheckedChange={setShowGitLog}
@@ -69,7 +62,6 @@ export function BasicExample() {
             Show Git Log
           </ContextMenu.CheckboxItem>
           <ContextMenu.CheckboxItem
-            key="show-history"
             class={style["context-menu__checkbox-item"]}
             isChecked={showHistory()}
             onCheckedChange={setShowHistory}

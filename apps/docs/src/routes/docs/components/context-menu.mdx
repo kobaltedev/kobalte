@@ -121,28 +121,24 @@ The checkable menu item consists of:
       const [showHistory, setShowHistory] = createSignal(false);
       const [branch, setBranch] = createSignal("main");
 
-      const handleAction = (key: string) => {
-        alert(key);
-      };
-
       return (
-        <ContextMenu onAction={handleAction}>
+        <ContextMenu>
           <ContextMenu.Trigger class="context-menu__trigger">
             Right click here.
           </ContextMenu.Trigger>
           <ContextMenu.Portal>
             <ContextMenu.Content class="context-menu__content">
-              <ContextMenu.Item key="commit" class="context-menu__item">
+              <ContextMenu.Item class="context-menu__item">
                 Commit <div class="context-menu__item-right-slot">⌘+K</div>
               </ContextMenu.Item>
-              <ContextMenu.Item key="push" class="context-menu__item">
+              <ContextMenu.Item class="context-menu__item">
                 Push <div class="context-menu__item-right-slot">⇧+⌘+K</div>
               </ContextMenu.Item>
-              <ContextMenu.Item key="update-project" class="context-menu__item" isDisabled>
+              <ContextMenu.Item class="context-menu__item" isDisabled>
                 Update Project <div class="context-menu__item-right-slot">⌘+T</div>
               </ContextMenu.Item>
               <ContextMenu.Sub gutter={4} shift={-8}>
-                <ContextMenu.SubTrigger key="github" class="context-menu__sub-trigger">
+                <ContextMenu.SubTrigger class="context-menu__sub-trigger">
                   GitHub
                   <div class="context-menu__item-right-slot">
                     <ChevronRightIcon width={20} height={20} />
@@ -150,17 +146,17 @@ The checkable menu item consists of:
                 </ContextMenu.SubTrigger>
                 <ContextMenu.Portal>
                   <ContextMenu.SubContent class="context-menu__sub-content">
-                    <ContextMenu.Item key="create-pull-request" class="context-menu__item">
+                    <ContextMenu.Item class="context-menu__item">
                       Create Pull Request…
                     </ContextMenu.Item>
-                    <ContextMenu.Item key="view-pull-requests" class="context-menu__item">
+                    <ContextMenu.Item class="context-menu__item">
                       View Pull Requests
                     </ContextMenu.Item>
-                    <ContextMenu.Item key="sync-fork" class="context-menu__item">
+                    <ContextMenu.Item class="context-menu__item">
                       Sync Fork
                     </ContextMenu.Item>
                     <ContextMenu.Separator class="context-menu__separator" />
-                    <ContextMenu.Item key="open-on-github" class="context-menu__item">
+                    <ContextMenu.Item class="context-menu__item">
                       Open on GitHub
                     </ContextMenu.Item>
                   </ContextMenu.SubContent>
@@ -170,22 +166,20 @@ The checkable menu item consists of:
               <ContextMenu.Separator class="context-menu__separator" />
 
               <ContextMenu.CheckboxItem
-                key="show-git-log"
                 class="context-menu__checkbox-item"
                 isChecked={showGitLog()}
                 onCheckedChange={setShowGitLog}
-                >
+              >
                 <ContextMenu.ItemIndicator class="context-menu__item-indicator">
                   <CheckIcon />
                 </ContextMenu.ItemIndicator>
                 Show Git Log
               </ContextMenu.CheckboxItem>
               <ContextMenu.CheckboxItem
-                key="show-history"
                 class="context-menu__checkbox-item"
                 isChecked={showHistory()}
                 onCheckedChange={setShowHistory}
-                >
+              >
                 <ContextMenu.ItemIndicator class="context-menu__item-indicator">
                   <CheckIcon />
                 </ContextMenu.ItemIndicator>
@@ -330,6 +324,8 @@ The checkable menu item consists of:
   {/* <!-- prettier-ignore-end --> */}
 </TabsSnippets>
 
+## Usage
+
 ### Origin-aware animations
 
 We expose a CSS custom property `--kb-popper-transform-origin` which can be used to animate the content from its computed origin.
@@ -344,7 +340,6 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | id           | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used.                                                                                                                                                                  |
 | isModal      | `boolean` <br/> Whether the menu should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the menu content. <br/> - elements outside the menu content will not be visible for screen readers. |
 | forceMount   | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                          |
-| onAction     | `(key: string) => void` <br/> Handler that is called when the user activates a menu item.                                                                                                                                                                                                                                                      |
 
 `ContextMenu` also accepts the following props to customize the placement of the `ContextMenu.Content`.
 
@@ -400,10 +395,10 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 
 | Prop          | Description                                                                                                                                                                                                                                                                                                      |
 | :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| key           | `string` <br/> A unique key for the menu item. It must be unique across the entire menu tree (including sub menu items, checkbox and radio values).                                                                                                                                                              |
 | textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `ContextMenu.ItemLabel` part if provided, or fallback to the .textContent of the `ContextMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
 | isDisabled    | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                             |
 | closeOnSelect | `boolean` <br/> Whether the menu should close when the item is activated.                                                                                                                                                                                                                                        |
+| onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                   |
 
 | Data attribute     | Description                                                                       |
 | :----------------- | :-------------------------------------------------------------------------------- |
@@ -434,10 +429,11 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 
 | Prop          | Description                                                                                                                                                                                                                                                                                                      |
 | :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value         | `string` <br/> The value of the menu item radio. It also **acts as a unique key** for the item radio in its parent menu.                                                                                                                                                                                         |
+| value         | `string` <br/> The value of the menu item radio.                                                                                                                                                                                                                                                                 |
 | textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `ContextMenu.ItemLabel` part if provided, or fallback to the .textContent of the `ContextMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
 | isDisabled    | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                             |
 | closeOnSelect | `boolean` <br/> Whether the menu should close when the item is checked.                                                                                                                                                                                                                                          |
+| onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                   |
 
 | Data attribute     | Description                                                                       |
 | :----------------- | :-------------------------------------------------------------------------------- |
@@ -455,11 +451,11 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | isChecked        | `boolean` <br/> The controlled checked state of the item.                                                                                                                                                                                                                                                        |
 | defaultIsChecked | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                                                                                                                                                                     |
 | onCheckedChange  | `(isChecked: boolean) => void` <br/> Event handler called when the checked state of the item changes.                                                                                                                                                                                                            |
-| key              | `string` <br/> A unique key for the menu item. It must be unique across the entire menu tree (including sub menu items, checkbox and radio values).                                                                                                                                                              |
 | textValue        | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `ContextMenu.ItemLabel` part if provided, or fallback to the .textContent of the `ContextMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
 | isIndeterminate  | `boolean` <br/> Whether the item is in an indeterminate state.                                                                                                                                                                                                                                                   |
 | isDisabled       | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                             |
 | closeOnSelect    | `boolean` <br/> Whether the menu should close when the item is checked/unchecked.                                                                                                                                                                                                                                |
+| onSelect         | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                   |
 
 | Data attribute     | Description                                                                       |
 | :----------------- | :-------------------------------------------------------------------------------- |
@@ -496,11 +492,10 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 
 ### ContextMenu.SubTrigger
 
-| Prop       | Description                                                                                                                                                                                                                                  |
-| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| key        | `string` <br/> A unique key for the sub menu trigger. It must be unique across the entire menu tree (including sub menu items, checkbox and radio values). This is needed since the sub menu trigger is also a menu item of its parent menu. |
-| textValue  | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `ContextMenu.SubTrigger`. Use this when the content is complex, or you have non-textual content inside.        |
-| isDisabled | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                             |
+| Prop       | Description                                                                                                                                                                                                                           |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| textValue  | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `ContextMenu.SubTrigger`. Use this when the content is complex, or you have non-textual content inside. |
+| isDisabled | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                      |
 
 | Data attribute     | Description                                                                       |
 | :----------------- | :-------------------------------------------------------------------------------- |
