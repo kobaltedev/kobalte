@@ -1,7 +1,7 @@
 {
   "name": "@kobalte/tailwindcss",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "description": "A TailwindCSS plugin for styling Kobalte Elements with data-* attributes by using modifiers like ui-expanded:*",
   "keywords": [
     "solid",
