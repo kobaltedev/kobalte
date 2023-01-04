@@ -14,7 +14,7 @@ import {
   MenuRadioGroup,
   MenuRadioItem,
   MenuRoot,
-  MenuRootProps,
+  MenuRootOptions,
   MenuSub,
   MenuSubContent,
   MenuSubTrigger,
@@ -45,7 +45,7 @@ export type DropdownMenuComposite = {
   SubTrigger: typeof MenuSubTrigger;
 };
 
-export interface DropdownMenuOptions extends MenuRootProps {}
+export interface DropdownMenuOptions extends MenuRootOptions {}
 
 /**
  * Displays a menu to the user —such as a set of actions or functions— triggered by a button.

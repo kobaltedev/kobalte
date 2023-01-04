@@ -9,9 +9,9 @@ import {
 } from "@kobalte/tests";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { ToggleButton, ToggleButtonProps } from "./toggle-button";
+import { ToggleButton, ToggleButtonOptions } from "./toggle-button";
 
-const defaultProps: ToggleButtonProps = {};
+const defaultProps: ToggleButtonOptions = {};
 
 describe("ToggleButton", () => {
   installPointerEvent();

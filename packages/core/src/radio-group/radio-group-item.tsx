@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
  */
 
-import { combineProps, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import { combineProps, createGenerateId, mergeDefaultProps, OverrideProps } from "@kobalte/utils";
 import {
   Accessor,
   ComponentProps,
@@ -18,14 +18,14 @@ import {
 
 import { useFormControlContext } from "../form-control";
 import { createHover } from "../primitives";
+import { useRadioGroupContext } from "./radio-group-context";
 import {
   RadioGroupItemContext,
   RadioGroupItemContextValue,
   RadioGroupItemDataSet,
 } from "./radio-group-item-context";
-import { useRadioGroupContext } from "./radio-group-context";
 
-export interface RadioGroupItemProps {
+export interface RadioGroupItemOptions {
   /**
    * The value of the radio button, used when submitting an HTML form.
    * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio#Value).
@@ -39,7 +39,9 @@ export interface RadioGroupItemProps {
 /**
  * The root container for a radio button.
  */
-export function RadioGroupItem(props: ComponentProps<"label"> & RadioGroupItemProps) {
+export function RadioGroupItem(
+  props: OverrideProps<ComponentProps<"label">, RadioGroupItemOptions>
+) {
   const formControlContext = useFormControlContext();
   const radioGroupContext = useRadioGroupContext();
 

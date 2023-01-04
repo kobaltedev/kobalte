@@ -4,7 +4,7 @@ import { Dynamic } from "solid-js/web";
 
 import { usePopperContext } from "./popper-context";
 
-export interface PopperPositionerProps {
+export interface PopperPositionerOptions {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }
@@ -12,26 +12,28 @@ export interface PopperPositionerProps {
 /**
  * The wrapper component that positions the popper content relative to the popper anchor.
  */
-export const PopperPositioner = createPolymorphicComponent<"div", PopperPositionerProps>(props => {
-  const context = usePopperContext();
+export const PopperPositioner = createPolymorphicComponent<"div", PopperPositionerOptions>(
+  props => {
+    const context = usePopperContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+    props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, ["as", "ref", "style"]);
+    const [local, others] = splitProps(props, ["as", "ref", "style"]);
 
-  return (
-    <Dynamic
-      component={local.as}
-      ref={mergeRefs(context.setPositionerRef, local.ref)}
-      data-popper-positioner=""
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        "min-width": "max-content",
-        ...local.style,
-      }}
-      {...others}
-    />
-  );
-});
+    return (
+      <Dynamic
+        component={local.as}
+        ref={mergeRefs(context.setPositionerRef, local.ref)}
+        data-popper-positioner=""
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          "min-width": "max-content",
+          ...local.style,
+        }}
+        {...others}
+      />
+    );
+  }
+);

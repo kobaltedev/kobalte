@@ -15,7 +15,7 @@ import { MenuGroup } from "./menu-group";
 import { MenuRadioGroupContext, MenuRadioGroupContextValue } from "./menu-radio-group-context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuRadioGroupProps {
+export interface MenuRadioGroupOptions {
   /** The controlled value of the item radio to check. */
   value?: string;
 
@@ -35,7 +35,7 @@ export interface MenuRadioGroupProps {
 /**
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
-export const MenuRadioGroup = createPolymorphicComponent<"div", MenuRadioGroupProps>(props => {
+export const MenuRadioGroup = createPolymorphicComponent<"div", MenuRadioGroupOptions>(props => {
   const rootContext = useMenuRootContext();
 
   const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);

@@ -15,7 +15,7 @@ import {
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
-import { Button, ButtonProps } from "../button";
+import { Button, ButtonOptions } from "../button";
 import {
   createFormControlField,
   FORM_CONTROL_FIELD_PROP_NAMES,
@@ -25,7 +25,7 @@ import { PressEvent } from "../primitives";
 import { createTypeSelect } from "../selection";
 import { useSelectContext } from "./select-context";
 
-export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(props => {
+export const SelectTrigger = createPolymorphicComponent<"button", ButtonOptions>(props => {
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
 

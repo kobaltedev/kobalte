@@ -45,7 +45,7 @@ type RadioGroupComposite = {
   ItemIndicator: typeof RadioGroupItemIndicator;
 };
 
-export interface RadioGroupProps extends CreateFormControlProps {
+export interface RadioGroupOptions extends CreateFormControlProps {
   /** The controlled value of the radio button to check. */
   value?: string;
 
@@ -66,7 +66,7 @@ export interface RadioGroupProps extends CreateFormControlProps {
  * A set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time.
  * This component is based on the [WAI-ARIA Radio Group Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radiobutton/)
  */
-export const RadioGroup = createPolymorphicComponent<"div", RadioGroupProps, RadioGroupComposite>(
+export const RadioGroup = createPolymorphicComponent<"div", RadioGroupOptions, RadioGroupComposite>(
   props => {
     let ref: HTMLDivElement | undefined;
 

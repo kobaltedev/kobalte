@@ -31,7 +31,7 @@ type PopoverComposite = {
   Description: typeof PopoverDescription;
 };
 
-export interface PopoverProps
+export interface PopoverOptions
   extends Omit<PopperOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /**
    * A ref for the anchor element.
@@ -78,7 +78,7 @@ export interface PopoverProps
 /**
  * A popover is a dialog positioned relative to an anchor element.
  */
-export const Popover: ParentComponent<PopoverProps> & PopoverComposite = props => {
+export const Popover: ParentComponent<PopoverOptions> & PopoverComposite = props => {
   const defaultId = `popover-${createUniqueId()}`;
 
   props = mergeDefaultProps(

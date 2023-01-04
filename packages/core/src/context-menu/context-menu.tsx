@@ -21,7 +21,7 @@ import {
   MenuRadioGroup,
   MenuRadioItem,
   MenuRoot,
-  MenuRootProps,
+  MenuRootOptions,
   MenuSub,
   MenuSubContent,
   MenuSubTrigger,
@@ -54,13 +54,13 @@ type ContextMenuComposite = {
   SubTrigger: typeof MenuSubTrigger;
 };
 
-export interface ContextMenuProps
-  extends Omit<MenuRootProps, "isOpen" | "defaultIsOpen" | "getAnchorRect"> {}
+export interface ContextMenuOptions
+  extends Omit<MenuRootOptions, "isOpen" | "defaultIsOpen" | "getAnchorRect"> {}
 
 /**
  * Displays a menu located at the pointer, triggered by a right-click or a long-press.
  */
-export const ContextMenu: ParentComponent<ContextMenuProps> & ContextMenuComposite = props => {
+export const ContextMenu: ParentComponent<ContextMenuOptions> & ContextMenuComposite = props => {
   const defaultId = `contextmenu-${createUniqueId()}`;
 
   const { direction } = useLocale();

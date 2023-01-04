@@ -14,13 +14,13 @@ import {
 } from "@kobalte/utils";
 import { JSX, onCleanup, splitProps } from "solid-js";
 
-import { Link, LinkProps } from "../link";
+import { Link, LinkOptions } from "../link";
 import { useHoverCardContext } from "./hover-card-context";
 
 /**
  * The link that opens the hovercard when hovered.
  */
-export const HoverCardTrigger = createPolymorphicComponent<"a", LinkProps>(props => {
+export const HoverCardTrigger = createPolymorphicComponent<"a", LinkOptions>(props => {
   const context = useHoverCardContext();
 
   props = mergeDefaultProps({ as: "a" }, props);

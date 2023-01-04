@@ -32,7 +32,7 @@ const ROTATION_DEG = {
 export const ARROW_PATH =
   "M23,27.8c1.1,1.2,3.4,2.2,5,2.2h2H0h2c1.7,0,3.9-1,5-2.2l6.6-7.2c0.7-0.8,2-0.8,2.7,0L23,27.8L23,27.8z";
 
-export interface PopperArrowProps {
+export interface PopperArrowOptions {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 
@@ -44,7 +44,7 @@ export interface PopperArrowProps {
  * An optional arrow element to render alongside the popper content.
  * Must be rendered in the popper content.
  */
-export const PopperArrow = createPolymorphicComponent<"div", PopperArrowProps>(props => {
+export const PopperArrow = createPolymorphicComponent<"div", PopperArrowOptions>(props => {
   const context = usePopperContext();
 
   props = mergeDefaultProps(

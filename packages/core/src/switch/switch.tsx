@@ -6,14 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/switch/src/useSwitch.ts
  */
 
-import { combineProps, mergeDefaultProps, ValidationState } from "@kobalte/utils";
+import { combineProps, mergeDefaultProps, OverrideProps, ValidationState } from "@kobalte/utils";
 import {
   Accessor,
+  Component,
   ComponentProps,
   createMemo,
   createSignal,
   createUniqueId,
-  ParentComponent,
   splitProps,
 } from "solid-js";
 
@@ -31,7 +31,7 @@ type SwitchComposite = {
   Thumb: typeof SwitchThumb;
 };
 
-export interface SwitchProps {
+export interface SwitchOptions {
   /** The controlled checked state of the switch. */
   isChecked?: boolean;
 
@@ -72,7 +72,7 @@ export interface SwitchProps {
 /**
  * A control that allows users to choose one of two values: on or off.
  */
-export const Switch: ParentComponent<ComponentProps<"label"> & SwitchProps> &
+export const Switch: Component<OverrideProps<ComponentProps<"label">, SwitchOptions>> &
   SwitchComposite = props => {
   let ref: HTMLLabelElement | undefined;
 

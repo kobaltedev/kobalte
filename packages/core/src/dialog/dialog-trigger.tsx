@@ -9,14 +9,14 @@
 import { createPolymorphicComponent, mergeRefs } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
-import { Button, ButtonProps } from "../button";
+import { Button, ButtonOptions } from "../button";
 import { PressEvents } from "../primitives";
 import { useDialogContext } from "./dialog-context";
 
 /**
  * The button that opens the dialog.
  */
-export const DialogTrigger = createPolymorphicComponent<"button", ButtonProps>(props => {
+export const DialogTrigger = createPolymorphicComponent<"button", ButtonOptions>(props => {
   const context = useDialogContext();
 
   const [local, others] = splitProps(props, ["ref", "onPress"]);

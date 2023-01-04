@@ -4,7 +4,7 @@ import { Dynamic } from "solid-js/web";
 
 import { useCheckboxContext } from "./checkbox-context";
 
-export interface CheckboxIndicatorProps {
+export interface CheckboxIndicatorOptions {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -16,7 +16,7 @@ export interface CheckboxIndicatorProps {
  * The visual indicator rendered when the checkbox is in a checked or indeterminate state.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export const CheckboxIndicator = createPolymorphicComponent<"div", CheckboxIndicatorProps>(
+export const CheckboxIndicator = createPolymorphicComponent<"div", CheckboxIndicatorOptions>(
   props => {
     const context = useCheckboxContext();
 

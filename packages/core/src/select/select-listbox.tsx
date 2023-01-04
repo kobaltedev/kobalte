@@ -1,10 +1,10 @@
 import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { createEffect, onCleanup, onMount, splitProps } from "solid-js";
 
-import { Listbox, ListboxProps } from "../listbox";
+import { Listbox, ListboxOptions } from "../listbox";
 import { useSelectContext } from "./select-context";
 
-export interface SelectListboxOptions extends Pick<ListboxProps, "scrollRef"> {}
+export interface SelectListboxOptions extends Pick<ListboxOptions, "scrollRef"> {}
 
 /**
  * Contains all the items of a `Select`.

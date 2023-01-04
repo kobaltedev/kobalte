@@ -117,7 +117,7 @@ The select item consists of:
     import { ComponentProps, splitProps } from "solid-js";
     import "./style.css";
 
-    function SelectItem(props: ComponentProps<typeof Select.Item\>) {
+    function SelectItem(props: ComponentProps<typeof Select.Item>) {
       const [local, others] = splitProps(props, ["children"]);
 
       return (

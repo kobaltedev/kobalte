@@ -4,7 +4,7 @@ import { Dynamic } from "solid-js/web";
 
 import { useRadioGroupItemContext } from "./radio-group-item-context";
 
-export interface RadioGroupItemIndicatorProps {
+export interface RadioGroupItemIndicatorOptions {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -18,7 +18,7 @@ export interface RadioGroupItemIndicatorProps {
  */
 export const RadioGroupItemIndicator = createPolymorphicComponent<
   "div",
-  RadioGroupItemIndicatorProps
+  RadioGroupItemIndicatorOptions
 >(props => {
   const context = useRadioGroupItemContext();
 

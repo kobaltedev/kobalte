@@ -21,7 +21,7 @@ import { useMenuRootContext } from "../menu/menu-root-context";
 import { createLongPress } from "../primitives";
 import { useContextMenuContext } from "./context-menu-context";
 
-export interface ContextMenuTriggerProps {
+export interface ContextMenuTriggerOptions {
   /** Whether the context menu trigger is disabled. */
   isDisabled?: boolean;
 
@@ -29,7 +29,7 @@ export interface ContextMenuTriggerProps {
   style?: JSX.CSSProperties;
 }
 
-export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuTriggerProps>(
+export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuTriggerOptions>(
   props => {
     const rootContext = useMenuRootContext();
     const menuContext = useMenuContext();

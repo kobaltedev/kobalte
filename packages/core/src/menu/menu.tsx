@@ -28,7 +28,7 @@ import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-co
 import { useMenuRootContext } from "./menu-root-context";
 import { GraceIntent, isPointerInGraceArea, Side } from "./utils";
 
-export interface MenuProps
+export interface MenuOptions
   extends Omit<PopperOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the menu. */
   isOpen?: boolean;
@@ -46,7 +46,7 @@ export interface MenuProps
 /**
  * Container for menu items and nested menu, provide context for its children.
  */
-export function Menu(props: ParentProps<MenuProps>) {
+export function Menu(props: ParentProps<MenuOptions>) {
   const rootContext = useMenuRootContext();
   const parentDomCollectionContext = useOptionalDomCollectionContext();
   const parentMenuContext = useOptionalMenuContext();

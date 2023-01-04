@@ -15,7 +15,7 @@
 import { createPolymorphicComponent, isFunction } from "@kobalte/utils";
 import { Accessor, children, JSX, splitProps } from "solid-js";
 
-import { Button, ButtonProps } from "../button";
+import { Button, ButtonOptions } from "../button";
 import { createToggleState, PressEvents } from "../primitives";
 
 interface ToggleButtonState {
@@ -23,7 +23,7 @@ interface ToggleButtonState {
   isPressed: Accessor<boolean>;
 }
 
-export interface ToggleButtonProps extends ButtonProps {
+export interface ToggleButtonOptions extends ButtonOptions {
   /** The controlled pressed state of the toggle button. */
   isPressed?: boolean;
 
@@ -50,7 +50,7 @@ export interface ToggleButtonProps extends ButtonProps {
  * A two-state button that allow users to toggle a selection on or off.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonProps>(props => {
+export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonOptions>(props => {
   const [local, others] = splitProps(props, [
     "children",
     "isPressed",
@@ -83,7 +83,7 @@ export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonPro
   );
 });
 
-interface ToggleButtonChildProps extends Pick<ToggleButtonProps, "children"> {
+interface ToggleButtonChildProps extends Pick<ToggleButtonOptions, "children"> {
   state: ToggleButtonState;
 }
 
