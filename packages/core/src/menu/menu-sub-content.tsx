@@ -1,3 +1,11 @@
+/*!
+ * Portions of this file are based on code from radix-ui-primitives.
+ * MIT Licensed, Copyright (c) 2022 WorkOS.
+ *
+ * Credits to the Radix UI team:
+ * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
+ */
+
 import {
   callHandler,
   contains,
@@ -49,9 +57,10 @@ export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOp
 
     // Submenu key events bubble through portals. We only care about keys in this menu.
     const isKeyDownInside = contains(e.currentTarget, e.target);
-    const isCloseKey = e.key === "ArrowLeft" && context.parentMenuContext() != null;
+    const isCloseKey = e.key === "ArrowLeft";
+    const isSubMenu = context.parentMenuContext() != null;
 
-    if (isKeyDownInside && isCloseKey) {
+    if (isKeyDownInside && isCloseKey && isSubMenu) {
       context.close();
 
       // We focus manually because we prevented it in `onCloseAutoFocus`.

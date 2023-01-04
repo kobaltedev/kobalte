@@ -12,6 +12,7 @@ export * from "./menu-portal";
 export * from "./menu-radio-group";
 export * from "./menu-radio-item";
 export * from "./menu-root";
+export * from "./menu-sub";
 export * from "./menu-sub-content";
 export * from "./menu-sub-trigger";
 export * from "./menu-trigger";

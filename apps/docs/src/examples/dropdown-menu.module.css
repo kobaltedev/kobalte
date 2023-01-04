@@ -11,6 +11,7 @@
   background-color: hsl(200 98% 39%);
   color: white;
   font-size: 16px;
+  gap: 8px;
   line-height: 0;
   transition: 250ms background-color;
 }
@@ -28,10 +29,15 @@
   background-color: hsl(201 90% 27%);
 }
 
-.dropdown-menu__icon {
+.dropdown-menu__trigger-icon {
   height: 20px;
   width: 20px;
   flex: 0 0 20px;
+  transition: transform 250ms;
+}
+
+.dropdown-menu__trigger-icon[data-expanded] {
+  transform: rotate(180deg);
 }
 
 .dropdown-menu__content,

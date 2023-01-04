@@ -4,17 +4,23 @@
  *
  * Credits to the React Spectrum team:
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuSubTrigger.ts
+ *
+ * Portions of this file are based on code from radix-ui-primitives.
+ * MIT Licensed, Copyright (c) 2022 WorkOS.
+ *
+ * Credits to the Radix UI team:
+ * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
 import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, createUniqueId, JSX, onCleanup, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { createEffect, createUniqueId, JSX, on, onCleanup, splitProps } from "solid-js";
+import { Dynamic, isServer } from "solid-js/web";
 
-import { createFocusRing, createHover, createPress } from "../primitives";
+import { createFocusRing, createHover, createPress, focusSafely } from "../primitives";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { getPointerGracePolygon } from "./utils";
+import { getPointerGraceArea, Side } from "./utils";
 
 export interface MenuSubTriggerProps {
   /**
@@ -53,6 +59,20 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
 
   const [local, others] = splitProps(props, ["as", "id", "key", "textValue", "isDisabled"]);
 
+  let openTimeoutId: number | null = null;
+
+  const clearOpenTimeout = () => {
+    if (isServer) {
+      return;
+    }
+
+    if (openTimeoutId) {
+      window.clearTimeout(openTimeoutId);
+    }
+
+    openTimeoutId = null;
+  };
+
   const parentSelectionManager = () => {
     const parentMenuContext = context.parentMenuContext();
 
@@ -84,6 +104,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     () => ref
   );
 
+  const { isFocusVisible, focusRingHandlers } = createFocusRing();
+
   const { pressHandlers, isPressed } = createPress({
     isDisabled: () => local.isDisabled,
     onPress: e => {
@@ -95,52 +117,88 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
 
   const { hoverHandlers, isHovered } = createHover({
     isDisabled: () => local.isDisabled,
-    onHoverStart: () => {
-      context.clearCloseTimeout();
-      context.clearFocusContentTimeout();
-
-      context.parentMenuContext()?.clearFocusContentTimeout();
-      context.parentMenuContext()?.focusContent(local.key);
-    },
-    onHoverEnd: () => {
-      context.clearOpenTimeout();
-      context.parentMenuContext()?.focusContentWithDelay(undefined);
-    },
   });
 
-  const { isFocusVisible, focusRingHandlers } = createFocusRing();
-
   const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
-    if (e.pointerType !== "mouse" || local.isDisabled) {
+    if (e.pointerType !== "mouse") {
       return;
     }
 
-    // For consistency with native menu implementation re-focus when the mouse wiggles.
-    if (parentSelectionManager().focusedKey() !== local.key) {
-      context.parentMenuContext()?.focusContent(local.key);
+    const parentMenuContext = context.parentMenuContext();
+
+    parentMenuContext?.onItemEnter(e);
+
+    if (e.defaultPrevented) {
+      return;
     }
 
-    if (!context.isOpen() && context.openTimeoutId() == null) {
-      context.openWithDelay(false);
+    if (local.isDisabled) {
+      parentMenuContext?.onItemLeave(e);
+      return;
+    }
+
+    if (!context.isOpen() && !openTimeoutId) {
+      context.parentMenuContext()?.setPointerGraceIntent(null);
+
+      openTimeoutId = window.setTimeout(() => {
+        context.open(false);
+        clearOpenTimeout();
+      }, 100);
+    }
+
+    parentMenuContext?.onItemEnter(e);
+
+    if (!e.defaultPrevented) {
+      // Remove visual focus from sub menu content.
+      if (context.listState().selectionManager().isFocused()) {
+        context.listState().selectionManager().setFocused(false);
+        context.listState().selectionManager().setFocusedKey(undefined);
+      }
+
+      // Restore visual focus to parent menu content.
+      focusSafely(e.currentTarget);
+      parentMenuContext?.listState().selectionManager().setFocused(true);
+      parentMenuContext?.listState().selectionManager().setFocusedKey(local.key);
     }
   };
 
   const onPointerLeave: JSX.EventHandlerUnion<any, PointerEvent> = e => {
-    if (e.pointerType !== "mouse" || local.isDisabled) {
+    if (e.pointerType !== "mouse") {
       return;
     }
+
+    clearOpenTimeout();
+
+    const parentMenuContext = context.parentMenuContext();
 
     const contentEl = context.contentRef();
 
-    if (!contentEl) {
-      return;
+    if (contentEl) {
+      parentMenuContext?.setPointerGraceIntent({
+        area: getPointerGraceArea(context.currentPlacement(), e, contentEl),
+        // Safe because sub menu always open "left" or "right".
+        side: context.currentPlacement().split("-")[0] as Side,
+      });
+
+      window.clearTimeout(parentMenuContext?.pointerGraceTimeoutId());
+
+      const pointerGraceTimeoutId = window.setTimeout(() => {
+        parentMenuContext?.setPointerGraceIntent(null);
+      }, 300);
+
+      parentMenuContext?.setPointerGraceTimeoutId(pointerGraceTimeoutId);
+    } else {
+      parentMenuContext?.onTriggerLeave(e);
+
+      if (e.defaultPrevented) {
+        return;
+      }
+
+      // There's 100ms where the user may leave an item before the submenu was opened.
+      parentMenuContext?.setPointerGraceIntent(null);
     }
 
-    context.setPointerGracePolygon(
-      getPointerGracePolygon(context.currentPlacement(), e, contentEl)
-    );
-
-    context.suspendPointer();
+    parentMenuContext?.onItemLeave(e);
   };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
@@ -168,7 +226,9 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
 
         // We focus manually because we prevented it in MenuSubContent's `onOpenAutoFocus`.
         if (context.isOpen()) {
-          context.focusContent(collection().getFirstKey());
+          context.focusContent();
+          context.listState().selectionManager().setFocused(true);
+          context.listState().selectionManager().setFocusedKey(collection().getFirstKey());
         } else {
           context.open("first");
         }
@@ -196,12 +256,22 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerPr
     onCleanup(unregister);
   });
 
+  createEffect(
+    on(
+      () => context.parentMenuContext()?.pointerGraceTimeoutId(),
+      pointerGraceTimer => {
+        onCleanup(() => {
+          window.clearTimeout(pointerGraceTimer);
+          context.parentMenuContext()?.setPointerGraceIntent(null);
+        });
+      }
+    )
+  );
+
   createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
 
   onCleanup(() => {
-    context.clearOpenTimeout();
-    context.clearCloseTimeout();
-    context.clearFocusContentTimeout();
+    clearOpenTimeout();
   });
 
   return (

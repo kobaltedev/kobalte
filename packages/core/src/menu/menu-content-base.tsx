@@ -1,3 +1,11 @@
+/*!
+ * Portions of this file are based on code from radix-ui-primitives.
+ * MIT Licensed, Copyright (c) 2022 WorkOS.
+ *
+ * Credits to the Radix UI team:
+ * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
+ */
+
 import {
   combineProps,
   contains,
@@ -5,7 +13,6 @@ import {
   mergeDefaultProps,
 } from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "solid-js";
-import { isServer } from "solid-js/web";
 
 import { DismissableLayer } from "../dismissable-layer";
 import { createSelectableList } from "../list";
@@ -18,7 +25,6 @@ import {
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives";
-import { MENU_TIMEOUT_DELAY } from "./menu";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 
@@ -86,31 +92,53 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     "onFocusOutside",
   ]);
 
-  let updateParentIsPointerInNestedMenuTimeoutId: number | undefined;
+  let lastPointerX = 0;
 
-  const clearUpdateParentIsPointerInNestedMenuTimeout = () => {
-    if (isServer) {
-      return;
-    }
-
-    window.clearTimeout(updateParentIsPointerInNestedMenuTimeoutId);
-    updateParentIsPointerInNestedMenuTimeoutId = undefined;
+  // Only the root menu can apply "modal" behavior (block pointer-events and trap focus).
+  const isRootModalContent = () => {
+    return context.parentMenuContext() == null && rootContext.isModal();
   };
 
-  const isPointerBlocking = () => {
-    // Only the root menu is pointer blocking when opened and modal.
-    return context.parentMenuContext() == null && context.isOpen() && rootContext.isModal();
-  };
+  const selectableList = createSelectableList(
+    {
+      selectionManager: context.listState().selectionManager,
+      collection: context.listState().collection,
+      autoFocus: context.autoFocus,
+      deferAutoFocus: true, // ensure all menu items are mounted and collection is not empty before trying to autofocus.
+      shouldFocusWrap: true,
+      disallowTypeAhead: () => !context.listState().selectionManager().isFocused(),
+    },
+    () => ref
+  );
+
+  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
+
+  createFocusScope(
+    {
+      trapFocus: () => isRootModalContent() && context.isOpen(),
+      onMountAutoFocus: local.onOpenAutoFocus,
+      onUnmountAutoFocus: local.onCloseAutoFocus,
+    },
+    () => ref
+  );
+
+  const { hoverHandlers } = createHover({
+    isDisabled: () => !context.isOpen(),
+    onHoverStart: () => {
+      // Remove visual focus from parent menu content.
+      context.parentMenuContext()?.listState().selectionManager().setFocused(false);
+      context.parentMenuContext()?.listState().selectionManager().setFocusedKey(undefined);
+    },
+  });
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
-    if (!context.isOpen() || !rootContext.isModal()) {
+    // Submenu key events bubble through portals. We only care about keys in this menu.
+    if (!contains(e.currentTarget, e.target)) {
       return;
     }
 
-    const isKeyDownInside = contains(e.currentTarget, e.target);
-
-    // Prevent shift + tab from doing anything when focus should be trapped (opened and modal).
-    if (isKeyDownInside && e.shiftKey && e.key === "Tab") {
+    // Menus should not be navigated using tab key, so we prevent it.
+    if (e.key === "Tab" && context.isOpen()) {
       e.preventDefault();
     }
   };
@@ -134,64 +162,23 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     }
   };
 
-  const selectableList = createSelectableList(
-    {
-      selectionManager: context.listState().selectionManager,
-      collection: context.listState().collection,
-      autoFocus: context.autoFocus,
-      deferAutoFocus: true, // ensure all menu items are mounted and collection is not empty before trying to autofocus.
-      shouldFocusWrap: true,
-      disallowTypeAhead: () => !context.listState().selectionManager().isFocused(),
-    },
-    () => ref
-  );
+  const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    if (e.pointerType !== "mouse") {
+      return;
+    }
 
-  const { hoverHandlers } = createHover({
-    isDisabled: () => !context.isOpen(),
-    onHoverStart: () => {
-      clearUpdateParentIsPointerInNestedMenuTimeout();
+    const target = e.target as HTMLElement;
+    const pointerXHasChanged = lastPointerX !== e.clientX;
 
-      // Cancel the closing attempt initiated by `MenuSubTrigger` pointer leave.
-      context.clearCloseTimeout();
-
-      // Don't focus the parent menu content.
-      context.parentMenuContext()?.clearFocusContentTimeout();
-
-      context.parentMenuContext()?.setIsPointerInNestedMenu(true);
-      context.setIsPointerInNestedMenu(false);
-
-      // Remove the grace polygon created when leaving the `MenuSubTrigger`.
-      context.setPointerGracePolygon(null);
-    },
-    onHoverEnd: () => {
-      context.listState().selectionManager().setFocused(false);
-      context.listState().selectionManager().setFocusedKey(undefined);
-
-      updateParentIsPointerInNestedMenuTimeoutId = window.setTimeout(() => {
-        // If pointer is in a sub menu of this menu, it's also considered in a sub menu of the parent menu.
-        context.parentMenuContext()?.setIsPointerInNestedMenu(context.isPointerInNestedMenu());
-
-        clearUpdateParentIsPointerInNestedMenuTimeout();
-      }, MENU_TIMEOUT_DELAY);
-    },
-  });
-
-  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
-
-  createFocusScope(
-    {
-      trapFocus: () => context.isOpen() && rootContext.isModal(),
-      onMountAutoFocus: local.onOpenAutoFocus,
-      onUnmountAutoFocus: local.onCloseAutoFocus,
-    },
-    () => ref
-  );
+    // We don't use `event.movementX` for this check because Safari will
+    // always return `0` on a pointer event.
+    if (contains(e.currentTarget, target) && pointerXHasChanged) {
+      context.setPointerDir(e.clientX > lastPointerX ? "right" : "left");
+      lastPointerX = e.clientX;
+    }
+  };
 
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
-
-  onCleanup(() => {
-    clearUpdateParentIsPointerInNestedMenuTimeout();
-  });
 
   return (
     <Show when={context.shouldMount()}>
@@ -201,7 +188,7 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           id={local.id}
           tabIndex={selectableList.tabIndex()}
           isDismissed={!context.isOpen()}
-          disableOutsidePointerEvents={isPointerBlocking()}
+          disableOutsidePointerEvents={isRootModalContent() && context.isOpen()}
           excludedElements={[context.triggerRef]}
           style={{ position: "relative", ...local.style }}
           aria-labelledby={context.triggerId()}
@@ -219,9 +206,9 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
             },
             others,
             selectableList.handlers,
-            { onKeyDown },
             hoverHandlers,
-            focusRingHandlers
+            focusRingHandlers,
+            { onPointerMove, onKeyDown }
           )}
         />
       </PopperPositioner>

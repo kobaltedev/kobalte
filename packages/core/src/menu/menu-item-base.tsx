@@ -1,8 +1,15 @@
+/*!
+ * Portions of this file are based on code from radix-ui-primitives.
+ * MIT Licensed, Copyright (c) 2022 WorkOS.
+ *
+ * Credits to the Radix UI team:
+ * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
+ */
+
 import {
   combineProps,
   createGenerateId,
   createPolymorphicComponent,
-  focusWithoutScrolling,
   mergeDefaultProps,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
@@ -14,6 +21,7 @@ import {
   createHover,
   createPress,
   createRegisterId,
+  focusSafely,
 } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -114,6 +122,8 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
     () => ref
   );
 
+  const { isFocusVisible, focusRingHandlers } = createFocusRing();
+
   const { pressHandlers, isPressed } = createPress({
     isDisabled: () => local.isDisabled,
     onPressUp: e => {
@@ -129,42 +139,43 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
 
   const { hoverHandlers, isHovered } = createHover({
     isDisabled: () => local.isDisabled,
-    onHoverStart: () => {
-      menuContext.clearFocusContentTimeout();
-
-      if (menuContext.isPointerSuspended()) {
-        return;
-      }
-
-      menuContext.listState().selectionManager().setFocused(true);
-      menuContext.listState().selectionManager().setFocusedKey(local.key);
-      focusWithoutScrolling(ref);
-    },
-    onHoverEnd: () => {
-      if (menuContext.isPointerSuspended()) {
-        return;
-      }
-
-      menuContext.focusContentWithDelay(undefined);
-    },
   });
 
-  const { isFocusVisible, focusRingHandlers } = createFocusRing();
-
+  /**
+   * We focus items on `pointerMove` to achieve the following:
+   *
+   * - Mouse over an item (it focuses)
+   * - Leave mouse where it is and use keyboard to focus a different item
+   * - Wiggle mouse without it leaving previously focused item
+   * - Previously focused item should re-focus
+   *
+   * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+   * wiggles. This is to match native menu implementation.
+   */
   const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
-    if (menuContext.isPointerSuspended()) {
-      e.preventDefault();
+    if (e.pointerType !== "mouse") {
       return;
     }
 
-    if (e.pointerType !== "mouse" || local.isDisabled) {
+    if (local.isDisabled) {
+      menuContext.onItemLeave(e);
+    } else {
+      menuContext.onItemEnter(e);
+
+      if (!e.defaultPrevented) {
+        focusSafely(e.currentTarget);
+        menuContext.listState().selectionManager().setFocused(true);
+        menuContext.listState().selectionManager().setFocusedKey(local.key);
+      }
+    }
+  };
+
+  const onPointerLeave: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    if (e.pointerType !== "mouse") {
       return;
     }
 
-    // For consistency with native menu implementation re-focus when the mouse wiggles.
-    if (selectionManager().focusedKey() !== local.key) {
-      menuContext.focusContent(local.key);
-    }
+    menuContext.onItemLeave(e);
   };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
@@ -242,7 +253,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
           pressHandlers,
           hoverHandlers,
           focusRingHandlers,
-          { onPointerMove, onKeyDown }
+          { onPointerMove, onPointerLeave, onKeyDown }
         )}
       />
     </MenuItemContext.Provider>

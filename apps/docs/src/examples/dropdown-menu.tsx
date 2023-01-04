@@ -1,53 +1,58 @@
 import { DropdownMenu } from "@kobalte/core";
 import { createSignal } from "solid-js";
 
-import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "../components";
+import { CheckIcon, ChevronDownIcon, ChevronRightIcon, DotFilledIcon } from "../components";
 import style from "./dropdown-menu.module.css";
 
 export function BasicExample() {
-  const [bookmarksChecked, setBookmarksChecked] = createSignal(true);
-  const [urlsChecked, setUrlsChecked] = createSignal(false);
-  const [person, setPerson] = createSignal("pedro");
+  const [showGitLog, setShowGitLog] = createSignal(true);
+  const [showHistory, setShowHistory] = createSignal(false);
+  const [branch, setBranch] = createSignal("main");
+
+  const handleAction = (key: string) => {
+    alert(key);
+  };
 
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger class={style["dropdown-menu__trigger"]}>Settings</DropdownMenu.Trigger>
+    <DropdownMenu onAction={handleAction}>
+      <DropdownMenu.Trigger class={style["dropdown-menu__trigger"]}>
+        <span>Git Settings</span>
+        <DropdownMenu.Icon class={style["dropdown-menu__trigger-icon"]}>
+          <ChevronDownIcon />
+        </DropdownMenu.Icon>
+      </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content class={style["dropdown-menu__content"]}>
-          <DropdownMenu.Item key="new-tab" class={style["dropdown-menu__item"]}>
-            New Tab <div class={style["dropdown-menu__item-right-slot"]}>⌘+T</div>
+          <DropdownMenu.Item key="commit" class={style["dropdown-menu__item"]}>
+            Commit <div class={style["dropdown-menu__item-right-slot"]}>⌘+K</div>
           </DropdownMenu.Item>
-          <DropdownMenu.Item key="new-window" class={style["dropdown-menu__item"]}>
-            New Window <div class={style["dropdown-menu__item-right-slot"]}>⌘+N</div>
+          <DropdownMenu.Item key="push" class={style["dropdown-menu__item"]}>
+            Push <div class={style["dropdown-menu__item-right-slot"]}>⇧+⌘+K</div>
           </DropdownMenu.Item>
-          <DropdownMenu.Item
-            key="new-private-window"
-            class={style["dropdown-menu__item"]}
-            isDisabled
-          >
-            New Private Window <div class={style["dropdown-menu__item-right-slot"]}>⇧+⌘+N</div>
+          <DropdownMenu.Item key="update-project" class={style["dropdown-menu__item"]} isDisabled>
+            Update Project <div class={style["dropdown-menu__item-right-slot"]}>⌘+T</div>
           </DropdownMenu.Item>
           <DropdownMenu.Sub gutter={2} shift={-5}>
-            <DropdownMenu.SubTrigger key="more-tools" class={style["dropdown-menu__sub-trigger"]}>
-              More Tools
+            <DropdownMenu.SubTrigger key="github" class={style["dropdown-menu__sub-trigger"]}>
+              GitHub
               <div class={style["dropdown-menu__item-right-slot"]}>
                 <ChevronRightIcon width={20} height={20} />
               </div>
             </DropdownMenu.SubTrigger>
             <DropdownMenu.Portal>
               <DropdownMenu.SubContent class={style["dropdown-menu__sub-content"]}>
-                <DropdownMenu.Item key="save-page-as" class={style["dropdown-menu__item"]}>
-                  Save Page As… <div class={style["dropdown-menu__item-right-slot"]}>⌘+S</div>
+                <DropdownMenu.Item key="create-pull-request" class={style["dropdown-menu__item"]}>
+                  Create Pull Request…
                 </DropdownMenu.Item>
-                <DropdownMenu.Item key="create-shortcut" class={style["dropdown-menu__item"]}>
-                  Create Shortcut…
+                <DropdownMenu.Item key="view-pull-requests" class={style["dropdown-menu__item"]}>
+                  View Pull Requests
                 </DropdownMenu.Item>
-                <DropdownMenu.Item key="name-window" class={style["dropdown-menu__item"]}>
-                  Name Window…
+                <DropdownMenu.Item key="sync-fork" class={style["dropdown-menu__item"]}>
+                  Sync Fork
                 </DropdownMenu.Item>
                 <DropdownMenu.Separator class="DropdownMenu.Separator" />
-                <DropdownMenu.Item key="developer-tools" class={style["dropdown-menu__item"]}>
-                  Developer Tools
+                <DropdownMenu.Item key="open-on-github" class={style["dropdown-menu__item"]}>
+                  Open on GitHub
                 </DropdownMenu.Item>
               </DropdownMenu.SubContent>
             </DropdownMenu.Portal>
@@ -56,46 +61,46 @@ export function BasicExample() {
           <DropdownMenu.Separator class={style["dropdown-menu__separator"]} />
 
           <DropdownMenu.CheckboxItem
-            key="show-bookmarks"
+            key="show-git-log"
             class={style["dropdown-menu__checkbox-item"]}
-            isChecked={bookmarksChecked()}
-            onCheckedChange={setBookmarksChecked}
+            isChecked={showGitLog()}
+            onCheckedChange={setShowGitLog}
           >
             <DropdownMenu.ItemIndicator class={style["dropdown-menu__item-indicator"]}>
               <CheckIcon />
             </DropdownMenu.ItemIndicator>
-            Show Bookmarks <div class={style["dropdown-menu__item-right-slot"]}>⌘+B</div>
+            Show Git Log
           </DropdownMenu.CheckboxItem>
           <DropdownMenu.CheckboxItem
-            key="show-full-url"
+            key="show-history"
             class={style["dropdown-menu__checkbox-item"]}
-            isChecked={urlsChecked()}
-            onCheckedChange={setUrlsChecked}
+            isChecked={showHistory()}
+            onCheckedChange={setShowHistory}
           >
             <DropdownMenu.ItemIndicator class={style["dropdown-menu__item-indicator"]}>
               <CheckIcon />
             </DropdownMenu.ItemIndicator>
-            Show Full URLs
+            Show History
           </DropdownMenu.CheckboxItem>
 
           <DropdownMenu.Separator class={style["dropdown-menu__separator"]} />
 
           <DropdownMenu.Group>
             <DropdownMenu.GroupLabel class={style["dropdown-menu__group-label"]}>
-              People
+              Branches
             </DropdownMenu.GroupLabel>
-            <DropdownMenu.RadioGroup value={person()} onValueChange={setPerson}>
-              <DropdownMenu.RadioItem class={style["dropdown-menu__radio-item"]} value="pedro">
+            <DropdownMenu.RadioGroup value={branch()} onValueChange={setBranch}>
+              <DropdownMenu.RadioItem class={style["dropdown-menu__radio-item"]} value="main">
                 <DropdownMenu.ItemIndicator class={style["dropdown-menu__item-indicator"]}>
                   <DotFilledIcon />
                 </DropdownMenu.ItemIndicator>
-                Pedro Duarte
+                main
               </DropdownMenu.RadioItem>
-              <DropdownMenu.RadioItem class={style["dropdown-menu__radio-item"]} value="colm">
+              <DropdownMenu.RadioItem class={style["dropdown-menu__radio-item"]} value="develop">
                 <DropdownMenu.ItemIndicator class={style["dropdown-menu__item-indicator"]}>
                   <DotFilledIcon />
                 </DropdownMenu.ItemIndicator>
-                Colm Tuite
+                develop
               </DropdownMenu.RadioItem>
             </DropdownMenu.RadioGroup>
           </DropdownMenu.Group>

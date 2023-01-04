@@ -11,7 +11,7 @@ import { useMenuContext } from "./menu-context";
 export const MenuIcon = createPolymorphicComponent<"div">(props => {
   const context = useMenuContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+  props = mergeDefaultProps({ as: "div", children: "▼" }, props);
 
   const [local, others] = splitProps(props, ["as"]);
 
@@ -21,8 +21,6 @@ export const MenuIcon = createPolymorphicComponent<"div">(props => {
       aria-hidden="true"
       data-expanded={context.isOpen() ? "" : undefined}
       {...others}
-    >
-      ▼
-    </Dynamic>
+    />
   );
 });

@@ -10,7 +10,6 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
 import {
-  Menu,
   MenuCheckboxItem,
   MenuGroup,
   MenuGroupLabel,
@@ -24,6 +23,7 @@ import {
   MenuRadioItem,
   MenuRoot,
   MenuRootProps,
+  MenuSub,
   MenuSubContent,
   MenuSubTrigger,
 } from "../menu";
@@ -50,7 +50,7 @@ type ContextMenuComposite = {
   RadioGroup: typeof MenuRadioGroup;
   RadioItem: typeof MenuRadioItem;
   CheckboxItem: typeof MenuCheckboxItem;
-  Sub: typeof Menu;
+  Sub: typeof MenuSub;
   SubContent: typeof MenuSubContent;
   SubTrigger: typeof MenuSubTrigger;
 };
@@ -114,6 +114,6 @@ ContextMenu.ItemIndicator = MenuItemIndicator;
 ContextMenu.RadioGroup = MenuRadioGroup;
 ContextMenu.RadioItem = MenuRadioItem;
 ContextMenu.CheckboxItem = MenuCheckboxItem;
-ContextMenu.Sub = Menu;
+ContextMenu.Sub = MenuSub;
 ContextMenu.SubContent = MenuSubContent;
 ContextMenu.SubTrigger = MenuSubTrigger;
