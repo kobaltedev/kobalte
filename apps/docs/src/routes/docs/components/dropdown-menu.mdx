@@ -124,12 +124,8 @@ The checkable menu item consists of:
       const [showHistory, setShowHistory] = createSignal(false);
       const [branch, setBranch] = createSignal("main");
 
-      const handleAction = (key: string) => {
-        alert(key);
-      };
-
       return (
-        <DropdownMenu onAction={handleAction}>
+        <DropdownMenu>
           <DropdownMenu.Trigger class="dropdown-menu__trigger">
             <span>Git Settings</span>
             <DropdownMenu.Icon class="dropdown-menu__trigger-icon">
@@ -138,17 +134,17 @@ The checkable menu item consists of:
           </DropdownMenu.Trigger>
           <DropdownMenu.Portal>
             <DropdownMenu.Content class="dropdown-menu__content">
-              <DropdownMenu.Item key="commit" class="dropdown-menu__item">
+              <DropdownMenu.Item class="dropdown-menu__item">
                 Commit <div class="dropdown-menu__item-right-slot">⌘+K</div>
               </DropdownMenu.Item>
-              <DropdownMenu.Item key="push" class="dropdown-menu__item">
+              <DropdownMenu.Item class="dropdown-menu__item">
                 Push <div class="dropdown-menu__item-right-slot">⇧+⌘+K</div>
               </DropdownMenu.Item>
-              <DropdownMenu.Item key="update-project" class="dropdown-menu__item" isDisabled>
+              <DropdownMenu.Item class="dropdown-menu__item" isDisabled>
                 Update Project <div class="dropdown-menu__item-right-slot">⌘+T</div>
               </DropdownMenu.Item>
               <DropdownMenu.Sub gutter={4} shift={-8}>
-                <DropdownMenu.SubTrigger key="github" class="dropdown-menu__sub-trigger">
+                <DropdownMenu.SubTrigger class="dropdown-menu__sub-trigger">
                   GitHub
                   <div class="dropdown-menu__item-right-slot">
                     <ChevronRightIcon width={20} height={20} />
@@ -156,17 +152,17 @@ The checkable menu item consists of:
                 </DropdownMenu.SubTrigger>
                 <DropdownMenu.Portal>
                   <DropdownMenu.SubContent class="dropdown-menu__sub-content">
-                    <DropdownMenu.Item key="create-pull-request" class="dropdown-menu__item">
+                    <DropdownMenu.Item class="dropdown-menu__item">
                       Create Pull Request…
                     </DropdownMenu.Item>
-                    <DropdownMenu.Item key="view-pull-requests" class="dropdown-menu__item">
+                    <DropdownMenu.Item class="dropdown-menu__item">
                       View Pull Requests
                     </DropdownMenu.Item>
-                    <DropdownMenu.Item key="sync-fork" class="dropdown-menu__item">
+                    <DropdownMenu.Item class="dropdown-menu__item">
                       Sync Fork
                     </DropdownMenu.Item>
                     <DropdownMenu.Separator class="dropdown-menu__separator" />
-                    <DropdownMenu.Item key="open-on-github" class="dropdown-menu__item">
+                    <DropdownMenu.Item class="dropdown-menu__item">
                       Open on GitHub
                     </DropdownMenu.Item>
                   </DropdownMenu.SubContent>
@@ -176,22 +172,20 @@ The checkable menu item consists of:
               <DropdownMenu.Separator class="dropdown-menu__separator" />
 
               <DropdownMenu.CheckboxItem
-                key="show-git-log"
                 class="dropdown-menu__checkbox-item"
                 isChecked={showGitLog()}
                 onCheckedChange={setShowGitLog}
-                >
+              >
                 <DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
                   <CheckIcon />
                 </DropdownMenu.ItemIndicator>
                 Show Git Log
               </DropdownMenu.CheckboxItem>
               <DropdownMenu.CheckboxItem
-                key="show-history"
                 class="dropdown-menu__checkbox-item"
                 isChecked={showHistory()}
                 onCheckedChange={setShowHistory}
-                >
+              >
                 <DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
                   <CheckIcon />
                 </DropdownMenu.ItemIndicator>
@@ -368,7 +362,7 @@ The checkable menu item consists of:
   {/* <!-- prettier-ignore-end --> */}
 </TabsSnippets>
 
-### Usage
+## Usage
 
 ### Default open
 
@@ -419,7 +413,6 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | id            | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used.                                                                                                                                                                  |
 | isModal       | `boolean` <br/> Whether the menu should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the menu content. <br/> - elements outside the menu content will not be visible for screen readers. |
 | forceMount    | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                          |
-| onAction      | `(key: string) => void` <br/> Handler that is called when the user activates a menu item.                                                                                                                                                                                                                                                      |
 
 `DropdownMenu` also accepts the following props to customize the placement of the `DropdownMenu.Content`.
 
@@ -479,10 +472,10 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 
 | Prop          | Description                                                                                                                                                                                                                                                                                                        |
 | :------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| key           | `string` <br/> A unique key for the menu item. It must be unique across the entire menu tree (including sub menu items, checkbox and radio values).                                                                                                                                                                |
 | textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `DropdownMenu.ItemLabel` part if provided, or fallback to the .textContent of the `DropdownMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
 | isDisabled    | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                               |
 | closeOnSelect | `boolean` <br/> Whether the menu should close when the item is activated.                                                                                                                                                                                                                                          |
+| onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                     |
 
 | Data attribute     | Description                                                                       |
 | :----------------- | :-------------------------------------------------------------------------------- |
@@ -513,10 +506,11 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 
 | Prop          | Description                                                                                                                                                                                                                                                                                                        |
 | :------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value         | `string` <br/> The value of the menu item radio. It also **acts as a unique key** for the item radio in its parent menu.                                                                                                                                                                                           |
+| value         | `string` <br/> The value of the menu item radio.                                                                                                                                                                                                                                                                   |
 | textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `DropdownMenu.ItemLabel` part if provided, or fallback to the .textContent of the `DropdownMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
 | isDisabled    | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                               |
 | closeOnSelect | `boolean` <br/> Whether the menu should close when the item is checked.                                                                                                                                                                                                                                            |
+| onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                     |
 
 | Data attribute     | Description                                                                       |
 | :----------------- | :-------------------------------------------------------------------------------- |
@@ -534,11 +528,11 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | isChecked        | `boolean` <br/> The controlled checked state of the item.                                                                                                                                                                                                                                                          |
 | defaultIsChecked | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                                                                                                                                                                       |
 | onCheckedChange  | `(isChecked: boolean) => void` <br/> Event handler called when the checked state of the item changes.                                                                                                                                                                                                              |
-| key              | `string` <br/> A unique key for the menu item. It must be unique across the entire menu tree (including sub menu items, checkbox and radio values).                                                                                                                                                                |
 | textValue        | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `DropdownMenu.ItemLabel` part if provided, or fallback to the .textContent of the `DropdownMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
 | isIndeterminate  | `boolean` <br/> Whether the item is in an indeterminate state.                                                                                                                                                                                                                                                     |
 | isDisabled       | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                               |
 | closeOnSelect    | `boolean` <br/> Whether the menu should close when the item is checked/unchecked.                                                                                                                                                                                                                                  |
+| onSelect         | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                     |
 
 | Data attribute     | Description                                                                       |
 | :----------------- | :-------------------------------------------------------------------------------- |
@@ -575,11 +569,10 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 
 ### DropdownMenu.SubTrigger
 
-| Prop       | Description                                                                                                                                                                                                                                  |
-| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| key        | `string` <br/> A unique key for the sub menu trigger. It must be unique across the entire menu tree (including sub menu items, checkbox and radio values). This is needed since the sub menu trigger is also a menu item of its parent menu. |
-| textValue  | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `DropdownMenu.SubTrigger`. Use this when the content is complex, or you have non-textual content inside.       |
-| isDisabled | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                             |
+| Prop       | Description                                                                                                                                                                                                                            |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| textValue  | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `DropdownMenu.SubTrigger`. Use this when the content is complex, or you have non-textual content inside. |
+| isDisabled | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                       |
 
 | Data attribute     | Description                                                                       |
 | :----------------- | :-------------------------------------------------------------------------------- |
@@ -608,14 +601,13 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 
 ### Keyboard Interactions
 
-| Key                   | Description                                                                                                                               |
-| :-------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| <Kbd>Space</Kbd>      | When focus is on the trigger, opens the menu and focuses the first item. <br/> When focus is on an item, activates the item.              |
-| <Kbd>Enter</Kbd>      | When focus is on the trigger, opens the menu and focuses the first item. <br/> When focus is on an item, activates the item.              |
-| <Kbd>ArrowDown</Kbd>  | When focus is on the trigger, opens the menu and focuses the first item. <br/> When focus is on an item, moves focus to the next item.    |
-| <Kbd>ArrowUp</Kbd>    | When focus is on the trigger, opens the menu and focuses the last item. <br/> When focus is on an item, moves focus to the previous item. |
-| <Kbd>ArrowRight</Kbd> | When focus is on a sub menu trigger, opens the sub menu.                                                                                  |
-| <Kbd>ArrowLeft</Kbd>  | When focus is on a sub menu, closes the sub menu.                                                                                         |
-| <Kbd>Home</Kbd>       | When focus is on an item, moves focus to first item.                                                                                      |
-| <Kbd>End</Kbd>        | When focus is on an item, moves focus to last item.                                                                                       |
-| <Kbd>Esc</Kbd>        | Closes the menu and moves focus to the trigger.                                                                                           |
+| Key                                          | Description                                                                                                                               |
+| :------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| <Kbd>Space</Kbd>                             | When focus is on the trigger, opens the menu and focuses the first item. <br/> When focus is on an item, activates the item.              |
+| <Kbd>Enter</Kbd>                             | When focus is on the trigger, opens the menu and focuses the first item. <br/> When focus is on an item, activates the item.              |
+| <Kbd>ArrowDown</Kbd>                         | When focus is on the trigger, opens the menu and focuses the first item. <br/> When focus is on an item, moves focus to the next item.    |
+| <Kbd>ArrowUp</Kbd>                           | When focus is on the trigger, opens the menu and focuses the last item. <br/> When focus is on an item, moves focus to the previous item. |
+| <Kbd>ArrowRight</Kbd> / <Kbd>ArrowLeft</Kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction.                                          |
+| <Kbd>Home</Kbd>                              | When focus is on an item, moves focus to first item.                                                                                      |
+| <Kbd>End</Kbd>                               | When focus is on an item, moves focus to last item.                                                                                       |
+| <Kbd>Esc</Kbd>                               | Closes the menu and moves focus to the trigger.                                                                                           |

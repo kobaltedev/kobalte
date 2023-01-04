@@ -9,12 +9,8 @@ export function BasicExample() {
   const [showHistory, setShowHistory] = createSignal(false);
   const [branch, setBranch] = createSignal("main");
 
-  const handleAction = (key: string) => {
-    alert(key);
-  };
-
   return (
-    <DropdownMenu onAction={handleAction}>
+    <DropdownMenu>
       <DropdownMenu.Trigger class={style["dropdown-menu__trigger"]}>
         <span>Git Settings</span>
         <DropdownMenu.Icon class={style["dropdown-menu__trigger-icon"]}>
@@ -23,17 +19,17 @@ export function BasicExample() {
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content class={style["dropdown-menu__content"]}>
-          <DropdownMenu.Item key="commit" class={style["dropdown-menu__item"]}>
+          <DropdownMenu.Item class={style["dropdown-menu__item"]}>
             Commit <div class={style["dropdown-menu__item-right-slot"]}>⌘+K</div>
           </DropdownMenu.Item>
-          <DropdownMenu.Item key="push" class={style["dropdown-menu__item"]}>
+          <DropdownMenu.Item class={style["dropdown-menu__item"]}>
             Push <div class={style["dropdown-menu__item-right-slot"]}>⇧+⌘+K</div>
           </DropdownMenu.Item>
-          <DropdownMenu.Item key="update-project" class={style["dropdown-menu__item"]} isDisabled>
+          <DropdownMenu.Item class={style["dropdown-menu__item"]} isDisabled>
             Update Project <div class={style["dropdown-menu__item-right-slot"]}>⌘+T</div>
           </DropdownMenu.Item>
           <DropdownMenu.Sub gutter={4} shift={-8}>
-            <DropdownMenu.SubTrigger key="github" class={style["dropdown-menu__sub-trigger"]}>
+            <DropdownMenu.SubTrigger class={style["dropdown-menu__sub-trigger"]}>
               GitHub
               <div class={style["dropdown-menu__item-right-slot"]}>
                 <ChevronRightIcon width={20} height={20} />
@@ -41,17 +37,17 @@ export function BasicExample() {
             </DropdownMenu.SubTrigger>
             <DropdownMenu.Portal>
               <DropdownMenu.SubContent class={style["dropdown-menu__sub-content"]}>
-                <DropdownMenu.Item key="create-pull-request" class={style["dropdown-menu__item"]}>
+                <DropdownMenu.Item class={style["dropdown-menu__item"]}>
                   Create Pull Request…
                 </DropdownMenu.Item>
-                <DropdownMenu.Item key="view-pull-requests" class={style["dropdown-menu__item"]}>
+                <DropdownMenu.Item class={style["dropdown-menu__item"]}>
                   View Pull Requests
                 </DropdownMenu.Item>
-                <DropdownMenu.Item key="sync-fork" class={style["dropdown-menu__item"]}>
+                <DropdownMenu.Item class={style["dropdown-menu__item"]}>
                   Sync Fork
                 </DropdownMenu.Item>
                 <DropdownMenu.Separator class={style["dropdown-menu__separator"]} />
-                <DropdownMenu.Item key="open-on-github" class={style["dropdown-menu__item"]}>
+                <DropdownMenu.Item class={style["dropdown-menu__item"]}>
                   Open on GitHub
                 </DropdownMenu.Item>
               </DropdownMenu.SubContent>
@@ -61,7 +57,6 @@ export function BasicExample() {
           <DropdownMenu.Separator class={style["dropdown-menu__separator"]} />
 
           <DropdownMenu.CheckboxItem
-            key="show-git-log"
             class={style["dropdown-menu__checkbox-item"]}
             isChecked={showGitLog()}
             onCheckedChange={setShowGitLog}
@@ -72,7 +67,6 @@ export function BasicExample() {
             Show Git Log
           </DropdownMenu.CheckboxItem>
           <DropdownMenu.CheckboxItem
-            key="show-history"
             class={style["dropdown-menu__checkbox-item"]}
             isChecked={showHistory()}
             onCheckedChange={setShowHistory}
@@ -122,13 +116,9 @@ export function ControlledExample() {
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content class={style["dropdown-menu__content"]}>
-          <DropdownMenu.Item key="new-tab" class={style["dropdown-menu__item"]}>
-            New Tab
-          </DropdownMenu.Item>
-          <DropdownMenu.Item key="new-window" class={style["dropdown-menu__item"]}>
-            New Window
-          </DropdownMenu.Item>
-          <DropdownMenu.Item key="new-private-window" class={style["dropdown-menu__item"]}>
+          <DropdownMenu.Item class={style["dropdown-menu__item"]}>New Tab</DropdownMenu.Item>
+          <DropdownMenu.Item class={style["dropdown-menu__item"]}>New Window</DropdownMenu.Item>
+          <DropdownMenu.Item class={style["dropdown-menu__item"]}>
             New Private Window
           </DropdownMenu.Item>
         </DropdownMenu.Content>

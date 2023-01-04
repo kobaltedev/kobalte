@@ -1,50 +1,72 @@
-import { Tabs as TabsBase } from "@kobalte/core";
-import { ComponentProps, createSignal, For, splitProps } from "solid-js";
+import { Tabs } from "@kobalte/core";
+import { createSignal, For } from "solid-js";
 
-function Tabs(props: ComponentProps<typeof TabsBase>) {
-  return <TabsBase class="w-full data-[orientation='vertical']:flex" {...props} />;
-}
+import style from "./tabs.module.css";
 
-function TabList(props: ComponentProps<typeof TabsBase.List>) {
-  const [local, others] = splitProps(props, ["children"]);
-
+export function BasicExample() {
   return (
-    <TabsBase.List
-      class="relative flex items-center data-[orientation='horizontal']:border-b data-[orientation='vertical']:flex-col data-[orientation='vertical']:items-stretch data-[orientation='vertical']:border-r border-zinc-300 dark:border-zinc-700"
-      {...others}
-    >
-      {local.children}
-      <TabsBase.Indicator class="absolute data-[orientation='horizontal']:bottom-[-1px] data-[orientation='vertical']:right-[-1px] data-[orientation='horizontal']:h-0.5 data-[orientation='vertical']:w-0.5 bg-blue-600 transition-all" />
-    </TabsBase.List>
+    <Tabs aria-label="Main navigation" class={style["tabs"]}>
+      <Tabs.List class={style["tabs__list"]}>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
+          Profile
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="dashboard">
+          Dashboard
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="settings">
+          Settings
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="contact">
+          Contact
+        </Tabs.Trigger>
+        <Tabs.Indicator class={style["tabs__indicator"]} />
+      </Tabs.List>
+      <Tabs.Content class={style["tabs__content"]} value="profile">
+        Profile details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="dashboard">
+        Dashboard details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="settings">
+        Settings details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="contact">
+        Contact details
+      </Tabs.Content>
+    </Tabs>
   );
 }
 
-function Tab(props: ComponentProps<typeof TabsBase.Trigger>) {
+export function DefaultValueExample() {
   return (
-    <TabsBase.Trigger
-      class="inline-block px-4 py-2 outline-none ui-focus-visible:bg-zinc-100 ui-hover:text-zinc-600 ui-hover:bg-zinc-50 dark:ui-hover:bg-zinc-800 dark:ui-hover:text-zinc-300 dark:ui-focus-visible:bg-zinc-800 ui-disabled:opacity-40 ui-disabled:ui-hover:bg-transparent"
-      {...props}
-    />
-  );
-}
-
-function TabPanel(props: ComponentProps<typeof TabsBase.Content>) {
-  return <TabsBase.Content class="p-4" {...props} />;
-}
-
-export function BasicExample(props: ComponentProps<typeof TabsBase>) {
-  return (
-    <Tabs aria-label="Main navigation" {...props}>
-      <TabList>
-        <Tab value="profile">Profile</Tab>
-        <Tab value="dashboard">Dashboard</Tab>
-        <Tab value="settings">Settings</Tab>
-        <Tab value="contact">Contact</Tab>
-      </TabList>
-      <TabPanel value="profile">Profile details</TabPanel>
-      <TabPanel value="dashboard">Dashboard details</TabPanel>
-      <TabPanel value="settings">Settings details</TabPanel>
-      <TabPanel value="contact">Contact details</TabPanel>
+    <Tabs aria-label="Main navigation" defaultValue="dashboard" class={style["tabs"]}>
+      <Tabs.List class={style["tabs__list"]}>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
+          Profile
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="dashboard">
+          Dashboard
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="settings">
+          Settings
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="contact">
+          Contact
+        </Tabs.Trigger>
+        <Tabs.Indicator class={style["tabs__indicator"]} />
+      </Tabs.List>
+      <Tabs.Content class={style["tabs__content"]} value="profile">
+        Profile details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="dashboard">
+        Dashboard details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="settings">
+        Settings details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="contact">
+        Contact details
+      </Tabs.Content>
     </Tabs>
   );
 }
@@ -54,17 +76,39 @@ export function ControlledExample() {
 
   return (
     <>
-      <Tabs value={selectedTab()} onValueChange={setSelectedTab}>
-        <TabList>
-          <Tab value="profile">Profile</Tab>
-          <Tab value="dashboard">Dashboard</Tab>
-          <Tab value="settings">Settings</Tab>
-          <Tab value="contact">Contact</Tab>
-        </TabList>
-        <TabPanel value="profile">Profile details</TabPanel>
-        <TabPanel value="dashboard">Dashboard details</TabPanel>
-        <TabPanel value="settings">Settings details</TabPanel>
-        <TabPanel value="contact">Contact details</TabPanel>
+      <Tabs
+        value={selectedTab()}
+        onValueChange={setSelectedTab}
+        aria-label="Main navigation"
+        class={style["tabs"]}
+      >
+        <Tabs.List class={style["tabs__list"]}>
+          <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
+            Profile
+          </Tabs.Trigger>
+          <Tabs.Trigger class={style["tabs__trigger"]} value="dashboard">
+            Dashboard
+          </Tabs.Trigger>
+          <Tabs.Trigger class={style["tabs__trigger"]} value="settings">
+            Settings
+          </Tabs.Trigger>
+          <Tabs.Trigger class={style["tabs__trigger"]} value="contact">
+            Contact
+          </Tabs.Trigger>
+          <Tabs.Indicator class={style["tabs__indicator"]} />
+        </Tabs.List>
+        <Tabs.Content class={style["tabs__content"]} value="profile">
+          Profile details
+        </Tabs.Content>
+        <Tabs.Content class={style["tabs__content"]} value="dashboard">
+          Dashboard details
+        </Tabs.Content>
+        <Tabs.Content class={style["tabs__content"]} value="settings">
+          Settings details
+        </Tabs.Content>
+        <Tabs.Content class={style["tabs__content"]} value="contact">
+          Contact details
+        </Tabs.Content>
       </Tabs>
       <p class="not-prose text-sm mt-2">Selected tab: {selectedTab()}</p>
     </>
@@ -73,22 +117,37 @@ export function ControlledExample() {
 
 export function FocusableContentExample() {
   return (
-    <Tabs>
-      <TabList>
-        <Tab value="profile">Profile</Tab>
-        <Tab value="dashboard">Dashboard</Tab>
-        <Tab value="settings">Settings</Tab>
-        <Tab value="contact">Contact</Tab>
-      </TabList>
-      <TabPanel value="profile">
+    <Tabs aria-label="Main navigation" class={style["tabs"]}>
+      <Tabs.List class={style["tabs__list"]}>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
+          Profile
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="dashboard">
+          Dashboard
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="settings">
+          Settings
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="contact">
+          Contact
+        </Tabs.Trigger>
+        <Tabs.Indicator class={style["tabs__indicator"]} />
+      </Tabs.List>
+      <Tabs.Content class={style["tabs__content"]} value="profile">
         <input
           class="border border-zinc-300 text-zinc-900 w-40 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-2 dark:border-zinc-600 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Change password"
         />
-      </TabPanel>
-      <TabPanel value="dashboard">Dashboard details</TabPanel>
-      <TabPanel value="settings">Settings details</TabPanel>
-      <TabPanel value="contact">Contact details</TabPanel>
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="dashboard">
+        Dashboard details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="settings">
+        Settings details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="contact">
+        Contact details
+      </Tabs.Content>
     </Tabs>
   );
 }
@@ -134,30 +193,160 @@ export function DynamicContentExample() {
         </button>
       </div>
       <Tabs>
-        <TabList>
-          <For each={tabs()}>{tab => <Tab value={tab.id}>{tab.title}</Tab>}</For>
-        </TabList>
-        <For each={tabs()}>{tab => <TabPanel value={tab.id}>{tab.content}</TabPanel>}</For>
+        <Tabs.List class={style["tabs__list"]}>
+          <For each={tabs()}>
+            {tab => (
+              <Tabs.Trigger class={style["tabs__trigger"]} value={tab.id}>
+                {tab.title}
+              </Tabs.Trigger>
+            )}
+          </For>
+          <Tabs.Indicator class={style["tabs__indicator"]} />
+        </Tabs.List>
+        <For each={tabs()}>
+          {tab => (
+            <Tabs.Content class={style["tabs__content"]} value={tab.id}>
+              {tab.content}
+            </Tabs.Content>
+          )}
+        </For>
       </Tabs>
     </>
   );
 }
 
-export function DisabledTabExample() {
+export function ManualActivationExample() {
   return (
-    <Tabs>
-      <TabList>
-        <Tab value="profile">Profile</Tab>
-        <Tab value="dashboard">Dashboard</Tab>
-        <Tab value="settings" isDisabled>
+    <Tabs aria-label="Main navigation" activationMode="manual" class={style["tabs"]}>
+      <Tabs.List class={style["tabs__list"]}>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
+          Profile
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="dashboard">
+          Dashboard
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="settings">
           Settings
-        </Tab>
-        <Tab value="contact">Contact</Tab>
-      </TabList>
-      <TabPanel value="profile">Profile details</TabPanel>
-      <TabPanel value="dashboard">Dashboard details</TabPanel>
-      <TabPanel value="settings">Settings details</TabPanel>
-      <TabPanel value="contact">Contact details</TabPanel>
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="contact">
+          Contact
+        </Tabs.Trigger>
+        <Tabs.Indicator class={style["tabs__indicator"]} />
+      </Tabs.List>
+      <Tabs.Content class={style["tabs__content"]} value="profile">
+        Profile details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="dashboard">
+        Dashboard details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="settings">
+        Settings details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="contact">
+        Contact details
+      </Tabs.Content>
+    </Tabs>
+  );
+}
+
+export function VerticalOrientationExample() {
+  return (
+    <Tabs aria-label="Main navigation" orientation="vertical" class={style["tabs"]}>
+      <Tabs.List class={style["tabs__list"]}>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
+          Profile
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="dashboard">
+          Dashboard
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="settings">
+          Settings
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="contact">
+          Contact
+        </Tabs.Trigger>
+        <Tabs.Indicator class={style["tabs__indicator"]} />
+      </Tabs.List>
+      <Tabs.Content class={style["tabs__content"]} value="profile">
+        Profile details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="dashboard">
+        Dashboard details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="settings">
+        Settings details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="contact">
+        Contact details
+      </Tabs.Content>
+    </Tabs>
+  );
+}
+
+export function DisabledTabsExample() {
+  return (
+    <Tabs aria-label="Main navigation" isDisabled class={style["tabs"]}>
+      <Tabs.List class={style["tabs__list"]}>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
+          Profile
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="dashboard">
+          Dashboard
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="settings">
+          Settings
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="contact">
+          Contact
+        </Tabs.Trigger>
+        <Tabs.Indicator class={style["tabs__indicator"]} />
+      </Tabs.List>
+      <Tabs.Content class={style["tabs__content"]} value="profile">
+        Profile details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="dashboard">
+        Dashboard details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="settings">
+        Settings details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="contact">
+        Contact details
+      </Tabs.Content>
+    </Tabs>
+  );
+}
+
+export function SingleDisabledTabExample() {
+  return (
+    <Tabs aria-label="Main navigation" class={style["tabs"]}>
+      <Tabs.List class={style["tabs__list"]}>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
+          Profile
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="dashboard">
+          Dashboard
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="settings" isDisabled>
+          Settings
+        </Tabs.Trigger>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="contact">
+          Contact
+        </Tabs.Trigger>
+        <Tabs.Indicator class={style["tabs__indicator"]} />
+      </Tabs.List>
+      <Tabs.Content class={style["tabs__content"]} value="profile">
+        Profile details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="dashboard">
+        Dashboard details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="settings">
+        Settings details
+      </Tabs.Content>
+      <Tabs.Content class={style["tabs__content"]} value="contact">
+        Contact details
+      </Tabs.Content>
     </Tabs>
   );
 }

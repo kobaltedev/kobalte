@@ -28,9 +28,6 @@ export interface MenuRootProps extends MenuProps {
    * Useful when controlling animation with SolidJS animation libraries.
    */
   forceMount?: boolean;
-
-  /** Handler that is called when the user activates a menu item. */
-  onAction?: (key: string) => void;
 }
 
 /**
@@ -52,7 +49,6 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
     "id",
     "isModal",
     "forceMount",
-    "onAction",
     "isOpen",
     "defaultIsOpen",
     "onOpenChange",
@@ -68,7 +64,6 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
     isModal: () => local.isModal ?? true,
     forceMount: () => local.forceMount ?? false,
     close: disclosureState.close,
-    onAction: key => local.onAction?.(key),
     generateId: createGenerateId(() => local.id!),
   };
 
