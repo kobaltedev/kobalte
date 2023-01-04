@@ -1,4 +1,9 @@
-import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import {
+  combineProps,
+  contains,
+  createPolymorphicComponent,
+  mergeDefaultProps,
+} from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
@@ -98,8 +103,14 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
   };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    if (!context.isOpen() || !rootContext.isModal()) {
+      return;
+    }
+
+    const isKeyDownInside = contains(e.currentTarget, e.target);
+
     // Prevent shift + tab from doing anything when focus should be trapped (opened and modal).
-    if (e.shiftKey && e.key === "Tab" && context.isOpen() && rootContext.isModal()) {
+    if (isKeyDownInside && e.shiftKey && e.key === "Tab") {
       e.preventDefault();
     }
   };

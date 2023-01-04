@@ -6,12 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuSubTrigger.ts
  */
 
-import {
-  combineProps,
-  createPolymorphicComponent,
-  getActiveElement,
-  mergeDefaultProps,
-} from "@kobalte/utils";
+import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 

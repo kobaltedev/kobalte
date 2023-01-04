@@ -1,7 +1,7 @@
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 
-import { useMenuRootContext } from "./menu-root-context";
 import { MenuItemBase, MenuItemBaseProps } from "./menu-item-base";
+import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuItemProps
   extends Omit<MenuItemBaseProps, "isChecked" | "isIndeterminate" | "onAction"> {}

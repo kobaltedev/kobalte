@@ -21,6 +21,9 @@ import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuTriggerProps extends ButtonProps {}
 
+/**
+ * The button that toggles the menu.
+ */
 export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps>(props => {
   const rootContext = useMenuRootContext();
   const context = useMenuContext();

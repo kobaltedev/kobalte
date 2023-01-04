@@ -6,6 +6,9 @@ import { useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
 import { InteractOutsideEvent } from "../primitives";
 
+/**
+ * Contains the content to be rendered when the dropdown menu is open.
+ */
 export const DropdownMenuContent = createPolymorphicComponent<"div", MenuContentOptions>(props => {
   const rootContext = useMenuRootContext();
   const context = useMenuContext();

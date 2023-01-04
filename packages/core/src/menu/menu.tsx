@@ -154,10 +154,9 @@ export function Menu(props: ParentProps<MenuProps>) {
 
     if (content) {
       focusSafely(content);
+      listState.selectionManager().setFocused(true);
+      listState.selectionManager().setFocusedKey(key);
     }
-
-    listState.selectionManager().setFocused(true);
-    listState.selectionManager().setFocusedKey(key);
   };
 
   const focusContentWithDelay = (key?: string) => {
@@ -208,6 +207,10 @@ export function Menu(props: ParentProps<MenuProps>) {
   };
 
   const resumePointer = () => {
+    if (isServer) {
+      return;
+    }
+
     setPointerGracePolygon(null);
     parentMenuContext?.setIsPointerSuspended(false);
     getDocument().removeEventListener("pointermove", trackPointerMove);

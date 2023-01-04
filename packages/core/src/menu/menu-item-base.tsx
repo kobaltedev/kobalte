@@ -2,7 +2,7 @@ import {
   combineProps,
   createGenerateId,
   createPolymorphicComponent,
-  getActiveElement,
+  focusWithoutScrolling,
   mergeDefaultProps,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
@@ -136,7 +136,9 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
         return;
       }
 
-      menuContext.focusContent(local.key);
+      menuContext.listState().selectionManager().setFocused(true);
+      menuContext.listState().selectionManager().setFocusedKey(local.key);
+      focusWithoutScrolling(ref);
     },
     onHoverEnd: () => {
       if (menuContext.isPointerSuspended()) {

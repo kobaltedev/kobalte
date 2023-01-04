@@ -58,7 +58,7 @@ function DropdownMenuDemo() {
   const [person, setPerson] = createSignal("pedro");
 
   return (
-    <DropdownMenu isModal={false}>
+    <DropdownMenu>
       <DropdownMenu.Trigger class="IconButton" aria-label="Customise options">
         <HamburgerMenuIcon />
       </DropdownMenu.Trigger>
@@ -349,11 +349,7 @@ export default function App() {
 
   return (
     <I18nProvider>
-      <form ref={formRef} onSubmit={onSubmit}>
-        <SelectDemo />
-        <button type="reset">Reset</button>
-        <button>Submit</button>
-      </form>
+      <DropdownMenuDemo />
     </I18nProvider>
   );
 }

@@ -1,3 +1,107 @@
+import { Preview, Kbd, TabsSnippets } from "../../../components";
+import { BasicExample } from "../../../examples/dropdown-menu";
+
 # Dropdown Menu
 
 Displays a menu to the user —such as a set of actions or functions— triggered by a button.
+
+## Import
+
+```ts
+import { DropdownMenu } from "@kobalte/core";
+```
+
+## Features
+
+- Exposed to assistive technology as a button with a menu using the [WAI ARIA Menu Button](https://www.w3.org/WAI/ARIA/apg/patterns/menubutton/) design pattern.
+- Supports modal and non-modal modes.
+- Supports submenus.
+- Supports items, labels, groups of items.
+- Supports checkable items (single or multiple) with optional indeterminate state.
+- Support disabled items.
+- Complex item labeling support for accessibility.
+- Keyboard opening and navigation support.
+- Automatic scrolling support during keyboard navigation.
+- Typeahead to allow focusing items by typing text.
+- Optionally render a pointing arrow.
+- Focus is fully managed.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The dropdown menu consists of:
+
+- **DropdownMenu:** The root container for a dropdown menu.
+- **DropdownMenu.Trigger:** The button that toggles the menu.
+- **DropdownMenu.Icon:** A small icon often displayed next to the menu trigger as a visual affordance for the fact it can be open.
+- **DropdownMenu.Portal:** Portals its children into the `body` when the menu is open.
+- **DropdownMenu.Content:** Contains the content to be rendered when the menu is open.
+- **DropdownMenu.Arrow:** An optional arrow element to render alongside the menu content.
+- **DropdownMenu.Separator:** Used to visually separate items in the menu.
+- **DropdownMenu.Group:** Used to group multiple items. Use in conjunction with `DropdownMenu.GroupLabel` to ensure good accessibility via automatic labelling.
+- **DropdownMenu.GroupLabel:** Used to render the label of a group. It won't be focusable using arrow keys.
+- **DropdownMenu.Sub:** Contains all the parts of a submenu.
+- **DropdownMenu.SubTrigger:** An item that opens a submenu. Must be rendered inside `DropdownMenu.Sub`.
+- **DropdownMenu.SubContent:** The component that pops out when a submenu is open. Must be rendered inside `DropdownMenu.Sub`.
+
+The menu item consists of:
+
+- **DropdownMenu.Item:** An item of the select.
+- **DropdownMenu.ItemLabel:** An accessible label to be announced for the item.
+- **DropdownMenu.ItemDescription:** An optional accessible description to be announced for the item.
+- **DropdownMenu.ItemIndicator:** The visual indicator rendered when the item is checked.
+
+The checkable menu item consists of:
+
+- **DropdownMenu.RadioGroup:** Used to group multiple `DropdownMenu.RadioItem`s and manage the selection.
+- **DropdownMenu.RadioItem:** An item that can be controlled and rendered like a radio.
+- **DropdownMenu.CheckboxItem:** An item that can be controlled and rendered like a checkbox.
+
+```tsx
+<DropdownMenu>
+  <DropdownMenu.Trigger>
+    <DropdownMenu.Icon />
+  </DropdownMenu.Trigger>
+
+  <DropdownMenu.Portal>
+    <DropdownMenu.Content>
+      <DropdownMenu.Arrow />
+
+      <DropdownMenu.Item>
+        <DropdownMenu.ItemLabel />
+        <DropdownMenu.ItemDescription />
+      </DropdownMenu.Item>
+
+      <DropdownMenu.Group>
+        <DropdownMenu.GroupLabel />
+        <DropdownMenu.Item />
+      </DropdownMenu.Group>
+
+      <DropdownMenu.CheckboxItem>
+        <DropdownMenu.ItemIndicator />
+      </DropdownMenu.CheckboxItem>
+
+      <DropdownMenu.RadioGroup>
+        <DropdownMenu.RadioItem>
+          <DropdownMenu.ItemIndicator />
+        </DropdownMenu.RadioItem>
+      </DropdownMenu.RadioGroup>
+
+      <DropdownMenu.Sub>
+        <DropdownMenu.SubTrigger />
+        <DropdownMenu.Portal>
+          <DropdownMenu.SubContent />
+        </DropdownMenu.Portal>
+      </DropdownMenu.Sub>
+
+      <DropdownMenu.Separator />
+    </DropdownMenu.Content>
+  </DropdownMenu.Portal>
+</DropdownMenu>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>

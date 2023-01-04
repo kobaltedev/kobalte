@@ -13,6 +13,9 @@ import { useMenuContext } from "./menu-context";
 export interface MenuSubContentOptions
   extends Omit<MenuContentBaseOptions, "onOpenAutoFocus" | "onCloseAutoFocus"> {}
 
+/**
+ * The component that pops out when a submenu is open.
+ */
 export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOptions>(props => {
   const context = useMenuContext();
 
@@ -56,33 +59,12 @@ export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOp
     }
   };
 
-  const onFocusOut: JSX.EventHandlerUnion<any, FocusEvent> = e => {
-    callHandler(e, local.onFocusOut);
-
-    const relatedTarget = e.relatedTarget as HTMLElement | null;
-
-    // Submenu focus out events bubble through portals. We only care about blur from inside this menu.
-    if (!contains(e.currentTarget, e.target)) {
-      return;
-    }
-
-    if (
-      !relatedTarget ||
-      (!contains(context.triggerRef(), relatedTarget) &&
-        !contains(context.contentRef(), relatedTarget) &&
-        !context.isTargetInNestedMenu(relatedTarget))
-    ) {
-      context.close();
-    }
-  };
-
   return (
     <MenuContentBase
       onOpenAutoFocus={onOpenAutoFocus}
       onCloseAutoFocus={onCloseAutoFocus}
       onFocusOutside={onFocusOutside}
       onKeyDown={onKeyDown}
-      onFocusOut={onFocusOut}
       {...others}
     />
   );
