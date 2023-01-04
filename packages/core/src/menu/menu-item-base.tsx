@@ -47,7 +47,7 @@ export interface MenuItemBaseProps {
   /** Whether the menu item is disabled. */
   isDisabled?: boolean;
 
-  /** Whether the menu should close when the menu item is selected. */
+  /** Whether the menu should close when the menu item is activated/selected. */
   closeOnSelect?: boolean;
 
   /** Handler that is called when the user activates the menu item. */

@@ -1,5 +1,5 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
+import { createUniqueId, ParentProps, splitProps } from "solid-js";
 
 import { createDisclosureState } from "../primitives";
 import { Menu, MenuProps } from "./menu";

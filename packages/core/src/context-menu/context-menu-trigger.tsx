@@ -64,7 +64,7 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
 
       if (menuContext.isOpen()) {
         // If the menu is already open, focus the menu itself.
-        menuContext.focusContent(undefined);
+        menuContext.focusContent();
       } else {
         menuContext.open(true);
       }

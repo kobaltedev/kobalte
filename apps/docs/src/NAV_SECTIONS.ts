@@ -62,7 +62,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/checkbox",
       },
       {
-        title: "Context Menu ❌",
+        title: "Context Menu",
         href: "/docs/components/context-menu",
       },
       {
@@ -70,7 +70,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/dialog",
       },
       {
-        title: "Dropdown Menu 🚧",
+        title: "Dropdown Menu",
         href: "/docs/components/dropdown-menu",
       },
       {
@@ -102,7 +102,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/switch",
       },
       {
-        title: "Tabs ❌",
+        title: "Tabs 🚧",
         href: "/docs/components/tabs",
       },
       {

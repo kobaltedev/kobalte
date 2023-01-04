@@ -13,7 +13,6 @@ import {
   MenuCheckboxItem,
   MenuGroup,
   MenuGroupLabel,
-  MenuIcon,
   MenuItem,
   MenuItemDescription,
   MenuItemIndicator,
@@ -36,7 +35,6 @@ import { ContextMenuTrigger } from "./context-menu-trigger";
 
 type ContextMenuComposite = {
   Trigger: typeof ContextMenuTrigger;
-  Icon: typeof MenuIcon;
   Portal: typeof MenuPortal;
   Content: typeof ContextMenuContent;
   Arrow: typeof Popper.Arrow;
@@ -100,7 +98,6 @@ export const ContextMenu: ParentComponent<ContextMenuProps> & ContextMenuComposi
 };
 
 ContextMenu.Trigger = ContextMenuTrigger;
-ContextMenu.Icon = MenuIcon;
 ContextMenu.Portal = MenuPortal;
 ContextMenu.Content = ContextMenuContent;
 ContextMenu.Arrow = Popper.Arrow;

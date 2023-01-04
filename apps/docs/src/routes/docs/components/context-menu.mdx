@@ -1,3 +1,542 @@
+import { Preview, Kbd, TabsSnippets } from "../../../components";
+import { BasicExample } from "../../../examples/context-menu";
+
 # Context Menu
 
 Displays a menu located at the pointer, triggered by a right-click or a long-press.
+
+## Import
+
+```ts
+import { ContextMenu } from "@kobalte/core";
+```
+
+## Features
+
+- Follow the [WAI ARIA Menu](https://www.w3.org/WAI/ARIA/apg/patterns/menu/) design pattern.
+- Triggers with a long-press on touch devices.
+- Supports modal and non-modal modes.
+- Supports submenus.
+- Supports items, labels, groups of items.
+- Supports checkable items (single or multiple) with optional indeterminate state.
+- Support disabled items.
+- Complex item labeling support for accessibility.
+- Keyboard opening and navigation support.
+- Automatic scrolling support during keyboard navigation.
+- Typeahead to allow focusing items by typing text.
+- Optionally render a pointing arrow.
+- Focus is fully managed.
+
+## Anatomy
+
+The context menu consists of:
+
+- **ContextMenu:** The root container for a context menu.
+- **ContextMenu.Trigger:** The button that toggles the menu.
+- **ContextMenu.Portal:** Portals its children into the `body` when the menu is open.
+- **ContextMenu.Content:** Contains the content to be rendered when the menu is open.
+- **ContextMenu.Arrow:** An optional arrow element to render alongside the menu content.
+- **ContextMenu.Separator:** Used to visually separate items in the menu.
+- **ContextMenu.Group:** Used to group multiple items. Use in conjunction with `ContextMenu.GroupLabel` to ensure good accessibility via automatic labelling.
+- **ContextMenu.GroupLabel:** Used to render the label of a group. It won't be focusable using arrow keys.
+- **ContextMenu.Sub:** Contains all the parts of a submenu.
+- **ContextMenu.SubTrigger:** An item that opens a submenu. Must be rendered inside `ContextMenu.Sub`.
+- **ContextMenu.SubContent:** The component that pops out when a submenu is open. Must be rendered inside `ContextMenu.Sub`.
+
+The menu item consists of:
+
+- **ContextMenu.Item:** An item of the select.
+- **ContextMenu.ItemLabel:** An accessible label to be announced for the item.
+- **ContextMenu.ItemDescription:** An optional accessible description to be announced for the item.
+- **ContextMenu.ItemIndicator:** The visual indicator rendered when the item is checked.
+
+The checkable menu item consists of:
+
+- **ContextMenu.RadioGroup:** Used to group multiple `ContextMenu.RadioItem`s and manage the selection.
+- **ContextMenu.RadioItem:** An item that can be controlled and rendered like a radio.
+- **ContextMenu.CheckboxItem:** An item that can be controlled and rendered like a checkbox.
+
+```tsx
+<ContextMenu>
+  <ContextMenu.Trigger />
+
+  <ContextMenu.Portal>
+    <ContextMenu.Content>
+      <ContextMenu.Arrow />
+
+      <ContextMenu.Item>
+        <ContextMenu.ItemLabel />
+        <ContextMenu.ItemDescription />
+      </ContextMenu.Item>
+
+      <ContextMenu.Group>
+        <ContextMenu.GroupLabel />
+        <ContextMenu.Item />
+      </ContextMenu.Group>
+
+      <ContextMenu.CheckboxItem>
+        <ContextMenu.ItemIndicator />
+      </ContextMenu.CheckboxItem>
+
+      <ContextMenu.RadioGroup>
+        <ContextMenu.RadioItem>
+          <ContextMenu.ItemIndicator />
+        </ContextMenu.RadioItem>
+      </ContextMenu.RadioGroup>
+
+      <ContextMenu.Sub>
+        <ContextMenu.SubTrigger />
+        <ContextMenu.Portal>
+          <ContextMenu.SubContent />
+        </ContextMenu.Portal>
+      </ContextMenu.Sub>
+
+      <ContextMenu.Separator />
+    </ContextMenu.Content>
+  </ContextMenu.Portal>
+</ContextMenu>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { ContextMenu } from "@kobalte/core";
+    import { createSignal } from "solid-js";
+    import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "some-icon-library";
+    import "./style.css";
+
+    function App() {
+      const [showGitLog, setShowGitLog] = createSignal(true);
+      const [showHistory, setShowHistory] = createSignal(false);
+      const [branch, setBranch] = createSignal("main");
+
+      const handleAction = (key: string) => {
+        alert(key);
+      };
+
+      return (
+        <ContextMenu onAction={handleAction}>
+          <ContextMenu.Trigger class="context-menu__trigger">
+            Right click here.
+          </ContextMenu.Trigger>
+          <ContextMenu.Portal>
+            <ContextMenu.Content class="context-menu__content">
+              <ContextMenu.Item key="commit" class="context-menu__item">
+                Commit <div class="context-menu__item-right-slot">⌘+K</div>
+              </ContextMenu.Item>
+              <ContextMenu.Item key="push" class="context-menu__item">
+                Push <div class="context-menu__item-right-slot">⇧+⌘+K</div>
+              </ContextMenu.Item>
+              <ContextMenu.Item key="update-project" class="context-menu__item" isDisabled>
+                Update Project <div class="context-menu__item-right-slot">⌘+T</div>
+              </ContextMenu.Item>
+              <ContextMenu.Sub gutter={4} shift={-8}>
+                <ContextMenu.SubTrigger key="github" class="context-menu__sub-trigger">
+                  GitHub
+                  <div class="context-menu__item-right-slot">
+                    <ChevronRightIcon width={20} height={20} />
+                  </div>
+                </ContextMenu.SubTrigger>
+                <ContextMenu.Portal>
+                  <ContextMenu.SubContent class="context-menu__sub-content">
+                    <ContextMenu.Item key="create-pull-request" class="context-menu__item">
+                      Create Pull Request…
+                    </ContextMenu.Item>
+                    <ContextMenu.Item key="view-pull-requests" class="context-menu__item">
+                      View Pull Requests
+                    </ContextMenu.Item>
+                    <ContextMenu.Item key="sync-fork" class="context-menu__item">
+                      Sync Fork
+                    </ContextMenu.Item>
+                    <ContextMenu.Separator class="context-menu__separator" />
+                    <ContextMenu.Item key="open-on-github" class="context-menu__item">
+                      Open on GitHub
+                    </ContextMenu.Item>
+                  </ContextMenu.SubContent>
+                </ContextMenu.Portal>
+              </ContextMenu.Sub>
+
+              <ContextMenu.Separator class="context-menu__separator" />
+
+              <ContextMenu.CheckboxItem
+                key="show-git-log"
+                class="context-menu__checkbox-item"
+                isChecked={showGitLog()}
+                onCheckedChange={setShowGitLog}
+                >
+                <ContextMenu.ItemIndicator class="context-menu__item-indicator">
+                  <CheckIcon />
+                </ContextMenu.ItemIndicator>
+                Show Git Log
+              </ContextMenu.CheckboxItem>
+              <ContextMenu.CheckboxItem
+                key="show-history"
+                class="context-menu__checkbox-item"
+                isChecked={showHistory()}
+                onCheckedChange={setShowHistory}
+                >
+                <ContextMenu.ItemIndicator class="context-menu__item-indicator">
+                  <CheckIcon />
+                </ContextMenu.ItemIndicator>
+                Show History
+              </ContextMenu.CheckboxItem>
+
+              <ContextMenu.Separator class="context-menu__separator" />
+
+              <ContextMenu.Group>
+                <ContextMenu.GroupLabel class="context-menu__group-label">
+                  Branches
+                </ContextMenu.GroupLabel>
+                <ContextMenu.RadioGroup value={branch()} onValueChange={setBranch}>
+                  <ContextMenu.RadioItem class="context-menu__radio-item" value="main">
+                    <ContextMenu.ItemIndicator class="context-menu__item-indicator">
+                      <DotFilledIcon />
+                    </ContextMenu.ItemIndicator>
+                    main
+                  </ContextMenu.RadioItem>
+                  <ContextMenu.RadioItem class="context-menu__radio-item" value="develop">
+                    <ContextMenu.ItemIndicator class="context-menu__item-indicator">
+                      <DotFilledIcon />
+                    </ContextMenu.ItemIndicator>
+                    develop
+                  </ContextMenu.RadioItem>
+                </ContextMenu.RadioGroup>
+              </ContextMenu.Group>
+            </ContextMenu.Content>
+          </ContextMenu.Portal>
+        </ContextMenu>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .context-menu__trigger {
+      display: block;
+      border: 2px dashed hsl(240 4% 46%);
+      color: hsl(240 5% 34%);
+      border-radius: 4px;
+      font-size: 15px;
+      user-select: none;
+      padding: 45px 0;
+      width: 300px;
+      text-align: center;
+    }
+
+    .context-menu__content,
+    .context-menu__sub-content {
+      min-width: 220px;
+      padding: 8px;
+      background-color: white;
+      border-radius: 6px;
+      border: 1px solid hsl(240 6% 90%);
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      outline: none;
+    }
+
+    .context-menu__item,
+    .context-menu__checkbox-item,
+    .context-menu__radio-item,
+    .context-menu__sub-trigger {
+      font-size: 16px;
+      line-height: 1;
+      color: hsl(240 4% 16%);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 8px 0 24px;
+      position: relative;
+      user-select: none;
+      outline: none;
+    }
+
+    .context-menu__sub-trigger[data-expanded] {
+      background-color: hsl(204 94% 94%);
+      color: hsl(201 96% 32%);
+    }
+
+    .context-menu__item[data-disabled],
+    .context-menu__checkbox-item[data-disabled],
+    .context-menu__radio-item[data-disabled],
+    .context-menu__sub-trigger[data-disabled] {
+      color: hsl(240 5% 65%);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .context-menu__item[data-focus],
+    .context-menu__checkbox-item[data-focus],
+    .context-menu__radio-item[data-focus],
+    .context-menu__sub-trigger[data-focus] {
+      outline: none;
+      background-color: hsl(200 98% 39%);
+      color: white;
+    }
+
+    .context-menu__group-label {
+      padding: 0 24px;
+      font-size: 14px;
+      line-height: 32px;
+      color: hsl(240 4% 46%);
+    }
+
+    .context-menu__separator {
+      height: 1px;
+      border-top: 1px solid hsl(240 6% 90%);
+      margin: 6px;
+    }
+
+    .context-menu__item-indicator {
+      position: absolute;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .context-menu__item-right-slot {
+      margin-left: auto;
+      padding-left: 20px;
+      font-size: 14px;
+      color: hsl(240 4% 46%);
+    }
+
+    [data-focus] > .context-menu__item-right-slot {
+      color: white;
+    }
+
+    [data-disabled] .context-menu__item-right-slot {
+      color: hsl(240 5% 65%);
+      opacity: 0.5;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+### Origin-aware animations
+
+We expose a CSS custom property `--kb-popper-transform-origin` which can be used to animate the content from its computed origin.
+
+## API Reference
+
+### ContextMenu
+
+| Prop         | Description                                                                                                                                                                                                                                                                                                                                    |
+| :----------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| onOpenChange | `(isOpen: boolean) => void` <br/> Event handler called when the open state of the menu changes.                                                                                                                                                                                                                                                |
+| id           | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used.                                                                                                                                                                  |
+| isModal      | `boolean` <br/> Whether the menu should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the menu content. <br/> - elements outside the menu content will not be visible for screen readers. |
+| forceMount   | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                          |
+| onAction     | `(key: string) => void` <br/> Handler that is called when the user activates a menu item.                                                                                                                                                                                                                                                      |
+
+`ContextMenu` also accepts the following props to customize the placement of the `ContextMenu.Content`.
+
+| Prop             | Description                                                                                                                                                                                                                                                                                                                                                          |
+| :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| placement        | `Placement` <br/> The placement of the menu content.                                                                                                                                                                                                                                                                                                                 |
+| gutter           | `number` <br/> The distance between the menu content and the trigger element. By default, it's 0 plus half of the arrow offset, if it exists.                                                                                                                                                                                                                        |
+| shift            | `number` <br/> The skidding of the menu content along the trigger element.                                                                                                                                                                                                                                                                                           |
+| flip             | `boolean \| string` <br/> Controls the behavior of the menu content when it overflows the viewport:<br/> - If a `boolean`, specifies whether the menu content should flip to the opposite side when it overflows.<br/> - If a `string`, indicates the preferred fallback placements when it overflows.<br/>The placements must be spaced-delimited, e.g. "top left". |
+| slide            | `boolean` <br/> Whether the menu content should slide when it overflows.                                                                                                                                                                                                                                                                                             |
+| overlap          | `boolean` <br/> Whether the menu content can overlap the trigger element when it overflows.                                                                                                                                                                                                                                                                          |
+| sameWidth        | `boolean` <br/> Whether the menu content should have the same width as the trigger element. This will be exposed to CSS as `--kb-popper-anchor-width`.                                                                                                                                                                                                               |
+| fitViewport      | `boolean` <br/> Whether the menu content should fit the viewport. If this is set to true, the menu content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`.                                                                                           |
+| hideWhenDetached | `boolean` <br/> Whether to hide the menu content when the trigger element becomes occluded.                                                                                                                                                                                                                                                                          |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                                                                                                |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the menu content corner.                                                                                                                                                                                                                                                                                    |
+| overflowPadding  | `number` <br/> The minimum padding between the menu content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                                    |
+
+### ContextMenu.Trigger
+
+| Prop       | Description                                                          |
+| :--------- | :------------------------------------------------------------------- |
+| isDisabled | `boolean` <br/> Whether the context menu trigger is disabled or not. |
+
+| Data attribute | Description                           |
+| :------------- | :------------------------------------ |
+| data-expanded  | Present when the menu is open.        |
+| data-disabled  | Present when the trigger is disabled. |
+
+### ContextMenu.Content
+
+| Prop                 | Description                                                                                                                                                                                                         |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| onOpenAutoFocus      | `(event: Event) => void` <br/> Event handler called when focus moves into the component after opening. It can be prevented by calling `event.preventDefault`.                                                       |
+| onCloseAutoFocus     | `(event: Event) => void` <br/> Event handler called when focus moves to the trigger after closing. It can be prevented by calling `event.preventDefault`.                                                           |
+| onEscapeKeyDown      | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                     |
+| onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
+| onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
+| onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
+
+| Data attribute     | Description                                                      |
+| :----------------- | :--------------------------------------------------------------- |
+| data-focus         | Present when the content element itself is focused.              |
+| data-focus-visible | Present when the content element itself is focused via keyboard. |
+
+### ContextMenu.Arrow
+
+| Prop | Description                           |
+| :--- | :------------------------------------ |
+| size | `number` <br/> The size of the arrow. |
+
+### ContextMenu.Item
+
+| Prop          | Description                                                                                                                                                                                                                                                                                                      |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| key           | `string` <br/> A unique key for the menu item. It must be unique across the entire menu tree (including sub menu items, checkbox and radio values).                                                                                                                                                              |
+| textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `ContextMenu.ItemLabel` part if provided, or fallback to the .textContent of the `ContextMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| isDisabled    | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                             |
+| closeOnSelect | `boolean` <br/> Whether the menu should close when the item is activated.                                                                                                                                                                                                                                        |
+
+| Data attribute     | Description                                                                       |
+| :----------------- | :-------------------------------------------------------------------------------- |
+| data-disabled      | Present when the item is disabled.                                                |
+| data-hover         | Present when the item is hovered.                                                 |
+| data-focus         | Present when the item is focused.                                                 |
+| data-focus-visible | Present when the item is focused via keyboard.                                    |
+| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+
+`ContextMenu.ItemLabel`, `ContextMenu.ItemDescription` and `ContextMenu.ItemIndicator` shares the same data-attributes.
+
+### ContextMenu.ItemIndicator
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### ContextMenu.RadioGroup
+
+| Prop          | Description                                                                                                                                                          |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value         | `string` <br/> The controlled value of the menu radio item to check.                                                                                                 |
+| defaultValue  | `string` <br/> The value of the menu radio item that should be checked when initially rendered. Useful when you do not need to control the state of the radio group. |
+| onValueChange | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                         |
+| isDisabled    | `boolean` <br/> Whether the radio group is disabled or not.                                                                                                          |
+
+### ContextMenu.RadioItem
+
+| Prop          | Description                                                                                                                                                                                                                                                                                                      |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value         | `string` <br/> The value of the menu item radio. It also **acts as a unique key** for the item radio in its parent menu.                                                                                                                                                                                         |
+| textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `ContextMenu.ItemLabel` part if provided, or fallback to the .textContent of the `ContextMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| isDisabled    | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                             |
+| closeOnSelect | `boolean` <br/> Whether the menu should close when the item is checked.                                                                                                                                                                                                                                          |
+
+| Data attribute     | Description                                                                       |
+| :----------------- | :-------------------------------------------------------------------------------- |
+| data-disabled      | Present when the item is disabled.                                                |
+| data-checked       | Present when the item is checked.                                                 |
+| data-hover         | Present when the item is hovered.                                                 |
+| data-focus         | Present when the item is focused.                                                 |
+| data-focus-visible | Present when the item is focused via keyboard.                                    |
+| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+
+### ContextMenu.CheckboxItem
+
+| Prop             | Description                                                                                                                                                                                                                                                                                                      |
+| :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| isChecked        | `boolean` <br/> The controlled checked state of the item.                                                                                                                                                                                                                                                        |
+| defaultIsChecked | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                                                                                                                                                                     |
+| onCheckedChange  | `(isChecked: boolean) => void` <br/> Event handler called when the checked state of the item changes.                                                                                                                                                                                                            |
+| key              | `string` <br/> A unique key for the menu item. It must be unique across the entire menu tree (including sub menu items, checkbox and radio values).                                                                                                                                                              |
+| textValue        | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `ContextMenu.ItemLabel` part if provided, or fallback to the .textContent of the `ContextMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| isIndeterminate  | `boolean` <br/> Whether the item is in an indeterminate state.                                                                                                                                                                                                                                                   |
+| isDisabled       | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                             |
+| closeOnSelect    | `boolean` <br/> Whether the menu should close when the item is checked/unchecked.                                                                                                                                                                                                                                |
+
+| Data attribute     | Description                                                                       |
+| :----------------- | :-------------------------------------------------------------------------------- |
+| data-disabled      | Present when the item is disabled.                                                |
+| data-indeterminate | Present when the item is in an indeterminate state.                               |
+| data-checked       | Present when the item is checked.                                                 |
+| data-hover         | Present when the item is hovered.                                                 |
+| data-focus         | Present when the item is focused.                                                 |
+| data-focus-visible | Present when the item is focused via keyboard.                                    |
+| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+
+### ContextMenu.Sub
+
+| Prop          | Description                                                                                                            |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------- |
+| isOpen        | `boolean` <br/> The controlled open state of the sub menu.                                                             |
+| defaultIsOpen | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state. |
+| onOpenChange  | `(isOpen: boolean) => void` <br/> Event handler called when the open state of the sub menu changes.                    |
+
+`ContextMenu.Sub` also accepts the following props to customize the placement of the `ContextMenu.SubContent`.
+
+| Prop             | Description                                                                                                                                                                                                                                                                        |
+| :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| getAnchorRect    | `(anchor?: HTMLElement) => AnchorRect  \| undefined` <br/> Function that returns the trigger element's DOMRect.                                                                                                                                                                    |
+| gutter           | `number` <br/> The distance between the sub menu content and the trigger element. By default, it's 0 plus half of the arrow offset, if it exists.                                                                                                                                  |
+| shift            | `number` <br/> The skidding of the sub menu content along the trigger element.                                                                                                                                                                                                     |
+| slide            | `boolean` <br/> Whether the sub menu content should slide when it overflows.                                                                                                                                                                                                       |
+| overlap          | `boolean` <br/> Whether the sub menu content can overlap the trigger element when it overflows.                                                                                                                                                                                    |
+| fitViewport      | `boolean` <br/> Whether the sub menu content should fit the viewport. If this is set to true, the sub menu content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`. |
+| hideWhenDetached | `boolean` <br/> Whether to hide the sub menu content when the trigger element becomes occluded.                                                                                                                                                                                    |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                              |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the sub menu content corner.                                                                                                                                                                                              |
+| overflowPadding  | `number` <br/> The minimum padding between the sub menu content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                              |
+
+### ContextMenu.SubTrigger
+
+| Prop       | Description                                                                                                                                                                                                                                  |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| key        | `string` <br/> A unique key for the sub menu trigger. It must be unique across the entire menu tree (including sub menu items, checkbox and radio values). This is needed since the sub menu trigger is also a menu item of its parent menu. |
+| textValue  | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `ContextMenu.SubTrigger`. Use this when the content is complex, or you have non-textual content inside.        |
+| isDisabled | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                             |
+
+| Data attribute     | Description                                                                       |
+| :----------------- | :-------------------------------------------------------------------------------- |
+| data-expanded      | Present when the sub menu is open.                                                |
+| data-disabled      | Present when the item is disabled.                                                |
+| data-hover         | Present when the item is hovered.                                                 |
+| data-focus         | Present when the item is focused.                                                 |
+| data-focus-visible | Present when the item is focused via keyboard.                                    |
+| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+
+### ContextMenu.SubContent
+
+| Prop                 | Description                                                                                                                                                                                                         |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| onEscapeKeyDown      | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                     |
+| onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
+| onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
+| onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
+
+| Data attribute     | Description                                                      |
+| :----------------- | :--------------------------------------------------------------- |
+| data-focus         | Present when the content element itself is focused.              |
+| data-focus-visible | Present when the content element itself is focused via keyboard. |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                                 |
+| :-------------------- | :---------------------------------------------------------- |
+| <Kbd>Space</Kbd>      | When focus is on an item, activates the item.               |
+| <Kbd>Enter</Kbd>      | When focus is on an item, activates the item.               |
+| <Kbd>ArrowDown</Kbd>  | When focus is on an item, moves focus to the next item.     |
+| <Kbd>ArrowUp</Kbd>    | When focus is on an item, moves focus to the previous item. |
+| <Kbd>ArrowRight</Kbd> | When focus is on a sub menu trigger, opens the sub menu.    |
+| <Kbd>ArrowLeft</Kbd>  | When focus is on a sub menu, closes the sub menu.           |
+| <Kbd>Home</Kbd>       | When focus is on an item, moves focus to first item.        |
+| <Kbd>End</Kbd>        | When focus is on an item, moves focus to last item.         |
+| <Kbd>Esc</Kbd>        | Closes the context menu.                                    |

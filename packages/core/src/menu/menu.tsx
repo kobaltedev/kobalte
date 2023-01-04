@@ -6,7 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import { contains, mergeDefaultProps, removeItemFromArray } from "@kobalte/utils";
+import { mergeDefaultProps, removeItemFromArray } from "@kobalte/utils";
 import { createEffect, createSignal, onCleanup, ParentProps, splitProps } from "solid-js";
 
 import { createListState } from "../list";

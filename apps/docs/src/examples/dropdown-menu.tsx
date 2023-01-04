@@ -32,7 +32,7 @@ export function BasicExample() {
           <DropdownMenu.Item key="update-project" class={style["dropdown-menu__item"]} isDisabled>
             Update Project <div class={style["dropdown-menu__item-right-slot"]}>⌘+T</div>
           </DropdownMenu.Item>
-          <DropdownMenu.Sub gutter={2} shift={-5}>
+          <DropdownMenu.Sub gutter={4} shift={-8}>
             <DropdownMenu.SubTrigger key="github" class={style["dropdown-menu__sub-trigger"]}>
               GitHub
               <div class={style["dropdown-menu__item-right-slot"]}>
@@ -50,7 +50,7 @@ export function BasicExample() {
                 <DropdownMenu.Item key="sync-fork" class={style["dropdown-menu__item"]}>
                   Sync Fork
                 </DropdownMenu.Item>
-                <DropdownMenu.Separator class="DropdownMenu.Separator" />
+                <DropdownMenu.Separator class={style["dropdown-menu__separator"]} />
                 <DropdownMenu.Item key="open-on-github" class={style["dropdown-menu__item"]}>
                   Open on GitHub
                 </DropdownMenu.Item>
@@ -106,6 +106,31 @@ export function BasicExample() {
           </DropdownMenu.Group>
 
           <DropdownMenu.Arrow />
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu>
+  );
+}
+
+export function ControlledExample() {
+  const [open, setOpen] = createSignal(false);
+
+  return (
+    <DropdownMenu isOpen={open()} onOpenChange={setOpen} gutter={8}>
+      <DropdownMenu.Trigger class={style["dropdown-menu__trigger"]}>
+        {open() ? "Close" : "Open"}
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content class={style["dropdown-menu__content"]}>
+          <DropdownMenu.Item key="new-tab" class={style["dropdown-menu__item"]}>
+            New Tab
+          </DropdownMenu.Item>
+          <DropdownMenu.Item key="new-window" class={style["dropdown-menu__item"]}>
+            New Window
+          </DropdownMenu.Item>
+          <DropdownMenu.Item key="new-private-window" class={style["dropdown-menu__item"]}>
+            New Private Window
+          </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu>
