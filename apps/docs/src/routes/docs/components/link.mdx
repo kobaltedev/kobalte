@@ -1,6 +1,5 @@
-import { Preview } from "../../../components/preview";
-import { Kbd } from "../../../components/kbd";
-import { Link } from "../../../examples/link";
+import { Preview, Kbd, TabsSnippets } from "../../../components";
+import { BasicExample, ClientHandledExample } from "../../../examples/link";
 
 # Link
 
@@ -32,49 +31,58 @@ The link consists of:
 ## Example
 
 <Preview>
-  <Link href="https://kobalte.dev" target="_blank">
-    <span>Kobalte</span>
-  </Link>
+  <BasicExample />
 </Preview>
 
-```tsx
-import { Link as LinkBase } from "@kobalte/core";
-import { ComponentProps } from "solid-js";
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Link } from "@kobalte/core";
+    import "./style.css";
 
-export function Link(props: ComponentProps<typeof LinkBase>) {
-  return (
-    <LinkBase
-      class="text-blue-600 dark:text-blue-500 hover:underline ui-disabled:cursor-not-allowed ui-disabled:opacity-40 ui-disabled:hover:no-underline"
-      {...props}
-    />
-  );
-}
+    function App() {
+      return (
+        <Link class="link" href="https://kobalte.dev">
+          Kobalte
+        </Link>
+      );
+    }
+    ```
 
-function App() {
-  return (
-    <Link href="https://kobalte.dev" target="_blank">
-      Kobalte
-    </Link>
-  );
-}
-```
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .link {
+      font-weight: 600;
+      color: hsl(201 96% 32%);
+    }
+
+    .link[data-hover] {
+      text-decoration: underline;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
 
 ## Usage
 
-The following examples show how to use the `Link` component created in the above example.
-
-### Events
-
-Link supports `PressEvent` like described in the [Button](/docs/components/button#events) documentation.
-
 ### Client handled links
 
-This example shows a client handled link using press events. It renders a `<span>`, and Kobalte returns the proper ARIA attributes to expose the element as a link to assistive technology.
+Link supports user interactions via mouse, keyboard, and touch. You can handle all of these via the `onPress` prop. This is similar to the standard `onClick` event, but normalized to support all interaction methods equally.
+
+In addition, the `onPressStart`, `onPressEnd`, and `onPressChange` events are fired as the user interacts with the link.
+
+This example shows a client handled link using press events. It renders a `<span>`, and expose the element as a link to assistive technology.
 
 <Preview>
-  <Link as="span" onPress={() => alert("Pressed link")}>
-    <span>Kobalte</span>
-  </Link>
+  <ClientHandledExample />
 </Preview>
 
 ```tsx
@@ -83,27 +91,13 @@ This example shows a client handled link using press events. It renders a `<span
 </Link>
 ```
 
-### Disabled
-
-Link can be disabled using the `isDisabled` prop. Native navigation will be disabled, and the link will be exposed as disabled to assistive technology with ARIA.
-
-<Preview>
-  <Link href="https://kobalte.dev" isDisabled>
-    <span>Kobalte</span>
-  </Link>
-</Preview>
-
-```tsx
-<Link href="https://kobalte.dev" isDisabled>
-  Kobalte
-</Link>
-```
+To learn more about _press interactions_ in Kobalte, check out the [documentation](/docs/overview/press-interactions).
 
 ## API Reference
 
 | Prop                | Description                                                                                                                                             |
 | :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| isDisabled          | `boolean` <br/> Whether the link is disabled.                                                                                                           |
+| isDisabled          | `boolean` <br/> Whether the link is disabled. Native navigation will be disabled, and the link will be exposed as disabled to assistive technology.     |
 | preventFocusOnPress | `boolean` <br/> Whether the link should not receive focus on press.                                                                                     |
 | onPress             | `(event: PressEvent) => void` <br/> Handler that is called when the press is released over the link.                                                    |
 | onPressStart        | `(event: PressEvent) => void` <br/> Handler that is called when a press interaction starts.                                                             |
@@ -114,6 +108,7 @@ Link can be disabled using the `isDisabled` prop. Native navigation will be disa
 | Data attribute     | Description                                                                       |
 | :----------------- | :-------------------------------------------------------------------------------- |
 | data-disabled      | Present when the link is disabled.                                                |
+| data-hover         | Present when the link is hovered.                                                 |
 | data-focus         | Present when the link is focused.                                                 |
 | data-focus-visible | Present when the link is focused via keyboard.                                    |
 | data-active        | Present when the link is activated by a pointer down (mouse, touch, pen, etc...). |

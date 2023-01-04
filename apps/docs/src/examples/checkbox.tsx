@@ -1,38 +1,34 @@
-import { Checkbox as CheckboxBase } from "@kobalte/core";
-import { ComponentProps, createSignal, Match, ParentProps, splitProps, Switch } from "solid-js";
+import { Checkbox } from "@kobalte/core";
+import { createSignal } from "solid-js";
 
-import { CheckIcon, DividerHorizontalIcon } from "../components";
+import { CheckIcon } from "../components";
+import style from "./checkbox.module.css";
 
-type CheckboxBaseProps = ComponentProps<typeof CheckboxBase>;
-
-type CheckboxProps = ParentProps<Omit<CheckboxBaseProps, "children">>;
-
-export function Checkbox(props: CheckboxProps) {
-  const [local, others] = splitProps(props, ["children"]);
-
+export function BasicExample() {
   return (
-    <CheckboxBase class="inline-flex items-center ui-disabled:opacity-40" {...others}>
-      {state => (
-        <>
-          <CheckboxBase.Input />
-          <CheckboxBase.Control class="w-4 h-4 bg-zinc-200 rounded border-zinc-300 ui-checked:bg-blue-600 ui-checked:ui-indeterminate:bg-zinc-200 ui-focus:ring ui-focus:ring-blue-200 dark:ui-focus:ring-blue-500/30 dark:bg-zinc-700 dark:border-zinc-600 dark:ui-checked:bg-blue-600 dark:ui-checked:ui-indeterminate:bg-zinc-700">
-            <CheckboxBase.Indicator>
-              <Switch>
-                <Match when={state.isIndeterminate()}>
-                  <DividerHorizontalIcon class="text-zinc-500" />
-                </Match>
-                <Match when={state.isChecked() && !state.isIndeterminate()}>
-                  <CheckIcon class="text-white" />
-                </Match>
-              </Switch>
-            </CheckboxBase.Indicator>
-          </CheckboxBase.Control>
-          <CheckboxBase.Label class="select-none ml-2 text-sm text-zinc-900 dark:text-zinc-300">
-            {local.children}
-          </CheckboxBase.Label>
-        </>
-      )}
-    </CheckboxBase>
+    <Checkbox class={style["checkbox"]}>
+      <Checkbox.Input />
+      <Checkbox.Control class={style["checkbox__control"]}>
+        <Checkbox.Indicator>
+          <CheckIcon />
+        </Checkbox.Indicator>
+      </Checkbox.Control>
+      <Checkbox.Label class={style["checkbox__label"]}>Subscribe</Checkbox.Label>
+    </Checkbox>
+  );
+}
+
+export function DefaultCheckedExample() {
+  return (
+    <Checkbox class={style["checkbox"]} defaultIsChecked>
+      <Checkbox.Input />
+      <Checkbox.Control class={style["checkbox__control"]}>
+        <Checkbox.Indicator>
+          <CheckIcon />
+        </Checkbox.Indicator>
+      </Checkbox.Control>
+      <Checkbox.Label class={style["checkbox__label"]}>Subscribe</Checkbox.Label>
+    </Checkbox>
   );
 }
 
@@ -41,43 +37,16 @@ export function ControlledExample() {
 
   return (
     <>
-      <Checkbox isChecked={checked()} onCheckedChange={setChecked}>
-        Subscribe
+      <Checkbox class={style["checkbox"]} isChecked={checked()} onCheckedChange={setChecked}>
+        <Checkbox.Input />
+        <Checkbox.Control class={style["checkbox__control"]}>
+          <Checkbox.Indicator>
+            <CheckIcon />
+          </Checkbox.Indicator>
+        </Checkbox.Control>
+        <Checkbox.Label class={style["checkbox__label"]}>Subscribe</Checkbox.Label>
       </Checkbox>
       <p class="not-prose text-sm mt-2">You are {checked() ? "subscribed" : "unsubscribed"}.</p>
-    </>
-  );
-}
-
-export function IndeterminateExample() {
-  const [checkedItems, setCheckedItems] = createSignal([false, false]);
-
-  const allChecked = () => checkedItems().every(Boolean);
-  const isIndeterminate = () => checkedItems().some(Boolean) && !allChecked();
-
-  return (
-    <>
-      <Checkbox
-        isChecked={allChecked()}
-        isIndeterminate={isIndeterminate()}
-        onCheckedChange={isChecked => setCheckedItems([isChecked, isChecked])}
-      >
-        Parent Checkbox
-      </Checkbox>
-      <div class="flex flex-col items-start pl-6 mt-1 space-y-1">
-        <Checkbox
-          isChecked={checkedItems()[0]}
-          onCheckedChange={isChecked => setCheckedItems([isChecked, checkedItems()[1]])}
-        >
-          Child Checkbox 1
-        </Checkbox>
-        <Checkbox
-          isChecked={checkedItems()[1]}
-          onCheckedChange={isChecked => setCheckedItems([checkedItems()[0], isChecked])}
-        >
-          Child Checkbox 2
-        </Checkbox>
-      </div>
     </>
   );
 }
@@ -95,15 +64,21 @@ export function HTMLFormExample() {
   };
 
   return (
-    <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-start space-y-4">
-      <Checkbox name="newsletter" value="subscribe">
-        Subscribe
+    <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
+      <Checkbox class={style["checkbox"]} name="newsletter" value="subscribe">
+        <Checkbox.Input />
+        <Checkbox.Control class={style["checkbox__control"]}>
+          <Checkbox.Indicator>
+            <CheckIcon />
+          </Checkbox.Indicator>
+        </Checkbox.Control>
+        <Checkbox.Label class={style["checkbox__label"]}>Subscribe</Checkbox.Label>
       </Checkbox>
       <div class="flex space-x-2">
-        <button type="reset" class="text-sm rounded border border-zinc-600 px-3">
+        <button type="reset" class="kb-button">
           Reset
         </button>
-        <button class="text-sm rounded text-white bg-blue-600 px-3">Submit</button>
+        <button class="kb-button-primary">Submit</button>
       </div>
     </form>
   );

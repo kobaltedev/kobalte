@@ -1,5 +1,5 @@
-import { Preview } from "../../../components";
-import { Separator } from "../../../examples/separator";
+import { Preview, TabsSnippets } from "../../../components";
+import { BasicExample } from "../../../examples/separator";
 
 # Separator
 
@@ -30,50 +30,48 @@ The separator consists of:
 ## Example
 
 <Preview>
-  <>
-    <div class="flex flex-col space-y-2 w-full">
-      Content above
-      <Separator />
-      Content below
-    </div>
-    <div class="flex items-center space-x-2 mt-5 h-10">
-      Content left
-      <Separator orientation="vertical" />
-      Content right
-    </div>
-  </>
+  <BasicExample />
 </Preview>
 
-```tsx
-import { Separator as SeparatorBase } from "@kobalte/core";
-import { ComponentProps } from "solid-js";
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Separator } from "@kobalte/core";
+    import "./style.css";
 
-function Separator(props: ComponentProps<typeof SeparatorBase>) {
-  return (
-    <SeparatorBase
-      class="border-none bg-zinc-300 data-[orientation='horizontal']:h-px data-[orientation='horizontal']:w-full data-[orientation='vertical']:w-px data-[orientation='vertical']:h-full dark:bg-zinc-700"
-      {...props}
-    />
-  );
-}
+    function App() {
+      return (
+        <div>
+          <span>Content above</span>
+          <Separator class="separator" />
+          <span>Content below</span>
+        </div>
+      );
+    }
+    ```
 
-function App() {
-  return (
-    <>
-      <div class="flex flex-col space-y-2 w-full">
-        Content above
-        <Separator />
-        Content below
-      </div>
-      <div class="flex items-center space-x-2 mt-5 h-10">
-        Content left
-        <Separator orientation="vertical" />
-        Content right
-      </div>
-    </>
-  );
-}
-```
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .separator {
+      border: none;
+      background-color: hsl(240 5% 84%);
+    }
+
+    .separator[data-orientation="horizontal"] {
+      height: 1px;
+      width: 100%;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
 
 ## API Reference
 

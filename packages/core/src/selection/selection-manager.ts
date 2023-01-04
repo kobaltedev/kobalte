@@ -11,7 +11,6 @@ import { Accessor } from "solid-js";
 import { Collection, CollectionNode, PressEvent } from "../primitives";
 import { LongPressEvent } from "../primitives/create-long-press/types";
 import {
-  FocusStrategy,
   MultipleSelectionManager,
   MultipleSelectionState,
   Selection,
@@ -66,15 +65,10 @@ export class SelectionManager implements MultipleSelectionManager {
     return this.state.focusedKey();
   }
 
-  /** Whether the first or last child of the focused key should receive focus. */
-  childFocusStrategy(): FocusStrategy {
-    return this.state.childFocusStrategy();
-  }
-
   /** Sets the focused key. */
-  setFocusedKey(key?: string, childFocusStrategy?: FocusStrategy) {
+  setFocusedKey(key?: string) {
     if (key == null || this.collection().getItem(key)) {
-      this.state.setFocusedKey(key, childFocusStrategy);
+      this.state.setFocusedKey(key);
     }
   }
 
@@ -317,7 +311,7 @@ export class SelectionManager implements MultipleSelectionManager {
   clearSelection() {
     const selectedKeys = this.state.selectedKeys();
 
-    if (!this.disallowEmptySelection && selectedKeys.size > 0) {
+    if (!this.disallowEmptySelection() && selectedKeys.size > 0) {
       this.state.setSelectedKeys(new Selection());
     }
   }
@@ -339,7 +333,7 @@ export class SelectionManager implements MultipleSelectionManager {
     }
 
     if (this.selectionMode() === "single") {
-      if (this.isSelected(key) && !this.disallowEmptySelection) {
+      if (this.isSelected(key) && !this.disallowEmptySelection()) {
         this.toggleSelection(key);
       } else {
         this.replaceSelection(key);

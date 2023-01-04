@@ -4,15 +4,20 @@ import { Dynamic } from "solid-js/web";
 
 import { useDialogContext } from "./dialog-context";
 
+export interface DialogOverlayOptions {
+  /** The HTML styles attribute (object form only). */
+  style?: JSX.CSSProperties;
+}
+
 /**
  * A layer that covers the inert portion of the view when the dialog is open.
  */
-export const DialogOverlay = createPolymorphicComponent<"div">(props => {
+export const DialogOverlay = createPolymorphicComponent<"div", DialogOverlayOptions>(props => {
   const context = useDialogContext();
 
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, ["as", "onPointerDown"]);
+  const [local, others] = splitProps(props, ["as", "style", "onPointerDown"]);
 
   const onPointerDown: JSX.EventHandlerUnion<HTMLDivElement, PointerEvent> = e => {
     callHandler(e, local.onPointerDown);
@@ -25,7 +30,13 @@ export const DialogOverlay = createPolymorphicComponent<"div">(props => {
 
   return (
     <Show when={context.shouldMount()}>
-      <Dynamic component={local.as} onPointerDown={onPointerDown} {...others} />
+      <Dynamic
+        component={local.as}
+        // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling.
+        style={{ "pointer-events": "auto", ...local.style }}
+        onPointerDown={onPointerDown}
+        {...others}
+      />
     </Show>
   );
 });

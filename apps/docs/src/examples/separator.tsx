@@ -1,11 +1,13 @@
-import { Separator as SeparatorBase } from "@kobalte/core";
-import { ComponentProps } from "solid-js";
+import { Separator } from "@kobalte/core";
 
-export function Separator(props: ComponentProps<typeof SeparatorBase>) {
+import style from "./separator.module.css";
+
+export function BasicExample() {
   return (
-    <SeparatorBase
-      class="border-none bg-zinc-300 data-[orientation='horizontal']:h-px data-[orientation='horizontal']:w-full data-[orientation='vertical']:w-px data-[orientation='vertical']:h-full dark:bg-zinc-700"
-      {...props}
-    />
+    <div class="flex flex-col space-y-2">
+      <span>Content above</span>
+      <Separator class={style["separator"]} />
+      <span>Content below</span>
+    </div>
   );
 }

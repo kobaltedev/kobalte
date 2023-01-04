@@ -3,6 +3,7 @@ import { Link } from "@solidjs/router";
 import { NavSection } from "../NAV_SECTIONS";
 import { GitHubIcon } from "./icons";
 import { ThemeSelector } from "./theme-selector";
+import { MobileNavigation } from "./mobile-navigation";
 
 interface HeaderProps {
   navSections: NavSection[];
@@ -15,7 +16,9 @@ export function Header(props: HeaderProps) {
         "sticky top-0 z-50 flex flex-wrap items-center justify-between bg-white border-b border-b-zinc-200 dark:border-b-zinc-800 p-4 transition duration-500 lg:px-6 dark:bg-zinc-900"
       }
     >
-      <div class="mr-6 flex lg:hidden">{/* MobileNavigation */}</div>
+      <div class="mr-6 flex lg:hidden">
+        <MobileNavigation sections={props.navSections} />
+      </div>
       <div class="relative flex flex-grow basis-0 items-center space-x-2">
         <Link
           class="text-zinc-800 dark:text-white/90 font-medium font-display text-xl leading-none"

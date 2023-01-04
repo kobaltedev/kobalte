@@ -210,6 +210,7 @@ interface CheckboxChildProps extends Pick<CheckboxProps, "children"> {
 
 function CheckboxChild(props: CheckboxChildProps) {
   return children(() => {
-    return isFunction(props.children) ? props.children(props.state) : props.children;
+    const body = props.children;
+    return isFunction(body) ? body(props.state) : body;
   });
 }

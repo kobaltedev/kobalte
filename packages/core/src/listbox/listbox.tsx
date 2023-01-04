@@ -12,7 +12,7 @@ import {
   createPolymorphicComponent,
   mergeDefaultProps,
 } from "@kobalte/utils";
-import { createMemo, createUniqueId, splitProps } from "solid-js";
+import { Accessor, createMemo, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
@@ -89,6 +89,12 @@ export interface ListboxProps
 
   /** Whether options should be focused when the user hovers over them. */
   shouldFocusOnHover?: boolean;
+
+  /**
+   * The ref attached to the scrollable element, used to provide automatic scrolling on item focus.
+   * If not provided, defaults to the listbox ref.
+   */
+  scrollRef?: Accessor<HTMLElement | undefined>;
 }
 
 /**
@@ -129,6 +135,7 @@ export const Listbox = createPolymorphicComponent<"div", ListboxProps, ListboxCo
     "selectOnFocus",
     "disallowTypeAhead",
     "allowsTabNavigation",
+    "scrollRef",
   ]);
 
   const [items, setItems] = createControllableArraySignal<CollectionItem>({
@@ -170,7 +177,8 @@ export const Listbox = createPolymorphicComponent<"div", ListboxProps, ListboxCo
       allowsTabNavigation: () => access(local.allowsTabNavigation),
       isVirtualized: false,
     },
-    () => ref
+    () => ref,
+    () => local.scrollRef?.()
   );
 
   const context: ListboxContextValue = {

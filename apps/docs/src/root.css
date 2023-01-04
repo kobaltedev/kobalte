@@ -42,6 +42,99 @@
     scrollbar-width: none; /* Firefox */
   }
 
+  .kb-button {
+    appearance: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: auto;
+    outline: none;
+    border: 1px solid hsl(240 5% 84%);
+    border-radius: 6px;
+    padding: 0 16px;
+    background-color: transparent;
+    color: hsl(240 6% 10%);
+    font-size: 16px;
+    line-height: 0;
+    transition: background-color;
+  }
+
+  .kb-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .kb-button:hover {
+    background-color: hsl(0 0% 98%);
+  }
+
+  .kb-button:focus-visible {
+    outline: 2px solid hsl(200 98% 39%);
+    outline-offset: 2px;
+  }
+
+  .kb-button:active {
+    background-color: hsl(240 6% 90%);
+  }
+
+  [data-kb-theme="dark"] .kb-button {
+    border-color: transparent;
+    background-color: hsl(240 4% 16%);
+    color: hsla(0 100% 100% / 0.9);
+  }
+
+  [data-kb-theme="dark"] .kb-button:hover {
+    background-color: hsl(240 5% 34%);
+  }
+
+  [data-kb-theme="dark"] .kb-button:active {
+    background-color: hsl(240 4% 46%);
+  }
+
+  .kb-button-primary {
+    appearance: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: auto;
+    outline: none;
+    border-radius: 6px;
+    padding: 0 16px;
+    background-color: hsl(200 98% 39%);
+    color: white;
+    font-size: 16px;
+    line-height: 0;
+    transition: 250ms background-color;
+  }
+
+  .kb-button-primary:hover {
+    background-color: hsl(201 96% 32%);
+  }
+
+  .kb-button-primary:focus-visible {
+    outline: 2px solid hsl(200 98% 39%);
+    outline-offset: 2px;
+  }
+
+  .kb-button-primary:active {
+    background-color: hsl(201 90% 27%);
+  }
+
+  [data-kb-theme="dark"] .kb-button-primary {
+    background-color: hsl(201 96% 32%);
+    color: hsla(0 100% 100% / 0.9);
+  }
+
+  [data-kb-theme="dark"] .kb-button-primary:hover {
+    background-color: hsl(200 98% 39%);
+  }
+
+  [data-kb-theme="dark"] .kb-button-primary:active {
+    background-color: hsl(199 89% 48%);
+  }
+
   .kb-table .kb-code {
     @apply bg-transparent dark:bg-transparent p-0 text-sky-700;
   }
@@ -49,6 +142,13 @@
   .kb-tabs-snippets pre.shiki {
     margin: 0;
     border: none;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+  }
+
+  .kb-preview + .kb-tabs-snippets {
+    margin: 0;
+    border-top: none;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
   }

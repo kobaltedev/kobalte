@@ -1,71 +1,128 @@
-import { RadioGroup as RadioGroupBase } from "@kobalte/core";
-import { ComponentProps, createSignal, JSX, Show, splitProps } from "solid-js";
+import { RadioGroup } from "@kobalte/core";
+import { createSignal, For, Show } from "solid-js";
 
-type RadioGroupBaseProps = ComponentProps<typeof RadioGroupBase>;
+import style from "./radio-group.module.css";
 
-interface RadioGroupProps extends RadioGroupBaseProps {
-  label?: JSX.Element;
-  description?: JSX.Element;
-  errorMessage?: JSX.Element;
-}
-
-export function RadioGroup(props: RadioGroupProps) {
-  const [local, others] = splitProps(props, ["label", "description", "errorMessage", "children"]);
-
+export function BasicExample() {
   return (
-    <RadioGroupBase orientation="horizontal" class="space-y-2" {...others}>
-      <Show when={local.label}>
-        <RadioGroupBase.Label class="text-base text-zinc-800 font-medium dark:text-white/90 ui-disabled:opacity-40">
-          {local.label}
-        </RadioGroupBase.Label>
-      </Show>
-      <div class="flex space-x-4">{local.children}</div>
-      <Show when={local.description}>
-        <RadioGroupBase.Description class="text-sm text-zinc-600 dark:text-zinc-400 ui-disabled:opacity-40">
-          {local.description}
-        </RadioGroupBase.Description>
-      </Show>
-      <Show when={local.errorMessage}>
-        <RadioGroupBase.ErrorMessage class="text-sm text-red-600 dark:text-red-400 ui-disabled:opacity-40">
-          {local.errorMessage}
-        </RadioGroupBase.ErrorMessage>
-      </Show>
-    </RadioGroupBase>
+    <RadioGroup class={style["radio-group"]}>
+      <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>
+      <div class={style["radio-group__items"]}>
+        <For each={["Apple", "Orange", "Watermelon"]}>
+          {fruit => (
+            <RadioGroup.Item value={fruit} class={style["radio"]}>
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl class={style["radio__control"]}>
+                <RadioGroup.ItemIndicator class={style["radio__indicator"]} />
+              </RadioGroup.ItemControl>
+              <RadioGroup.ItemLabel class={style["radio__label"]}>{fruit}</RadioGroup.ItemLabel>
+            </RadioGroup.Item>
+          )}
+        </For>
+      </div>
+    </RadioGroup>
   );
 }
 
-export function Radio(props: ComponentProps<typeof RadioGroupBase.Item>) {
-  const [local, others] = splitProps(props, ["value", "children"]);
-
+export function DefaultValueExample() {
   return (
-    <RadioGroupBase.Item
-      value={local.value}
-      class="flex items-center ui-disabled:opacity-40"
-      {...others}
-    >
-      <RadioGroupBase.ItemInput />
-      <RadioGroupBase.ItemControl class="flex items-center justify-center transition h-5 w-5 rounded-full border border-zinc-400 dark:border-zinc-600 mr-2 ui-hover:bg-blue-50 dark:ui-hover:bg-blue-900/60 ui-focus-visible:border-blue-500 ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:border-blue-600 dark:ui-focus-visible:ring-blue-900/60">
-        <RadioGroupBase.ItemIndicator class="h-2.5 w-2.5 rounded-full bg-blue-500" />
-      </RadioGroupBase.ItemControl>
-      <RadioGroupBase.ItemLabel class="text-sm text-zinc-900 dark:text-white/90 first-letter:uppercase">
-        {local.children}
-      </RadioGroupBase.ItemLabel>
-    </RadioGroupBase.Item>
+    <RadioGroup class={style["radio-group"]} defaultValue="Orange">
+      <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>
+      <div class={style["radio-group__items"]}>
+        <For each={["Apple", "Orange", "Watermelon"]}>
+          {fruit => (
+            <RadioGroup.Item value={fruit} class={style["radio"]}>
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl class={style["radio__control"]}>
+                <RadioGroup.ItemIndicator class={style["radio__indicator"]} />
+              </RadioGroup.ItemControl>
+              <RadioGroup.ItemLabel class={style["radio__label"]}>{fruit}</RadioGroup.ItemLabel>
+            </RadioGroup.Item>
+          )}
+        </For>
+      </div>
+    </RadioGroup>
   );
 }
 
 export function ControlledExample() {
-  const [value, setValue] = createSignal("orange");
+  const [value, setValue] = createSignal("Orange");
 
   return (
     <>
-      <RadioGroup label="Favorite fruit" value={value()} onValueChange={setValue}>
-        <Radio value="apple">Apple</Radio>
-        <Radio value="orange">Orange</Radio>
-        <Radio value="watermelon">Watermelon</Radio>
+      <RadioGroup class={style["radio-group"]} value={value()} onValueChange={setValue}>
+        <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>
+        <div class={style["radio-group__items"]}>
+          <For each={["Apple", "Orange", "Watermelon"]}>
+            {fruit => (
+              <RadioGroup.Item value={fruit} class={style["radio"]}>
+                <RadioGroup.ItemInput />
+                <RadioGroup.ItemControl class={style["radio__control"]}>
+                  <RadioGroup.ItemIndicator class={style["radio__indicator"]} />
+                </RadioGroup.ItemControl>
+                <RadioGroup.ItemLabel class={style["radio__label"]}>{fruit}</RadioGroup.ItemLabel>
+              </RadioGroup.Item>
+            )}
+          </For>
+        </div>
       </RadioGroup>
-      <p class="not-prose text-sm mt-2">Your favorite fruit is: {value()}.</p>
+      <p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
     </>
+  );
+}
+
+export function DescriptionExample() {
+  return (
+    <RadioGroup class={style["radio-group"]}>
+      <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>
+      <div class={style["radio-group__items"]}>
+        <For each={["Apple", "Orange", "Watermelon"]}>
+          {fruit => (
+            <RadioGroup.Item value={fruit} class={style["radio"]}>
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl class={style["radio__control"]}>
+                <RadioGroup.ItemIndicator class={style["radio__indicator"]} />
+              </RadioGroup.ItemControl>
+              <RadioGroup.ItemLabel class={style["radio__label"]}>{fruit}</RadioGroup.ItemLabel>
+            </RadioGroup.Item>
+          )}
+        </For>
+      </div>
+      <RadioGroup.Description class={style["radio-group__description"]}>
+        Choose the fruit you like the most.
+      </RadioGroup.Description>
+    </RadioGroup>
+  );
+}
+
+export function ErrorMessageExample() {
+  const [value, setValue] = createSignal("Orange");
+
+  return (
+    <RadioGroup
+      class={style["radio-group"]}
+      value={value()}
+      onValueChange={setValue}
+      validationState={value() !== "Apple" ? "invalid" : "valid"}
+    >
+      <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>
+      <div class={style["radio-group__items"]}>
+        <For each={["Apple", "Orange", "Watermelon"]}>
+          {fruit => (
+            <RadioGroup.Item value={fruit} class={style["radio"]}>
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl class={style["radio__control"]}>
+                <RadioGroup.ItemIndicator class={style["radio__indicator"]} />
+              </RadioGroup.ItemControl>
+              <RadioGroup.ItemLabel class={style["radio__label"]}>{fruit}</RadioGroup.ItemLabel>
+            </RadioGroup.Item>
+          )}
+        </For>
+      </div>
+      <RadioGroup.ErrorMessage class={style["radio-group__error-message"]}>
+        Hmm, I prefer apples.
+      </RadioGroup.ErrorMessage>
+    </RadioGroup>
   );
 }
 
@@ -82,17 +139,28 @@ export function HTMLFormExample() {
   };
 
   return (
-    <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-start space-y-4">
-      <RadioGroup label="Favorite fruit" name="fruit">
-        <Radio value="apple">Apple</Radio>
-        <Radio value="orange">Orange</Radio>
-        <Radio value="watermelon">Watermelon</Radio>
+    <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
+      <RadioGroup class={style["radio-group"]} name="favorite-fruit">
+        <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>
+        <div class={style["radio-group__items"]}>
+          <For each={["Apple", "Orange", "Watermelon"]}>
+            {fruit => (
+              <RadioGroup.Item value={fruit} class={style["radio"]}>
+                <RadioGroup.ItemInput />
+                <RadioGroup.ItemControl class={style["radio__control"]}>
+                  <RadioGroup.ItemIndicator class={style["radio__indicator"]} />
+                </RadioGroup.ItemControl>
+                <RadioGroup.ItemLabel class={style["radio__label"]}>{fruit}</RadioGroup.ItemLabel>
+              </RadioGroup.Item>
+            )}
+          </For>
+        </div>
       </RadioGroup>
       <div class="flex space-x-2">
-        <button type="reset" class="text-sm rounded border border-zinc-600 px-3">
+        <button type="reset" class="kb-button">
           Reset
         </button>
-        <button class="text-sm rounded text-white bg-blue-600 px-3">Submit</button>
+        <button class="kb-button-primary">Submit</button>
       </div>
     </form>
   );

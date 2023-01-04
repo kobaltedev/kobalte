@@ -11,21 +11,19 @@ import { createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createRegisterId } from "../primitives";
-import { useMenuContext } from "./menu-context";
 import { MenuGroupContext, MenuGroupContextValue } from "./menu-group-context";
+import { useMenuRootContext } from "./menu-root-context";
 
 /**
  * A container used to group multiple `Menu.Item`s.
  */
 export const MenuGroup = createPolymorphicComponent<"div">(props => {
-  const menuContext = useMenuContext();
-
-  const defaultId = `${menuContext.generateId("group")}-${createUniqueId()}`;
+  const rootContext = useMenuRootContext();
 
   props = mergeDefaultProps(
     {
       as: "div",
-      id: defaultId,
+      id: rootContext.generateId(`group-${createUniqueId()}`),
     },
     props
   );

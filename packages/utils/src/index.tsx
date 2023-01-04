@@ -11,6 +11,7 @@ export * from "./get-scroll-parent";
 export * from "./is-virtual-event";
 export * from "./noop";
 export * from "./platform";
+export * from "./polygon";
 export * from "./polymorphic";
 export * from "./props";
 export * from "./run-after-transition";

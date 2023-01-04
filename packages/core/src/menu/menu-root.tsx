@@ -1,73 +1,62 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
+import { createUniqueId, ParentProps, splitProps } from "solid-js";
 
-import { HoverCard, HoverCardProps } from "../hover-card";
-import { createListState } from "../list";
-import {
-  CollectionItem,
-  createDisclosureState,
-  createRegisterId,
-  focusSafely,
-} from "../primitives";
-import {
-  createDomCollection,
-  useOptionalDomCollectionContext,
-} from "../primitives/create-dom-collection";
-import { FocusStrategy } from "../selection";
-import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-context";
+import { createDisclosureState } from "../primitives";
+import { Menu, MenuProps } from "./menu";
+import { MenuRootContext, MenuRootContextValue } from "./menu-root-context";
 
-export interface MenuRootProps
-  extends Omit<
-    HoverCardProps,
-    "closeOnHoverOutside" | "closeOnInteractOutside" | "closeDelay" | "openDelay"
-  > {
+export interface MenuRootProps extends MenuProps {
+  /**
+   * A unique identifier for the component.
+   * The id is used to generate id attributes for nested components.
+   * If no id prop is provided, a generated id will be used.
+   */
+  id?: string;
+
+  /**
+   * Whether the menu should be the only visible content for screen readers.
+   * When set to `true`:
+   * - interaction with outside elements will be disabled.
+   * - scroll will be locked.
+   * - focus will be locked inside the menu content.
+   * - elements outside the menu content will not be visible for screen readers.
+   */
+  isModal?: boolean;
+
+  /**
+   * Used to force mounting the menu (portal, positioner and content) when more control is needed.
+   * Useful when controlling animation with SolidJS animation libraries.
+   */
+  forceMount?: boolean;
+
   /** Handler that is called when the user activates a menu item. */
   onAction?: (key: string) => void;
 }
 
 /**
- * Base component for a menu, provide context for its children.
+ * Root component for a menu, provide context for its children.
  * Used to build dropdown menu, context menu and menubar.
  */
 export function MenuRoot(props: ParentProps<MenuRootProps>) {
-  const parentDomCollectionContext = useOptionalDomCollectionContext();
-  const parentMenuContext = useOptionalMenuContext();
   const defaultId = `menu-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
       id: defaultId,
-      placement: "bottom-start",
-      closeOnEsc: true,
-      isModal: parentMenuContext?.isModal() ?? true,
-      preventScroll: parentMenuContext?.preventScroll() ?? true,
-      trapFocus: parentMenuContext?.trapFocus() ?? true,
-      autoFocus: true,
-      restoreFocus: true,
+      isModal: true,
     },
     props
   );
 
   const [local, others] = splitProps(props, [
     "id",
-    "children",
+    "isModal",
+    "forceMount",
+    "onAction",
     "isOpen",
     "defaultIsOpen",
     "onOpenChange",
-    "onAction",
   ]);
-
-  const [triggerId, setTriggerId] = createSignal<string>();
-  const [contentId, setContentId] = createSignal<string>();
-
-  const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
-  const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
-
-  const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean | undefined>(true);
-
-  const [items, setItems] = createSignal<CollectionItem[]>([]);
-
-  const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
 
   const disclosureState = createDisclosureState({
     isOpen: () => local.isOpen,
@@ -75,81 +64,21 @@ export function MenuRoot(props: ParentProps<MenuRootProps>) {
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
-  const listState = createListState({
-    selectionMode: "none",
-    dataSource: items,
-  });
-
-  const open = (focusStrategy?: FocusStrategy) => {
-    setFocusStrategy(focusStrategy);
-    disclosureState.open();
-  };
-
-  const close = (deep?: boolean) => {
-    disclosureState.close();
-
-    if (deep) {
-      parentMenuContext?.close(deep);
-    }
-  };
-
-  const toggle = (focusStrategy?: FocusStrategy) => {
-    if (disclosureState.isOpen()) {
-      close();
-    } else {
-      setFocusStrategy(focusStrategy);
-      open(focusStrategy);
-    }
-  };
-
-  const focusContent = () => {
-    const content = contentRef();
-
-    if (content) {
-      focusSafely(content);
-    }
-  };
-
-  const context: MenuContextValue = {
-    isOpen: () => disclosureState.isOpen(),
-    isModal: () => others.isModal!,
-    preventScroll: () => others.preventScroll!,
-    trapFocus: () => others.trapFocus!,
-    autoFocus: focusStrategy,
-    listState: () => listState,
-    parentMenuContext: () => parentMenuContext,
-    triggerId,
-    contentId,
-    setTriggerRef,
-    setContentRef,
-    open,
-    close,
-    toggle,
-    focusContent,
+  const context: MenuRootContextValue = {
+    isModal: () => local.isModal ?? true,
+    forceMount: () => local.forceMount ?? false,
+    close: disclosureState.close,
     onAction: key => local.onAction?.(key),
-    registerItemToParentDomCollection: parentDomCollectionContext?.registerItem,
     generateId: createGenerateId(() => local.id!),
-    registerTriggerId: createRegisterId(setTriggerId),
-    registerContentId: createRegisterId(setContentId),
   };
 
   return (
-    <DomCollectionProvider>
-      <MenuContext.Provider value={context}>
-        <HoverCard
-          id={local.id}
-          isOpen={disclosureState.isOpen()}
-          onOpenChange={disclosureState.setIsOpen}
-          anchorRef={triggerRef}
-          closeOnInteractOutside={true}
-          closeOnHoverOutside={parentMenuContext != null}
-          openDelay={0}
-          closeDelay={0}
-          {...others}
-        >
-          {local.children}
-        </HoverCard>
-      </MenuContext.Provider>
-    </DomCollectionProvider>
+    <MenuRootContext.Provider value={context}>
+      <Menu
+        isOpen={disclosureState.isOpen()}
+        onOpenChange={disclosureState.setIsOpen}
+        {...others}
+      />
+    </MenuRootContext.Provider>
   );
 }

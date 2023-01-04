@@ -1,19 +1,13 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentComponent } from "solid-js";
 
-import {
-  createDisclosureState,
-  CreateFocusTrapRegionProps,
-  CreateOverlayProps,
-  createRegisterId,
-} from "../primitives";
+import { createDisclosureState, createRegisterId } from "../primitives";
 import { DialogCloseButton } from "./dialog-close-button";
 import { DialogContent } from "./dialog-content";
 import { DialogContext, DialogContextValue } from "./dialog-context";
 import { DialogDescription } from "./dialog-description";
 import { DialogOverlay } from "./dialog-overlay";
 import { DialogPortal } from "./dialog-portal";
-import { DialogPositioner } from "./dialog-positioner";
 import { DialogTitle } from "./dialog-title";
 import { DialogTrigger } from "./dialog-trigger";
 
@@ -21,7 +15,6 @@ type DialogComposite = {
   Trigger: typeof DialogTrigger;
   Portal: typeof DialogPortal;
   Overlay: typeof DialogOverlay;
-  Positioner: typeof DialogPositioner;
   Content: typeof DialogContent;
   CloseButton: typeof DialogCloseButton;
   Title: typeof DialogTitle;
@@ -49,47 +42,20 @@ export interface DialogProps {
   id?: string;
 
   /**
+   * Whether the dialog should be the only visible content for screen readers.
+   * When set to `true`:
+   * - interaction with outside elements will be disabled.
+   * - scroll will be locked.
+   * - focus will be locked inside the dialog content.
+   * - elements outside the dialog content will not be visible for screen readers.
+   */
+  isModal?: boolean;
+
+  /**
    * Used to force mounting the dialog (portal, overlay, positioner and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
    */
   forceMount?: boolean;
-
-  /** Whether the dialog should be the only visible content for screen readers. */
-  isModal?: boolean;
-
-  /** Whether the scroll should be locked when the dialog is open. */
-  preventScroll?: boolean;
-
-  /** Whether pressing the escape key should close the dialog. */
-  closeOnEsc?: boolean;
-
-  /** Whether to close the dialog when the user interacts outside it. */
-  closeOnInteractOutside?: boolean;
-
-  /**
-   * When user interacts with the argument element outside the dialog content,
-   * return `true` if the dialog should be closed. This gives you a chance to filter
-   * out interaction with elements that should not dismiss the dialog.
-   * By default, the dialog will always close on interaction outside the dialog content.
-   */
-  shouldCloseOnInteractOutside?: (element: Element) => boolean;
-
-  /** Whether focus should be locked inside the dialog content. */
-  trapFocus?: boolean;
-
-  /**
-   * Whether focus should be set on a child element once the dialog is open.
-   * If `true` focus will be set to the first focusable element inside the dialog content.
-   * If a `string` (query selector) is provided focus will be set to the target element.
-   */
-  autoFocus?: boolean | string;
-
-  /**
-   * Whether focus should be restored once the dialog close.
-   * If `true` focus will be restored to the element that triggered the dialog.
-   * If a `string` (query selector) is provided focus will be restored to the target element.
-   */
-  restoreFocus?: boolean | string;
 }
 
 /**
@@ -102,12 +68,6 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
     {
       id: defaultId,
       isModal: true,
-      preventScroll: true,
-      closeOnEsc: true,
-      closeOnInteractOutside: true,
-      trapFocus: true,
-      autoFocus: true,
-      restoreFocus: true,
     },
     props
   );
@@ -116,40 +76,25 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
   const [titleId, setTitleId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
 
+  const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
+
   const disclosureState = createDisclosureState({
     isOpen: () => props.isOpen,
     defaultIsOpen: () => props.defaultIsOpen,
     onOpenChange: isOpen => props.onOpenChange?.(isOpen),
   });
 
-  const createOverlayProps: CreateOverlayProps = {
-    isOpen: disclosureState.isOpen,
-    onClose: disclosureState.close,
-    isModal: () => props.isModal,
-    preventScroll: () => props.preventScroll,
-    closeOnInteractOutside: () => props.closeOnInteractOutside,
-    closeOnEsc: () => props.closeOnEsc,
-    shouldCloseOnInteractOutside: element => {
-      return props.shouldCloseOnInteractOutside?.(element) ?? true;
-    },
-  };
-
-  const createFocusTrapRegionProps: CreateFocusTrapRegionProps = {
-    trapFocus: () => props.trapFocus && disclosureState.isOpen(),
-    autoFocus: () => props.autoFocus,
-    restoreFocus: () => props.restoreFocus,
-  };
-
   const context: DialogContextValue = {
     isOpen: disclosureState.isOpen,
+    isModal: () => props.isModal!,
     shouldMount: () => props.forceMount || disclosureState.isOpen(),
     contentId,
     titleId,
     descriptionId,
-    createOverlayProps,
-    createFocusTrapRegionProps,
+    triggerRef,
     close: disclosureState.close,
     toggle: disclosureState.toggle,
+    setTriggerRef,
     generateId: createGenerateId(() => props.id!),
     registerContentId: createRegisterId(setContentId),
     registerTitleId: createRegisterId(setTitleId),
@@ -162,7 +107,6 @@ export const Dialog: ParentComponent<DialogProps> & DialogComposite = props => {
 Dialog.Trigger = DialogTrigger;
 Dialog.Portal = DialogPortal;
 Dialog.Overlay = DialogOverlay;
-Dialog.Positioner = DialogPositioner;
 Dialog.Content = DialogContent;
 Dialog.CloseButton = DialogCloseButton;
 Dialog.Title = DialogTitle;

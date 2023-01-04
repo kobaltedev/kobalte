@@ -21,7 +21,11 @@ interface ScrollableElement {
   scrollLeft: number;
 }
 
-export function focusWithoutScrolling(element: HTMLElement) {
+export function focusWithoutScrolling(element: HTMLElement | null | undefined) {
+  if (!element) {
+    return;
+  }
+
   if (supportsPreventScroll()) {
     element.focus({ preventScroll: true });
   } else {

@@ -22,7 +22,7 @@ import {
   useFormControlContext,
 } from "../form-control";
 import { PressEvent } from "../primitives";
-import { createTypeSelect, FocusStrategy } from "../selection";
+import { createTypeSelect } from "../selection";
 import { useSelectContext } from "./select-context";
 
 export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(props => {
@@ -38,7 +38,6 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
   );
 
   const selectionManager = () => context.listState().selectionManager();
-  const collection = () => context.listState().collection();
   const keyboardDelegate = () => context.keyboardDelegate();
 
   const isDisabled = () => local.isDisabled || context.isDisabled();
@@ -64,7 +63,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
     if (e.pointerType !== "touch" && e.pointerType !== "keyboard" && !isDisabled()) {
       // If opened with a screen reader, autofocus the first item.
       // Otherwise, the menu itself will be focused.
-      context.toggle(e.pointerType === "virtual" ? "first" : undefined);
+      context.toggle(e.pointerType === "virtual" ? "first" : true);
     }
   };
 
@@ -72,7 +71,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", ButtonProps>(p
     local.onPress?.(e);
 
     if (e.pointerType === "touch" && !isDisabled()) {
-      context.toggle();
+      context.toggle(true);
     }
   };
 

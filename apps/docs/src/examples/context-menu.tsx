@@ -1,0 +1,108 @@
+import { ContextMenu } from "@kobalte/core";
+import { createSignal } from "solid-js";
+
+import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "../components";
+import style from "./context-menu.module.css";
+
+export function BasicExample() {
+  const [showGitLog, setShowGitLog] = createSignal(true);
+  const [showHistory, setShowHistory] = createSignal(false);
+  const [branch, setBranch] = createSignal("main");
+
+  const handleAction = (key: string) => {
+    alert(key);
+  };
+
+  return (
+    <ContextMenu onAction={handleAction}>
+      <ContextMenu.Trigger class={style["context-menu__trigger"]}>
+        Right click here.
+      </ContextMenu.Trigger>
+      <ContextMenu.Portal>
+        <ContextMenu.Content class={style["context-menu__content"]}>
+          <ContextMenu.Item key="commit" class={style["context-menu__item"]}>
+            Commit <div class={style["context-menu__item-right-slot"]}>⌘+K</div>
+          </ContextMenu.Item>
+          <ContextMenu.Item key="push" class={style["context-menu__item"]}>
+            Push <div class={style["context-menu__item-right-slot"]}>⇧+⌘+K</div>
+          </ContextMenu.Item>
+          <ContextMenu.Item key="update-project" class={style["context-menu__item"]} isDisabled>
+            Update Project <div class={style["context-menu__item-right-slot"]}>⌘+T</div>
+          </ContextMenu.Item>
+          <ContextMenu.Sub gutter={4} shift={-8}>
+            <ContextMenu.SubTrigger key="github" class={style["context-menu__sub-trigger"]}>
+              GitHub
+              <div class={style["context-menu__item-right-slot"]}>
+                <ChevronRightIcon width={20} height={20} />
+              </div>
+            </ContextMenu.SubTrigger>
+            <ContextMenu.Portal>
+              <ContextMenu.SubContent class={style["context-menu__sub-content"]}>
+                <ContextMenu.Item key="create-pull-request" class={style["context-menu__item"]}>
+                  Create Pull Request…
+                </ContextMenu.Item>
+                <ContextMenu.Item key="view-pull-requests" class={style["context-menu__item"]}>
+                  View Pull Requests
+                </ContextMenu.Item>
+                <ContextMenu.Item key="sync-fork" class={style["context-menu__item"]}>
+                  Sync Fork
+                </ContextMenu.Item>
+                <ContextMenu.Separator class={style["context-menu__separator"]} />
+                <ContextMenu.Item key="open-on-github" class={style["context-menu__item"]}>
+                  Open on GitHub
+                </ContextMenu.Item>
+              </ContextMenu.SubContent>
+            </ContextMenu.Portal>
+          </ContextMenu.Sub>
+
+          <ContextMenu.Separator class={style["context-menu__separator"]} />
+
+          <ContextMenu.CheckboxItem
+            key="show-git-log"
+            class={style["context-menu__checkbox-item"]}
+            isChecked={showGitLog()}
+            onCheckedChange={setShowGitLog}
+          >
+            <ContextMenu.ItemIndicator class={style["context-menu__item-indicator"]}>
+              <CheckIcon />
+            </ContextMenu.ItemIndicator>
+            Show Git Log
+          </ContextMenu.CheckboxItem>
+          <ContextMenu.CheckboxItem
+            key="show-history"
+            class={style["context-menu__checkbox-item"]}
+            isChecked={showHistory()}
+            onCheckedChange={setShowHistory}
+          >
+            <ContextMenu.ItemIndicator class={style["context-menu__item-indicator"]}>
+              <CheckIcon />
+            </ContextMenu.ItemIndicator>
+            Show History
+          </ContextMenu.CheckboxItem>
+
+          <ContextMenu.Separator class={style["context-menu__separator"]} />
+
+          <ContextMenu.Group>
+            <ContextMenu.GroupLabel class={style["context-menu__group-label"]}>
+              Branches
+            </ContextMenu.GroupLabel>
+            <ContextMenu.RadioGroup value={branch()} onValueChange={setBranch}>
+              <ContextMenu.RadioItem class={style["context-menu__radio-item"]} value="main">
+                <ContextMenu.ItemIndicator class={style["context-menu__item-indicator"]}>
+                  <DotFilledIcon />
+                </ContextMenu.ItemIndicator>
+                main
+              </ContextMenu.RadioItem>
+              <ContextMenu.RadioItem class={style["context-menu__radio-item"]} value="develop">
+                <ContextMenu.ItemIndicator class={style["context-menu__item-indicator"]}>
+                  <DotFilledIcon />
+                </ContextMenu.ItemIndicator>
+                develop
+              </ContextMenu.RadioItem>
+            </ContextMenu.RadioGroup>
+          </ContextMenu.Group>
+        </ContextMenu.Content>
+      </ContextMenu.Portal>
+    </ContextMenu>
+  );
+}

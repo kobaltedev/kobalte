@@ -11,7 +11,7 @@ import { useSelectContext } from "./select-context";
 export const SelectIcon = createPolymorphicComponent<"div">(props => {
   const context = useSelectContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+  props = mergeDefaultProps({ as: "div", children: "▼" }, props);
 
   const [local, others] = splitProps(props, ["as"]);
 
@@ -21,8 +21,6 @@ export const SelectIcon = createPolymorphicComponent<"div">(props => {
       aria-hidden="true"
       data-expanded={context.isOpen() ? "" : undefined}
       {...others}
-    >
-      ▼
-    </Dynamic>
+    />
   );
 });

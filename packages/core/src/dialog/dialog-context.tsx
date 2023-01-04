@@ -1,17 +1,16 @@
-import { Accessor, createContext, useContext } from "solid-js";
-
-import { CreateFocusTrapRegionProps, CreateOverlayProps } from "../primitives";
+import { Accessor, createContext, Setter, useContext } from "solid-js";
 
 export interface DialogContextValue {
   isOpen: Accessor<boolean>;
+  isModal: Accessor<boolean>;
   shouldMount: Accessor<boolean>;
   contentId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;
-  createOverlayProps: CreateOverlayProps;
-  createFocusTrapRegionProps: CreateFocusTrapRegionProps;
+  triggerRef: Accessor<HTMLElement | undefined>;
   close: () => void;
   toggle: () => void;
+  setTriggerRef: Setter<HTMLElement>;
   generateId: (part: string) => string;
   registerContentId: (id: string) => () => void;
   registerTitleId: (id: string) => () => void;

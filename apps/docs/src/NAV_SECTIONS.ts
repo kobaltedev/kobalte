@@ -40,6 +40,10 @@ export const NAV_SECTIONS: NavSection[] = [
         title: "Server side rendering",
         href: "/docs/overview/ssr",
       },
+      {
+        title: "Press interactions",
+        href: "/docs/overview/press-interactions",
+      },
     ],
   },
   {
@@ -98,7 +102,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/switch",
       },
       {
-        title: "Tabs",
+        title: "Tabs 🚧",
         href: "/docs/components/tabs",
       },
       {

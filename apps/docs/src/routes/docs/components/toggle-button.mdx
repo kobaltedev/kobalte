@@ -1,9 +1,11 @@
 import { Show } from "solid-js";
 
-import { Preview } from "../../../components/preview";
-import { VolumeOnIcon, VolumeOffIcon } from "../../../components/icons";
-import { Kbd } from "../../../components/kbd";
-import { ControlledExample, ToggleButton } from "../../../examples/toggle-button";
+import { Preview, TabsSnippets, Kbd } from "../../../components";
+import {
+  BasicExample,
+  ControlledExample,
+  DefaultPressedExample,
+} from "../../../examples/toggle-button";
 
 # Toggle Button
 
@@ -36,88 +38,90 @@ The toggle button consists of:
 ## Example
 
 <Preview>
-  <ToggleButton
-    aria-label="Mute"
-    onIcon={<VolumeOffIcon class="h-6 w-6" />}
-    offIcon={<VolumeOnIcon class="h-6 w-6" />}
-  />
+  <BasicExample />
 </Preview>
 
-```tsx
-import { ToggleButton as ToggleButtonBase } from "@kobalte/core";
-import { ComponentProps, JSX, Show, splitProps } from "solid-js";
-import { VolumeOffIcon, VolumeOnIcon } from "some-icon-library";
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { ToggleButton } from "@kobalte/core";
+    import { Show } from "solid-js";
+    import { VolumeOffIcon, VolumeOnIcon } from "some-icon-library";
+    import "./style.css";
 
-type ToggleButtonBaseProps = ComponentProps<typeof ToggleButtonBase>;
+    function App() {
+      return (
+        <ToggleButton class="toggle-button" aria-label="Mute">
+          {state => (
+            <Show when={state.isPressed()} fallback={<VolumeOnIcon />}>
+              <VolumeOffIcon />
+            </Show>
+          )}
+        </ToggleButton>
+      );
+    }
+    ```
 
-interface ToggleButtonProps extends Omit<ToggleButtonBaseProps, "children"> {
-  onIcon: JSX.Element;
-  offIcon: JSX.Element;
-}
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .toggle-button {
+      appearance: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      width: 40px;
+      outline: none;
+      border-radius: 6px;
+      background-color: hsl(200 98% 39%);
+      color: white;
+      font-size: 16px;
+      line-height: 0;
+    }
 
-export function ToggleButton(props: ToggleButtonProps) {
-  const [local, others] = splitProps(props, ["onIcon", "offIcon"]);
+    .toggle-button[data-focus-visible] {
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+    }
 
-  return (
-    <ToggleButtonBase
-      class="appearance-none outline-none h-10 w-10 flex items-center justify-center rounded-md text-white bg-blue-600 dark:text-white/90 ui-disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30 ui-pressed:bg-red-600"
-      {...others}
-    >
-      {state => (
-        <Show when={state.isPressed()} fallback={local.offIcon}>
-          {local.onIcon}
-        </Show>
-      )}
-    </ToggleButtonBase>
-  );
-}
+    .toggle-button[data-pressed] {
+      background-color: hsl(0 72% 51%);
+    }
+    ```
 
-function App() {
-  return (
-    <ToggleButton
-      aria-label="Mute"
-      onIcon={<VolumeOffIcon class="h-6 w-6" />}
-      offIcon={<VolumeOnIcon class="h-6 w-6" />}
-    />
-  );
-}
-```
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
 
 ## Usage
 
-The following examples show how to use the `ToggleButton` component created in the above example.
+### Default pressed
 
-### Default pressed state
-
-An initial, uncontrolled value can be provided to the ToggleButton using the `defaultIsPressed` prop.
+An initial, uncontrolled value can be provided using the `defaultIsPressed` prop.
 
 <Preview>
-  <ToggleButton
-    defaultIsPressed
-    aria-label="Mute"
-    onIcon={<VolumeOffIcon class="h-6 w-6" />}
-    offIcon={<VolumeOnIcon class="h-6 w-6" />}
-  />
+  <DefaultPressedExample />
 </Preview>
 
-```tsx {1}
-<ToggleButton
-  defaultIsPressed
-  aria-label="Mute"
-  onIcon={<VolumeOffIcon class="h-6 w-6" />}
-  offIcon={<VolumeOnIcon class="h-6 w-6" />}
-/>
+```tsx
+<ToggleButton defaultIsPressed>...</ToggleButton>
 ```
 
-### Controlled pressed state
+### Controlled pressed
 
-A controlled value can be provided using the `isPressed` prop. The `onPressedChange` event is fired when the user toggle the button.
+The `isPressed` prop can be used to make the pressed state controlled. The `onPressedChange` event is fired when the user toggle the button, and receives the new value.
 
 <Preview>
   <ControlledExample />
 </Preview>
 
-```tsx {3,8-9}
+```tsx {3,7}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
@@ -125,39 +129,13 @@ function ControlledExample() {
 
   return (
     <>
-      <ToggleButton
-        isPressed={pressed()}
-        onPressedChange={setPressed}
-        aria-label="Mute"
-        onIcon={<VolumeOffIcon class="h-6 w-6" />}
-        offIcon={<VolumeOnIcon class="h-6 w-6" />}
-      />
+      <ToggleButton isPressed={pressed()} onPressedChange={setPressed}>
+        ...
+      </ToggleButton>
       <p>The microphone is {pressed() ? "muted" : "active"}.</p>
     </>
   );
 }
-```
-
-### Disabled
-
-The ToggleButton can be disabled with the `isDisabled` prop.
-
-<Preview>
-  <ToggleButton
-    isDisabled
-    aria-label="Mute"
-    onIcon={<VolumeOffIcon class="h-6 w-6" />}
-    offIcon={<VolumeOnIcon class="h-6 w-6" />}
-  />
-</Preview>
-
-```tsx {1}
-<ToggleButton
-  isDisabled
-  aria-label="Mute"
-  onIcon={<VolumeOffIcon class="h-6 w-6" />}
-  offIcon={<VolumeOnIcon class="h-6 w-6" />}
-/>
 ```
 
 ## API Reference
@@ -175,9 +153,9 @@ The ToggleButton can be disabled with the `isDisabled` prop.
 | :---------- | :---------------------------------------------------------------------------------------- |
 | isPressed   | `Accessor<boolean>` <br/> Whether the toggle button is on (pressed) or off (not pressed). |
 
-| Data attributes | Description                                     |
-| :-------------- | :---------------------------------------------- |
-| data-pressed    | Present when the toggle button is on (pressed). |
+| Data attribute | Description                                     |
+| :------------- | :---------------------------------------------- |
+| data-pressed   | Present when the toggle button is on (pressed). |
 
 ## Accessibility
 

@@ -80,7 +80,7 @@ export function HiddenSelect(props: HiddenSelectProps) {
             required={formControlContext.isRequired()}
             disabled={formControlContext.isDisabled()}
             size={collection().getSize()}
-            value={selectionManager().firstSelectedKey() ?? ""}
+            value={selectionManager().firstSelectedKey()}
             onChange={e =>
               selectionManager().setSelectedKeys(new Set([(e.target as HTMLSelectElement).value]))
             }

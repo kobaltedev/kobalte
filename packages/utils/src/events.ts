@@ -1,13 +1,11 @@
 import { JSX } from "solid-js";
 
 import { isFunction } from "./assertion";
+import { isMac } from "./platform";
 
 /** Call a JSX.EventHandlerUnion with the event. */
 export function callHandler<T, E extends Event>(
-  event: E & {
-    currentTarget: T;
-    target: Element;
-  },
+  event: E & { currentTarget: T; target: Element },
   handler: JSX.EventHandlerUnion<T, E> | undefined
 ) {
   if (handler) {
@@ -21,17 +19,15 @@ export function callHandler<T, E extends Event>(
   return event?.defaultPrevented;
 }
 
-/** Calls all JSX.EventHandlerUnion in the order they were chained with the same event. */
-export function chainHandlers<T, E extends Event>(
-  event: E & {
-    currentTarget: T;
-    target: Element;
-  },
-  callbacks: Array<JSX.EventHandlerUnion<T, E> | undefined>
-): void {
-  for (const callback of callbacks) {
-    callHandler(event, callback);
-  }
+/** Create a new event handler which calls all given handlers in the order they were chained with the same event. */
+export function composeEventHandlers<T, E extends Event>(
+  handlers: Array<JSX.EventHandlerUnion<T, E> | undefined>
+) {
+  return function handleEvent(event: E & { currentTarget: T; target: Element }) {
+    for (const handler of handlers) {
+      callHandler(event, handler);
+    }
+  };
 }
 
 export function isActionKey() {
@@ -42,4 +38,12 @@ export function isActionKey() {
 export function isSelectionKey() {
   const event = window.event as KeyboardEvent;
   return event?.key === " " || event?.code === "Space";
+}
+
+export function isCtrlKey(e: Pick<KeyboardEvent, "ctrlKey" | "metaKey">) {
+  if (isMac()) {
+    return e.metaKey && !e.ctrlKey;
+  }
+
+  return e.ctrlKey && !e.metaKey;
 }

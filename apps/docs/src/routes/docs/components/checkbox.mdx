@@ -1,10 +1,9 @@
-import { Preview } from "../../../components/preview";
-import { Kbd } from "../../../components/kbd";
+import { Preview, TabsSnippets, Kbd } from "../../../components";
 import {
-  Checkbox,
+  BasicExample,
   ControlledExample,
+  DefaultCheckedExample,
   HTMLFormExample,
-  IndeterminateExample,
 } from "../../../examples/checkbox";
 
 # Checkbox
@@ -47,69 +46,90 @@ The checkbox consists of:
 ## Example
 
 <Preview>
-  <Checkbox>Subscribe</Checkbox>
+  <BasicExample />
 </Preview>
 
-```tsx
-import { Checkbox as CheckboxBase } from "@kobalte/core";
-import { ComponentProps, createSignal, Match, ParentProps, splitProps, Switch } from "solid-js";
-import { CheckIcon, DividerHorizontalIcon } from "some-icon-library";
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Checkbox } from "@kobalte/core";
+    import { CheckIcon } from "some-icon-library";
+    import "./style.css";
 
-type CheckboxBaseProps = ComponentProps<typeof CheckboxBase>;
+    function App() {
+      return (
+        <Checkbox class="checkbox">
+          <Checkbox.Input />
+          <Checkbox.Control class="checkbox__control">
+            <Checkbox.Indicator>
+              <CheckIcon />
+            </Checkbox.Indicator>
+          </Checkbox.Control>
+          <Checkbox.Label class="checkbox__label">Subscribe</Checkbox.Label>
+        </Checkbox>
+      );
+    }
+    ```
 
-type CheckboxProps = ParentProps<Omit<CheckboxBaseProps, "children">>;
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .checkbox {
+      display: inline-flex;
+      align-items: center;
+    }
 
-export function Checkbox(props: CheckboxProps) {
-  const [local, others] = splitProps(props, ["children"]);
+    .checkbox__control {
+      height: 20px;
+      width: 20px;
+      border-radius: 6px;
+      border: 1px solid hsl(240 5% 84%);
+      background-color: hsl(240 6% 90%);
+    }
 
-  return (
-    <CheckboxBase class="inline-flex items-center ui-disabled:opacity-40" {...others}>
-      {state => (
-        <>
-          <CheckboxBase.Input />
-          <CheckboxBase.Control class="w-4 h-4 bg-zinc-200 rounded border-zinc-300 ui-checked:bg-blue-600 ui-checked:ui-indeterminate:bg-zinc-200 ui-focus:ring ui-focus:ring-blue-200 dark:ui-focus:ring-blue-500/30 dark:bg-zinc-700 dark:border-zinc-600 dark:ui-checked:bg-blue-600 dark:ui-checked:ui-indeterminate:bg-zinc-700">
-            <CheckboxBase.Indicator>
-              <Switch>
-                <Match when={state.isIndeterminate()}>
-                  <DividerHorizontalIcon class="text-zinc-500" />
-                </Match>
-                <Match when={state.isChecked() && !state.isIndeterminate()}>
-                  <CheckIcon class="text-white" />
-                </Match>
-              </Switch>
-            </CheckboxBase.Indicator>
-          </CheckboxBase.Control>
-          <CheckboxBase.Label class="select-none ml-2 text-sm text-zinc-900 dark:text-zinc-300">
-            {local.children}
-          </CheckboxBase.Label>
-        </>
-      )}
-    </CheckboxBase>
-  );
-}
+    .checkbox__control[data-focus-visible] {
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+    }
 
-function App() {
-  return <Checkbox>Subscribe</Checkbox>;
-}
-```
+    .checkbox__control[data-checked] {
+      border-color: hsl(200 98% 39%);
+      background-color: hsl(200 98% 39%);
+      color: white;
+    }
+
+    .checkbox__label {
+      margin-left: 6px;
+      color: hsl(240 6% 10%);
+      font-size: 14px;
+      user-select: none;
+    }
+    ```
+
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
 
 ## Usage
 
-The following examples show how to use the `Checkbox` component created in the above example.
+### Default checked
 
-### Default checked state
-
-Checkboxes are not checked by default. The `defaultIsChecked` prop can be used to set the default state.
+An initial, uncontrolled value can be provided using the `defaultIsChecked` prop.
 
 <Preview>
-  <Checkbox defaultIsChecked>Subscribe</Checkbox>
+  <DefaultCheckedExample />
 </Preview>
 
 ```tsx
-<Checkbox defaultIsChecked>Subscribe</Checkbox>
+<Checkbox defaultIsChecked>...</Checkbox>
 ```
 
-### Controlled checked state
+### Controlled checked
 
 The `isChecked` prop can be used to make the checked state controlled. The `onCheckedChange` event is fired when the user presses the checkbox, and receives the new value.
 
@@ -126,7 +146,7 @@ function ControlledExample() {
   return (
     <>
       <Checkbox isChecked={checked()} onCheckedChange={setChecked}>
-        Subscribe
+        ...
       </Checkbox>
       <p>You are {checked() ? "subscribed" : "unsubscribed"}.</p>
     </>
@@ -134,106 +154,28 @@ function ControlledExample() {
 }
 ```
 
-### Indeterminate
-
-Checkboxes can be in an indeterminate state using the `isIndeterminate` prop. The Checkbox will remain indeterminate until the `isIndeterminate` prop is set to false, regardless of user interaction.
-
-<Preview>
-  <IndeterminateExample />
-</Preview>
-
-```tsx {6,12}
-import { createSignal } from "solid-js";
-
-function IndeterminateExample() {
-  const [checkedItems, setCheckedItems] = createSignal([false, false]);
-
-  const allChecked = () => checkedItems().every(Boolean);
-  const isIndeterminate = () => checkedItems().some(Boolean) && !allChecked();
-
-  return (
-    <>
-      <Checkbox
-        isChecked={allChecked()}
-        isIndeterminate={isIndeterminate()}
-        onCheckedChange={isChecked => setCheckedItems([isChecked, isChecked])}
-      >
-        Parent Checkbox
-      </Checkbox>
-      <div class="flex flex-col items-start pl-6 mt-1 space-y-1">
-        <Checkbox
-          isChecked={checkedItems()[0]}
-          onCheckedChange={isChecked => setCheckedItems([isChecked, checkedItems()[1]])}
-        >
-          Child Checkbox 1
-        </Checkbox>
-        <Checkbox
-          isChecked={checkedItems()[1]}
-          onCheckedChange={isChecked => setCheckedItems([checkedItems()[0], isChecked])}
-        >
-          Child Checkbox 2
-        </Checkbox>
-      </div>
-    </>
-  );
-}
-```
-
-### Disabled
-
-Checkboxes can be disabled using the `isDisabled` prop.
-
-<Preview>
-  <Checkbox isDisabled>Subscribe</Checkbox>
-</Preview>
-
-```tsx
-<Checkbox isDisabled>Subscribe</Checkbox>
-```
-
-### Read only
-
-The `isReadOnly` prop makes the selection immutable. Unlike `isDisabled`, the checkbox remains focusable.
-
-<Preview>
-  <Checkbox isReadOnly>Subscribe</Checkbox>
-</Preview>
-
-```tsx
-<Checkbox isReadOnly>Subscribe</Checkbox>
-```
-
 ### HTML forms
 
-Checkbox supports the `name` and `value` props for integration with HTML forms.
+The `name` and `value` props can be used for integration with HTML forms.
 
 <Preview>
   <HTMLFormExample />
 </Preview>
 
-```tsx {14}
+```tsx {7}
 function HTMLFormExample() {
-  let formRef: HTMLFormElement | undefined;
-
   const onSubmit = (e: SubmitEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const formData = new FormData(formRef);
-
-    alert(JSON.stringify(Object.fromEntries(formData), null, 2));
+    // handle form submission.
   };
 
   return (
-    <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-start space-y-4">
+    <form onSubmit={onSubmit}>
       <Checkbox name="newsletter" value="subscribe">
-        Subscribe
+        ...
       </Checkbox>
-      <div class="flex space-x-2">
-        <button type="reset" class="text-sm rounded border border-zinc-600 px-3">
-          Reset
-        </button>
-        <button class="text-sm rounded text-white bg-blue-600 px-3">Submit</button>
+      <div>
+        <button type="reset">Reset</button>
+        <button>Submit</button>
       </div>
     </form>
   );

@@ -20,10 +20,11 @@ export interface SelectContextValue {
   keyboardDelegate: Accessor<KeyboardDelegate>;
   setListboxAriaLabelledBy: Setter<string | undefined>;
   setTriggerRef: (el: HTMLButtonElement) => void;
+  setContentRef: (el: HTMLDivElement) => void;
   setListboxRef: (el: HTMLDivElement) => void;
-  open: (focusStrategy?: FocusStrategy) => void;
-  close: (focusStrategy?: FocusStrategy) => void;
-  toggle: (focusStrategy?: FocusStrategy) => void;
+  open: (focusStrategy: FocusStrategy | boolean) => void;
+  close: () => void;
+  toggle: (focusStrategy: FocusStrategy | boolean) => void;
   generateId: (part: string) => string;
   registerTriggerId: (id: string) => () => void;
   registerValueId: (id: string) => () => void;

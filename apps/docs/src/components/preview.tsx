@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { ComponentProps, splitProps } from "solid-js";
+import { ComponentProps, mergeProps, splitProps } from "solid-js";
 
 interface PreviewProps extends ComponentProps<"div"> {
   isCentered?: boolean;
@@ -7,6 +7,8 @@ interface PreviewProps extends ComponentProps<"div"> {
 }
 
 export function Preview(props: PreviewProps) {
+  props = mergeProps({ isCentered: true }, props);
+
   const [local, others] = splitProps(props, ["class", "isCentered", "isRounded"]);
 
   return (

@@ -1,9 +1,8 @@
+import { mergeDefaultProps } from "@kobalte/utils";
 import { createUniqueId, ParentComponent } from "solid-js";
 
-import { HoverCard } from "../hover-card";
 import {
   MenuCheckboxItem,
-  MenuContent,
   MenuGroup,
   MenuGroupLabel,
   MenuIcon,
@@ -11,24 +10,26 @@ import {
   MenuItemDescription,
   MenuItemIndicator,
   MenuItemLabel,
+  MenuPortal,
   MenuRadioGroup,
   MenuRadioItem,
   MenuRoot,
   MenuRootProps,
   MenuSub,
+  MenuSubContent,
   MenuSubTrigger,
   MenuTrigger,
 } from "../menu";
+import { Popper } from "../popper";
 import { Separator } from "../separator";
-import { mergeDefaultProps } from "@kobalte/utils";
+import { DropdownMenuContent } from "./dropdown-menu-content";
 
 export type DropdownMenuComposite = {
   Trigger: typeof MenuTrigger;
   Icon: typeof MenuIcon;
-  Portal: typeof HoverCard.Portal;
-  Positioner: typeof HoverCard.Positioner;
-  Content: typeof MenuContent;
-  Arrow: typeof HoverCard.Arrow;
+  Portal: typeof MenuPortal;
+  Content: typeof DropdownMenuContent;
+  Arrow: typeof Popper.Arrow;
   Separator: typeof Separator;
   Group: typeof MenuGroup;
   GroupLabel: typeof MenuGroupLabel;
@@ -40,13 +41,16 @@ export type DropdownMenuComposite = {
   RadioItem: typeof MenuRadioItem;
   CheckboxItem: typeof MenuCheckboxItem;
   Sub: typeof MenuSub;
+  SubContent: typeof MenuSubContent;
   SubTrigger: typeof MenuSubTrigger;
 };
+
+export interface DropdownMenuOptions extends MenuRootProps {}
 
 /**
  * Displays a menu to the user —such as a set of actions or functions— triggered by a button.
  */
-export const DropdownMenu: ParentComponent<MenuRootProps> & DropdownMenuComposite = props => {
+export const DropdownMenu: ParentComponent<DropdownMenuOptions> & DropdownMenuComposite = props => {
   const defaultId = `dropdownmenu-${createUniqueId()}`;
 
   props = mergeDefaultProps({ id: defaultId }, props);
@@ -56,10 +60,9 @@ export const DropdownMenu: ParentComponent<MenuRootProps> & DropdownMenuComposit
 
 DropdownMenu.Trigger = MenuTrigger;
 DropdownMenu.Icon = MenuIcon;
-DropdownMenu.Portal = HoverCard.Portal;
-DropdownMenu.Positioner = HoverCard.Positioner;
-DropdownMenu.Content = MenuContent;
-DropdownMenu.Arrow = HoverCard.Arrow;
+DropdownMenu.Portal = MenuPortal;
+DropdownMenu.Content = DropdownMenuContent;
+DropdownMenu.Arrow = Popper.Arrow;
 DropdownMenu.Separator = Separator;
 DropdownMenu.Group = MenuGroup;
 DropdownMenu.GroupLabel = MenuGroupLabel;
@@ -71,4 +74,5 @@ DropdownMenu.RadioGroup = MenuRadioGroup;
 DropdownMenu.RadioItem = MenuRadioItem;
 DropdownMenu.CheckboxItem = MenuCheckboxItem;
 DropdownMenu.Sub = MenuSub;
+DropdownMenu.SubContent = MenuSubContent;
 DropdownMenu.SubTrigger = MenuSubTrigger;

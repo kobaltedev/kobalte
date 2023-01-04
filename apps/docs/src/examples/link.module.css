@@ -1,0 +1,12 @@
+.link {
+  font-weight: 600;
+  color: hsl(201 96% 32%);
+}
+
+.link[data-hover] {
+  text-decoration: underline;
+}
+
+[data-kb-theme="dark"] .link {
+  color: hsl(198 93% 60%);
+}

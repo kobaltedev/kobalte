@@ -1,11 +1,19 @@
-import { Link as LinkBase } from "@kobalte/core";
-import { ComponentProps } from "solid-js";
+import { Link } from "@kobalte/core";
 
-export function Link(props: ComponentProps<typeof LinkBase>) {
+import style from "./link.module.css";
+
+export function BasicExample() {
   return (
-    <LinkBase
-      class="text-blue-600 dark:text-blue-500 hover:underline ui-disabled:cursor-not-allowed ui-disabled:opacity-40 ui-disabled:hover:no-underline"
-      {...props}
-    />
+    <Link class={style["link"]} href="https://kobalte.dev" target="_blank">
+      Kobalte
+    </Link>
+  );
+}
+
+export function ClientHandledExample() {
+  return (
+    <Link as="span" class={style["link"]} onPress={() => alert("Pressed link")}>
+      Kobalte
+    </Link>
   );
 }

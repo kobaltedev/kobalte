@@ -1,15 +1,19 @@
 import {
-  callHandler,
-  contains,
   createPolymorphicComponent,
+  focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
-import { usePopoverContext } from "../popover/popover-context";
-import { createFocusTrapRegion, createOverlay } from "../primitives";
+import { DismissableLayer } from "../dismissable-layer";
+import { PopperPositioner } from "../popper/popper-positioner";
+import {
+  createFocusScope,
+  createHideOutside,
+  createPreventScroll,
+  FocusOutsideEvent,
+} from "../primitives";
 import { useSelectContext } from "./select-context";
 
 export interface SelectContentProps {
@@ -20,7 +24,7 @@ export interface SelectContentProps {
    * Used to force keeping the content visible when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
    */
-  keepVisible?: boolean;
+  forceMount?: boolean;
 }
 
 /**
@@ -29,68 +33,73 @@ export interface SelectContentProps {
 export const SelectContent = createPolymorphicComponent<"div", SelectContentProps>(props => {
   let ref: HTMLElement | undefined;
 
-  const popoverContext = usePopoverContext();
   const context = useSelectContext();
 
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, [
-    "as",
-    "ref",
-    "id",
-    "style",
-    "keepVisible",
-    "onKeyDown",
-  ]);
+  const [local, others] = splitProps(props, ["ref", "id", "style", "forceMount"]);
 
-  const keepVisible = () => local.keepVisible || context.isOpen();
+  const forceMount = () => local.forceMount || context.isOpen();
 
-  const { overlayHandlers } = createOverlay(
-    {
-      isOpen: context.isOpen,
-      onClose: context.close,
-      isModal: false,
-      preventScroll: false,
-      closeOnEsc: true,
-      closeOnInteractOutside: true,
-      shouldCloseOnInteractOutside: element => !contains(context.triggerRef(), element),
-    },
-    () => ref
-  );
-
-  const { FocusTrap } = createFocusTrapRegion(
-    {
-      trapFocus: context.isOpen,
-      autoFocus: false, // Handled by the select listbox.
-      restoreFocus: false, // Handled by the select
-    },
-    () => ref
-  );
-
-  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
-    callHandler(e, local.onKeyDown);
-    callHandler(e, overlayHandlers.onKeyDown);
+  const onEscapeKeyDown = (e: KeyboardEvent) => {
+    // `createSelectableList` prevent escape key down,
+    // which prevent our `onDismiss` in `DismissableLayer` to run,
+    // so we force "close on escape" here.
+    context.close();
   };
 
+  const onFocusOutside = (e: FocusOutsideEvent) => {
+    // When focus is trapped, a `focusout` event may still happen.
+    // We make sure we don't trigger our `onDismiss` in such case.
+    e.preventDefault();
+  };
+
+  // aria-hide everything except the content (better supported equivalent to setting aria-modal)
+  createHideOutside({
+    isDisabled: () => !context.isOpen(),
+    targets: () => (ref ? [ref] : []),
+  });
+
+  createPreventScroll({
+    isDisabled: () => !context.isOpen(),
+  });
+
+  createFocusScope(
+    {
+      trapFocus: context.isOpen,
+      onMountAutoFocus: e => {
+        // We prevent open autofocus because it's handled by the `Listbox`.
+        e.preventDefault();
+      },
+      onUnmountAutoFocus: e => {
+        focusWithoutScrolling(context.triggerRef());
+        e.preventDefault();
+      },
+    },
+    () => ref
+  );
+
   return (
-    <>
-      <FocusTrap />
-      <Dynamic
-        component={local.as}
+    <PopperPositioner>
+      <DismissableLayer
         ref={mergeRefs(el => {
-          popoverContext.setContentRef(el);
+          context.setContentRef(el);
           ref = el;
         }, local.ref)}
-        hidden={!keepVisible()}
+        isDismissed={!context.isOpen()}
+        disableOutsidePointerEvents={context.isOpen()}
+        excludedElements={[context.triggerRef]}
+        hidden={!forceMount()}
         style={{
           position: "relative",
-          display: !keepVisible() ? "none" : undefined,
+          display: !forceMount() ? "none" : undefined,
           ...local.style,
         }}
-        onKeyDown={onKeyDown}
+        onEscapeKeyDown={onEscapeKeyDown}
+        onFocusOutside={onFocusOutside}
+        onDismiss={context.close}
         {...others}
       />
-      <FocusTrap />
-    </>
+    </PopperPositioner>
   );
 });

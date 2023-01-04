@@ -1,21 +1,19 @@
-import { Button as ButtonBase } from "@kobalte/core";
-import { ComponentProps, createSignal, Show } from "solid-js";
+import { Button } from "@kobalte/core";
+import { createSignal, Show } from "solid-js";
 
-export function Button(props: ComponentProps<typeof ButtonBase>) {
-  return (
-    <ButtonBase
-      class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30"
-      {...props}
-    />
-  );
+import style from "./button.module.css";
+
+export function BasicExample() {
+  return <Button class={style["button"]}>Press me</Button>;
 }
 
-export function EventsExample() {
+export function PressInteractionExample() {
   const [pointerType, setPointerType] = createSignal<string>();
 
   return (
     <>
       <Button
+        class={style["button"]}
         onPressStart={e => setPointerType(e.pointerType)}
         onPressEnd={() => setPointerType(undefined)}
       >

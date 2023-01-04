@@ -41,8 +41,7 @@ export function createMultipleSelectionState(
   );
 
   const [isFocused, setFocused] = createSignal(false);
-  const [focusedKey, _setFocusedKey] = createSignal<string>();
-  const [childFocusStrategy, setChildFocusStrategy] = createSignal<FocusStrategy>("first");
+  const [focusedKey, setFocusedKey] = createSignal<string>();
 
   const selectedKeysProp = createMemo(() => {
     const selection = access(props.selectedKeys);
@@ -76,11 +75,6 @@ export function createMultipleSelectionState(
 
   const selectionMode = () => access(props.selectionMode)!;
   const disallowEmptySelection = () => access(props.disallowEmptySelection) ?? false;
-
-  const setFocusedKey = (key?: string, childFocusStrategy: FocusStrategy = "first") => {
-    setChildFocusStrategy(childFocusStrategy);
-    _setFocusedKey(key);
-  };
 
   const setSelectedKeys = (keys: Set<string>) => {
     if (access(props.allowDuplicateSelectionEvents) || !isSameSelection(keys, selectedKeys())) {
@@ -116,7 +110,6 @@ export function createMultipleSelectionState(
     isFocused,
     setFocused,
     focusedKey,
-    childFocusStrategy,
     setFocusedKey,
     selectedKeys,
     setSelectedKeys,

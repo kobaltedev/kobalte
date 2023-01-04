@@ -8,7 +8,7 @@ export interface MenuRadioItemProps
   extends Omit<MenuItemBaseProps, "key" | "isChecked" | "isIndeterminate" | "onAction"> {
   /**
    * The value of the menu item radio.
-   * It will also act as a unique key for the item radio in its parent `Menu`.
+   * It also acts as a unique key for the item radio in its parent `Menu`.
    */
   value: string;
 }

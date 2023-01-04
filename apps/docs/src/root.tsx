@@ -19,7 +19,7 @@ import {
   Title,
 } from "solid-start";
 
-import { Layout } from "./components/layout";
+import { Layout } from "./components";
 import { mdxComponents } from "./mdx-components";
 
 export const mods = /*#__PURE__*/ import.meta.glob<
@@ -58,9 +58,9 @@ export default function Root() {
         <Link rel="manifest" href="/site.webmanifest" />
       </Head>
       <Body>
-        <ColorModeScript storageType={storageManager.type} />
-        <Suspense>
-          <ErrorBoundary>
+        <ErrorBoundary>
+          <ColorModeScript storageType={storageManager.type} />
+          <Suspense>
             <ColorModeProvider storageManager={storageManager}>
               <MDXProvider components={mdxComponents}>
                 <Layout>
@@ -70,9 +70,9 @@ export default function Root() {
                 </Layout>
               </MDXProvider>
             </ColorModeProvider>
-          </ErrorBoundary>
-        </Suspense>
-        <Scripts />
+          </Suspense>
+          <Scripts />
+        </ErrorBoundary>
       </Body>
     </Html>
   );

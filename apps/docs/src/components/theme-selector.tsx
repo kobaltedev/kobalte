@@ -1,4 +1,4 @@
-import { ConfigColorMode, Select, SelectProps, useColorMode } from "@kobalte/core";
+import { ConfigColorMode, Select, useColorMode } from "@kobalte/core";
 import { clsx } from "clsx";
 import { ComponentProps, Show, splitProps } from "solid-js";
 
@@ -18,13 +18,13 @@ function Item(props: ComponentProps<typeof Select.Item>) {
   );
 }
 
-export function ThemeSelector(props: Omit<SelectProps, "options">) {
+export function ThemeSelector(props: ComponentProps<typeof Select>) {
   const { colorMode, setColorMode } = useColorMode();
 
   return (
     <Select
       defaultValue={colorMode()}
-      onValueChange={value => setColorMode(value.values().next().value as ConfigColorMode)}
+      onValueChange={value => setColorMode(value as ConfigColorMode)}
       gutter={8}
       sameWidth={false}
       placement="bottom"
@@ -41,24 +41,22 @@ export function ThemeSelector(props: Omit<SelectProps, "options">) {
         </Select.Value>
       </Select.Trigger>
       <Select.Portal>
-        <Select.Positioner>
-          <Select.Content class="bg-white border border-zinc-300 rounded shadow-md py-1 z-50 dark:text-zinc-300 dark:bg-zinc-800 dark:border-none dark:shadow-none">
-            <Select.Listbox>
-              <Item value="light">
-                <SunIcon class="h-4 w-4" />
-                <Select.ItemLabel>Light</Select.ItemLabel>
-              </Item>
-              <Item value="dark">
-                <MoonIcon class="h-4 w-4" />
-                <Select.ItemLabel>Dark</Select.ItemLabel>
-              </Item>
-              <Item value="system">
-                <DesktopIcon class="h-4 w-4" />
-                <Select.ItemLabel>System</Select.ItemLabel>
-              </Item>
-            </Select.Listbox>
-          </Select.Content>
-        </Select.Positioner>
+        <Select.Content class="bg-white border border-zinc-300 rounded shadow-md py-1 z-50 dark:text-zinc-300 dark:bg-zinc-800 dark:border-none dark:shadow-none">
+          <Select.Listbox>
+            <Item value="light">
+              <SunIcon class="h-4 w-4" />
+              <Select.ItemLabel>Light</Select.ItemLabel>
+            </Item>
+            <Item value="dark">
+              <MoonIcon class="h-4 w-4" />
+              <Select.ItemLabel>Dark</Select.ItemLabel>
+            </Item>
+            <Item value="system">
+              <DesktopIcon class="h-4 w-4" />
+              <Select.ItemLabel>System</Select.ItemLabel>
+            </Item>
+          </Select.Listbox>
+        </Select.Content>
       </Select.Portal>
     </Select>
   );

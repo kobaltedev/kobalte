@@ -1,3 +1,11 @@
+/*!
+ * Portions of this file are based on code from radix-ui-primitives.
+ * MIT Licensed, Copyright (c) 2022 WorkOS.
+ *
+ * Credits to the Radix UI team:
+ * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
+ */
+
 import {
   combineProps,
   createGenerateId,
@@ -13,12 +21,13 @@ import {
   createHover,
   createPress,
   createRegisterId,
-  isKeyboardFocusVisible,
+  focusSafely,
 } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { MenuItemContext, MenuItemContextValue, MenuItemDataSet } from "./menu-item.context";
+import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuItemBaseProps {
   /**
@@ -38,7 +47,7 @@ export interface MenuItemBaseProps {
   /** Whether the menu item is disabled. */
   isDisabled?: boolean;
 
-  /** Whether the menu should close when the menu item is selected. */
+  /** Whether the menu should close when the menu item is activated/selected. */
   closeOnSelect?: boolean;
 
   /** Handler that is called when the user activates the menu item. */
@@ -61,14 +70,13 @@ export interface MenuItemBaseProps {
 export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>(props => {
   let ref: HTMLDivElement | undefined;
 
+  const rootContext = useMenuRootContext();
   const menuContext = useMenuContext();
-
-  const defaultId = `${menuContext.generateId("item")}-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
       as: "div",
-      id: defaultId,
+      id: rootContext.generateId(`item-${createUniqueId()}`),
     },
     props
   );
@@ -114,6 +122,8 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
     () => ref
   );
 
+  const { isFocusVisible, focusRingHandlers } = createFocusRing();
+
   const { pressHandlers, isPressed } = createPress({
     isDisabled: () => local.isDisabled,
     onPressUp: e => {
@@ -121,7 +131,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
         local.onAction(local.key);
 
         if (local.closeOnSelect) {
-          menuContext.close(true);
+          rootContext.close();
         }
       }
     },
@@ -129,15 +139,44 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
 
   const { hoverHandlers, isHovered } = createHover({
     isDisabled: () => local.isDisabled,
-    onHoverStart: () => {
-      if (!isKeyboardFocusVisible()) {
-        selectionManager().setFocused(true);
-        selectionManager().setFocusedKey(local.key);
-      }
-    },
   });
 
-  const { isFocusVisible, focusRingHandlers } = createFocusRing();
+  /**
+   * We focus items on `pointerMove` to achieve the following:
+   *
+   * - Mouse over an item (it focuses)
+   * - Leave mouse where it is and use keyboard to focus a different item
+   * - Wiggle mouse without it leaving previously focused item
+   * - Previously focused item should re-focus
+   *
+   * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+   * wiggles. This is to match native menu implementation.
+   */
+  const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    if (e.pointerType !== "mouse") {
+      return;
+    }
+
+    if (local.isDisabled) {
+      menuContext.onItemLeave(e);
+    } else {
+      menuContext.onItemEnter(e);
+
+      if (!e.defaultPrevented) {
+        focusSafely(e.currentTarget);
+        menuContext.listState().selectionManager().setFocused(true);
+        menuContext.listState().selectionManager().setFocusedKey(local.key);
+      }
+    }
+  };
+
+  const onPointerLeave: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    if (e.pointerType !== "mouse") {
+      return;
+    }
+
+    menuContext.onItemLeave(e);
+  };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     // Ignore repeating events, which may have started on the menu trigger before moving
@@ -151,19 +190,14 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
     }
 
     switch (e.key) {
-      case " ":
       case "Enter":
+      case " ":
         local.onAction(local.key);
 
         if (local.closeOnSelect) {
-          menuContext.close(true);
+          rootContext.close();
         }
-        break;
-      case "ArrowLeft":
-        // The Arrow Left key close only that menu if it's a sub menu.
-        if (menuContext.parentMenuContext() != null) {
-          menuContext.close();
-        }
+
         break;
     }
   };
@@ -219,7 +253,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseProps>
           pressHandlers,
           hoverHandlers,
           focusRingHandlers,
-          { onKeyDown }
+          { onPointerMove, onPointerLeave, onKeyDown }
         )}
       />
     </MenuItemContext.Provider>

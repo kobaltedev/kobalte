@@ -1,13 +1,15 @@
 import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+import { createEffect, onCleanup, onMount, splitProps } from "solid-js";
 
-import { Listbox } from "../listbox";
+import { Listbox, ListboxProps } from "../listbox";
 import { useSelectContext } from "./select-context";
+
+export interface SelectListboxOptions extends Pick<ListboxProps, "scrollRef"> {}
 
 /**
  * Contains all the items of a `Select`.
  */
-export const SelectListbox = createPolymorphicComponent<"div">(props => {
+export const SelectListbox = createPolymorphicComponent<"div", SelectListboxOptions>(props => {
   const context = useSelectContext();
 
   props = mergeDefaultProps(
@@ -21,6 +23,25 @@ export const SelectListbox = createPolymorphicComponent<"div">(props => {
   const [local, others] = splitProps(props, ["ref", "id"]);
 
   createEffect(() => onCleanup(context.registerListboxId(local.id!)));
+
+  onMount(() => {
+    if (!context.isOpen() || context.autoFocus() === false) {
+      return;
+    }
+
+    let focusedKey = context.listState().selectionManager().firstSelectedKey();
+
+    if (focusedKey == null) {
+      if (context.autoFocus() === "first") {
+        focusedKey = context.listState().collection().getFirstKey();
+      } else if (context.autoFocus() === "last") {
+        focusedKey = context.listState().collection().getLastKey();
+      }
+    }
+
+    context.listState().selectionManager().setFocused(true);
+    context.listState().selectionManager().setFocusedKey(focusedKey);
+  });
 
   return (
     <Listbox

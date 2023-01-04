@@ -1,29 +1,30 @@
-import { ToggleButton as ToggleButtonBase } from "@kobalte/core";
-import { ComponentProps, createSignal, JSX, Show, splitProps } from "solid-js";
-import { Checkbox } from "./checkbox";
+import { ToggleButton } from "@kobalte/core";
+import { createSignal, Show } from "solid-js";
+
 import { VolumeOffIcon, VolumeOnIcon } from "../components";
+import style from "./toggle-button.module.css";
 
-type ToggleButtonBaseProps = ComponentProps<typeof ToggleButtonBase>;
-
-interface ToggleButtonProps extends Omit<ToggleButtonBaseProps, "children"> {
-  onIcon: JSX.Element;
-  offIcon: JSX.Element;
-}
-
-export function ToggleButton(props: ToggleButtonProps) {
-  const [local, others] = splitProps(props, ["onIcon", "offIcon"]);
-
+export function BasicExample() {
   return (
-    <ToggleButtonBase
-      class="appearance-none outline-none h-10 w-10 flex items-center justify-center rounded-md text-white bg-blue-600 dark:text-white/90 ui-disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30 ui-pressed:bg-red-600"
-      {...others}
-    >
+    <ToggleButton class={style["toggle-button"]} aria-label="Mute">
       {state => (
-        <Show when={state.isPressed()} fallback={local.offIcon}>
-          {local.onIcon}
+        <Show when={state.isPressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
+          <VolumeOffIcon class="h-6 w-6" />
         </Show>
       )}
-    </ToggleButtonBase>
+    </ToggleButton>
+  );
+}
+
+export function DefaultPressedExample() {
+  return (
+    <ToggleButton class={style["toggle-button"]} aria-label="Mute" defaultIsPressed>
+      {state => (
+        <Show when={state.isPressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
+          <VolumeOffIcon class="h-6 w-6" />
+        </Show>
+      )}
+    </ToggleButton>
   );
 }
 
@@ -33,12 +34,17 @@ export function ControlledExample() {
   return (
     <>
       <ToggleButton
+        class={style["toggle-button"]}
+        aria-label="Mute"
         isPressed={pressed()}
         onPressedChange={setPressed}
-        aria-label="Mute"
-        onIcon={<VolumeOffIcon class="h-6 w-6" />}
-        offIcon={<VolumeOnIcon class="h-6 w-6" />}
-      />
+      >
+        {state => (
+          <Show when={state.isPressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
+            <VolumeOffIcon class="h-6 w-6" />
+          </Show>
+        )}
+      </ToggleButton>
       <p class="not-prose text-sm mt-2">The microphone is {pressed() ? "muted" : "active"}.</p>
     </>
   );

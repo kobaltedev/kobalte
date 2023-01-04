@@ -1,0 +1,12 @@
+.alert {
+  border-radius: 6px;
+  padding: 12px 16px;
+  background-color: hsl(204 100% 97%);
+  color: hsl(201 96% 32%);
+  font-size: 16px;
+}
+
+[data-kb-theme="dark"] .alert {
+  background-color: hsla(202 80% 24% / 0.2);
+  color: hsl(198 93% 60%);
+}

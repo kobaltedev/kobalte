@@ -17,13 +17,23 @@ import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 import { Button, ButtonProps } from "../button";
 import { PressEvent } from "../primitives";
 import { useMenuContext } from "./menu-context";
+import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuTriggerProps extends ButtonProps {}
 
+/**
+ * The button that toggles the menu.
+ */
 export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps>(props => {
+  const rootContext = useMenuRootContext();
   const context = useMenuContext();
 
-  props = mergeDefaultProps({ id: context.generateId("trigger") }, props);
+  props = mergeDefaultProps(
+    {
+      id: rootContext.generateId("trigger"),
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, [
     "ref",
@@ -41,7 +51,7 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps
     if (e.pointerType !== "touch" && e.pointerType !== "keyboard" && !local.isDisabled) {
       // If opened with a screen reader, autofocus the first item.
       // Otherwise, the menu itself will be focused.
-      context.toggle(e.pointerType === "virtual" ? "first" : undefined);
+      context.toggle(e.pointerType === "virtual" ? "first" : true);
     }
   };
 
@@ -49,7 +59,7 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerProps
     local.onPress?.(e);
 
     if (e.pointerType === "touch" && !local.isDisabled) {
-      context.toggle();
+      context.toggle(true);
     }
   };
 

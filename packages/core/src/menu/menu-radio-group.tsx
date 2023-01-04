@@ -11,9 +11,9 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
 
 import { createControllableSignal } from "../primitives";
-import { useMenuContext } from "./menu-context";
 import { MenuGroup } from "./menu-group";
 import { MenuRadioGroupContext, MenuRadioGroupContextValue } from "./menu-radio-group-context";
+import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuRadioGroupProps {
   /** The controlled value of the item radio to check. */
@@ -28,14 +28,7 @@ export interface MenuRadioGroupProps {
   /** Event handler called when the value changes. */
   onValueChange?: (value: string) => void;
 
-  /**
-   * A unique identifier for the component.
-   * The id is used to generate id attributes for nested components.
-   * If no id prop is provided, a generated id will be used.
-   */
-  id?: string;
-
-  /** Whether the form control is disabled. */
+  /** Whether the menu radio group is disabled. */
   isDisabled?: boolean;
 }
 
@@ -43,9 +36,9 @@ export interface MenuRadioGroupProps {
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
 export const MenuRadioGroup = createPolymorphicComponent<"div", MenuRadioGroupProps>(props => {
-  const menuContext = useMenuContext();
+  const rootContext = useMenuRootContext();
 
-  const defaultId = menuContext.generateId(`radiogroup-${createUniqueId()}`);
+  const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);
 
   props = mergeDefaultProps(
     {

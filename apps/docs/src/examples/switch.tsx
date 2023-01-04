@@ -1,19 +1,29 @@
-import { Switch as SwitchBase } from "@kobalte/core";
-import { ComponentProps, createSignal, splitProps } from "solid-js";
+import { Switch } from "@kobalte/core";
+import { createSignal } from "solid-js";
 
-export function Switch(props: ComponentProps<typeof SwitchBase>) {
-  const [local, others] = splitProps(props, ["children"]);
+import style from "./switch.module.css";
 
+export function BasicExample() {
   return (
-    <SwitchBase class="inline-flex items-center ui-disabled:opacity-50" {...others}>
-      <SwitchBase.Input />
-      <SwitchBase.Label class="select-none mr-3 text-sm text-zinc-900 dark:text-zinc-300">
-        {local.children}
-      </SwitchBase.Label>
-      <SwitchBase.Control class="inline-flex transition items-center px-[2px] w-11 h-6 bg-zinc-200 outline-none ui-focus-visible:ring ui-focus-visible:ring-blue-100 dark:ui-focus-visible:ring-blue-900/60 rounded-full dark:bg-zinc-700 dark:border-zinc-600 ui-checked:bg-blue-600 dark:ui-checked:bg-blue-600">
-        <SwitchBase.Thumb class="ui-checked:translate-x-full ui-checked:border-white bg-white after:border-zinc-300 border rounded-full h-5 w-5 transition-all" />
-      </SwitchBase.Control>
-    </SwitchBase>
+    <Switch class={style["switch"]}>
+      <Switch.Input />
+      <Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
+      <Switch.Control class={style["switch__control"]}>
+        <Switch.Thumb class={style["switch__thumb"]} />
+      </Switch.Control>
+    </Switch>
+  );
+}
+
+export function DefaultCheckedExample() {
+  return (
+    <Switch class={style["switch"]} defaultIsChecked>
+      <Switch.Input />
+      <Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
+      <Switch.Control class={style["switch__control"]}>
+        <Switch.Thumb class={style["switch__thumb"]} />
+      </Switch.Control>
+    </Switch>
   );
 }
 
@@ -22,8 +32,12 @@ export function ControlledExample() {
 
   return (
     <>
-      <Switch isChecked={checked()} onCheckedChange={setChecked}>
-        Airplane mode
+      <Switch class={style["switch"]} isChecked={checked()} onCheckedChange={setChecked}>
+        <Switch.Input />
+        <Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
+        <Switch.Control class={style["switch__control"]}>
+          <Switch.Thumb class={style["switch__thumb"]} />
+        </Switch.Control>
       </Switch>
       <p class="not-prose text-sm mt-2">Airplane mode is {checked() ? "active" : "inactive"}.</p>
     </>
@@ -43,15 +57,19 @@ export function HTMLFormExample() {
   };
 
   return (
-    <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-start space-y-4">
-      <Switch name="airplane-mode" value="on">
-        Airplane mode
+    <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
+      <Switch class={style["switch"]} name="airplane-mode" value="on">
+        <Switch.Input />
+        <Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
+        <Switch.Control class={style["switch__control"]}>
+          <Switch.Thumb class={style["switch__thumb"]} />
+        </Switch.Control>
       </Switch>
       <div class="flex space-x-2">
-        <button type="reset" class="text-sm rounded border border-zinc-600 px-3">
+        <button type="reset" class="kb-button">
           Reset
         </button>
-        <button class="text-sm rounded text-white bg-blue-600 px-3">Submit</button>
+        <button class="kb-button-primary">Submit</button>
       </div>
     </form>
   );

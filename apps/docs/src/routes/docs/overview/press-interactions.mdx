@@ -1,0 +1,82 @@
+import { Kbd, Preview } from "../../../components";
+import { PressInteractionExample } from "../../../examples/press-interaction";
+
+# Press interactions
+
+Some Kobalte components normalizes press interactions behavior (mouse, touch, keyboard, and screen readers) across browsers and platforms, and handles many nuances of dealing with pointer and keyboard events.
+
+A press interaction starts when a user presses down with a mouse or their finger on the target, and ends when they move the pointer off the target. It may start again if the pointer re-enters the target. If the pointer is released over the target, then an `onPress` event is fired.
+
+## Features
+
+- Uses pointer events.
+- Handles <Kbd>Space</Kbd> or <Kbd>Enter</Kbd> key presses.
+- Handles screen reader virtual clicks.
+- Normalizes focus behavior on mouse and touch interactions across browsers.
+- Handles disabling text selection on mobile while the press interaction is active.
+- Handles canceling press interactions on scroll.
+- Normalizes many cross browser inconsistencies.
+
+## Example
+
+The following example show how _press events_ are handled in Kobalte's `Button` component.
+
+Press down on the button and drag your pointer off and over to see when the events are fired, and try focusing the button with a keyboard and pressing the <Kbd>Space</Kbd> or <Kbd>Enter</Kbd> keys to trigger events as well.
+
+<Preview>
+  <PressInteractionExample />
+</Preview>
+
+```tsx
+import { Button } from "@kobalte/core";
+import { createSignal, For } from "solid-js";
+
+function PressInteractionExample() {
+  const [events, setEvents] = createSignal<string[]>([]);
+
+  return (
+    <>
+      <Button
+        onPressStart={e => setEvents(prev => [...prev, `press start with ${e.pointerType}`])}
+        onPressEnd={e => setEvents(prev => [...prev, `press end with ${e.pointerType}`])}
+        onPress={e => setEvents(prev => [...prev, `press with ${e.pointerType}`])}
+      >
+        Press me
+      </Button>
+      <ul>
+        <For each={events()}>{e => <li>{e}</li>}</For>
+      </ul>
+    </>
+  );
+}
+```
+
+## API reference
+
+### Press handlers
+
+| Name          | Description                                                                                                                                             |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| onPress       | `(e: PressEvent) => void` <br/> Handler that is called when the press is released over the target.                                                      |
+| onPressStart  | `(e: PressEvent) => void` <br/> Handler that is called when a press interaction starts.                                                                 |
+| onPressEnd    | `(e: PressEvent) => void` <br/> Handler that is called when a press interaction ends, either over the target or when the pointer leaves the target.     |
+| onPressChange | `(isPressed: boolean) => void` <br/> Handler that is called when the press state changes.                                                               |
+| onPressUp     | `(e: PressEvent) => void` <br/> Handler that is called when a press is released over the target, regardless of whether it started on the target or not. |
+
+Each of these handlers is fired with a `PressEvent`, which exposes information about the target and the type of event that triggered the interaction.
+
+### PressEvent
+
+| Name        | Description                                                                                                     |
+| :---------- | :-------------------------------------------------------------------------------------------------------------- |
+| type        | `'press' \| 'pressstart' \| 'pressend' \| 'pressup'` <br/> The type of press event being fired.                 |
+| pointerType | `'mouse' \| 'pen' \| 'touch' \| 'keyboard' \| 'virtual'` <br/> The pointer type that triggered the press event. |
+| target      | `Element` <br/> The target element of the press event.                                                          |
+| shiftKey    | `boolean` <br/> Whether the shift keyboard modifier was held during the press event.                            |
+| ctrlKey     | `boolean` <br/> Whether the ctrl keyboard modifier was held during the press event.                             |
+| metaKey     | `boolean` <br/> Whether the meta keyboard modifier was held during the press event.                             |
+| altKey      | `boolean` <br/> Whether the alt keyboard modifier was held during the press event.                              |
+
+## Acknowledgment
+
+This is an adaptation of React Aria's [usePress](https://react-spectrum.adobe.com/react-aria/usePress.html) hook, all credits goes to the React Aria team.
