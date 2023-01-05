@@ -6,22 +6,29 @@
  * https://github.com/adobe/react-spectrum/blob/15e101b74966bd5eb719c6529ce71ce57eaed430/packages/@react-aria/calendar/src/useCalendarBase.ts
  */
 
-import { CalendarDate } from "@internationalized/date";
+import { CalendarDate, startOfWeek, today } from "@internationalized/date";
 import { createPolymorphicComponent, mergeDefaultProps, ValidationState } from "@kobalte/utils";
-import { Accessor, createEffect, JSX, on, splitProps } from "solid-js";
+import { Accessor, createEffect, createMemo, JSX, on, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
+import { createDateFormatter, useLocale } from "../i18n";
 import { announce } from "../live-announcer";
 import { CalendarContext, CalendarContextValue } from "./calendar-context";
 import { createSelectedDateDescription, createVisibleRangeDescription } from "./primitives";
 import { CalendarState, DateValue, RangeCalendarState } from "./types";
 
-interface CalendarBaseState {
+interface CalendarRootState {
   /** A description of the visible date range, for use in the calendar title. */
   title: Accessor<string>;
+
+  /**
+   * A list of week day abbreviations formatted for the current locale,
+   * typically used in column headers.
+   */
+  weekDays: Accessor<string[]>;
 }
 
-export interface CalendarBaseOptions {
+export interface CalendarRootOptions {
   state: CalendarState | RangeCalendarState;
 
   /** The minimum allowed date that a user may select. */
@@ -54,35 +61,68 @@ export interface CalendarBaseOptions {
   /** Whether the current selection is valid or invalid according to application logic. */
   validationState?: ValidationState;
 
-  children: (state: CalendarBaseState) => JSX.Element;
+  children: (state: CalendarRootState) => JSX.Element;
 }
 
-export const CalendarBase = createPolymorphicComponent<"div", CalendarBaseOptions>(props => {
+export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOptions>(props => {
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, ["as", "children", "aria-label", "aria-labelledby"]);
+  const [local, others] = splitProps(props, [
+    "as",
+    "children",
+    "state",
+    "minValue",
+    "maxValue",
+    "isDateUnavailable",
+    "isDisabled",
+    "isReadOnly",
+    "autoFocus",
+    "focusedValue",
+    "defaultFocusedValue",
+    "onFocusChange",
+    "validationState",
+    "aria-label",
+    "aria-labelledby",
+  ]);
+
+  const { locale } = useLocale();
+
+  const dayFormatter = createDateFormatter(() => ({
+    weekday: "narrow",
+    timeZone: local.state.timeZone(),
+  }));
+
+  const weekDays = createMemo(() => {
+    const weekStart = startOfWeek(today(local.state.timeZone()), locale());
+
+    return [...new Array(7).keys()].map(index => {
+      const date = weekStart.add({ days: index });
+      const dateDay = date.toDate(local.state.timeZone());
+      return dayFormatter().format(dateDay);
+    });
+  });
 
   const title = createVisibleRangeDescription({
-    startDate: () => props.state.visibleRange().start,
-    endDate: () => props.state.visibleRange().end,
-    timeZone: () => props.state.timeZone(),
+    startDate: () => local.state.visibleRange().start,
+    endDate: () => local.state.visibleRange().end,
+    timeZone: () => local.state.timeZone(),
     isAria: () => false,
   });
 
   const visibleRangeDescription = createVisibleRangeDescription({
-    startDate: () => props.state.visibleRange().start,
-    endDate: () => props.state.visibleRange().end,
-    timeZone: () => props.state.timeZone(),
+    startDate: () => local.state.visibleRange().start,
+    endDate: () => local.state.visibleRange().end,
+    timeZone: () => local.state.timeZone(),
     isAria: () => true,
   });
 
-  const selectedDateDescription = createSelectedDateDescription(props.state);
+  const selectedDateDescription = createSelectedDateDescription(local.state);
 
   let isNextFocused = false;
-  const isNextDisabled = () => props.isDisabled || props.state.isNextVisibleRangeInvalid();
+  const isNextDisabled = () => local.isDisabled || local.state.isNextVisibleRangeInvalid();
 
   let isPreviousFocused = false;
-  const isPreviousDisabled = () => props.isDisabled || props.state.isPreviousVisibleRangeInvalid();
+  const isPreviousDisabled = () => local.isDisabled || local.state.isPreviousVisibleRangeInvalid();
 
   // Announce when the visible date range changes.
   createEffect(
@@ -90,7 +130,7 @@ export const CalendarBase = createPolymorphicComponent<"div", CalendarBaseOption
       visibleRangeDescription,
       visibleRangeDescription => {
         // Only when pressing the Previous or Next button.
-        if (!props.state.isFocused()) {
+        if (!local.state.isFocused()) {
           announce(visibleRangeDescription);
         }
       },
@@ -116,17 +156,17 @@ export const CalendarBase = createPolymorphicComponent<"div", CalendarBaseOption
   createEffect(() => {
     if (isNextDisabled() && isNextFocused) {
       isNextFocused = false;
-      props.state.setFocused(true);
+      local.state.setFocused(true);
     }
 
     if (isPreviousDisabled() && isPreviousFocused) {
       isPreviousFocused = false;
-      props.state.setFocused(true);
+      local.state.setFocused(true);
     }
   });
 
   const context: CalendarContextValue = {
-    calendarState: () => props.state,
+    calendarState: () => local.state,
     selectedDateDescription,
     isPreviousDisabled,
     isNextDisabled,
@@ -145,9 +185,7 @@ export const CalendarBase = createPolymorphicComponent<"div", CalendarBaseOption
         aria-labelledby={local["aria-labelledby"]}
         {...others}
       >
-        {local.children({
-          title,
-        })}
+        {local.children({ title, weekDays })}
       </Dynamic>
     </CalendarContext.Provider>
   );

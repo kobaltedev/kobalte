@@ -33,31 +33,45 @@ export function createSelectedDateDescription(state: CalendarState | RangeCalend
     }
   };
 
-  const dateFormatter = createDateFormatter(() => ({
-    weekday: "long",
-    month: "long",
-    year: "numeric",
-    day: "numeric",
-    era: getEraFormat(start()) || getEraFormat(end()),
-    timeZone: state.timeZone(),
-  }));
+  const dateFormatter = createDateFormatter(() => {
+    const startDate = start();
+    const endDate = end();
+
+    let era = startDate ? getEraFormat(startDate) : undefined;
+
+    if (era == null && endDate != null) {
+      era = getEraFormat(endDate);
+    }
+
+    return {
+      weekday: "long",
+      month: "long",
+      year: "numeric",
+      day: "numeric",
+      era,
+      timeZone: state.timeZone(),
+    };
+  });
 
   const anchorDate = () => ("anchorDate" in state ? state.anchorDate() : null);
 
   return createMemo(() => {
+    const startDate = start();
+    const endDate = end();
+
     // No message if currently selecting a range, or there is nothing highlighted.
-    if (!anchorDate() && start() && end()) {
+    if (!anchorDate() && startDate && endDate) {
       // Use a single date message if the start and end dates are the same day,
       // otherwise include both dates.
-      if (isSameDay(start(), end())) {
-        const date = dateFormatter().format(start().toDate(state.timeZone()));
+      if (isSameDay(startDate, endDate)) {
+        const date = dateFormatter().format(startDate.toDate(state.timeZone()));
         return stringFormatter().format("selectedDateDescription", { date });
       } else {
         const dateRange = formatRange(
           dateFormatter(),
           stringFormatter(),
-          start(),
-          end(),
+          startDate,
+          endDate,
           state.timeZone()
         );
 

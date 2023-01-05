@@ -12,6 +12,14 @@ import { Accessor } from "solid-js";
 
 export type DateValue = CalendarDate | CalendarDateTime | ZonedDateTime;
 
+export type MappedDateValue<T> = T extends ZonedDateTime
+  ? ZonedDateTime
+  : T extends CalendarDateTime
+  ? CalendarDateTime
+  : T extends CalendarDate
+  ? CalendarDate
+  : never;
+
 interface CalendarStateBase {
   /** Whether the calendar is disabled. */
   isDisabled: Accessor<boolean>;
@@ -35,7 +43,7 @@ interface CalendarStateBase {
   timeZone: Accessor<string>;
 
   /** The current validation state of the selected value. */
-  validationState: Accessor<ValidationState>;
+  validationState: Accessor<ValidationState | undefined>;
 
   /** The currently focused date. */
   focusedDate: Accessor<CalendarDate>;
@@ -124,7 +132,7 @@ interface CalendarStateBase {
 
 export interface CalendarState extends CalendarStateBase {
   /** The currently selected date. */
-  value: Accessor<CalendarDate>;
+  value: Accessor<CalendarDate | undefined>;
 
   /** Sets the currently selected date. */
   setValue: (value: CalendarDate) => void;

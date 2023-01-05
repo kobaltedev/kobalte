@@ -22,7 +22,7 @@ import { LocalizedStringFormatter } from "@internationalized/string";
 
 import { DateValue } from "./types";
 
-export function isInvalid(date: DateValue, minValue: DateValue, maxValue: DateValue) {
+export function isInvalid(date: DateValue, minValue?: DateValue, maxValue?: DateValue) {
   return (
     (minValue != null && date.compare(minValue) < 0) ||
     (maxValue != null && date.compare(maxValue) > 0)
@@ -118,7 +118,7 @@ export function constrainStart(
   return aligned;
 }
 
-export function constrainValue(date: CalendarDate, minValue: DateValue, maxValue: DateValue) {
+export function constrainValue(date: CalendarDate, minValue?: DateValue, maxValue?: DateValue) {
   if (minValue) {
     date = maxDate(date, toCalendarDate(minValue));
   }
@@ -133,7 +133,7 @@ export function constrainValue(date: CalendarDate, minValue: DateValue, maxValue
 export function previousAvailableDate(
   date: CalendarDate,
   minValue: DateValue,
-  isDateUnavailable: (date: CalendarDate) => boolean
+  isDateUnavailable?: (date: CalendarDate) => boolean
 ) {
   if (!isDateUnavailable) {
     return date;
@@ -188,4 +188,15 @@ export function formatRange(
   }
 
   return stringFormatter.format("dateRange", { startDate: startValue, endDate: endValue });
+}
+
+export function unitDuration(duration: DateDuration) {
+  const unit = { ...duration };
+
+  for (const key in duration) {
+    // @ts-ignore
+    unit[key] = 1;
+  }
+
+  return unit;
 }
