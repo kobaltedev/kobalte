@@ -166,12 +166,14 @@ importers:
   packages/core:
     specifiers:
       '@floating-ui/dom': ^1.0.7
+      '@internationalized/date': ^3.0.2
       '@internationalized/number': ^3.1.1
       '@internationalized/string': ^3.0.0
       '@kobalte/tests': ^0.1.0
       '@kobalte/utils': ^0.1.0
     dependencies:
       '@floating-ui/dom': 1.1.0
+      '@internationalized/date': 3.0.2
       '@internationalized/number': 3.1.2
       '@internationalized/string': 3.0.1
       '@kobalte/utils': link:../utils
@@ -2870,6 +2872,12 @@ packages:
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
+
+  /@internationalized/date/3.0.2:
+    resolution: {integrity: sha512-9V1IxesP6ASZj/hYyOXOC4yPJvidbbStyWQKLCQSqhhKACMOXoo+BddXZJy47ju9mqOMpWdrJ2rTx4yTxK9oag==}
+    dependencies:
+      '@swc/helpers': 0.4.14
+    dev: false
 
   /@internationalized/number/3.1.2:
     resolution: {integrity: sha512-Mbys8SGsn0ApXz3hJLNU+d95B8luoUbwnmCpBwl7d63UmYAlcT6TRDyvaS/vwdbElXLcsQJjQCu0gox2cv/Tig==}
