@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/15e101b74966bd5eb719c6529ce71ce57eaed430/packages/@react-aria/calendar/src/useCalendarBase.ts
  */
 
-import { startOfWeek, today } from "@internationalized/date";
+import { CalendarDate, getWeeksInMonth, startOfWeek, today } from "@internationalized/date";
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, JSX, on, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -26,6 +26,12 @@ interface CalendarRootState {
    * typically used in column headers.
    */
   weekDays: Accessor<string[]>;
+
+  /**
+   * A two-dimensional array containing each week of the month, containing each date of the week.
+   * Used render the proper number of rows.
+   */
+  weeksInMonth: Accessor<Array<Array<CalendarDate | null>>>;
 }
 
 export interface CalendarRootOptions {
@@ -59,6 +65,13 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
     timeZone: local.state.timeZone(),
   }));
 
+  const title = createVisibleRangeDescription({
+    startDate: () => local.state.visibleRange().start,
+    endDate: () => local.state.visibleRange().end,
+    timeZone: () => local.state.timeZone(),
+    isAria: () => false,
+  });
+
   const weekDays = createMemo(() => {
     const weekStart = startOfWeek(today(local.state.timeZone()), local.state.locale());
 
@@ -69,11 +82,12 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
     });
   });
 
-  const title = createVisibleRangeDescription({
-    startDate: () => local.state.visibleRange().start,
-    endDate: () => local.state.visibleRange().end,
-    timeZone: () => local.state.timeZone(),
-    isAria: () => false,
+  const weeksInMonth = createMemo(() => {
+    const weeksInMonth = getWeeksInMonth(local.state.visibleRange().start, local.state.locale());
+
+    return [...new Array(weeksInMonth).keys()].map(weekIndex => {
+      return local.state.getDatesInWeek(weekIndex);
+    });
   });
 
   const visibleRangeDescription = createVisibleRangeDescription({
@@ -152,7 +166,7 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
         aria-labelledby={local["aria-labelledby"]}
         {...others}
       >
-        {local.children?.({ title, weekDays })}
+        {local.children?.({ title, weekDays, weeksInMonth })}
       </Dynamic>
     </CalendarContext.Provider>
   );

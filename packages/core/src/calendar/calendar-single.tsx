@@ -17,6 +17,9 @@ export interface CalendarSingleOptions
   extends CreateCalendarStateProps,
     Pick<CalendarRootOptions, "children"> {}
 
+/**
+ * Displays one or more date grids and allows users to select a single date.
+ */
 export const CalendarSingle = createPolymorphicComponent<"div", CalendarSingleOptions>(props => {
   const [local, others] = splitProps(props, [
     "value",
