@@ -6,16 +6,16 @@
  * https://github.com/adobe/react-spectrum/blob/15e101b74966bd5eb719c6529ce71ce57eaed430/packages/@react-aria/calendar/src/useCalendarBase.ts
  */
 
-import { CalendarDate, startOfWeek, today } from "@internationalized/date";
-import { createPolymorphicComponent, mergeDefaultProps, ValidationState } from "@kobalte/utils";
+import { startOfWeek, today } from "@internationalized/date";
+import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, JSX, on, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createDateFormatter, useLocale } from "../i18n";
+import { createDateFormatter } from "../i18n";
 import { announce } from "../live-announcer";
 import { CalendarContext, CalendarContextValue } from "./calendar-context";
 import { createSelectedDateDescription, createVisibleRangeDescription } from "./primitives";
-import { CalendarState, DateValue, RangeCalendarState } from "./types";
+import { CalendarState, RangeCalendarState } from "./types";
 
 interface CalendarRootState {
   /** A description of the visible date range, for use in the calendar title. */
@@ -29,39 +29,17 @@ interface CalendarRootState {
 }
 
 export interface CalendarRootOptions {
+  /** The state of the calendar as returned by `createCalendarState` or `createRangeCalendarState`. */
   state: CalendarState | RangeCalendarState;
-
-  /** The minimum allowed date that a user may select. */
-  minValue?: DateValue;
-
-  /** The maximum allowed date that a user may select. */
-  maxValue?: DateValue;
-
-  /** Callback that is called for each date of the calendar. If it returns true, then the date is unavailable. */
-  isDateUnavailable?: (date: DateValue) => boolean;
 
   /** Whether the calendar is disabled. */
   isDisabled?: boolean;
 
-  /** Whether the calendar value is immutable. */
-  isReadOnly?: boolean;
-
-  /** Whether to automatically focus the calendar when it mounts. */
-  autoFocus?: boolean;
-
-  /** Controls the currently focused date within the calendar. */
-  focusedValue?: DateValue;
-
-  /** The date that is focused when the calendar first mounts (uncountrolled). */
-  defaultFocusedValue?: DateValue;
-
-  /** Handler that is called when the focused date changes. */
-  onFocusChange?: (date: CalendarDate) => void;
-
-  /** Whether the current selection is valid or invalid according to application logic. */
-  validationState?: ValidationState;
-
-  children: (state: CalendarRootState) => JSX.Element;
+  /**
+   * The children of the calendar.
+   * It is a _render prop_ which give access to the internal state.
+   */
+  children?: (state: CalendarRootState) => JSX.Element;
 }
 
 export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOptions>(props => {
@@ -71,21 +49,10 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
     "as",
     "children",
     "state",
-    "minValue",
-    "maxValue",
-    "isDateUnavailable",
     "isDisabled",
-    "isReadOnly",
-    "autoFocus",
-    "focusedValue",
-    "defaultFocusedValue",
-    "onFocusChange",
-    "validationState",
     "aria-label",
     "aria-labelledby",
   ]);
-
-  const { locale } = useLocale();
 
   const dayFormatter = createDateFormatter(() => ({
     weekday: "narrow",
@@ -93,7 +60,7 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
   }));
 
   const weekDays = createMemo(() => {
-    const weekStart = startOfWeek(today(local.state.timeZone()), locale());
+    const weekStart = startOfWeek(today(local.state.timeZone()), local.state.locale());
 
     return [...new Array(7).keys()].map(index => {
       const date = weekStart.add({ days: index });
@@ -185,7 +152,7 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
         aria-labelledby={local["aria-labelledby"]}
         {...others}
       >
-        {local.children({ title, weekDays })}
+        {local.children?.({ title, weekDays })}
       </Dynamic>
     </CalendarContext.Provider>
   );

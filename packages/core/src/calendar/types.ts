@@ -39,6 +39,9 @@ interface CalendarStateBase {
   /** The maximum allowed date that a user may select. */
   maxValue: Accessor<DateValue | undefined>;
 
+  /** The locale to display and edit the value according to. */
+  locale: Accessor<string>;
+
   /** The time zone of the dates currently being displayed. */
   timeZone: Accessor<string>;
 
