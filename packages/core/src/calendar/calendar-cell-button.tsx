@@ -15,7 +15,15 @@ import {
   mergeDefaultProps,
   scrollIntoView,
 } from "@kobalte/utils";
-import { createEffect, JSX, splitProps } from "solid-js";
+import {
+  createDeferred,
+  createEffect,
+  createRenderEffect,
+  JSX,
+  onCleanup,
+  onMount,
+  splitProps,
+} from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createFocusRing, createHover, createPress, getInteractionModality } from "../primitives";
@@ -31,7 +39,6 @@ export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
   props = mergeDefaultProps(
     {
       as: "div",
-      children: context.formattedDate(),
     },
     props
   );
@@ -258,6 +265,7 @@ export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
       {...combineProps(
         {
           ref: el => (ref = el),
+          children: context.formattedDate(),
         },
         others,
         pressHandlers,

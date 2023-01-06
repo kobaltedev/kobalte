@@ -1,30 +1,33 @@
-import { For } from "solid-js";
+import { For, Index } from "solid-js";
 
 import { Calendar, I18nProvider } from "../src";
 
 export default function App() {
   return (
     <div class="app">
+      <button>Prev</button>
       <I18nProvider>
         <Calendar class="calendar">
-          {({ title, weekDays, weeksInMonth }) => (
+          {state => (
             <>
               <div class="header">
-                <Calendar.PrevButton class="button">&lsaquo;</Calendar.PrevButton>
-                <h2>{title()}</h2>
-                <Calendar.NextButton class="button">&rsaquo;</Calendar.NextButton>
+                <Calendar.PrevYearButton class="button">&lsaquo;&lsaquo;</Calendar.PrevYearButton>
+                <Calendar.PrevPageButton class="button">&lsaquo;</Calendar.PrevPageButton>
+                <h2>{state.title()}</h2>
+                <Calendar.NextPageButton class="button">&rsaquo;</Calendar.NextPageButton>
+                <Calendar.NextYearButton class="button">&rsaquo;&rsaquo;</Calendar.NextYearButton>
               </div>
               <Calendar.Grid cell-padding="0" class="grid">
                 <thead aria-hidden="true">
                   <tr>
-                    <For each={weekDays()}>{day => <th>{day}</th>}</For>
+                    <For each={state.weekDays()}>{day => <th>{day}</th>}</For>
                   </tr>
                 </thead>
                 <tbody>
-                  <For each={weeksInMonth()}>
-                    {datesInWeek => (
+                  <For each={[...new Array(state.weeksInMonth()).keys()]}>
+                    {weekIndex => (
                       <tr>
-                        <For each={datesInWeek}>
+                        <For each={state.getDatesInWeek(weekIndex)}>
                           {date => (
                             <Calendar.Cell date={date}>
                               <Calendar.CellButton class="cell" />
@@ -40,6 +43,7 @@ export default function App() {
           )}
         </Calendar>
       </I18nProvider>
+      <button>Last</button>
     </div>
   );
 }

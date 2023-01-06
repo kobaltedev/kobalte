@@ -72,6 +72,12 @@ interface CalendarStateBase {
   /** Moves focus to the previous page of dates, e.g. the previous month if one month is visible. */
   focusPreviousPage: () => void;
 
+  /** Moves focus to one year after the current page of dates, e.g. the month + 1 year if one month is visible. */
+  focusNextYear: () => void;
+
+  /** Moves focus to one year before the current page of dates, e.g. the month - 1 year if one month is visible. */
+  focusPreviousYear: () => void;
+
   /** Moves focus to the start of the current section of dates, e.g. the start of the current month. */
   focusSectionStart: () => void;
 

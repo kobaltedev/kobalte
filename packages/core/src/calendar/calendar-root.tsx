@@ -28,10 +28,13 @@ interface CalendarRootState {
   weekDays: Accessor<string[]>;
 
   /**
-   * A two-dimensional array containing each week of the month, containing each date of the week.
-   * Used render the proper number of rows.
+   * The number of weeks in the currently displayed month.
+   * Used render the proper number of rows in the calendar grid.
    */
-  weeksInMonth: Accessor<Array<Array<CalendarDate | null>>>;
+  weeksInMonth: Accessor<number>;
+
+  /** A function de retrieve the dates to render for a given week index. */
+  getDatesInWeek: (weekIndex: number) => Array<CalendarDate | null>;
 }
 
 export interface CalendarRootOptions {
@@ -83,11 +86,7 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
   });
 
   const weeksInMonth = createMemo(() => {
-    const weeksInMonth = getWeeksInMonth(local.state.visibleRange().start, local.state.locale());
-
-    return [...new Array(weeksInMonth).keys()].map(weekIndex => {
-      return local.state.getDatesInWeek(weekIndex);
-    });
+    return getWeeksInMonth(local.state.visibleRange().start, local.state.locale());
   });
 
   const visibleRangeDescription = createVisibleRangeDescription({
@@ -166,7 +165,12 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
         aria-labelledby={local["aria-labelledby"]}
         {...others}
       >
-        {local.children?.({ title, weekDays, weeksInMonth })}
+        {local.children?.({
+          title,
+          weekDays,
+          weeksInMonth,
+          getDatesInWeek: weekIndex => local.state.getDatesInWeek(weekIndex),
+        })}
       </Dynamic>
     </CalendarContext.Provider>
   );

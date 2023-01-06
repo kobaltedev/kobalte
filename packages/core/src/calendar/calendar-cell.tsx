@@ -8,7 +8,7 @@
 
 import { CalendarDate, isSameDay, isToday } from "@internationalized/date";
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createMemo, Show, splitProps } from "solid-js";
+import { createMemo, onCleanup, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createDateFormatter, createLocalizedStringFormatter } from "../i18n";

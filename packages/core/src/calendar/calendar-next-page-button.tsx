@@ -15,7 +15,7 @@ import { PressEvents } from "../primitives";
 import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
 import { useCalendarContext } from "./calendar-context";
 
-export const CalendarPrevButton = createPolymorphicComponent<"button", ButtonOptions>(props => {
+export const CalendarNextPageButton = createPolymorphicComponent<"button", ButtonOptions>(props => {
   const context = useCalendarContext();
 
   const [local, others] = splitProps(props, ["onPress", "onFocus", "onBlur"]);
@@ -24,23 +24,23 @@ export const CalendarPrevButton = createPolymorphicComponent<"button", ButtonOpt
 
   const onPress: PressEvents["onPress"] = e => {
     local.onPress?.(e);
-    context.calendarState().focusPreviousPage();
+    context.calendarState().focusNextPage();
   };
 
   const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onFocus);
-    context.setPreviousFocused(true);
+    context.setNextFocused(true);
   };
 
   const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onBlur);
-    context.setPreviousFocused(false);
+    context.setNextFocused(false);
   };
 
   return (
     <Button
-      isDisabled={context.isPreviousDisabled()}
-      aria-label={stringFormatter().format("previous")}
+      isDisabled={context.isNextDisabled()}
+      aria-label={stringFormatter().format("next")}
       onPress={onPress}
       onFocus={onFocus}
       onBlur={onBlur}

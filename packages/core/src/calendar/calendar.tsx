@@ -3,13 +3,17 @@ import { createPolymorphicComponent } from "@kobalte/utils";
 import { CalendarCell } from "./calendar-cell";
 import { CalendarCellButton } from "./calendar-cell-button";
 import { CalendarGrid } from "./calendar-grid";
-import { CalendarNextButton } from "./calendar-next-button";
-import { CalendarPrevButton } from "./calendar-prev-button";
+import { CalendarNextPageButton } from "./calendar-next-page-button";
+import { CalendarPrevPageButton } from "./calendar-prev-page-button";
 import { CalendarSingle, CalendarSingleOptions } from "./calendar-single";
+import { CalendarNextYearButton } from "./calendar-next-year-button";
+import { CalendarPrevYearButton } from "./calendar-prev-year-button";
 
 type CalendarComposite = {
-  PrevButton: typeof CalendarPrevButton;
-  NextButton: typeof CalendarNextButton;
+  PrevPageButton: typeof CalendarPrevPageButton;
+  NextPageButton: typeof CalendarNextPageButton;
+  PrevYearButton: typeof CalendarPrevYearButton;
+  NextYearButton: typeof CalendarNextYearButton;
   Grid: typeof CalendarGrid;
   Cell: typeof CalendarCell;
   CellButton: typeof CalendarCellButton;
@@ -24,8 +28,10 @@ export const Calendar = createPolymorphicComponent<"div", CalendarSingleOptions,
   }
 );
 
-Calendar.PrevButton = CalendarPrevButton;
-Calendar.NextButton = CalendarNextButton;
+Calendar.PrevPageButton = CalendarPrevPageButton;
+Calendar.NextPageButton = CalendarNextPageButton;
+Calendar.PrevYearButton = CalendarPrevYearButton;
+Calendar.NextYearButton = CalendarNextYearButton;
 Calendar.Grid = CalendarGrid;
 Calendar.Cell = CalendarCell;
 Calendar.CellButton = CalendarCellButton;

@@ -26,6 +26,7 @@ import {
 import { access, MaybeAccessor, mergeDefaultProps, ValidationState } from "@kobalte/utils";
 import { createEffect, createMemo, createSignal } from "solid-js";
 
+import { useLocale } from "../i18n";
 import { createControllableSignal } from "../primitives";
 import { CalendarState, DateValue, MappedDateValue } from "./types";
 import {
@@ -38,7 +39,6 @@ import {
   previousAvailableDate,
   unitDuration,
 } from "./utils";
-import { useLocale } from "../i18n";
 
 export interface CreateCalendarStateProps {
   /** The controlled selected date of the calendar. */
@@ -383,6 +383,42 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       const start = startDate().subtract(visibleDuration);
 
       setFocusedDate(constrainValue(focusedDate()!.subtract(visibleDuration), minValue, maxValue));
+
+      setStartDate(
+        alignStart(
+          constrainStart(focusedDate()!, start, visibleDuration, locale, minValue, maxValue),
+          visibleDuration,
+          locale
+        )
+      );
+    },
+    focusNextYear() {
+      const visibleDuration = access(props.visibleDuration)!;
+      const locale = access(props.locale)!;
+      const minValue = access(props.minValue);
+      const maxValue = access(props.maxValue);
+
+      const start = startDate().add({ years: 1 });
+
+      setFocusedDate(constrainValue(focusedDate()!.add({ years: 1 }), minValue, maxValue));
+
+      setStartDate(
+        alignStart(
+          constrainStart(focusedDate()!, start, visibleDuration, locale, minValue, maxValue),
+          visibleDuration,
+          locale
+        )
+      );
+    },
+    focusPreviousYear() {
+      const visibleDuration = access(props.visibleDuration)!;
+      const locale = access(props.locale)!;
+      const minValue = access(props.minValue);
+      const maxValue = access(props.maxValue);
+
+      const start = startDate().subtract({ years: 1 });
+
+      setFocusedDate(constrainValue(focusedDate()!.subtract({ years: 1 }), minValue, maxValue));
 
       setStartDate(
         alignStart(
