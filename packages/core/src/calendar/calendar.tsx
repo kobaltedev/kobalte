@@ -6,14 +6,10 @@ import { CalendarGrid } from "./calendar-grid";
 import { CalendarNextPageButton } from "./calendar-next-page-button";
 import { CalendarPrevPageButton } from "./calendar-prev-page-button";
 import { CalendarSingle, CalendarSingleOptions } from "./calendar-single";
-import { CalendarNextYearButton } from "./calendar-next-year-button";
-import { CalendarPrevYearButton } from "./calendar-prev-year-button";
 
 type CalendarComposite = {
-  PrevPageButton: typeof CalendarPrevPageButton;
   NextPageButton: typeof CalendarNextPageButton;
-  PrevYearButton: typeof CalendarPrevYearButton;
-  NextYearButton: typeof CalendarNextYearButton;
+  PrevPageButton: typeof CalendarPrevPageButton;
   Grid: typeof CalendarGrid;
   Cell: typeof CalendarCell;
   CellButton: typeof CalendarCellButton;
@@ -28,10 +24,8 @@ export const Calendar = createPolymorphicComponent<"div", CalendarSingleOptions,
   }
 );
 
-Calendar.PrevPageButton = CalendarPrevPageButton;
 Calendar.NextPageButton = CalendarNextPageButton;
-Calendar.PrevYearButton = CalendarPrevYearButton;
-Calendar.NextYearButton = CalendarNextYearButton;
+Calendar.PrevPageButton = CalendarPrevPageButton;
 Calendar.Grid = CalendarGrid;
 Calendar.Cell = CalendarCell;
 Calendar.CellButton = CalendarCellButton;

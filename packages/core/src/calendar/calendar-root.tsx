@@ -8,7 +8,7 @@
 
 import { CalendarDate, getWeeksInMonth, startOfWeek, today } from "@internationalized/date";
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, createEffect, createMemo, JSX, on, splitProps } from "solid-js";
+import { Accessor, createEffect, JSX, on, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createDateFormatter } from "../i18n";
@@ -68,14 +68,7 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
     timeZone: local.state.timeZone(),
   }));
 
-  const title = createVisibleRangeDescription({
-    startDate: () => local.state.visibleRange().start,
-    endDate: () => local.state.visibleRange().end,
-    timeZone: () => local.state.timeZone(),
-    isAria: () => false,
-  });
-
-  const weekDays = createMemo(() => {
+  const weekDays = () => {
     const weekStart = startOfWeek(today(local.state.timeZone()), local.state.locale());
 
     return [...new Array(7).keys()].map(index => {
@@ -83,10 +76,17 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
       const dateDay = date.toDate(local.state.timeZone());
       return dayFormatter().format(dateDay);
     });
-  });
+  };
 
-  const weeksInMonth = createMemo(() => {
+  const weeksInMonth = () => {
     return getWeeksInMonth(local.state.visibleRange().start, local.state.locale());
+  };
+
+  const title = createVisibleRangeDescription({
+    startDate: () => local.state.visibleRange().start,
+    endDate: () => local.state.visibleRange().end,
+    timeZone: () => local.state.timeZone(),
+    isAria: () => false,
   });
 
   const visibleRangeDescription = createVisibleRangeDescription({

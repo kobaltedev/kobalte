@@ -7,41 +7,20 @@
  */
 
 import { isSameDay } from "@internationalized/date";
-import {
-  combineProps,
-  createPolymorphicComponent,
-  focusWithoutScrolling,
-  getScrollParent,
-  mergeDefaultProps,
-  scrollIntoView,
-} from "@kobalte/utils";
-import {
-  createDeferred,
-  createEffect,
-  createRenderEffect,
-  JSX,
-  onCleanup,
-  onMount,
-  splitProps,
-} from "solid-js";
+import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createFocusRing, createHover, createPress, getInteractionModality } from "../primitives";
+import { createFocusRing, createHover, createPress } from "../primitives";
 import { useCalendarCellContext } from "./calendar-cell-context";
 import { useCalendarContext } from "./calendar-context";
+import { getKeyForDate } from "./utils";
 
 export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
-  let ref: HTMLElement | undefined;
-
   const calendarContext = useCalendarContext();
   const context = useCalendarCellContext();
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-    },
-    props
-  );
+  props = mergeDefaultProps({ as: "div" }, props);
 
   const [local, others] = splitProps(props, ["as"]);
 
@@ -231,21 +210,6 @@ export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
     e.preventDefault();
   };
 
-  // Focus the button in the DOM when the state updates.
-  createEffect(() => {
-    if (context.isFocused() && ref) {
-      focusWithoutScrolling(ref);
-
-      // Scroll into view if navigating with a keyboard, otherwise
-      // try not to shift the view under the user's mouse/finger.
-      // Only scroll the direct scroll parent, not the whole page, so
-      // we don't scroll to the bottom when opening date picker popover.
-      if (getInteractionModality() !== "pointer") {
-        scrollIntoView(getScrollParent(ref) as HTMLElement, ref);
-      }
-    }
-  });
-
   return (
     <Dynamic
       component={local.as}
@@ -253,6 +217,7 @@ export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
       tabIndex={tabIndex()}
       aria-label={context.label()}
       aria-disabled={!context.isSelectable() || undefined}
+      data-key={getKeyForDate(context.date())}
       data-disabled={context.isDisabled() ? "" : undefined}
       data-unavailable={context.isUnavailable() ? "" : undefined}
       data-outside-visible-range={context.isOutsideVisibleRange() ? "" : undefined}
@@ -264,7 +229,6 @@ export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
       data-active={isPressed() ? "" : undefined}
       {...combineProps(
         {
-          ref: el => (ref = el),
           children: context.formattedDate(),
         },
         others,

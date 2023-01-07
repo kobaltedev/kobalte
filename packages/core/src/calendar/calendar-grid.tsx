@@ -7,14 +7,8 @@
  */
 
 import { CalendarDate } from "@internationalized/date";
-import {
-  callHandler,
-  contains,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
-import { createEffect, JSX, splitProps } from "solid-js";
+import { callHandler, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useLocale } from "../i18n";
@@ -42,15 +36,12 @@ export interface CalendarGridOptions {
  * can be navigated via keyboard and selected by the user.
  */
 export const CalendarGrid = createPolymorphicComponent<"table", CalendarGridOptions>(props => {
-  let ref: HTMLTableElement | undefined;
-
   const context = useCalendarContext();
 
   props = mergeDefaultProps({ as: "table" }, props);
 
   const [local, others] = splitProps(props, [
     "as",
-    "ref",
     "startDate",
     "endDate",
     "onKeyDown",
@@ -146,23 +137,12 @@ export const CalendarGrid = createPolymorphicComponent<"table", CalendarGridOpti
 
   const onFocusOut: JSX.EventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onFocusOut);
-
-    // Focus events bubble through portals. We only care about blur in this grid.
-    if (!contains(ref, e.target)) {
-      return;
-    }
-
-    const relatedTarget = e.relatedTarget as HTMLElement | null;
-
-    if (relatedTarget && !contains(ref, relatedTarget)) {
-      context.calendarState().setFocused(false);
-    }
+    context.calendarState().setFocused(false);
   };
 
   return (
     <Dynamic
       component={local.as}
-      ref={mergeRefs(el => (ref = el), local.ref)}
       role="grid"
       aria-readonly={context.calendarState().isReadOnly() || undefined}
       aria-disabled={context.calendarState().isDisabled() || undefined}

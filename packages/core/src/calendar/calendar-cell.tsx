@@ -8,7 +8,7 @@
 
 import { CalendarDate, isSameDay, isToday } from "@internationalized/date";
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createMemo, onCleanup, Show, splitProps } from "solid-js";
+import { Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createDateFormatter, createLocalizedStringFormatter } from "../i18n";
@@ -81,10 +81,10 @@ const CalendarCellBase = createPolymorphicComponent<"td", CalendarCellBaseOption
     );
   };
 
-  const nativeDate = createMemo(() => local.date.toDate(state().timeZone()));
+  const nativeDate = () => local.date.toDate(state().timeZone());
 
   // aria-label should be localized Day of week, Month, Day and Year without Time.
-  const label = createMemo(() => {
+  const label = () => {
     const state = calendarContext.calendarState();
 
     let label = "";
@@ -127,25 +127,9 @@ const CalendarCellBase = createPolymorphicComponent<"td", CalendarCellBaseOption
     }
 
     return label;
-  });
+  };
 
-  // TODO: need react-aria `useDescription`
-  /*
-  // When a cell is focused and this is a range calendar, add a prompt to help
-  // screenreader users know that they are in a range selection mode.
-  let rangeSelectionPrompt = "";
-  if ("anchorDate" in state && isFocused && !state.isReadOnly && isSelectable) {
-    // If selection has started add "click to finish selecting range"
-    if (state.anchorDate) {
-      rangeSelectionPrompt = stringFormatter.format("finishRangeSelectionPrompt");
-      // Otherwise, add "click to start selecting range" prompt
-    } else {
-      rangeSelectionPrompt = stringFormatter.format("startRangeSelectionPrompt");
-    }
-  }
-
-  let descriptionProps = useDescription(rangeSelectionPrompt);
-  */
+  // TODO: add description part, need react-aria `useDescription`
 
   const cellDateFormatter = createDateFormatter(() => ({
     day: "numeric",
@@ -153,7 +137,7 @@ const CalendarCellBase = createPolymorphicComponent<"td", CalendarCellBaseOption
     calendar: local.date.calendar.identifier,
   }));
 
-  const formattedDate = createMemo(() => cellDateFormatter().format(nativeDate()));
+  const formattedDate = () => cellDateFormatter().format(nativeDate());
 
   const context: CalendarCellContextValue = {
     isSelectable,

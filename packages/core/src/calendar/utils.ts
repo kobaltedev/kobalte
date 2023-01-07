@@ -200,3 +200,10 @@ export function unitDuration(duration: DateDuration) {
 
   return unit;
 }
+
+/**
+ * Create a unique key for the given date.
+ */
+export function getKeyForDate(date: CalendarDate) {
+  return `${date.year}-${date.month}-${date.day}`;
+}

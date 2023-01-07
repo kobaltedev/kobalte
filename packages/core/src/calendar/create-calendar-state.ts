@@ -23,11 +23,20 @@ import {
   toCalendarDate,
   today,
 } from "@internationalized/date";
-import { access, MaybeAccessor, mergeDefaultProps, ValidationState } from "@kobalte/utils";
+import {
+  access,
+  focusWithoutScrolling,
+  getDocument,
+  getScrollParent,
+  MaybeAccessor,
+  mergeDefaultProps,
+  scrollIntoView,
+  ValidationState,
+} from "@kobalte/utils";
 import { createEffect, createMemo, createSignal } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { createControllableSignal } from "../primitives";
+import { createControllableSignal, getInteractionModality } from "../primitives";
 import { CalendarState, DateValue, MappedDateValue } from "./types";
 import {
   alignCenter,
@@ -35,6 +44,7 @@ import {
   alignStart,
   constrainStart,
   constrainValue,
+  getKeyForDate,
   isInvalid,
   previousAvailableDate,
   unitDuration,
@@ -132,7 +142,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
 
   const calendar = createMemo(() => props.createCalendar!(resolvedOptions().calendar));
 
-  const calendarDateValue = createMemo(() => {
+  const calendarDateValue = () => {
     const value = selectedDate();
 
     if (value != null) {
@@ -140,9 +150,9 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     }
 
     return undefined;
-  });
+  };
 
-  const timeZone = createMemo(() => {
+  const timeZone = () => {
     const value = selectedDate();
 
     if (value != null && "timeZone" in value) {
@@ -150,9 +160,9 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     }
 
     return resolvedOptions().timeZone;
-  });
+  };
 
-  const focusedCalendarDate = createMemo(() => {
+  const focusedCalendarDate = () => {
     const focusedValue = access(props.focusedValue);
 
     if (focusedValue == null) {
@@ -162,9 +172,9 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     const date = toCalendar(toCalendarDate(focusedValue), calendar());
 
     return constrainValue(date, access(props.minValue), access(props.maxValue));
-  });
+  };
 
-  const defaultFocusedCalendarDate = createMemo(() => {
+  const defaultFocusedCalendarDate = () => {
     const defaultFocusedValue = access(props.defaultFocusedValue);
     let date: CalendarDate;
 
@@ -175,7 +185,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     }
 
     return constrainValue(date, access(props.minValue), access(props.maxValue));
-  });
+  };
 
   const [focusedDate, setFocusedDate] = createControllableSignal<CalendarDate>({
     value: focusedCalendarDate,
@@ -209,7 +219,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
 
   const [isFocused, setFocused] = createSignal(access(props.autoFocus) || false);
 
-  const endDate = createMemo(() => {
+  const endDate = () => {
     const duration = { ...access(props.visibleDuration) };
 
     if (duration.days) {
@@ -219,7 +229,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     }
 
     return startDate().add(duration);
-  });
+  };
 
   let lastCalendarIdentifier = calendar().identifier;
 
@@ -263,6 +273,24 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
   const focusCell = (date: CalendarDate) => {
     date = constrainValue(date, access(props.minValue), access(props.maxValue));
     setFocusedDate(date);
+
+    const key = getKeyForDate(date);
+
+    // Try focus the cell button with the given key here,
+    // instead of in the component itself, because of unexpected focusout behavior.
+    const cellButton = getDocument().querySelector(`[data-key='${key}']`) as HTMLElement | null;
+
+    if (cellButton) {
+      focusWithoutScrolling(cellButton);
+
+      // Scroll into view if navigating with a keyboard, otherwise
+      // try not to shift the view under the user's mouse/finger.
+      // Only scroll the direct scroll parent, not the whole page, so
+      // we don't scroll to the bottom when opening date picker popover.
+      if (getInteractionModality() !== "pointer") {
+        scrollIntoView(getScrollParent(cellButton) as HTMLElement, cellButton);
+      }
+    }
   };
 
   const setValue = (date: CalendarDate) => {
@@ -295,7 +323,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     }
   };
 
-  const isUnavailable = createMemo(() => {
+  const isUnavailable = () => {
     const value = calendarDateValue();
 
     if (!value) {
@@ -307,7 +335,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     }
 
     return isInvalid(value, access(props.minValue), access(props.maxValue));
-  });
+  };
 
   const validationState = () => {
     return access(props.validationState) || (isUnavailable() ? "invalid" : undefined);
