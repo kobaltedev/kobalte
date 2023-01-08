@@ -24,7 +24,7 @@ export const CalendarNextPageButton = createPolymorphicComponent<"button", Butto
 
   const onPress: PressEvents["onPress"] = e => {
     local.onPress?.(e);
-    context.calendarState().focusNextPage();
+    context.state().focusNextPage();
   };
 
   const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {

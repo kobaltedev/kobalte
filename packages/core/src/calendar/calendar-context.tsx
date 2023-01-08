@@ -3,7 +3,7 @@ import { Accessor, createContext, useContext } from "solid-js";
 import { CalendarState, RangeCalendarState } from "./types";
 
 export interface CalendarContextValue {
-  calendarState: Accessor<CalendarState | RangeCalendarState>;
+  state: Accessor<CalendarState | RangeCalendarState>;
   selectedDateDescription: Accessor<string>;
   isPreviousDisabled: Accessor<boolean>;
   isNextDisabled: Accessor<boolean>;

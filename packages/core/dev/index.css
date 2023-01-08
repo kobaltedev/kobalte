@@ -74,7 +74,7 @@
   background: #eee;
 }
 
-.cell[data-selected] {
+.cell[data-selected]:not([data-outside-month]) {
   background: var(--accent-color);
   color: white;
 }
@@ -88,6 +88,7 @@
   border: 2px solid var(--accent-color);
 }
 
-.cell[data-disabled] {
+.cell[data-disabled],
+.cell[data-outside-month] {
   color: gray;
 }

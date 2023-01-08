@@ -14,6 +14,7 @@ import { Dynamic } from "solid-js/web";
 import { useLocale } from "../i18n";
 import { useCalendarContext } from "./calendar-context";
 import { createVisibleRangeDescription } from "./primitives";
+import { CalendarGridContext, CalendarGridContextValue } from "./calendar-grid-context";
 
 export interface CalendarGridOptions {
   /**
@@ -36,7 +37,7 @@ export interface CalendarGridOptions {
  * can be navigated via keyboard and selected by the user.
  */
 export const CalendarGrid = createPolymorphicComponent<"table", CalendarGridOptions>(props => {
-  const context = useCalendarContext();
+  const calendarContext = useCalendarContext();
 
   props = mergeDefaultProps({ as: "table" }, props);
 
@@ -51,20 +52,20 @@ export const CalendarGrid = createPolymorphicComponent<"table", CalendarGridOpti
 
   const { direction } = useLocale();
 
-  const startDate = () => local.startDate ?? context.calendarState().visibleRange().start;
-  const endDate = () => local.endDate ?? context.calendarState().visibleRange().end;
+  const startDate = () => local.startDate ?? calendarContext.state().visibleRange().start;
+  const endDate = () => local.endDate ?? calendarContext.state().visibleRange().end;
 
   const visibleRangeDescription = createVisibleRangeDescription({
     startDate,
     endDate,
-    timeZone: () => context.calendarState().timeZone(),
+    timeZone: () => calendarContext.state().timeZone(),
     isAria: () => true,
   });
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
 
-    const state = context.calendarState();
+    const state = calendarContext.state();
 
     switch (e.key) {
       case "Enter":
@@ -132,27 +133,35 @@ export const CalendarGrid = createPolymorphicComponent<"table", CalendarGridOpti
 
   const onFocusIn: JSX.EventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onFocusIn);
-    context.calendarState().setFocused(true);
+    calendarContext.state().setFocused(true);
   };
 
   const onFocusOut: JSX.EventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onFocusOut);
-    context.calendarState().setFocused(false);
+    calendarContext.state().setFocused(false);
+  };
+
+  const context: CalendarGridContextValue = {
+    startDate,
   };
 
   return (
-    <Dynamic
-      component={local.as}
-      role="grid"
-      aria-readonly={context.calendarState().isReadOnly() || undefined}
-      aria-disabled={context.calendarState().isDisabled() || undefined}
-      aria-multiselectable={"highlightedRange" in context.calendarState() || undefined}
-      aria-label={[context.ariaLabel(), visibleRangeDescription()].filter(Boolean).join(", ")}
-      aria-labelledby={context.ariaLabelledBy()}
-      onKeyDown={onKeyDown}
-      onFocusIn={onFocusIn}
-      onFocusOut={onFocusOut}
-      {...others}
-    />
+    <CalendarGridContext.Provider value={context}>
+      <Dynamic
+        component={local.as}
+        role="grid"
+        aria-readonly={calendarContext.state().isReadOnly() || undefined}
+        aria-disabled={calendarContext.state().isDisabled() || undefined}
+        aria-multiselectable={"highlightedRange" in calendarContext.state() || undefined}
+        aria-label={[calendarContext.ariaLabel(), visibleRangeDescription()]
+          .filter(Boolean)
+          .join(", ")}
+        aria-labelledby={calendarContext.ariaLabelledBy()}
+        onKeyDown={onKeyDown}
+        onFocusIn={onFocusIn}
+        onFocusOut={onFocusOut}
+        {...others}
+      />
+    </CalendarGridContext.Provider>
   );
 });

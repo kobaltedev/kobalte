@@ -96,7 +96,7 @@ function hasNegativeTabIndex(element: Element) {
  * Licensed under the MIT License.
  * @param element - Element to evaluate for display or visibility.
  */
-function isElementVisible(element: Element, childElement?: Element): boolean {
+export function isElementVisible(element: Element, childElement?: Element): boolean {
   return (
     element.nodeName !== "#comment" &&
     isStyleVisible(element) &&

@@ -7,7 +7,7 @@
  */
 
 import { CalendarDate, endOfMonth, isSameDay, startOfMonth } from "@internationalized/date";
-import { Accessor } from "solid-js";
+import { Accessor, createMemo } from "solid-js";
 
 import { createDateFormatter, createLocalizedStringFormatter } from "../i18n";
 import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
@@ -55,8 +55,7 @@ export function createSelectedDateDescription(state: CalendarState | RangeCalend
 
   const anchorDate = () => ("anchorDate" in state ? state.anchorDate() : null);
 
-  //TODO: re-add createMemo if needed
-  return () => {
+  return createMemo(() => {
     const startDate = start();
     const endDate = end();
 
@@ -81,7 +80,7 @@ export function createSelectedDateDescription(state: CalendarState | RangeCalend
     }
 
     return "";
-  };
+  });
 }
 
 interface CreateVisibleRangeDescriptionProps {
@@ -115,8 +114,7 @@ export function createVisibleRangeDescription(props: CreateVisibleRangeDescripti
     timeZone: props.timeZone(),
   }));
 
-  //TODO: re-add createMemo if needed
-  return () => {
+  return createMemo(() => {
     // Special case for month granularity. Format as a single month if only a
     // single month is visible, otherwise format as a range of months.
     if (isSameDay(props.startDate(), startOfMonth(props.startDate()))) {
@@ -154,5 +152,5 @@ export function createVisibleRangeDescription(props: CreateVisibleRangeDescripti
         props.endDate().toDate(props.timeZone())
       );
     }
-  };
+  });
 }

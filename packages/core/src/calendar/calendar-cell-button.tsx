@@ -4,32 +4,119 @@
  *
  * Credits to the React Spectrum team:
  * https://github.com/adobe/react-spectrum/blob/bb9f65fc853474065a9de9ed6f5f471c16689237/packages/@react-aria/calendar/src/useCalendarCell.ts
+ * https://github.com/adobe/react-spectrum/blob/73d8be4dd7ff1713084cfe3f602f11aef1cecb07/packages/@react-spectrum/calendar/src/CalendarCell.tsx
  */
 
-import { isSameDay } from "@internationalized/date";
+import { getDayOfWeek, isSameDay, isSameMonth, isToday } from "@internationalized/date";
 import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
+import { createDateFormatter } from "../i18n";
 import { createFocusRing, createHover, createPress } from "../primitives";
-import { useCalendarCellContext } from "./calendar-cell-context";
+import { useCalendarGridCellContext } from "./calendar-grid-cell-context";
 import { useCalendarContext } from "./calendar-context";
 import { getKeyForDate } from "./utils";
+import { useCalendarGridContext } from "./calendar-grid-context";
 
 export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
   const calendarContext = useCalendarContext();
-  const context = useCalendarCellContext();
+  const gridContext = useCalendarGridContext();
+  const context = useCalendarGridCellContext();
 
   props = mergeDefaultProps({ as: "div" }, props);
 
   const [local, others] = splitProps(props, ["as"]);
+
+  const cellDateFormatter = createDateFormatter(() => ({
+    day: "numeric",
+    timeZone: calendarContext.state().timeZone(),
+    calendar: context.date().calendar.identifier,
+  }));
+
+  const formattedDate = () => {
+    const nativeDate = context.date().toDate(calendarContext.state().timeZone());
+    return cellDateFormatter().format(nativeDate);
+  };
+
+  const isLastSelectedBeforeDisabled = () => {
+    const state = calendarContext.state();
+
+    return (
+      !context.isDisabled() &&
+      !context.isInvalid() &&
+      state.isCellUnavailable(context.date().add({ days: 1 }))
+    );
+  };
+
+  const isFirstSelectedAfterDisabled = () => {
+    const state = calendarContext.state();
+
+    return (
+      !context.isDisabled() &&
+      !context.isInvalid() &&
+      state.isCellUnavailable(context.date().subtract({ days: 1 }))
+    );
+  };
+
+  const dayOfWeek = () => {
+    return getDayOfWeek(context.date(), calendarContext.state().locale());
+  };
+
+  const isRangeStart = () => {
+    return (
+      context.isSelected() &&
+      (isFirstSelectedAfterDisabled() || dayOfWeek() === 0 || context.date().day === 1)
+    );
+  };
+
+  const isRangeEnd = () => {
+    const currentMonth = calendarContext.state().visibleRange().start;
+
+    return (
+      context.isSelected() &&
+      (isLastSelectedBeforeDisabled() ||
+        dayOfWeek() === 6 ||
+        context.date().day === currentMonth.calendar.getDaysInMonth(currentMonth))
+    );
+  };
+
+  const isRangeSelection = () => {
+    return context.isSelected() && "highlightedRange" in calendarContext.state();
+  };
+
+  const isSelectionStart = () => {
+    const state = calendarContext.state();
+
+    if ("highlightedRange" in state) {
+      const highlightedRange = state.highlightedRange();
+      return context.isSelected() && isSameDay(context.date(), highlightedRange.start);
+    }
+  };
+
+  const isSelectionEnd = () => {
+    const state = calendarContext.state();
+
+    if ("highlightedRange" in state) {
+      const highlightedRange = state.highlightedRange();
+      return context.isSelected() && isSameDay(context.date(), highlightedRange.end);
+    }
+  };
+
+  const isOutsideMonth = () => {
+    return !isSameMonth(gridContext.startDate(), context.date());
+  };
+
+  const isFocused = () => {
+    return calendarContext.state().isCellFocused(context.date());
+  };
 
   const tabIndex = () => {
     if (context.isDisabled()) {
       return undefined;
     }
 
-    const state = calendarContext.calendarState();
+    const state = calendarContext.state();
 
     return isSameDay(context.date(), state.focusedDate()) ? 0 : -1;
   };
@@ -42,13 +129,13 @@ export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
     // When dragging to select a range, we don't want dragging over the original anchor
     // again to trigger onPressStart. Cancel presses immediately when the pointer exits.
     cancelOnPointerExit: () => {
-      const state = calendarContext.calendarState();
+      const state = calendarContext.state();
       return "anchorDate" in state && !!state.anchorDate();
     },
     preventFocusOnPress: true,
     isDisabled: () => !context.isSelectable(),
     onPressStart: e => {
-      const state = calendarContext.calendarState();
+      const state = calendarContext.state();
 
       if (state.isReadOnly()) {
         state.setFocusedDate(context.date());
@@ -111,7 +198,7 @@ export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
       touchDragTimeoutId = null;
     },
     onPress: () => {
-      const state = calendarContext.calendarState();
+      const state = calendarContext.state();
 
       // For non-range selection, always select on press up.
       if (!("anchorDate" in state) && !state.isReadOnly()) {
@@ -120,7 +207,7 @@ export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
       }
     },
     onPressUp: e => {
-      const state = calendarContext.calendarState();
+      const state = calendarContext.state();
 
       if (state.isReadOnly()) {
         return;
@@ -176,7 +263,7 @@ export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
   const { isFocusVisible, focusRingHandlers } = createFocusRing();
 
   const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
-    const state = calendarContext.calendarState();
+    const state = calendarContext.state();
 
     if (!context.isDisabled()) {
       state.setFocusedDate(context.date());
@@ -184,7 +271,7 @@ export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
   };
 
   const onPointerEnter: JSX.EventHandlerUnion<any, PointerEvent> = e => {
-    const state = calendarContext.calendarState();
+    const state = calendarContext.state();
 
     // Highlight the date on hover or drag over a date when selecting a range.
     if (
@@ -218,19 +305,23 @@ export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
       aria-label={context.label()}
       aria-disabled={!context.isSelectable() || undefined}
       data-key={getKeyForDate(context.date())}
-      data-disabled={context.isDisabled() ? "" : undefined}
+      data-today={isToday(context.date(), calendarContext.state().timeZone()) ? "" : undefined}
       data-unavailable={context.isUnavailable() ? "" : undefined}
-      data-outside-visible-range={context.isOutsideVisibleRange() ? "" : undefined}
+      data-outside-month={isOutsideMonth() ? "" : undefined}
+      data-range-start={isRangeStart() ? "" : undefined}
+      data-range-end={isRangeEnd() ? "" : undefined}
+      data-range-selection={isRangeSelection() ? "" : undefined}
+      data-selection-start={isSelectionStart() ? "" : undefined}
+      data-selection-end={isSelectionEnd() ? "" : undefined}
       data-selected={context.isSelected() ? "" : undefined}
+      data-disabled={context.isDisabled() ? "" : undefined}
       data-invalid={context.isInvalid() ? "" : undefined}
       data-hover={isHovered() ? "" : undefined}
-      data-focus={context.isFocused() ? "" : undefined}
+      data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
       data-active={isPressed() ? "" : undefined}
       {...combineProps(
-        {
-          children: context.formattedDate(),
-        },
+        { children: formattedDate },
         others,
         pressHandlers,
         hoverHandlers,

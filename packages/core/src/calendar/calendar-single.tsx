@@ -8,40 +8,49 @@
  */
 
 import { access, createPolymorphicComponent } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { JSX, splitProps } from "solid-js";
 
-import { CalendarRoot, CalendarRootOptions } from "./calendar-root";
+import { CalendarRoot } from "./calendar-root";
 import { createCalendarState, CreateCalendarStateProps } from "./create-calendar-state";
+import { CalendarState } from "./types";
 
-export interface CalendarSingleOptions
-  extends CreateCalendarStateProps,
-    Pick<CalendarRootOptions, "children"> {}
+export interface CalendarSingleOptions extends CreateCalendarStateProps {
+  children: (state: CalendarState) => JSX.Element;
+}
 
 /**
  * Displays one or more date grids and allows users to select a single date.
  */
 export const CalendarSingle = createPolymorphicComponent<"div", CalendarSingleOptions>(props => {
-  const [local, others] = splitProps(props, [
-    "value",
-    "defaultValue",
-    "onValueChange",
-    "locale",
-    "createCalendar",
-    "visibleDuration",
-    "selectionAlignment",
-    "minValue",
-    "maxValue",
-    "isDateUnavailable",
-    "isDisabled",
-    "isReadOnly",
-    "autoFocus",
-    "focusedValue",
-    "defaultFocusedValue",
-    "onFocusChange",
-    "validationState",
-  ]);
+  const [local, stateProps, others] = splitProps(
+    props,
+    ["children"],
+    [
+      "value",
+      "defaultValue",
+      "onValueChange",
+      "locale",
+      "createCalendar",
+      "visibleDuration",
+      "selectionAlignment",
+      "minValue",
+      "maxValue",
+      "isDateUnavailable",
+      "isDisabled",
+      "isReadOnly",
+      "autoFocus",
+      "focusedValue",
+      "defaultFocusedValue",
+      "onFocusChange",
+      "validationState",
+    ]
+  );
 
-  const state = createCalendarState(local);
+  const state = createCalendarState(stateProps);
 
-  return <CalendarRoot state={state} isDisabled={access(local.isDisabled)} {...others} />;
+  return (
+    <CalendarRoot state={state} isDisabled={access(stateProps.isDisabled)} {...others}>
+      {local.children(state)}
+    </CalendarRoot>
+  );
 });

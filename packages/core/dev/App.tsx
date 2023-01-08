@@ -1,4 +1,4 @@
-import { For, Index } from "solid-js";
+import { getLocalTimeZone, today } from "@internationalized/date";
 
 import { Calendar, I18nProvider } from "../src";
 
@@ -6,36 +6,52 @@ export default function App() {
   return (
     <div class="app">
       <I18nProvider>
-        <Calendar class="calendar">
+        <Calendar minValue={today(getLocalTimeZone())} class="calendar">
           {state => (
             <>
               <div class="header">
                 <Calendar.PrevPageButton class="button">&lsaquo;</Calendar.PrevPageButton>
-                <h2>{state.title()}</h2>
+                <h2>Title</h2>
                 <Calendar.NextPageButton class="button">&rsaquo;</Calendar.NextPageButton>
               </div>
-              <Calendar.Grid cell-padding="0" class="grid">
-                <thead aria-hidden="true">
-                  <tr>
-                    <For each={state.weekDays()}>{day => <th>{day}</th>}</For>
-                  </tr>
-                </thead>
-                <tbody>
-                  <Index each={[...new Array(state.weeksInMonth()).keys()]}>
+              <div class="flex space-x-12">
+                <Calendar.Grid cell-padding="0" class="grid">
+                  <Calendar.GridHeader>
+                    <Calendar.WeekDays>{day => <th>{day()}</th>}</Calendar.WeekDays>
+                  </Calendar.GridHeader>
+                  <Calendar.GridBody>
                     {weekIndex => (
-                      <tr>
-                        <Index each={state.getDatesInWeek(weekIndex())}>
-                          {date => (
-                            <Calendar.Cell date={date()}>
-                              <Calendar.CellButton class="cell" />
-                            </Calendar.Cell>
-                          )}
-                        </Index>
-                      </tr>
+                      <Calendar.GridRow weekIndex={weekIndex()}>
+                        {date => (
+                          <Calendar.GridCell date={date()}>
+                            <Calendar.CellButton class="cell" />
+                          </Calendar.GridCell>
+                        )}
+                      </Calendar.GridRow>
                     )}
-                  </Index>
-                </tbody>
-              </Calendar.Grid>
+                  </Calendar.GridBody>
+                </Calendar.Grid>
+                <Calendar.Grid
+                  startDate={state.visibleRange().start.add({ months: 1 })}
+                  cell-padding="0"
+                  class="grid"
+                >
+                  <Calendar.GridHeader>
+                    <Calendar.WeekDays>{day => <th>{day()}</th>}</Calendar.WeekDays>
+                  </Calendar.GridHeader>
+                  <Calendar.GridBody>
+                    {weekIndex => (
+                      <Calendar.GridRow weekIndex={weekIndex()}>
+                        {date => (
+                          <Calendar.GridCell date={date()}>
+                            <Calendar.CellButton class="cell" />
+                          </Calendar.GridCell>
+                        )}
+                      </Calendar.GridRow>
+                    )}
+                  </Calendar.GridBody>
+                </Calendar.Grid>
+              </div>
             </>
           )}
         </Calendar>

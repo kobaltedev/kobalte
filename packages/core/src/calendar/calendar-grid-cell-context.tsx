@@ -1,27 +1,24 @@
 import { CalendarDate } from "@internationalized/date";
 import { Accessor, createContext, useContext } from "solid-js";
 
-export interface CalendarCellContextValue {
+export interface CalendarGridCellContextValue {
   isSelectable: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
   isUnavailable: Accessor<boolean>;
-  isOutsideVisibleRange: Accessor<boolean>;
   isSelected: Accessor<boolean>;
   isInvalid: Accessor<boolean>;
-  isFocused: Accessor<boolean>;
   date: Accessor<CalendarDate>;
-  formattedDate: Accessor<string>;
   label: Accessor<string>;
 }
 
-export const CalendarCellContext = createContext<CalendarCellContextValue>();
+export const CalendarGridCellContext = createContext<CalendarGridCellContextValue>();
 
-export function useCalendarCellContext() {
-  const context = useContext(CalendarCellContext);
+export function useCalendarGridCellContext() {
+  const context = useContext(CalendarGridCellContext);
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useCalendarCellContext` must be used within a `Calendar.Cell` component"
+      "[kobalte]: `useCalendarGridCellContext` must be used within a `Calendar.GridCell` component"
     );
   }
 

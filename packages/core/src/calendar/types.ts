@@ -6,7 +6,12 @@
  * https://github.com/adobe/react-spectrum/blob/15e101b74966bd5eb719c6529ce71ce57eaed430/packages/@react-stately/calendar/src/types.ts
  */
 
-import { CalendarDate, CalendarDateTime, ZonedDateTime } from "@internationalized/date";
+import {
+  CalendarDate,
+  CalendarDateTime,
+  getWeeksInMonth,
+  ZonedDateTime,
+} from "@internationalized/date";
 import { RangeValue, ValidationState } from "@kobalte/utils";
 import { Accessor } from "solid-js";
 
@@ -44,6 +49,12 @@ interface CalendarStateBase {
 
   /** The time zone of the dates currently being displayed. */
   timeZone: Accessor<string>;
+
+  /**
+   * A list of week day abbreviations formatted for the current locale,
+   * typically used in column headers.
+   */
+  weekDays: Accessor<string[]>;
 
   /** The current validation state of the selected value. */
   validationState: Accessor<ValidationState | undefined>;
@@ -131,6 +142,9 @@ interface CalendarStateBase {
 
   /** Returns whether the next visible date range is allowed to be selected according to the `maxValue` prop. */
   isNextVisibleRangeInvalid: () => boolean;
+
+  /** Returns the number of weeks in the given month and the current locale. */
+  getWeeksInMonth: (date: DateValue) => number;
 
   /**
    * Returns an array of dates in the week index counted from the provided start date, or the first visible date if not given.

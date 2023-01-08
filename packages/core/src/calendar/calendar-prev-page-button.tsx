@@ -24,7 +24,7 @@ export const CalendarPrevPageButton = createPolymorphicComponent<"button", Butto
 
   const onPress: PressEvents["onPress"] = e => {
     local.onPress?.(e);
-    context.calendarState().focusPreviousPage();
+    context.state().focusPreviousPage();
   };
 
   const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {

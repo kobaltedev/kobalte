@@ -15,6 +15,7 @@ import {
   endOfMonth,
   endOfWeek,
   getDayOfWeek,
+  getWeeksInMonth,
   GregorianCalendar,
   isSameDay,
   startOfMonth,
@@ -28,6 +29,7 @@ import {
   focusWithoutScrolling,
   getDocument,
   getScrollParent,
+  isElementVisible,
   MaybeAccessor,
   mergeDefaultProps,
   scrollIntoView,
@@ -35,7 +37,7 @@ import {
 } from "@kobalte/utils";
 import { createEffect, createMemo, createSignal } from "solid-js";
 
-import { useLocale } from "../i18n";
+import { createDateFormatter, useLocale } from "../i18n";
 import { createControllableSignal, getInteractionModality } from "../primitives";
 import { CalendarState, DateValue, MappedDateValue } from "./types";
 import {
@@ -119,11 +121,11 @@ export interface CreateCalendarStateProps {
  * A calendar displays one or more date grids and allows users to select a single date.
  */
 export function createCalendarState(props: CreateCalendarStateProps): CalendarState {
-  const { locale } = useLocale();
+  const { locale: defaultLocale } = useLocale();
 
   props = mergeDefaultProps(
     {
-      locale,
+      locale: () => defaultLocale(),
       visibleDuration: { months: 1 },
       createCalendar,
     },
@@ -231,43 +233,38 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     return startDate().add(duration);
   };
 
-  let lastCalendarIdentifier = calendar().identifier;
+  const isUnavailable = () => {
+    const value = calendarDateValue();
 
-  // Reset focused date and visible range when calendar changes.
-  createEffect(() => {
-    if (calendar().identifier !== lastCalendarIdentifier) {
-      const visibleDuration = access(props.visibleDuration)!;
-      const locale = access(props.locale)!;
-      const minValue = access(props.minValue);
-      const maxValue = access(props.maxValue);
-
-      const newFocusedDate = toCalendar(focusedDate()!, calendar());
-
-      setStartDate(alignCenter(newFocusedDate, visibleDuration, locale, minValue, maxValue));
-
-      setFocusedDate(newFocusedDate);
-
-      lastCalendarIdentifier = calendar().identifier;
+    if (!value) {
+      return false;
     }
-  });
 
-  createEffect(() => {
-    const date = focusedDate()!;
-
-    const visibleDuration = access(props.visibleDuration)!;
-    const locale = access(props.locale)!;
-    const minValue = access(props.minValue);
-    const maxValue = access(props.maxValue);
-
-    if (isInvalid(date, minValue, maxValue)) {
-      // If the focused date was moved to an invalid value, it can't be focused, so constrain it.
-      setFocusedDate(constrainValue(date, minValue, maxValue));
-    } else if (date.compare(startDate()) < 0) {
-      setStartDate(alignEnd(date, visibleDuration, locale, minValue, maxValue));
-    } else if (date.compare(endDate()) > 0) {
-      setStartDate(alignStart(date, visibleDuration, locale, minValue, maxValue));
+    if (props.isDateUnavailable && props.isDateUnavailable(value)) {
+      return true;
     }
-  });
+
+    return isInvalid(value, access(props.minValue), access(props.maxValue));
+  };
+
+  const validationState = () => {
+    return access(props.validationState) || (isUnavailable() ? "invalid" : undefined);
+  };
+
+  const dayFormatter = createDateFormatter(() => ({
+    weekday: "narrow",
+    timeZone: timeZone(),
+  }));
+
+  const weekDays = () => {
+    const weekStart = startOfWeek(today(timeZone()), access(props.locale)!);
+
+    return [...new Array(7).keys()].map(index => {
+      const date = weekStart.add({ days: index });
+      const dateDay = date.toDate(timeZone());
+      return dayFormatter().format(dateDay);
+    });
+  };
 
   // Sets focus to a specific cell date
   const focusCell = (date: CalendarDate) => {
@@ -276,9 +273,10 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
 
     const key = getKeyForDate(date);
 
-    // Try focus the cell button with the given key here,
-    // instead of in the component itself, because of unexpected focusout behavior.
-    const cellButton = getDocument().querySelector(`[data-key='${key}']`) as HTMLElement | null;
+    // Focus the cell button with the given key and in the grid of the same month.
+    const cellButton = getDocument().querySelector(
+      `[data-key='${key}']:not([data-outside-month])`
+    ) as HTMLElement | null;
 
     if (cellButton) {
       focusWithoutScrolling(cellButton);
@@ -323,23 +321,43 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     }
   };
 
-  const isUnavailable = () => {
-    const value = calendarDateValue();
+  let lastCalendarIdentifier = calendar().identifier;
 
-    if (!value) {
-      return false;
+  // Reset focused date and visible range when calendar changes.
+  createEffect(() => {
+    if (calendar().identifier !== lastCalendarIdentifier) {
+      const visibleDuration = access(props.visibleDuration)!;
+      const locale = access(props.locale)!;
+      const minValue = access(props.minValue);
+      const maxValue = access(props.maxValue);
+
+      const newFocusedDate = toCalendar(focusedDate()!, calendar());
+
+      setStartDate(alignCenter(newFocusedDate, visibleDuration, locale, minValue, maxValue));
+
+      setFocusedDate(newFocusedDate);
+
+      lastCalendarIdentifier = calendar().identifier;
     }
+  });
 
-    if (props.isDateUnavailable && props.isDateUnavailable(value)) {
-      return true;
+  createEffect(() => {
+    const date = focusedDate()!;
+
+    const visibleDuration = access(props.visibleDuration)!;
+    const locale = access(props.locale)!;
+    const minValue = access(props.minValue);
+    const maxValue = access(props.maxValue);
+
+    if (isInvalid(date, minValue, maxValue)) {
+      // If the focused date was moved to an invalid value, it can't be focused, so constrain it.
+      setFocusedDate(constrainValue(date, minValue, maxValue));
+    } else if (date.compare(startDate()) < 0) {
+      setStartDate(alignEnd(date, visibleDuration, locale, minValue, maxValue));
+    } else if (date.compare(endDate()) > 0) {
+      setStartDate(alignStart(date, visibleDuration, locale, minValue, maxValue));
     }
-
-    return isInvalid(value, access(props.minValue), access(props.maxValue));
-  };
-
-  const validationState = () => {
-    return access(props.validationState) || (isUnavailable() ? "invalid" : undefined);
-  };
+  });
 
   return {
     isDisabled: () => access(props.isDisabled) ?? false,
@@ -355,6 +373,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     focusedDate: () => focusedDate()!,
     locale: () => access(props.locale)!,
     timeZone,
+    weekDays,
     validationState,
     setFocusedDate(date) {
       focusCell(date);
@@ -556,6 +575,9 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       // according to the calendar system (e.g. 9999-12-31).
       const next = endDate().add({ days: 1 });
       return isSameDay(next, endDate()) || this.isInvalid(next);
+    },
+    getWeeksInMonth(date: DateValue) {
+      return getWeeksInMonth(date, access(props.locale)!);
     },
     getDatesInWeek(weekIndex, from) {
       const locale = access(props.locale)!;
