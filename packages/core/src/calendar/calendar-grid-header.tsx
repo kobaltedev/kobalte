@@ -10,6 +10,9 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
+/**
+ * The header of a `Calendar.Grid`.
+ */
 export const CalendarGridHeader = createPolymorphicComponent<"thead">(props => {
   props = mergeDefaultProps({ as: "thead" }, props);
 

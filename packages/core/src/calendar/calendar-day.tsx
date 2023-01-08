@@ -14,15 +14,18 @@ import { Dynamic } from "solid-js/web";
 
 import { createDateFormatter } from "../i18n";
 import { createFocusRing, createHover, createPress } from "../primitives";
-import { useCalendarGridCellContext } from "./calendar-grid-cell-context";
+import { useCalendarCellContext } from "./calendar-cell-context";
 import { useCalendarContext } from "./calendar-context";
+import { useCalendarMonthContext } from "./calendar-month-context";
 import { getKeyForDate } from "./utils";
-import { useCalendarGridContext } from "./calendar-grid-context";
 
-export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
+/**
+ * A day of the `Calendar.Month` which can be selected by the user.
+ */
+export const CalendarDay = createPolymorphicComponent<"div">(props => {
   const calendarContext = useCalendarContext();
-  const gridContext = useCalendarGridContext();
-  const context = useCalendarGridCellContext();
+  const monthContext = useCalendarMonthContext();
+  const context = useCalendarCellContext();
 
   props = mergeDefaultProps({ as: "div" }, props);
 
@@ -104,7 +107,7 @@ export const CalendarCellButton = createPolymorphicComponent<"div">(props => {
   };
 
   const isOutsideMonth = () => {
-    return !isSameMonth(gridContext.startDate(), context.date());
+    return !isSameMonth(monthContext.startDate(), context.date());
   };
 
   const isFocused = () => {

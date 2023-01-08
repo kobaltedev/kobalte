@@ -15,6 +15,9 @@ import { PressEvents } from "../primitives";
 import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
 import { useCalendarContext } from "./calendar-context";
 
+/**
+ * A navigation button to go to the previous page within a calendar or range calendar.
+ */
 export const CalendarPrevPageButton = createPolymorphicComponent<"button", ButtonOptions>(props => {
   const context = useCalendarContext();
 

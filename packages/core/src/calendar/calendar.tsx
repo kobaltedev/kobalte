@@ -1,26 +1,33 @@
 import { createPolymorphicComponent } from "@kobalte/utils";
 
-import { CalendarGridCell } from "./calendar-grid-cell";
-import { CalendarCellButton } from "./calendar-cell-button";
+import { CalendarCell } from "./calendar-cell";
+import { CalendarDay } from "./calendar-day";
 import { CalendarGrid } from "./calendar-grid";
 import { CalendarNextPageButton } from "./calendar-next-page-button";
 import { CalendarPrevPageButton } from "./calendar-prev-page-button";
 import { CalendarSingle, CalendarSingleOptions } from "./calendar-single";
 import { CalendarGridBody } from "./calendar-grid-body";
-import { CalendarGridRow } from "./calendar-grid-row";
+import { CalendarRow } from "./calendar-row";
 import { CalendarGridHeader } from "./calendar-grid-header";
 import { CalendarWeekDays } from "./calendar-week-days";
+import { CalendarWeekDay } from "./calendar-week-day";
+import { CalendarMonth } from "./calendar-month";
+import { CalendarTitle } from "./calendar-title";
 
 type CalendarComposite = {
+  Month: typeof CalendarMonth;
+  Header: typeof CalendarGridHeader;
+  Title: typeof CalendarTitle;
   NextPageButton: typeof CalendarNextPageButton;
   PrevPageButton: typeof CalendarPrevPageButton;
   Grid: typeof CalendarGrid;
   GridHeader: typeof CalendarGridHeader;
   WeekDays: typeof CalendarWeekDays;
+  WeekDay: typeof CalendarWeekDay;
   GridBody: typeof CalendarGridBody;
-  GridRow: typeof CalendarGridRow;
-  GridCell: typeof CalendarGridCell;
-  CellButton: typeof CalendarCellButton;
+  Row: typeof CalendarRow;
+  Cell: typeof CalendarCell;
+  Day: typeof CalendarDay;
 };
 
 /**
@@ -32,12 +39,16 @@ export const Calendar = createPolymorphicComponent<"div", CalendarSingleOptions,
   }
 );
 
+Calendar.Month = CalendarMonth;
+Calendar.Header = CalendarGridHeader;
+Calendar.Title = CalendarTitle;
 Calendar.NextPageButton = CalendarNextPageButton;
 Calendar.PrevPageButton = CalendarPrevPageButton;
 Calendar.Grid = CalendarGrid;
 Calendar.GridHeader = CalendarGridHeader;
 Calendar.WeekDays = CalendarWeekDays;
+Calendar.WeekDay = CalendarWeekDay;
 Calendar.GridBody = CalendarGridBody;
-Calendar.GridRow = CalendarGridRow;
-Calendar.GridCell = CalendarGridCell;
-Calendar.CellButton = CalendarCellButton;
+Calendar.Row = CalendarRow;
+Calendar.Cell = CalendarCell;
+Calendar.Day = CalendarDay;

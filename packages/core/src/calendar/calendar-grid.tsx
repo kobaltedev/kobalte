@@ -6,58 +6,32 @@
  * https://github.com/adobe/react-spectrum/blob/bb9f65fc853474065a9de9ed6f5f471c16689237/packages/@react-aria/calendar/src/useCalendarGrid.ts
  */
 
-import { CalendarDate } from "@internationalized/date";
 import { callHandler, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useLocale } from "../i18n";
 import { useCalendarContext } from "./calendar-context";
+import { useCalendarMonthContext } from "./calendar-month-context";
 import { createVisibleRangeDescription } from "./primitives";
-import { CalendarGridContext, CalendarGridContextValue } from "./calendar-grid-context";
-
-export interface CalendarGridOptions {
-  /**
-   * The first date displayed in the calendar grid.
-   * Defaults to the first visible date in the calendar.
-   * Override this to display multiple date grids in a calendar.
-   */
-  startDate?: CalendarDate;
-
-  /**
-   * The last date displayed in the calendar grid.
-   * Defaults to the last visible date in the calendar.
-   * Override this to display multiple date grids in a calendar.
-   */
-  endDate?: CalendarDate;
-}
 
 /**
- * Displays a single grid of days within a calendar or range calendar which
+ * A single grid of days within a `Calendar.Month` which
  * can be navigated via keyboard and selected by the user.
  */
-export const CalendarGrid = createPolymorphicComponent<"table", CalendarGridOptions>(props => {
+export const CalendarGrid = createPolymorphicComponent<"table">(props => {
   const calendarContext = useCalendarContext();
+  const monthContext = useCalendarMonthContext();
 
   props = mergeDefaultProps({ as: "table" }, props);
 
-  const [local, others] = splitProps(props, [
-    "as",
-    "startDate",
-    "endDate",
-    "onKeyDown",
-    "onFocusIn",
-    "onFocusOut",
-  ]);
+  const [local, others] = splitProps(props, ["as", "onKeyDown", "onFocusIn", "onFocusOut"]);
 
   const { direction } = useLocale();
 
-  const startDate = () => local.startDate ?? calendarContext.state().visibleRange().start;
-  const endDate = () => local.endDate ?? calendarContext.state().visibleRange().end;
-
   const visibleRangeDescription = createVisibleRangeDescription({
-    startDate,
-    endDate,
+    startDate: () => monthContext.startDate(),
+    endDate: () => monthContext.endDate(),
     timeZone: () => calendarContext.state().timeZone(),
     isAria: () => true,
   });
@@ -141,27 +115,21 @@ export const CalendarGrid = createPolymorphicComponent<"table", CalendarGridOpti
     calendarContext.state().setFocused(false);
   };
 
-  const context: CalendarGridContextValue = {
-    startDate,
-  };
-
   return (
-    <CalendarGridContext.Provider value={context}>
-      <Dynamic
-        component={local.as}
-        role="grid"
-        aria-readonly={calendarContext.state().isReadOnly() || undefined}
-        aria-disabled={calendarContext.state().isDisabled() || undefined}
-        aria-multiselectable={"highlightedRange" in calendarContext.state() || undefined}
-        aria-label={[calendarContext.ariaLabel(), visibleRangeDescription()]
-          .filter(Boolean)
-          .join(", ")}
-        aria-labelledby={calendarContext.ariaLabelledBy()}
-        onKeyDown={onKeyDown}
-        onFocusIn={onFocusIn}
-        onFocusOut={onFocusOut}
-        {...others}
-      />
-    </CalendarGridContext.Provider>
+    <Dynamic
+      component={local.as}
+      role="grid"
+      aria-readonly={calendarContext.state().isReadOnly() || undefined}
+      aria-disabled={calendarContext.state().isDisabled() || undefined}
+      aria-multiselectable={"highlightedRange" in calendarContext.state() || undefined}
+      aria-label={[calendarContext.ariaLabel(), visibleRangeDescription()]
+        .filter(Boolean)
+        .join(", ")}
+      aria-labelledby={calendarContext.ariaLabelledBy()}
+      onKeyDown={onKeyDown}
+      onFocusIn={onFocusIn}
+      onFocusOut={onFocusOut}
+      {...others}
+    />
   );
 });

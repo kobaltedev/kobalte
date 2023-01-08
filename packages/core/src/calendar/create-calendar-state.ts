@@ -15,7 +15,6 @@ import {
   endOfMonth,
   endOfWeek,
   getDayOfWeek,
-  getWeeksInMonth,
   GregorianCalendar,
   isSameDay,
   startOfMonth,
@@ -29,15 +28,14 @@ import {
   focusWithoutScrolling,
   getDocument,
   getScrollParent,
-  isElementVisible,
   MaybeAccessor,
   mergeDefaultProps,
   scrollIntoView,
   ValidationState,
 } from "@kobalte/utils";
-import { createEffect, createMemo, createSignal } from "solid-js";
+import { Accessor, createEffect, createMemo, createSignal } from "solid-js";
 
-import { createDateFormatter, useLocale } from "../i18n";
+import { useLocale } from "../i18n";
 import { createControllableSignal, getInteractionModality } from "../primitives";
 import { CalendarState, DateValue, MappedDateValue } from "./types";
 import {
@@ -77,10 +75,10 @@ export interface CreateCalendarStateProps {
   createCalendar?: (name: string) => Calendar;
 
   /**
-   * The amount of days that will be displayed at once.
+   * The number of months that will be displayed at once.
    * This affects how pagination works.
    */
-  visibleDuration?: MaybeAccessor<DateDuration | undefined>;
+  visibleMonths?: MaybeAccessor<number | undefined>;
 
   /** Determines how to align the initial selection relative to the visible date range. */
   selectionAlignment?: MaybeAccessor<"start" | "center" | "end" | undefined>;
@@ -126,7 +124,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
   props = mergeDefaultProps(
     {
       locale: () => defaultLocale(),
-      visibleDuration: { months: 1 },
+      visibleMonths: 1,
       createCalendar,
     },
     props
@@ -136,6 +134,10 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     value: () => access(props.value),
     defaultValue: () => access(props.defaultValue),
     onChange: value => props.onValueChange?.(value),
+  });
+
+  const visibleDuration: Accessor<DateDuration> = createMemo(() => {
+    return { months: access(props.visibleMonths) };
   });
 
   const defaultFormatter = createMemo(() => new DateFormatter(access(props.locale)!));
@@ -200,7 +202,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     const date = focusedDate()!;
 
     // Can't be undefined because of the default props.
-    const visibleDuration = access(props.visibleDuration)!;
     const locale = access(props.locale)!;
 
     const minValue = access(props.minValue);
@@ -208,12 +209,12 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
 
     switch (access(props.selectionAlignment)) {
       case "start":
-        return alignStart(date, visibleDuration, locale, minValue, maxValue);
+        return alignStart(date, visibleDuration(), locale, minValue, maxValue);
       case "end":
-        return alignEnd(date, visibleDuration, locale, minValue, maxValue);
+        return alignEnd(date, visibleDuration(), locale, minValue, maxValue);
       case "center":
       default:
-        return alignCenter(date, visibleDuration, locale, minValue, maxValue);
+        return alignCenter(date, visibleDuration(), locale, minValue, maxValue);
     }
   };
 
@@ -222,7 +223,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
   const [isFocused, setFocused] = createSignal(access(props.autoFocus) || false);
 
   const endDate = () => {
-    const duration = { ...access(props.visibleDuration) };
+    const duration = { ...visibleDuration() };
 
     if (duration.days) {
       duration.days--;
@@ -249,21 +250,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
 
   const validationState = () => {
     return access(props.validationState) || (isUnavailable() ? "invalid" : undefined);
-  };
-
-  const dayFormatter = createDateFormatter(() => ({
-    weekday: "narrow",
-    timeZone: timeZone(),
-  }));
-
-  const weekDays = () => {
-    const weekStart = startOfWeek(today(timeZone()), access(props.locale)!);
-
-    return [...new Array(7).keys()].map(index => {
-      const date = weekStart.add({ days: index });
-      const dateDay = date.toDate(timeZone());
-      return dayFormatter().format(dateDay);
-    });
   };
 
   // Sets focus to a specific cell date
@@ -326,14 +312,13 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
   // Reset focused date and visible range when calendar changes.
   createEffect(() => {
     if (calendar().identifier !== lastCalendarIdentifier) {
-      const visibleDuration = access(props.visibleDuration)!;
       const locale = access(props.locale)!;
       const minValue = access(props.minValue);
       const maxValue = access(props.maxValue);
 
       const newFocusedDate = toCalendar(focusedDate()!, calendar());
 
-      setStartDate(alignCenter(newFocusedDate, visibleDuration, locale, minValue, maxValue));
+      setStartDate(alignCenter(newFocusedDate, visibleDuration(), locale, minValue, maxValue));
 
       setFocusedDate(newFocusedDate);
 
@@ -344,7 +329,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
   createEffect(() => {
     const date = focusedDate()!;
 
-    const visibleDuration = access(props.visibleDuration)!;
     const locale = access(props.locale)!;
     const minValue = access(props.minValue);
     const maxValue = access(props.maxValue);
@@ -353,9 +337,9 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       // If the focused date was moved to an invalid value, it can't be focused, so constrain it.
       setFocusedDate(constrainValue(date, minValue, maxValue));
     } else if (date.compare(startDate()) < 0) {
-      setStartDate(alignEnd(date, visibleDuration, locale, minValue, maxValue));
+      setStartDate(alignEnd(date, visibleDuration(), locale, minValue, maxValue));
     } else if (date.compare(endDate()) > 0) {
-      setStartDate(alignStart(date, visibleDuration, locale, minValue, maxValue));
+      setStartDate(alignStart(date, visibleDuration(), locale, minValue, maxValue));
     }
   });
 
@@ -373,7 +357,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     focusedDate: () => focusedDate()!,
     locale: () => access(props.locale)!,
     timeZone,
-    weekDays,
     validationState,
     setFocusedDate(date) {
       focusCell(date);
@@ -386,61 +369,60 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       focusCell(focusedDate()!.subtract({ days: 1 }));
     },
     focusNextRow() {
-      const visibleDuration = access(props.visibleDuration)!;
-
-      if (visibleDuration.days) {
+      console.log(visibleDuration());
+      if (visibleDuration().days) {
         this.focusNextPage();
-      } else if (visibleDuration.weeks || visibleDuration.months || visibleDuration.years) {
+      } else if (visibleDuration().weeks || visibleDuration().months || visibleDuration().years) {
         focusCell(focusedDate()!.add({ weeks: 1 }));
       }
     },
     focusPreviousRow() {
-      const visibleDuration = access(props.visibleDuration)!;
-
-      if (visibleDuration.days) {
+      console.log(visibleDuration());
+      if (visibleDuration().days) {
         this.focusPreviousPage();
-      } else if (visibleDuration.weeks || visibleDuration.months || visibleDuration.years) {
+      } else if (visibleDuration().weeks || visibleDuration().months || visibleDuration().years) {
         focusCell(focusedDate()!.subtract({ weeks: 1 }));
       }
     },
     focusNextPage() {
-      const visibleDuration = access(props.visibleDuration)!;
+      console.log(visibleDuration());
       const locale = access(props.locale)!;
       const minValue = access(props.minValue);
       const maxValue = access(props.maxValue);
 
-      const start = startDate().add(visibleDuration);
+      const start = startDate().add(visibleDuration());
 
-      setFocusedDate(constrainValue(focusedDate()!.add(visibleDuration), minValue, maxValue));
+      setFocusedDate(constrainValue(focusedDate()!.add(visibleDuration()), minValue, maxValue));
 
       setStartDate(
         alignStart(
-          constrainStart(focusedDate()!, start, visibleDuration, locale, minValue, maxValue),
-          visibleDuration,
+          constrainStart(focusedDate()!, start, visibleDuration(), locale, minValue, maxValue),
+          visibleDuration(),
           locale
         )
       );
     },
     focusPreviousPage() {
-      const visibleDuration = access(props.visibleDuration)!;
+      console.log(visibleDuration());
       const locale = access(props.locale)!;
       const minValue = access(props.minValue);
       const maxValue = access(props.maxValue);
 
-      const start = startDate().subtract(visibleDuration);
+      const start = startDate().subtract(visibleDuration());
 
-      setFocusedDate(constrainValue(focusedDate()!.subtract(visibleDuration), minValue, maxValue));
+      setFocusedDate(
+        constrainValue(focusedDate()!.subtract(visibleDuration()), minValue, maxValue)
+      );
 
       setStartDate(
         alignStart(
-          constrainStart(focusedDate()!, start, visibleDuration, locale, minValue, maxValue),
-          visibleDuration,
+          constrainStart(focusedDate()!, start, visibleDuration(), locale, minValue, maxValue),
+          visibleDuration(),
           locale
         )
       );
     },
     focusNextYear() {
-      const visibleDuration = access(props.visibleDuration)!;
       const locale = access(props.locale)!;
       const minValue = access(props.minValue);
       const maxValue = access(props.maxValue);
@@ -451,14 +433,13 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
 
       setStartDate(
         alignStart(
-          constrainStart(focusedDate()!, start, visibleDuration, locale, minValue, maxValue),
-          visibleDuration,
+          constrainStart(focusedDate()!, start, visibleDuration(), locale, minValue, maxValue),
+          visibleDuration(),
           locale
         )
       );
     },
     focusPreviousYear() {
-      const visibleDuration = access(props.visibleDuration)!;
       const locale = access(props.locale)!;
       const minValue = access(props.minValue);
       const maxValue = access(props.maxValue);
@@ -469,65 +450,63 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
 
       setStartDate(
         alignStart(
-          constrainStart(focusedDate()!, start, visibleDuration, locale, minValue, maxValue),
-          visibleDuration,
+          constrainStart(focusedDate()!, start, visibleDuration(), locale, minValue, maxValue),
+          visibleDuration(),
           locale
         )
       );
     },
     focusSectionStart() {
-      const visibleDuration = access(props.visibleDuration)!;
+      console.log(visibleDuration());
       const locale = access(props.locale)!;
 
-      if (visibleDuration.days) {
+      if (visibleDuration().days) {
         focusCell(startDate());
-      } else if (visibleDuration.weeks) {
+      } else if (visibleDuration().weeks) {
         focusCell(startOfWeek(focusedDate()!, locale));
-      } else if (visibleDuration.months || visibleDuration.years) {
+      } else if (visibleDuration().months || visibleDuration().years) {
         focusCell(startOfMonth(focusedDate()!));
       }
     },
     focusSectionEnd() {
-      const visibleDuration = access(props.visibleDuration)!;
+      console.log(visibleDuration());
       const locale = access(props.locale)!;
 
-      if (visibleDuration.days) {
+      if (visibleDuration().days) {
         focusCell(endDate());
-      } else if (visibleDuration.weeks) {
+      } else if (visibleDuration().weeks) {
         focusCell(endOfWeek(focusedDate()!, locale));
-      } else if (visibleDuration.months || visibleDuration.years) {
+      } else if (visibleDuration().months || visibleDuration().years) {
         focusCell(endOfMonth(focusedDate()!));
       }
     },
     focusNextSection(larger) {
-      const visibleDuration = access(props.visibleDuration)!;
-
-      if (!larger && !visibleDuration.days) {
-        focusCell(focusedDate()!.add(unitDuration(visibleDuration)));
+      console.log(visibleDuration());
+      if (!larger && !visibleDuration().days) {
+        focusCell(focusedDate()!.add(unitDuration(visibleDuration())));
         return;
       }
 
-      if (visibleDuration.days) {
+      if (visibleDuration().days) {
         this.focusNextPage();
-      } else if (visibleDuration.weeks) {
+      } else if (visibleDuration().weeks) {
         focusCell(focusedDate()!.add({ months: 1 }));
-      } else if (visibleDuration.months || visibleDuration.years) {
+      } else if (visibleDuration().months || visibleDuration().years) {
         focusCell(focusedDate()!.add({ years: 1 }));
       }
     },
     focusPreviousSection(larger) {
-      const visibleDuration = access(props.visibleDuration)!;
-
-      if (!larger && !visibleDuration.days) {
-        focusCell(focusedDate()!.subtract(unitDuration(visibleDuration)));
+      console.log(visibleDuration());
+      if (!larger && !visibleDuration().days) {
+        focusCell(focusedDate()!.subtract(unitDuration(visibleDuration())));
         return;
       }
 
-      if (visibleDuration.days) {
+      if (visibleDuration().days) {
         this.focusPreviousPage();
-      } else if (visibleDuration.weeks) {
+      } else if (visibleDuration().weeks) {
         focusCell(focusedDate()!.subtract({ months: 1 }));
-      } else if (visibleDuration.months || visibleDuration.years) {
+      } else if (visibleDuration().months || visibleDuration().years) {
         focusCell(focusedDate()!.subtract({ years: 1 }));
       }
     },
@@ -575,9 +554,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       // according to the calendar system (e.g. 9999-12-31).
       const next = endDate().add({ days: 1 });
       return isSameDay(next, endDate()) || this.isInvalid(next);
-    },
-    getWeeksInMonth(date: DateValue) {
-      return getWeeksInMonth(date, access(props.locale)!);
     },
     getDatesInWeek(weekIndex, from) {
       const locale = access(props.locale)!;

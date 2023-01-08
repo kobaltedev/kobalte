@@ -4,24 +4,27 @@ import { Accessor, Index, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useCalendarContext } from "./calendar-context";
-import { useCalendarGridContext } from "./calendar-grid-context";
+import { useCalendarMonthContext } from "./calendar-month-context";
 
-export interface CalendarGridRowOptions {
+export interface CalendarRowOptions {
   weekIndex: number;
 
   children: (date: Accessor<CalendarDate | null>) => JSX.Element;
 }
 
-export const CalendarGridRow = createPolymorphicComponent<"tr", CalendarGridRowOptions>(props => {
+/**
+ * Contains a row of day cells within a `Calendar.Grid`.
+ */
+export const CalendarRow = createPolymorphicComponent<"tr", CalendarRowOptions>(props => {
   const calendarContext = useCalendarContext();
-  const context = useCalendarGridContext();
+  const monthContext = useCalendarMonthContext();
 
   props = mergeDefaultProps({ as: "tr" }, props);
 
   const [local, others] = splitProps(props, ["as", "children", "weekIndex"]);
 
   const datesInWeek = () => {
-    return calendarContext.state().getDatesInWeek(local.weekIndex, context.startDate());
+    return calendarContext.state().getDatesInWeek(local.weekIndex, monthContext.startDate());
   };
 
   return (

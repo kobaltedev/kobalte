@@ -1,26 +1,39 @@
+import { getWeeksInMonth } from "@internationalized/date";
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, Index, JSX, splitProps } from "solid-js";
+import { Accessor, createMemo, Index, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useCalendarContext } from "./calendar-context";
-import { useCalendarGridContext } from "./calendar-grid-context";
+import { useCalendarMonthContext } from "./calendar-month-context";
 
 export interface CalendarGridBodyOptions {
+  /**
+   * Render prop used to render each row of the calendar grid,
+   * it receives a week index accessor as parameter.
+   */
   children: (weekIndex: Accessor<number>) => JSX.Element;
 }
 
+/**
+ * Contains the day cells of a `Calendar.Grid`.
+ */
 export const CalendarGridBody = createPolymorphicComponent<"tbody", CalendarGridBodyOptions>(
   props => {
     const calendarContext = useCalendarContext();
-    const context = useCalendarGridContext();
+    const monthContext = useCalendarMonthContext();
 
     props = mergeDefaultProps({ as: "tbody" }, props);
 
     const [local, others] = splitProps(props, ["as", "children"]);
 
-    const weekIndexes = () => {
-      return [...new Array(calendarContext.state().getWeeksInMonth(context.startDate())).keys()];
-    };
+    const weekIndexes = createMemo(() => {
+      const weeksInMonth = getWeeksInMonth(
+        monthContext.startDate(),
+        calendarContext.state().locale()
+      );
+
+      return [...new Array(weeksInMonth).keys()];
+    });
 
     return (
       <Dynamic component={local.as} {...others}>
