@@ -6,12 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/15e101b74966bd5eb719c6529ce71ce57eaed430/packages/@react-stately/calendar/src/types.ts
  */
 
-import {
-  CalendarDate,
-  CalendarDateTime,
-  getWeeksInMonth,
-  ZonedDateTime,
-} from "@internationalized/date";
+import { CalendarDate, CalendarDateTime, ZonedDateTime } from "@internationalized/date";
 import { RangeValue, ValidationState } from "@kobalte/utils";
 import { Accessor } from "solid-js";
 
@@ -24,6 +19,8 @@ export type MappedDateValue<T> = T extends ZonedDateTime
   : T extends CalendarDate
   ? CalendarDate
   : never;
+
+export type DateRange = RangeValue<DateValue>;
 
 interface CalendarStateBase {
   /** Whether the calendar is disabled. */
@@ -154,25 +151,25 @@ export interface CalendarState extends CalendarStateBase {
 
 export interface RangeCalendarState extends CalendarStateBase {
   /** The currently selected date range. */
-  value: Accessor<RangeValue<DateValue>>;
-
-  /** The current anchor date that the user clicked on to begin range selection. */
-  anchorDate: Accessor<CalendarDate | null>;
-
-  /** The currently highlighted date range. */
-  highlightedRange: Accessor<RangeValue<CalendarDate>>;
-
-  /** Whether the user is currently dragging over the calendar. */
-  isDragging: Accessor<boolean>;
+  value: Accessor<DateRange | undefined>;
 
   /** Sets the currently selected date range. */
-  setValue: (value: RangeValue<DateValue>) => void;
+  setValue: (value: DateRange) => void;
+
+  /** The current anchor date that the user clicked on to begin range selection. */
+  anchorDate: Accessor<CalendarDate | undefined>;
+
+  /** Sets the anchor date that the user clicked on to begin range selection. */
+  setAnchorDate: (date: CalendarDate | undefined) => void;
+
+  /** The currently highlighted date range. */
+  highlightedRange: Accessor<RangeValue<CalendarDate> | undefined>;
 
   /** Highlights the given date during selection, e.g. by hovering or dragging. */
   highlightDate: (date: CalendarDate) => void;
 
-  /** Sets the anchor date that the user clicked on to begin range selection. */
-  setAnchorDate: (date: CalendarDate | null) => void;
+  /** Whether the user is currently dragging over the calendar. */
+  isDragging: Accessor<boolean>;
 
   /** Sets whether the user is dragging over the calendar. */
   setDragging: (isDragging: boolean) => void;

@@ -13,8 +13,10 @@ import { CalendarWeekDays } from "./calendar-week-days";
 import { CalendarWeekDay } from "./calendar-week-day";
 import { CalendarMonth } from "./calendar-month";
 import { CalendarTitle } from "./calendar-title";
+import { CalendarRange } from "./calendar-range";
 
 type CalendarComposite = {
+  Range: typeof CalendarRange;
   Month: typeof CalendarMonth;
   Header: typeof CalendarGridHeader;
   Title: typeof CalendarTitle;
@@ -39,6 +41,7 @@ export const Calendar = createPolymorphicComponent<"div", CalendarSingleOptions,
   }
 );
 
+Calendar.Range = CalendarRange;
 Calendar.Month = CalendarMonth;
 Calendar.Header = CalendarGridHeader;
 Calendar.Title = CalendarTitle;
