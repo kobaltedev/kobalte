@@ -16,8 +16,28 @@ import {
   toCalendar,
   toCalendarDate,
 } from "@internationalized/date";
-import { access, createPolymorphicComponent, mergeDefaultProps, RangeValue } from "@kobalte/utils";
-import { Accessor, createEffect, createMemo, createSignal, mergeProps, splitProps } from "solid-js";
+import {
+  access,
+  callHandler,
+  contains,
+  createPolymorphicComponent,
+  getActiveElement,
+  getWindow,
+  mergeDefaultProps,
+  mergeRefs,
+  RangeValue,
+} from "@kobalte/utils";
+import {
+  Accessor,
+  createEffect,
+  createMemo,
+  createSignal,
+  JSX,
+  mergeProps,
+  onCleanup,
+  onMount,
+  splitProps,
+} from "solid-js";
 
 import { useLocale } from "../i18n";
 import { createControllableSignal } from "../primitives";
@@ -54,6 +74,8 @@ export interface CalendarRangeOptions
  * Displays one or more date grids and allows users to select a contiguous range of dates.
  */
 export const CalendarRange = createPolymorphicComponent<"div", CalendarRangeOptions>(props => {
+  let ref: HTMLDivElement | undefined;
+
   const { locale: defaultLocale } = useLocale();
 
   props = mergeDefaultProps(
@@ -67,6 +89,7 @@ export const CalendarRange = createPolymorphicComponent<"div", CalendarRangeOpti
   const [local, calendarProps, others] = splitProps(
     props,
     [
+      "ref",
       "value",
       "defaultValue",
       "onValueChange",
@@ -75,6 +98,7 @@ export const CalendarRange = createPolymorphicComponent<"div", CalendarRangeOpti
       "visibleMonths",
       "minValue",
       "maxValue",
+      "onBlur",
     ],
     [
       "createCalendar",
@@ -97,6 +121,8 @@ export const CalendarRange = createPolymorphicComponent<"div", CalendarRangeOpti
 
   const [anchorDate, setAnchorDateState] = createSignal<CalendarDate>();
 
+  // Available range must be stored in a ref, so we have access to the updated version immediately in `isInvalid`.
+  let availableRangeRef: RangeValue<DateValue | undefined> | undefined;
   const [availableRange, setAvailableRange] = createSignal<RangeValue<DateValue | undefined>>();
 
   const [isDragging, setDragging] = createSignal(false);
@@ -110,8 +136,8 @@ export const CalendarRange = createPolymorphicComponent<"div", CalendarRangeOpti
         toCalendarDate(value.start),
         visibleDuration,
         access(local.locale)!,
-        min(),
-        max()
+        access(local.minValue),
+        access(local.maxValue)
       );
 
       const end = start.add(visibleDuration).subtract({ days: 1 });
@@ -128,14 +154,14 @@ export const CalendarRange = createPolymorphicComponent<"div", CalendarRangeOpti
     const minValue = access(local.minValue);
     const rangeStart = availableRange()?.start;
 
-    return minValue && rangeStart && maxDate(minValue, rangeStart);
+    return maxDate(minValue!, rangeStart!);
   });
 
   const max = createMemo(() => {
     const maxValue = access(local.maxValue);
     const rangeEnd = availableRange()?.end;
 
-    return maxValue && rangeEnd && minDate(maxValue, rangeEnd);
+    return minDate(maxValue!, rangeEnd!);
   });
 
   const createCalendarStateProps = mergeProps(calendarProps, {
@@ -151,11 +177,14 @@ export const CalendarRange = createPolymorphicComponent<"div", CalendarRangeOpti
 
   const updateAvailableRange = (date: CalendarDate | undefined) => {
     if (date && calendarProps.isDateUnavailable && !local.allowsNonContiguousRanges) {
-      setAvailableRange(() => ({
+      availableRangeRef = {
         start: nextUnavailableDate(date, calendar, -1),
         end: nextUnavailableDate(date, calendar, 1),
-      }));
+      };
+
+      setAvailableRange(availableRangeRef);
     } else {
+      availableRangeRef = undefined;
       setAvailableRange(undefined);
     }
   };
@@ -283,14 +312,97 @@ export const CalendarRange = createPolymorphicComponent<"div", CalendarRangeOpti
     },
     isInvalid(date) {
       return (
-        calendar.isInvalid(date) || isInvalid(date, availableRange()?.start, availableRange()?.end)
+        calendar.isInvalid(date) ||
+        isInvalid(date, availableRangeRef?.start, availableRangeRef?.end)
       );
     },
     isDragging,
     setDragging,
   } as Partial<RangeCalendarState>) as RangeCalendarState;
 
-  return <CalendarRoot state={state} isDisabled={access(calendarProps.isDisabled)} {...others} />;
+  let isVirtualClick = false;
+
+  // We need to ignore virtual pointer events from VoiceOver due to these bugs.
+  // https://bugs.webkit.org/show_bug.cgi?id=222627
+  // https://bugs.webkit.org/show_bug.cgi?id=223202
+  // createPress also does this and waits for the following click event before firing.
+  // We need to match that here otherwise this will fire before the press event in
+  // Calendar.Day, causing range selection to not work properly.
+  const onGlobalPointerDown = (e: PointerEvent) => {
+    isVirtualClick = e.width === 0 && e.height === 0;
+  };
+
+  // Stop range selection when pressing or releasing a pointer outside the calendar body,
+  // except when pressing the next or previous buttons to switch months.
+  const onGlobalEndDragging = (e: PointerEvent) => {
+    if (isVirtualClick) {
+      isVirtualClick = false;
+      return;
+    }
+
+    setDragging(false);
+
+    if (!anchorDate()) {
+      return;
+    }
+
+    const target = e.target as Element;
+
+    if (
+      ref &&
+      contains(ref, getActiveElement()) &&
+      (!contains(ref, target) || !target.closest('button, [role="button"]'))
+    ) {
+      state.selectFocusedDate();
+    }
+  };
+
+  // Prevent touch scrolling while dragging
+  const onTouchMove = (e: TouchEvent) => {
+    if (isDragging()) {
+      e.preventDefault();
+    }
+  };
+
+  onMount(() => {
+    const window = getWindow();
+
+    window.addEventListener("pointerdown", onGlobalPointerDown);
+    window.addEventListener("pointerup", onGlobalEndDragging);
+    window.addEventListener("pointercancel", onGlobalEndDragging);
+
+    ref?.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
+
+    onCleanup(() => {
+      window.removeEventListener("pointerdown", onGlobalPointerDown);
+      window.removeEventListener("pointerup", onGlobalEndDragging);
+      window.removeEventListener("pointercancel", onGlobalEndDragging);
+
+      // @ts-ignore
+      ref?.removeEventListener("touchmove", onTouchMove, { passive: false, capture: true });
+    });
+  });
+
+  // Also stop range selection on blur, e.g. tabbing away from the calendar.
+  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onBlur);
+
+    const relatedTarget = e.relatedTarget as HTMLElement | null;
+
+    if ((!relatedTarget || !contains(ref, relatedTarget)) && anchorDate()) {
+      state.selectFocusedDate();
+    }
+  };
+
+  return (
+    <CalendarRoot
+      ref={mergeRefs(el => (ref = el), local.ref)}
+      state={state}
+      isDisabled={access(calendarProps.isDisabled)}
+      onBlur={onBlur}
+      {...others}
+    />
+  );
 });
 
 function makeRange(

@@ -256,25 +256,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
   const focusCell = (date: CalendarDate) => {
     date = constrainValue(date, access(props.minValue), access(props.maxValue));
     setFocusedDate(date);
-
-    const key = getKeyForDate(date);
-
-    // Focus the cell button with the given key and in the grid of the same month.
-    const cellButton = getDocument().querySelector(
-      `[data-key='${key}']:not([data-outside-month])`
-    ) as HTMLElement | null;
-
-    if (cellButton) {
-      focusWithoutScrolling(cellButton);
-
-      // Scroll into view if navigating with a keyboard, otherwise
-      // try not to shift the view under the user's mouse/finger.
-      // Only scroll the direct scroll parent, not the whole page, so
-      // we don't scroll to the bottom when opening date picker popover.
-      if (getInteractionModality() !== "pointer") {
-        scrollIntoView(getScrollParent(cellButton) as HTMLElement, cellButton);
-      }
-    }
   };
 
   const setValue = (date: CalendarDate) => {
@@ -369,7 +350,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       focusCell(focusedDate()!.subtract({ days: 1 }));
     },
     focusNextRow() {
-      console.log(visibleDuration());
       if (visibleDuration().days) {
         this.focusNextPage();
       } else if (visibleDuration().weeks || visibleDuration().months || visibleDuration().years) {
@@ -377,7 +357,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       }
     },
     focusPreviousRow() {
-      console.log(visibleDuration());
       if (visibleDuration().days) {
         this.focusPreviousPage();
       } else if (visibleDuration().weeks || visibleDuration().months || visibleDuration().years) {
@@ -385,7 +364,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       }
     },
     focusNextPage() {
-      console.log(visibleDuration());
       const locale = access(props.locale)!;
       const minValue = access(props.minValue);
       const maxValue = access(props.maxValue);
@@ -403,7 +381,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       );
     },
     focusPreviousPage() {
-      console.log(visibleDuration());
       const locale = access(props.locale)!;
       const minValue = access(props.minValue);
       const maxValue = access(props.maxValue);
@@ -457,7 +434,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       );
     },
     focusSectionStart() {
-      console.log(visibleDuration());
       const locale = access(props.locale)!;
 
       if (visibleDuration().days) {
@@ -469,7 +445,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       }
     },
     focusSectionEnd() {
-      console.log(visibleDuration());
       const locale = access(props.locale)!;
 
       if (visibleDuration().days) {
@@ -481,7 +456,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       }
     },
     focusNextSection(larger) {
-      console.log(visibleDuration());
       if (!larger && !visibleDuration().days) {
         focusCell(focusedDate()!.add(unitDuration(visibleDuration())));
         return;
@@ -496,7 +470,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       }
     },
     focusPreviousSection(larger) {
-      console.log(visibleDuration());
       if (!larger && !visibleDuration().days) {
         focusCell(focusedDate()!.subtract(unitDuration(visibleDuration())));
         return;

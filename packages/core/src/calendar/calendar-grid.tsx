@@ -99,7 +99,7 @@ export const CalendarGrid = createPolymorphicComponent<"table">(props => {
         // Cancel the selection.
         if ("setAnchorDate" in state) {
           e.preventDefault();
-          state.setAnchorDate(null);
+          state.setAnchorDate(undefined);
         }
         break;
     }

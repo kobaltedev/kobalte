@@ -79,11 +79,6 @@
   background: #eee;
 }
 
-.cell[data-selected]:not([data-outside-month]) {
-  background: var(--accent-color);
-  color: white;
-}
-
 .cell[data-focus-visible]::after {
   content: "";
   position: absolute;
@@ -91,6 +86,11 @@
   border-radius: 9px;
   z-index: -1;
   border: 2px solid var(--accent-color);
+}
+
+.cell[data-selected]:not([data-outside-month]) {
+  background-color: var(--accent-color);
+  color: white;
 }
 
 .cell[data-disabled],

@@ -8,12 +8,19 @@
  */
 
 import { getDayOfWeek, isSameDay, isSameMonth, isToday } from "@internationalized/date";
-import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import {
+  combineProps,
+  createPolymorphicComponent,
+  focusWithoutScrolling,
+  getScrollParent,
+  mergeDefaultProps,
+  scrollIntoView,
+} from "@kobalte/utils";
+import { createEffect, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createDateFormatter } from "../i18n";
-import { createFocusRing, createHover, createPress } from "../primitives";
+import { createFocusRing, createHover, createPress, getInteractionModality } from "../primitives";
 import { useCalendarCellContext } from "./calendar-cell-context";
 import { useCalendarContext } from "./calendar-context";
 import { useCalendarMonthContext } from "./calendar-month-context";
@@ -23,6 +30,8 @@ import { getKeyForDate } from "./utils";
  * A day of the `Calendar.Month` which can be selected by the user.
  */
 export const CalendarDay = createPolymorphicComponent<"div">(props => {
+  let ref: HTMLDivElement | undefined;
+
   const calendarContext = useCalendarContext();
   const monthContext = useCalendarMonthContext();
   const context = useCalendarCellContext();
@@ -93,8 +102,15 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
 
     if ("highlightedRange" in state) {
       const highlightedRange = state.highlightedRange();
-      return context.isSelected() && isSameDay(context.date(), highlightedRange.start);
+
+      return (
+        context.isSelected() &&
+        highlightedRange != null &&
+        isSameDay(context.date(), highlightedRange.start)
+      );
     }
+
+    return false;
   };
 
   const isSelectionEnd = () => {
@@ -102,8 +118,15 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
 
     if ("highlightedRange" in state) {
       const highlightedRange = state.highlightedRange();
-      return context.isSelected() && isSameDay(context.date(), highlightedRange.end);
+
+      return (
+        context.isSelected() &&
+        highlightedRange != null &&
+        isSameDay(context.date(), highlightedRange.end)
+      );
     }
+
+    return false;
   };
 
   const isOutsideMonth = () => {
@@ -300,6 +323,21 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
     e.preventDefault();
   };
 
+  // Focus the button in the DOM when the state updates.
+  createEffect(() => {
+    if (isFocused() && ref) {
+      focusWithoutScrolling(ref);
+
+      // Scroll into view if navigating with a keyboard, otherwise
+      // try not to shift the view under the user's mouse/finger.
+      // Only scroll the direct scroll parent, not the whole page, so
+      // we don't scroll to the bottom when opening date picker popover.
+      if (getInteractionModality() !== "pointer") {
+        scrollIntoView(getScrollParent(ref) as HTMLElement, ref);
+      }
+    }
+  });
+
   return (
     <Dynamic
       component={local.as}
@@ -324,7 +362,10 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
       data-focus-visible={isFocusVisible() ? "" : undefined}
       data-active={isPressed() ? "" : undefined}
       {...combineProps(
-        { children: formattedDate },
+        {
+          ref: el => (ref = el),
+          children: formattedDate,
+        },
         others,
         pressHandlers,
         hoverHandlers,

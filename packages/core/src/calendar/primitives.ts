@@ -19,7 +19,7 @@ export function createSelectedDateDescription(state: CalendarState | RangeCalend
 
   const start = () => {
     if ("highlightedRange" in state) {
-      return state.highlightedRange().start;
+      return state.highlightedRange()?.start;
     } else {
       return state.value();
     }
@@ -27,7 +27,7 @@ export function createSelectedDateDescription(state: CalendarState | RangeCalend
 
   const end = () => {
     if ("highlightedRange" in state) {
-      return state.highlightedRange().end;
+      return state.highlightedRange()?.end;
     } else {
       return state.value();
     }
