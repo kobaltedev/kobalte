@@ -1,6 +1,6 @@
 import { DateDuration, endOfMonth } from "@internationalized/date";
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { createMemo, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useCalendarContext } from "./calendar-context";
@@ -21,14 +21,14 @@ export const CalendarMonth = createPolymorphicComponent<"div", CalendarMonthProp
 
   const [local, others] = splitProps(props, ["as", "offset"]);
 
-  const startDate = () => {
+  const startDate = createMemo(() => {
     const offset: DateDuration = local.offset != null ? { months: local.offset } : {};
     return calendarContext.state().visibleRange().start.add(offset);
-  };
+  });
 
-  const endDate = () => {
+  const endDate = createMemo(() => {
     return endOfMonth(startDate());
-  };
+  });
 
   const context: CalendarMonthContextValue = {
     startDate,

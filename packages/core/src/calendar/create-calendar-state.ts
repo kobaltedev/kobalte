@@ -23,20 +23,11 @@ import {
   toCalendarDate,
   today,
 } from "@internationalized/date";
-import {
-  access,
-  focusWithoutScrolling,
-  getDocument,
-  getScrollParent,
-  MaybeAccessor,
-  mergeDefaultProps,
-  scrollIntoView,
-  ValidationState,
-} from "@kobalte/utils";
+import { access, MaybeAccessor, mergeDefaultProps, ValidationState } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, createSignal } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { createControllableSignal, getInteractionModality } from "../primitives";
+import { createControllableSignal } from "../primitives";
 import { CalendarState, DateValue, MappedDateValue } from "./types";
 import {
   alignCenter,
@@ -44,7 +35,6 @@ import {
   alignStart,
   constrainStart,
   constrainValue,
-  getKeyForDate,
   isInvalid,
   previousAvailableDate,
   unitDuration,

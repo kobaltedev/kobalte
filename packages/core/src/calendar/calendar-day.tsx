@@ -12,11 +12,12 @@ import {
   combineProps,
   createPolymorphicComponent,
   focusWithoutScrolling,
+  getDocument,
   getScrollParent,
   mergeDefaultProps,
   scrollIntoView,
 } from "@kobalte/utils";
-import { createEffect, JSX, splitProps } from "solid-js";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createDateFormatter } from "../i18n";
@@ -24,7 +25,6 @@ import { createFocusRing, createHover, createPress, getInteractionModality } fro
 import { useCalendarCellContext } from "./calendar-cell-context";
 import { useCalendarContext } from "./calendar-context";
 import { useCalendarMonthContext } from "./calendar-month-context";
-import { getKeyForDate } from "./utils";
 
 /**
  * A day of the `Calendar.Month` which can be selected by the user.
@@ -179,7 +179,7 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
         // rather than starting a new selection.
         // Don't allow dragging when invalid, or weird jumping behavior may occur as date ranges
         // are constrained to available dates. The user will need to select a new range in this case.
-        if (highlightedRange && !context.isInvalid()) {
+        if (highlightedRange != null && !context.isInvalid()) {
           if (isSameDay(context.date(), highlightedRange.start)) {
             state.setAnchorDate(highlightedRange.end);
             state.setFocusedDate(context.date());
@@ -325,7 +325,7 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
 
   // Focus the button in the DOM when the state updates.
   createEffect(() => {
-    if (isFocused() && ref) {
+    if (ref && isFocused()) {
       focusWithoutScrolling(ref);
 
       // Scroll into view if navigating with a keyboard, otherwise
@@ -345,7 +345,6 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
       tabIndex={tabIndex()}
       aria-label={context.label()}
       aria-disabled={!context.isSelectable() || undefined}
-      data-key={getKeyForDate(context.date())}
       data-today={isToday(context.date(), calendarContext.state().timeZone()) ? "" : undefined}
       data-unavailable={context.isUnavailable() ? "" : undefined}
       data-outside-month={isOutsideMonth() ? "" : undefined}

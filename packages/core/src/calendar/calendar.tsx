@@ -3,22 +3,23 @@ import { createPolymorphicComponent } from "@kobalte/utils";
 import { CalendarCell } from "./calendar-cell";
 import { CalendarDay } from "./calendar-day";
 import { CalendarGrid } from "./calendar-grid";
+import { CalendarGridBody } from "./calendar-grid-body";
+import { CalendarGridHeader } from "./calendar-grid-header";
+import { CalendarHeader } from "./calendar-header";
+import { CalendarMonth } from "./calendar-month";
 import { CalendarNextPageButton } from "./calendar-next-page-button";
 import { CalendarPrevPageButton } from "./calendar-prev-page-button";
-import { CalendarSingle, CalendarSingleOptions } from "./calendar-single";
-import { CalendarGridBody } from "./calendar-grid-body";
-import { CalendarRow } from "./calendar-row";
-import { CalendarGridHeader } from "./calendar-grid-header";
-import { CalendarWeekDays } from "./calendar-week-days";
-import { CalendarWeekDay } from "./calendar-week-day";
-import { CalendarMonth } from "./calendar-month";
-import { CalendarTitle } from "./calendar-title";
 import { CalendarRange } from "./calendar-range";
+import { CalendarRow } from "./calendar-row";
+import { CalendarSingle, CalendarSingleOptions } from "./calendar-single";
+import { CalendarTitle } from "./calendar-title";
+import { CalendarWeekDay } from "./calendar-week-day";
+import { CalendarWeekDays } from "./calendar-week-days";
 
 type CalendarComposite = {
   Range: typeof CalendarRange;
   Month: typeof CalendarMonth;
-  Header: typeof CalendarGridHeader;
+  Header: typeof CalendarHeader;
   Title: typeof CalendarTitle;
   NextPageButton: typeof CalendarNextPageButton;
   PrevPageButton: typeof CalendarPrevPageButton;
@@ -43,7 +44,7 @@ export const Calendar = createPolymorphicComponent<"div", CalendarSingleOptions,
 
 Calendar.Range = CalendarRange;
 Calendar.Month = CalendarMonth;
-Calendar.Header = CalendarGridHeader;
+Calendar.Header = CalendarHeader;
 Calendar.Title = CalendarTitle;
 Calendar.NextPageButton = CalendarNextPageButton;
 Calendar.PrevPageButton = CalendarPrevPageButton;

@@ -6,16 +6,17 @@
  * https://github.com/adobe/react-spectrum/blob/bb9f65fc853474065a9de9ed6f5f471c16689237/packages/@react-aria/calendar/src/useCalendarCell.ts
  */
 
-import { CalendarDate, isSameDay, isToday } from "@internationalized/date";
+import { CalendarDate, isSameDay, isSameMonth, isToday } from "@internationalized/date";
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createMemo, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createDateFormatter, createLocalizedStringFormatter } from "../i18n";
 import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
-import { useCalendarContext } from "./calendar-context";
 import { CalendarCellContext, CalendarCellContextValue } from "./calendar-cell-context";
+import { useCalendarContext } from "./calendar-context";
 import { getEraFormat } from "./utils";
+import { useCalendarMonthContext } from "./calendar-month-context";
 
 export interface CalendarCellOptions {
   /** The date that this cell represents. */
@@ -35,7 +36,7 @@ export const CalendarCell = createPolymorphicComponent<"td", CalendarCellOptions
   const [local, others] = splitProps(props, ["as", "date", "isDisabled"]);
 
   return (
-    <Show when={local.date} fallback={<td {...others} />}>
+    <Show when={local.date} fallback={<td />}>
       <CalendarCellBase date={local.date!} isDisabled={local.isDisabled} {...others} />
     </Show>
   );
@@ -77,7 +78,7 @@ const CalendarCellBase = createPolymorphicComponent<"td", CalendarCellBaseOption
       return (
         isInvalid &&
         !state.anchorDate() &&
-        highlightedRange &&
+        highlightedRange != null &&
         local.date.compare(highlightedRange.start) >= 0 &&
         local.date.compare(highlightedRange.end) <= 0
       );
