@@ -79,6 +79,10 @@
   background: #eee;
 }
 
+.cell[data-focus] {
+  background-color: green;
+}
+
 .cell:focus-visible::after,
 .cell[data-focus-visible]::after {
   content: "";

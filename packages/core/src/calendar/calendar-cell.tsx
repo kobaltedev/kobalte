@@ -93,6 +93,8 @@ const CalendarCellBase = createPolymorphicComponent<"td", CalendarCellBaseOption
   const isUnavailable = () => state().isCellUnavailable(local.date);
   const isSelectable = () => !isDisabled() && !isUnavailable();
 
+  const nativeDate = createMemo(() => local.date.toDate(calendarContext.state().timeZone()));
+
   // aria-label should be localized Day of week, Month, Day and Year without Time.
   const label = createMemo(() => {
     const state = calendarContext.state();
@@ -113,9 +115,7 @@ const CalendarCellBase = createPolymorphicComponent<"td", CalendarCellBaseOption
       }
     }
 
-    const nativeDate = local.date.toDate(state.timeZone());
-
-    label += dateFormatter().format(nativeDate);
+    label += dateFormatter().format(nativeDate());
 
     if (isToday(local.date, state.timeZone())) {
       // If date is today, set appropriate string depending on selected state:
@@ -149,6 +149,7 @@ const CalendarCellBase = createPolymorphicComponent<"td", CalendarCellBaseOption
     isInvalid,
     date: () => local.date,
     label,
+    nativeDate,
   };
 
   return (

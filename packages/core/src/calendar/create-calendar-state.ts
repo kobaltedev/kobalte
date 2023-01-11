@@ -13,7 +13,6 @@ import {
   DateDuration,
   DateFormatter,
   endOfMonth,
-  endOfWeek,
   getDayOfWeek,
   GregorianCalendar,
   isSameDay,
@@ -136,7 +135,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
 
   const calendar = createMemo(() => props.createCalendar!(resolvedOptions().calendar));
 
-  const calendarDateValue = () => {
+  const calendarDateValue = createMemo(() => {
     const value = selectedDate();
 
     if (value != null) {
@@ -144,9 +143,9 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     }
 
     return undefined;
-  };
+  });
 
-  const timeZone = () => {
+  const timeZone = createMemo(() => {
     const value = selectedDate();
 
     if (value != null && "timeZone" in value) {
@@ -154,9 +153,9 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     }
 
     return resolvedOptions().timeZone;
-  };
+  });
 
-  const focusedCalendarDate = () => {
+  const focusedCalendarDate = createMemo(() => {
     const focusedValue = access(props.focusedValue);
 
     if (focusedValue == null) {
@@ -166,9 +165,9 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     const date = toCalendar(toCalendarDate(focusedValue), calendar());
 
     return constrainValue(date, access(props.minValue), access(props.maxValue));
-  };
+  });
 
-  const defaultFocusedCalendarDate = () => {
+  const defaultFocusedCalendarDate = createMemo(() => {
     const defaultFocusedValue = access(props.defaultFocusedValue);
     let date: CalendarDate;
 
@@ -179,7 +178,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     }
 
     return constrainValue(date, access(props.minValue), access(props.maxValue));
-  };
+  });
 
   const [focusedDate, setFocusedDate] = createControllableSignal<CalendarDate>({
     value: focusedCalendarDate,
@@ -212,19 +211,11 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
 
   const [isFocused, setFocused] = createSignal(access(props.autoFocus) || false);
 
-  const endDate = () => {
-    const duration = { ...visibleDuration() };
+  const endDate = createMemo(() => {
+    return startDate().add({ ...visibleDuration(), days: -1 });
+  });
 
-    if (duration.days) {
-      duration.days--;
-    } else {
-      duration.days = -1;
-    }
-
-    return startDate().add(duration);
-  };
-
-  const isUnavailable = () => {
+  const isUnavailable = createMemo(() => {
     const value = calendarDateValue();
 
     if (!value) {
@@ -236,7 +227,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     }
 
     return isInvalid(value, access(props.minValue), access(props.maxValue));
-  };
+  });
 
   const validationState = () => {
     return access(props.validationState) || (isUnavailable() ? "invalid" : undefined);
@@ -342,18 +333,10 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       focusCell(focusedDate()!.subtract({ days: 1 }));
     },
     focusNextRow() {
-      if (visibleDuration().days) {
-        this.focusNextPage();
-      } else if (visibleDuration().weeks || visibleDuration().months || visibleDuration().years) {
-        focusCell(focusedDate()!.add({ weeks: 1 }));
-      }
+      focusCell(focusedDate()!.add({ weeks: 1 }));
     },
     focusPreviousRow() {
-      if (visibleDuration().days) {
-        this.focusPreviousPage();
-      } else if (visibleDuration().weeks || visibleDuration().months || visibleDuration().years) {
-        focusCell(focusedDate()!.subtract({ weeks: 1 }));
-      }
+      focusCell(focusedDate()!.subtract({ weeks: 1 }));
     },
     focusNextPage() {
       const locale = access(props.locale)!;
@@ -362,11 +345,17 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
 
       const start = startDate().add(visibleDuration());
 
-      setFocusedDate(constrainValue(focusedDate()!.add(visibleDuration()), minValue, maxValue));
+      const newFocusedDate = constrainValue(
+        focusedDate()!.add(visibleDuration()),
+        minValue,
+        maxValue
+      );
+
+      setFocusedDate(newFocusedDate);
 
       setStartDate(
         alignStart(
-          constrainStart(focusedDate()!, start, visibleDuration(), locale, minValue, maxValue),
+          constrainStart(newFocusedDate, start, visibleDuration(), locale, minValue, maxValue),
           visibleDuration(),
           locale
         )
@@ -379,67 +368,43 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
 
       const start = startDate().subtract(visibleDuration());
 
-      setFocusedDate(
-        constrainValue(focusedDate()!.subtract(visibleDuration()), minValue, maxValue)
+      const newFocusedDate = constrainValue(
+        focusedDate()!.subtract(visibleDuration()),
+        minValue,
+        maxValue
       );
+
+      setFocusedDate(newFocusedDate);
 
       setStartDate(
         alignStart(
-          constrainStart(focusedDate()!, start, visibleDuration(), locale, minValue, maxValue),
+          constrainStart(newFocusedDate, start, visibleDuration(), locale, minValue, maxValue),
           visibleDuration(),
           locale
         )
       );
     },
     focusSectionStart() {
-      const locale = access(props.locale)!;
-
-      if (visibleDuration().days) {
-        focusCell(startDate());
-      } else if (visibleDuration().weeks) {
-        focusCell(startOfWeek(focusedDate()!, locale));
-      } else if (visibleDuration().months || visibleDuration().years) {
-        focusCell(startOfMonth(focusedDate()!));
-      }
+      focusCell(startOfMonth(focusedDate()!));
     },
     focusSectionEnd() {
-      const locale = access(props.locale)!;
-
-      if (visibleDuration().days) {
-        focusCell(endDate());
-      } else if (visibleDuration().weeks) {
-        focusCell(endOfWeek(focusedDate()!, locale));
-      } else if (visibleDuration().months || visibleDuration().years) {
-        focusCell(endOfMonth(focusedDate()!));
-      }
+      focusCell(endOfMonth(focusedDate()!));
     },
     focusNextSection(larger) {
-      if (!larger && !visibleDuration().days) {
+      if (!larger) {
         focusCell(focusedDate()!.add(unitDuration(visibleDuration())));
         return;
       }
 
-      if (visibleDuration().days) {
-        this.focusNextPage();
-      } else if (visibleDuration().weeks) {
-        focusCell(focusedDate()!.add({ months: 1 }));
-      } else if (visibleDuration().months || visibleDuration().years) {
-        focusCell(focusedDate()!.add({ years: 1 }));
-      }
+      focusCell(focusedDate()!.add({ years: 1 }));
     },
     focusPreviousSection(larger) {
-      if (!larger && !visibleDuration().days) {
+      if (!larger) {
         focusCell(focusedDate()!.subtract(unitDuration(visibleDuration())));
         return;
       }
 
-      if (visibleDuration().days) {
-        this.focusPreviousPage();
-      } else if (visibleDuration().weeks) {
-        focusCell(focusedDate()!.subtract({ months: 1 }));
-      } else if (visibleDuration().months || visibleDuration().years) {
-        focusCell(focusedDate()!.subtract({ years: 1 }));
-      }
+      focusCell(focusedDate()!.subtract({ years: 1 }));
     },
     selectFocusedDate() {
       setValue(focusedDate()!);

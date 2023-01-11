@@ -16,7 +16,7 @@ import {
   mergeDefaultProps,
   scrollIntoView,
 } from "@kobalte/utils";
-import { createEffect, JSX, splitProps } from "solid-js";
+import { createEffect, createMemo, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createDateFormatter } from "../i18n";
@@ -44,11 +44,6 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
     timeZone: calendarContext.state().timeZone(),
     calendar: context.date().calendar.identifier,
   }));
-
-  const formattedDate = () => {
-    const nativeDate = context.date().toDate(calendarContext.state().timeZone());
-    return cellDateFormatter().format(nativeDate);
-  };
 
   const isLastSelectedBeforeDisabled = () => {
     const state = calendarContext.state();
@@ -135,6 +130,10 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
   const isFocused = () => {
     return calendarContext.state().isCellFocused(context.date());
   };
+
+  const formattedDate = createMemo(() => {
+    return cellDateFormatter().format(context.nativeDate());
+  });
 
   const tabIndex = () => {
     if (context.isDisabled()) {
@@ -362,18 +361,18 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
       {...combineProps(
         {
           ref: el => (ref = el),
-          children: formattedDate,
+          children: formattedDate(),
         },
         others,
         pressHandlers,
+        hoverHandlers,
+        focusRingHandlers,
         {
           onFocus,
           onPointerEnter,
           onPointerDown,
           onContextMenu,
-        },
-        hoverHandlers,
-        focusRingHandlers
+        }
       )}
     />
   );

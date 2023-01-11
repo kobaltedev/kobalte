@@ -1,6 +1,6 @@
 import { getWeeksInMonth } from "@internationalized/date";
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, createMemo, Index, JSX, splitProps } from "solid-js";
+import { Accessor, Index, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useCalendarContext } from "./calendar-context";

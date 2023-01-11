@@ -9,6 +9,7 @@ export interface CalendarCellContextValue {
   isInvalid: Accessor<boolean>;
   date: Accessor<CalendarDate>;
   label: Accessor<string>;
+  nativeDate: Accessor<Date>;
 }
 
 export const CalendarCellContext = createContext<CalendarCellContextValue>();
