@@ -7,6 +7,7 @@ export interface CalendarContextValue {
   selectedDateDescription: Accessor<string>;
   isPreviousDisabled: Accessor<boolean>;
   isNextDisabled: Accessor<boolean>;
+  hideDatesOutsideMonth: Accessor<boolean>;
   ariaLabel: Accessor<string | undefined>;
   ariaLabelledBy: Accessor<string | undefined>;
   setPreviousFocused: (newValue: boolean) => void;

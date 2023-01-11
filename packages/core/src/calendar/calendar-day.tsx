@@ -9,18 +9,16 @@
 
 import { getDayOfWeek, isSameDay, isSameMonth, isToday } from "@internationalized/date";
 import {
-  combineProps,
+  composeEventHandlers,
   createPolymorphicComponent,
-  focusWithoutScrolling,
-  getScrollParent,
   mergeDefaultProps,
-  scrollIntoView,
+  mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, createMemo, JSX, splitProps } from "solid-js";
+import { createMemo, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createDateFormatter } from "../i18n";
-import { createFocusRing, createHover, createPress, getInteractionModality } from "../primitives";
+import { createFocusRing, createHover, createPress } from "../primitives";
 import { useCalendarCellContext } from "./calendar-cell-context";
 import { useCalendarContext } from "./calendar-context";
 import { useCalendarMonthContext } from "./calendar-month-context";
@@ -37,7 +35,23 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
 
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, ["as"]);
+  const [local, others] = splitProps(props, [
+    "as",
+    "ref",
+    "onFocus",
+    "onContextMenu",
+    "onKeyDown",
+    "onKeyUp",
+    "onClick",
+    "onPointerDown",
+    "onPointerUp",
+    "onMouseDown",
+    "onDragStart",
+    "onPointerEnter",
+    "onPointerLeave",
+    "onFocusIn",
+    "onFocusOut",
+  ]);
 
   const cellDateFormatter = createDateFormatter(() => ({
     day: "numeric",
@@ -136,7 +150,7 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
   });
 
   const tabIndex = () => {
-    if (context.isDisabled()) {
+    if (context.isDisabled() || isOutsideMonth()) {
       return undefined;
     }
 
@@ -321,28 +335,16 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
     e.preventDefault();
   };
 
-  // Focus the button in the DOM when the state updates.
-  createEffect(() => {
-    if (ref && isFocused()) {
-      focusWithoutScrolling(ref);
-
-      // Scroll into view if navigating with a keyboard, otherwise
-      // try not to shift the view under the user's mouse/finger.
-      // Only scroll the direct scroll parent, not the whole page, so
-      // we don't scroll to the bottom when opening date picker popover.
-      if (getInteractionModality() !== "pointer") {
-        scrollIntoView(getScrollParent(ref) as HTMLElement, ref);
-      }
-    }
-  });
-
   return (
     <Dynamic
       component={local.as}
+      ref={mergeRefs(el => (ref = el), local.ref)}
       role="button"
       tabIndex={tabIndex()}
+      children={formattedDate()}
       aria-label={context.label()}
       aria-disabled={!context.isSelectable() || undefined}
+      data-date={context.date()}
       data-today={isToday(context.date(), calendarContext.state().timeZone()) ? "" : undefined}
       data-unavailable={context.isUnavailable() ? "" : undefined}
       data-outside-month={isOutsideMonth() ? "" : undefined}
@@ -358,22 +360,28 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
       data-active={isPressed() ? "" : undefined}
-      {...combineProps(
-        {
-          ref: el => (ref = el),
-          children: formattedDate(),
-        },
-        others,
-        pressHandlers,
-        hoverHandlers,
-        focusRingHandlers,
-        {
-          onFocus,
-          onPointerEnter,
-          onPointerDown,
-          onContextMenu,
-        }
-      )}
+      onFocus={composeEventHandlers([local.onFocus, onFocus])}
+      onContextMenu={composeEventHandlers([local.onContextMenu, onContextMenu])}
+      onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
+      onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
+      onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
+      onPointerDown={composeEventHandlers([
+        local.onPointerDown,
+        pressHandlers.onPointerDown,
+        onPointerDown,
+      ])}
+      onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
+      onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
+      onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
+      onPointerEnter={composeEventHandlers([
+        local.onPointerEnter,
+        onPointerEnter,
+        hoverHandlers.onPointerEnter,
+      ])}
+      onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
+      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
+      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+      {...others}
     />
   );
 });

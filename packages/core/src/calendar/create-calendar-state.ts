@@ -22,11 +22,19 @@ import {
   toCalendarDate,
   today,
 } from "@internationalized/date";
-import { access, MaybeAccessor, mergeDefaultProps, ValidationState } from "@kobalte/utils";
+import {
+  access,
+  focusWithoutScrolling,
+  getScrollParent,
+  MaybeAccessor,
+  mergeDefaultProps,
+  scrollIntoView,
+  ValidationState,
+} from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, createSignal, on } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { createControllableSignal } from "../primitives";
+import { createControllableSignal, getInteractionModality } from "../primitives";
 import { CalendarState, DateValue, MappedDateValue } from "./types";
 import {
   alignCenter,
@@ -124,6 +132,8 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     defaultValue: () => access(props.defaultValue),
     onChange: value => props.onValueChange?.(value),
   });
+
+  const [calendarRef, setCalendarRef] = createSignal<HTMLDivElement>();
 
   const visibleDuration: Accessor<DateDuration> = createMemo(() => {
     return { months: access(props.visibleMonths) };
@@ -237,6 +247,23 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
   const focusCell = (date: CalendarDate) => {
     date = constrainValue(date, access(props.minValue), access(props.maxValue));
     setFocusedDate(date);
+
+    // Focus the first tabbable cell button with the focused date in the calendar root DOM subtree.
+    const cellButton = calendarRef()?.querySelector(
+      `[data-date='${date}'][tabindex='0']`
+    ) as HTMLElement | null;
+
+    if (cellButton) {
+      focusWithoutScrolling(cellButton);
+
+      // Scroll into view if navigating with a keyboard, otherwise
+      // try not to shift the view under the user's mouse/finger.
+      // Only scroll the direct scroll parent, not the whole page, so
+      // we don't scroll to the bottom when opening date picker popover.
+      if (getInteractionModality() !== "pointer") {
+        scrollIntoView(getScrollParent(cellButton) as HTMLElement, cellButton);
+      }
+    }
   };
 
   const setValue = (date: CalendarDate) => {
@@ -308,6 +335,7 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
   });
 
   return {
+    setCalendarRef,
     isDisabled: () => access(props.isDisabled) ?? false,
     isReadOnly: () => access(props.isReadOnly) ?? false,
     value: () => calendarDateValue(),

@@ -79,11 +79,6 @@
   background: #eee;
 }
 
-.cell[data-focus] {
-  background-color: green;
-}
-
-.cell:focus-visible::after,
 .cell[data-focus-visible]::after {
   content: "";
   position: absolute;
@@ -98,7 +93,12 @@
   color: white;
 }
 
+.cell[data-unavailable] {
+  color: red;
+}
+
 .cell[data-disabled],
 .cell[data-outside-month] {
   color: gray;
+  opacity: 0.4;
 }

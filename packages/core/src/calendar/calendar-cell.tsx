@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/bb9f65fc853474065a9de9ed6f5f471c16689237/packages/@react-aria/calendar/src/useCalendarCell.ts
  */
 
-import { CalendarDate, isSameDay, isToday } from "@internationalized/date";
+import { CalendarDate, isSameDay, isSameMonth, isToday } from "@internationalized/date";
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createMemo, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -16,6 +16,7 @@ import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
 import { CalendarCellContext, CalendarCellContextValue } from "./calendar-cell-context";
 import { useCalendarContext } from "./calendar-context";
 import { getEraFormat } from "./utils";
+import { useCalendarMonthContext } from "./calendar-month-context";
 
 export interface CalendarCellOptions {
   /** The date that this cell represents. */
@@ -32,10 +33,25 @@ export interface CalendarCellOptions {
  * The wrapper component for a `Calendar.Day`.
  */
 export const CalendarCell = createPolymorphicComponent<"td", CalendarCellOptions>(props => {
+  const calendarContext = useCalendarContext();
+  const monthContext = useCalendarMonthContext();
+
   const [local, others] = splitProps(props, ["as", "date", "isDisabled"]);
 
+  const shouldMountCell = () => {
+    if (!local.date) {
+      return false;
+    }
+
+    if (calendarContext.hideDatesOutsideMonth()) {
+      return isSameMonth(monthContext.startDate(), local.date);
+    }
+
+    return true;
+  };
+
   return (
-    <Show when={local.date} fallback={<td />}>
+    <Show when={shouldMountCell()} fallback={<td />}>
       <CalendarCellBase date={local.date!} isDisabled={local.isDisabled} {...others} />
     </Show>
   );

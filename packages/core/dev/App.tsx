@@ -1,4 +1,4 @@
-import { ComponentProps } from "solid-js";
+import { ComponentProps, For } from "solid-js";
 
 import { Calendar, I18nProvider } from "../src";
 
@@ -33,11 +33,13 @@ function CalendarMonth(props: ComponentProps<typeof Calendar.Month>) {
 }
 
 export default function App() {
+  const months = [...new Array(2).keys()];
+
   return (
     <div class="app">
       <I18nProvider>
-        <Calendar class="calendar">
-          <CalendarMonth />
+        <Calendar class="calendar" visibleMonths={months.length}>
+          <For each={months}>{offset => <CalendarMonth offset={offset} />}</For>
         </Calendar>
       </I18nProvider>
     </div>

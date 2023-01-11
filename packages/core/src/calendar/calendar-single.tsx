@@ -10,10 +10,12 @@
 import { access, createPolymorphicComponent } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
-import { CalendarRoot } from "./calendar-root";
+import { CalendarRoot, CalendarRootOptions } from "./calendar-root";
 import { createCalendarState, CreateCalendarStateProps } from "./create-calendar-state";
 
-export interface CalendarSingleOptions extends CreateCalendarStateProps {}
+export interface CalendarSingleOptions
+  extends CreateCalendarStateProps,
+    Pick<CalendarRootOptions, "hideDatesOutsideMonth"> {}
 
 /**
  * Displays one or more date grids and allows users to select a single date.

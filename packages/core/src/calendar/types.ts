@@ -8,7 +8,7 @@
 
 import { CalendarDate, CalendarDateTime, ZonedDateTime } from "@internationalized/date";
 import { RangeValue, ValidationState } from "@kobalte/utils";
-import { Accessor } from "solid-js";
+import { Accessor, Setter } from "solid-js";
 
 export type DateValue = CalendarDate | CalendarDateTime | ZonedDateTime;
 
@@ -23,6 +23,9 @@ export type MappedDateValue<T> = T extends ZonedDateTime
 export type DateRange = RangeValue<DateValue>;
 
 interface CalendarStateBase {
+  /** Set the ref of the calendar root component. */
+  setCalendarRef: Setter<HTMLDivElement>;
+
   /** Whether the calendar is disabled. */
   isDisabled: Accessor<boolean>;
 

@@ -6,8 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/15e101b74966bd5eb719c6529ce71ce57eaed430/packages/@react-aria/calendar/src/useCalendarBase.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, createUniqueId, on, splitProps } from "solid-js";
+import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { createEffect, on, onMount, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { announce } from "../live-announcer";
@@ -21,23 +21,22 @@ export interface CalendarRootOptions {
 
   /** Whether the calendar is disabled. */
   isDisabled?: boolean;
+
+  /** Whether dates outside each calendar month should not be visible. */
+  hideDatesOutsideMonth?: boolean;
 }
 
 export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOptions>(props => {
-  const defaultId = `calendar-${createUniqueId()}`;
+  let ref: HTMLDivElement | undefined;
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      id: defaultId,
-    },
-    props
-  );
+  props = mergeDefaultProps({ as: "div" }, props);
 
   const [local, others] = splitProps(props, [
     "as",
+    "ref",
     "state",
     "isDisabled",
+    "hideDatesOutsideMonth",
     "aria-label",
     "aria-labelledby",
   ]);
@@ -56,6 +55,12 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
 
   let isPreviousFocused = false;
   const isPreviousDisabled = () => local.isDisabled || local.state.isPreviousVisibleRangeInvalid();
+
+  onMount(() => {
+    if (ref) {
+      local.state.setCalendarRef(ref);
+    }
+  });
 
   // Announce when the visible date range changes.
   createEffect(
@@ -107,6 +112,7 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
     selectedDateDescription,
     isPreviousDisabled,
     isNextDisabled,
+    hideDatesOutsideMonth: () => local.hideDatesOutsideMonth ?? false,
     ariaLabel: () => local["aria-label"],
     ariaLabelledBy: () => local["aria-labelledby"],
     setPreviousFocused: newValue => (isPreviousFocused = newValue),
@@ -117,6 +123,7 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
     <CalendarContext.Provider value={context}>
       <Dynamic
         component={local.as}
+        ref={mergeRefs(el => (ref = el), local.ref)}
         role="group"
         aria-label={[local["aria-label"], visibleRangeDescription()].filter(Boolean).join(", ")}
         aria-labelledby={local["aria-labelledby"]}

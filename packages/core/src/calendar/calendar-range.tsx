@@ -41,16 +41,17 @@ import {
 
 import { useLocale } from "../i18n";
 import { createControllableSignal } from "../primitives";
-import { CalendarRoot } from "./calendar-root";
+import { CalendarRoot, CalendarRootOptions } from "./calendar-root";
 import { createCalendarState, CreateCalendarStateProps } from "./create-calendar-state";
 import { CalendarState, DateRange, DateValue, MappedDateValue, RangeCalendarState } from "./types";
 import { alignCenter, constrainValue, isInvalid, previousAvailableDate } from "./utils";
 
 export interface CalendarRangeOptions
   extends Omit<
-    CreateCalendarStateProps,
-    "value" | "defaultValue" | "onValueChange" | "selectionAlignment"
-  > {
+      CreateCalendarStateProps,
+      "value" | "defaultValue" | "onValueChange" | "selectionAlignment"
+    >,
+    Pick<CalendarRootOptions, "hideDatesOutsideMonth"> {
   /** The controlled selected date range of the calendar. */
   value?: DateRange;
 
