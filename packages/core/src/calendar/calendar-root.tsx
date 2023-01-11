@@ -7,7 +7,7 @@
  */
 
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, on, splitProps } from "solid-js";
+import { createEffect, createUniqueId, on, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { announce } from "../live-announcer";
@@ -24,7 +24,15 @@ export interface CalendarRootOptions {
 }
 
 export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOptions>(props => {
-  props = mergeDefaultProps({ as: "div" }, props);
+  const defaultId = `calendar-${createUniqueId()}`;
+
+  props = mergeDefaultProps(
+    {
+      as: "div",
+      id: defaultId,
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, [
     "as",
@@ -59,7 +67,9 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
           announce(visibleRangeDescription);
         }
       },
-      { defer: true }
+      {
+        defer: true,
+      }
     )
   );
 
@@ -73,7 +83,9 @@ export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOption
           announce(selectedDateDescription, "polite", 4000);
         }
       },
-      { defer: true }
+      {
+        defer: true,
+      }
     )
   );
 

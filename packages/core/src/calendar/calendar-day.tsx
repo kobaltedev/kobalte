@@ -12,12 +12,11 @@ import {
   combineProps,
   createPolymorphicComponent,
   focusWithoutScrolling,
-  getDocument,
   getScrollParent,
   mergeDefaultProps,
   scrollIntoView,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import { createEffect, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createDateFormatter } from "../i18n";
@@ -367,14 +366,14 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
         },
         others,
         pressHandlers,
-        hoverHandlers,
-        focusRingHandlers,
         {
           onFocus,
           onPointerEnter,
           onPointerDown,
           onContextMenu,
-        }
+        },
+        hoverHandlers,
+        focusRingHandlers
       )}
     />
   );

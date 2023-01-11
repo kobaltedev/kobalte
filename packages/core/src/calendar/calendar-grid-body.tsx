@@ -26,14 +26,14 @@ export const CalendarGridBody = createPolymorphicComponent<"tbody", CalendarGrid
 
     const [local, others] = splitProps(props, ["as", "children"]);
 
-    const weekIndexes = createMemo(() => {
+    const weekIndexes = () => {
       const weeksInMonth = getWeeksInMonth(
         monthContext.startDate(),
         calendarContext.state().locale()
       );
 
       return [...new Array(weeksInMonth).keys()];
-    });
+    };
 
     return (
       <Dynamic component={local.as} {...others}>

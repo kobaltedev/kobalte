@@ -24,7 +24,7 @@ import {
   today,
 } from "@internationalized/date";
 import { access, MaybeAccessor, mergeDefaultProps, ValidationState } from "@kobalte/utils";
-import { Accessor, createEffect, createMemo, createSignal } from "solid-js";
+import { Accessor, createEffect, createMemo, createSignal, on } from "solid-js";
 
 import { useLocale } from "../i18n";
 import { createControllableSignal } from "../primitives";
@@ -278,27 +278,26 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
     }
   };
 
-  let lastCalendarIdentifier = calendar().identifier;
-
   // Reset focused date and visible range when calendar changes.
+  createEffect(
+    on(
+      () => calendar().identifier,
+      () => {
+        const locale = access(props.locale)!;
+        const minValue = access(props.minValue);
+        const maxValue = access(props.maxValue);
+
+        const newFocusedDate = toCalendar(focusedDate()!, calendar());
+
+        setStartDate(alignCenter(newFocusedDate, visibleDuration(), locale, minValue, maxValue));
+
+        setFocusedDate(newFocusedDate);
+      }
+    )
+  );
+
   createEffect(() => {
-    if (calendar().identifier !== lastCalendarIdentifier) {
-      const locale = access(props.locale)!;
-      const minValue = access(props.minValue);
-      const maxValue = access(props.maxValue);
-
-      const newFocusedDate = toCalendar(focusedDate()!, calendar());
-
-      setStartDate(alignCenter(newFocusedDate, visibleDuration(), locale, minValue, maxValue));
-
-      setFocusedDate(newFocusedDate);
-
-      lastCalendarIdentifier = calendar().identifier;
-    }
-  });
-
-  createEffect(() => {
-    const date = focusedDate()!;
+    let date = focusedDate()!;
 
     const locale = access(props.locale)!;
     const minValue = access(props.minValue);
@@ -306,8 +305,11 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
 
     if (isInvalid(date, minValue, maxValue)) {
       // If the focused date was moved to an invalid value, it can't be focused, so constrain it.
-      setFocusedDate(constrainValue(date, minValue, maxValue));
-    } else if (date.compare(startDate()) < 0) {
+      date = constrainValue(date, minValue, maxValue);
+      setFocusedDate(date);
+    }
+
+    if (date.compare(startDate()) < 0) {
       setStartDate(alignEnd(date, visibleDuration(), locale, minValue, maxValue));
     } else if (date.compare(endDate()) > 0) {
       setStartDate(alignStart(date, visibleDuration(), locale, minValue, maxValue));
@@ -389,40 +391,6 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
         )
       );
     },
-    focusNextYear() {
-      const locale = access(props.locale)!;
-      const minValue = access(props.minValue);
-      const maxValue = access(props.maxValue);
-
-      const start = startDate().add({ years: 1 });
-
-      setFocusedDate(constrainValue(focusedDate()!.add({ years: 1 }), minValue, maxValue));
-
-      setStartDate(
-        alignStart(
-          constrainStart(focusedDate()!, start, visibleDuration(), locale, minValue, maxValue),
-          visibleDuration(),
-          locale
-        )
-      );
-    },
-    focusPreviousYear() {
-      const locale = access(props.locale)!;
-      const minValue = access(props.minValue);
-      const maxValue = access(props.maxValue);
-
-      const start = startDate().subtract({ years: 1 });
-
-      setFocusedDate(constrainValue(focusedDate()!.subtract({ years: 1 }), minValue, maxValue));
-
-      setStartDate(
-        alignStart(
-          constrainStart(focusedDate()!, start, visibleDuration(), locale, minValue, maxValue),
-          visibleDuration(),
-          locale
-        )
-      );
-    },
     focusSectionStart() {
       const locale = access(props.locale)!;
 
@@ -495,7 +463,8 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       );
     },
     isCellFocused(date) {
-      return isFocused() && isSameDay(date, focusedDate()!);
+      const resolvedFocusedDate = focusedDate();
+      return isFocused() && resolvedFocusedDate != null && isSameDay(date, resolvedFocusedDate);
     },
     isCellDisabled(date) {
       return (

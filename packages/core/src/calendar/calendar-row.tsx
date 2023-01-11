@@ -7,8 +7,13 @@ import { useCalendarContext } from "./calendar-context";
 import { useCalendarMonthContext } from "./calendar-month-context";
 
 export interface CalendarRowOptions {
+  /** The index of the week to render. */
   weekIndex: number;
 
+  /**
+   * Render prop used to render each day of the week row,
+   * it receives a date accessor as parameter.
+   */
   children: (date: Accessor<CalendarDate | null>) => JSX.Element;
 }
 

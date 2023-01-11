@@ -79,6 +79,7 @@
   background: #eee;
 }
 
+.cell:focus-visible::after,
 .cell[data-focus-visible]::after {
   content: "";
   position: absolute;

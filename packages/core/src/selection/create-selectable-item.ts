@@ -211,13 +211,11 @@ export function createSelectableItem<T extends HTMLElement>(
     return access(props.isVirtualized) ? undefined : key();
   });
 
-  // Focus the associated DOM node when this item becomes the focusedKey
+  // Focus the associated DOM node when this item becomes the focusedKey.
   createEffect(
     on(
       [ref, key, shouldUseVirtualFocus, () => manager().focusedKey(), () => manager().isFocused()],
-      newValue => {
-        const [refEl, key, shouldUseVirtualFocus, focusedKey, isFocused] = newValue;
-
+      ([refEl, key, shouldUseVirtualFocus, focusedKey, isFocused]) => {
         if (
           refEl &&
           key === focusedKey &&
