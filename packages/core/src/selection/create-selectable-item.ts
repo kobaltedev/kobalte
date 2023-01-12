@@ -182,10 +182,17 @@ export function createSelectableItem<T extends HTMLElement>(
     }
   };
 
+  const onMouseDown = (e: MouseEvent) => {
+    if (isDisabled()) {
+      // Prevent focus going to the body when clicking on a disabled item.
+      e.preventDefault();
+    }
+  };
+
   const onFocus = (e: FocusEvent) => {
     const refEl = ref();
 
-    if (shouldUseVirtualFocus() || !refEl) {
+    if (shouldUseVirtualFocus() || isDisabled() || !refEl) {
       return;
     }
 
@@ -199,7 +206,7 @@ export function createSelectableItem<T extends HTMLElement>(
   // If using virtual focus, don't set a tabIndex at all so that VoiceOver
   // on iOS 14 doesn't try to move real DOM focus to the item anyway.
   const tabIndex = createMemo(() => {
-    if (shouldUseVirtualFocus()) {
+    if (shouldUseVirtualFocus() || isDisabled()) {
       return undefined;
     }
 
@@ -242,6 +249,6 @@ export function createSelectableItem<T extends HTMLElement>(
     dataKey,
     pressHandlers,
     longPressHandlers,
-    otherHandlers: { onDragStart, onFocus },
+    otherHandlers: { onMouseDown, onFocus, onDragStart },
   };
 }

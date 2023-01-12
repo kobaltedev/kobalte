@@ -8,7 +8,7 @@
 
 import {
   callHandler,
-  combineProps,
+  composeEventHandlers,
   createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
@@ -18,7 +18,7 @@ import { Dynamic } from "solid-js/web";
 
 import { useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
-import { createLongPress } from "../primitives";
+import { createLongPress, PRESS_HANDLERS_PROP_NAMES } from "../primitives";
 import { useContextMenuContext } from "./context-menu-context";
 
 export interface ContextMenuTriggerOptions {
@@ -49,6 +49,7 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
       "style",
       "isDisabled",
       "onContextMenu",
+      ...PRESS_HANDLERS_PROP_NAMES,
     ]);
 
     const onContextMenu: JSX.EventHandlerUnion<any, MouseEvent> = e => {
@@ -92,7 +93,14 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
         data-expanded={menuContext.isOpen() ? "" : undefined}
         data-disabled={local.isDisabled ? "" : undefined}
         onContextMenu={onContextMenu}
-        {...combineProps(others, longPressHandlers)}
+        onKeyDown={composeEventHandlers([local.onKeyDown, longPressHandlers.onKeyDown])}
+        onKeyUp={composeEventHandlers([local.onKeyUp, longPressHandlers.onKeyUp])}
+        onClick={composeEventHandlers([local.onClick, longPressHandlers.onClick])}
+        onPointerDown={composeEventHandlers([local.onPointerDown, longPressHandlers.onPointerDown])}
+        onPointerUp={composeEventHandlers([local.onPointerUp, longPressHandlers.onPointerUp])}
+        onMouseDown={composeEventHandlers([local.onMouseDown, longPressHandlers.onMouseDown])}
+        onDragStart={composeEventHandlers([local.onDragStart, longPressHandlers.onDragStart])}
+        {...others}
       />
     );
   }

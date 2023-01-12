@@ -7,15 +7,16 @@
  */
 
 import {
-  combineProps,
+  composeEventHandlers,
   createPolymorphicComponent,
   getFocusableTreeWalker,
   mergeDefaultProps,
+  mergeRefs,
 } from "@kobalte/utils";
 import { createEffect, createSignal, on, onCleanup, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createFocusRing } from "../primitives";
+import { createFocusRing, FOCUS_RING_HANDLERS_PROP_NAMES } from "../primitives";
 import { useTabsContext } from "./tabs-context";
 
 export interface TabsContentOptions {
@@ -39,7 +40,14 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
 
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, ["as", "id", "value", "forceMount"]);
+  const [local, others] = splitProps(props, [
+    "as",
+    "ref",
+    "id",
+    "value",
+    "forceMount",
+    ...FOCUS_RING_HANDLERS_PROP_NAMES,
+  ]);
 
   const [tabIndex, setTabIndex] = createSignal<number | undefined>(0);
 
@@ -90,6 +98,7 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
     <Show when={shouldMount()}>
       <Dynamic
         component={local.as}
+        ref={mergeRefs(el => (ref = el), local.ref)}
         id={id()}
         role="tabpanel"
         tabIndex={tabIndex()}
@@ -97,7 +106,9 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
         data-orientation={context.orientation()}
         data-focus={isFocused() ? "" : undefined}
         data-focus-visible={isFocusVisible() ? "" : undefined}
-        {...combineProps({ ref: el => (ref = el) }, others, focusRingHandlers)}
+        onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
+        onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+        {...others}
       />
     </Show>
   );

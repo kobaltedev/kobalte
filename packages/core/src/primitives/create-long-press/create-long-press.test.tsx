@@ -6,13 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/interactions/test/useLongPress.test.js
  */
 
+import { installPointerEvent } from "@kobalte/tests";
+import { composeEventHandlers } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { fireEvent, render, screen } from "solid-testing-library";
+
+import { createPress, PRESS_HANDLERS_PROP_NAMES } from "../create-press";
 import { createLongPress } from "./create-long-press";
-import { createPress } from "../create-press";
-import { combineProps } from "@kobalte/utils";
-import { installPointerEvent } from "@kobalte/tests";
 
 function Example(props: any) {
   const [local, others] = splitProps(props, ["elementType"]);
@@ -32,16 +33,54 @@ function ExampleWithPress(props: any) {
     "onPress",
     "onPressStart",
     "onPressEnd",
+    ...PRESS_HANDLERS_PROP_NAMES,
   ]);
 
   const { longPressHandlers } = createLongPress(others);
 
   const { pressHandlers } = createPress(local);
 
-  const combinedProps = combineProps(longPressHandlers, pressHandlers);
-
   return (
-    <Dynamic component={local.elementType ?? "div"} {...combinedProps} tabIndex="0">
+    <Dynamic
+      component={local.elementType ?? "div"}
+      tabIndex="0"
+      onKeyDown={composeEventHandlers([
+        local.onKeyDown,
+        longPressHandlers.onKeyDown,
+        pressHandlers.onKeyDown,
+      ])}
+      onKeyUp={composeEventHandlers([
+        local.onKeyUp,
+        longPressHandlers.onKeyUp,
+        pressHandlers.onKeyUp,
+      ])}
+      onClick={composeEventHandlers([
+        local.onClick,
+        longPressHandlers.onClick,
+        pressHandlers.onClick,
+      ])}
+      onPointerDown={composeEventHandlers([
+        local.onPointerDown,
+        longPressHandlers.onPointerDown,
+        pressHandlers.onPointerDown,
+      ])}
+      onPointerUp={composeEventHandlers([
+        local.onPointerUp,
+        longPressHandlers.onPointerUp,
+        pressHandlers.onPointerUp,
+      ])}
+      onMouseDown={composeEventHandlers([
+        local.onMouseDown,
+        longPressHandlers.onMouseDown,
+        pressHandlers.onMouseDown,
+      ])}
+      onDragStart={composeEventHandlers([
+        local.onDragStart,
+        longPressHandlers.onDragStart,
+        pressHandlers.onDragStart,
+      ])}
+      {...others}
+    >
       test
     </Dynamic>
   );

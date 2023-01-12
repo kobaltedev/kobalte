@@ -7,21 +7,42 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/toggle/src/useToggle.ts
  */
 
-import { callHandler, combineProps, mergeDefaultProps, visuallyHiddenStyles } from "@kobalte/utils";
+import {
+  callHandler,
+  composeEventHandlers,
+  mergeDefaultProps,
+  OverrideProps,
+  visuallyHiddenStyles,
+} from "@kobalte/utils";
 import { ComponentProps, JSX, splitProps } from "solid-js";
 
-import { createFocusRing, createPress } from "../primitives";
+import {
+  createFocusRing,
+  createPress,
+  FOCUS_RING_HANDLERS_PROP_NAMES,
+  PRESS_HANDLERS_PROP_NAMES,
+} from "../primitives";
 import { useSwitchContext } from "./switch-context";
+
+export interface SwitchInputOptions {
+  /** The HTML styles attribute (object form only). */
+  style?: JSX.CSSProperties;
+}
 
 /**
  * The native html input that is visually hidden in the switch.
  */
-export function SwitchInput(props: ComponentProps<"input">) {
+export function SwitchInput(props: OverrideProps<ComponentProps<"input">, SwitchInputOptions>) {
   const context = useSwitchContext();
 
   props = mergeDefaultProps({ id: context.generateId("input") }, props);
 
-  const [local, others] = splitProps(props, ["onChange"]);
+  const [local, others] = splitProps(props, [
+    "style",
+    "onChange",
+    ...PRESS_HANDLERS_PROP_NAMES,
+    ...FOCUS_RING_HANDLERS_PROP_NAMES,
+  ]);
 
   const { pressHandlers } = createPress({
     isDisabled: context.isDisabled,
@@ -73,6 +94,7 @@ export function SwitchInput(props: ComponentProps<"input">) {
       required={context.isRequired()}
       disabled={context.isDisabled()}
       readonly={context.isReadOnly()}
+      style={{ ...visuallyHiddenStyles, ...local.style }}
       aria-label={context.ariaLabel()}
       aria-labelledby={ariaLabelledBy()}
       aria-describedby={context.ariaDescribedBy()}
@@ -82,7 +104,16 @@ export function SwitchInput(props: ComponentProps<"input">) {
       aria-disabled={context.isDisabled() || undefined}
       aria-readonly={context.isReadOnly() || undefined}
       onChange={onChange}
-      {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers, focusRingHandlers)}
+      onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
+      onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
+      onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
+      onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
+      onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
+      onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
+      onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
+      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
+      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+      {...others}
     />
   );
 }

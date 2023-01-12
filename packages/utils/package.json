@@ -52,7 +52,6 @@
   "dependencies": {
     "@solid-primitives/event-listener": "^2.2.4",
     "@solid-primitives/media": "^2.0.4",
-    "@solid-primitives/props": "^3.0.1",
     "@solid-primitives/refs": "^0.3.4",
     "@solid-primitives/utils": "^4.0.0"
   },

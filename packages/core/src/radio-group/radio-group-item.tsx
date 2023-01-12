@@ -6,7 +6,12 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
  */
 
-import { combineProps, createGenerateId, mergeDefaultProps, OverrideProps } from "@kobalte/utils";
+import {
+  composeEventHandlers,
+  createGenerateId,
+  mergeDefaultProps,
+  OverrideProps,
+} from "@kobalte/utils";
 import {
   Accessor,
   ComponentProps,
@@ -17,7 +22,7 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { createHover } from "../primitives";
+import { createHover, HOVER_HANDLERS_PROP_NAMES } from "../primitives";
 import { useRadioGroupContext } from "./radio-group-context";
 import {
   RadioGroupItemContext,
@@ -55,6 +60,7 @@ export function RadioGroupItem(
     "aria-label",
     "aria-labelledby",
     "aria-describedby",
+    ...HOVER_HANDLERS_PROP_NAMES,
   ]);
 
   const [isFocused, setIsFocused] = createSignal(false);
@@ -95,7 +101,12 @@ export function RadioGroupItem(
 
   return (
     <RadioGroupItemContext.Provider value={context}>
-      <label {...context.dataset()} {...combineProps(others, hoverHandlers)} />
+      <label
+        {...context.dataset()}
+        onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
+        onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
+        {...others}
+      />
     </RadioGroupItemContext.Provider>
   );
 }

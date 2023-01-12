@@ -8,9 +8,10 @@
 
 import {
   access,
-  combineProps,
+  composeEventHandlers,
   createPolymorphicComponent,
   mergeDefaultProps,
+  mergeRefs,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -117,6 +118,7 @@ export const Listbox = createPolymorphicComponent<"div", ListboxOptions, Listbox
 
     const [local, others] = splitProps(props, [
       "as",
+      "ref",
       "value",
       "defaultValue",
       "onValueChange",
@@ -137,6 +139,10 @@ export const Listbox = createPolymorphicComponent<"div", ListboxOptions, Listbox
       "disallowTypeAhead",
       "allowsTabNavigation",
       "scrollRef",
+      "onKeyDown",
+      "onMouseDown",
+      "onFocusIn",
+      "onFocusOut",
     ]);
 
     const [items, setItems] = createControllableArraySignal<CollectionItem>({
@@ -195,15 +201,26 @@ export const Listbox = createPolymorphicComponent<"div", ListboxOptions, Listbox
         <ListboxContext.Provider value={context}>
           <Dynamic
             component={local.as}
+            ref={mergeRefs(el => (ref = el), local.ref)}
             role="listbox"
             tabIndex={selectableList.tabIndex()}
             aria-multiselectable={
               listState().selectionManager().selectionMode() === "multiple" ? true : undefined
             }
             data-focus={listState().selectionManager().isFocused() ? "" : undefined}
-            {...combineProps({ ref: el => (ref = el) }, others, selectableList.handlers)}
+            onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.handlers.onKeyDown])}
+            onMouseDown={composeEventHandlers([
+              local.onMouseDown,
+              selectableList.handlers.onMouseDown,
+            ])}
+            onFocusIn={composeEventHandlers([local.onFocusIn, selectableList.handlers.onFocusIn])}
+            onFocusOut={composeEventHandlers([
+              local.onFocusOut,
+              selectableList.handlers.onFocusOut,
+            ])}
+            {...others}
           />
-        </ListboxContext.Provider>{" "}
+        </ListboxContext.Provider>
       </DomCollectionProvider>
     );
   }
