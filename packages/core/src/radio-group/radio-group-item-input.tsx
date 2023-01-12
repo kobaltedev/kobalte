@@ -50,6 +50,8 @@ export function RadioGroupItemInput(
   const [local, others] = splitProps(props, [
     "style",
     "onChange",
+    "aria-labelledby",
+    "aria-describedby",
     ...PRESS_HANDLERS_PROP_NAMES,
     ...FOCUS_RING_HANDLERS_PROP_NAMES,
   ]);
@@ -66,11 +68,9 @@ export function RadioGroupItemInput(
   const ariaLabelledBy = () => {
     return (
       [
-        radioContext.ariaLabelledBy(),
+        local["aria-labelledby"],
         // If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
-        radioContext.ariaLabelledBy() != null && radioContext.ariaLabel() != null
-          ? others.id
-          : undefined,
+        local["aria-labelledby"] != null && others["aria-label"] != null ? others.id : undefined,
       ]
         .filter(Boolean)
         .join(" ") || undefined
@@ -79,9 +79,8 @@ export function RadioGroupItemInput(
 
   const ariaDescribedBy = () => {
     return (
-      [radioContext.ariaDescribedBy(), radioGroupContext.ariaDescribedBy()]
-        .filter(Boolean)
-        .join(" ") || undefined
+      [local["aria-describedby"], radioGroupContext.ariaDescribedBy()].filter(Boolean).join(" ") ||
+      undefined
     );
   };
 
@@ -114,7 +113,6 @@ export function RadioGroupItemInput(
       disabled={radioContext.isDisabled()}
       readonly={formControlContext.isReadOnly()}
       style={{ ...visuallyHiddenStyles, ...local.style }}
-      aria-label={radioContext.ariaLabel()}
       aria-labelledby={ariaLabelledBy()}
       aria-describedby={ariaDescribedBy()}
       onChange={onChange}

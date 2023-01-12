@@ -54,14 +54,7 @@ export function RadioGroupItem(
 
   props = mergeDefaultProps({ id: defaultId }, props);
 
-  const [local, others] = splitProps(props, [
-    "value",
-    "isDisabled",
-    "aria-label",
-    "aria-labelledby",
-    "aria-describedby",
-    ...HOVER_HANDLERS_PROP_NAMES,
-  ]);
+  const [local, others] = splitProps(props, ["value", "isDisabled", ...HOVER_HANDLERS_PROP_NAMES]);
 
   const [isFocused, setIsFocused] = createSignal(false);
   const [isFocusVisible, setIsFocusVisible] = createSignal(false);
@@ -89,9 +82,6 @@ export function RadioGroupItem(
   const context: RadioGroupItemContextValue = {
     value: () => local.value,
     dataset,
-    ariaLabel: () => local["aria-label"],
-    ariaLabelledBy: () => local["aria-labelledby"],
-    ariaDescribedBy: () => local["aria-describedby"],
     isSelected,
     isDisabled,
     generateId: createGenerateId(() => others.id!),

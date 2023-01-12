@@ -263,8 +263,8 @@ describe("Switch", () => {
 
   it("passes through 'aria-errormessage'", async () => {
     render(() => (
-      <Switch validationState="invalid" aria-errormessage="test" onCheckedChange={onChangeSpy}>
-        <Switch.Input />
+      <Switch validationState="invalid" onCheckedChange={onChangeSpy}>
+        <Switch.Input aria-errormessage="test" />
       </Switch>
     ));
 
@@ -277,8 +277,8 @@ describe("Switch", () => {
 
   it("supports 'aria-label'", () => {
     render(() => (
-      <Switch aria-label="Label">
-        <Switch.Input />
+      <Switch>
+        <Switch.Input aria-label="Label" />
         <Switch.Control />
       </Switch>
     ));
@@ -291,8 +291,8 @@ describe("Switch", () => {
 
   it("supports 'aria-labelledby'", () => {
     render(() => (
-      <Switch aria-labelledby="foo">
-        <Switch.Input />
+      <Switch>
+        <Switch.Input aria-labelledby="foo" />
       </Switch>
     ));
 
@@ -304,8 +304,8 @@ describe("Switch", () => {
 
   it("should combine 'aria-label' and 'aria-labelledby'", () => {
     render(() => (
-      <Switch aria-label="Label" aria-labelledby="foo">
-        <Switch.Input />
+      <Switch>
+        <Switch.Input aria-label="Label" aria-labelledby="foo" />
       </Switch>
     ));
 
@@ -317,8 +317,8 @@ describe("Switch", () => {
 
   it("supports 'aria-describedby'", () => {
     render(() => (
-      <Switch aria-describedby="foo">
-        <Switch.Input />
+      <Switch>
+        <Switch.Input aria-describedby="foo" />
       </Switch>
     ));
 

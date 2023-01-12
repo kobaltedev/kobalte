@@ -40,6 +40,7 @@ export function SwitchInput(props: OverrideProps<ComponentProps<"input">, Switch
   const [local, others] = splitProps(props, [
     "style",
     "onChange",
+    "aria-labelledby",
     ...PRESS_HANDLERS_PROP_NAMES,
     ...FOCUS_RING_HANDLERS_PROP_NAMES,
   ]);
@@ -56,9 +57,9 @@ export function SwitchInput(props: OverrideProps<ComponentProps<"input">, Switch
   const ariaLabelledBy = () => {
     return (
       [
-        context.ariaLabelledBy(),
+        local["aria-labelledby"],
         // If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
-        context.ariaLabelledBy() != null && context.ariaLabel() != null ? others.id : undefined,
+        local["aria-labelledby"] != null && others["aria-label"] != null ? others.id : undefined,
       ]
         .filter(Boolean)
         .join(" ") || undefined
@@ -95,10 +96,7 @@ export function SwitchInput(props: OverrideProps<ComponentProps<"input">, Switch
       disabled={context.isDisabled()}
       readonly={context.isReadOnly()}
       style={{ ...visuallyHiddenStyles, ...local.style }}
-      aria-label={context.ariaLabel()}
       aria-labelledby={ariaLabelledBy()}
-      aria-describedby={context.ariaDescribedBy()}
-      aria-errormessage={context.ariaErrorMessage()}
       aria-invalid={context.validationState() === "invalid" || undefined}
       aria-required={context.isRequired() || undefined}
       aria-disabled={context.isDisabled() || undefined}
