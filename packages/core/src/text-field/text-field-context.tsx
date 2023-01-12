@@ -7,12 +7,12 @@ export interface TextFieldDataSet {
 }
 
 export interface TextFieldContextValue {
-  value: Accessor<string | undefined>;
   dataset: Accessor<TextFieldDataSet>;
+  value: Accessor<string | undefined>;
   generateId: (part: string) => string;
   setIsFocused: (isFocused: boolean) => void;
   setIsFocusVisible: (isFocusVisible: boolean) => void;
-  onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent>;
+  onInput: JSX.EventHandlerUnion<HTMLInputElement | HTMLTextAreaElement, InputEvent>;
 }
 
 export const TextFieldContext = createContext<TextFieldContextValue>();

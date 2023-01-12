@@ -26,10 +26,12 @@ import {
 } from "../primitives";
 import { TextFieldContext, TextFieldContextValue, TextFieldDataSet } from "./text-field-context";
 import { TextFieldInput } from "./text-field-input";
+import { TextFieldTextArea } from "./text-field-text-area";
 
 type TextFieldComposite = {
   Label: typeof FormControlLabel;
   Input: typeof TextFieldInput;
+  TextArea: typeof TextFieldTextArea;
   Description: typeof FormControlDescription;
   ErrorMessage: typeof FormControlErrorMessage;
 };
@@ -91,7 +93,10 @@ export const TextField = createPolymorphicComponent<"div", TextFieldOptions, Tex
       isDisabled: () => access(formControlProps.isDisabled),
     });
 
-    const onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = e => {
+    const onInput: JSX.EventHandlerUnion<
+      HTMLInputElement | HTMLTextAreaElement,
+      InputEvent
+    > = e => {
       const newValue = (e.target as HTMLInputElement).value;
       setValue(newValue);
     };
@@ -138,5 +143,6 @@ export const TextField = createPolymorphicComponent<"div", TextFieldOptions, Tex
 
 TextField.Label = FormControlLabel;
 TextField.Input = TextFieldInput;
+TextField.TextArea = TextFieldTextArea;
 TextField.Description = FormControlDescription;
 TextField.ErrorMessage = FormControlErrorMessage;

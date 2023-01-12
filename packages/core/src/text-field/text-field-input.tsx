@@ -6,8 +6,13 @@
  * https://github.com/adobe/react-spectrum/blob/0af91c08c745f4bb35b6ad4932ca17a0d85dd02c/packages/@react-aria/textfield/src/useTextField.ts
  */
 
-import { composeEventHandlers, mergeDefaultProps } from "@kobalte/utils";
+import {
+  composeEventHandlers,
+  createPolymorphicComponent,
+  mergeDefaultProps,
+} from "@kobalte/utils";
 import { ComponentProps, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 
 import {
   createFormControlField,
@@ -21,27 +26,38 @@ import { useTextFieldContext } from "./text-field-context";
  * The native html input of the textfield.
  */
 export function TextFieldInput(props: ComponentProps<"input">) {
+  return <TextFieldInputBase type="text" {...props} />;
+}
+
+export const TextFieldInputBase = createPolymorphicComponent<"input">(props => {
   const formControlContext = useFormControlContext();
   const context = useTextFieldContext();
 
-  props = mergeDefaultProps({ id: context.generateId("input") }, props);
+  props = mergeDefaultProps(
+    {
+      as: "input",
+      id: context.generateId("input"),
+    },
+    props
+  );
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
-    ["onInput", ...FOCUS_RING_HANDLERS_PROP_NAMES],
+    ["as", "onInput", ...FOCUS_RING_HANDLERS_PROP_NAMES],
     FORM_CONTROL_FIELD_PROP_NAMES
   );
 
   const { fieldProps } = createFormControlField(formControlFieldProps);
 
   const { focusRingHandlers } = createFocusRing({
+    isTextInput: true,
     onFocusChange: value => context.setIsFocused(value),
     onFocusVisibleChange: value => context.setIsFocusVisible(value),
   });
 
   return (
-    <input
-      type="text"
+    <Dynamic
+      component={local.as}
       id={fieldProps.id()}
       name={formControlContext.name()}
       value={context.value()}
@@ -58,7 +74,9 @@ export function TextFieldInput(props: ComponentProps<"input">) {
       onInput={composeEventHandlers([local.onInput, context.onInput])}
       onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
       onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+      {...formControlContext.dataset()}
+      {...context.dataset()}
       {...others}
     />
   );
-}
+});
