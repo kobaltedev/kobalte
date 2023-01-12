@@ -201,7 +201,7 @@ export const Checkbox: Component<OverrideProps<ComponentProps<"label">, Checkbox
         ref={mergeRefs(el => (ref = el), local.ref)}
         onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
         onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
-        {...context.dataset()}
+        {...dataset()}
         {...others}
       >
         <CheckboxChild state={context} children={local.children} />

@@ -25,4 +25,5 @@ export * from "./select";
 export * from "./separator";
 export * from "./switch";
 export * from "./tabs";
+export * from "./text-field";
 export * from "./toggle-button";
