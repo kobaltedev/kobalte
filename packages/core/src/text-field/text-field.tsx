@@ -97,8 +97,20 @@ export const TextField = createPolymorphicComponent<"div", TextFieldOptions, Tex
       HTMLInputElement | HTMLTextAreaElement,
       InputEvent
     > = e => {
-      const newValue = (e.target as HTMLInputElement).value;
-      setValue(newValue);
+      if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
+        return;
+      }
+
+      const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+
+      setValue(target.value);
+
+      // Unlike in React, inputs `value` can be out of sync with our value state.
+      // even if an input is controlled (ex: `<input value="foo" />`,
+      // typing on the input will change its internal `value`.
+      //
+      // To prevent this, we need to force the input `value` to be in sync with the textfield value state.
+      target.value = value() ?? "";
     };
 
     const dataset: Accessor<TextFieldDataSet> = createMemo(() => ({

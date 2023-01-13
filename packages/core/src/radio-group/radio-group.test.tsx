@@ -162,9 +162,9 @@ describe("RadioGroup", () => {
     expect(onChangeSpy).toHaveBeenCalledWith("dragons");
 
     expect(inputs[0].checked).toBeFalsy();
-    expect(inputs[1].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeTruthy();
 
-    // false because `value` is controlled
+    // false because `value` is controlled.
     expect(inputs[2].checked).toBeFalsy();
   });
 

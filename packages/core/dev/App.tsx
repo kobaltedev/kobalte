@@ -1,6 +1,6 @@
 import { ComponentProps, For } from "solid-js";
 
-import { Calendar, I18nProvider } from "../src";
+import { Calendar, I18nProvider, RadioGroup } from "../src";
 
 function CalendarMonth(props: ComponentProps<typeof Calendar.Month>) {
   return (
@@ -41,6 +41,27 @@ export default function App() {
         <Calendar class="calendar" visibleMonths={months.length}>
           <For each={months}>{offset => <CalendarMonth offset={offset} />}</For>
         </Calendar>
+
+        <RadioGroup value="cats">
+          <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+          <div>
+            <RadioGroup.Item value="dogs">
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl />
+              <RadioGroup.ItemLabel>Dogs</RadioGroup.ItemLabel>
+            </RadioGroup.Item>
+            <RadioGroup.Item value="cats">
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl />
+              <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
+            </RadioGroup.Item>
+            <RadioGroup.Item value="dragons">
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl />
+              <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
+            </RadioGroup.Item>
+          </div>
+        </RadioGroup>
       </I18nProvider>
     </div>
   );
