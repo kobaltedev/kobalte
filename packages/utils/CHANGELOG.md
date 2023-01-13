@@ -1,5 +1,12 @@
 # @kobalte/utils
 
+## 0.2.0
+
+### Minor Changes
+
+- b2ecae7: - Added `TextField` component.
+  - Performance improvement.
+
 ## 0.1.0
 
 ### Minor Changes
