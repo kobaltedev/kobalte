@@ -7,21 +7,43 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/toggle/src/useToggle.ts
  */
 
-import { callHandler, combineProps, mergeDefaultProps, visuallyHiddenStyles } from "@kobalte/utils";
+import {
+  callHandler,
+  composeEventHandlers,
+  mergeDefaultProps,
+  OverrideProps,
+  visuallyHiddenStyles,
+} from "@kobalte/utils";
 import { ComponentProps, JSX, splitProps } from "solid-js";
 
-import { createFocusRing, createPress } from "../primitives";
+import {
+  createFocusRing,
+  createPress,
+  FOCUS_RING_HANDLERS_PROP_NAMES,
+  PRESS_HANDLERS_PROP_NAMES,
+} from "../primitives";
 import { useSwitchContext } from "./switch-context";
+
+export interface SwitchInputOptions {
+  /** The HTML styles attribute (object form only). */
+  style?: JSX.CSSProperties;
+}
 
 /**
  * The native html input that is visually hidden in the switch.
  */
-export function SwitchInput(props: ComponentProps<"input">) {
+export function SwitchInput(props: OverrideProps<ComponentProps<"input">, SwitchInputOptions>) {
   const context = useSwitchContext();
 
   props = mergeDefaultProps({ id: context.generateId("input") }, props);
 
-  const [local, others] = splitProps(props, ["onChange"]);
+  const [local, others] = splitProps(props, [
+    "style",
+    "onChange",
+    "aria-labelledby",
+    ...PRESS_HANDLERS_PROP_NAMES,
+    ...FOCUS_RING_HANDLERS_PROP_NAMES,
+  ]);
 
   const { pressHandlers } = createPress({
     isDisabled: context.isDisabled,
@@ -35,9 +57,9 @@ export function SwitchInput(props: ComponentProps<"input">) {
   const ariaLabelledBy = () => {
     return (
       [
-        context.ariaLabelledBy(),
+        local["aria-labelledby"],
         // If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
-        context.ariaLabelledBy() != null && context.ariaLabel() != null ? others.id : undefined,
+        local["aria-labelledby"] != null && others["aria-label"] != null ? others.id : undefined,
       ]
         .filter(Boolean)
         .join(" ") || undefined
@@ -73,16 +95,23 @@ export function SwitchInput(props: ComponentProps<"input">) {
       required={context.isRequired()}
       disabled={context.isDisabled()}
       readonly={context.isReadOnly()}
-      aria-label={context.ariaLabel()}
+      style={{ ...visuallyHiddenStyles, ...local.style }}
       aria-labelledby={ariaLabelledBy()}
-      aria-describedby={context.ariaDescribedBy()}
-      aria-errormessage={context.ariaErrorMessage()}
       aria-invalid={context.validationState() === "invalid" || undefined}
       aria-required={context.isRequired() || undefined}
       aria-disabled={context.isDisabled() || undefined}
       aria-readonly={context.isReadOnly() || undefined}
       onChange={onChange}
-      {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers, focusRingHandlers)}
+      onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
+      onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
+      onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
+      onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
+      onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
+      onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
+      onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
+      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
+      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+      {...others}
     />
   );
 }

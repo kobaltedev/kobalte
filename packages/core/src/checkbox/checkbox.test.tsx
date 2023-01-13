@@ -279,8 +279,8 @@ describe("Checkbox", () => {
 
   it("passes through 'aria-errormessage'", async () => {
     render(() => (
-      <Checkbox validationState="invalid" aria-errormessage="test" onCheckedChange={onChangeSpy}>
-        <Checkbox.Input />
+      <Checkbox validationState="invalid" onCheckedChange={onChangeSpy}>
+        <Checkbox.Input aria-errormessage="test" />
       </Checkbox>
     ));
 
@@ -293,8 +293,8 @@ describe("Checkbox", () => {
 
   it("supports 'aria-label'", () => {
     render(() => (
-      <Checkbox aria-label="Label">
-        <Checkbox.Input />
+      <Checkbox>
+        <Checkbox.Input aria-label="Label" />
         <Checkbox.Control />
       </Checkbox>
     ));
@@ -307,8 +307,8 @@ describe("Checkbox", () => {
 
   it("supports 'aria-labelledby'", () => {
     render(() => (
-      <Checkbox aria-labelledby="foo">
-        <Checkbox.Input />
+      <Checkbox>
+        <Checkbox.Input aria-labelledby="foo" />
       </Checkbox>
     ));
 
@@ -320,8 +320,8 @@ describe("Checkbox", () => {
 
   it("should combine 'aria-label' and 'aria-labelledby'", () => {
     render(() => (
-      <Checkbox aria-label="Label" aria-labelledby="foo">
-        <Checkbox.Input />
+      <Checkbox>
+        <Checkbox.Input aria-label="Label" aria-labelledby="foo" />
       </Checkbox>
     ));
 
@@ -333,8 +333,8 @@ describe("Checkbox", () => {
 
   it("supports 'aria-describedby'", () => {
     render(() => (
-      <Checkbox aria-describedby="foo">
-        <Checkbox.Input />
+      <Checkbox>
+        <Checkbox.Input aria-describedby="foo" />
       </Checkbox>
     ));
 

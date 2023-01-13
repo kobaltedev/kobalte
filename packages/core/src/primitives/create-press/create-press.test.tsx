@@ -7,12 +7,12 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { combineProps } from "@kobalte/utils";
+import { composeEventHandlers } from "@kobalte/utils";
 import { createSignal, JSX, mergeProps, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { CREATE_PRESS_PROP_NAMES, createPress } from "./create-press";
+import { CREATE_PRESS_PROP_NAMES, createPress, PRESS_HANDLERS_PROP_NAMES } from "./create-press";
 import { CreatePressProps } from "./types";
 
 function Example(
@@ -26,7 +26,7 @@ function Example(
 ) {
   const [local, createPressProps, others] = splitProps(
     props,
-    ["elementType"],
+    ["elementType", ...PRESS_HANDLERS_PROP_NAMES],
     CREATE_PRESS_PROP_NAMES
   );
 
@@ -36,7 +36,14 @@ function Example(
     <Dynamic
       component={local.elementType || "div"}
       tabIndex="0"
-      {...combineProps(others, pressHandlers)}
+      onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
+      onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
+      onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
+      onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
+      onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
+      onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
+      onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
+      {...others}
     >
       {local.elementType !== "input" ? "test" : undefined}
     </Dynamic>

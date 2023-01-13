@@ -1,5 +1,6 @@
 export * from "./common.intl";
 export * from "./create-collator";
+export * from "./create-date-formatter";
 export * from "./create-default-locale";
 export * from "./create-filter";
 export * from "./create-localized-string-formatter";

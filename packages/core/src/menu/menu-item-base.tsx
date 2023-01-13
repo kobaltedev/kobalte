@@ -7,10 +7,11 @@
  */
 
 import {
-  combineProps,
+  composeEventHandlers,
   createGenerateId,
   createPolymorphicComponent,
   mergeDefaultProps,
+  mergeRefs,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -21,7 +22,10 @@ import {
   createHover,
   createPress,
   createRegisterId,
+  FOCUS_RING_HANDLERS_PROP_NAMES,
   focusSafely,
+  HOVER_HANDLERS_PROP_NAMES,
+  PRESS_HANDLERS_PROP_NAMES,
 } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -77,12 +81,17 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
 
   const [local, others] = splitProps(props, [
     "as",
+    "ref",
     "textValue",
     "isDisabled",
     "closeOnSelect",
-    "onSelect",
     "isChecked",
     "isIndeterminate",
+    "onSelect",
+    "onFocus",
+    ...PRESS_HANDLERS_PROP_NAMES,
+    ...HOVER_HANDLERS_PROP_NAMES,
+    ...FOCUS_RING_HANDLERS_PROP_NAMES,
   ]);
 
   const [labelId, setLabelId] = createSignal<string>();
@@ -231,24 +240,70 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
     <MenuItemContext.Provider value={context}>
       <Dynamic
         component={local.as}
+        ref={mergeRefs(el => (ref = el), local.ref)}
         tabIndex={selectableItem.tabIndex()}
         aria-checked={ariaChecked()}
         aria-disabled={local.isDisabled}
         aria-labelledby={labelId()}
         aria-describedby={descriptionId()}
         data-key={selectableItem.dataKey()}
+        onKeyDown={composeEventHandlers([
+          local.onKeyDown,
+          selectableItem.pressHandlers.onKeyDown,
+          selectableItem.longPressHandlers.onKeyDown,
+          pressHandlers.onKeyDown,
+          onKeyDown,
+        ])}
+        onKeyUp={composeEventHandlers([
+          local.onKeyUp,
+          selectableItem.pressHandlers.onKeyUp,
+          selectableItem.longPressHandlers.onKeyUp,
+          pressHandlers.onKeyUp,
+        ])}
+        onClick={composeEventHandlers([
+          local.onClick,
+          selectableItem.pressHandlers.onClick,
+          selectableItem.longPressHandlers.onClick,
+          pressHandlers.onClick,
+        ])}
+        onPointerDown={composeEventHandlers([
+          local.onPointerDown,
+          selectableItem.pressHandlers.onPointerDown,
+          selectableItem.longPressHandlers.onPointerDown,
+          pressHandlers.onPointerDown,
+        ])}
+        onPointerUp={composeEventHandlers([
+          local.onPointerUp,
+          selectableItem.pressHandlers.onPointerUp,
+          selectableItem.longPressHandlers.onPointerUp,
+          pressHandlers.onPointerUp,
+        ])}
+        onMouseDown={composeEventHandlers([
+          local.onMouseDown,
+          selectableItem.otherHandlers.onMouseDown,
+          selectableItem.pressHandlers.onMouseDown,
+          selectableItem.longPressHandlers.onMouseDown,
+          pressHandlers.onMouseDown,
+        ])}
+        onDragStart={composeEventHandlers([
+          local.onDragStart,
+          selectableItem.pressHandlers.onDragStart,
+          selectableItem.longPressHandlers.onDragStart,
+          selectableItem.otherHandlers.onDragStart,
+          pressHandlers.onDragStart,
+        ])}
+        onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
+        onPointerLeave={composeEventHandlers([
+          local.onPointerLeave,
+          onPointerLeave,
+          hoverHandlers.onPointerLeave,
+        ])}
+        onPointerMove={onPointerMove}
+        onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
+        onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+        onFocus={composeEventHandlers([local.onFocus, selectableItem.otherHandlers.onFocus])}
         {...dataset()}
-        {...combineProps(
-          { ref: el => (ref = el) },
-          others,
-          selectableItem.pressHandlers,
-          selectableItem.longPressHandlers,
-          selectableItem.otherHandlers,
-          pressHandlers,
-          hoverHandlers,
-          focusRingHandlers,
-          { onPointerMove, onPointerLeave, onKeyDown }
-        )}
+        {...others}
       />
     </MenuItemContext.Provider>
   );

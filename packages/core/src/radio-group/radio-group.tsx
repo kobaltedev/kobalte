@@ -121,13 +121,27 @@ export const RadioGroup = createPolymorphicComponent<"div", RadioGroupOptions, R
       return formControlContext.getAriaDescribedBy(local["aria-describedby"]);
     };
 
+    const isSelectedValue = (value: string) => {
+      return value === selected();
+    };
+
     const context: RadioGroupContextValue = {
       ariaDescribedBy,
-      isSelectedValue: (value: string) => value === selected(),
+      isSelectedValue,
       setSelectedValue: value => {
-        if (!formControlContext.isReadOnly() && !formControlContext.isDisabled()) {
-          setSelected(value);
+        if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
+          return;
         }
+
+        setSelected(value);
+
+        // Sync all radio input checked state in the group with the selected value.
+        // This is necessary because checked state might be out of sync
+        // (ex: when using controlled radio-group).
+        ref?.querySelectorAll("[type='radio']").forEach(el => {
+          const radio = el as HTMLInputElement;
+          radio.checked = isSelectedValue(radio.value);
+        });
       },
     };
 

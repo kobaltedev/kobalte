@@ -8,7 +8,7 @@ export interface NavSection {
   links: NavLink[];
 }
 
-const VERSIONS = ["0.1.0"].reverse();
+const VERSIONS = ["0.x"].reverse();
 
 const CHANGELOG_NAV_SECTIONS: NavSection[] = [
   {
@@ -104,6 +104,10 @@ export const NAV_SECTIONS: NavSection[] = [
       {
         title: "Tabs",
         href: "/docs/components/tabs",
+      },
+      {
+        title: "Text Field",
+        href: "/docs/components/text-field",
       },
       {
         title: "Toggle Button",

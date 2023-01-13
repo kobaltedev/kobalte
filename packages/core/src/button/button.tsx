@@ -14,9 +14,10 @@
 
 import {
   callHandler,
-  combineProps,
+  composeEventHandlers,
   createPolymorphicComponent,
   mergeDefaultProps,
+  mergeRefs,
 } from "@kobalte/utils";
 import { createMemo, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -28,6 +29,9 @@ import {
   createPress,
   CreatePressProps,
   createTagName,
+  FOCUS_RING_HANDLERS_PROP_NAMES,
+  HOVER_HANDLERS_PROP_NAMES,
+  PRESS_HANDLERS_PROP_NAMES,
 } from "../primitives";
 import { isButton } from "./is-button";
 
@@ -54,7 +58,15 @@ export const Button = createPolymorphicComponent<"button", ButtonOptions>(props 
 
   const [local, createPressProps, others] = splitProps(
     props,
-    ["as", "type", "isDisabled", "onClick"],
+    [
+      "as",
+      "ref",
+      "type",
+      "isDisabled",
+      ...PRESS_HANDLERS_PROP_NAMES,
+      ...HOVER_HANDLERS_PROP_NAMES,
+      ...FOCUS_RING_HANDLERS_PROP_NAMES,
+    ],
     CREATE_PRESS_PROP_NAMES
   );
 
@@ -99,6 +111,7 @@ export const Button = createPolymorphicComponent<"button", ButtonOptions>(props 
   return (
     <Dynamic
       component={local.as}
+      ref={mergeRefs(el => (ref = el), local.ref)}
       type={isNativeButton() || isInput() ? local.type : undefined}
       role={!isNativeButton() && !isLink() ? "button" : undefined}
       tabIndex={!isNativeButton() && !isLink() && !local.isDisabled ? 0 : undefined}
@@ -109,13 +122,18 @@ export const Button = createPolymorphicComponent<"button", ButtonOptions>(props 
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
       data-active={isPressed() ? "" : undefined}
-      {...combineProps(
-        { ref: el => (ref = el), onClick },
-        others,
-        pressHandlers,
-        hoverHandlers,
-        focusRingHandlers
-      )}
+      onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
+      onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
+      onClick={composeEventHandlers([onClick, pressHandlers.onClick])}
+      onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
+      onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
+      onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
+      onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
+      onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
+      onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
+      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
+      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+      {...others}
     />
   );
 });

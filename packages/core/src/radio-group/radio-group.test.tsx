@@ -162,9 +162,9 @@ describe("RadioGroup", () => {
     expect(onChangeSpy).toHaveBeenCalledWith("dragons");
 
     expect(inputs[0].checked).toBeFalsy();
-    expect(inputs[1].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeTruthy();
 
-    // false because `value` is controlled
+    // false because `value` is controlled.
     expect(inputs[2].checked).toBeFalsy();
   });
 
@@ -1136,8 +1136,8 @@ describe("RadioGroup", () => {
     it("supports 'aria-label'", () => {
       render(() => (
         <RadioGroup>
-          <RadioGroup.Item value="cats" aria-label="Label">
-            <RadioGroup.ItemInput />
+          <RadioGroup.Item value="cats">
+            <RadioGroup.ItemInput aria-label="Label" />
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
@@ -1152,8 +1152,8 @@ describe("RadioGroup", () => {
     it("supports 'aria-labelledby'", () => {
       render(() => (
         <RadioGroup>
-          <RadioGroup.Item value="cats" aria-labelledby="foo">
-            <RadioGroup.ItemInput />
+          <RadioGroup.Item value="cats">
+            <RadioGroup.ItemInput aria-labelledby="foo" />
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
@@ -1168,8 +1168,8 @@ describe("RadioGroup", () => {
     it("should combine 'aria-label' and 'aria-labelledby'", () => {
       render(() => (
         <RadioGroup>
-          <RadioGroup.Item value="cats" aria-label="Label" aria-labelledby="foo">
-            <RadioGroup.ItemInput />
+          <RadioGroup.Item value="cats">
+            <RadioGroup.ItemInput aria-label="Label" aria-labelledby="foo" />
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
@@ -1184,8 +1184,8 @@ describe("RadioGroup", () => {
     it("supports 'aria-describedby'", () => {
       render(() => (
         <RadioGroup>
-          <RadioGroup.Item value="cats" aria-describedby="foo">
-            <RadioGroup.ItemInput />
+          <RadioGroup.Item value="cats">
+            <RadioGroup.ItemInput aria-describedby="foo" />
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
@@ -1200,8 +1200,8 @@ describe("RadioGroup", () => {
     it("should combine 'aria-describedby' from both radio and radio group", () => {
       render(() => (
         <RadioGroup>
-          <RadioGroup.Item value="cats" aria-describedby="foo">
-            <RadioGroup.ItemInput />
+          <RadioGroup.Item value="cats">
+            <RadioGroup.ItemInput aria-describedby="foo" />
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
