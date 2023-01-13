@@ -37,16 +37,16 @@ type TextFieldComposite = {
 };
 
 export interface TextFieldOptions extends CreateFormControlProps {
-  /** The controlled input value of the textfield. */
+  /** The controlled value of the textfield. */
   value?: string;
 
   /**
-   * The default input value when initially rendered.
-   * Useful when you do not need to control the input value.
+   * The default value when initially rendered.
+   * Useful when you do not need to control the value.
    */
   defaultValue?: string;
 
-  /** Event handler called when the input value of the textfield changes. */
+  /** Event handler called when the value of the textfield changes. */
   onValueChange?: (value: string) => void;
 }
 

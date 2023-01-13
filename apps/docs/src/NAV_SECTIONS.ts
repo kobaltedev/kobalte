@@ -106,6 +106,10 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/docs/components/tabs",
       },
       {
+        title: "Text Field",
+        href: "/docs/components/text-field",
+      },
+      {
         title: "Toggle Button",
         href: "/docs/components/toggle-button",
       },
