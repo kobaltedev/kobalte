@@ -66,6 +66,16 @@ export const CREATE_PRESS_PROP_NAMES = [
   "allowTextSelectionOnPress",
 ] as const;
 
+export const PRESS_HANDLERS_PROP_NAMES = [
+  "onKeyDown",
+  "onKeyUp",
+  "onClick",
+  "onPointerDown",
+  "onPointerUp",
+  "onMouseDown",
+  "onDragStart",
+] as const;
+
 /**
  * Handles press interactions across mouse, touch, keyboard, and screen readers.
  * It normalizes behavior across browsers and platforms, and handles many nuances

@@ -7,12 +7,13 @@
  */
 
 import {
-  combineProps,
+  composeEventHandlers,
   createGenerateId,
   createPolymorphicComponent,
   isMac,
   isWebKit,
   mergeDefaultProps,
+  mergeRefs,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -22,7 +23,10 @@ import {
   createFocusRing,
   createHover,
   createRegisterId,
+  FOCUS_RING_HANDLERS_PROP_NAMES,
+  HOVER_HANDLERS_PROP_NAMES,
   isKeyboardFocusVisible,
+  PRESS_HANDLERS_PROP_NAMES,
 } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -69,12 +73,17 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
 
   const [local, others] = splitProps(props, [
     "as",
+    "ref",
     "value",
     "textValue",
     "isDisabled",
     "aria-label",
     "aria-labelledby",
     "aria-describedby",
+    "onFocus",
+    ...PRESS_HANDLERS_PROP_NAMES,
+    ...HOVER_HANDLERS_PROP_NAMES,
+    ...FOCUS_RING_HANDLERS_PROP_NAMES,
   ]);
 
   const [labelId, setLabelId] = createSignal<string>();
@@ -161,6 +170,7 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
     <ListboxItemContext.Provider value={context}>
       <Dynamic
         component={local.as}
+        ref={mergeRefs(el => (ref = el), local.ref)}
         role="option"
         tabIndex={selectableItem.tabIndex()}
         aria-disabled={selectableItem.isDisabled()}
@@ -169,16 +179,50 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
         aria-labelledby={ariaLabelledBy()}
         aria-describedby={ariaDescribedBy()}
         data-key={selectableItem.dataKey()}
+        onKeyDown={composeEventHandlers([
+          local.onKeyDown,
+          selectableItem.pressHandlers.onKeyDown,
+          selectableItem.longPressHandlers.onKeyDown,
+        ])}
+        onKeyUp={composeEventHandlers([
+          local.onKeyUp,
+          selectableItem.pressHandlers.onKeyUp,
+          selectableItem.longPressHandlers.onKeyUp,
+        ])}
+        onClick={composeEventHandlers([
+          local.onClick,
+          selectableItem.pressHandlers.onClick,
+          selectableItem.longPressHandlers.onClick,
+        ])}
+        onPointerDown={composeEventHandlers([
+          local.onPointerDown,
+          selectableItem.pressHandlers.onPointerDown,
+          selectableItem.longPressHandlers.onPointerDown,
+        ])}
+        onPointerUp={composeEventHandlers([
+          local.onPointerUp,
+          selectableItem.pressHandlers.onPointerUp,
+          selectableItem.longPressHandlers.onPointerUp,
+        ])}
+        onMouseDown={composeEventHandlers([
+          local.onMouseDown,
+          selectableItem.otherHandlers.onMouseDown,
+          selectableItem.pressHandlers.onMouseDown,
+          selectableItem.longPressHandlers.onMouseDown,
+        ])}
+        onDragStart={composeEventHandlers([
+          local.onDragStart,
+          selectableItem.pressHandlers.onDragStart,
+          selectableItem.longPressHandlers.onDragStart,
+          selectableItem.otherHandlers.onDragStart,
+        ])}
+        onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
+        onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
+        onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
+        onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+        onFocus={composeEventHandlers([local.onFocus, selectableItem.otherHandlers.onFocus])}
         {...dataset()}
-        {...combineProps(
-          { ref: el => (ref = el) },
-          others,
-          selectableItem.pressHandlers,
-          selectableItem.longPressHandlers,
-          selectableItem.otherHandlers,
-          hoverHandlers,
-          focusRingHandlers
-        )}
+        {...others}
       />
     </ListboxItemContext.Provider>
   );

@@ -7,9 +7,10 @@
  */
 
 import {
-  combineProps,
+  composeEventHandlers,
   isFunction,
   mergeDefaultProps,
+  mergeRefs,
   OverrideProps,
   ValidationState,
 } from "@kobalte/utils";
@@ -25,7 +26,12 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createFormResetListener, createHover, createToggleState } from "../primitives";
+import {
+  createFormResetListener,
+  createHover,
+  createToggleState,
+  HOVER_HANDLERS_PROP_NAMES,
+} from "../primitives";
 import { CheckboxContext, CheckboxContextValue, CheckboxDataSet } from "./checkbox-context";
 import { CheckboxControl } from "./checkbox-control";
 import { CheckboxIndicator } from "./checkbox-indicator";
@@ -116,6 +122,7 @@ export const Checkbox: Component<OverrideProps<ComponentProps<"label">, Checkbox
   );
 
   const [local, others] = splitProps(props, [
+    "ref",
     "children",
     "value",
     "isChecked",
@@ -123,15 +130,12 @@ export const Checkbox: Component<OverrideProps<ComponentProps<"label">, Checkbox
     "onCheckedChange",
     "name",
     "value",
-    "aria-label",
-    "aria-labelledby",
-    "aria-describedby",
-    "aria-errormessage",
     "validationState",
     "isRequired",
     "isDisabled",
     "isReadOnly",
     "isIndeterminate",
+    ...HOVER_HANDLERS_PROP_NAMES,
   ]);
 
   const [isFocused, setIsFocused] = createSignal(false);
@@ -171,10 +175,6 @@ export const Checkbox: Component<OverrideProps<ComponentProps<"label">, Checkbox
     name: () => local.name ?? others.id!,
     value: () => local.value!,
     dataset,
-    ariaLabel: () => local["aria-label"],
-    ariaLabelledBy: () => local["aria-labelledby"],
-    ariaDescribedBy: () => local["aria-describedby"],
-    ariaErrorMessage: () => local["aria-errormessage"],
     validationState: () => local.validationState,
     isChecked: () => state.isSelected(),
     isRequired: () => local.isRequired ?? false,
@@ -190,8 +190,11 @@ export const Checkbox: Component<OverrideProps<ComponentProps<"label">, Checkbox
   return (
     <CheckboxContext.Provider value={context}>
       <label
-        {...context.dataset()}
-        {...combineProps({ ref: el => (ref = el) }, others, hoverHandlers)}
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
+        onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
+        {...dataset()}
+        {...others}
       >
         <CheckboxChild state={context} children={local.children} />
       </label>

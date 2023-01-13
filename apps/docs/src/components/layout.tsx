@@ -29,9 +29,9 @@ export function Layout(props: ParentProps) {
           <article>
             <Prose>{props.children}</Prose>
           </article>
-          <dl class="mt-12 flex border-t border-zinc-200 pt-6 dark:border-zinc-800">
+          <div class="mt-12 flex border-t border-zinc-200 pt-6 dark:border-zinc-800">
             <Show when={previousPage()}>
-              <div>
+              <dl>
                 <dt class="font-display text-sm font-medium text-zinc-900 dark:text-white">
                   Previous
                 </dt>
@@ -46,10 +46,10 @@ export function Layout(props: ParentProps) {
                     <span>{previousPage().title}</span>
                   </Link>
                 </dd>
-              </div>
+              </dl>
             </Show>
             <Show when={nextPage()}>
-              <div class="ml-auto text-right">
+              <dl class="ml-auto text-right">
                 <dt class="font-display text-sm font-medium text-zinc-900 dark:text-white">Next</dt>
                 <dd class="mt-1">
                   <Link
@@ -62,9 +62,9 @@ export function Layout(props: ParentProps) {
                     </span>
                   </Link>
                 </dd>
-              </div>
+              </dl>
             </Show>
-          </dl>
+          </div>
           <Footer />
         </div>
         <TableOfContents />

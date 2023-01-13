@@ -12,12 +12,25 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import {
+  composeEventHandlers,
+  createPolymorphicComponent,
+  mergeDefaultProps,
+  mergeRefs,
+} from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, on, onCleanup, splitProps } from "solid-js";
 import { Dynamic, isServer } from "solid-js/web";
 
 import { Direction, useLocale } from "../i18n";
-import { createFocusRing, createHover, createPress, focusSafely } from "../primitives";
+import {
+  createFocusRing,
+  createHover,
+  createPress,
+  FOCUS_RING_HANDLERS_PROP_NAMES,
+  focusSafely,
+  HOVER_HANDLERS_PROP_NAMES,
+  PRESS_HANDLERS_PROP_NAMES,
+} from "../primitives";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
@@ -58,7 +71,17 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "id", "textValue", "isDisabled"]);
+  const [local, others] = splitProps(props, [
+    "as",
+    "ref",
+    "id",
+    "textValue",
+    "isDisabled",
+    "onFocus",
+    ...PRESS_HANDLERS_PROP_NAMES,
+    ...HOVER_HANDLERS_PROP_NAMES,
+    ...FOCUS_RING_HANDLERS_PROP_NAMES,
+  ]);
 
   let openTimeoutId: number | null = null;
 
@@ -92,13 +115,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
 
   const isFocused = () => parentSelectionManager().focusedKey() === key();
 
-  const {
-    tabIndex,
-    dataKey,
-    pressHandlers: itemPressHandlers,
-    longPressHandlers: itemLongPressHandlers,
-    otherHandlers: itemOtherHandlers,
-  } = createSelectableItem(
+  const selectableItem = createSelectableItem(
     {
       key,
       selectionManager: parentSelectionManager,
@@ -277,36 +294,80 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
   return (
     <Dynamic
       component={local.as}
+      ref={mergeRefs(el => {
+        context.setTriggerRef(el);
+        ref = el;
+      }, local.ref)}
       id={local.id}
       role="menuitem"
-      tabIndex={tabIndex()}
+      tabIndex={selectableItem.tabIndex()}
       aria-haspopup="true"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.contentId() : undefined}
       aria-disabled={local.isDisabled}
-      data-key={dataKey()}
+      data-key={selectableItem.dataKey()}
       data-expanded={context.isOpen() ? "" : undefined}
       data-disabled={local.isDisabled ? "" : undefined}
       data-hover={isHovered() ? "" : undefined}
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
       data-active={isPressed() ? "" : undefined}
-      {...combineProps(
-        {
-          ref: el => {
-            context.setTriggerRef(el);
-            ref = el;
-          },
-        },
-        others,
-        itemPressHandlers,
-        itemLongPressHandlers,
-        itemOtherHandlers,
-        pressHandlers,
-        hoverHandlers,
-        focusRingHandlers,
-        { onPointerMove, onPointerLeave, onKeyDown }
-      )}
+      onKeyDown={composeEventHandlers([
+        local.onKeyDown,
+        selectableItem.pressHandlers.onKeyDown,
+        selectableItem.longPressHandlers.onKeyDown,
+        pressHandlers.onKeyDown,
+        onKeyDown,
+      ])}
+      onKeyUp={composeEventHandlers([
+        local.onKeyUp,
+        selectableItem.pressHandlers.onKeyUp,
+        selectableItem.longPressHandlers.onKeyUp,
+        pressHandlers.onKeyUp,
+      ])}
+      onClick={composeEventHandlers([
+        local.onClick,
+        selectableItem.pressHandlers.onClick,
+        selectableItem.longPressHandlers.onClick,
+        pressHandlers.onClick,
+      ])}
+      onPointerDown={composeEventHandlers([
+        local.onPointerDown,
+        selectableItem.pressHandlers.onPointerDown,
+        selectableItem.longPressHandlers.onPointerDown,
+        pressHandlers.onPointerDown,
+      ])}
+      onPointerUp={composeEventHandlers([
+        local.onPointerUp,
+        selectableItem.pressHandlers.onPointerUp,
+        selectableItem.longPressHandlers.onPointerUp,
+        pressHandlers.onPointerUp,
+      ])}
+      onMouseDown={composeEventHandlers([
+        local.onMouseDown,
+        selectableItem.otherHandlers.onMouseDown,
+        selectableItem.pressHandlers.onMouseDown,
+        selectableItem.longPressHandlers.onMouseDown,
+        pressHandlers.onMouseDown,
+      ])}
+      onDragStart={composeEventHandlers([
+        local.onDragStart,
+        selectableItem.pressHandlers.onDragStart,
+        selectableItem.longPressHandlers.onDragStart,
+        selectableItem.otherHandlers.onDragStart,
+        pressHandlers.onDragStart,
+      ])}
+      onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
+      onPointerLeave={composeEventHandlers([
+        local.onPointerLeave,
+        onPointerLeave,
+        hoverHandlers.onPointerLeave,
+      ])}
+      onPointerMove={onPointerMove}
+      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
+      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+      onFocus={composeEventHandlers([local.onFocus, selectableItem.otherHandlers.onFocus])}
+      {...others}
     />
   );
 });

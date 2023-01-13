@@ -1,7 +1,7 @@
 import { callHandler, createPolymorphicComponent } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { FormControlLabel, useFormControlContext } from "../form-control";
+import { FormControlLabel } from "../form-control";
 import { setInteractionModality } from "../primitives";
 import { useSelectContext } from "./select-context";
 
@@ -9,7 +9,6 @@ import { useSelectContext } from "./select-context";
  * The label that gives the user information on the select.
  */
 export const SelectLabel = createPolymorphicComponent<"span">(props => {
-  const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
   const [local, others] = splitProps(props, ["onClick"]);
@@ -25,7 +24,5 @@ export const SelectLabel = createPolymorphicComponent<"span">(props => {
     }
   };
 
-  return (
-    <FormControlLabel as="span" onClick={onClick} {...formControlContext.dataset()} {...others} />
-  );
+  return <FormControlLabel as="span" onClick={onClick} {...others} />;
 });

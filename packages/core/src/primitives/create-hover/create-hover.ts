@@ -68,6 +68,8 @@ interface HoverState {
   pointerType: PointerType | null;
 }
 
+export const HOVER_HANDLERS_PROP_NAMES = ["onPointerEnter", "onPointerLeave"] as const;
+
 /**
  * Handles pointer hover interactions for an element. Normalizes behavior
  * across browsers and platforms, and ignores emulated mouse events on touch devices.

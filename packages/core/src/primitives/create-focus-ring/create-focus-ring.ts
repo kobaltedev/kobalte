@@ -45,6 +45,8 @@ export interface CreateFocusRingResult<T extends HTMLElement> {
   focusRingHandlers: FocusRingHandlers<T>;
 }
 
+export const FOCUS_RING_HANDLERS_PROP_NAMES = ["onFocusIn", "onFocusOut"] as const;
+
 /**
  * Determines whether a focus ring should be shown to indicate keyboard focus.
  * Focus rings are visible only when the user is interacting with a keyboard,

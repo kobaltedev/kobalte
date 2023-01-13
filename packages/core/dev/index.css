@@ -1,215 +1,104 @@
-#root {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ContextMenuTrigger {
-  display: block;
-  border: 2px black dashed;
-  color: black;
-  border-radius: 4px;
-  font-size: 15px;
-  user-select: none;
-  padding: 45px 0;
-  width: 300px;
+.app {
+  font-family: sans-serif;
   text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  --accent-color: rgb(25, 102, 222);
 }
 
-.DropdownMenuContent,
-.DropdownMenuSubContent {
-  min-width: 220px;
-  background-color: white;
-  border-radius: 6px;
-  padding: 5px;
-  box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2);
-  animation-duration: 400ms;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
-  outline: none;
+.calendar {
+  display: flex;
+  gap: 16px;
 }
 
-.DropdownMenuItem,
-.DropdownMenuCheckboxItem,
-.DropdownMenuRadioItem,
-.DropdownMenuSubTrigger {
-  font-size: 13px;
-  line-height: 1;
-  color: var(--violet11);
-  border-radius: 3px;
+.header {
   display: flex;
   align-items: center;
-  height: 25px;
-  padding: 0 5px;
-  position: relative;
-  padding-left: 25px;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 8px 12px 8px;
+}
+
+.select {
   user-select: none;
-  outline: none;
-}
-.DropdownMenuSubTrigger[data-expanded] {
-  background-color: var(--violet4);
-  color: var(--violet11);
-}
-.DropdownMenuItem[data-disabled],
-.DropdownMenuCheckboxItem[data-disabled],
-.DropdownMenuRadioItem[data-disabled],
-.DropdownMenuSubTrigger[data-disabled] {
-  color: var(--mauve8);
-  pointer-events: none;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 4px;
+  border-radius: 4px;
+  outline-color: var(--accent-color);
+  font-size: 15px;
 }
 
-.DropdownMenuItem[data-focus],
-.DropdownMenuCheckboxItem[data-focus],
-.DropdownMenuRadioItem[data-focus],
-.DropdownMenuSubTrigger[data-focus] {
-  background-color: var(--violet9);
-  color: var(--violet1);
+.button {
+  user-select: none;
+  border: 1px solid #ddd;
+  background: transparent;
+  padding: 0 10px;
+  border-radius: 4px;
+  outline-color: var(--accent-color);
+  font-size: 24px;
+  line-height: 26px;
+  color: #333;
 }
 
-.DropdownMenuLabel {
-  padding-left: 25px;
+.button:active {
+  background: #eee;
+}
+
+.button[data-disabled] {
+  opacity: 0.4;
+}
+
+.grid {
+  width: 100%;
+}
+
+.grid th {
   font-size: 12px;
-  line-height: 25px;
-  color: var(--mauve11);
+  color: #444;
 }
 
-.DropdownMenuSeparator {
-  height: 1px;
-  background-color: var(--violet6);
-  margin: 5px;
+.week-days {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-around;
 }
 
-.DropdownMenuItemIndicator {
+.cell {
+  cursor: default;
+  text-align: center;
+  padding: 6px 8px;
+  margin: 2px;
+  border-radius: 6px;
+  position: relative;
+  outline: none;
+  color: #333;
+}
+
+.cell[data-hover] {
+  background: #eee;
+}
+
+.cell[data-focus-visible]::after {
+  content: "";
   position: absolute;
-  left: 0;
-  width: 25px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  inset: -4px;
+  border-radius: 9px;
+  z-index: -1;
+  border: 2px solid var(--accent-color);
 }
 
-.DropdownMenuArrow {
-  fill: white;
-}
-
-.IconButton {
-  font-family: inherit;
-  border-radius: 100%;
-  height: 35px;
-  width: 35px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--violet11);
-  background-color: white;
-  box-shadow: 0 2px 10px var(--blackA7);
-}
-.IconButton:hover {
-  background-color: var(--violet3);
-}
-.IconButton:focus {
-  box-shadow: 0 0 0 2px black;
-}
-
-.RightSlot {
-  margin-left: auto;
-  padding-left: 20px;
-  color: var(--mauve11);
-}
-[data-focus] > .RightSlot {
+.cell[data-selected]:not([data-outside-month]) {
+  background-color: var(--accent-color);
   color: white;
 }
-[data-disabled] .RightSlot {
-  color: var(--mauve8);
+
+.cell[data-unavailable] {
+  color: red;
 }
 
-.SelectTrigger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  padding: 0 15px;
-  font-size: 13px;
-  line-height: 1;
-  height: 35px;
-  gap: 5px;
-  background-color: white;
-  color: var(--violet11);
-  box-shadow: 0 2px 10px var(--blackA7);
-}
-.SelectTrigger:hover {
-  background-color: var(--mauve3);
-}
-.SelectTrigger:focus {
-  box-shadow: 0 0 0 2px black;
-}
-.SelectTrigger[data-placeholder-shown] {
-  color: var(--violet9);
-}
-
-.SelectIcon {
-  color: Var(--violet11);
-}
-
-.SelectContent {
-  padding: 5px;
-  background-color: white;
-  border-radius: 6px;
-  box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2);
-}
-
-.SelectItem {
-  font-size: 13px;
-  line-height: 1;
-  color: var(--violet11);
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  height: 25px;
-  padding: 0 35px 0 25px;
-  position: relative;
-  user-select: none;
-}
-.SelectItem[data-disabled] {
-  color: var(--mauve8);
-  pointer-events: none;
-}
-.SelectItem[data-focus] {
-  outline: none;
-  background-color: var(--violet9);
-  color: var(--violet1);
-}
-
-.SelectLabel {
-  padding: 0 25px;
-  font-size: 12px;
-  line-height: 25px;
-  color: var(--mauve11);
-}
-
-.SelectSeparator {
-  height: 1px;
-  background-color: var(--violet6);
-  margin: 5px;
-}
-
-.SelectItemIndicator {
-  position: absolute;
-  left: 0;
-  width: 25px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.SelectScrollButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 25px;
-  background-color: white;
-  color: var(--violet11);
-  cursor: default;
+.cell[data-disabled],
+.cell[data-outside-month] {
+  color: gray;
+  opacity: 0.4;
 }

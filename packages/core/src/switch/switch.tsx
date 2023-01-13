@@ -6,7 +6,13 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/switch/src/useSwitch.ts
  */
 
-import { combineProps, mergeDefaultProps, OverrideProps, ValidationState } from "@kobalte/utils";
+import {
+  composeEventHandlers,
+  mergeDefaultProps,
+  mergeRefs,
+  OverrideProps,
+  ValidationState,
+} from "@kobalte/utils";
 import {
   Accessor,
   Component,
@@ -17,7 +23,12 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createFormResetListener, createHover, createToggleState } from "../primitives";
+import {
+  createFormResetListener,
+  createHover,
+  createToggleState,
+  HOVER_HANDLERS_PROP_NAMES,
+} from "../primitives";
 import { SwitchContext, SwitchContextValue, SwitchDataSet } from "./switch-context";
 import { SwitchControl } from "./switch-control";
 import { SwitchInput } from "./switch-input";
@@ -87,20 +98,18 @@ export const Switch: Component<OverrideProps<ComponentProps<"label">, SwitchOpti
   );
 
   const [local, others] = splitProps(props, [
+    "ref",
     "value",
     "isChecked",
     "defaultIsChecked",
     "onCheckedChange",
     "name",
     "value",
-    "aria-label",
-    "aria-labelledby",
-    "aria-describedby",
-    "aria-errormessage",
     "validationState",
     "isRequired",
     "isDisabled",
     "isReadOnly",
+    ...HOVER_HANDLERS_PROP_NAMES,
   ]);
 
   const [isFocused, setIsFocused] = createSignal(false);
@@ -139,10 +148,6 @@ export const Switch: Component<OverrideProps<ComponentProps<"label">, SwitchOpti
     name: () => local.name ?? others.id!,
     value: () => local.value!,
     dataset,
-    ariaLabel: () => local["aria-label"],
-    ariaLabelledBy: () => local["aria-labelledby"],
-    ariaDescribedBy: () => local["aria-describedby"],
-    ariaErrorMessage: () => local["aria-errormessage"],
     validationState: () => local.validationState,
     isChecked: () => state.isSelected(),
     isRequired: () => local.isRequired,
@@ -157,8 +162,11 @@ export const Switch: Component<OverrideProps<ComponentProps<"label">, SwitchOpti
   return (
     <SwitchContext.Provider value={context}>
       <label
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
+        onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
         {...context.dataset()}
-        {...combineProps({ ref: el => (ref = el) }, others, hoverHandlers)}
+        {...others}
       />
     </SwitchContext.Provider>
   );

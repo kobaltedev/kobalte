@@ -17,10 +17,6 @@ export interface SwitchContextValue {
   name: Accessor<string | undefined>;
   value: Accessor<string>;
   dataset: Accessor<SwitchDataSet>;
-  ariaLabel: Accessor<string | undefined>;
-  ariaLabelledBy: Accessor<string | undefined>;
-  ariaDescribedBy: Accessor<string | undefined>;
-  ariaErrorMessage: Accessor<string | undefined>;
   validationState: Accessor<ValidationState | undefined>;
   isChecked: Accessor<boolean>;
   isRequired: Accessor<boolean | undefined>;

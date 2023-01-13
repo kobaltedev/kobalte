@@ -1,0 +1,342 @@
+import { Preview, TabsSnippets } from "../../../components";
+import {
+  ControlledExample,
+  DefaultValueExample,
+  HTMLFormExample,
+  BasicExample,
+  DescriptionExample,
+  ErrorMessageExample,
+  TextAreaExample,
+  TextAreaAutoResizeExample,
+} from "../../../examples/text-field";
+
+# Text Field
+
+A text input that allow users to input custom text entries with a keyboard.
+
+## Import
+
+```ts
+import { TextField } from "@kobalte/core";
+```
+
+## Features
+
+- Built with a native `<input>` or `<textarea>` element.
+- Visual and ARIA labeling support.
+- Required and invalid states exposed to assistive technology via ARIA.
+- Support for description and error message help text linked to the input via ARIA.
+- Syncs with form reset events.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The text field consists of:
+
+- **TextField**: The root container for the text field.
+- **TextField.Label**: The label that gives the user information on the text field.
+- **TextField.Input**: The native HTML input of the text field, used for single line text.
+- **TextField.TextArea**: The native HTML textarea of the text field, used for multiline text.
+- **TextField.Description**: The description that gives the user more information on the text field.
+- **TextField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the text field.
+
+```tsx
+<TextField>
+  <TextField.Label />
+  <TextField.Input /> {/* or <TextField.TextArea /> */}
+  <TextField.Description />
+  <TextField.ErrorMessage />
+</TextField>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { TextField } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      return (
+        <TextField class="text-field">
+          <TextField.Label class="text-field__label">Favorite fruit</TextField.Label>
+          <TextField.Input class="text-field__input" />
+        </TextField>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .text-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .text-field__label {
+      color: hsl(240 6% 10%);
+      font-size: 14px;
+      font-weight: 500;
+      user-select: none;
+    }
+
+    .text-field__input {
+      display: inline-flex;
+      width: 200px;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 16px;
+      outline: none;
+      background-color: white;
+      border: 1px solid hsl(240 6% 90%);
+      color: hsl(240 4% 16%);
+      transition: border-color 250ms, color 250ms;
+    }
+
+    .text-field__input[data-hover] {
+      border-color: hsl(240 5% 65%);
+    }
+
+    .text-field__input[data-focus-visible] {
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+    }
+
+    .text-field__input[data-invalid] {
+      border-color: hsl(0 72% 51%);
+      color: hsl(0 72% 51%);
+    }
+
+    .text-field__input::placeholder {
+      color: hsl(240 4% 46%);
+    }
+
+    .text-field__description {
+      color: hsl(240 5% 26%);
+      font-size: 12px;
+      user-select: none;
+    }
+
+    .text-field__error-message {
+      color: hsl(0 72% 51%);
+      font-size: 12px;
+      user-select: none;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Default value
+
+An initial, uncontrolled value can be provided using the `defaultValue` prop.
+
+<Preview>
+  <DefaultValueExample />
+</Preview>
+
+```tsx {0}
+<TextField defaultValue="Apple">
+  <TextField.Label>Favorite fruit</TextField.Label>
+  <TextField.Input />
+</TextField>
+```
+
+### Controlled value
+
+The `value` prop can be used to make the value controlled. The `onValueChange` event is fired when the user type into the input and receive the new value.
+
+<Preview>
+  <ControlledExample />
+</Preview>
+
+```tsx {3,7}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+  const [value, setValue] = createSignal("Apple");
+
+  return (
+    <>
+      <TextField value={value()} onValueChange={setValue}>
+        <TextField.Label>Favorite fruit</TextField.Label>
+        <TextField.Input />
+      </TextField>
+      <p>Your favorite fruit is: {value()}.</p>
+    </>
+  );
+}
+```
+
+### Multiline
+
+Use the `TextField.TextArea` component instead of `TextField.Input` to create a multiline text field.
+
+<Preview>
+  <TextAreaExample />
+</Preview>
+
+```tsx {2}
+<TextField>
+  <TextField.Label>Favorite fruit</TextField.Label>
+  <TextField.TextArea />
+</TextField>
+```
+
+In addition, the `autoResize` prop can be used to make the textarea height adjust to it's content. Try typing in the text field below to see it in action.
+
+<Preview>
+  <TextAreaAutoResizeExample />
+</Preview>
+
+```tsx {2}
+<TextField>
+  <TextField.Label>Favorite fruit</TextField.Label>
+  <TextField.TextArea autoResize />
+</TextField>
+```
+
+### Description
+
+The `TextField.Description` component can be used to associate additional help text with a text field.
+
+<Preview>
+  <DescriptionExample />
+</Preview>
+
+```tsx {3}
+<TextField>
+  <TextField.Label>Favorite fruit</TextField.Label>
+  <TextField.Input />
+  <TextField.Description>Choose the fruit you like the most.</TextField.Description>
+</TextField>
+```
+
+### Error message
+
+The `TextField.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the text field as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+<Preview>
+  <ErrorMessageExample />
+</Preview>
+
+```tsx {9,12}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+  const [value, setValue] = createSignal("Orange");
+
+  return (
+    <TextField
+      value={value()}
+      onValueChange={setValue}
+      validationState={value() !== "Apple" ? "invalid" : "valid"}
+    >
+      <TextField.Label>Favorite fruit</TextField.Label>
+      <TextField.Input />
+      <TextField.ErrorMessage>Hmm, I prefer apples.</TextField.ErrorMessage>
+    </TextField>
+  );
+}
+```
+
+### HTML forms
+
+The text field `name` prop can be used for integration with HTML forms.
+
+<Preview>
+  <HTMLFormExample />
+</Preview>
+
+```tsx {7}
+function HTMLFormExample() {
+  const onSubmit = (e: SubmitEvent) => {
+    // handle form submission.
+  };
+
+  return (
+    <form onSubmit={onSubmit}>
+      <TextField name="favorite-fruit">
+        <TextField.Label>Favorite fruit</TextField.Label>
+        <TextField.Input />
+      </TextField>
+      <div>
+        <button type="reset">Reset</button>
+        <button>Submit</button>
+      </div>
+    </form>
+  );
+}
+```
+
+## API Reference
+
+### TextField
+
+| Prop            | Description                                                                                                 |
+| :-------------- | :---------------------------------------------------------------------------------------------------------- |
+| value           | `string` <br/> The controlled value of the text field to check.                                             |
+| defaultValue    | `string` <br/> The default value when initially rendered. Useful when you do not need to control the value. |
+| onValueChange   | `(value: string) => void` <br/> Event handler called when the value of the textfield changes.               |
+| name            | `string` <br/> The name of the text field. Submitted with its owning form as part of a name/value pair.     |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the text field should display its "valid" or "invalid" visual styling. |
+| isRequired      | `boolean` <br/> Whether the user must fill the text field before the owning form can be submitted.          |
+| isDisabled      | `boolean` <br/> Whether the text field is disabled.                                                         |
+| isReadOnly      | `boolean` <br/> Whether the text field items can be selected but not changed by the user.                   |
+
+| Data attribute | Description                                                                             |
+| :------------- | :-------------------------------------------------------------------------------------- |
+| data-valid     | Present when the text field is valid according to the validation rules.                 |
+| data-invalid   | Present when the text field is invalid according to the validation rules.               |
+| data-required  | Present when the user must fill the text field before the owning form can be submitted. |
+| data-disabled  | Present when the text field is disabled.                                                |
+| data-readonly  | Present when the text field is read only.                                               |
+
+`TextField.Label`, `TextField.Input`, `TextField.TextArea`, `TextField.Description` and `TextField.ErrorMesssage` shares the same data-attributes.
+
+### TextField.Input
+
+`TextField.Input` renders an `input` and support all it's props.
+
+| Data attribute     | Description                                     |
+| :----------------- | :---------------------------------------------- |
+| data-hover         | Present when the input is hovered.              |
+| data-focus         | Present when the input is focused.              |
+| data-focus-visible | Present when the input is focused via keyboard. |
+
+### TextField.TextArea
+
+`TextField.TextArea` renders a `textarea` and support all it's props.
+
+| Prop       | Description                                                                           |
+| :--------- | :------------------------------------------------------------------------------------ |
+| autoResize | `boolean` <br/> Whether the textarea should adjust its height when the value changes. |
+
+| Data attribute     | Description                                        |
+| :----------------- | :------------------------------------------------- |
+| data-hover         | Present when the textarea is hovered.              |
+| data-focus         | Present when the textarea is focused.              |
+| data-focus-visible | Present when the textarea is focused via keyboard. |
+
+### TextField.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |

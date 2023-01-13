@@ -6,18 +6,36 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
  */
 
-import { callHandler, combineProps, mergeDefaultProps, visuallyHiddenStyles } from "@kobalte/utils";
+import {
+  callHandler,
+  composeEventHandlers,
+  mergeDefaultProps,
+  OverrideProps,
+  visuallyHiddenStyles,
+} from "@kobalte/utils";
 import { ComponentProps, JSX, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { createFocusRing, createPress } from "../primitives";
+import {
+  createFocusRing,
+  createPress,
+  FOCUS_RING_HANDLERS_PROP_NAMES,
+  PRESS_HANDLERS_PROP_NAMES,
+} from "../primitives";
 import { useRadioGroupContext } from "./radio-group-context";
 import { useRadioGroupItemContext } from "./radio-group-item-context";
+
+export interface RadioGroupItemInputOptions {
+  /** The HTML styles attribute (object form only). */
+  style?: JSX.CSSProperties;
+}
 
 /**
  * The native html input that is visually hidden in the radio button.
  */
-export function RadioGroupItemInput(props: ComponentProps<"input">) {
+export function RadioGroupItemInput(
+  props: OverrideProps<ComponentProps<"input">, RadioGroupItemInputOptions>
+) {
   const formControlContext = useFormControlContext();
   const radioGroupContext = useRadioGroupContext();
   const radioContext = useRadioGroupItemContext();
@@ -29,7 +47,14 @@ export function RadioGroupItemInput(props: ComponentProps<"input">) {
     props
   );
 
-  const [local, others] = splitProps(props, ["onChange"]);
+  const [local, others] = splitProps(props, [
+    "style",
+    "onChange",
+    "aria-labelledby",
+    "aria-describedby",
+    ...PRESS_HANDLERS_PROP_NAMES,
+    ...FOCUS_RING_HANDLERS_PROP_NAMES,
+  ]);
 
   const { pressHandlers } = createPress({
     isDisabled: radioContext.isDisabled,
@@ -43,11 +68,9 @@ export function RadioGroupItemInput(props: ComponentProps<"input">) {
   const ariaLabelledBy = () => {
     return (
       [
-        radioContext.ariaLabelledBy(),
+        local["aria-labelledby"],
         // If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
-        radioContext.ariaLabelledBy() != null && radioContext.ariaLabel() != null
-          ? others.id
-          : undefined,
+        local["aria-labelledby"] != null && others["aria-label"] != null ? others.id : undefined,
       ]
         .filter(Boolean)
         .join(" ") || undefined
@@ -56,9 +79,8 @@ export function RadioGroupItemInput(props: ComponentProps<"input">) {
 
   const ariaDescribedBy = () => {
     return (
-      [radioContext.ariaDescribedBy(), radioGroupContext.ariaDescribedBy()]
-        .filter(Boolean)
-        .join(" ") || undefined
+      [local["aria-describedby"], radioGroupContext.ariaDescribedBy()].filter(Boolean).join(" ") ||
+      undefined
     );
   };
 
@@ -90,11 +112,20 @@ export function RadioGroupItemInput(props: ComponentProps<"input">) {
       required={formControlContext.isRequired()}
       disabled={radioContext.isDisabled()}
       readonly={formControlContext.isReadOnly()}
-      aria-label={radioContext.ariaLabel()}
+      style={{ ...visuallyHiddenStyles, ...local.style }}
       aria-labelledby={ariaLabelledBy()}
       aria-describedby={ariaDescribedBy()}
       onChange={onChange}
-      {...combineProps({ style: visuallyHiddenStyles }, others, pressHandlers, focusRingHandlers)}
+      onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
+      onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
+      onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
+      onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
+      onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
+      onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
+      onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
+      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
+      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+      {...others}
     />
   );
 }

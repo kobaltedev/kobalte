@@ -7,10 +7,11 @@
  */
 
 import {
-  combineProps,
+  composeEventHandlers,
   contains,
   createPolymorphicComponent,
   mergeDefaultProps,
+  mergeRefs,
 } from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "solid-js";
 
@@ -21,7 +22,9 @@ import {
   createFocusRing,
   createFocusScope,
   createHover,
+  FOCUS_RING_HANDLERS_PROP_NAMES,
   FocusOutsideEvent,
+  HOVER_HANDLERS_PROP_NAMES,
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives";
@@ -84,12 +87,17 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
   );
 
   const [local, others] = splitProps(props, [
+    "ref",
     "id",
     "style",
     "onOpenAutoFocus",
     "onCloseAutoFocus",
     "onEscapeKeyDown",
     "onFocusOutside",
+    "onKeyDown",
+    "onMouseDown",
+    ...HOVER_HANDLERS_PROP_NAMES,
+    ...FOCUS_RING_HANDLERS_PROP_NAMES,
   ]);
 
   let lastPointerX = 0;
@@ -184,6 +192,10 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     <Show when={context.shouldMount()}>
       <PopperPositioner>
         <DismissableLayer
+          ref={mergeRefs(el => {
+            context.setContentRef(el);
+            ref = el;
+          }, local.ref)}
           role="menu"
           id={local.id}
           tabIndex={selectableList.tabIndex()}
@@ -197,19 +209,35 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           onEscapeKeyDown={onEscapeKeyDown}
           onFocusOutside={onFocusOutside}
           onDismiss={context.close}
-          {...combineProps(
-            {
-              ref: el => {
-                context.setContentRef(el);
-                ref = el;
-              },
-            },
-            others,
-            selectableList.handlers,
-            hoverHandlers,
-            focusRingHandlers,
-            { onPointerMove, onKeyDown }
-          )}
+          onKeyDown={composeEventHandlers([
+            local.onKeyDown,
+            selectableList.handlers.onKeyDown,
+            onKeyDown,
+          ])}
+          onMouseDown={composeEventHandlers([
+            local.onMouseDown,
+            selectableList.handlers.onMouseDown,
+          ])}
+          onPointerEnter={composeEventHandlers([
+            local.onPointerEnter,
+            hoverHandlers.onPointerEnter,
+          ])}
+          onPointerLeave={composeEventHandlers([
+            local.onPointerLeave,
+            hoverHandlers.onPointerLeave,
+          ])}
+          onPointerMove={onPointerMove}
+          onFocusIn={composeEventHandlers([
+            local.onFocusIn,
+            selectableList.handlers.onFocusIn,
+            focusRingHandlers.onFocusIn,
+          ])}
+          onFocusOut={composeEventHandlers([
+            local.onFocusOut,
+            selectableList.handlers.onFocusOut,
+            focusRingHandlers.onFocusOut,
+          ])}
+          {...others}
         />
       </PopperPositioner>
     </Show>

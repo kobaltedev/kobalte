@@ -6,7 +6,12 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
-import { combineProps, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import {
+  composeEventHandlers,
+  createPolymorphicComponent,
+  mergeDefaultProps,
+  mergeRefs,
+} from "@kobalte/utils";
 import { createEffect, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
@@ -25,7 +30,14 @@ export const TabsList = createPolymorphicComponent<"div">(props => {
 
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, ["as"]);
+  const [local, others] = splitProps(props, [
+    "as",
+    "ref",
+    "onKeyDown",
+    "onMouseDown",
+    "onFocusIn",
+    "onFocusOut",
+  ]);
 
   const { direction } = useLocale();
 
@@ -63,10 +75,21 @@ export const TabsList = createPolymorphicComponent<"div">(props => {
   return (
     <Dynamic
       component={local.as}
+      ref={mergeRefs(el => (ref = el), local.ref)}
       role="tablist"
       aria-orientation={context.orientation()}
       data-orientation={context.orientation()}
-      {...combineProps({ ref: el => (ref = el) }, others, selectableCollection.handlers)}
+      onKeyDown={composeEventHandlers([local.onKeyDown, selectableCollection.handlers.onKeyDown])}
+      onMouseDown={composeEventHandlers([
+        local.onMouseDown,
+        selectableCollection.handlers.onMouseDown,
+      ])}
+      onFocusIn={composeEventHandlers([local.onFocusIn, selectableCollection.handlers.onFocusIn])}
+      onFocusOut={composeEventHandlers([
+        local.onFocusOut,
+        selectableCollection.handlers.onFocusOut,
+      ])}
+      {...others}
     />
   );
 });

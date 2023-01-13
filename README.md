@@ -1,8 +1,7 @@
 # kobalte
 
-[![workflow-badge]](https://github.com/fabien-ml/kobalte/actions/workflows/ci.yaml) [![license-badge]](https://github.com/fabien-ml/kobalte#license)
+[![license-badge]](https://github.com/fabien-ml/kobalte#license)
 
-[workflow-badge]: https://img.shields.io/github/workflow/status/fabien-ml/kobalte/CI
 [license-badge]: https://img.shields.io/github/license/fabien-ml/kobalte
 
 A UI toolkit for building accessible web apps and design systems with SolidJS.
@@ -20,6 +19,10 @@ A UI toolkit for building accessible web apps and design systems with SolidJS.
 ## Documentation
 
 For full documentation, visit [kobalte.dev](https://kobalte.dev/).
+
+## Roadmap
+
+View roadmap, give feedback and vote for new features at https://kobalte.canny.io/.
 
 ## Acknowledgment
 

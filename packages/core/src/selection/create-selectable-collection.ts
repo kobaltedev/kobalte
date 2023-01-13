@@ -482,9 +482,9 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
     tabIndex,
     handlers: {
       onKeyDown,
+      onMouseDown,
       onFocusIn,
       onFocusOut,
-      onMouseDown,
     },
   };
 }
