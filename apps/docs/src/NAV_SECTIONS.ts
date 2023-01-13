@@ -8,7 +8,7 @@ export interface NavSection {
   links: NavLink[];
 }
 
-const VERSIONS = ["0.1.0"].reverse();
+const VERSIONS = ["0.x"].reverse();
 
 const CHANGELOG_NAV_SECTIONS: NavSection[] = [
   {
