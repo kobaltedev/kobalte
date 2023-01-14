@@ -24,7 +24,7 @@ import { Dialog } from "@kobalte/core";
 
 The dialog consists of:
 
-- **Dialog:** Contains all the parts of a dialog.
+- **Dialog.Root:** Contains all the parts of a dialog.
 - **Dialog.Trigger:** The button that opens the dialog.
 - **Dialog.Portal:** Portals its children into the `body` when the dialog is open.
 - **Dialog.Overlay:** The layer that covers the inert portion of the view when the dialog is open.
@@ -34,7 +34,7 @@ The dialog consists of:
 - **Dialog.Description:** An optional accessible description to be announced when the dialog is opened.
 
 ```tsx
-<Dialog>
+<Dialog.Root>
   <Dialog.Trigger />
   <Dialog.Portal>
     <Dialog.Overlay />
@@ -44,7 +44,7 @@ The dialog consists of:
       <Dialog.Description />
     </Dialog.Content>
   </Dialog.Portal>
-</Dialog>
+</Dialog.Root>
 ```
 
 ## Example
@@ -66,7 +66,7 @@ The dialog consists of:
     import "./style.css";
 
     function App() {
-      <Dialog>
+      <Dialog.Root>
         <Dialog.Trigger class="dialog__trigger">Open</Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Overlay class="dialog__overlay" />
@@ -86,7 +86,7 @@ The dialog consists of:
             </Dialog.Content>
           </div>
         </Dialog.Portal>
-      </Dialog>
+      </Dialog.Root>
     }
     ```
 
@@ -185,7 +185,7 @@ The dialog consists of:
 An initial, uncontrolled open value can be provided using the `defaultIsOpen` prop.
 
 ```tsx
-<Dialog defaultIsOpen>...</Dialog>
+<Dialog.Root defaultIsOpen>...</Dialog.Root>
 ```
 
 ### Controlled open
@@ -199,16 +199,16 @@ function ControlledExample() {
   const [open, setOpen] = createSignal(false);
 
   return (
-    <Dialog isOpen={open()} onOpenChange={setOpen}>
+    <Dialog.Root isOpen={open()} onOpenChange={setOpen}>
       ...
-    </Dialog>
+    </Dialog.Root>
   );
 }
 ```
 
 ## API Reference
 
-### Dialog
+### Dialog.Root
 
 | Prop          | Description                                                                                                                                                                                                                                                                                                                                          |
 | :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

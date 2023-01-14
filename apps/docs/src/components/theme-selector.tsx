@@ -18,11 +18,11 @@ function Item(props: ComponentProps<typeof Select.Item>) {
   );
 }
 
-export function ThemeSelector(props: ComponentProps<typeof Select>) {
+export function ThemeSelector(props: ComponentProps<typeof Select.Root>) {
   const { colorMode, setColorMode } = useColorMode();
 
   return (
-    <Select
+    <Select.Root
       defaultValue={colorMode()}
       onValueChange={value => setColorMode(value as ConfigColorMode)}
       gutter={8}
@@ -58,6 +58,6 @@ export function ThemeSelector(props: ComponentProps<typeof Select>) {
           </Select.Listbox>
         </Select.Content>
       </Select.Portal>
-    </Select>
+    </Select.Root>
   );
 }

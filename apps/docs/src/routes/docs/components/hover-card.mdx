@@ -23,21 +23,21 @@ import { HoverCard } from "@kobalte/core";
 
 The hovercard consists of:
 
-- **HoverCard:** The root container for a hovercard.
+- **HoverCard.Root:** The root container for a hovercard.
 - **HoverCard.Trigger:** The link that opens the hovercard.
 - **HoverCard.Portal:** Portals its children into the `body` when the hovercard is open.
 - **HoverCard.Content:** Contains the content to be rendered when the hovercard is open.
 - **HoverCard.Arrow:** An optional arrow element to render alongside the hovercard.
 
 ```tsx
-<HoverCard>
+<HoverCard.Root>
   <HoverCard.Trigger />
   <HoverCard.Portal>
     <HoverCard.Content>
       <HoverCard.Arrow />
     </HoverCard.Content>
   </HoverCard.Portal>
-</HoverCard>
+</HoverCard.Root>
 ```
 
 ## Example
@@ -59,7 +59,7 @@ The hovercard consists of:
 
     function App() {
       return (
-        <HoverCard>
+        <HoverCard.Root>
           <HoverCard.Trigger
             class="hovercard__trigger"
             href="https://twitter.com/mlfabien"
@@ -81,7 +81,7 @@ The hovercard consists of:
               </p>
             </HoverCard.Content>
           </HoverCard.Portal>
-        </HoverCard>
+        </HoverCard.Root>
       );
     }
     ```
@@ -142,7 +142,7 @@ The hovercard consists of:
 An initial, uncontrolled open value can be provided using the `defaultIsOpen` prop.
 
 ```tsx
-<HoverCard defaultIsOpen>...</HoverCard>
+<HoverCard.Root defaultIsOpen>...</HoverCard.Root>
 ```
 
 ### Controlled open
@@ -156,9 +156,9 @@ function ControlledExample() {
   const [open, setOpen] = createSignal(false);
 
   return (
-    <HoverCard isOpen={open()} onOpenChange={setOpen}>
+    <HoverCard.Root isOpen={open()} onOpenChange={setOpen}>
       ...
-    </HoverCard>
+    </HoverCard.Root>
   );
 }
 ```
@@ -169,7 +169,7 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 
 ## API Reference
 
-### HoverCard
+### HoverCard.Root
 
 | Prop          | Description                                                                                                                                                                   |
 | :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -181,7 +181,7 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | id            | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used. |
 | forceMount    | `boolean` <br/> Used to force mounting the hovercard (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.    |
 
-`HoverCard` also accepts the following props to customize the placement of the `HoverCard.Content`.
+`HoverCard.Root` also accepts the following props to customize the placement of the `HoverCard.Content`.
 
 | Prop             | Description                                                                                                                                                                                                                                                                                                                                                    |
 | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

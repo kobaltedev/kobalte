@@ -31,7 +31,7 @@ import { ContextMenu } from "@kobalte/core";
 
 The context menu consists of:
 
-- **ContextMenu:** The root container for a context menu.
+- **ContextMenu.Root:** The root container for a context menu.
 - **ContextMenu.Trigger:** The button that toggles the menu.
 - **ContextMenu.Portal:** Portals its children into the `body` when the menu is open.
 - **ContextMenu.Content:** Contains the content to be rendered when the menu is open.
@@ -57,7 +57,7 @@ The checkable menu item consists of:
 - **ContextMenu.CheckboxItem:** An item that can be controlled and rendered like a checkbox.
 
 ```tsx
-<ContextMenu>
+<ContextMenu.Root>
   <ContextMenu.Trigger />
 
   <ContextMenu.Portal>
@@ -94,7 +94,7 @@ The checkable menu item consists of:
       <ContextMenu.Separator />
     </ContextMenu.Content>
   </ContextMenu.Portal>
-</ContextMenu>
+</ContextMenu.Root>
 ```
 
 ## Example
@@ -122,7 +122,7 @@ The checkable menu item consists of:
       const [branch, setBranch] = createSignal("main");
 
       return (
-        <ContextMenu>
+        <ContextMenu.Root>
           <ContextMenu.Trigger class="context-menu__trigger">
             Right click here.
           </ContextMenu.Trigger>
@@ -209,7 +209,7 @@ The checkable menu item consists of:
               </ContextMenu.Group>
             </ContextMenu.Content>
           </ContextMenu.Portal>
-        </ContextMenu>
+        </ContextMenu.Root>
       );
     }
     ```
@@ -332,7 +332,7 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 
 ## API Reference
 
-### ContextMenu
+### ContextMenu.Root
 
 | Prop         | Description                                                                                                                                                                                                                                                                                                                                    |
 | :----------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -341,7 +341,7 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | isModal      | `boolean` <br/> Whether the menu should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the menu content. <br/> - elements outside the menu content will not be visible for screen readers. |
 | forceMount   | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                          |
 
-`ContextMenu` also accepts the following props to customize the placement of the `ContextMenu.Content`.
+`ContextMenu.Root` also accepts the following props to customize the placement of the `ContextMenu.Content`.
 
 | Prop             | Description                                                                                                                                                                                                                                                                                                                                                          |
 | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

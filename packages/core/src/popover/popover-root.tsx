@@ -9,30 +9,12 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { Accessor, createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
 
-import { Popper, PopperOptions } from "../popper";
+import { PopperRoot, PopperRootOptions } from "../popper";
 import { createDisclosureState, createRegisterId } from "../primitives";
-import { PopoverAnchor } from "./popover-anchor";
-import { PopoverCloseButton } from "./popover-close-button";
-import { PopoverContent } from "./popover-content";
 import { PopoverContext, PopoverContextValue } from "./popover-context";
-import { PopoverDescription } from "./popover-description";
-import { PopoverPortal } from "./popover-portal";
-import { PopoverTitle } from "./popover-title";
-import { PopoverTrigger } from "./popover-trigger";
 
-type PopoverComposite = {
-  Trigger: typeof PopoverTrigger;
-  Anchor: typeof PopoverAnchor;
-  Portal: typeof PopoverPortal;
-  Content: typeof PopoverContent;
-  Arrow: typeof Popper.Arrow;
-  CloseButton: typeof PopoverCloseButton;
-  Title: typeof PopoverTitle;
-  Description: typeof PopoverDescription;
-};
-
-export interface PopoverOptions
-  extends Omit<PopperOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
+export interface PopoverRootOptions
+  extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /**
    * A ref for the anchor element.
    * Useful if you want to use an element outside `Popover` as the popover anchor.
@@ -78,7 +60,7 @@ export interface PopoverOptions
 /**
  * A popover is a dialog positioned relative to an anchor element.
  */
-export const Popover: ParentComponent<PopoverOptions> & PopoverComposite = props => {
+export const PopoverRoot: ParentComponent<PopoverRootOptions> = props => {
   const defaultId = `popover-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -138,16 +120,7 @@ export const Popover: ParentComponent<PopoverOptions> & PopoverComposite = props
 
   return (
     <PopoverContext.Provider value={context}>
-      <Popper anchorRef={anchorRef} contentRef={contentRef} {...others} />
+      <PopperRoot anchorRef={anchorRef} contentRef={contentRef} {...others} />
     </PopoverContext.Provider>
   );
 };
-
-Popover.Trigger = PopoverTrigger;
-Popover.Anchor = PopoverAnchor;
-Popover.Portal = PopoverPortal;
-Popover.Content = PopoverContent;
-Popover.Arrow = Popper.Arrow;
-Popover.CloseButton = PopoverCloseButton;
-Popover.Title = PopoverTitle;
-Popover.Description = PopoverDescription;

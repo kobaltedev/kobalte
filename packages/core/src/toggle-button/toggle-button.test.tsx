@@ -9,25 +9,25 @@ import {
 } from "@kobalte/tests";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { ToggleButton, ToggleButtonOptions } from "./toggle-button";
+import * as ToggleButton from ".";
 
-const defaultProps: ToggleButtonOptions = {};
+const defaultProps: ToggleButton.ToggleButtonRootOptions = {};
 
 describe("ToggleButton", () => {
   installPointerEvent();
 
-  checkAccessibility([<ToggleButton>Button</ToggleButton>]);
-  itIsPolymorphic(ToggleButton as any, defaultProps);
-  itRendersChildren(ToggleButton as any, defaultProps);
-  itSupportsClass(ToggleButton as any, defaultProps);
-  itSupportsRef(ToggleButton as any, defaultProps, HTMLButtonElement);
-  itSupportsStyle(ToggleButton as any, defaultProps);
+  checkAccessibility([<ToggleButton.Root>Button</ToggleButton.Root>]);
+  itIsPolymorphic(ToggleButton.Root as any, defaultProps);
+  itRendersChildren(ToggleButton.Root as any, defaultProps);
+  itSupportsClass(ToggleButton.Root as any, defaultProps);
+  itSupportsRef(ToggleButton.Root as any, defaultProps, HTMLButtonElement);
+  itSupportsStyle(ToggleButton.Root as any, defaultProps);
 
   it("can be default selected (uncontrolled)", () => {
     render(() => (
-      <ToggleButton data-testid="toggle" defaultIsPressed>
+      <ToggleButton.Root data-testid="toggle" defaultIsPressed>
         Button
-      </ToggleButton>
+      </ToggleButton.Root>
     ));
 
     const toggle = screen.getByTestId("toggle");
@@ -40,9 +40,9 @@ describe("ToggleButton", () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <ToggleButton data-testid="toggle" isPressed onPressedChange={onChangeSpy}>
+      <ToggleButton.Root data-testid="toggle" isPressed onPressedChange={onChangeSpy}>
         Button
-      </ToggleButton>
+      </ToggleButton.Root>
     ));
 
     const toggle = screen.getByTestId("toggle");
@@ -60,7 +60,7 @@ describe("ToggleButton", () => {
   });
 
   it("should have correct attributes when the toggle button is off (not selected)", () => {
-    render(() => <ToggleButton data-testid="toggle">Button</ToggleButton>);
+    render(() => <ToggleButton.Root data-testid="toggle">Button</ToggleButton.Root>);
 
     const toggle = screen.getByTestId("toggle");
 
@@ -70,9 +70,9 @@ describe("ToggleButton", () => {
 
   it("should have correct attributes when the toggle button is on (selected)", () => {
     render(() => (
-      <ToggleButton data-testid="toggle" isPressed>
+      <ToggleButton.Root data-testid="toggle" isPressed>
         Button
-      </ToggleButton>
+      </ToggleButton.Root>
     ));
 
     const toggle = screen.getByTestId("toggle");

@@ -24,7 +24,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
       <button type="button" onClick={open} class="relative" aria-label="Open navigation">
         <HamburgerMenuIcon class="h-6 w-6 text-zinc-500" />
       </button>
-      <Dialog isOpen={isOpen()} onOpenChange={setIsOpen} aria-label="Navigation">
+      <Dialog.Root isOpen={isOpen()} onOpenChange={setIsOpen} aria-label="Navigation">
         <Dialog.Portal>
           <Dialog.Overlay class="fixed inset-0 z-50 flex items-start overflow-y-auto bg-zinc-900/50 pr-10 backdrop-blur lg:hidden" />
 
@@ -54,7 +54,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
             <Navigation sections={local.sections} class="mt-5 px-1" />
           </Dialog.Content>
         </Dialog.Portal>
-      </Dialog>
+      </Dialog.Root>
     </>
   );
 }

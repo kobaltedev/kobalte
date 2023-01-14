@@ -1,10 +1,10 @@
 import { render, screen } from "solid-testing-library";
 
-import { Separator } from "./separator";
+import * as Separator from ".";
 
 describe("Separator", () => {
   it("should render an 'hr' by default", () => {
-    render(() => <Separator />);
+    render(() => <Separator.Root />);
 
     const separator = screen.getByRole("separator");
 
@@ -12,7 +12,7 @@ describe("Separator", () => {
   });
 
   it("should not have implicit 'aria-orientation' by default", () => {
-    render(() => <Separator />);
+    render(() => <Separator.Root />);
 
     const separator = screen.getByRole("separator");
 
@@ -20,7 +20,7 @@ describe("Separator", () => {
   });
 
   it("should not have implicit 'role=separator' by default", () => {
-    render(() => <Separator />);
+    render(() => <Separator.Root />);
 
     const separator = screen.getByRole("separator");
 
@@ -28,7 +28,7 @@ describe("Separator", () => {
   });
 
   it("should not have implicit 'aria-orientation' when 'orientation=horizontal'", () => {
-    render(() => <Separator orientation="horizontal" />);
+    render(() => <Separator.Root orientation="horizontal" />);
 
     const separator = screen.getByRole("separator");
 
@@ -36,7 +36,7 @@ describe("Separator", () => {
   });
 
   it("should have 'aria-orientation' set to vertical when 'orientation=vertical'", () => {
-    render(() => <Separator orientation="vertical" />);
+    render(() => <Separator.Root orientation="vertical" />);
 
     const separator = screen.getByRole("separator");
 
@@ -44,7 +44,7 @@ describe("Separator", () => {
   });
 
   it("should have 'role=separator' when rendered element is not 'hr'", () => {
-    render(() => <Separator as="span" />);
+    render(() => <Separator.Root as="span" />);
 
     const separator = screen.getByRole("separator");
 
@@ -53,7 +53,7 @@ describe("Separator", () => {
   });
 
   it("should have 'data-orientation=horizontal' when 'orientation=horizontal'", () => {
-    render(() => <Separator orientation="horizontal" />);
+    render(() => <Separator.Root orientation="horizontal" />);
 
     const separator = screen.getByRole("separator");
 
@@ -61,7 +61,7 @@ describe("Separator", () => {
   });
 
   it("should have 'data-orientation=vertical' when 'orientation=vertical'", () => {
-    render(() => <Separator orientation="vertical" />);
+    render(() => <Separator.Root orientation="vertical" />);
 
     const separator = screen.getByRole("separator");
 

@@ -5,7 +5,7 @@ import style from "./dialog.module.css";
 
 export function BasicExample() {
   return (
-    <Dialog>
+    <Dialog.Root>
       <Dialog.Trigger class={style["dialog__trigger"]}>Open</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay class={style["dialog__overlay"]} />
@@ -25,6 +25,6 @@ export function BasicExample() {
           </Dialog.Content>
         </div>
       </Dialog.Portal>
-    </Dialog>
+    </Dialog.Root>
   );
 }
