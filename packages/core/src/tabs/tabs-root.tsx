@@ -21,14 +21,7 @@ import { TabsList } from "./tabs-list";
 import { TabsTrigger } from "./tabs-trigger";
 import { TabsActivationMode } from "./types";
 
-type TabsComposite = {
-  List: typeof TabsList;
-  Trigger: typeof TabsTrigger;
-  Indicator: typeof TabsIndicator;
-  Content: typeof TabsContent;
-};
-
-export interface TabsOptions {
+export interface TabsRootOptions {
   /** The controlled value of the tab to activate. */
   value?: string;
 
@@ -55,7 +48,7 @@ export interface TabsOptions {
  * A set of layered sections of content, known as tab panels, that display one panel of content at a time.
  * `Tabs` contains all the parts of a tabs component and provide context for its children.
  */
-export const Tabs = createPolymorphicComponent<"div", TabsOptions, TabsComposite>(props => {
+export const TabsRoot = createPolymorphicComponent<"div", TabsRootOptions>(props => {
   const defaultId = `tabs-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -166,8 +159,3 @@ export const Tabs = createPolymorphicComponent<"div", TabsOptions, TabsComposite
     </DomCollectionProvider>
   );
 });
-
-Tabs.List = TabsList;
-Tabs.Trigger = TabsTrigger;
-Tabs.Indicator = TabsIndicator;
-Tabs.Content = TabsContent;

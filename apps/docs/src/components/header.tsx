@@ -2,8 +2,8 @@ import { Link } from "@solidjs/router";
 
 import { NavSection } from "../NAV_SECTIONS";
 import { GitHubIcon } from "./icons";
-import { ThemeSelector } from "./theme-selector";
 import { MobileNavigation } from "./mobile-navigation";
+import { ThemeSelector } from "./theme-selector";
 
 interface HeaderProps {
   navSections: NavSection[];
@@ -28,7 +28,7 @@ export function Header(props: HeaderProps) {
           <span class="text-3xl leading-[0] text-sky-600">.</span>
         </Link>
         <span class="rounded bg-zinc-100 px-1.5 py-1 text-sm leading-none dark:bg-zinc-800 dark:text-zinc-300">
-          v0.2.0
+          v0.3.0
         </span>
       </div>
       <div class="-my-5 mr-6 sm:mr-8 md:mr-0">{/* Search */}</div>

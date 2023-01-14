@@ -2,7 +2,7 @@ import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import userEvent from "@testing-library/user-event";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { TextField } from "./text-field";
+import * as TextField from ".";
 
 describe("TextField", () => {
   installPointerEvent();
@@ -11,10 +11,10 @@ describe("TextField", () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <TextField defaultValue="cat" onValueChange={onChangeSpy}>
+      <TextField.Root defaultValue="cat" onValueChange={onChangeSpy}>
         <TextField.Label>Favorite Pet</TextField.Label>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -31,10 +31,10 @@ describe("TextField", () => {
   it("value can be controlled", async () => {
     const onChangeSpy = jest.fn();
     render(() => (
-      <TextField value="cat" onValueChange={onChangeSpy}>
+      <TextField.Root value="cat" onValueChange={onChangeSpy}>
         <TextField.Label>Favorite Pet</TextField.Label>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -52,10 +52,10 @@ describe("TextField", () => {
 
   it("name can be controlled", async () => {
     render(() => (
-      <TextField name="favorite-pet">
+      <TextField.Root name="favorite-pet">
         <TextField.Label>Favorite Pet</TextField.Label>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -65,10 +65,10 @@ describe("TextField", () => {
 
   it("supports visible label", async () => {
     render(() => (
-      <TextField>
+      <TextField.Root>
         <TextField.Label>Favorite Pet</TextField.Label>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -81,9 +81,9 @@ describe("TextField", () => {
 
   it("supports 'aria-labelledby'", async () => {
     render(() => (
-      <TextField>
+      <TextField.Root>
         <TextField.Input aria-labelledby="foo" />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -93,10 +93,10 @@ describe("TextField", () => {
 
   it("should combine 'aria-labelledby' if visible label is also provided", async () => {
     render(() => (
-      <TextField>
+      <TextField.Root>
         <TextField.Label>Favorite Pet</TextField.Label>
         <TextField.Input aria-labelledby="foo" />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -107,9 +107,9 @@ describe("TextField", () => {
 
   it("supports 'aria-label'", async () => {
     render(() => (
-      <TextField>
+      <TextField.Root>
         <TextField.Input aria-label="My Favorite Pet" />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -119,10 +119,10 @@ describe("TextField", () => {
 
   it("should combine 'aria-labelledby' if visible label and 'aria-label' is also provided", async () => {
     render(() => (
-      <TextField>
+      <TextField.Root>
         <TextField.Label>Favorite Pet</TextField.Label>
         <TextField.Input aria-label="bar" aria-labelledby="foo" />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -133,10 +133,10 @@ describe("TextField", () => {
 
   it("supports visible description", async () => {
     render(() => (
-      <TextField>
+      <TextField.Root>
         <TextField.Input />
         <TextField.Description>Description</TextField.Description>
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -152,9 +152,9 @@ describe("TextField", () => {
 
   it("supports 'aria-describedby'", async () => {
     render(() => (
-      <TextField>
+      <TextField.Root>
         <TextField.Input aria-describedby="foo" />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -164,10 +164,10 @@ describe("TextField", () => {
 
   it("should combine 'aria-describedby' if visible description", async () => {
     render(() => (
-      <TextField>
+      <TextField.Root>
         <TextField.Input aria-describedby="foo" />
         <TextField.Description>Description</TextField.Description>
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -178,10 +178,10 @@ describe("TextField", () => {
 
   it("supports visible error message when invalid", async () => {
     render(() => (
-      <TextField validationState="invalid">
+      <TextField.Root validationState="invalid">
         <TextField.Input />
         <TextField.ErrorMessage>ErrorMessage</TextField.ErrorMessage>
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -197,10 +197,10 @@ describe("TextField", () => {
 
   it("should not be described by error message when not invalid", async () => {
     render(() => (
-      <TextField>
+      <TextField.Root>
         <TextField.Input />
         <TextField.ErrorMessage>ErrorMessage</TextField.ErrorMessage>
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -210,10 +210,10 @@ describe("TextField", () => {
 
   it("should combine 'aria-describedby' if visible error message when invalid", () => {
     render(() => (
-      <TextField validationState="invalid">
+      <TextField.Root validationState="invalid">
         <TextField.Input aria-describedby="foo" />
         <TextField.ErrorMessage>ErrorMessage</TextField.ErrorMessage>
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -224,11 +224,11 @@ describe("TextField", () => {
 
   it("should combine 'aria-describedby' if visible description and error message when invalid", () => {
     render(() => (
-      <TextField validationState="invalid">
+      <TextField.Root validationState="invalid">
         <TextField.Input aria-describedby="foo" />
         <TextField.Description>Description</TextField.Description>
         <TextField.ErrorMessage>ErrorMessage</TextField.ErrorMessage>
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -240,9 +240,9 @@ describe("TextField", () => {
 
   it("should not have form control 'data-*' attributes by default", () => {
     render(() => (
-      <TextField data-testid="textfield">
+      <TextField.Root data-testid="textfield">
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const textField = screen.getByTestId("textfield");
@@ -259,9 +259,9 @@ describe("TextField", () => {
 
   it("should have 'data-valid' attribute when valid", () => {
     render(() => (
-      <TextField data-testid="textfield" validationState="valid">
+      <TextField.Root data-testid="textfield" validationState="valid">
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const textField = screen.getByTestId("textfield");
@@ -274,9 +274,9 @@ describe("TextField", () => {
 
   it("should have 'data-invalid' attribute when invalid", () => {
     render(() => (
-      <TextField data-testid="textfield" validationState="invalid">
+      <TextField.Root data-testid="textfield" validationState="invalid">
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const textField = screen.getByTestId("textfield");
@@ -289,9 +289,9 @@ describe("TextField", () => {
 
   it("should have 'data-required' attribute when required", () => {
     render(() => (
-      <TextField data-testid="textfield" isRequired>
+      <TextField.Root data-testid="textfield" isRequired>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const textField = screen.getByTestId("textfield");
@@ -304,9 +304,9 @@ describe("TextField", () => {
 
   it("should have 'data-disabled' attribute when disabled", () => {
     render(() => (
-      <TextField data-testid="textfield" isDisabled>
+      <TextField.Root data-testid="textfield" isDisabled>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const textField = screen.getByTestId("textfield");
@@ -319,9 +319,9 @@ describe("TextField", () => {
 
   it("should have 'data-readonly' attribute when readonly", () => {
     render(() => (
-      <TextField data-testid="textfield" isReadOnly>
+      <TextField.Root data-testid="textfield" isReadOnly>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const textField = screen.getByTestId("textfield");
@@ -334,9 +334,9 @@ describe("TextField", () => {
 
   it("should have 'data-hover' attribute when input is hovered", async () => {
     render(() => (
-      <TextField data-testid="textfield">
+      <TextField.Root data-testid="textfield">
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const textField = screen.getByTestId("textfield");
@@ -359,9 +359,9 @@ describe("TextField", () => {
 
   it("should have 'data-focus' attribute when input is focused", async () => {
     render(() => (
-      <TextField data-testid="textfield">
+      <TextField.Root data-testid="textfield">
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const textField = screen.getByTestId("textfield");
@@ -384,9 +384,9 @@ describe("TextField", () => {
 
   it("sets 'aria-invalid' on input when 'validationState=invalid'", () => {
     render(() => (
-      <TextField validationState="invalid">
+      <TextField.Root validationState="invalid">
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -396,9 +396,9 @@ describe("TextField", () => {
 
   it("input should not have 'required', 'disabled' or 'readonly' attributes by default", () => {
     render(() => (
-      <TextField>
+      <TextField.Root>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -410,9 +410,9 @@ describe("TextField", () => {
 
   it("sets 'required' and 'aria-required' on input when 'isRequired' is true", () => {
     render(() => (
-      <TextField isRequired>
+      <TextField.Root isRequired>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -423,9 +423,9 @@ describe("TextField", () => {
 
   it("sets 'disabled' and 'aria-disabled' on input when 'isDisabled' is true", () => {
     render(() => (
-      <TextField isDisabled>
+      <TextField.Root isDisabled>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -436,9 +436,9 @@ describe("TextField", () => {
 
   it("sets 'readonly' and 'aria-readonly' on input when 'isReadOnly' is true", () => {
     render(() => (
-      <TextField isReadOnly>
+      <TextField.Root isReadOnly>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
     ));
 
     const input = screen.getByRole("textbox") as HTMLInputElement;

@@ -1,4 +1,4 @@
-import { Select } from "@kobalte/core";
+import { Select, MultiSelect } from "@kobalte/core";
 import { ComponentProps, createSignal, For, splitProps } from "solid-js";
 
 import { CaretSortIcon, CheckIcon } from "../components";
@@ -19,7 +19,7 @@ function SelectItem(props: ComponentProps<typeof Select.Item>) {
 
 export function BasicExample() {
   return (
-    <Select>
+    <Select.Root>
       <Select.Trigger class={style["select__trigger"]} aria-label="Food">
         <Select.Value class={style["select__value"]} placeholder="Select a food…" />
         <Select.Icon class={style["select__icon"]}>
@@ -63,13 +63,13 @@ export function BasicExample() {
           </Select.Listbox>
         </Select.Content>
       </Select.Portal>
-    </Select>
+    </Select.Root>
   );
 }
 
 export function DefaultValueExample() {
   return (
-    <Select defaultValue="Blueberry">
+    <Select.Root defaultValue="Blueberry">
       <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
         <Select.Value class={style["select__value"]} placeholder="Select a fruit…" />
         <Select.Icon class={style["select__icon"]}>
@@ -92,7 +92,7 @@ export function DefaultValueExample() {
           </Select.Listbox>
         </Select.Content>
       </Select.Portal>
-    </Select>
+    </Select.Root>
   );
 }
 
@@ -101,7 +101,7 @@ export function ControlledExample() {
 
   return (
     <>
-      <Select value={value()} onValueChange={setValue}>
+      <Select.Root value={value()} onValueChange={setValue}>
         <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
           <Select.Value class={style["select__value"]} placeholder="Select a fruit…" />
           <Select.Icon class={style["select__icon"]}>
@@ -124,7 +124,7 @@ export function ControlledExample() {
             </Select.Listbox>
           </Select.Content>
         </Select.Portal>
-      </Select>
+      </Select.Root>
       <p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
     </>
   );
@@ -135,30 +135,30 @@ export function MultiSelectExample() {
 
   return (
     <>
-      <Select.Multi value={values()} onValueChange={setValues}>
-        <Select.Trigger class={style["select__trigger"]} aria-label="Fruits">
-          <Select.Value class={style["select__value"]} placeholder="Select some fruits…" />
-          <Select.Icon class={style["select__icon"]}>
+      <MultiSelect.Root value={values()} onValueChange={setValues}>
+        <MultiSelect.Trigger class={style["select__trigger"]} aria-label="Fruits">
+          <MultiSelect.Value class={style["select__value"]} placeholder="Select some fruits…" />
+          <MultiSelect.Icon class={style["select__icon"]}>
             <CaretSortIcon />
-          </Select.Icon>
-        </Select.Trigger>
-        <Select.Portal>
-          <Select.Content class={style["select__content"]}>
-            <Select.Listbox class={style["select__listbox"]}>
+          </MultiSelect.Icon>
+        </MultiSelect.Trigger>
+        <MultiSelect.Portal>
+          <MultiSelect.Content class={style["select__content"]}>
+            <MultiSelect.Listbox class={style["select__listbox"]}>
               <For each={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}>
                 {fruit => (
-                  <Select.Item value={fruit} class={style["select__item"]}>
-                    <Select.ItemLabel>{fruit}</Select.ItemLabel>
-                    <Select.ItemIndicator class={style["select__item-indicator"]}>
+                  <MultiSelect.Item value={fruit} class={style["select__item"]}>
+                    <MultiSelect.ItemLabel>{fruit}</MultiSelect.ItemLabel>
+                    <MultiSelect.ItemIndicator class={style["select__item-indicator"]}>
                       <CheckIcon />
-                    </Select.ItemIndicator>
-                  </Select.Item>
+                    </MultiSelect.ItemIndicator>
+                  </MultiSelect.Item>
                 )}
               </For>
-            </Select.Listbox>
-          </Select.Content>
-        </Select.Portal>
-      </Select.Multi>
+            </MultiSelect.Listbox>
+          </MultiSelect.Content>
+        </MultiSelect.Portal>
+      </MultiSelect.Root>
       <p class="not-prose text-sm mt-4">Your favorite fruits are: {[...values()].join(", ")}.</p>
     </>
   );
@@ -166,7 +166,7 @@ export function MultiSelectExample() {
 
 export function DescriptionExample() {
   return (
-    <Select>
+    <Select.Root>
       <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
         <Select.Value class={style["select__value"]} placeholder="Select a fruit…" />
         <Select.Icon class={style["select__icon"]}>
@@ -192,7 +192,7 @@ export function DescriptionExample() {
           </Select.Listbox>
         </Select.Content>
       </Select.Portal>
-    </Select>
+    </Select.Root>
   );
 }
 
@@ -200,7 +200,7 @@ export function ErrorMessageExample() {
   const [value, setValue] = createSignal("Grapes");
 
   return (
-    <Select
+    <Select.Root
       value={value()}
       onValueChange={setValue}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
@@ -230,7 +230,7 @@ export function ErrorMessageExample() {
           </Select.Listbox>
         </Select.Content>
       </Select.Portal>
-    </Select>
+    </Select.Root>
   );
 }
 
@@ -248,7 +248,7 @@ export function HTMLFormExample() {
 
   return (
     <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
-      <Select name="fruit">
+      <Select.Root name="fruit">
         <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
           <Select.Value class={style["select__value"]} placeholder="Select a fruit…" />
           <Select.Icon class={style["select__icon"]}>
@@ -271,7 +271,7 @@ export function HTMLFormExample() {
             </Select.Listbox>
           </Select.Content>
         </Select.Portal>
-      </Select>
+      </Select.Root>
       <div class="flex space-x-2">
         <button type="reset" class="kb-button">
           Reset

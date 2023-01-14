@@ -33,7 +33,7 @@ import { TextField } from "@kobalte/core";
 
 The text field consists of:
 
-- **TextField**: The root container for the text field.
+- **TextField.Root**: The root container for the text field.
 - **TextField.Label**: The label that gives the user information on the text field.
 - **TextField.Input**: The native HTML input of the text field, used for single line text.
 - **TextField.TextArea**: The native HTML textarea of the text field, used for multiline text.
@@ -41,12 +41,12 @@ The text field consists of:
 - **TextField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the text field.
 
 ```tsx
-<TextField>
+<TextField.Root>
   <TextField.Label />
   <TextField.Input /> {/* or <TextField.TextArea /> */}
   <TextField.Description />
   <TextField.ErrorMessage />
-</TextField>
+</TextField.Root>
 ```
 
 ## Example
@@ -68,10 +68,10 @@ The text field consists of:
 
     function App() {
       return (
-        <TextField class="text-field">
+        <TextField.Root class="text-field">
           <TextField.Label class="text-field__label">Favorite fruit</TextField.Label>
           <TextField.Input class="text-field__input" />
-        </TextField>
+        </TextField.Root>
       );
     }
     ```
@@ -151,10 +151,10 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 </Preview>
 
 ```tsx {0}
-<TextField defaultValue="Apple">
+<TextField.Root defaultValue="Apple">
   <TextField.Label>Favorite fruit</TextField.Label>
   <TextField.Input />
-</TextField>
+</TextField.Root>
 ```
 
 ### Controlled value
@@ -173,10 +173,10 @@ function ControlledExample() {
 
   return (
     <>
-      <TextField value={value()} onValueChange={setValue}>
+      <TextField.Root value={value()} onValueChange={setValue}>
         <TextField.Label>Favorite fruit</TextField.Label>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
       <p>Your favorite fruit is: {value()}.</p>
     </>
   );
@@ -192,10 +192,10 @@ Use the `TextField.TextArea` component instead of `TextField.Input` to create a 
 </Preview>
 
 ```tsx {2}
-<TextField>
+<TextField.Root>
   <TextField.Label>Favorite fruit</TextField.Label>
   <TextField.TextArea />
-</TextField>
+</TextField.Root>
 ```
 
 In addition, the `autoResize` prop can be used to make the textarea height adjust to it's content. Try typing in the text field below to see it in action.
@@ -205,10 +205,10 @@ In addition, the `autoResize` prop can be used to make the textarea height adjus
 </Preview>
 
 ```tsx {2}
-<TextField>
+<TextField.Root>
   <TextField.Label>Favorite fruit</TextField.Label>
   <TextField.TextArea autoResize />
-</TextField>
+</TextField.Root>
 ```
 
 ### Description
@@ -220,11 +220,11 @@ The `TextField.Description` component can be used to associate additional help t
 </Preview>
 
 ```tsx {3}
-<TextField>
+<TextField.Root>
   <TextField.Label>Favorite fruit</TextField.Label>
   <TextField.Input />
   <TextField.Description>Choose the fruit you like the most.</TextField.Description>
-</TextField>
+</TextField.Root>
 ```
 
 ### Error message
@@ -244,7 +244,7 @@ function ErrorMessageExample() {
   const [value, setValue] = createSignal("Orange");
 
   return (
-    <TextField
+    <TextField.Root
       value={value()}
       onValueChange={setValue}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
@@ -252,7 +252,7 @@ function ErrorMessageExample() {
       <TextField.Label>Favorite fruit</TextField.Label>
       <TextField.Input />
       <TextField.ErrorMessage>Hmm, I prefer apples.</TextField.ErrorMessage>
-    </TextField>
+    </TextField.Root>
   );
 }
 ```
@@ -273,10 +273,10 @@ function HTMLFormExample() {
 
   return (
     <form onSubmit={onSubmit}>
-      <TextField name="favorite-fruit">
+      <TextField.Root name="favorite-fruit">
         <TextField.Label>Favorite fruit</TextField.Label>
         <TextField.Input />
-      </TextField>
+      </TextField.Root>
       <div>
         <button type="reset">Reset</button>
         <button>Submit</button>
@@ -288,7 +288,7 @@ function HTMLFormExample() {
 
 ## API Reference
 
-### TextField
+### TextField.Root
 
 | Prop            | Description                                                                                                 |
 | :-------------- | :---------------------------------------------------------------------------------------------------------- |

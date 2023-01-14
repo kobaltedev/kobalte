@@ -6,7 +6,7 @@ import style from "./checkbox.module.css";
 
 export function BasicExample() {
   return (
-    <Checkbox class={style["checkbox"]}>
+    <Checkbox.Root class={style["checkbox"]}>
       <Checkbox.Input />
       <Checkbox.Control class={style["checkbox__control"]}>
         <Checkbox.Indicator>
@@ -14,13 +14,13 @@ export function BasicExample() {
         </Checkbox.Indicator>
       </Checkbox.Control>
       <Checkbox.Label class={style["checkbox__label"]}>Subscribe</Checkbox.Label>
-    </Checkbox>
+    </Checkbox.Root>
   );
 }
 
 export function DefaultCheckedExample() {
   return (
-    <Checkbox class={style["checkbox"]} defaultIsChecked>
+    <Checkbox.Root class={style["checkbox"]} defaultIsChecked>
       <Checkbox.Input />
       <Checkbox.Control class={style["checkbox__control"]}>
         <Checkbox.Indicator>
@@ -28,7 +28,7 @@ export function DefaultCheckedExample() {
         </Checkbox.Indicator>
       </Checkbox.Control>
       <Checkbox.Label class={style["checkbox__label"]}>Subscribe</Checkbox.Label>
-    </Checkbox>
+    </Checkbox.Root>
   );
 }
 
@@ -37,7 +37,7 @@ export function ControlledExample() {
 
   return (
     <>
-      <Checkbox class={style["checkbox"]} isChecked={checked()} onCheckedChange={setChecked}>
+      <Checkbox.Root class={style["checkbox"]} isChecked={checked()} onCheckedChange={setChecked}>
         <Checkbox.Input />
         <Checkbox.Control class={style["checkbox__control"]}>
           <Checkbox.Indicator>
@@ -45,7 +45,7 @@ export function ControlledExample() {
           </Checkbox.Indicator>
         </Checkbox.Control>
         <Checkbox.Label class={style["checkbox__label"]}>Subscribe</Checkbox.Label>
-      </Checkbox>
+      </Checkbox.Root>
       <p class="not-prose text-sm mt-2">You are {checked() ? "subscribed" : "unsubscribed"}.</p>
     </>
   );
@@ -65,7 +65,7 @@ export function HTMLFormExample() {
 
   return (
     <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
-      <Checkbox class={style["checkbox"]} name="newsletter" value="subscribe">
+      <Checkbox.Root class={style["checkbox"]} name="newsletter" value="subscribe">
         <Checkbox.Input />
         <Checkbox.Control class={style["checkbox__control"]}>
           <Checkbox.Indicator>
@@ -73,7 +73,7 @@ export function HTMLFormExample() {
           </Checkbox.Indicator>
         </Checkbox.Control>
         <Checkbox.Label class={style["checkbox__label"]}>Subscribe</Checkbox.Label>
-      </Checkbox>
+      </Checkbox.Root>
       <div class="flex space-x-2">
         <button type="reset" class="kb-button">
           Reset

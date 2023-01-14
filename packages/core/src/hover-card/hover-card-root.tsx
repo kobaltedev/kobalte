@@ -23,24 +23,14 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { Popper, PopperOptions } from "../popper";
+import { PopperRoot, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
 import { createDisclosureState } from "../primitives";
-import { HoverCardContent } from "./hover-card-content";
 import { HoverCardContext, HoverCardContextValue } from "./hover-card-context";
-import { HoverCardPortal } from "./hover-card-portal";
-import { HoverCardTrigger } from "./hover-card-trigger";
 import { getHoverCardSafeArea } from "./utils";
 
-type HoverCardComposite = {
-  Trigger: typeof HoverCardTrigger;
-  Portal: typeof HoverCardPortal;
-  Content: typeof HoverCardContent;
-  Arrow: typeof Popper.Arrow;
-};
-
-export interface HoverCardOptions
-  extends Omit<PopperOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
+export interface HoverCardRootOptions
+  extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the hovercard. */
   isOpen?: boolean;
 
@@ -79,7 +69,7 @@ export interface HoverCardOptions
 /**
  * A popover that allows sighted users to preview content available behind a link.
  */
-export const HoverCard: ParentComponent<HoverCardOptions> & HoverCardComposite = props => {
+export const HoverCardRoot: ParentComponent<HoverCardRootOptions> = props => {
   const defaultId = `hovercard-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -236,7 +226,7 @@ export const HoverCard: ParentComponent<HoverCardOptions> & HoverCardComposite =
 
   return (
     <HoverCardContext.Provider value={context}>
-      <Popper
+      <PopperRoot
         anchorRef={triggerRef}
         contentRef={contentRef}
         onCurrentPlacementChange={setCurrentPlacement}
@@ -245,8 +235,3 @@ export const HoverCard: ParentComponent<HoverCardOptions> & HoverCardComposite =
     </HoverCardContext.Provider>
   );
 };
-
-HoverCard.Trigger = HoverCardTrigger;
-HoverCard.Portal = HoverCardPortal;
-HoverCard.Content = HoverCardContent;
-HoverCard.Arrow = Popper.Arrow;

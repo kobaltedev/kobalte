@@ -17,7 +17,7 @@ import { Dynamic } from "solid-js/web";
 
 import { createTagName } from "../primitives";
 
-export interface SeparatorOptions {
+export interface SeparatorRootOptions {
   /** The orientation of the separator. */
   orientation?: Orientation;
 }
@@ -25,7 +25,7 @@ export interface SeparatorOptions {
 /**
  * A separator visually or semantically separates content.
  */
-export const Separator = createPolymorphicComponent<"hr", SeparatorOptions>(props => {
+export const SeparatorRoot = createPolymorphicComponent<"hr", SeparatorRootOptions>(props => {
   let ref: HTMLElement | undefined;
 
   props = mergeDefaultProps(

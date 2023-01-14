@@ -6,7 +6,7 @@ import style from "./popover.module.css";
 
 export function BasicExample() {
   return (
-    <Popover>
+    <Popover.Root>
       <Popover.Trigger class={style["popover__trigger"]}>Open</Popover.Trigger>
       <Popover.Portal>
         <Popover.Content class={style["popover__content"]}>
@@ -22,7 +22,7 @@ export function BasicExample() {
           </Popover.Description>
         </Popover.Content>
       </Popover.Portal>
-    </Popover>
+    </Popover.Root>
   );
 }
 
@@ -30,7 +30,7 @@ export function ControlledExample() {
   const [open, setOpen] = createSignal(false);
 
   return (
-    <Popover isOpen={open()} onOpenChange={setOpen}>
+    <Popover.Root isOpen={open()} onOpenChange={setOpen}>
       <Popover.Trigger class={style["popover__trigger"]}>
         {open() ? "Close" : "Open"}
       </Popover.Trigger>
@@ -48,13 +48,13 @@ export function ControlledExample() {
           </Popover.Description>
         </Popover.Content>
       </Popover.Portal>
-    </Popover>
+    </Popover.Root>
   );
 }
 
 export function CustomAnchorExample() {
   return (
-    <Popover>
+    <Popover.Root>
       <Popover.Anchor class={style["popover__anchor"]}>
         <p>
           The popover opens when you click{" "}
@@ -76,6 +76,6 @@ export function CustomAnchorExample() {
           </Popover.Description>
         </Popover.Content>
       </Popover.Portal>
-    </Popover>
+    </Popover.Root>
   );
 }

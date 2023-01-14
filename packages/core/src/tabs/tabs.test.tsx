@@ -10,7 +10,7 @@ import { triggerPress } from "@kobalte/tests";
 import userEvent from "@testing-library/user-event";
 import { fireEvent, render, screen, waitFor, within } from "solid-testing-library";
 
-import { Tabs } from "./tabs";
+import * as Tabs from ".";
 
 describe("Tabs", function () {
   // Make userEvent work with jest fakeTimers
@@ -34,7 +34,7 @@ describe("Tabs", function () {
 
   it("renders properly", async () => {
     render(() => (
-      <Tabs>
+      <Tabs.Root>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -43,7 +43,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     const tablist = screen.getByRole("tablist");
@@ -72,7 +72,7 @@ describe("Tabs", function () {
 
   it("allows user to change tab item select via left/right arrow keys with horizontal tabs", async () => {
     render(() => (
-      <Tabs>
+      <Tabs.Root>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -81,7 +81,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     const tablist = screen.getByRole("tablist");
@@ -118,7 +118,7 @@ describe("Tabs", function () {
 
   it("allows user to change tab item select via up/down arrow keys with vertical tabs", async () => {
     render(() => (
-      <Tabs orientation="vertical">
+      <Tabs.Root orientation="vertical">
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -127,7 +127,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     const tablist = screen.getByRole("tablist");
@@ -166,7 +166,7 @@ describe("Tabs", function () {
 
   it("wraps focus from first to last/last to first item", async () => {
     render(() => (
-      <Tabs>
+      <Tabs.Root>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -175,7 +175,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     const tablist = screen.getByRole("tablist");
@@ -203,7 +203,7 @@ describe("Tabs", function () {
 
   it("select last item via end key / select first item via home key", async () => {
     render(() => (
-      <Tabs>
+      <Tabs.Root>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -212,7 +212,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     const tablist = screen.getByRole("tablist");
@@ -240,7 +240,7 @@ describe("Tabs", function () {
 
   it("does not select via left / right keys if 'activationMode' is manual, select on enter / spacebar", async () => {
     render(() => (
-      <Tabs activationMode="manual" defaultValue="one" onValueChange={onValueChangeSpy}>
+      <Tabs.Root activationMode="manual" defaultValue="one" onValueChange={onValueChangeSpy}>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -249,7 +249,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     const tablist = screen.getByRole("tablist");
@@ -285,7 +285,7 @@ describe("Tabs", function () {
 
   it("supports using click to change tab", async () => {
     render(() => (
-      <Tabs activationMode="manual" defaultValue="one" onValueChange={onValueChangeSpy}>
+      <Tabs.Root activationMode="manual" defaultValue="one" onValueChange={onValueChangeSpy}>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -294,7 +294,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     const tablist = screen.getByRole("tablist");
@@ -321,7 +321,7 @@ describe("Tabs", function () {
 
   it("should focus the selected tab when tabbing in for the first time", async () => {
     render(() => (
-      <Tabs defaultValue="two">
+      <Tabs.Root defaultValue="two">
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -330,7 +330,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     await user.tab();
@@ -343,7 +343,7 @@ describe("Tabs", function () {
 
   it("should not focus any tabs when isDisabled tabbing in for the first time", async () => {
     render(() => (
-      <Tabs defaultValue="two" isDisabled>
+      <Tabs.Root defaultValue="two" isDisabled>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -352,7 +352,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     await user.tab();
@@ -364,7 +364,7 @@ describe("Tabs", function () {
 
   it("disabled tabs cannot be keyboard navigated to", async () => {
     render(() => (
-      <Tabs defaultValue="one" onValueChange={onValueChangeSpy}>
+      <Tabs.Root defaultValue="one" onValueChange={onValueChangeSpy}>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two" isDisabled>
@@ -375,7 +375,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     await user.tab();
@@ -396,7 +396,7 @@ describe("Tabs", function () {
 
   it("disabled tabs cannot be pressed", async () => {
     render(() => (
-      <Tabs defaultValue="one" onValueChange={onValueChangeSpy}>
+      <Tabs.Root defaultValue="one" onValueChange={onValueChangeSpy}>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two" isDisabled>
@@ -407,7 +407,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     await user.tab();
@@ -424,7 +424,7 @@ describe("Tabs", function () {
 
   it("selects first tab if all tabs are disabled", async () => {
     render(() => (
-      <Tabs onValueChange={onValueChangeSpy}>
+      <Tabs.Root onValueChange={onValueChangeSpy}>
         <Tabs.List>
           <Tabs.Trigger value="one" isDisabled>
             One
@@ -439,7 +439,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     await user.tab();
@@ -455,7 +455,7 @@ describe("Tabs", function () {
 
   it("tabpanel should have tabIndex=0 only when there are no focusable elements", async () => {
     render(() => (
-      <Tabs>
+      <Tabs.Root>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -466,7 +466,7 @@ describe("Tabs", function () {
         <Tabs.Content value="two">
           <input disabled />
         </Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     let tabpanel = screen.getByRole("tabpanel");
@@ -487,7 +487,7 @@ describe("Tabs", function () {
 
   it("fires onValueChange when clicking on the current tab", async () => {
     render(() => (
-      <Tabs defaultValue="one" onValueChange={onValueChangeSpy}>
+      <Tabs.Root defaultValue="one" onValueChange={onValueChangeSpy}>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -496,7 +496,7 @@ describe("Tabs", function () {
         <Tabs.Content value="one">Body 1</Tabs.Content>
         <Tabs.Content value="two">Body 2</Tabs.Content>
         <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     ));
 
     const tablist = screen.getByRole("tablist");

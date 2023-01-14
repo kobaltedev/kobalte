@@ -10,22 +10,22 @@ import {
 } from "@kobalte/tests";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { Link, LinkOptions } from "./link";
+import * as Link from ".";
 
-const defaultProps: LinkOptions = {};
+const defaultProps: Link.LinkRootOptions = {};
 
 describe("Link", () => {
   installPointerEvent();
 
-  checkAccessibility([<Link href="#">Link</Link>]);
-  itIsPolymorphic(Link as any, defaultProps);
-  itRendersChildren(Link as any, defaultProps);
-  itSupportsClass(Link as any, defaultProps);
-  itSupportsRef(Link as any, defaultProps, HTMLAnchorElement);
-  itSupportsStyle(Link as any, defaultProps);
+  checkAccessibility([<Link.Root href="#">Link</Link.Root>]);
+  itIsPolymorphic(Link.Root as any, defaultProps);
+  itRendersChildren(Link.Root as any, defaultProps);
+  itSupportsClass(Link.Root as any, defaultProps);
+  itSupportsRef(Link.Root as any, defaultProps, HTMLAnchorElement);
+  itSupportsStyle(Link.Root as any, defaultProps);
 
   it("should not have attribute 'role=link' when it's a native link", () => {
-    render(() => <Link data-testid="link">Link</Link>);
+    render(() => <Link.Root data-testid="link">Link</Link.Root>);
 
     const link = screen.getByTestId("link");
 
@@ -34,9 +34,9 @@ describe("Link", () => {
 
   it("should have attribute 'role=link' when it's not a native link", () => {
     render(() => (
-      <Link data-testid="link" as="div">
+      <Link.Root data-testid="link" as="div">
         Link
-      </Link>
+      </Link.Root>
     ));
 
     const link = screen.getByTestId("link");
@@ -46,9 +46,9 @@ describe("Link", () => {
 
   it("should have attribute 'tabindex=0' when it's not a native link and is not disabled", () => {
     render(() => (
-      <Link data-testid="link" as="div">
+      <Link.Root data-testid="link" as="div">
         Link
-      </Link>
+      </Link.Root>
     ));
 
     const link = screen.getByTestId("link");
@@ -58,9 +58,9 @@ describe("Link", () => {
 
   it("should not have attribute 'tabindex=0' when it's a native link ", () => {
     render(() => (
-      <Link data-testid="link" href="https://kobalte.dev">
+      <Link.Root data-testid="link" href="https://kobalte.dev">
         Link
-      </Link>
+      </Link.Root>
     ));
 
     const link = screen.getByTestId("link");
@@ -70,9 +70,9 @@ describe("Link", () => {
 
   it("should not have attribute 'tabindex=0' when it's disabled", () => {
     render(() => (
-      <Link data-testid="link" as="div" isDisabled>
+      <Link.Root data-testid="link" as="div" isDisabled>
         Link
-      </Link>
+      </Link.Root>
     ));
 
     const link = screen.getByTestId("link");
@@ -82,9 +82,9 @@ describe("Link", () => {
 
   it("should have attribute 'aria-disabled=true' when disabled", () => {
     render(() => (
-      <Link data-testid="link" isDisabled>
+      <Link.Root data-testid="link" isDisabled>
         Link
-      </Link>
+      </Link.Root>
     ));
 
     const link = screen.getByTestId("link");
@@ -93,7 +93,7 @@ describe("Link", () => {
   });
 
   it("should not have attribute 'data-active' and 'data-disabled' by default", async () => {
-    render(() => <Link data-testid="link">Link</Link>);
+    render(() => <Link.Root data-testid="link">Link</Link.Root>);
 
     const link = screen.getByTestId("link");
 
@@ -102,7 +102,7 @@ describe("Link", () => {
   });
 
   it("should have attribute 'data-active' when pressed", async () => {
-    render(() => <Link data-testid="link">Link</Link>);
+    render(() => <Link.Root data-testid="link">Link</Link.Root>);
 
     const link = screen.getByTestId("link");
 
@@ -114,9 +114,9 @@ describe("Link", () => {
 
   it("should have attribute 'data-disabled' when disabled", () => {
     render(() => (
-      <Link data-testid="link" isDisabled>
+      <Link.Root data-testid="link" isDisabled>
         Link
-      </Link>
+      </Link.Root>
     ));
 
     const link = screen.getByTestId("link");

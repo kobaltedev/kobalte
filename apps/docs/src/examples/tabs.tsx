@@ -5,7 +5,7 @@ import style from "./tabs.module.css";
 
 export function BasicExample() {
   return (
-    <Tabs aria-label="Main navigation" class={style["tabs"]}>
+    <Tabs.Root aria-label="Main navigation" class={style["tabs"]}>
       <Tabs.List class={style["tabs__list"]}>
         <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
           Profile
@@ -33,13 +33,13 @@ export function BasicExample() {
       <Tabs.Content class={style["tabs__content"]} value="contact">
         Contact details
       </Tabs.Content>
-    </Tabs>
+    </Tabs.Root>
   );
 }
 
 export function DefaultValueExample() {
   return (
-    <Tabs aria-label="Main navigation" defaultValue="dashboard" class={style["tabs"]}>
+    <Tabs.Root aria-label="Main navigation" defaultValue="dashboard" class={style["tabs"]}>
       <Tabs.List class={style["tabs__list"]}>
         <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
           Profile
@@ -67,7 +67,7 @@ export function DefaultValueExample() {
       <Tabs.Content class={style["tabs__content"]} value="contact">
         Contact details
       </Tabs.Content>
-    </Tabs>
+    </Tabs.Root>
   );
 }
 
@@ -76,7 +76,7 @@ export function ControlledExample() {
 
   return (
     <>
-      <Tabs
+      <Tabs.Root
         value={selectedTab()}
         onValueChange={setSelectedTab}
         aria-label="Main navigation"
@@ -109,7 +109,7 @@ export function ControlledExample() {
         <Tabs.Content class={style["tabs__content"]} value="contact">
           Contact details
         </Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
       <p class="not-prose text-sm mt-2">Selected tab: {selectedTab()}</p>
     </>
   );
@@ -117,7 +117,7 @@ export function ControlledExample() {
 
 export function FocusableContentExample() {
   return (
-    <Tabs aria-label="Main navigation" class={style["tabs"]}>
+    <Tabs.Root aria-label="Main navigation" class={style["tabs"]}>
       <Tabs.List class={style["tabs__list"]}>
         <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
           Profile
@@ -148,7 +148,7 @@ export function FocusableContentExample() {
       <Tabs.Content class={style["tabs__content"]} value="contact">
         Contact details
       </Tabs.Content>
-    </Tabs>
+    </Tabs.Root>
   );
 }
 
@@ -192,7 +192,7 @@ export function DynamicContentExample() {
           Remove tab
         </button>
       </div>
-      <Tabs>
+      <Tabs.Root>
         <Tabs.List class={style["tabs__list"]}>
           <For each={tabs()}>
             {tab => (
@@ -210,14 +210,14 @@ export function DynamicContentExample() {
             </Tabs.Content>
           )}
         </For>
-      </Tabs>
+      </Tabs.Root>
     </>
   );
 }
 
 export function ManualActivationExample() {
   return (
-    <Tabs aria-label="Main navigation" activationMode="manual" class={style["tabs"]}>
+    <Tabs.Root aria-label="Main navigation" activationMode="manual" class={style["tabs"]}>
       <Tabs.List class={style["tabs__list"]}>
         <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
           Profile
@@ -245,13 +245,13 @@ export function ManualActivationExample() {
       <Tabs.Content class={style["tabs__content"]} value="contact">
         Contact details
       </Tabs.Content>
-    </Tabs>
+    </Tabs.Root>
   );
 }
 
 export function VerticalOrientationExample() {
   return (
-    <Tabs aria-label="Main navigation" orientation="vertical" class={style["tabs"]}>
+    <Tabs.Root aria-label="Main navigation" orientation="vertical" class={style["tabs"]}>
       <Tabs.List class={style["tabs__list"]}>
         <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
           Profile
@@ -279,13 +279,13 @@ export function VerticalOrientationExample() {
       <Tabs.Content class={style["tabs__content"]} value="contact">
         Contact details
       </Tabs.Content>
-    </Tabs>
+    </Tabs.Root>
   );
 }
 
 export function DisabledTabsExample() {
   return (
-    <Tabs aria-label="Main navigation" isDisabled class={style["tabs"]}>
+    <Tabs.Root aria-label="Main navigation" isDisabled class={style["tabs"]}>
       <Tabs.List class={style["tabs__list"]}>
         <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
           Profile
@@ -313,13 +313,13 @@ export function DisabledTabsExample() {
       <Tabs.Content class={style["tabs__content"]} value="contact">
         Contact details
       </Tabs.Content>
-    </Tabs>
+    </Tabs.Root>
   );
 }
 
 export function SingleDisabledTabExample() {
   return (
-    <Tabs aria-label="Main navigation" class={style["tabs"]}>
+    <Tabs.Root aria-label="Main navigation" class={style["tabs"]}>
       <Tabs.List class={style["tabs__list"]}>
         <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
           Profile
@@ -347,6 +347,6 @@ export function SingleDisabledTabExample() {
       <Tabs.Content class={style["tabs__content"]} value="contact">
         Contact details
       </Tabs.Content>
-    </Tabs>
+    </Tabs.Root>
   );
 }
