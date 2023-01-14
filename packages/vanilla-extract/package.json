@@ -2,7 +2,7 @@
   "name": "@kobalte/vanilla-extract",
   "version": "0.1.0",
   "private": false,
-  "description": "A TailwindCSS plugin for styling Kobalte Elements with data-* attributes by using modifiers like ui-expanded:*",
+  "description": "Vanilla Extract utils for styling Kobalte Elements easily",
   "keywords": [
     "solid",
     "solidjs",
