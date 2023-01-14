@@ -1,6 +1,6 @@
 # @kobalte/tailwindcss
 
-Vanilla Extract utils for styling Kobalte Elements easily.
+Vanilla Extract utils to style Kobalte Elements easily.
 
 ## Installation
 
