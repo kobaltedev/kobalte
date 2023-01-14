@@ -92,7 +92,7 @@ importers:
 
   apps/docs:
     specifiers:
-      '@kobalte/core': 0.2.0
+      '@kobalte/core': 0.3.0
       '@kobalte/tailwindcss': 0.2.0
       '@mdx-js/mdx': 2.1.3
       '@mdx-js/rollup': 2.1.3
@@ -165,7 +165,7 @@ importers:
 
   apps/playground:
     specifiers:
-      '@kobalte/core': ^0.2.0
+      '@kobalte/core': ^0.3.0
       solid-js: ^1.6.1
       typescript: ^4.7.4
       vite: ^3.0.3
@@ -185,7 +185,7 @@ importers:
       '@internationalized/number': ^3.1.1
       '@internationalized/string': ^3.0.0
       '@kobalte/tests': ^0.1.0
-      '@kobalte/utils': ^0.2.0
+      '@kobalte/utils': ^0.3.0
     dependencies:
       '@floating-ui/dom': 1.1.0
       '@internationalized/date': 3.0.2

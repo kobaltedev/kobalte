@@ -1,5 +1,11 @@
 # @kobalte/utils
 
+## 0.3.0
+
+### Minor Changes
+
+- 828eba6: Improve tree shaking
+
 ## 0.2.0
 
 ### Minor Changes
