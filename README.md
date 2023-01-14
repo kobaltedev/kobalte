@@ -8,13 +8,15 @@ A UI toolkit for building accessible web apps and design systems with SolidJS.
 
 ## Packages
 
-| Name                                          |                                 Version                                  | Description                                                                                                          |
-| :-------------------------------------------- | :----------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------- |
-| [@kobalte/core](/packages/core)               |        [![core-npm]](https://www.npmjs.com/package/@kobalte/core)        | Unstyled components and primitives for building accessible web apps and design systems.                              |
-| [@kobalte/tailwindcss](/packages/tailwindcss) | [![tailwindcss-npm]](https://www.npmjs.com/package/@kobalte/tailwindcss) | A TailwindCSS plugin for styling Kobalte components with `data-*` attributes by using modifiers like `ui-expanded:*` |
+| Name                                                  |                                     Version                                      | Description                                                                                                          |
+| :---------------------------------------------------- | :------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------- |
+| [@kobalte/core](/packages/core)                       |            [![core-npm]](https://www.npmjs.com/package/@kobalte/core)            | Unstyled components and primitives for building accessible web apps and design systems.                              |
+| [@kobalte/tailwindcss](/packages/tailwindcss)         |     [![tailwindcss-npm]](https://www.npmjs.com/package/@kobalte/tailwindcss)     | A TailwindCSS plugin for styling Kobalte components with `data-*` attributes by using modifiers like `ui-expanded:*` |
+| [@kobalte/vanilla-extract](/packages/vanilla-extract) | [![vanilla-extract-npm]](https://www.npmjs.com/package/@kobalte/vanilla-extract) | A Vanilla Extract plugin for styling Kobalte components with `data-*` attributes.                                    |
 
 [core-npm]: https://img.shields.io/npm/v/@kobalte/core
 [tailwindcss-npm]: https://img.shields.io/npm/v/@kobalte/tailwindcss
+[vanilla-extract-npm]: https://img.shields.io/npm/v/@kobalte/vanilla-extract
 
 ## Documentation
 
