@@ -10,7 +10,7 @@ export function BasicExample() {
   const [branch, setBranch] = createSignal("main");
 
   return (
-    <DropdownMenu>
+    <DropdownMenu.Root>
       <DropdownMenu.Trigger class={style["dropdown-menu__trigger"]}>
         <span>Git Settings</span>
         <DropdownMenu.Icon class={style["dropdown-menu__trigger-icon"]}>
@@ -102,7 +102,7 @@ export function BasicExample() {
           <DropdownMenu.Arrow />
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
-    </DropdownMenu>
+    </DropdownMenu.Root>
   );
 }
 
@@ -110,7 +110,7 @@ export function ControlledExample() {
   const [open, setOpen] = createSignal(false);
 
   return (
-    <DropdownMenu isOpen={open()} onOpenChange={setOpen} gutter={8}>
+    <DropdownMenu.Root isOpen={open()} onOpenChange={setOpen} gutter={8}>
       <DropdownMenu.Trigger class={style["dropdown-menu__trigger"]}>
         {open() ? "Close" : "Open"}
       </DropdownMenu.Trigger>
@@ -123,6 +123,6 @@ export function ControlledExample() {
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
-    </DropdownMenu>
+    </DropdownMenu.Root>
   );
 }

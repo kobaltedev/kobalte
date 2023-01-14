@@ -33,12 +33,8 @@ import {
   HOVER_HANDLERS_PROP_NAMES,
 } from "../primitives";
 import { CheckboxContext, CheckboxContextValue, CheckboxDataSet } from "./checkbox-context";
-import { CheckboxControl } from "./checkbox-control";
-import { CheckboxIndicator } from "./checkbox-indicator";
-import { CheckboxInput } from "./checkbox-input";
-import { CheckboxLabel } from "./checkbox-label";
 
-interface CheckboxState {
+interface CheckboxRootState {
   /** Whether the checkbox is checked or not. */
   isChecked: Accessor<boolean>;
 
@@ -46,14 +42,7 @@ interface CheckboxState {
   isIndeterminate: Accessor<boolean>;
 }
 
-type CheckboxComposite = {
-  Label: typeof CheckboxLabel;
-  Input: typeof CheckboxInput;
-  Control: typeof CheckboxControl;
-  Indicator: typeof CheckboxIndicator;
-};
-
-export interface CheckboxOptions {
+export interface CheckboxRootOptions {
   /** The controlled checked state of the checkbox. */
   isChecked?: boolean;
 
@@ -101,14 +90,15 @@ export interface CheckboxOptions {
    * The children of the checkbox.
    * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
    */
-  children?: JSX.Element | ((state: CheckboxState) => JSX.Element);
+  children?: JSX.Element | ((state: CheckboxRootState) => JSX.Element);
 }
 
 /**
  * A control that allows the user to toggle between checked and not checked.
  */
-export const Checkbox: Component<OverrideProps<ComponentProps<"label">, CheckboxOptions>> &
-  CheckboxComposite = props => {
+export const CheckboxRoot: Component<
+  OverrideProps<ComponentProps<"label">, CheckboxRootOptions>
+> = props => {
   let ref: HTMLLabelElement | undefined;
 
   const defaultId = `checkbox-${createUniqueId()}`;
@@ -196,22 +186,17 @@ export const Checkbox: Component<OverrideProps<ComponentProps<"label">, Checkbox
         {...dataset()}
         {...others}
       >
-        <CheckboxChild state={context} children={local.children} />
+        <CheckboxRootChild state={context} children={local.children} />
       </label>
     </CheckboxContext.Provider>
   );
 };
 
-Checkbox.Label = CheckboxLabel;
-Checkbox.Input = CheckboxInput;
-Checkbox.Control = CheckboxControl;
-Checkbox.Indicator = CheckboxIndicator;
-
-interface CheckboxChildProps extends Pick<CheckboxOptions, "children"> {
-  state: CheckboxState;
+interface CheckboxRootChildProps extends Pick<CheckboxRootOptions, "children"> {
+  state: CheckboxRootState;
 }
 
-function CheckboxChild(props: CheckboxChildProps) {
+function CheckboxRootChild(props: CheckboxRootChildProps) {
   return children(() => {
     const body = props.children;
     return isFunction(body) ? body(props.state) : body;

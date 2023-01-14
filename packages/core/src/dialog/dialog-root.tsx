@@ -2,26 +2,9 @@ import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentComponent } from "solid-js";
 
 import { createDisclosureState, createRegisterId } from "../primitives";
-import { DialogCloseButton } from "./dialog-close-button";
-import { DialogContent } from "./dialog-content";
 import { DialogContext, DialogContextValue } from "./dialog-context";
-import { DialogDescription } from "./dialog-description";
-import { DialogOverlay } from "./dialog-overlay";
-import { DialogPortal } from "./dialog-portal";
-import { DialogTitle } from "./dialog-title";
-import { DialogTrigger } from "./dialog-trigger";
 
-type DialogComposite = {
-  Trigger: typeof DialogTrigger;
-  Portal: typeof DialogPortal;
-  Overlay: typeof DialogOverlay;
-  Content: typeof DialogContent;
-  CloseButton: typeof DialogCloseButton;
-  Title: typeof DialogTitle;
-  Description: typeof DialogDescription;
-};
-
-export interface DialogOptions {
+export interface DialogRootOptions {
   /** The controlled open state of the dialog. */
   isOpen?: boolean;
 
@@ -61,7 +44,7 @@ export interface DialogOptions {
 /**
  * A dialog is a window overlaid on either the primary window or another dialog window.
  */
-export const Dialog: ParentComponent<DialogOptions> & DialogComposite = props => {
+export const DialogRoot: ParentComponent<DialogRootOptions> = props => {
   const defaultId = `dialog-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -103,11 +86,3 @@ export const Dialog: ParentComponent<DialogOptions> & DialogComposite = props =>
 
   return <DialogContext.Provider value={context}>{props.children}</DialogContext.Provider>;
 };
-
-Dialog.Trigger = DialogTrigger;
-Dialog.Portal = DialogPortal;
-Dialog.Overlay = DialogOverlay;
-Dialog.Content = DialogContent;
-Dialog.CloseButton = DialogCloseButton;
-Dialog.Title = DialogTitle;
-Dialog.Description = DialogDescription;

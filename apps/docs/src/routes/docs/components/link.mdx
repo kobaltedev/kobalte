@@ -22,10 +22,10 @@ import { Link } from "@kobalte/core";
 
 The link consists of:
 
-- **Link:** The root container for a link.
+- **Link.Root:** The root container for a link.
 
 ```tsx
-<Link />
+<Link.Root />
 ```
 
 ## Example
@@ -47,9 +47,9 @@ The link consists of:
 
     function App() {
       return (
-        <Link class="link" href="https://kobalte.dev">
+        <Link.Root class="link" href="https://kobalte.dev">
           Kobalte
-        </Link>
+        </Link.Root>
       );
     }
     ```
@@ -86,14 +86,16 @@ This example shows a client handled link using press events. It renders a `<span
 </Preview>
 
 ```tsx
-<Link as="span" onPress={() => alert("Pressed link")}>
+<Link.Root as="span" onPress={() => alert("Pressed link")}>
   Kobalte
-</Link>
+</Link.Root>
 ```
 
 To learn more about _press interactions_ in Kobalte, check out the [documentation](/docs/overview/press-interactions).
 
 ## API Reference
+
+### Link.Root
 
 | Prop                | Description                                                                                                                                             |
 | :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------ |

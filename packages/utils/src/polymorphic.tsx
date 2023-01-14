@@ -31,8 +31,8 @@ export type PolymorphicComponent<DefaultType extends As, Props = {}> = {
  * Create a component with the type cast to `PolymorphicComponent`.
  * You have to use `Dynamic` internally and pass the `as` prop to handle polymorphism correctly.
  */
-export function createPolymorphicComponent<DefaultType extends As, Props = {}, Composite = {}>(
+export function createPolymorphicComponent<DefaultType extends As, Props = {}>(
   component: Component<PolymorphicProps<DefaultType, Props>>
 ) {
-  return component as unknown as PolymorphicComponent<DefaultType, Props> & Composite;
+  return component as unknown as PolymorphicComponent<DefaultType, Props>;
 }

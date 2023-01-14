@@ -9,7 +9,7 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { Checkbox } from "./checkbox";
+import * as Checkbox from ".";
 
 describe("Checkbox", () => {
   installPointerEvent();
@@ -22,13 +22,13 @@ describe("Checkbox", () => {
 
   it("should generate default ids", () => {
     render(() => (
-      <Checkbox data-testid="checkbox">
+      <Checkbox.Root data-testid="checkbox">
         <Checkbox.Input data-testid="input" />
         <Checkbox.Control data-testid="control">
           <Checkbox.Indicator data-testid="indicator" forceMount />
         </Checkbox.Control>
         <Checkbox.Label data-testid="label">Label</Checkbox.Label>
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const checkboxRoot = screen.getByTestId("checkbox");
@@ -46,13 +46,13 @@ describe("Checkbox", () => {
 
   it("should generate ids based on checkbox id", () => {
     render(() => (
-      <Checkbox data-testid="checkbox" id="foo">
+      <Checkbox.Root data-testid="checkbox" id="foo">
         <Checkbox.Input data-testid="input" />
         <Checkbox.Control data-testid="control">
           <Checkbox.Indicator data-testid="indicator" forceMount />
         </Checkbox.Control>
         <Checkbox.Label data-testid="label">Label</Checkbox.Label>
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const checkboxRoot = screen.getByTestId("checkbox");
@@ -70,7 +70,7 @@ describe("Checkbox", () => {
 
   it("supports custom ids", () => {
     render(() => (
-      <Checkbox data-testid="checkbox" id="custom-checkbox-id">
+      <Checkbox.Root data-testid="checkbox" id="custom-checkbox-id">
         <Checkbox.Input data-testid="input" id="custom-input-id" />
         <Checkbox.Control data-testid="control" id="custom-control-id">
           <Checkbox.Indicator data-testid="indicator" id="custom-indicator-id" forceMount />
@@ -78,7 +78,7 @@ describe("Checkbox", () => {
         <Checkbox.Label data-testid="label" id="custom-label-id">
           Label
         </Checkbox.Label>
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const checkboxRoot = screen.getByTestId("checkbox");
@@ -96,9 +96,9 @@ describe("Checkbox", () => {
 
   it("should set input type to checkbox", async () => {
     render(() => (
-      <Checkbox>
+      <Checkbox.Root>
         <Checkbox.Input />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox");
@@ -108,9 +108,9 @@ describe("Checkbox", () => {
 
   it("should have default value of 'on'", async () => {
     render(() => (
-      <Checkbox>
+      <Checkbox.Root>
         <Checkbox.Input />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -120,9 +120,9 @@ describe("Checkbox", () => {
 
   it("supports custom value", async () => {
     render(() => (
-      <Checkbox value="custom">
+      <Checkbox.Root value="custom">
         <Checkbox.Input />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -132,9 +132,9 @@ describe("Checkbox", () => {
 
   it("ensure default unchecked can be checked", async () => {
     render(() => (
-      <Checkbox onCheckedChange={onChangeSpy}>
+      <Checkbox.Root onCheckedChange={onChangeSpy}>
         <Checkbox.Input />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -157,9 +157,9 @@ describe("Checkbox", () => {
 
   it("can be default checked", async () => {
     render(() => (
-      <Checkbox defaultIsChecked onCheckedChange={onChangeSpy}>
+      <Checkbox.Root defaultIsChecked onCheckedChange={onChangeSpy}>
         <Checkbox.Input />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -176,9 +176,9 @@ describe("Checkbox", () => {
 
   it("can be controlled checked", async () => {
     render(() => (
-      <Checkbox isChecked onCheckedChange={onChangeSpy}>
+      <Checkbox.Root isChecked onCheckedChange={onChangeSpy}>
         <Checkbox.Input />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -195,9 +195,9 @@ describe("Checkbox", () => {
 
   it("can be controlled unchecked", async () => {
     render(() => (
-      <Checkbox isChecked={false} onCheckedChange={onChangeSpy}>
+      <Checkbox.Root isChecked={false} onCheckedChange={onChangeSpy}>
         <Checkbox.Input />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -214,9 +214,9 @@ describe("Checkbox", () => {
 
   it("can be indeterminate", async () => {
     render(() => (
-      <Checkbox isIndeterminate onCheckedChange={onChangeSpy}>
+      <Checkbox.Root isIndeterminate onCheckedChange={onChangeSpy}>
         <Checkbox.Input />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -243,10 +243,10 @@ describe("Checkbox", () => {
 
   it("can be disabled", async () => {
     render(() => (
-      <Checkbox isDisabled onCheckedChange={onChangeSpy}>
+      <Checkbox.Root isDisabled onCheckedChange={onChangeSpy}>
         <Checkbox.Input />
         <Checkbox.Label data-testid="label">Label</Checkbox.Label>
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const label = screen.getByTestId("label");
@@ -266,9 +266,9 @@ describe("Checkbox", () => {
 
   it("can be invalid", async () => {
     render(() => (
-      <Checkbox validationState="invalid" onCheckedChange={onChangeSpy}>
+      <Checkbox.Root validationState="invalid" onCheckedChange={onChangeSpy}>
         <Checkbox.Input />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -279,9 +279,9 @@ describe("Checkbox", () => {
 
   it("passes through 'aria-errormessage'", async () => {
     render(() => (
-      <Checkbox validationState="invalid" onCheckedChange={onChangeSpy}>
+      <Checkbox.Root validationState="invalid" onCheckedChange={onChangeSpy}>
         <Checkbox.Input aria-errormessage="test" />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -293,10 +293,10 @@ describe("Checkbox", () => {
 
   it("supports 'aria-label'", () => {
     render(() => (
-      <Checkbox>
+      <Checkbox.Root>
         <Checkbox.Input aria-label="Label" />
         <Checkbox.Control />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -307,9 +307,9 @@ describe("Checkbox", () => {
 
   it("supports 'aria-labelledby'", () => {
     render(() => (
-      <Checkbox>
+      <Checkbox.Root>
         <Checkbox.Input aria-labelledby="foo" />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -320,9 +320,9 @@ describe("Checkbox", () => {
 
   it("should combine 'aria-label' and 'aria-labelledby'", () => {
     render(() => (
-      <Checkbox>
+      <Checkbox.Root>
         <Checkbox.Input aria-label="Label" aria-labelledby="foo" />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -333,9 +333,9 @@ describe("Checkbox", () => {
 
   it("supports 'aria-describedby'", () => {
     render(() => (
-      <Checkbox>
+      <Checkbox.Root>
         <Checkbox.Input aria-describedby="foo" />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -345,9 +345,9 @@ describe("Checkbox", () => {
 
   it("can be read only", async () => {
     render(() => (
-      <Checkbox isChecked isReadOnly onCheckedChange={onChangeSpy}>
+      <Checkbox.Root isChecked isReadOnly onCheckedChange={onChangeSpy}>
         <Checkbox.Input />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -365,9 +365,9 @@ describe("Checkbox", () => {
 
   it("supports uncontrolled read only", async () => {
     render(() => (
-      <Checkbox isReadOnly onCheckedChange={onChangeSpy}>
+      <Checkbox.Root isReadOnly onCheckedChange={onChangeSpy}>
         <Checkbox.Input />
-      </Checkbox>
+      </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -385,12 +385,12 @@ describe("Checkbox", () => {
   describe("indicator", () => {
     it("should not display indicator by default", async () => {
       render(() => (
-        <Checkbox>
+        <Checkbox.Root>
           <Checkbox.Input />
           <Checkbox.Control>
             <Checkbox.Indicator data-testid="indicator" />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       expect(screen.queryByTestId("indicator")).toBeNull();
@@ -398,12 +398,12 @@ describe("Checkbox", () => {
 
     it("should display indicator when 'checked'", async () => {
       render(() => (
-        <Checkbox>
+        <Checkbox.Root>
           <Checkbox.Input />
           <Checkbox.Control>
             <Checkbox.Indicator data-testid="indicator" />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       const input = screen.getByRole("checkbox") as HTMLInputElement;
@@ -426,12 +426,12 @@ describe("Checkbox", () => {
 
     it("should display indicator when 'indeterminate'", async () => {
       render(() => (
-        <Checkbox isIndeterminate>
+        <Checkbox.Root isIndeterminate>
           <Checkbox.Input />
           <Checkbox.Control>
             <Checkbox.Indicator data-testid="indicator" />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       expect(screen.getByTestId("indicator")).toBeInTheDocument();
@@ -439,12 +439,12 @@ describe("Checkbox", () => {
 
     it("should display indicator when 'forceMount'", async () => {
       render(() => (
-        <Checkbox>
+        <Checkbox.Root>
           <Checkbox.Input />
           <Checkbox.Control>
             <Checkbox.Indicator data-testid="indicator" forceMount />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       expect(screen.getByTestId("indicator")).toBeInTheDocument();
@@ -454,13 +454,13 @@ describe("Checkbox", () => {
   describe("data-attributes", () => {
     it("should have 'data-valid' attribute when checkbox is valid", async () => {
       render(() => (
-        <Checkbox data-testid="checkbox-root" validationState="valid">
+        <Checkbox.Root data-testid="checkbox-root" validationState="valid">
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       const elements = screen.getAllByTestId(/^checkbox/);
@@ -472,13 +472,13 @@ describe("Checkbox", () => {
 
     it("should have 'data-invalid' attribute when checkbox is invalid", async () => {
       render(() => (
-        <Checkbox data-testid="checkbox-root" validationState="invalid">
+        <Checkbox.Root data-testid="checkbox-root" validationState="invalid">
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       const elements = screen.getAllByTestId(/^checkbox/);
@@ -490,13 +490,13 @@ describe("Checkbox", () => {
 
     it("should have 'data-checked' attribute when checkbox is checked", async () => {
       render(() => (
-        <Checkbox data-testid="checkbox-root" isChecked>
+        <Checkbox.Root data-testid="checkbox-root" isChecked>
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       const elements = screen.getAllByTestId(/^checkbox/);
@@ -508,13 +508,13 @@ describe("Checkbox", () => {
 
     it("should have 'data-indeterminate' attribute when checkbox is indeterminate", async () => {
       render(() => (
-        <Checkbox data-testid="checkbox-root" isIndeterminate>
+        <Checkbox.Root data-testid="checkbox-root" isIndeterminate>
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       const elements = screen.getAllByTestId(/^checkbox/);
@@ -526,13 +526,13 @@ describe("Checkbox", () => {
 
     it("should have 'data-required' attribute when checkbox is required", async () => {
       render(() => (
-        <Checkbox data-testid="checkbox-root" isRequired>
+        <Checkbox.Root data-testid="checkbox-root" isRequired>
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       const elements = screen.getAllByTestId(/^checkbox/);
@@ -544,13 +544,13 @@ describe("Checkbox", () => {
 
     it("should have 'data-disabled' attribute when checkbox is disabled", async () => {
       render(() => (
-        <Checkbox data-testid="checkbox-root" isDisabled>
+        <Checkbox.Root data-testid="checkbox-root" isDisabled>
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       const elements = screen.getAllByTestId(/^checkbox/);
@@ -562,13 +562,13 @@ describe("Checkbox", () => {
 
     it("should have 'data-readonly' attribute when checkbox is read only", async () => {
       render(() => (
-        <Checkbox data-testid="checkbox-root" isReadOnly>
+        <Checkbox.Root data-testid="checkbox-root" isReadOnly>
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       const elements = screen.getAllByTestId(/^checkbox/);
@@ -580,13 +580,13 @@ describe("Checkbox", () => {
 
     it("should have 'data-hover' attribute when checkbox is hovered", async () => {
       render(() => (
-        <Checkbox data-testid="checkbox-root">
+        <Checkbox.Root data-testid="checkbox-root">
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       const checkboxRoot = screen.getByTestId("checkbox-root");
@@ -609,13 +609,13 @@ describe("Checkbox", () => {
 
     it("should have 'data-focus' attribute on focused checkbox", async () => {
       render(() => (
-        <Checkbox data-testid="checkbox-root">
+        <Checkbox.Root data-testid="checkbox-root">
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
             <Checkbox.Indicator data-testid="checkbox-indicator" />
           </Checkbox.Control>
-        </Checkbox>
+        </Checkbox.Root>
       ));
 
       const checkboxInput = screen.getByRole("checkbox");

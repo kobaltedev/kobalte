@@ -6,7 +6,7 @@ import { Dynamic } from "solid-js/web";
  * Alert displays a brief, important message
  * in a way that attracts the user's attention without interrupting the user's task.
  */
-export const Alert = createPolymorphicComponent<"div">(props => {
+export const AlertRoot = createPolymorphicComponent<"div">(props => {
   props = mergeDefaultProps({ as: "div" }, props);
 
   const [local, others] = splitProps(props, ["as"]);

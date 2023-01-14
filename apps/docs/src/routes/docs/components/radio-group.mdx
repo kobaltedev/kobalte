@@ -30,7 +30,7 @@ import { RadioGroup } from "@kobalte/core";
 
 The radio group consists of:
 
-- **RadioGroup**: The root container for the radio group.
+- **RadioGroup.Root**: The root container for the radio group.
 - **RadioGroup.Label**: The label that gives the user information on the radio group.
 - **RadioGroup.Description**: The description that gives the user more information on the radio group.
 - **RadioGroup.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the radio group.
@@ -44,7 +44,7 @@ The radio item consists of:
 - **RadioGroup.ItemLabel**: The label that gives the user information on the radio button.
 
 ```tsx
-<RadioGroup>
+<RadioGroup.Root>
   <RadioGroup.Label />
   <RadioGroup.Item>
     <RadioGroup.ItemInput />
@@ -55,7 +55,7 @@ The radio item consists of:
   </RadioGroup.Item>
   <RadioGroup.Description />
   <RadioGroup.ErrorMessage />
-</RadioGroup>
+</RadioGroup.Root>
 ```
 
 ## Example
@@ -77,7 +77,7 @@ The radio item consists of:
 
     function App() {
       return (
-        <RadioGroup class="radio-group">
+        <RadioGroup.Root class="radio-group">
           <RadioGroup.Label class="radio-group__label">Favorite fruit</RadioGroup.Label>
           <div class="radio-group__items">
             <For each={["Apple", "Orange", "Watermelon"]}>
@@ -92,7 +92,7 @@ The radio item consists of:
               )}
             </For>
           </div>
-        </RadioGroup>
+        </RadioGroup.Root>
       );
     }
     ```
@@ -191,14 +191,14 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 </Preview>
 
 ```tsx {0,4}
-<RadioGroup defaultValue="Orange">
+<RadioGroup.Root defaultValue="Orange">
   <RadioGroup.Label>Favorite fruit</RadioGroup.Label>
   <div>
     <For each={["Apple", "Orange", "Watermelon"]}>
       {fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
     </For>
   </div>
-</RadioGroup>
+</RadioGroup.Root>
 ```
 
 ### Controlled value
@@ -217,14 +217,14 @@ function ControlledExample() {
 
   return (
     <>
-      <RadioGroup value={value()} onValueChange={setValue}>
+      <RadioGroup.Root value={value()} onValueChange={setValue}>
         <RadioGroup.Label>Favorite fruit</RadioGroup.Label>
         <div>
           <For each={["Apple", "Orange", "Watermelon"]}>
             {fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
           </For>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
       <p>Your favorite fruit is: {value()}.</p>
     </>
   );
@@ -240,7 +240,7 @@ The `RadioGroup.Description` component can be used to associate additional help 
 </Preview>
 
 ```tsx {7}
-<RadioGroup>
+<RadioGroup.Root>
   <RadioGroup.Label>Favorite fruit</RadioGroup.Label>
   <div>
     <For each={["Apple", "Orange", "Watermelon"]}>
@@ -248,7 +248,7 @@ The `RadioGroup.Description` component can be used to associate additional help 
     </For>
   </div>
   <RadioGroup.Description>Choose the fruit you like the most.</RadioGroup.Description>
-</RadioGroup>
+</RadioGroup.Root>
 ```
 
 ### Error message
@@ -268,7 +268,7 @@ function ErrorMessageExample() {
   const [value, setValue] = createSignal("Orange");
 
   return (
-    <RadioGroup
+    <RadioGroup.Root
       value={value()}
       onValueChange={setValue}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
@@ -280,7 +280,7 @@ function ErrorMessageExample() {
         </For>
       </div>
       <RadioGroup.ErrorMessage>Hmm, I prefer apples.</RadioGroup.ErrorMessage>
-    </RadioGroup>
+    </RadioGroup.Root>
   );
 }
 ```
@@ -301,14 +301,14 @@ function HTMLFormExample() {
 
   return (
     <form onSubmit={onSubmit}>
-      <RadioGroup name="favorite-fruit">
+      <RadioGroup.Root name="favorite-fruit">
         <RadioGroup.Label>Favorite fruit</RadioGroup.Label>
         <div>
           <For each={["Apple", "Orange", "Watermelon"]}>
             {fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
           </For>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
       <div>
         <button type="reset">Reset</button>
         <button>Submit</button>
@@ -320,7 +320,7 @@ function HTMLFormExample() {
 
 ## API Reference
 
-### RadioGroup
+### RadioGroup.Root
 
 | Prop            | Description                                                                                                                                                         |
 | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

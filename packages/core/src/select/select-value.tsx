@@ -6,11 +6,8 @@ import { useFormControlContext } from "../form-control";
 import { useSelectContext } from "./select-context";
 
 interface SelectValueState {
-  /**
-   * The selected values of the select.
-   * It will always be of type `Set<string>` even for single selection.
-   */
-  selectedValues: Accessor<Set<string>>;
+  /** The selected value of the select. */
+  selectedValue: Accessor<string>;
 }
 
 export interface SelectValueOptions {
@@ -56,7 +53,7 @@ export const SelectValue = createPolymorphicComponent<"span", SelectValueOptions
       <Show when={!isSelectionEmpty()} fallback={local.placeholder}>
         <Show when={local.children} fallback={valueLabels()}>
           <SelectValueChild
-            state={{ selectedValues: () => selectionManager().selectedKeys() }}
+            state={{ selectedValue: () => selectionManager().selectedKeys().values().next().value }}
             children={local.children}
           />
         </Show>

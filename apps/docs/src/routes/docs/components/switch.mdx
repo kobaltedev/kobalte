@@ -28,20 +28,20 @@ import { Switch } from "@kobalte/core";
 
 The switch consists of:
 
-- **Switch:** The root container for a switch.
+- **Switch.Root:** The root container for a switch.
 - **Switch.Input:** The native html input that is visually hidden in the switch.
 - **Switch.Label:** The label that gives the user information on the switch.
 - **Switch.Control:** The element that visually represents a switch.
 - **Switch.Thumb:** The thumb that is used to visually indicate whether the switch is on or off.
 
 ```tsx
-<Switch>
+<Switch.Root>
   <Switch.Input />
   <Switch.Label />
   <Switch.Control>
     <Switch.Thumb />
   </Switch.Control>
-</Switch>
+</Switch.Root>
 ```
 
 ## Example
@@ -63,13 +63,13 @@ The switch consists of:
 
     function App() {
       return (
-        <Switch class="switch">
+        <Switch.Root class="switch">
           <Switch.Input />
           <Switch.Label class="switch__label">Airplane mode</Switch.Label>
           <Switch.Control class="switch__control">
             <Switch.Thumb class="switch__thumb" />
           </Switch.Control>
-        </Switch>
+        </Switch.Root>
       );
     }
     ```
@@ -139,7 +139,7 @@ An initial, uncontrolled value can be provided using the `defaultIsChecked` prop
 </Preview>
 
 ```tsx
-<Switch defaultIsChecked>...</Switch>
+<Switch.Root defaultIsChecked>...</Switch.Root>
 ```
 
 ### Controlled checked
@@ -158,9 +158,9 @@ export function ControlledExample() {
 
   return (
     <>
-      <Switch isChecked={checked()} onCheckedChange={setChecked}>
+      <Switch.Root isChecked={checked()} onCheckedChange={setChecked}>
         ...
-      </Switch>
+      </Switch.Root>
       <p>Airplane mode is {checked() ? "active" : "inactive"}.</p>
     </>
   );
@@ -182,9 +182,9 @@ function HTMLFormExample() {
   };
   return (
     <form onSubmit={onSubmit}>
-      <Switch name="airplane-mode" value="on">
+      <Switch.Root name="airplane-mode" value="on">
         ...
-      </Switch>
+      </Switch.Root>
       <div>
         <button type="reset">Reset</button>
         <button>Submit</button>
@@ -196,7 +196,7 @@ function HTMLFormExample() {
 
 ## API Reference
 
-### Switch
+### Switch.Root
 
 | Prop             | Description                                                                                                                                                             |
 | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

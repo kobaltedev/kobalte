@@ -8,20 +8,20 @@ import {
 } from "@kobalte/tests";
 import { render, screen } from "solid-testing-library";
 
-import { Alert } from "./alert";
+import * as Alert from ".";
 
 const defaultProps = {};
 
-describe("Button", () => {
-  checkAccessibility([<Alert>Alert</Alert>]);
-  itIsPolymorphic(Alert as any, defaultProps);
-  itRendersChildren(Alert as any, defaultProps);
-  itSupportsClass(Alert as any, defaultProps);
-  itSupportsRef(Alert as any, defaultProps, HTMLDivElement);
-  itSupportsStyle(Alert as any, defaultProps);
+describe("Alert", () => {
+  checkAccessibility([<Alert.Root>Alert</Alert.Root>]);
+  itIsPolymorphic(Alert.Root as any, defaultProps);
+  itRendersChildren(Alert.Root as any, defaultProps);
+  itSupportsClass(Alert.Root as any, defaultProps);
+  itSupportsRef(Alert.Root as any, defaultProps, HTMLDivElement);
+  itSupportsStyle(Alert.Root as any, defaultProps);
 
   it("should have attribute 'role=alert'", () => {
-    render(() => <Alert>Alert</Alert>);
+    render(() => <Alert.Root>Alert</Alert.Root>);
 
     const alert = screen.getByRole("alert");
 

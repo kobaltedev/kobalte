@@ -8,7 +8,7 @@
 
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { Listbox } from "./listbox";
+import * as Listbox from ".";
 
 describe("Listbox", () => {
   beforeEach(() => {
@@ -28,11 +28,11 @@ describe("Listbox", () => {
 
   it("renders properly", () => {
     render(() => (
-      <Listbox selectionMode="single">
+      <Listbox.Root selectionMode="single">
         <Listbox.Item value="1">One</Listbox.Item>
         <Listbox.Item value="2">Two</Listbox.Item>
         <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox>
+      </Listbox.Root>
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -52,11 +52,11 @@ describe("Listbox", () => {
 
   it("allows user to change option focus via up/down arrow keys", async () => {
     render(() => (
-      <Listbox>
+      <Listbox.Root>
         <Listbox.Item value="1">One</Listbox.Item>
         <Listbox.Item value="2">Two</Listbox.Item>
         <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox>
+      </Listbox.Root>
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -80,11 +80,11 @@ describe("Listbox", () => {
 
   it("wraps focus from first to last/last to first option if up/down arrow is pressed if shouldFocusWrap is true", async () => {
     render(() => (
-      <Listbox shouldFocusWrap>
+      <Listbox.Root shouldFocusWrap>
         <Listbox.Item value="1">One</Listbox.Item>
         <Listbox.Item value="2">Two</Listbox.Item>
         <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox>
+      </Listbox.Root>
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -111,11 +111,11 @@ describe("Listbox", () => {
       const defaultValue = new Set(["2"]);
 
       render(() => (
-        <Listbox selectionMode="single" defaultValue={defaultValue}>
+        <Listbox.Root selectionMode="single" defaultValue={defaultValue}>
           <Listbox.Item value="1">One</Listbox.Item>
           <Listbox.Item value="2">Two</Listbox.Item>
           <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -135,11 +135,11 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox selectionMode="single" value={value} onValueChange={onValueChangeSpy}>
+        <Listbox.Root selectionMode="single" value={value} onValueChange={onValueChangeSpy}>
           <Listbox.Item value="1">One</Listbox.Item>
           <Listbox.Item value="2">Two</Listbox.Item>
           <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -171,11 +171,11 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox selectionMode="single" onValueChange={onValueChangeSpy}>
+        <Listbox.Root selectionMode="single" onValueChange={onValueChangeSpy}>
           <Listbox.Item value="1">One</Listbox.Item>
           <Listbox.Item value="2">Two</Listbox.Item>
           <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -200,11 +200,11 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox selectionMode="single" onValueChange={onValueChangeSpy}>
+        <Listbox.Root selectionMode="single" onValueChange={onValueChangeSpy}>
           <Listbox.Item value="1">One</Listbox.Item>
           <Listbox.Item value="2">Two</Listbox.Item>
           <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -229,13 +229,13 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox selectionMode="single" onValueChange={onValueChangeSpy}>
+        <Listbox.Root selectionMode="single" onValueChange={onValueChangeSpy}>
           <Listbox.Item value="1">One</Listbox.Item>
           <Listbox.Item value="2" isDisabled>
             Two
           </Listbox.Item>
           <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -270,11 +270,11 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox selectionMode="multiple" onValueChange={onValueChangeSpy}>
+        <Listbox.Root selectionMode="multiple" onValueChange={onValueChangeSpy}>
           <Listbox.Item value="1">One</Listbox.Item>
           <Listbox.Item value="2">Two</Listbox.Item>
           <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -302,7 +302,7 @@ describe("Listbox", () => {
       const defaultValue = new Set(["1", "2"]);
 
       render(() => (
-        <Listbox
+        <Listbox.Root
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
@@ -310,7 +310,7 @@ describe("Listbox", () => {
           <Listbox.Item value="1">One</Listbox.Item>
           <Listbox.Item value="2">Two</Listbox.Item>
           <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       const options = screen.getAllByRole("option");
@@ -340,11 +340,11 @@ describe("Listbox", () => {
       const value = new Set(["1", "2"]);
 
       render(() => (
-        <Listbox selectionMode="multiple" value={value} onValueChange={onValueChangeSpy}>
+        <Listbox.Root selectionMode="multiple" value={value} onValueChange={onValueChangeSpy}>
           <Listbox.Item value="1">One</Listbox.Item>
           <Listbox.Item value="2">Two</Listbox.Item>
           <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       const options = screen.getAllByRole("option");
@@ -372,7 +372,7 @@ describe("Listbox", () => {
       const defaultValue = new Set(["1", "2"]);
 
       render(() => (
-        <Listbox
+        <Listbox.Root
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
@@ -380,7 +380,7 @@ describe("Listbox", () => {
           <Listbox.Item value="1">One</Listbox.Item>
           <Listbox.Item value="2">Two</Listbox.Item>
           <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       const options = screen.getAllByRole("option");
@@ -407,7 +407,7 @@ describe("Listbox", () => {
       const defaultValue = new Set(["1", "2"]);
 
       render(() => (
-        <Listbox
+        <Listbox.Root
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
@@ -417,7 +417,7 @@ describe("Listbox", () => {
           <Listbox.Item value="3" isDisabled>
             Three
           </Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       const options = screen.getAllByRole("option");
@@ -444,7 +444,7 @@ describe("Listbox", () => {
     const defaultValue = new Set(["2"]);
 
     render(() => (
-      <Listbox
+      <Listbox.Root
         selectionMode="single"
         defaultValue={defaultValue}
         onValueChange={onValueChangeSpy}
@@ -453,7 +453,7 @@ describe("Listbox", () => {
         <Listbox.Item value="1">One</Listbox.Item>
         <Listbox.Item value="2">Two</Listbox.Item>
         <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox>
+      </Listbox.Root>
     ));
 
     const options = screen.getAllByRole("option");
@@ -474,11 +474,11 @@ describe("Listbox", () => {
 
   it("supports type to select", async () => {
     render(() => (
-      <Listbox>
+      <Listbox.Root>
         <Listbox.Item value="1">One</Listbox.Item>
         <Listbox.Item value="2">Two</Listbox.Item>
         <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox>
+      </Listbox.Root>
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -504,11 +504,11 @@ describe("Listbox", () => {
 
   it("resets the search text after a timeout", async () => {
     render(() => (
-      <Listbox>
+      <Listbox.Root>
         <Listbox.Item value="1">One</Listbox.Item>
         <Listbox.Item value="2">Two</Listbox.Item>
         <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox>
+      </Listbox.Root>
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -532,11 +532,11 @@ describe("Listbox", () => {
 
   it("supports aria-label on options", () => {
     render(() => (
-      <Listbox>
+      <Listbox.Root>
         <Listbox.Item value="option" aria-label="Item">
           Item
         </Listbox.Item>
-      </Listbox>
+      </Listbox.Root>
     ));
 
     jest.runAllTimers();
@@ -550,12 +550,12 @@ describe("Listbox", () => {
 
   it("supports complex options with aria-labelledby and aria-describedby", async () => {
     render(() => (
-      <Listbox>
+      <Listbox.Root>
         <Listbox.Item value="option">
           <Listbox.ItemLabel>Label</Listbox.ItemLabel>
           <Listbox.ItemDescription>Description</Listbox.ItemDescription>
         </Listbox.Item>
-      </Listbox>
+      </Listbox.Root>
     ));
 
     jest.runAllTimers();
@@ -570,11 +570,11 @@ describe("Listbox", () => {
 
   it("supports aria-label", () => {
     render(() => (
-      <Listbox aria-label="Test">
+      <Listbox.Root aria-label="Test">
         <Listbox.Item value="1">One</Listbox.Item>
         <Listbox.Item value="2">Two</Listbox.Item>
         <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox>
+      </Listbox.Root>
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -585,14 +585,14 @@ describe("Listbox", () => {
   describe("item indicator", () => {
     it("should not display item indicator by default", async () => {
       render(() => (
-        <Listbox>
+        <Listbox.Root>
           <Listbox.Item value="1">One</Listbox.Item>
           <Listbox.Item value="2">
             <Listbox.ItemLabel>Two</Listbox.ItemLabel>
             <Listbox.ItemIndicator data-testid="indicator" />
           </Listbox.Item>
           <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       expect(screen.queryByTestId("indicator")).toBeNull();
@@ -600,14 +600,14 @@ describe("Listbox", () => {
 
     it("should display item indicator when 'selected'", async () => {
       render(() => (
-        <Listbox value={["2"]}>
+        <Listbox.Root value={["2"]}>
           <Listbox.Item value="1">One</Listbox.Item>
           <Listbox.Item value="2">
             <Listbox.ItemLabel>Two</Listbox.ItemLabel>
             <Listbox.ItemIndicator data-testid="indicator" />
           </Listbox.Item>
           <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       expect(screen.getByTestId("indicator")).toBeInTheDocument();
@@ -615,14 +615,14 @@ describe("Listbox", () => {
 
     it("should display item indicator when 'forceMount'", async () => {
       render(() => (
-        <Listbox>
+        <Listbox.Root>
           <Listbox.Item value="1">One</Listbox.Item>
           <Listbox.Item value="2">
             <Listbox.ItemLabel>Two</Listbox.ItemLabel>
             <Listbox.ItemIndicator data-testid="indicator" forceMount />
           </Listbox.Item>
           <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox>
+        </Listbox.Root>
       ));
 
       expect(screen.getByTestId("indicator")).toBeInTheDocument();

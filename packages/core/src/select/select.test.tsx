@@ -10,7 +10,7 @@ import { createPointerEvent, installPointerEvent, triggerPress } from "@kobalte/
 import { For } from "solid-js";
 import { fireEvent, render, screen, within } from "solid-testing-library";
 
-import { Select } from "./select";
+import * as Select from ".";
 
 describe("Select", () => {
   installPointerEvent();
@@ -28,7 +28,7 @@ describe("Select", () => {
 
   it("renders correctly", () => {
     render(() => (
-      <Select>
+      <Select.Root>
         <Select.Label>Label</Select.Label>
         <Select.Trigger>
           <Select.Value placeholder="Placeholder" />
@@ -42,7 +42,7 @@ describe("Select", () => {
             </Select.Listbox>
           </Select.Content>
         </Select.Portal>
-      </Select>
+      </Select.Root>
     ));
 
     const select = screen.getByRole("textbox", { hidden: true });
@@ -65,7 +65,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select onOpenChange={onOpenChange}>
+        <Select.Root onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -79,7 +79,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -110,7 +110,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select onOpenChange={onOpenChange}>
+        <Select.Root onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -124,7 +124,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -169,7 +169,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select onOpenChange={onOpenChange}>
+        <Select.Root onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -183,7 +183,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -216,7 +216,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select onOpenChange={onOpenChange}>
+        <Select.Root onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -230,7 +230,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -263,7 +263,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select onOpenChange={onOpenChange}>
+        <Select.Root onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -277,7 +277,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -310,7 +310,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select onOpenChange={onOpenChange}>
+        <Select.Root onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -324,7 +324,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -357,7 +357,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select onOpenChange={onOpenChange}>
+        <Select.Root onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -371,7 +371,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -422,7 +422,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select isOpen onOpenChange={onOpenChange}>
+        <Select.Root isOpen onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -436,7 +436,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       jest.runAllTimers();
@@ -465,7 +465,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select defaultIsOpen onOpenChange={onOpenChange}>
+        <Select.Root defaultIsOpen onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -479,7 +479,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       jest.runAllTimers();
@@ -510,7 +510,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select onOpenChange={onOpenChange}>
+        <Select.Root onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -524,7 +524,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -560,7 +560,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select onOpenChange={onOpenChange}>
+        <Select.Root onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -574,7 +574,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -608,7 +608,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select onOpenChange={onOpenChange}>
+        <Select.Root onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -622,7 +622,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -655,7 +655,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select isOpen onOpenChange={onOpenChange}>
+        <Select.Root isOpen onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -669,7 +669,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -695,7 +695,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select defaultIsOpen onOpenChange={onOpenChange}>
+        <Select.Root defaultIsOpen onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -709,7 +709,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -737,7 +737,7 @@ describe("Select", () => {
   describe("labeling", () => {
     it("focuses on the trigger when you click the label", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -751,7 +751,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const label = screen.getAllByText("Label")[0];
@@ -766,7 +766,7 @@ describe("Select", () => {
 
     it("supports labeling with a visible label", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -780,7 +780,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -803,7 +803,7 @@ describe("Select", () => {
 
     it("supports labeling via aria-label", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Trigger aria-label="foo">
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
@@ -816,7 +816,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -837,7 +837,7 @@ describe("Select", () => {
 
     it("supports labeling via aria-labelledby", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Trigger aria-labelledby="foo">
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
@@ -850,7 +850,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -870,7 +870,7 @@ describe("Select", () => {
 
     it("supports labeling via aria-label and aria-labelledby", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Trigger aria-label="bar" aria-labelledby="foo">
             <Select.Value placeholder="Placeholder" />
           </Select.Trigger>
@@ -883,7 +883,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -905,7 +905,7 @@ describe("Select", () => {
   describe("help text", () => {
     it("supports description", () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -920,7 +920,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -932,7 +932,7 @@ describe("Select", () => {
 
     it("supports error message", () => {
       render(() => (
-        <Select validationState="invalid" onValueChange={onValueChange}>
+        <Select.Root validationState="invalid" onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -947,7 +947,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -961,7 +961,7 @@ describe("Select", () => {
   describe("selection", () => {
     it("can select items on press", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -975,7 +975,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1009,7 +1009,7 @@ describe("Select", () => {
 
     it("can select items with the Space key", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1023,7 +1023,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1071,7 +1071,7 @@ describe("Select", () => {
 
     it("can select items with the Enter key", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1085,7 +1085,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1133,7 +1133,7 @@ describe("Select", () => {
 
     it("focuses items on hover", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1147,7 +1147,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1198,7 +1198,7 @@ describe("Select", () => {
     it("does not clear selection on escape closing the listbox", async () => {
       const onOpenChangeSpy = jest.fn();
       render(() => (
-        <Select onValueChange={onValueChange} onOpenChange={onOpenChangeSpy}>
+        <Select.Root onValueChange={onValueChange} onOpenChange={onOpenChangeSpy}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1212,7 +1212,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1269,7 +1269,7 @@ describe("Select", () => {
 
     it("supports controlled selection", async () => {
       render(() => (
-        <Select value="2" onValueChange={onValueChange}>
+        <Select.Root value="2" onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1283,7 +1283,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1331,7 +1331,7 @@ describe("Select", () => {
 
     it("supports default selection", async () => {
       render(() => (
-        <Select defaultValue="2" onValueChange={onValueChange}>
+        <Select.Root defaultValue="2" onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1345,7 +1345,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1393,7 +1393,7 @@ describe("Select", () => {
 
     it("skips disabled items", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1409,7 +1409,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1464,7 +1464,7 @@ describe("Select", () => {
 
     it("supports type to select", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1479,7 +1479,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1561,7 +1561,7 @@ describe("Select", () => {
 
     it("does not deselect when pressing an already selected item", async () => {
       render(() => (
-        <Select defaultValue="2" onValueChange={onValueChange}>
+        <Select.Root defaultValue="2" onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1575,7 +1575,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1604,7 +1604,7 @@ describe("Select", () => {
 
     it("move selection on Arrow-Left/Right", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1618,7 +1618,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1663,189 +1663,10 @@ describe("Select", () => {
     });
   });
 
-  describe("multi selection", () => {
-    it("supports selecting multiple options", async () => {
-      render(() => (
-        <Select.Multi onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
-            </Select.Content>
-          </Select.Portal>
-        </Select.Multi>
-      ));
-
-      const trigger = screen.getByRole("button");
-      expect(trigger).toHaveTextContent("Placeholder");
-
-      await triggerPress(trigger);
-
-      const listbox = screen.getByRole("listbox");
-      const items = within(listbox).getAllByRole("option");
-
-      expect(listbox).toHaveAttribute("aria-multiselectable", "true");
-
-      expect(items.length).toBe(3);
-      expect(items[0]).toHaveTextContent("One");
-      expect(items[1]).toHaveTextContent("Two");
-      expect(items[2]).toHaveTextContent("Three");
-
-      expect(document.activeElement).toBe(items[0]);
-
-      await triggerPress(items[0]);
-      await triggerPress(items[2]);
-
-      expect(items[0]).toHaveAttribute("aria-selected", "true");
-      expect(items[2]).toHaveAttribute("aria-selected", "true");
-
-      expect(onValueChange).toBeCalledTimes(2);
-      expect(onValueChange.mock.calls[0][0].has("1")).toBeTruthy();
-      expect(onValueChange.mock.calls[1][0].has("3")).toBeTruthy();
-
-      // Does not close on multi-select
-      expect(listbox).toBeVisible();
-
-      expect(trigger).toHaveTextContent("One, Three");
-    });
-
-    it("supports multiple defaultValue (uncontrolled)", async () => {
-      const defaultValue = new Set(["1", "2"]);
-
-      render(() => (
-        <Select.Multi defaultValue={defaultValue} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
-            </Select.Content>
-          </Select.Portal>
-        </Select.Multi>
-      ));
-
-      const trigger = screen.getByRole("button");
-
-      await triggerPress(trigger);
-
-      const listbox = screen.getByRole("listbox");
-      const items = within(listbox).getAllByRole("option");
-
-      expect(items[0]).toHaveAttribute("aria-selected", "true");
-      expect(items[1]).toHaveAttribute("aria-selected", "true");
-
-      // SelectBase a different option
-      fireEvent.click(items[2]);
-      await Promise.resolve();
-
-      expect(items[2]).toHaveAttribute("aria-selected", "true");
-
-      expect(onValueChange).toBeCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0].has("1")).toBeTruthy();
-      expect(onValueChange.mock.calls[0][0].has("2")).toBeTruthy();
-      expect(onValueChange.mock.calls[0][0].has("3")).toBeTruthy();
-    });
-
-    it("supports multiple value (controlled)", async () => {
-      const value = new Set(["1", "2"]);
-
-      render(() => (
-        <Select.Multi value={value} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
-            </Select.Content>
-          </Select.Portal>
-        </Select.Multi>
-      ));
-
-      const trigger = screen.getByRole("button");
-
-      await triggerPress(trigger);
-
-      const listbox = screen.getByRole("listbox");
-      const items = within(listbox).getAllByRole("option");
-
-      expect(items[0]).toHaveAttribute("aria-selected", "true");
-      expect(items[1]).toHaveAttribute("aria-selected", "true");
-
-      // SelectBase a different option
-      fireEvent.click(items[2]);
-      await Promise.resolve();
-
-      expect(items[2]).toHaveAttribute("aria-selected", "false");
-
-      expect(onValueChange).toBeCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0].has("3")).toBeTruthy();
-    });
-
-    it("supports deselection", async () => {
-      const defaultValue = new Set(["1", "2"]);
-
-      render(() => (
-        <Select.Multi defaultValue={defaultValue} onValueChange={onValueChange}>
-          <Select.Label>Label</Select.Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
-            </Select.Content>
-          </Select.Portal>
-        </Select.Multi>
-      ));
-
-      const trigger = screen.getByRole("button");
-
-      await triggerPress(trigger);
-
-      const listbox = screen.getByRole("listbox");
-      const items = within(listbox).getAllByRole("option");
-
-      expect(items[0]).toHaveAttribute("aria-selected", "true");
-      expect(items[1]).toHaveAttribute("aria-selected", "true");
-
-      // Deselect first option
-      await triggerPress(items[0]);
-
-      expect(items[0]).toHaveAttribute("aria-selected", "false");
-
-      expect(onValueChange).toBeCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0].has("1")).toBeFalsy();
-      expect(onValueChange.mock.calls[0][0].has("2")).toBeTruthy();
-    });
-  });
-
   describe("type to select", () => {
     it("supports focusing items by typing letters in rapid succession without opening the menu", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1859,7 +1680,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1892,7 +1713,7 @@ describe("Select", () => {
 
     it("resets the search text after a timeout", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1906,7 +1727,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1942,7 +1763,7 @@ describe("Select", () => {
 
     it("wraps around when no items past the current one match", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -1956,7 +1777,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -1999,7 +1820,7 @@ describe("Select", () => {
       ];
 
       render(() => (
-        <Select autoComplete="address-level1" onValueChange={onValueChange}>
+        <Select.Root autoComplete="address-level1" onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -2013,7 +1834,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const trigger = screen.getByRole("button");
@@ -2045,7 +1866,7 @@ describe("Select", () => {
     // TODO: failing, don't know why.
     it.skip("should have a hidden input to marshall focus to the button", async () => {
       render(() => (
-        <Select onValueChange={onValueChange}>
+        <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -2059,7 +1880,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const hiddenInput = screen.getByRole("textbox", { hidden: true }); // get the hidden ones
@@ -2086,7 +1907,7 @@ describe("Select", () => {
   describe("disabled", () => {
     it("disables the hidden select when isDisabled is true", async () => {
       render(() => (
-        <Select isDisabled onValueChange={onValueChange}>
+        <Select.Root isDisabled onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -2100,7 +1921,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       const select = screen.getByRole("textbox", { hidden: true });
@@ -2112,7 +1933,7 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select isDisabled onValueChange={onValueChange}>
+        <Select.Root isDisabled onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -2126,7 +1947,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -2145,7 +1966,7 @@ describe("Select", () => {
     it("does not open on Space key press when isDisabled is true", async () => {
       const onOpenChange = jest.fn();
       render(() => (
-        <Select isDisabled onValueChange={onValueChange}>
+        <Select.Root isDisabled onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder" />
@@ -2159,7 +1980,7 @@ describe("Select", () => {
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       ));
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -2193,7 +2014,7 @@ describe("Select", () => {
 
       render(() => (
         <form data-testid="form" onSubmit={onSubmit}>
-          <Select name="test">
+          <Select.Root name="test">
             <Select.Label>Label</Select.Label>
             <Select.Trigger autofocus>
               <Select.Value placeholder="Placeholder" />
@@ -2207,7 +2028,7 @@ describe("Select", () => {
                 </Select.Listbox>
               </Select.Content>
             </Select.Portal>
-          </Select>
+          </Select.Root>
           <button type="submit" data-testid="submit">
             submit
           </button>
@@ -2232,7 +2053,7 @@ describe("Select", () => {
 
       render(() => (
         <form data-testid="form" onSubmit={onSubmit}>
-          <Select name="test" defaultValue="1">
+          <Select.Root name="test" defaultValue="1">
             <Select.Label>Label</Select.Label>
             <Select.Trigger autofocus>
               <Select.Value placeholder="Placeholder" />
@@ -2246,7 +2067,7 @@ describe("Select", () => {
                 </Select.Listbox>
               </Select.Content>
             </Select.Portal>
-          </Select>
+          </Select.Root>
         </form>
       ));
 

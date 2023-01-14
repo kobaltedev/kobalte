@@ -15,15 +15,15 @@
 import { createPolymorphicComponent, isFunction } from "@kobalte/utils";
 import { Accessor, children, JSX, splitProps } from "solid-js";
 
-import { Button, ButtonOptions } from "../button";
+import * as Button from "../button";
 import { createToggleState, PressEvents } from "../primitives";
 
-interface ToggleButtonState {
+export interface ToggleButtonRootState {
   /** Whether the toggle button is on (pressed) or off (not pressed). */
   isPressed: Accessor<boolean>;
 }
 
-export interface ToggleButtonOptions extends ButtonOptions {
+export interface ToggleButtonRootOptions extends Button.ButtonRootOptions {
   /** The controlled pressed state of the toggle button. */
   isPressed?: boolean;
 
@@ -43,51 +43,53 @@ export interface ToggleButtonOptions extends ButtonOptions {
    * The children of the toggle button.
    * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
    */
-  children?: JSX.Element | ((state: ToggleButtonState) => JSX.Element);
+  children?: JSX.Element | ((state: ToggleButtonRootState) => JSX.Element);
 }
 
 /**
  * A two-state button that allow users to toggle a selection on or off.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export const ToggleButton = createPolymorphicComponent<"button", ToggleButtonOptions>(props => {
-  const [local, others] = splitProps(props, [
-    "children",
-    "isPressed",
-    "defaultIsPressed",
-    "onPressedChange",
-    "onPress",
-  ]);
+export const ToggleButtonRoot = createPolymorphicComponent<"button", ToggleButtonRootOptions>(
+  props => {
+    const [local, others] = splitProps(props, [
+      "children",
+      "isPressed",
+      "defaultIsPressed",
+      "onPressedChange",
+      "onPress",
+    ]);
 
-  const state = createToggleState({
-    isSelected: () => local.isPressed,
-    defaultIsSelected: () => local.defaultIsPressed,
-    onSelectedChange: selected => local.onPressedChange?.(selected),
-    isDisabled: () => others.isDisabled,
-  });
+    const state = createToggleState({
+      isSelected: () => local.isPressed,
+      defaultIsSelected: () => local.defaultIsPressed,
+      onSelectedChange: selected => local.onPressedChange?.(selected),
+      isDisabled: () => others.isDisabled,
+    });
 
-  const onPress: PressEvents["onPress"] = e => {
-    local.onPress?.(e);
-    state.toggle();
-  };
+    const onPress: PressEvents["onPress"] = e => {
+      local.onPress?.(e);
+      state.toggle();
+    };
 
-  return (
-    <Button
-      aria-pressed={state.isSelected()}
-      data-pressed={state.isSelected() ? "" : undefined}
-      onPress={onPress}
-      {...others}
-    >
-      <ToggleButtonChild state={{ isPressed: state.isSelected }} children={local.children} />
-    </Button>
-  );
-});
+    return (
+      <Button.Root
+        aria-pressed={state.isSelected()}
+        data-pressed={state.isSelected() ? "" : undefined}
+        onPress={onPress}
+        {...others}
+      >
+        <ToggleButtonRootChild state={{ isPressed: state.isSelected }} children={local.children} />
+      </Button.Root>
+    );
+  }
+);
 
-interface ToggleButtonChildProps extends Pick<ToggleButtonOptions, "children"> {
-  state: ToggleButtonState;
+interface ToggleButtonRootChildProps extends Pick<ToggleButtonRootOptions, "children"> {
+  state: ToggleButtonRootState;
 }
 
-function ToggleButtonChild(props: ToggleButtonChildProps) {
+function ToggleButtonRootChild(props: ToggleButtonRootChildProps) {
   return children(() => {
     const body = props.children;
     return isFunction(body) ? body(props.state) : body;

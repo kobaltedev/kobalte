@@ -9,7 +9,7 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { Switch } from "./switch";
+import * as Switch from ".";
 
 describe("Switch", () => {
   installPointerEvent();
@@ -22,13 +22,13 @@ describe("Switch", () => {
 
   it("should generate default ids", () => {
     render(() => (
-      <Switch data-testid="switch">
+      <Switch.Root data-testid="switch">
         <Switch.Input data-testid="input" />
         <Switch.Control data-testid="control">
           <Switch.Thumb data-testid="thumb" />
         </Switch.Control>
         <Switch.Label data-testid="label">Label</Switch.Label>
-      </Switch>
+      </Switch.Root>
     ));
 
     const switchRoot = screen.getByTestId("switch");
@@ -46,13 +46,13 @@ describe("Switch", () => {
 
   it("should generate ids based on switch id", () => {
     render(() => (
-      <Switch data-testid="switch" id="foo">
+      <Switch.Root data-testid="switch" id="foo">
         <Switch.Input data-testid="input" />
         <Switch.Control data-testid="control">
           <Switch.Thumb data-testid="thumb" />
         </Switch.Control>
         <Switch.Label data-testid="label">Label</Switch.Label>
-      </Switch>
+      </Switch.Root>
     ));
 
     const switchRoot = screen.getByTestId("switch");
@@ -70,7 +70,7 @@ describe("Switch", () => {
 
   it("supports custom ids", () => {
     render(() => (
-      <Switch data-testid="switch" id="custom-switch-id">
+      <Switch.Root data-testid="switch" id="custom-switch-id">
         <Switch.Input data-testid="input" id="custom-input-id" />
         <Switch.Control data-testid="control" id="custom-control-id">
           <Switch.Thumb data-testid="thumb" id="custom-thumb-id" />
@@ -78,7 +78,7 @@ describe("Switch", () => {
         <Switch.Label data-testid="label" id="custom-label-id">
           Label
         </Switch.Label>
-      </Switch>
+      </Switch.Root>
     ));
 
     const switchRoot = screen.getByTestId("switch");
@@ -96,9 +96,9 @@ describe("Switch", () => {
 
   it("should set input type to checkbox", async () => {
     render(() => (
-      <Switch>
+      <Switch.Root>
         <Switch.Input />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch");
@@ -108,9 +108,9 @@ describe("Switch", () => {
 
   it("should set input role to switch", async () => {
     render(() => (
-      <Switch>
+      <Switch.Root>
         <Switch.Input />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch");
@@ -120,9 +120,9 @@ describe("Switch", () => {
 
   it("should have default value of 'on'", async () => {
     render(() => (
-      <Switch>
+      <Switch.Root>
         <Switch.Input />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -132,9 +132,9 @@ describe("Switch", () => {
 
   it("supports custom value", async () => {
     render(() => (
-      <Switch value="custom">
+      <Switch.Root value="custom">
         <Switch.Input />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -144,9 +144,9 @@ describe("Switch", () => {
 
   it("ensure default unchecked can be checked", async () => {
     render(() => (
-      <Switch onCheckedChange={onChangeSpy}>
+      <Switch.Root onCheckedChange={onChangeSpy}>
         <Switch.Input />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -169,9 +169,9 @@ describe("Switch", () => {
 
   it("can be default checked", async () => {
     render(() => (
-      <Switch defaultIsChecked onCheckedChange={onChangeSpy}>
+      <Switch.Root defaultIsChecked onCheckedChange={onChangeSpy}>
         <Switch.Input />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -188,9 +188,9 @@ describe("Switch", () => {
 
   it("can be controlled checked", async () => {
     render(() => (
-      <Switch isChecked onCheckedChange={onChangeSpy}>
+      <Switch.Root isChecked onCheckedChange={onChangeSpy}>
         <Switch.Input />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -207,9 +207,9 @@ describe("Switch", () => {
 
   it("can be controlled unchecked", async () => {
     render(() => (
-      <Switch isChecked={false} onCheckedChange={onChangeSpy}>
+      <Switch.Root isChecked={false} onCheckedChange={onChangeSpy}>
         <Switch.Input />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -226,10 +226,10 @@ describe("Switch", () => {
 
   it("can be disabled", async () => {
     render(() => (
-      <Switch isDisabled onCheckedChange={onChangeSpy}>
+      <Switch.Root isDisabled onCheckedChange={onChangeSpy}>
         <Switch.Input />
         <Switch.Label data-testid="label">Label</Switch.Label>
-      </Switch>
+      </Switch.Root>
     ));
 
     const label = screen.getByTestId("label");
@@ -250,9 +250,9 @@ describe("Switch", () => {
 
   it("can be invalid", async () => {
     render(() => (
-      <Switch validationState="invalid" onCheckedChange={onChangeSpy}>
+      <Switch.Root validationState="invalid" onCheckedChange={onChangeSpy}>
         <Switch.Input />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -263,9 +263,9 @@ describe("Switch", () => {
 
   it("passes through 'aria-errormessage'", async () => {
     render(() => (
-      <Switch validationState="invalid" onCheckedChange={onChangeSpy}>
+      <Switch.Root validationState="invalid" onCheckedChange={onChangeSpy}>
         <Switch.Input aria-errormessage="test" />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -277,10 +277,10 @@ describe("Switch", () => {
 
   it("supports 'aria-label'", () => {
     render(() => (
-      <Switch>
+      <Switch.Root>
         <Switch.Input aria-label="Label" />
         <Switch.Control />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -291,9 +291,9 @@ describe("Switch", () => {
 
   it("supports 'aria-labelledby'", () => {
     render(() => (
-      <Switch>
+      <Switch.Root>
         <Switch.Input aria-labelledby="foo" />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -304,9 +304,9 @@ describe("Switch", () => {
 
   it("should combine 'aria-label' and 'aria-labelledby'", () => {
     render(() => (
-      <Switch>
+      <Switch.Root>
         <Switch.Input aria-label="Label" aria-labelledby="foo" />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -317,9 +317,9 @@ describe("Switch", () => {
 
   it("supports 'aria-describedby'", () => {
     render(() => (
-      <Switch>
+      <Switch.Root>
         <Switch.Input aria-describedby="foo" />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -330,9 +330,9 @@ describe("Switch", () => {
 
   it("can be read only", async () => {
     render(() => (
-      <Switch isChecked isReadOnly onCheckedChange={onChangeSpy}>
+      <Switch.Root isChecked isReadOnly onCheckedChange={onChangeSpy}>
         <Switch.Input />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -350,9 +350,9 @@ describe("Switch", () => {
 
   it("supports uncontrolled read only", async () => {
     render(() => (
-      <Switch isReadOnly onCheckedChange={onChangeSpy}>
+      <Switch.Root isReadOnly onCheckedChange={onChangeSpy}>
         <Switch.Input />
-      </Switch>
+      </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
@@ -370,13 +370,13 @@ describe("Switch", () => {
   describe("data-attributes", () => {
     it("should have 'data-valid' attribute when switch is valid", async () => {
       render(() => (
-        <Switch data-testid="switch-root" validationState="valid">
+        <Switch.Root data-testid="switch-root" validationState="valid">
           <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
           </Switch.Control>
-        </Switch>
+        </Switch.Root>
       ));
 
       const elements = screen.getAllByTestId(/^switch/);
@@ -388,13 +388,13 @@ describe("Switch", () => {
 
     it("should have 'data-invalid' attribute when switch is invalid", async () => {
       render(() => (
-        <Switch data-testid="switch-root" validationState="invalid">
+        <Switch.Root data-testid="switch-root" validationState="invalid">
           <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
           </Switch.Control>
-        </Switch>
+        </Switch.Root>
       ));
 
       const elements = screen.getAllByTestId(/^switch/);
@@ -406,13 +406,13 @@ describe("Switch", () => {
 
     it("should have 'data-checked' attribute when switch is checked", async () => {
       render(() => (
-        <Switch data-testid="switch-root" isChecked>
+        <Switch.Root data-testid="switch-root" isChecked>
           <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
           </Switch.Control>
-        </Switch>
+        </Switch.Root>
       ));
 
       const elements = screen.getAllByTestId(/^switch/);
@@ -424,13 +424,13 @@ describe("Switch", () => {
 
     it("should have 'data-required' attribute when switch is required", async () => {
       render(() => (
-        <Switch data-testid="switch-root" isRequired>
+        <Switch.Root data-testid="switch-root" isRequired>
           <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
           </Switch.Control>
-        </Switch>
+        </Switch.Root>
       ));
 
       const elements = screen.getAllByTestId(/^switch/);
@@ -442,13 +442,13 @@ describe("Switch", () => {
 
     it("should have 'data-disabled' attribute when switch is disabled", async () => {
       render(() => (
-        <Switch data-testid="switch-root" isDisabled>
+        <Switch.Root data-testid="switch-root" isDisabled>
           <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
           </Switch.Control>
-        </Switch>
+        </Switch.Root>
       ));
 
       const elements = screen.getAllByTestId(/^switch/);
@@ -460,13 +460,13 @@ describe("Switch", () => {
 
     it("should have 'data-readonly' attribute when switch is read only", async () => {
       render(() => (
-        <Switch data-testid="switch-root" isReadOnly>
+        <Switch.Root data-testid="switch-root" isReadOnly>
           <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
           </Switch.Control>
-        </Switch>
+        </Switch.Root>
       ));
 
       const elements = screen.getAllByTestId(/^switch/);
@@ -478,13 +478,13 @@ describe("Switch", () => {
 
     it("should have 'data-hover' attribute when switch is hovered", async () => {
       render(() => (
-        <Switch data-testid="switch-root">
+        <Switch.Root data-testid="switch-root">
           <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
           </Switch.Control>
-        </Switch>
+        </Switch.Root>
       ));
 
       const switchRoot = screen.getByTestId("switch-root");
@@ -507,13 +507,13 @@ describe("Switch", () => {
 
     it("should have 'data-focus' attribute on focused switch", async () => {
       render(() => (
-        <Switch data-testid="switch-root">
+        <Switch.Root data-testid="switch-root">
           <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
             <Switch.Thumb data-testid="switch-thumb" />
           </Switch.Control>
-        </Switch>
+        </Switch.Root>
       ));
 
       const switchInput = screen.getByRole("switch");

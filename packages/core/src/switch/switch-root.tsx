@@ -35,14 +35,7 @@ import { SwitchInput } from "./switch-input";
 import { SwitchLabel } from "./switch-label";
 import { SwitchThumb } from "./switch-thumb";
 
-type SwitchComposite = {
-  Label: typeof SwitchLabel;
-  Input: typeof SwitchInput;
-  Control: typeof SwitchControl;
-  Thumb: typeof SwitchThumb;
-};
-
-export interface SwitchOptions {
+export interface SwitchRootOptions {
   /** The controlled checked state of the switch. */
   isChecked?: boolean;
 
@@ -83,8 +76,9 @@ export interface SwitchOptions {
 /**
  * A control that allows users to choose one of two values: on or off.
  */
-export const Switch: Component<OverrideProps<ComponentProps<"label">, SwitchOptions>> &
-  SwitchComposite = props => {
+export const SwitchRoot: Component<
+  OverrideProps<ComponentProps<"label">, SwitchRootOptions>
+> = props => {
   let ref: HTMLLabelElement | undefined;
 
   const defaultId = `switch-${createUniqueId()}`;
@@ -171,8 +165,3 @@ export const Switch: Component<OverrideProps<ComponentProps<"label">, SwitchOpti
     </SwitchContext.Provider>
   );
 };
-
-Switch.Label = SwitchLabel;
-Switch.Input = SwitchInput;
-Switch.Control = SwitchControl;
-Switch.Thumb = SwitchThumb;

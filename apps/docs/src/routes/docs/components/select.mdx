@@ -16,7 +16,7 @@ Displays a list of options for the user to pick from — triggered by a button.
 ## Import
 
 ```ts
-import { Select } from "@kobalte/core";
+import { Select, MultiSelect } from "@kobalte/core";
 ```
 
 ## Features
@@ -39,8 +39,7 @@ import { Select } from "@kobalte/core";
 
 The select consists of:
 
-- **Select:** The root container for a single-select component.
-- **Select.Multi:** The root container for a muli-select component.
+- **Select.Root:** The root container for a single-select component.
 - **Select.Label:** The label that gives the user information on the select.
 - **Select.Description:** The description that gives the user more information on the select.
 - **Select.ErrorMessage:** The error message that gives the user information about how to fix a validation error on the select.
@@ -62,8 +61,13 @@ The select item consists of:
 - **Select.ItemDescription:** An optional accessible description to be announced for the item.
 - **Select.ItemIndicator:** The visual indicator rendered when the item is selected.
 
+The multi-select consists of:
+
+- **MultiSelect.Root:** The root container for a multi-select component.
+- All the parts above in form of `MultiSelect.*`.
+
 ```tsx
-<Select> {/* <Select.Multi> */}
+<Select.Root> {/* <MultiSelect.Root> */}
   <Select.Label />
   <Select.Trigger>
     <Select.Value />
@@ -95,7 +99,7 @@ The select item consists of:
       </Select.Listbox>
     </Select.Content>
   </Select.Portal>
-</Select> {/* </Select.Multi> */}
+</Select.Root> {/* </MultiSelect.Root> */}
 ```
 
 ## Example
@@ -132,7 +136,7 @@ The select item consists of:
 
     function App() {
       return (
-        <Select>
+        <Select.Root>
           <Select.Trigger class="select__trigger" aria-label="Food">
             <Select.Value class="select__value" placeholder="Select a food…" />
             <Select.Icon class="select__icon">
@@ -174,7 +178,7 @@ The select item consists of:
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
-        </Select>
+        </Select.Root>
       );
     }
     ```
@@ -321,7 +325,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 </Preview>
 
 ```tsx {0}
-<Select defaultValue="Blueberry">
+<Select.Root defaultValue="Blueberry">
   <Select.Trigger aria-label="Fruit">
     <Select.Value placeholder="Select a fruit…" />
     <Select.Icon>
@@ -344,7 +348,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
       </Select.Listbox>
     </Select.Content>
   </Select.Portal>
-</Select>
+</Select.Root>
 ```
 
 ### Controlled value
@@ -363,7 +367,7 @@ function ControlledExample() {
 
   return (
     <>
-      <Select value={value()} onValueChange={setValue}>
+      <Select.Root value={value()} onValueChange={setValue}>
         <Select.Trigger aria-label="Fruit">
           <Select.Value placeholder="Select a fruit…" />
           <Select.Icon>
@@ -386,16 +390,16 @@ function ControlledExample() {
             </Select.Listbox>
           </Select.Content>
         </Select.Portal>
-      </Select>
+      </Select.Root>
       <p>Your favorite fruit is: {value()}.</p>
     </>
   );
 }
 ```
 
-### Multi-select
+### MultiSelect
 
-The `Select.Multi` component can be used to create a select that allow multi-selection. In this case the value provided to `value`, `defaultValue` and `onValueChange` props are of type `Set<string>` instead of `string`.
+The `MultiSelect.*` components can be used to create a select that allow multi-selection. In this case the value provided to `value`, `defaultValue` and `onValueChange` props are of type `Set<string>` instead of `string`.
 
 <Preview>
   <MultiSelectExample />
@@ -409,30 +413,30 @@ function MultiSelectExample() {
 
   return (
     <>
-      <Select.Multi value={values()} onValueChange={setValues}>
-        <Select.Trigger aria-label="Fruits">
-          <Select.Value placeholder="Select some fruits…" />
-          <Select.Icon>
+      <MultiSelect.Root value={values()} onValueChange={setValues}>
+        <MultiSelect.Trigger aria-label="Fruits">
+          <MultiSelect.Value placeholder="Select some fruits…" />
+          <MultiSelect.Icon>
             <CaretSortIcon />
-          </Select.Icon>
-        </Select.Trigger>
-        <Select.Portal>
-          <Select.Content>
-            <Select.Listbox>
+          </MultiSelect.Icon>
+        </MultiSelect.Trigger>
+        <MultiSelect.Portal>
+          <MultiSelect.Content>
+            <MultiSelect.Listbox>
               <For each={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}>
                 {fruit => (
-                  <Select.Item value={fruit}>
-                    <Select.ItemLabel>{fruit}</Select.ItemLabel>
-                    <Select.ItemIndicator>
+                  <MultiSelect.Item value={fruit}>
+                    <MultiSelect.ItemLabel>{fruit}</Select.ItemLabel>
+                    <MultiSelect.ItemIndicator>
                       <CheckIcon />
-                    </Select.ItemIndicator>
-                  </Select.Item>
+                    </MultiSelect.ItemIndicator>
+                  </MultiSelect.Item>
                 )}
               </For>
-            </Select.Listbox>
-          </Select.Content>
-        </Select.Portal>
-      </Select.Multi>
+            </MultiSelect.Listbox>
+          </MultiSelect.Content>
+        </MultiSelect.Portal>
+      </MultiSelect.Root>
       <p>Your favorite fruits are: {[...values()].join(", ")}.</p>
     </>
   );
@@ -448,7 +452,7 @@ The `Select.Description` component can be used to associate additional help text
 </Preview>
 
 ```tsx {7}
-<Select>
+<Select.Root>
   <Select.Trigger aria-label="Fruit">
     <Select.Value placeholder="Select a fruit…" />
     <Select.Icon>
@@ -472,7 +476,7 @@ The `Select.Description` component can be used to associate additional help text
       </Select.Listbox>
     </Select.Content>
   </Select.Portal>
-</Select>
+</Select.Root>
 ```
 
 ### Error message
@@ -492,7 +496,7 @@ function ErrorMessageExample() {
   const [value, setValue] = createSignal("Grapes");
 
   return (
-    <Select
+    <Select.Root
       value={value()}
       onValueChange={setValue}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
@@ -541,7 +545,7 @@ function HTMLFormExample() {
 
   return (
     <form onSubmit={onSubmit}>
-      <Select name="fruit">
+      <Select.Root name="fruit">
         <Select.Trigger aria-label="Fruit">
           <Select.Value placeholder="Select a fruit…" />
           <Select.Icon>
@@ -580,7 +584,7 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 
 ## API Reference
 
-### Select
+### Select.Root
 
 | Prop                          | Description                                                                                                                                                                                         |
 | :---------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -600,7 +604,7 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | isReadOnly                    | `boolean` <br/> Whether the select items can be selected but not changed by the user.                                                                                                               |
 | autoComplete                  | `string` <br/> Describes the type of autocomplete functionality the input should provide if any. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete) |
 
-`Select` also accepts the following props to customize the placement of the `Select.Content`.
+`Select.Root` also accepts the following props to customize the placement of the `Select.Content`.
 
 | Prop             | Description                                                                                                                                                                                                                                                                                                                                                               |
 | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -616,16 +620,6 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                                                                                                     |
 | arrowPadding     | `number` <br/> The minimum padding between the arrow and the select content corner.                                                                                                                                                                                                                                                                                       |
 | overflowPadding  | `number` <br/> The minimum padding between the select content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                                       |
-
-### Select.Multi
-
-`Select.Multi` consists of [Select](/docs/components/select#select-1) and additional props.
-
-| Prop          | Description                                                                                                            |
-| :------------ | :--------------------------------------------------------------------------------------------------------------------- |
-| value         | `Set<string>` <br/> The controlled value of the select.                                                                |
-| defaultValue  | `Set<string>` <br/> The value of the select when initially rendered. Useful when you do not need to control the state. |
-| onValueChange | `(value: Set<string>) => void` <br/> Event handler called when the value changes.                                      |
 
 ### Select.Label
 
@@ -654,9 +648,9 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | placeholder | `JSX.Element` <br/> The content that will be rendered when no value or defaultValue is set.                            |
 | children    | `JSX.Element \| (state: SelectValueState) => JSX.Element` <br/> The content that will be rendered when a value is set. |
 
-| Render Prop    | Description                                                                                                           |
-| :------------- | :-------------------------------------------------------------------------------------------------------------------- |
-| selectedValues | `Accessor<Set<string>>` <br/> The selected values. It will always be of type `Set<string>` even for single selection. |
+| Render Prop   | Description                                  |
+| :------------ | :------------------------------------------- |
+| selectedValue | `Accessor<string>` <br/> The selected value. |
 
 | Data attribute         | Description                                                         |
 | :--------------------- | :------------------------------------------------------------------ |
@@ -717,6 +711,31 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
 | forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
+### MultiSelect.Root
+
+`MultiSelect.Root` consists of [Select.Root](/docs/components/select#selectroot) and additional props.
+
+| Prop          | Description                                                                                                            |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------- |
+| value         | `Set<string>` <br/> The controlled value of the select.                                                                |
+| defaultValue  | `Set<string>` <br/> The value of the select when initially rendered. Useful when you do not need to control the state. |
+| onValueChange | `(value: Set<string>) => void` <br/> Event handler called when the value changes.                                      |
+
+### MultiSelect.Value
+
+| Prop        | Description                                                                                                                 |
+| :---------- | :-------------------------------------------------------------------------------------------------------------------------- |
+| placeholder | `JSX.Element` <br/> The content that will be rendered when no value or defaultValue is set.                                 |
+| children    | `JSX.Element \| (state: MultiSelectValueState) => JSX.Element` <br/> The content that will be rendered when a value is set. |
+
+| Render Prop    | Description                                        |
+| :------------- | :------------------------------------------------- |
+| selectedValues | `Accessor<Set<string>>` <br/> The selected values. |
+
+| Data attribute         | Description                                                         |
+| :--------------------- | :------------------------------------------------------------------ |
+| data-placeholder-shown | Present when the select placeholder is visible (no value selected). |
+
 ## Accessibility
 
 ### Keyboard Interactions
@@ -731,10 +750,10 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | <Kbd>End</Kbd>                                       | When focus is on an item, moves focus to last item.                                                                                                     |
 | <Kbd>ArrowRight</Kbd>                                | In `Select`, when focus is on the trigger, change the selection to the next item.                                                                       |
 | <Kbd>ArrowLeft</Kbd>                                 | In `Select`, when focus is on the trigger, change the selection to the previous item.                                                                   |
-| <Kbd>Shift</Kbd> + <Kbd>ArrowDown</Kbd>              | In `Select.Multi`, moves focus to and toggles the selected state of the next item.                                                                      |
-| <Kbd>Shift</Kbd> + <Kbd>ArrowUp</Kbd>                | In `Select.Multi`, moves focus to and toggles the selected state of the previous item.                                                                  |
-| <Kbd>Shift</Kbd> + <Kbd>Space</Kbd>                  | In `Select.Multi`, selects contiguous items from the most recently selected item to the focused item.                                                   |
-| <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Home</Kbd> | In `Select.Multi`, selects the focused item and all options up to the first item.                                                                       |
-| <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>End</Kbd>  | In `Select.Multi`, selects the focused item and all options down to the last item.                                                                      |
-| <Kbd>Ctrl</Kbd> + <Kbd>A</Kbd>                       | In `Select.Multi`, selects all item in the list.                                                                                                        |
+| <Kbd>Shift</Kbd> + <Kbd>ArrowDown</Kbd>              | In `MultiSelect`, moves focus to and toggles the selected state of the next item.                                                                       |
+| <Kbd>Shift</Kbd> + <Kbd>ArrowUp</Kbd>                | In `MultiSelect`, moves focus to and toggles the selected state of the previous item.                                                                   |
+| <Kbd>Shift</Kbd> + <Kbd>Space</Kbd>                  | In `MultiSelect`, selects contiguous items from the most recently selected item to the focused item.                                                    |
+| <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Home</Kbd> | In `MultiSelect`, selects the focused item and all options up to the first item.                                                                        |
+| <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>End</Kbd>  | In `MultiSelect`, selects the focused item and all options down to the last item.                                                                       |
+| <Kbd>Ctrl</Kbd> + <Kbd>A</Kbd>                       | In `MultiSelect`, selects all item in the list.                                                                                                         |
 | <Kbd>Esc</Kbd>                                       | Closes the select and moves focus to the trigger.                                                                                                       |

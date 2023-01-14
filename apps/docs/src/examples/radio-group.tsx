@@ -5,7 +5,7 @@ import style from "./radio-group.module.css";
 
 export function BasicExample() {
   return (
-    <RadioGroup class={style["radio-group"]}>
+    <RadioGroup.Root class={style["radio-group"]}>
       <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>
       <div class={style["radio-group__items"]}>
         <For each={["Apple", "Orange", "Watermelon"]}>
@@ -20,13 +20,13 @@ export function BasicExample() {
           )}
         </For>
       </div>
-    </RadioGroup>
+    </RadioGroup.Root>
   );
 }
 
 export function DefaultValueExample() {
   return (
-    <RadioGroup class={style["radio-group"]} defaultValue="Orange">
+    <RadioGroup.Root class={style["radio-group"]} defaultValue="Orange">
       <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>
       <div class={style["radio-group__items"]}>
         <For each={["Apple", "Orange", "Watermelon"]}>
@@ -41,7 +41,7 @@ export function DefaultValueExample() {
           )}
         </For>
       </div>
-    </RadioGroup>
+    </RadioGroup.Root>
   );
 }
 
@@ -50,7 +50,7 @@ export function ControlledExample() {
 
   return (
     <>
-      <RadioGroup class={style["radio-group"]} value={value()} onValueChange={setValue}>
+      <RadioGroup.Root class={style["radio-group"]} value={value()} onValueChange={setValue}>
         <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>
         <div class={style["radio-group__items"]}>
           <For each={["Apple", "Orange", "Watermelon"]}>
@@ -65,7 +65,7 @@ export function ControlledExample() {
             )}
           </For>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
       <p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
     </>
   );
@@ -73,7 +73,7 @@ export function ControlledExample() {
 
 export function DescriptionExample() {
   return (
-    <RadioGroup class={style["radio-group"]}>
+    <RadioGroup.Root class={style["radio-group"]}>
       <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>
       <div class={style["radio-group__items"]}>
         <For each={["Apple", "Orange", "Watermelon"]}>
@@ -91,7 +91,7 @@ export function DescriptionExample() {
       <RadioGroup.Description class={style["radio-group__description"]}>
         Choose the fruit you like the most.
       </RadioGroup.Description>
-    </RadioGroup>
+    </RadioGroup.Root>
   );
 }
 
@@ -99,7 +99,7 @@ export function ErrorMessageExample() {
   const [value, setValue] = createSignal("Orange");
 
   return (
-    <RadioGroup
+    <RadioGroup.Root
       class={style["radio-group"]}
       value={value()}
       onValueChange={setValue}
@@ -122,7 +122,7 @@ export function ErrorMessageExample() {
       <RadioGroup.ErrorMessage class={style["radio-group__error-message"]}>
         Hmm, I prefer apples.
       </RadioGroup.ErrorMessage>
-    </RadioGroup>
+    </RadioGroup.Root>
   );
 }
 
@@ -140,7 +140,7 @@ export function HTMLFormExample() {
 
   return (
     <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
-      <RadioGroup class={style["radio-group"]} name="favorite-fruit">
+      <RadioGroup.Root class={style["radio-group"]} name="favorite-fruit">
         <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>
         <div class={style["radio-group__items"]}>
           <For each={["Apple", "Orange", "Watermelon"]}>
@@ -155,7 +155,7 @@ export function HTMLFormExample() {
             )}
           </For>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
       <div class="flex space-x-2">
         <button type="reset" class="kb-button">
           Reset
