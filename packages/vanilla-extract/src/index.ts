@@ -51,7 +51,7 @@ function makeSelectorByOptions(selector: string, options: SelectorOptions): stri
 
 type CompoonentStateStyleOptions = {
   /**
-   * Apply a parent selector to the given selector
+   * Apply the given parent selector to the `StyleRule` data-* attribute selector
    */
   parentSelector?: string;
 };
