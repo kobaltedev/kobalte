@@ -1,5 +1,16 @@
 # @kobalte/core
 
+## 0.3.0
+
+### Minor Changes
+
+- 828eba6: Improve tree shaking
+
+### Patch Changes
+
+- Updated dependencies [828eba6]
+  - @kobalte/utils@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes
