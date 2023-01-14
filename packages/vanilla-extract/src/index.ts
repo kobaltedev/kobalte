@@ -1,33 +1,10 @@
 import type { StyleRule } from "@vanilla-extract/css";
 
-type DataAttribute<TState extends string> = `[data-${TState}]`;
+type DataAttribute<KobalteState extends string> = `[data-${KobalteState}]`;
 
 type CSSProps = Omit<StyleRule, "selectors" | "@media" | "@supports">;
 
-type SelectorOptions = {
-  parentSelector?: string;
-  not?: boolean;
-};
-
-function makeDataAttribute<TState extends string>(state: TState): DataAttribute<TState> {
-  return `[data-${state}]` as const;
-}
-
-function makeSelectorByOptions(selector: string, options: SelectorOptions): string {
-  if (options.not) {
-    selector = `:not(${selector})`;
-  }
-
-  selector = `&${selector}`;
-
-  if (options.parentSelector) {
-    selector = `${options.parentSelector} ${selector}`;
-  }
-
-  return selector;
-}
-
-type DataAttributeStates =
+export type DataAttributeState =
   | "valid"
   | "invalid"
   | "required"
@@ -43,9 +20,34 @@ type DataAttributeStates =
   | "focus-visible"
   | "active";
 
-type DataAttributeStyles = {
-  [key in DataAttributeStates]?: CSSProps & { not?: CSSProps };
+export type DataAttributeStyles = {
+  [key in DataAttributeState]?: CSSProps & { not?: CSSProps };
 };
+
+function makeDataAttribute<KobalteState extends string>(
+  state: KobalteState
+): DataAttribute<KobalteState> {
+  return `[data-${state}]` as const;
+}
+
+type SelectorOptions = {
+  parentSelector?: string;
+  not?: boolean;
+};
+
+function makeSelectorByOptions(selector: string, options: SelectorOptions): string {
+  if (options.not) {
+    selector = `:not(${selector})`;
+  }
+
+  selector = `&${selector}`;
+
+  if (options.parentSelector) {
+    selector = `${options.parentSelector} ${selector}`;
+  }
+
+  return selector;
+}
 
 type CompoonentStateStyleOptions = {
   /**
@@ -66,7 +68,7 @@ export function componentStateStyles(
 
   if (styleRule.selectors) {
     for (const property in styles) {
-      const { not, ...styleValues } = styles[property as DataAttributeStates] ?? {};
+      const { not, ...styleValues } = styles[property as DataAttributeState] ?? {};
       const dataAttrSelector = makeDataAttribute(property);
 
       if (not) {
@@ -85,5 +87,6 @@ export function componentStateStyles(
       styleRule.selectors[selector] = styleValues;
     }
   }
+
   return styleRule;
 }
