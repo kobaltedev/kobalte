@@ -21,14 +21,14 @@ All components and their parts accept a `class` prop. This class will be passed 
 
     export const Popover = () => {
       return (
-        <PopoverBase>
+        <PopoverBase.Root>
           <PopoverBase.Trigger class="popover__trigger">
             Open
           </PopoverBase.Trigger>
           <PopoverBase.Content class="popover__content">
             ...
           </PopoverBase.Content>
-        </PopoverBase>
+        </PopoverBase.Root>
       );
     };
     ```
@@ -137,14 +137,14 @@ Style your component:
 import { Popover as PopoverBase } from "@kobalte/core";
 
 export const Popover = () => (
-  <PopoverBase>
+  <PopoverBase.Root>
     <PopoverBase.Trigger class="inline-flex px-4 py-2 rounded ui-disabled:bg-slate-100">
       Open
     </PopoverBase.Trigger>
     <PopoverBase.Content class="flex p-4 rounded bg-white ui-expanded:shadow-md">
       ...
     </PopoverBase.Content>
-  </PopoverBase>
+  </PopoverBase.Root>
 );
 ```
 
@@ -194,10 +194,10 @@ import { MyButton } from "./my-button";
 
 export const Popover = () => {
   return (
-    <PopoverBase>
+    <PopoverBase.Root>
       <PopoverBase.Trigger as={MyButton}>Open</PopoverBase.Trigger>
       <PopoverBase.Content>...</PopoverBase.Content>
-    </PopoverBase>
+    </PopoverBase.Root>
   );
 };
 ```

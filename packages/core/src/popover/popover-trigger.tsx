@@ -9,32 +9,34 @@
 import { createPolymorphicComponent, mergeRefs } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
-import { Button, ButtonOptions } from "../button";
+import * as Button from "../button";
 import { PressEvents } from "../primitives";
 import { usePopoverContext } from "./popover-context";
 
 /**
  * The button that opens the popover.
  */
-export const PopoverTrigger = createPolymorphicComponent<"button", ButtonOptions>(props => {
-  const context = usePopoverContext();
+export const PopoverTrigger = createPolymorphicComponent<"button", Button.ButtonRootOptions>(
+  props => {
+    const context = usePopoverContext();
 
-  const [local, others] = splitProps(props, ["ref", "onPress"]);
+    const [local, others] = splitProps(props, ["ref", "onPress"]);
 
-  const onPress: PressEvents["onPress"] = e => {
-    local.onPress?.(e);
-    context.toggle();
-  };
+    const onPress: PressEvents["onPress"] = e => {
+      local.onPress?.(e);
+      context.toggle();
+    };
 
-  return (
-    <Button
-      ref={mergeRefs(context.setTriggerRef, local.ref)}
-      aria-haspopup="dialog"
-      aria-expanded={context.isOpen()}
-      aria-controls={context.isOpen() ? context.contentId() : undefined}
-      data-expanded={context.isOpen() ? "" : undefined}
-      onPress={onPress}
-      {...others}
-    />
-  );
-});
+    return (
+      <Button.Root
+        ref={mergeRefs(context.setTriggerRef, local.ref)}
+        aria-haspopup="dialog"
+        aria-expanded={context.isOpen()}
+        aria-controls={context.isOpen() ? context.contentId() : undefined}
+        data-expanded={context.isOpen() ? "" : undefined}
+        onPress={onPress}
+        {...others}
+      />
+    );
+  }
+);

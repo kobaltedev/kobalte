@@ -1,1 +1,3 @@
-export * from "./alert";
+import { AlertRoot as Root } from "./alert-root";
+
+export { Root };

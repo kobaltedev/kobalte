@@ -50,7 +50,7 @@ export const mdxComponents = {
 
     return (
       <pre ref={domRef} onMouseLeave={reset} {...others}>
-        <Button
+        <Button.Root
           aria-label="copy to clipboard"
           onPress={copyToClipboard}
           class={clsx(
@@ -63,7 +63,7 @@ export const mdxComponents = {
           <Show when={isCopied()} fallback={<CopyIcon class="h-4 w-4" />}>
             <CheckIcon class="h-4 w-4" />
           </Show>
-        </Button>
+        </Button.Root>
         {local.children}
       </pre>
     );

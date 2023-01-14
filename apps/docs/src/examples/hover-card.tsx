@@ -4,7 +4,7 @@ import style from "./hover-card.module.css";
 
 export function BasicExample() {
   return (
-    <HoverCard>
+    <HoverCard.Root>
       <HoverCard.Trigger
         class={style["hovercard__trigger"]}
         href="https://twitter.com/mlfabien"
@@ -26,6 +26,6 @@ export function BasicExample() {
           </p>
         </HoverCard.Content>
       </HoverCard.Portal>
-    </HoverCard>
+    </HoverCard.Root>
   );
 }

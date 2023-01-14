@@ -22,9 +22,7 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import { Accessor, createEffect, createSignal, onCleanup, ParentComponent } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { PopperArrow } from "./popper-arrow";
 import { PopperContext, PopperContextValue } from "./popper-context";
-import { PopperPositioner } from "./popper-positioner";
 import {
   AnchorRect,
   BasePlacement,
@@ -34,12 +32,7 @@ import {
   Placement,
 } from "./utils";
 
-type PopperComposite = {
-  Positioner: typeof PopperPositioner;
-  Arrow: typeof PopperArrow;
-};
-
-export interface PopperOptions {
+export interface PopperRootOptions {
   /** A ref for the anchor element. */
   anchorRef: Accessor<HTMLElement | undefined>;
 
@@ -118,7 +111,7 @@ export interface PopperOptions {
 /**
  * Display a floating content relative to an anchor element with an optional arrow.
  */
-export const Popper: ParentComponent<PopperOptions> & PopperComposite = props => {
+export const PopperRoot: ParentComponent<PopperRootOptions> = props => {
   props = mergeDefaultProps(
     {
       getAnchorRect: anchor => anchor?.getBoundingClientRect(),
@@ -348,6 +341,3 @@ export const Popper: ParentComponent<PopperOptions> & PopperComposite = props =>
 
   return <PopperContext.Provider value={context}>{props.children}</PopperContext.Provider>;
 };
-
-Popper.Positioner = PopperPositioner;
-Popper.Arrow = PopperArrow;

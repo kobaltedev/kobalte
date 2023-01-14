@@ -21,10 +21,10 @@ import { Separator } from "@kobalte/core";
 
 The separator consists of:
 
-- **Separator:** The root container for a separator.
+- **Separator.Root:** The root container for a separator.
 
 ```tsx
-<Separator />
+<Separator.Root />
 ```
 
 ## Example
@@ -48,7 +48,7 @@ The separator consists of:
       return (
         <div>
           <span>Content above</span>
-          <Separator class="separator" />
+          <Separator.Root class="separator" />
           <span>Content below</span>
         </div>
       );
@@ -74,6 +74,8 @@ The separator consists of:
 </TabsSnippets>
 
 ## API Reference
+
+### Separator.Root
 
 | Prop        | Description                                                          |
 | :---------- | :------------------------------------------------------------------- |

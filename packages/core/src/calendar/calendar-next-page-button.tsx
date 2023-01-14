@@ -9,7 +9,7 @@
 import { callHandler, createPolymorphicComponent } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { Button, ButtonOptions } from "../button";
+import * as Button from "../button";
 import { createLocalizedStringFormatter } from "../i18n";
 import { PressEvents } from "../primitives";
 import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
@@ -18,7 +18,10 @@ import { useCalendarContext } from "./calendar-context";
 /**
  * A navigation button to go to the next page within a calendar or range calendar.
  */
-export const CalendarNextPageButton = createPolymorphicComponent<"button", ButtonOptions>(props => {
+export const CalendarNextPageButton = createPolymorphicComponent<
+  "button",
+  Button.ButtonRootOptions
+>(props => {
   const context = useCalendarContext();
 
   const [local, others] = splitProps(props, ["onPress", "onFocus", "onBlur"]);
@@ -41,7 +44,7 @@ export const CalendarNextPageButton = createPolymorphicComponent<"button", Butto
   };
 
   return (
-    <Button
+    <Button.Root
       isDisabled={context.isNextDisabled()}
       aria-label={stringFormatter().format("next")}
       onPress={onPress}

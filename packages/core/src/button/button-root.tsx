@@ -3,7 +3,13 @@
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *
  * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/link/src/useLink.ts
+ * https://github.com/adobe/react-spectrum/blob/a13802d8be6f83af1450e56f7a88527b10d9cadf/packages/@react-aria/button/src/useButton.ts
+ *
+ * Portions of this file are based on code from ariakit.
+ * MIT Licensed, Copyright (c) Diego Haz.
+ *
+ * Credits to the Ariakit team:
+ * https://github.com/ariakit/ariakit/blob/8a13899ff807bbf39f3d89d2d5964042ba4d5287/packages/ariakit/src/button/button.ts
  */
 
 import {
@@ -13,7 +19,7 @@ import {
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { createMemo, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import {
@@ -27,28 +33,35 @@ import {
   HOVER_HANDLERS_PROP_NAMES,
   PRESS_HANDLERS_PROP_NAMES,
 } from "../primitives";
+import { isButton } from "./is-button";
 
-export interface LinkOptions extends CreatePressProps {
-  /**
-   * Whether the link is disabled.
-   * Native navigation will be disabled, and the link will be exposed as disabled to assistive technology.
-   */
+export interface ButtonRootOptions extends CreatePressProps {
+  /** Whether the button is disabled. */
   isDisabled?: boolean;
 }
 
 /**
- * Link allows a user to navigate to another page or resource within a web page or application.
+ * Button enables users to trigger an action or event, such as submitting a form,
+ * opening a dialog, canceling an action, or performing a delete operation.
+ * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export const Link = createPolymorphicComponent<"a", LinkOptions>(props => {
-  let ref: HTMLAnchorElement | undefined;
+export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions>(props => {
+  let ref: HTMLButtonElement | undefined;
 
-  props = mergeDefaultProps({ as: "a" }, props);
+  props = mergeDefaultProps(
+    {
+      as: "button",
+      type: "button",
+    },
+    props
+  );
 
   const [local, createPressProps, others] = splitProps(
     props,
     [
       "as",
       "ref",
+      "type",
       "isDisabled",
       ...PRESS_HANDLERS_PROP_NAMES,
       ...HOVER_HANDLERS_PROP_NAMES,
@@ -57,7 +70,7 @@ export const Link = createPolymorphicComponent<"a", LinkOptions>(props => {
     CREATE_PRESS_PROP_NAMES
   );
 
-  const { isPressed, pressHandlers } = createPress<HTMLAnchorElement>(createPressProps);
+  const { isPressed, pressHandlers } = createPress<HTMLButtonElement>(createPressProps);
 
   const { isHovered, hoverHandlers } = createHover({
     isDisabled: () => local.isDisabled,
@@ -67,10 +80,28 @@ export const Link = createPolymorphicComponent<"a", LinkOptions>(props => {
 
   const tagName = createTagName(
     () => ref,
-    () => local.as || "a"
+    () => local.as || "button"
   );
 
-  const onClick: JSX.EventHandlerUnion<HTMLAnchorElement, MouseEvent> = e => {
+  const isNativeButton = createMemo(() => {
+    const elementTagName = tagName();
+
+    if (elementTagName == null) {
+      return false;
+    }
+
+    return isButton({ tagName: elementTagName, type: local.type });
+  });
+
+  const isLink = createMemo(() => {
+    return tagName() === "a" && (others as any).href != null;
+  });
+
+  const isInput = createMemo(() => {
+    return tagName() === "input";
+  });
+
+  const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
     if (local.onClick) {
       callHandler(e, local.onClick);
       console.warn("[kobalte]: use `onPress` instead of `onClick` for handling click interactions");
@@ -81,9 +112,11 @@ export const Link = createPolymorphicComponent<"a", LinkOptions>(props => {
     <Dynamic
       component={local.as}
       ref={mergeRefs(el => (ref = el), local.ref)}
-      role={tagName() !== "a" ? "link" : undefined}
-      tabIndex={tagName() !== "a" && !local.isDisabled ? 0 : undefined}
-      aria-disabled={local.isDisabled ? true : undefined}
+      type={isNativeButton() || isInput() ? local.type : undefined}
+      role={!isNativeButton() && !isLink() ? "button" : undefined}
+      tabIndex={!isNativeButton() && !isLink() && !local.isDisabled ? 0 : undefined}
+      disabled={isNativeButton() || isInput() ? local.isDisabled : undefined}
+      aria-disabled={!isNativeButton() && !isInput() && local.isDisabled ? true : undefined}
       data-disabled={local.isDisabled ? "" : undefined}
       data-hover={isHovered() ? "" : undefined}
       data-focus={isFocused() ? "" : undefined}

@@ -23,10 +23,10 @@ import { Button } from "@kobalte/core";
 
 The button consists of:
 
-- **Button:** The root container for a button.
+- **Button.Root:** The root container for a button.
 
 ```tsx
-<Button />
+<Button.Root />
 ```
 
 ## Example
@@ -47,7 +47,7 @@ The button consists of:
     import "./style.css";
 
     function App() {
-      return <Button class="button">Press me</Button>;
+      return <Button.Root class="button">Press me</Button.Root>;
     }
     ```
 
@@ -109,12 +109,12 @@ function PressInteractionExample() {
 
   return (
     <>
-      <Button
+      <Button.Root
         onPressStart={e => setPointerType(e.pointerType)}
         onPressEnd={() => setPointerType(undefined)}
       >
         Press me
-      </Button>
+      </Button.Root>
       <p>
         <Show when={pointerType()} fallback="Ready to be pressed.">
           You are pressing the button with a {pointerType()}!
@@ -128,6 +128,8 @@ function PressInteractionExample() {
 To learn more about _press interactions_ in Kobalte, check out the [documentation](/docs/overview/press-interactions).
 
 ## API Reference
+
+### Button.Root
 
 | Prop                | Description                                                                                                                                                 |
 | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |

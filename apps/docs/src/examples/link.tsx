@@ -4,16 +4,16 @@ import style from "./link.module.css";
 
 export function BasicExample() {
   return (
-    <Link class={style["link"]} href="https://kobalte.dev" target="_blank">
+    <Link.Root class={style["link"]} href="https://kobalte.dev" target="_blank">
       Kobalte
-    </Link>
+    </Link.Root>
   );
 }
 
 export function ClientHandledExample() {
   return (
-    <Link as="span" class={style["link"]} onPress={() => alert("Pressed link")}>
+    <Link.Root as="span" class={style["link"]} onPress={() => alert("Pressed link")}>
       Kobalte
-    </Link>
+    </Link.Root>
   );
 }

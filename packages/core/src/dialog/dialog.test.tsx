@@ -8,16 +8,16 @@
 
 import { render, screen } from "solid-testing-library";
 
-import { Dialog } from "./dialog";
+import * as Dialog from ".";
 
 describe("Dialog", () => {
   it("should be labelled by its dialog title", function () {
     render(() => (
-      <Dialog isOpen>
+      <Dialog.Root isOpen>
         <Dialog.Content>
           <Dialog.Title data-testid="title">title</Dialog.Title>
         </Dialog.Content>
-      </Dialog>
+      </Dialog.Root>
     ));
 
     const panel = screen.getByRole("dialog");
@@ -28,11 +28,11 @@ describe("Dialog", () => {
 
   it("should be described by its dialog description", function () {
     render(() => (
-      <Dialog isOpen>
+      <Dialog.Root isOpen>
         <Dialog.Content>
           <Dialog.Description data-testid="description">description</Dialog.Description>
         </Dialog.Content>
-      </Dialog>
+      </Dialog.Root>
     ));
 
     const panel = screen.getByRole("dialog");

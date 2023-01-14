@@ -10,7 +10,7 @@ export function BasicExample() {
   const [branch, setBranch] = createSignal("main");
 
   return (
-    <ContextMenu>
+    <ContextMenu.Root>
       <ContextMenu.Trigger class={style["context-menu__trigger"]}>
         Right click here.
       </ContextMenu.Trigger>
@@ -95,6 +95,6 @@ export function BasicExample() {
           </ContextMenu.Group>
         </ContextMenu.Content>
       </ContextMenu.Portal>
-    </ContextMenu>
+    </ContextMenu.Root>
   );
 }

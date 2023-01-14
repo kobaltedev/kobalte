@@ -29,10 +29,10 @@ import { ToggleButton } from "@kobalte/core";
 
 The toggle button consists of:
 
-- **ToggleButton:** the root container for a toggle button.
+- **ToggleButton.Root:** the root container for a toggle button.
 
 ```tsx
-<ToggleButton />
+<ToggleButton.Root />
 ```
 
 ## Example
@@ -56,13 +56,13 @@ The toggle button consists of:
 
     function App() {
       return (
-        <ToggleButton class="toggle-button" aria-label="Mute">
+        <ToggleButton.Root class="toggle-button" aria-label="Mute">
           {state => (
             <Show when={state.isPressed()} fallback={<VolumeOnIcon />}>
               <VolumeOffIcon />
             </Show>
           )}
-        </ToggleButton>
+        </ToggleButton.Root>
       );
     }
     ```
@@ -110,7 +110,7 @@ An initial, uncontrolled value can be provided using the `defaultIsPressed` prop
 </Preview>
 
 ```tsx
-<ToggleButton defaultIsPressed>...</ToggleButton>
+<ToggleButton.Root defaultIsPressed>...</ToggleButton.Root>
 ```
 
 ### Controlled pressed
@@ -129,9 +129,9 @@ function ControlledExample() {
 
   return (
     <>
-      <ToggleButton isPressed={pressed()} onPressedChange={setPressed}>
+      <ToggleButton.Root isPressed={pressed()} onPressedChange={setPressed}>
         ...
-      </ToggleButton>
+      </ToggleButton.Root>
       <p>The microphone is {pressed() ? "muted" : "active"}.</p>
     </>
   );
@@ -140,7 +140,9 @@ function ControlledExample() {
 
 ## API Reference
 
-`ToggleButton` consists of [Button](/docs/components/button) and additional props.
+### ToggleButton.Root
+
+`ToggleButton.Root` consists of [Button.Root](/docs/components/button) and additional props.
 
 | Prop             | Description                                                                                                                                                                                                        |
 | :--------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

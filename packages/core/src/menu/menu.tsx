@@ -10,7 +10,7 @@ import { mergeDefaultProps, removeItemFromArray } from "@kobalte/utils";
 import { createEffect, createSignal, onCleanup, ParentProps, splitProps } from "solid-js";
 
 import { createListState } from "../list";
-import { Popper, PopperOptions } from "../popper";
+import { PopperRoot, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
 import {
   CollectionItem,
@@ -29,7 +29,7 @@ import { useMenuRootContext } from "./menu-root-context";
 import { GraceIntent, isPointerInGraceArea, Side } from "./utils";
 
 export interface MenuOptions
-  extends Omit<PopperOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
+  extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the menu. */
   isOpen?: boolean;
 
@@ -205,7 +205,7 @@ export function Menu(props: ParentProps<MenuOptions>) {
   return (
     <DomCollectionProvider>
       <MenuContext.Provider value={context}>
-        <Popper
+        <PopperRoot
           anchorRef={triggerRef}
           contentRef={contentRef}
           onCurrentPlacementChange={setCurrentPlacement}

@@ -2,8 +2,8 @@ import { Link } from "@solidjs/router";
 
 import { NavSection } from "../NAV_SECTIONS";
 import { GitHubIcon } from "./icons";
-import { ThemeSelector } from "./theme-selector";
 import { MobileNavigation } from "./mobile-navigation";
+import { ThemeSelector } from "./theme-selector";
 
 interface HeaderProps {
   navSections: NavSection[];

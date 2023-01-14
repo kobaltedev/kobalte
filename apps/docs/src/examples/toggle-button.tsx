@@ -6,25 +6,25 @@ import style from "./toggle-button.module.css";
 
 export function BasicExample() {
   return (
-    <ToggleButton class={style["toggle-button"]} aria-label="Mute">
+    <ToggleButton.Root class={style["toggle-button"]} aria-label="Mute">
       {state => (
         <Show when={state.isPressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
           <VolumeOffIcon class="h-6 w-6" />
         </Show>
       )}
-    </ToggleButton>
+    </ToggleButton.Root>
   );
 }
 
 export function DefaultPressedExample() {
   return (
-    <ToggleButton class={style["toggle-button"]} aria-label="Mute" defaultIsPressed>
+    <ToggleButton.Root class={style["toggle-button"]} aria-label="Mute" defaultIsPressed>
       {state => (
         <Show when={state.isPressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
           <VolumeOffIcon class="h-6 w-6" />
         </Show>
       )}
-    </ToggleButton>
+    </ToggleButton.Root>
   );
 }
 
@@ -33,7 +33,7 @@ export function ControlledExample() {
 
   return (
     <>
-      <ToggleButton
+      <ToggleButton.Root
         class={style["toggle-button"]}
         aria-label="Mute"
         isPressed={pressed()}
@@ -44,7 +44,7 @@ export function ControlledExample() {
             <VolumeOffIcon class="h-6 w-6" />
           </Show>
         )}
-      </ToggleButton>
+      </ToggleButton.Root>
       <p class="not-prose text-sm mt-2">The microphone is {pressed() ? "muted" : "active"}.</p>
     </>
   );

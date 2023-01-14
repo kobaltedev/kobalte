@@ -9,7 +9,7 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { RadioGroup } from "./radio-group";
+import * as RadioGroup from ".";
 
 describe("RadioGroup", () => {
   installPointerEvent();
@@ -18,7 +18,7 @@ describe("RadioGroup", () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup onValueChange={onChangeSpy}>
+      <RadioGroup.Root onValueChange={onChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -37,7 +37,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -76,7 +76,7 @@ describe("RadioGroup", () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup defaultValue="cats" onValueChange={onChangeSpy}>
+      <RadioGroup.Root defaultValue="cats" onValueChange={onChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -95,7 +95,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -125,7 +125,7 @@ describe("RadioGroup", () => {
   it("value can be controlled", async () => {
     const onChangeSpy = jest.fn();
     render(() => (
-      <RadioGroup value="cats" onValueChange={onChangeSpy}>
+      <RadioGroup.Root value="cats" onValueChange={onChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -144,7 +144,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
@@ -170,7 +170,7 @@ describe("RadioGroup", () => {
 
   it("name can be controlled", () => {
     render(() => (
-      <RadioGroup name="test-name">
+      <RadioGroup.Root name="test-name">
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -189,7 +189,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
@@ -201,7 +201,7 @@ describe("RadioGroup", () => {
 
   it("supports visible label", () => {
     render(() => (
-      <RadioGroup>
+      <RadioGroup.Root>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -220,7 +220,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -233,7 +233,7 @@ describe("RadioGroup", () => {
 
   it("supports 'aria-labelledby'", () => {
     render(() => (
-      <RadioGroup aria-labelledby="foo">
+      <RadioGroup.Root aria-labelledby="foo">
         <div>
           <RadioGroup.Item value="dogs">
             <RadioGroup.ItemInput />
@@ -251,7 +251,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -261,7 +261,7 @@ describe("RadioGroup", () => {
 
   it("should combine 'aria-labelledby' if visible label is also provided", () => {
     render(() => (
-      <RadioGroup aria-labelledby="foo">
+      <RadioGroup.Root aria-labelledby="foo">
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -280,7 +280,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -291,7 +291,7 @@ describe("RadioGroup", () => {
 
   it("supports 'aria-label'", () => {
     render(() => (
-      <RadioGroup aria-label="My Favorite Pet">
+      <RadioGroup.Root aria-label="My Favorite Pet">
         <div>
           <RadioGroup.Item value="dogs">
             <RadioGroup.ItemInput />
@@ -309,7 +309,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -319,7 +319,7 @@ describe("RadioGroup", () => {
 
   it("should combine 'aria-labelledby' if visible label and 'aria-label' is also provided", () => {
     render(() => (
-      <RadioGroup aria-label="bar" aria-labelledby="foo">
+      <RadioGroup.Root aria-label="bar" aria-labelledby="foo">
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -338,7 +338,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -349,7 +349,7 @@ describe("RadioGroup", () => {
 
   it("supports visible description", () => {
     render(() => (
-      <RadioGroup>
+      <RadioGroup.Root>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -369,7 +369,7 @@ describe("RadioGroup", () => {
           </RadioGroup.Item>
         </div>
         <RadioGroup.Description>Description</RadioGroup.Description>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -385,7 +385,7 @@ describe("RadioGroup", () => {
 
   it("supports 'aria-describedby'", () => {
     render(() => (
-      <RadioGroup aria-describedby="foo">
+      <RadioGroup.Root aria-describedby="foo">
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -404,7 +404,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -414,7 +414,7 @@ describe("RadioGroup", () => {
 
   it("should combine 'aria-describedby' if visible description", () => {
     render(() => (
-      <RadioGroup aria-describedby="foo">
+      <RadioGroup.Root aria-describedby="foo">
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -434,7 +434,7 @@ describe("RadioGroup", () => {
           </RadioGroup.Item>
         </div>
         <RadioGroup.Description>Description</RadioGroup.Description>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -445,7 +445,7 @@ describe("RadioGroup", () => {
 
   it("supports visible error message when invalid", () => {
     render(() => (
-      <RadioGroup validationState="invalid">
+      <RadioGroup.Root validationState="invalid">
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -465,7 +465,7 @@ describe("RadioGroup", () => {
           </RadioGroup.Item>
         </div>
         <RadioGroup.ErrorMessage>ErrorMessage</RadioGroup.ErrorMessage>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -481,7 +481,7 @@ describe("RadioGroup", () => {
 
   it("should not be described by error message when not invalid", () => {
     render(() => (
-      <RadioGroup>
+      <RadioGroup.Root>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -501,7 +501,7 @@ describe("RadioGroup", () => {
           </RadioGroup.Item>
         </div>
         <RadioGroup.ErrorMessage>ErrorMessage</RadioGroup.ErrorMessage>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -511,7 +511,7 @@ describe("RadioGroup", () => {
 
   it("should combine 'aria-describedby' if visible error message when invalid", () => {
     render(() => (
-      <RadioGroup validationState="invalid" aria-describedby="foo">
+      <RadioGroup.Root validationState="invalid" aria-describedby="foo">
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -531,7 +531,7 @@ describe("RadioGroup", () => {
           </RadioGroup.Item>
         </div>
         <RadioGroup.ErrorMessage>ErrorMessage</RadioGroup.ErrorMessage>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -542,7 +542,7 @@ describe("RadioGroup", () => {
 
   it("should combine 'aria-describedby' if visible description and error message when invalid", () => {
     render(() => (
-      <RadioGroup validationState="invalid" aria-describedby="foo">
+      <RadioGroup.Root validationState="invalid" aria-describedby="foo">
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -563,7 +563,7 @@ describe("RadioGroup", () => {
         </div>
         <RadioGroup.Description>Description</RadioGroup.Description>
         <RadioGroup.ErrorMessage>ErrorMessage</RadioGroup.ErrorMessage>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -578,11 +578,11 @@ describe("RadioGroup", () => {
 
   it("should not have form control 'data-*' attributes by default", async () => {
     render(() => (
-      <RadioGroup>
+      <RadioGroup.Root>
         <RadioGroup.Item value="cats">
           <RadioGroup.ItemInput />
         </RadioGroup.Item>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -596,11 +596,11 @@ describe("RadioGroup", () => {
 
   it("should have 'data-valid' attribute when valid", async () => {
     render(() => (
-      <RadioGroup validationState="valid">
+      <RadioGroup.Root validationState="valid">
         <RadioGroup.Item value="cats">
           <RadioGroup.ItemInput />
         </RadioGroup.Item>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -610,11 +610,11 @@ describe("RadioGroup", () => {
 
   it("should have 'data-invalid' attribute when invalid", async () => {
     render(() => (
-      <RadioGroup validationState="invalid">
+      <RadioGroup.Root validationState="invalid">
         <RadioGroup.Item value="cats">
           <RadioGroup.ItemInput />
         </RadioGroup.Item>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -624,11 +624,11 @@ describe("RadioGroup", () => {
 
   it("should have 'data-required' attribute when required", async () => {
     render(() => (
-      <RadioGroup isRequired>
+      <RadioGroup.Root isRequired>
         <RadioGroup.Item value="cats">
           <RadioGroup.ItemInput />
         </RadioGroup.Item>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -638,11 +638,11 @@ describe("RadioGroup", () => {
 
   it("should have 'data-disabled' attribute when disabled", async () => {
     render(() => (
-      <RadioGroup isDisabled>
+      <RadioGroup.Root isDisabled>
         <RadioGroup.Item value="cats">
           <RadioGroup.ItemInput />
         </RadioGroup.Item>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -652,11 +652,11 @@ describe("RadioGroup", () => {
 
   it("should have 'data-readonly' attribute when readonly", async () => {
     render(() => (
-      <RadioGroup isReadOnly>
+      <RadioGroup.Root isReadOnly>
         <RadioGroup.Item value="cats">
           <RadioGroup.ItemInput />
         </RadioGroup.Item>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -666,7 +666,7 @@ describe("RadioGroup", () => {
 
   it("sets 'aria-orientation' by default", () => {
     render(() => (
-      <RadioGroup>
+      <RadioGroup.Root>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -685,7 +685,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -695,7 +695,7 @@ describe("RadioGroup", () => {
 
   it("sets 'aria-orientation' based on the 'orientation' prop", () => {
     render(() => (
-      <RadioGroup orientation="horizontal">
+      <RadioGroup.Root orientation="horizontal">
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -714,7 +714,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -724,7 +724,7 @@ describe("RadioGroup", () => {
 
   it("sets 'aria-invalid' when 'validationState=invalid'", () => {
     render(() => (
-      <RadioGroup validationState="invalid">
+      <RadioGroup.Root validationState="invalid">
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -743,7 +743,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -753,7 +753,7 @@ describe("RadioGroup", () => {
 
   it("passes through 'aria-errormessage'", () => {
     render(() => (
-      <RadioGroup validationState="invalid" aria-errormessage="test">
+      <RadioGroup.Root validationState="invalid" aria-errormessage="test">
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -772,7 +772,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -783,7 +783,7 @@ describe("RadioGroup", () => {
 
   it("sets 'aria-required' when 'isRequired' is true", () => {
     render(() => (
-      <RadioGroup isRequired>
+      <RadioGroup.Root isRequired>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -802,7 +802,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -820,7 +820,7 @@ describe("RadioGroup", () => {
     const groupOnChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup isDisabled onValueChange={groupOnChangeSpy}>
+      <RadioGroup.Root isDisabled onValueChange={groupOnChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -839,7 +839,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -865,7 +865,7 @@ describe("RadioGroup", () => {
     const groupOnChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup onValueChange={groupOnChangeSpy}>
+      <RadioGroup.Root onValueChange={groupOnChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -884,7 +884,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
@@ -919,7 +919,7 @@ describe("RadioGroup", () => {
 
   it("doesn't set 'aria-disabled' or make radios disabled by default", () => {
     render(() => (
-      <RadioGroup>
+      <RadioGroup.Root>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -938,7 +938,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -954,7 +954,7 @@ describe("RadioGroup", () => {
 
   it("doesn't set 'aria-disabled' or make radios disabled when 'isDisabled' is false", () => {
     render(() => (
-      <RadioGroup isDisabled={false}>
+      <RadioGroup.Root isDisabled={false}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -973,7 +973,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -990,7 +990,7 @@ describe("RadioGroup", () => {
   it("sets 'aria-readonly=true' on radio group", async () => {
     const groupOnChangeSpy = jest.fn();
     render(() => (
-      <RadioGroup isReadOnly onValueChange={groupOnChangeSpy}>
+      <RadioGroup.Root isReadOnly onValueChange={groupOnChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -1009,7 +1009,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const radioGroup = screen.getByRole("radiogroup", { exact: true });
@@ -1032,7 +1032,7 @@ describe("RadioGroup", () => {
     const groupOnChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup isReadOnly onValueChange={groupOnChangeSpy}>
+      <RadioGroup.Root isReadOnly onValueChange={groupOnChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -1051,7 +1051,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </div>
-      </RadioGroup>
+      </RadioGroup.Root>
     ));
 
     const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
@@ -1067,13 +1067,13 @@ describe("RadioGroup", () => {
   describe("Radio", () => {
     it("should generate default ids", () => {
       render(() => (
-        <RadioGroup>
+        <RadioGroup.Root>
           <RadioGroup.Item data-testid="radio" value="cats">
             <RadioGroup.ItemInput data-testid="input" />
             <RadioGroup.ItemControl data-testid="control" />
             <RadioGroup.ItemLabel data-testid="label">Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
-        </RadioGroup>
+        </RadioGroup.Root>
       ));
 
       const radio = screen.getByTestId("radio");
@@ -1089,13 +1089,13 @@ describe("RadioGroup", () => {
 
     it("should generate ids based on radio id", () => {
       render(() => (
-        <RadioGroup>
+        <RadioGroup.Root>
           <RadioGroup.Item data-testid="radio" value="cats" id="foo">
             <RadioGroup.ItemInput data-testid="input" />
             <RadioGroup.ItemControl data-testid="control" />
             <RadioGroup.ItemLabel data-testid="label">Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
-        </RadioGroup>
+        </RadioGroup.Root>
       ));
 
       const radio = screen.getByTestId("radio");
@@ -1111,7 +1111,7 @@ describe("RadioGroup", () => {
 
     it("supports custom ids", () => {
       render(() => (
-        <RadioGroup>
+        <RadioGroup.Root>
           <RadioGroup.Item data-testid="radio" value="cats" id="custom-radio-id">
             <RadioGroup.ItemInput data-testid="input" id="custom-input-id" />
             <RadioGroup.ItemControl data-testid="control" id="custom-control-id" />
@@ -1119,7 +1119,7 @@ describe("RadioGroup", () => {
               Cats
             </RadioGroup.ItemLabel>
           </RadioGroup.Item>
-        </RadioGroup>
+        </RadioGroup.Root>
       ));
 
       const radio = screen.getByTestId("radio");
@@ -1135,13 +1135,13 @@ describe("RadioGroup", () => {
 
     it("supports 'aria-label'", () => {
       render(() => (
-        <RadioGroup>
+        <RadioGroup.Root>
           <RadioGroup.Item value="cats">
             <RadioGroup.ItemInput aria-label="Label" />
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
-        </RadioGroup>
+        </RadioGroup.Root>
       ));
 
       const radio = screen.getByRole("radio");
@@ -1151,13 +1151,13 @@ describe("RadioGroup", () => {
 
     it("supports 'aria-labelledby'", () => {
       render(() => (
-        <RadioGroup>
+        <RadioGroup.Root>
           <RadioGroup.Item value="cats">
             <RadioGroup.ItemInput aria-labelledby="foo" />
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
-        </RadioGroup>
+        </RadioGroup.Root>
       ));
 
       const radio = screen.getByRole("radio");
@@ -1167,13 +1167,13 @@ describe("RadioGroup", () => {
 
     it("should combine 'aria-label' and 'aria-labelledby'", () => {
       render(() => (
-        <RadioGroup>
+        <RadioGroup.Root>
           <RadioGroup.Item value="cats">
             <RadioGroup.ItemInput aria-label="Label" aria-labelledby="foo" />
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
-        </RadioGroup>
+        </RadioGroup.Root>
       ));
 
       const radio = screen.getByRole("radio");
@@ -1183,13 +1183,13 @@ describe("RadioGroup", () => {
 
     it("supports 'aria-describedby'", () => {
       render(() => (
-        <RadioGroup>
+        <RadioGroup.Root>
           <RadioGroup.Item value="cats">
             <RadioGroup.ItemInput aria-describedby="foo" />
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
-        </RadioGroup>
+        </RadioGroup.Root>
       ));
 
       const radio = screen.getByRole("radio");
@@ -1199,14 +1199,14 @@ describe("RadioGroup", () => {
 
     it("should combine 'aria-describedby' from both radio and radio group", () => {
       render(() => (
-        <RadioGroup>
+        <RadioGroup.Root>
           <RadioGroup.Item value="cats">
             <RadioGroup.ItemInput aria-describedby="foo" />
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
           <RadioGroup.Description data-testid="description">Description</RadioGroup.Description>
-        </RadioGroup>
+        </RadioGroup.Root>
       ));
 
       const radio = screen.getByRole("radio");
@@ -1218,14 +1218,14 @@ describe("RadioGroup", () => {
     describe("indicator", () => {
       it("should not display indicator by default", async () => {
         render(() => (
-          <RadioGroup>
+          <RadioGroup.Root>
             <RadioGroup.Item value="cats">
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl>
                 <RadioGroup.ItemIndicator data-testid="indicator" />
               </RadioGroup.ItemControl>
             </RadioGroup.Item>
-          </RadioGroup>
+          </RadioGroup.Root>
         ));
 
         expect(screen.queryByTestId("indicator")).toBeNull();
@@ -1233,14 +1233,14 @@ describe("RadioGroup", () => {
 
       it("should display indicator when 'selected'", async () => {
         render(() => (
-          <RadioGroup>
+          <RadioGroup.Root>
             <RadioGroup.Item value="cats">
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl>
                 <RadioGroup.ItemIndicator data-testid="indicator" />
               </RadioGroup.ItemControl>
             </RadioGroup.Item>
-          </RadioGroup>
+          </RadioGroup.Root>
         ));
 
         const input = screen.getByRole("radio") as HTMLInputElement;
@@ -1257,14 +1257,14 @@ describe("RadioGroup", () => {
 
       it("should display indicator when 'forceMount'", async () => {
         render(() => (
-          <RadioGroup>
+          <RadioGroup.Root>
             <RadioGroup.Item value="cats">
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl>
                 <RadioGroup.ItemIndicator data-testid="indicator" forceMount />
               </RadioGroup.ItemControl>
             </RadioGroup.Item>
-          </RadioGroup>
+          </RadioGroup.Root>
         ));
 
         expect(screen.getByTestId("indicator")).toBeInTheDocument();
@@ -1274,7 +1274,7 @@ describe("RadioGroup", () => {
     describe("data-attributes", () => {
       it("should have 'data-valid' attribute on radio elements when radio group is valid", async () => {
         render(() => (
-          <RadioGroup validationState="valid" value="cats">
+          <RadioGroup.Root validationState="valid" value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
@@ -1282,7 +1282,7 @@ describe("RadioGroup", () => {
               </RadioGroup.ItemControl>
               <RadioGroup.ItemLabel data-testid="radio-label">Cats</RadioGroup.ItemLabel>
             </RadioGroup.Item>
-          </RadioGroup>
+          </RadioGroup.Root>
         ));
 
         const elements = screen.getAllByTestId(/^radio/);
@@ -1294,7 +1294,7 @@ describe("RadioGroup", () => {
 
       it("should have 'data-invalid' attribute on radios when radio group is invalid", async () => {
         render(() => (
-          <RadioGroup validationState="invalid" value="cats">
+          <RadioGroup.Root validationState="invalid" value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
@@ -1302,7 +1302,7 @@ describe("RadioGroup", () => {
               </RadioGroup.ItemControl>
               <RadioGroup.ItemLabel data-testid="radio-label">Cats</RadioGroup.ItemLabel>
             </RadioGroup.Item>
-          </RadioGroup>
+          </RadioGroup.Root>
         ));
 
         const elements = screen.getAllByTestId(/^radio/);
@@ -1314,7 +1314,7 @@ describe("RadioGroup", () => {
 
       it("should have 'data-checked' attribute on checked radio", async () => {
         render(() => (
-          <RadioGroup value="cats">
+          <RadioGroup.Root value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
@@ -1322,7 +1322,7 @@ describe("RadioGroup", () => {
               </RadioGroup.ItemControl>
               <RadioGroup.ItemLabel data-testid="radio-label">Cats</RadioGroup.ItemLabel>
             </RadioGroup.Item>
-          </RadioGroup>
+          </RadioGroup.Root>
         ));
 
         const elements = screen.getAllByTestId(/^radio/);
@@ -1334,7 +1334,7 @@ describe("RadioGroup", () => {
 
       it("should have 'data-disabled' attribute on radios when radio group is disabled", async () => {
         render(() => (
-          <RadioGroup isDisabled value="cats">
+          <RadioGroup.Root isDisabled value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
@@ -1342,7 +1342,7 @@ describe("RadioGroup", () => {
               </RadioGroup.ItemControl>
               <RadioGroup.ItemLabel data-testid="radio-label">Cats</RadioGroup.ItemLabel>
             </RadioGroup.Item>
-          </RadioGroup>
+          </RadioGroup.Root>
         ));
 
         const elements = screen.getAllByTestId(/^radio/);
@@ -1354,7 +1354,7 @@ describe("RadioGroup", () => {
 
       it("should have 'data-disabled' attribute on single disabled radio", async () => {
         render(() => (
-          <RadioGroup value="cats">
+          <RadioGroup.Root value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats" isDisabled>
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
@@ -1362,7 +1362,7 @@ describe("RadioGroup", () => {
               </RadioGroup.ItemControl>
               <RadioGroup.ItemLabel data-testid="radio-label">Cats</RadioGroup.ItemLabel>
             </RadioGroup.Item>
-          </RadioGroup>
+          </RadioGroup.Root>
         ));
 
         const elements = screen.getAllByTestId(/^radio/);
@@ -1374,7 +1374,7 @@ describe("RadioGroup", () => {
 
       it("should have 'data-hover' attribute on hovered radio", async () => {
         render(() => (
-          <RadioGroup value="cats">
+          <RadioGroup.Root value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
@@ -1382,7 +1382,7 @@ describe("RadioGroup", () => {
               </RadioGroup.ItemControl>
               <RadioGroup.ItemLabel data-testid="radio-label">Cats</RadioGroup.ItemLabel>
             </RadioGroup.Item>
-          </RadioGroup>
+          </RadioGroup.Root>
         ));
 
         const radioRoot = screen.getByTestId("radio-root");
@@ -1405,7 +1405,7 @@ describe("RadioGroup", () => {
 
       it("should have 'data-focus' attribute on focused radio", async () => {
         render(() => (
-          <RadioGroup value="cats">
+          <RadioGroup.Root value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
@@ -1413,7 +1413,7 @@ describe("RadioGroup", () => {
               </RadioGroup.ItemControl>
               <RadioGroup.ItemLabel data-testid="radio-label">Cats</RadioGroup.ItemLabel>
             </RadioGroup.Item>
-          </RadioGroup>
+          </RadioGroup.Root>
         ));
 
         const radioInput = screen.getByRole("radio");

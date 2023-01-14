@@ -27,20 +27,20 @@ import { Checkbox } from "@kobalte/core";
 
 The checkbox consists of:
 
-- **Checkbox:** The root container for a checkbox.
+- **Checkbox.Root:** The root container for a checkbox.
 - **Checkbox.Input:** The native html input that is visually hidden in the checkbox.
 - **Checkbox.Control:** The element that visually represents a checkbox.
 - **Checkbox.Indicator:** The visual indicator rendered when the checkbox is in a checked or indeterminate state.
 - **Checkbox.Label:** The label that gives the user information on the checkbox.
 
 ```tsx
-<Checkbox>
+<Checkbox.Root>
   <Checkbox.Input />
   <Checkbox.Control>
     <Checkbox.Indicator />
   </Checkbox.Control>
   <Checkbox.Label />
-</Checkbox>
+</Checkbox.Root>
 ```
 
 ## Example
@@ -63,7 +63,7 @@ The checkbox consists of:
 
     function App() {
       return (
-        <Checkbox class="checkbox">
+        <Checkbox.Root class="checkbox">
           <Checkbox.Input />
           <Checkbox.Control class="checkbox__control">
             <Checkbox.Indicator>
@@ -71,7 +71,7 @@ The checkbox consists of:
             </Checkbox.Indicator>
           </Checkbox.Control>
           <Checkbox.Label class="checkbox__label">Subscribe</Checkbox.Label>
-        </Checkbox>
+        </Checkbox.Root>
       );
     }
     ```
@@ -126,7 +126,7 @@ An initial, uncontrolled value can be provided using the `defaultIsChecked` prop
 </Preview>
 
 ```tsx
-<Checkbox defaultIsChecked>...</Checkbox>
+<Checkbox.Root defaultIsChecked>...</Checkbox.Root>
 ```
 
 ### Controlled checked
@@ -145,9 +145,9 @@ function ControlledExample() {
 
   return (
     <>
-      <Checkbox isChecked={checked()} onCheckedChange={setChecked}>
+      <Checkbox.Root isChecked={checked()} onCheckedChange={setChecked}>
         ...
-      </Checkbox>
+      </Checkbox.Root>
       <p>You are {checked() ? "subscribed" : "unsubscribed"}.</p>
     </>
   );
@@ -170,9 +170,9 @@ function HTMLFormExample() {
 
   return (
     <form onSubmit={onSubmit}>
-      <Checkbox name="newsletter" value="subscribe">
+      <Checkbox.Root name="newsletter" value="subscribe">
         ...
-      </Checkbox>
+      </Checkbox.Root>
       <div>
         <button type="reset">Reset</button>
         <button>Submit</button>
@@ -184,7 +184,7 @@ function HTMLFormExample() {
 
 ## API Reference
 
-### Checkbox
+### Checkbox.Root
 
 | Prop             | Description                                                                                                                                                                   |
 | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

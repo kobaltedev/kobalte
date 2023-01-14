@@ -14,12 +14,12 @@ import {
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
-import { Button, ButtonOptions } from "../button";
+import * as Button from "../button";
 import { PressEvent } from "../primitives";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuTriggerOptions extends ButtonOptions {}
+export interface MenuTriggerOptions extends Button.ButtonRootOptions {}
 
 /**
  * The button that toggles the menu.
@@ -90,7 +90,7 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerOptio
   createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
 
   return (
-    <Button
+    <Button.Root
       ref={mergeRefs(context.setTriggerRef, local.ref)}
       id={local.id}
       isDisabled={local.isDisabled}
