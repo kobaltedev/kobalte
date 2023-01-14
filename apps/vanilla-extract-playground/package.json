@@ -1,5 +1,5 @@
 {
-  "name": "@kobalte/playground",
+  "name": "@kobalte/playground-vanilla-extract",
   "private": true,
   "description": "A SolidJS app playground for Kobalte.",
   "keywords": [
