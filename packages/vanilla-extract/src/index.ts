@@ -14,18 +14,17 @@ function makeDataAttribute<TState extends string>(state: TState): DataAttribute<
 }
 
 function makeSelectorByOptions(selector: string, options: SelectorOptions): string {
-  let computedSelector = selector;
   if (options.not) {
-    computedSelector = `:not(${computedSelector})`;
+    selector = `:not(${selector})`;
   }
 
-  computedSelector = `&${computedSelector}`;
+  selector = `&${selector}`;
 
   if (options.parentSelector) {
-    computedSelector = `${options.parentSelector} ${computedSelector}`;
+    selector = `${options.parentSelector} ${selector}`;
   }
 
-  return computedSelector;
+  return selector;
 }
 
 type DataAttributeStates =
@@ -48,13 +47,19 @@ type DataAttributeStyles = {
   [key in DataAttributeStates]?: CSSProps & { not?: CSSProps };
 };
 
-type CompoonentStateStyleOptions = Pick<SelectorOptions, "parentSelector">;
+type CompoonentStateStyleOptions = {
+  /**
+   * Apply a parent selector to the given selector
+   */
+  parentSelector?: string;
+};
 
 export function componentStateStyles(
   styles: DataAttributeStyles,
   options?: CompoonentStateStyleOptions
 ): StyleRule {
   const styleRule = { selectors: {} } as { selectors: StyleRule["selectors"] };
+
   const selectorOptions: SelectorOptions = {
     parentSelector: options?.parentSelector ?? undefined,
   };

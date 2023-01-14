@@ -2,8 +2,6 @@
 
 Vanilla Extract utils for styling Kobalte Elements easily.
 
-> **Note** In order to use these utils you need to install @vanilla-extract/css and it's plugin to process the css (e.g. @vanilla-extract/vite-plugin). https://vanilla-extract.style
-
 ## Installation
 
 ```bash
@@ -14,11 +12,13 @@ yarn add -D @kobalte/vanilla-extract
 pnpm add -D @kobalte/vanilla-extract
 ```
 
+> **Note** In order to use these utils you need to configure Vanilla Extract in your project. https://vanilla-extract.style
+
 ## Usage
 
 ### componentStateStyles
 
-In order to style kobalte elements with data-\* attributes you can use the `componentStateStyles` function in your `.css.ts` files.
+Create vanilla-extract complaint styles for styling data-\* attributes of Kobalte Elements.
 
 ```ts
 // styles.css
@@ -31,26 +31,16 @@ const button = style([
     padding: "2px 6px",
   },
   componentStateStyles({
-    // { selectors: { &[data-disabled] {} }
-    disabled: {
-      opacity: 0.4,
-    },
-    // { selectors: { &[data-hover] {} }
+    disabled: { opacity: 0.4 },
     hover: {
       backgroundColor: "red",
-      // { selectors: { &:not([data-hover]) {} }
       not: {
         backgroundColor: "yellow",
       },
     },
   }),
   componentStateStyles(
-    {
-      // { selectors: { '[data-theme=dark] &[data-hover]'  {} }
-      hover: {
-        backgroundColor: "red",
-      },
-    },
+    { hover: { backgroundColor: "red" } },
     { parentSelector: "[data-theme=dark]" }
   ),
 ]);
