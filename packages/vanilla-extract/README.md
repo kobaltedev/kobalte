@@ -2,6 +2,8 @@
 
 Vanilla Extract utils for styling Kobalte Elements easily.
 
+> **Note** In order to use these utils you need to install @vanilla-extract/css and it's plugin to process the css (e.g. @vanilla-extract/vite-plugin). https://vanilla-extract.style
+
 ## Installation
 
 ```bash
