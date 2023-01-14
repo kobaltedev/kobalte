@@ -169,6 +169,90 @@ You can use the following modifiers:
 
 It's also possible to use _inverse modifiers_ in the form of `ui-not-*`.
 
+## Using the Vanilla Extract plugin
+
+If you are using [Vanilla Extract](https://vanilla-extract.style/), you can use the `@kobalte/vanilla-extract` plugin to target Kobalte's `data-*` attributes.
+
+### Installation
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="npm">npm</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="yarn">yarn</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="pnpm">pnpm</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  <TabsSnippets.Content value="npm">
+    {/* <!-- prettier-ignore-start --> */}
+    ```bash
+    npm install @kobalte/vanilla-extract
+    ```
+    {/* <!-- prettier-ignore-end --> */}
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="yarn">
+    {/* <!-- prettier-ignore-start --> */}
+    ```bash
+    yarn add @kobalte/vanilla-extract
+    ```
+    {/* <!-- prettier-ignore-end --> */}
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="pnpm">
+    {/* <!-- prettier-ignore-start --> */}
+    ```bash
+    pnpm add @kobalte/vanilla-extract
+    ```
+    {/* <!-- prettier-ignore-end --> */}
+  </TabsSnippets.Content>
+</TabsSnippets>
+
+### Usage
+
+Use the `componentStateStyles` utility function to create vanilla-extract styles that target `data-*` attributes of Kobalte components.
+
+```ts
+// styles.css
+import { componentStateStyles } from "@kobalte/vanilla-extract";
+import { style } from "@vanilla-extract/css";
+
+const button = style([
+  {
+    background: "blue",
+    padding: "2px 6px",
+  },
+  componentStateStyles({
+    disabled: {
+      opacity: 0.4,
+    },
+    hover: {
+      backgroundColor: "red",
+      not: {
+        backgroundColor: "yellow",
+      },
+    },
+  }),
+  componentStateStyles(
+    {
+      hover: {
+        backgroundColor: "red",
+      },
+    },
+    { parentSelector: "[data-theme=dark]" }
+  ),
+]);
+```
+
+Then apply your styles to the component:
+
+```tsx
+import { Button } from "@kobalte/core";
+import { button } from "./styles.css";
+
+export const MyButton = () => <Button.Root class={button}>...</Button.Root>;
+```
+
+## Usage with UnoCSS
+
+The [UnoCSS preset](https://github.com/zirbest/unocss-preset-primitives#kobalte) made by the community can be used to achieve the same behavior of the TailwindCSS plugin.
+
 ## Extending a component
 
 Extending a component is done the same way you extend any SolidJS component.

@@ -1,6 +1,6 @@
 # @kobalte/tailwindcss
 
-A TailwindCSS plugin for styling Kobalte Elements with `data-*` attributes by using modifiers like `ui-expanded:*`.
+A TailwindCSS plugin for styling Kobalte components with `data-*` attributes by using modifiers like `ui-expanded:*`.
 
 ## Installation
 
