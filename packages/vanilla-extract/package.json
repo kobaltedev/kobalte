@@ -1,6 +1,6 @@
 {
   "name": "@kobalte/vanilla-extract",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "Vanilla Extract utils to style Kobalte components easily",
   "keywords": [
