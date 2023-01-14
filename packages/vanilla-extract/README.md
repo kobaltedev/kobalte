@@ -1,6 +1,6 @@
-# @kobalte/tailwindcss
+# @kobalte/vanilla-extract
 
-Vanilla Extract utils to style Kobalte Elements easily.
+Vanilla Extract utils to style Kobalte components easily.
 
 ## Installation
 
@@ -18,7 +18,7 @@ pnpm add -D @kobalte/vanilla-extract
 
 ### componentStateStyles
 
-Create vanilla-extract complaint styles for styling data-\* attributes of Kobalte Elements.
+Create vanilla-extract complaint styles for styling data-\* attributes of Kobalte components.
 
 ```ts
 // styles.css
@@ -31,7 +31,9 @@ const button = style([
     padding: "2px 6px",
   },
   componentStateStyles({
-    disabled: { opacity: 0.4 },
+    disabled: {
+      opacity: 0.4,
+    },
     hover: {
       backgroundColor: "red",
       not: {
@@ -40,7 +42,11 @@ const button = style([
     },
   }),
   componentStateStyles(
-    { hover: { backgroundColor: "red" } },
+    {
+      hover: {
+        backgroundColor: "red",
+      },
+    },
     { parentSelector: "[data-theme=dark]" }
   ),
 ]);
@@ -57,7 +63,7 @@ export const MyButton = () => <Button.Root class={button}>...</Button.Root>;
 
 ## Documentation
 
-For full documentation, visit [kobalte.dev](https://kobalte.dev/docs/overview/styling#using-the-tailwindcss-plugin).
+For full documentation, visit [kobalte.dev](https://kobalte.dev/docs/overview/styling#using-the-vanilla-extract-plugin).
 
 ## Changelog
 

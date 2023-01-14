@@ -1,15 +1,16 @@
 {
   "name": "@kobalte/vanilla-extract",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": false,
-  "description": "Vanilla Extract utils to style Kobalte Elements easily",
+  "description": "Vanilla Extract utils to style Kobalte components easily",
   "keywords": [
     "solid",
     "solidjs",
     "ui",
     "library",
     "design-system",
-    "components"
+    "components",
+    "vanilla-extract"
   ],
   "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/vanilla-extract#readme",
   "bugs": {
@@ -40,10 +41,8 @@
     "build": "tsup",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
-  "dependencies": {
-    "@vanilla-extract/css": "^1.9.2"
-  },
   "devDependencies": {
+    "@vanilla-extract/css": "1.9.2",
     "tsup": "6.5.0"
   },
   "peerDependencies": {
