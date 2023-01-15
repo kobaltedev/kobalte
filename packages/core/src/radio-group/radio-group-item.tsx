@@ -22,7 +22,12 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { createHover, HOVER_HANDLERS_PROP_NAMES } from "../primitives";
+import {
+  createHover,
+  createPress,
+  HOVER_HANDLERS_PROP_NAMES,
+  PRESS_HANDLERS_PROP_NAMES,
+} from "../primitives";
 import { useRadioGroupContext } from "./radio-group-context";
 import {
   RadioGroupItemContext,
@@ -54,7 +59,12 @@ export function RadioGroupItem(
 
   props = mergeDefaultProps({ id: defaultId }, props);
 
-  const [local, others] = splitProps(props, ["value", "isDisabled", ...HOVER_HANDLERS_PROP_NAMES]);
+  const [local, others] = splitProps(props, [
+    "value",
+    "isDisabled",
+    ...PRESS_HANDLERS_PROP_NAMES,
+    ...HOVER_HANDLERS_PROP_NAMES,
+  ]);
 
   const [isFocused, setIsFocused] = createSignal(false);
   const [isFocusVisible, setIsFocusVisible] = createSignal(false);
@@ -67,7 +77,14 @@ export function RadioGroupItem(
     return local.isDisabled || formControlContext.isDisabled() || false;
   });
 
-  const { isHovered, hoverHandlers } = createHover({ isDisabled });
+  const { isPressed, pressHandlers } = createPress({
+    isDisabled,
+    preventFocusOnPress: () => isFocused(), // For consistency with native, prevent the input blurs.
+  });
+
+  const { isHovered, hoverHandlers } = createHover({
+    isDisabled,
+  });
 
   const dataset: Accessor<RadioGroupItemDataSet> = createMemo(() => ({
     "data-valid": formControlContext.dataset()["data-valid"],
@@ -77,6 +94,7 @@ export function RadioGroupItem(
     "data-hover": isHovered() ? "" : undefined,
     "data-focus": isFocused() ? "" : undefined,
     "data-focus-visible": isFocusVisible() ? "" : undefined,
+    "data-active": isPressed() ? "" : undefined,
   }));
 
   const context: RadioGroupItemContextValue = {
@@ -93,6 +111,13 @@ export function RadioGroupItem(
     <RadioGroupItemContext.Provider value={context}>
       <label
         {...context.dataset()}
+        onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
+        onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
+        onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
+        onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
+        onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
+        onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
+        onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
         onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
         onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
         {...others}
