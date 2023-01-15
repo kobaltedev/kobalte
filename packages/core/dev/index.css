@@ -102,3 +102,32 @@
   color: gray;
   opacity: 0.4;
 }
+
+/**/
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+}
+.checkbox__control {
+  height: 20px;
+  width: 20px;
+  border-radius: 6px;
+  border: 1px solid hsl(240 5% 84%);
+  background-color: hsl(240 6% 90%);
+}
+.checkbox__control[data-focus-visible] {
+  outline: 2px solid hsl(200 98% 39%);
+  outline-offset: 2px;
+}
+.checkbox__control[data-checked] {
+  border-color: hsl(200 98% 39%);
+  background-color: hsl(200 98% 39%);
+  color: white;
+}
+.checkbox__label {
+  margin-left: 6px;
+  color: hsl(240 6% 10%);
+  font-size: 14px;
+  user-select: none;
+}
