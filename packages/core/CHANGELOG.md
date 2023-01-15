@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.3.1
+
+### Patch Changes
+
+- 6457a2b: fix #39 and #50
+
 ## 0.3.0
 
 ### Minor Changes
