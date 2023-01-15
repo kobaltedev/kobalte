@@ -1,6 +1,6 @@
 import { ComponentProps, For } from "solid-js";
 
-import { Calendar, I18nProvider } from "../src";
+import { Calendar, Checkbox, I18nProvider } from "../src";
 
 function CalendarMonth(props: ComponentProps<typeof Calendar.Month>) {
   return (
@@ -41,6 +41,13 @@ export default function App() {
         <Calendar.Root class="calendar" visibleMonths={months.length}>
           <For each={months}>{offset => <CalendarMonth offset={offset} />}</For>
         </Calendar.Root>
+        <Checkbox.Root class="checkbox">
+          <Checkbox.Input />
+          <Checkbox.Control class="checkbox__control">
+            <Checkbox.Indicator>X</Checkbox.Indicator>
+          </Checkbox.Control>
+          <Checkbox.Label class="checkbox__label">Subscribe</Checkbox.Label>
+        </Checkbox.Root>
       </I18nProvider>
     </div>
   );
