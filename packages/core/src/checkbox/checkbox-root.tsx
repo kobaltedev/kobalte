@@ -149,7 +149,7 @@ export const CheckboxRoot: Component<
 
   const { isPressed, pressHandlers } = createPress({
     isDisabled: () => local.isDisabled,
-    preventFocusOnPress: () => isFocused(), // For consistency with native checkbox, prevent the input blurs.
+    preventFocusOnPress: () => isFocused(), // For consistency with native, prevent the input blurs.
   });
 
   const { isHovered, hoverHandlers } = createHover({

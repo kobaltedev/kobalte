@@ -26,14 +26,12 @@ import {
 import {
   createFormResetListener,
   createHover,
+  createPress,
   createToggleState,
   HOVER_HANDLERS_PROP_NAMES,
+  PRESS_HANDLERS_PROP_NAMES,
 } from "../primitives";
 import { SwitchContext, SwitchContextValue, SwitchDataSet } from "./switch-context";
-import { SwitchControl } from "./switch-control";
-import { SwitchInput } from "./switch-input";
-import { SwitchLabel } from "./switch-label";
-import { SwitchThumb } from "./switch-thumb";
 
 export interface SwitchRootOptions {
   /** The controlled checked state of the switch. */
@@ -103,6 +101,7 @@ export const SwitchRoot: Component<
     "isRequired",
     "isDisabled",
     "isReadOnly",
+    ...PRESS_HANDLERS_PROP_NAMES,
     ...HOVER_HANDLERS_PROP_NAMES,
   ]);
 
@@ -122,6 +121,11 @@ export const SwitchRoot: Component<
     () => state.setIsSelected(local.defaultIsChecked ?? false)
   );
 
+  const { isPressed, pressHandlers } = createPress({
+    isDisabled: () => local.isDisabled,
+    preventFocusOnPress: () => isFocused(), // For consistency with native, prevent the input blurs.
+  });
+
   const { isHovered, hoverHandlers } = createHover({
     isDisabled: () => local.isDisabled,
   });
@@ -136,6 +140,7 @@ export const SwitchRoot: Component<
     "data-hover": isHovered() ? "" : undefined,
     "data-focus": isFocused() ? "" : undefined,
     "data-focus-visible": isFocusVisible() ? "" : undefined,
+    "data-active": isPressed() ? "" : undefined,
   }));
 
   const context: SwitchContextValue = {
@@ -157,6 +162,13 @@ export const SwitchRoot: Component<
     <SwitchContext.Provider value={context}>
       <label
         ref={mergeRefs(el => (ref = el), local.ref)}
+        onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
+        onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
+        onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
+        onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
+        onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
+        onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
+        onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
         onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
         onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
         {...context.dataset()}
