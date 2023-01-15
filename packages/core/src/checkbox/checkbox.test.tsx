@@ -635,5 +635,40 @@ describe("Checkbox", () => {
         expect(el).not.toHaveAttribute("data-focus");
       }
     });
+
+    it("should have attribute 'data-active' when pressed", async () => {
+      render(() => (
+        <Checkbox.Root data-testid="checkbox-root">
+          <Checkbox.Input />
+          <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
+          <Checkbox.Control data-testid="checkbox-control">
+            <Checkbox.Indicator data-testid="checkbox-indicator" />
+          </Checkbox.Control>
+        </Checkbox.Root>
+      ));
+
+      const checkboxRoot = screen.getByTestId("checkbox-root");
+      const elements = screen.getAllByTestId(/^checkbox/);
+
+      fireEvent(
+        checkboxRoot,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      for (const el of elements) {
+        expect(el).toHaveAttribute("data-active");
+      }
+
+      fireEvent(
+        checkboxRoot,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      for (const el of elements) {
+        expect(el).not.toHaveAttribute("data-active");
+      }
+    });
   });
 });

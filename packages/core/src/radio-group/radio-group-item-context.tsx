@@ -8,6 +8,7 @@ export interface RadioGroupItemDataSet {
   "data-hover": string | undefined;
   "data-focus": string | undefined;
   "data-focus-visible": string | undefined;
+  "data-active": string | undefined;
 }
 
 export interface RadioGroupItemContextValue {

@@ -1433,6 +1433,43 @@ describe("RadioGroup", () => {
           expect(el).not.toHaveAttribute("data-focus");
         }
       });
+
+      it("should have 'data-active' attribute on pressed radio", async () => {
+        render(() => (
+          <RadioGroup.Root value="cats">
+            <RadioGroup.Item data-testid="radio-root" value="cats">
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl data-testid="radio-control">
+                <RadioGroup.ItemIndicator data-testid="radio-indicator" />
+              </RadioGroup.ItemControl>
+              <RadioGroup.ItemLabel data-testid="radio-label">Cats</RadioGroup.ItemLabel>
+            </RadioGroup.Item>
+          </RadioGroup.Root>
+        ));
+
+        const radioRoot = screen.getByTestId("radio-root");
+        const elements = screen.getAllByTestId(/^radio/);
+
+        fireEvent(
+          radioRoot,
+          createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        );
+        await Promise.resolve();
+
+        for (const el of elements) {
+          expect(el).toHaveAttribute("data-active");
+        }
+
+        fireEvent(
+          radioRoot,
+          createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+        );
+        await Promise.resolve();
+
+        for (const el of elements) {
+          expect(el).not.toHaveAttribute("data-active");
+        }
+      });
     });
   });
 });
