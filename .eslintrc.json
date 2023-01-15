@@ -23,7 +23,8 @@
     "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/no-empty-function": "off",
     "jsx-a11y/no-autofocus": "off",
-    "jsx-a11y/label-has-associated-control": "off"
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off"
   },
   "env": {
     "es6": true,

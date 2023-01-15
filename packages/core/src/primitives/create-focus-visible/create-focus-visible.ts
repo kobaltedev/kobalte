@@ -59,6 +59,19 @@ function handlePointerEvent(e: PointerEvent | MouseEvent) {
   currentModality = "pointer";
   if (e.type === "mousedown" || e.type === "pointerdown") {
     hasEventBeforeFocus = true;
+    const target = e.composedPath ? e.composedPath()[0] : e.target;
+
+    let matches = false;
+    try {
+      matches = (target as any).matches(":focus-visible");
+    } catch {
+      // noop
+    }
+
+    if (matches) {
+      return;
+    }
+
     triggerChangeHandlers("pointer", e);
   }
 }
@@ -72,7 +85,7 @@ function handleClickEvent(e: MouseEvent) {
 
 function handleWindowFocus(e: FocusEvent) {
   // Firefox fires two extra focus events when the user first clicks into an iframe:
-  // first on the window, then on the document. We ignore these events so they don't
+  // first on the window, then on the document. We ignore these events, so they don't
   // cause keyboard focus rings to appear.
   if (e.target === window || e.target === document) {
     return;

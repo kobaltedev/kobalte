@@ -533,5 +533,40 @@ describe("Switch", () => {
         expect(el).not.toHaveAttribute("data-focus");
       }
     });
+
+    it("should have attribute 'data-active' when pressed", async () => {
+      render(() => (
+        <Switch.Root data-testid="switch-root">
+          <Switch.Input />
+          <Switch.Label data-testid="switch-label">Label</Switch.Label>
+          <Switch.Control data-testid="switch-control">
+            <Switch.Thumb data-testid="switch-thumb" />
+          </Switch.Control>
+        </Switch.Root>
+      ));
+
+      const switchRoot = screen.getByTestId("switch-root");
+      const elements = screen.getAllByTestId(/^switch/);
+
+      fireEvent(
+        switchRoot,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      for (const el of elements) {
+        expect(el).toHaveAttribute("data-active");
+      }
+
+      fireEvent(
+        switchRoot,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      for (const el of elements) {
+        expect(el).not.toHaveAttribute("data-active");
+      }
+    });
   });
 });
