@@ -2,7 +2,7 @@ import { Link, useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
 import { ComponentProps, For, splitProps } from "solid-js";
 
-import { NavSection } from "../NAV_SECTIONS";
+import { NavSection } from "../model/navigation";
 
 interface NavigationProps extends ComponentProps<"nav"> {
   sections: NavSection[];
