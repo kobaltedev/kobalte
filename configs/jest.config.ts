@@ -22,6 +22,8 @@ const config: Config.InitialOptions = {
   moduleNameMapper: {
     "solid-js/web": `${solidjsPath}/web/dist/web.cjs`,
     "solid-js/store": `${solidjsPath}/store/dist/store.cjs`,
+    "solid-js/h/jsx-runtime": `${solidjsPath}/h/jsx-runtime/dist/jsx.cjs`,
+    "solid-js/h": `${solidjsPath}/h/dist/h.cjs`,
     "solid-js": `${solidjsPath}/dist/solid.cjs`,
   },
 
