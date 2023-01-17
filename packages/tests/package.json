@@ -31,14 +31,15 @@
   "types": "./dist/index.d.ts",
   "browser": {},
   "exports": {
-    "solid": "./dist/index.jsx",
     "browser": {
+      "solid": "./dist/index.jsx",
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
       "require": "./dist/index.cjs"
     },
+    "solid": "./dist/index.jsx",
     "import": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
@@ -62,5 +63,6 @@
   "peerDependencies": {
     "solid-js": "^1.6.1",
     "solid-testing-library": "^0.3.0"
-  }
+  },
+  "typesVersions": {}
 }

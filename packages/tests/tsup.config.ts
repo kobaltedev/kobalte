@@ -6,5 +6,6 @@ export default defineConfig(
   },
   {
     // writePackageJson: true,
+    cjs: true,
   }
 );
