@@ -32,7 +32,7 @@ export function ThemeSelector(props: ComponentProps<typeof Select.Root>) {
     >
       <Select.Trigger
         aria-label="toggle color mode"
-        class="flex p-1 items-center justify-center transition rounded text-zinc-700 hover:text-zinc-800 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:text-zinc-200 dark:hover:bg-zinc-800"
+        class="flex p-4 items-center justify-center transition rounded text-zinc-700 hover:text-zinc-800 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:text-zinc-200 dark:hover:bg-zinc-800"
       >
         <Select.Value>
           <Show when={colorMode() === "dark"} fallback={<SunIcon class="h-5 w-5" />}>

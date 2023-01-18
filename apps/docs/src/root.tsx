@@ -19,7 +19,6 @@ import {
   Title,
 } from "solid-start";
 
-import { Layout } from "./components";
 import { mdxComponents } from "./mdx-components";
 
 export const mods = /*#__PURE__*/ import.meta.glob<
@@ -63,11 +62,9 @@ export default function Root() {
           <Suspense>
             <ColorModeProvider storageManager={storageManager}>
               <MDXProvider components={mdxComponents}>
-                <Layout>
-                  <Routes>
-                    <FileRoutes />
-                  </Routes>
-                </Layout>
+                <Routes>
+                  <FileRoutes />
+                </Routes>
               </MDXProvider>
             </ColorModeProvider>
           </Suspense>

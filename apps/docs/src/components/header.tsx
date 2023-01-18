@@ -1,6 +1,8 @@
-import { Link } from "@solidjs/router";
+import { Link, useMatch } from "@solidjs/router";
+import { clsx } from "clsx";
 
-import { NavSection } from "../NAV_SECTIONS";
+import { NavSection } from "../model/navigation";
+import { LATEST_CORE_CHANGELOG_URL } from "../VERSIONS";
 import { GitHubIcon } from "./icons";
 import { MobileNavigation } from "./mobile-navigation";
 import { ThemeSelector } from "./theme-selector";
@@ -10,10 +12,12 @@ interface HeaderProps {
 }
 
 export function Header(props: HeaderProps) {
+  const isChangelogPath = useMatch(() => "/docs/changelog/*");
+
   return (
     <header
       class={
-        "sticky top-0 z-50 flex flex-wrap items-center justify-between bg-white border-b border-b-zinc-200 dark:border-b-zinc-800 p-4 transition duration-500 lg:px-6 dark:bg-zinc-900"
+        "sticky top-0 z-50 flex flex-wrap items-center justify-between bg-white border-b border-b-zinc-200 dark:border-b-zinc-800 px-4 transition duration-500 lg:px-6 dark:bg-zinc-900"
       }
     >
       <div class="mr-6 flex lg:hidden">
@@ -32,17 +36,41 @@ export function Header(props: HeaderProps) {
         </span>
       </div>
       <div class="-my-5 mr-6 sm:mr-8 md:mr-0">{/* Search */}</div>
-      <div class="relative flex basis-0 justify-end gap-2 sm:gap-4 md:flex-grow">
-        <ThemeSelector />
+      <div class="relative flex basis-0 justify-end md:flex-grow">
+        <div class="hidden lg:flex text-sm">
+          <Link
+            href="/docs/core/overview/introduction"
+            class={clsx(
+              "px-3 py-4 flex items-center justify-center transition",
+              !isChangelogPath()
+                ? "text-sky-700 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200 hover:bg-sky-100 dark:hover:bg-sky-800"
+                : "text-zinc-700 hover:text-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            )}
+          >
+            Core
+          </Link>
+          <Link
+            href={LATEST_CORE_CHANGELOG_URL}
+            class={clsx(
+              "px-3 py-4 flex items-center justify-center transition",
+              isChangelogPath()
+                ? "text-sky-700 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200 hover:bg-sky-100 dark:hover:bg-sky-800"
+                : "text-zinc-700 hover:text-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            )}
+          >
+            Changelog
+          </Link>
+        </div>
         <Link
           href="https://github.com/fabien-ml/kobalte"
           target="_blank"
           rel="noopener noreferrer"
-          class="p-1 flex items-center justify-center transition rounded text-zinc-700 hover:text-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+          class="p-4 flex items-center justify-center transition rounded text-zinc-700 hover:text-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
           aria-label="GitHub"
         >
           <GitHubIcon class="h-5 w-5" />
         </Link>
+        <ThemeSelector />
       </div>
     </header>
   );

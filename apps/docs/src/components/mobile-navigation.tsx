@@ -1,8 +1,10 @@
-import { createDisclosureState, Dialog } from "@kobalte/core";
-import { Link, useIsRouting } from "@solidjs/router";
+import { createDisclosureState, Dialog, Separator } from "@kobalte/core";
+import { Link, useIsRouting, useMatch } from "@solidjs/router";
+import { clsx } from "clsx";
 import { ComponentProps, createComputed, splitProps } from "solid-js";
 
-import { NavSection } from "../NAV_SECTIONS";
+import { NavSection } from "../model/navigation";
+import { LATEST_CORE_CHANGELOG_URL } from "../VERSIONS";
 import { CrossIcon, HamburgerMenuIcon } from "./icons";
 import { Navigation } from "./navigation";
 
@@ -18,6 +20,8 @@ export function MobileNavigation(props: MobileNavigationProps) {
   const isRouting = useIsRouting();
 
   createComputed(() => isRouting() && close());
+
+  const isChangelogPath = useMatch(() => "/docs/changelog/*");
 
   return (
     <>
@@ -51,6 +55,31 @@ export function MobileNavigation(props: MobileNavigationProps) {
                 <CrossIcon class="h-4 w-4 stroke-zinc-500" />
               </button>
             </div>
+            <div class="flex flex-col items-start lg:hidden pt-4 pb-2 text-sm">
+              <Link
+                href="/docs/core/overview/introduction"
+                class={clsx(
+                  "block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
+                  !isChangelogPath()
+                    ? "text-sky-700 dark:text-sky-600"
+                    : "text-zinc-600 dark:text-zinc-400"
+                )}
+              >
+                Core
+              </Link>
+              <Link
+                href={LATEST_CORE_CHANGELOG_URL}
+                class={clsx(
+                  "block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
+                  isChangelogPath()
+                    ? "text-sky-700 dark:text-sky-600"
+                    : "text-zinc-600 dark:text-zinc-400"
+                )}
+              >
+                Changelog
+              </Link>
+            </div>
+            <Separator.Root class="lg:hidden" />
             <Navigation sections={local.sections} class="mt-5 px-1" />
           </Dialog.Content>
         </Dialog.Portal>
