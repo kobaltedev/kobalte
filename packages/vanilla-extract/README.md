@@ -63,7 +63,7 @@ export const MyButton = () => <Button.Root class={button}>...</Button.Root>;
 
 ## Documentation
 
-For full documentation, visit [kobalte.dev](https://kobalte.dev/docs/overview/styling#using-the-vanilla-extract-plugin).
+For full documentation, visit [kobalte.dev](https://kobalte.dev/docs/core/overview/styling#using-the-vanilla-extract-plugin).
 
 ## Changelog
 
