@@ -67,7 +67,7 @@ You can use the following modifiers:
 
 ## Documentation
 
-For full documentation, visit [kobalte.dev](https://kobalte.dev/docs/overview/styling#using-the-tailwindcss-plugin).
+For full documentation, visit [kobalte.dev](https://kobalte.dev/docs/core/overview/styling#using-the-tailwindcss-plugin).
 
 ## Acknowledgment
 

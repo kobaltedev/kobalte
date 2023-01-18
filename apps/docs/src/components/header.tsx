@@ -1,19 +1,17 @@
 import { Link, useMatch } from "@solidjs/router";
+import { clsx } from "clsx";
 
 import { NavSection } from "../model/navigation";
 import { LATEST_CORE_CHANGELOG_URL } from "../VERSIONS";
 import { GitHubIcon } from "./icons";
 import { MobileNavigation } from "./mobile-navigation";
 import { ThemeSelector } from "./theme-selector";
-import { clsx } from "clsx";
 
 interface HeaderProps {
   navSections: NavSection[];
 }
 
 export function Header(props: HeaderProps) {
-  const isCorePath = useMatch(() => "/docs/core/*");
-  const isPigmentPath = useMatch(() => "/docs/pigment/*");
   const isChangelogPath = useMatch(() => "/docs/changelog/*");
 
   return (
@@ -44,23 +42,12 @@ export function Header(props: HeaderProps) {
             href="/docs/core/overview/introduction"
             class={clsx(
               "px-3 py-4 flex items-center justify-center transition",
-              isCorePath()
+              !isChangelogPath()
                 ? "text-sky-700 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200 hover:bg-sky-100 dark:hover:bg-sky-800"
                 : "text-zinc-700 hover:text-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             )}
           >
             Core
-          </Link>
-          <Link
-            href="/docs/pigment/overview/introduction"
-            class={clsx(
-              "px-3 py-4 flex items-center justify-center transition",
-              isPigmentPath()
-                ? "text-sky-700 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200 hover:bg-sky-100 dark:hover:bg-sky-800"
-                : "text-zinc-700 hover:text-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            )}
-          >
-            Pigment
           </Link>
           <Link
             href={LATEST_CORE_CHANGELOG_URL}
