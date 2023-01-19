@@ -59,7 +59,7 @@ describe("MultiSelect", () => {
     expect(items[1]).toHaveTextContent("Two");
     expect(items[2]).toHaveTextContent("Three");
 
-    expect(document.activeElement).toBe(items[0]);
+    expect(document.activeElement).toBe(listbox);
 
     await triggerPress(items[0]);
     await triggerPress(items[2]);

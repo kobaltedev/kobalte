@@ -6,17 +6,12 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/useSelect.ts
  */
 
-import { access, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import { access, createGenerateId, mergeDefaultProps, ValidationState } from "@kobalte/utils";
 import { createMemo, createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
 
-import {
-  createFormControl,
-  CreateFormControlProps,
-  FORM_CONTROL_PROP_NAMES,
-  FormControlContext,
-} from "../form-control";
+import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
 import { createCollator } from "../i18n";
-import { createListState, CreateListStateProps, ListKeyboardDelegate } from "../list";
+import { createListState, ListKeyboardDelegate } from "../list";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
   CollectionItem,
@@ -25,17 +20,18 @@ import {
   createRegisterId,
   focusSafely,
 } from "../primitives";
-import { FocusStrategy, KeyboardDelegate, Selection, SelectionMode } from "../selection";
+import {
+  FocusStrategy,
+  KeyboardDelegate,
+  Selection,
+  SelectionBehavior,
+  SelectionMode,
+} from "../selection";
 import { HiddenSelect } from "./hidden-select";
 import { SelectContext, SelectContextValue } from "./select-context";
 
 export interface SelectBaseOptions
-  extends Pick<
-      CreateListStateProps,
-      "allowDuplicateSelectionEvents" | "disallowEmptySelection" | "selectionBehavior"
-    >,
-    Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange">,
-    CreateFormControlProps {
+  extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the select. */
   isOpen?: boolean;
 
@@ -65,6 +61,40 @@ export interface SelectBaseOptions
 
   /** The type of selection that is allowed in the select. */
   selectionMode?: Exclude<SelectionMode, "none">;
+
+  /** How multiple selection should behave in the select. */
+  selectionBehavior?: SelectionBehavior;
+
+  /** Whether onValueChange should fire even if the new set of keys is the same as the last. */
+  allowDuplicateSelectionEvents?: boolean;
+
+  /** Whether the select allows empty selection. */
+  disallowEmptySelection?: boolean;
+
+  /**
+   * A unique identifier for the component.
+   * The id is used to generate id attributes for nested components.
+   * If no id prop is provided, a generated id will be used.
+   */
+  id?: string;
+
+  /**
+   * The name of the select.
+   * Submitted with its owning form as part of a name/value pair.
+   */
+  name?: string;
+
+  /** Whether the select should display its "valid" or "invalid" visual styling. */
+  validationState?: ValidationState;
+
+  /** Whether the user must select an item before the owning form can be submitted. */
+  isRequired?: boolean;
+
+  /** Whether the select is disabled. */
+  isDisabled?: boolean;
+
+  /** Whether the select is read only. */
+  isReadOnly?: boolean;
 
   /**
    * Describes the type of autocomplete functionality the input should provide if any.
