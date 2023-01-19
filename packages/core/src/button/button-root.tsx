@@ -27,17 +27,34 @@ import {
   createFocusRing,
   createHover,
   createPress,
-  CreatePressProps,
   createTagName,
   FOCUS_RING_HANDLERS_PROP_NAMES,
   HOVER_HANDLERS_PROP_NAMES,
   PRESS_HANDLERS_PROP_NAMES,
+  PressEvents,
 } from "../primitives";
 import { isButton } from "./is-button";
 
-export interface ButtonRootOptions extends CreatePressProps {
+export interface ButtonRootOptions extends PressEvents {
   /** Whether the button is disabled. */
   isDisabled?: boolean;
+
+  /** Whether the button should not receive focus on press. */
+  preventFocusOnPress?: boolean;
+
+  /**
+   * Whether press events should be canceled when the pointer leaves the button while pressed.
+   *
+   * By default, this is `false`, which means if the pointer returns over the button while
+   * still pressed, onPressStart will be fired again.
+   *
+   * If set to `true`, the press is canceled when the pointer leaves the button and
+   * onPressStart will not be fired if the pointer returns.
+   */
+  cancelOnPointerExit?: boolean;
+
+  /** Whether text selection should be enabled on the button. */
+  allowTextSelectionOnPress?: boolean;
 }
 
 const ButtonRootSymbol = Symbol("$$ButtonRoot");
