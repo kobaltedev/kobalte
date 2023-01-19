@@ -21,19 +21,36 @@ import {
   createFocusRing,
   createHover,
   createPress,
-  CreatePressProps,
   createTagName,
   FOCUS_RING_HANDLERS_PROP_NAMES,
   HOVER_HANDLERS_PROP_NAMES,
   PRESS_HANDLERS_PROP_NAMES,
+  PressEvents,
 } from "../primitives";
 
-export interface LinkRootOptions extends CreatePressProps {
+export interface LinkRootOptions extends PressEvents {
   /**
    * Whether the link is disabled.
    * Native navigation will be disabled, and the link will be exposed as disabled to assistive technology.
    */
   isDisabled?: boolean;
+
+  /** Whether the link should not receive focus on press. */
+  preventFocusOnPress?: boolean;
+
+  /**
+   * Whether press events should be canceled when the pointer leaves the link while pressed.
+   *
+   * By default, this is `false`, which means if the pointer returns over the link while
+   * still pressed, onPressStart will be fired again.
+   *
+   * If set to `true`, the press is canceled when the pointer leaves the link and
+   * onPressStart will not be fired if the pointer returns.
+   */
+  cancelOnPointerExit?: boolean;
+
+  /** Whether text selection should be enabled on the link. */
+  allowTextSelectionOnPress?: boolean;
 }
 
 const LinkRootSymbol = Symbol("$$LinkRoot");
