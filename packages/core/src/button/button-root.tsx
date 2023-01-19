@@ -40,6 +40,8 @@ export interface ButtonRootOptions extends CreatePressProps {
   isDisabled?: boolean;
 }
 
+const ButtonRootSymbol = Symbol("$$ButtonRoot");
+
 /**
  * Button enables users to trigger an action or event, such as submitting a form,
  * opening a dialog, canceling an action, or performing a delete operation.
@@ -101,12 +103,125 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
     return tagName() === "input";
   });
 
-  const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
+  // Mark the handlers below as coming from a `ButtonRoot` component and prevent them from executing their
+  // default behavior when a component that use `ButtonRoot` under the hood
+  // is passed to the `as` prop of another component that use `ButtonRoot` under the hood.
+  // This is necessary to prevent `createPress` logic being executed twice.
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    if (local.onKeyDown) {
+      callHandler(e, local.onKeyDown);
+
+      // @ts-ignore
+      if (local.onKeyDown[ButtonRootSymbol]) {
+        return;
+      }
+    }
+
+    callHandler(e, pressHandlers.onKeyDown);
+  };
+
+  // @ts-ignore
+  onKeyDown[ButtonRootSymbol] = true;
+
+  const onKeyUp: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    if (local.onKeyUp) {
+      callHandler(e, local.onKeyUp);
+
+      // @ts-ignore
+      if (local.onKeyUp[ButtonRootSymbol]) {
+        return;
+      }
+    }
+
+    callHandler(e, pressHandlers.onKeyUp);
+  };
+
+  // @ts-ignore
+  onKeyUp[ButtonRootSymbol] = true;
+
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     if (local.onClick) {
       callHandler(e, local.onClick);
-      console.warn("[kobalte]: use `onPress` instead of `onClick` for handling click interactions");
+
+      // @ts-ignore
+      if (local.onClick[ButtonRootSymbol]) {
+        return;
+      }
+
+      console.warn(
+        "[kobalte]: use `onPress` instead of `onClick` for handling click interactions."
+      );
     }
+
+    callHandler(e, pressHandlers.onClick);
   };
+
+  // @ts-ignore
+  onClick[ButtonRootSymbol] = true;
+
+  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    if (local.onPointerDown) {
+      callHandler(e, local.onPointerDown);
+
+      // @ts-ignore
+      if (local.onPointerDown[ButtonRootSymbol]) {
+        return;
+      }
+    }
+
+    callHandler(e, pressHandlers.onPointerDown);
+  };
+
+  // @ts-ignore
+  onPointerDown[ButtonRootSymbol] = true;
+
+  const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    if (local.onPointerUp) {
+      callHandler(e, local.onPointerUp);
+
+      // @ts-ignore
+      if (local.onPointerUp[ButtonRootSymbol]) {
+        return;
+      }
+    }
+
+    callHandler(e, pressHandlers.onPointerUp);
+  };
+
+  // @ts-ignore
+  onPointerUp[ButtonRootSymbol] = true;
+
+  const onMouseDown: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    if (local.onMouseDown) {
+      callHandler(e, local.onMouseDown);
+
+      // @ts-ignore
+      if (local.onMouseDown[ButtonRootSymbol]) {
+        return;
+      }
+    }
+
+    callHandler(e, pressHandlers.onMouseDown);
+  };
+
+  // @ts-ignore
+  onMouseDown[ButtonRootSymbol] = true;
+
+  const onDragStart: JSX.EventHandlerUnion<any, DragEvent> = e => {
+    if (local.onDragStart) {
+      callHandler(e, local.onDragStart);
+
+      // @ts-ignore
+      if (local.onDragStart[ButtonRootSymbol]) {
+        return;
+      }
+    }
+
+    callHandler(e, pressHandlers.onDragStart);
+  };
+
+  // @ts-ignore
+  onDragStart[ButtonRootSymbol] = true;
 
   return (
     <Dynamic
@@ -122,13 +237,13 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
       data-active={isPressed() ? "" : undefined}
-      onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
-      onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
-      onClick={composeEventHandlers([onClick, pressHandlers.onClick])}
-      onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
-      onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
-      onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
-      onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
+      onKeyDown={onKeyDown}
+      onKeyUp={onKeyUp}
+      onClick={onClick}
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
+      onMouseDown={onMouseDown}
+      onDragStart={onDragStart}
       onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
       onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
       onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
