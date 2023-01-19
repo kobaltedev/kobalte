@@ -103,7 +103,7 @@ describe("Select", () => {
       expect(items[1]).toHaveTextContent("Two");
       expect(items[2]).toHaveTextContent("Three");
 
-      expect(document.activeElement).toBe(items[0]);
+      expect(document.activeElement).toBe(listbox);
     });
 
     it("can be opened on touch up", async () => {
@@ -162,7 +162,7 @@ describe("Select", () => {
       expect(items[1]).toHaveTextContent("Two");
       expect(items[2]).toHaveTextContent("Three");
 
-      expect(document.activeElement).toBe(items[0]);
+      expect(document.activeElement).toBe(listbox);
     });
 
     it("can be opened on Space key down", async () => {
@@ -991,7 +991,7 @@ describe("Select", () => {
       expect(items[1]).toHaveTextContent("Two");
       expect(items[2]).toHaveTextContent("Three");
 
-      expect(document.activeElement).toBe(items[0]);
+      expect(document.activeElement).toBe(listbox);
 
       await triggerPress(items[2]);
 
@@ -1163,7 +1163,7 @@ describe("Select", () => {
       expect(items[1]).toHaveTextContent("Two");
       expect(items[2]).toHaveTextContent("Three");
 
-      expect(document.activeElement).toBe(items[0]);
+      expect(document.activeElement).toBe(listbox);
 
       fireEvent.pointerEnter(items[1]);
       await Promise.resolve();
@@ -1863,8 +1863,7 @@ describe("Select", () => {
       expect(trigger).toHaveTextContent("France");
     });
 
-    // TODO: failing, don't know why.
-    it.skip("should have a hidden input to marshall focus to the button", async () => {
+    it("should have a hidden input to marshall focus to the button", async () => {
       render(() => (
         <Select.Root onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>

@@ -1,28 +1,32 @@
 import { Link, useLocation } from "@solidjs/router";
 import { ParentProps, Show } from "solid-js";
 
-import { NAV_SECTIONS } from "../NAV_SECTIONS";
+import { NavSection } from "../model/navigation";
 import { Footer } from "./footer";
 import { Header } from "./header";
 import { Navigation } from "./navigation";
 import { Prose } from "./prose";
 import { TableOfContents } from "./table-of-contents";
 
-export function Layout(props: ParentProps) {
+interface LayoutProps extends ParentProps {
+  navSections: NavSection[];
+}
+
+export function Layout(props: LayoutProps) {
   const location = useLocation();
 
-  const allLinks = NAV_SECTIONS.flatMap(section => section.links);
+  const allLinks = props.navSections.flatMap(section => section.links);
   const linkIndex = () => allLinks.findIndex(link => link.href === location.pathname);
   const previousPage = () => allLinks[linkIndex() - 1];
   const nextPage = () => allLinks[linkIndex() + 1];
 
   return (
     <>
-      <Header navSections={NAV_SECTIONS} />
+      <Header navSections={props.navSections} />
       <div class="relative flex justify-center dark:bg-zinc-900">
         <div class="hidden lg:relative lg:block lg:flex-none">
           <div class="sticky top-[61px] h-[calc(100vh-61px)] overflow-y-auto py-6 pl-6 pr-2">
-            <Navigation sections={NAV_SECTIONS} />
+            <Navigation sections={props.navSections} />
           </div>
         </div>
         <div class="min-w-0 mx-auto max-w-2xl flex-auto px-4 xl:px-16 py-16 lg:max-w-4xl">
