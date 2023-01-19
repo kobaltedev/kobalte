@@ -40,6 +40,8 @@ export interface ButtonRootOptions extends CreatePressProps {
   isDisabled?: boolean;
 }
 
+const ButtonRootSymbol = Symbol("$$ButtonRoot");
+
 /**
  * Button enables users to trigger an action or event, such as submitting a form,
  * opening a dialog, canceling an action, or performing a delete operation.
@@ -104,9 +106,23 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
   const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
     if (local.onClick) {
       callHandler(e, local.onClick);
-      console.warn("[kobalte]: use `onPress` instead of `onClick` for handling click interactions");
+
+      // Show the warning if the `onClick` prop is not coming from a `ButtonRoot`.
+      // @ts-ignore
+      if (!local.onClick[ButtonRootSymbol]) {
+        console.warn(
+          "[kobalte]: use `onPress` instead of `onClick` for handling click interactions"
+        );
+      }
     }
+
+    callHandler(e, pressHandlers.onClick);
   };
+
+  // Mark the click handler as coming from a `ButtonRoot` component to prevent showing the warning
+  // when a component that use `ButtonRoot` under the hood is passed to the `as` prop.
+  // @ts-ignore
+  onClick[ButtonRootSymbol] = true;
 
   return (
     <Dynamic
@@ -124,7 +140,8 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
       data-active={isPressed() ? "" : undefined}
       onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
       onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
-      onClick={composeEventHandlers([onClick, pressHandlers.onClick])}
+      //onClick={composeEventHandlers([onClick, pressHandlers.onClick])}
+      onClick={onClick}
       onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
       onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
       onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
