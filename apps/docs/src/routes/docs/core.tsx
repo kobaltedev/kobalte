@@ -69,6 +69,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/popover",
       },
       {
+        title: "Progress",
+        href: "/docs/core/components/progress",
+      },
+      {
         title: "Radio Group",
         href: "/docs/core/components/radio-group",
       },
