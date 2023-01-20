@@ -10,6 +10,7 @@ export * from "./focus-without-scrolling";
 export * from "./get-scroll-parent";
 export * from "./is-virtual-event";
 export * from "./noop";
+export * from "./number";
 export * from "./platform";
 export * from "./polygon";
 export * from "./polymorphic";
