@@ -21,6 +21,7 @@ export * as Link from "./link";
 export * as Listbox from "./listbox";
 export * as MultiSelect from "./multi-select";
 export * as Popover from "./popover";
+export * as Progress from "./progress";
 export * as RadioGroup from "./radio-group";
 export * as RangeCalendar from "./range-calendar";
 export * as Select from "./select";

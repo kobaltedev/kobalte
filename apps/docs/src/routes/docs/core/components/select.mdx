@@ -121,7 +121,7 @@ The multi-select consists of:
     import { ComponentProps, splitProps } from "solid-js";
     import "./style.css";
 
-    function SelectItem(props: ComponentProps<typeof Select.Item>) {
+    function SelectItem(props: ComponentProps<typeof Select.Item\>) {
       const [local, others] = splitProps(props, ["children"]);
 
       return (
@@ -735,6 +735,30 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | Data attribute         | Description                                                         |
 | :--------------------- | :------------------------------------------------------------------ |
 | data-placeholder-shown | Present when the select placeholder is visible (no value selected). |
+
+## Rendered elements
+
+| Component                | Default rendered element |
+| :----------------------- | :----------------------- |
+| `Select.Root`            | none                     |
+| `Select.Label`           | `span`                   |
+| `Select.Description`     | `div`                    |
+| `Select.ErrorMessage`    | `div`                    |
+| `Select.Trigger`         | `button`                 |
+| `Select.Value`           | `span`                   |
+| `Select.Icon`            | `div`                    |
+| `Select.Portal`          | `Portal`                 |
+| `Select.Content`         | `div`                    |
+| `Select.Arrow`           | `div`                    |
+| `Select.Listbox`         | `div`                    |
+| `Select.Separator`       | `hr`                     |
+| `Select.Group`           | `div`                    |
+| `Select.GroupLabel`      | `span`                   |
+| `Select.Item`            | `div`                    |
+| `Select.ItemLabel`       | `div`                    |
+| `Select.ItemDescription` | `div`                    |
+| `Select.ItemIndicator`   | `div`                    |
+| `MultiSelect.Root`       | none                     |
 
 ## Accessibility
 
