@@ -13,6 +13,9 @@ import { ComponentProps, createEffect, createSignal, on, onCleanup, Show } from 
 import { useAvatarContext } from "./avatar-context";
 import { ImageLoadingStatus } from "./types";
 
+/**
+ * The image to render. By default, it will only render when it has loaded.
+ */
 export const AvatarImage = (props: ComponentProps<"img">) => {
   const context = useAvatarContext();
 
