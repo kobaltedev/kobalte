@@ -39,6 +39,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Avatar",
         href: "/docs/core/components/avatar",
+        status: "new",
       },
       {
         title: "Button",
@@ -75,6 +76,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Progress",
         href: "/docs/core/components/progress",
+        status: "new",
       },
       {
         title: "Radio Group",
