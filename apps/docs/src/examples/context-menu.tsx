@@ -25,7 +25,7 @@ export function BasicExample() {
           <ContextMenu.Item class={style["context-menu__item"]} isDisabled>
             Update Project <div class={style["context-menu__item-right-slot"]}>⌘+T</div>
           </ContextMenu.Item>
-          <ContextMenu.Sub gutter={4} shift={-8}>
+          <ContextMenu.Sub overlap gutter={4} shift={-8}>
             <ContextMenu.SubTrigger class={style["context-menu__sub-trigger"]}>
               GitHub
               <div class={style["context-menu__item-right-slot"]}>
