@@ -10,8 +10,8 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { ImageLoadingStatus } from "./types";
 import { AvatarContext, AvatarContextValue } from "./avatar-context";
+import { ImageLoadingStatus } from "./types";
 
 export interface AvatarRootOptions {
   /**
