@@ -10,6 +10,7 @@ export { createPolymorphicComponent } from "@kobalte/utils";
 
 // components
 export * as Alert from "./alert";
+export * as Avatar from "./avatar";
 export * as Button from "./button";
 export * as Calendar from "./calendar";
 export * as Checkbox from "./checkbox";
