@@ -1,0 +1,194 @@
+import { Preview, TabsSnippets } from "../../../../components";
+import { BasicExample, CustomSeparatorExample } from "../../../../examples/breadcrumbs";
+
+# Breadcrumbs
+
+Show hierarchy and navigational context for a user’s location within an application.
+
+## Import
+
+```ts
+import { Breadcrumbs } from "@kobalte/core";
+```
+
+## Features
+
+- Support for mouse, touch, and keyboard interactions on breadcrumb links.
+- Support for navigation links via `<a>` elements or custom element types via ARIA.
+- Localized ARIA labeling support for landmark navigation region.
+- Support for disabled breadcrumb links.
+
+## Anatomy
+
+The breadcrumbs consist of:
+
+- **Breadcrumbs.Root:** The root container for a breadcrumbs.
+- **Breadcrumbs.Link:** The breadcrumb link.
+- **Breadcrumbs.Separator:** The visual separator between each breadcrumb items. It will not be visible by screen readers.
+- **ol:** The native HTML `<ol>` element used to contain breadcrumb items.
+- **li:** The native HTML `<li>` element used to contain breadcrumb link and separator.
+
+```tsx
+<Breadcrumbs.Root>
+  <ol>
+    <li>
+      <Breadcrumbs.Link />
+      <Breadcrumbs.Separator />
+    </li>
+  </ol>
+</Breadcrumbs.Root>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Breadcrumbs } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      return (
+        <Breadcrumbs.Root>
+          <ol class="breadcrumbs__list">
+            <li class="breadcrumbs__item">
+              <Breadcrumbs.Link href="/" class="breadcrumbs__link">
+                Home
+              </Breadcrumbs.Link>
+              <Breadcrumbs.Separator class="breadcrumbs__separator" />
+            </li>
+            <li class="breadcrumbs__item">
+              <Breadcrumbs.Link href="/components" class="breadcrumbs__link">
+                Components
+              </Breadcrumbs.Link>
+              <Breadcrumbs.Separator class="breadcrumbs__separator" />
+            </li>
+            <li class="breadcrumbs__item">
+              <Breadcrumbs.Link isCurrent class="breadcrumbs__link">
+                Breadcrumbs
+              </Breadcrumbs.Link>
+            </li>
+          </ol>
+        </Breadcrumbs.Root>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .breadcrumbs__list {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .breadcrumbs__item {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .breadcrumbs__link {
+      font-weight: 500;
+      color: hsl(240 4% 16%);
+    }
+
+    .breadcrumbs__link[data-disabled] {
+      color: hsl(240 4% 46%);
+    }
+
+    .breadcrumbs__link[data-hover] {
+      color: hsl(201 96% 32%);
+    }
+
+    .breadcrumbs__link[data-current] {
+      font-weight: 400;
+    }
+
+    .breadcrumbs__separator {
+      display: inline-block;
+      margin: 0 4px;
+      color: hsl(240 5% 65%);
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+### Custom separator
+
+Use the `separator` prop to provide a default content for all `Breadcrumbs.Separator`. You can pass it a `string` or a SolidJS component.
+
+<Preview>
+  <CustomSeparatorExample />
+</Preview>
+
+```tsx {0,4}
+import { ChevronRightIcon } from "some-icon-library";
+
+function App() {
+  return (
+    <Breadcrumbs.Root separator={<ChevronRightIcon />}>
+      <ol class="breadcrumbs__list">
+        <li class="breadcrumbs__item">
+          <Breadcrumbs.Link href="/" class="breadcrumbs__link">
+            Home
+          </Breadcrumbs.Link>
+          <Breadcrumbs.Separator class="breadcrumbs__separator" />
+        </li>
+        <li class="breadcrumbs__item">
+          <Breadcrumbs.Link href="/components" class="breadcrumbs__link">
+            Components
+          </Breadcrumbs.Link>
+          <Breadcrumbs.Separator class="breadcrumbs__separator" />
+        </li>
+        <li class="breadcrumbs__item">
+          <Breadcrumbs.Link isCurrent class="breadcrumbs__link">
+            Breadcrumbs
+          </Breadcrumbs.Link>
+        </li>
+      </ol>
+    </Breadcrumbs.Root>
+  );
+}
+```
+
+## API Reference
+
+### Breadcrumbs.Root
+
+| Prop      | Description                                                                                                                                          |
+| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| separator | `string \| JSX.Element` <br/> The visual separator between each breadcrumb item. It will be used as the default children of `Breadcrumbs.Separator`. |
+
+### Breadcrumbs.Link
+
+`Breadcrumbs.Link` consists of [Link](/docs/core/components/link).
+
+| Prop       | Description                                                              |
+| :--------- | :----------------------------------------------------------------------- |
+| isCurrent  | `boolean` <br/> Whether the breadcrumb link represents the current page. |
+| isDisabled | `boolean` <br/> Whether the breadcrumb link is disabled.                 |
+
+| Data attribute | Description                                                   |
+| :------------- | :------------------------------------------------------------ |
+| data-current   | Present when the breadcrumb link represents the current page. |
+
+## Rendered elements
+
+| Component               | Default rendered element |
+| :---------------------- | :----------------------- |
+| `Breadcrumbs.Root`      | `nav`                    |
+| `Breadcrumbs.Link`      | `a`                      |
+| `Breadcrumbs.Separator` | `span`                   |

@@ -42,6 +42,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         status: "new",
       },
       {
+        title: "Breadcrumbs",
+        href: "/docs/core/components/breadcrumbs",
+        status: "new",
+      },
+      {
         title: "Button",
         href: "/docs/core/components/button",
       },
