@@ -1,6 +1,6 @@
 import { Link } from "@solidjs/router";
 
-import { GitHubIcon, TwitterIcon } from "./icons";
+import { DiscordIcon, GitHubIcon, TwitterIcon } from "./icons";
 
 export function Footer() {
   return (
@@ -32,6 +32,17 @@ export function Footer() {
                 >
                   <GitHubIcon class="h-4 w-4" />
                   <span>GitHub</span>
+                </a>
+              </li>
+              <li class="mb-2">
+                <a
+                  class="flex items-center space-x-1 text-zinc-600 hover:text-zinc-700 dark:text-zinc-400 transition duration-150 ease-in-out"
+                  href="https://discord.com/channels/722131463138705510/1063803756388548709"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <DiscordIcon class="h-4 w-4" />
+                  <span>Discord</span>
                 </a>
               </li>
               <li class="mb-2">
