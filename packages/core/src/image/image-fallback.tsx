@@ -10,14 +10,14 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, createSignal, onCleanup, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { useAvatarContext } from "./avatar-context";
+import { useImageContext } from "./image-context";
 
 /**
  * An element that renders when the image hasn't loaded.
  * This means whilst it's loading, or if there was an error.
  */
-export const AvatarFallback = createPolymorphicComponent<"span">(props => {
-  const context = useAvatarContext();
+export const ImageFallback = createPolymorphicComponent<"span">(props => {
+  const context = useImageContext();
 
   props = mergeDefaultProps({ as: "span" }, props);
 

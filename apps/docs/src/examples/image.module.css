@@ -1,4 +1,4 @@
-.avatar {
+.image {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -11,14 +11,14 @@
   background-color: hsl(240 6% 90%);
 }
 
-.avatar__image {
+.image__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: inherit;
 }
 
-.avatar__fallback {
+.image__fallback {
   width: 100%;
   height: 100%;
   display: flex;
@@ -31,7 +31,7 @@
   font-weight: 500;
 }
 
-[data-kb-theme="dark"] .avatar__fallback {
+[data-kb-theme="dark"] .image__fallback {
   background-color: hsl(202 80% 24%);
   color: hsl(198 93% 60%);
 }

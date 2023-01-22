@@ -10,14 +10,14 @@
 
 import { ComponentProps, createEffect, createSignal, on, onCleanup, Show } from "solid-js";
 
-import { useAvatarContext } from "./avatar-context";
+import { useImageContext } from "./image-context";
 import { ImageLoadingStatus } from "./types";
 
 /**
  * The image to render. By default, it will only render when it has loaded.
  */
-export const AvatarImage = (props: ComponentProps<"img">) => {
-  const context = useAvatarContext();
+export const ImageImg = (props: ComponentProps<"img">) => {
+  const context = useImageContext();
 
   const [loadingStatus, setLoadingStatus] = createSignal<ImageLoadingStatus>("idle");
 

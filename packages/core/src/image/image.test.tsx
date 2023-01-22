@@ -9,19 +9,19 @@
 import { checkAccessibility } from "@kobalte/tests";
 import { render, screen } from "solid-testing-library";
 
-import * as Avatar from ".";
+import * as Image from ".";
 
-const ROOT_TEST_ID = "avatar-root";
+const ROOT_TEST_ID = "image-root";
 const FALLBACK_TEXT = "AB";
-const IMAGE_ALT_TEXT = "Fake Avatar";
+const IMAGE_ALT_TEXT = "Fake Image";
 const DELAY = 300;
 
-describe("Avatar", () => {
+describe("Image", () => {
   describe("with fallback and no image", () => {
     checkAccessibility([
-      <Avatar.Root data-testid={ROOT_TEST_ID}>
-        <Avatar.Fallback>{FALLBACK_TEXT}</Avatar.Fallback>
-      </Avatar.Root>,
+      <Image.Root data-testid={ROOT_TEST_ID}>
+        <Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
+      </Image.Root>,
     ]);
   });
 
@@ -47,10 +47,10 @@ describe("Avatar", () => {
 
     it("should render the fallback initially", () => {
       render(() => (
-        <Avatar.Root data-testid={ROOT_TEST_ID}>
-          <Avatar.Fallback>{FALLBACK_TEXT}</Avatar.Fallback>
-          <Avatar.Image src="/test.jpg" alt={IMAGE_ALT_TEXT} />
-        </Avatar.Root>
+        <Image.Root data-testid={ROOT_TEST_ID}>
+          <Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
+          <Image.Img src="/test.jpg" alt={IMAGE_ALT_TEXT} />
+        </Image.Root>
       ));
 
       const fallback = screen.queryByText(FALLBACK_TEXT);
@@ -59,10 +59,10 @@ describe("Avatar", () => {
 
     it("should not render the image initially", () => {
       render(() => (
-        <Avatar.Root data-testid={ROOT_TEST_ID}>
-          <Avatar.Fallback>{FALLBACK_TEXT}</Avatar.Fallback>
-          <Avatar.Image src="/test.jpg" alt={IMAGE_ALT_TEXT} />
-        </Avatar.Root>
+        <Image.Root data-testid={ROOT_TEST_ID}>
+          <Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
+          <Image.Img src="/test.jpg" alt={IMAGE_ALT_TEXT} />
+        </Image.Root>
       ));
 
       const image = screen.queryByRole("img");
@@ -71,10 +71,10 @@ describe("Avatar", () => {
 
     it("should render the image after it has loaded", async () => {
       render(() => (
-        <Avatar.Root data-testid={ROOT_TEST_ID}>
-          <Avatar.Fallback>{FALLBACK_TEXT}</Avatar.Fallback>
-          <Avatar.Image src="/test.jpg" alt={IMAGE_ALT_TEXT} />
-        </Avatar.Root>
+        <Image.Root data-testid={ROOT_TEST_ID}>
+          <Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
+          <Image.Img src="/test.jpg" alt={IMAGE_ALT_TEXT} />
+        </Image.Root>
       ));
 
       const image = await screen.findByRole("img");
@@ -83,10 +83,10 @@ describe("Avatar", () => {
 
     it("should have alt text on the image", async () => {
       render(() => (
-        <Avatar.Root data-testid={ROOT_TEST_ID}>
-          <Avatar.Fallback>{FALLBACK_TEXT}</Avatar.Fallback>
-          <Avatar.Image src="/test.jpg" alt={IMAGE_ALT_TEXT} />
-        </Avatar.Root>
+        <Image.Root data-testid={ROOT_TEST_ID}>
+          <Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
+          <Image.Img src="/test.jpg" alt={IMAGE_ALT_TEXT} />
+        </Image.Root>
       ));
 
       const image = await screen.findByAltText(IMAGE_ALT_TEXT);
@@ -97,9 +97,9 @@ describe("Avatar", () => {
   describe("with fallback and delayed render", () => {
     it("should not render a fallback immediately", () => {
       render(() => (
-        <Avatar.Root data-testid={ROOT_TEST_ID} fallbackDelay={DELAY}>
-          <Avatar.Fallback>{FALLBACK_TEXT}</Avatar.Fallback>
-        </Avatar.Root>
+        <Image.Root data-testid={ROOT_TEST_ID} fallbackDelay={DELAY}>
+          <Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
+        </Image.Root>
       ));
 
       const fallback = screen.queryByText(FALLBACK_TEXT);
@@ -108,9 +108,9 @@ describe("Avatar", () => {
 
     it("should render a fallback after the delay", async () => {
       render(() => (
-        <Avatar.Root data-testid={ROOT_TEST_ID} fallbackDelay={DELAY}>
-          <Avatar.Fallback>{FALLBACK_TEXT}</Avatar.Fallback>
-        </Avatar.Root>
+        <Image.Root data-testid={ROOT_TEST_ID} fallbackDelay={DELAY}>
+          <Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
+        </Image.Root>
       ));
 
       let fallback = screen.queryByText(FALLBACK_TEXT);

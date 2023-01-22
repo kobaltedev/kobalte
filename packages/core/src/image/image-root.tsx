@@ -10,12 +10,12 @@ import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { AvatarContext, AvatarContextValue } from "./avatar-context";
+import { ImageContext, ImageContextValue } from "./image-context";
 import { ImageLoadingStatus } from "./types";
 
 export interface AvatarRootOptions {
   /**
-   * The delay (in ms) before displaying the avatar fallback.
+   * The delay (in ms) before displaying the image fallback.
    * Useful if you notice a flash during loading for delaying rendering,
    * so it only appears for those with slower internet connections.
    */
@@ -29,16 +29,16 @@ export interface AvatarRootOptions {
 }
 
 /**
- * An image element with a fallback for representing the user.
+ * An image element with an optional fallback for loading and error status.
  */
-export const AvatarRoot = createPolymorphicComponent<"span", AvatarRootOptions>(props => {
+export const ImageRoot = createPolymorphicComponent<"span", AvatarRootOptions>(props => {
   props = mergeDefaultProps({ as: "span" }, props);
 
   const [local, others] = splitProps(props, ["as", "fallbackDelay", "onLoadingStatusChange"]);
 
   const [imageLoadingStatus, setImageLoadingStatus] = createSignal<ImageLoadingStatus>("idle");
 
-  const context: AvatarContextValue = {
+  const context: ImageContextValue = {
     fallbackDelay: () => local.fallbackDelay,
     imageLoadingStatus,
     onImageLoadingStatusChange: status => {
@@ -48,8 +48,8 @@ export const AvatarRoot = createPolymorphicComponent<"span", AvatarRootOptions>(
   };
 
   return (
-    <AvatarContext.Provider value={context}>
+    <ImageContext.Provider value={context}>
       <Dynamic component={local.as} {...others} />
-    </AvatarContext.Provider>
+    </ImageContext.Provider>
   );
 });

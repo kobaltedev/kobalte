@@ -37,11 +37,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/alert",
       },
       {
-        title: "Avatar",
-        href: "/docs/core/components/avatar",
-        status: "new",
-      },
-      {
         title: "Breadcrumbs",
         href: "/docs/core/components/breadcrumbs",
         status: "new",
@@ -69,6 +64,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Hover Card",
         href: "/docs/core/components/hover-card",
+      },
+      {
+        title: "Image",
+        href: "/docs/core/components/image",
+        status: "new",
       },
       {
         title: "Link",
