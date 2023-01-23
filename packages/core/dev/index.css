@@ -1,27 +1,30 @@
-.breadcrumbs__list {
-  display: flex;
-  align-items: center;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.collapsible {
+  width: 300px;
 }
 
-.breadcrumbs__link {
-  color: blue;
-  text-decoration: underline;
-  cursor: pointer;
+.collapsible__content {
+  overflow: hidden;
+  animation: slideUp 300ms ease-out;
 }
 
-.breadcrumbs__link[data-disabled] {
-  color: gray;
-  text-decoration: none;
-  cursor: default;
+.collapsible__content[data-expanded] {
+  animation: slideDown 300ms ease-out;
 }
 
-.breadcrumbs__link[data-disabled][data-current] {
-  color: blue;
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--kb-collapsible-content-height);
+  }
 }
 
-.breadcrumbs__separator {
-  margin: 0 4px;
+@keyframes slideUp {
+  from {
+    height: var(--kb-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
 }

@@ -10,6 +10,7 @@ export * from "./create-hide-outside";
 export * from "./create-hover";
 export * from "./create-interact-outside";
 export * from "./create-long-press";
+export * from "./create-presence";
 export * from "./create-press";
 export * from "./create-prevent-scroll";
 export * from "./create-register-id";
