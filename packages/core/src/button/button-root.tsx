@@ -32,6 +32,7 @@ import {
   HOVER_HANDLERS_PROP_NAMES,
   PRESS_HANDLERS_PROP_NAMES,
   PressEvents,
+  PressSymbol,
 } from "../primitives";
 import { isButton } from "./is-button";
 
@@ -56,8 +57,6 @@ export interface ButtonRootOptions extends PressEvents {
   /** Whether text selection should be enabled on the button. */
   allowTextSelectionOnPress?: boolean;
 }
-
-const ButtonRootSymbol = Symbol("$$ButtonRoot");
 
 /**
  * Button enables users to trigger an action or event, such as submitting a form,
@@ -120,16 +119,16 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
     return tagName() === "input";
   });
 
-  // Mark the handlers below as coming from a `ButtonRoot` component and prevent them from executing their
-  // default behavior when a component that use `ButtonRoot` under the hood
-  // is passed to the `as` prop of another component that use `ButtonRoot` under the hood.
+  // Mark the handlers below as coming from a `createPress` primitive and prevent them from executing their
+  // default behavior when a component that use `createPress` under the hood
+  // is passed to the `as` prop of another component that use `createPress` under the hood.
   // This is necessary to prevent `createPress` logic being executed twice.
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     if (local.onKeyDown) {
       callHandler(e, local.onKeyDown);
 
       // @ts-ignore
-      if (local.onKeyDown[ButtonRootSymbol]) {
+      if (local.onKeyDown[PressSymbol]) {
         return;
       }
     }
@@ -138,14 +137,14 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
   };
 
   // @ts-ignore
-  onKeyDown[ButtonRootSymbol] = true;
+  onKeyDown[PressSymbol] = true;
 
   const onKeyUp: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     if (local.onKeyUp) {
       callHandler(e, local.onKeyUp);
 
       // @ts-ignore
-      if (local.onKeyUp[ButtonRootSymbol]) {
+      if (local.onKeyUp[PressSymbol]) {
         return;
       }
     }
@@ -154,14 +153,14 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
   };
 
   // @ts-ignore
-  onKeyUp[ButtonRootSymbol] = true;
+  onKeyUp[PressSymbol] = true;
 
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     if (local.onClick) {
       callHandler(e, local.onClick);
 
       // @ts-ignore
-      if (local.onClick[ButtonRootSymbol]) {
+      if (local.onClick[PressSymbol]) {
         return;
       }
 
@@ -174,14 +173,14 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
   };
 
   // @ts-ignore
-  onClick[ButtonRootSymbol] = true;
+  onClick[PressSymbol] = true;
 
   const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
     if (local.onPointerDown) {
       callHandler(e, local.onPointerDown);
 
       // @ts-ignore
-      if (local.onPointerDown[ButtonRootSymbol]) {
+      if (local.onPointerDown[PressSymbol]) {
         return;
       }
     }
@@ -190,14 +189,14 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
   };
 
   // @ts-ignore
-  onPointerDown[ButtonRootSymbol] = true;
+  onPointerDown[PressSymbol] = true;
 
   const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
     if (local.onPointerUp) {
       callHandler(e, local.onPointerUp);
 
       // @ts-ignore
-      if (local.onPointerUp[ButtonRootSymbol]) {
+      if (local.onPointerUp[PressSymbol]) {
         return;
       }
     }
@@ -206,14 +205,14 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
   };
 
   // @ts-ignore
-  onPointerUp[ButtonRootSymbol] = true;
+  onPointerUp[PressSymbol] = true;
 
   const onMouseDown: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     if (local.onMouseDown) {
       callHandler(e, local.onMouseDown);
 
       // @ts-ignore
-      if (local.onMouseDown[ButtonRootSymbol]) {
+      if (local.onMouseDown[PressSymbol]) {
         return;
       }
     }
@@ -222,14 +221,14 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
   };
 
   // @ts-ignore
-  onMouseDown[ButtonRootSymbol] = true;
+  onMouseDown[PressSymbol] = true;
 
   const onDragStart: JSX.EventHandlerUnion<any, DragEvent> = e => {
     if (local.onDragStart) {
       callHandler(e, local.onDragStart);
 
       // @ts-ignore
-      if (local.onDragStart[ButtonRootSymbol]) {
+      if (local.onDragStart[PressSymbol]) {
         return;
       }
     }
@@ -238,7 +237,7 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
   };
 
   // @ts-ignore
-  onDragStart[ButtonRootSymbol] = true;
+  onDragStart[PressSymbol] = true;
 
   return (
     <Dynamic
