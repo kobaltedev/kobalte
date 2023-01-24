@@ -14,7 +14,7 @@ import { PressEvents } from "../primitives";
 import { useCollapsibleContext } from "./collapsible-context";
 
 /**
- * The button that opens/closes the collapsible content.
+ * The button that expands/collapses the collapsible content.
  */
 export const CollapsibleTrigger = createPolymorphicComponent<"button", Button.ButtonRootOptions>(
   props => {

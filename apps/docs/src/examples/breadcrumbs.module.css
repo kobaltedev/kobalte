@@ -32,7 +32,7 @@
 }
 
 [data-kb-theme="dark"] .breadcrumbs__link {
-  color: hsl(255 100% 100% / 0.9);
+  color: hsl(0 100% 100% / 0.9);
 }
 
 [data-kb-theme="dark"] .breadcrumbs__link[data-disabled] {
