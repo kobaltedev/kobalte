@@ -1,0 +1,205 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import { BasicExample, AnimatingContentExample } from "../../../../examples/collapsible";
+
+# Collapsible
+
+An interactive component which expands/collapses a content.
+
+## Import
+
+```ts
+import { Collapsible } from "@kobalte/core";
+```
+
+## Features
+
+- Follow the [WAI ARIA Disclosure](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/) design pattern.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The collapsible consists of:
+
+- **Collapsible.Root:** The root container for a collapsible.
+- **Collapsible.Trigger:** The button that expands/collapses the collapsible content.
+- **Collapsible.Content:** Contains the content to be rendered when the collapsible is expanded.
+
+```tsx
+<Collapsible.Root>
+  <Collapsible.Trigger />
+  <Collapsible.Content />
+</Collapsible.Root>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Collapsible } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      return (
+        <Collapsible.Root class="collapsible">
+          <Collapsible.Trigger class="collapsible__trigger">
+            <span>What is Kobalte ?</span>
+            <ChevronDownIcon class="collapsible__trigger-icon" />
+          </Collapsible.Trigger>
+          <Collapsible.Content class="collapsible__container">
+            <p class="collapsible__content">
+              Kobalte is a UI toolkit for building accessible web apps and design systems with SolidJS.
+              It provides a set of low-level UI components and primitives which can be the foundation
+              for your design system implementation.
+            </p>
+          </Collapsible.Content>
+        </Collapsible.Root>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .collapsible {
+      width: 300px;
+    }
+
+    .collapsible__trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 14px;
+      font-weight: 600;
+      border: 1px solid hsl(240 5% 84%);
+      color: hsl(240 4% 16%);
+      text-align: left;
+      outline: none;
+    }
+
+    .collapsible__trigger[data-focus-visible] {
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+    }
+
+    .collapsible__trigger-icon {
+      width: 20px;
+      height: 20px;
+      transition: transform 250ms;
+    }
+
+    .collapsible__trigger[data-expanded] .collapsible__trigger-icon {
+      transform: rotateZ(180deg);
+    }
+
+    .collapsible__container {
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid hsl(240 5% 84%);
+      border-top: none;
+      color: hsl(240 4% 16%);
+    }
+
+    .collapsible__content {
+      padding: 16px;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+### Animating content size
+
+We expose the CSS custom properties `--kb-collapsible-content-width` and `--kb-collapsible-content-height` which you can use to animate the size of the content when it opens/closes.
+
+<Preview class="h-[324px] !justify-start">
+  <AnimatingContentExample />
+</Preview>
+
+```css {15,27}
+/* style.css */
+.collapsible__container {
+  overflow: hidden;
+}
+
+.collapsible__container {
+  animation: slideUp 300ms ease-out;
+}
+
+.collapsible__container[data-expanded] {
+  animation: slideDown 300ms ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--kb-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--kb-collapsible-content-height);
+  }
+}
+```
+
+## API Reference
+
+### Collapsible.Root
+
+| Prop          | Description                                                                                                                                                     |
+| :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| isOpen        | `boolean` <br/> The controlled open state of the collapsible.                                                                                                   |
+| defaultIsOpen | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                          |
+| onOpenChange  | `(isOpen: boolean) => void` <br/> Event handler called when the open state of the collapsible changes.                                                          |
+| forceMount    | `boolean` <br/> Used to force mounting the collapsible content when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### Collapsible.Trigger
+
+`Collapsible.Trigger` consists of [Button](/docs/core/components/button).
+
+| Data attribute | Description                               |
+| :------------- | :---------------------------------------- |
+| data-expanded  | Present when the collapsible is expanded. |
+
+### Collapsible.Content
+
+| Data attribute | Description                               |
+| :------------- | :---------------------------------------- |
+| data-expanded  | Present when the collapsible is expanded. |
+
+## Rendered elements
+
+| Component             | Default rendered element |
+| :-------------------- | :----------------------- |
+| `Collapsible.Root`    | `div`                    |
+| `Collapsible.Trigger` | `button`                 |
+| `Collapsible.Content` | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description                                                 |
+| :--------------- | :---------------------------------------------------------- |
+| <Kbd>Space</Kbd> | When focus is on the trigger, opens/closes the collapsible. |
+| <Kbd>Enter</Kbd> | When focus is on the trigger, opens/closes the collapsible. |

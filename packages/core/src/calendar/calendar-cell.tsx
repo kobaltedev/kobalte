@@ -15,47 +15,8 @@ import { createDateFormatter, createLocalizedStringFormatter } from "../i18n";
 import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
 import { CalendarCellContext, CalendarCellContextValue } from "./calendar-cell-context";
 import { useCalendarContext } from "./calendar-context";
-import { getEraFormat } from "./utils";
 import { useCalendarMonthContext } from "./calendar-month-context";
-
-export interface CalendarCellOptions {
-  /** The date that this cell represents. */
-  date?: CalendarDate | null;
-
-  /**
-   * Whether the cell is disabled. By default, this is determined by the
-   * Calendar's `minValue`, `maxValue`, and `isDisabled` props.
-   */
-  isDisabled?: boolean;
-}
-
-/**
- * The wrapper component for a `Calendar.Day`.
- */
-export const CalendarCell = createPolymorphicComponent<"td", CalendarCellOptions>(props => {
-  const calendarContext = useCalendarContext();
-  const monthContext = useCalendarMonthContext();
-
-  const [local, others] = splitProps(props, ["as", "date", "isDisabled"]);
-
-  const shouldMountCell = () => {
-    if (!local.date) {
-      return false;
-    }
-
-    if (calendarContext.hideDatesOutsideMonth()) {
-      return isSameMonth(monthContext.startDate(), local.date);
-    }
-
-    return true;
-  };
-
-  return (
-    <Show when={shouldMountCell()} fallback={<td />}>
-      <CalendarCellBase date={local.date!} isDisabled={local.isDisabled} {...others} />
-    </Show>
-  );
-});
+import { getEraFormat } from "./utils";
 
 interface CalendarCellBaseOptions {
   date: CalendarDate;
@@ -179,5 +140,44 @@ const CalendarCellBase = createPolymorphicComponent<"td", CalendarCellBaseOption
         {...others}
       />
     </CalendarCellContext.Provider>
+  );
+});
+
+export interface CalendarCellOptions {
+  /** The date that this cell represents. */
+  date?: CalendarDate | null;
+
+  /**
+   * Whether the cell is disabled. By default, this is determined by the
+   * Calendar's `minValue`, `maxValue`, and `isDisabled` props.
+   */
+  isDisabled?: boolean;
+}
+
+/**
+ * The wrapper component for a `Calendar.Day`.
+ */
+export const CalendarCell = createPolymorphicComponent<"td", CalendarCellOptions>(props => {
+  const calendarContext = useCalendarContext();
+  const monthContext = useCalendarMonthContext();
+
+  const [local, others] = splitProps(props, ["as", "date", "isDisabled"]);
+
+  const shouldMountCell = () => {
+    if (!local.date) {
+      return false;
+    }
+
+    if (calendarContext.hideDatesOutsideMonth()) {
+      return isSameMonth(monthContext.startDate(), local.date);
+    }
+
+    return true;
+  };
+
+  return (
+    <Show when={shouldMountCell()} fallback={<td />}>
+      <CalendarCellBase date={local.date!} isDisabled={local.isDisabled} {...others} />
+    </Show>
   );
 });

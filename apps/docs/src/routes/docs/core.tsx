@@ -50,6 +50,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/checkbox",
       },
       {
+        title: "Collapsible",
+        href: "/docs/core/components/collapsible",
+        status: "new",
+      },
+      {
         title: "Context Menu",
         href: "/docs/core/components/context-menu",
       },
