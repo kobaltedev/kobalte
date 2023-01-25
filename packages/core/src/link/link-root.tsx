@@ -26,7 +26,7 @@ import {
   HOVER_HANDLERS_PROP_NAMES,
   PRESS_HANDLERS_PROP_NAMES,
   PressEvents,
-  PressSymbol,
+  PressHandlerSymbol,
 } from "../primitives";
 
 export interface LinkRootOptions extends PressEvents {
@@ -97,7 +97,7 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
       callHandler(e, local.onKeyDown);
 
       // @ts-ignore
-      if (local.onKeyDown[PressSymbol]) {
+      if (local.onKeyDown[PressHandlerSymbol]) {
         return;
       }
     }
@@ -106,14 +106,14 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
   };
 
   // @ts-ignore
-  onKeyDown[PressSymbol] = true;
+  onKeyDown[PressHandlerSymbol] = true;
 
   const onKeyUp: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     if (local.onKeyUp) {
       callHandler(e, local.onKeyUp);
 
       // @ts-ignore
-      if (local.onKeyUp[PressSymbol]) {
+      if (local.onKeyUp[PressHandlerSymbol]) {
         return;
       }
     }
@@ -122,14 +122,14 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
   };
 
   // @ts-ignore
-  onKeyUp[PressSymbol] = true;
+  onKeyUp[PressHandlerSymbol] = true;
 
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     if (local.onClick) {
       callHandler(e, local.onClick);
 
       // @ts-ignore
-      if (local.onClick[PressSymbol]) {
+      if (local.onClick[PressHandlerSymbol]) {
         return;
       }
 
@@ -142,14 +142,14 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
   };
 
   // @ts-ignore
-  onClick[PressSymbol] = true;
+  onClick[PressHandlerSymbol] = true;
 
   const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
     if (local.onPointerDown) {
       callHandler(e, local.onPointerDown);
 
       // @ts-ignore
-      if (local.onPointerDown[PressSymbol]) {
+      if (local.onPointerDown[PressHandlerSymbol]) {
         return;
       }
     }
@@ -158,14 +158,14 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
   };
 
   // @ts-ignore
-  onPointerDown[PressSymbol] = true;
+  onPointerDown[PressHandlerSymbol] = true;
 
   const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
     if (local.onPointerUp) {
       callHandler(e, local.onPointerUp);
 
       // @ts-ignore
-      if (local.onPointerUp[PressSymbol]) {
+      if (local.onPointerUp[PressHandlerSymbol]) {
         return;
       }
     }
@@ -174,14 +174,14 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
   };
 
   // @ts-ignore
-  onPointerUp[PressSymbol] = true;
+  onPointerUp[PressHandlerSymbol] = true;
 
   const onMouseDown: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     if (local.onMouseDown) {
       callHandler(e, local.onMouseDown);
 
       // @ts-ignore
-      if (local.onMouseDown[PressSymbol]) {
+      if (local.onMouseDown[PressHandlerSymbol]) {
         return;
       }
     }
@@ -190,14 +190,14 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
   };
 
   // @ts-ignore
-  onMouseDown[PressSymbol] = true;
+  onMouseDown[PressHandlerSymbol] = true;
 
   const onDragStart: JSX.EventHandlerUnion<any, DragEvent> = e => {
     if (local.onDragStart) {
       callHandler(e, local.onDragStart);
 
       // @ts-ignore
-      if (local.onDragStart[PressSymbol]) {
+      if (local.onDragStart[PressHandlerSymbol]) {
         return;
       }
     }
@@ -206,7 +206,7 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
   };
 
   // @ts-ignore
-  onDragStart[PressSymbol] = true;
+  onDragStart[PressHandlerSymbol] = true;
 
   return (
     <Dynamic

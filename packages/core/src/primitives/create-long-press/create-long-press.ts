@@ -11,6 +11,14 @@ import { access, createGlobalListeners, mergeDefaultProps } from "@kobalte/utils
 import { createPress, PressEvent } from "../create-press";
 import { CreateLongPressProps, CreateLongPressResult } from "./types";
 
+export const CREATE_LONG_PRESS_PROP_NAMES = [
+  "onLongPressStart",
+  "onLongPressEnd",
+  "onLongPress",
+  "isDisabled",
+  "threshold",
+] as const;
+
 /**
  * Handles long press interactions across mouse and touch devices. Supports a customizable time threshold,
  * accessibility description, and normalizes behavior across browsers and devices.

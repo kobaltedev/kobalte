@@ -76,7 +76,7 @@ export const PRESS_HANDLERS_PROP_NAMES = [
   "onDragStart",
 ] as const;
 
-export const PressSymbol = Symbol("$$Press");
+export const PressHandlerSymbol = Symbol("$$PressHandler");
 
 /**
  * Handles press interactions across mouse, touch, keyboard, and screen readers.

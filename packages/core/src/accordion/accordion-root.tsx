@@ -10,15 +10,18 @@ import {
   composeEventHandlers,
   createGenerateId,
   createPolymorphicComponent,
+  isArray,
+  isString,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, createSignal, createUniqueId, splitProps } from "solid-js";
+import { createEffect, createSignal, createUniqueId, onMount, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createListState, createSelectableList } from "../list";
 import { CollectionItem } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
+import { SelectionMode } from "../selection";
 import { AccordionContext, AccordionContextValue } from "./accordion-context";
 
 export interface AccordionRootOptions {
@@ -34,11 +37,14 @@ export interface AccordionRootOptions {
   /** Event handler called when the value changes. */
   onValueChange?: (value: Set<string>) => void;
 
-  /** Whether multiple items can be opened at the same time. */
-  allowMultiple?: boolean;
+  /** Determines whether one or multiple items can be opened at the same time. */
+  type?: Exclude<SelectionMode, "none">;
 
   /** When `allowMultiple` is `false`, allows closing content when clicking trigger for an open item. */
   isCollapsible?: boolean;
+
+  /** Whether focus should wrap around when the end/start is reached. */
+  shouldFocusWrap?: boolean;
 }
 
 export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOptions>(props => {
@@ -50,8 +56,9 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
     {
       as: "div",
       id: defaultId,
-      allowMultiple: false,
+      type: "single",
       isCollapsible: false,
+      shouldFocusWrap: true,
     },
     props
   );
@@ -62,8 +69,9 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
     "value",
     "defaultValue",
     "onValueChange",
-    "allowMultiple",
+    "type",
     "isCollapsible",
+    "shouldFocusWrap",
     "onKeyDown",
     "onMouseDown",
     "onFocusIn",
@@ -78,8 +86,8 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
     selectedKeys: () => local.value,
     defaultSelectedKeys: () => local.defaultValue,
     onSelectionChange: local.onValueChange,
-    disallowEmptySelection: () => !local.allowMultiple && !local.isCollapsible,
-    selectionMode: () => (local.allowMultiple ? "multiple" : "single"),
+    disallowEmptySelection: () => local.type === "single" && !local.isCollapsible,
+    selectionMode: () => local.type,
     dataSource: items,
   });
 
@@ -88,8 +96,8 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
       selectionManager: () => listState.selectionManager(),
       collection: () => listState.collection(),
       disallowEmptySelection: () => listState.selectionManager().disallowEmptySelection(),
+      shouldFocusWrap: () => local.shouldFocusWrap,
       disallowTypeAhead: true,
-      shouldFocusWrap: true,
       allowsTabNavigation: true,
     },
     () => ref
@@ -100,7 +108,21 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
     generateId: createGenerateId(() => others.id!),
   };
 
-  // TODO: warn about value, defaultValue, onValueChange depending on allowMultiple
+  onMount(() => {
+    const value = local.value || local.defaultValue;
+
+    if (local.type === "multiple" && isString(value)) {
+      throw new Error(
+        "Invalid prop `type` supplied to `Accordion.Root`. Expected `single` when `defaultValue` or `value` is type `string`."
+      );
+    }
+
+    if (local.type === "single" && isArray(value)) {
+      throw new Error(
+        "Invalid prop `type` supplied to `Accordion.Root`. Expected `multiple` when `defaultValue` or `value` is type `string[]`."
+      );
+    }
+  });
 
   return (
     <DomCollectionProvider>
