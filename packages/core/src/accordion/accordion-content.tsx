@@ -7,7 +7,7 @@
  */
 
 import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, onCleanup } from "solid-js";
+import { createEffect, onCleanup, splitProps } from "solid-js";
 
 import * as Collapsible from "../collapsible";
 import { useAccordionItemContext } from "./accordion-item-context";
@@ -28,10 +28,21 @@ export const AccordionContent = createPolymorphicComponent<"div", AccordionConte
       props
     );
 
-    createEffect(() => onCleanup(itemContext.registerContentId(props.id!)));
+    const [local, others] = splitProps(props, ["style"]);
+
+    createEffect(() => onCleanup(itemContext.registerContentId(others.id!)));
 
     return (
-      <Collapsible.Content role="region" aria-labelledby={itemContext.triggerId()} {...props} />
+      <Collapsible.Content
+        role="region"
+        aria-labelledby={itemContext.triggerId()}
+        style={{
+          "--kb-accordion-content-height": "var(--kb-collapsible-content-height)",
+          "--kb-accordion-content-width": "var(--kb-collapsible-content-width)",
+          ...local.style,
+        }}
+        {...others}
+      />
     );
   }
 );

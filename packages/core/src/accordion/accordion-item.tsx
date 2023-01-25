@@ -7,7 +7,7 @@
  */
 
 import { createGenerateId, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, splitProps } from "solid-js";
+import { createEffect, createSignal, createUniqueId, splitProps } from "solid-js";
 
 import * as Collapsible from "../collapsible";
 import { createRegisterId } from "../primitives";
@@ -20,6 +20,12 @@ export interface AccordionItemOptions {
 
   /** Whether the item is disabled. */
   isDisabled?: boolean;
+
+  /**
+   * Used to force mounting the item content when more control is needed.
+   * Useful when controlling animation with SolidJS animation libraries.
+   */
+  forceMount?: boolean;
 }
 
 /**

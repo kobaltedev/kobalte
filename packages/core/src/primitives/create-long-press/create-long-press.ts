@@ -21,7 +21,7 @@ export const CREATE_LONG_PRESS_PROP_NAMES = [
 
 /**
  * Handles long press interactions across mouse and touch devices. Supports a customizable time threshold,
- * accessibility description, and normalizes behavior across browsers and devices.
+ * and normalizes behavior across browsers and devices.
  */
 export function createLongPress<T extends HTMLElement>(
   props: CreateLongPressProps

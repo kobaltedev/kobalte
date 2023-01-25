@@ -111,8 +111,8 @@ export const CollapsibleContent = createPolymorphicComponent<"div", CollapsibleC
       <Dynamic
         component={local.as}
         ref={mergeRefs(el => {
-          ref = el;
           presence.setRef(el);
+          ref = el;
         }, local.ref)}
         id={local.id}
         hidden={!isOpen()}

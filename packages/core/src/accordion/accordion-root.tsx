@@ -10,37 +10,34 @@ import {
   composeEventHandlers,
   createGenerateId,
   createPolymorphicComponent,
-  isArray,
-  isString,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, createSignal, createUniqueId, onMount, splitProps } from "solid-js";
+import { createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createListState, createSelectableList } from "../list";
 import { CollectionItem } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
-import { SelectionMode } from "../selection";
 import { AccordionContext, AccordionContextValue } from "./accordion-context";
 
 export interface AccordionRootOptions {
-  /** The controlled value of the accordion item to expand. */
-  value?: Iterable<string>;
+  /** The controlled value of the accordion item(s) to expand. */
+  value?: string[];
 
   /**
-   * The value of the accordion item to expand when initially rendered.
+   * The value of the accordion item(s) to expand when initially rendered.
    * Useful when you do not need to control the state.
    */
-  defaultValue?: Iterable<string>;
+  defaultValue?: string[];
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: Set<string>) => void;
+  onValueChange?: (value: string[]) => void;
 
-  /** Determines whether one or multiple items can be opened at the same time. */
-  type?: Exclude<SelectionMode, "none">;
+  /** Whether multiple items can be opened at the same time. */
+  isMultiple?: boolean;
 
-  /** When `allowMultiple` is `false`, allows closing content when clicking trigger for an open item. */
+  /** When `isMultiple` is `false`, allows closing content when clicking trigger for an open item. */
   isCollapsible?: boolean;
 
   /** Whether focus should wrap around when the end/start is reached. */
@@ -56,7 +53,7 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
     {
       as: "div",
       id: defaultId,
-      type: "single",
+      isMultiple: false,
       isCollapsible: false,
       shouldFocusWrap: true,
     },
@@ -69,7 +66,7 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
     "value",
     "defaultValue",
     "onValueChange",
-    "type",
+    "isMultiple",
     "isCollapsible",
     "shouldFocusWrap",
     "onKeyDown",
@@ -85,9 +82,9 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
   const listState = createListState({
     selectedKeys: () => local.value,
     defaultSelectedKeys: () => local.defaultValue,
-    onSelectionChange: local.onValueChange,
-    disallowEmptySelection: () => local.type === "single" && !local.isCollapsible,
-    selectionMode: () => local.type,
+    onSelectionChange: value => local.onValueChange?.(Array.from(value)),
+    disallowEmptySelection: () => !local.isMultiple && !local.isCollapsible,
+    selectionMode: () => (local.isMultiple ? "multiple" : "single"),
     dataSource: items,
   });
 
@@ -107,22 +104,6 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
     listState: () => listState,
     generateId: createGenerateId(() => others.id!),
   };
-
-  onMount(() => {
-    const value = local.value || local.defaultValue;
-
-    if (local.type === "multiple" && isString(value)) {
-      throw new Error(
-        "Invalid prop `type` supplied to `Accordion.Root`. Expected `single` when `defaultValue` or `value` is type `string`."
-      );
-    }
-
-    if (local.type === "single" && isArray(value)) {
-      throw new Error(
-        "Invalid prop `type` supplied to `Accordion.Root`. Expected `multiple` when `defaultValue` or `value` is type `string[]`."
-      );
-    }
-  });
 
   return (
     <DomCollectionProvider>
