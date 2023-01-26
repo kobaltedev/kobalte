@@ -26,30 +26,8 @@
   "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
   "sideEffects": false,
   "type": "module",
-  "main": "./dist/index/index.cjs",
-  "module": "./dist/index/index.js",
-  "types": "./dist/index/index.d.ts",
-  "browser": {},
   "exports": {
     ".": {
-      "browser": {
-        "solid": {
-          "development": "./dist/index/dev.jsx",
-          "import": "./dist/index/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/index/index.d.ts",
-            "default": "./dist/index/dev.js"
-          },
-          "require": "./dist/index/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/index/index.d.ts",
-          "default": "./dist/index/index.js"
-        },
-        "require": "./dist/index/index.cjs"
-      },
       "solid": {
         "development": "./dist/index/dev.jsx",
         "import": "./dist/index/index.jsx"
@@ -68,24 +46,6 @@
       "require": "./dist/index/index.cjs"
     },
     "./i18n": {
-      "browser": {
-        "solid": {
-          "development": "./dist/i18n/dev.jsx",
-          "import": "./dist/i18n/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/i18n/index.d.ts",
-            "default": "./dist/i18n/dev.js"
-          },
-          "require": "./dist/i18n/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/i18n/index.d.ts",
-          "default": "./dist/i18n/index.js"
-        },
-        "require": "./dist/i18n/index.cjs"
-      },
       "solid": {
         "development": "./dist/i18n/dev.jsx",
         "import": "./dist/i18n/index.jsx"
@@ -104,24 +64,6 @@
       "require": "./dist/i18n/index.cjs"
     },
     "./alert": {
-      "browser": {
-        "solid": {
-          "development": "./dist/alert/dev.jsx",
-          "import": "./dist/alert/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/alert/index.d.ts",
-            "default": "./dist/alert/dev.js"
-          },
-          "require": "./dist/alert/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/alert/index.d.ts",
-          "default": "./dist/alert/index.js"
-        },
-        "require": "./dist/alert/index.cjs"
-      },
       "solid": {
         "development": "./dist/alert/dev.jsx",
         "import": "./dist/alert/index.jsx"
@@ -140,24 +82,6 @@
       "require": "./dist/alert/index.cjs"
     },
     "./button": {
-      "browser": {
-        "solid": {
-          "development": "./dist/button/dev.jsx",
-          "import": "./dist/button/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/button/index.d.ts",
-            "default": "./dist/button/dev.js"
-          },
-          "require": "./dist/button/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/button/index.d.ts",
-          "default": "./dist/button/index.js"
-        },
-        "require": "./dist/button/index.cjs"
-      },
       "solid": {
         "development": "./dist/button/dev.jsx",
         "import": "./dist/button/index.jsx"
@@ -176,24 +100,6 @@
       "require": "./dist/button/index.cjs"
     },
     "./calendar": {
-      "browser": {
-        "solid": {
-          "development": "./dist/calendar/dev.jsx",
-          "import": "./dist/calendar/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/calendar/index.d.ts",
-            "default": "./dist/calendar/dev.js"
-          },
-          "require": "./dist/calendar/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/calendar/index.d.ts",
-          "default": "./dist/calendar/index.js"
-        },
-        "require": "./dist/calendar/index.cjs"
-      },
       "solid": {
         "development": "./dist/calendar/dev.jsx",
         "import": "./dist/calendar/index.jsx"
@@ -212,24 +118,6 @@
       "require": "./dist/calendar/index.cjs"
     },
     "./checkbox": {
-      "browser": {
-        "solid": {
-          "development": "./dist/checkbox/dev.jsx",
-          "import": "./dist/checkbox/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/checkbox/index.d.ts",
-            "default": "./dist/checkbox/dev.js"
-          },
-          "require": "./dist/checkbox/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/checkbox/index.d.ts",
-          "default": "./dist/checkbox/index.js"
-        },
-        "require": "./dist/checkbox/index.cjs"
-      },
       "solid": {
         "development": "./dist/checkbox/dev.jsx",
         "import": "./dist/checkbox/index.jsx"
@@ -248,24 +136,6 @@
       "require": "./dist/checkbox/index.cjs"
     },
     "./context-menu": {
-      "browser": {
-        "solid": {
-          "development": "./dist/context-menu/dev.jsx",
-          "import": "./dist/context-menu/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/context-menu/index.d.ts",
-            "default": "./dist/context-menu/dev.js"
-          },
-          "require": "./dist/context-menu/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/context-menu/index.d.ts",
-          "default": "./dist/context-menu/index.js"
-        },
-        "require": "./dist/context-menu/index.cjs"
-      },
       "solid": {
         "development": "./dist/context-menu/dev.jsx",
         "import": "./dist/context-menu/index.jsx"
@@ -284,24 +154,6 @@
       "require": "./dist/context-menu/index.cjs"
     },
     "./dialog": {
-      "browser": {
-        "solid": {
-          "development": "./dist/dialog/dev.jsx",
-          "import": "./dist/dialog/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/dialog/index.d.ts",
-            "default": "./dist/dialog/dev.js"
-          },
-          "require": "./dist/dialog/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/dialog/index.d.ts",
-          "default": "./dist/dialog/index.js"
-        },
-        "require": "./dist/dialog/index.cjs"
-      },
       "solid": {
         "development": "./dist/dialog/dev.jsx",
         "import": "./dist/dialog/index.jsx"
@@ -320,24 +172,6 @@
       "require": "./dist/dialog/index.cjs"
     },
     "./dropdown-menu": {
-      "browser": {
-        "solid": {
-          "development": "./dist/dropdown-menu/dev.jsx",
-          "import": "./dist/dropdown-menu/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/dropdown-menu/index.d.ts",
-            "default": "./dist/dropdown-menu/dev.js"
-          },
-          "require": "./dist/dropdown-menu/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/dropdown-menu/index.d.ts",
-          "default": "./dist/dropdown-menu/index.js"
-        },
-        "require": "./dist/dropdown-menu/index.cjs"
-      },
       "solid": {
         "development": "./dist/dropdown-menu/dev.jsx",
         "import": "./dist/dropdown-menu/index.jsx"
@@ -356,24 +190,6 @@
       "require": "./dist/dropdown-menu/index.cjs"
     },
     "./hover-card": {
-      "browser": {
-        "solid": {
-          "development": "./dist/hover-card/dev.jsx",
-          "import": "./dist/hover-card/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/hover-card/index.d.ts",
-            "default": "./dist/hover-card/dev.js"
-          },
-          "require": "./dist/hover-card/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/hover-card/index.d.ts",
-          "default": "./dist/hover-card/index.js"
-        },
-        "require": "./dist/hover-card/index.cjs"
-      },
       "solid": {
         "development": "./dist/hover-card/dev.jsx",
         "import": "./dist/hover-card/index.jsx"
@@ -392,24 +208,6 @@
       "require": "./dist/hover-card/index.cjs"
     },
     "./link": {
-      "browser": {
-        "solid": {
-          "development": "./dist/link/dev.jsx",
-          "import": "./dist/link/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/link/index.d.ts",
-            "default": "./dist/link/dev.js"
-          },
-          "require": "./dist/link/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/link/index.d.ts",
-          "default": "./dist/link/index.js"
-        },
-        "require": "./dist/link/index.cjs"
-      },
       "solid": {
         "development": "./dist/link/dev.jsx",
         "import": "./dist/link/index.jsx"
@@ -428,24 +226,6 @@
       "require": "./dist/link/index.cjs"
     },
     "./listbox": {
-      "browser": {
-        "solid": {
-          "development": "./dist/listbox/dev.jsx",
-          "import": "./dist/listbox/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/listbox/index.d.ts",
-            "default": "./dist/listbox/dev.js"
-          },
-          "require": "./dist/listbox/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/listbox/index.d.ts",
-          "default": "./dist/listbox/index.js"
-        },
-        "require": "./dist/listbox/index.cjs"
-      },
       "solid": {
         "development": "./dist/listbox/dev.jsx",
         "import": "./dist/listbox/index.jsx"
@@ -464,24 +244,6 @@
       "require": "./dist/listbox/index.cjs"
     },
     "./multi-select": {
-      "browser": {
-        "solid": {
-          "development": "./dist/multi-select/dev.jsx",
-          "import": "./dist/multi-select/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/multi-select/index.d.ts",
-            "default": "./dist/multi-select/dev.js"
-          },
-          "require": "./dist/multi-select/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/multi-select/index.d.ts",
-          "default": "./dist/multi-select/index.js"
-        },
-        "require": "./dist/multi-select/index.cjs"
-      },
       "solid": {
         "development": "./dist/multi-select/dev.jsx",
         "import": "./dist/multi-select/index.jsx"
@@ -500,24 +262,6 @@
       "require": "./dist/multi-select/index.cjs"
     },
     "./popover": {
-      "browser": {
-        "solid": {
-          "development": "./dist/popover/dev.jsx",
-          "import": "./dist/popover/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/popover/index.d.ts",
-            "default": "./dist/popover/dev.js"
-          },
-          "require": "./dist/popover/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/popover/index.d.ts",
-          "default": "./dist/popover/index.js"
-        },
-        "require": "./dist/popover/index.cjs"
-      },
       "solid": {
         "development": "./dist/popover/dev.jsx",
         "import": "./dist/popover/index.jsx"
@@ -536,24 +280,6 @@
       "require": "./dist/popover/index.cjs"
     },
     "./radio-group": {
-      "browser": {
-        "solid": {
-          "development": "./dist/radio-group/dev.jsx",
-          "import": "./dist/radio-group/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/radio-group/index.d.ts",
-            "default": "./dist/radio-group/dev.js"
-          },
-          "require": "./dist/radio-group/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/radio-group/index.d.ts",
-          "default": "./dist/radio-group/index.js"
-        },
-        "require": "./dist/radio-group/index.cjs"
-      },
       "solid": {
         "development": "./dist/radio-group/dev.jsx",
         "import": "./dist/radio-group/index.jsx"
@@ -572,24 +298,6 @@
       "require": "./dist/radio-group/index.cjs"
     },
     "./range-calendar": {
-      "browser": {
-        "solid": {
-          "development": "./dist/range-calendar/dev.jsx",
-          "import": "./dist/range-calendar/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/range-calendar/index.d.ts",
-            "default": "./dist/range-calendar/dev.js"
-          },
-          "require": "./dist/range-calendar/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/range-calendar/index.d.ts",
-          "default": "./dist/range-calendar/index.js"
-        },
-        "require": "./dist/range-calendar/index.cjs"
-      },
       "solid": {
         "development": "./dist/range-calendar/dev.jsx",
         "import": "./dist/range-calendar/index.jsx"
@@ -608,24 +316,6 @@
       "require": "./dist/range-calendar/index.cjs"
     },
     "./select": {
-      "browser": {
-        "solid": {
-          "development": "./dist/select/dev.jsx",
-          "import": "./dist/select/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/select/index.d.ts",
-            "default": "./dist/select/dev.js"
-          },
-          "require": "./dist/select/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/select/index.d.ts",
-          "default": "./dist/select/index.js"
-        },
-        "require": "./dist/select/index.cjs"
-      },
       "solid": {
         "development": "./dist/select/dev.jsx",
         "import": "./dist/select/index.jsx"
@@ -644,24 +334,6 @@
       "require": "./dist/select/index.cjs"
     },
     "./separator": {
-      "browser": {
-        "solid": {
-          "development": "./dist/separator/dev.jsx",
-          "import": "./dist/separator/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/separator/index.d.ts",
-            "default": "./dist/separator/dev.js"
-          },
-          "require": "./dist/separator/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/separator/index.d.ts",
-          "default": "./dist/separator/index.js"
-        },
-        "require": "./dist/separator/index.cjs"
-      },
       "solid": {
         "development": "./dist/separator/dev.jsx",
         "import": "./dist/separator/index.jsx"
@@ -680,24 +352,6 @@
       "require": "./dist/separator/index.cjs"
     },
     "./switch": {
-      "browser": {
-        "solid": {
-          "development": "./dist/switch/dev.jsx",
-          "import": "./dist/switch/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/switch/index.d.ts",
-            "default": "./dist/switch/dev.js"
-          },
-          "require": "./dist/switch/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/switch/index.d.ts",
-          "default": "./dist/switch/index.js"
-        },
-        "require": "./dist/switch/index.cjs"
-      },
       "solid": {
         "development": "./dist/switch/dev.jsx",
         "import": "./dist/switch/index.jsx"
@@ -716,24 +370,6 @@
       "require": "./dist/switch/index.cjs"
     },
     "./tabs": {
-      "browser": {
-        "solid": {
-          "development": "./dist/tabs/dev.jsx",
-          "import": "./dist/tabs/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/tabs/index.d.ts",
-            "default": "./dist/tabs/dev.js"
-          },
-          "require": "./dist/tabs/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/tabs/index.d.ts",
-          "default": "./dist/tabs/index.js"
-        },
-        "require": "./dist/tabs/index.cjs"
-      },
       "solid": {
         "development": "./dist/tabs/dev.jsx",
         "import": "./dist/tabs/index.jsx"
@@ -752,24 +388,6 @@
       "require": "./dist/tabs/index.cjs"
     },
     "./text-field": {
-      "browser": {
-        "solid": {
-          "development": "./dist/text-field/dev.jsx",
-          "import": "./dist/text-field/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/text-field/index.d.ts",
-            "default": "./dist/text-field/dev.js"
-          },
-          "require": "./dist/text-field/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/text-field/index.d.ts",
-          "default": "./dist/text-field/index.js"
-        },
-        "require": "./dist/text-field/index.cjs"
-      },
       "solid": {
         "development": "./dist/text-field/dev.jsx",
         "import": "./dist/text-field/index.jsx"
@@ -788,24 +406,6 @@
       "require": "./dist/text-field/index.cjs"
     },
     "./toggle-button": {
-      "browser": {
-        "solid": {
-          "development": "./dist/toggle-button/dev.jsx",
-          "import": "./dist/toggle-button/index.jsx"
-        },
-        "development": {
-          "import": {
-            "types": "./dist/toggle-button/index.d.ts",
-            "default": "./dist/toggle-button/dev.js"
-          },
-          "require": "./dist/toggle-button/dev.cjs"
-        },
-        "import": {
-          "types": "./dist/toggle-button/index.d.ts",
-          "default": "./dist/toggle-button/index.js"
-        },
-        "require": "./dist/toggle-button/index.cjs"
-      },
       "solid": {
         "development": "./dist/toggle-button/dev.jsx",
         "import": "./dist/toggle-button/index.jsx"
@@ -824,6 +424,10 @@
       "require": "./dist/toggle-button/index.cjs"
     }
   },
+  "main": "./dist/index/index.cjs",
+  "module": "./dist/index/index.js",
+  "browser": {},
+  "types": "./dist/index/index.d.ts",
   "typesVersions": {
     "*": {
       "./i18n": [

@@ -41,7 +41,7 @@ importers:
       sort-package-json: 1.57.0
       ts-jest: 28.0.5
       tsup: 6.5.0
-      tsup-preset-solid: ^0.1.1
+      tsup-preset-solid: ^0.1.4
       turbo: 1.4.6
       typescript: 4.8.3
       vite: 3.2.2
@@ -84,7 +84,7 @@ importers:
       sort-package-json: 1.57.0
       ts-jest: 28.0.5_jalze457mvapyy37stvf3rhxpq
       tsup: 6.5.0_qv3zdqwr5cvvfboiktsp7a3dfa
-      tsup-preset-solid: 0.1.1_efnooeacp4uiuu4kbnpwing2fy
+      tsup-preset-solid: 0.1.4_efnooeacp4uiuu4kbnpwing2fy
       turbo: 1.4.6
       typescript: 4.8.3
       vite: 3.2.2
@@ -5883,7 +5883,7 @@ packages:
     dependencies:
       '@babel/core': 7.20.12
       '@babel/preset-typescript': 7.18.6_@babel+core@7.20.12
-      babel-preset-solid: 1.6.9_@babel+core@7.20.12
+      babel-preset-solid: 1.6.1_@babel+core@7.20.12
       esbuild: 0.15.18
       solid-js: 1.6.1
     transitivePeerDependencies:
@@ -11248,9 +11248,8 @@ packages:
   /tslib/2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
 
-  /tsup-preset-solid/0.1.1_efnooeacp4uiuu4kbnpwing2fy:
-    resolution: {integrity: sha512-1p498UPo+bW4SOoYs6kTa6fkN6z6WgRuFyUUCZ/jFAOapOLps0ZZhJH0xlO0EhW9SRIGqqW3AJB69chExc3wLA==}
-    engines: {node: '>=18'}
+  /tsup-preset-solid/0.1.4_efnooeacp4uiuu4kbnpwing2fy:
+    resolution: {integrity: sha512-G0Je4rI37euELhE94+4f4tPDAKxR28jahRhe5SS/IgQ6JVJugIzDSZuvCE5QtXXMuIcJAaot+1w80nuBwj2Sig==}
     peerDependencies:
       tsup: ^6.5.0
     dependencies:

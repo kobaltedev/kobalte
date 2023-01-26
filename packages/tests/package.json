@@ -26,19 +26,7 @@
   "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
   "sideEffects": false,
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "browser": {},
   "exports": {
-    "browser": {
-      "solid": "./dist/index.jsx",
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": "./dist/index.cjs"
-    },
     "solid": "./dist/index.jsx",
     "import": {
       "types": "./dist/index.d.ts",
@@ -46,6 +34,11 @@
     },
     "require": "./dist/index.cjs"
   },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "browser": {},
+  "types": "./dist/index.d.ts",
+  "typesVersions": {},
   "files": [
     "dist"
   ],
@@ -63,6 +56,5 @@
   "peerDependencies": {
     "solid-js": "^1.6.1",
     "solid-testing-library": "^0.3.0"
-  },
-  "typesVersions": {}
+  }
 }

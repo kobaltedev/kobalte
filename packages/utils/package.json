@@ -25,28 +25,22 @@
   "license": "MIT",
   "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
   "sideEffects": false,
-  "files": [
-    "dist"
-  ],
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "browser": {},
   "exports": {
-    "browser": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": "./dist/index.cjs"
-    },
     "import": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "require": "./dist/index.cjs"
   },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "browser": {},
+  "types": "./dist/index.d.ts",
+  "typesVersions": {},
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
@@ -64,6 +58,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "typesVersions": {}
+  }
 }
