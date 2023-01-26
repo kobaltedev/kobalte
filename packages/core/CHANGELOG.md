@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.4.0
+
+### Minor Changes
+
+- a71c1fb: fix #57, #58, #62, #64
+
 ## 0.3.1
 
 ### Patch Changes

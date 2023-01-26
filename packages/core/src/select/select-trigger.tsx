@@ -36,7 +36,7 @@ export const SelectTrigger = /*#__PURE__*/ createPolymorphicComponent<
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
-    ["ref", "isDisabled", "onPressStart", "onPress", "onKeyDown"],
+    ["ref", "isDisabled", "onPressStart", "onPress", "onKeyDown", "onFocus", "onBlur"],
     FORM_CONTROL_FIELD_PROP_NAMES
   );
 
@@ -145,6 +145,26 @@ export const SelectTrigger = /*#__PURE__*/ createPolymorphicComponent<
     }
   };
 
+  const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onFocus);
+
+    if (selectionManager().isFocused()) {
+      return;
+    }
+
+    selectionManager().setFocused(true);
+  };
+
+  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onBlur);
+
+    if (context.isOpen()) {
+      return;
+    }
+
+    selectionManager().setFocused(false);
+  };
+
   createEffect(() => onCleanup(context.registerTriggerId(fieldProps.id()!)));
 
   createEffect(() => {
@@ -173,6 +193,8 @@ export const SelectTrigger = /*#__PURE__*/ createPolymorphicComponent<
       onPressStart={onPressStart}
       onPress={onPress}
       onKeyDown={onKeyDown}
+      onFocus={onFocus}
+      onBlur={onBlur}
       {...formControlContext.dataset()}
       {...others}
     />

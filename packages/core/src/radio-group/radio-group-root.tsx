@@ -13,20 +13,16 @@ import {
   mergeDefaultProps,
   mergeRefs,
   Orientation,
+  ValidationState,
 } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import {
-  createFormControl,
-  CreateFormControlProps,
-  FORM_CONTROL_PROP_NAMES,
-  FormControlContext,
-} from "../form-control";
+import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
 import { createControllableSignal, createFormResetListener } from "../primitives";
 import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context";
 
-export interface RadioGroupRootOptions extends CreateFormControlProps {
+export interface RadioGroupRootOptions {
   /** The controlled value of the radio button to check. */
   value?: string;
 
@@ -41,6 +37,31 @@ export interface RadioGroupRootOptions extends CreateFormControlProps {
 
   /** The axis the radio group items should align with. */
   orientation?: Orientation;
+
+  /**
+   * A unique identifier for the component.
+   * The id is used to generate id attributes for nested components.
+   * If no id prop is provided, a generated id will be used.
+   */
+  id?: string;
+
+  /**
+   * The name of the radio group.
+   * Submitted with its owning form as part of a name/value pair.
+   */
+  name?: string;
+
+  /** Whether the radio group should display its "valid" or "invalid" visual styling. */
+  validationState?: ValidationState;
+
+  /** Whether the user must select an item before the owning form can be submitted. */
+  isRequired?: boolean;
+
+  /** Whether the radio group is disabled. */
+  isDisabled?: boolean;
+
+  /** Whether the radio group is read only. */
+  isReadOnly?: boolean;
 }
 
 /**

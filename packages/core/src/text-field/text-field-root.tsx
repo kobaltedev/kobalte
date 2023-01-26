@@ -5,16 +5,12 @@ import {
   createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
+  ValidationState,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import {
-  createFormControl,
-  CreateFormControlProps,
-  FORM_CONTROL_PROP_NAMES,
-  FormControlContext,
-} from "../form-control";
+import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
 import {
   createControllableSignal,
   createFormResetListener,
@@ -23,7 +19,7 @@ import {
 } from "../primitives";
 import { TextFieldContext, TextFieldContextValue, TextFieldDataSet } from "./text-field-context";
 
-export interface TextFieldRootOptions extends CreateFormControlProps {
+export interface TextFieldRootOptions {
   /** The controlled value of the textfield. */
   value?: string;
 
@@ -35,6 +31,31 @@ export interface TextFieldRootOptions extends CreateFormControlProps {
 
   /** Event handler called when the value of the textfield changes. */
   onValueChange?: (value: string) => void;
+
+  /**
+   * A unique identifier for the component.
+   * The id is used to generate id attributes for nested components.
+   * If no id prop is provided, a generated id will be used.
+   */
+  id?: string;
+
+  /**
+   * The name of the textfield.
+   * Submitted with its owning form as part of a name/value pair.
+   */
+  name?: string;
+
+  /** Whether the textfield should display its "valid" or "invalid" visual styling. */
+  validationState?: ValidationState;
+
+  /** Whether the user must fill the textfield before the owning form can be submitted. */
+  isRequired?: boolean;
+
+  /** Whether the textfield is disabled. */
+  isDisabled?: boolean;
+
+  /** Whether the textfield is read only. */
+  isReadOnly?: boolean;
 }
 
 /**

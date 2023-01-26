@@ -16,27 +16,13 @@ import {
 import { Accessor, createMemo, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import {
-  createListState,
-  CreateListStateProps,
-  createSelectableList,
-  CreateSelectableListProps,
-  ListState,
-} from "../list";
+import { createListState, createSelectableList, ListState } from "../list";
 import { CollectionItem, createControllableArraySignal } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
-import { FocusStrategy, KeyboardDelegate } from "../selection";
+import { FocusStrategy, KeyboardDelegate, SelectionBehavior, SelectionMode } from "../selection";
 import { ListboxContext, ListboxContextValue } from "./listbox-context";
 
-export interface ListboxRootOptions
-  extends Pick<
-      CreateListStateProps,
-      | "allowDuplicateSelectionEvents"
-      | "disallowEmptySelection"
-      | "selectionBehavior"
-      | "selectionMode"
-    >,
-    Pick<CreateSelectableListProps, "selectOnFocus" | "disallowTypeAhead" | "allowsTabNavigation"> {
+export interface ListboxRootOptions {
   /** The controlled value of the listbox. */
   value?: Iterable<string>;
 
@@ -81,6 +67,27 @@ export interface ListboxRootOptions
    * If not provided, defaults to the listbox ref.
    */
   scrollRef?: Accessor<HTMLElement | undefined>;
+
+  /** How multiple selection should behave in the listbox. */
+  selectionBehavior?: SelectionBehavior;
+
+  /** Whether onValueChange should fire even if the new set of keys is the same as the last. */
+  allowDuplicateSelectionEvents?: boolean;
+
+  /** The type of selection that is allowed in the listbox. */
+  selectionMode?: SelectionMode;
+
+  /** Whether the listbox allows empty selection. */
+  disallowEmptySelection?: boolean;
+
+  /** Whether selection should occur automatically on focus. */
+  selectOnFocus?: boolean;
+
+  /** Whether typeahead is disabled. */
+  disallowTypeAhead?: boolean;
+
+  /** Whether navigation through tab key is enabled. */
+  allowsTabNavigation?: boolean;
 }
 
 /**

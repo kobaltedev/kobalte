@@ -152,7 +152,7 @@ export const ListboxItem = /*#__PURE__*/ createPolymorphicComponent<"div", Listb
     const dataset: Accessor<ListboxItemDataSet> = createMemo(() => ({
       "data-disabled": selectableItem.isDisabled() ? "" : undefined,
       "data-selected": selectableItem.isSelected() ? "" : undefined,
-      "data-hover": isHovered() && !listBoxContext.shouldFocusOnHover() ? "" : undefined,
+      "data-hover": isHovered() ? "" : undefined,
       "data-focus": isFocused() ? "" : undefined,
       "data-focus-visible": isFocusVisible() ? "" : undefined,
       "data-active": selectableItem.isPressed() ? "" : undefined,
