@@ -29,79 +29,80 @@ export interface ContextMenuTriggerOptions {
   style?: JSX.CSSProperties;
 }
 
-export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuTriggerOptions>(
-  props => {
-    const rootContext = useMenuRootContext();
-    const menuContext = useMenuContext();
-    const context = useContextMenuContext();
+export const ContextMenuTrigger = /*#__PURE__*/ createPolymorphicComponent<
+  "div",
+  ContextMenuTriggerOptions
+>(props => {
+  const rootContext = useMenuRootContext();
+  const menuContext = useMenuContext();
+  const context = useContextMenuContext();
 
-    props = mergeDefaultProps(
-      {
-        as: "div",
-        id: rootContext.generateId("trigger"),
-      },
-      props
-    );
+  props = mergeDefaultProps(
+    {
+      as: "div",
+      id: rootContext.generateId("trigger"),
+    },
+    props
+  );
 
-    const [local, others] = splitProps(props, [
-      "as",
-      "ref",
-      "style",
-      "isDisabled",
-      "onContextMenu",
-      ...PRESS_HANDLERS_PROP_NAMES,
-    ]);
+  const [local, others] = splitProps(props, [
+    "as",
+    "ref",
+    "style",
+    "isDisabled",
+    "onContextMenu",
+    ...PRESS_HANDLERS_PROP_NAMES,
+  ]);
 
-    const onContextMenu: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-      // If trigger is disabled, enable the native Context Menu.
-      if (local.isDisabled) {
-        callHandler(e, local.onContextMenu);
-        return;
+  const onContextMenu: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    // If trigger is disabled, enable the native Context Menu.
+    if (local.isDisabled) {
+      callHandler(e, local.onContextMenu);
+      return;
+    }
+
+    e.preventDefault();
+
+    context.setAnchorRect({ x: e.clientX, y: e.clientY });
+
+    if (menuContext.isOpen()) {
+      // If the menu is already open, focus the menu itself.
+      menuContext.focusContent();
+    } else {
+      menuContext.open(true);
+    }
+  };
+
+  const { longPressHandlers } = createLongPress({
+    isDisabled: () => local.isDisabled,
+    threshold: 700,
+    onLongPress: e => {
+      if (e.pointerType === "touch" || e.pointerType === "pen") {
+        menuContext.open(false);
       }
+    },
+  });
 
-      e.preventDefault();
-
-      context.setAnchorRect({ x: e.clientX, y: e.clientY });
-
-      if (menuContext.isOpen()) {
-        // If the menu is already open, focus the menu itself.
-        menuContext.focusContent();
-      } else {
-        menuContext.open(true);
-      }
-    };
-
-    const { longPressHandlers } = createLongPress({
-      isDisabled: () => local.isDisabled,
-      threshold: 700,
-      onLongPress: e => {
-        if (e.pointerType === "touch" || e.pointerType === "pen") {
-          menuContext.open(false);
-        }
-      },
-    });
-
-    return (
-      <Dynamic
-        component={local.as}
-        ref={mergeRefs(menuContext.setTriggerRef, local.ref)}
-        style={{
-          // prevent iOS context menu from appearing
-          "-webkit-touch-callout": "none",
-          ...local.style,
-        }}
-        data-expanded={menuContext.isOpen() ? "" : undefined}
-        data-disabled={local.isDisabled ? "" : undefined}
-        onContextMenu={onContextMenu}
-        onKeyDown={composeEventHandlers([local.onKeyDown, longPressHandlers.onKeyDown])}
-        onKeyUp={composeEventHandlers([local.onKeyUp, longPressHandlers.onKeyUp])}
-        onClick={composeEventHandlers([local.onClick, longPressHandlers.onClick])}
-        onPointerDown={composeEventHandlers([local.onPointerDown, longPressHandlers.onPointerDown])}
-        onPointerUp={composeEventHandlers([local.onPointerUp, longPressHandlers.onPointerUp])}
-        onMouseDown={composeEventHandlers([local.onMouseDown, longPressHandlers.onMouseDown])}
-        onDragStart={composeEventHandlers([local.onDragStart, longPressHandlers.onDragStart])}
-        {...others}
-      />
-    );
-  }
-);
+  return (
+    <Dynamic
+      component={local.as}
+      ref={mergeRefs(menuContext.setTriggerRef, local.ref)}
+      style={{
+        // prevent iOS context menu from appearing
+        "-webkit-touch-callout": "none",
+        ...local.style,
+      }}
+      data-expanded={menuContext.isOpen() ? "" : undefined}
+      data-disabled={local.isDisabled ? "" : undefined}
+      onContextMenu={onContextMenu}
+      onKeyDown={composeEventHandlers([local.onKeyDown, longPressHandlers.onKeyDown])}
+      onKeyUp={composeEventHandlers([local.onKeyUp, longPressHandlers.onKeyUp])}
+      onClick={composeEventHandlers([local.onClick, longPressHandlers.onClick])}
+      onPointerDown={composeEventHandlers([local.onPointerDown, longPressHandlers.onPointerDown])}
+      onPointerUp={composeEventHandlers([local.onPointerUp, longPressHandlers.onPointerUp])}
+      onMouseDown={composeEventHandlers([local.onMouseDown, longPressHandlers.onMouseDown])}
+      onDragStart={composeEventHandlers([local.onDragStart, longPressHandlers.onDragStart])}
+      {...others}
+    />
+  );
+});

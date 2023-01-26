@@ -16,7 +16,7 @@ import { useListboxGroupContext } from "./listbox-group-context";
  * A component used to render the label of a `Listbox.Group`.
  * It won't be focusable using arrow keys.
  */
-export const ListboxGroupLabel = createPolymorphicComponent<"span">(props => {
+export const ListboxGroupLabel = /*#__PURE__*/ createPolymorphicComponent<"span">(props => {
   const context = useListboxGroupContext();
 
   props = mergeDefaultProps(

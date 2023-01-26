@@ -26,7 +26,10 @@ export interface CalendarWeekDaysOptions {
 /**
  * A row in the `Calendar.GridHeader`, used to contain the weekday cells.
  */
-export const CalendarWeekDays = createPolymorphicComponent<"tr", CalendarWeekDaysOptions>(props => {
+export const CalendarWeekDays = /*#__PURE__*/ createPolymorphicComponent<
+  "tr",
+  CalendarWeekDaysOptions
+>(props => {
   const context = useCalendarContext();
 
   props = mergeDefaultProps(

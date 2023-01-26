@@ -35,7 +35,10 @@ export interface MenuRadioGroupOptions {
 /**
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
-export const MenuRadioGroup = createPolymorphicComponent<"div", MenuRadioGroupOptions>(props => {
+export const MenuRadioGroup = /*#__PURE__*/ createPolymorphicComponent<
+  "div",
+  MenuRadioGroupOptions
+>(props => {
   const rootContext = useMenuRootContext();
 
   const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);

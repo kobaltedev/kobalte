@@ -23,7 +23,7 @@ import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate";
 /**
  * Contains the tabs that are aligned along the edge of the active tab panel.
  */
-export const TabsList = createPolymorphicComponent<"div">(props => {
+export const TabsList = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   let ref: HTMLElement | undefined;
 
   const context = useTabsContext();

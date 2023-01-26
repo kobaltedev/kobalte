@@ -8,7 +8,7 @@ import { useFormControlContext } from "./form-control-context";
 /**
  * The label that gives the user information on the form control.
  */
-export const FormControlLabel = createPolymorphicComponent<"label">(props => {
+export const FormControlLabel = /*#__PURE__*/ createPolymorphicComponent<"label">(props => {
   let ref: HTMLElement | undefined;
 
   const context = useFormControlContext();

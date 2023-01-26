@@ -20,91 +20,93 @@ import { useHoverCardContext } from "./hover-card-context";
 /**
  * The link that opens the hovercard when hovered.
  */
-export const HoverCardTrigger = createPolymorphicComponent<"a", Link.LinkRootOptions>(props => {
-  const context = useHoverCardContext();
+export const HoverCardTrigger = /*#__PURE__*/ createPolymorphicComponent<"a", Link.LinkRootOptions>(
+  props => {
+    const context = useHoverCardContext();
 
-  props = mergeDefaultProps({ as: "a" }, props);
+    props = mergeDefaultProps({ as: "a" }, props);
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    "onPointerEnter",
-    "onPointerLeave",
-    "onFocus",
-    "onBlur",
-    "onTouchStart",
-  ]);
+    const [local, others] = splitProps(props, [
+      "ref",
+      "onPointerEnter",
+      "onPointerLeave",
+      "onFocus",
+      "onBlur",
+      "onTouchStart",
+    ]);
 
-  const onPointerEnter: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> = e => {
-    callHandler(e, local.onPointerEnter);
+    const onPointerEnter: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> = e => {
+      callHandler(e, local.onPointerEnter);
 
-    if (e.pointerType === "touch" || others.isDisabled || e.defaultPrevented) {
-      return;
-    }
+      if (e.pointerType === "touch" || others.isDisabled || e.defaultPrevented) {
+        return;
+      }
 
-    context.cancelClosing();
+      context.cancelClosing();
 
-    if (!context.isOpen()) {
-      context.openWithDelay();
-    }
-  };
+      if (!context.isOpen()) {
+        context.openWithDelay();
+      }
+    };
 
-  const onPointerLeave: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> = e => {
-    callHandler(e, local.onPointerLeave);
+    const onPointerLeave: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> = e => {
+      callHandler(e, local.onPointerLeave);
 
-    if (e.pointerType === "touch") {
-      return;
-    }
+      if (e.pointerType === "touch") {
+        return;
+      }
 
-    context.cancelOpening();
-  };
+      context.cancelOpening();
+    };
 
-  const onFocus: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = e => {
-    callHandler(e, local.onFocus);
+    const onFocus: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = e => {
+      callHandler(e, local.onFocus);
 
-    if (others.isDisabled || e.defaultPrevented) {
-      return;
-    }
+      if (others.isDisabled || e.defaultPrevented) {
+        return;
+      }
 
-    context.cancelClosing();
+      context.cancelClosing();
 
-    if (!context.isOpen()) {
-      context.openWithDelay();
-    }
-  };
+      if (!context.isOpen()) {
+        context.openWithDelay();
+      }
+    };
 
-  const onBlur: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = e => {
-    callHandler(e, local.onBlur);
+    const onBlur: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = e => {
+      callHandler(e, local.onBlur);
 
-    context.cancelOpening();
+      context.cancelOpening();
 
-    const relatedTarget = e.relatedTarget as Node | null;
+      const relatedTarget = e.relatedTarget as Node | null;
 
-    if (context.isTargetOnHoverCard(relatedTarget)) {
-      return;
-    }
+      if (context.isTargetOnHoverCard(relatedTarget)) {
+        return;
+      }
 
-    context.closeWithDelay();
-  };
+      context.closeWithDelay();
+    };
 
-  const onTouchStart: JSX.EventHandlerUnion<HTMLAnchorElement, TouchEvent> = e => {
-    callHandler(e, local.onTouchStart);
+    const onTouchStart: JSX.EventHandlerUnion<HTMLAnchorElement, TouchEvent> = e => {
+      callHandler(e, local.onTouchStart);
 
-    // prevent focus event on touch devices
-    e.preventDefault();
-  };
+      // prevent focus event on touch devices
+      e.preventDefault();
+    };
 
-  onCleanup(context.cancelOpening);
+    onCleanup(context.cancelOpening);
 
-  return (
-    <Link.Root
-      ref={mergeRefs(context.setTriggerRef, local.ref)}
-      data-expanded={context.isOpen() ? "" : undefined}
-      onPointerEnter={onPointerEnter}
-      onPointerLeave={onPointerLeave}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      onTouchStart={onTouchStart}
-      {...others}
-    />
-  );
-});
+    return (
+      <Link.Root
+        ref={mergeRefs(context.setTriggerRef, local.ref)}
+        data-expanded={context.isOpen() ? "" : undefined}
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={onPointerLeave}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onTouchStart={onTouchStart}
+        {...others}
+      />
+    );
+  }
+);

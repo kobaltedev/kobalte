@@ -5,7 +5,7 @@ import { Dynamic } from "solid-js/web";
 /**
  * Contains the title and navigation buttons of a `Calendar.Month`.
  */
-export const CalendarHeader = createPolymorphicComponent<"div">(props => {
+export const CalendarHeader = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   props = mergeDefaultProps({ as: "div" }, props);
 
   const [local, others] = splitProps(props, ["as"]);

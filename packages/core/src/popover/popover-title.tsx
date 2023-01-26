@@ -7,7 +7,7 @@ import { usePopoverContext } from "./popover-context";
 /**
  * An accessible title to be announced when the popover is open.
  */
-export const PopoverTitle = createPolymorphicComponent<"h2">(props => {
+export const PopoverTitle = /*#__PURE__*/ createPolymorphicComponent<"h2">(props => {
   const context = usePopoverContext();
 
   props = mergeDefaultProps(

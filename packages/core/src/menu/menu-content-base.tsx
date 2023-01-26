@@ -72,7 +72,10 @@ export interface MenuContentBaseOptions {
   onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBaseOptions>(props => {
+export const MenuContentBase = /*#__PURE__*/ createPolymorphicComponent<
+  "div",
+  MenuContentBaseOptions
+>(props => {
   let ref: HTMLElement | undefined;
 
   const rootContext = useMenuRootContext();

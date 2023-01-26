@@ -21,42 +21,43 @@ export interface MenuCheckboxItemOptions extends Omit<MenuItemBaseOptions, "isCh
 /**
  * An item that can be controlled and rendered like a checkbox.
  */
-export const MenuCheckboxItem = createPolymorphicComponent<"div", MenuCheckboxItemOptions>(
-  props => {
-    props = mergeDefaultProps(
-      {
-        as: "div",
-        closeOnSelect: false,
-      },
-      props
-    );
+export const MenuCheckboxItem = /*#__PURE__*/ createPolymorphicComponent<
+  "div",
+  MenuCheckboxItemOptions
+>(props => {
+  props = mergeDefaultProps(
+    {
+      as: "div",
+      closeOnSelect: false,
+    },
+    props
+  );
 
-    const [local, others] = splitProps(props, [
-      "isChecked",
-      "defaultIsChecked",
-      "onCheckedChange",
-      "onSelect",
-    ]);
+  const [local, others] = splitProps(props, [
+    "isChecked",
+    "defaultIsChecked",
+    "onCheckedChange",
+    "onSelect",
+  ]);
 
-    const state = createToggleState({
-      isSelected: () => local.isChecked,
-      defaultIsSelected: () => local.defaultIsChecked,
-      onSelectedChange: checked => local.onCheckedChange?.(checked),
-      isDisabled: () => others.isDisabled,
-    });
+  const state = createToggleState({
+    isSelected: () => local.isChecked,
+    defaultIsSelected: () => local.defaultIsChecked,
+    onSelectedChange: checked => local.onCheckedChange?.(checked),
+    isDisabled: () => others.isDisabled,
+  });
 
-    const onSelect = () => {
-      local.onSelect?.();
-      state.toggle();
-    };
+  const onSelect = () => {
+    local.onSelect?.();
+    state.toggle();
+  };
 
-    return (
-      <MenuItemBase
-        role="menuitemcheckbox"
-        isChecked={state.isSelected()}
-        onSelect={onSelect}
-        {...others}
-      />
-    );
-  }
-);
+  return (
+    <MenuItemBase
+      role="menuitemcheckbox"
+      isChecked={state.isSelected()}
+      onSelect={onSelect}
+      {...others}
+    />
+  );
+});

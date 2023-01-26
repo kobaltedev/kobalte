@@ -7,7 +7,7 @@ import { useRadioGroupItemContext } from "./radio-group-item-context";
 /**
  * The element that visually represents a radio button.
  */
-export const RadioGroupItemControl = createPolymorphicComponent<"div">(props => {
+export const RadioGroupItemControl = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   const context = useRadioGroupItemContext();
 
   props = mergeDefaultProps(

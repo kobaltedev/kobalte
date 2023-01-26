@@ -7,7 +7,7 @@ import { usePopoverContext } from "./popover-context";
 /**
  * An optional accessible description to be announced when the popover is open.
  */
-export const PopoverDescription = createPolymorphicComponent<"p">(props => {
+export const PopoverDescription = /*#__PURE__*/ createPolymorphicComponent<"p">(props => {
   const context = usePopoverContext();
 
   props = mergeDefaultProps(

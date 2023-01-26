@@ -13,26 +13,27 @@ export interface HoverCardContentOptions {
 /**
  * Contains the content to be rendered when the hovercard is open.
  */
-export const HoverCardContent = createPolymorphicComponent<"div", HoverCardContentOptions>(
-  props => {
-    const context = useHoverCardContext();
+export const HoverCardContent = /*#__PURE__*/ createPolymorphicComponent<
+  "div",
+  HoverCardContentOptions
+>(props => {
+  const context = useHoverCardContext();
 
-    const [local, others] = splitProps(props, ["ref", "style"]);
+  const [local, others] = splitProps(props, ["ref", "style"]);
 
-    return (
-      <Show when={context.shouldMount()}>
-        <PopperPositioner>
-          <DismissableLayer
-            ref={mergeRefs(context.setContentRef, local.ref)}
-            isDismissed={!context.isOpen()}
-            disableOutsidePointerEvents={false}
-            style={{ position: "relative", ...local.style }}
-            onFocusOutside={e => e.preventDefault()}
-            onDismiss={context.close}
-            {...others}
-          />
-        </PopperPositioner>
-      </Show>
-    );
-  }
-);
+  return (
+    <Show when={context.shouldMount()}>
+      <PopperPositioner>
+        <DismissableLayer
+          ref={mergeRefs(context.setContentRef, local.ref)}
+          isDismissed={!context.isOpen()}
+          disableOutsidePointerEvents={false}
+          style={{ position: "relative", ...local.style }}
+          onFocusOutside={e => e.preventDefault()}
+          onDismiss={context.close}
+          {...others}
+        />
+      </PopperPositioner>
+    </Show>
+  );
+});

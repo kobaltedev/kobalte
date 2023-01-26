@@ -16,7 +16,7 @@ import { useListboxItemContext } from "./listbox-item-context";
  * An accessible label to be announced for the item.
  * Useful for items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
-export const ListboxItemLabel = createPolymorphicComponent<"div">(props => {
+export const ListboxItemLabel = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   const context = useListboxItemContext();
 
   props = mergeDefaultProps(

@@ -15,7 +15,7 @@ export interface FormControlErrorMessageOptions {
 /**
  * The error message that gives the user information about how to fix a validation error on the form control.
  */
-export const FormControlErrorMessage = createPolymorphicComponent<
+export const FormControlErrorMessage = /*#__PURE__*/ createPolymorphicComponent<
   "div",
   FormControlErrorMessageOptions
 >(props => {

@@ -17,28 +17,29 @@ export interface CalendarGridBodyOptions {
 /**
  * Contains the day cells of a `Calendar.Grid`.
  */
-export const CalendarGridBody = createPolymorphicComponent<"tbody", CalendarGridBodyOptions>(
-  props => {
-    const calendarContext = useCalendarContext();
-    const monthContext = useCalendarMonthContext();
+export const CalendarGridBody = /*#__PURE__*/ createPolymorphicComponent<
+  "tbody",
+  CalendarGridBodyOptions
+>(props => {
+  const calendarContext = useCalendarContext();
+  const monthContext = useCalendarMonthContext();
 
-    props = mergeDefaultProps({ as: "tbody" }, props);
+  props = mergeDefaultProps({ as: "tbody" }, props);
 
-    const [local, others] = splitProps(props, ["as", "children"]);
+  const [local, others] = splitProps(props, ["as", "children"]);
 
-    const weekIndexes = () => {
-      const weeksInMonth = getWeeksInMonth(
-        monthContext.startDate(),
-        calendarContext.state().locale()
-      );
-
-      return [...new Array(weeksInMonth).keys()];
-    };
-
-    return (
-      <Dynamic component={local.as} {...others}>
-        <Index each={weekIndexes()}>{local.children}</Index>
-      </Dynamic>
+  const weekIndexes = () => {
+    const weeksInMonth = getWeeksInMonth(
+      monthContext.startDate(),
+      calendarContext.state().locale()
     );
-  }
-);
+
+    return [...new Array(weeksInMonth).keys()];
+  };
+
+  return (
+    <Dynamic component={local.as} {...others}>
+      <Index each={weekIndexes()}>{local.children}</Index>
+    </Dynamic>
+  );
+});

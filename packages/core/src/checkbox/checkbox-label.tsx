@@ -7,7 +7,7 @@ import { useCheckboxContext } from "./checkbox-context";
 /**
  * The label that gives the user information on the checkbox.
  */
-export const CheckboxLabel = createPolymorphicComponent<"span">(props => {
+export const CheckboxLabel = /*#__PURE__*/ createPolymorphicComponent<"span">(props => {
   const context = useCheckboxContext();
 
   props = mergeDefaultProps(

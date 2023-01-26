@@ -7,7 +7,7 @@ import { useDialogContext } from "./dialog-context";
 /**
  * An optional accessible description to be announced when the dialog is open.
  */
-export const DialogDescription = createPolymorphicComponent<"p">(props => {
+export const DialogDescription = /*#__PURE__*/ createPolymorphicComponent<"p">(props => {
   const context = useDialogContext();
 
   props = mergeDefaultProps(

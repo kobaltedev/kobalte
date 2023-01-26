@@ -13,7 +13,10 @@ import { MenuContent, MenuContentOptions } from "../menu";
 import { useMenuRootContext } from "../menu/menu-root-context";
 import { InteractOutsideEvent } from "../primitives";
 
-export const ContextMenuContent = createPolymorphicComponent<"div", MenuContentOptions>(props => {
+export const ContextMenuContent = /*#__PURE__*/ createPolymorphicComponent<
+  "div",
+  MenuContentOptions
+>(props => {
   const rootContext = useMenuRootContext();
 
   const [local, others] = splitProps(props, ["onCloseAutoFocus", "onInteractOutside"]);

@@ -39,7 +39,7 @@ export interface LinkRootOptions extends CreatePressProps {
 /**
  * Link allows a user to navigate to another page or resource within a web page or application.
  */
-export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props => {
+export const LinkRoot = /*#__PURE__*/ createPolymorphicComponent<"a", LinkRootOptions>(props => {
   let ref: HTMLAnchorElement | undefined;
 
   props = mergeDefaultProps({ as: "a" }, props);

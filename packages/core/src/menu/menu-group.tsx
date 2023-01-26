@@ -17,7 +17,7 @@ import { useMenuRootContext } from "./menu-root-context";
 /**
  * A container used to group multiple `Menu.Item`s.
  */
-export const MenuGroup = createPolymorphicComponent<"div">(props => {
+export const MenuGroup = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   const rootContext = useMenuRootContext();
 
   props = mergeDefaultProps(

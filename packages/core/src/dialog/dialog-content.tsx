@@ -66,120 +66,122 @@ export interface DialogContentOptions {
 /**
  * Contains the content to be rendered when the dialog is open.
  */
-export const DialogContent = createPolymorphicComponent<"div", DialogContentOptions>(props => {
-  let ref: HTMLElement | undefined;
+export const DialogContent = /*#__PURE__*/ createPolymorphicComponent<"div", DialogContentOptions>(
+  props => {
+    let ref: HTMLElement | undefined;
 
-  const context = useDialogContext();
+    const context = useDialogContext();
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      id: context.generateId("content"),
-    },
-    props
-  );
+    props = mergeDefaultProps(
+      {
+        as: "div",
+        id: context.generateId("content"),
+      },
+      props
+    );
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    "id",
-    "onOpenAutoFocus",
-    "onCloseAutoFocus",
-    "onEscapeKeyDown",
-    "onPointerDownOutside",
-    "onFocusOutside",
-    "onInteractOutside",
-  ]);
+    const [local, others] = splitProps(props, [
+      "ref",
+      "id",
+      "onOpenAutoFocus",
+      "onCloseAutoFocus",
+      "onEscapeKeyDown",
+      "onPointerDownOutside",
+      "onFocusOutside",
+      "onInteractOutside",
+    ]);
 
-  let hasInteractedOutside = false;
+    let hasInteractedOutside = false;
 
-  const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
-    local.onPointerDownOutside?.(e);
+    const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
+      local.onPointerDownOutside?.(e);
 
-    // If the event is a right-click, we shouldn't close because
-    // it is effectively as if we right-clicked the `Overlay`.
-    if (context.isModal() && e.detail.isContextMenu) {
-      e.preventDefault();
-    }
-  };
-
-  const onFocusOutside = (e: FocusOutsideEvent) => {
-    local.onFocusOutside?.(e);
-
-    // When focus is trapped, a `focusout` event may still happen.
-    // We make sure we don't trigger our `onDismiss` in such case.
-    if (context.isModal()) {
-      e.preventDefault();
-    }
-  };
-
-  const onInteractOutside = (e: InteractOutsideEvent) => {
-    local.onInteractOutside?.(e);
-
-    if (!context.isModal() && !e.defaultPrevented) {
-      hasInteractedOutside = true;
-    }
-  };
-
-  const onCloseAutoFocus = (e: Event) => {
-    local.onCloseAutoFocus?.(e);
-
-    if (context.isModal()) {
-      e.preventDefault();
-      focusWithoutScrolling(context.triggerRef());
-    } else {
-      if (!e.defaultPrevented) {
-        if (!hasInteractedOutside) {
-          focusWithoutScrolling(context.triggerRef());
-        }
-
-        // Always prevent autofocus because we either focus manually or want user agent focus
+      // If the event is a right-click, we shouldn't close because
+      // it is effectively as if we right-clicked the `Overlay`.
+      if (context.isModal() && e.detail.isContextMenu) {
         e.preventDefault();
       }
+    };
 
-      hasInteractedOutside = false;
-    }
-  };
+    const onFocusOutside = (e: FocusOutsideEvent) => {
+      local.onFocusOutside?.(e);
 
-  // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-  createHideOutside({
-    isDisabled: () => !(context.isOpen() && context.isModal()),
-    targets: () => (ref ? [ref] : []),
-  });
+      // When focus is trapped, a `focusout` event may still happen.
+      // We make sure we don't trigger our `onDismiss` in such case.
+      if (context.isModal()) {
+        e.preventDefault();
+      }
+    };
 
-  createPreventScroll({
-    isDisabled: () => !(context.isOpen() && context.isModal()),
-  });
+    const onInteractOutside = (e: InteractOutsideEvent) => {
+      local.onInteractOutside?.(e);
 
-  createFocusScope(
-    {
-      trapFocus: () => context.isOpen() && context.isModal(),
-      onMountAutoFocus: local.onOpenAutoFocus,
-      onUnmountAutoFocus: onCloseAutoFocus,
-    },
-    () => ref
-  );
+      if (!context.isModal() && !e.defaultPrevented) {
+        hasInteractedOutside = true;
+      }
+    };
 
-  createEffect(() => onCleanup(context.registerContentId(local.id!)));
+    const onCloseAutoFocus = (e: Event) => {
+      local.onCloseAutoFocus?.(e);
 
-  return (
-    <Show when={context.shouldMount()}>
-      <DismissableLayer
-        ref={mergeRefs(el => (ref = el), local.ref)}
-        role="dialog"
-        id={local.id}
-        tabIndex={-1}
-        isDismissed={!context.isOpen()}
-        disableOutsidePointerEvents={context.isOpen() && context.isModal()}
-        excludedElements={[context.triggerRef]}
-        aria-labelledby={context.titleId()}
-        aria-describedby={context.descriptionId()}
-        onEscapeKeyDown={local.onEscapeKeyDown}
-        onPointerDownOutside={onPointerDownOutside}
-        onFocusOutside={onFocusOutside}
-        onInteractOutside={onInteractOutside}
-        onDismiss={context.close}
-        {...others}
-      />
-    </Show>
-  );
-});
+      if (context.isModal()) {
+        e.preventDefault();
+        focusWithoutScrolling(context.triggerRef());
+      } else {
+        if (!e.defaultPrevented) {
+          if (!hasInteractedOutside) {
+            focusWithoutScrolling(context.triggerRef());
+          }
+
+          // Always prevent autofocus because we either focus manually or want user agent focus
+          e.preventDefault();
+        }
+
+        hasInteractedOutside = false;
+      }
+    };
+
+    // aria-hide everything except the content (better supported equivalent to setting aria-modal)
+    createHideOutside({
+      isDisabled: () => !(context.isOpen() && context.isModal()),
+      targets: () => (ref ? [ref] : []),
+    });
+
+    createPreventScroll({
+      isDisabled: () => !(context.isOpen() && context.isModal()),
+    });
+
+    createFocusScope(
+      {
+        trapFocus: () => context.isOpen() && context.isModal(),
+        onMountAutoFocus: local.onOpenAutoFocus,
+        onUnmountAutoFocus: onCloseAutoFocus,
+      },
+      () => ref
+    );
+
+    createEffect(() => onCleanup(context.registerContentId(local.id!)));
+
+    return (
+      <Show when={context.shouldMount()}>
+        <DismissableLayer
+          ref={mergeRefs(el => (ref = el), local.ref)}
+          role="dialog"
+          id={local.id}
+          tabIndex={-1}
+          isDismissed={!context.isOpen()}
+          disableOutsidePointerEvents={context.isOpen() && context.isModal()}
+          excludedElements={[context.triggerRef]}
+          aria-labelledby={context.titleId()}
+          aria-describedby={context.descriptionId()}
+          onEscapeKeyDown={local.onEscapeKeyDown}
+          onPointerDownOutside={onPointerDownOutside}
+          onFocusOutside={onFocusOutside}
+          onInteractOutside={onInteractOutside}
+          onDismiss={context.close}
+          {...others}
+        />
+      </Show>
+    );
+  }
+);

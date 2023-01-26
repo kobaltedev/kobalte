@@ -7,13 +7,15 @@ import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuContentOptions extends MenuContentBaseOptions {}
 
-export const MenuContent = createPolymorphicComponent<"div", MenuContentOptions>(props => {
-  const rootContext = useMenuRootContext();
-  const context = useMenuContext();
+export const MenuContent = /*#__PURE__*/ createPolymorphicComponent<"div", MenuContentOptions>(
+  props => {
+    const rootContext = useMenuRootContext();
+    const context = useMenuContext();
 
-  createPreventScroll({
-    isDisabled: () => !(context.isOpen() && rootContext.isModal()),
-  });
+    createPreventScroll({
+      isDisabled: () => !(context.isOpen() && rootContext.isModal()),
+    });
 
-  return <MenuContentBase {...props} />;
-});
+    return <MenuContentBase {...props} />;
+  }
+);

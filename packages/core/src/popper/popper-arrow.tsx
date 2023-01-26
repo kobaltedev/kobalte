@@ -44,61 +44,63 @@ export interface PopperArrowOptions {
  * An optional arrow element to render alongside the popper content.
  * Must be rendered in the popper content.
  */
-export const PopperArrow = createPolymorphicComponent<"div", PopperArrowOptions>(props => {
-  const context = usePopperContext();
+export const PopperArrow = /*#__PURE__*/ createPolymorphicComponent<"div", PopperArrowOptions>(
+  props => {
+    const context = usePopperContext();
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      size: DEFAULT_SIZE,
-    },
-    props
-  );
+    props = mergeDefaultProps(
+      {
+        as: "div",
+        size: DEFAULT_SIZE,
+      },
+      props
+    );
 
-  const [local, others] = splitProps(props, ["as", "ref", "style", "children", "size"]);
+    const [local, others] = splitProps(props, ["as", "ref", "style", "children", "size"]);
 
-  const dir = () => context.currentPlacement().split("-")[0] as BasePlacement;
-  const contentStyle = createComputedStyle(context.contentRef);
-  const fill = () => contentStyle()?.getPropertyValue("background-color") || "none";
-  const stroke = () => contentStyle()?.getPropertyValue(`border-${dir()}-color`) || "none";
-  const borderWidth = () => contentStyle()?.getPropertyValue(`border-${dir()}-width`) || "0px";
-  const strokeWidth = () => {
-    return parseInt(borderWidth()) * 2 * (DEFAULT_SIZE / local.size!);
-  };
-  const rotate = () => {
-    return `rotate(${ROTATION_DEG[dir()]} ${HALF_DEFAULT_SIZE} ${HALF_DEFAULT_SIZE})`;
-  };
+    const dir = () => context.currentPlacement().split("-")[0] as BasePlacement;
+    const contentStyle = createComputedStyle(context.contentRef);
+    const fill = () => contentStyle()?.getPropertyValue("background-color") || "none";
+    const stroke = () => contentStyle()?.getPropertyValue(`border-${dir()}-color`) || "none";
+    const borderWidth = () => contentStyle()?.getPropertyValue(`border-${dir()}-width`) || "0px";
+    const strokeWidth = () => {
+      return parseInt(borderWidth()) * 2 * (DEFAULT_SIZE / local.size!);
+    };
+    const rotate = () => {
+      return `rotate(${ROTATION_DEG[dir()]} ${HALF_DEFAULT_SIZE} ${HALF_DEFAULT_SIZE})`;
+    };
 
-  return (
-    <Dynamic
-      component={local.as}
-      ref={mergeRefs(context.setArrowRef, local.ref)}
-      aria-hidden="true"
-      style={
-        {
-          // server side rendering
-          position: "absolute",
-          "font-size": `${local.size!}px`,
-          width: "1em",
-          height: "1em",
-          "pointer-events": "none",
-          fill: fill(),
-          stroke: stroke(),
-          "stroke-width": strokeWidth(),
-          ...local.style,
-        } as JSX.CSSProperties
-      }
-      {...others}
-    >
-      <svg display="block" viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}>
-        <g transform={rotate()}>
-          <path fill="none" d={ARROW_PATH} />
-          <path stroke="none" d={ARROW_PATH} />
-        </g>
-      </svg>
-    </Dynamic>
-  );
-});
+    return (
+      <Dynamic
+        component={local.as}
+        ref={mergeRefs(context.setArrowRef, local.ref)}
+        aria-hidden="true"
+        style={
+          {
+            // server side rendering
+            position: "absolute",
+            "font-size": `${local.size!}px`,
+            width: "1em",
+            height: "1em",
+            "pointer-events": "none",
+            fill: fill(),
+            stroke: stroke(),
+            "stroke-width": strokeWidth(),
+            ...local.style,
+          } as JSX.CSSProperties
+        }
+        {...others}
+      >
+        <svg display="block" viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}>
+          <g transform={rotate()}>
+            <path fill="none" d={ARROW_PATH} />
+            <path stroke="none" d={ARROW_PATH} />
+          </g>
+        </svg>
+      </Dynamic>
+    );
+  }
+);
 
 function createComputedStyle(element: Accessor<Element | undefined>) {
   const [style, setStyle] = createSignal<CSSStyleDeclaration>();

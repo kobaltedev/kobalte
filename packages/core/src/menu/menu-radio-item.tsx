@@ -13,30 +13,32 @@ export interface MenuRadioItemOptions
 /**
  * An item that can be controlled and rendered like a radio.
  */
-export const MenuRadioItem = createPolymorphicComponent<"div", MenuRadioItemOptions>(props => {
-  const context = useMenuRadioGroupContext();
+export const MenuRadioItem = /*#__PURE__*/ createPolymorphicComponent<"div", MenuRadioItemOptions>(
+  props => {
+    const context = useMenuRadioGroupContext();
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      closeOnSelect: false,
-    },
-    props
-  );
+    props = mergeDefaultProps(
+      {
+        as: "div",
+        closeOnSelect: false,
+      },
+      props
+    );
 
-  const [local, others] = splitProps(props, ["value", "onSelect"]);
+    const [local, others] = splitProps(props, ["value", "onSelect"]);
 
-  const onSelect = () => {
-    local.onSelect?.();
-    context.setSelectedValue(local.value);
-  };
+    const onSelect = () => {
+      local.onSelect?.();
+      context.setSelectedValue(local.value);
+    };
 
-  return (
-    <MenuItemBase
-      role="menuitemradio"
-      isChecked={context.isSelectedValue(local.value)}
-      onSelect={onSelect}
-      {...others}
-    />
-  );
-});
+    return (
+      <MenuItemBase
+        role="menuitemradio"
+        isChecked={context.isSelectedValue(local.value)}
+        onSelect={onSelect}
+        {...others}
+      />
+    );
+  }
+);

@@ -30,109 +30,112 @@ export interface CalendarBaseOptions {
  * Base component for a calendar, provide context for its children.
  * Used to build calendar and range calendar.
  */
-export const CalendarBase = createPolymorphicComponent<"div", CalendarBaseOptions>(props => {
-  let ref: HTMLDivElement | undefined;
+export const CalendarBase = /*#__PURE__*/ createPolymorphicComponent<"div", CalendarBaseOptions>(
+  props => {
+    let ref: HTMLDivElement | undefined;
 
-  props = mergeDefaultProps({ as: "div" }, props);
+    props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, [
-    "as",
-    "ref",
-    "state",
-    "isDisabled",
-    "hideDatesOutsideMonth",
-    "aria-label",
-    "aria-labelledby",
-  ]);
+    const [local, others] = splitProps(props, [
+      "as",
+      "ref",
+      "state",
+      "isDisabled",
+      "hideDatesOutsideMonth",
+      "aria-label",
+      "aria-labelledby",
+    ]);
 
-  const visibleRangeDescription = createVisibleRangeDescription({
-    startDate: () => local.state.visibleRange().start,
-    endDate: () => local.state.visibleRange().end,
-    timeZone: () => local.state.timeZone(),
-    isAria: () => true,
-  });
+    const visibleRangeDescription = createVisibleRangeDescription({
+      startDate: () => local.state.visibleRange().start,
+      endDate: () => local.state.visibleRange().end,
+      timeZone: () => local.state.timeZone(),
+      isAria: () => true,
+    });
 
-  const selectedDateDescription = createSelectedDateDescription(local.state);
+    const selectedDateDescription = createSelectedDateDescription(local.state);
 
-  let isNextFocused = false;
-  const isNextDisabled = () => local.isDisabled || local.state.isNextVisibleRangeInvalid();
+    let isNextFocused = false;
+    const isNextDisabled = () => local.isDisabled || local.state.isNextVisibleRangeInvalid();
 
-  let isPreviousFocused = false;
-  const isPreviousDisabled = () => local.isDisabled || local.state.isPreviousVisibleRangeInvalid();
+    let isPreviousFocused = false;
+    const isPreviousDisabled = () =>
+      local.isDisabled || local.state.isPreviousVisibleRangeInvalid();
 
-  onMount(() => {
-    if (ref) {
-      local.state.setCalendarRef(ref);
-    }
-  });
-
-  // Announce when the visible date range changes.
-  createEffect(
-    on(
-      visibleRangeDescription,
-      visibleRangeDescription => {
-        // Only when pressing the Previous or Next button.
-        if (!local.state.isFocused()) {
-          announce(visibleRangeDescription);
-        }
-      },
-      {
-        defer: true,
+    onMount(() => {
+      if (ref) {
+        local.state.setCalendarRef(ref);
       }
-    )
-  );
+    });
 
-  // Announce when the selected value changes,
-  // handle an update to the caption that describes the currently selected range, to announce the new value
-  createEffect(
-    on(
+    // Announce when the visible date range changes.
+    createEffect(
+      on(
+        visibleRangeDescription,
+        visibleRangeDescription => {
+          // Only when pressing the Previous or Next button.
+          if (!local.state.isFocused()) {
+            announce(visibleRangeDescription);
+          }
+        },
+        {
+          defer: true,
+        }
+      )
+    );
+
+    // Announce when the selected value changes,
+    // handle an update to the caption that describes the currently selected range, to announce the new value
+    createEffect(
+      on(
+        selectedDateDescription,
+        selectedDateDescription => {
+          if (selectedDateDescription) {
+            announce(selectedDateDescription, "polite", 4000);
+          }
+        },
+        {
+          defer: true,
+        }
+      )
+    );
+
+    // If the next or previous buttons become disabled while they are focused, move focus to the calendar body.
+    createEffect(() => {
+      if (isNextDisabled() && isNextFocused) {
+        isNextFocused = false;
+        local.state.setFocused(true);
+      }
+
+      if (isPreviousDisabled() && isPreviousFocused) {
+        isPreviousFocused = false;
+        local.state.setFocused(true);
+      }
+    });
+
+    const context: CalendarContextValue = {
+      state: () => local.state,
       selectedDateDescription,
-      selectedDateDescription => {
-        if (selectedDateDescription) {
-          announce(selectedDateDescription, "polite", 4000);
-        }
-      },
-      {
-        defer: true,
-      }
-    )
-  );
+      isPreviousDisabled,
+      isNextDisabled,
+      hideDatesOutsideMonth: () => local.hideDatesOutsideMonth ?? false,
+      ariaLabel: () => local["aria-label"],
+      ariaLabelledBy: () => local["aria-labelledby"],
+      setPreviousFocused: newValue => (isPreviousFocused = newValue),
+      setNextFocused: newValue => (isNextFocused = newValue),
+    };
 
-  // If the next or previous buttons become disabled while they are focused, move focus to the calendar body.
-  createEffect(() => {
-    if (isNextDisabled() && isNextFocused) {
-      isNextFocused = false;
-      local.state.setFocused(true);
-    }
-
-    if (isPreviousDisabled() && isPreviousFocused) {
-      isPreviousFocused = false;
-      local.state.setFocused(true);
-    }
-  });
-
-  const context: CalendarContextValue = {
-    state: () => local.state,
-    selectedDateDescription,
-    isPreviousDisabled,
-    isNextDisabled,
-    hideDatesOutsideMonth: () => local.hideDatesOutsideMonth ?? false,
-    ariaLabel: () => local["aria-label"],
-    ariaLabelledBy: () => local["aria-labelledby"],
-    setPreviousFocused: newValue => (isPreviousFocused = newValue),
-    setNextFocused: newValue => (isNextFocused = newValue),
-  };
-
-  return (
-    <CalendarContext.Provider value={context}>
-      <Dynamic
-        component={local.as}
-        ref={mergeRefs(el => (ref = el), local.ref)}
-        role="group"
-        aria-label={[local["aria-label"], visibleRangeDescription()].filter(Boolean).join(", ")}
-        aria-labelledby={local["aria-labelledby"]}
-        {...others}
-      />
-    </CalendarContext.Provider>
-  );
-});
+    return (
+      <CalendarContext.Provider value={context}>
+        <Dynamic
+          component={local.as}
+          ref={mergeRefs(el => (ref = el), local.ref)}
+          role="group"
+          aria-label={[local["aria-label"], visibleRangeDescription()].filter(Boolean).join(", ")}
+          aria-labelledby={local["aria-labelledby"]}
+          {...others}
+        />
+      </CalendarContext.Provider>
+    );
+  }
+);

@@ -5,7 +5,7 @@ import { Dynamic } from "solid-js/web";
 /**
  * A weekday cell of a `Calendar.Grid`.
  */
-export const CalendarWeekDay = createPolymorphicComponent<"th">(props => {
+export const CalendarWeekDay = /*#__PURE__*/ createPolymorphicComponent<"th">(props => {
   props = mergeDefaultProps({ as: "th" }, props);
 
   const [local, others] = splitProps(props, ["as"]);

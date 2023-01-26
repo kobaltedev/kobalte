@@ -8,7 +8,7 @@ import { useSelectContext } from "./select-context";
  * A small icon often displayed next to the value as a visual affordance for the fact it can be open.
  * It renders a `▼` by default, but you can use your own icon `children`.
  */
-export const SelectIcon = createPolymorphicComponent<"div">(props => {
+export const SelectIcon = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   const context = useSelectContext();
 
   props = mergeDefaultProps({ as: "div", children: "▼" }, props);

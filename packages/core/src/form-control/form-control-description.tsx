@@ -7,7 +7,7 @@ import { useFormControlContext } from "./form-control-context";
 /**
  * The description that gives the user more information on the form control.
  */
-export const FormControlDescription = createPolymorphicComponent<"div">(props => {
+export const FormControlDescription = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   const context = useFormControlContext();
 
   props = mergeDefaultProps(

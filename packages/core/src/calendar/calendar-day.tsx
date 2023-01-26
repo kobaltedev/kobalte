@@ -26,7 +26,7 @@ import { useCalendarMonthContext } from "./calendar-month-context";
 /**
  * A day of the `Calendar.Month` which can be selected by the user.
  */
-export const CalendarDay = createPolymorphicComponent<"div">(props => {
+export const CalendarDay = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   let ref: HTMLDivElement | undefined;
 
   const calendarContext = useCalendarContext();

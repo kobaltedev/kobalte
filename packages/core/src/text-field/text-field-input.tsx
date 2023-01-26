@@ -29,7 +29,7 @@ export function TextFieldInput(props: ComponentProps<"input">) {
   return <TextFieldInputBase type="text" {...props} />;
 }
 
-export const TextFieldInputBase = createPolymorphicComponent<"input">(props => {
+export const TextFieldInputBase = /*#__PURE__*/ createPolymorphicComponent<"input">(props => {
   const formControlContext = useFormControlContext();
   const context = useTextFieldContext();
 

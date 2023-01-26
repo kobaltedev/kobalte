@@ -48,7 +48,7 @@ export interface TabsRootOptions {
  * A set of layered sections of content, known as tab panels, that display one panel of content at a time.
  * `Tabs` contains all the parts of a tabs component and provide context for its children.
  */
-export const TabsRoot = createPolymorphicComponent<"div", TabsRootOptions>(props => {
+export const TabsRoot = /*#__PURE__*/ createPolymorphicComponent<"div", TabsRootOptions>(props => {
   const defaultId = `tabs-${createUniqueId()}`;
 
   props = mergeDefaultProps(

@@ -14,30 +14,32 @@ export interface CalendarMonthProps {
 /**
  * Root container for a month within a calendar or range calendar.
  */
-export const CalendarMonth = createPolymorphicComponent<"div", CalendarMonthProps>(props => {
-  const calendarContext = useCalendarContext();
+export const CalendarMonth = /*#__PURE__*/ createPolymorphicComponent<"div", CalendarMonthProps>(
+  props => {
+    const calendarContext = useCalendarContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+    props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, ["as", "offset"]);
+    const [local, others] = splitProps(props, ["as", "offset"]);
 
-  const startDate = createMemo(() => {
-    const offset: DateDuration = local.offset != null ? { months: local.offset } : {};
-    return calendarContext.state().visibleRange().start.add(offset);
-  });
+    const startDate = createMemo(() => {
+      const offset: DateDuration = local.offset != null ? { months: local.offset } : {};
+      return calendarContext.state().visibleRange().start.add(offset);
+    });
 
-  const endDate = createMemo(() => {
-    return endOfMonth(startDate());
-  });
+    const endDate = createMemo(() => {
+      return endOfMonth(startDate());
+    });
 
-  const context: CalendarMonthContextValue = {
-    startDate,
-    endDate,
-  };
+    const context: CalendarMonthContextValue = {
+      startDate,
+      endDate,
+    };
 
-  return (
-    <CalendarMonthContext.Provider value={context}>
-      <Dynamic component={local.as} {...others} />
-    </CalendarMonthContext.Provider>
-  );
-});
+    return (
+      <CalendarMonthContext.Provider value={context}>
+        <Dynamic component={local.as} {...others} />
+      </CalendarMonthContext.Provider>
+    );
+  }
+);

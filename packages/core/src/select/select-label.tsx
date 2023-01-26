@@ -8,7 +8,7 @@ import { useSelectContext } from "./select-context";
 /**
  * The label that gives the user information on the select.
  */
-export const SelectLabel = createPolymorphicComponent<"span">(props => {
+export const SelectLabel = /*#__PURE__*/ createPolymorphicComponent<"span">(props => {
   const context = useSelectContext();
 
   const [local, others] = splitProps(props, ["onClick"]);

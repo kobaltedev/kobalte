@@ -3,7 +3,7 @@ import { clsx } from "clsx";
 import { splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-export const Prose = createPolymorphicComponent<"div">(props => {
+export const Prose = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   const [local, others] = splitProps(props, ["as", "class"]);
 
   return (

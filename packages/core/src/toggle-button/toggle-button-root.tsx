@@ -50,40 +50,41 @@ export interface ToggleButtonRootOptions extends Button.ButtonRootOptions {
  * A two-state button that allow users to toggle a selection on or off.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export const ToggleButtonRoot = createPolymorphicComponent<"button", ToggleButtonRootOptions>(
-  props => {
-    const [local, others] = splitProps(props, [
-      "children",
-      "isPressed",
-      "defaultIsPressed",
-      "onPressedChange",
-      "onPress",
-    ]);
+export const ToggleButtonRoot = /*#__PURE__*/ createPolymorphicComponent<
+  "button",
+  ToggleButtonRootOptions
+>(props => {
+  const [local, others] = splitProps(props, [
+    "children",
+    "isPressed",
+    "defaultIsPressed",
+    "onPressedChange",
+    "onPress",
+  ]);
 
-    const state = createToggleState({
-      isSelected: () => local.isPressed,
-      defaultIsSelected: () => local.defaultIsPressed,
-      onSelectedChange: selected => local.onPressedChange?.(selected),
-      isDisabled: () => others.isDisabled,
-    });
+  const state = createToggleState({
+    isSelected: () => local.isPressed,
+    defaultIsSelected: () => local.defaultIsPressed,
+    onSelectedChange: selected => local.onPressedChange?.(selected),
+    isDisabled: () => others.isDisabled,
+  });
 
-    const onPress: PressEvents["onPress"] = e => {
-      local.onPress?.(e);
-      state.toggle();
-    };
+  const onPress: PressEvents["onPress"] = e => {
+    local.onPress?.(e);
+    state.toggle();
+  };
 
-    return (
-      <Button.Root
-        aria-pressed={state.isSelected()}
-        data-pressed={state.isSelected() ? "" : undefined}
-        onPress={onPress}
-        {...others}
-      >
-        <ToggleButtonRootChild state={{ isPressed: state.isSelected }} children={local.children} />
-      </Button.Root>
-    );
-  }
-);
+  return (
+    <Button.Root
+      aria-pressed={state.isSelected()}
+      data-pressed={state.isSelected() ? "" : undefined}
+      onPress={onPress}
+      {...others}
+    >
+      <ToggleButtonRootChild state={{ isPressed: state.isSelected }} children={local.children} />
+    </Button.Root>
+  );
+});
 
 interface ToggleButtonRootChildProps extends Pick<ToggleButtonRootOptions, "children"> {
   state: ToggleButtonRootState;

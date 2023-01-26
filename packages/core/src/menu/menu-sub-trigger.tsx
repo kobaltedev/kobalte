@@ -57,7 +57,10 @@ const SUB_OPEN_KEYS: Record<Direction, string[]> = {
 /**
  * An item that opens a submenu.
  */
-export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOptions>(props => {
+export const MenuSubTrigger = /*#__PURE__*/ createPolymorphicComponent<
+  "div",
+  MenuSubTriggerOptions
+>(props => {
   let ref: HTMLDivElement | undefined;
 
   const rootContext = useMenuRootContext();

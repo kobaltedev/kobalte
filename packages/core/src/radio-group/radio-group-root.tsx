@@ -47,7 +47,10 @@ export interface RadioGroupRootOptions extends CreateFormControlProps {
  * A set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time.
  * This component is based on the [WAI-ARIA Radio Group Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radiobutton/)
  */
-export const RadioGroupRoot = createPolymorphicComponent<"div", RadioGroupRootOptions>(props => {
+export const RadioGroupRoot = /*#__PURE__*/ createPolymorphicComponent<
+  "div",
+  RadioGroupRootOptions
+>(props => {
   let ref: HTMLDivElement | undefined;
 
   const defaultId = `radiogroup-${createUniqueId()}`;

@@ -7,7 +7,7 @@ import { useDialogContext } from "./dialog-context";
 /**
  * An accessible title to be announced when the dialog is open.
  */
-export const DialogTitle = createPolymorphicComponent<"h2">(props => {
+export const DialogTitle = /*#__PURE__*/ createPolymorphicComponent<"h2">(props => {
   const context = useDialogContext();
 
   props = mergeDefaultProps(

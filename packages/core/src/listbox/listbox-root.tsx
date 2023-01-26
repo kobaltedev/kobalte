@@ -86,122 +86,127 @@ export interface ListboxRootOptions
 /**
  * Listbox presents a list of options and allows a user to select one or more of them.
  */
-export const ListboxRoot = createPolymorphicComponent<"div", ListboxRootOptions>(props => {
-  let ref: HTMLElement | undefined;
+export const ListboxRoot = /*#__PURE__*/ createPolymorphicComponent<"div", ListboxRootOptions>(
+  props => {
+    let ref: HTMLElement | undefined;
 
-  const defaultId = `listbox-${createUniqueId()}`;
+    const defaultId = `listbox-${createUniqueId()}`;
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      id: defaultId,
-      selectionMode: "single",
-    },
-    props
-  );
+    props = mergeDefaultProps(
+      {
+        as: "div",
+        id: defaultId,
+        selectionMode: "single",
+      },
+      props
+    );
 
-  const [local, others] = splitProps(props, [
-    "as",
-    "ref",
-    "value",
-    "defaultValue",
-    "onValueChange",
-    "items",
-    "onItemsChange",
-    "state",
-    "keyboardDelegate",
-    "autoFocus",
-    "selectionMode",
-    "shouldFocusWrap",
-    "shouldUseVirtualFocus",
-    "shouldSelectOnPressUp",
-    "shouldFocusOnHover",
-    "allowDuplicateSelectionEvents",
-    "disallowEmptySelection",
-    "selectionBehavior",
-    "selectOnFocus",
-    "disallowTypeAhead",
-    "allowsTabNavigation",
-    "scrollRef",
-    "onKeyDown",
-    "onMouseDown",
-    "onFocusIn",
-    "onFocusOut",
-  ]);
+    const [local, others] = splitProps(props, [
+      "as",
+      "ref",
+      "value",
+      "defaultValue",
+      "onValueChange",
+      "items",
+      "onItemsChange",
+      "state",
+      "keyboardDelegate",
+      "autoFocus",
+      "selectionMode",
+      "shouldFocusWrap",
+      "shouldUseVirtualFocus",
+      "shouldSelectOnPressUp",
+      "shouldFocusOnHover",
+      "allowDuplicateSelectionEvents",
+      "disallowEmptySelection",
+      "selectionBehavior",
+      "selectOnFocus",
+      "disallowTypeAhead",
+      "allowsTabNavigation",
+      "scrollRef",
+      "onKeyDown",
+      "onMouseDown",
+      "onFocusIn",
+      "onFocusOut",
+    ]);
 
-  const [items, setItems] = createControllableArraySignal<CollectionItem>({
-    value: () => local.items,
-    defaultValue: () => [],
-    onChange: value => local.onItemsChange?.(value),
-  });
-
-  const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
-
-  const listState = createMemo(() => {
-    if (local.state) {
-      return local.state;
-    }
-
-    return createListState({
-      selectedKeys: () => local.value,
-      defaultSelectedKeys: () => local.defaultValue,
-      onSelectionChange: local.onValueChange,
-      allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
-      disallowEmptySelection: () => access(local.disallowEmptySelection),
-      selectionBehavior: () => access(local.selectionBehavior),
-      selectionMode: () => access(local.selectionMode),
-      dataSource: items,
+    const [items, setItems] = createControllableArraySignal<CollectionItem>({
+      value: () => local.items,
+      defaultValue: () => [],
+      onChange: value => local.onItemsChange?.(value),
     });
-  });
 
-  const selectableList = createSelectableList(
-    {
-      selectionManager: () => listState().selectionManager(),
-      collection: () => listState().collection(),
-      autoFocus: () => access(local.autoFocus),
-      shouldFocusWrap: () => access(local.shouldFocusWrap),
-      keyboardDelegate: () => local.keyboardDelegate,
-      disallowEmptySelection: () => access(local.disallowEmptySelection),
-      selectOnFocus: () => access(local.selectOnFocus),
-      disallowTypeAhead: () => access(local.disallowTypeAhead),
-      shouldUseVirtualFocus: () => access(local.shouldUseVirtualFocus),
-      allowsTabNavigation: () => access(local.allowsTabNavigation),
-      isVirtualized: false,
-    },
-    () => ref,
-    () => local.scrollRef?.()
-  );
+    const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
 
-  const context: ListboxContextValue = {
-    listState,
-    generateId: part => `${others.id!}-${part}`,
-    shouldUseVirtualFocus: () => props.shouldUseVirtualFocus,
-    shouldSelectOnPressUp: () => props.shouldSelectOnPressUp,
-    shouldFocusOnHover: () => props.shouldFocusOnHover,
-  };
+    const listState = createMemo(() => {
+      if (local.state) {
+        return local.state;
+      }
 
-  return (
-    <DomCollectionProvider>
-      <ListboxContext.Provider value={context}>
-        <Dynamic
-          component={local.as}
-          ref={mergeRefs(el => (ref = el), local.ref)}
-          role="listbox"
-          tabIndex={selectableList.tabIndex()}
-          aria-multiselectable={
-            listState().selectionManager().selectionMode() === "multiple" ? true : undefined
-          }
-          data-focus={listState().selectionManager().isFocused() ? "" : undefined}
-          onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.handlers.onKeyDown])}
-          onMouseDown={composeEventHandlers([
-            local.onMouseDown,
-            selectableList.handlers.onMouseDown,
-          ])}
-          onFocusIn={composeEventHandlers([local.onFocusIn, selectableList.handlers.onFocusIn])}
-          onFocusOut={composeEventHandlers([local.onFocusOut, selectableList.handlers.onFocusOut])}
-          {...others}
-        />
-      </ListboxContext.Provider>
-    </DomCollectionProvider>
-  );
-});
+      return createListState({
+        selectedKeys: () => local.value,
+        defaultSelectedKeys: () => local.defaultValue,
+        onSelectionChange: local.onValueChange,
+        allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
+        disallowEmptySelection: () => access(local.disallowEmptySelection),
+        selectionBehavior: () => access(local.selectionBehavior),
+        selectionMode: () => access(local.selectionMode),
+        dataSource: items,
+      });
+    });
+
+    const selectableList = createSelectableList(
+      {
+        selectionManager: () => listState().selectionManager(),
+        collection: () => listState().collection(),
+        autoFocus: () => access(local.autoFocus),
+        shouldFocusWrap: () => access(local.shouldFocusWrap),
+        keyboardDelegate: () => local.keyboardDelegate,
+        disallowEmptySelection: () => access(local.disallowEmptySelection),
+        selectOnFocus: () => access(local.selectOnFocus),
+        disallowTypeAhead: () => access(local.disallowTypeAhead),
+        shouldUseVirtualFocus: () => access(local.shouldUseVirtualFocus),
+        allowsTabNavigation: () => access(local.allowsTabNavigation),
+        isVirtualized: false,
+      },
+      () => ref,
+      () => local.scrollRef?.()
+    );
+
+    const context: ListboxContextValue = {
+      listState,
+      generateId: part => `${others.id!}-${part}`,
+      shouldUseVirtualFocus: () => props.shouldUseVirtualFocus,
+      shouldSelectOnPressUp: () => props.shouldSelectOnPressUp,
+      shouldFocusOnHover: () => props.shouldFocusOnHover,
+    };
+
+    return (
+      <DomCollectionProvider>
+        <ListboxContext.Provider value={context}>
+          <Dynamic
+            component={local.as}
+            ref={mergeRefs(el => (ref = el), local.ref)}
+            role="listbox"
+            tabIndex={selectableList.tabIndex()}
+            aria-multiselectable={
+              listState().selectionManager().selectionMode() === "multiple" ? true : undefined
+            }
+            data-focus={listState().selectionManager().isFocused() ? "" : undefined}
+            onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.handlers.onKeyDown])}
+            onMouseDown={composeEventHandlers([
+              local.onMouseDown,
+              selectableList.handlers.onMouseDown,
+            ])}
+            onFocusIn={composeEventHandlers([local.onFocusIn, selectableList.handlers.onFocusIn])}
+            onFocusOut={composeEventHandlers([
+              local.onFocusOut,
+              selectableList.handlers.onFocusOut,
+            ])}
+            {...others}
+          />
+        </ListboxContext.Provider>
+      </DomCollectionProvider>
+    );
+  }
+);

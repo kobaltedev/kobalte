@@ -62,7 +62,10 @@ export interface PopoverContentOptions {
 /**
  * Contains the content to be rendered when the popover is open.
  */
-export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOptions>(props => {
+export const PopoverContent = /*#__PURE__*/ createPolymorphicComponent<
+  "div",
+  PopoverContentOptions
+>(props => {
   let ref: HTMLElement | undefined;
 
   const context = usePopoverContext();

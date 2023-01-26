@@ -25,32 +25,34 @@ export interface SeparatorRootOptions {
 /**
  * A separator visually or semantically separates content.
  */
-export const SeparatorRoot = createPolymorphicComponent<"hr", SeparatorRootOptions>(props => {
-  let ref: HTMLElement | undefined;
+export const SeparatorRoot = /*#__PURE__*/ createPolymorphicComponent<"hr", SeparatorRootOptions>(
+  props => {
+    let ref: HTMLElement | undefined;
 
-  props = mergeDefaultProps(
-    {
-      as: "hr",
-      orientation: "horizontal",
-    },
-    props
-  );
+    props = mergeDefaultProps(
+      {
+        as: "hr",
+        orientation: "horizontal",
+      },
+      props
+    );
 
-  const [local, others] = splitProps(props, ["as", "ref", "orientation"]);
+    const [local, others] = splitProps(props, ["as", "ref", "orientation"]);
 
-  const tagName = createTagName(
-    () => ref,
-    () => local.as || "hr"
-  );
+    const tagName = createTagName(
+      () => ref,
+      () => local.as || "hr"
+    );
 
-  return (
-    <Dynamic
-      component={local.as}
-      ref={mergeRefs(el => (ref = el), local.ref)}
-      role={tagName() !== "hr" ? "separator" : undefined}
-      aria-orientation={local.orientation === "vertical" ? "vertical" : undefined}
-      data-orientation={local.orientation}
-      {...others}
-    />
-  );
-});
+    return (
+      <Dynamic
+        component={local.as}
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        role={tagName() !== "hr" ? "separator" : undefined}
+        aria-orientation={local.orientation === "vertical" ? "vertical" : undefined}
+        data-orientation={local.orientation}
+        {...others}
+      />
+    );
+  }
+);

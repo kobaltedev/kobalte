@@ -30,76 +30,78 @@ export interface SelectContentOptions {
 /**
  * The component that pops out when the select is open.
  */
-export const SelectContent = createPolymorphicComponent<"div", SelectContentOptions>(props => {
-  let ref: HTMLElement | undefined;
+export const SelectContent = /*#__PURE__*/ createPolymorphicComponent<"div", SelectContentOptions>(
+  props => {
+    let ref: HTMLElement | undefined;
 
-  const context = useSelectContext();
+    const context = useSelectContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+    props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, ["ref", "id", "style", "forceMount"]);
+    const [local, others] = splitProps(props, ["ref", "id", "style", "forceMount"]);
 
-  const forceMount = () => local.forceMount || context.isOpen();
+    const forceMount = () => local.forceMount || context.isOpen();
 
-  const onEscapeKeyDown = (e: KeyboardEvent) => {
-    // `createSelectableList` prevent escape key down,
-    // which prevent our `onDismiss` in `DismissableLayer` to run,
-    // so we force "close on escape" here.
-    context.close();
-  };
+    const onEscapeKeyDown = (e: KeyboardEvent) => {
+      // `createSelectableList` prevent escape key down,
+      // which prevent our `onDismiss` in `DismissableLayer` to run,
+      // so we force "close on escape" here.
+      context.close();
+    };
 
-  const onFocusOutside = (e: FocusOutsideEvent) => {
-    // When focus is trapped, a `focusout` event may still happen.
-    // We make sure we don't trigger our `onDismiss` in such case.
-    e.preventDefault();
-  };
+    const onFocusOutside = (e: FocusOutsideEvent) => {
+      // When focus is trapped, a `focusout` event may still happen.
+      // We make sure we don't trigger our `onDismiss` in such case.
+      e.preventDefault();
+    };
 
-  // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-  createHideOutside({
-    isDisabled: () => !context.isOpen(),
-    targets: () => (ref ? [ref] : []),
-  });
+    // aria-hide everything except the content (better supported equivalent to setting aria-modal)
+    createHideOutside({
+      isDisabled: () => !context.isOpen(),
+      targets: () => (ref ? [ref] : []),
+    });
 
-  createPreventScroll({
-    isDisabled: () => !context.isOpen(),
-  });
+    createPreventScroll({
+      isDisabled: () => !context.isOpen(),
+    });
 
-  createFocusScope(
-    {
-      trapFocus: context.isOpen,
-      onMountAutoFocus: e => {
-        // We prevent open autofocus because it's handled by the `Listbox`.
-        e.preventDefault();
+    createFocusScope(
+      {
+        trapFocus: context.isOpen,
+        onMountAutoFocus: e => {
+          // We prevent open autofocus because it's handled by the `Listbox`.
+          e.preventDefault();
+        },
+        onUnmountAutoFocus: e => {
+          focusWithoutScrolling(context.triggerRef());
+          e.preventDefault();
+        },
       },
-      onUnmountAutoFocus: e => {
-        focusWithoutScrolling(context.triggerRef());
-        e.preventDefault();
-      },
-    },
-    () => ref
-  );
+      () => ref
+    );
 
-  return (
-    <PopperPositioner>
-      <DismissableLayer
-        ref={mergeRefs(el => {
-          context.setContentRef(el);
-          ref = el;
-        }, local.ref)}
-        isDismissed={!context.isOpen()}
-        disableOutsidePointerEvents={context.isOpen()}
-        excludedElements={[context.triggerRef]}
-        hidden={!forceMount()}
-        style={{
-          position: "relative",
-          display: !forceMount() ? "none" : undefined,
-          ...local.style,
-        }}
-        onEscapeKeyDown={onEscapeKeyDown}
-        onFocusOutside={onFocusOutside}
-        onDismiss={context.close}
-        {...others}
-      />
-    </PopperPositioner>
-  );
-});
+    return (
+      <PopperPositioner>
+        <DismissableLayer
+          ref={mergeRefs(el => {
+            context.setContentRef(el);
+            ref = el;
+          }, local.ref)}
+          isDismissed={!context.isOpen()}
+          disableOutsidePointerEvents={context.isOpen()}
+          excludedElements={[context.triggerRef]}
+          hidden={!forceMount()}
+          style={{
+            position: "relative",
+            display: !forceMount() ? "none" : undefined,
+            ...local.style,
+          }}
+          onEscapeKeyDown={onEscapeKeyDown}
+          onFocusOutside={onFocusOutside}
+          onDismiss={context.close}
+          {...others}
+        />
+      </PopperPositioner>
+    );
+  }
+);

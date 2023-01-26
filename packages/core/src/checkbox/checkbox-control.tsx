@@ -7,7 +7,7 @@ import { useCheckboxContext } from "./checkbox-context";
 /**
  * The element that visually represents a checkbox.
  */
-export const CheckboxControl = createPolymorphicComponent<"div">(props => {
+export const CheckboxControl = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   const context = useCheckboxContext();
 
   props = mergeDefaultProps(

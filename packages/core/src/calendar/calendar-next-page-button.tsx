@@ -18,7 +18,7 @@ import { useCalendarContext } from "./calendar-context";
 /**
  * A navigation button to go to the next page within a calendar or range calendar.
  */
-export const CalendarNextPageButton = createPolymorphicComponent<
+export const CalendarNextPageButton = /*#__PURE__*/ createPolymorphicComponent<
   "button",
   Button.ButtonRootOptions
 >(props => {

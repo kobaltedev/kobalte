@@ -7,7 +7,7 @@ import { useSwitchContext } from "./switch-context";
 /**
  * The thumb that is used to visually indicate whether the switch is on or off.
  */
-export const SwitchThumb = createPolymorphicComponent<"div">(props => {
+export const SwitchThumb = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   const context = useSwitchContext();
 
   props = mergeDefaultProps(

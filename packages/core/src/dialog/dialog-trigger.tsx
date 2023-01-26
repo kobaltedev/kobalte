@@ -16,27 +16,28 @@ import { useDialogContext } from "./dialog-context";
 /**
  * The button that opens the dialog.
  */
-export const DialogTrigger = createPolymorphicComponent<"button", Button.ButtonRootOptions>(
-  props => {
-    const context = useDialogContext();
+export const DialogTrigger = /*#__PURE__*/ createPolymorphicComponent<
+  "button",
+  Button.ButtonRootOptions
+>(props => {
+  const context = useDialogContext();
 
-    const [local, others] = splitProps(props, ["ref", "onPress"]);
+  const [local, others] = splitProps(props, ["ref", "onPress"]);
 
-    const onPress: PressEvents["onPress"] = e => {
-      local.onPress?.(e);
-      context.toggle();
-    };
+  const onPress: PressEvents["onPress"] = e => {
+    local.onPress?.(e);
+    context.toggle();
+  };
 
-    return (
-      <Button.Root
-        ref={mergeRefs(context.setTriggerRef, local.ref)}
-        aria-haspopup="dialog"
-        aria-expanded={context.isOpen()}
-        aria-controls={context.isOpen() ? context.contentId() : undefined}
-        data-expanded={context.isOpen() ? "" : undefined}
-        onPress={onPress}
-        {...others}
-      />
-    );
-  }
-);
+  return (
+    <Button.Root
+      ref={mergeRefs(context.setTriggerRef, local.ref)}
+      aria-haspopup="dialog"
+      aria-expanded={context.isOpen()}
+      aria-controls={context.isOpen() ? context.contentId() : undefined}
+      data-expanded={context.isOpen() ? "" : undefined}
+      onPress={onPress}
+      {...others}
+    />
+  );
+});

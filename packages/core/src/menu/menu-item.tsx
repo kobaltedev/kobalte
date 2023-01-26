@@ -8,7 +8,7 @@ export interface MenuItemOptions
 /**
  * An item of the menu.
  */
-export const MenuItem = createPolymorphicComponent<"div", MenuItemOptions>(props => {
+export const MenuItem = /*#__PURE__*/ createPolymorphicComponent<"div", MenuItemOptions>(props => {
   props = mergeDefaultProps(
     {
       as: "div",

@@ -17,7 +17,7 @@ import { ListboxGroupContext, ListboxGroupContextValue } from "./listbox-group-c
 /**
  * A container used to group multiple `Listbox.Option`s.
  */
-export const ListboxGroup = createPolymorphicComponent<"div">(props => {
+export const ListboxGroup = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   const listBoxContext = useListboxContext();
 
   const defaultId = `${listBoxContext.generateId("group")}-${createUniqueId()}`;

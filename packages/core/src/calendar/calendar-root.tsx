@@ -20,28 +20,30 @@ export interface CalendarRootOptions
 /**
  * Displays one or more date grids and allows users to select a single date.
  */
-export const CalendarRoot = createPolymorphicComponent<"div", CalendarRootOptions>(props => {
-  const [calendarProps, others] = splitProps(props, [
-    "value",
-    "defaultValue",
-    "onValueChange",
-    "locale",
-    "createCalendar",
-    "visibleMonths",
-    "selectionAlignment",
-    "minValue",
-    "maxValue",
-    "isDateUnavailable",
-    "isDisabled",
-    "isReadOnly",
-    "autoFocus",
-    "focusedValue",
-    "defaultFocusedValue",
-    "onFocusChange",
-    "validationState",
-  ]);
+export const CalendarRoot = /*#__PURE__*/ createPolymorphicComponent<"div", CalendarRootOptions>(
+  props => {
+    const [calendarProps, others] = splitProps(props, [
+      "value",
+      "defaultValue",
+      "onValueChange",
+      "locale",
+      "createCalendar",
+      "visibleMonths",
+      "selectionAlignment",
+      "minValue",
+      "maxValue",
+      "isDateUnavailable",
+      "isDisabled",
+      "isReadOnly",
+      "autoFocus",
+      "focusedValue",
+      "defaultFocusedValue",
+      "onFocusChange",
+      "validationState",
+    ]);
 
-  const state = createCalendarState(calendarProps);
+    const state = createCalendarState(calendarProps);
 
-  return <CalendarBase state={state} isDisabled={access(calendarProps.isDisabled)} {...others} />;
-});
+    return <CalendarBase state={state} isDisabled={access(calendarProps.isDisabled)} {...others} />;
+  }
+);

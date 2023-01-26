@@ -23,46 +23,47 @@ export interface MultiSelectValueOptions {
  * If you require more control, you can instead control the select and pass your own children.
  * An optional placeholder prop is also available for when the select has no value.
  */
-export const MultiSelectValue = createPolymorphicComponent<"span", MultiSelectValueOptions>(
-  props => {
-    const formControlContext = useFormControlContext();
-    const context = useSelectContext();
+export const MultiSelectValue = /*#__PURE__*/ createPolymorphicComponent<
+  "span",
+  MultiSelectValueOptions
+>(props => {
+  const formControlContext = useFormControlContext();
+  const context = useSelectContext();
 
-    props = mergeDefaultProps({ as: "span", id: context.generateId("value") }, props);
+  props = mergeDefaultProps({ as: "span", id: context.generateId("value") }, props);
 
-    const [local, others] = splitProps(props, ["as", "id", "children", "placeholder"]);
+  const [local, others] = splitProps(props, ["as", "id", "children", "placeholder"]);
 
-    const selectionManager = () => context.listState().selectionManager();
-    const isSelectionEmpty = () => selectionManager().isEmpty();
+  const selectionManager = () => context.listState().selectionManager();
+  const isSelectionEmpty = () => selectionManager().isEmpty();
 
-    const valueLabels = () => {
-      return [...selectionManager().selectedKeys()]
-        .map(key => context.listState().collection().getItem(key)?.label ?? key)
-        .join(", ");
-    };
+  const valueLabels = () => {
+    return [...selectionManager().selectedKeys()]
+      .map(key => context.listState().collection().getItem(key)?.label ?? key)
+      .join(", ");
+  };
 
-    createEffect(() => onCleanup(context.registerValueId(local.id!)));
+  createEffect(() => onCleanup(context.registerValueId(local.id!)));
 
-    return (
-      <Dynamic
-        component={local.as}
-        id={local.id}
-        data-placeholder-shown={isSelectionEmpty() ? "" : undefined}
-        {...formControlContext.dataset()}
-        {...others}
-      >
-        <Show when={!isSelectionEmpty()} fallback={local.placeholder}>
-          <Show when={local.children} fallback={valueLabels()}>
-            <MultiSelectValueChild
-              state={{ selectedValues: () => selectionManager().selectedKeys() }}
-              children={local.children}
-            />
-          </Show>
+  return (
+    <Dynamic
+      component={local.as}
+      id={local.id}
+      data-placeholder-shown={isSelectionEmpty() ? "" : undefined}
+      {...formControlContext.dataset()}
+      {...others}
+    >
+      <Show when={!isSelectionEmpty()} fallback={local.placeholder}>
+        <Show when={local.children} fallback={valueLabels()}>
+          <MultiSelectValueChild
+            state={{ selectedValues: () => selectionManager().selectedKeys() }}
+            children={local.children}
+          />
         </Show>
-      </Dynamic>
-    );
-  }
-);
+      </Show>
+    </Dynamic>
+  );
+});
 
 interface MultiSelectValueChildProps extends Pick<MultiSelectValueOptions, "children"> {
   state: MultiSelectValueState;

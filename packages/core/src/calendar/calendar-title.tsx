@@ -9,7 +9,7 @@ import { useCalendarMonthContext } from "./calendar-month-context";
 /**
  * A description of the visible `Calendar.Month`.
  */
-export const CalendarTitle = createPolymorphicComponent<"h2">(props => {
+export const CalendarTitle = /*#__PURE__*/ createPolymorphicComponent<"h2">(props => {
   const calendarContext = useCalendarContext();
   const monthContext = useCalendarMonthContext();
 

@@ -20,21 +20,23 @@ export interface CalendarRowOptions {
 /**
  * Contains a row of day cells within a `Calendar.Grid`.
  */
-export const CalendarRow = createPolymorphicComponent<"tr", CalendarRowOptions>(props => {
-  const calendarContext = useCalendarContext();
-  const monthContext = useCalendarMonthContext();
+export const CalendarRow = /*#__PURE__*/ createPolymorphicComponent<"tr", CalendarRowOptions>(
+  props => {
+    const calendarContext = useCalendarContext();
+    const monthContext = useCalendarMonthContext();
 
-  props = mergeDefaultProps({ as: "tr" }, props);
+    props = mergeDefaultProps({ as: "tr" }, props);
 
-  const [local, others] = splitProps(props, ["as", "children", "weekIndex"]);
+    const [local, others] = splitProps(props, ["as", "children", "weekIndex"]);
 
-  const datesInWeek = () => {
-    return calendarContext.state().getDatesInWeek(local.weekIndex, monthContext.startDate());
-  };
+    const datesInWeek = () => {
+      return calendarContext.state().getDatesInWeek(local.weekIndex, monthContext.startDate());
+    };
 
-  return (
-    <Dynamic component={local.as} {...others}>
-      <Index each={datesInWeek()}>{local.children}</Index>
-    </Dynamic>
-  );
-});
+    return (
+      <Dynamic component={local.as} {...others}>
+        <Index each={datesInWeek()}>{local.children}</Index>
+      </Dynamic>
+    );
+  }
+);

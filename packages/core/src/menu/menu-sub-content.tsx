@@ -30,7 +30,10 @@ const SUB_CLOSE_KEYS: Record<Direction, string[]> = {
 /**
  * The component that pops out when a submenu is open.
  */
-export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOptions>(props => {
+export const MenuSubContent = /*#__PURE__*/ createPolymorphicComponent<
+  "div",
+  MenuSubContentOptions
+>(props => {
   const context = useMenuContext();
 
   const [local, others] = splitProps(props, ["onFocusOutside", "onKeyDown", "onFocusOut"]);

@@ -16,7 +16,7 @@ import { useMenuItemContext } from "./menu-item.context";
  * An optional accessible description to be announced for the menu item.
  * Useful for menu items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
-export const MenuItemDescription = createPolymorphicComponent<"div">(props => {
+export const MenuItemDescription = /*#__PURE__*/ createPolymorphicComponent<"div">(props => {
   const context = useMenuItemContext();
 
   props = mergeDefaultProps(

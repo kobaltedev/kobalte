@@ -16,7 +16,7 @@ import { useMenuGroupContext } from "./menu-group-context";
  * A component used to render the label of a `Menu.Group`.
  * It won't be focusable using arrow keys.
  */
-export const MenuGroupLabel = createPolymorphicComponent<"span">(props => {
+export const MenuGroupLabel = /*#__PURE__*/ createPolymorphicComponent<"span">(props => {
   const context = useMenuGroupContext();
 
   props = mergeDefaultProps(

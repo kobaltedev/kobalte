@@ -7,7 +7,7 @@ import { useSwitchContext } from "./switch-context";
 /**
  * The label that gives the user information on the switch.
  */
-export const SwitchLabel = createPolymorphicComponent<"span">(props => {
+export const SwitchLabel = /*#__PURE__*/ createPolymorphicComponent<"span">(props => {
   const context = useSwitchContext();
 
   props = mergeDefaultProps(

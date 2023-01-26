@@ -33,83 +33,85 @@ export interface TabsContentOptions {
 /**
  * Contains the content associated with a tab trigger.
  */
-export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>(props => {
-  let ref!: HTMLElement;
+export const TabsContent = /*#__PURE__*/ createPolymorphicComponent<"div", TabsContentOptions>(
+  props => {
+    let ref!: HTMLElement;
 
-  const context = useTabsContext();
+    const context = useTabsContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
+    props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, [
-    "as",
-    "ref",
-    "id",
-    "value",
-    "forceMount",
-    ...FOCUS_RING_HANDLERS_PROP_NAMES,
-  ]);
+    const [local, others] = splitProps(props, [
+      "as",
+      "ref",
+      "id",
+      "value",
+      "forceMount",
+      ...FOCUS_RING_HANDLERS_PROP_NAMES,
+    ]);
 
-  const [tabIndex, setTabIndex] = createSignal<number | undefined>(0);
+    const [tabIndex, setTabIndex] = createSignal<number | undefined>(0);
 
-  const id = () => local.id ?? context.generateContentId(local.value);
+    const id = () => local.id ?? context.generateContentId(local.value);
 
-  const isSelected = () => context.listState().selectedKey() === local.value;
-  const shouldMount = () => local.forceMount || isSelected();
+    const isSelected = () => context.listState().selectedKey() === local.value;
+    const shouldMount = () => local.forceMount || isSelected();
 
-  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
+    const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
 
-  createEffect(
-    on([() => ref, shouldMount], ([ref, shouldMount]) => {
-      if (ref == null || !shouldMount) {
-        return;
-      }
+    createEffect(
+      on([() => ref, shouldMount], ([ref, shouldMount]) => {
+        if (ref == null || !shouldMount) {
+          return;
+        }
 
-      const updateTabIndex = () => {
-        // Detect if there are any tabbable elements and update the tabIndex accordingly.
-        const walker = getFocusableTreeWalker(ref, { tabbable: true });
-        setTabIndex(walker.nextNode() ? undefined : 0);
-      };
+        const updateTabIndex = () => {
+          // Detect if there are any tabbable elements and update the tabIndex accordingly.
+          const walker = getFocusableTreeWalker(ref, { tabbable: true });
+          setTabIndex(walker.nextNode() ? undefined : 0);
+        };
 
-      updateTabIndex();
+        updateTabIndex();
 
-      const observer = new MutationObserver(updateTabIndex);
+        const observer = new MutationObserver(updateTabIndex);
 
-      // Update when new elements are inserted, or the tabIndex/disabled attribute updates.
-      observer.observe(ref, {
-        subtree: true,
-        childList: true,
-        attributes: true,
-        attributeFilter: ["tabIndex", "disabled"],
-      });
+        // Update when new elements are inserted, or the tabIndex/disabled attribute updates.
+        observer.observe(ref, {
+          subtree: true,
+          childList: true,
+          attributes: true,
+          attributeFilter: ["tabIndex", "disabled"],
+        });
 
-      onCleanup(() => {
-        observer.disconnect();
-      });
-    })
-  );
+        onCleanup(() => {
+          observer.disconnect();
+        });
+      })
+    );
 
-  createEffect(
-    on([() => local.value, id], ([value, id]) => {
-      context.contentIdsMap().set(value, id);
-    })
-  );
+    createEffect(
+      on([() => local.value, id], ([value, id]) => {
+        context.contentIdsMap().set(value, id);
+      })
+    );
 
-  return (
-    <Show when={shouldMount()}>
-      <Dynamic
-        component={local.as}
-        ref={mergeRefs(el => (ref = el), local.ref)}
-        id={id()}
-        role="tabpanel"
-        tabIndex={tabIndex()}
-        aria-labelledby={context.triggerIdsMap().get(local.value)}
-        data-orientation={context.orientation()}
-        data-focus={isFocused() ? "" : undefined}
-        data-focus-visible={isFocusVisible() ? "" : undefined}
-        onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-        onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
-        {...others}
-      />
-    </Show>
-  );
-});
+    return (
+      <Show when={shouldMount()}>
+        <Dynamic
+          component={local.as}
+          ref={mergeRefs(el => (ref = el), local.ref)}
+          id={id()}
+          role="tabpanel"
+          tabIndex={tabIndex()}
+          aria-labelledby={context.triggerIdsMap().get(local.value)}
+          data-orientation={context.orientation()}
+          data-focus={isFocused() ? "" : undefined}
+          data-focus-visible={isFocusVisible() ? "" : undefined}
+          onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
+          onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+          {...others}
+        />
+      </Show>
+    );
+  }
+);

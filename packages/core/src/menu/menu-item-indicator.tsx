@@ -16,24 +16,25 @@ export interface MenuItemIndicatorOptions {
  * The visual indicator rendered when the parent menu `CheckboxItem` or `RadioItem` is checked.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export const MenuItemIndicator = createPolymorphicComponent<"div", MenuItemIndicatorOptions>(
-  props => {
-    const context = useMenuItemContext();
+export const MenuItemIndicator = /*#__PURE__*/ createPolymorphicComponent<
+  "div",
+  MenuItemIndicatorOptions
+>(props => {
+  const context = useMenuItemContext();
 
-    props = mergeDefaultProps(
-      {
-        as: "div",
-        id: context.generateId("indicator"),
-      },
-      props
-    );
+  props = mergeDefaultProps(
+    {
+      as: "div",
+      id: context.generateId("indicator"),
+    },
+    props
+  );
 
-    const [local, others] = splitProps(props, ["as", "forceMount"]);
+  const [local, others] = splitProps(props, ["as", "forceMount"]);
 
-    return (
-      <Show when={local.forceMount || context.isChecked()}>
-        <Dynamic component={local.as} {...context.dataset()} {...others} />
-      </Show>
-    );
-  }
-);
+  return (
+    <Show when={local.forceMount || context.isChecked()}>
+      <Dynamic component={local.as} {...context.dataset()} {...others} />
+    </Show>
+  );
+});

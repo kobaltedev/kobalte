@@ -24,84 +24,86 @@ export interface MenuTriggerOptions extends Button.ButtonRootOptions {}
 /**
  * The button that toggles the menu.
  */
-export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerOptions>(props => {
-  const rootContext = useMenuRootContext();
-  const context = useMenuContext();
+export const MenuTrigger = /*#__PURE__*/ createPolymorphicComponent<"button", MenuTriggerOptions>(
+  props => {
+    const rootContext = useMenuRootContext();
+    const context = useMenuContext();
 
-  props = mergeDefaultProps(
-    {
-      id: rootContext.generateId("trigger"),
-    },
-    props
-  );
+    props = mergeDefaultProps(
+      {
+        id: rootContext.generateId("trigger"),
+      },
+      props
+    );
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    "id",
-    "isDisabled",
-    "onPressStart",
-    "onPress",
-    "onKeyDown",
-  ]);
+    const [local, others] = splitProps(props, [
+      "ref",
+      "id",
+      "isDisabled",
+      "onPressStart",
+      "onPress",
+      "onKeyDown",
+    ]);
 
-  const onPressStart = (e: PressEvent) => {
-    local.onPressStart?.(e);
+    const onPressStart = (e: PressEvent) => {
+      local.onPressStart?.(e);
 
-    // For consistency with native, open the menu on mouse down, but touch up.
-    if (e.pointerType !== "touch" && e.pointerType !== "keyboard" && !local.isDisabled) {
-      // If opened with a screen reader, autofocus the first item.
-      // Otherwise, the menu itself will be focused.
-      context.toggle(e.pointerType === "virtual" ? "first" : true);
-    }
-  };
+      // For consistency with native, open the menu on mouse down, but touch up.
+      if (e.pointerType !== "touch" && e.pointerType !== "keyboard" && !local.isDisabled) {
+        // If opened with a screen reader, autofocus the first item.
+        // Otherwise, the menu itself will be focused.
+        context.toggle(e.pointerType === "virtual" ? "first" : true);
+      }
+    };
 
-  const onPress = (e: PressEvent) => {
-    local.onPress?.(e);
+    const onPress = (e: PressEvent) => {
+      local.onPress?.(e);
 
-    if (e.pointerType === "touch" && !local.isDisabled) {
-      context.toggle(true);
-    }
-  };
+      if (e.pointerType === "touch" && !local.isDisabled) {
+        context.toggle(true);
+      }
+    };
 
-  const onKeyDown: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = e => {
-    callHandler(e, local.onKeyDown);
+    const onKeyDown: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = e => {
+      callHandler(e, local.onKeyDown);
 
-    if (local.isDisabled) {
-      return;
-    }
+      if (local.isDisabled) {
+        return;
+      }
 
-    // For consistency with native, open the menu on key down.
-    switch (e.key) {
-      case "Enter":
-      case " ":
-      case "ArrowDown":
-        e.stopPropagation();
-        e.preventDefault();
-        context.toggle("first");
-        break;
-      case "ArrowUp":
-        e.stopPropagation();
-        e.preventDefault();
-        context.toggle("last");
-        break;
-    }
-  };
+      // For consistency with native, open the menu on key down.
+      switch (e.key) {
+        case "Enter":
+        case " ":
+        case "ArrowDown":
+          e.stopPropagation();
+          e.preventDefault();
+          context.toggle("first");
+          break;
+        case "ArrowUp":
+          e.stopPropagation();
+          e.preventDefault();
+          context.toggle("last");
+          break;
+      }
+    };
 
-  createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
+    createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
 
-  return (
-    <Button.Root
-      ref={mergeRefs(context.setTriggerRef, local.ref)}
-      id={local.id}
-      isDisabled={local.isDisabled}
-      aria-haspopup="true"
-      aria-expanded={context.isOpen()}
-      aria-controls={context.isOpen() ? context.contentId() : undefined}
-      data-expanded={context.isOpen() ? "" : undefined}
-      onPressStart={onPressStart}
-      onPress={onPress}
-      onKeyDown={onKeyDown}
-      {...others}
-    />
-  );
-});
+    return (
+      <Button.Root
+        ref={mergeRefs(context.setTriggerRef, local.ref)}
+        id={local.id}
+        isDisabled={local.isDisabled}
+        aria-haspopup="true"
+        aria-expanded={context.isOpen()}
+        aria-controls={context.isOpen() ? context.contentId() : undefined}
+        data-expanded={context.isOpen() ? "" : undefined}
+        onPressStart={onPressStart}
+        onPress={onPress}
+        onKeyDown={onKeyDown}
+        {...others}
+      />
+    );
+  }
+);

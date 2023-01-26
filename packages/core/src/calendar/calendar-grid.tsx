@@ -19,7 +19,7 @@ import { createVisibleRangeDescription } from "./primitives";
  * A single grid of days within a `Calendar.Month` which
  * can be navigated via keyboard and selected by the user.
  */
-export const CalendarGrid = createPolymorphicComponent<"table">(props => {
+export const CalendarGrid = /*#__PURE__*/ createPolymorphicComponent<"table">(props => {
   const calendarContext = useCalendarContext();
   const monthContext = useCalendarMonthContext();
 

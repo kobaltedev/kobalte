@@ -13,7 +13,7 @@ import { Dynamic } from "solid-js/web";
 /**
  * The header of a `Calendar.Grid`.
  */
-export const CalendarGridHeader = createPolymorphicComponent<"thead">(props => {
+export const CalendarGridHeader = /*#__PURE__*/ createPolymorphicComponent<"thead">(props => {
   props = mergeDefaultProps({ as: "thead" }, props);
 
   const [local, others] = splitProps(props, ["as"]);

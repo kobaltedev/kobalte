@@ -80,341 +80,340 @@ export interface RangeCalendarRootOptions
 /**
  * Displays one or more date grids and allows users to select a contiguous range of dates.
  */
-export const RangeCalendarRoot = createPolymorphicComponent<"div", RangeCalendarRootOptions>(
-  props => {
-    let ref: HTMLDivElement | undefined;
+export const RangeCalendarRoot = /*#__PURE__*/ createPolymorphicComponent<
+  "div",
+  RangeCalendarRootOptions
+>(props => {
+  let ref: HTMLDivElement | undefined;
 
-    const { locale: defaultLocale } = useLocale();
+  const { locale: defaultLocale } = useLocale();
 
-    props = mergeDefaultProps(
-      {
-        locale: () => defaultLocale(),
-        visibleMonths: 1,
-      },
-      props
-    );
+  props = mergeDefaultProps(
+    {
+      locale: () => defaultLocale(),
+      visibleMonths: 1,
+    },
+    props
+  );
 
-    const [local, calendarProps, others] = splitProps(
-      props,
-      [
-        "ref",
-        "value",
-        "defaultValue",
-        "onValueChange",
-        "allowsNonContiguousRanges",
-        "locale",
-        "visibleMonths",
-        "minValue",
-        "maxValue",
-        "onBlur",
-      ],
-      [
-        "createCalendar",
-        "isDateUnavailable",
-        "isDisabled",
-        "isReadOnly",
-        "autoFocus",
-        "focusedValue",
-        "defaultFocusedValue",
-        "onFocusChange",
-        "validationState",
-      ]
-    );
+  const [local, calendarProps, others] = splitProps(
+    props,
+    [
+      "ref",
+      "value",
+      "defaultValue",
+      "onValueChange",
+      "allowsNonContiguousRanges",
+      "locale",
+      "visibleMonths",
+      "minValue",
+      "maxValue",
+      "onBlur",
+    ],
+    [
+      "createCalendar",
+      "isDateUnavailable",
+      "isDisabled",
+      "isReadOnly",
+      "autoFocus",
+      "focusedValue",
+      "defaultFocusedValue",
+      "onFocusChange",
+      "validationState",
+    ]
+  );
 
-    const [selectedRange, setSelectedRange] = createControllableSignal<DateRange>({
-      value: () => local.value,
-      defaultValue: () => local.defaultValue,
-      onChange: value => local.onValueChange?.(value),
-    });
+  const [selectedRange, setSelectedRange] = createControllableSignal<DateRange>({
+    value: () => local.value,
+    defaultValue: () => local.defaultValue,
+    onChange: value => local.onValueChange?.(value),
+  });
 
-    const [anchorDate, setAnchorDateState] = createSignal<CalendarDate>();
+  const [anchorDate, setAnchorDateState] = createSignal<CalendarDate>();
 
-    // Available range must be stored in a ref, so we have access to the updated version immediately in `isInvalid`.
-    let availableRangeRef: RangeValue<DateValue | undefined> | undefined;
-    const [availableRange, setAvailableRange] = createSignal<RangeValue<DateValue | undefined>>();
+  // Available range must be stored in a ref, so we have access to the updated version immediately in `isInvalid`.
+  let availableRangeRef: RangeValue<DateValue | undefined> | undefined;
+  const [availableRange, setAvailableRange] = createSignal<RangeValue<DateValue | undefined>>();
 
-    const [isDragging, setDragging] = createSignal(false);
+  const [isDragging, setDragging] = createSignal(false);
 
-    const alignment: Accessor<"center" | "start"> = createMemo(() => {
-      const visibleDuration = { months: access(local.visibleMonths) };
-      const value = selectedRange();
+  const alignment: Accessor<"center" | "start"> = createMemo(() => {
+    const visibleDuration = { months: access(local.visibleMonths) };
+    const value = selectedRange();
 
-      if (value && value.start && value.end) {
-        const start = alignCenter(
-          toCalendarDate(value.start),
-          visibleDuration,
-          access(local.locale)!,
-          access(local.minValue),
-          access(local.maxValue)
-        );
-
-        const end = start.add(visibleDuration).subtract({ days: 1 });
-
-        if (value.end.compare(end) > 0) {
-          return "start";
-        }
-      }
-
-      return "center";
-    });
-
-    const min = createMemo(() => {
-      const minValue = access(local.minValue);
-      const rangeStart = availableRange()?.start;
-
-      return maxDate(minValue!, rangeStart!);
-    });
-
-    const max = createMemo(() => {
-      const maxValue = access(local.maxValue);
-      const rangeEnd = availableRange()?.end;
-
-      return minDate(maxValue!, rangeEnd!);
-    });
-
-    const createCalendarStateProps = mergeProps(calendarProps, {
-      value: () => selectedRange()?.start,
-      locale: () => access(local.locale)!,
-      visibleMonths: () => access(local.visibleMonths),
-      minValue: min,
-      maxValue: max,
-      selectionAlignment: alignment,
-    } as CreateCalendarStateProps);
-
-    const calendar = createCalendarState(createCalendarStateProps);
-
-    const updateAvailableRange = (date: CalendarDate | undefined) => {
-      if (date && calendarProps.isDateUnavailable && !local.allowsNonContiguousRanges) {
-        availableRangeRef = {
-          start: nextUnavailableDate(date, calendar, -1),
-          end: nextUnavailableDate(date, calendar, 1),
-        };
-
-        setAvailableRange(availableRangeRef);
-      } else {
-        availableRangeRef = undefined;
-        setAvailableRange(undefined);
-      }
-    };
-
-    let lastVisibleRange = calendar.visibleRange();
-
-    // If the visible range changes, we need to update the available range.
-    createEffect(() => {
-      const visibleRange = calendar.visibleRange();
-
-      if (
-        !isEqualDay(visibleRange.start, lastVisibleRange.start) ||
-        !isEqualDay(visibleRange.end, lastVisibleRange.end)
-      ) {
-        updateAvailableRange(anchorDate());
-        lastVisibleRange = calendar.visibleRange();
-      }
-    });
-
-    const setAnchorDate = (date: CalendarDate | undefined) => {
-      if (date) {
-        setAnchorDateState(date);
-        updateAvailableRange(date);
-      } else {
-        setAnchorDateState(undefined);
-        updateAvailableRange(undefined);
-      }
-    };
-
-    const highlightedRange = createMemo(() => {
-      const anchor = anchorDate();
-      const value = selectedRange();
-
-      if (anchor) {
-        return makeRange(anchor, calendar.focusedDate());
-      } else if (value) {
-        return makeRange(value.start, value.end);
-      }
-    });
-
-    const selectDate = (newDate: CalendarDate) => {
-      if (access(calendarProps.isReadOnly)) {
-        return;
-      }
-
-      let date: CalendarDate | undefined = constrainValue(newDate, min(), max());
-      date = previousAvailableDate(
-        date,
-        calendar.visibleRange().start,
-        calendarProps.isDateUnavailable
+    if (value && value.start && value.end) {
+      const start = alignCenter(
+        toCalendarDate(value.start),
+        visibleDuration,
+        access(local.locale)!,
+        access(local.minValue),
+        access(local.maxValue)
       );
 
-      if (!date) {
-        return;
+      const end = start.add(visibleDuration).subtract({ days: 1 });
+
+      if (value.end.compare(end) > 0) {
+        return "start";
+      }
+    }
+
+    return "center";
+  });
+
+  const min = createMemo(() => {
+    const minValue = access(local.minValue);
+    const rangeStart = availableRange()?.start;
+
+    return maxDate(minValue!, rangeStart!);
+  });
+
+  const max = createMemo(() => {
+    const maxValue = access(local.maxValue);
+    const rangeEnd = availableRange()?.end;
+
+    return minDate(maxValue!, rangeEnd!);
+  });
+
+  const createCalendarStateProps = mergeProps(calendarProps, {
+    value: () => selectedRange()?.start,
+    locale: () => access(local.locale)!,
+    visibleMonths: () => access(local.visibleMonths),
+    minValue: min,
+    maxValue: max,
+    selectionAlignment: alignment,
+  } as CreateCalendarStateProps);
+
+  const calendar = createCalendarState(createCalendarStateProps);
+
+  const updateAvailableRange = (date: CalendarDate | undefined) => {
+    if (date && calendarProps.isDateUnavailable && !local.allowsNonContiguousRanges) {
+      availableRangeRef = {
+        start: nextUnavailableDate(date, calendar, -1),
+        end: nextUnavailableDate(date, calendar, 1),
+      };
+
+      setAvailableRange(availableRangeRef);
+    } else {
+      availableRangeRef = undefined;
+      setAvailableRange(undefined);
+    }
+  };
+
+  let lastVisibleRange = calendar.visibleRange();
+
+  // If the visible range changes, we need to update the available range.
+  createEffect(() => {
+    const visibleRange = calendar.visibleRange();
+
+    if (
+      !isEqualDay(visibleRange.start, lastVisibleRange.start) ||
+      !isEqualDay(visibleRange.end, lastVisibleRange.end)
+    ) {
+      updateAvailableRange(anchorDate());
+      lastVisibleRange = calendar.visibleRange();
+    }
+  });
+
+  const setAnchorDate = (date: CalendarDate | undefined) => {
+    if (date) {
+      setAnchorDateState(date);
+      updateAvailableRange(date);
+    } else {
+      setAnchorDateState(undefined);
+      updateAvailableRange(undefined);
+    }
+  };
+
+  const highlightedRange = createMemo(() => {
+    const anchor = anchorDate();
+    const value = selectedRange();
+
+    if (anchor) {
+      return makeRange(anchor, calendar.focusedDate());
+    } else if (value) {
+      return makeRange(value.start, value.end);
+    }
+  });
+
+  const selectDate = (newDate: CalendarDate) => {
+    if (access(calendarProps.isReadOnly)) {
+      return;
+    }
+
+    let date: CalendarDate | undefined = constrainValue(newDate, min(), max());
+    date = previousAvailableDate(
+      date,
+      calendar.visibleRange().start,
+      calendarProps.isDateUnavailable
+    );
+
+    if (!date) {
+      return;
+    }
+
+    const anchor = anchorDate();
+    const value = selectedRange();
+
+    if (!anchor) {
+      setAnchorDate(date);
+    } else {
+      const range = makeRange(anchor, date);
+
+      if (range) {
+        setSelectedRange({
+          start: convertValue(range.start, value?.start),
+          end: convertValue(range.end, value?.end),
+        });
       }
 
-      const anchor = anchorDate();
-      const value = selectedRange();
+      setAnchorDate(undefined);
+    }
+  };
 
-      if (!anchor) {
-        setAnchorDate(date);
-      } else {
-        const range = makeRange(anchor, date);
+  const isInvalidSelection = createMemo(() => {
+    const anchor = anchorDate();
+    const value = selectedRange();
+    const isDateUnavailable = calendarProps.isDateUnavailable;
 
-        if (range) {
-          setSelectedRange({
-            start: convertValue(range.start, value?.start),
-            end: convertValue(range.end, value?.end),
-          });
-        }
+    if (!value || anchor) {
+      return false;
+    }
 
-        setAnchorDate(undefined);
+    if (isDateUnavailable && (isDateUnavailable(value.start) || isDateUnavailable(value.end))) {
+      return true;
+    }
+
+    const minValue = access(local.minValue);
+    const maxValue = access(local.maxValue);
+
+    return isInvalid(value.start, minValue, maxValue) || isInvalid(value.end, minValue, maxValue);
+  });
+
+  const validationState = () => {
+    return access(calendarProps.validationState) || (isInvalidSelection() ? "invalid" : undefined);
+  };
+
+  const state = mergeProps(calendar, {
+    value: () => selectedRange(),
+    setValue: setSelectedRange,
+    anchorDate,
+    setAnchorDate,
+    highlightedRange,
+    validationState,
+    selectFocusedDate() {
+      selectDate(calendar.focusedDate());
+    },
+    selectDate,
+    highlightDate(date) {
+      if (anchorDate()) {
+        calendar.setFocusedDate(date);
       }
-    };
+    },
+    isSelected(date) {
+      const highlighted = highlightedRange();
 
-    const isInvalidSelection = createMemo(() => {
-      const anchor = anchorDate();
-      const value = selectedRange();
-      const isDateUnavailable = calendarProps.isDateUnavailable;
-
-      if (!value || anchor) {
-        return false;
-      }
-
-      if (isDateUnavailable && (isDateUnavailable(value.start) || isDateUnavailable(value.end))) {
-        return true;
-      }
-
-      const minValue = access(local.minValue);
-      const maxValue = access(local.maxValue);
-
-      return isInvalid(value.start, minValue, maxValue) || isInvalid(value.end, minValue, maxValue);
-    });
-
-    const validationState = () => {
       return (
-        access(calendarProps.validationState) || (isInvalidSelection() ? "invalid" : undefined)
+        highlighted != null &&
+        date.compare(highlighted.start) >= 0 &&
+        date.compare(highlighted.end) <= 0 &&
+        !calendar.isCellDisabled(date) &&
+        !calendar.isCellUnavailable(date)
       );
-    };
+    },
+    isInvalid(date) {
+      return (
+        calendar.isInvalid(date) ||
+        isInvalid(date, availableRangeRef?.start, availableRangeRef?.end)
+      );
+    },
+    isDragging,
+    setDragging,
+  } as Partial<RangeCalendarState>) as RangeCalendarState;
 
-    const state = mergeProps(calendar, {
-      value: () => selectedRange(),
-      setValue: setSelectedRange,
-      anchorDate,
-      setAnchorDate,
-      highlightedRange,
-      validationState,
-      selectFocusedDate() {
-        selectDate(calendar.focusedDate());
-      },
-      selectDate,
-      highlightDate(date) {
-        if (anchorDate()) {
-          calendar.setFocusedDate(date);
-        }
-      },
-      isSelected(date) {
-        const highlighted = highlightedRange();
+  let isVirtualClick = false;
 
-        return (
-          highlighted != null &&
-          date.compare(highlighted.start) >= 0 &&
-          date.compare(highlighted.end) <= 0 &&
-          !calendar.isCellDisabled(date) &&
-          !calendar.isCellUnavailable(date)
-        );
-      },
-      isInvalid(date) {
-        return (
-          calendar.isInvalid(date) ||
-          isInvalid(date, availableRangeRef?.start, availableRangeRef?.end)
-        );
-      },
-      isDragging,
-      setDragging,
-    } as Partial<RangeCalendarState>) as RangeCalendarState;
+  // We need to ignore virtual pointer events from VoiceOver due to these bugs.
+  // https://bugs.webkit.org/show_bug.cgi?id=222627
+  // https://bugs.webkit.org/show_bug.cgi?id=223202
+  // createPress also does this and waits for the following click event before firing.
+  // We need to match that here otherwise this will fire before the press event in
+  // Calendar.Day, causing range selection to not work properly.
+  const onGlobalPointerDown = (e: PointerEvent) => {
+    isVirtualClick = e.width === 0 && e.height === 0;
+  };
 
-    let isVirtualClick = false;
+  // Stop range selection when pressing or releasing a pointer outside the calendar body,
+  // except when pressing the next or previous buttons to switch months.
+  const onGlobalEndDragging = (e: PointerEvent) => {
+    if (isVirtualClick) {
+      isVirtualClick = false;
+      return;
+    }
 
-    // We need to ignore virtual pointer events from VoiceOver due to these bugs.
-    // https://bugs.webkit.org/show_bug.cgi?id=222627
-    // https://bugs.webkit.org/show_bug.cgi?id=223202
-    // createPress also does this and waits for the following click event before firing.
-    // We need to match that here otherwise this will fire before the press event in
-    // Calendar.Day, causing range selection to not work properly.
-    const onGlobalPointerDown = (e: PointerEvent) => {
-      isVirtualClick = e.width === 0 && e.height === 0;
-    };
+    setDragging(false);
 
-    // Stop range selection when pressing or releasing a pointer outside the calendar body,
-    // except when pressing the next or previous buttons to switch months.
-    const onGlobalEndDragging = (e: PointerEvent) => {
-      if (isVirtualClick) {
-        isVirtualClick = false;
-        return;
-      }
+    if (!anchorDate()) {
+      return;
+    }
 
-      setDragging(false);
+    const target = e.target as Element;
 
-      if (!anchorDate()) {
-        return;
-      }
+    if (
+      ref &&
+      contains(ref, getActiveElement()) &&
+      (!contains(ref, target) || !target.closest('button, [role="button"]'))
+    ) {
+      state.selectFocusedDate();
+    }
+  };
 
-      const target = e.target as Element;
+  // Prevent touch scrolling while dragging
+  const onTouchMove = (e: TouchEvent) => {
+    if (isDragging()) {
+      e.preventDefault();
+    }
+  };
 
-      if (
-        ref &&
-        contains(ref, getActiveElement()) &&
-        (!contains(ref, target) || !target.closest('button, [role="button"]'))
-      ) {
-        state.selectFocusedDate();
-      }
-    };
+  onMount(() => {
+    const window = getWindow();
 
-    // Prevent touch scrolling while dragging
-    const onTouchMove = (e: TouchEvent) => {
-      if (isDragging()) {
-        e.preventDefault();
-      }
-    };
+    window.addEventListener("pointerdown", onGlobalPointerDown);
+    window.addEventListener("pointerup", onGlobalEndDragging);
+    window.addEventListener("pointercancel", onGlobalEndDragging);
 
-    onMount(() => {
-      const window = getWindow();
+    ref?.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
 
-      window.addEventListener("pointerdown", onGlobalPointerDown);
-      window.addEventListener("pointerup", onGlobalEndDragging);
-      window.addEventListener("pointercancel", onGlobalEndDragging);
+    onCleanup(() => {
+      window.removeEventListener("pointerdown", onGlobalPointerDown);
+      window.removeEventListener("pointerup", onGlobalEndDragging);
+      window.removeEventListener("pointercancel", onGlobalEndDragging);
 
-      ref?.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
-
-      onCleanup(() => {
-        window.removeEventListener("pointerdown", onGlobalPointerDown);
-        window.removeEventListener("pointerup", onGlobalEndDragging);
-        window.removeEventListener("pointercancel", onGlobalEndDragging);
-
-        // @ts-ignore
-        ref?.removeEventListener("touchmove", onTouchMove, { passive: false, capture: true });
-      });
+      // @ts-ignore
+      ref?.removeEventListener("touchmove", onTouchMove, { passive: false, capture: true });
     });
+  });
 
-    // Also stop range selection on blur, e.g. tabbing away from the calendar.
-    const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
-      callHandler(e, local.onBlur);
+  // Also stop range selection on blur, e.g. tabbing away from the calendar.
+  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onBlur);
 
-      const relatedTarget = e.relatedTarget as HTMLElement | null;
+    const relatedTarget = e.relatedTarget as HTMLElement | null;
 
-      if ((!relatedTarget || !contains(ref, relatedTarget)) && anchorDate()) {
-        state.selectFocusedDate();
-      }
-    };
+    if ((!relatedTarget || !contains(ref, relatedTarget)) && anchorDate()) {
+      state.selectFocusedDate();
+    }
+  };
 
-    return (
-      <CalendarBase
-        ref={mergeRefs(el => (ref = el), local.ref)}
-        state={state}
-        isDisabled={access(calendarProps.isDisabled)}
-        onBlur={onBlur}
-        {...others}
-      />
-    );
-  }
-);
+  return (
+    <CalendarBase
+      ref={mergeRefs(el => (ref = el), local.ref)}
+      state={state}
+      isDisabled={access(calendarProps.isDisabled)}
+      onBlur={onBlur}
+      {...others}
+    />
+  );
+});
 
 function makeRange(
   start: DateValue | undefined,

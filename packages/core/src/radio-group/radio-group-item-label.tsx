@@ -7,7 +7,7 @@ import { useRadioGroupItemContext } from "./radio-group-item-context";
 /**
  * The label that gives the user information on the radio button.
  */
-export const RadioGroupItemLabel = createPolymorphicComponent<"span">(props => {
+export const RadioGroupItemLabel = /*#__PURE__*/ createPolymorphicComponent<"span">(props => {
   const context = useRadioGroupItemContext();
 
   props = mergeDefaultProps(

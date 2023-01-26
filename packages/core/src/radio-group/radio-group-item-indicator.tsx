@@ -16,7 +16,7 @@ export interface RadioGroupItemIndicatorOptions {
  * The visual indicator rendered when the radio item is in a checked state.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export const RadioGroupItemIndicator = createPolymorphicComponent<
+export const RadioGroupItemIndicator = /*#__PURE__*/ createPolymorphicComponent<
   "div",
   RadioGroupItemIndicatorOptions
 >(props => {
