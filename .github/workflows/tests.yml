@@ -1,6 +1,10 @@
 name: Build and Test
 
-on: [push]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
@@ -8,16 +12,16 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 17.x]
+        node-version: [16.x, 18.x]
         operating-system: [ubuntu-latest]
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 2
 
-      - uses: pnpm/action-setup@v2.2.2
+      - uses: pnpm/action-setup@v2.2.4
 
       - name: Setup Node.js environment ${{ matrix.node-version }}
         uses: actions/setup-node@v3
