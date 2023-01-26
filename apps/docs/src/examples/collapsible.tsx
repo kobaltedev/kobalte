@@ -23,7 +23,7 @@ export function BasicExample() {
 
 export function AnimatingContentExample() {
   return (
-    <Collapsible.Root class={style["collapsible"]}>
+    <Collapsible.Root class={style["collapsible"]} defaultIsOpen>
       <Collapsible.Trigger class={style["collapsible__trigger"]}>
         <span>What is Kobalte ?</span>
         <ChevronDownIcon class={style["collapsible__trigger-icon"]} />

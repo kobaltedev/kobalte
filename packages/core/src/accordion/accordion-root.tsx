@@ -44,6 +44,9 @@ export interface AccordionRootOptions {
   shouldFocusWrap?: boolean;
 }
 
+/**
+ * A vertically stacked set of interactive headings that each reveal an associated section of content.
+ */
 export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOptions>(props => {
   let ref: HTMLDivElement | undefined;
 

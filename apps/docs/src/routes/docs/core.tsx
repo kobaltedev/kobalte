@@ -33,6 +33,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
     title: "Components",
     links: [
       {
+        title: "Accordion",
+        href: "/docs/core/components/accordion",
+        status: "new",
+      },
+      {
         title: "Alert",
         href: "/docs/core/components/alert",
       },

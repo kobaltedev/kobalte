@@ -7,7 +7,7 @@
  */
 
 import { createGenerateId, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, createSignal, createUniqueId, splitProps } from "solid-js";
+import { createSignal, createUniqueId, splitProps } from "solid-js";
 
 import * as Collapsible from "../collapsible";
 import { createRegisterId } from "../primitives";
@@ -29,7 +29,7 @@ export interface AccordionItemOptions {
 }
 
 /**
- * An item of the accordion.
+ * An item of the accordion, contains all the parts of a collapsible section.
  */
 export const AccordionItem = createPolymorphicComponent<"div", AccordionItemOptions>(props => {
   const accordionContext = useAccordionContext();

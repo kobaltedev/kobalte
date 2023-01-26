@@ -1,0 +1,302 @@
+import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
+import { BasicExample } from "../../../../examples/accordion";
+
+# Accordion
+
+A vertically stacked set of interactive headings that each reveal an associated section of content.
+
+## Import
+
+```ts
+import { Accordion } from "@kobalte/core";
+```
+
+## Features
+
+- Follow the [WAI ARIA Accordion](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/) design pattern.
+- Full keyboard navigation.
+- Can expand one or multiple items.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The accordion consists of:
+
+- **Accordion.Root:** The root container for an accordion.
+- **Accordion.Item:** An item of the accordion, contains all the parts of a collapsible section.
+- **Accordion.Header:** Wraps an `Accordion.Trigger`. Use the `as` prop to update it to the appropriate heading level for your page.
+- **Accordion.Trigger:** Toggles the collapsed state of its associated item. It should be nested inside an `Accordion.Header`.
+- **Accordion.Content:** Contains the content to be rendered when the `Accordion.Item` is expanded.
+
+```tsx
+<Accordion.Root>
+  <Accordion.Item>
+    <Accordion.Header>
+      <Accordion.Trigger />
+    </Accordion.Header>
+    <Accordion.Content />
+  </Accordion.Item>
+</Accordion.Root>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Accordion } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      return (
+        <Accordion.Root class="accordion" defaultValue={["item-1"]} isCollapsible>
+          <Accordion.Item class="accordion__item" value="item-1">
+            <Accordion.Header class="accordion__item-header">
+              <Accordion.Trigger class="accordion__item-trigger">
+                <span>Is it accessible?</span>
+                <ChevronDownIcon class="accordion__item-trigger-icon" aria-hidden />
+              </Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content class="accordion__item-content">
+              <p class="accordion__item-content-text">
+                Yes. It adheres to the WAI-ARIA design pattern.
+              </p>
+            </Accordion.Content>
+          </Accordion.Item>
+
+          <Accordion.Item class="accordion__item" value="item-2">
+            <Accordion.Header class="accordion__item-header">
+              <Accordion.Trigger class="accordion__item-trigger">
+                <span>Is it unstyled?</span>
+                <ChevronDownIcon class="accordion__item-trigger-icon" aria-hidden />
+              </Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content class="accordion__item-content">
+              <p class="accordion__item-content-text">
+                Yes. It's unstyled by default, giving you freedom over the look and feel.
+              </p>
+            </Accordion.Content>
+          </Accordion.Item>
+
+          <Accordion.Item class="accordion__item" value="item-3">
+            <Accordion.Header class="accordion__item-header">
+              <Accordion.Trigger class="accordion__item-trigger">
+                <span>Can it be animated?</span>
+                <ChevronDownIcon class="accordion__item-trigger-icon" aria-hidden />
+              </Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content class="accordion__item-content">
+              <p class="accordion__item-content-text">
+                Yes! You can animate the Accordion with CSS or JavaScript.
+              </p>
+            </Accordion.Content>
+          </Accordion.Item>
+        </Accordion.Root>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .accordion {
+      border-radius: 6px;
+      width: 300px;
+      border: 1px solid hsl(240 5% 84%);
+      color: hsl(240 4% 16%);
+    }
+
+    .accordion__item:first-child {
+      margin-top: 0;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+    }
+
+    .accordion__item:last-child {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+
+    .accordion__item-header {
+      display: flex;
+    }
+
+    .accordion__item-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 14px;
+      border-bottom: 1px solid hsl(240 5% 84%);
+      font-weight: 600;
+      text-align: left;
+      outline: none;
+    }
+
+    .accordion__item:last-child .accordion__item-trigger {
+      border-bottom: none;
+    }
+
+    .accordion__item-trigger[data-focus-visible] {
+      z-index: 1;
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+
+}
+
+    .accordion__item-trigger-icon {
+      width: 24px;
+      height: 24px;
+      transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+    }
+
+    .accordion__item-trigger[data-expanded] > .accordion__item-trigger-icon {
+      transform: rotate(180deg);
+    }
+
+    .accordion__item-content {
+      overflow: hidden;
+      font-size: 16px;
+    }
+
+    .accordion__item-content:not([data-expanded]) {
+      animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
+    }
+
+    .accordion__item-content[data-expanded] {
+      animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
+    }
+
+    .accordion__item-content-text {
+      padding: 16px;
+    }
+
+    @keyframes slideDown {
+      from {
+        height: 0;
+      }
+      to {
+        height: var(--kb-accordion-content-height);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        height: var(--kb-accordion-content-height);
+      }
+      to {
+        height: 0;
+      }
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+### Default value
+
+<Preview>
+
+</Preview>
+
+### Controlled value
+
+<Preview>
+
+</Preview>
+
+### Collapsible item
+
+<Preview>
+
+</Preview>
+
+### Allow expanding multiple items
+
+<Preview>
+
+</Preview>
+
+### Animating content size
+
+We expose the CSS custom properties `--kb-accordion-content-width` and `--kb-accordion-content-height` which you can use to animate the size of the content when it opens/closes.
+
+<Preview></Preview>
+
+```css
+/* style.css */
+```
+
+## API Reference
+
+### Accordion.Root
+
+| Prop            | Description                                                                                                                              |
+| :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| value           | `string[]` <br/> The controlled value of the accordion item(s) to expand.                                                                |
+| defaultValue    | `string[]` <br/> The value of the accordion item(s) to expand when initially rendered. Useful when you do not need to control the state. |
+| onValueChange   | `(value: string[]) => void` <br/> Event handler called when the value changes.                                                           |
+| isMultiple      | `boolean` <br/> Whether multiple items can be opened at the same time.                                                                   |
+| isCollapsible   | `boolean` <br/> When `isMultiple` is `false`, allows closing content when clicking trigger for an open item.                             |
+| shouldFocusWrap | `boolean` <br/> Whether focus should wrap around when the end/start is reached.                                                          |
+
+### Accordion.Item
+
+`Accordion.Item` consists of [Collapsible.Root](/docs/core/components/collapsible).
+
+| Data attribute | Description                             |
+| :------------- | :-------------------------------------- |
+| data-expanded  | Present when the accordion is expanded. |
+
+`Accordion.Header`, `Accordion.Trigger` and `Accordion.Content` share the same data-attributes.
+
+### Accordion.Trigger
+
+`Accordion.Trigger` consists of [Collapsible.Trigger](/docs/core/components/collapsible).
+
+| Prop       | Description                                                                                                                                              |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value      | `string` <br/> A unique value for the item.                                                                                                              |
+| isDisabled | `boolean` <br/> Whether the item is disabled.                                                                                                            |
+| forceMount | `boolean` <br/> Used to force mounting the item content when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### Accordion.Content
+
+`Accordion.Content` consists of [Collapsible.Content](/docs/core/components/collapsible).
+
+## Rendered elements
+
+| Component           | Default rendered element |
+| :------------------ | :----------------------- |
+| `Accordion.Root`    | `div`                    |
+| `Accordion.Item`    | `div`                    |
+| `Accordion.Header`  | `h3`                     |
+| `Accordion.Trigger` | `button`                 |
+| `Accordion.Content` | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                               | Description                                                                            |
+| :-------------------------------- | :------------------------------------------------------------------------------------- |
+| <Kbd>Space</Kbd>                  | When focus is on an `Accordion.Trigger` of a collapsed section, expands the section.   |
+| <Kbd>Enter</Kbd>                  | When focus is on an `Accordion.Trigger` of a collapsed section, expands the section.   |
+| <Kbd>Tab</Kbd>                    | Moves focus to the next focusable element.                                             |
+| <Kbd>Shift</Kbd> + <Kbd>Tab</Kbd> | Moves focus to the previous focusable element.                                         |
+| <Kbd>ArrowDown</Kbd>              | Moves focus to the next `Accordion.Trigger`.                                           |
+| <Kbd>ArrowUp</Kbd>                | Moves focus to the previous `Accordion.Trigger`.                                       |
+| <Kbd>Home</Kbd>                   | When focus is on an `Accordion.Trigger`, moves focus to the first `Accordion.Trigger`. |
+| <Kbd>End</Kbd>                    | When focus is on an `Accordion.Trigger`, moves focus to the last `Accordion.Trigger`.  |

@@ -14,6 +14,9 @@ import { useAccordionItemContext } from "./accordion-item-context";
 
 export interface AccordionContentOptions extends Collapsible.CollapsibleContentOptions {}
 
+/**
+ * Contains the content to be rendered when the `Accordion.Item` is expanded.
+ */
 export const AccordionContent = createPolymorphicComponent<"div", AccordionContentOptions>(
   props => {
     const itemContext = useAccordionItemContext();

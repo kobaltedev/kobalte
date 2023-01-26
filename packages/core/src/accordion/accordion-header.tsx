@@ -4,6 +4,9 @@ import { Dynamic } from "solid-js/web";
 
 import { useAccordionItemContext } from "./accordion-item-context";
 
+/**
+ * Wraps an `Accordion.Trigger`. Use the `as` prop to update it to the appropriate heading level for your page.
+ */
 export const AccordionHeader = createPolymorphicComponent<"h3">(props => {
   const context = useAccordionItemContext();
 
