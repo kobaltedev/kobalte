@@ -57,6 +57,40 @@ describe("Accordion", () => {
     }
   });
 
+  it("can have default expanded value", async () => {
+    render(() => <AccordionTest defaultValue={["one"]} />);
+
+    const buttons = screen.getAllByRole("button");
+    const [firstItem] = buttons;
+    const contentOne = screen.getByText("Content one");
+
+    expect(firstItem).toHaveAttribute("aria-expanded", "true");
+    expect(contentOne).toBeVisible();
+  });
+
+  it("can be controlled", async () => {
+    const onValueChangeSpy = jest.fn();
+
+    render(() => <AccordionTest value={["one"]} onValueChange={onValueChangeSpy} />);
+
+    const buttons = screen.getAllByRole("button");
+    const [firstItem, secondItem] = buttons;
+    const contentOne = screen.getByText("Content one");
+
+    expect(firstItem).toHaveAttribute("aria-expanded", "true");
+    expect(contentOne).toBeVisible();
+    expect(secondItem).toHaveAttribute("aria-expanded", "false");
+
+    await userEvent.click(secondItem);
+    expect(onValueChangeSpy).toHaveBeenCalledWith(["two"]);
+    expect(onValueChangeSpy).toHaveBeenCalledTimes(1);
+
+    // First item is still expanded because Accordion is controlled.
+    expect(firstItem).toHaveAttribute("aria-expanded", "true");
+    expect(contentOne).toBeVisible();
+    expect(secondItem).toHaveAttribute("aria-expanded", "false");
+  });
+
   it("allows users to navigate accordion headers through arrow keys", async () => {
     render(() => <AccordionTest />);
 
