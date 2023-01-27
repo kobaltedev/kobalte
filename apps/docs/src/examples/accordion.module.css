@@ -55,9 +55,6 @@
 .accordion__item-content {
   overflow: hidden;
   font-size: 16px;
-}
-
-.accordion__item-content:not([data-expanded]) {
   animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
 }
 

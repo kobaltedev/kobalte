@@ -1,5 +1,5 @@
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
-import { BasicExample, AnimatingContentExample } from "../../../../examples/collapsible";
+import { BasicExample } from "../../../../examples/collapsible";
 
 # Collapsible
 
@@ -46,6 +46,7 @@ The collapsible consists of:
   <TabsSnippets.Content value="index.tsx">
     ```tsx
     import { Collapsible } from "@kobalte/core";
+    import { ChevronDownIcon } from "some-icon-library";
     import "./style.css";
 
     function App() {
@@ -55,8 +56,8 @@ The collapsible consists of:
             <span>What is Kobalte ?</span>
             <ChevronDownIcon class="collapsible__trigger-icon" />
           </Collapsible.Trigger>
-          <Collapsible.Content class="collapsible__container">
-            <p class="collapsible__content">
+          <Collapsible.Content class="collapsible__content">
+            <p class="collapsible__content-text">
               Kobalte is a UI toolkit for building accessible web apps and design systems with SolidJS.
               It provides a set of low-level UI components and primitives which can be the foundation
               for your design system implementation.
@@ -102,16 +103,39 @@ The collapsible consists of:
       transform: rotateZ(180deg);
     }
 
-    .collapsible__container {
+    .collapsible__content {
       width: 100%;
       overflow: hidden;
       border: 1px solid hsl(240 5% 84%);
       border-top: none;
       color: hsl(240 4% 16%);
+      animation: slideUp 300ms ease-out;
     }
 
-    .collapsible__content {
+    .collapsible__content[data-expanded] {
+      animation: slideDown 300ms ease-out;
+    }
+
+    .collapsible__content-text {
       padding: 16px;
+    }
+
+    @keyframes slideDown {
+      from {
+        height: 0;
+      }
+      to {
+        height: var(--kb-collapsible-content-height);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        height: var(--kb-collapsible-content-height);
+      }
+      to {
+        height: 0;
+      }
     }
     ```
 
@@ -125,31 +149,15 @@ The collapsible consists of:
 
 We expose the CSS custom properties `--kb-collapsible-content-width` and `--kb-collapsible-content-height` which you can use to animate the size of the content when it opens/closes.
 
-<Preview class="h-[324px] !justify-start">
-  <AnimatingContentExample />
-</Preview>
-
-```css {15,27}
+```css {15,21}
 /* style.css */
-.collapsible__container {
+.collapsible__content {
   overflow: hidden;
-}
-
-.collapsible__container {
   animation: slideUp 300ms ease-out;
 }
 
-.collapsible__container[data-expanded] {
+.collapsible__content[data-expanded] {
   animation: slideDown 300ms ease-out;
-}
-
-@keyframes slideUp {
-  from {
-    height: var(--kb-collapsible-content-height);
-  }
-  to {
-    height: 0;
-  }
 }
 
 @keyframes slideDown {
@@ -158,6 +166,15 @@ We expose the CSS custom properties `--kb-collapsible-content-width` and `--kb-c
   }
   to {
     height: var(--kb-collapsible-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--kb-collapsible-content-height);
+  }
+  to {
+    height: 0;
   }
 }
 ```

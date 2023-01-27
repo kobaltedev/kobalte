@@ -1,5 +1,11 @@
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
-import { BasicExample } from "../../../../examples/accordion";
+import {
+  BasicExample,
+  DefaultValueExample,
+  ControlledExample,
+  CollapsibleExample,
+  AllowMultipleExample,
+} from "../../../../examples/accordion";
 
 # Accordion
 
@@ -54,11 +60,12 @@ The accordion consists of:
   <TabsSnippets.Content value="index.tsx">
     ```tsx
     import { Accordion } from "@kobalte/core";
+    import { ChevronDownIcon } from "some-icon-library";
     import "./style.css";
 
     function App() {
       return (
-        <Accordion.Root class="accordion" defaultValue={["item-1"]} isCollapsible>
+        <Accordion.Root class="accordion" defaultValue={["item-1"]}>
           <Accordion.Item class="accordion__item" value="item-1">
             <Accordion.Header class="accordion__item-header">
               <Accordion.Trigger class="accordion__item-trigger">
@@ -166,9 +173,6 @@ The accordion consists of:
     .accordion__item-content {
       overflow: hidden;
       font-size: 16px;
-    }
-
-    .accordion__item-content:not([data-expanded]) {
       animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
     }
 
@@ -207,36 +211,116 @@ The accordion consists of:
 
 ### Default value
 
-<Preview>
+A default expanded item can be provided using the `defaultValue` prop, which should correspond to the `value` prop provided to each accordion item.
 
+<Preview>
+  <DefaultValueExample />
 </Preview>
+
+```tsx {0,2}
+<Accordion.Root defaultValue={["item-2"]}>
+  <Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
+  <Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
+  <Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
+</Accordion.Root>
+```
+
+<Callout>
+  <span>The `value` and `defaultValue` props always take a `string[]`.</span>
+</Callout>
 
 ### Controlled value
 
-<Preview>
+Expanded item can be controlled using the `value` prop, paired with the `onValueChange` event. The `value` prop from the accordion item will be passed into the callback when the item is expanded, allowing you to update state accordingly.
 
+<Preview>
+  <ControlledExample />
 </Preview>
+
+```tsx {3,7}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+  const [expandedItem, setExpandedItem] = createSignal(["item-2"]);
+
+  return (
+    <>
+      <Accordion.Root value={expandedItem()} onValueChange={setExpandedItem}>
+        <Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
+        <Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
+        <Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
+      </Accordion.Root>
+      <p>Expanded item: {expandedItem().join(",")}</p>
+    </>
+  );
+}
+```
 
 ### Collapsible item
 
-<Preview>
+By default, accordion items are not collapsible, meaning you can't toggle them from open to close and vice-versa. You can use the `isCollapsible` prop to enable this behavior.
 
+<Preview>
+  <CollapsibleExample />
 </Preview>
+
+```tsx {0}
+<Accordion.Root isCollapsible>
+  <Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
+  <Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
+  <Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
+</Accordion.Root>
+```
 
 ### Allow expanding multiple items
 
-<Preview>
+Use the `isMultiple` to allow expanding multiple accordion items at the same time. This also make all accordion items collapsible.
 
+<Preview>
+  <AllowMultipleExample />
 </Preview>
+
+```tsx {0}
+<Accordion.Root isMultiple>
+  <Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
+  <Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
+  <Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
+</Accordion.Root>
+```
 
 ### Animating content size
 
 We expose the CSS custom properties `--kb-accordion-content-width` and `--kb-accordion-content-height` which you can use to animate the size of the content when it opens/closes.
 
-<Preview></Preview>
-
-```css
+```css {16,22}
 /* style.css */
+.accordion__item-content {
+  overflow: hidden;
+  font-size: 16px;
+  animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.accordion__item-content[data-expanded] {
+  animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--kb-accordion-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--kb-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
 ```
 
 ## API Reference
