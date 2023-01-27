@@ -74,7 +74,11 @@ export const CollapsibleRoot = createPolymorphicComponent<"div", CollapsibleRoot
 
   return (
     <CollapsibleContext.Provider value={context}>
-      <Dynamic component={local.as} {...others} />
+      <Dynamic
+        component={local.as}
+        data-expanded={disclosureState.isOpen() ? "" : undefined}
+        {...others}
+      />
     </CollapsibleContext.Provider>
   );
 });

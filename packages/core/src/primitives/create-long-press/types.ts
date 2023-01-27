@@ -17,13 +17,7 @@ export interface LongPressEvent extends Omit<PressEvent, "type"> {
   type: "longpressstart" | "longpressend" | "longpress";
 }
 
-export interface CreateLongPressProps {
-  /** Whether long press events should be disabled. */
-  isDisabled?: MaybeAccessor<boolean | undefined>;
-
-  /** The amount of time in milliseconds to wait before triggering a long press. */
-  threshold?: MaybeAccessor<number | undefined>;
-
+export interface LongPressEvents {
   /** Handler that is called when a long press interaction starts. */
   onLongPressStart?: (e: LongPressEvent) => void;
 
@@ -35,6 +29,14 @@ export interface CreateLongPressProps {
 
   /** Handler that is called when the threshold time is met while the press is over the target. */
   onLongPress?: (e: LongPressEvent) => void;
+}
+
+export interface CreateLongPressProps extends LongPressEvents {
+  /** Whether long press events should be disabled. */
+  isDisabled?: MaybeAccessor<boolean | undefined>;
+
+  /** The amount of time in milliseconds to wait before triggering a long press. */
+  threshold?: MaybeAccessor<number | undefined>;
 }
 
 export interface CreateLongPressResult<T extends HTMLElement> {

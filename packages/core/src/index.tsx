@@ -9,6 +9,7 @@ export * from "./selection";
 export { createPolymorphicComponent } from "@kobalte/utils";
 
 // components
+export * as Accordion from "./accordion";
 export * as Alert from "./alert";
 export * as Breadcrumbs from "./breadcrumbs";
 export * as Button from "./button";

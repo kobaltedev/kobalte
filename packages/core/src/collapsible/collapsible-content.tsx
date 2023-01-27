@@ -58,7 +58,15 @@ export const CollapsibleContent = createPolymorphicComponent<"div", CollapsibleC
     let isMountAnimationPrevented = isOpen();
     let originalStyles: Record<string, string> | undefined;
 
-    createEffect(() => onCleanup(context.registerContentId(local.id!)));
+    onMount(() => {
+      const raf = requestAnimationFrame(() => {
+        isMountAnimationPrevented = false;
+      });
+
+      onCleanup(() => {
+        cancelAnimationFrame(raf);
+      });
+    });
 
     createEffect(
       on(
@@ -97,22 +105,14 @@ export const CollapsibleContent = createPolymorphicComponent<"div", CollapsibleC
       )
     );
 
-    onMount(() => {
-      const raf = requestAnimationFrame(() => {
-        isMountAnimationPrevented = false;
-      });
-
-      onCleanup(() => {
-        cancelAnimationFrame(raf);
-      });
-    });
+    createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
     return (
       <Dynamic
         component={local.as}
         ref={mergeRefs(el => {
-          ref = el;
           presence.setRef(el);
+          ref = el;
         }, local.ref)}
         id={local.id}
         hidden={!isOpen()}

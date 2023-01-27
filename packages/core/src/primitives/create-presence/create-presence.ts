@@ -31,6 +31,13 @@ export function createPresence(present: Accessor<boolean>) {
   });
 
   createEffect(
+    on(state, state => {
+      const currentAnimationName = getAnimationName(styles);
+      prevAnimationName = state === "mounted" ? currentAnimationName : "none";
+    })
+  );
+
+  createEffect(
     on(present, present => {
       if (prevPresent === present) {
         return;
@@ -40,8 +47,10 @@ export function createPresence(present: Accessor<boolean>) {
 
       if (present) {
         send("MOUNT");
-      } else if (currentAnimationName === "none" || styles?.display === "none") {
+        //} else if (currentAnimationName === "none" || styles?.display === "none") {
         // If there is no exit animation or the element is hidden, animations won't run, so we unmount instantly
+      } else if (styles?.display === "none") {
+        // If the element is hidden, animations won't run, so we unmount instantly
         send("UNMOUNT");
       } else {
         /**
@@ -101,13 +110,6 @@ export function createPresence(present: Accessor<boolean>) {
         // We avoid doing so during cleanup as the node may change but still exist.
         send("ANIMATION_END");
       }
-    })
-  );
-
-  createEffect(
-    on(state, state => {
-      const currentAnimationName = getAnimationName(styles);
-      prevAnimationName = state === "mounted" ? currentAnimationName : "none";
     })
   );
 
