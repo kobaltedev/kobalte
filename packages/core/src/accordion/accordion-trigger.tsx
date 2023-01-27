@@ -70,6 +70,7 @@ export const AccordionTrigger = createPolymorphicComponent<
       key: () => itemContext.value(),
       selectionManager: () => accordionContext.listState().selectionManager(),
       isDisabled: () => itemContext.isDisabled(),
+      shouldSelectOnPressUp: true,
     },
     () => ref
   );
