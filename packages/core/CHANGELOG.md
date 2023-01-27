@@ -1,5 +1,21 @@
 # @kobalte/core
 
+## 0.5.0
+
+### Minor Changes
+
+- 3b9d8de: - Added `Accordion` component.
+  - Added `Breadcrumbs` component.
+  - Added `Collapsible` component.
+  - Added `Image` component.
+  - Added `Progress` component.
+  - Fix #78
+
+### Patch Changes
+
+- Updated dependencies [3b9d8de]
+  - @kobalte/utils@0.4.0
+
 ## 0.4.0
 
 ### Minor Changes
