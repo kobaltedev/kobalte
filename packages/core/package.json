@@ -1,6 +1,6 @@
 {
   "name": "@kobalte/core",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": false,
   "description": "Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
   "keywords": [
@@ -55,7 +55,7 @@
     "@internationalized/date": "^3.0.2",
     "@internationalized/number": "^3.1.1",
     "@internationalized/string": "^3.0.0",
-    "@kobalte/utils": "^0.3.0"
+    "@kobalte/utils": "^0.4.0"
   },
   "devDependencies": {
     "@kobalte/tests": "^0.1.0"
