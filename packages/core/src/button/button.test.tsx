@@ -44,7 +44,7 @@ describe("Button", () => {
     expect(button).not.toHaveAttribute("type", "button");
   });
 
-  it("should keep attribute 'type' when provided", () => {
+  it("should keep attribute 'type' when provided and it's a native 'button' or 'input'", () => {
     render(() => (
       <Button.Root data-testid="button" as="input" type="submit">
         Button

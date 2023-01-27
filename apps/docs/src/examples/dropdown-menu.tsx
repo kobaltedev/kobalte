@@ -28,7 +28,7 @@ export function BasicExample() {
           <DropdownMenu.Item class={style["dropdown-menu__item"]} isDisabled>
             Update Project <div class={style["dropdown-menu__item-right-slot"]}>⌘+T</div>
           </DropdownMenu.Item>
-          <DropdownMenu.Sub gutter={4} shift={-8}>
+          <DropdownMenu.Sub overlap gutter={4} shift={-8}>
             <DropdownMenu.SubTrigger class={style["dropdown-menu__sub-trigger"]}>
               GitHub
               <div class={style["dropdown-menu__item-right-slot"]}>

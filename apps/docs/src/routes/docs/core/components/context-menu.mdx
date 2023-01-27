@@ -137,7 +137,7 @@ The checkable menu item consists of:
               <ContextMenu.Item class="context-menu__item" isDisabled>
                 Update Project <div class="context-menu__item-right-slot">⌘+T</div>
               </ContextMenu.Item>
-              <ContextMenu.Sub gutter={4} shift={-8}>
+              <ContextMenu.Sub overlap gutter={4} shift={-8}>
                 <ContextMenu.SubTrigger class="context-menu__sub-trigger">
                   GitHub
                   <div class="context-menu__item-right-slot">
@@ -519,6 +519,30 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | :----------------- | :--------------------------------------------------------------- |
 | data-focus         | Present when the content element itself is focused.              |
 | data-focus-visible | Present when the content element itself is focused via keyboard. |
+
+## Rendered elements
+
+| Component                     | Default rendered element |
+| :---------------------------- | :----------------------- |
+| `ContextMenu.Root`            | none                     |
+| `ContextMenu.Trigger`         | `div`                    |
+| `ContextMenu.Icon`            | `div`                    |
+| `ContextMenu.Portal`          | `Portal`                 |
+| `ContextMenu.Content`         | `div`                    |
+| `ContextMenu.Arrow`           | `div`                    |
+| `ContextMenu.Separator`       | `hr`                     |
+| `ContextMenu.Group`           | `div`                    |
+| `ContextMenu.GroupLabel`      | `span`                   |
+| `ContextMenu.Sub`             | none                     |
+| `ContextMenu.SubTrigger`      | `div`                    |
+| `ContextMenu.SubContent`      | `div`                    |
+| `ContextMenu.Item`            | `div`                    |
+| `ContextMenu.ItemLabel`       | `div`                    |
+| `ContextMenu.ItemDescription` | `div`                    |
+| `ContextMenu.ItemIndicator`   | `div`                    |
+| `ContextMenu.RadioGroup`      | `div`                    |
+| `ContextMenu.RadioItem`       | `div`                    |
+| `ContextMenu.CheckboxItem`    | `div`                    |
 
 ## Accessibility
 

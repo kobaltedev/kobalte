@@ -25,6 +25,7 @@ const STATES = [
   "focus",
   "focus-visible",
   "active",
+  "current",
 ];
 
 module.exports = plugin.withOptions(({ prefix = "ui" } = {}) => {

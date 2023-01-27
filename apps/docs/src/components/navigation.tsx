@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
-import { ComponentProps, For, splitProps } from "solid-js";
+import { ComponentProps, For, Match, Show, splitProps, Switch } from "solid-js";
 
 import { NavSection } from "../model/navigation";
 
@@ -29,13 +29,25 @@ export function Navigation(props: NavigationProps) {
                       <Link
                         href={link.href}
                         class={clsx(
-                          "block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
+                          "flex items-center justify-between w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
                           link.href === location.pathname
                             ? "text-sky-700 dark:text-sky-600"
                             : "text-zinc-600 dark:text-zinc-400"
                         )}
                       >
-                        {link.title}
+                        <span>{link.title}</span>
+                        <Switch>
+                          <Match when={link.status === "new"}>
+                            <span class="inline-flex items-center font-medium leading-none uppercase px-1.5 py-1 text-[12px] rounded text-white bg-sky-600">
+                              new
+                            </span>
+                          </Match>
+                          <Match when={link.status === "updated"}>
+                            <span class="inline-flex items-center font-medium leading-none uppercase px-1.5 py-1 text-[12px] rounded text-amber-800 bg-amber-100">
+                              updated
+                            </span>
+                          </Match>
+                        </Switch>
                       </Link>
                     </li>
                   )}

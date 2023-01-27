@@ -9,6 +9,7 @@
 import {
   access,
   composeEventHandlers,
+  createGenerateId,
   createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
@@ -181,7 +182,7 @@ export const ListboxRoot = createPolymorphicComponent<"div", ListboxRootOptions>
 
   const context: ListboxContextValue = {
     listState,
-    generateId: part => `${others.id!}-${part}`,
+    generateId: createGenerateId(() => others.id!),
     shouldUseVirtualFocus: () => props.shouldUseVirtualFocus,
     shouldSelectOnPressUp: () => props.shouldSelectOnPressUp,
     shouldFocusOnHover: () => props.shouldFocusOnHover,

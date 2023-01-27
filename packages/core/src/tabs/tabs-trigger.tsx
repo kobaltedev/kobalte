@@ -13,21 +13,20 @@ import {
   mergeRefs,
 } from "@kobalte/utils";
 import { createEffect, on, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { Pressable, PressableOptions } from "../pressable";
 import {
   CollectionItem,
   createFocusRing,
   createHover,
   FOCUS_RING_HANDLERS_PROP_NAMES,
   HOVER_HANDLERS_PROP_NAMES,
-  PRESS_HANDLERS_PROP_NAMES,
 } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsTriggerOptions {
+export interface TabsTriggerOptions extends PressableOptions {
   /** The unique key that associates the tab with a tab panel. */
   value: string;
 
@@ -52,13 +51,17 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "id",
     "value",
     "isDisabled",
+    "onPressStart",
+    "onPressUp",
+    "onPress",
+    "onLongPress",
     "onFocus",
-    ...PRESS_HANDLERS_PROP_NAMES,
+    "onMouseDown",
+    "onDragStart",
     ...HOVER_HANDLERS_PROP_NAMES,
     ...FOCUS_RING_HANDLERS_PROP_NAMES,
   ]);
@@ -68,6 +71,8 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
   const isFocused = () => context.listState().selectionManager().focusedKey() === local.value;
 
   const isDisabled = () => local.isDisabled || context.isDisabled();
+
+  const contentId = () => context.contentIdsMap().get(local.value);
 
   createDomCollectionItem<CollectionItem>({
     getItem: () => ({
@@ -88,9 +93,7 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
     () => ref
   );
 
-  const { isHovered, hoverHandlers } = createHover({
-    isDisabled,
-  });
+  const { isHovered, hoverHandlers } = createHover({ isDisabled });
 
   const { isFocusVisible, focusRingHandlers } = createFocusRing();
 
@@ -101,68 +104,32 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
   );
 
   return (
-    <Dynamic
-      component={local.as}
+    <Pressable
       ref={mergeRefs(el => (ref = el), local.ref)}
       id={id()}
       role="tab"
       tabIndex={!isDisabled() ? selectableItem.tabIndex() : undefined}
-      disabled={isDisabled()}
+      isDisabled={isDisabled()}
+      preventFocusOnPress={selectableItem.preventFocusOnPress()}
       aria-selected={selectableItem.isSelected()}
-      aria-disabled={isDisabled() || undefined}
-      aria-controls={
-        selectableItem.isSelected() ? context.contentIdsMap().get(local.value) : undefined
-      }
+      aria-controls={selectableItem.isSelected() ? contentId() : undefined}
       data-key={selectableItem.dataKey()}
       data-orientation={context.orientation()}
       data-selected={selectableItem.isSelected() ? "" : undefined}
-      data-disabled={isDisabled() ? "" : undefined}
       data-hover={isHovered() ? "" : undefined}
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
-      data-active={selectableItem.isPressed() ? "" : undefined}
-      onKeyDown={composeEventHandlers([
-        local.onKeyDown,
-        selectableItem.pressHandlers.onKeyDown,
-        selectableItem.longPressHandlers.onKeyDown,
-      ])}
-      onKeyUp={composeEventHandlers([
-        local.onKeyUp,
-        selectableItem.pressHandlers.onKeyUp,
-        selectableItem.longPressHandlers.onKeyUp,
-      ])}
-      onClick={composeEventHandlers([
-        local.onClick,
-        selectableItem.pressHandlers.onClick,
-        selectableItem.longPressHandlers.onClick,
-      ])}
-      onPointerDown={composeEventHandlers([
-        local.onPointerDown,
-        selectableItem.pressHandlers.onPointerDown,
-        selectableItem.longPressHandlers.onPointerDown,
-      ])}
-      onPointerUp={composeEventHandlers([
-        local.onPointerUp,
-        selectableItem.pressHandlers.onPointerUp,
-        selectableItem.longPressHandlers.onPointerUp,
-      ])}
-      onMouseDown={composeEventHandlers([
-        local.onMouseDown,
-        selectableItem.otherHandlers.onMouseDown,
-        selectableItem.pressHandlers.onMouseDown,
-        selectableItem.longPressHandlers.onMouseDown,
-      ])}
-      onDragStart={composeEventHandlers([
-        local.onDragStart,
-        selectableItem.pressHandlers.onDragStart,
-        selectableItem.longPressHandlers.onDragStart,
-        selectableItem.otherHandlers.onDragStart,
-      ])}
+      onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
+      onPressStart={composeEventHandlers([local.onPressStart, selectableItem.onPressStart])}
+      onPressUp={composeEventHandlers([local.onPressUp, selectableItem.onPressUp])}
+      onPress={composeEventHandlers([local.onPress, selectableItem.onPress])}
+      onLongPress={composeEventHandlers([local.onLongPress, selectableItem.onLongPress])}
+      onMouseDown={composeEventHandlers([local.onMouseDown, selectableItem.onMouseDown])}
+      onDragStart={composeEventHandlers([local.onDragStart, selectableItem.onDragStart])}
       onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
       onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
       onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
       onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
-      onFocus={composeEventHandlers([local.onFocus, selectableItem.otherHandlers.onFocus])}
       {...others}
     />
   );

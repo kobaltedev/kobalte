@@ -1,0 +1,146 @@
+import { Preview, TabsSnippets } from "../../../../components";
+import { BasicExample } from "../../../../examples/image";
+
+# Image
+
+An image element with an optional fallback for loading and error status.
+
+## Import
+
+```ts
+import { Image } from "@kobalte/core";
+```
+
+## Features
+
+- Automatic and manual control over when the image renders.
+- Fallback part accepts any children.
+- Optionally delay fallback rendering to avoid content flashing.
+
+## Anatomy
+
+The image consists of:
+
+- **Image.Root:** The root container for an image.
+- **Image.Img:** The image to render. By default, it will only render when it has loaded.
+- **Image.Fallback:** An element that renders when the image hasn't loaded. This means whilst it's loading, or if there was an error.
+
+```tsx
+<Image.Root>
+  <Image.Img />
+  <Image.Fallback />
+</Image.Root>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Image } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      return (
+        <>
+          <Image.Root fallbackDelay={600} class="image">
+            <Image.Img
+              class="image__img"
+              src="https://randomuser.me/api/portraits/women/44.jpg"
+              alt="Nicole Steeves"
+            />
+            <Image.Fallback class="image__fallback">NS</Image.Fallback>
+          </Image.Root>
+          <Image.Root class="image">
+            <Image.Fallback class="image__fallback">MD</Image.Fallback>
+          </Image.Root>
+        </>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .image {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      overflow: hidden;
+      user-select: none;
+      width: 56px;
+      height: 56px;
+      border-radius: 100%;
+      background-color: hsl(240 6% 90%);
+    }
+
+    .image__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+
+    .image__fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: hsl(204 94% 94%);
+      color: hsl(201 96% 32%);
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 500;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+### Avoid flash during loading
+
+By default `Image.Fallback` will render when the image hasn't loaded. This means whilst it's loading, or if there was an error.
+
+If you notice a flash during loading, use the `fallbackDelay` prop to delay its rendering, so it only renders for those with slower internet connections.
+
+```tsx {0}
+<Image.Root fallbackDelay={600} class="image">
+  <Image.Img
+    class="image__img"
+    src="https://randomuser.me/api/portraits/women/44.jpg"
+    alt="Nicole Steeves"
+  />
+  <Image.Fallback class="image__fallback">NS</Image.Fallback>
+</Image.Root>
+```
+
+## API Reference
+
+### Image.Root
+
+| Prop                  | Description                                                                                                                                                                                                                                    |
+| :-------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| fallbackDelay         | `number` <br/> The delay (in ms) before displaying the image fallback. Useful if you notice a flash during loading for delaying rendering, so it only appears for those with slower internet connections.                                      |
+| onLoadingStatusChange | `(status: "idle" \| "loading" \| "loaded" \| "error") => void` <br/> A callback providing information about the loading status of the image. This is useful in case you want to control more precisely what to render as the image is loading. |
+
+## Rendered elements
+
+| Component        | Default rendered element |
+| :--------------- | :----------------------- |
+| `Image.Root`     | `span`                   |
+| `Image.Img`      | `img`                    |
+| `Image.Fallback` | `span`                   |
