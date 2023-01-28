@@ -4,7 +4,7 @@ export interface MenuItemDataSet {
   "data-indeterminate": string | undefined;
   "data-checked": string | undefined;
   "data-disabled": string | undefined;
-  "data-focus": string | undefined;
+  "data-highlighted": string | undefined;
 }
 
 export interface MenuItemContextValue {

@@ -98,7 +98,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
 
   const key = () => others.id!;
 
-  const isFocused = () => selectionManager().focusedKey() === key();
+  const isHighlighted = () => selectionManager().focusedKey() === key();
 
   const onSelect = () => {
     local.onSelect?.();
@@ -217,7 +217,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
     "data-indeterminate": local.isIndeterminate ? "" : undefined,
     "data-checked": local.isChecked && !local.isIndeterminate ? "" : undefined,
     "data-disabled": local.isDisabled ? "" : undefined,
-    "data-focus": isFocused() ? "" : undefined,
+    "data-highlighted": isHighlighted() ? "" : undefined,
   }));
 
   const context: MenuItemContextValue = {

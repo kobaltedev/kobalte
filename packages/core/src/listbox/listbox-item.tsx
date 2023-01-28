@@ -87,7 +87,7 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
 
   const selectionManager = () => listBoxContext.listState().selectionManager();
 
-  const isFocused = () => selectionManager().focusedKey() === local.value;
+  const isHighlighted = () => selectionManager().focusedKey() === local.value;
 
   createDomCollectionItem<CollectionItem>({
     getItem: () => ({
@@ -142,7 +142,7 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
   const dataset: Accessor<ListboxItemDataSet> = createMemo(() => ({
     "data-disabled": selectableItem.isDisabled() ? "" : undefined,
     "data-selected": selectableItem.isSelected() ? "" : undefined,
-    "data-focus": isFocused() ? "" : undefined,
+    "data-highlighted": isHighlighted() ? "" : undefined,
   }));
 
   const context: ListboxItemContextValue = {

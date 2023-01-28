@@ -138,7 +138,7 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
     return !isSameMonth(monthContext.startDate(), context.date());
   };
 
-  const isFocused = () => {
+  const isHighlighted = () => {
     return calendarContext.state().isCellFocused(context.date());
   };
 
@@ -350,9 +350,9 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
       data-selection-start={isSelectionStart() ? "" : undefined}
       data-selection-end={isSelectionEnd() ? "" : undefined}
       data-selected={context.isSelected() ? "" : undefined}
+      data-highlighted={isHighlighted() ? "" : undefined}
       data-disabled={context.isDisabled() ? "" : undefined}
       data-invalid={context.isInvalid() ? "" : undefined}
-      data-focus={isFocused() ? "" : undefined}
       onFocus={composeEventHandlers([local.onFocus, onFocus])}
       onContextMenu={composeEventHandlers([local.onContextMenu, onContextMenu])}
       //onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}

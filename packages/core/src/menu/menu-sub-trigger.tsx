@@ -110,7 +110,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
 
   const collection = () => context.listState().collection();
 
-  const isFocused = () => parentSelectionManager().focusedKey() === key();
+  const isHighlighted = () => parentSelectionManager().focusedKey() === key();
 
   const selectableItem = createSelectableItem(
     {
@@ -304,8 +304,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
       aria-disabled={local.isDisabled}
       data-key={selectableItem.dataKey()}
       data-expanded={context.isOpen() ? "" : undefined}
+      data-highlighted={isHighlighted() ? "" : undefined}
       data-disabled={local.isDisabled ? "" : undefined}
-      data-focus={isFocused() ? "" : undefined}
       onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
       onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}
       onClick={composeEventHandlers([onClick, selectableItem.onClick])}

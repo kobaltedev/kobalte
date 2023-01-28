@@ -60,7 +60,7 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
 
   const id = () => local.id ?? context.generateTriggerId(local.value);
 
-  const isFocused = () => context.listState().selectionManager().focusedKey() === local.value;
+  const isHighlighted = () => context.listState().selectionManager().focusedKey() === local.value;
 
   const isDisabled = () => local.isDisabled || context.isDisabled();
 
@@ -105,8 +105,8 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
       data-key={selectableItem.dataKey()}
       data-orientation={context.orientation()}
       data-selected={selectableItem.isSelected() ? "" : undefined}
+      data-highlighted={isHighlighted() ? "" : undefined}
       data-disabled={isDisabled() ? "" : undefined}
-      data-focus={isFocused() ? "" : undefined}
       onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
       onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}
       onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
