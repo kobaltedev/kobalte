@@ -1,0 +1,199 @@
+import { Preview, TabsSnippets } from "../../../../components";
+import {
+  BasicExample,
+  CustomValueLabelExample,
+  CustomValueScaleExample,
+} from "../../../../examples/progress";
+
+# Progress
+
+Show either determinate or indeterminate progress of an operation over time.
+
+## Import
+
+```ts
+import { Progress } from "@kobalte/core";
+```
+
+## Features
+
+- Exposed to assistive technology as a progress bar via ARIA.
+- Labeling support for accessibility.
+- Internationalized number formatting as a percentage or value.
+- Determinate and indeterminate progress support.
+
+## Anatomy
+
+The progress consists of:
+
+- **Progress.Root:** The root container for a progress bar.
+- **Progress.Label:** An accessible label that gives the user information on the progress.
+- **Progress.ValueLabel:** The accessible label text representing the current value in a human-readable format.
+- **Progress.Track:** The component that visually represents the progress track.
+- **Progress.Fill:** The component that visually represents the progress value.
+
+```tsx
+<Progress.Root>
+  <Progress.Label />
+  <Progress.ValueLabel />
+  <Progress.Track>
+    <Progress.Fill />
+  </Progress.Track>
+</Progress.Root>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Progress } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      return (
+        <Progress.Root value={80} class="progress">
+          <div class="progress__label-container">
+            <Progress.Label class="progress__label">Loading...</Progress.Label>
+            <Progress.ValueLabel class="progress__value-label" />
+          </div>
+          <Progress.Track class="progress__track">
+            <Progress.Fill class="progress__fill" />
+          </Progress.Track>
+        </Progress.Root>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .progress {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      width: 300px;
+    }
+
+    .progress__label-container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .progress__label,
+    .progress__value-label {
+      color: hsl(240 4% 16%);
+      font-size: 14px;
+    }
+
+    .progress__track {
+      height: 10px;
+      background-color: hsl(240 6% 90%);
+    }
+
+    .progress__fill {
+      background-color: hsl(200 98% 39%);
+      height: 100%;
+      width: var(--kb-progress-fill-width);
+      transition: width 250ms linear;
+    }
+
+    .progress__fill[data-progress="complete"] {
+      background-color: #16a34a;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+### Custom value scale
+
+By default, the `value` prop represents the current percentage of progress, as the minimum and maximum values default to 0 and 100, respectively. Alternatively, a different scale can be used by setting the `minValue` and `maxValue` props.
+
+<Preview>
+  <CustomValueScaleExample />
+</Preview>
+
+```tsx {0}
+<Progress.Root value={100} minValue={50} maxValue={150} class="progress">
+  <div class="progress__label-container">
+    <Progress.Label class="progress__label">Loading...</Progress.Label>
+    <Progress.ValueLabel class="progress__value-label" />
+  </div>
+  <Progress.Track class="progress__track">
+    <Progress.Fill class="progress__fill" />
+  </Progress.Track>
+</Progress.Root>
+```
+
+### Custom value label
+
+The `getValueLabel` prop allows the formatted value used in `Progress.ValueLabel` and ARIA to be replaced with a custom string. It receives the current value, min and max values as parameters.
+
+<Preview>
+  <CustomValueLabelExample />
+</Preview>
+
+```tsx {4}
+<Progress.Root
+  value={3}
+  minValue={0}
+  maxValue={10}
+  getValueLabel={({ value, max }) => `${value} of ${max} tasks completed`}
+  class="progress"
+>
+  <div class="progress__label-container">
+    <Progress.Label class="progress__label">Processing...</Progress.Label>
+    <Progress.ValueLabel class="progress__value-label" />
+  </div>
+  <Progress.Track class="progress__track">
+    <Progress.Fill class="progress__fill" />
+  </Progress.Track>
+</Progress.Root>
+```
+
+### Progress bar fill width
+
+We expose a CSS custom property `--kb-progress-fill-width` which corresponds to the percentage of progression (ex: 80%). If you are building a linear progress bar, you can use it to set the width of the `Progress.Fill` component in CSS.
+
+## API Reference
+
+### Progress.Root
+
+| Prop            | Description                                                                                                                                                                                                                                                    |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value           | `number` <br/> The progress value.                                                                                                                                                                                                                             |
+| minValue        | `number` <br/> The minimum progress value.                                                                                                                                                                                                                     |
+| maxValue        | `number` <br/> The maximum progress value.                                                                                                                                                                                                                     |
+| isIndeterminate | `boolean` <br/> Whether the progress is in an indeterminate state.                                                                                                                                                                                             |
+| getValueLabel   | `(params: { value: number; min: number; max: number }) => string` <br/> A function to get the accessible label text representing the current value in a human-readable format. If not provided, the value label will be read as a percentage of the max value. |
+
+| Data attribute           | Description                                                       |
+| :----------------------- | :---------------------------------------------------------------- |
+| data-progress='loading'  | Present when the progress is not complete (`value` < `maxValue`). |
+| data-progress='complete' | Present when the progress is complete (`value` === `maxValue`).   |
+| data-indeterminate       | Present when the progress is in an indeterminate state.           |
+
+`Progress.Label`, `Progress.ValueLabel`, `Progress.Track` and `Progress.Fill` shares the same data-attributes.
+
+## Rendered elements
+
+| Component             | Default rendered element |
+| :-------------------- | :----------------------- |
+| `Progress.Root`       | `div`                    |
+| `Progress.Label`      | `span`                   |
+| `Progress.ValueLabel` | `div`                    |
+| `Progress.Track`      | `div`                    |
+| `Progress.Fill`       | `div`                    |

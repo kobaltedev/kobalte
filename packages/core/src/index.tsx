@@ -9,18 +9,23 @@ export * from "./selection";
 export { createPolymorphicComponent } from "@kobalte/utils";
 
 // components
+export * as Accordion from "./accordion";
 export * as Alert from "./alert";
+export * as Breadcrumbs from "./breadcrumbs";
 export * as Button from "./button";
 export * as Calendar from "./calendar";
 export * as Checkbox from "./checkbox";
+export * as Collapsible from "./collapsible";
 export * as ContextMenu from "./context-menu";
 export * as Dialog from "./dialog";
 export * as DropdownMenu from "./dropdown-menu";
 export * as HoverCard from "./hover-card";
+export * as Image from "./image";
 export * as Link from "./link";
 export * as Listbox from "./listbox";
 export * as MultiSelect from "./multi-select";
 export * as Popover from "./popover";
+export * as Progress from "./progress";
 export * as RadioGroup from "./radio-group";
 export * as RangeCalendar from "./range-calendar";
 export * as Select from "./select";

@@ -1,5 +1,16 @@
 # @kobalte/tailwindcss
 
+## 0.3.0
+
+### Minor Changes
+
+- 3b9d8de: - Added `Accordion` component.
+  - Added `Breadcrumbs` component.
+  - Added `Collapsible` component.
+  - Added `Image` component.
+  - Added `Progress` component.
+  - Fix #78
+
 ## 0.2.0
 
 ### Minor Changes

@@ -13,30 +13,31 @@
  */
 
 import {
+  callHandler,
   composeEventHandlers,
   createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, on, onCleanup, splitProps } from "solid-js";
-import { Dynamic, isServer } from "solid-js/web";
+import { isServer } from "solid-js/web";
 
 import { Direction, useLocale } from "../i18n";
+import { Pressable, PressableOptions } from "../pressable";
 import {
   createFocusRing,
   createHover,
-  createPress,
   FOCUS_RING_HANDLERS_PROP_NAMES,
   focusSafely,
   HOVER_HANDLERS_PROP_NAMES,
-  PRESS_HANDLERS_PROP_NAMES,
+  PressEvent,
 } from "../primitives";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 import { getPointerGraceArea, Side } from "./utils";
 
-export interface MenuSubTriggerOptions {
+export interface MenuSubTriggerOptions extends PressableOptions {
   /**
    * Optional text used for typeahead purposes.
    * By default, the typeahead behavior will use the .textContent of the Menu.SubTrigger.
@@ -80,8 +81,15 @@ export const MenuSubTrigger = /*#__PURE__*/ createPolymorphicComponent<
     "id",
     "textValue",
     "isDisabled",
+    "onPressStart",
+    "onPressUp",
+    "onPress",
+    "onLongPress",
     "onFocus",
-    ...PRESS_HANDLERS_PROP_NAMES,
+    "onMouseDown",
+    "onDragStart",
+    "onKeyDown",
+    "onPointerMove",
     ...HOVER_HANDLERS_PROP_NAMES,
     ...FOCUS_RING_HANDLERS_PROP_NAMES,
   ]);
@@ -131,20 +139,21 @@ export const MenuSubTrigger = /*#__PURE__*/ createPolymorphicComponent<
 
   const { isFocusVisible, focusRingHandlers } = createFocusRing();
 
-  const { pressHandlers, isPressed } = createPress({
-    isDisabled: () => local.isDisabled,
-    onPress: e => {
-      if (e.pointerType === "touch" && !context.isOpen() && !local.isDisabled) {
-        context.open(true);
-      }
-    },
-  });
-
   const { hoverHandlers, isHovered } = createHover({
     isDisabled: () => local.isDisabled,
   });
 
+  const onPress = (e: PressEvent) => {
+    local.onPress?.(e);
+
+    if (e.pointerType === "touch" && !context.isOpen() && !local.isDisabled) {
+      context.open(true);
+    }
+  };
+
   const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerMove);
+
     if (e.pointerType !== "mouse") {
       return;
     }
@@ -188,6 +197,8 @@ export const MenuSubTrigger = /*#__PURE__*/ createPolymorphicComponent<
   };
 
   const onPointerLeave: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerLeave);
+
     if (e.pointerType !== "mouse") {
       return;
     }
@@ -227,6 +238,8 @@ export const MenuSubTrigger = /*#__PURE__*/ createPolymorphicComponent<
   };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    callHandler(e, local.onKeyDown);
+
     // Ignore repeating events, which may have started on the menu trigger before moving
     // focus to the menu item. We want to wait for a second complete key press sequence.
     if (e.repeat) {
@@ -295,8 +308,8 @@ export const MenuSubTrigger = /*#__PURE__*/ createPolymorphicComponent<
   });
 
   return (
-    <Dynamic
-      component={local.as}
+    <Pressable
+      as={local.as!}
       ref={mergeRefs(el => {
         context.setTriggerRef(el);
         ref = el;
@@ -304,72 +317,29 @@ export const MenuSubTrigger = /*#__PURE__*/ createPolymorphicComponent<
       id={local.id}
       role="menuitem"
       tabIndex={selectableItem.tabIndex()}
+      isDisabled={selectableItem.isDisabled()}
+      preventFocusOnPress={selectableItem.preventFocusOnPress()}
       aria-haspopup="true"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.contentId() : undefined}
-      aria-disabled={local.isDisabled}
       data-key={selectableItem.dataKey()}
       data-expanded={context.isOpen() ? "" : undefined}
-      data-disabled={local.isDisabled ? "" : undefined}
       data-hover={isHovered() ? "" : undefined}
       data-focus={isFocused() ? "" : undefined}
       data-focus-visible={isFocusVisible() ? "" : undefined}
-      data-active={isPressed() ? "" : undefined}
-      onKeyDown={composeEventHandlers([
-        local.onKeyDown,
-        selectableItem.pressHandlers.onKeyDown,
-        selectableItem.longPressHandlers.onKeyDown,
-        pressHandlers.onKeyDown,
-        onKeyDown,
-      ])}
-      onKeyUp={composeEventHandlers([
-        local.onKeyUp,
-        selectableItem.pressHandlers.onKeyUp,
-        selectableItem.longPressHandlers.onKeyUp,
-        pressHandlers.onKeyUp,
-      ])}
-      onClick={composeEventHandlers([
-        local.onClick,
-        selectableItem.pressHandlers.onClick,
-        selectableItem.longPressHandlers.onClick,
-        pressHandlers.onClick,
-      ])}
-      onPointerDown={composeEventHandlers([
-        local.onPointerDown,
-        selectableItem.pressHandlers.onPointerDown,
-        selectableItem.longPressHandlers.onPointerDown,
-        pressHandlers.onPointerDown,
-      ])}
-      onPointerUp={composeEventHandlers([
-        local.onPointerUp,
-        selectableItem.pressHandlers.onPointerUp,
-        selectableItem.longPressHandlers.onPointerUp,
-        pressHandlers.onPointerUp,
-      ])}
-      onMouseDown={composeEventHandlers([
-        local.onMouseDown,
-        selectableItem.otherHandlers.onMouseDown,
-        selectableItem.pressHandlers.onMouseDown,
-        selectableItem.longPressHandlers.onMouseDown,
-        pressHandlers.onMouseDown,
-      ])}
-      onDragStart={composeEventHandlers([
-        local.onDragStart,
-        selectableItem.pressHandlers.onDragStart,
-        selectableItem.longPressHandlers.onDragStart,
-        selectableItem.otherHandlers.onDragStart,
-        pressHandlers.onDragStart,
-      ])}
-      onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
-      onPointerLeave={composeEventHandlers([
-        local.onPointerLeave,
-        onPointerLeave,
-        hoverHandlers.onPointerLeave,
-      ])}
+      onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
+      onPressStart={composeEventHandlers([local.onPressStart, selectableItem.onPressStart])}
+      onPressUp={composeEventHandlers([local.onPressUp, selectableItem.onPressUp])}
+      onPress={composeEventHandlers([onPress, selectableItem.onPress])}
+      onLongPress={composeEventHandlers([local.onLongPress, selectableItem.onLongPress])}
+      onMouseDown={composeEventHandlers([local.onMouseDown, selectableItem.onMouseDown])}
+      onDragStart={composeEventHandlers([local.onDragStart, selectableItem.onDragStart])}
+      onKeyDown={onKeyDown}
       onPointerMove={onPointerMove}
+      onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
+      onPointerLeave={composeEventHandlers([onPointerLeave, hoverHandlers.onPointerLeave])}
       onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
       onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
-      onFocus={composeEventHandlers([local.onFocus, selectableItem.otherHandlers.onFocus])}
       {...others}
     />
   );

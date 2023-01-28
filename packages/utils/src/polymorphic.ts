@@ -4,7 +4,7 @@ import { Component, ComponentProps, JSX } from "solid-js";
 export type DOMElements = keyof JSX.IntrinsicElements;
 
 /** Any HTML element or SolidJS component. */
-export type ElementType<Props = any> = DOMElements | Component<Props>;
+export type ElementType<Props = any> = DOMElements | Component<Props> | (string & {});
 
 /**
  * Allows for extending a set of props (`Source`) by an overriding set of props (`Override`),
@@ -18,7 +18,7 @@ export type As<Props = any> = ElementType<Props>;
 /** Props object that includes the `as` prop. */
 export type PolymorphicProps<Type extends As = As, Props = {}> = OverrideProps<
   ComponentProps<Type>,
-  Props & { as?: Type }
+  Props & { as?: Type | As }
 >;
 
 /** A component with the `as` prop. */

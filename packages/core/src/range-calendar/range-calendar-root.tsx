@@ -39,7 +39,8 @@ import {
   splitProps,
 } from "solid-js";
 
-import { CalendarBase, CalendarBaseOptions } from "../calendar/calendar-base";
+import { CalendarRootOptions } from "../calendar";
+import { CalendarBase } from "../calendar/calendar-base";
 import { createCalendarState, CreateCalendarStateProps } from "../calendar/create-calendar-state";
 import {
   CalendarState,
@@ -54,10 +55,9 @@ import { createControllableSignal } from "../primitives";
 
 export interface RangeCalendarRootOptions
   extends Omit<
-      CreateCalendarStateProps,
-      "value" | "defaultValue" | "onValueChange" | "selectionAlignment"
-    >,
-    Pick<CalendarBaseOptions, "hideDatesOutsideMonth"> {
+    CalendarRootOptions,
+    "value" | "defaultValue" | "onValueChange" | "selectionAlignment"
+  > {
   /** The controlled selected date range of the calendar. */
   value?: DateRange;
 
@@ -90,7 +90,6 @@ export const RangeCalendarRoot = /*#__PURE__*/ createPolymorphicComponent<
 
   props = mergeDefaultProps(
     {
-      locale: () => defaultLocale(),
       visibleMonths: 1,
     },
     props
@@ -123,6 +122,8 @@ export const RangeCalendarRoot = /*#__PURE__*/ createPolymorphicComponent<
     ]
   );
 
+  const locale = () => local.locale ?? defaultLocale();
+
   const [selectedRange, setSelectedRange] = createControllableSignal<DateRange>({
     value: () => local.value,
     defaultValue: () => local.defaultValue,
@@ -145,7 +146,7 @@ export const RangeCalendarRoot = /*#__PURE__*/ createPolymorphicComponent<
       const start = alignCenter(
         toCalendarDate(value.start),
         visibleDuration,
-        access(local.locale)!,
+        locale(),
         access(local.minValue),
         access(local.maxValue)
       );
@@ -176,7 +177,7 @@ export const RangeCalendarRoot = /*#__PURE__*/ createPolymorphicComponent<
 
   const createCalendarStateProps = mergeProps(calendarProps, {
     value: () => selectedRange()?.start,
-    locale: () => access(local.locale)!,
+    locale,
     visibleMonths: () => access(local.visibleMonths),
     minValue: min,
     maxValue: max,

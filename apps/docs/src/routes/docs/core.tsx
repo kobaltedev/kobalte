@@ -33,8 +33,18 @@ const CORE_NAV_SECTIONS: NavSection[] = [
     title: "Components",
     links: [
       {
+        title: "Accordion",
+        href: "/docs/core/components/accordion",
+        status: "new",
+      },
+      {
         title: "Alert",
         href: "/docs/core/components/alert",
+      },
+      {
+        title: "Breadcrumbs",
+        href: "/docs/core/components/breadcrumbs",
+        status: "new",
       },
       {
         title: "Button",
@@ -43,6 +53,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Checkbox",
         href: "/docs/core/components/checkbox",
+      },
+      {
+        title: "Collapsible",
+        href: "/docs/core/components/collapsible",
+        status: "new",
       },
       {
         title: "Context Menu",
@@ -61,12 +76,22 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/hover-card",
       },
       {
+        title: "Image",
+        href: "/docs/core/components/image",
+        status: "new",
+      },
+      {
         title: "Link",
         href: "/docs/core/components/link",
       },
       {
         title: "Popover",
         href: "/docs/core/components/popover",
+      },
+      {
+        title: "Progress",
+        href: "/docs/core/components/progress",
+        status: "new",
       },
       {
         title: "Radio Group",

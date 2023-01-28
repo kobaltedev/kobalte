@@ -64,6 +64,7 @@ You can use the following modifiers:
 | `ui-focus`         | `ui-not-focus`         |
 | `ui-focus-visible` | `ui-not-focus-visible` |
 | `ui-active`        | `ui-not-active`        |
+| `ui-current`       | `ui-not-current`       |
 
 ## Documentation
 
