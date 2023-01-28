@@ -30,7 +30,13 @@ export function SwitchInput(props: OverrideProps<ComponentProps<"input">, Switch
 
   props = mergeDefaultProps({ id: context.generateId("input") }, props);
 
-  const [local, others] = splitProps(props, ["style", "onChange", "aria-labelledby"]);
+  const [local, others] = splitProps(props, [
+    "style",
+    "aria-labelledby",
+    "onChange",
+    "onFocus",
+    "onBlur",
+  ]);
 
   const ariaLabelledBy = () => {
     return (
@@ -63,6 +69,16 @@ export function SwitchInput(props: OverrideProps<ComponentProps<"input">, Switch
     target.checked = context.isChecked();
   };
 
+  const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onFocus);
+    context.setIsFocused(true);
+  };
+
+  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onBlur);
+    context.setIsFocused(false);
+  };
+
   return (
     <input
       type="checkbox"
@@ -80,6 +96,8 @@ export function SwitchInput(props: OverrideProps<ComponentProps<"input">, Switch
       aria-disabled={context.isDisabled() || undefined}
       aria-readonly={context.isReadOnly() || undefined}
       onChange={onChange}
+      onFocus={onFocus}
+      onBlur={onBlur}
       {...others}
     />
   );

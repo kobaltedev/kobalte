@@ -6,13 +6,22 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/switch/src/useSwitch.ts
  */
 
-import { mergeDefaultProps, mergeRefs, OverrideProps, ValidationState } from "@kobalte/utils";
+import {
+  callHandler,
+  createGenerateId,
+  mergeDefaultProps,
+  mergeRefs,
+  OverrideProps,
+  ValidationState,
+} from "@kobalte/utils";
 import {
   Accessor,
   Component,
   ComponentProps,
   createMemo,
+  createSignal,
   createUniqueId,
+  JSX,
   splitProps,
 } from "solid-js";
 
@@ -87,7 +96,10 @@ export const SwitchRoot: Component<
     "isRequired",
     "isDisabled",
     "isReadOnly",
+    "onPointerDown",
   ]);
+
+  const [isFocused, setIsFocused] = createSignal(false);
 
   const state = createToggleState({
     isSelected: () => local.isChecked,
@@ -102,7 +114,14 @@ export const SwitchRoot: Component<
     () => state.setIsSelected(local.defaultIsChecked ?? false)
   );
 
-  //TODO: For consistency with native, prevent the input blurs on pointer down on root.
+  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerDown);
+
+    // For consistency with native, prevent the input blurs on pointer down.
+    if (isFocused()) {
+      e.preventDefault();
+    }
+  };
 
   const dataset: Accessor<SwitchDataSet> = createMemo(() => ({
     "data-valid": local.validationState === "valid" ? "" : undefined,
@@ -122,13 +141,19 @@ export const SwitchRoot: Component<
     isRequired: () => local.isRequired,
     isDisabled: () => local.isDisabled,
     isReadOnly: () => local.isReadOnly,
-    generateId: part => `${others.id!}-${part}`,
+    generateId: createGenerateId(() => others.id!),
     setIsChecked: isChecked => state.setIsSelected(isChecked),
+    setIsFocused,
   };
 
   return (
     <SwitchContext.Provider value={context}>
-      <label ref={mergeRefs(el => (ref = el), local.ref)} {...context.dataset()} {...others} />
+      <label
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        onPointerDown={onPointerDown}
+        {...dataset()}
+        {...others}
+      />
     </SwitchContext.Provider>
   );
 };

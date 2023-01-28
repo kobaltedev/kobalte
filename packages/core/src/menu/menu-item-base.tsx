@@ -16,6 +16,7 @@ import {
   mergeRefs,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 
 import { CollectionItem, createRegisterId } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
@@ -23,7 +24,6 @@ import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { MenuItemContext, MenuItemContextValue, MenuItemDataSet } from "./menu-item.context";
 import { useMenuRootContext } from "./menu-root-context";
-import { Dynamic } from "solid-js/web";
 
 export interface MenuItemBaseOptions {
   /**
@@ -237,6 +237,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
         tabIndex={selectableItem.tabIndex()}
         isDisabled={selectableItem.isDisabled()}
         aria-checked={ariaChecked()}
+        aria-disabled={local.isDisabled}
         aria-labelledby={labelId()}
         aria-describedby={descriptionId()}
         data-key={selectableItem.dataKey()}

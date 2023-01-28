@@ -42,9 +42,11 @@ export function RadioGroupItemInput(
 
   const [local, others] = splitProps(props, [
     "style",
-    "onChange",
     "aria-labelledby",
     "aria-describedby",
+    "onChange",
+    "onFocus",
+    "onBlur",
   ]);
 
   const ariaLabelledBy = () => {
@@ -85,6 +87,16 @@ export function RadioGroupItemInput(
     target.checked = radioContext.isSelected();
   };
 
+  const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onFocus);
+    radioContext.setIsFocused(true);
+  };
+
+  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onBlur);
+    radioContext.setIsFocused(false);
+  };
+
   return (
     <input
       type="radio"
@@ -98,6 +110,8 @@ export function RadioGroupItemInput(
       aria-labelledby={ariaLabelledBy()}
       aria-describedby={ariaDescribedBy()}
       onChange={onChange}
+      onFocus={onFocus}
+      onBlur={onBlur}
       {...others}
     />
   );

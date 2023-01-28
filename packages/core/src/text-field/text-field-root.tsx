@@ -6,12 +6,12 @@ import {
   mergeRefs,
   ValidationState,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createUniqueId, JSX, splitProps } from "solid-js";
+import { createUniqueId, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
 import { createControllableSignal, createFormResetListener } from "../primitives";
-import { TextFieldContext, TextFieldContextValue, TextFieldDataSet } from "./text-field-context";
+import { TextFieldContext, TextFieldContextValue } from "./text-field-context";
 
 export interface TextFieldRootOptions {
   /** The controlled value of the textfield. */
@@ -104,13 +104,7 @@ export const TextFieldRoot = createPolymorphicComponent<"div", TextFieldRootOpti
     target.value = value() ?? "";
   };
 
-  const dataset: Accessor<TextFieldDataSet> = createMemo(() => ({
-    //"data-hover": isHovered() ? "" : undefined,
-    //"data-focus": isFocused() ? "" : undefined,
-  }));
-
   const context: TextFieldContextValue = {
-    dataset,
     value,
     generateId: createGenerateId(() => access(formControlProps.id)!),
     onInput,
@@ -124,7 +118,6 @@ export const TextFieldRoot = createPolymorphicComponent<"div", TextFieldRootOpti
           ref={mergeRefs(el => (ref = el), local.ref)}
           role="group"
           {...formControlContext.dataset()}
-          {...dataset()}
           {...others}
         />
       </TextFieldContext.Provider>

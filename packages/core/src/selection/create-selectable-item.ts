@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableItem.ts
  */
 
-import { access, EventKey, focusWithoutScrolling, MaybeAccessor } from "@kobalte/utils";
+import { access, focusWithoutScrolling, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, JSX, on } from "solid-js";
 
 import { MultipleSelectionManager } from "./types";
@@ -57,7 +57,7 @@ export function createSelectableItem<T extends HTMLElement>(
   const key = () => access(props.key);
   const shouldUseVirtualFocus = () => access(props.shouldUseVirtualFocus);
 
-  const onSelect = (e: MouseEvent | PointerEvent) => {
+  const onSelect = (e: MouseEvent | PointerEvent | KeyboardEvent) => {
     if (manager().selectionMode() === "none") {
       return;
     }
@@ -92,10 +92,14 @@ export function createSelectableItem<T extends HTMLElement>(
 
   const allowsSelection = () => !isDisabled() && manager().canSelectItem(key());
 
+  let pointerDownType: PointerEvent["pointerType"] | null = null;
+
   const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
     if (!allowsSelection()) {
       return;
     }
+
+    pointerDownType = e.pointerType;
 
     // Selection occurs on mouse down.
     if (e.pointerType === "mouse" && !access(props.shouldSelectOnPressUp)) {
@@ -118,29 +122,30 @@ export function createSelectableItem<T extends HTMLElement>(
     }
   };
 
-  // Selection onClick requires a pointer down event on the same element as pointer up.
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     if (!allowsSelection()) {
       return;
     }
 
-    if (access(props.shouldSelectOnPressUp) && !access(props.allowsDifferentPressOrigin)) {
+    // If not allowsDifferentPressOrigin or pointerType is touch/pen, make selection happen on click.
+    if (
+      (access(props.shouldSelectOnPressUp) && !access(props.allowsDifferentPressOrigin)) ||
+      pointerDownType !== "mouse"
+    ) {
       onSelect(e);
     }
   };
 
-  // For keyboard events, selection still occurs on key down.
+  // For keyboard events, selection occurs on key down (Enter or Space bar).
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
-    if (!allowsSelection()) {
+    if (!allowsSelection() || !["Enter", " "].includes(e.key)) {
       return;
     }
 
-    // Selection occurs on key down (Enter or Space bar).
-    if (
-      (e.key === EventKey.Enter || e.key === EventKey.Space) &&
-      isNonContiguousSelectionModifier(e)
-    ) {
+    if (isNonContiguousSelectionModifier(e)) {
       manager().toggleSelection(key());
+    } else {
+      onSelect(e);
     }
   };
 

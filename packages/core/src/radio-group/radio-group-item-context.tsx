@@ -5,10 +5,6 @@ export interface RadioGroupItemDataSet {
   "data-invalid": string | undefined;
   "data-checked": string | undefined;
   "data-disabled": string | undefined;
-  //"data-hover": string | undefined;
-  //"data-focus": string | undefined;
-  //"data-focus-visible": string | undefined;
-  //"data-active": string | undefined;
 }
 
 export interface RadioGroupItemContextValue {
@@ -17,8 +13,7 @@ export interface RadioGroupItemContextValue {
   isSelected: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
   generateId: (part: string) => string;
-  //setIsFocused: (isFocused: boolean) => void;
-  //setIsFocusVisible: (isFocusVisible: boolean) => void;
+  setIsFocused: (isFocused: boolean) => void;
 }
 
 export const RadioGroupItemContext = createContext<RadioGroupItemContextValue>();

@@ -66,7 +66,6 @@ export const TextFieldInputBase = createPolymorphicComponent<"input">(props => {
       aria-readonly={formControlContext.isReadOnly() || undefined}
       onInput={composeEventHandlers([local.onInput, context.onInput])}
       {...formControlContext.dataset()}
-      {...context.dataset()}
       {...others}
     />
   );

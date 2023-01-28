@@ -6,18 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
  */
 
-import {
-  composeEventHandlers,
-  createGenerateId,
-  mergeDefaultProps,
-  OverrideProps,
-} from "@kobalte/utils";
+import { callHandler, createGenerateId, mergeDefaultProps, OverrideProps } from "@kobalte/utils";
 import {
   Accessor,
   ComponentProps,
   createMemo,
   createSignal,
   createUniqueId,
+  JSX,
   splitProps,
 } from "solid-js";
 
@@ -53,7 +49,9 @@ export function RadioGroupItem(
 
   props = mergeDefaultProps({ id: defaultId }, props);
 
-  const [local, others] = splitProps(props, ["value", "isDisabled"]);
+  const [local, others] = splitProps(props, ["value", "isDisabled", "onPointerDown"]);
+
+  const [isFocused, setIsFocused] = createSignal(false);
 
   const isSelected = createMemo(() => {
     return radioGroupContext.isSelectedValue(local.value);
@@ -63,7 +61,14 @@ export function RadioGroupItem(
     return local.isDisabled || formControlContext.isDisabled() || false;
   });
 
-  //TODO: For consistency with native, prevent the input blurs on pointer down on root.
+  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerDown);
+
+    // For consistency with native, prevent the input blurs on pointer down.
+    if (isFocused()) {
+      e.preventDefault();
+    }
+  };
 
   const dataset: Accessor<RadioGroupItemDataSet> = createMemo(() => ({
     "data-valid": formControlContext.dataset()["data-valid"],
@@ -78,11 +83,12 @@ export function RadioGroupItem(
     isSelected,
     isDisabled,
     generateId: createGenerateId(() => others.id!),
+    setIsFocused,
   };
 
   return (
     <RadioGroupItemContext.Provider value={context}>
-      <label {...context.dataset()} {...others} />
+      <label onPointerDown={onPointerDown} {...dataset()} {...others} />
     </RadioGroupItemContext.Provider>
   );
 }

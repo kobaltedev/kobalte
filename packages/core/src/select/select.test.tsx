@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-spectrum/picker/test/Picker.test.js
  */
 
-import { createPointerEvent, installPointerEvent, triggerPress } from "@kobalte/tests";
+import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { For } from "solid-js";
 import { fireEvent, render, screen, within } from "solid-testing-library";
 
@@ -86,7 +86,13 @@ describe("Select", () => {
 
       const trigger = screen.getByRole("button");
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
 
       const listbox = screen.getByRole("listbox");
 
@@ -146,6 +152,11 @@ describe("Select", () => {
         })
       );
       await Promise.resolve();
+
+      fireEvent.click(trigger);
+      await Promise.resolve();
+
+      jest.runAllTimers();
 
       const listbox = screen.getByRole("listbox");
 
@@ -531,7 +542,8 @@ describe("Select", () => {
 
       const trigger = screen.getByRole("button");
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       jest.runAllTimers();
 
@@ -543,7 +555,8 @@ describe("Select", () => {
       expect(trigger).toHaveAttribute("aria-expanded", "true");
       expect(trigger).toHaveAttribute("aria-controls", listbox.id);
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       jest.runAllTimers();
 
@@ -581,7 +594,11 @@ describe("Select", () => {
 
       const trigger = screen.getByRole("button");
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       jest.runAllTimers();
 
@@ -593,7 +610,17 @@ describe("Select", () => {
       expect(trigger).toHaveAttribute("aria-expanded", "true");
       expect(trigger).toHaveAttribute("aria-controls", listbox.id);
 
-      await triggerPress(document.body);
+      fireEvent(
+        document.body,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        document.body,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
 
       jest.runAllTimers();
 
@@ -629,7 +656,8 @@ describe("Select", () => {
 
       const trigger = screen.getByRole("button");
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
 
@@ -793,7 +821,8 @@ describe("Select", () => {
       expect(value).toHaveAttribute("id");
       expect(trigger).toHaveAttribute("aria-labelledby", `${label.id} ${value.id}`);
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
 
@@ -827,7 +856,8 @@ describe("Select", () => {
       expect(trigger).toHaveAttribute("aria-label", "foo");
       expect(trigger).toHaveAttribute("aria-labelledby", `${trigger.id} ${value.id}`);
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
 
@@ -860,7 +890,8 @@ describe("Select", () => {
       expect(value).toHaveAttribute("id");
       expect(trigger).toHaveAttribute("aria-labelledby", `foo ${value.id}`);
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
 
@@ -894,7 +925,8 @@ describe("Select", () => {
       expect(trigger).toHaveAttribute("aria-label", "bar");
       expect(trigger).toHaveAttribute("aria-labelledby", `foo ${trigger.id} ${value.id}`);
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
       expect(listbox).toBeVisible();
@@ -981,7 +1013,13 @@ describe("Select", () => {
       const trigger = screen.getByRole("button");
       expect(trigger).toHaveTextContent("Placeholder");
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
 
       const listbox = screen.getByRole("listbox");
       const items = within(listbox).getAllByRole("option");
@@ -993,7 +1031,8 @@ describe("Select", () => {
 
       expect(document.activeElement).toBe(listbox);
 
-      await triggerPress(items[2]);
+      fireEvent.click(items[2]);
+      await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
       expect(onValueChange.mock.calls[0][0]).toBe("3");
@@ -1029,7 +1068,8 @@ describe("Select", () => {
       const trigger = screen.getByRole("button");
       expect(trigger).toHaveTextContent("Placeholder");
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       jest.runAllTimers();
 
@@ -1153,7 +1193,13 @@ describe("Select", () => {
       const trigger = screen.getByRole("button");
       expect(trigger).toHaveTextContent("Placeholder");
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
 
       const listbox = screen.getByRole("listbox");
       const items = within(listbox).getAllByRole("option");
@@ -1220,7 +1266,8 @@ describe("Select", () => {
       expect(trigger).toHaveTextContent("Placeholder");
       expect(onOpenChangeSpy).toHaveBeenCalledTimes(0);
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
 
@@ -1238,14 +1285,16 @@ describe("Select", () => {
       expect(item2).toBeTruthy();
       expect(item3).toBeTruthy();
 
-      await triggerPress(item3);
+      fireEvent.click(item3);
+      await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
 
       expect(onOpenChangeSpy).toHaveBeenCalledTimes(2);
       expect(screen.queryByRole("listbox")).toBeNull();
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       expect(onOpenChangeSpy).toHaveBeenCalledTimes(3);
 
@@ -1289,7 +1338,8 @@ describe("Select", () => {
       const trigger = screen.getByRole("button");
       expect(trigger).toHaveTextContent("Two");
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
       const items = within(listbox).getAllByRole("option");
@@ -1352,7 +1402,8 @@ describe("Select", () => {
 
       expect(trigger).toHaveTextContent("Two");
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
       const items = within(listbox).getAllByRole("option");
@@ -1415,7 +1466,8 @@ describe("Select", () => {
       const trigger = screen.getByRole("button");
       expect(trigger).toHaveTextContent("Placeholder");
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       jest.runAllTimers();
 
@@ -1581,14 +1633,16 @@ describe("Select", () => {
       const trigger = screen.getByRole("button");
       expect(trigger).toHaveTextContent("Two");
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
       const items = within(listbox).getAllByRole("option");
 
       expect(document.activeElement).toBe(items[1]);
 
-      await triggerPress(items[1]);
+      fireEvent.click(items[1]);
+      await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
       expect(onValueChange.mock.calls[0][0]).toBe("2");
@@ -1953,7 +2007,8 @@ describe("Select", () => {
 
       const trigger = screen.getByRole("button");
 
-      await triggerPress(trigger);
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
 
       expect(screen.queryByRole("listbox")).toBeNull();
 

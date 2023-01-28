@@ -92,24 +92,12 @@ describe("Link", () => {
     expect(link).toHaveAttribute("aria-disabled", "true");
   });
 
-  it("should not have attribute 'data-active' and 'data-disabled' by default", async () => {
+  it("should not have attribute 'data-disabled' by default", async () => {
     render(() => <Link.Root data-testid="link">Link</Link.Root>);
 
     const link = screen.getByTestId("link");
 
-    expect(link).not.toHaveAttribute("data-active");
     expect(link).not.toHaveAttribute("data-disabled");
-  });
-
-  it("should have attribute 'data-active' when pressed", async () => {
-    render(() => <Link.Root data-testid="link">Link</Link.Root>);
-
-    const link = screen.getByTestId("link");
-
-    fireEvent(link, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
-    await Promise.resolve();
-
-    expect(link).toHaveAttribute("data-active");
   });
 
   it("should have attribute 'data-disabled' when disabled", () => {

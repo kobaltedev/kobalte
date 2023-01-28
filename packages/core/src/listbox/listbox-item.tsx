@@ -161,7 +161,7 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
         ref={mergeRefs(el => (ref = el), local.ref)}
         role="option"
         tabIndex={selectableItem.tabIndex()}
-        isDisabled={selectableItem.isDisabled()}
+        aria-disabled={selectableItem.isDisabled()}
         aria-selected={ariaSelected()}
         aria-label={ariaLabel()}
         aria-labelledby={ariaLabelledBy()}

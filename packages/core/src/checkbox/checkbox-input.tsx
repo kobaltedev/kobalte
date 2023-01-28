@@ -33,7 +33,14 @@ export function CheckboxInput(props: OverrideProps<ComponentProps<"input">, Chec
 
   props = mergeDefaultProps({ id: context.generateId("input") }, props);
 
-  const [local, others] = splitProps(props, ["ref", "style", "onChange", "aria-labelledby"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "style",
+    "aria-labelledby",
+    "onChange",
+    "onFocus",
+    "onBlur",
+  ]);
 
   const ariaLabelledBy = () => {
     return (
@@ -66,6 +73,16 @@ export function CheckboxInput(props: OverrideProps<ComponentProps<"input">, Chec
     target.checked = context.isChecked();
   };
 
+  const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onFocus);
+    context.setIsFocused(true);
+  };
+
+  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onBlur);
+    context.setIsFocused(false);
+  };
+
   // indeterminate is a property, but it can only be set via javascript
   // https://css-tricks.com/indeterminate-checkboxes/
   // Unlike in React, inputs `indeterminate` state can be out of sync with our.
@@ -96,6 +113,8 @@ export function CheckboxInput(props: OverrideProps<ComponentProps<"input">, Chec
       aria-disabled={context.isDisabled() || undefined}
       aria-readonly={context.isReadOnly() || undefined}
       onChange={onChange}
+      onFocus={onFocus}
+      onBlur={onBlur}
       {...others}
     />
   );

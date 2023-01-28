@@ -7,7 +7,8 @@
  */
 
 import {
-  composeEventHandlers,
+  callHandler,
+  createGenerateId,
   isFunction,
   mergeDefaultProps,
   mergeRefs,
@@ -120,10 +121,10 @@ export const CheckboxRoot: Component<
     "isDisabled",
     "isReadOnly",
     "isIndeterminate",
+    "onPointerDown",
   ]);
 
   const [isFocused, setIsFocused] = createSignal(false);
-  const [isFocusVisible, setIsFocusVisible] = createSignal(false);
 
   const state = createToggleState({
     isSelected: () => local.isChecked,
@@ -138,7 +139,14 @@ export const CheckboxRoot: Component<
     () => state.setIsSelected(local.defaultIsChecked ?? false)
   );
 
-  //TODO: For consistency with native, prevent the input blurs on pointer down on root.
+  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerDown);
+
+    // For consistency with native, prevent the input blurs on pointer down.
+    if (isFocused()) {
+      e.preventDefault();
+    }
+  };
 
   const dataset: Accessor<CheckboxDataSet> = createMemo(() => ({
     "data-valid": local.validationState === "valid" ? "" : undefined,
@@ -160,13 +168,19 @@ export const CheckboxRoot: Component<
     isDisabled: () => local.isDisabled ?? false,
     isReadOnly: () => local.isReadOnly ?? false,
     isIndeterminate: () => local.isIndeterminate ?? false,
-    generateId: part => `${others.id!}-${part}`,
+    generateId: createGenerateId(() => others.id!),
     setIsChecked: isChecked => state.setIsSelected(isChecked),
+    setIsFocused,
   };
 
   return (
     <CheckboxContext.Provider value={context}>
-      <label ref={mergeRefs(el => (ref = el), local.ref)} {...dataset()} {...others}>
+      <label
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        onPointerDown={onPointerDown}
+        {...dataset()}
+        {...others}
+      >
         <CheckboxRootChild state={context} children={local.children} />
       </label>
     </CheckboxContext.Provider>

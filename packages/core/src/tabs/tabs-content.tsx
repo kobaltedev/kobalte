@@ -7,7 +7,6 @@
  */
 
 import {
-  composeEventHandlers,
   createPolymorphicComponent,
   getFocusableTreeWalker,
   mergeDefaultProps,
@@ -64,12 +63,12 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
 
       const observer = new MutationObserver(updateTabIndex);
 
-      // Update when new elements are inserted, or the tabIndex/disabled attribute updates.
+      // Update when new elements are inserted, or the tabindex/disabled attribute updates.
       observer.observe(ref, {
         subtree: true,
         childList: true,
         attributes: true,
-        attributeFilter: ["tabIndex", "disabled"],
+        attributeFilter: ["tabindex", "disabled"],
       });
 
       onCleanup(() => {
