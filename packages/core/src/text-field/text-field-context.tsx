@@ -1,17 +1,16 @@
 import { Accessor, createContext, JSX, useContext } from "solid-js";
 
 export interface TextFieldDataSet {
-  "data-hover": string | undefined;
-  "data-focus": string | undefined;
-  "data-focus-visible": string | undefined;
+  //"data-hover": string | undefined;
+  //"data-focus": string | undefined;
 }
 
 export interface TextFieldContextValue {
   dataset: Accessor<TextFieldDataSet>;
   value: Accessor<string | undefined>;
   generateId: (part: string) => string;
-  setIsFocused: (isFocused: boolean) => void;
-  setIsFocusVisible: (isFocusVisible: boolean) => void;
+  //setIsFocused: (isFocused: boolean) => void;
+  //setIsFocusVisible: (isFocusVisible: boolean) => void;
   onInput: JSX.EventHandlerUnion<HTMLInputElement | HTMLTextAreaElement, InputEvent>;
 }
 

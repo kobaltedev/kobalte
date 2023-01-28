@@ -11,29 +11,21 @@ import {
   composeEventHandlers,
   createGenerateId,
   createPolymorphicComponent,
+  focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
-import { Pressable, PressableOptions } from "../pressable";
-import {
-  CollectionItem,
-  createFocusRing,
-  createHover,
-  createRegisterId,
-  FOCUS_RING_HANDLERS_PROP_NAMES,
-  focusSafely,
-  HOVER_HANDLERS_PROP_NAMES,
-  PressEvent,
-} from "../primitives";
+import { CollectionItem, createRegisterId } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { MenuItemContext, MenuItemContextValue, MenuItemDataSet } from "./menu-item.context";
 import { useMenuRootContext } from "./menu-root-context";
+import { Dynamic } from "solid-js/web";
 
-export interface MenuItemBaseOptions extends PressableOptions {
+export interface MenuItemBaseOptions {
   /**
    * Optional text used for typeahead purposes.
    * By default, the typeahead behavior will use the .textContent of the Menu.ItemLabel part
@@ -88,24 +80,19 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
     "isChecked",
     "isIndeterminate",
     "onSelect",
-    "onPressStart",
-    "onPressUp",
-    "onPress",
-    "onPressChange",
-    "onLongPress",
-    "onFocus",
-    "onMouseDown",
-    "onDragStart",
-    "onKeyDown",
     "onPointerMove",
-    ...HOVER_HANDLERS_PROP_NAMES,
-    ...FOCUS_RING_HANDLERS_PROP_NAMES,
+    "onPointerLeave",
+    "onPointerDown",
+    "onPointerUp",
+    "onClick",
+    "onKeyDown",
+    "onMouseDown",
+    "onFocus",
   ]);
 
   const [labelId, setLabelId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
   const [labelRef, setLabelRef] = createSignal<HTMLElement>();
-  const [isPressed, setIsPressed] = createSignal<boolean>();
 
   const selectionManager = () => menuContext.listState().selectionManager();
 
@@ -142,20 +129,6 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
     () => ref
   );
 
-  const { isFocusVisible, focusRingHandlers } = createFocusRing();
-
-  const { hoverHandlers, isHovered } = createHover({
-    isDisabled: () => local.isDisabled,
-  });
-
-  const onPressUp = (e: PressEvent) => {
-    local.onPressUp?.(e);
-
-    if (e.pointerType !== "keyboard") {
-      onSelect();
-    }
-  };
-
   /**
    * We focus items on `pointerMove` to achieve the following:
    *
@@ -180,7 +153,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
       menuContext.onItemEnter(e);
 
       if (!e.defaultPrevented) {
-        focusSafely(e.currentTarget);
+        focusWithoutScrolling(e.currentTarget);
         menuContext.listState().selectionManager().setFocused(true);
         menuContext.listState().selectionManager().setFocusedKey(key());
       }
@@ -195,6 +168,16 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
     }
 
     menuContext.onItemLeave(e);
+  };
+
+  const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerUp);
+
+    if (local.isDisabled) {
+      return;
+    }
+
+    onSelect();
   };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
@@ -234,10 +217,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
     "data-indeterminate": local.isIndeterminate ? "" : undefined,
     "data-checked": local.isChecked && !local.isIndeterminate ? "" : undefined,
     "data-disabled": local.isDisabled ? "" : undefined,
-    "data-hover": isHovered() ? "" : undefined,
     "data-focus": isFocused() ? "" : undefined,
-    "data-focus-visible": isFocusVisible() ? "" : undefined,
-    "data-active": isPressed() ? "" : undefined,
   }));
 
   const context: MenuItemContextValue = {
@@ -251,30 +231,23 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
 
   return (
     <MenuItemContext.Provider value={context}>
-      <Pressable
-        as={local.as!}
+      <Dynamic
+        component={local.as!}
         ref={mergeRefs(el => (ref = el), local.ref)}
         tabIndex={selectableItem.tabIndex()}
         isDisabled={selectableItem.isDisabled()}
-        preventFocusOnPress={selectableItem.preventFocusOnPress()}
         aria-checked={ariaChecked()}
         aria-labelledby={labelId()}
         aria-describedby={descriptionId()}
         data-key={selectableItem.dataKey()}
-        onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
-        onPressStart={composeEventHandlers([local.onPressStart, selectableItem.onPressStart])}
-        onPressUp={composeEventHandlers([onPressUp, selectableItem.onPressUp])}
-        onPress={composeEventHandlers([local.onPress, selectableItem.onPress])}
-        onPressChange={composeEventHandlers([local.onPressChange, setIsPressed])}
-        onLongPress={composeEventHandlers([local.onLongPress, selectableItem.onLongPress])}
+        onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
+        onPointerUp={composeEventHandlers([onPointerUp, selectableItem.onPointerUp])}
+        onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
+        onKeyDown={composeEventHandlers([onKeyDown, selectableItem.onKeyDown])}
         onMouseDown={composeEventHandlers([local.onMouseDown, selectableItem.onMouseDown])}
-        onDragStart={composeEventHandlers([local.onDragStart, selectableItem.onDragStart])}
-        onKeyDown={onKeyDown}
+        onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
         onPointerMove={onPointerMove}
-        onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
-        onPointerLeave={composeEventHandlers([onPointerLeave, hoverHandlers.onPointerLeave])}
-        onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-        onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+        onPointerLeave={onPointerLeave}
         {...dataset()}
         {...others}
       />

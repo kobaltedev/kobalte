@@ -26,14 +26,7 @@ import {
   splitProps,
 } from "solid-js";
 
-import {
-  createFormResetListener,
-  createHover,
-  createPress,
-  createToggleState,
-  HOVER_HANDLERS_PROP_NAMES,
-  PRESS_HANDLERS_PROP_NAMES,
-} from "../primitives";
+import { createFormResetListener, createToggleState } from "../primitives";
 import { CheckboxContext, CheckboxContextValue, CheckboxDataSet } from "./checkbox-context";
 
 interface CheckboxRootState {
@@ -127,8 +120,6 @@ export const CheckboxRoot: Component<
     "isDisabled",
     "isReadOnly",
     "isIndeterminate",
-    ...PRESS_HANDLERS_PROP_NAMES,
-    ...HOVER_HANDLERS_PROP_NAMES,
   ]);
 
   const [isFocused, setIsFocused] = createSignal(false);
@@ -147,14 +138,7 @@ export const CheckboxRoot: Component<
     () => state.setIsSelected(local.defaultIsChecked ?? false)
   );
 
-  const { isPressed, pressHandlers } = createPress({
-    isDisabled: () => local.isDisabled,
-    preventFocusOnPress: () => isFocused(), // For consistency with native, prevent the input blurs.
-  });
-
-  const { isHovered, hoverHandlers } = createHover({
-    isDisabled: () => local.isDisabled,
-  });
+  //TODO: For consistency with native, prevent the input blurs on pointer down on root.
 
   const dataset: Accessor<CheckboxDataSet> = createMemo(() => ({
     "data-valid": local.validationState === "valid" ? "" : undefined,
@@ -164,10 +148,6 @@ export const CheckboxRoot: Component<
     "data-required": local.isRequired ? "" : undefined,
     "data-disabled": local.isDisabled ? "" : undefined,
     "data-readonly": local.isReadOnly ? "" : undefined,
-    "data-hover": isHovered() ? "" : undefined,
-    "data-focus": isFocused() ? "" : undefined,
-    "data-focus-visible": isFocusVisible() ? "" : undefined,
-    "data-active": isPressed() ? "" : undefined,
   }));
 
   const context: CheckboxContextValue = {
@@ -182,26 +162,11 @@ export const CheckboxRoot: Component<
     isIndeterminate: () => local.isIndeterminate ?? false,
     generateId: part => `${others.id!}-${part}`,
     setIsChecked: isChecked => state.setIsSelected(isChecked),
-    setIsFocused,
-    setIsFocusVisible,
   };
 
   return (
     <CheckboxContext.Provider value={context}>
-      <label
-        ref={mergeRefs(el => (ref = el), local.ref)}
-        onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
-        onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
-        onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
-        onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
-        onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
-        onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
-        onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
-        onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
-        onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
-        {...dataset()}
-        {...others}
-      >
+      <label ref={mergeRefs(el => (ref = el), local.ref)} {...dataset()} {...others}>
         <CheckboxRootChild state={context} children={local.children} />
       </label>
     </CheckboxContext.Provider>

@@ -6,11 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/src/useOverlayTrigger.ts
  */
 
-import { createPolymorphicComponent, mergeRefs } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { callHandler, createPolymorphicComponent, mergeRefs } from "@kobalte/utils";
+import { JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
-import { PressEvents } from "../primitives";
 import { usePopoverContext } from "./popover-context";
 
 /**
@@ -20,10 +19,10 @@ export const PopoverTrigger = createPolymorphicComponent<"button", Button.Button
   props => {
     const context = usePopoverContext();
 
-    const [local, others] = splitProps(props, ["ref", "onPress"]);
+    const [local, others] = splitProps(props, ["ref", "onClick"]);
 
-    const onPress: PressEvents["onPress"] = e => {
-      local.onPress?.(e);
+    const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+      callHandler(e, local.onClick);
       context.toggle();
     };
 
@@ -34,7 +33,7 @@ export const PopoverTrigger = createPolymorphicComponent<"button", Button.Button
         aria-expanded={context.isOpen()}
         aria-controls={context.isOpen() ? context.contentId() : undefined}
         data-expanded={context.isOpen() ? "" : undefined}
-        onPress={onPress}
+        onClick={onClick}
         {...others}
       />
     );

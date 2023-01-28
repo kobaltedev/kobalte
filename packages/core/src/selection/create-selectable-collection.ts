@@ -18,7 +18,6 @@ import {
 import { Accessor, createEffect, createMemo, JSX, mergeProps, on, onMount } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { focusSafely } from "../primitives";
 import { createTypeSelect } from "./create-type-select";
 import { FocusStrategy, KeyboardDelegate, MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
@@ -431,7 +430,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
     // If no default focus key is selected, focus the collection itself.
     if (refEl && focusedKey == null && !access(props.shouldUseVirtualFocus)) {
-      focusSafely(refEl);
+      focusWithoutScrolling(refEl);
     }
   };
 
@@ -480,11 +479,9 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
   return {
     tabIndex,
-    handlers: {
-      onKeyDown,
-      onMouseDown,
-      onFocusIn,
-      onFocusOut,
-    },
+    onKeyDown,
+    onMouseDown,
+    onFocusIn,
+    onFocusOut,
   };
 }

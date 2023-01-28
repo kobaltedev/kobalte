@@ -46,13 +46,12 @@ export const AccordionTrigger = createPolymorphicComponent<
 
   const [local, others] = splitProps(props, [
     "ref",
-    "onPressStart",
-    "onPressUp",
-    "onPress",
-    "onLongPress",
-    "onFocus",
+    "onPointerDown",
+    "onPointerUp",
+    "onClick",
+    "onKeyDown",
     "onMouseDown",
-    "onDragStart",
+    "onFocus",
   ]);
 
   createDomCollectionItem<CollectionItem>({
@@ -81,15 +80,13 @@ export const AccordionTrigger = createPolymorphicComponent<
     <Collapsible.Trigger
       ref={mergeRefs(el => (ref = el), local.ref)}
       isDisabled={selectableItem.isDisabled()}
-      preventFocusOnPress={selectableItem.preventFocusOnPress()}
       data-key={selectableItem.dataKey()}
-      onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
-      onPressStart={composeEventHandlers([local.onPressStart, selectableItem.onPressStart])}
-      onPressUp={composeEventHandlers([local.onPressUp, selectableItem.onPressUp])}
-      onPress={composeEventHandlers([local.onPress, selectableItem.onPress])}
-      onLongPress={composeEventHandlers([local.onLongPress, selectableItem.onLongPress])}
+      onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
+      onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}
+      onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
+      onKeyDown={composeEventHandlers([local.onKeyDown, selectableItem.onKeyDown])}
       onMouseDown={composeEventHandlers([local.onMouseDown, selectableItem.onMouseDown])}
-      onDragStart={composeEventHandlers([local.onDragStart, selectableItem.onDragStart])}
+      onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
       {...others}
     />
   );

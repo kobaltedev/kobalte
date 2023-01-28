@@ -1,5 +1,10 @@
-import { I18nProvider } from "../src";
+import { Button, I18nProvider } from "../src";
 
 export default function App() {
-  return <I18nProvider></I18nProvider>;
+  return (
+    <I18nProvider>
+      <Button.Root>Hi mom</Button.Root>
+      <button>hi dad</button>
+    </I18nProvider>
+  );
 }

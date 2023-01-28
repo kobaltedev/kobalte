@@ -12,11 +12,11 @@
  * https://github.com/adobe/react-spectrum/blob/a13802d8be6f83af1450e56f7a88527b10d9cadf/packages/@react-aria/button/src/useToggleButton.ts
  */
 
-import { createPolymorphicComponent, isFunction } from "@kobalte/utils";
+import { callHandler, createPolymorphicComponent, isFunction } from "@kobalte/utils";
 import { Accessor, children, JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
-import { createToggleState, PressEvents } from "../primitives";
+import { createToggleState } from "../primitives";
 
 export interface ToggleButtonRootState {
   /** Whether the toggle button is on (pressed) or off (not pressed). */
@@ -33,10 +33,7 @@ export interface ToggleButtonRootOptions extends Button.ButtonRootOptions {
    */
   defaultIsPressed?: boolean;
 
-  /**
-   * Event handler called when the pressed state of the toggle button changes.
-   * This handler is different from the `onPressChange` handler which is related to `PressEvent`.
-   */
+  /** Event handler called when the pressed state of the toggle button changes. */
   onPressedChange?: (isPressed: boolean) => void;
 
   /**
@@ -57,7 +54,7 @@ export const ToggleButtonRoot = createPolymorphicComponent<"button", ToggleButto
       "isPressed",
       "defaultIsPressed",
       "onPressedChange",
-      "onPress",
+      "onClick",
     ]);
 
     const state = createToggleState({
@@ -67,8 +64,8 @@ export const ToggleButtonRoot = createPolymorphicComponent<"button", ToggleButto
       isDisabled: () => others.isDisabled,
     });
 
-    const onPress: PressEvents["onPress"] = e => {
-      local.onPress?.(e);
+    const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+      callHandler(e, local.onClick);
       state.toggle();
     };
 
@@ -76,7 +73,7 @@ export const ToggleButtonRoot = createPolymorphicComponent<"button", ToggleButto
       <Button.Root
         aria-pressed={state.isSelected()}
         data-pressed={state.isSelected() ? "" : undefined}
-        onPress={onPress}
+        onClick={onClick}
         {...others}
       >
         <ToggleButtonRootChild state={{ isPressed: state.isSelected }} children={local.children} />

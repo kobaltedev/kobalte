@@ -19,7 +19,6 @@ import {
   FORM_CONTROL_FIELD_PROP_NAMES,
   useFormControlContext,
 } from "../form-control";
-import { createFocusRing, FOCUS_RING_HANDLERS_PROP_NAMES } from "../primitives";
 import { useTextFieldContext } from "./text-field-context";
 
 /**
@@ -43,17 +42,11 @@ export const TextFieldInputBase = createPolymorphicComponent<"input">(props => {
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
-    ["as", "onInput", ...FOCUS_RING_HANDLERS_PROP_NAMES],
+    ["as", "onInput"],
     FORM_CONTROL_FIELD_PROP_NAMES
   );
 
   const { fieldProps } = createFormControlField(formControlFieldProps);
-
-  const { focusRingHandlers } = createFocusRing({
-    isTextInput: true,
-    onFocusChange: value => context.setIsFocused(value),
-    onFocusVisibleChange: value => context.setIsFocusVisible(value),
-  });
 
   return (
     <Dynamic
@@ -72,8 +65,6 @@ export const TextFieldInputBase = createPolymorphicComponent<"input">(props => {
       aria-disabled={formControlContext.isDisabled() || undefined}
       aria-readonly={formControlContext.isReadOnly() || undefined}
       onInput={composeEventHandlers([local.onInput, context.onInput])}
-      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
       {...formControlContext.dataset()}
       {...context.dataset()}
       {...others}

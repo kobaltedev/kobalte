@@ -34,7 +34,7 @@ import {
 import { Accessor, createEffect, createMemo, createSignal, on } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { createControllableSignal, getInteractionModality } from "../primitives";
+import { createControllableSignal } from "../primitives";
 import { CalendarState, DateValue, MappedDateValue } from "./types";
 import {
   alignCenter,
@@ -260,9 +260,13 @@ export function createCalendarState(props: CreateCalendarStateProps): CalendarSt
       // try not to shift the view under the user's mouse/finger.
       // Only scroll the direct scroll parent, not the whole page, so
       // we don't scroll to the bottom when opening date picker popover.
+
+      // TODO: fix later
+      /*
       if (getInteractionModality() !== "pointer") {
         scrollIntoView(getScrollParent(cellButton) as HTMLElement, cellButton);
       }
+      */
     }
   };
 

@@ -22,12 +22,6 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import {
-  createHover,
-  createPress,
-  HOVER_HANDLERS_PROP_NAMES,
-  PRESS_HANDLERS_PROP_NAMES,
-} from "../primitives";
 import { useRadioGroupContext } from "./radio-group-context";
 import {
   RadioGroupItemContext,
@@ -59,15 +53,7 @@ export function RadioGroupItem(
 
   props = mergeDefaultProps({ id: defaultId }, props);
 
-  const [local, others] = splitProps(props, [
-    "value",
-    "isDisabled",
-    ...PRESS_HANDLERS_PROP_NAMES,
-    ...HOVER_HANDLERS_PROP_NAMES,
-  ]);
-
-  const [isFocused, setIsFocused] = createSignal(false);
-  const [isFocusVisible, setIsFocusVisible] = createSignal(false);
+  const [local, others] = splitProps(props, ["value", "isDisabled"]);
 
   const isSelected = createMemo(() => {
     return radioGroupContext.isSelectedValue(local.value);
@@ -77,24 +63,13 @@ export function RadioGroupItem(
     return local.isDisabled || formControlContext.isDisabled() || false;
   });
 
-  const { isPressed, pressHandlers } = createPress({
-    isDisabled,
-    preventFocusOnPress: () => isFocused(), // For consistency with native, prevent the input blurs.
-  });
-
-  const { isHovered, hoverHandlers } = createHover({
-    isDisabled,
-  });
+  //TODO: For consistency with native, prevent the input blurs on pointer down on root.
 
   const dataset: Accessor<RadioGroupItemDataSet> = createMemo(() => ({
     "data-valid": formControlContext.dataset()["data-valid"],
     "data-invalid": formControlContext.dataset()["data-invalid"],
     "data-checked": isSelected() ? "" : undefined,
     "data-disabled": isDisabled() ? "" : undefined,
-    "data-hover": isHovered() ? "" : undefined,
-    "data-focus": isFocused() ? "" : undefined,
-    "data-focus-visible": isFocusVisible() ? "" : undefined,
-    "data-active": isPressed() ? "" : undefined,
   }));
 
   const context: RadioGroupItemContextValue = {
@@ -103,25 +78,11 @@ export function RadioGroupItem(
     isSelected,
     isDisabled,
     generateId: createGenerateId(() => others.id!),
-    setIsFocused,
-    setIsFocusVisible,
   };
 
   return (
     <RadioGroupItemContext.Provider value={context}>
-      <label
-        {...context.dataset()}
-        onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
-        onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
-        onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
-        onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
-        onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
-        onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
-        onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
-        onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
-        onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
-        {...others}
-      />
+      <label {...context.dataset()} {...others} />
     </RadioGroupItemContext.Provider>
   );
 }

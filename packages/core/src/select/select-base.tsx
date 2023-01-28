@@ -6,7 +6,13 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/useSelect.ts
  */
 
-import { access, createGenerateId, mergeDefaultProps, ValidationState } from "@kobalte/utils";
+import {
+  access,
+  createGenerateId,
+  focusWithoutScrolling,
+  mergeDefaultProps,
+  ValidationState,
+} from "@kobalte/utils";
 import { createMemo, createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
@@ -18,7 +24,6 @@ import {
   createDisclosureState,
   createFormResetListener,
   createRegisterId,
-  focusSafely,
 } from "../primitives";
 import {
   FocusStrategy,
@@ -164,7 +169,7 @@ export function SelectBase(props: ParentProps<SelectBaseOptions>) {
     const triggerEl = triggerRef();
 
     if (triggerEl) {
-      focusSafely(triggerEl);
+      focusWithoutScrolling(triggerEl);
     }
   };
 
@@ -172,7 +177,7 @@ export function SelectBase(props: ParentProps<SelectBaseOptions>) {
     const listboxEl = listboxRef();
 
     if (listboxEl) {
-      focusSafely(listboxEl);
+      focusWithoutScrolling(listboxEl);
     }
   };
 

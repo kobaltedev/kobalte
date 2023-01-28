@@ -9,7 +9,6 @@
 
 import {
   callHandler,
-  composeEventHandlers,
   mergeDefaultProps,
   mergeRefs,
   OverrideProps,
@@ -17,12 +16,6 @@ import {
 } from "@kobalte/utils";
 import { ComponentProps, createEffect, JSX, on, splitProps } from "solid-js";
 
-import {
-  createFocusRing,
-  createPress,
-  FOCUS_RING_HANDLERS_PROP_NAMES,
-  PRESS_HANDLERS_PROP_NAMES,
-} from "../primitives";
 import { useCheckboxContext } from "./checkbox-context";
 
 export interface CheckboxInputOptions {
@@ -40,23 +33,7 @@ export function CheckboxInput(props: OverrideProps<ComponentProps<"input">, Chec
 
   props = mergeDefaultProps({ id: context.generateId("input") }, props);
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    "style",
-    "onChange",
-    "aria-labelledby",
-    ...PRESS_HANDLERS_PROP_NAMES,
-    ...FOCUS_RING_HANDLERS_PROP_NAMES,
-  ]);
-
-  const { pressHandlers } = createPress({
-    isDisabled: context.isDisabled,
-  });
-
-  const { focusRingHandlers } = createFocusRing({
-    onFocusChange: value => context.setIsFocused(value),
-    onFocusVisibleChange: value => context.setIsFocusVisible(value),
-  });
+  const [local, others] = splitProps(props, ["ref", "style", "onChange", "aria-labelledby"]);
 
   const ariaLabelledBy = () => {
     return (
@@ -119,15 +96,6 @@ export function CheckboxInput(props: OverrideProps<ComponentProps<"input">, Chec
       aria-disabled={context.isDisabled() || undefined}
       aria-readonly={context.isReadOnly() || undefined}
       onChange={onChange}
-      onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
-      onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
-      onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
-      onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
-      onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
-      onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
-      onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
-      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
       {...others}
     />
   );

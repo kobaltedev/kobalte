@@ -8,17 +8,15 @@
 
 import {
   callHandler,
-  composeEventHandlers,
   createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { JSX, onCleanup, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
-import { createLongPress, PRESS_HANDLERS_PROP_NAMES } from "../primitives";
 import { useContextMenuContext } from "./context-menu-context";
 
 export interface ContextMenuTriggerOptions {
@@ -49,8 +47,20 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
       "style",
       "isDisabled",
       "onContextMenu",
-      ...PRESS_HANDLERS_PROP_NAMES,
+      "onPointerDown",
+      "onPointerMove",
+      "onPointerCancel",
+      "onPointerUp",
     ]);
+
+    let longPressTimerRef = 0;
+    const clearLongPress = () => {
+      window.clearTimeout(longPressTimerRef);
+    };
+
+    onCleanup(() => {
+      clearLongPress();
+    });
 
     const onContextMenu: JSX.EventHandlerUnion<any, MouseEvent> = e => {
       // If trigger is disabled, enable the native Context Menu.
@@ -58,6 +68,10 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
         callHandler(e, local.onContextMenu);
         return;
       }
+
+      // Clearing the long press here because some platforms already support
+      // long press to trigger a `contextmenu` event.
+      clearLongPress();
 
       e.preventDefault();
 
@@ -71,15 +85,41 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
       }
     };
 
-    const { longPressHandlers } = createLongPress({
-      isDisabled: () => local.isDisabled,
-      threshold: 700,
-      onLongPress: e => {
-        if (e.pointerType === "touch" || e.pointerType === "pen") {
-          menuContext.open(false);
-        }
-      },
-    });
+    const isTouchOrPen = (e: PointerEvent) => e.pointerType === "touch" || e.pointerType === "pen";
+
+    const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+      callHandler(e, local.onPointerDown);
+
+      if (!local.isDisabled && isTouchOrPen(e)) {
+        // Clear the long press here in case there's multiple touch points.
+        clearLongPress();
+        longPressTimerRef = window.setTimeout(() => menuContext.open(false), 700);
+      }
+    };
+
+    const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+      callHandler(e, local.onPointerMove);
+
+      if (!local.isDisabled && isTouchOrPen(e)) {
+        clearLongPress();
+      }
+    };
+
+    const onPointerCancel: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+      callHandler(e, local.onPointerCancel);
+
+      if (!local.isDisabled && isTouchOrPen(e)) {
+        clearLongPress();
+      }
+    };
+
+    const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+      callHandler(e, local.onPointerUp);
+
+      if (!local.isDisabled && isTouchOrPen(e)) {
+        clearLongPress();
+      }
+    };
 
     return (
       <Dynamic
@@ -93,13 +133,10 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
         data-expanded={menuContext.isOpen() ? "" : undefined}
         data-disabled={local.isDisabled ? "" : undefined}
         onContextMenu={onContextMenu}
-        onKeyDown={composeEventHandlers([local.onKeyDown, longPressHandlers.onKeyDown])}
-        onKeyUp={composeEventHandlers([local.onKeyUp, longPressHandlers.onKeyUp])}
-        onClick={composeEventHandlers([local.onClick, longPressHandlers.onClick])}
-        onPointerDown={composeEventHandlers([local.onPointerDown, longPressHandlers.onPointerDown])}
-        onPointerUp={composeEventHandlers([local.onPointerUp, longPressHandlers.onPointerUp])}
-        onMouseDown={composeEventHandlers([local.onMouseDown, longPressHandlers.onMouseDown])}
-        onDragStart={composeEventHandlers([local.onDragStart, longPressHandlers.onDragStart])}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerCancel={onPointerCancel}
+        onPointerUp={onPointerUp}
         {...others}
       />
     );

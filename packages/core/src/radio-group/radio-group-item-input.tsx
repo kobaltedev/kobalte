@@ -8,7 +8,6 @@
 
 import {
   callHandler,
-  composeEventHandlers,
   mergeDefaultProps,
   OverrideProps,
   visuallyHiddenStyles,
@@ -16,12 +15,6 @@ import {
 import { ComponentProps, JSX, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import {
-  createFocusRing,
-  createPress,
-  FOCUS_RING_HANDLERS_PROP_NAMES,
-  PRESS_HANDLERS_PROP_NAMES,
-} from "../primitives";
 import { useRadioGroupContext } from "./radio-group-context";
 import { useRadioGroupItemContext } from "./radio-group-item-context";
 
@@ -52,18 +45,7 @@ export function RadioGroupItemInput(
     "onChange",
     "aria-labelledby",
     "aria-describedby",
-    ...PRESS_HANDLERS_PROP_NAMES,
-    ...FOCUS_RING_HANDLERS_PROP_NAMES,
   ]);
-
-  const { pressHandlers } = createPress({
-    isDisabled: radioContext.isDisabled,
-  });
-
-  const { focusRingHandlers } = createFocusRing({
-    onFocusChange: value => radioContext.setIsFocused(value),
-    onFocusVisibleChange: value => radioContext.setIsFocusVisible(value),
-  });
 
   const ariaLabelledBy = () => {
     return (
@@ -116,15 +98,6 @@ export function RadioGroupItemInput(
       aria-labelledby={ariaLabelledBy()}
       aria-describedby={ariaDescribedBy()}
       onChange={onChange}
-      onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
-      onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
-      onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
-      onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
-      onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
-      onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
-      onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
-      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
       {...others}
     />
   );

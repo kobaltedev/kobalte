@@ -7,6 +7,7 @@
  */
 
 import {
+  callHandler,
   composeEventHandlers,
   createGenerateId,
   createPolymorphicComponent,
@@ -15,18 +16,10 @@ import {
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
+import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 
-import { Pressable, PressableOptions } from "../pressable";
-import {
-  CollectionItem,
-  createFocusRing,
-  createHover,
-  createRegisterId,
-  FOCUS_RING_HANDLERS_PROP_NAMES,
-  HOVER_HANDLERS_PROP_NAMES,
-  isKeyboardFocusVisible,
-} from "../primitives";
+import { CollectionItem, createRegisterId } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useListboxContext } from "./listbox-context";
@@ -36,7 +29,7 @@ import {
   ListboxItemDataSet,
 } from "./listbox-item-context";
 
-export interface ListboxItemOptions extends PressableOptions {
+export interface ListboxItemOptions {
   /** A unique value for the item. */
   value: string;
 
@@ -79,22 +72,18 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
     "aria-label",
     "aria-labelledby",
     "aria-describedby",
-    "onPressStart",
-    "onPressUp",
-    "onPress",
-    "onPressChange",
-    "onLongPress",
-    "onFocus",
+    "onPointerEnter",
+    "onPointerDown",
+    "onPointerUp",
+    "onClick",
+    "onKeyDown",
     "onMouseDown",
-    "onDragStart",
-    ...HOVER_HANDLERS_PROP_NAMES,
-    ...FOCUS_RING_HANDLERS_PROP_NAMES,
+    "onFocus",
   ]);
 
   const [labelId, setLabelId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
   const [labelRef, setLabelRef] = createSignal<HTMLElement>();
-  const [isPressed, setIsPressed] = createSignal<boolean>();
 
   const selectionManager = () => listBoxContext.listState().selectionManager();
 
@@ -124,18 +113,6 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
     () => ref
   );
 
-  const { hoverHandlers, isHovered } = createHover({
-    isDisabled: () => selectableItem.isDisabled(),
-    onHoverStart: () => {
-      if (!isKeyboardFocusVisible() && listBoxContext.shouldFocusOnHover()) {
-        selectionManager().setFocused(true);
-        selectionManager().setFocusedKey(local.value);
-      }
-    },
-  });
-
-  const { isFocusVisible, focusRingHandlers } = createFocusRing();
-
   const ariaSelected = () => {
     if (selectionManager().selectionMode() === "none") {
       return undefined;
@@ -153,13 +130,19 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
   const ariaLabelledBy = () => (isNotSafariMacOS() ? labelId() : undefined);
   const ariaDescribedBy = () => (isNotSafariMacOS() ? descriptionId() : undefined);
 
+  const onPointerEnter: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerEnter);
+
+    if (!selectableItem.isDisabled() && listBoxContext.shouldFocusOnHover()) {
+      selectionManager().setFocused(true);
+      selectionManager().setFocusedKey(local.value);
+    }
+  };
+
   const dataset: Accessor<ListboxItemDataSet> = createMemo(() => ({
     "data-disabled": selectableItem.isDisabled() ? "" : undefined,
     "data-selected": selectableItem.isSelected() ? "" : undefined,
-    "data-hover": isHovered() ? "" : undefined,
     "data-focus": isFocused() ? "" : undefined,
-    "data-focus-visible": isFocusVisible() ? "" : undefined,
-    "data-active": isPressed() ? "" : undefined,
   }));
 
   const context: ListboxItemContextValue = {
@@ -173,30 +156,24 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
 
   return (
     <ListboxItemContext.Provider value={context}>
-      <Pressable
-        as={local.as!}
+      <Dynamic
+        component={local.as}
         ref={mergeRefs(el => (ref = el), local.ref)}
         role="option"
         tabIndex={selectableItem.tabIndex()}
         isDisabled={selectableItem.isDisabled()}
-        preventFocusOnPress={selectableItem.preventFocusOnPress()}
         aria-selected={ariaSelected()}
         aria-label={ariaLabel()}
         aria-labelledby={ariaLabelledBy()}
         aria-describedby={ariaDescribedBy()}
         data-key={selectableItem.dataKey()}
-        onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
-        onPressStart={composeEventHandlers([local.onPressStart, selectableItem.onPressStart])}
-        onPressUp={composeEventHandlers([local.onPressUp, selectableItem.onPressUp])}
-        onPress={composeEventHandlers([local.onPress, selectableItem.onPress])}
-        onPressChange={composeEventHandlers([local.onPressChange, setIsPressed])}
-        onLongPress={composeEventHandlers([local.onLongPress, selectableItem.onLongPress])}
+        onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
+        onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}
+        onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
+        onKeyDown={composeEventHandlers([local.onKeyDown, selectableItem.onKeyDown])}
         onMouseDown={composeEventHandlers([local.onMouseDown, selectableItem.onMouseDown])}
-        onDragStart={composeEventHandlers([local.onDragStart, selectableItem.onDragStart])}
-        onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
-        onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
-        onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-        onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+        onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
+        onPointerEnter={onPointerEnter}
         {...dataset()}
         {...others}
       />

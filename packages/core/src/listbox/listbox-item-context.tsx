@@ -3,10 +3,7 @@ import { Accessor, createContext, useContext } from "solid-js";
 export interface ListboxItemDataSet {
   "data-disabled": string | undefined;
   "data-selected": string | undefined;
-  "data-hover": string | undefined;
   "data-focus": string | undefined;
-  "data-focus-visible": string | undefined;
-  "data-active": string | undefined;
 }
 
 export interface ListboxItemContextValue {

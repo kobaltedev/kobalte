@@ -10,7 +10,6 @@ import { visuallyHiddenStyles } from "@kobalte/utils";
 import { For, Match, Switch } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { createInteractionModality } from "../primitives";
 import { useSelectContext } from "./select-context";
 
 export interface HiddenSelectProps {
@@ -47,8 +46,6 @@ export function HiddenSelect(props: HiddenSelectProps) {
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
-  const modality = createInteractionModality();
-
   const selectionManager = () => context.listState().selectionManager();
   const collection = () => context.listState().collection();
 
@@ -64,9 +61,7 @@ export function HiddenSelect(props: HiddenSelectProps) {
         <div style={visuallyHiddenStyles} aria-hidden="true">
           <input
             type="text"
-            tabIndex={
-              modality() == null || selectionManager().isFocused() || context.isOpen() ? -1 : 0
-            }
+            tabIndex={selectionManager().isFocused() || context.isOpen() ? -1 : 0}
             style={{ "font-size": "16px" }}
             required={formControlContext.isRequired()}
             disabled={formControlContext.isDisabled()}

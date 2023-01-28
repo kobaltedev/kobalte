@@ -13,20 +13,14 @@ import {
   mergeRefs,
 } from "@kobalte/utils";
 import { createEffect, on, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 
-import { Pressable, PressableOptions } from "../pressable";
-import {
-  CollectionItem,
-  createFocusRing,
-  createHover,
-  FOCUS_RING_HANDLERS_PROP_NAMES,
-  HOVER_HANDLERS_PROP_NAMES,
-} from "../primitives";
+import { CollectionItem } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsTriggerOptions extends PressableOptions {
+export interface TabsTriggerOptions {
   /** The unique key that associates the tab with a tab panel. */
   value: string;
 
@@ -51,19 +45,17 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
   );
 
   const [local, others] = splitProps(props, [
+    "as",
     "ref",
     "id",
     "value",
     "isDisabled",
-    "onPressStart",
-    "onPressUp",
-    "onPress",
-    "onLongPress",
-    "onFocus",
+    "onPointerDown",
+    "onPointerUp",
+    "onClick",
+    "onKeyDown",
     "onMouseDown",
-    "onDragStart",
-    ...HOVER_HANDLERS_PROP_NAMES,
-    ...FOCUS_RING_HANDLERS_PROP_NAMES,
+    "onFocus",
   ]);
 
   const id = () => local.id ?? context.generateTriggerId(local.value);
@@ -93,10 +85,6 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
     () => ref
   );
 
-  const { isHovered, hoverHandlers } = createHover({ isDisabled });
-
-  const { isFocusVisible, focusRingHandlers } = createFocusRing();
-
   createEffect(
     on([() => local.value, id], ([value, id]) => {
       context.triggerIdsMap().set(value, id);
@@ -104,32 +92,25 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
   );
 
   return (
-    <Pressable
+    <Dynamic
+      component={local.as}
       ref={mergeRefs(el => (ref = el), local.ref)}
       id={id()}
       role="tab"
       tabIndex={!isDisabled() ? selectableItem.tabIndex() : undefined}
       isDisabled={isDisabled()}
-      preventFocusOnPress={selectableItem.preventFocusOnPress()}
       aria-selected={selectableItem.isSelected()}
       aria-controls={selectableItem.isSelected() ? contentId() : undefined}
       data-key={selectableItem.dataKey()}
       data-orientation={context.orientation()}
       data-selected={selectableItem.isSelected() ? "" : undefined}
-      data-hover={isHovered() ? "" : undefined}
       data-focus={isFocused() ? "" : undefined}
-      data-focus-visible={isFocusVisible() ? "" : undefined}
-      onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
-      onPressStart={composeEventHandlers([local.onPressStart, selectableItem.onPressStart])}
-      onPressUp={composeEventHandlers([local.onPressUp, selectableItem.onPressUp])}
-      onPress={composeEventHandlers([local.onPress, selectableItem.onPress])}
-      onLongPress={composeEventHandlers([local.onLongPress, selectableItem.onLongPress])}
+      onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
+      onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}
+      onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
+      onKeyDown={composeEventHandlers([local.onKeyDown, selectableItem.onKeyDown])}
       onMouseDown={composeEventHandlers([local.onMouseDown, selectableItem.onMouseDown])}
-      onDragStart={composeEventHandlers([local.onDragStart, selectableItem.onDragStart])}
-      onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
-      onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
-      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+      onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
       {...others}
     />
   );
