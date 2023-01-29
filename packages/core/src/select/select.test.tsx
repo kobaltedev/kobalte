@@ -1211,7 +1211,15 @@ describe("Select", () => {
 
       expect(document.activeElement).toBe(listbox);
 
-      fireEvent.pointerEnter(items[1]);
+      fireEvent(
+        items[1],
+        createPointerEvent("pointermove", {
+          pointerId: 1,
+          pointerType: "mouse",
+          clientX: 0,
+          clientY: 0,
+        })
+      );
       await Promise.resolve();
 
       expect(document.activeElement).toBe(items[1]);
