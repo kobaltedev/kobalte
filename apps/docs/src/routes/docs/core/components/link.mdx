@@ -15,7 +15,6 @@ import { Link } from "@kobalte/core";
 
 - Native HTML `<a>` element support.
 - Custom element type support via the [WAI ARIA Link](https://www.w3.org/WAI/ARIA/apg/patterns/link/) design pattern.
-- Support for mouse, touch, and keyboard interactions.
 - Support for disabled links.
 
 ## Anatomy
@@ -62,7 +61,7 @@ The link consists of:
       color: hsl(201 96% 32%);
     }
 
-    .link[data-hover] {
+    .link:hover {
       text-decoration: underline;
     }
     ```
@@ -71,49 +70,17 @@ The link consists of:
   {/* <!-- prettier-ignore-end -->*/}
 </TabsSnippets>
 
-## Usage
-
-### Client handled links
-
-Link supports user interactions via mouse, keyboard, and touch. You can handle all of these via the `onPress` prop. This is similar to the standard `onClick` event, but normalized to support all interaction methods equally.
-
-In addition, the `onPressStart`, `onPressEnd`, and `onPressChange` events are fired as the user interacts with the link.
-
-This example shows a client handled link using press events. It renders a `<span>`, and expose the element as a link to assistive technology.
-
-<Preview>
-  <ClientHandledExample />
-</Preview>
-
-```tsx
-<Link.Root as="span" onPress={() => alert("Pressed link")}>
-  Kobalte
-</Link.Root>
-```
-
-To learn more about _press interactions_ in Kobalte, check out the [documentation](/docs/core/overview/press-interactions).
-
 ## API Reference
 
 ### Link.Root
 
-| Prop                | Description                                                                                                                                             |
-| :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| isDisabled          | `boolean` <br/> Whether the link is disabled. Native navigation will be disabled, and the link will be exposed as disabled to assistive technology.     |
-| preventFocusOnPress | `boolean` <br/> Whether the link should not receive focus on press.                                                                                     |
-| onPress             | `(event: PressEvent) => void` <br/> Handler that is called when the press is released over the link.                                                    |
-| onPressStart        | `(event: PressEvent) => void` <br/> Handler that is called when a press interaction starts.                                                             |
-| onPressEnd          | `(event: PressEvent) => void` <br/> Handler that is called when a press interaction ends, either over the link or when the pointer leaves the link.     |
-| onPressUp           | `(event: PressEvent) => void` <br/> Handler that is called when a press is released over the link, regardless of whether it started on the link or not. |
-| onPressChange       | `(isPressed: boolean) => void` <br/> Handler that is called when the press state changes.                                                               |
+| Prop       | Description                                                                                                                                         |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| isDisabled | `boolean` <br/> Whether the link is disabled. Native navigation will be disabled, and the link will be exposed as disabled to assistive technology. |
 
-| Data attribute     | Description                                                                       |
-| :----------------- | :-------------------------------------------------------------------------------- |
-| data-disabled      | Present when the link is disabled.                                                |
-| data-hover         | Present when the link is hovered.                                                 |
-| data-focus         | Present when the link is focused.                                                 |
-| data-focus-visible | Present when the link is focused via keyboard.                                    |
-| data-active        | Present when the link is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute | Description                        |
+| :------------- | :--------------------------------- |
+| data-disabled  | Present when the link is disabled. |
 
 ## Rendered elements
 

@@ -7,7 +7,7 @@ import style from "./checkbox.module.css";
 export function BasicExample() {
   return (
     <Checkbox.Root class={style["checkbox"]}>
-      <Checkbox.Input />
+      <Checkbox.Input class={style["checkbox__input"]} />
       <Checkbox.Control class={style["checkbox__control"]}>
         <Checkbox.Indicator>
           <CheckIcon />
@@ -21,7 +21,7 @@ export function BasicExample() {
 export function DefaultCheckedExample() {
   return (
     <Checkbox.Root class={style["checkbox"]} defaultIsChecked>
-      <Checkbox.Input />
+      <Checkbox.Input class={style["checkbox__input"]} />
       <Checkbox.Control class={style["checkbox__control"]}>
         <Checkbox.Indicator>
           <CheckIcon />
@@ -38,7 +38,7 @@ export function ControlledExample() {
   return (
     <>
       <Checkbox.Root class={style["checkbox"]} isChecked={checked()} onCheckedChange={setChecked}>
-        <Checkbox.Input />
+        <Checkbox.Input class={style["checkbox__input"]} />
         <Checkbox.Control class={style["checkbox__control"]}>
           <Checkbox.Indicator>
             <CheckIcon />
@@ -66,7 +66,7 @@ export function HTMLFormExample() {
   return (
     <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
       <Checkbox.Root class={style["checkbox"]} name="newsletter" value="subscribe">
-        <Checkbox.Input />
+        <Checkbox.Input class={style["checkbox__input"]} />
         <Checkbox.Control class={style["checkbox__control"]}>
           <Checkbox.Indicator>
             <CheckIcon />

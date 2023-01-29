@@ -1,6 +1,6 @@
 import { Preview, Kbd, TabsSnippets } from "../../../../components";
 
-import { BasicExample, PressInteractionExample } from "../../../../examples/button";
+import { BasicExample } from "../../../../examples/button";
 
 # Button
 
@@ -16,7 +16,6 @@ import { Button } from "@kobalte/core";
 
 - Native HTML `<button>` element support.
 - `<a>` and custom element type support via the [WAI ARIA Button](https://www.w3.org/WAI/ARIA/apg/patterns/button/) design pattern.
-- Mouse and touch event handling, and press state management.
 - Keyboard event support for <Kbd>Space</Kbd> and <Kbd>Enter</Kbd> keys.
 
 ## Anatomy
@@ -47,7 +46,7 @@ The button consists of:
     import "./style.css";
 
     function App() {
-      return <Button.Root class="button">Press me</Button.Root>;
+      return <Button.Root class="button">Click me</Button.Root>;
     }
     ```
 
@@ -71,16 +70,16 @@ The button consists of:
       transition: 250ms background-color;
     }
 
-    .button[data-hover] {
+    .button:hover {
       background-color: hsl(201 96% 32%);
     }
 
-    .button[data-focus-visible] {
+    .button:focus-visible {
       outline: 2px solid hsl(200 98% 39%);
       outline-offset: 2px;
     }
 
-    .button[data-active] {
+    .button:active {
       background-color: hsl(201 90% 27%);
     }
     ```
@@ -89,65 +88,17 @@ The button consists of:
   {/* <!-- prettier-ignore-end -->*/}
 </TabsSnippets>
 
-## Usage
-
-### Press interactions
-
-Button supports user interactions via mouse, keyboard, and touch. You can handle all of these via the `onPress` prop. This is similar to the standard `onClick` event, but normalized to support all interaction methods equally.
-
-In addition, the `onPressStart`, `onPressEnd`, and `onPressChange` events are fired as the user interacts with the button.
-
-<Preview>
-  <PressInteractionExample />
-</Preview>
-
-```tsx {3,8-9}
-import { createSignal } from "solid-js";
-
-function PressInteractionExample() {
-  const [pointerType, setPointerType] = createSignal<string>();
-
-  return (
-    <>
-      <Button.Root
-        onPressStart={e => setPointerType(e.pointerType)}
-        onPressEnd={() => setPointerType(undefined)}
-      >
-        Press me
-      </Button.Root>
-      <p>
-        <Show when={pointerType()} fallback="Ready to be pressed.">
-          You are pressing the button with a {pointerType()}!
-        </Show>
-      </p>
-    </>
-  );
-}
-```
-
-To learn more about _press interactions_ in Kobalte, check out the [documentation](/docs/core/overview/press-interactions).
-
 ## API Reference
 
 ### Button.Root
 
-| Prop                | Description                                                                                                                                                 |
-| :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| isDisabled          | `boolean` <br/> Whether the button is disabled.                                                                                                             |
-| preventFocusOnPress | `boolean` <br/> Whether the button should not receive focus on press.                                                                                       |
-| onPress             | `(event: PressEvent) => void` <br/> Handler that is called when the press is released over the button.                                                      |
-| onPressStart        | `(event: PressEvent) => void` <br/> Handler that is called when a press interaction starts.                                                                 |
-| onPressEnd          | `(event: PressEvent) => void` <br/> Handler that is called when a press interaction ends, either over the button or when the pointer leaves the button.     |
-| onPressUp           | `(event: PressEvent) => void` <br/> Handler that is called when a press is released over the button, regardless of whether it started on the button or not. |
-| onPressChange       | `(isPressed: boolean) => void` <br/> Handler that is called when the press state changes.                                                                   |
+| Prop       | Description                                     |
+| :--------- | :---------------------------------------------- |
+| isDisabled | `boolean` <br/> Whether the button is disabled. |
 
-| Data attribute     | Description                                                                         |
-| :----------------- | :---------------------------------------------------------------------------------- |
-| data-disabled      | Present when the button is disabled.                                                |
-| data-hover         | Present when the button is hovered.                                                 |
-| data-focus         | Present when the button is focused.                                                 |
-| data-focus-visible | Present when the button is focused via keyboard.                                    |
-| data-active        | Present when the button is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute | Description                          |
+| :------------- | :----------------------------------- |
+| data-disabled  | Present when the button is disabled. |
 
 ## Rendered elements
 

@@ -13,7 +13,7 @@
   line-height: 0;
 }
 
-.toggle-button[data-focus-visible] {
+.toggle-button:focus-visible {
   outline: 2px solid hsl(200 98% 39%);
   outline-offset: 2px;
 }

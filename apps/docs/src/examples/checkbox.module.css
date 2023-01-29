@@ -11,7 +11,7 @@
   background-color: hsl(240 6% 90%);
 }
 
-.checkbox__control[data-focus-visible] {
+.checkbox__input:focus-visible + .checkbox__control {
   outline: 2px solid hsl(200 98% 39%);
   outline-offset: 2px;
 }

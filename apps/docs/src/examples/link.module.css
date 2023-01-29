@@ -3,7 +3,7 @@
   color: hsl(201 96% 32%);
 }
 
-.link[data-hover] {
+.link:hover {
   text-decoration: underline;
 }
 

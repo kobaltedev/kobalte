@@ -10,7 +10,7 @@ function Item(props: ComponentProps<typeof Select.Item>) {
   return (
     <Select.Item
       class={clsx(
-        "flex items-center space-x-2 px-3 py-1 text-sm outline-none ui-selected:text-sky-700 ui-focus:bg-zinc-100 transition-colors cursor-default dark:ui-selected:text-sky-400 dark:ui-focus:bg-zinc-700",
+        "flex items-center space-x-2 px-3 py-1 text-sm outline-none ui-selected:text-sky-700 ui-highlighted:bg-zinc-100 transition-colors cursor-default dark:ui-selected:text-sky-400 dark:ui-highlighted:bg-zinc-700",
         local.class
       )}
       {...others}

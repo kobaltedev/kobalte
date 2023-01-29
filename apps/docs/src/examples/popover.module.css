@@ -15,16 +15,16 @@
   transition: 250ms background-color;
 }
 
-.popover__trigger[data-hover] {
+.popover__trigger:hover {
   background-color: hsl(201 96% 32%);
 }
 
-.popover__trigger[data-focus-visible] {
+.popover__trigger:focus-visible {
   outline: 2px solid hsl(200 98% 39%);
   outline-offset: 2px;
 }
 
-.popover__trigger[data-active] {
+.popover__trigger:active {
   background-color: hsl(201 90% 27%);
 }
 
@@ -73,11 +73,11 @@
   color: hsla(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .popover__trigger[data-hover] {
+[data-kb-theme="dark"] .popover__trigger:hover {
   background-color: hsl(200 98% 39%);
 }
 
-[data-kb-theme="dark"] .popover__trigger[data-active] {
+[data-kb-theme="dark"] .popover__trigger:active {
   background-color: hsl(199 89% 48%);
 }
 

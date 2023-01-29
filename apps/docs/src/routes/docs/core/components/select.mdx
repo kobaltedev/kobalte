@@ -26,7 +26,6 @@ import { Select, MultiSelect } from "@kobalte/core";
 - Support for disabled options.
 - Labeling support for accessibility.
 - Support for description and error message help text linked to the button via ARIA.
-- Support for mouse, touch, and keyboard interactions.
 - Tab stop focus management.
 - Keyboard support for opening the listbox using the arrow keys, including automatically focusing the first or last item accordingly.
 - Typeahead to allow selecting options by typing text, even without opening the listbox.
@@ -203,11 +202,11 @@ The multi-select consists of:
       transition: border-color 250ms, color 250ms;
     }
 
-    .select__trigger[data-hover] {
+    .select__trigger:hover {
       border-color: hsl(240 5% 65%);
     }
 
-    .select__trigger[data-focus-visible] {
+    .select__trigger:focus-visible {
       outline: 2px solid hsl(200 98% 39%);
       outline-offset: 2px;
     }
@@ -280,7 +279,7 @@ The multi-select consists of:
       pointer-events: none;
     }
 
-    .select__item[data-focus] {
+    .select__item[data-highlighted] {
       outline: none;
       background-color: hsl(200 98% 39%);
       color: white;
@@ -694,14 +693,11 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | textValue  | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `Select.ItemLabel` part if provided, or fallback to the .textContent of the `Select.Item`. Use this when the content is complex, or you have non-textual content inside. |
 | isDisabled | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                   |
 
-| Data attribute     | Description                                                                       |
-| :----------------- | :-------------------------------------------------------------------------------- |
-| data-disabled      | Present when the item is disabled.                                                |
-| data-selected      | Present when the item is selected.                                                |
-| data-hover         | Present when the item is hovered.                                                 |
-| data-focus         | Present when the item is focused.                                                 |
-| data-focus-visible | Present when the item is focused via keyboard.                                    |
-| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-selected    | Present when the item is selected.    |
+| data-highlighted | Present when the item is highlighted. |
 
 `Select.ItemLabel`, `Select.ItemDescription` and `Select.ItemIndicator` shares the same data-attributes.
 

@@ -40,9 +40,10 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     if (local.isDisabled) {
       e.preventDefault();
-    } else {
-      callHandler(e, local.onClick);
+      return;
     }
+
+    callHandler(e, local.onClick);
   };
 
   return (

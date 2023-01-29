@@ -297,7 +297,6 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
       id={local.id}
       role="menuitem"
       tabIndex={selectableItem.tabIndex()}
-      isDisabled={selectableItem.isDisabled()}
       aria-haspopup="true"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.contentId() : undefined}

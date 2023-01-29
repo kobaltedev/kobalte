@@ -64,7 +64,7 @@ The checkbox consists of:
     function App() {
       return (
         <Checkbox.Root class="checkbox">
-          <Checkbox.Input />
+          <Checkbox.Input class="checkbox__input" />
           <Checkbox.Control class="checkbox__control">
             <Checkbox.Indicator>
               <CheckIcon />
@@ -92,7 +92,7 @@ The checkbox consists of:
       background-color: hsl(240 6% 90%);
     }
 
-    .checkbox__control[data-focus-visible] {
+    .checkbox__input:focus-visible + .checkbox__control {
       outline: 2px solid hsl(200 98% 39%);
       outline-offset: 2px;
     }
@@ -205,19 +205,15 @@ function HTMLFormExample() {
 | isChecked       | `Accessor<boolean>` <br/> Whether the checkbox is checked or not.            |
 | isIndeterminate | `Accessor<boolean>` <br/> Whether the checkbox is in an indeterminate state. |
 
-| Data attribute     | Description                                                                           |
-| :----------------- | :------------------------------------------------------------------------------------ |
-| data-valid         | Present when the checkbox is valid according to the validation rules.                 |
-| data-invalid       | Present when the checkbox is invalid according to the validation rules.               |
-| data-checked       | Present when the checkbox is checked.                                                 |
-| data-indeterminate | Present when the checkbox is in an indeterminate state.                               |
-| data-required      | Present when the checkbox is required.                                                |
-| data-disabled      | Present when the checkbox is disabled.                                                |
-| data-readonly      | Present when the checkbox is read only.                                               |
-| data-hover         | Present when the checkbox is hovered.                                                 |
-| data-focus         | Present when the checkbox is focused.                                                 |
-| data-focus-visible | Present when the checkbox is focused via keyboard.                                    |
-| data-active        | Present when the checkbox is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute     | Description                                                             |
+| :----------------- | :---------------------------------------------------------------------- |
+| data-valid         | Present when the checkbox is valid according to the validation rules.   |
+| data-invalid       | Present when the checkbox is invalid according to the validation rules. |
+| data-checked       | Present when the checkbox is checked.                                   |
+| data-indeterminate | Present when the checkbox is in an indeterminate state.                 |
+| data-required      | Present when the checkbox is required.                                  |
+| data-disabled      | Present when the checkbox is disabled.                                  |
+| data-readonly      | Present when the checkbox is read only.                                 |
 
 `Checkbox.Control`, `Checkbox.Indicator` and `Checkbox.Label` shares the same data-attributes.
 

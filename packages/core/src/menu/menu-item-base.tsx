@@ -235,7 +235,6 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
         component={local.as!}
         ref={mergeRefs(el => (ref = el), local.ref)}
         tabIndex={selectableItem.tabIndex()}
-        isDisabled={selectableItem.isDisabled()}
         aria-checked={ariaChecked()}
         aria-disabled={local.isDisabled}
         aria-labelledby={labelId()}

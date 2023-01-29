@@ -13,7 +13,7 @@ import {
   mergeRefs,
 } from "@kobalte/utils";
 import { JSX, onCleanup, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { Dynamic, isServer } from "solid-js/web";
 
 import { useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
@@ -53,13 +53,18 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
       "onPointerUp",
     ]);
 
-    let longPressTimerRef = 0;
-    const clearLongPress = () => {
-      window.clearTimeout(longPressTimerRef);
+    let longPressTimoutId = 0;
+
+    const clearLongPressTimeout = () => {
+      if (isServer) {
+        return;
+      }
+
+      window.clearTimeout(longPressTimoutId);
     };
 
     onCleanup(() => {
-      clearLongPress();
+      clearLongPressTimeout();
     });
 
     const onContextMenu: JSX.EventHandlerUnion<any, MouseEvent> = e => {
@@ -71,7 +76,7 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
 
       // Clearing the long press here because some platforms already support
       // long press to trigger a `contextmenu` event.
-      clearLongPress();
+      clearLongPressTimeout();
 
       e.preventDefault();
 
@@ -92,8 +97,8 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
 
       if (!local.isDisabled && isTouchOrPen(e)) {
         // Clear the long press here in case there's multiple touch points.
-        clearLongPress();
-        longPressTimerRef = window.setTimeout(() => menuContext.open(false), 700);
+        clearLongPressTimeout();
+        longPressTimoutId = window.setTimeout(() => menuContext.open(false), 700);
       }
     };
 
@@ -101,7 +106,7 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
       callHandler(e, local.onPointerMove);
 
       if (!local.isDisabled && isTouchOrPen(e)) {
-        clearLongPress();
+        clearLongPressTimeout();
       }
     };
 
@@ -109,7 +114,7 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
       callHandler(e, local.onPointerCancel);
 
       if (!local.isDisabled && isTouchOrPen(e)) {
-        clearLongPress();
+        clearLongPressTimeout();
       }
     };
 
@@ -117,7 +122,7 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
       callHandler(e, local.onPointerUp);
 
       if (!local.isDisabled && isTouchOrPen(e)) {
-        clearLongPress();
+        clearLongPressTimeout();
       }
     };
 

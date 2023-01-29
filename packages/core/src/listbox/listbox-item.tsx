@@ -11,6 +11,7 @@ import {
   composeEventHandlers,
   createGenerateId,
   createPolymorphicComponent,
+  focusWithoutScrolling,
   isMac,
   isWebKit,
   mergeDefaultProps,
@@ -72,7 +73,7 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
     "aria-label",
     "aria-labelledby",
     "aria-describedby",
-    "onPointerEnter",
+    "onPointerMove",
     "onPointerDown",
     "onPointerUp",
     "onClick",
@@ -130,10 +131,26 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
   const ariaLabelledBy = () => (isNotSafariMacOS() ? labelId() : undefined);
   const ariaDescribedBy = () => (isNotSafariMacOS() ? descriptionId() : undefined);
 
-  const onPointerEnter: JSX.EventHandlerUnion<any, PointerEvent> = e => {
-    callHandler(e, local.onPointerEnter);
+  /**
+   * We focus items on `pointerMove` to achieve the following:
+   *
+   * - Mouse over an item (it focuses)
+   * - Leave mouse where it is and use keyboard to focus a different item
+   * - Wiggle mouse without it leaving previously focused item
+   * - Previously focused item should re-focus
+   *
+   * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
+   * wiggles. This is to match native select implementation.
+   */
+  const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerMove);
+
+    if (e.pointerType !== "mouse") {
+      return;
+    }
 
     if (!selectableItem.isDisabled() && listBoxContext.shouldFocusOnHover()) {
+      focusWithoutScrolling(e.currentTarget);
       selectionManager().setFocused(true);
       selectionManager().setFocusedKey(local.value);
     }
@@ -173,7 +190,7 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
         onKeyDown={composeEventHandlers([local.onKeyDown, selectableItem.onKeyDown])}
         onMouseDown={composeEventHandlers([local.onMouseDown, selectableItem.onMouseDown])}
         onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
-        onPointerEnter={onPointerEnter}
+        onPointerMove={onPointerMove}
         {...dataset()}
         {...others}
       />

@@ -23,10 +23,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         title: "Server side rendering",
         href: "/docs/core/overview/ssr",
       },
-      {
-        title: "Press interactions",
-        href: "/docs/core/overview/press-interactions",
-      },
     ],
   },
   {
@@ -35,7 +31,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Accordion",
         href: "/docs/core/components/accordion",
-        status: "new",
       },
       {
         title: "Alert",
@@ -44,7 +39,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Breadcrumbs",
         href: "/docs/core/components/breadcrumbs",
-        status: "new",
       },
       {
         title: "Button",
@@ -57,7 +51,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Collapsible",
         href: "/docs/core/components/collapsible",
-        status: "new",
       },
       {
         title: "Context Menu",
@@ -78,7 +71,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Image",
         href: "/docs/core/components/image",
-        status: "new",
       },
       {
         title: "Link",
@@ -91,7 +83,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Progress",
         href: "/docs/core/components/progress",
-        status: "new",
       },
       {
         title: "Radio Group",
