@@ -391,7 +391,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
   const onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = e => {
     // Ignore events that bubbled through portals.
-    if (e.currentTarget.contains(e.target)) {
+    if (finalScrollRef() === e.target) {
       // Prevent focus going to the collection when clicking on the scrollbar.
       e.preventDefault();
     }

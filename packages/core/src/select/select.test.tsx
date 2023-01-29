@@ -2093,7 +2093,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onSubmit).toHaveBeenCalledTimes(1);
-      expect(value).toBeUndefined();
+      expect(value).toBe("");
     });
 
     it("Should submit default option", async () => {
