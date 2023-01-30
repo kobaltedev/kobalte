@@ -8,10 +8,6 @@ export interface SwitchDataSet {
   "data-required": string | undefined;
   "data-disabled": string | undefined;
   "data-readonly": string | undefined;
-  "data-hover": string | undefined;
-  "data-focus": string | undefined;
-  "data-focus-visible": string | undefined;
-  "data-active": string | undefined;
 }
 
 export interface SwitchContextValue {
@@ -26,7 +22,6 @@ export interface SwitchContextValue {
   generateId: (part: string) => string;
   setIsChecked: (isChecked: boolean) => void;
   setIsFocused: (isFocused: boolean) => void;
-  setIsFocusVisible: (isFocusVisible: boolean) => void;
 }
 
 export const SwitchContext = createContext<SwitchContextValue>();

@@ -6,7 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import { mergeDefaultProps, removeItemFromArray } from "@kobalte/utils";
+import { focusWithoutScrolling, mergeDefaultProps, removeItemFromArray } from "@kobalte/utils";
 import { createEffect, createSignal, onCleanup, ParentProps, splitProps } from "solid-js";
 
 import { createListState } from "../list";
@@ -17,7 +17,6 @@ import {
   createDisclosureState,
   createHideOutside,
   createRegisterId,
-  focusSafely,
 } from "../primitives";
 import {
   createDomCollection,
@@ -107,7 +106,7 @@ export function Menu(props: ParentProps<MenuOptions>) {
     const content = contentRef();
 
     if (content) {
-      focusSafely(content);
+      focusWithoutScrolling(content);
       listState.selectionManager().setFocused(true);
       listState.selectionManager().setFocusedKey(undefined);
     }

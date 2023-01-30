@@ -11,7 +11,6 @@ import { JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { createLocalizedStringFormatter } from "../i18n";
-import { PressEvents } from "../primitives";
 import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
 import { useCalendarContext } from "./calendar-context";
 
@@ -24,12 +23,12 @@ export const CalendarNextPageButton = createPolymorphicComponent<
 >(props => {
   const context = useCalendarContext();
 
-  const [local, others] = splitProps(props, ["onPress", "onFocus", "onBlur"]);
+  const [local, others] = splitProps(props, ["onClick", "onFocus", "onBlur"]);
 
   const stringFormatter = createLocalizedStringFormatter(() => CALENDAR_INTL_MESSAGES);
 
-  const onPress: PressEvents["onPress"] = e => {
-    local.onPress?.(e);
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    callHandler(e, local.onClick);
     context.state().focusNextPage();
   };
 
@@ -47,7 +46,7 @@ export const CalendarNextPageButton = createPolymorphicComponent<
     <Button.Root
       isDisabled={context.isNextDisabled()}
       aria-label={stringFormatter().format("next")}
-      onPress={onPress}
+      onClick={onClick}
       onFocus={onFocus}
       onBlur={onBlur}
       {...others}

@@ -114,13 +114,10 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
         <Dynamic
           component={local.as}
           ref={mergeRefs(el => (ref = el), local.ref)}
-          onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.handlers.onKeyDown])}
-          onMouseDown={composeEventHandlers([
-            local.onMouseDown,
-            selectableList.handlers.onMouseDown,
-          ])}
-          onFocusIn={composeEventHandlers([local.onFocusIn, selectableList.handlers.onFocusIn])}
-          onFocusOut={composeEventHandlers([local.onFocusOut, selectableList.handlers.onFocusOut])}
+          onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.onKeyDown])}
+          onMouseDown={composeEventHandlers([local.onMouseDown, selectableList.onMouseDown])}
+          onFocusIn={composeEventHandlers([local.onFocusIn, selectableList.onFocusIn])}
+          onFocusOut={composeEventHandlers([local.onFocusOut, selectableList.onFocusOut])}
           {...others}
         />
       </AccordionContext.Provider>

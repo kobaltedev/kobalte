@@ -7,7 +7,6 @@
  */
 
 import {
-  composeEventHandlers,
   createPolymorphicComponent,
   getFocusableTreeWalker,
   mergeDefaultProps,
@@ -16,7 +15,6 @@ import {
 import { createEffect, createSignal, on, onCleanup, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createFocusRing, FOCUS_RING_HANDLERS_PROP_NAMES } from "../primitives";
 import { useTabsContext } from "./tabs-context";
 
 export interface TabsContentOptions {
@@ -40,14 +38,7 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
 
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, [
-    "as",
-    "ref",
-    "id",
-    "value",
-    "forceMount",
-    ...FOCUS_RING_HANDLERS_PROP_NAMES,
-  ]);
+  const [local, others] = splitProps(props, ["as", "ref", "id", "value", "forceMount"]);
 
   const [tabIndex, setTabIndex] = createSignal<number | undefined>(0);
 
@@ -55,8 +46,6 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
 
   const isSelected = () => context.listState().selectedKey() === local.value;
   const shouldMount = () => local.forceMount || isSelected();
-
-  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
 
   createEffect(
     on([() => ref, shouldMount], ([ref, shouldMount]) => {
@@ -74,12 +63,12 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
 
       const observer = new MutationObserver(updateTabIndex);
 
-      // Update when new elements are inserted, or the tabIndex/disabled attribute updates.
+      // Update when new elements are inserted, or the tabindex/disabled attribute updates.
       observer.observe(ref, {
         subtree: true,
         childList: true,
         attributes: true,
-        attributeFilter: ["tabIndex", "disabled"],
+        attributeFilter: ["tabindex", "disabled"],
       });
 
       onCleanup(() => {
@@ -104,10 +93,6 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
         tabIndex={tabIndex()}
         aria-labelledby={context.triggerIdsMap().get(local.value)}
         data-orientation={context.orientation()}
-        data-focus={isFocused() ? "" : undefined}
-        data-focus-visible={isFocusVisible() ? "" : undefined}
-        onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-        onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
         {...others}
       />
     </Show>

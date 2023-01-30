@@ -162,9 +162,12 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentOpti
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
   return (
-    <Show when={context.shouldMount()}>
+    <Show when={context.contentPresence.isPresent()}>
       <DismissableLayer
-        ref={mergeRefs(el => (ref = el), local.ref)}
+        ref={mergeRefs(el => {
+          context.contentPresence.setRef(el);
+          ref = el;
+        }, local.ref)}
         role="dialog"
         id={local.id}
         tabIndex={-1}
@@ -173,6 +176,7 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentOpti
         excludedElements={[context.triggerRef]}
         aria-labelledby={context.titleId()}
         aria-describedby={context.descriptionId()}
+        data-expanded={context.isOpen() ? "" : undefined}
         onEscapeKeyDown={local.onEscapeKeyDown}
         onPointerDownOutside={onPointerDownOutside}
         onFocusOutside={onFocusOutside}

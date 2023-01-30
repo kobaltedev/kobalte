@@ -60,10 +60,7 @@ You can use the following modifiers:
 | `ui-selected`      | `ui-not-selected`      |
 | `ui-pressed`       | `ui-not-pressed`       |
 | `ui-expanded`      | `ui-not-expanded`      |
-| `ui-hover`         | `ui-not-hover`         |
-| `ui-focus`         | `ui-not-focus`         |
-| `ui-focus-visible` | `ui-not-focus-visible` |
-| `ui-active`        | `ui-not-active`        |
+| `ui-highlighted`   | `ui-not-highlighted`   |
 | `ui-current`       | `ui-not-current`       |
 
 ## Documentation

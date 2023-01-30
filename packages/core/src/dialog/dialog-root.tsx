@@ -1,7 +1,7 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentComponent } from "solid-js";
 
-import { createDisclosureState, createRegisterId } from "../primitives";
+import { createDisclosureState, createPresence, createRegisterId } from "../primitives";
 import { DialogContext, DialogContextValue } from "./dialog-context";
 
 export interface DialogRootOptions {
@@ -35,7 +35,7 @@ export interface DialogRootOptions {
   isModal?: boolean;
 
   /**
-   * Used to force mounting the dialog (portal, overlay, positioner and content) when more control is needed.
+   * Used to force mounting the dialog (portal, overlay and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
    */
   forceMount?: boolean;
@@ -67,14 +67,20 @@ export const DialogRoot: ParentComponent<DialogRootOptions> = props => {
     onOpenChange: isOpen => props.onOpenChange?.(isOpen),
   });
 
+  const shouldMount = () => props.forceMount || disclosureState.isOpen();
+
+  const overlayPresence = createPresence(shouldMount);
+  const contentPresence = createPresence(shouldMount);
+
   const context: DialogContextValue = {
     isOpen: disclosureState.isOpen,
     isModal: () => props.isModal!,
-    shouldMount: () => props.forceMount || disclosureState.isOpen(),
     contentId,
     titleId,
     descriptionId,
     triggerRef,
+    overlayPresence,
+    contentPresence,
     close: disclosureState.close,
     toggle: disclosureState.toggle,
     setTriggerRef,

@@ -141,9 +141,7 @@ export const Popover = () => (
     <PopoverBase.Trigger class="inline-flex px-4 py-2 rounded ui-disabled:bg-slate-100">
       Open
     </PopoverBase.Trigger>
-    <PopoverBase.Content class="flex p-4 rounded bg-white ui-expanded:shadow-md">
-      ...
-    </PopoverBase.Content>
+    <PopoverBase.Content class="flex p-4 rounded bg-white">...</PopoverBase.Content>
   </PopoverBase.Root>
 );
 ```
@@ -162,10 +160,8 @@ You can use the following modifiers:
 | `ui-selected`      | `&[data-selected]`      |
 | `ui-pressed`       | `&[data-pressed]`       |
 | `ui-expanded`      | `&[data-expanded]`      |
-| `ui-hover`         | `&[data-hover]`         |
-| `ui-focus`         | `&[data-focus]`         |
-| `ui-focus-visible` | `&[data-focus-visible]` |
-| `ui-active`        | `&[data-active]`        |
+| `ui-highlighted`   | `&[data-highlighted]`   |
+| `ui-current`       | `&[data-current]`       |
 
 It's also possible to use _inverse modifiers_ in the form of `ui-not-*`.
 

@@ -8,8 +8,7 @@
 
 import { Accessor } from "solid-js";
 
-import { Collection, CollectionNode, PressEvent } from "../primitives";
-import { LongPressEvent } from "../primitives/create-long-press/types";
+import { Collection, CollectionNode } from "../primitives";
 import {
   MultipleSelectionManager,
   MultipleSelectionState,
@@ -327,7 +326,7 @@ export class SelectionManager implements MultipleSelectionManager {
     }
   }
 
-  select(key: string, e?: PressEvent | LongPressEvent | PointerEvent) {
+  select(key: string, e?: PointerEvent) {
     if (this.selectionMode() === "none") {
       return;
     }
@@ -338,11 +337,8 @@ export class SelectionManager implements MultipleSelectionManager {
       } else {
         this.replaceSelection(key);
       }
-    } else if (
-      this.selectionBehavior() === "toggle" ||
-      (e && (e.pointerType === "touch" || e.pointerType === "virtual"))
-    ) {
-      // if touch or virtual then we just want to toggle, otherwise it's impossible to multi select because they don't have modifier keys
+    } else if (this.selectionBehavior() === "toggle" || (e && e.pointerType === "touch")) {
+      // if touch then we just want to toggle, otherwise it's impossible to multi select because they don't have modifier keys
       this.toggleSelection(key);
     } else {
       this.replaceSelection(key);

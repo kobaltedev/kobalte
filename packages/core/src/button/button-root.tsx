@@ -12,25 +12,17 @@
  * https://github.com/ariakit/ariakit/blob/8a13899ff807bbf39f3d89d2d5964042ba4d5287/packages/ariakit/src/button/button.ts
  */
 
-import {
-  composeEventHandlers,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
+import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { createMemo, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 
-import { Pressable, PressableOptions } from "../pressable";
-import {
-  createFocusRing,
-  createHover,
-  createTagName,
-  FOCUS_RING_HANDLERS_PROP_NAMES,
-  HOVER_HANDLERS_PROP_NAMES,
-} from "../primitives";
+import { createTagName } from "../primitives";
 import { isButton } from "./is-button";
 
-export interface ButtonRootOptions extends PressableOptions {}
+export interface ButtonRootOptions {
+  /** Whether the button is disabled. */
+  isDisabled?: boolean;
+}
 
 /**
  * Button enables users to trigger an action or event, such as submitting a form,
@@ -48,21 +40,11 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
     props
   );
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    ...HOVER_HANDLERS_PROP_NAMES,
-    ...FOCUS_RING_HANDLERS_PROP_NAMES,
-  ]);
-
-  const { isHovered, hoverHandlers } = createHover({
-    isDisabled: () => others.isDisabled,
-  });
-
-  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
+  const [local, others] = splitProps(props, ["as", "ref", "type", "isDisabled"]);
 
   const tagName = createTagName(
     () => ref,
-    () => others.as || "button"
+    () => local.as || "button"
   );
 
   const isNativeButton = createMemo(() => {
@@ -72,25 +54,27 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
       return false;
     }
 
-    return isButton({ tagName: elementTagName, type: others.type });
+    return isButton({ tagName: elementTagName, type: local.type });
   });
 
-  const isLink = createMemo(() => {
+  const isNativeInput = createMemo(() => {
+    return tagName() === "input";
+  });
+
+  const isNativeLink = createMemo(() => {
     return tagName() === "a" && (others as any).href != null;
   });
 
   return (
-    <Pressable
+    <Dynamic
+      component={local.as}
       ref={mergeRefs(el => (ref = el), local.ref)}
-      role={!isNativeButton() && !isLink() ? "button" : undefined}
-      tabIndex={!isNativeButton() && !isLink() && !others.isDisabled ? 0 : undefined}
-      data-hover={isHovered() ? "" : undefined}
-      data-focus={isFocused() ? "" : undefined}
-      data-focus-visible={isFocusVisible() ? "" : undefined}
-      onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
-      onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
-      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+      type={isNativeButton() || isNativeInput() ? local.type : undefined}
+      role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
+      tabIndex={!isNativeButton() && !isNativeLink() && !local.isDisabled ? 0 : undefined}
+      disabled={isNativeButton() || isNativeInput() ? local.isDisabled : undefined}
+      aria-disabled={!isNativeButton() && !isNativeInput() && local.isDisabled ? true : undefined}
+      data-disabled={local.isDisabled ? "" : undefined}
       {...others}
     />
   );

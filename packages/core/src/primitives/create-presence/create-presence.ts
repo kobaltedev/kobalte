@@ -9,7 +9,12 @@
 
 import { Accessor, createEffect, createSignal, on, onCleanup } from "solid-js";
 
-export function createPresence(present: Accessor<boolean>) {
+export interface CreatePresenceResult {
+  isPresent: Accessor<boolean>;
+  setRef: (el: HTMLElement) => void;
+}
+
+export function createPresence(present: Accessor<boolean>): CreatePresenceResult {
   const [node, setNode] = createSignal<HTMLElement>();
 
   let styles = {} as CSSStyleDeclaration;

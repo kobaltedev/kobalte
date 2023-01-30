@@ -2,7 +2,6 @@ import { callHandler, createPolymorphicComponent } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import { FormControlLabel } from "../form-control";
-import { setInteractionModality } from "../primitives";
 import { useSelectContext } from "./select-context";
 
 /**
@@ -18,9 +17,6 @@ export const SelectLabel = createPolymorphicComponent<"span">(props => {
 
     if (!context.isDisabled()) {
       context.triggerRef()?.focus();
-
-      // Show the focus ring so the user knows where focus went
-      setInteractionModality("keyboard");
     }
   };
 

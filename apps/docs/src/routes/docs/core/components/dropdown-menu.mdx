@@ -243,16 +243,16 @@ The checkable menu item consists of:
       transition: 250ms background-color;
     }
 
-    .dropdown-menu__trigger[data-hover] {
+    .dropdown-menu__trigger:hover {
       background-color: hsl(201 96% 32%);
     }
 
-    .dropdown-menu__trigger[data-focus-visible] {
+    .dropdown-menu__trigger:focus-visible {
       outline: 2px solid hsl(200 98% 39%);
       outline-offset: 2px;
     }
 
-    .dropdown-menu__trigger[data-active] {
+    .dropdown-menu__trigger:active {
       background-color: hsl(201 90% 27%);
     }
 
@@ -309,10 +309,10 @@ The checkable menu item consists of:
       pointer-events: none;
     }
 
-    .dropdown-menu__item[data-focus],
-    .dropdown-menu__checkbox-item[data-focus],
-    .dropdown-menu__radio-item[data-focus],
-    .dropdown-menu__sub-trigger[data-focus] {
+    .dropdown-menu__item[data-highlighted],
+    .dropdown-menu__checkbox-item[data-highlighted],
+    .dropdown-menu__radio-item[data-highlighted],
+    .dropdown-menu__sub-trigger[data-highlighted] {
       outline: none;
       background-color: hsl(200 98% 39%);
       color: white;
@@ -348,7 +348,7 @@ The checkable menu item consists of:
       color: hsl(240 4% 46%);
     }
 
-    [data-focus] > .dropdown-menu__item-right-slot {
+    [data-highlighted] > .dropdown-menu__item-right-slot {
       color: white;
     }
 
@@ -457,11 +457,6 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
 | onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
 
-| Data attribute     | Description                                                      |
-| :----------------- | :--------------------------------------------------------------- |
-| data-focus         | Present when the content element itself is focused.              |
-| data-focus-visible | Present when the content element itself is focused via keyboard. |
-
 ### DropdownMenu.Arrow
 
 | Prop | Description                           |
@@ -477,13 +472,10 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | closeOnSelect | `boolean` <br/> Whether the menu should close when the item is activated.                                                                                                                                                                                                                                          |
 | onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                     |
 
-| Data attribute     | Description                                                                       |
-| :----------------- | :-------------------------------------------------------------------------------- |
-| data-disabled      | Present when the item is disabled.                                                |
-| data-hover         | Present when the item is hovered.                                                 |
-| data-focus         | Present when the item is focused.                                                 |
-| data-focus-visible | Present when the item is focused via keyboard.                                    |
-| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-highlighted | Present when the item is highlighted. |
 
 `DropdownMenu.ItemLabel`, `DropdownMenu.ItemDescription` and `DropdownMenu.ItemIndicator` shares the same data-attributes.
 
@@ -512,14 +504,11 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | closeOnSelect | `boolean` <br/> Whether the menu should close when the item is checked.                                                                                                                                                                                                                                            |
 | onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                     |
 
-| Data attribute     | Description                                                                       |
-| :----------------- | :-------------------------------------------------------------------------------- |
-| data-disabled      | Present when the item is disabled.                                                |
-| data-checked       | Present when the item is checked.                                                 |
-| data-hover         | Present when the item is hovered.                                                 |
-| data-focus         | Present when the item is focused.                                                 |
-| data-focus-visible | Present when the item is focused via keyboard.                                    |
-| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-checked     | Present when the item is checked.     |
+| data-highlighted | Present when the item is highlighted. |
 
 ### DropdownMenu.CheckboxItem
 
@@ -534,15 +523,12 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | closeOnSelect    | `boolean` <br/> Whether the menu should close when the item is checked/unchecked.                                                                                                                                                                                                                                  |
 | onSelect         | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                     |
 
-| Data attribute     | Description                                                                       |
-| :----------------- | :-------------------------------------------------------------------------------- |
-| data-disabled      | Present when the item is disabled.                                                |
-| data-indeterminate | Present when the item is in an indeterminate state.                               |
-| data-checked       | Present when the item is checked.                                                 |
-| data-hover         | Present when the item is hovered.                                                 |
-| data-focus         | Present when the item is focused.                                                 |
-| data-focus-visible | Present when the item is focused via keyboard.                                    |
-| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute     | Description                                         |
+| :----------------- | :-------------------------------------------------- |
+| data-disabled      | Present when the item is disabled.                  |
+| data-indeterminate | Present when the item is in an indeterminate state. |
+| data-checked       | Present when the item is checked.                   |
+| data-highlighted   | Present when the item is highlighted.               |
 
 ### DropdownMenu.Sub
 
@@ -574,14 +560,11 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | textValue  | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `DropdownMenu.SubTrigger`. Use this when the content is complex, or you have non-textual content inside. |
 | isDisabled | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                       |
 
-| Data attribute     | Description                                                                       |
-| :----------------- | :-------------------------------------------------------------------------------- |
-| data-expanded      | Present when the sub menu is open.                                                |
-| data-disabled      | Present when the item is disabled.                                                |
-| data-hover         | Present when the item is hovered.                                                 |
-| data-focus         | Present when the item is focused.                                                 |
-| data-focus-visible | Present when the item is focused via keyboard.                                    |
-| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-expanded    | Present when the sub menu is open.    |
+| data-disabled    | Present when the item is disabled.    |
+| data-highlighted | Present when the item is highlighted. |
 
 ### DropdownMenu.SubContent
 
@@ -591,11 +574,6 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
 | onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
 | onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
-
-| Data attribute     | Description                                                      |
-| :----------------- | :--------------------------------------------------------------- |
-| data-focus         | Present when the content element itself is focused.              |
-| data-focus-visible | Present when the content element itself is focused via keyboard. |
 
 ## Rendered elements
 

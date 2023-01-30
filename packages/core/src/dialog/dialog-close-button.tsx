@@ -1,9 +1,8 @@
-import { createPolymorphicComponent } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { callHandler, createPolymorphicComponent } from "@kobalte/utils";
+import { JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { COMMON_INTL_MESSAGES, createLocalizedStringFormatter } from "../i18n";
-import { PressEvents } from "../primitives";
 import { useDialogContext } from "./dialog-context";
 
 /**
@@ -13,19 +12,19 @@ export const DialogCloseButton = createPolymorphicComponent<"button", Button.But
   props => {
     const context = useDialogContext();
 
-    const [local, others] = splitProps(props, ["onPress", "aria-label"]);
+    const [local, others] = splitProps(props, ["aria-label", "onClick"]);
 
     const stringFormatter = createLocalizedStringFormatter(() => COMMON_INTL_MESSAGES);
 
-    const onPress: PressEvents["onPress"] = e => {
-      local.onPress?.(e);
+    const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+      callHandler(e, local.onClick);
       context.close();
     };
 
     return (
       <Button.Root
         aria-label={local["aria-label"] || stringFormatter().format("dismiss")}
-        onPress={onPress}
+        onClick={onClick}
         {...others}
       />
     );

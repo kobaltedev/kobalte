@@ -1,13 +1,16 @@
 import { Accessor, createContext, Setter, useContext } from "solid-js";
 
+import { CreatePresenceResult } from "../primitives";
+
 export interface DialogContextValue {
   isOpen: Accessor<boolean>;
   isModal: Accessor<boolean>;
-  shouldMount: Accessor<boolean>;
   contentId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;
   triggerRef: Accessor<HTMLElement | undefined>;
+  overlayPresence: CreatePresenceResult;
+  contentPresence: CreatePresenceResult;
   close: () => void;
   toggle: () => void;
   setTriggerRef: Setter<HTMLElement>;

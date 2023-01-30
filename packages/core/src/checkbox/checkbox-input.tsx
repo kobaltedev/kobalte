@@ -9,7 +9,6 @@
 
 import {
   callHandler,
-  composeEventHandlers,
   mergeDefaultProps,
   mergeRefs,
   OverrideProps,
@@ -17,12 +16,6 @@ import {
 } from "@kobalte/utils";
 import { ComponentProps, createEffect, JSX, on, splitProps } from "solid-js";
 
-import {
-  createFocusRing,
-  createPress,
-  FOCUS_RING_HANDLERS_PROP_NAMES,
-  PRESS_HANDLERS_PROP_NAMES,
-} from "../primitives";
 import { useCheckboxContext } from "./checkbox-context";
 
 export interface CheckboxInputOptions {
@@ -43,20 +36,11 @@ export function CheckboxInput(props: OverrideProps<ComponentProps<"input">, Chec
   const [local, others] = splitProps(props, [
     "ref",
     "style",
-    "onChange",
     "aria-labelledby",
-    ...PRESS_HANDLERS_PROP_NAMES,
-    ...FOCUS_RING_HANDLERS_PROP_NAMES,
+    "onChange",
+    "onFocus",
+    "onBlur",
   ]);
-
-  const { pressHandlers } = createPress({
-    isDisabled: context.isDisabled,
-  });
-
-  const { focusRingHandlers } = createFocusRing({
-    onFocusChange: value => context.setIsFocused(value),
-    onFocusVisibleChange: value => context.setIsFocusVisible(value),
-  });
 
   const ariaLabelledBy = () => {
     return (
@@ -89,6 +73,16 @@ export function CheckboxInput(props: OverrideProps<ComponentProps<"input">, Chec
     target.checked = context.isChecked();
   };
 
+  const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onFocus);
+    context.setIsFocused(true);
+  };
+
+  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onBlur);
+    context.setIsFocused(false);
+  };
+
   // indeterminate is a property, but it can only be set via javascript
   // https://css-tricks.com/indeterminate-checkboxes/
   // Unlike in React, inputs `indeterminate` state can be out of sync with our.
@@ -119,15 +113,8 @@ export function CheckboxInput(props: OverrideProps<ComponentProps<"input">, Chec
       aria-disabled={context.isDisabled() || undefined}
       aria-readonly={context.isReadOnly() || undefined}
       onChange={onChange}
-      onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
-      onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
-      onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
-      onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
-      onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
-      onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
-      onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
-      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+      onFocus={onFocus}
+      onBlur={onBlur}
       {...others}
     />
   );

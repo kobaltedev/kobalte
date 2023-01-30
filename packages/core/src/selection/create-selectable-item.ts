@@ -6,11 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableItem.ts
  */
 
-import { access, isActionKey, isSelectionKey, MaybeAccessor } from "@kobalte/utils";
-import { Accessor, createEffect, createMemo, on } from "solid-js";
+import { access, focusWithoutScrolling, MaybeAccessor } from "@kobalte/utils";
+import { Accessor, createEffect, createMemo, JSX, on } from "solid-js";
 
-import { focusSafely, PointerType, PressEvent } from "../primitives";
-import { LongPressEvent } from "../primitives/create-long-press/types";
 import { MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
 
@@ -59,31 +57,28 @@ export function createSelectableItem<T extends HTMLElement>(
   const key = () => access(props.key);
   const shouldUseVirtualFocus = () => access(props.shouldUseVirtualFocus);
 
-  const onSelect = (e: PressEvent | LongPressEvent | PointerEvent) => {
-    if (e.pointerType === "keyboard" && isNonContiguousSelectionModifier(e)) {
-      manager().toggleSelection(key());
-    } else {
-      if (manager().selectionMode() === "none") {
-        return;
-      }
+  const onSelect = (e: MouseEvent | PointerEvent | KeyboardEvent) => {
+    if (manager().selectionMode() === "none") {
+      return;
+    }
 
-      if (manager().selectionMode() === "single") {
-        if (manager().isSelected(key()) && !manager().disallowEmptySelection()) {
-          manager().toggleSelection(key());
-        } else {
-          manager().replaceSelection(key());
-        }
-      } else if (e && e.shiftKey) {
-        manager().extendSelection(key());
-      } else if (
-        manager().selectionBehavior() === "toggle" ||
-        (e && (isCtrlKeyPressed(e) || e.pointerType === "touch" || e.pointerType === "virtual"))
-      ) {
-        // if touch or virtual then we just want to toggle, otherwise it's impossible to multi select because they don't have modifier keys
+    if (manager().selectionMode() === "single") {
+      if (manager().isSelected(key()) && !manager().disallowEmptySelection()) {
         manager().toggleSelection(key());
       } else {
         manager().replaceSelection(key());
       }
+    } else if (e && e.shiftKey) {
+      manager().extendSelection(key());
+    } else if (
+      manager().selectionBehavior() === "toggle" ||
+      isCtrlKeyPressed(e) ||
+      ("pointerType" in e && e.pointerType === "touch")
+    ) {
+      // if touch then we just want to toggle, otherwise it's impossible to multi select because they don't have modifier keys
+      manager().toggleSelection(key());
+    } else {
+      manager().replaceSelection(key());
     }
   };
 
@@ -97,86 +92,60 @@ export function createSelectableItem<T extends HTMLElement>(
 
   const allowsSelection = () => !isDisabled() && manager().canSelectItem(key());
 
-  let modality: PointerType | null = null;
+  let pointerDownType: PointerEvent["pointerType"] | null = null;
 
-  let longPressEnabledOnPressStart = false;
+  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    if (!allowsSelection()) {
+      return;
+    }
+
+    pointerDownType = e.pointerType;
+
+    // Selection occurs on mouse down.
+    if (e.pointerType === "mouse" && !access(props.shouldSelectOnPressUp)) {
+      onSelect(e);
+    }
+  };
 
   // By default, selection occurs on pointer down. This can be strange if selecting an
   // item causes the UI to disappear immediately (e.g. menus).
-  // If shouldSelectOnPressUp is true, we use onPressUp instead of onPressStart.
-  // onPress requires a pointer down event on the same element as pointer up. For menus,
-  // we want to be able to have the pointer down on the trigger that opens the menu and
-  // the pointer up on the menu item rather than requiring a separate press.
-  // For keyboard events, selection still occurs on key down.
-  const onPressStart = (e: PressEvent) => {
+  // If shouldSelectOnPressUp is true, we use onPointerUp instead of onPointerDown.
+  const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
     if (!allowsSelection()) {
       return;
     }
 
-    modality = e.pointerType;
-    longPressEnabledOnPressStart = allowsSelection();
+    // If allowsDifferentPressOrigin, make selection happen on pointer up.
+    // Otherwise, have selection happen on click.
+    if (access(props.shouldSelectOnPressUp) && access(props.allowsDifferentPressOrigin)) {
+      onSelect(e);
+    }
+  };
 
-    // Selection occurs on mouse down or key down (Enter or Space bar).
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    if (!allowsSelection()) {
+      return;
+    }
+
+    // If not allowsDifferentPressOrigin or pointerType is touch/pen, make selection happen on click.
     if (
-      (e.pointerType === "mouse" && !access(props.shouldSelectOnPressUp)) ||
-      (e.pointerType === "keyboard" && (isActionKey() || isSelectionKey()))
+      (access(props.shouldSelectOnPressUp) && !access(props.allowsDifferentPressOrigin)) ||
+      pointerDownType !== "mouse"
     ) {
       onSelect(e);
     }
   };
 
-  const onPressUp = (e: PressEvent) => {
-    if (!allowsSelection()) {
+  // For keyboard events, selection occurs on key down (Enter or Space bar).
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    if (!allowsSelection() || !["Enter", " "].includes(e.key)) {
       return;
     }
 
-    // If allowsDifferentPressOrigin, make selection happen on pressUp.
-    // Otherwise, have selection happen onPress
-    if (
-      access(props.shouldSelectOnPressUp) &&
-      access(props.allowsDifferentPressOrigin) &&
-      e.pointerType !== "keyboard"
-    ) {
-      onSelect(e);
-    }
-  };
-
-  const onPress = (e: PressEvent) => {
-    if (!allowsSelection()) {
-      return;
-    }
-
-    if (access(props.shouldSelectOnPressUp)) {
-      if (!access(props.allowsDifferentPressOrigin) && e.pointerType !== "keyboard") {
-        onSelect(e);
-      }
+    if (isNonContiguousSelectionModifier(e)) {
+      manager().toggleSelection(key());
     } else {
-      // Selection occurs on touch up.
-      if (e.pointerType === "touch" || e.pointerType === "pen" || e.pointerType === "virtual") {
-        onSelect(e);
-      }
-    }
-  };
-
-  // Long pressing an item with touch when selectionBehavior = 'replace' switches the selection behavior
-  // to 'toggle'. This changes the single tap behavior from performing an action (i.e. navigating) to
-  // selecting, and may toggle the appearance of a UI affordance like checkboxes on each item.
-  const onLongPress = (e: LongPressEvent) => {
-    if (!allowsSelection()) {
-      return;
-    }
-
-    if (e.pointerType === "touch") {
       onSelect(e);
-      manager().setSelectionBehavior("toggle");
-    }
-  };
-
-  // Prevent native drag and drop on long press if we also select on long press.
-  // Once the user is in selection mode, they can long press again to drag.
-  const onDragStart = (e: Event) => {
-    if (modality === "touch" && longPressEnabledOnPressStart) {
-      e.preventDefault();
     }
   };
 
@@ -231,7 +200,7 @@ export function createSelectableItem<T extends HTMLElement>(
           if (props.focus) {
             props.focus();
           } else {
-            focusSafely(refEl);
+            focusWithoutScrolling(refEl);
           }
         }
       }
@@ -242,15 +211,13 @@ export function createSelectableItem<T extends HTMLElement>(
     isSelected,
     isDisabled,
     allowsSelection,
-    preventFocusOnPress: shouldUseVirtualFocus,
     tabIndex,
     dataKey,
-    onPressStart,
-    onPressUp,
-    onPress,
-    onLongPress,
+    onPointerDown,
+    onPointerUp,
+    onClick,
+    onKeyDown,
     onMouseDown,
     onFocus,
-    onDragStart,
   };
 }

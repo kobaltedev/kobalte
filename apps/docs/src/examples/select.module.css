@@ -15,11 +15,11 @@
   transition: border-color 250ms, color 250ms;
 }
 
-.select__trigger[data-hover] {
+.select__trigger:hover {
   border-color: hsl(240 5% 65%);
 }
 
-.select__trigger[data-focus-visible] {
+.select__trigger:focus-visible {
   outline: 2px solid hsl(200 98% 39%);
   outline-offset: 2px;
 }
@@ -92,7 +92,7 @@
   pointer-events: none;
 }
 
-.select__item[data-focus] {
+.select__item[data-highlighted] {
   outline: none;
   background-color: hsl(200 98% 39%);
   color: white;
@@ -127,7 +127,7 @@
   color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .select__trigger[data-hover] {
+[data-kb-theme="dark"] .select__trigger:hover {
   border-color: hsl(240 4% 46%);
 }
 

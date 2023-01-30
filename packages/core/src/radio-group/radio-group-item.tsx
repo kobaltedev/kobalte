@@ -6,28 +6,18 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
  */
 
-import {
-  composeEventHandlers,
-  createGenerateId,
-  mergeDefaultProps,
-  OverrideProps,
-} from "@kobalte/utils";
+import { callHandler, createGenerateId, mergeDefaultProps, OverrideProps } from "@kobalte/utils";
 import {
   Accessor,
   ComponentProps,
   createMemo,
   createSignal,
   createUniqueId,
+  JSX,
   splitProps,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import {
-  createHover,
-  createPress,
-  HOVER_HANDLERS_PROP_NAMES,
-  PRESS_HANDLERS_PROP_NAMES,
-} from "../primitives";
 import { useRadioGroupContext } from "./radio-group-context";
 import {
   RadioGroupItemContext,
@@ -59,15 +49,9 @@ export function RadioGroupItem(
 
   props = mergeDefaultProps({ id: defaultId }, props);
 
-  const [local, others] = splitProps(props, [
-    "value",
-    "isDisabled",
-    ...PRESS_HANDLERS_PROP_NAMES,
-    ...HOVER_HANDLERS_PROP_NAMES,
-  ]);
+  const [local, others] = splitProps(props, ["value", "isDisabled", "onPointerDown"]);
 
   const [isFocused, setIsFocused] = createSignal(false);
-  const [isFocusVisible, setIsFocusVisible] = createSignal(false);
 
   const isSelected = createMemo(() => {
     return radioGroupContext.isSelectedValue(local.value);
@@ -77,24 +61,20 @@ export function RadioGroupItem(
     return local.isDisabled || formControlContext.isDisabled() || false;
   });
 
-  const { isPressed, pressHandlers } = createPress({
-    isDisabled,
-    preventFocusOnPress: () => isFocused(), // For consistency with native, prevent the input blurs.
-  });
+  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerDown);
 
-  const { isHovered, hoverHandlers } = createHover({
-    isDisabled,
-  });
+    // For consistency with native, prevent the input blurs on pointer down.
+    if (isFocused()) {
+      e.preventDefault();
+    }
+  };
 
   const dataset: Accessor<RadioGroupItemDataSet> = createMemo(() => ({
     "data-valid": formControlContext.dataset()["data-valid"],
     "data-invalid": formControlContext.dataset()["data-invalid"],
     "data-checked": isSelected() ? "" : undefined,
     "data-disabled": isDisabled() ? "" : undefined,
-    "data-hover": isHovered() ? "" : undefined,
-    "data-focus": isFocused() ? "" : undefined,
-    "data-focus-visible": isFocusVisible() ? "" : undefined,
-    "data-active": isPressed() ? "" : undefined,
   }));
 
   const context: RadioGroupItemContextValue = {
@@ -104,24 +84,11 @@ export function RadioGroupItem(
     isDisabled,
     generateId: createGenerateId(() => others.id!),
     setIsFocused,
-    setIsFocusVisible,
   };
 
   return (
     <RadioGroupItemContext.Provider value={context}>
-      <label
-        {...context.dataset()}
-        onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
-        onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
-        onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
-        onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
-        onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
-        onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
-        onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
-        onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
-        onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
-        {...others}
-      />
+      <label onPointerDown={onPointerDown} {...dataset()} {...others} />
     </RadioGroupItemContext.Provider>
   );
 }

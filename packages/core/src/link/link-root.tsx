@@ -7,23 +7,20 @@
  */
 
 import {
-  composeEventHandlers,
+  callHandler,
   createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { JSX, splitProps } from "solid-js";
 
-import { Pressable, PressableOptions } from "../pressable";
-import {
-  createFocusRing,
-  createHover,
-  createTagName,
-  FOCUS_RING_HANDLERS_PROP_NAMES,
-  HOVER_HANDLERS_PROP_NAMES,
-} from "../primitives";
+import { createTagName } from "../primitives";
+import { Dynamic } from "solid-js/web";
 
-export interface LinkRootOptions extends PressableOptions {}
+export interface LinkRootOptions {
+  /** Whether the link is disabled. */
+  isDisabled?: boolean;
+}
 
 /**
  * Link allows a user to navigate to another page or resource within a web page or application.
@@ -33,37 +30,31 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
 
   props = mergeDefaultProps({ as: "a" }, props);
 
-  const [local, others] = splitProps(props, [
-    "as",
-    "ref",
-    ...HOVER_HANDLERS_PROP_NAMES,
-    ...FOCUS_RING_HANDLERS_PROP_NAMES,
-  ]);
-
-  const { isHovered, hoverHandlers } = createHover({
-    isDisabled: () => others.isDisabled,
-  });
-
-  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
+  const [local, others] = splitProps(props, ["as", "ref", "type", "isDisabled", "onClick"]);
 
   const tagName = createTagName(
     () => ref,
     () => local.as || "a"
   );
 
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    if (local.isDisabled) {
+      e.preventDefault();
+      return;
+    }
+
+    callHandler(e, local.onClick);
+  };
+
   return (
-    <Pressable
-      as={local.as!}
+    <Dynamic
+      component={local.as}
       ref={mergeRefs(el => (ref = el), local.ref)}
       role={tagName() !== "a" ? "link" : undefined}
-      tabIndex={tagName() !== "a" && !others.isDisabled ? 0 : undefined}
-      data-hover={isHovered() ? "" : undefined}
-      data-focus={isFocused() ? "" : undefined}
-      data-focus-visible={isFocusVisible() ? "" : undefined}
-      onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
-      onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
-      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+      tabIndex={tagName() !== "a" && !local.isDisabled ? 0 : undefined}
+      aria-disabled={local.isDisabled ? true : undefined}
+      data-disabled={local.isDisabled ? "" : undefined}
+      onClick={onClick}
       {...others}
     />
   );

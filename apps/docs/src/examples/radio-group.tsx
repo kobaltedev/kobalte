@@ -11,7 +11,7 @@ export function BasicExample() {
         <For each={["Apple", "Orange", "Watermelon"]}>
           {fruit => (
             <RadioGroup.Item value={fruit} class={style["radio"]}>
-              <RadioGroup.ItemInput />
+              <RadioGroup.ItemInput class={style["radio__input"]} />
               <RadioGroup.ItemControl class={style["radio__control"]}>
                 <RadioGroup.ItemIndicator class={style["radio__indicator"]} />
               </RadioGroup.ItemControl>
@@ -32,7 +32,7 @@ export function DefaultValueExample() {
         <For each={["Apple", "Orange", "Watermelon"]}>
           {fruit => (
             <RadioGroup.Item value={fruit} class={style["radio"]}>
-              <RadioGroup.ItemInput />
+              <RadioGroup.ItemInput class={style["radio__input"]} />
               <RadioGroup.ItemControl class={style["radio__control"]}>
                 <RadioGroup.ItemIndicator class={style["radio__indicator"]} />
               </RadioGroup.ItemControl>
@@ -56,7 +56,7 @@ export function ControlledExample() {
           <For each={["Apple", "Orange", "Watermelon"]}>
             {fruit => (
               <RadioGroup.Item value={fruit} class={style["radio"]}>
-                <RadioGroup.ItemInput />
+                <RadioGroup.ItemInput class={style["radio__input"]} />
                 <RadioGroup.ItemControl class={style["radio__control"]}>
                   <RadioGroup.ItemIndicator class={style["radio__indicator"]} />
                 </RadioGroup.ItemControl>
@@ -79,7 +79,7 @@ export function DescriptionExample() {
         <For each={["Apple", "Orange", "Watermelon"]}>
           {fruit => (
             <RadioGroup.Item value={fruit} class={style["radio"]}>
-              <RadioGroup.ItemInput />
+              <RadioGroup.ItemInput class={style["radio__input"]} />
               <RadioGroup.ItemControl class={style["radio__control"]}>
                 <RadioGroup.ItemIndicator class={style["radio__indicator"]} />
               </RadioGroup.ItemControl>
@@ -110,7 +110,7 @@ export function ErrorMessageExample() {
         <For each={["Apple", "Orange", "Watermelon"]}>
           {fruit => (
             <RadioGroup.Item value={fruit} class={style["radio"]}>
-              <RadioGroup.ItemInput />
+              <RadioGroup.ItemInput class={style["radio__input"]} />
               <RadioGroup.ItemControl class={style["radio__control"]}>
                 <RadioGroup.ItemIndicator class={style["radio__indicator"]} />
               </RadioGroup.ItemControl>
@@ -146,7 +146,7 @@ export function HTMLFormExample() {
           <For each={["Apple", "Orange", "Watermelon"]}>
             {fruit => (
               <RadioGroup.Item value={fruit} class={style["radio"]}>
-                <RadioGroup.ItemInput />
+                <RadioGroup.ItemInput class={style["radio__input"]} />
                 <RadioGroup.ItemControl class={style["radio__control"]}>
                   <RadioGroup.ItemIndicator class={style["radio__indicator"]} />
                 </RadioGroup.ItemControl>

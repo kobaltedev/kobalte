@@ -21,10 +21,7 @@ const STATES = [
   "selected",
   "pressed",
   "expanded",
-  "hover",
-  "focus",
-  "focus-visible",
-  "active",
+  "highlighted",
   "current",
 ];
 

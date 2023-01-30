@@ -46,7 +46,7 @@ describe("Listbox", () => {
       expect(option).toBeInTheDocument();
       expect(option).toHaveAttribute("tabindex");
       expect(option).toHaveAttribute("aria-selected", "false");
-      expect(option).not.toHaveAttribute("aria-disabled");
+      expect(option).toHaveAttribute("aria-disabled", "false");
     }
   });
 

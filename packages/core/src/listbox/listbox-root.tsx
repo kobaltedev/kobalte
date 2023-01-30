@@ -199,14 +199,10 @@ export const ListboxRoot = createPolymorphicComponent<"div", ListboxRootOptions>
           aria-multiselectable={
             listState().selectionManager().selectionMode() === "multiple" ? true : undefined
           }
-          data-focus={listState().selectionManager().isFocused() ? "" : undefined}
-          onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.handlers.onKeyDown])}
-          onMouseDown={composeEventHandlers([
-            local.onMouseDown,
-            selectableList.handlers.onMouseDown,
-          ])}
-          onFocusIn={composeEventHandlers([local.onFocusIn, selectableList.handlers.onFocusIn])}
-          onFocusOut={composeEventHandlers([local.onFocusOut, selectableList.handlers.onFocusOut])}
+          onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.onKeyDown])}
+          onMouseDown={composeEventHandlers([local.onMouseDown, selectableList.onMouseDown])}
+          onFocusIn={composeEventHandlers([local.onFocusIn, selectableList.onFocusIn])}
+          onFocusOut={composeEventHandlers([local.onFocusOut, selectableList.onFocusOut])}
           {...others}
         />
       </ListboxContext.Provider>

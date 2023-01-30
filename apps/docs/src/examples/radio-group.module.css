@@ -44,7 +44,7 @@
   background-color: hsl(240 6% 90%);
 }
 
-.radio__control[data-focus-visible] {
+.radio__input:focus-visible + .radio__control {
   outline: 2px solid hsl(200 98% 39%);
   outline-offset: 2px;
 }

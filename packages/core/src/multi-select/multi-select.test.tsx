@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-spectrum/picker/test/Picker.test.js
  */
 
-import { installPointerEvent, triggerPress } from "@kobalte/tests";
+import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen, within } from "solid-testing-library";
 
 import * as MultiSelect from ".";
@@ -47,7 +47,13 @@ describe("MultiSelect", () => {
     const trigger = screen.getByRole("button");
     expect(trigger).toHaveTextContent("Placeholder");
 
-    await triggerPress(trigger);
+    fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
+
+    fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
+
+    jest.runAllTimers();
 
     const listbox = screen.getByRole("listbox");
     const items = within(listbox).getAllByRole("option");
@@ -61,8 +67,11 @@ describe("MultiSelect", () => {
 
     expect(document.activeElement).toBe(listbox);
 
-    await triggerPress(items[0]);
-    await triggerPress(items[2]);
+    fireEvent.click(items[0]);
+    await Promise.resolve();
+
+    fireEvent.click(items[2]);
+    await Promise.resolve();
 
     expect(items[0]).toHaveAttribute("aria-selected", "true");
     expect(items[2]).toHaveAttribute("aria-selected", "true");
@@ -100,7 +109,8 @@ describe("MultiSelect", () => {
 
     const trigger = screen.getByRole("button");
 
-    await triggerPress(trigger);
+    fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
 
     const listbox = screen.getByRole("listbox");
     const items = within(listbox).getAllByRole("option");
@@ -143,7 +153,8 @@ describe("MultiSelect", () => {
 
     const trigger = screen.getByRole("button");
 
-    await triggerPress(trigger);
+    fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
 
     const listbox = screen.getByRole("listbox");
     const items = within(listbox).getAllByRole("option");
@@ -184,7 +195,8 @@ describe("MultiSelect", () => {
 
     const trigger = screen.getByRole("button");
 
-    await triggerPress(trigger);
+    fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
 
     const listbox = screen.getByRole("listbox");
     const items = within(listbox).getAllByRole("option");
@@ -193,7 +205,8 @@ describe("MultiSelect", () => {
     expect(items[1]).toHaveAttribute("aria-selected", "true");
 
     // Deselect first option
-    await triggerPress(items[0]);
+    fireEvent.click(items[0]);
+    await Promise.resolve();
 
     expect(items[0]).toHaveAttribute("aria-selected", "false");
 

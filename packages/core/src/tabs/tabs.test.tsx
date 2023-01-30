@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/703ab7b4559ecd4fc611e7f2c0e758867990fe01/packages/@react-spectrum/tabs/test/Tabs.test.js
  */
 
-import { triggerPress } from "@kobalte/tests";
+import { createPointerEvent } from "@kobalte/tests";
 import userEvent from "@testing-library/user-event";
 import { fireEvent, render, screen, waitFor, within } from "solid-testing-library";
 
@@ -19,13 +19,13 @@ describe("Tabs", function () {
 
   const onValueChangeSpy = jest.fn();
 
-  beforeAll(() => {
-    jest.useFakeTimers({ legacyFakeTimers: true });
+  beforeEach(() => {
+    jest.useFakeTimers();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
-    jest.runAllTimers();
+    jest.clearAllTimers();
   });
 
   afterAll(() => {
@@ -254,9 +254,7 @@ describe("Tabs", function () {
 
     const tablist = screen.getByRole("tablist");
     const tabs = within(tablist).getAllByRole("tab");
-    const firstItem = tabs[0];
-    const secondItem = tabs[1];
-    const thirdItem = tabs[2];
+    const [firstItem, secondItem, thirdItem] = tabs;
 
     firstItem.focus();
 
@@ -299,13 +297,15 @@ describe("Tabs", function () {
 
     const tablist = screen.getByRole("tablist");
     const tabs = within(tablist).getAllByRole("tab");
-    const firstItem = tabs[0];
+    const [firstItem, secondItem] = tabs;
 
     expect(firstItem).toHaveAttribute("aria-selected", "true");
 
-    const secondItem = tabs[1];
-
-    await triggerPress(secondItem);
+    fireEvent(
+      secondItem,
+      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+    );
+    await Promise.resolve();
 
     expect(secondItem).toHaveAttribute("aria-selected", "true");
     expect(secondItem).toHaveAttribute("aria-controls");
@@ -469,20 +469,36 @@ describe("Tabs", function () {
       </Tabs.Root>
     ));
 
-    let tabpanel = screen.getByRole("tabpanel");
-    await waitFor(() => expect(tabpanel).not.toHaveAttribute("tabindex"));
-
     const tabs = screen.getAllByRole("tab");
+    const [firstItem, secondItem] = tabs;
 
-    await triggerPress(tabs[1]);
+    let tabpanel = screen.getByRole("tabpanel");
+    expect(tabpanel).not.toHaveAttribute("tabindex");
+
+    fireEvent(
+      secondItem,
+      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+    );
+    await Promise.resolve();
+
+    fireEvent(secondItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
+
+    jest.runAllTimers();
 
     tabpanel = screen.getByRole("tabpanel");
-    await waitFor(() => expect(tabpanel).toHaveAttribute("tabindex", "0"));
+    expect(tabpanel).toHaveAttribute("tabindex", "0");
 
-    await triggerPress(tabs[0]);
+    fireEvent(firstItem, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
+
+    fireEvent(firstItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
+
+    jest.runAllTimers();
 
     tabpanel = screen.getByRole("tabpanel");
-    await waitFor(() => expect(tabpanel).not.toHaveAttribute("tabindex"));
+    expect(tabpanel).not.toHaveAttribute("tabindex");
   });
 
   it("fires onValueChange when clicking on the current tab", async () => {
@@ -505,7 +521,8 @@ describe("Tabs", function () {
 
     expect(firstItem).toHaveAttribute("aria-selected", "true");
 
-    await triggerPress(firstItem);
+    fireEvent(firstItem, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
 
     expect(onValueChangeSpy).toBeCalledTimes(1);
     expect(onValueChangeSpy).toHaveBeenCalledWith("one");

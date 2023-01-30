@@ -9,6 +9,7 @@
 
 import { getDayOfWeek, isSameDay, isSameMonth, isToday } from "@internationalized/date";
 import {
+  callHandler,
   composeEventHandlers,
   createPolymorphicComponent,
   mergeDefaultProps,
@@ -18,7 +19,6 @@ import { createMemo, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createDateFormatter } from "../i18n";
-import { createFocusRing, createHover, createPress } from "../primitives";
 import { useCalendarCellContext } from "./calendar-cell-context";
 import { useCalendarContext } from "./calendar-context";
 import { useCalendarMonthContext } from "./calendar-month-context";
@@ -48,9 +48,6 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
     "onMouseDown",
     "onDragStart",
     "onPointerEnter",
-    "onPointerLeave",
-    "onFocusIn",
-    "onFocusOut",
   ]);
 
   const cellDateFormatter = createDateFormatter(() => ({
@@ -141,7 +138,7 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
     return !isSameMonth(monthContext.startDate(), context.date());
   };
 
-  const isFocused = () => {
+  const isHighlighted = () => {
     return calendarContext.state().isCellFocused(context.date());
   };
 
@@ -159,6 +156,8 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
     return isSameDay(context.date(), state.focusedDate()) ? 0 : -1;
   };
 
+  // TODO: replace createPress
+  /*
   let isAnchorPressed = false;
   let isRangeBoundaryPressed = false;
   let touchDragTimeoutId: number | null = null;
@@ -293,12 +292,7 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
       }
     },
   });
-
-  const { isHovered, hoverHandlers } = createHover({
-    isDisabled: () => !context.isSelectable(),
-  });
-
-  const { isFocusVisible, focusRingHandlers } = createFocusRing();
+  */
 
   const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
     const state = calendarContext.state();
@@ -309,6 +303,8 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
   };
 
   const onPointerEnter: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerEnter);
+
     const state = calendarContext.state();
 
     // Highlight the date on hover or drag over a date when selecting a range.
@@ -354,33 +350,19 @@ export const CalendarDay = createPolymorphicComponent<"div">(props => {
       data-selection-start={isSelectionStart() ? "" : undefined}
       data-selection-end={isSelectionEnd() ? "" : undefined}
       data-selected={context.isSelected() ? "" : undefined}
+      data-highlighted={isHighlighted() ? "" : undefined}
       data-disabled={context.isDisabled() ? "" : undefined}
       data-invalid={context.isInvalid() ? "" : undefined}
-      data-hover={isHovered() ? "" : undefined}
-      data-focus={isFocused() ? "" : undefined}
-      data-focus-visible={isFocusVisible() ? "" : undefined}
-      data-active={isPressed() ? "" : undefined}
       onFocus={composeEventHandlers([local.onFocus, onFocus])}
       onContextMenu={composeEventHandlers([local.onContextMenu, onContextMenu])}
-      onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
-      onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
-      onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
-      onPointerDown={composeEventHandlers([
-        local.onPointerDown,
-        pressHandlers.onPointerDown,
-        onPointerDown,
-      ])}
-      onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
-      onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
-      onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
-      onPointerEnter={composeEventHandlers([
-        local.onPointerEnter,
-        onPointerEnter,
-        hoverHandlers.onPointerEnter,
-      ])}
-      onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
-      onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-      onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+      //onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
+      //onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
+      //onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
+      //onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown, onPointerDown,])}
+      //onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
+      //onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
+      //onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
+      //onPointerEnter={onPointerEnter}
       {...others}
     />
   );
