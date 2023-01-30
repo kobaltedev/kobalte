@@ -128,6 +128,11 @@ The dialog consists of:
       inset: 0;
       z-index: 50;
       background-color: rgb(0 0 0 / 0.2);
+      animation: overlayHide 250ms ease 100ms forwards;
+    }
+
+    .dialog__overlay[data-expanded] {
+      animation: overlayShow 250ms ease;
     }
 
     .dialog__positioner {
@@ -147,6 +152,11 @@ The dialog consists of:
       padding: 16px;
       background-color: white;
       box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      animation: contentHide 300ms ease-in forwards;
+    }
+
+    .dialog__content[data-expanded] {
+      animation: contentShow 300ms ease-out;
     }
 
     .dialog__header {
@@ -171,6 +181,46 @@ The dialog consists of:
     .dialog__description {
       font-size: 16px;
       color: hsl(240 5% 26%);
+    }
+
+    @keyframes overlayShow {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes overlayHide {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    @keyframes contentShow {
+      from {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes contentHide {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.96);
+      }
     }
     ```
 
@@ -226,6 +276,8 @@ function ControlledExample() {
 | Data attribute | Description                      |
 | :------------- | :------------------------------- |
 | data-expanded  | Present when the dialog is open. |
+
+`Dialog.Content` and `Dialog.Overlay` shares the same data-attributes.
 
 ### Dialog.Content
 
