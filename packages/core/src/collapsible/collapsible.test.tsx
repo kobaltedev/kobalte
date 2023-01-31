@@ -53,7 +53,7 @@ describe("Collapsible", () => {
     await Promise.resolve();
 
     const content = screen.queryByText(CONTENT_TEXT);
-    expect(content).not.toBeVisible();
+    expect(content).toBeNull();
   });
 
   it("should close content when clicking the trigger and collapsible is open uncontrolled", async () => {
