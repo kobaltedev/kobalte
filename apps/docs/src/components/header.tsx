@@ -35,8 +35,9 @@ export function Header(props: HeaderProps) {
           v0.5.0
         </span>
       </div>
-      <div class="-my-5 mr-6 sm:mr-8 md:mr-0">{/* Search */}</div>
+
       <div class="relative flex basis-0 justify-end md:flex-grow">
+        <div id="docsearch" class="px-1 py-4 flex items-center justify-center" />
         <div class="hidden lg:flex text-sm">
           <Link
             href="/docs/core/overview/introduction"
