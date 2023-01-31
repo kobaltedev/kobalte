@@ -340,6 +340,12 @@ We expose the CSS custom properties `--kb-accordion-content-width` and `--kb-acc
 
 `Accordion.Item` consists of [Collapsible.Root](/docs/core/components/collapsible).
 
+| Prop       | Description                                                                                                                                              |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value      | `string` <br/> A unique value for the item.                                                                                                              |
+| isDisabled | `boolean` <br/> Whether the item is disabled.                                                                                                            |
+| forceMount | `boolean` <br/> Used to force mounting the item content when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
 | Data attribute | Description                             |
 | :------------- | :-------------------------------------- |
 | data-expanded  | Present when the accordion is expanded. |
@@ -349,12 +355,6 @@ We expose the CSS custom properties `--kb-accordion-content-width` and `--kb-acc
 ### Accordion.Trigger
 
 `Accordion.Trigger` consists of [Collapsible.Trigger](/docs/core/components/collapsible).
-
-| Prop       | Description                                                                                                                                              |
-| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value      | `string` <br/> A unique value for the item.                                                                                                              |
-| isDisabled | `boolean` <br/> Whether the item is disabled.                                                                                                            |
-| forceMount | `boolean` <br/> Used to force mounting the item content when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
 ### Accordion.Content
 
