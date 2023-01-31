@@ -121,7 +121,7 @@ export const CollapsibleContent = createPolymorphicComponent<"div", CollapsibleC
           "--kb-collapsible-content-width": width() ? `${width()}px` : undefined,
           ...local.style,
         }}
-        data-expanded={context.isOpen() ? "" : undefined}
+        {...context.dataset()}
         {...others}
       >
         <Show when={isOpen()}>{local.children}</Show>

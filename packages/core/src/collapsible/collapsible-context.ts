@@ -1,7 +1,14 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
+export interface CollapsibleDataSet {
+  "data-expanded": string | undefined;
+  "data-disabled": string | undefined;
+}
+
 export interface CollapsibleContextValue {
+  dataset: Accessor<CollapsibleDataSet>;
   isOpen: Accessor<boolean>;
+  isDisabled: Accessor<boolean>;
   shouldMount: Accessor<boolean>;
   contentId: Accessor<string | undefined>;
   toggle: () => void;
