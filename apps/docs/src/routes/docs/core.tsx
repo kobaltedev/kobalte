@@ -20,6 +20,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/overview/styling",
       },
       {
+        title: "Animation",
+        href: "/docs/core/overview/animation",
+      },
+      {
         title: "Server side rendering",
         href: "/docs/core/overview/ssr",
       },
