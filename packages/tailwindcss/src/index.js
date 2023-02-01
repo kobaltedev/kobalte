@@ -25,11 +25,18 @@ const STATES = [
   "current",
 ];
 
+const ORIENTATIONS = ["horizontal", "vertical"];
+
 module.exports = plugin.withOptions(({ prefix = "ui" } = {}) => {
   return ({ addVariant }) => {
     for (let state of STATES) {
       addVariant(`${prefix}-${state}`, [`&[data-${state}]`]);
       addVariant(`${prefix}-not-${state}`, [`&:not([data-${state}])`]);
+    }
+
+    for (let orientation of ORIENTATIONS) {
+      addVariant(`${prefix}-${orientation}`, [`&[data-orientation='${orientation}']`]);
+      addVariant(`${prefix}-not-${orientation}`, [`&:not([data-orientation='${orientation}'])`]);
     }
   };
 });
