@@ -276,6 +276,13 @@ The checkable menu item consists of:
       border: 1px solid hsl(240 6% 90%);
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
       outline: none;
+      transform-origin: var(--kb-menu-content-transform-origin);
+      animation: contentHide 250ms ease-in forwards;
+    }
+
+    .dropdown-menu__content[data-expanded],
+    .dropdown-menu__sub-content[data-expanded] {
+      animation: contentShow 250ms ease-out;
     }
 
     .dropdown-menu__item,
@@ -356,6 +363,28 @@ The checkable menu item consists of:
       color: hsl(240 5% 65%);
       opacity: 0.5;
     }
+
+    @keyframes contentShow {
+      from {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes contentHide {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+    }
     ```
 
   </TabsSnippets.Content>
@@ -399,7 +428,43 @@ function ControlledExample() {
 
 ### Origin-aware animations
 
-We expose a CSS custom property `--kb-popper-content-transform-origin` which can be used to animate the content from its computed origin.
+We expose a CSS custom property `--kb-menu-content-transform-origin` which can be used to animate the content from its computed origin.
+
+```css {3}
+/* style.css */
+.dropdown-menu__content,
+.dropdown-menu__sub-content {
+  transform-origin: var(--kb-menu-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
+
+.dropdown-menu__content[data-expanded],
+.dropdown-menu__sub-content[data-expanded] {
+  animation: contentShow 250ms ease-out;
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+```
 
 ## API Reference
 
@@ -440,11 +505,7 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | :------------- | :----------------------------- |
 | data-expanded  | Present when the menu is open. |
 
-### DropdownMenu.Icon
-
-| Data attribute | Description                    |
-| :------------- | :----------------------------- |
-| data-expanded  | Present when the menu is open. |
+`DropdownMenu.Icon`, `DropdownMenu.Content`, `DropdownMenu.SubTrigger` and `DropdownMenu.SubContent` share the same data-attributes.
 
 ### DropdownMenu.Content
 
@@ -562,7 +623,6 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 | Data attribute   | Description                           |
 | :--------------- | :------------------------------------ |
-| data-expanded    | Present when the sub menu is open.    |
 | data-disabled    | Present when the item is disabled.    |
 | data-highlighted | Present when the item is highlighted. |
 

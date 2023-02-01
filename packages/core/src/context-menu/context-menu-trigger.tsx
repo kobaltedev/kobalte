@@ -135,13 +135,13 @@ export const ContextMenuTrigger = createPolymorphicComponent<"div", ContextMenuT
           "-webkit-touch-callout": "none",
           ...local.style,
         }}
-        data-expanded={menuContext.isOpen() ? "" : undefined}
         data-disabled={local.isDisabled ? "" : undefined}
         onContextMenu={onContextMenu}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerCancel={onPointerCancel}
         onPointerUp={onPointerUp}
+        {...menuContext.dataset()}
         {...others}
       />
     );

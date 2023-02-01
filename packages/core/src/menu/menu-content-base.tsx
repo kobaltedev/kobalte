@@ -191,11 +191,12 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
   return (
-    <Show when={context.shouldMount()}>
+    <Show when={context.contentPresence.isPresent()}>
       <PopperPositioner>
         <DismissableLayer
           ref={mergeRefs(el => {
             context.setContentRef(el);
+            context.contentPresence.setRef(el);
             ref = el;
           }, local.ref)}
           role="menu"
@@ -219,6 +220,7 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           onFocusOut={composeEventHandlers([local.onFocusOut, selectableList.onFocusOut])}
           onPointerEnter={onPointerEnter}
           onPointerMove={onPointerMove}
+          {...context.dataset()}
           {...others}
         />
       </PopperPositioner>
