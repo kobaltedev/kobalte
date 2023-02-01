@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@kobalte/core": "^0.6.0",
-    "solid-js": "^1.6.1"
+    "solid-js": "^1.6.10"
   },
   "devDependencies": {
     "typescript": "^4.7.4",
