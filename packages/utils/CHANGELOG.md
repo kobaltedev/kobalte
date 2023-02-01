@@ -1,5 +1,11 @@
 # @kobalte/utils
 
+## 0.5.0
+
+### Minor Changes
+
+- 975d526: v0.6.0
+
 ## 0.4.0
 
 ### Minor Changes

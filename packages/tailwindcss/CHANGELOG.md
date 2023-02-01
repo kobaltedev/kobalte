@@ -1,5 +1,11 @@
 # @kobalte/tailwindcss
 
+## 0.4.0
+
+### Minor Changes
+
+- 975d526: v0.6.0
+
 ## 0.3.0
 
 ### Minor Changes
