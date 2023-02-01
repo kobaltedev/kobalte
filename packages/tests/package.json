@@ -55,7 +55,7 @@
     "@types/jest-axe": "3.5.4"
   },
   "peerDependencies": {
-    "solid-js": "^1.6.1",
+    "solid-js": "^1.6.10",
     "solid-testing-library": "^0.3.0"
   }
 }
