@@ -2,8 +2,6 @@ import { Accessor, createContext, useContext } from "solid-js";
 
 export interface AccordionItemContextValue {
   value: Accessor<string>;
-  isDisabled: Accessor<boolean>;
-  isExpanded: Accessor<boolean>;
   triggerId: Accessor<string | undefined>;
   contentId: Accessor<string | undefined>;
   generateId: (part: string) => string;

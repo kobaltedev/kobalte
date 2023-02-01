@@ -112,6 +112,12 @@ The hovercard consists of:
       padding: 16px;
       background-color: white;
       box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      transform-origin: var(--kb-hovercard-content-transform-origin);
+      animation: contentHide 250ms ease-in forwards;
+    }
+
+    .hovercard__content[data-expanded] {
+      animation: contentShow 250ms ease-out;
     }
 
     .hovercard__title {
@@ -128,6 +134,28 @@ The hovercard consists of:
     .hovercard__avatar {
       height: 56px;
       width: 56px;
+    }
+
+    @keyframes contentShow {
+      from {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes contentHide {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.96);
+      }
     }
     ```
 
@@ -165,7 +193,41 @@ function ControlledExample() {
 
 ### Origin-aware animations
 
-We expose a CSS custom property `--kb-popper-transform-origin` which can be used to animate the content from its computed origin.
+We expose a CSS custom property `--kb-hovercard-content-transform-origin` which can be used to animate the content from its computed origin.
+
+```css {2}
+/* style.css */
+.hovercard__content {
+  transform-origin: var(--kb-hovercard-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
+
+.hovercard__content[data-expanded] {
+  animation: contentShow 250ms ease-out;
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+```
 
 ## API Reference
 
@@ -206,6 +268,8 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | Data attribute | Description                         |
 | :------------- | :---------------------------------- |
 | data-expanded  | Present when the hovercard is open. |
+
+`HoverCard.Content` share the same data-attributes.
 
 ## Rendered elements
 

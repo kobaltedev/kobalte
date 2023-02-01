@@ -22,5 +22,5 @@ export const PopoverTitle = createPolymorphicComponent<"h2">(props => {
 
   createEffect(() => onCleanup(context.registerTitleId(local.id!)));
 
-  return <Dynamic component={local.as} id={local.id} {...others} />;
+  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
 });

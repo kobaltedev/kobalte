@@ -16,6 +16,7 @@ import { createEffect, createSignal, on, onCleanup, Show, splitProps } from "sol
 import { Dynamic } from "solid-js/web";
 
 import { useTabsContext } from "./tabs-context";
+import { createPresence } from "../primitives";
 
 export interface TabsContentOptions {
   /** The unique key that associates the tab panel with a tab. */
@@ -45,11 +46,12 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
   const id = () => local.id ?? context.generateContentId(local.value);
 
   const isSelected = () => context.listState().selectedKey() === local.value;
-  const shouldMount = () => local.forceMount || isSelected();
+
+  const presence = createPresence(() => local.forceMount || isSelected());
 
   createEffect(
-    on([() => ref, shouldMount], ([ref, shouldMount]) => {
-      if (ref == null || !shouldMount) {
+    on([() => ref, () => presence.isPresent()], ([ref, isPresent]) => {
+      if (ref == null || !isPresent) {
         return;
       }
 
@@ -84,10 +86,13 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
   );
 
   return (
-    <Show when={shouldMount()}>
+    <Show when={presence.isPresent()}>
       <Dynamic
         component={local.as}
-        ref={mergeRefs(el => (ref = el), local.ref)}
+        ref={mergeRefs(el => {
+          presence.setRef(el);
+          ref = el;
+        }, local.ref)}
         id={id()}
         role="tabpanel"
         tabIndex={tabIndex()}

@@ -7,11 +7,15 @@
  */
 
 import { createGenerateId, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, splitProps } from "solid-js";
+import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createDisclosureState, createRegisterId } from "../primitives";
-import { CollapsibleContext, CollapsibleContextValue } from "./collapsible-context";
+import {
+  CollapsibleContext,
+  CollapsibleContextValue,
+  CollapsibleDataSet,
+} from "./collapsible-context";
 
 export interface CollapsibleRootOptions {
   /** The controlled open state of the collapsible. */
@@ -25,6 +29,9 @@ export interface CollapsibleRootOptions {
 
   /** Event handler called when the open state of the collapsible changes. */
   onOpenChange?: (isOpen: boolean) => void;
+
+  /** Whether the collapsible is disabled. */
+  isDisabled?: boolean;
 
   /**
    * Used to force mounting the collapsible content when more control is needed.
@@ -52,6 +59,7 @@ export const CollapsibleRoot = createPolymorphicComponent<"div", CollapsibleRoot
     "isOpen",
     "defaultIsOpen",
     "onOpenChange",
+    "isDisabled",
     "forceMount",
   ]);
 
@@ -63,8 +71,15 @@ export const CollapsibleRoot = createPolymorphicComponent<"div", CollapsibleRoot
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
+  const dataset: Accessor<CollapsibleDataSet> = createMemo(() => ({
+    "data-expanded": disclosureState.isOpen() ? "" : undefined,
+    "data-disabled": local.isDisabled ? "" : undefined,
+  }));
+
   const context: CollapsibleContextValue = {
+    dataset,
     isOpen: disclosureState.isOpen,
+    isDisabled: () => local.isDisabled ?? false,
     shouldMount: () => local.forceMount || disclosureState.isOpen(),
     contentId,
     toggle: disclosureState.toggle,
@@ -74,11 +89,7 @@ export const CollapsibleRoot = createPolymorphicComponent<"div", CollapsibleRoot
 
   return (
     <CollapsibleContext.Provider value={context}>
-      <Dynamic
-        component={local.as}
-        data-expanded={disclosureState.isOpen() ? "" : undefined}
-        {...others}
-      />
+      <Dynamic component={local.as} {...dataset()} {...others} />
     </CollapsibleContext.Provider>
   );
 });

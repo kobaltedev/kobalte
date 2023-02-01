@@ -15,25 +15,24 @@ import { useCollapsibleContext } from "./collapsible-context";
 /**
  * The button that expands/collapses the collapsible content.
  */
-export const CollapsibleTrigger = createPolymorphicComponent<"button", Button.ButtonRootOptions>(
-  props => {
-    const context = useCollapsibleContext();
+export const CollapsibleTrigger = createPolymorphicComponent<"button">(props => {
+  const context = useCollapsibleContext();
 
-    const [local, others] = splitProps(props, ["onClick"]);
+  const [local, others] = splitProps(props, ["onClick"]);
 
-    const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-      callHandler(e, local.onClick);
-      context.toggle();
-    };
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    callHandler(e, local.onClick);
+    context.toggle();
+  };
 
-    return (
-      <Button.Root
-        aria-expanded={context.isOpen()}
-        aria-controls={context.isOpen() ? context.contentId() : undefined}
-        data-expanded={context.isOpen() ? "" : undefined}
-        onClick={onClick}
-        {...others}
-      />
-    );
-  }
-);
+  return (
+    <Button.Root
+      aria-expanded={context.isOpen()}
+      aria-controls={context.isOpen() ? context.contentId() : undefined}
+      isDisabled={context.isDisabled()}
+      onClick={onClick}
+      {...context.dataset()}
+      {...others}
+    />
+  );
+});

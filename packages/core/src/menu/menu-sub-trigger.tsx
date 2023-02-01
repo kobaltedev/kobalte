@@ -302,7 +302,6 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
       aria-controls={context.isOpen() ? context.contentId() : undefined}
       aria-disabled={local.isDisabled}
       data-key={selectableItem.dataKey()}
-      data-expanded={context.isOpen() ? "" : undefined}
       data-highlighted={isHighlighted() ? "" : undefined}
       data-disabled={local.isDisabled ? "" : undefined}
       onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
@@ -313,6 +312,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
       onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
+      {...context.dataset()}
       {...others}
     />
   );

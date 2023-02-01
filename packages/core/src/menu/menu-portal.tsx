@@ -10,7 +10,7 @@ export function MenuPortal(props: ComponentProps<typeof Portal>) {
   const context = useMenuContext();
 
   return (
-    <Show when={context.shouldMount()}>
+    <Show when={context.contentPresence.isPresent()}>
       <Portal {...props} />
     </Show>
   );

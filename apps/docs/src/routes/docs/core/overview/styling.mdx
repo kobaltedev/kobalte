@@ -16,19 +16,19 @@ All components and their parts accept a `class` prop. This class will be passed 
   <TabsSnippets.Content value="tsx">
     {/* <!-- prettier-ignore-start --> */}
     ```tsx
-    import { Popover as PopoverBase } from "@kobalte/core";
+    import { Popover as KPopover } from "@kobalte/core";
     import "./style.css";
 
     export const Popover = () => {
       return (
-        <PopoverBase.Root>
-          <PopoverBase.Trigger class="popover__trigger">
+        <KPopover.Root>
+          <KPopover.Trigger class="popover__trigger">
             Open
-          </PopoverBase.Trigger>
-          <PopoverBase.Content class="popover__content">
+          </KPopover.Trigger>
+          <KPopover.Content class="popover__content">
             ...
-          </PopoverBase.Content>
-        </PopoverBase.Root>
+          </KPopover.Content>
+        </KPopover.Root>
       );
     };
     ```
@@ -134,15 +134,15 @@ module.exports = {
 Style your component:
 
 ```tsx
-import { Popover as PopoverBase } from "@kobalte/core";
+import { Popover as KPopover } from "@kobalte/core";
 
 export const Popover = () => (
-  <PopoverBase.Root>
-    <PopoverBase.Trigger class="inline-flex px-4 py-2 rounded ui-disabled:bg-slate-100">
+  <KPopover.Root>
+    <KPopover.Trigger class="inline-flex px-4 py-2 rounded ui-disabled:bg-slate-100">
       Open
-    </PopoverBase.Trigger>
-    <PopoverBase.Content class="flex p-4 rounded bg-white">...</PopoverBase.Content>
-  </PopoverBase.Root>
+    </KPopover.Trigger>
+    <KPopover.Content class="flex p-4 rounded bg-white">...</KPopover.Content>
+  </KPopover.Root>
 );
 ```
 
@@ -254,11 +254,11 @@ The [UnoCSS preset](https://github.com/zirbest/unocss-preset-primitives#kobalte)
 Extending a component is done the same way you extend any SolidJS component.
 
 ```tsx
-import { Popover as PopoverBase } from "@kobalte/core";
+import { Popover as KPopover } from "@kobalte/core";
 import { ComponentProps } from "solid-js";
 
-export const PopoverTrigger = (props: ComponentProps<typeof PopoverBase.Trigger>) => {
-  return <PopoverBase.Trigger {...props} />;
+export const PopoverTrigger = (props: ComponentProps<typeof KPopover.Trigger>) => {
+  return <KPopover.Trigger {...props} />;
 };
 ```
 
@@ -269,15 +269,15 @@ Kobalte Elements are polymorphic, meaning you can use the `as` prop to change th
 For example, you can use a custom button called `MyButton` as the trigger for a `Popover.Trigger` like below:
 
 ```tsx
-import { Popover as PopoverBase } from "@kobalte/core";
+import { Popover as KPopover } from "@kobalte/core";
 import { MyButton } from "./my-button";
 
 export const Popover = () => {
   return (
-    <PopoverBase.Root>
-      <PopoverBase.Trigger as={MyButton}>Open</PopoverBase.Trigger>
-      <PopoverBase.Content>...</PopoverBase.Content>
-    </PopoverBase.Root>
+    <KPopover.Root>
+      <KPopover.Trigger as={MyButton}>Open</KPopover.Trigger>
+      <KPopover.Content>...</KPopover.Content>
+    </KPopover.Root>
   );
 };
 ```

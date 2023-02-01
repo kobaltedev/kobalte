@@ -7,7 +7,7 @@ import {
 import { JSX, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
-import { PopperPositioner } from "../popper/popper-positioner";
+import { PopperPositioner } from "../popper";
 import {
   createFocusScope,
   createHideOutside,
@@ -91,6 +91,7 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentOpti
         excludedElements={[context.triggerRef]}
         hidden={!forceMount()}
         style={{
+          "--kb-select-content-transform-origin": "var(--kb-popper-content-transform-origin)",
           position: "relative",
           display: !forceMount() ? "none" : undefined,
           ...local.style,

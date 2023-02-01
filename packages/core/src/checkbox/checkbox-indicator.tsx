@@ -1,8 +1,9 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useCheckboxContext } from "./checkbox-context";
+import { createPresence } from "../primitives";
 
 export interface CheckboxIndicatorOptions {
   /**
@@ -28,11 +29,20 @@ export const CheckboxIndicator = createPolymorphicComponent<"div", CheckboxIndic
       props
     );
 
-    const [local, others] = splitProps(props, ["as", "forceMount"]);
+    const [local, others] = splitProps(props, ["as", "ref", "forceMount"]);
+
+    const presence = createPresence(
+      () => local.forceMount || context.isIndeterminate() || context.isChecked()
+    );
 
     return (
-      <Show when={local.forceMount || context.isIndeterminate() || context.isChecked()}>
-        <Dynamic component={local.as} {...context.dataset()} {...others} />
+      <Show when={presence.isPresent()}>
+        <Dynamic
+          component={local.as}
+          ref={mergeRefs(presence.setRef, local.ref)}
+          {...context.dataset()}
+          {...others}
+        />
       </Show>
     );
   }

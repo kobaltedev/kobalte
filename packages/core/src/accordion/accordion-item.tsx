@@ -57,8 +57,6 @@ export const AccordionItem = createPolymorphicComponent<"div", AccordionItemOpti
 
   const context: AccordionItemContextValue = {
     value: () => local.value,
-    isDisabled: () => local.isDisabled ?? false,
-    isExpanded,
     triggerId,
     contentId,
     generateId: createGenerateId(() => others.id!),
@@ -68,7 +66,7 @@ export const AccordionItem = createPolymorphicComponent<"div", AccordionItemOpti
 
   return (
     <AccordionItemContext.Provider value={context}>
-      <Collapsible.Root isOpen={isExpanded()} {...others} />
+      <Collapsible.Root isOpen={isExpanded()} isDisabled={local.isDisabled} {...others} />
     </AccordionItemContext.Provider>
   );
 });

@@ -191,11 +191,12 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
   return (
-    <Show when={context.shouldMount()}>
+    <Show when={context.contentPresence.isPresent()}>
       <PopperPositioner>
         <DismissableLayer
           ref={mergeRefs(el => {
             context.setContentRef(el);
+            context.contentPresence.setRef(el);
             ref = el;
           }, local.ref)}
           role="menu"
@@ -204,7 +205,11 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           isDismissed={!context.isOpen()}
           disableOutsidePointerEvents={isRootModalContent() && context.isOpen()}
           excludedElements={[context.triggerRef]}
-          style={{ position: "relative", ...local.style }}
+          style={{
+            "--kb-menu-content-transform-origin": "var(--kb-popper-content-transform-origin)",
+            position: "relative",
+            ...local.style,
+          }}
           aria-labelledby={context.triggerId()}
           onEscapeKeyDown={onEscapeKeyDown}
           onFocusOutside={onFocusOutside}
@@ -215,6 +220,7 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           onFocusOut={composeEventHandlers([local.onFocusOut, selectableList.onFocusOut])}
           onPointerEnter={onPointerEnter}
           onPointerMove={onPointerMove}
+          {...context.dataset()}
           {...others}
         />
       </PopperPositioner>

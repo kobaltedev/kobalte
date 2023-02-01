@@ -7,11 +7,18 @@
  */
 
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
+import {
+  Accessor,
+  createMemo,
+  createSignal,
+  createUniqueId,
+  ParentComponent,
+  splitProps,
+} from "solid-js";
 
 import { PopperRoot, PopperRootOptions } from "../popper";
-import { createDisclosureState, createRegisterId } from "../primitives";
-import { PopoverContext, PopoverContextValue } from "./popover-context";
+import { createDisclosureState, createPresence, createRegisterId } from "../primitives";
+import { PopoverContext, PopoverContextValue, PopoverDataSet } from "./popover-context";
 
 export interface PopoverRootOptions
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
@@ -99,10 +106,17 @@ export const PopoverRoot: ParentComponent<PopoverRootOptions> = props => {
     return local.anchorRef?.() ?? defaultAnchorRef() ?? triggerRef();
   };
 
+  const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
+
+  const dataset: Accessor<PopoverDataSet> = createMemo(() => ({
+    "data-expanded": disclosureState.isOpen() ? "" : undefined,
+  }));
+
   const context: PopoverContextValue = {
+    dataset,
     isOpen: disclosureState.isOpen,
     isModal: () => local.isModal!,
-    shouldMount: () => local.forceMount || disclosureState.isOpen(),
+    contentPresence,
     triggerRef,
     contentId,
     titleId,

@@ -1,15 +1,19 @@
-import { Polygon } from "@kobalte/utils";
-import { Accessor, createContext, Setter, useContext } from "solid-js";
+import { Accessor, createContext, useContext } from "solid-js";
 
 import { ListState } from "../list";
 import { Placement } from "../popper/utils";
-import { CollectionItem } from "../primitives";
+import { CollectionItem, CreatePresenceResult } from "../primitives";
 import { FocusStrategy } from "../selection";
 import { GraceIntent, Side } from "./utils";
 
+export interface MenuDataSet {
+  "data-expanded": string | undefined;
+}
+
 export interface MenuContextValue {
+  dataset: Accessor<MenuDataSet>;
   isOpen: Accessor<boolean>;
-  shouldMount: Accessor<boolean>;
+  contentPresence: CreatePresenceResult;
   currentPlacement: Accessor<Placement>;
   pointerGraceTimeoutId: Accessor<number>;
   autoFocus: Accessor<FocusStrategy | boolean | undefined>;

@@ -7,7 +7,15 @@
  */
 
 import { focusWithoutScrolling, mergeDefaultProps, removeItemFromArray } from "@kobalte/utils";
-import { createEffect, createSignal, onCleanup, ParentProps, splitProps } from "solid-js";
+import {
+  Accessor,
+  createEffect,
+  createMemo,
+  createSignal,
+  onCleanup,
+  ParentProps,
+  splitProps,
+} from "solid-js";
 
 import { createListState } from "../list";
 import { PopperRoot, PopperRootOptions } from "../popper";
@@ -16,6 +24,7 @@ import {
   CollectionItem,
   createDisclosureState,
   createHideOutside,
+  createPresence,
   createRegisterId,
 } from "../primitives";
 import {
@@ -23,7 +32,7 @@ import {
   useOptionalDomCollectionContext,
 } from "../primitives/create-dom-collection";
 import { FocusStrategy } from "../selection";
-import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-context";
+import { MenuContext, MenuContextValue, MenuDataSet, useOptionalMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 import { GraceIntent, isPointerInGraceArea, Side } from "./utils";
 
@@ -82,6 +91,10 @@ export function Menu(props: ParentProps<MenuOptions>) {
     defaultIsOpen: () => local.defaultIsOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
+
+  const contentPresence = createPresence(
+    () => rootContext.forceMount() || disclosureState.isOpen()
+  );
 
   const listState = createListState({
     selectionMode: "none",
@@ -171,9 +184,14 @@ export function Menu(props: ParentProps<MenuOptions>) {
     });
   });
 
+  const dataset: Accessor<MenuDataSet> = createMemo(() => ({
+    "data-expanded": disclosureState.isOpen() ? "" : undefined,
+  }));
+
   const context: MenuContextValue = {
+    dataset,
     isOpen: disclosureState.isOpen,
-    shouldMount: () => rootContext.forceMount() || disclosureState.isOpen(),
+    contentPresence,
     currentPlacement,
     pointerGraceTimeoutId: () => pointerGraceTimeoutId,
     autoFocus: focusStrategy,

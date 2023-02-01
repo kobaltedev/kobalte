@@ -96,10 +96,10 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerOptio
       aria-haspopup="true"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.contentId() : undefined}
-      data-expanded={context.isOpen() ? "" : undefined}
       onPointerDown={onPointerDown}
       onClick={onClick}
       onKeyDown={onKeyDown}
+      {...context.dataset()}
       {...others}
     />
   );

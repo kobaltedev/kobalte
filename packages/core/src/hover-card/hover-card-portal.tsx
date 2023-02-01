@@ -10,7 +10,7 @@ export function HoverCardPortal(props: ComponentProps<typeof Portal>) {
   const context = useHoverCardContext();
 
   return (
-    <Show when={context.shouldMount()}>
+    <Show when={context.contentPresence.isPresent()}>
       <Portal {...props} />
     </Show>
   );

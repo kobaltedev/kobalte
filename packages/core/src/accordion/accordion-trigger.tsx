@@ -14,8 +14,8 @@ import {
 } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import * as Button from "../button";
 import * as Collapsible from "../collapsible";
+import { useCollapsibleContext } from "../collapsible/collapsible-context";
 import { CollectionItem } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -25,14 +25,12 @@ import { useAccordionItemContext } from "./accordion-item-context";
 /**
  * Toggles the collapsed state of its associated item. It should be nested inside an `Accordion.Header`.
  */
-export const AccordionTrigger = createPolymorphicComponent<
-  "button",
-  Omit<Button.ButtonRootOptions, "isDisabled">
->(props => {
+export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
   let ref: HTMLElement | undefined;
 
   const accordionContext = useAccordionContext();
   const itemContext = useAccordionItemContext();
+  const collapsibleContext = useCollapsibleContext();
 
   const defaultId = itemContext.generateId("trigger");
 
@@ -58,7 +56,7 @@ export const AccordionTrigger = createPolymorphicComponent<
     getItem: () => ({
       ref: () => ref,
       key: itemContext.value(),
-      isDisabled: itemContext.isDisabled(),
+      isDisabled: collapsibleContext.isDisabled(),
       label: "", // not applicable
       textValue: "", // not applicable
     }),
@@ -68,7 +66,7 @@ export const AccordionTrigger = createPolymorphicComponent<
     {
       key: () => itemContext.value(),
       selectionManager: () => accordionContext.listState().selectionManager(),
-      isDisabled: () => itemContext.isDisabled(),
+      isDisabled: () => collapsibleContext.isDisabled(),
       shouldSelectOnPressUp: true,
     },
     () => ref
@@ -79,7 +77,6 @@ export const AccordionTrigger = createPolymorphicComponent<
   return (
     <Collapsible.Trigger
       ref={mergeRefs(el => (ref = el), local.ref)}
-      isDisabled={selectableItem.isDisabled()}
       data-key={selectableItem.dataKey()}
       onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
       onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}

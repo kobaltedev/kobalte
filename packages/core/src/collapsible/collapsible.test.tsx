@@ -44,6 +44,18 @@ describe("Collapsible", () => {
     expect(content).not.toBeVisible();
   });
 
+  it("should not open the content when clicking the trigger if disabled", async () => {
+    render(() => <Example isDisabled />);
+
+    const trigger = screen.getByText(TRIGGER_TEXT);
+
+    fireEvent.click(trigger);
+    await Promise.resolve();
+
+    const content = screen.queryByText(CONTENT_TEXT);
+    expect(content).toBeNull();
+  });
+
   it("should close content when clicking the trigger and collapsible is open uncontrolled", async () => {
     const onOpenChangeSpy = jest.fn();
 
