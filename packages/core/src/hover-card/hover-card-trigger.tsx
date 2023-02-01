@@ -98,12 +98,12 @@ export const HoverCardTrigger = createPolymorphicComponent<"a", Link.LinkRootOpt
   return (
     <Link.Root
       ref={mergeRefs(context.setTriggerRef, local.ref)}
-      data-expanded={context.isOpen() ? "" : undefined}
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
       onFocus={onFocus}
       onBlur={onBlur}
       onTouchStart={onTouchStart}
+      {...context.dataset()}
       {...others}
     />
   );

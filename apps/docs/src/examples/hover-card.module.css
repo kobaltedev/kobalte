@@ -21,6 +21,12 @@
   padding: 16px;
   background-color: white;
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transform-origin: var(--kb-hovercard-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
+
+.hovercard__content[data-expanded] {
+  animation: contentShow 250ms ease-out;
 }
 
 .hovercard__title {
@@ -37,6 +43,28 @@
 .hovercard__avatar {
   height: 56px;
   width: 56px;
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
 }
 
 [data-kb-theme="dark"] .hovercard__trigger {

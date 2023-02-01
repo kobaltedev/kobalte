@@ -20,10 +20,13 @@ export const HoverCardContent = createPolymorphicComponent<"div", HoverCardConte
     const [local, others] = splitProps(props, ["ref", "style"]);
 
     return (
-      <Show when={context.shouldMount()}>
+      <Show when={context.contentPresence.isPresent()}>
         <PopperPositioner>
           <DismissableLayer
-            ref={mergeRefs(context.setContentRef, local.ref)}
+            ref={mergeRefs(el => {
+              context.setContentRef(el);
+              context.contentPresence.setRef(el);
+            }, local.ref)}
             isDismissed={!context.isOpen()}
             disableOutsidePointerEvents={false}
             style={{
@@ -34,6 +37,7 @@ export const HoverCardContent = createPolymorphicComponent<"div", HoverCardConte
             }}
             onFocusOutside={e => e.preventDefault()}
             onDismiss={context.close}
+            {...context.dataset()}
             {...others}
           />
         </PopperPositioner>

@@ -14,7 +14,9 @@ import {
   mergeDefaultProps,
 } from "@kobalte/utils";
 import {
+  Accessor,
   createEffect,
+  createMemo,
   createSignal,
   createUniqueId,
   onCleanup,
@@ -25,8 +27,8 @@ import { isServer } from "solid-js/web";
 
 import { PopperRoot, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
-import { createDisclosureState } from "../primitives";
-import { HoverCardContext, HoverCardContextValue } from "./hover-card-context";
+import { createDisclosureState, createPresence } from "../primitives";
+import { HoverCardContext, HoverCardContextValue, HoverCardDataSet } from "./hover-card-context";
 import { getHoverCardSafeArea } from "./utils";
 
 export interface HoverCardRootOptions
@@ -105,6 +107,8 @@ export const HoverCardRoot: ParentComponent<HoverCardRootOptions> = props => {
     defaultIsOpen: () => local.defaultIsOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
+
+  const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
 
   const { addGlobalListener, removeGlobalListener } = createGlobalListeners();
 
@@ -211,9 +215,14 @@ export const HoverCardRoot: ParentComponent<HoverCardRootOptions> = props => {
     cancelClosing();
   });
 
+  const dataset: Accessor<HoverCardDataSet> = createMemo(() => ({
+    "data-expanded": disclosureState.isOpen() ? "" : undefined,
+  }));
+
   const context: HoverCardContextValue = {
+    dataset,
     isOpen: disclosureState.isOpen,
-    shouldMount: () => local.forceMount || disclosureState.isOpen(),
+    contentPresence,
     openWithDelay,
     closeWithDelay,
     cancelOpening,
