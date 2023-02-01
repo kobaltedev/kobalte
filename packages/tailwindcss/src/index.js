@@ -32,8 +32,8 @@ module.exports = plugin.withOptions(({ prefix = "ui" } = {}) => {
     for (let state of STATES) {
       addVariant(`${prefix}-${state}`, [`&[data-${state}]`]);
       addVariant(`${prefix}-not-${state}`, [`&:not([data-${state}])`]);
-      addVariant(`${prefix}-group-${state}`, `:merge(.group):[data-${state}] &`);
-      addVariant(`${prefix}-peer-${state}`, `:merge(.peer):[data-${state}] ~ &`);
+      addVariant(`${prefix}-group-${state}`, `:merge(.group)[data-${state}] &`);
+      addVariant(`${prefix}-peer-${state}`, `:merge(.peer)[data-${state}] ~ &`);
     }
 
     for (let orientation of ORIENTATIONS) {
@@ -41,11 +41,11 @@ module.exports = plugin.withOptions(({ prefix = "ui" } = {}) => {
       addVariant(`${prefix}-not-${orientation}`, [`&:not([data-orientation='${orientation}'])`]);
       addVariant(
         `${prefix}-group-${orientation}`,
-        `:merge(.group):[data-orientation='${orientation}'] &`
+        `:merge(.group)[data-orientation='${orientation}'] &`
       );
       addVariant(
         `${prefix}-peer-${orientation}`,
-        `:merge(.peer):[data-orientation='${orientation}'] ~ &`
+        `:merge(.peer)[data-orientation='${orientation}'] ~ &`
       );
     }
   };
