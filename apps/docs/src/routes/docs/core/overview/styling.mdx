@@ -163,7 +163,7 @@ You can use the following modifiers:
 | `ui-highlighted`   | `&[data-highlighted]`   |
 | `ui-current`       | `&[data-current]`       |
 
-It's also possible to use _inverse modifiers_ in the form of `ui-not-*`.
+It's also possible to use _inverse modifiers_ in the form of `ui-not-*`, _group and peer modifiers_ in the form of `ui-group-*` and `ui-peer-*`.
 
 ## Using the Vanilla Extract plugin
 
@@ -218,7 +218,7 @@ const button = style([
     disabled: {
       opacity: 0.4,
     },
-    hover: {
+    invalid: {
       backgroundColor: "red",
       not: {
         backgroundColor: "yellow",
@@ -227,7 +227,7 @@ const button = style([
   }),
   componentStateStyles(
     {
-      hover: {
+      invalid: {
         backgroundColor: "red",
       },
     },

@@ -98,6 +98,7 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
         tabIndex={tabIndex()}
         aria-labelledby={context.triggerIdsMap().get(local.value)}
         data-orientation={context.orientation()}
+        data-selected={isSelected() ? "" : undefined}
         {...others}
       />
     </Show>

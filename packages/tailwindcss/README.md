@@ -63,6 +63,8 @@ You can use the following modifiers:
 | `ui-highlighted`   | `ui-not-highlighted`   |
 | `ui-current`       | `ui-not-current`       |
 
+It's also possible to use _inverse modifiers_ in the form of `ui-not-*`, _group and peer modifiers_ in the form of `ui-group-*` and `ui-peer-*`.
+
 ## Documentation
 
 For full documentation, visit [kobalte.dev](https://kobalte.dev/docs/core/overview/styling#using-the-tailwindcss-plugin).

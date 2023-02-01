@@ -34,7 +34,7 @@ const button = style([
     disabled: {
       opacity: 0.4,
     },
-    hover: {
+    invalid: {
       backgroundColor: "red",
       not: {
         backgroundColor: "yellow",
@@ -43,7 +43,7 @@ const button = style([
   }),
   componentStateStyles(
     {
-      hover: {
+      invalid: {
         backgroundColor: "red",
       },
     },
