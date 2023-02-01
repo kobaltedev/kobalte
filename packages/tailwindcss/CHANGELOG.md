@@ -1,5 +1,11 @@
 # @kobalte/tailwindcss
 
+## 0.4.1
+
+### Patch Changes
+
+- 72b390e: fix: #101
+
 ## 0.4.0
 
 ### Minor Changes
