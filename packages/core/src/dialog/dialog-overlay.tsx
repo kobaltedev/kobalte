@@ -1,4 +1,9 @@
-import { callHandler, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import {
+  callHandler,
+  createPolymorphicComponent,
+  mergeDefaultProps,
+  mergeRefs,
+} from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
@@ -17,7 +22,7 @@ export const DialogOverlay = createPolymorphicComponent<"div", DialogOverlayOpti
 
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, ["as", "style", "onPointerDown"]);
+  const [local, others] = splitProps(props, ["as", "ref", "style", "onPointerDown"]);
 
   const onPointerDown: JSX.EventHandlerUnion<HTMLDivElement, PointerEvent> = e => {
     callHandler(e, local.onPointerDown);
@@ -29,11 +34,13 @@ export const DialogOverlay = createPolymorphicComponent<"div", DialogOverlayOpti
   };
 
   return (
-    <Show when={context.shouldMount()}>
+    <Show when={context.overlayPresence.isPresent()}>
       <Dynamic
         component={local.as}
+        ref={mergeRefs(context.overlayPresence.setRef, local.ref)}
         // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling.
         style={{ "pointer-events": "auto", ...local.style }}
+        data-expanded={context.isOpen() ? "" : undefined}
         onPointerDown={onPointerDown}
         {...others}
       />

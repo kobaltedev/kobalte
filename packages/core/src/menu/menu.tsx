@@ -6,8 +6,16 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import { mergeDefaultProps, removeItemFromArray } from "@kobalte/utils";
-import { createEffect, createSignal, onCleanup, ParentProps, splitProps } from "solid-js";
+import { focusWithoutScrolling, mergeDefaultProps, removeItemFromArray } from "@kobalte/utils";
+import {
+  Accessor,
+  createEffect,
+  createMemo,
+  createSignal,
+  onCleanup,
+  ParentProps,
+  splitProps,
+} from "solid-js";
 
 import { createListState } from "../list";
 import { PopperRoot, PopperRootOptions } from "../popper";
@@ -16,15 +24,15 @@ import {
   CollectionItem,
   createDisclosureState,
   createHideOutside,
+  createPresence,
   createRegisterId,
-  focusSafely,
 } from "../primitives";
 import {
   createDomCollection,
   useOptionalDomCollectionContext,
 } from "../primitives/create-dom-collection";
 import { FocusStrategy } from "../selection";
-import { MenuContext, MenuContextValue, useOptionalMenuContext } from "./menu-context";
+import { MenuContext, MenuContextValue, MenuDataSet, useOptionalMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 import { GraceIntent, isPointerInGraceArea, Side } from "./utils";
 
@@ -84,6 +92,10 @@ export function Menu(props: ParentProps<MenuOptions>) {
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
+  const contentPresence = createPresence(
+    () => rootContext.forceMount() || disclosureState.isOpen()
+  );
+
   const listState = createListState({
     selectionMode: "none",
     dataSource: items,
@@ -107,7 +119,7 @@ export function Menu(props: ParentProps<MenuOptions>) {
     const content = contentRef();
 
     if (content) {
-      focusSafely(content);
+      focusWithoutScrolling(content);
       listState.selectionManager().setFocused(true);
       listState.selectionManager().setFocusedKey(undefined);
     }
@@ -172,9 +184,14 @@ export function Menu(props: ParentProps<MenuOptions>) {
     });
   });
 
+  const dataset: Accessor<MenuDataSet> = createMemo(() => ({
+    "data-expanded": disclosureState.isOpen() ? "" : undefined,
+  }));
+
   const context: MenuContextValue = {
+    dataset,
     isOpen: disclosureState.isOpen,
-    shouldMount: () => rootContext.forceMount() || disclosureState.isOpen(),
+    contentPresence,
     currentPlacement,
     pointerGraceTimeoutId: () => pointerGraceTimeoutId,
     autoFocus: focusStrategy,

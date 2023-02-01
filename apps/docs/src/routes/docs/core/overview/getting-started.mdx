@@ -97,16 +97,16 @@ The example below demonstrate how to create a Popover component with Kobalte.
       transition: 250ms background-color;
     }
 
-    .popover__trigger[data-hover] {
+    .popover__trigger:hover {
       background-color: hsl(201 96% 32%);
     }
 
-    .popover__trigger[data-focus-visible] {
+    .popover__trigger:focus-visible {
       outline: 2px solid hsl(200 98% 39%);
       outline-offset: 2px;
     }
 
-    .popover__trigger[data-active] {
+    .popover__trigger:active {
       background-color: hsl(201 90% 27%);
     }
 

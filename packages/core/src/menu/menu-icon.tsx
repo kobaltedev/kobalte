@@ -15,12 +15,5 @@ export const MenuIcon = createPolymorphicComponent<"div">(props => {
 
   const [local, others] = splitProps(props, ["as"]);
 
-  return (
-    <Dynamic
-      component={local.as}
-      aria-hidden="true"
-      data-expanded={context.isOpen() ? "" : undefined}
-      {...others}
-    />
-  );
+  return <Dynamic component={local.as} aria-hidden="true" {...context.dataset()} {...others} />;
 });

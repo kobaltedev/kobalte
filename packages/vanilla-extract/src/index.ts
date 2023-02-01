@@ -15,10 +15,8 @@ export type DataAttributeState =
   | "selected"
   | "pressed"
   | "expanded"
-  | "hover"
-  | "focus"
-  | "focus-visible"
-  | "active";
+  | "highlighted"
+  | "current";
 
 export type DataAttributeStyles = {
   [key in DataAttributeState]?: CSSProps & { not?: CSSProps };
@@ -49,7 +47,7 @@ function makeSelectorByOptions(selector: string, options: SelectorOptions): stri
   return selector;
 }
 
-type CompoonentStateStyleOptions = {
+type ComponentStateStyleOptions = {
   /**
    * Apply the given parent selector to the `StyleRule` data-* attribute selector
    */
@@ -58,7 +56,7 @@ type CompoonentStateStyleOptions = {
 
 export function componentStateStyles(
   styles: DataAttributeStyles,
-  options?: CompoonentStateStyleOptions
+  options?: ComponentStateStyleOptions
 ): StyleRule {
   const styleRule = { selectors: {} } as { selectors: StyleRule["selectors"] };
 

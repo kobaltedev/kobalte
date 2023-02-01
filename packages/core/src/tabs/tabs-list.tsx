@@ -79,16 +79,10 @@ export const TabsList = createPolymorphicComponent<"div">(props => {
       role="tablist"
       aria-orientation={context.orientation()}
       data-orientation={context.orientation()}
-      onKeyDown={composeEventHandlers([local.onKeyDown, selectableCollection.handlers.onKeyDown])}
-      onMouseDown={composeEventHandlers([
-        local.onMouseDown,
-        selectableCollection.handlers.onMouseDown,
-      ])}
-      onFocusIn={composeEventHandlers([local.onFocusIn, selectableCollection.handlers.onFocusIn])}
-      onFocusOut={composeEventHandlers([
-        local.onFocusOut,
-        selectableCollection.handlers.onFocusOut,
-      ])}
+      onKeyDown={composeEventHandlers([local.onKeyDown, selectableCollection.onKeyDown])}
+      onMouseDown={composeEventHandlers([local.onMouseDown, selectableCollection.onMouseDown])}
+      onFocusIn={composeEventHandlers([local.onFocusIn, selectableCollection.onFocusIn])}
+      onFocusOut={composeEventHandlers([local.onFocusOut, selectableCollection.onFocusOut])}
       {...others}
     />
   );

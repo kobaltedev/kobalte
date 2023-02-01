@@ -15,7 +15,7 @@
   transition: 250ms background-color;
 }
 
-.switch__control[data-focus-visible] {
+.switch__input:focus-visible + .switch__control {
   outline: 2px solid hsl(200 98% 39%);
   outline-offset: 2px;
 }

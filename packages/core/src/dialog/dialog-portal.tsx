@@ -10,7 +10,7 @@ export function DialogPortal(props: ComponentProps<typeof Portal>) {
   const context = useDialogContext();
 
   return (
-    <Show when={context.shouldMount()}>
+    <Show when={context.contentPresence.isPresent() || context.overlayPresence.isPresent()}>
       <Portal {...props} />
     </Show>
   );

@@ -7,7 +7,8 @@
  */
 
 import {
-  composeEventHandlers,
+  callHandler,
+  createGenerateId,
   mergeDefaultProps,
   mergeRefs,
   OverrideProps,
@@ -20,17 +21,11 @@ import {
   createMemo,
   createSignal,
   createUniqueId,
+  JSX,
   splitProps,
 } from "solid-js";
 
-import {
-  createFormResetListener,
-  createHover,
-  createPress,
-  createToggleState,
-  HOVER_HANDLERS_PROP_NAMES,
-  PRESS_HANDLERS_PROP_NAMES,
-} from "../primitives";
+import { createFormResetListener, createToggleState } from "../primitives";
 import { SwitchContext, SwitchContextValue, SwitchDataSet } from "./switch-context";
 
 export interface SwitchRootOptions {
@@ -101,12 +96,10 @@ export const SwitchRoot: Component<
     "isRequired",
     "isDisabled",
     "isReadOnly",
-    ...PRESS_HANDLERS_PROP_NAMES,
-    ...HOVER_HANDLERS_PROP_NAMES,
+    "onPointerDown",
   ]);
 
   const [isFocused, setIsFocused] = createSignal(false);
-  const [isFocusVisible, setIsFocusVisible] = createSignal(false);
 
   const state = createToggleState({
     isSelected: () => local.isChecked,
@@ -121,14 +114,14 @@ export const SwitchRoot: Component<
     () => state.setIsSelected(local.defaultIsChecked ?? false)
   );
 
-  const { isPressed, pressHandlers } = createPress({
-    isDisabled: () => local.isDisabled,
-    preventFocusOnPress: () => isFocused(), // For consistency with native, prevent the input blurs.
-  });
+  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerDown);
 
-  const { isHovered, hoverHandlers } = createHover({
-    isDisabled: () => local.isDisabled,
-  });
+    // For consistency with native, prevent the input blurs on pointer down.
+    if (isFocused()) {
+      e.preventDefault();
+    }
+  };
 
   const dataset: Accessor<SwitchDataSet> = createMemo(() => ({
     "data-valid": local.validationState === "valid" ? "" : undefined,
@@ -137,10 +130,6 @@ export const SwitchRoot: Component<
     "data-required": local.isRequired ? "" : undefined,
     "data-disabled": local.isDisabled ? "" : undefined,
     "data-readonly": local.isReadOnly ? "" : undefined,
-    "data-hover": isHovered() ? "" : undefined,
-    "data-focus": isFocused() ? "" : undefined,
-    "data-focus-visible": isFocusVisible() ? "" : undefined,
-    "data-active": isPressed() ? "" : undefined,
   }));
 
   const context: SwitchContextValue = {
@@ -152,26 +141,17 @@ export const SwitchRoot: Component<
     isRequired: () => local.isRequired,
     isDisabled: () => local.isDisabled,
     isReadOnly: () => local.isReadOnly,
-    generateId: part => `${others.id!}-${part}`,
+    generateId: createGenerateId(() => others.id!),
     setIsChecked: isChecked => state.setIsSelected(isChecked),
     setIsFocused,
-    setIsFocusVisible,
   };
 
   return (
     <SwitchContext.Provider value={context}>
       <label
         ref={mergeRefs(el => (ref = el), local.ref)}
-        onKeyDown={composeEventHandlers([local.onKeyDown, pressHandlers.onKeyDown])}
-        onKeyUp={composeEventHandlers([local.onKeyUp, pressHandlers.onKeyUp])}
-        onClick={composeEventHandlers([local.onClick, pressHandlers.onClick])}
-        onPointerDown={composeEventHandlers([local.onPointerDown, pressHandlers.onPointerDown])}
-        onPointerUp={composeEventHandlers([local.onPointerUp, pressHandlers.onPointerUp])}
-        onMouseDown={composeEventHandlers([local.onMouseDown, pressHandlers.onMouseDown])}
-        onDragStart={composeEventHandlers([local.onDragStart, pressHandlers.onDragStart])}
-        onPointerEnter={composeEventHandlers([local.onPointerEnter, hoverHandlers.onPointerEnter])}
-        onPointerLeave={composeEventHandlers([local.onPointerLeave, hoverHandlers.onPointerLeave])}
-        {...context.dataset()}
+        onPointerDown={onPointerDown}
+        {...dataset()}
         {...others}
       />
     </SwitchContext.Provider>

@@ -43,7 +43,7 @@ TabsSnippets.Trigger = (props: ComponentProps<typeof Tabs.Trigger>) => {
   return (
     <Tabs.Trigger
       class={clsx(
-        "outline-none text-sm px-3 py-2 text-zinc-700 ui-selected:font-medium ui-focus-visible:bg-zinc-200 dark:text-white/80 dark:ui-focus-visible:bg-zinc-700",
+        "outline-none text-sm px-3 py-2 text-zinc-700 ui-selected:font-medium focus-visible:bg-zinc-200 dark:text-white/80 dark:focus-visible:bg-zinc-700",
         local.class
       )}
       {...others}

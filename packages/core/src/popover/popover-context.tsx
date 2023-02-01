@@ -1,9 +1,16 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
+import { CreatePresenceResult } from "../primitives";
+
+export interface PopoverDataSet {
+  "data-expanded": string | undefined;
+}
+
 export interface PopoverContextValue {
+  dataset: Accessor<PopoverDataSet>;
   isOpen: Accessor<boolean>;
   isModal: Accessor<boolean>;
-  shouldMount: Accessor<boolean>;
+  contentPresence: CreatePresenceResult;
   triggerRef: Accessor<HTMLElement | undefined>;
   contentId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;

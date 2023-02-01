@@ -52,7 +52,7 @@ export const mdxComponents = {
       <pre ref={domRef} onMouseLeave={reset} {...others}>
         <Button.Root
           aria-label="copy to clipboard"
-          onPress={copyToClipboard}
+          onClick={copyToClipboard}
           class={clsx(
             "kb-copy-btn transition outline-none absolute top-3 right-2 z-10 text-base h-6 w-6 rounded appearance-none flex items-center justify-center",
             isCopied()

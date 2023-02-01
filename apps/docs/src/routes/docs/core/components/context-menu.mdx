@@ -33,6 +33,7 @@ The context menu consists of:
 
 - **ContextMenu.Root:** The root container for a context menu.
 - **ContextMenu.Trigger:** The button that toggles the menu.
+- **ContextMenu.Icon:** A small icon that can be displayed inside the menu trigger as a visual affordance for the fact it can be open.
 - **ContextMenu.Portal:** Portals its children into the `body` when the menu is open.
 - **ContextMenu.Content:** Contains the content to be rendered when the menu is open.
 - **ContextMenu.Arrow:** An optional arrow element to render alongside the menu content.
@@ -58,7 +59,9 @@ The checkable menu item consists of:
 
 ```tsx
 <ContextMenu.Root>
-  <ContextMenu.Trigger />
+  <ContextMenu.Trigger>
+    <ContextMenu.Icon />
+  </ContextMenu.Trigger>
 
   <ContextMenu.Portal>
     <ContextMenu.Content>
@@ -238,6 +241,13 @@ The checkable menu item consists of:
       border: 1px solid hsl(240 6% 90%);
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
       outline: none;
+      transform-origin: var(--kb-menu-content-transform-origin);
+      animation: contentHide 250ms ease-in forwards;
+    }
+
+    .context-menu__content[data-expanded],
+    .context-menu__sub-content[data-expanded] {
+      animation: contentShow 250ms ease-out;
     }
 
     .context-menu__item,
@@ -271,10 +281,10 @@ The checkable menu item consists of:
       pointer-events: none;
     }
 
-    .context-menu__item[data-focus],
-    .context-menu__checkbox-item[data-focus],
-    .context-menu__radio-item[data-focus],
-    .context-menu__sub-trigger[data-focus] {
+    .context-menu__item[data-highlighted],
+    .context-menu__checkbox-item[data-highlighted],
+    .context-menu__radio-item[data-highlighted],
+    .context-menu__sub-trigger[data-highlighted] {
       outline: none;
       background-color: hsl(200 98% 39%);
       color: white;
@@ -310,13 +320,35 @@ The checkable menu item consists of:
       color: hsl(240 4% 46%);
     }
 
-    [data-focus] > .context-menu__item-right-slot {
+    [data-highlighted] > .context-menu__item-right-slot {
       color: white;
     }
 
     [data-disabled] .context-menu__item-right-slot {
       color: hsl(240 5% 65%);
       opacity: 0.5;
+    }
+
+    @keyframes contentShow {
+      from {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes contentHide {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.96);
+      }
     }
     ```
 
@@ -328,7 +360,43 @@ The checkable menu item consists of:
 
 ### Origin-aware animations
 
-We expose a CSS custom property `--kb-popper-transform-origin` which can be used to animate the content from its computed origin.
+We expose a CSS custom property `--kb-popper-content-transform-origin` which can be used to animate the content from its computed origin.
+
+```css {3}
+/* style.css */
+.context-menu__content,
+.context-menu__sub-content {
+  transform-origin: var(--kb-menu-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
+
+.context-menu__content[data-expanded],
+.context-menu__sub-content[data-expanded] {
+  animation: contentShow 250ms ease-out;
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+```
 
 ## API Reference
 
@@ -369,6 +437,8 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | data-expanded  | Present when the menu is open.        |
 | data-disabled  | Present when the trigger is disabled. |
 
+`ContextMenu.Icon`, `ContextMenu.Content`, `ContextMenu.SubTrigger` and `ContextMenu.SubContent` share the same `data-expanded` attribute.
+
 ### ContextMenu.Content
 
 | Prop                 | Description                                                                                                                                                                                                         |
@@ -379,11 +449,6 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
 | onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
 | onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
-
-| Data attribute     | Description                                                      |
-| :----------------- | :--------------------------------------------------------------- |
-| data-focus         | Present when the content element itself is focused.              |
-| data-focus-visible | Present when the content element itself is focused via keyboard. |
 
 ### ContextMenu.Arrow
 
@@ -400,13 +465,10 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | closeOnSelect | `boolean` <br/> Whether the menu should close when the item is activated.                                                                                                                                                                                                                                        |
 | onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                   |
 
-| Data attribute     | Description                                                                       |
-| :----------------- | :-------------------------------------------------------------------------------- |
-| data-disabled      | Present when the item is disabled.                                                |
-| data-hover         | Present when the item is hovered.                                                 |
-| data-focus         | Present when the item is focused.                                                 |
-| data-focus-visible | Present when the item is focused via keyboard.                                    |
-| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-highlighted | Present when the item is highlighted. |
 
 `ContextMenu.ItemLabel`, `ContextMenu.ItemDescription` and `ContextMenu.ItemIndicator` shares the same data-attributes.
 
@@ -435,14 +497,11 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | closeOnSelect | `boolean` <br/> Whether the menu should close when the item is checked.                                                                                                                                                                                                                                          |
 | onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                   |
 
-| Data attribute     | Description                                                                       |
-| :----------------- | :-------------------------------------------------------------------------------- |
-| data-disabled      | Present when the item is disabled.                                                |
-| data-checked       | Present when the item is checked.                                                 |
-| data-hover         | Present when the item is hovered.                                                 |
-| data-focus         | Present when the item is focused.                                                 |
-| data-focus-visible | Present when the item is focused via keyboard.                                    |
-| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-checked     | Present when the item is checked.     |
+| data-highlighted | Present when the item is highlighted. |
 
 ### ContextMenu.CheckboxItem
 
@@ -457,15 +516,12 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | closeOnSelect    | `boolean` <br/> Whether the menu should close when the item is checked/unchecked.                                                                                                                                                                                                                                |
 | onSelect         | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                   |
 
-| Data attribute     | Description                                                                       |
-| :----------------- | :-------------------------------------------------------------------------------- |
-| data-disabled      | Present when the item is disabled.                                                |
-| data-indeterminate | Present when the item is in an indeterminate state.                               |
-| data-checked       | Present when the item is checked.                                                 |
-| data-hover         | Present when the item is hovered.                                                 |
-| data-focus         | Present when the item is focused.                                                 |
-| data-focus-visible | Present when the item is focused via keyboard.                                    |
-| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute     | Description                                         |
+| :----------------- | :-------------------------------------------------- |
+| data-disabled      | Present when the item is disabled.                  |
+| data-indeterminate | Present when the item is in an indeterminate state. |
+| data-checked       | Present when the item is checked.                   |
+| data-highlighted   | Present when the item is highlighted.               |
 
 ### ContextMenu.Sub
 
@@ -497,14 +553,10 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | textValue  | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `ContextMenu.SubTrigger`. Use this when the content is complex, or you have non-textual content inside. |
 | isDisabled | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                      |
 
-| Data attribute     | Description                                                                       |
-| :----------------- | :-------------------------------------------------------------------------------- |
-| data-expanded      | Present when the sub menu is open.                                                |
-| data-disabled      | Present when the item is disabled.                                                |
-| data-hover         | Present when the item is hovered.                                                 |
-| data-focus         | Present when the item is focused.                                                 |
-| data-focus-visible | Present when the item is focused via keyboard.                                    |
-| data-active        | Present when the item is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-highlighted | Present when the item is highlighted. |
 
 ### ContextMenu.SubContent
 
@@ -514,11 +566,6 @@ We expose a CSS custom property `--kb-popper-transform-origin` which can be used
 | onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
 | onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
 | onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
-
-| Data attribute     | Description                                                      |
-| :----------------- | :--------------------------------------------------------------- |
-| data-focus         | Present when the content element itself is focused.              |
-| data-focus-visible | Present when the content element itself is focused via keyboard. |
 
 ## Rendered elements
 

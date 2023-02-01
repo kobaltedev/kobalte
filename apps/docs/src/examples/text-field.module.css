@@ -24,11 +24,11 @@
   transition: border-color 250ms, color 250ms;
 }
 
-.text-field__input[data-hover] {
+.text-field__input:hover {
   border-color: hsl(240 5% 65%);
 }
 
-.text-field__input[data-focus-visible] {
+.text-field__input:focus-visible {
   outline: 2px solid hsl(200 98% 39%);
   outline-offset: 2px;
 }
@@ -60,7 +60,7 @@
   color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .text-field__input[data-hover] {
+[data-kb-theme="dark"] .text-field__input:hover {
   border-color: hsl(240 4% 46%);
 }
 

@@ -15,16 +15,16 @@
   transition: 250ms background-color;
 }
 
-.dialog__trigger[data-hover] {
+.dialog__trigger:hover {
   background-color: hsl(201 96% 32%);
 }
 
-.dialog__trigger[data-focus-visible] {
+.dialog__trigger:focus-visible {
   outline: 2px solid hsl(200 98% 39%);
   outline-offset: 2px;
 }
 
-.dialog__trigger[data-active] {
+.dialog__trigger:active {
   background-color: hsl(201 90% 27%);
 }
 
@@ -33,6 +33,11 @@
   inset: 0;
   z-index: 50;
   background-color: rgb(0 0 0 / 0.2);
+  animation: overlayHide 250ms ease 100ms forwards;
+}
+
+.dialog__overlay[data-expanded] {
+  animation: overlayShow 250ms ease;
 }
 
 .dialog__positioner {
@@ -52,6 +57,11 @@
   padding: 16px;
   background-color: white;
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  animation: contentHide 300ms ease-in forwards;
+}
+
+.dialog__content[data-expanded] {
+  animation: contentShow 300ms ease-out;
 }
 
 .dialog__header {
@@ -78,16 +88,56 @@
   color: hsl(240 5% 26%);
 }
 
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes overlayHide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
 [data-kb-theme="dark"] .dialog__trigger {
   background-color: hsl(201 96% 32%);
   color: hsla(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .dialog__trigger[data-hover] {
+[data-kb-theme="dark"] .dialog__trigger:hover {
   background-color: hsl(200 98% 39%);
 }
 
-[data-kb-theme="dark"] .dialog__trigger[data-active] {
+[data-kb-theme="dark"] .dialog__trigger:active {
   background-color: hsl(199 89% 48%);
 }
 

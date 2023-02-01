@@ -30,16 +30,6 @@ export function composeEventHandlers<T>(
   };
 }
 
-export function isActionKey() {
-  const event = window.event as KeyboardEvent;
-  return event?.key === "Enter";
-}
-
-export function isSelectionKey() {
-  const event = window.event as KeyboardEvent;
-  return event?.key === " " || event?.code === "Space";
-}
-
 export function isCtrlKey(e: Pick<KeyboardEvent, "ctrlKey" | "metaKey">) {
   if (isMac()) {
     return e.metaKey && !e.ctrlKey;

@@ -32,11 +32,12 @@ export function Header(props: HeaderProps) {
           <span class="text-3xl leading-[0] text-sky-600">.</span>
         </Link>
         <span class="rounded bg-zinc-100 px-1.5 py-1 text-sm leading-none dark:bg-zinc-800 dark:text-zinc-300">
-          v0.5.0
+          v0.6.0
         </span>
       </div>
-      <div class="-my-5 mr-6 sm:mr-8 md:mr-0">{/* Search */}</div>
+
       <div class="relative flex basis-0 justify-end md:flex-grow">
+        <div id="docsearch" class="px-1 flex items-center justify-center" />
         <div class="hidden lg:flex text-sm">
           <Link
             href="/docs/core/overview/introduction"

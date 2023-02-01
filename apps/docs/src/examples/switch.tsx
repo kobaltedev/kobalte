@@ -6,8 +6,8 @@ import style from "./switch.module.css";
 export function BasicExample() {
   return (
     <Switch.Root class={style["switch"]}>
-      <Switch.Input />
       <Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
+      <Switch.Input class={style["switch__input"]} />
       <Switch.Control class={style["switch__control"]}>
         <Switch.Thumb class={style["switch__thumb"]} />
       </Switch.Control>
@@ -18,8 +18,8 @@ export function BasicExample() {
 export function DefaultCheckedExample() {
   return (
     <Switch.Root class={style["switch"]} defaultIsChecked>
-      <Switch.Input />
       <Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
+      <Switch.Input class={style["switch__input"]} />
       <Switch.Control class={style["switch__control"]}>
         <Switch.Thumb class={style["switch__thumb"]} />
       </Switch.Control>
@@ -33,8 +33,8 @@ export function ControlledExample() {
   return (
     <>
       <Switch.Root class={style["switch"]} isChecked={checked()} onCheckedChange={setChecked}>
-        <Switch.Input />
         <Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
+        <Switch.Input class={style["switch__input"]} />
         <Switch.Control class={style["switch__control"]}>
           <Switch.Thumb class={style["switch__thumb"]} />
         </Switch.Control>
@@ -59,8 +59,8 @@ export function HTMLFormExample() {
   return (
     <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
       <Switch.Root class={style["switch"]} name="airplane-mode" value="on">
-        <Switch.Input />
         <Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
+        <Switch.Input class={style["switch__input"]} />
         <Switch.Control class={style["switch__control"]}>
           <Switch.Thumb class={style["switch__thumb"]} />
         </Switch.Control>

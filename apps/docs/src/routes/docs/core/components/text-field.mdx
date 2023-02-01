@@ -105,11 +105,11 @@ The text field consists of:
       transition: border-color 250ms, color 250ms;
     }
 
-    .text-field__input[data-hover] {
+    .text-field__input:hover {
       border-color: hsl(240 5% 65%);
     }
 
-    .text-field__input[data-focus-visible] {
+    .text-field__input:focus-visible {
       outline: 2px solid hsl(200 98% 39%);
       outline-offset: 2px;
     }
@@ -309,31 +309,11 @@ function HTMLFormExample() {
 | data-disabled  | Present when the text field is disabled.                                                |
 | data-readonly  | Present when the text field is read only.                                               |
 
-`TextField.Label`, `TextField.Input`, `TextField.TextArea`, `TextField.Description` and `TextField.ErrorMesssage` shares the same data-attributes.
-
-### TextField.Input
-
-`TextField.Input` renders an `input` and support all it's props.
-
-| Data attribute     | Description                                     |
-| :----------------- | :---------------------------------------------- |
-| data-hover         | Present when the input is hovered.              |
-| data-focus         | Present when the input is focused.              |
-| data-focus-visible | Present when the input is focused via keyboard. |
-
-### TextField.TextArea
-
-`TextField.TextArea` renders a `textarea` and support all it's props.
+`TextField.Label`, `TextField.Input`, `TextField.TextArea`, `TextField.Description` and `TextField.ErrorMesssage` share the same data-attributes.
 
 | Prop       | Description                                                                           |
 | :--------- | :------------------------------------------------------------------------------------ |
 | autoResize | `boolean` <br/> Whether the textarea should adjust its height when the value changes. |
-
-| Data attribute     | Description                                        |
-| :----------------- | :------------------------------------------------- |
-| data-hover         | Present when the textarea is hovered.              |
-| data-focus         | Present when the textarea is focused.              |
-| data-focus-visible | Present when the textarea is focused via keyboard. |
 
 ### TextField.ErrorMessage
 

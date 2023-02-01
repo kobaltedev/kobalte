@@ -6,12 +6,11 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.test.tsx
  */
 
+import { checkAccessibility, installPointerEvent } from "@kobalte/tests";
 import { ComponentProps } from "solid-js";
-
-import { render, screen } from "solid-testing-library";
+import { fireEvent, render, screen } from "solid-testing-library";
 
 import * as Collapsible from ".";
-import { checkAccessibility, installPointerEvent, triggerPress } from "@kobalte/tests";
 
 const TRIGGER_TEXT = "Trigger";
 const CONTENT_TEXT = "Content";
@@ -32,13 +31,29 @@ describe("Collapsible", () => {
     render(() => <Example />);
 
     const trigger = screen.getByText(TRIGGER_TEXT);
-    await triggerPress(trigger);
+
+    fireEvent.click(trigger);
+    await Promise.resolve();
 
     const content = screen.queryByText(CONTENT_TEXT);
     expect(content).toBeVisible();
 
-    await triggerPress(trigger);
+    fireEvent.click(trigger);
+    await Promise.resolve();
+
     expect(content).not.toBeVisible();
+  });
+
+  it("should not open the content when clicking the trigger if disabled", async () => {
+    render(() => <Example isDisabled />);
+
+    const trigger = screen.getByText(TRIGGER_TEXT);
+
+    fireEvent.click(trigger);
+    await Promise.resolve();
+
+    const content = screen.queryByText(CONTENT_TEXT);
+    expect(content).toBeNull();
   });
 
   it("should close content when clicking the trigger and collapsible is open uncontrolled", async () => {
@@ -49,7 +64,9 @@ describe("Collapsible", () => {
     const trigger = screen.getByText(TRIGGER_TEXT);
     const content = screen.getByText(CONTENT_TEXT);
 
-    await triggerPress(trigger);
+    fireEvent.click(trigger);
+    await Promise.resolve();
+
     expect(content).not.toBeVisible();
     expect(onOpenChangeSpy).toHaveBeenCalledWith(false);
   });
@@ -62,7 +79,9 @@ describe("Collapsible", () => {
     const trigger = screen.getByText(TRIGGER_TEXT);
     const content = screen.getByText(CONTENT_TEXT);
 
-    await triggerPress(trigger);
+    fireEvent.click(trigger);
+    await Promise.resolve();
+
     expect(content).toBeVisible();
     expect(onOpenChangeSpy).toHaveBeenCalledWith(false);
   });

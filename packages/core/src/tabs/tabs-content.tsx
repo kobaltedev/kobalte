@@ -7,7 +7,6 @@
  */
 
 import {
-  composeEventHandlers,
   createPolymorphicComponent,
   getFocusableTreeWalker,
   mergeDefaultProps,
@@ -16,8 +15,8 @@ import {
 import { createEffect, createSignal, on, onCleanup, Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { createFocusRing, FOCUS_RING_HANDLERS_PROP_NAMES } from "../primitives";
 import { useTabsContext } from "./tabs-context";
+import { createPresence } from "../primitives";
 
 export interface TabsContentOptions {
   /** The unique key that associates the tab panel with a tab. */
@@ -40,27 +39,19 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
 
   props = mergeDefaultProps({ as: "div" }, props);
 
-  const [local, others] = splitProps(props, [
-    "as",
-    "ref",
-    "id",
-    "value",
-    "forceMount",
-    ...FOCUS_RING_HANDLERS_PROP_NAMES,
-  ]);
+  const [local, others] = splitProps(props, ["as", "ref", "id", "value", "forceMount"]);
 
   const [tabIndex, setTabIndex] = createSignal<number | undefined>(0);
 
   const id = () => local.id ?? context.generateContentId(local.value);
 
   const isSelected = () => context.listState().selectedKey() === local.value;
-  const shouldMount = () => local.forceMount || isSelected();
 
-  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
+  const presence = createPresence(() => local.forceMount || isSelected());
 
   createEffect(
-    on([() => ref, shouldMount], ([ref, shouldMount]) => {
-      if (ref == null || !shouldMount) {
+    on([() => ref, () => presence.isPresent()], ([ref, isPresent]) => {
+      if (ref == null || !isPresent) {
         return;
       }
 
@@ -74,12 +65,12 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
 
       const observer = new MutationObserver(updateTabIndex);
 
-      // Update when new elements are inserted, or the tabIndex/disabled attribute updates.
+      // Update when new elements are inserted, or the tabindex/disabled attribute updates.
       observer.observe(ref, {
         subtree: true,
         childList: true,
         attributes: true,
-        attributeFilter: ["tabIndex", "disabled"],
+        attributeFilter: ["tabindex", "disabled"],
       });
 
       onCleanup(() => {
@@ -95,19 +86,19 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
   );
 
   return (
-    <Show when={shouldMount()}>
+    <Show when={presence.isPresent()}>
       <Dynamic
         component={local.as}
-        ref={mergeRefs(el => (ref = el), local.ref)}
+        ref={mergeRefs(el => {
+          presence.setRef(el);
+          ref = el;
+        }, local.ref)}
         id={id()}
         role="tabpanel"
         tabIndex={tabIndex()}
         aria-labelledby={context.triggerIdsMap().get(local.value)}
         data-orientation={context.orientation()}
-        data-focus={isFocused() ? "" : undefined}
-        data-focus-visible={isFocusVisible() ? "" : undefined}
-        onFocusIn={composeEventHandlers([local.onFocusIn, focusRingHandlers.onFocusIn])}
-        onFocusOut={composeEventHandlers([local.onFocusOut, focusRingHandlers.onFocusOut])}
+        data-selected={isSelected() ? "" : undefined}
         {...others}
       />
     </Show>

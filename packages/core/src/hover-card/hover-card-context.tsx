@@ -1,8 +1,15 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
+import { CreatePresenceResult } from "../primitives";
+
+export interface HoverCardDataSet {
+  "data-expanded": string | undefined;
+}
+
 export interface HoverCardContextValue {
+  dataset: Accessor<HoverCardDataSet>;
   isOpen: Accessor<boolean>;
-  shouldMount: Accessor<boolean>;
+  contentPresence: CreatePresenceResult;
   openWithDelay: () => void;
   closeWithDelay: () => void;
   cancelOpening: () => void;

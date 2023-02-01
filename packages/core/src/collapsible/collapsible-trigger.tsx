@@ -6,35 +6,33 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import { createPolymorphicComponent } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { callHandler, createPolymorphicComponent } from "@kobalte/utils";
+import { JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
-import { PressEvents } from "../primitives";
 import { useCollapsibleContext } from "./collapsible-context";
 
 /**
  * The button that expands/collapses the collapsible content.
  */
-export const CollapsibleTrigger = createPolymorphicComponent<"button", Button.ButtonRootOptions>(
-  props => {
-    const context = useCollapsibleContext();
+export const CollapsibleTrigger = createPolymorphicComponent<"button">(props => {
+  const context = useCollapsibleContext();
 
-    const [local, others] = splitProps(props, ["onPress"]);
+  const [local, others] = splitProps(props, ["onClick"]);
 
-    const onPress: PressEvents["onPress"] = e => {
-      local.onPress?.(e);
-      context.toggle();
-    };
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    callHandler(e, local.onClick);
+    context.toggle();
+  };
 
-    return (
-      <Button.Root
-        aria-expanded={context.isOpen()}
-        aria-controls={context.isOpen() ? context.contentId() : undefined}
-        data-expanded={context.isOpen() ? "" : undefined}
-        onPress={onPress}
-        {...others}
-      />
-    );
-  }
-);
+  return (
+    <Button.Root
+      aria-expanded={context.isOpen()}
+      aria-controls={context.isOpen() ? context.contentId() : undefined}
+      isDisabled={context.isDisabled()}
+      onClick={onClick}
+      {...context.dataset()}
+      {...others}
+    />
+  );
+});

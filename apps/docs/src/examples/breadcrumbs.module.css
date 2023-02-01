@@ -17,7 +17,7 @@
   color: hsl(240 4% 46%);
 }
 
-.breadcrumbs__link[data-hover] {
+.breadcrumbs__link:hover {
   color: hsl(201 96% 32%);
 }
 
@@ -39,6 +39,6 @@
   color: hsl(240 4% 46%);
 }
 
-[data-kb-theme="dark"] .breadcrumbs__link[data-hover] {
+[data-kb-theme="dark"] .breadcrumbs__link:hover {
   color: hsl(201 96% 32%);
 }

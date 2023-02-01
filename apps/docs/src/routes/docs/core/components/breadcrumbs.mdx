@@ -13,7 +13,6 @@ import { Breadcrumbs } from "@kobalte/core";
 
 ## Features
 
-- Support for mouse, touch, and keyboard interactions on breadcrumb links.
 - Support for navigation links via `<a>` elements or custom element types via ARIA.
 - Localized ARIA labeling support for landmark navigation region.
 - Support for disabled breadcrumb links.
@@ -105,7 +104,7 @@ The breadcrumbs consist of:
       color: hsl(240 4% 46%);
     }
 
-    .breadcrumbs__link[data-hover] {
+    .breadcrumbs__link:hover {
       color: hsl(201 96% 32%);
     }
 

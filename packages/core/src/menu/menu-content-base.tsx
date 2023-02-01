@@ -7,6 +7,7 @@
  */
 
 import {
+  callHandler,
   composeEventHandlers,
   contains,
   createPolymorphicComponent,
@@ -17,14 +18,10 @@ import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "
 
 import { DismissableLayer } from "../dismissable-layer";
 import { createSelectableList } from "../list";
-import { PopperPositioner } from "../popper/popper-positioner";
+import { PopperPositioner } from "../popper";
 import {
-  createFocusRing,
   createFocusScope,
-  createHover,
-  FOCUS_RING_HANDLERS_PROP_NAMES,
   FocusOutsideEvent,
-  HOVER_HANDLERS_PROP_NAMES,
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives";
@@ -94,10 +91,12 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     "onCloseAutoFocus",
     "onEscapeKeyDown",
     "onFocusOutside",
+    "onPointerEnter",
+    "onPointerMove",
     "onKeyDown",
     "onMouseDown",
-    ...HOVER_HANDLERS_PROP_NAMES,
-    ...FOCUS_RING_HANDLERS_PROP_NAMES,
+    "onFocusIn",
+    "onFocusOut",
   ]);
 
   let lastPointerX = 0;
@@ -119,8 +118,6 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     () => ref
   );
 
-  const { isFocused, isFocusVisible, focusRingHandlers } = createFocusRing();
-
   createFocusScope(
     {
       trapFocus: () => isRootModalContent() && context.isOpen(),
@@ -129,15 +126,6 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     },
     () => ref
   );
-
-  const { hoverHandlers } = createHover({
-    isDisabled: () => !context.isOpen(),
-    onHoverStart: () => {
-      // Remove visual focus from parent menu content.
-      context.parentMenuContext()?.listState().selectionManager().setFocused(false);
-      context.parentMenuContext()?.listState().selectionManager().setFocusedKey(undefined);
-    },
-  });
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
     // Submenu key events bubble through portals. We only care about keys in this menu.
@@ -170,7 +158,21 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     }
   };
 
+  const onPointerEnter: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerEnter);
+
+    if (!context.isOpen()) {
+      return;
+    }
+
+    // Remove visual focus from parent menu content.
+    context.parentMenuContext()?.listState().selectionManager().setFocused(false);
+    context.parentMenuContext()?.listState().selectionManager().setFocusedKey(undefined);
+  };
+
   const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerMove);
+
     if (e.pointerType !== "mouse") {
       return;
     }
@@ -189,11 +191,12 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
   createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
   return (
-    <Show when={context.shouldMount()}>
+    <Show when={context.contentPresence.isPresent()}>
       <PopperPositioner>
         <DismissableLayer
           ref={mergeRefs(el => {
             context.setContentRef(el);
+            context.contentPresence.setRef(el);
             ref = el;
           }, local.ref)}
           role="menu"
@@ -202,41 +205,22 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           isDismissed={!context.isOpen()}
           disableOutsidePointerEvents={isRootModalContent() && context.isOpen()}
           excludedElements={[context.triggerRef]}
-          style={{ position: "relative", ...local.style }}
+          style={{
+            "--kb-menu-content-transform-origin": "var(--kb-popper-content-transform-origin)",
+            position: "relative",
+            ...local.style,
+          }}
           aria-labelledby={context.triggerId()}
-          data-focus={isFocused() ? "" : undefined}
-          data-focus-visible={isFocusVisible() ? "" : undefined}
           onEscapeKeyDown={onEscapeKeyDown}
           onFocusOutside={onFocusOutside}
           onDismiss={context.close}
-          onKeyDown={composeEventHandlers([
-            local.onKeyDown,
-            selectableList.handlers.onKeyDown,
-            onKeyDown,
-          ])}
-          onMouseDown={composeEventHandlers([
-            local.onMouseDown,
-            selectableList.handlers.onMouseDown,
-          ])}
-          onPointerEnter={composeEventHandlers([
-            local.onPointerEnter,
-            hoverHandlers.onPointerEnter,
-          ])}
-          onPointerLeave={composeEventHandlers([
-            local.onPointerLeave,
-            hoverHandlers.onPointerLeave,
-          ])}
+          onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.onKeyDown, onKeyDown])}
+          onMouseDown={composeEventHandlers([local.onMouseDown, selectableList.onMouseDown])}
+          onFocusIn={composeEventHandlers([local.onFocusIn, selectableList.onFocusIn])}
+          onFocusOut={composeEventHandlers([local.onFocusOut, selectableList.onFocusOut])}
+          onPointerEnter={onPointerEnter}
           onPointerMove={onPointerMove}
-          onFocusIn={composeEventHandlers([
-            local.onFocusIn,
-            selectableList.handlers.onFocusIn,
-            focusRingHandlers.onFocusIn,
-          ])}
-          onFocusOut={composeEventHandlers([
-            local.onFocusOut,
-            selectableList.handlers.onFocusOut,
-            focusRingHandlers.onFocusOut,
-          ])}
+          {...context.dataset()}
           {...others}
         />
       </PopperPositioner>

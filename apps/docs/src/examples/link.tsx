@@ -9,11 +9,3 @@ export function BasicExample() {
     </Link.Root>
   );
 }
-
-export function ClientHandledExample() {
-  return (
-    <Link.Root as="span" class={style["link"]} onPress={() => alert("Pressed link")}>
-      Kobalte
-    </Link.Root>
-  );
-}

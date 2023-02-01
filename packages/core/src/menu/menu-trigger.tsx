@@ -15,7 +15,6 @@ import {
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Button from "../button";
-import { PressEvent } from "../primitives";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 
@@ -39,26 +38,26 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerOptio
     "ref",
     "id",
     "isDisabled",
-    "onPressStart",
-    "onPress",
+    "onPointerDown",
+    "onClick",
     "onKeyDown",
   ]);
 
-  const onPressStart = (e: PressEvent) => {
-    local.onPressStart?.(e);
+  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerDown);
 
-    // For consistency with native, open the menu on mouse down, but touch up.
-    if (e.pointerType !== "touch" && e.pointerType !== "keyboard" && !local.isDisabled) {
-      // If opened with a screen reader, autofocus the first item.
-      // Otherwise, the menu itself will be focused.
-      context.toggle(e.pointerType === "virtual" ? "first" : true);
+    e.currentTarget.dataset.pointerType = e.pointerType;
+
+    // For consistency with native, open the select on mouse down, but touch up.
+    if (!local.isDisabled && e.pointerType !== "touch") {
+      context.toggle(true);
     }
   };
 
-  const onPress = (e: PressEvent) => {
-    local.onPress?.(e);
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    callHandler(e, local.onClick);
 
-    if (e.pointerType === "touch" && !local.isDisabled) {
+    if (!local.isDisabled && e.currentTarget.dataset.pointerType === "touch") {
       context.toggle(true);
     }
   };
@@ -97,10 +96,10 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerOptio
       aria-haspopup="true"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.contentId() : undefined}
-      data-expanded={context.isOpen() ? "" : undefined}
-      onPressStart={onPressStart}
-      onPress={onPress}
+      onPointerDown={onPointerDown}
+      onClick={onClick}
       onKeyDown={onKeyDown}
+      {...context.dataset()}
       {...others}
     />
   );

@@ -11,8 +11,6 @@
 import { MaybeAccessor } from "@kobalte/utils";
 import { Accessor } from "solid-js";
 
-import { PressEvent } from "../primitives";
-
 export type SelectionMode = "none" | "single" | "multiple";
 export type SelectionBehavior = "toggle" | "replace";
 export type FocusStrategy = "first" | "last";
@@ -169,7 +167,7 @@ export interface MultipleSelectionManager extends FocusState {
    * Toggles, replaces, or extends selection to the given key depending
    * on the pointer event and collection's selection mode.
    */
-  select(key: string, e?: PressEvent | PointerEvent): void;
+  select(key: string, e?: PointerEvent): void;
 
   /** Returns whether the given key can be selected. */
   canSelectItem: (key: string) => boolean;

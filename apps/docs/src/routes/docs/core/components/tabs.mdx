@@ -24,7 +24,6 @@ import { Tabs } from "@kobalte/core";
 ## Features
 
 - Follow the [WAI ARIA Tabs](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/) design pattern, semantically linking tabs and their associated tab panels.
-- Support for mouse, touch, and keyboard interactions on tabs.
 - Support for LTR and RTL keyboard navigation.
 - Support for disabled tabs.
 - Supports horizontal/vertical orientation.
@@ -137,17 +136,17 @@ The tabs consist of:
       outline: none;
     }
 
-    .tabs__trigger[data-hover] {
+    .tabs__trigger:hover {
       background-color: hsl(0 0% 98%);
       color: hsl(240 5% 34%);
     }
 
-    .tabs__trigger[data-focus-visible] {
+    .tabs__trigger:focus-visible {
       background-color: hsl(240 5% 96%);
     }
 
     .tabs__trigger[data-disabled],
-    .tabs__trigger[data-disabled][data-hover] {
+    .tabs__trigger[data-disabled]:hover {
       opacity: 0.5;
       background-color: transparent;
     }
@@ -423,7 +422,7 @@ Individual tab can be disabled using the `isDisabled` prop on the tab itself.
 | data-orientation='horizontal' | Present when the separator has horizontal orientation. |
 | data-orientation='vertical'   | Present when the separator has vertical orientation.   |
 
-`Tabs.List`, `Tabs.Trigger`, `Tabs.Indicator` and `Tabs.Content` shares the same data-attributes.
+`Tabs.List`, `Tabs.Trigger`, `Tabs.Indicator` and `Tabs.Content` share the same data-attributes.
 
 ### Tabs.Trigger
 
@@ -432,14 +431,11 @@ Individual tab can be disabled using the `isDisabled` prop on the tab itself.
 | value      | `string` <br/> The unique key that associates the tab with a tab panel. |
 | isDisabled | `boolean` <br/> Whether the tab should be disabled.                     |
 
-| Data attribute     | Description                                                                          |
-| :----------------- | :----------------------------------------------------------------------------------- |
-| data-selected      | Present when the trigger is selected.                                                |
-| data-disabled      | Present when the trigger is disabled.                                                |
-| data-hover         | Present when the trigger is hovered.                                                 |
-| data-focus         | Present when the trigger is focused.                                                 |
-| data-focus-visible | Present when the trigger is focused via keyboard.                                    |
-| data-active        | Present when the trigger is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute   | Description                              |
+| :--------------- | :--------------------------------------- |
+| data-selected    | Present when the trigger is selected.    |
+| data-disabled    | Present when the trigger is disabled.    |
+| data-highlighted | Present when the trigger is highlighted. |
 
 ### Tabs.Content
 
@@ -448,10 +444,9 @@ Individual tab can be disabled using the `isDisabled` prop on the tab itself.
 | value      | `string` <br/> The unique key that associates the tab panel with a tab.                                                                 |
 | forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
-| Data attribute     | Description                                              |
-| :----------------- | :------------------------------------------------------- |
-| data-focus         | Present when the content itself is focused.              |
-| data-focus-visible | Present when the content itself is focused via keyboard. |
+| Data attribute | Description                                      |
+| :------------- | :----------------------------------------------- |
+| data-selected  | Present when the associated trigger is selected. |
 
 ## Rendered elements
 

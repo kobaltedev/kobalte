@@ -30,14 +30,14 @@ The switch consists of:
 
 - **Switch.Root:** The root container for a switch.
 - **Switch.Input:** The native html input that is visually hidden in the switch.
-- **Switch.Label:** The label that gives the user information on the switch.
 - **Switch.Control:** The element that visually represents a switch.
 - **Switch.Thumb:** The thumb that is used to visually indicate whether the switch is on or off.
+- **Switch.Label:** The label that gives the user information on the switch.
 
 ```tsx
 <Switch.Root>
-  <Switch.Input />
   <Switch.Label />
+  <Switch.Input />
   <Switch.Control>
     <Switch.Thumb />
   </Switch.Control>
@@ -64,8 +64,8 @@ The switch consists of:
     function App() {
       return (
         <Switch.Root class="switch">
-          <Switch.Input />
           <Switch.Label class="switch__label">Airplane mode</Switch.Label>
+          <Switch.Input class="switch__input" />
           <Switch.Control class="switch__control">
             <Switch.Thumb class="switch__thumb" />
           </Switch.Control>
@@ -94,7 +94,7 @@ The switch consists of:
       transition: 250ms background-color;
     }
 
-    .switch__control[data-focus-visible] {
+    .switch__input:focus-visible + .switch__control {
       outline: 2px solid hsl(200 98% 39%);
       outline-offset: 2px;
     }
@@ -210,20 +210,16 @@ function HTMLFormExample() {
 | isDisabled       | `boolean` <br/> Whether the switch is disabled.                                                                                                                         |
 | isReadOnly       | `boolean` <br/> Whether the switch can be checked but not changed by the user.                                                                                          |
 
-| Data attribute     | Description                                                                         |
-| :----------------- | :---------------------------------------------------------------------------------- |
-| data-valid         | Present when the switch is valid according to the validation rules.                 |
-| data-invalid       | Present when the switch is invalid according to the validation rules.               |
-| data-checked       | Present when the switch is checked.                                                 |
-| data-required      | Present when the switch is required.                                                |
-| data-disabled      | Present when the switch is disabled.                                                |
-| data-readonly      | Present when the switch is read only.                                               |
-| data-hover         | Present when the switch is hovered.                                                 |
-| data-focus         | Present when the switch is focused.                                                 |
-| data-focus-visible | Present when the switch is focused via keyboard.                                    |
-| data-active        | Present when the switch is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute | Description                                                           |
+| :------------- | :-------------------------------------------------------------------- |
+| data-valid     | Present when the switch is valid according to the validation rules.   |
+| data-invalid   | Present when the switch is invalid according to the validation rules. |
+| data-checked   | Present when the switch is checked.                                   |
+| data-required  | Present when the switch is required.                                  |
+| data-disabled  | Present when the switch is disabled.                                  |
+| data-readonly  | Present when the switch is read only.                                 |
 
-`Switch.Control`, `Switch.Thumb` and `Switch.Label` shares the same data-attributes.
+`Switch.Input`, `Switch.Control`, `Switch.Thumb` and `Switch.Label` shares the same data-attributes.
 
 ## Rendered elements
 

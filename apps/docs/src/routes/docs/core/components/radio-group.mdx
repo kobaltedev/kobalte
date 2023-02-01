@@ -83,7 +83,7 @@ The radio item consists of:
             <For each={["Apple", "Orange", "Watermelon"]}>
               {fruit => (
                 <RadioGroup.Item value={fruit} class="radio">
-                  <RadioGroup.ItemInput />
+                  <RadioGroup.ItemInput class="radio__input" />
                   <RadioGroup.ItemControl class="radio__control">
                     <RadioGroup.ItemIndicator class="radio__indicator" />
                   </RadioGroup.ItemControl>
@@ -146,7 +146,7 @@ The radio item consists of:
       background-color: hsl(240 6% 90%);
     }
 
-    .radio__control[data-focus-visible] {
+    .radio__input:focus-visible + .radio__control {
       outline: 2px solid hsl(200 98% 39%);
       outline-offset: 2px;
     }
@@ -357,18 +357,14 @@ function HTMLFormExample() {
 | value      | `string` <br/> The value of the radio button, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio#Value). |
 | isDisabled | `boolean` <br/> Whether the radio button is disabled or not.                                                                                                             |
 
-| Data attribute     | Description                                                                        |
-| :----------------- | :--------------------------------------------------------------------------------- |
-| data-valid         | Present when the parent radio group is valid according to the validation rules.    |
-| data-invalid       | Present when the parent radio group is invalid according to the validation rules.  |
-| data-checked       | Present when the radio is checked.                                                 |
-| data-disabled      | Present when the radio is disabled.                                                |
-| data-hover         | Present when the radio is hovered.                                                 |
-| data-focus         | Present when the radio is focused.                                                 |
-| data-focus-visible | Present when the radio is focused via keyboard.                                    |
-| data-active        | Present when the radio is activated by a pointer down (mouse, touch, pen, etc...). |
+| Data attribute | Description                                                                       |
+| :------------- | :-------------------------------------------------------------------------------- |
+| data-valid     | Present when the parent radio group is valid according to the validation rules.   |
+| data-invalid   | Present when the parent radio group is invalid according to the validation rules. |
+| data-checked   | Present when the radio is checked.                                                |
+| data-disabled  | Present when the radio is disabled.                                               |
 
-`RadioGroup.ItemControl`, `RadioGroup.ItemIndicator` and `RadioGroup.ItemLabel` shares the same data-attributes.
+`RadioGroup.ItemInput`, `RadioGroup.ItemControl`, `RadioGroup.ItemIndicator` and `RadioGroup.ItemLabel` shares the same data-attributes.
 
 ### RadioGroup.ItemIndicator
 

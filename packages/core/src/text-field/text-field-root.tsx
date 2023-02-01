@@ -1,23 +1,17 @@
 import {
   access,
-  composeEventHandlers,
   createGenerateId,
   createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
   ValidationState,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
+import { createUniqueId, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import {
-  createControllableSignal,
-  createFormResetListener,
-  createHover,
-  HOVER_HANDLERS_PROP_NAMES,
-} from "../primitives";
-import { TextFieldContext, TextFieldContextValue, TextFieldDataSet } from "./text-field-context";
+import { createControllableSignal, createFormResetListener } from "../primitives";
+import { TextFieldContext, TextFieldContextValue } from "./text-field-context";
 
 export interface TextFieldRootOptions {
   /** The controlled value of the textfield. */
@@ -76,7 +70,7 @@ export const TextFieldRoot = createPolymorphicComponent<"div", TextFieldRootOpti
 
   const [local, formControlProps, others] = splitProps(
     props,
-    ["as", "ref", "value", "defaultValue", "onValueChange", ...HOVER_HANDLERS_PROP_NAMES],
+    ["as", "ref", "value", "defaultValue", "onValueChange"],
     FORM_CONTROL_PROP_NAMES
   );
 
@@ -86,19 +80,12 @@ export const TextFieldRoot = createPolymorphicComponent<"div", TextFieldRootOpti
     onChange: value => local.onValueChange?.(value),
   });
 
-  const [isFocused, setIsFocused] = createSignal(false);
-  const [isFocusVisible, setIsFocusVisible] = createSignal(false);
-
   const { formControlContext } = createFormControl(formControlProps);
 
   createFormResetListener(
     () => ref,
     () => setValue(local.defaultValue ?? "")
   );
-
-  const { isHovered, hoverHandlers } = createHover({
-    isDisabled: () => access(formControlProps.isDisabled),
-  });
 
   const onInput: JSX.EventHandlerUnion<HTMLInputElement | HTMLTextAreaElement, InputEvent> = e => {
     if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
@@ -117,18 +104,9 @@ export const TextFieldRoot = createPolymorphicComponent<"div", TextFieldRootOpti
     target.value = value() ?? "";
   };
 
-  const dataset: Accessor<TextFieldDataSet> = createMemo(() => ({
-    "data-hover": isHovered() ? "" : undefined,
-    "data-focus": isFocused() ? "" : undefined,
-    "data-focus-visible": isFocusVisible() ? "" : undefined,
-  }));
-
   const context: TextFieldContextValue = {
-    dataset,
     value,
     generateId: createGenerateId(() => access(formControlProps.id)!),
-    setIsFocused,
-    setIsFocusVisible,
     onInput,
   };
 
@@ -139,16 +117,7 @@ export const TextFieldRoot = createPolymorphicComponent<"div", TextFieldRootOpti
           component={local.as}
           ref={mergeRefs(el => (ref = el), local.ref)}
           role="group"
-          onPointerEnter={composeEventHandlers([
-            local.onPointerEnter,
-            hoverHandlers.onPointerEnter,
-          ])}
-          onPointerLeave={composeEventHandlers([
-            local.onPointerLeave,
-            hoverHandlers.onPointerLeave,
-          ])}
           {...formControlContext.dataset()}
-          {...dataset()}
           {...others}
         />
       </TextFieldContext.Provider>

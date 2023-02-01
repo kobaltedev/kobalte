@@ -21,18 +21,32 @@ const STATES = [
   "selected",
   "pressed",
   "expanded",
-  "hover",
-  "focus",
-  "focus-visible",
-  "active",
+  "highlighted",
   "current",
 ];
+
+const ORIENTATIONS = ["horizontal", "vertical"];
 
 module.exports = plugin.withOptions(({ prefix = "ui" } = {}) => {
   return ({ addVariant }) => {
     for (let state of STATES) {
       addVariant(`${prefix}-${state}`, [`&[data-${state}]`]);
       addVariant(`${prefix}-not-${state}`, [`&:not([data-${state}])`]);
+      addVariant(`${prefix}-group-${state}`, `:merge(.group):[data-${state}] &`);
+      addVariant(`${prefix}-peer-${state}`, `:merge(.peer):[data-${state}] ~ &`);
+    }
+
+    for (let orientation of ORIENTATIONS) {
+      addVariant(`${prefix}-${orientation}`, [`&[data-orientation='${orientation}']`]);
+      addVariant(`${prefix}-not-${orientation}`, [`&:not([data-orientation='${orientation}'])`]);
+      addVariant(
+        `${prefix}-group-${orientation}`,
+        `:merge(.group):[data-orientation='${orientation}'] &`
+      );
+      addVariant(
+        `${prefix}-peer-${orientation}`,
+        `:merge(.peer):[data-orientation='${orientation}'] ~ &`
+      );
     }
   };
 });

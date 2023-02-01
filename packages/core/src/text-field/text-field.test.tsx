@@ -332,56 +332,6 @@ describe("TextField", () => {
     }
   });
 
-  it("should have 'data-hover' attribute when input is hovered", async () => {
-    render(() => (
-      <TextField.Root data-testid="textfield">
-        <TextField.Input />
-      </TextField.Root>
-    ));
-
-    const textField = screen.getByTestId("textfield");
-    const input = screen.getByRole("textbox") as HTMLInputElement;
-
-    fireEvent(input, createPointerEvent("pointerenter", { pointerType: "mouse" }));
-    await Promise.resolve();
-
-    for (const el of [textField, input]) {
-      expect(el).toHaveAttribute("data-hover");
-    }
-
-    fireEvent(input, createPointerEvent("pointerleave", { pointerType: "mouse" }));
-    await Promise.resolve();
-
-    for (const el of [textField, input]) {
-      expect(el).not.toHaveAttribute("data-hover");
-    }
-  });
-
-  it("should have 'data-focus' attribute when input is focused", async () => {
-    render(() => (
-      <TextField.Root data-testid="textfield">
-        <TextField.Input />
-      </TextField.Root>
-    ));
-
-    const textField = screen.getByTestId("textfield");
-    const input = screen.getByRole("textbox") as HTMLInputElement;
-
-    input.focus();
-    await Promise.resolve();
-
-    for (const el of [textField, input]) {
-      expect(el).toHaveAttribute("data-focus");
-    }
-
-    input.blur();
-    await Promise.resolve();
-
-    for (const el of [textField, input]) {
-      expect(el).not.toHaveAttribute("data-v");
-    }
-  });
-
   it("sets 'aria-invalid' on input when 'validationState=invalid'", () => {
     render(() => (
       <TextField.Root validationState="invalid">

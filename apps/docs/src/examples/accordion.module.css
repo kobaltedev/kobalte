@@ -36,7 +36,7 @@
   border-bottom: none;
 }
 
-.accordion__item-trigger[data-focus-visible] {
+.accordion__item-trigger:focus-visible {
   z-index: 1;
   outline: 2px solid hsl(200 98% 39%);
   outline-offset: 2px;
