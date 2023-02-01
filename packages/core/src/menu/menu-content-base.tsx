@@ -204,7 +204,11 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           isDismissed={!context.isOpen()}
           disableOutsidePointerEvents={isRootModalContent() && context.isOpen()}
           excludedElements={[context.triggerRef]}
-          style={{ position: "relative", ...local.style }}
+          style={{
+            "--kb-menu-content-transform-origin": "var(--kb-popper-content-transform-origin)",
+            position: "relative",
+            ...local.style,
+          }}
           aria-labelledby={context.triggerId()}
           onEscapeKeyDown={onEscapeKeyDown}
           onFocusOutside={onFocusOutside}

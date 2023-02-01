@@ -129,8 +129,13 @@ The popover consists of:
       padding: 12px;
       background-color: white;
       box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      transform-origin: var(--kb-popover-content-transform-origin);
+      animation: contentHide 250ms ease-in forwards;
     }
 
+    .popover__content[data-expanded] {
+      animation: contentShow 250ms ease-out;
+    }
     .popover__header {
       display: flex;
       align-items: baseline;
@@ -153,6 +158,28 @@ The popover consists of:
     .popover__description {
       font-size: 14px;
       color: hsl(240 5% 26%);
+    }
+
+    @keyframes contentShow {
+      from {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes contentHide {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.96);
+      }
     }
     ```
 
@@ -219,7 +246,41 @@ Use the `Popover.Anchor` component to anchor the content to another element if y
 
 ### Origin-aware animations
 
-We expose a CSS custom property `--kb-popper-content-transform-origin` which can be used to animate the content from its computed origin.
+We expose a CSS custom property `--kb-popover-content-transform-origin` which can be used to animate the content from its computed origin.
+
+```css {2}
+/* style.css */
+.popover__content {
+  transform-origin: var(--kb-popover-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
+
+.popover__content[data-expanded] {
+  animation: contentShow 250ms ease-out;
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+```
 
 ## API Reference
 
@@ -260,6 +321,8 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | Data attribute | Description                       |
 | :------------- | :-------------------------------- |
 | data-expanded  | Present when the popover is open. |
+
+`Popover.Anchor` , `Popover.Content` , `Popover.Arrow`, `Popover.Title`, `Popover.Description` and `Popover.CloseButton` share the same data-attributes.
 
 ### Popover.Content
 

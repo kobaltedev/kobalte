@@ -25,6 +25,7 @@ export const PopoverCloseButton = createPolymorphicComponent<"button", Button.Bu
       <Button.Root
         aria-label={local["aria-label"] || stringFormatter().format("dismiss")}
         onClick={onClick}
+        {...context.dataset()}
         {...others}
       />
     );

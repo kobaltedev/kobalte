@@ -32,8 +32,8 @@ export const PopoverTrigger = createPolymorphicComponent<"button", Button.Button
         aria-haspopup="dialog"
         aria-expanded={context.isOpen()}
         aria-controls={context.isOpen() ? context.contentId() : undefined}
-        data-expanded={context.isOpen() ? "" : undefined}
         onClick={onClick}
+        {...context.dataset()}
         {...others}
       />
     );

@@ -10,7 +10,7 @@ export function PopoverPortal(props: ComponentProps<typeof Portal>) {
   const context = usePopoverContext();
 
   return (
-    <Show when={context.shouldMount()}>
+    <Show when={context.contentPresence.isPresent()}>
       <Portal {...props} />
     </Show>
   );

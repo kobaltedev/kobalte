@@ -2,7 +2,7 @@ import { createPolymorphicComponent, mergeRefs } from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
-import { PopperPositioner } from "../popper/popper-positioner";
+import { PopperPositioner } from "../popper";
 import { useHoverCardContext } from "./hover-card-context";
 
 export interface HoverCardContentOptions {
@@ -26,7 +26,12 @@ export const HoverCardContent = createPolymorphicComponent<"div", HoverCardConte
             ref={mergeRefs(context.setContentRef, local.ref)}
             isDismissed={!context.isOpen()}
             disableOutsidePointerEvents={false}
-            style={{ position: "relative", ...local.style }}
+            style={{
+              "--kb-hovercard-content-transform-origin":
+                "var(--kb-popper-content-transform-origin)",
+              position: "relative",
+              ...local.style,
+            }}
             onFocusOutside={e => e.preventDefault()}
             onDismiss={context.close}
             {...others}
