@@ -98,6 +98,7 @@ export function SwitchInput(props: OverrideProps<ComponentProps<"input">, Switch
       onChange={onChange}
       onFocus={onFocus}
       onBlur={onBlur}
+      {...context.dataset()}
       {...others}
     />
   );

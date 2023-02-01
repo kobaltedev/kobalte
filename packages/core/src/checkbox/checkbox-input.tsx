@@ -115,6 +115,7 @@ export function CheckboxInput(props: OverrideProps<ComponentProps<"input">, Chec
       onChange={onChange}
       onFocus={onFocus}
       onBlur={onBlur}
+      {...context.dataset()}
       {...others}
     />
   );

@@ -112,6 +112,7 @@ export function RadioGroupItemInput(
       onChange={onChange}
       onFocus={onFocus}
       onBlur={onBlur}
+      {...radioContext.dataset()}
       {...others}
     />
   );
