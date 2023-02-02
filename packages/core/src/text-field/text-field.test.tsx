@@ -396,4 +396,73 @@ describe("TextField", () => {
     expect(input).toHaveAttribute("readonly");
     expect(input).toHaveAttribute("aria-readonly", "true");
   });
+
+  it("should have 'aria-multiline' set to false on textarea when 'submitOnEnter' is true", () => {
+    render(() => (
+      <TextField.Root>
+        <TextField.TextArea submitOnEnter />
+      </TextField.Root>
+    ));
+
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+    expect(input).toHaveAttribute("aria-multiline", "false");
+  });
+
+  it("should not have 'aria-multiline' on textarea when 'submitOnEnter' is false", () => {
+    render(() => (
+      <TextField.Root>
+        <TextField.TextArea />
+      </TextField.Root>
+    ));
+
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+    expect(input).not.toHaveAttribute("aria-multiline");
+  });
+
+  it("form is submitted when 'submitOnEnter' is true and user presses the enter key", async () => {
+    const onSubmit = jest.fn();
+    render(() => (
+      <form onSubmit={onSubmit}>
+        <TextField.Root>
+          <TextField.TextArea submitOnEnter />
+        </TextField.Root>
+      </form>
+    ));
+
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+    await userEvent.type(input, "abc{enter}");
+    expect(onSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  it("form is not submitted when 'submitOnEnter' is true and the user presses shift + enter at the same time", async () => {
+    const onSubmit = jest.fn();
+
+    render(() => (
+      <form onSubmit={onSubmit}>
+        <TextField.Root>
+          <TextField.TextArea submitOnEnter />
+        </TextField.Root>
+      </form>
+    ));
+
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+    await userEvent.type(input, "{Shift>}enter{/Shift}");
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
+
+  it("form is not submitted when 'submitOnEnter' is not set and user presses the enter key", async () => {
+    const onSubmit = jest.fn();
+
+    render(() => (
+      <form onSubmit={onSubmit}>
+        <TextField.Root>
+          <TextField.TextArea />
+        </TextField.Root>
+      </form>
+    ));
+
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+    await userEvent.type(input, "{enter}");
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
 });

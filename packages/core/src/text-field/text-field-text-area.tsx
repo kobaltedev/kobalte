@@ -7,7 +7,7 @@
  * https://github.com/adobe/react-spectrum/blob/0af91c08c745f4bb35b6ad4932ca17a0d85dd02c/packages/@react-spectrum/textfield/src/TextArea.tsx
  */
 
-import { mergeDefaultProps, mergeRefs, OverrideProps } from "@kobalte/utils";
+import { composeEventHandlers, mergeDefaultProps, mergeRefs, OverrideProps } from "@kobalte/utils";
 import { ComponentProps, createEffect, on, splitProps } from "solid-js";
 
 import { useTextFieldContext } from "./text-field-context";
@@ -16,6 +16,7 @@ import { TextFieldInputBase } from "./text-field-input";
 export interface TextFieldAreaOptions {
   /** Whether the textarea should adjust its height when the value changes. */
   autoResize?: boolean;
+  submitOnEnter?: boolean;
 }
 
 /**
@@ -35,7 +36,7 @@ export function TextFieldTextArea(
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "autoResize"]);
+  const [local, others] = splitProps(props, ["ref", "autoResize", "submitOnEnter", "onKeyPress"]);
 
   createEffect(
     on([() => ref, () => local.autoResize, () => context.value()], ([ref, autoResize]) => {
@@ -47,8 +48,23 @@ export function TextFieldTextArea(
     })
   );
 
+  const onKeyPressed = (event: KeyboardEvent) => {
+    if (ref && local.submitOnEnter && event.key === "Enter" && !event.shiftKey) {
+      if (ref.form) {
+        ref.form.requestSubmit();
+        event.preventDefault();
+      }
+    }
+  };
+
   return (
-    <TextFieldInputBase as="textarea" ref={mergeRefs(el => (ref = el), local.ref)} {...others} />
+    <TextFieldInputBase
+      as="textarea"
+      aria-multiline={local.submitOnEnter ? "false" : undefined}
+      onKeyPress={composeEventHandlers([local.onKeyPress, onKeyPressed])}
+      ref={mergeRefs(el => (ref = el), local.ref)}
+      {...others}
+    />
   );
 }
 
