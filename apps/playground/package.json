@@ -13,13 +13,13 @@
     "unstyled",
     "aria"
   ],
-  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/apps/playground#readme",
+  "homepage": "https://github.com/kobaltedev/kobalte/tree/main/apps/playground#readme",
   "bugs": {
-    "url": "https://github.com/fabien-ml/kobalte/issues"
+    "url": "https://github.com/kobaltedev/kobalte/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fabien-ml/kobalte.git"
+    "url": "git+https://github.com/kobaltedev/kobalte.git"
   },
   "license": "MIT",
   "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@kobalte/core": "^0.6.0",
-    "solid-js": "^1.6.1"
+    "solid-js": "^1.6.10"
   },
   "devDependencies": {
     "@kobalte/tailwindcss": "^0.4.1",

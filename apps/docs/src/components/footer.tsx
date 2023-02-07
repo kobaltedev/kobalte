@@ -26,7 +26,7 @@ export function Footer() {
               <li class="mb-2">
                 <a
                   class="flex items-center space-x-1 text-zinc-600 hover:text-zinc-700 dark:text-zinc-400 transition duration-150 ease-in-out"
-                  href="https://github.com/fabien-ml/kobalte"
+                  href="https://github.com/kobaltedev/kobalte"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

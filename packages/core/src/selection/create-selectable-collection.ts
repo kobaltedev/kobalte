@@ -436,7 +436,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
 
   onMount(() => {
     if (props.deferAutoFocus) {
-      queueMicrotask(tryAutoFocus); // TODO: does this work EVERY time ?
+      setTimeout(tryAutoFocus, 0); // TODO: does this work EVERY time ?
     } else {
       tryAutoFocus();
     }

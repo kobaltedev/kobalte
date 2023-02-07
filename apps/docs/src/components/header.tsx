@@ -63,7 +63,7 @@ export function Header(props: HeaderProps) {
           </Link>
         </div>
         <Link
-          href="https://github.com/fabien-ml/kobalte"
+          href="https://github.com/kobaltedev/kobalte"
           target="_blank"
           rel="noopener noreferrer"
           class="p-4 flex items-center justify-center transition rounded text-zinc-700 hover:text-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
