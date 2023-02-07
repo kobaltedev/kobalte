@@ -48,7 +48,7 @@ Kobalte is a UI toolkit for building accessible web apps and design systems with
 
 ### Bugs
 
-We use [GitHub issues](https://github.com/fabien-ml/kobalte/issues) to track work and log bugs. Please check existing issues before filing anything new. We do our best to respond to issues within a few days. If you would like to contribute a fix, please let us know by leaving a comment on the issue.
+We use [GitHub issues](https://github.com/kobaltedev/kobalte/issues) to track work and log bugs. Please check existing issues before filing anything new. We do our best to respond to issues within a few days. If you would like to contribute a fix, please let us know by leaving a comment on the issue.
 
 The best way to reduce back and forth on a bug is to provide a small code example exhibiting the issue along with steps to reproduce it. If you would like to work on a bugfix yourself, make sure an issue exists first.
 
@@ -56,7 +56,7 @@ Please follow the issue templates when filing new ones and add as much informati
 
 ### Feature requests
 
-Kobalte components can always be improved upon. If you have a feature request, you can use our Feature Request issue template. For new component or larger scopes of work, it is a good idea to open a Request For Comments (RFC) first to gather feedback from the team. Create a [new discussion](https://github.com/fabien-ml/kobalte/discussions/categories/rfc) in the RFC category by using our [RFC](https://github.com/fabien-ml/kobalte/tree/main/templates/rfc.md) template.
+Kobalte components can always be improved upon. If you have a feature request, you can use our Feature Request issue template. For new component or larger scopes of work, it is a good idea to open a Request For Comments (RFC) first to gather feedback from the team. Create a [new discussion](https://github.com/kobaltedev/kobalte/discussions/categories/rfc) in the RFC category by using our [RFC](https://github.com/kobaltedev/kobalte/tree/main/templates/rfc.md) template.
 
 ## Connect with the community
 
@@ -106,7 +106,7 @@ Kobalte follows the [conventional commits](https://www.conventionalcommits.org/e
 ### Get started with Kobalte locally
 
 - Install [editorconfig](https://editorconfig.org/) extension for your editor.
-- Fork [repository](https://github.com/fabien-ml/kobalte), clone or download your fork.
+- Fork [repository](https://github.com/kobaltedev/kobalte), clone or download your fork.
 - Install dependencies with pnpm – `pnpm`.
 - Build local version of all packages and docs – `pnpm build`.
 - Build local version of all packages – `pnpm build:libs`.
