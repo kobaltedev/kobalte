@@ -26,6 +26,17 @@ export function DiscordIcon(props: ComponentProps<"svg">) {
   );
 }
 
+export function OpenCollectiveIcon(props: ComponentProps<"svg">) {
+  return (
+    <svg viewBox="0 0 32 32" {...props}>
+      <path
+        fill="currentColor"
+        d="M29.145 6.896a15.9 15.9 0 0 1 0 18.208l-4.129-4.131a10.269 10.269 0 0 0 0-9.947zm-4.041-4.041l-4.131 4.129a10.28 10.28 0 0 0-15.234 9.01c0 3.636 1.916 7 5.047 8.849s7 1.905 10.187.156l4.131 4.145c-4.891 3.391-11.26 3.781-16.531 1.021S-.006 21.941-.006 15.993A16.015 16.015 0 0 1 8.573 1.816a16.006 16.006 0 0 1 16.531 1.021zm4.041 4.041a15.9 15.9 0 0 1 0 18.208l-4.129-4.131a10.269 10.269 0 0 0 0-9.947z"
+      />
+    </svg>
+  );
+}
+
 export function TwitterIcon(props: ComponentProps<"svg">) {
   return (
     <svg viewBox="0 0 15 15" {...props}>
