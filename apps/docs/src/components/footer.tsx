@@ -1,6 +1,6 @@
 import { Link } from "@solidjs/router";
 
-import { DiscordIcon, GitHubIcon, TwitterIcon } from "./icons";
+import { DiscordIcon, GitHubIcon, OpenCollectiveIcon, TwitterIcon } from "./icons";
 
 export function Footer() {
   return (
@@ -25,35 +25,46 @@ export function Footer() {
             <ul class="text-sm flex items-center space-x-6">
               <li class="mb-2">
                 <a
-                  class="flex items-center space-x-1 text-zinc-600 hover:text-zinc-700 dark:text-zinc-400 transition duration-150 ease-in-out"
+                  aria-label="Github"
+                  class="flex items-center text-zinc-600 hover:text-zinc-700 dark:text-zinc-400 transition duration-150 ease-in-out"
                   href="https://github.com/kobaltedev/kobalte"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <GitHubIcon class="h-4 w-4" />
-                  <span>GitHub</span>
                 </a>
               </li>
               <li class="mb-2">
                 <a
-                  class="flex items-center space-x-1 text-zinc-600 hover:text-zinc-700 dark:text-zinc-400 transition duration-150 ease-in-out"
+                  aria-label="Open Collective"
+                  class="flex items-center text-zinc-600 hover:text-zinc-700 dark:text-zinc-400 transition duration-150 ease-in-out"
+                  href="https://opencollective.com/kobalte"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <OpenCollectiveIcon class="h-4 w-4" />
+                </a>
+              </li>
+              <li class="mb-2">
+                <a
+                  aria-label="Discord"
+                  class="flex items-center text-zinc-600 hover:text-zinc-700 dark:text-zinc-400 transition duration-150 ease-in-out"
                   href="https://discord.com/channels/722131463138705510/1063803756388548709"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <DiscordIcon class="h-4 w-4" />
-                  <span>Discord</span>
                 </a>
               </li>
               <li class="mb-2">
                 <a
-                  class="flex items-center space-x-1 text-zinc-600 hover:text-zinc-700 dark:text-zinc-400 transition duration-150 ease-in-out"
+                  aria-label="Twitter"
+                  class="flex items-center text-zinc-600 hover:text-zinc-700 dark:text-zinc-400 transition duration-150 ease-in-out"
                   href="https://twitter.com/MLFabien"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <TwitterIcon class="h-4 w-4" />
-                  <span>Twitter</span>
                 </a>
               </li>
             </ul>
