@@ -1,5 +1,11 @@
 # @kobalte/vanilla-extract
 
+## 0.2.1
+
+### Patch Changes
+
+- 056ed63: Add `data-closed` attribute.
+
 ## 0.2.0
 
 ### Minor Changes
