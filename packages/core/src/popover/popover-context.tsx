@@ -4,6 +4,7 @@ import { CreatePresenceResult } from "../primitives";
 
 export interface PopoverDataSet {
   "data-expanded": string | undefined;
+  "data-closed": string | undefined;
 }
 
 export interface PopoverContextValue {

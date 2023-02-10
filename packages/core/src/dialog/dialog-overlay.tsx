@@ -41,6 +41,7 @@ export const DialogOverlay = createPolymorphicComponent<"div", DialogOverlayOpti
         // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling.
         style={{ "pointer-events": "auto", ...local.style }}
         data-expanded={context.isOpen() ? "" : undefined}
+        data-closed={!context.isOpen() ? "" : undefined}
         onPointerDown={onPointerDown}
         {...others}
       />

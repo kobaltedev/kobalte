@@ -104,7 +104,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
     local.onSelect?.();
 
     if (local.closeOnSelect) {
-      rootContext.close();
+      menuContext.close(true);
     }
   };
 

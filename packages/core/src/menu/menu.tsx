@@ -106,8 +106,12 @@ export function Menu(props: ParentProps<MenuOptions>) {
     disclosureState.open();
   };
 
-  const close = () => {
+  const close = (recursively = false) => {
     disclosureState.close();
+
+    if (recursively && parentMenuContext) {
+      parentMenuContext.close(true);
+    }
   };
 
   const toggle = (focusStrategy: FocusStrategy | boolean) => {
@@ -186,6 +190,7 @@ export function Menu(props: ParentProps<MenuOptions>) {
 
   const dataset: Accessor<MenuDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
+    "data-closed": !disclosureState.isOpen() ? "" : undefined,
   }));
 
   const context: MenuContextValue = {

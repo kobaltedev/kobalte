@@ -2,6 +2,7 @@ import { Accessor, createContext, useContext } from "solid-js";
 
 export interface CollapsibleDataSet {
   "data-expanded": string | undefined;
+  "data-closed": string | undefined;
   "data-disabled": string | undefined;
 }
 

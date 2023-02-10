@@ -33,6 +33,7 @@ export const DialogTrigger = createPolymorphicComponent<"button", Button.ButtonR
         aria-expanded={context.isOpen()}
         aria-controls={context.isOpen() ? context.contentId() : undefined}
         data-expanded={context.isOpen() ? "" : undefined}
+        data-closed={!context.isOpen() ? "" : undefined}
         onClick={onClick}
         {...others}
       />

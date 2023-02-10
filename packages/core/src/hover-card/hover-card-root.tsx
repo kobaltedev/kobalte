@@ -217,6 +217,7 @@ export const HoverCardRoot: ParentComponent<HoverCardRootOptions> = props => {
 
   const dataset: Accessor<HoverCardDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
+    "data-closed": !disclosureState.isOpen() ? "" : undefined,
   }));
 
   const context: HoverCardContextValue = {

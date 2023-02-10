@@ -8,6 +8,7 @@ import { GraceIntent, Side } from "./utils";
 
 export interface MenuDataSet {
   "data-expanded": string | undefined;
+  "data-closed": string | undefined;
 }
 
 export interface MenuContextValue {
@@ -26,7 +27,7 @@ export interface MenuContextValue {
   setTriggerRef: (el: HTMLElement) => void;
   setContentRef: (el: HTMLDivElement) => void;
   open: (focusStrategy: FocusStrategy | boolean) => void;
-  close: () => void;
+  close: (recursively?: boolean) => void;
   toggle: (focusStrategy: FocusStrategy | boolean) => void;
   focusContent: () => void;
   onItemEnter: (e: PointerEvent) => void;

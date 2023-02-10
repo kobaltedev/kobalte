@@ -20,6 +20,7 @@ export const SelectIcon = createPolymorphicComponent<"div">(props => {
       component={local.as}
       aria-hidden="true"
       data-expanded={context.isOpen() ? "" : undefined}
+      data-closed={!context.isOpen() ? "" : undefined}
       {...others}
     />
   );

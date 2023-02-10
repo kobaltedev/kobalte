@@ -32,7 +32,7 @@ export function Header(props: HeaderProps) {
           <span class="text-3xl leading-[0] text-sky-600">.</span>
         </Link>
         <span class="rounded bg-zinc-100 px-1.5 py-1 text-sm leading-none dark:bg-zinc-800 dark:text-zinc-300">
-          v0.6.0
+          v0.6.1
         </span>
       </div>
 
