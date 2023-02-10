@@ -1,5 +1,11 @@
 # @kobalte/tailwindcss
 
+## 0.4.2
+
+### Patch Changes
+
+- 056ed63: Add `data-closed` attribute.
+
 ## 0.4.1
 
 ### Patch Changes

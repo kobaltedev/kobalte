@@ -1,5 +1,11 @@
 # @kobalte/utils
 
+## 0.5.1
+
+### Patch Changes
+
+- 056ed63: Add `data-closed` attribute.
+
 ## 0.5.0
 
 ### Minor Changes
