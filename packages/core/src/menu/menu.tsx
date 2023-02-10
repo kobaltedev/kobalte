@@ -186,6 +186,7 @@ export function Menu(props: ParentProps<MenuOptions>) {
 
   const dataset: Accessor<MenuDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
+    "data-closed": !disclosureState.isOpen() ? "" : undefined,
   }));
 
   const context: MenuContextValue = {

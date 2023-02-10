@@ -21,6 +21,7 @@ const STATES = [
   "selected",
   "pressed",
   "expanded",
+  "closed",
   "highlighted",
   "current",
 ];

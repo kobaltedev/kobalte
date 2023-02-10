@@ -177,6 +177,7 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentOpti
         aria-labelledby={context.titleId()}
         aria-describedby={context.descriptionId()}
         data-expanded={context.isOpen() ? "" : undefined}
+        data-closed={!context.isOpen() ? "" : undefined}
         onEscapeKeyDown={local.onEscapeKeyDown}
         onPointerDownOutside={onPointerDownOutside}
         onFocusOutside={onFocusOutside}

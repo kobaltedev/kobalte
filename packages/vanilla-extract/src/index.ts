@@ -15,6 +15,7 @@ export type DataAttributeState =
   | "selected"
   | "pressed"
   | "expanded"
+  | "closed"
   | "highlighted"
   | "current";
 

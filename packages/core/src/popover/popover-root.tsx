@@ -110,6 +110,7 @@ export const PopoverRoot: ParentComponent<PopoverRootOptions> = props => {
 
   const dataset: Accessor<PopoverDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
+    "data-closed": !disclosureState.isOpen() ? "" : undefined,
   }));
 
   const context: PopoverContextValue = {

@@ -70,18 +70,18 @@ export default function Root() {
               </MDXProvider>
             </ColorModeProvider>
           </Suspense>
-          <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
-          <script>
-            {`docsearch({
-            appId: "H7ZQSI0SAN",
-            apiKey: "c9354456dd4bb74c37e4d2b762b89b88",
-            indexName: "kobalte",
-            container: "#docsearch",
-            debug: false
-          });`}
-          </script>
-          <Scripts />
         </ErrorBoundary>
+        <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+        <script>
+          {`docsearch({
+              appId: "H7ZQSI0SAN",
+              apiKey: "c9354456dd4bb74c37e4d2b762b89b88",
+              indexName: "kobalte",
+              container: "#docsearch",
+              debug: false
+            });`}
+        </script>
+        <Scripts />
       </Body>
     </Html>
   );

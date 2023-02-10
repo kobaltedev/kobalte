@@ -8,6 +8,7 @@ import { GraceIntent, Side } from "./utils";
 
 export interface MenuDataSet {
   "data-expanded": string | undefined;
+  "data-closed": string | undefined;
 }
 
 export interface MenuContextValue {

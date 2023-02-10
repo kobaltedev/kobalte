@@ -187,6 +187,7 @@ export const SelectTrigger = createPolymorphicComponent<"button", Button.ButtonR
         aria-labelledby={ariaLabelledBy()}
         aria-describedby={fieldProps.ariaDescribedBy()}
         data-expanded={context.isOpen() ? "" : undefined}
+        data-closed={!context.isOpen() ? "" : undefined}
         onPointerDown={onPointerDown}
         onClick={onClick}
         onKeyDown={onKeyDown}

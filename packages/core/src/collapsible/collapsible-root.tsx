@@ -73,6 +73,7 @@ export const CollapsibleRoot = createPolymorphicComponent<"div", CollapsibleRoot
 
   const dataset: Accessor<CollapsibleDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
+    "data-closed": !disclosureState.isOpen() ? "" : undefined,
     "data-disabled": local.isDisabled ? "" : undefined,
   }));
 
