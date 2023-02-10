@@ -145,7 +145,7 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     // `createSelectableList` prevent escape key down,
     // which prevent our `onDismiss` in `DismissableLayer` to run,
     // so we force "close on escape" here.
-    rootContext.close();
+    context.close(true);
   };
 
   const onFocusOutside = (e: FocusOutsideEvent) => {

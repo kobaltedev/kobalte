@@ -86,7 +86,12 @@ export const RangeCalendarRoot = createPolymorphicComponent<"div", RangeCalendar
 
     const { locale: defaultLocale } = useLocale();
 
-    props = mergeDefaultProps({ visibleMonths: 1 }, props);
+    props = mergeDefaultProps(
+      {
+        visibleMonths: 1,
+      },
+      props
+    );
 
     const [local, calendarProps, others] = splitProps(
       props,

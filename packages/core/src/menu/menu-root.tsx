@@ -63,7 +63,6 @@ export function MenuRoot(props: ParentProps<MenuRootOptions>) {
   const context: MenuRootContextValue = {
     isModal: () => local.isModal ?? true,
     forceMount: () => local.forceMount ?? false,
-    close: disclosureState.close,
     generateId: createGenerateId(() => local.id!),
   };
 
