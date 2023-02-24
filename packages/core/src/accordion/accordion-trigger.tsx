@@ -7,12 +7,13 @@
  */
 
 import {
+  callHandler,
   composeEventHandlers,
   createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Collapsible from "../collapsible";
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
@@ -72,6 +73,16 @@ export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
     () => ref
   );
 
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    // Prevent `Enter` and `Space` default behavior which fires a click event when using a <button>.
+    if (["Enter", " "].includes(e.key)) {
+      e.preventDefault();
+    }
+
+    callHandler(e, local.onKeyDown);
+    callHandler(e, selectableItem.onKeyDown);
+  };
+
   createEffect(() => onCleanup(itemContext.registerTriggerId(others.id!)));
 
   return (
@@ -81,7 +92,7 @@ export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
       onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
       onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}
       onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
-      onKeyDown={composeEventHandlers([local.onKeyDown, selectableItem.onKeyDown])}
+      onKeyDown={onKeyDown}
       onMouseDown={composeEventHandlers([local.onMouseDown, selectableItem.onMouseDown])}
       onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
       {...others}
