@@ -123,7 +123,7 @@ importers:
       solid-start-node: 0.2.22
       tailwindcss: 3.2.4
       typescript: 4.8.3
-      undici: 5.19.1
+      undici: 5.16.0
       unist-util-visit: 4.1.2
       vite: 3.2.5
     dependencies:
@@ -156,10 +156,10 @@ importers:
       solid-mdx: 0.0.6_solid-js@1.6.10+vite@3.2.5
       solid-start: 0.2.22_7tpus2iqdlhujxfipub43kkgfi
       solid-start-netlify: 0.2.22_solid-start@0.2.22
-      solid-start-node: 0.2.22_i6cwb6ivxueptcb5xs536kwrdq
+      solid-start-node: 0.2.22_vevr5447zwawz4ua7zfhqhx5aa
       tailwindcss: 3.2.4_postcss@8.4.21
       typescript: 4.8.3
-      undici: 5.19.1
+      undici: 5.16.0
       unist-util-visit: 4.1.2
       vite: 3.2.5
 
@@ -3159,7 +3159,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.14.1
+      '@types/node': 18.13.0
       '@types/yargs': 15.0.15
       chalk: 4.1.2
 
@@ -3827,10 +3827,10 @@ packages:
 
   /@types/node/18.13.0:
     resolution: {integrity: sha512-gC3TazRzGoOnoKAhUx+Q0t8S9Tzs74z7m0ipwGpSqQrleP14hKxP4/JUeEQcD3W1/aIpnWl8pHowI7WokuZpXg==}
-    dev: true
 
   /@types/node/18.14.1:
     resolution: {integrity: sha512-QH+37Qds3E0eDlReeboBxfHbX9omAcBCXEzswCu6jySP642jiM3cYSIkU/REqwhCUqXdonHFuBfJDiAJxMNhaQ==}
+    dev: true
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -10698,7 +10698,7 @@ packages:
       - supports-color
     dev: true
 
-  /solid-start-node/0.2.22_i6cwb6ivxueptcb5xs536kwrdq:
+  /solid-start-node/0.2.22_vevr5447zwawz4ua7zfhqhx5aa:
     resolution: {integrity: sha512-BOLYzp9mkBRs2CvhFLxz66J1hlyxZoJd2x6BT9pKitm3qdbyTZTm0mLsMchgMNsXTBTxnhXOMATe3lectsV7fA==}
     peerDependencies:
       solid-start: '*'
@@ -10714,7 +10714,7 @@ packages:
       sirv: 2.0.2
       solid-start: 0.2.22_7tpus2iqdlhujxfipub43kkgfi
       terser: 5.16.5
-      undici: 5.19.1
+      undici: 5.16.0
       vite: 3.2.5
     transitivePeerDependencies:
       - supports-color
@@ -10784,9 +10784,9 @@ packages:
       sirv: 2.0.2
       solid-js: 1.6.10
       solid-start-netlify: 0.2.22_solid-start@0.2.22
-      solid-start-node: 0.2.22_i6cwb6ivxueptcb5xs536kwrdq
+      solid-start-node: 0.2.22_vevr5447zwawz4ua7zfhqhx5aa
       terser: 5.16.5
-      undici: 5.19.1
+      undici: 5.16.0
       vite: 3.2.5
       vite-plugin-inspect: 0.7.15_rollup@3.17.2+vite@3.2.5
       vite-plugin-solid: 2.5.0_solid-js@1.6.10+vite@3.2.5
@@ -11620,8 +11620,8 @@ packages:
       which-boxed-primitive: 1.0.2
     dev: true
 
-  /undici/5.19.1:
-    resolution: {integrity: sha512-YiZ61LPIgY73E7syxCDxxa3LV2yl3sN8spnIuTct60boiiRaE1J8mNWHO8Im2Zi/sFrPusjLlmRPrsyraSqX6A==}
+  /undici/5.16.0:
+    resolution: {integrity: sha512-KWBOXNv6VX+oJQhchXieUznEmnJMqgXMbs0xxH2t8q/FUAWSJvOSr/rMaZKnX5RIVq7JDn0JbP4BOnKG2SGXLQ==}
     engines: {node: '>=12.18'}
     dependencies:
       busboy: 1.6.0
