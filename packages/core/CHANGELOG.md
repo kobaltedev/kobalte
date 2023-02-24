@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.6.2
+
+### Patch Changes
+
+- 1734b1e: fix: #119
+
 ## 0.6.1
 
 ### Patch Changes

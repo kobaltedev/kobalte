@@ -31,7 +31,7 @@
     "start": "solid-start start"
   },
   "dependencies": {
-    "@kobalte/core": "0.6.1",
+    "@kobalte/core": "0.6.2",
     "@solidjs/meta": "0.28.2",
     "@solidjs/router": "0.7.0",
     "clsx": "1.2.1"
