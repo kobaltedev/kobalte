@@ -1,7 +1,7 @@
 import { Accessor, createContext, Setter, useContext } from "solid-js";
 
 import { ListState } from "../list";
-import { CollectionItem } from "../primitives";
+import { CollectionItemWithRef } from "../primitives";
 import { FocusStrategy, KeyboardDelegate } from "../selection";
 
 export interface SelectContextValue {
@@ -13,8 +13,8 @@ export interface SelectContextValue {
   triggerId: Accessor<string | undefined>;
   valueId: Accessor<string | undefined>;
   listboxId: Accessor<string | undefined>;
-  items: Accessor<CollectionItem[]>;
-  setItems: (items: CollectionItem[]) => void;
+  items: Accessor<CollectionItemWithRef[]>;
+  setItems: (items: CollectionItemWithRef[]) => void;
   listboxAriaLabelledBy: Accessor<string | undefined>;
   listState: Accessor<ListState>;
   keyboardDelegate: Accessor<KeyboardDelegate>;

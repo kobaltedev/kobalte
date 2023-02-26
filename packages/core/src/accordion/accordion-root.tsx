@@ -7,6 +7,7 @@
  */
 
 import {
+  access,
   composeEventHandlers,
   createGenerateId,
   createPolymorphicComponent,
@@ -17,7 +18,7 @@ import { createSignal, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createListState, createSelectableList } from "../list";
-import { CollectionItem } from "../primitives";
+import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { AccordionContext, AccordionContextValue } from "./accordion-context";
 
@@ -78,7 +79,7 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
     "onFocusOut",
   ]);
 
-  const [items, setItems] = createSignal<CollectionItem[]>([]);
+  const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 
   const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
 

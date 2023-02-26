@@ -18,7 +18,7 @@ import { Accessor, createMemo, createUniqueId, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { createListState, createSelectableList, ListState } from "../list";
-import { CollectionItem, createControllableArraySignal } from "../primitives";
+import { CollectionItemWithRef, createControllableArraySignal } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { FocusStrategy, KeyboardDelegate, SelectionBehavior, SelectionMode } from "../selection";
 import { ListboxContext, ListboxContextValue } from "./listbox-context";
@@ -37,10 +37,10 @@ export interface ListboxRootOptions {
   onValueChange?: (value: Set<string>) => void;
 
   /** The controlled items of the listbox. */
-  items?: CollectionItem[];
+  items?: CollectionItemWithRef[];
 
   /** Event handler called when the items change. */
-  onItemsChange?: (items: CollectionItem[]) => void;
+  onItemsChange?: (items: CollectionItemWithRef[]) => void;
 
   /** The controlled state of the listbox. */
   state?: ListState;
@@ -137,7 +137,7 @@ export const ListboxRoot = createPolymorphicComponent<"div", ListboxRootOptions>
     "onFocusOut",
   ]);
 
-  const [items, setItems] = createControllableArraySignal<CollectionItem>({
+  const [items, setItems] = createControllableArraySignal<CollectionItemWithRef>({
     value: () => local.items,
     defaultValue: () => [],
     onChange: value => local.onItemsChange?.(value),

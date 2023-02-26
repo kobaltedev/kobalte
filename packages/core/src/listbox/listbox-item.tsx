@@ -20,7 +20,7 @@ import {
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { CollectionItem, createRegisterId } from "../primitives";
+import { CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useListboxContext } from "./listbox-context";
@@ -90,9 +90,10 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
 
   const isHighlighted = () => selectionManager().focusedKey() === local.value;
 
-  createDomCollectionItem<CollectionItem>({
+  createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
       ref: () => ref,
+      type: "item",
       key: local.value,
       label: labelRef()?.textContent ?? ref?.textContent ?? "",
       textValue: local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",

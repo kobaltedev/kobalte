@@ -15,7 +15,7 @@ import {
 import { createEffect, on, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { CollectionItem } from "../primitives";
+import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useTabsContext } from "./tabs-context";
@@ -66,11 +66,11 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
 
   const contentId = () => context.contentIdsMap().get(local.value);
 
-  createDomCollectionItem<CollectionItem>({
+  createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
       ref: () => ref,
+      type: "item",
       key: local.value,
-      label: "", // not applicable here
       textValue: "", // not applicable here
       isDisabled: isDisabled(),
     }),

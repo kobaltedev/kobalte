@@ -4,10 +4,11 @@ import { Dynamic } from "solid-js/web";
 
 import { useFormControlContext } from "../form-control";
 import { useSelectContext } from "../select/select-context";
+import { CollectionNode } from "../primitives";
 
 interface MultiSelectValueState {
-  /** The selected values of the multi-select. */
-  selectedValues: Accessor<Set<string>>;
+  /** The selected items of the multi-select. */
+  selectedItems: Accessor<CollectionNode[]>;
 }
 
 export interface MultiSelectValueOptions {
@@ -35,10 +36,10 @@ export const MultiSelectValue = createPolymorphicComponent<"span", MultiSelectVa
     const selectionManager = () => context.listState().selectionManager();
     const isSelectionEmpty = () => selectionManager().isEmpty();
 
-    const valueLabels = () => {
+    const selectedItems = () => {
       return [...selectionManager().selectedKeys()]
-        .map(key => context.listState().collection().getItem(key)?.label ?? key)
-        .join(", ");
+        .map(key => context.listState().collection().getItem(key))
+        .filter(Boolean) as CollectionNode[];
     };
 
     createEffect(() => onCleanup(context.registerValueId(local.id!)));
@@ -52,12 +53,7 @@ export const MultiSelectValue = createPolymorphicComponent<"span", MultiSelectVa
         {...others}
       >
         <Show when={!isSelectionEmpty()} fallback={local.placeholder}>
-          <Show when={local.children} fallback={valueLabels()}>
-            <MultiSelectValueChild
-              state={{ selectedValues: () => selectionManager().selectedKeys() }}
-              children={local.children}
-            />
-          </Show>
+          <MultiSelectValueChild state={{ selectedItems }} children={local.children} />
         </Show>
       </Dynamic>
     );

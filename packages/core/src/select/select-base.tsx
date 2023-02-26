@@ -20,7 +20,7 @@ import { createCollator } from "../i18n";
 import { createListState, ListKeyboardDelegate } from "../list";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
-  CollectionItem,
+  CollectionItemWithRef,
   createDisclosureState,
   createFormResetListener,
   createPresence,
@@ -158,7 +158,7 @@ export function SelectBase(props: ParentProps<SelectBaseOptions>) {
   const [listboxAriaLabelledBy, setListboxAriaLabelledBy] = createSignal<string>();
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(true);
 
-  const [items, setItems] = createSignal<CollectionItem[]>([]);
+  const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 
   const disclosureState = createDisclosureState({
     isOpen: () => local.isOpen,

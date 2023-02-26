@@ -12,7 +12,7 @@ import { createEffect, createSignal, createUniqueId, on, splitProps } from "soli
 import { Dynamic } from "solid-js/web";
 
 import { createSingleSelectListState } from "../list";
-import { CollectionItem } from "../primitives";
+import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { TabsContext, TabsContextValue } from "./tabs-context";
 import { TabsActivationMode } from "./types";
@@ -67,7 +67,7 @@ export const TabsRoot = createPolymorphicComponent<"div", TabsRootOptions>(props
     "isDisabled",
   ]);
 
-  const [items, setItems] = createSignal<CollectionItem[]>([]);
+  const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
   const [selectedTab, setSelectedTab] = createSignal<HTMLElement>();
 
   const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });

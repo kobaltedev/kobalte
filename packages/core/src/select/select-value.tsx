@@ -3,11 +3,12 @@ import { Accessor, children, createEffect, JSX, onCleanup, Show, splitProps } fr
 import { Dynamic } from "solid-js/web";
 
 import { useFormControlContext } from "../form-control";
+import { CollectionNode } from "../primitives";
 import { useSelectContext } from "./select-context";
 
 interface SelectValueState {
-  /** The selected value of the select. */
-  selectedValue: Accessor<string>;
+  /** The selected item of the select. */
+  selectedItem: Accessor<CollectionNode>;
 }
 
 export interface SelectValueOptions {
@@ -34,10 +35,12 @@ export const SelectValue = createPolymorphicComponent<"span", SelectValueOptions
   const selectionManager = () => context.listState().selectionManager();
   const isSelectionEmpty = () => selectionManager().isEmpty();
 
-  const valueLabels = () => {
-    return [...selectionManager().selectedKeys()]
-      .map(key => context.listState().collection().getItem(key)?.label ?? key)
-      .join(", ");
+  const selectedItem = () => {
+    // Safe non-null assertion since it's used only when selection is not empty.
+    return context
+      .listState()
+      .collection()
+      .getItem(selectionManager().selectedKeys().values().next().value)!;
   };
 
   createEffect(() => onCleanup(context.registerValueId(local.id!)));
@@ -51,12 +54,7 @@ export const SelectValue = createPolymorphicComponent<"span", SelectValueOptions
       {...others}
     >
       <Show when={!isSelectionEmpty()} fallback={local.placeholder}>
-        <Show when={local.children} fallback={valueLabels()}>
-          <SelectValueChild
-            state={{ selectedValue: () => selectionManager().selectedKeys().values().next().value }}
-            children={local.children}
-          />
-        </Show>
+        <SelectValueChild state={{ selectedItem }} children={local.children} />
       </Show>
     </Dynamic>
   );
