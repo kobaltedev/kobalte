@@ -55,6 +55,9 @@ export interface CreateSelectableListProps {
 
   /** Whether the option is contained in a virtual scroller. */
   isVirtualized?: MaybeAccessor<boolean | undefined>;
+
+  /** When virtualized, the Virtualizer function used to scroll to the item of the key provided. */
+  scrollToKey?: MaybeAccessor<((key: string) => void) | undefined>;
 }
 
 /**
@@ -95,6 +98,7 @@ export function createSelectableList<T extends HTMLElement, U extends HTMLElemen
       shouldUseVirtualFocus: () => access(props.shouldUseVirtualFocus),
       allowsTabNavigation: () => access(props.allowsTabNavigation),
       isVirtualized: () => access(props.isVirtualized),
+      scrollToKey: key => access(props.scrollToKey)?.(key),
     },
     ref,
     scrollRef

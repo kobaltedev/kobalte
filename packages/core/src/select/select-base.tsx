@@ -62,6 +62,24 @@ export interface SelectBaseOptions
   /** Event handler called when the value changes. */
   onValueChange?: (value: Set<string>) => void;
 
+  /** An array of options to display as the available options. */
+  options?: any[];
+
+  /** Property name or getter function to use as the value of an option. */
+  optionValue?: string | ((option: any) => string);
+
+  /** Property name or getter function to use as the text value of an option for typeahead purpose. */
+  optionTextValue?: string | ((option: any) => string);
+
+  /** Property name or getter function to use as the disabled flag of an option. */
+  optionDisabled?: string | ((option: any) => boolean);
+
+  /** Property name or getter function that refers to the children options of option group. */
+  optionGroupChildren?: string | ((optGroup: any) => any[]);
+
+  /** Function used to check if an option is an option group. */
+  isOptionGroup?: (maybeOptGroup: any) => boolean;
+
   /** An optional keyboard delegate implementation for type to select, to override the default. */
   keyboardDelegate?: KeyboardDelegate;
 
@@ -76,6 +94,15 @@ export interface SelectBaseOptions
 
   /** Whether the select allows empty selection. */
   disallowEmptySelection?: boolean;
+
+  /** Whether the select uses virtual scrolling. */
+  isVirtualized?: boolean;
+
+  /**
+   * Used to force mounting the select (portal, positioner and content) when more control is needed.
+   * Useful when controlling animation with SolidJS animation libraries.
+   */
+  forceMount?: boolean;
 
   /**
    * A unique identifier for the component.
@@ -137,12 +164,20 @@ export function SelectBase(props: ParentProps<SelectBaseOptions>) {
       "value",
       "defaultValue",
       "onValueChange",
+      "options",
+      "optionValue",
+      "optionTextValue",
+      "optionDisabled",
+      "optionGroupChildren",
+      "isOptionGroup",
       "keyboardDelegate",
       "autoComplete",
       "allowDuplicateSelectionEvents",
       "disallowEmptySelection",
       "selectionBehavior",
       "selectionMode",
+      "isVirtualized",
+      "forceMount",
     ],
     FORM_CONTROL_PROP_NAMES
   );
@@ -153,18 +188,18 @@ export function SelectBase(props: ParentProps<SelectBaseOptions>) {
 
   const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
   const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
-  const [listboxRef, setListboxRef] = createSignal<HTMLDivElement>();
+  const [listboxRef, setListboxRef] = createSignal<HTMLUListElement>();
 
   const [listboxAriaLabelledBy, setListboxAriaLabelledBy] = createSignal<string>();
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(true);
-
-  const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 
   const disclosureState = createDisclosureState({
     isOpen: () => local.isOpen,
     defaultIsOpen: () => local.defaultIsOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
+
+  const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
 
   const focusTrigger = () => {
     const triggerEl = triggerRef();
@@ -236,7 +271,12 @@ export function SelectBase(props: ParentProps<SelectBaseOptions>) {
     disallowEmptySelection: () => access(local.disallowEmptySelection),
     selectionBehavior: () => access(local.selectionBehavior),
     selectionMode: () => local.selectionMode,
-    dataSource: items,
+    dataSource: () => local.options ?? [],
+    getKey: () => local.optionValue,
+    getTextValue: () => local.optionTextValue,
+    getIsDisabled: () => local.optionDisabled,
+    getSectionChildren: () => local.optionGroupChildren,
+    getIsSection: () => local.isOptionGroup,
   });
 
   const { formControlContext } = createFormControl(formControlProps);
@@ -263,12 +303,12 @@ export function SelectBase(props: ParentProps<SelectBaseOptions>) {
     isOpen: disclosureState.isOpen,
     isDisabled: () => formControlContext.isDisabled() ?? false,
     isMultiple: () => access(local.selectionMode) === "multiple",
+    isVirtualized: () => local.isVirtualized,
+    contentPresence,
     autoFocus: focusStrategy,
     triggerRef,
     listState: () => listState,
     keyboardDelegate: delegate,
-    items,
-    setItems,
     triggerId,
     valueId,
     listboxId,

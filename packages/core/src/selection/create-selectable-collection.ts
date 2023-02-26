@@ -58,6 +58,9 @@ interface CreateSelectableCollectionProps {
 
   /** Whether the collection items are contained in a virtual scroller. */
   isVirtualized?: MaybeAccessor<boolean | undefined>;
+
+  /** When virtualized, the Virtualizer function used to scroll to the item of the key provided. */
+  scrollToKey?: (key: string) => void;
 }
 
 /**
@@ -454,11 +457,15 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
       newValue => {
         const [scrollEl, isVirtualized, focusedKey] = newValue;
 
-        if (!isVirtualized && focusedKey && scrollEl) {
-          const element = scrollEl.querySelector(`[data-key="${focusedKey}"]`);
+        if (isVirtualized) {
+          focusedKey && props.scrollToKey?.(focusedKey);
+        } else {
+          if (focusedKey && scrollEl) {
+            const element = scrollEl.querySelector(`[data-key="${focusedKey}"]`);
 
-          if (element) {
-            scrollIntoView(scrollEl, element as HTMLElement);
+            if (element) {
+              scrollIntoView(scrollEl, element as HTMLElement);
+            }
           }
         }
       }

@@ -9,7 +9,6 @@ export interface ListboxItemDataSet {
 export interface ListboxItemContextValue {
   isSelected: Accessor<boolean>;
   dataset: Accessor<ListboxItemDataSet>;
-  setLabelRef: (el: HTMLElement) => void;
   generateId: (part: string) => string;
   registerLabelId: (id: string) => () => void;
   registerDescriptionId: (id: string) => () => void;

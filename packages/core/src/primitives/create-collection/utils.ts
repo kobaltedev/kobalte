@@ -63,7 +63,10 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
       continue;
     }
 
-    if (params.getIsSection?.(data)) {
+    // If no custom `getIsSection` is provided assume it's a section if it has children.
+    const isSection = params.getIsSection?.(data) ?? getSectionChildren(data) != null;
+
+    if (isSection) {
       nodes.push({
         type: "section",
         rawValue: data,

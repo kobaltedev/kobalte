@@ -4,17 +4,18 @@ import { createEffect, onCleanup, onMount, splitProps } from "solid-js";
 import * as Listbox from "../listbox";
 import { useSelectContext } from "./select-context";
 
-export interface SelectListboxOptions extends Pick<Listbox.ListboxRootOptions, "scrollRef"> {}
+export interface SelectListboxOptions
+  extends Pick<Listbox.ListboxRootOptions, "scrollRef" | "children" | "scrollToKey"> {}
 
 /**
  * Contains all the items of a `Select`.
  */
-export const SelectListbox = createPolymorphicComponent<"div", SelectListboxOptions>(props => {
+export const SelectListbox = createPolymorphicComponent<"ul", SelectListboxOptions>(props => {
   const context = useSelectContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
+      as: "ul",
       id: context.generateId("listbox"),
     },
     props
@@ -47,13 +48,12 @@ export const SelectListbox = createPolymorphicComponent<"div", SelectListboxOpti
     <Listbox.Root
       ref={mergeRefs(context.setListboxRef, local.ref)}
       id={local.id}
-      items={context.items()}
       state={context.listState()}
-      autoFocus={context.isOpen() ? context.autoFocus() : false}
+      isVirtualized={context.isVirtualized()}
+      autoFocus={context.autoFocus()}
       shouldSelectOnPressUp
       shouldFocusOnHover
       aria-labelledby={context.listboxAriaLabelledBy()}
-      onItemsChange={context.setItems}
       {...others}
     />
   );

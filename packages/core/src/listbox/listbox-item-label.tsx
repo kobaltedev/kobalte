@@ -27,17 +27,9 @@ export const ListboxItemLabel = createPolymorphicComponent<"div">(props => {
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "ref", "id"]);
+  const [local, others] = splitProps(props, ["as", "id"]);
 
   createEffect(() => onCleanup(context.registerLabelId(local.id!)));
 
-  return (
-    <Dynamic
-      component={local.as}
-      ref={mergeRefs(context.setLabelRef, local.ref)}
-      id={local.id}
-      {...context.dataset()}
-      {...others}
-    />
-  );
+  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
 });
