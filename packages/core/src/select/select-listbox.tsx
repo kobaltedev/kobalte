@@ -25,6 +25,7 @@ export const SelectListbox = createPolymorphicComponent<"ul", SelectListboxOptio
 
   createEffect(() => onCleanup(context.registerListboxId(local.id!)));
 
+  /*
   onMount(() => {
     if (!context.isOpen() || context.autoFocus() === false) {
       return;
@@ -43,6 +44,7 @@ export const SelectListbox = createPolymorphicComponent<"ul", SelectListboxOptio
     context.listState().selectionManager().setFocused(true);
     context.listState().selectionManager().setFocusedKey(focusedKey);
   });
+  */
 
   return (
     <Listbox.Root

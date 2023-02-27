@@ -7,10 +7,16 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { For } from "solid-js";
+import { Key } from "@kobalte/utils";
 import { fireEvent, render, screen, within } from "solid-testing-library";
 
 import * as Select from ".";
+
+const DATA_SOURCE = [
+  { key: "1", label: "One", textValue: "One", isDisabled: false },
+  { key: "2", label: "Two", textValue: "Two", isDisabled: false },
+  { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+];
 
 describe("Select", () => {
   installPointerEvent();
@@ -28,17 +34,21 @@ describe("Select", () => {
 
   it("renders correctly", () => {
     render(() => (
-      <Select.Root>
+      <Select.Root options={DATA_SOURCE}>
         <Select.Label>Label</Select.Label>
         <Select.Trigger>
-          <Select.Value placeholder="Placeholder" />
+          <Select.Value placeholder="Placeholder">
+            {({ selectedItem }) => selectedItem().rawValue.label}
+          </Select.Value>
         </Select.Trigger>
         <Select.Portal>
           <Select.Content>
             <Select.Listbox>
-              <Select.Item value="1">One</Select.Item>
-              <Select.Item value="2">Two</Select.Item>
-              <Select.Item value="3">Three</Select.Item>
+              {collection => (
+                <Key each={[...collection()]} by="key">
+                  {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                </Key>
+              )}
             </Select.Listbox>
           </Select.Content>
         </Select.Portal>
@@ -65,17 +75,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -116,17 +130,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -180,17 +198,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -227,17 +249,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -274,17 +300,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -321,17 +351,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -368,17 +402,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -433,17 +471,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root isOpen onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} isOpen onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -476,17 +518,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root defaultIsOpen onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} defaultIsOpen onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -521,17 +567,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -573,17 +623,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -635,17 +689,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -683,17 +741,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root isOpen onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} isOpen onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -723,17 +785,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root defaultIsOpen onOpenChange={onOpenChange}>
+        <Select.Root options={DATA_SOURCE} defaultIsOpen onOpenChange={onOpenChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -765,17 +831,21 @@ describe("Select", () => {
   describe("labeling", () => {
     it("focuses on the trigger when you click the label", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -794,17 +864,21 @@ describe("Select", () => {
 
     it("supports labeling with a visible label", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -832,16 +906,20 @@ describe("Select", () => {
 
     it("supports labeling via aria-label", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Trigger aria-label="foo">
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -867,16 +945,20 @@ describe("Select", () => {
 
     it("supports labeling via aria-labelledby", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Trigger aria-labelledby="foo">
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -901,16 +983,20 @@ describe("Select", () => {
 
     it("supports labeling via aria-label and aria-labelledby", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Trigger aria-label="bar" aria-labelledby="foo">
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -937,18 +1023,22 @@ describe("Select", () => {
   describe("help text", () => {
     it("supports description", () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Description>Description</Select.Description>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -964,18 +1054,22 @@ describe("Select", () => {
 
     it("supports error message", () => {
       render(() => (
-        <Select.Root validationState="invalid" onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} validationState="invalid" onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.ErrorMessage>ErrorMessage</Select.ErrorMessage>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -993,17 +1087,21 @@ describe("Select", () => {
   describe("selection", () => {
     it("can select items on press", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1048,17 +1146,21 @@ describe("Select", () => {
 
     it("can select items with the Space key", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1111,17 +1213,21 @@ describe("Select", () => {
 
     it("can select items with the Enter key", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1173,17 +1279,21 @@ describe("Select", () => {
 
     it("focuses items on hover", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1252,17 +1362,25 @@ describe("Select", () => {
     it("does not clear selection on escape closing the listbox", async () => {
       const onOpenChangeSpy = jest.fn();
       render(() => (
-        <Select.Root onValueChange={onValueChange} onOpenChange={onOpenChangeSpy}>
+        <Select.Root
+          options={DATA_SOURCE}
+          onValueChange={onValueChange}
+          onOpenChange={onOpenChangeSpy}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1326,17 +1444,21 @@ describe("Select", () => {
 
     it("supports controlled selection", async () => {
       render(() => (
-        <Select.Root value="2" onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} value="2" onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1389,17 +1511,21 @@ describe("Select", () => {
 
     it("supports default selection", async () => {
       render(() => (
-        <Select.Root defaultValue="2" onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} defaultValue="2" onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1451,20 +1577,28 @@ describe("Select", () => {
     });
 
     it("skips disabled items", async () => {
+      const dataSource = [
+        { key: "1", label: "One", textValue: "One", isDisabled: false },
+        { key: "2", label: "Two", textValue: "Two", isDisabled: true },
+        { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+      ];
+
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={dataSource} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2" isDisabled>
-                  Two
-                </Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1523,19 +1657,29 @@ describe("Select", () => {
     });
 
     it("supports type to select", async () => {
+      const dataSource = [
+        { key: "1", label: "One", textValue: "One", isDisabled: false },
+        { key: "2", label: "Two", textValue: "Two", isDisabled: false },
+        { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+        { key: "4", label: "Four", textValue: "Four", isDisabled: false },
+      ];
+
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={dataSource} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-                <Select.Item value="4">Four</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1591,8 +1735,6 @@ describe("Select", () => {
       expect(listbox).not.toBeVisible();
       expect(trigger).toHaveTextContent("Three");
 
-      jest.advanceTimersByTime(500);
-
       fireEvent.focus(trigger);
       await Promise.resolve();
 
@@ -1621,17 +1763,21 @@ describe("Select", () => {
 
     it("does not deselect when pressing an already selected item", async () => {
       render(() => (
-        <Select.Root defaultValue="2" onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} defaultValue="2" onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1666,17 +1812,21 @@ describe("Select", () => {
 
     it("move selection on Arrow-Left/Right", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1728,17 +1878,21 @@ describe("Select", () => {
   describe("type to select", () => {
     it("supports focusing items by typing letters in rapid succession without opening the menu", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1775,17 +1929,21 @@ describe("Select", () => {
 
     it("resets the search text after a timeout", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1825,17 +1983,21 @@ describe("Select", () => {
 
     it("wraps around when no items past the current one match", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1875,24 +2037,32 @@ describe("Select", () => {
 
   describe("autofill", () => {
     it("should have a hidden select element for form autocomplete", async () => {
-      const ADDRESS_DATA = [
-        { label: "Germany", value: "DE" },
-        { label: "France", value: "FR" },
-        { label: "Italy", value: "IT" },
+      const dataSource = [
+        { key: "DE", label: "Germany", textValue: "Germany", isDisabled: false },
+        { key: "FR", label: "France", textValue: "France", isDisabled: false },
+        { key: "IT", label: "Italy", textValue: "Italy", isDisabled: false },
       ];
 
       render(() => (
-        <Select.Root autoComplete="address-level1" onValueChange={onValueChange}>
+        <Select.Root
+          options={dataSource}
+          autoComplete="address-level1"
+          onValueChange={onValueChange}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <For each={ADDRESS_DATA}>
-                  {data => <Select.Item value={data.value}>{data.label}</Select.Item>}
-                </For>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1914,7 +2084,7 @@ describe("Select", () => {
 
       options.forEach(
         (option, index) =>
-          index > 0 && expect(option).toHaveTextContent(ADDRESS_DATA[index - 1].label)
+          index > 0 && expect(option).toHaveTextContent(dataSource[index - 1].label)
       );
 
       fireEvent.change(hiddenSelectBase, { target: { value: "FR" } });
@@ -1927,17 +2097,21 @@ describe("Select", () => {
 
     it("should have a hidden input to marshall focus to the button", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1968,17 +2142,21 @@ describe("Select", () => {
   describe("disabled", () => {
     it("disables the hidden select when isDisabled is true", async () => {
       render(() => (
-        <Select.Root isDisabled onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} isDisabled onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -1994,17 +2172,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root isDisabled onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} isDisabled onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -2028,17 +2210,21 @@ describe("Select", () => {
     it("does not open on Space key press when isDisabled is true", async () => {
       const onOpenChange = jest.fn();
       render(() => (
-        <Select.Root isDisabled onValueChange={onValueChange}>
+        <Select.Root options={DATA_SOURCE} isDisabled onValueChange={onValueChange}>
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value placeholder="Placeholder">
+              {({ selectedItem }) => selectedItem().rawValue.label}
+            </Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
               <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
+                {collection => (
+                  <Key each={[...collection()]} by="key">
+                    {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                  </Key>
+                )}
               </Select.Listbox>
             </Select.Content>
           </Select.Portal>
@@ -2076,17 +2262,21 @@ describe("Select", () => {
 
       render(() => (
         <form data-testid="form" onSubmit={onSubmit}>
-          <Select.Root name="test">
+          <Select.Root options={DATA_SOURCE} name="test">
             <Select.Label>Label</Select.Label>
             <Select.Trigger autofocus>
-              <Select.Value placeholder="Placeholder" />
+              <Select.Value placeholder="Placeholder">
+                {({ selectedItem }) => selectedItem().rawValue.label}
+              </Select.Value>
             </Select.Trigger>
             <Select.Portal>
               <Select.Content>
                 <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
+                  {collection => (
+                    <Key each={[...collection()]} by="key">
+                      {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                    </Key>
+                  )}
                 </Select.Listbox>
               </Select.Content>
             </Select.Portal>
@@ -2115,17 +2305,21 @@ describe("Select", () => {
 
       render(() => (
         <form data-testid="form" onSubmit={onSubmit}>
-          <Select.Root name="test" defaultValue="1">
+          <Select.Root options={DATA_SOURCE} name="test" defaultValue="1">
             <Select.Label>Label</Select.Label>
             <Select.Trigger autofocus>
-              <Select.Value placeholder="Placeholder" />
+              <Select.Value placeholder="Placeholder">
+                {({ selectedItem }) => selectedItem().rawValue.label}
+              </Select.Value>
             </Select.Trigger>
             <Select.Portal>
               <Select.Content>
                 <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
+                  {collection => (
+                    <Key each={[...collection()]} by="key">
+                      {item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+                    </Key>
+                  )}
                 </Select.Listbox>
               </Select.Content>
             </Select.Portal>

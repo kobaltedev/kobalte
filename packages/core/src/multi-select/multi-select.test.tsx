@@ -7,9 +7,16 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
+import { Key } from "@kobalte/utils";
 import { fireEvent, render, screen, within } from "solid-testing-library";
 
 import * as MultiSelect from ".";
+
+const DATA_SOURCE = [
+  { key: "1", label: "One", textValue: "One", isDisabled: false },
+  { key: "2", label: "Two", textValue: "Two", isDisabled: false },
+  { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+];
 
 describe("MultiSelect", () => {
   installPointerEvent();
@@ -27,17 +34,27 @@ describe("MultiSelect", () => {
 
   it("supports selecting multiple options", async () => {
     render(() => (
-      <MultiSelect.Root onValueChange={onValueChange}>
+      <MultiSelect.Root options={DATA_SOURCE} onValueChange={onValueChange}>
         <MultiSelect.Label>Label</MultiSelect.Label>
         <MultiSelect.Trigger>
-          <MultiSelect.Value placeholder="Placeholder" />
+          <MultiSelect.Value placeholder="Placeholder">
+            {({ selectedItems }) =>
+              selectedItems()
+                .map(item => item.rawValue.label)
+                .join(", ")
+            }
+          </MultiSelect.Value>
         </MultiSelect.Trigger>
         <MultiSelect.Portal>
           <MultiSelect.Content>
             <MultiSelect.Listbox>
-              <MultiSelect.Item value="1">One</MultiSelect.Item>
-              <MultiSelect.Item value="2">Two</MultiSelect.Item>
-              <MultiSelect.Item value="3">Three</MultiSelect.Item>
+              {collection => (
+                <Key each={[...collection()]} by="key">
+                  {item => (
+                    <MultiSelect.Item item={item()}>{item().rawValue.label}</MultiSelect.Item>
+                  )}
+                </Key>
+              )}
             </MultiSelect.Listbox>
           </MultiSelect.Content>
         </MultiSelect.Portal>
@@ -90,17 +107,31 @@ describe("MultiSelect", () => {
     const defaultValue = new Set(["1", "2"]);
 
     render(() => (
-      <MultiSelect.Root defaultValue={defaultValue} onValueChange={onValueChange}>
+      <MultiSelect.Root
+        options={DATA_SOURCE}
+        defaultValue={defaultValue}
+        onValueChange={onValueChange}
+      >
         <MultiSelect.Label>Label</MultiSelect.Label>
         <MultiSelect.Trigger>
-          <MultiSelect.Value placeholder="Placeholder" />
+          <MultiSelect.Value placeholder="Placeholder">
+            {({ selectedItems }) =>
+              selectedItems()
+                .map(item => item.rawValue.label)
+                .join(", ")
+            }
+          </MultiSelect.Value>
         </MultiSelect.Trigger>
         <MultiSelect.Portal>
           <MultiSelect.Content>
             <MultiSelect.Listbox>
-              <MultiSelect.Item value="1">One</MultiSelect.Item>
-              <MultiSelect.Item value="2">Two</MultiSelect.Item>
-              <MultiSelect.Item value="3">Three</MultiSelect.Item>
+              {collection => (
+                <Key each={[...collection()]} by="key">
+                  {item => (
+                    <MultiSelect.Item item={item()}>{item().rawValue.label}</MultiSelect.Item>
+                  )}
+                </Key>
+              )}
             </MultiSelect.Listbox>
           </MultiSelect.Content>
         </MultiSelect.Portal>
@@ -134,17 +165,27 @@ describe("MultiSelect", () => {
     const value = new Set(["1", "2"]);
 
     render(() => (
-      <MultiSelect.Root value={value} onValueChange={onValueChange}>
+      <MultiSelect.Root options={DATA_SOURCE} value={value} onValueChange={onValueChange}>
         <MultiSelect.Label>Label</MultiSelect.Label>
         <MultiSelect.Trigger>
-          <MultiSelect.Value placeholder="Placeholder" />
+          <MultiSelect.Value placeholder="Placeholder">
+            {({ selectedItems }) =>
+              selectedItems()
+                .map(item => item.rawValue.label)
+                .join(", ")
+            }
+          </MultiSelect.Value>
         </MultiSelect.Trigger>
         <MultiSelect.Portal>
           <MultiSelect.Content>
             <MultiSelect.Listbox>
-              <MultiSelect.Item value="1">One</MultiSelect.Item>
-              <MultiSelect.Item value="2">Two</MultiSelect.Item>
-              <MultiSelect.Item value="3">Three</MultiSelect.Item>
+              {collection => (
+                <Key each={[...collection()]} by="key">
+                  {item => (
+                    <MultiSelect.Item item={item()}>{item().rawValue.label}</MultiSelect.Item>
+                  )}
+                </Key>
+              )}
             </MultiSelect.Listbox>
           </MultiSelect.Content>
         </MultiSelect.Portal>
@@ -176,17 +217,31 @@ describe("MultiSelect", () => {
     const defaultValue = new Set(["1", "2"]);
 
     render(() => (
-      <MultiSelect.Root defaultValue={defaultValue} onValueChange={onValueChange}>
+      <MultiSelect.Root
+        options={DATA_SOURCE}
+        defaultValue={defaultValue}
+        onValueChange={onValueChange}
+      >
         <MultiSelect.Label>Label</MultiSelect.Label>
         <MultiSelect.Trigger>
-          <MultiSelect.Value placeholder="Placeholder" />
+          <MultiSelect.Value placeholder="Placeholder">
+            {({ selectedItems }) =>
+              selectedItems()
+                .map(item => item.rawValue.label)
+                .join(", ")
+            }
+          </MultiSelect.Value>
         </MultiSelect.Trigger>
         <MultiSelect.Portal>
           <MultiSelect.Content>
             <MultiSelect.Listbox>
-              <MultiSelect.Item value="1">One</MultiSelect.Item>
-              <MultiSelect.Item value="2">Two</MultiSelect.Item>
-              <MultiSelect.Item value="3">Three</MultiSelect.Item>
+              {collection => (
+                <Key each={[...collection()]} by="key">
+                  {item => (
+                    <MultiSelect.Item item={item()}>{item().rawValue.label}</MultiSelect.Item>
+                  )}
+                </Key>
+              )}
             </MultiSelect.Listbox>
           </MultiSelect.Content>
         </MultiSelect.Portal>

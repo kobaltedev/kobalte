@@ -6,9 +6,16 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-spectrum/listbox/test/Listbox.test.js
  */
 
+import { Key } from "@kobalte/utils";
 import { fireEvent, render, screen } from "solid-testing-library";
 
 import * as Listbox from ".";
+
+const DATA_SOURCE = [
+  { key: "1", label: "One", textValue: "One", isDisabled: false },
+  { key: "2", label: "Two", textValue: "Two", isDisabled: false },
+  { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+];
 
 describe("Listbox", () => {
   beforeEach(() => {
@@ -28,10 +35,12 @@ describe("Listbox", () => {
 
   it("renders properly", () => {
     render(() => (
-      <Listbox.Root selectionMode="single">
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
+      <Listbox.Root options={DATA_SOURCE} selectionMode="single">
+        {collection => (
+          <Key each={[...collection()]} by="key">
+            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          </Key>
+        )}
       </Listbox.Root>
     ));
 
@@ -52,10 +61,12 @@ describe("Listbox", () => {
 
   it("allows user to change option focus via up/down arrow keys", async () => {
     render(() => (
-      <Listbox.Root>
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
+      <Listbox.Root options={DATA_SOURCE}>
+        {collection => (
+          <Key each={[...collection()]} by="key">
+            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          </Key>
+        )}
       </Listbox.Root>
     ));
 
@@ -80,10 +91,12 @@ describe("Listbox", () => {
 
   it("wraps focus from first to last/last to first option if up/down arrow is pressed if shouldFocusWrap is true", async () => {
     render(() => (
-      <Listbox.Root shouldFocusWrap>
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
+      <Listbox.Root options={DATA_SOURCE} shouldFocusWrap>
+        {collection => (
+          <Key each={[...collection()]} by="key">
+            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          </Key>
+        )}
       </Listbox.Root>
     ));
 
@@ -111,10 +124,12 @@ describe("Listbox", () => {
       const defaultValue = new Set(["2"]);
 
       render(() => (
-        <Listbox.Root selectionMode="single" defaultValue={defaultValue}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
+        <Listbox.Root options={DATA_SOURCE} selectionMode="single" defaultValue={defaultValue}>
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
@@ -135,10 +150,17 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox.Root selectionMode="single" value={value} onValueChange={onValueChangeSpy}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          selectionMode="single"
+          value={value}
+          onValueChange={onValueChangeSpy}
+        >
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
@@ -171,10 +193,12 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox.Root selectionMode="single" onValueChange={onValueChangeSpy}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
+        <Listbox.Root options={DATA_SOURCE} selectionMode="single" onValueChange={onValueChangeSpy}>
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
@@ -200,10 +224,12 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox.Root selectionMode="single" onValueChange={onValueChangeSpy}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
+        <Listbox.Root options={DATA_SOURCE} selectionMode="single" onValueChange={onValueChangeSpy}>
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
@@ -228,13 +254,19 @@ describe("Listbox", () => {
     it("supports disabled options", async () => {
       const onValueChangeSpy = jest.fn();
 
+      const dataSource = [
+        { key: "1", label: "One", textValue: "One", isDisabled: false },
+        { key: "2", label: "Two", textValue: "Two", isDisabled: true },
+        { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+      ];
+
       render(() => (
-        <Listbox.Root selectionMode="single" onValueChange={onValueChangeSpy}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2" isDisabled>
-            Two
-          </Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
+        <Listbox.Root options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
@@ -270,10 +302,16 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox.Root selectionMode="multiple" onValueChange={onValueChangeSpy}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          selectionMode="multiple"
+          onValueChange={onValueChangeSpy}
+        >
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
@@ -303,13 +341,16 @@ describe("Listbox", () => {
 
       render(() => (
         <Listbox.Root
+          options={DATA_SOURCE}
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
@@ -340,10 +381,17 @@ describe("Listbox", () => {
       const value = new Set(["1", "2"]);
 
       render(() => (
-        <Listbox.Root selectionMode="multiple" value={value} onValueChange={onValueChangeSpy}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          selectionMode="multiple"
+          value={value}
+          onValueChange={onValueChangeSpy}
+        >
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
@@ -373,13 +421,16 @@ describe("Listbox", () => {
 
       render(() => (
         <Listbox.Root
+          options={DATA_SOURCE}
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
@@ -406,17 +457,24 @@ describe("Listbox", () => {
 
       const defaultValue = new Set(["1", "2"]);
 
+      const dataSource = [
+        { key: "1", label: "One", textValue: "One", isDisabled: false },
+        { key: "2", label: "Two", textValue: "Two", isDisabled: false },
+        { key: "3", label: "Three", textValue: "Three", isDisabled: true },
+      ];
+
       render(() => (
         <Listbox.Root
+          options={dataSource}
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
         >
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3" isDisabled>
-            Three
-          </Listbox.Item>
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
@@ -445,14 +503,17 @@ describe("Listbox", () => {
 
     render(() => (
       <Listbox.Root
+        options={DATA_SOURCE}
         selectionMode="single"
         defaultValue={defaultValue}
         onValueChange={onValueChangeSpy}
         disallowEmptySelection={false}
       >
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
+        {collection => (
+          <Key each={[...collection()]} by="key">
+            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          </Key>
+        )}
       </Listbox.Root>
     ));
 
@@ -474,10 +535,12 @@ describe("Listbox", () => {
 
   it("supports type to select", async () => {
     render(() => (
-      <Listbox.Root>
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
+      <Listbox.Root options={DATA_SOURCE}>
+        {collection => (
+          <Key each={[...collection()]} by="key">
+            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          </Key>
+        )}
       </Listbox.Root>
     ));
 
@@ -504,10 +567,12 @@ describe("Listbox", () => {
 
   it("resets the search text after a timeout", async () => {
     render(() => (
-      <Listbox.Root>
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
+      <Listbox.Root options={DATA_SOURCE}>
+        {collection => (
+          <Key each={[...collection()]} by="key">
+            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          </Key>
+        )}
       </Listbox.Root>
     ));
 
@@ -531,11 +596,19 @@ describe("Listbox", () => {
   });
 
   it("supports aria-label on options", () => {
+    const dataSource = [{ key: "1", label: "One", textValue: "One", isDisabled: false }];
+
     render(() => (
-      <Listbox.Root>
-        <Listbox.Item value="option" aria-label="Item">
-          Item
-        </Listbox.Item>
+      <Listbox.Root options={dataSource}>
+        {collection => (
+          <Key each={[...collection()]} by="key">
+            {item => (
+              <Listbox.Item item={item()} aria-label="Item">
+                {item().rawValue.label}
+              </Listbox.Item>
+            )}
+          </Key>
+        )}
       </Listbox.Root>
     ));
 
@@ -549,12 +622,28 @@ describe("Listbox", () => {
   });
 
   it("supports complex options with aria-labelledby and aria-describedby", async () => {
+    const dataSource = [
+      {
+        key: "1",
+        label: "Label",
+        description: "Description",
+        textValue: "One",
+        isDisabled: false,
+      },
+    ];
+
     render(() => (
-      <Listbox.Root>
-        <Listbox.Item value="option">
-          <Listbox.ItemLabel>Label</Listbox.ItemLabel>
-          <Listbox.ItemDescription>Description</Listbox.ItemDescription>
-        </Listbox.Item>
+      <Listbox.Root options={dataSource}>
+        {collection => (
+          <Key each={[...collection()]} by="key">
+            {item => (
+              <Listbox.Item item={item()}>
+                <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+                <Listbox.ItemDescription>{item().rawValue.description}</Listbox.ItemDescription>
+              </Listbox.Item>
+            )}
+          </Key>
+        )}
       </Listbox.Root>
     ));
 
@@ -570,10 +659,12 @@ describe("Listbox", () => {
 
   it("supports aria-label", () => {
     render(() => (
-      <Listbox.Root aria-label="Test">
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
+      <Listbox.Root options={DATA_SOURCE} aria-label="Test">
+        {collection => (
+          <Key each={[...collection()]} by="key">
+            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          </Key>
+        )}
       </Listbox.Root>
     ));
 
@@ -585,13 +676,17 @@ describe("Listbox", () => {
   describe("item indicator", () => {
     it("should not display item indicator by default", async () => {
       render(() => (
-        <Listbox.Root>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">
-            <Listbox.ItemLabel>Two</Listbox.ItemLabel>
-            <Listbox.ItemIndicator data-testid="indicator" />
-          </Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
+        <Listbox.Root options={DATA_SOURCE}>
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => (
+                <Listbox.Item item={item()}>
+                  <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+                  <Listbox.ItemIndicator data-testid="indicator" />
+                </Listbox.Item>
+              )}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
@@ -600,13 +695,17 @@ describe("Listbox", () => {
 
     it("should display item indicator when 'selected'", async () => {
       render(() => (
-        <Listbox.Root value={["2"]}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">
-            <Listbox.ItemLabel>Two</Listbox.ItemLabel>
-            <Listbox.ItemIndicator data-testid="indicator" />
-          </Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
+        <Listbox.Root options={DATA_SOURCE} value={["2"]}>
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => (
+                <Listbox.Item item={item()}>
+                  <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+                  <Listbox.ItemIndicator data-testid="indicator" />
+                </Listbox.Item>
+              )}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
@@ -615,17 +714,23 @@ describe("Listbox", () => {
 
     it("should display item indicator when 'forceMount'", async () => {
       render(() => (
-        <Listbox.Root>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">
-            <Listbox.ItemLabel>Two</Listbox.ItemLabel>
-            <Listbox.ItemIndicator data-testid="indicator" forceMount />
-          </Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
+        <Listbox.Root options={DATA_SOURCE}>
+          {collection => (
+            <Key each={[...collection()]} by="key">
+              {item => (
+                <Listbox.Item item={item()}>
+                  <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+                  <Listbox.ItemIndicator data-testid="indicator" forceMount />
+                </Listbox.Item>
+              )}
+            </Key>
+          )}
         </Listbox.Root>
       ));
 
-      expect(screen.getByTestId("indicator")).toBeInTheDocument();
+      screen.getAllByTestId("indicator").forEach(indicator => {
+        expect(indicator).toBeInTheDocument();
+      });
     });
   });
 });

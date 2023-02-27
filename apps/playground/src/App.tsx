@@ -18,7 +18,7 @@ const generateItems = (n: number) => {
 };
 
 export default function App() {
-  const data = generateItems(100_000);
+  const data = generateItems(100);
   let listboxRef: HTMLUListElement | undefined;
 
   return (
