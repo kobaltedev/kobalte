@@ -43,8 +43,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
-    "@vanilla-extract/css": "1.9.2",
-    "tsup": "6.5.0"
+    "@vanilla-extract/css": "1.9.2"
   },
   "peerDependencies": {
     "@vanilla-extract/css": "^1.9.2"

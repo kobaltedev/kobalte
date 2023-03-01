@@ -260,8 +260,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
     // Register the item trigger on the parent menu that contains it.
     const unregister = context.registerItemToParentDomCollection({
       ref: () => ref,
+      type: "item",
       key: key(),
-      label: "", // not applicable here
       textValue: local.textValue ?? ref?.textContent ?? "",
       isDisabled: local.isDisabled ?? false,
     });
