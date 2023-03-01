@@ -6,16 +6,11 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/link/src/useLink.ts
  */
 
-import {
-  callHandler,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { callHandler, mergeRefs, OverrideProps } from "@kobalte/utils";
+import { ComponentProps, JSX, splitProps } from "solid-js";
 
+import { Polymorphic } from "../polymorphic";
 import { createTagName } from "../primitives";
-import { Dynamic } from "solid-js/web";
 
 export interface LinkRootOptions {
   /** Whether the link is disabled. */
@@ -25,16 +20,14 @@ export interface LinkRootOptions {
 /**
  * Link allows a user to navigate to another page or resource within a web page or application.
  */
-export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props => {
+export function LinkRoot(props: OverrideProps<ComponentProps<"a">, LinkRootOptions>) {
   let ref: HTMLAnchorElement | undefined;
 
-  props = mergeDefaultProps({ as: "a" }, props);
-
-  const [local, others] = splitProps(props, ["as", "ref", "type", "isDisabled", "onClick"]);
+  const [local, others] = splitProps(props, ["ref", "type", "isDisabled", "onClick"]);
 
   const tagName = createTagName(
     () => ref,
-    () => local.as || "a"
+    () => "a"
   );
 
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
@@ -47,8 +40,8 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
   };
 
   return (
-    <Dynamic
-      component={local.as}
+    <Polymorphic
+      fallbackComponent="a"
       ref={mergeRefs(el => (ref = el), local.ref)}
       role={tagName() !== "a" ? "link" : undefined}
       tabIndex={tagName() !== "a" && !local.isDisabled ? 0 : undefined}
@@ -58,4 +51,4 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
       {...others}
     />
   );
-});
+}

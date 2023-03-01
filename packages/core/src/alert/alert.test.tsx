@@ -1,6 +1,5 @@
 import {
   checkAccessibility,
-  itIsPolymorphic,
   itRendersChildren,
   itSupportsClass,
   itSupportsRef,
@@ -14,7 +13,6 @@ const defaultProps = {};
 
 describe("Alert", () => {
   checkAccessibility([<Alert.Root>Alert</Alert.Root>]);
-  itIsPolymorphic(Alert.Root as any, defaultProps);
   itRendersChildren(Alert.Root as any, defaultProps);
   itSupportsClass(Alert.Root as any, defaultProps);
   itSupportsRef(Alert.Root as any, defaultProps, HTMLDivElement);
