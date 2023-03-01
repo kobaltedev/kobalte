@@ -1,31 +1,30 @@
-import { Portal } from "solid-js/web";
-
 import {
   FormControlDescription as Description,
   FormControlErrorMessage as ErrorMessage,
 } from "../form-control";
 import {
-  type ListboxItemIndicatorOptions as SelectItemIndicatorOptions,
-  type ListboxItemOptions as SelectItemOptions,
-  Group,
-  GroupLabel,
   Item,
   ItemDescription,
   ItemIndicator,
   ItemLabel,
+  type ListboxItemIndicatorOptions as SelectItemIndicatorOptions,
+  type ListboxItemOptions as SelectItemOptions,
+  Section,
 } from "../listbox";
-import { type PopperArrowOptions as SelectArrowOptions, PopperArrow as Arrow } from "../popper";
+import { PopperArrow as Arrow, type PopperArrowOptions as SelectArrowOptions } from "../popper";
 import {
-  type SeparatorRootOptions as SelectSeparatorOptions,
   Root as Separator,
+  type SeparatorRootOptions as SelectSeparatorOptions,
 } from "../separator";
-import { type SelectContentOptions, SelectContent as Content } from "./select-content";
+import { HiddenSelect as HiddenSelect } from "./hidden-select";
+import { SelectContent as Content, type SelectContentOptions } from "./select-content";
 import { SelectIcon as Icon } from "./select-icon";
 import { SelectLabel as Label } from "./select-label";
-import { type SelectListboxOptions, SelectListbox as Listbox } from "./select-listbox";
-import { type SelectRootOptions, SelectRoot as Root } from "./select-root";
+import { SelectListbox as Listbox, type SelectListboxOptions } from "./select-listbox";
+import { SelectPortal as Portal } from "./select-portal";
+import { SelectRoot as Root, type SelectRootOptions } from "./select-root";
 import { SelectTrigger as Trigger } from "./select-trigger";
-import { type SelectValueOptions, SelectValue as Value } from "./select-value";
+import { SelectValue as Value, type SelectValueOptions } from "./select-value";
 
 export type {
   SelectArrowOptions,
@@ -43,8 +42,7 @@ export {
   Content,
   Description,
   ErrorMessage,
-  Group,
-  GroupLabel,
+  HiddenSelect,
   Icon,
   Item,
   ItemDescription,
@@ -54,6 +52,7 @@ export {
   Listbox,
   Portal,
   Root,
+  Section,
   Separator,
   Trigger,
   Value,

@@ -6,19 +6,11 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/HiddenSelect.tsx
  */
 
-import { visuallyHiddenStyles } from "@kobalte/utils";
-import { For, Match, Switch } from "solid-js";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
+import { ComponentProps, For, JSX, Match, mergeProps, onMount, splitProps, Switch } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { useSelectContext } from "./select-context";
-
-export interface HiddenSelectProps {
-  /**
-   * Describes the type of autocomplete functionality the input should provide if any.
-   * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete).
-   */
-  autoComplete?: string;
-}
 
 // In Safari, the <select> cannot have `display: none` or `hidden` for autofill to work.
 // In Firefox, there must be a <label> to identify the <select> whereas other browsers
@@ -42,22 +34,21 @@ export interface HiddenSelectProps {
  * Renders a hidden native `<select>` element, which can be used to support browser
  * form autofill, mobile form navigation, and native form submission.
  */
-export function HiddenSelect(props: HiddenSelectProps) {
+export function HiddenSelect(props: ComponentProps<"select"> & ComponentProps<"input">) {
+  const [local, others] = splitProps(props, ["onChange"]);
+
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
   const selectionManager = () => context.listState().selectionManager();
   const collection = () => context.listState().collection();
 
-  // If used in a <form>, use hidden inputs so the value can be submitted to a server.
-  // If single selection mode and the collection isn't too big,
-  // use a hidden <select> element for this so that browser autofill will work.
-  // Otherwise, use <input type="hidden" />.
+  // If used in a <form>, use a hidden input so the value can be submitted to a server.
+  // If the collection isn't too big, use a hidden <select> element for this so that browser
+  // autofill will work. Otherwise, use an <input type="hidden">.
   return (
     <Switch fallback={null}>
-      <Match
-        when={selectionManager().selectionMode() === "single" && collection().getSize() <= 300}
-      >
+      <Match when={collection().getSize() <= 300}>
         <div style={visuallyHiddenStyles} aria-hidden="true">
           <input
             type="text"
@@ -70,22 +61,28 @@ export function HiddenSelect(props: HiddenSelectProps) {
           />
           <select
             tabIndex={-1}
-            autocomplete={props.autoComplete}
+            multiple={context.isMultiple()}
             name={formControlContext.name()}
             required={formControlContext.isRequired()}
             disabled={formControlContext.isDisabled()}
             size={collection().getSize()}
             value={selectionManager().firstSelectedKey() ?? ""}
-            onChange={e =>
-              selectionManager().setSelectedKeys(new Set([(e.target as HTMLSelectElement).value]))
-            }
+            onChange={e => {
+              callHandler(e, local.onChange);
+              selectionManager().setSelectedKeys(new Set([(e.target as HTMLSelectElement).value]));
+            }}
+            {...(others as any)}
           >
             <option />
             <For each={[...collection().getKeys()]}>
               {key => {
                 const item = collection().getItem(key);
-                if (item) {
-                  return <option value={item.key}>{item.textValue}</option>;
+                if (item && item.type === "item") {
+                  return (
+                    <option value={item.key} selected={selectionManager().isSelected(item.key)}>
+                      {item.textValue}
+                    </option>
+                  );
                 }
               }}
             </For>
@@ -97,12 +94,13 @@ export function HiddenSelect(props: HiddenSelectProps) {
           {key => (
             <input
               type="hidden"
-              autocomplete={props.autoComplete}
               name={formControlContext.name()}
               required={formControlContext.isRequired()}
               disabled={formControlContext.isDisabled()}
               readOnly={formControlContext.isReadOnly()}
               value={key ?? ""}
+              onChange={local.onChange}
+              {...(others as any)}
             />
           )}
         </For>

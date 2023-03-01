@@ -21,7 +21,7 @@ import { createListState } from "../list";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
 import {
-  CollectionItem,
+  CollectionItemWithRef,
   createDisclosureState,
   createHideOutside,
   createPresence,
@@ -82,7 +82,7 @@ export function Menu(props: ParentProps<MenuOptions>) {
   const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(others.placement!);
   const [nestedMenus, setNestedMenus] = createSignal<Element[]>([]);
 
-  const [items, setItems] = createSignal<CollectionItem[]>([]);
+  const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 
   const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
 

@@ -18,7 +18,7 @@ import {
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { CollectionItem, createRegisterId } from "../primitives";
+import { CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
@@ -108,11 +108,11 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
     }
   };
 
-  createDomCollectionItem<CollectionItem>({
+  createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
       ref: () => ref,
+      type: "item",
       key: key(),
-      label: "", // not applicable here
       textValue: local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
       isDisabled: local.isDisabled ?? false,
     }),

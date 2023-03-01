@@ -17,7 +17,7 @@ import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Collapsible from "../collapsible";
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
-import { CollectionItem } from "../primitives";
+import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useAccordionContext } from "./accordion-context";
@@ -53,13 +53,13 @@ export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
     "onFocus",
   ]);
 
-  createDomCollectionItem<CollectionItem>({
+  createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
       ref: () => ref,
+      type: "item",
       key: itemContext.value(),
       isDisabled: collapsibleContext.isDisabled(),
-      label: "", // not applicable
-      textValue: "", // not applicable
+      textValue: "", // not applicable here
     }),
   });
 

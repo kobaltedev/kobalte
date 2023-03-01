@@ -1,27 +1,27 @@
 import { Accessor, createContext, Setter, useContext } from "solid-js";
 
 import { ListState } from "../list";
-import { CollectionItem } from "../primitives";
+import { CollectionItemWithRef, CreatePresenceResult } from "../primitives";
 import { FocusStrategy, KeyboardDelegate } from "../selection";
 
 export interface SelectContextValue {
   isOpen: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
   isMultiple: Accessor<boolean>;
+  isVirtualized: Accessor<boolean | undefined>;
+  contentPresence: CreatePresenceResult;
   autoFocus: Accessor<FocusStrategy | boolean>;
   triggerRef: Accessor<HTMLButtonElement | undefined>;
   triggerId: Accessor<string | undefined>;
   valueId: Accessor<string | undefined>;
   listboxId: Accessor<string | undefined>;
-  items: Accessor<CollectionItem[]>;
-  setItems: (items: CollectionItem[]) => void;
   listboxAriaLabelledBy: Accessor<string | undefined>;
   listState: Accessor<ListState>;
   keyboardDelegate: Accessor<KeyboardDelegate>;
   setListboxAriaLabelledBy: Setter<string | undefined>;
   setTriggerRef: (el: HTMLButtonElement) => void;
   setContentRef: (el: HTMLDivElement) => void;
-  setListboxRef: (el: HTMLDivElement) => void;
+  setListboxRef: (el: HTMLUListElement) => void;
   open: (focusStrategy: FocusStrategy | boolean) => void;
   close: () => void;
   toggle: (focusStrategy: FocusStrategy | boolean) => void;

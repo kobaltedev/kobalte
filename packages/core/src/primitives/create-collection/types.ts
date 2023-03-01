@@ -2,12 +2,12 @@ import { MaybeAccessor } from "@kobalte/utils";
 
 import { DomCollectionItem } from "../create-dom-collection";
 
-export interface CollectionItem extends DomCollectionItem {
+export interface CollectionItem {
+  /** The type of the item. */
+  type: "item" | "section";
+
   /** A unique key for the item. */
   key: string;
-
-  /** A label for the item. */
-  label: string;
 
   /** A string value for the item, used for features like typeahead. */
   textValue: string;
@@ -16,18 +16,26 @@ export interface CollectionItem extends DomCollectionItem {
   isDisabled: boolean;
 }
 
-export interface CollectionNode {
+export interface CollectionItemWithRef extends CollectionItem, DomCollectionItem {}
+
+export interface CollectionNode<T = any> {
+  /** The type of item this node represents. */
+  type: "item" | "section";
+
   /** A unique key for the node. */
   key: string;
 
-  /** A label for the node. */
-  label: string;
+  /** The source object this node was created from. */
+  rawValue: T;
 
   /** A string value for the node, used for features like typeahead. */
   textValue: string;
 
   /** Whether the node is disabled. */
   isDisabled: boolean;
+
+  /** The level of depth this node is at in the hierarchy. */
+  level: number;
 
   /** The index of this node within its parent. */
   index: number;
@@ -42,6 +50,21 @@ export interface CollectionNode {
 export interface CollectionBase {
   /** The source data to be managed by the collection. */
   dataSource: MaybeAccessor<Array<any>>;
+
+  /** Property name or getter function to use as the key of an item. */
+  getKey?: MaybeAccessor<string | ((data: any) => string) | undefined>;
+
+  /** Property name or getter function to use as the text value of an item for typeahead purpose. */
+  getTextValue?: MaybeAccessor<string | ((data: any) => string) | undefined>;
+
+  /** Property name or getter function to use as the disabled flag of an item. */
+  getIsDisabled?: MaybeAccessor<string | ((data: any) => boolean) | undefined>;
+
+  /** Property name or getter function that refers to the children items of a section. */
+  getSectionChildren?: MaybeAccessor<string | ((section: any) => any[]) | undefined>;
+
+  /** Function to check if the node is a section. */
+  getIsSection?: MaybeAccessor<((maybeSection: any) => boolean) | undefined>;
 }
 
 /**
