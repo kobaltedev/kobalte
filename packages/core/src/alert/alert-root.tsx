@@ -7,5 +7,5 @@ import { Polymorphic } from "../polymorphic";
  * in a way that attracts the user's attention without interrupting the user's task.
  */
 export function AlertRoot(props: ComponentProps<"div">) {
-  return <Polymorphic fallbackComponent="div" role="alert" {...props} />;
+  return <Polymorphic fallback="div" role="alert" {...props} />;
 }

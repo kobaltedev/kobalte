@@ -61,7 +61,7 @@ export function ButtonRoot(props: OverrideComponentProps<"button", ButtonRootOpt
 
   return (
     <Polymorphic
-      fallbackComponent="button"
+      fallback="button"
       ref={mergeRefs(el => (ref = el), local.ref)}
       type={isNativeButton() || isNativeInput() ? local.type : undefined}
       role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
