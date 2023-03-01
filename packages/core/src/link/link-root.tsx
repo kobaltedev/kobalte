@@ -6,8 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/link/src/useLink.ts
  */
 
-import { callHandler, mergeRefs, OverrideProps } from "@kobalte/utils";
-import { ComponentProps, JSX, splitProps } from "solid-js";
+import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { JSX, splitProps } from "solid-js";
 
 import { Polymorphic } from "../polymorphic";
 import { createTagName } from "../primitives";
@@ -20,7 +20,7 @@ export interface LinkRootOptions {
 /**
  * Link allows a user to navigate to another page or resource within a web page or application.
  */
-export function LinkRoot(props: OverrideProps<ComponentProps<"a">, LinkRootOptions>) {
+export function LinkRoot(props: OverrideComponentProps<"a", LinkRootOptions>) {
   let ref: HTMLAnchorElement | undefined;
 
   const [local, others] = splitProps(props, ["ref", "type", "isDisabled", "onClick"]);

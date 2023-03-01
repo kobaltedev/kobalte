@@ -1,4 +1,4 @@
-import { Component, ComponentProps, JSX } from "solid-js";
+import { Component, ComponentProps, JSX, ValidComponent } from "solid-js";
 
 /** All HTML and SVG elements. */
 export type DOMElements = keyof JSX.IntrinsicElements;
@@ -11,6 +11,15 @@ export type ElementType<Props = any> = DOMElements | Component<Props> | (string 
  * ensuring that any duplicates are overridden by the overriding set of props.
  */
 export type OverrideProps<Source = {}, Override = {}> = Omit<Source, keyof Override> & Override;
+
+/**
+ * Allows for extending a set of `ComponentProps` by an overriding set of props,
+ * ensuring that any duplicates are overridden by the overriding set of props.
+ */
+export type OverrideComponentProps<T extends ValidComponent, P> = OverrideProps<
+  ComponentProps<T>,
+  P
+>;
 
 /** The `as` prop type. */
 export type As<Props = any> = ElementType<Props>;
