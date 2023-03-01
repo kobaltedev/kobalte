@@ -16,6 +16,7 @@ import {
   Root as Separator,
   type SeparatorRootOptions as SelectSeparatorOptions,
 } from "../separator";
+import { HiddenSelect as HiddenInput } from "./hidden-select";
 import { SelectContent as Content, type SelectContentOptions } from "./select-content";
 import { SelectIcon as Icon } from "./select-icon";
 import { SelectLabel as Label } from "./select-label";
@@ -42,6 +43,7 @@ export {
   Description,
   ErrorMessage,
   Icon,
+  HiddenInput,
   Item,
   ItemDescription,
   ItemIndicator,

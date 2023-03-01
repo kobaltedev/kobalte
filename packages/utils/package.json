@@ -53,6 +53,7 @@
     "@solid-primitives/event-listener": "^2.2.4",
     "@solid-primitives/keyed": "^1.1.7",
     "@solid-primitives/media": "^2.0.4",
+    "@solid-primitives/props": "^3.1.0",
     "@solid-primitives/refs": "^0.3.4",
     "@solid-primitives/utils": "^4.0.0"
   },

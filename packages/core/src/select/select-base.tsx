@@ -20,7 +20,6 @@ import { createCollator } from "../i18n";
 import { createListState, ListKeyboardDelegate } from "../list";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
-  CollectionItemWithRef,
   createDisclosureState,
   createFormResetListener,
   createPresence,
@@ -33,7 +32,6 @@ import {
   SelectionBehavior,
   SelectionMode,
 } from "../selection";
-import { HiddenSelect } from "./hidden-select";
 import { SelectContext, SelectContextValue } from "./select-context";
 
 export interface SelectBaseOptions
@@ -128,12 +126,6 @@ export interface SelectBaseOptions
 
   /** Whether the select is read only. */
   isReadOnly?: boolean;
-
-  /**
-   * Describes the type of autocomplete functionality the input should provide if any.
-   * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete).
-   */
-  autoComplete?: string;
 }
 
 /**
@@ -171,7 +163,6 @@ export function SelectBase(props: ParentProps<SelectBaseOptions>) {
       "optionGroupChildren",
       "isOptionGroup",
       "keyboardDelegate",
-      "autoComplete",
       "allowDuplicateSelectionEvents",
       "disallowEmptySelection",
       "selectionBehavior",
@@ -330,7 +321,6 @@ export function SelectBase(props: ParentProps<SelectBaseOptions>) {
     <FormControlContext.Provider value={formControlContext}>
       <SelectContext.Provider value={context}>
         <PopperRoot anchorRef={triggerRef} contentRef={contentRef} sameWidth {...others}>
-          <HiddenSelect autoComplete={local.autoComplete} />
           {local.children}
         </PopperRoot>
       </SelectContext.Provider>
