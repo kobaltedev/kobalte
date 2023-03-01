@@ -35,7 +35,7 @@ describe("Select", () => {
   it("renders correctly", () => {
     render(() => (
       <Select.Root options={DATA_SOURCE}>
-        <Select.HiddenInput />
+        <Select.HiddenSelect />
         <Select.Label>Label</Select.Label>
         <Select.Trigger>
           <Select.Value placeholder="Placeholder">
@@ -2046,7 +2046,7 @@ describe("Select", () => {
 
       render(() => (
         <Select.Root options={dataSource} onValueChange={onValueChange}>
-          <Select.HiddenInput autocomplete="address-level1" />
+          <Select.HiddenSelect autocomplete="address-level1" />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder">
@@ -2096,7 +2096,7 @@ describe("Select", () => {
     it("should have a hidden input to marshall focus to the button", async () => {
       render(() => (
         <Select.Root options={DATA_SOURCE} onValueChange={onValueChange}>
-          <Select.HiddenInput />
+          <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder">
@@ -2142,7 +2142,7 @@ describe("Select", () => {
     it("disables the hidden select when isDisabled is true", async () => {
       render(() => (
         <Select.Root options={DATA_SOURCE} isDisabled onValueChange={onValueChange}>
-          <Select.HiddenInput />
+          <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
             <Select.Value placeholder="Placeholder">
@@ -2263,7 +2263,7 @@ describe("Select", () => {
       render(() => (
         <form data-testid="form" onSubmit={onSubmit}>
           <Select.Root options={DATA_SOURCE} name="test">
-            <Select.HiddenInput />
+            <Select.HiddenSelect />
             <Select.Label>Label</Select.Label>
             <Select.Trigger autofocus>
               <Select.Value placeholder="Placeholder">
@@ -2307,7 +2307,7 @@ describe("Select", () => {
       render(() => (
         <form data-testid="form" onSubmit={onSubmit}>
           <Select.Root options={DATA_SOURCE} name="test" defaultValue="1">
-            <Select.HiddenInput />
+            <Select.HiddenSelect />
             <Select.Label>Label</Select.Label>
             <Select.Trigger autofocus>
               <Select.Value placeholder="Placeholder">
