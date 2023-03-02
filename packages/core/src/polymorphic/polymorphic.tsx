@@ -13,8 +13,8 @@
 import { combineProps as baseCombineProps, isArray } from "@kobalte/utils";
 import {
   Accessor,
+  children,
   ComponentProps,
-  createMemo,
   For,
   JSX,
   ParentProps,
@@ -44,7 +44,7 @@ export function Polymorphic<T extends ValidComponent>(props: PolymorphicProps<T>
     "children",
   ]);
 
-  const resolvedChildren = createMemo(() => local.children) as Accessor<any>;
+  const resolvedChildren = children(() => local.children) as Accessor<any>;
 
   // Single child is `As`.
   if (isAs(resolvedChildren())) {
@@ -88,7 +88,7 @@ export function Polymorphic<T extends ValidComponent>(props: PolymorphicProps<T>
   // No `As` or `Slottable`, render the fallback with the original children.
   return (
     <Dynamic component={local.fallback} {...others}>
-      {resolvedChildren()}
+      {resolvedChildren}
     </Dynamic>
   );
 }

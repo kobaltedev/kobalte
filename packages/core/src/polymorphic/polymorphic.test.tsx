@@ -54,6 +54,18 @@ describe("Polymorphic", () => {
       expect(polymorphic).toBeInstanceOf(HTMLAnchorElement);
     });
 
+    it("should render the component from 'As' when using a render prop and the only direct child is 'As'", () => {
+      render(() => (
+        <Polymorphic data-testid="polymorphic" fallback="button">
+          {() => <As component="a">Link</As>}
+        </Polymorphic>
+      ));
+
+      const polymorphic = screen.getByTestId("polymorphic");
+
+      expect(polymorphic).toBeInstanceOf(HTMLAnchorElement);
+    });
+
     it("should render the component from 'As' when one of the direct children is a 'Slottable' containing 'As'", () => {
       render(() => (
         <Polymorphic data-testid="polymorphic" fallback="button">
@@ -62,6 +74,26 @@ describe("Polymorphic", () => {
             <As component="a">Link</As>
           </Slottable>
           <span>after</span>
+        </Polymorphic>
+      ));
+
+      const polymorphic = screen.getByTestId("polymorphic");
+
+      expect(polymorphic).toBeInstanceOf(HTMLAnchorElement);
+    });
+
+    it("should render the component from 'As' when using a render prop and one of the direct children is a 'Slottable' containing 'As'", () => {
+      render(() => (
+        <Polymorphic data-testid="polymorphic" fallback="button">
+          {() => (
+            <>
+              <span>before</span>
+              <Slottable>
+                <As component="a">Link</As>
+              </Slottable>
+              <span>after</span>
+            </>
+          )}
         </Polymorphic>
       ));
 
