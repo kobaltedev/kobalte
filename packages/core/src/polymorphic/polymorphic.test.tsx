@@ -9,7 +9,7 @@
 import { ComponentProps, JSX, splitProps } from "solid-js";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { As, Polymorphic } from "./polymorphic";
+import { As, Polymorphic, Slottable } from "./polymorphic";
 
 type ButtonExampleProps = ComponentProps<"button"> & {
   leftIcon?: JSX.Element;
@@ -22,7 +22,7 @@ function ButtonExample(props: ButtonExampleProps) {
   return (
     <Polymorphic fallback="button" {...others}>
       {local.leftIcon}
-      {local.children}
+      <Slottable>{local.children}</Slottable>
       {local.rightIcon}
     </Polymorphic>
   );
@@ -54,23 +54,13 @@ describe("Polymorphic", () => {
       expect(polymorphic).toBeInstanceOf(HTMLAnchorElement);
     });
 
-    it("should render the component from 'As' when 'As' is wrapped in a render prop", () => {
-      render(() => (
-        <Polymorphic data-testid="polymorphic" fallback="button">
-          {() => <As component="a">Link</As>}
-        </Polymorphic>
-      ));
-
-      const polymorphic = screen.getByTestId("polymorphic");
-
-      expect(polymorphic).toBeInstanceOf(HTMLAnchorElement);
-    });
-
-    it("should render the component from 'As' when one of the direct children is 'As'", () => {
+    it("should render the component from 'As' when one of the direct children is a 'Slottable' containing 'As'", () => {
       render(() => (
         <Polymorphic data-testid="polymorphic" fallback="button">
           <span>before</span>
-          <As component="a">Link</As>
+          <Slottable>
+            <As component="a">Link</As>
+          </Slottable>
           <span>after</span>
         </Polymorphic>
       ));
