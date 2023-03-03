@@ -10,9 +10,9 @@ import {
   callHandler,
   composeEventHandlers,
   contains,
-  createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "solid-js";
 
@@ -69,7 +69,7 @@ export interface MenuContentBaseOptions {
   onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBaseOptions>(props => {
+export function MenuContentBase(props: OverrideComponentProps<"div", MenuContentBaseOptions>) {
   let ref: HTMLElement | undefined;
 
   const rootContext = useMenuRootContext();
@@ -77,7 +77,6 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: rootContext.generateId(`content-${createUniqueId()}`),
     },
     props
@@ -226,4 +225,4 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
       </PopperPositioner>
     </Show>
   );
-});
+}

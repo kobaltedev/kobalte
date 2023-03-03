@@ -6,17 +6,12 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabPanel.ts
  */
 
-import {
-  createPolymorphicComponent,
-  getFocusableTreeWalker,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
+import { getFocusableTreeWalker, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, createSignal, on, onCleanup, Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
-import { useTabsContext } from "./tabs-context";
+import { Polymorphic } from "../polymorphic";
 import { createPresence } from "../primitives";
+import { useTabsContext } from "./tabs-context";
 
 export interface TabsContentOptions {
   /** The unique key that associates the tab panel with a tab. */
@@ -32,14 +27,12 @@ export interface TabsContentOptions {
 /**
  * Contains the content associated with a tab trigger.
  */
-export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>(props => {
+export function TabsContent(props: OverrideComponentProps<"div", TabsContentOptions>) {
   let ref!: HTMLElement;
 
   const context = useTabsContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
-
-  const [local, others] = splitProps(props, ["as", "ref", "id", "value", "forceMount"]);
+  const [local, others] = splitProps(props, ["ref", "id", "value", "forceMount"]);
 
   const [tabIndex, setTabIndex] = createSignal<number | undefined>(0);
 
@@ -87,8 +80,8 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
 
   return (
     <Show when={presence.isPresent()}>
-      <Dynamic
-        component={local.as}
+      <Polymorphic
+        fallback="div"
         ref={mergeRefs(el => {
           presence.setRef(el);
           ref = el;
@@ -103,4 +96,4 @@ export const TabsContent = createPolymorphicComponent<"div", TabsContentOptions>
       />
     </Show>
   );
-});
+}

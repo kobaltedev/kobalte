@@ -19,7 +19,7 @@ import {
   size,
 } from "@floating-ui/dom";
 import { mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, createEffect, createSignal, onCleanup, ParentComponent } from "solid-js";
+import { Accessor, createEffect, createSignal, onCleanup, ParentProps } from "solid-js";
 
 import { useLocale } from "../i18n";
 import { PopperContext, PopperContextValue } from "./popper-context";
@@ -111,7 +111,7 @@ export interface PopperRootOptions {
 /**
  * Display a floating content relative to an anchor element with an optional arrow.
  */
-export const PopperRoot: ParentComponent<PopperRootOptions> = props => {
+export function PopperRoot(props: ParentProps<PopperRootOptions>) {
   props = mergeDefaultProps(
     {
       getAnchorRect: anchor => anchor?.getBoundingClientRect(),
@@ -340,4 +340,4 @@ export const PopperRoot: ParentComponent<PopperRootOptions> = props => {
   };
 
   return <PopperContext.Provider value={context}>{props.children}</PopperContext.Provider>;
-};
+}

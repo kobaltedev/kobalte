@@ -3,6 +3,7 @@ import {
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
@@ -62,14 +63,13 @@ export interface PopoverContentOptions {
 /**
  * Contains the content to be rendered when the popover is open.
  */
-export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOptions>(props => {
+export function PopoverContent(props: OverrideComponentProps<"div", PopoverContentOptions>) {
   let ref: HTMLElement | undefined;
 
   const context = usePopoverContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: context.generateId("content"),
     },
     props
@@ -191,4 +191,4 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
       </PopperPositioner>
     </Show>
   );
-});
+}

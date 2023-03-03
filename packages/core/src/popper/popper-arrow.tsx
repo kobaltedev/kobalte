@@ -7,15 +7,10 @@
  * https://github.com/ariakit/ariakit/blob/a178c2f2dcc6571ba338fd74c79e3b0eab2a27c5/packages/ariakit/src/popover/__popover-arrow-path.ts
  */
 
-import {
-  createPolymorphicComponent,
-  getWindow,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
+import { getWindow, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, createEffect, createSignal, JSX, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { Polymorphic } from "../polymorphic";
 import { usePopperContext } from "./popper-context";
 import { BasePlacement } from "./utils";
 
@@ -44,18 +39,17 @@ export interface PopperArrowOptions {
  * An optional arrow element to render alongside the popper content.
  * Must be rendered in the popper content.
  */
-export const PopperArrow = createPolymorphicComponent<"div", PopperArrowOptions>(props => {
+export function PopperArrow(props: OverrideComponentProps<"div", PopperArrowOptions>) {
   const context = usePopperContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       size: DEFAULT_SIZE,
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "ref", "style", "children", "size"]);
+  const [local, others] = splitProps(props, ["ref", "style", "children", "size"]);
 
   const dir = () => context.currentPlacement().split("-")[0] as BasePlacement;
   const contentStyle = createComputedStyle(context.contentRef);
@@ -70,8 +64,8 @@ export const PopperArrow = createPolymorphicComponent<"div", PopperArrowOptions>
   };
 
   return (
-    <Dynamic
-      component={local.as}
+    <Polymorphic
+      fallback="div"
       ref={mergeRefs(context.setArrowRef, local.ref)}
       aria-hidden="true"
       style={
@@ -96,9 +90,9 @@ export const PopperArrow = createPolymorphicComponent<"div", PopperArrowOptions>
           <path stroke="none" d={ARROW_PATH} />
         </g>
       </svg>
-    </Dynamic>
+    </Polymorphic>
   );
-});
+}
 
 function createComputedStyle(element: Accessor<Element | undefined>) {
   const [style, setStyle] = createSignal<CSSStyleDeclaration>();

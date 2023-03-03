@@ -1,24 +1,21 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { mergeDefaultProps } from "@kobalte/utils";
+import { ComponentProps } from "solid-js";
 
+import { Polymorphic } from "../polymorphic";
 import { useSwitchContext } from "./switch-context";
 
 /**
  * The thumb that is used to visually indicate whether the switch is on or off.
  */
-export const SwitchThumb = createPolymorphicComponent<"div">(props => {
+export function SwitchThumb(props: ComponentProps<"div">) {
   const context = useSwitchContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: context.generateId("thumb"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as"]);
-
-  return <Dynamic component={local.as} {...context.dataset()} {...others} />;
-});
+  return <Polymorphic fallback="div" {...context.dataset()} {...props} />;
+}

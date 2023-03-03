@@ -10,10 +10,10 @@
 import {
   callHandler,
   mergeDefaultProps,
-  OverrideProps,
+  OverrideComponentProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { ComponentProps, JSX, splitProps } from "solid-js";
+import { JSX, splitProps } from "solid-js";
 
 import { useSwitchContext } from "./switch-context";
 
@@ -25,7 +25,7 @@ export interface SwitchInputOptions {
 /**
  * The native html input that is visually hidden in the switch.
  */
-export function SwitchInput(props: OverrideProps<ComponentProps<"input">, SwitchInputOptions>) {
+export function SwitchInput(props: OverrideComponentProps<"input", SwitchInputOptions>) {
   const context = useSwitchContext();
 
   props = mergeDefaultProps({ id: context.generateId("input") }, props);

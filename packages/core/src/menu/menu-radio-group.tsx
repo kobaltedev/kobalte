@@ -7,7 +7,7 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-stately/radio/src/useRadioGroupState.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
 
 import { createControllableSignal } from "../primitives";
@@ -35,14 +35,13 @@ export interface MenuRadioGroupOptions {
 /**
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
-export const MenuRadioGroup = createPolymorphicComponent<"div", MenuRadioGroupOptions>(props => {
+export function MenuRadioGroup(props: OverrideComponentProps<"div", MenuRadioGroupOptions>) {
   const rootContext = useMenuRootContext();
 
   const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: defaultId,
     },
     props
@@ -72,4 +71,4 @@ export const MenuRadioGroup = createPolymorphicComponent<"div", MenuRadioGroupOp
       <MenuGroup {...others} />
     </MenuRadioGroupContext.Provider>
   );
-});
+}

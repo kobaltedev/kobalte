@@ -1,7 +1,7 @@
-import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { Polymorphic } from "../polymorphic";
 import { usePopperContext } from "./popper-context";
 
 export interface PopperPositionerOptions {
@@ -12,28 +12,24 @@ export interface PopperPositionerOptions {
 /**
  * The wrapper component that positions the popper content relative to the popper anchor.
  */
-export const PopperPositioner = createPolymorphicComponent<"div", PopperPositionerOptions>(
-  props => {
-    const context = usePopperContext();
+export function PopperPositioner(props: OverrideComponentProps<"div", PopperPositionerOptions>) {
+  const context = usePopperContext();
 
-    props = mergeDefaultProps({ as: "div" }, props);
+  const [local, others] = splitProps(props, ["ref", "style"]);
 
-    const [local, others] = splitProps(props, ["as", "ref", "style"]);
-
-    return (
-      <Dynamic
-        component={local.as}
-        ref={mergeRefs(context.setPositionerRef, local.ref)}
-        data-popper-positioner=""
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          "min-width": "max-content",
-          ...local.style,
-        }}
-        {...others}
-      />
-    );
-  }
-);
+  return (
+    <Polymorphic
+      fallback="div"
+      ref={mergeRefs(context.setPositionerRef, local.ref)}
+      data-popper-positioner=""
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        "min-width": "max-content",
+        ...local.style,
+      }}
+      {...others}
+    />
+  );
+}

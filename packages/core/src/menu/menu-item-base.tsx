@@ -10,14 +10,14 @@ import {
   callHandler,
   composeEventHandlers,
   createGenerateId,
-  createPolymorphicComponent,
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -57,7 +57,7 @@ export interface MenuItemBaseOptions {
 /**
  * Base component for a menu item.
  */
-export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOptions>(props => {
+export function MenuItemBase(props: OverrideComponentProps<"div", MenuItemBaseOptions>) {
   let ref: HTMLDivElement | undefined;
 
   const rootContext = useMenuRootContext();
@@ -65,14 +65,12 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: rootContext.generateId(`item-${createUniqueId()}`),
     },
     props
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "textValue",
     "isDisabled",
@@ -231,8 +229,8 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
 
   return (
     <MenuItemContext.Provider value={context}>
-      <Dynamic
-        component={local.as!}
+      <Polymorphic
+        fallback="div"
         ref={mergeRefs(el => (ref = el), local.ref)}
         tabIndex={selectableItem.tabIndex()}
         aria-checked={ariaChecked()}
@@ -253,4 +251,4 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
       />
     </MenuItemContext.Provider>
   );
-});
+}
