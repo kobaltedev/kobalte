@@ -12,7 +12,7 @@ import {
   createMemo,
   createSignal,
   createUniqueId,
-  ParentComponent,
+  ParentProps,
   splitProps,
 } from "solid-js";
 
@@ -67,7 +67,7 @@ export interface PopoverRootOptions
 /**
  * A popover is a dialog positioned relative to an anchor element.
  */
-export const PopoverRoot: ParentComponent<PopoverRootOptions> = props => {
+export function PopoverRoot(props: ParentProps<PopoverRootOptions>) {
   const defaultId = `popover-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -138,4 +138,4 @@ export const PopoverRoot: ParentComponent<PopoverRootOptions> = props => {
       <PopperRoot anchorRef={anchorRef} contentRef={contentRef} {...others} />
     </PopoverContext.Provider>
   );
-};
+}

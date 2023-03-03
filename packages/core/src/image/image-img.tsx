@@ -16,7 +16,7 @@ import { ImageLoadingStatus } from "./types";
 /**
  * The image to render. By default, it will only render when it has loaded.
  */
-export const ImageImg = (props: ComponentProps<"img">) => {
+export function ImageImg(props: ComponentProps<"img">) {
   const context = useImageContext();
 
   const [loadingStatus, setLoadingStatus] = createSignal<ImageLoadingStatus>("idle");
@@ -66,4 +66,4 @@ export const ImageImg = (props: ComponentProps<"img">) => {
       <img {...props} />
     </Show>
   );
-};
+}

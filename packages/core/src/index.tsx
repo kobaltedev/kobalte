@@ -4,16 +4,16 @@ export * from "./form-control";
 export * from "./i18n";
 export * from "./list";
 export * from "./live-announcer";
+export * from "./polymorphic";
 export * from "./primitives";
 export * from "./selection";
-export { createPolymorphicComponent } from "@kobalte/utils";
+export { Key } from "@kobalte/utils";
 
 // components
 export * as Accordion from "./accordion";
 export * as Alert from "./alert";
 export * as Breadcrumbs from "./breadcrumbs";
 export * as Button from "./button";
-//export * as Calendar from "./calendar";
 export * as Checkbox from "./checkbox";
 export * as Collapsible from "./collapsible";
 export * as ContextMenu from "./context-menu";
@@ -27,7 +27,6 @@ export * as MultiSelect from "./multi-select";
 export * as Popover from "./popover";
 export * as Progress from "./progress";
 export * as RadioGroup from "./radio-group";
-//export * as RangeCalendar from "./range-calendar";
 export * as Select from "./select";
 export * as Separator from "./separator";
 export * as Switch from "./switch";

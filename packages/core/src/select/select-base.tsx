@@ -34,7 +34,7 @@ import {
 } from "../selection";
 import { SelectContext, SelectContextValue } from "./select-context";
 
-export interface SelectBaseOptions
+export interface SelectBaseOptions<T>
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the select. */
   isOpen?: boolean;
@@ -61,22 +61,22 @@ export interface SelectBaseOptions
   onValueChange?: (value: Set<string>) => void;
 
   /** An array of options to display as the available options. */
-  options?: any[];
+  options?: T[];
 
   /** Property name or getter function to use as the value of an option. */
-  optionValue?: string | ((option: any) => string);
+  optionValue?: string | ((option: T) => string);
 
   /** Property name or getter function to use as the text value of an option for typeahead purpose. */
-  optionTextValue?: string | ((option: any) => string);
+  optionTextValue?: string | ((option: T) => string);
 
   /** Property name or getter function to use as the disabled flag of an option. */
-  optionDisabled?: string | ((option: any) => boolean);
+  optionDisabled?: string | ((option: T) => boolean);
 
   /** Property name or getter function that refers to the children options of option group. */
-  optionGroupChildren?: string | ((optGroup: any) => any[]);
+  optionGroupChildren?: string | ((optGroup: T) => T[]);
 
   /** Function used to check if an option is an option group. */
-  isOptionGroup?: (maybeOptGroup: any) => boolean;
+  isOptionGroup?: (maybeOptGroup: T) => boolean;
 
   /** An optional keyboard delegate implementation for type to select, to override the default. */
   keyboardDelegate?: KeyboardDelegate;
@@ -132,7 +132,7 @@ export interface SelectBaseOptions
  * Base component for a select, provide context for its children.
  * Used to build single and multi-select.
  */
-export function SelectBase(props: ParentProps<SelectBaseOptions>) {
+export function SelectBase<T>(props: ParentProps<SelectBaseOptions<T>>) {
   const defaultId = `select-${createUniqueId()}`;
 
   props = mergeDefaultProps(

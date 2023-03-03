@@ -13,7 +13,6 @@ export * from "./noop";
 export * from "./number";
 export * from "./platform";
 export * from "./polygon";
-export * from "./polymorphic";
 export * from "./props";
 export * from "./run-after-transition";
 export * from "./scroll-into-view";

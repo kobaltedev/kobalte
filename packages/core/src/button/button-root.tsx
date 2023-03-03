@@ -12,14 +12,14 @@
  * https://github.com/ariakit/ariakit/blob/8a13899ff807bbf39f3d89d2d5964042ba4d5287/packages/ariakit/src/button/button.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createMemo, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createTagName } from "../primitives";
 import { isButton } from "./is-button";
 
-export interface ButtonRootOptions {
+export interface ButtonRootOptions extends AsChildProp {
   /** Whether the button is disabled. */
   isDisabled?: boolean;
 }
@@ -29,22 +29,16 @@ export interface ButtonRootOptions {
  * opening a dialog, canceling an action, or performing a delete operation.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions>(props => {
+export function ButtonRoot(props: OverrideComponentProps<"button", ButtonRootOptions>) {
   let ref: HTMLButtonElement | undefined;
 
-  props = mergeDefaultProps(
-    {
-      as: "button",
-      type: "button",
-    },
-    props
-  );
+  props = mergeDefaultProps({ type: "button" }, props);
 
-  const [local, others] = splitProps(props, ["as", "ref", "type", "isDisabled"]);
+  const [local, others] = splitProps(props, ["ref", "type", "isDisabled"]);
 
   const tagName = createTagName(
     () => ref,
-    () => local.as || "button"
+    () => "button"
   );
 
   const isNativeButton = createMemo(() => {
@@ -62,12 +56,12 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
   });
 
   const isNativeLink = createMemo(() => {
-    return tagName() === "a" && (others as any).href != null;
+    return tagName() === "a" && ref?.getAttribute("href") != null;
   });
 
   return (
-    <Dynamic
-      component={local.as}
+    <Polymorphic
+      fallback="button"
       ref={mergeRefs(el => (ref = el), local.ref)}
       type={isNativeButton() || isNativeInput() ? local.type : undefined}
       role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
@@ -78,4 +72,4 @@ export const ButtonRoot = createPolymorphicComponent<"button", ButtonRootOptions
       {...others}
     />
   );
-});
+}

@@ -1,9 +1,4 @@
-import {
-  createPolymorphicComponent,
-  focusWithoutScrolling,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
+import { focusWithoutScrolling, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
@@ -15,8 +10,9 @@ import {
   FocusOutsideEvent,
 } from "../primitives";
 import { useSelectContext } from "./select-context";
+import { AsChildProp } from "../polymorphic";
 
-export interface SelectContentOptions {
+export interface SelectContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }
@@ -24,12 +20,10 @@ export interface SelectContentOptions {
 /**
  * The component that pops out when the select is open.
  */
-export const SelectContent = createPolymorphicComponent<"div", SelectContentOptions>(props => {
+export function SelectContent(props: OverrideComponentProps<"div", SelectContentOptions>) {
   let ref: HTMLElement | undefined;
 
   const context = useSelectContext();
-
-  props = mergeDefaultProps({ as: "div" }, props);
 
   const [local, others] = splitProps(props, ["ref", "id", "style"]);
 
@@ -96,4 +90,4 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentOpti
       </PopperPositioner>
     </Show>
   );
-});
+}

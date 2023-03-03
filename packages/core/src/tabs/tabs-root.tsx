@@ -7,17 +7,17 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps, Orientation } from "@kobalte/utils";
+import { mergeDefaultProps, Orientation, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, createSignal, createUniqueId, on, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { createSingleSelectListState } from "../list";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { TabsContext, TabsContextValue } from "./tabs-context";
 import { TabsActivationMode } from "./types";
 
-export interface TabsRootOptions {
+export interface TabsRootOptions extends AsChildProp {
   /** The controlled value of the tab to activate. */
   value?: string;
 
@@ -44,12 +44,11 @@ export interface TabsRootOptions {
  * A set of layered sections of content, known as tab panels, that display one panel of content at a time.
  * `Tabs` contains all the parts of a tabs component and provide context for its children.
  */
-export const TabsRoot = createPolymorphicComponent<"div", TabsRootOptions>(props => {
+export function TabsRoot(props: OverrideComponentProps<"div", TabsRootOptions>) {
   const defaultId = `tabs-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: defaultId,
       orientation: "horizontal",
       activationMode: "automatic",
@@ -58,7 +57,6 @@ export const TabsRoot = createPolymorphicComponent<"div", TabsRootOptions>(props
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "value",
     "defaultValue",
     "onValueChange",
@@ -150,8 +148,8 @@ export const TabsRoot = createPolymorphicComponent<"div", TabsRootOptions>(props
   return (
     <DomCollectionProvider>
       <TabsContext.Provider value={context}>
-        <Dynamic component={local.as} data-orientation={context.orientation()} {...others} />
+        <Polymorphic fallback="div" data-orientation={context.orientation()} {...others} />
       </TabsContext.Provider>
     </DomCollectionProvider>
   );
-});
+}

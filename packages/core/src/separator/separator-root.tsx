@@ -6,18 +6,13 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/separator/src/useSeparator.ts
  */
 
-import {
-  createPolymorphicComponent,
-  mergeDefaultProps,
-  mergeRefs,
-  Orientation,
-} from "@kobalte/utils";
+import { mergeDefaultProps, mergeRefs, Orientation, OverrideComponentProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createTagName } from "../primitives";
 
-export interface SeparatorRootOptions {
+export interface SeparatorRootOptions extends AsChildProp {
   /** The orientation of the separator. */
   orientation?: Orientation;
 }
@@ -25,27 +20,26 @@ export interface SeparatorRootOptions {
 /**
  * A separator visually or semantically separates content.
  */
-export const SeparatorRoot = createPolymorphicComponent<"hr", SeparatorRootOptions>(props => {
+export function SeparatorRoot(props: OverrideComponentProps<"hr", SeparatorRootOptions>) {
   let ref: HTMLElement | undefined;
 
   props = mergeDefaultProps(
     {
-      as: "hr",
       orientation: "horizontal",
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "ref", "orientation"]);
+  const [local, others] = splitProps(props, ["ref", "orientation"]);
 
   const tagName = createTagName(
     () => ref,
-    () => local.as || "hr"
+    () => "hr"
   );
 
   return (
-    <Dynamic
-      component={local.as}
+    <Polymorphic
+      fallback="hr"
       ref={mergeRefs(el => (ref = el), local.ref)}
       role={tagName() !== "hr" ? "separator" : undefined}
       aria-orientation={local.orientation === "vertical" ? "vertical" : undefined}
@@ -53,4 +47,4 @@ export const SeparatorRoot = createPolymorphicComponent<"hr", SeparatorRootOptio
       {...others}
     />
   );
-});
+}

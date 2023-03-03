@@ -11,19 +11,10 @@ import {
   createGenerateId,
   mergeDefaultProps,
   mergeRefs,
-  OverrideProps,
+  OverrideComponentProps,
   ValidationState,
 } from "@kobalte/utils";
-import {
-  Accessor,
-  Component,
-  ComponentProps,
-  createMemo,
-  createSignal,
-  createUniqueId,
-  JSX,
-  splitProps,
-} from "solid-js";
+import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { createFormResetListener, createToggleState } from "../primitives";
 import { SwitchContext, SwitchContextValue, SwitchDataSet } from "./switch-context";
@@ -69,9 +60,7 @@ export interface SwitchRootOptions {
 /**
  * A control that allows users to choose one of two values: on or off.
  */
-export const SwitchRoot: Component<
-  OverrideProps<ComponentProps<"label">, SwitchRootOptions>
-> = props => {
+export function SwitchRoot(props: OverrideComponentProps<"label", SwitchRootOptions>) {
   let ref: HTMLLabelElement | undefined;
 
   const defaultId = `switch-${createUniqueId()}`;
@@ -156,4 +145,4 @@ export const SwitchRoot: Component<
       />
     </SwitchContext.Provider>
   );
-};
+}

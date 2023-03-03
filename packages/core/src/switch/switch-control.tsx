@@ -1,24 +1,20 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useSwitchContext } from "./switch-context";
 
 /**
  * The element that visually represents a switch.
  */
-export const SwitchControl = createPolymorphicComponent<"div">(props => {
+export function SwitchControl(props: OverrideComponentProps<"div", AsChildProp>) {
   const context = useSwitchContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: context.generateId("control"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as"]);
-
-  return <Dynamic component={local.as} {...context.dataset()} {...others} />;
-});
+  return <Polymorphic fallback="div" {...context.dataset()} {...props} />;
+}

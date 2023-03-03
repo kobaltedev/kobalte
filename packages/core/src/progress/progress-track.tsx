@@ -1,19 +1,14 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { OverrideComponentProps } from "@kobalte/utils";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useProgressContext } from "./progress-context";
 
 /**
  * The component that visually represents the progress track.
  * Act as a container for `Progress.Fill`.
  */
-export const ProgressTrack = createPolymorphicComponent<"div">(props => {
+export function ProgressTrack(props: OverrideComponentProps<"div", AsChildProp>) {
   const context = useProgressContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
-
-  const [local, others] = splitProps(props, ["as"]);
-
-  return <Dynamic component={local.as} {...context.dataset()} {...others} />;
-});
+  return <Polymorphic fallback="div" {...context.dataset()} {...props} />;
+}

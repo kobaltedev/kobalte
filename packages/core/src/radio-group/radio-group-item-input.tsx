@@ -9,10 +9,10 @@
 import {
   callHandler,
   mergeDefaultProps,
-  OverrideProps,
+  OverrideComponentProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { ComponentProps, JSX, splitProps } from "solid-js";
+import { JSX, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { useRadioGroupContext } from "./radio-group-context";
@@ -27,7 +27,7 @@ export interface RadioGroupItemInputOptions {
  * The native html input that is visually hidden in the radio button.
  */
 export function RadioGroupItemInput(
-  props: OverrideProps<ComponentProps<"input">, RadioGroupItemInputOptions>
+  props: OverrideComponentProps<"input", RadioGroupItemInputOptions>
 ) {
   const formControlContext = useFormControlContext();
   const radioGroupContext = useRadioGroupContext();

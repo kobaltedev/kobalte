@@ -1,15 +1,11 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { OverrideComponentProps } from "@kobalte/utils";
+
+import { AsChildProp, Polymorphic } from "../polymorphic";
 
 /**
  * Alert displays a brief, important message
  * in a way that attracts the user's attention without interrupting the user's task.
  */
-export const AlertRoot = createPolymorphicComponent<"div">(props => {
-  props = mergeDefaultProps({ as: "div" }, props);
-
-  const [local, others] = splitProps(props, ["as"]);
-
-  return <Dynamic component={local.as} role="alert" {...others} />;
-});
+export function AlertRoot(props: OverrideComponentProps<"div", AsChildProp>) {
+  return <Polymorphic fallback="div" role="alert" {...props} />;
+}

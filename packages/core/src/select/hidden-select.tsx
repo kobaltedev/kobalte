@@ -7,7 +7,7 @@
  */
 
 import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
-import { ComponentProps, For, JSX, Match, mergeProps, onMount, splitProps, Switch } from "solid-js";
+import { ComponentProps, For, Match, splitProps, Switch } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { useSelectContext } from "./select-context";

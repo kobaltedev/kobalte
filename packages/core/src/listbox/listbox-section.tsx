@@ -1,15 +1,11 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { OverrideComponentProps } from "@kobalte/utils";
+
+import { AsChildProp, Polymorphic } from "../polymorphic";
 
 /**
  * A component used to render the label of a listbox option group.
  * It won't be focusable using arrow keys.
  */
-export const ListboxSection = createPolymorphicComponent<"li">(props => {
-  props = mergeDefaultProps({ as: "li" }, props);
-
-  const [local, others] = splitProps(props, ["as"]);
-
-  return <Dynamic component={local.as} role="presentation" {...others} />;
-});
+export function ListboxSection(props: OverrideComponentProps<"li", AsChildProp>) {
+  return <Polymorphic fallback="li" role="presentation" {...props} />;
+}

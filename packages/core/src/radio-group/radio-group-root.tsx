@@ -9,20 +9,20 @@
 
 import {
   access,
-  createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
   Orientation,
+  OverrideComponentProps,
   ValidationState,
 } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createControllableSignal, createFormResetListener } from "../primitives";
 import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context";
 
-export interface RadioGroupRootOptions {
+export interface RadioGroupRootOptions extends AsChildProp {
   /** The controlled value of the radio button to check. */
   value?: string;
 
@@ -68,14 +68,13 @@ export interface RadioGroupRootOptions {
  * A set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time.
  * This component is based on the [WAI-ARIA Radio Group Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radiobutton/)
  */
-export const RadioGroupRoot = createPolymorphicComponent<"div", RadioGroupRootOptions>(props => {
+export function RadioGroupRoot(props: OverrideComponentProps<"div", RadioGroupRootOptions>) {
   let ref: HTMLDivElement | undefined;
 
   const defaultId = `radiogroup-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: defaultId,
       orientation: "vertical",
     },
@@ -85,7 +84,6 @@ export const RadioGroupRoot = createPolymorphicComponent<"div", RadioGroupRootOp
   const [local, formControlProps, others] = splitProps(
     props,
     [
-      "as",
       "ref",
       "value",
       "defaultValue",
@@ -149,8 +147,8 @@ export const RadioGroupRoot = createPolymorphicComponent<"div", RadioGroupRootOp
   return (
     <FormControlContext.Provider value={formControlContext}>
       <RadioGroupContext.Provider value={context}>
-        <Dynamic
-          component={local.as}
+        <Polymorphic
+          fallback="div"
           ref={mergeRefs(el => (ref = el), local.ref)}
           id={access(formControlProps.id)}
           role="radiogroup"
@@ -167,4 +165,4 @@ export const RadioGroupRoot = createPolymorphicComponent<"div", RadioGroupRootOp
       </RadioGroupContext.Provider>
     </FormControlContext.Provider>
   );
-});
+}

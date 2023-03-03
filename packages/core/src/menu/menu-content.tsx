@@ -1,4 +1,4 @@
-import { createPolymorphicComponent } from "@kobalte/utils";
+import { OverrideComponentProps } from "@kobalte/utils";
 
 import { createPreventScroll } from "../primitives";
 import { MenuContentBase, MenuContentBaseOptions } from "./menu-content-base";
@@ -7,7 +7,7 @@ import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuContentOptions extends MenuContentBaseOptions {}
 
-export const MenuContent = createPolymorphicComponent<"div", MenuContentOptions>(props => {
+export function MenuContent(props: OverrideComponentProps<"div", MenuContentOptions>) {
   const rootContext = useMenuRootContext();
   const context = useMenuContext();
 
@@ -16,4 +16,4 @@ export const MenuContent = createPolymorphicComponent<"div", MenuContentOptions>
   });
 
   return <MenuContentBase {...props} />;
-});
+}

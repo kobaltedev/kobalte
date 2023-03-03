@@ -10,20 +10,19 @@ import {
   access,
   composeEventHandlers,
   createGenerateId,
-  createPolymorphicComponent,
-  Key,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createUniqueId, JSX, Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { Accessor, createMemo, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { createListState, createSelectableList, ListState } from "../list";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { Collection, CollectionNode } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, SelectionBehavior, SelectionMode } from "../selection";
 import { ListboxContext, ListboxContextValue } from "./listbox-context";
 
-export interface ListboxRootOptions {
+export interface ListboxRootOptions<T> extends AsChildProp {
   /** The controlled value of the listbox. */
   value?: Iterable<string>;
 
@@ -37,22 +36,22 @@ export interface ListboxRootOptions {
   onValueChange?: (value: Set<string>) => void;
 
   /** An array of options to display as the available options. */
-  options?: any[];
+  options?: T[];
 
   /** Property name or getter function to use as the value of an option. */
-  optionValue?: string | ((option: any) => string);
+  optionValue?: string | ((option: T) => string);
 
   /** Property name or getter function to use as the text value of an option for typeahead purpose. */
-  optionTextValue?: string | ((option: any) => string);
+  optionTextValue?: string | ((option: T) => string);
 
   /** Property name or getter function to use as the disabled flag of an option. */
-  optionDisabled?: string | ((option: any) => boolean);
+  optionDisabled?: string | ((option: T) => boolean);
 
   /** Property name or getter function that refers to the children options of option group. */
-  optionGroupChildren?: string | ((optGroup: any) => any[]);
+  optionGroupChildren?: string | ((optGroup: T) => T[]);
 
   /** Function used to check if an option is an option group. */
-  isOptionGroup?: (maybeOptGroup: any) => boolean;
+  isOptionGroup?: (maybeOptGroup: T) => boolean;
 
   /** The controlled state of the listbox. */
   state?: ListState;
@@ -115,14 +114,13 @@ export interface ListboxRootOptions {
 /**
  * Listbox presents a list of options and allows a user to select one or more of them.
  */
-export const ListboxRoot = createPolymorphicComponent<"ul", ListboxRootOptions>(props => {
+export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOptions<T>>) {
   let ref: HTMLElement | undefined;
 
   const defaultId = `listbox-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
-      as: "ul",
       id: defaultId,
       selectionMode: "single",
     },
@@ -130,7 +128,6 @@ export const ListboxRoot = createPolymorphicComponent<"ul", ListboxRootOptions>(
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "children",
     "value",
@@ -217,8 +214,8 @@ export const ListboxRoot = createPolymorphicComponent<"ul", ListboxRootOptions>(
 
   return (
     <ListboxContext.Provider value={context}>
-      <Dynamic
-        component={local.as}
+      <Polymorphic
+        fallback="ul"
         ref={mergeRefs(el => (ref = el), local.ref)}
         role="listbox"
         tabIndex={selectableList.tabIndex()}
@@ -232,7 +229,7 @@ export const ListboxRoot = createPolymorphicComponent<"ul", ListboxRootOptions>(
         {...others}
       >
         {local.children?.(listState().collection)}
-      </Dynamic>
+      </Polymorphic>
     </ListboxContext.Provider>
   );
-});
+}

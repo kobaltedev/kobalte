@@ -1,5 +1,5 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, ParentComponent } from "solid-js";
+import { createSignal, createUniqueId, ParentProps } from "solid-js";
 
 import { createDisclosureState, createPresence, createRegisterId } from "../primitives";
 import { DialogContext, DialogContextValue } from "./dialog-context";
@@ -44,7 +44,7 @@ export interface DialogRootOptions {
 /**
  * A dialog is a window overlaid on either the primary window or another dialog window.
  */
-export const DialogRoot: ParentComponent<DialogRootOptions> = props => {
+export function DialogRoot(props: ParentProps<DialogRootOptions>) {
   const defaultId = `dialog-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -91,4 +91,4 @@ export const DialogRoot: ParentComponent<DialogRootOptions> = props => {
   };
 
   return <DialogContext.Provider value={context}>{props.children}</DialogContext.Provider>;
-};
+}

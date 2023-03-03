@@ -1,17 +1,17 @@
-import { createPolymorphicComponent, isFunction, mergeDefaultProps } from "@kobalte/utils";
+import { isFunction, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, children, createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { useFormControlContext } from "../form-control";
-import { useSelectContext } from "../select/select-context";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionNode } from "../primitives";
+import { useSelectContext } from "../select/select-context";
 
 interface MultiSelectValueState {
   /** The selected items of the multi-select. */
   selectedItems: Accessor<CollectionNode[]>;
 }
 
-export interface MultiSelectValueOptions {
+export interface MultiSelectValueOptions extends AsChildProp {
   /** The content that will be rendered when no value or defaultValue is set. */
   placeholder?: JSX.Element;
 
@@ -24,41 +24,39 @@ export interface MultiSelectValueOptions {
  * If you require more control, you can instead control the select and pass your own children.
  * An optional placeholder prop is also available for when the select has no value.
  */
-export const MultiSelectValue = createPolymorphicComponent<"span", MultiSelectValueOptions>(
-  props => {
-    const formControlContext = useFormControlContext();
-    const context = useSelectContext();
+export function MultiSelectValue(props: OverrideComponentProps<"span", MultiSelectValueOptions>) {
+  const formControlContext = useFormControlContext();
+  const context = useSelectContext();
 
-    props = mergeDefaultProps({ as: "span", id: context.generateId("value") }, props);
+  props = mergeDefaultProps({ id: context.generateId("value") }, props);
 
-    const [local, others] = splitProps(props, ["as", "id", "children", "placeholder"]);
+  const [local, others] = splitProps(props, ["id", "children", "placeholder"]);
 
-    const selectionManager = () => context.listState().selectionManager();
-    const isSelectionEmpty = () => selectionManager().isEmpty();
+  const selectionManager = () => context.listState().selectionManager();
+  const isSelectionEmpty = () => selectionManager().isEmpty();
 
-    const selectedItems = () => {
-      return [...selectionManager().selectedKeys()]
-        .map(key => context.listState().collection().getItem(key))
-        .filter(Boolean) as CollectionNode[];
-    };
+  const selectedItems = () => {
+    return [...selectionManager().selectedKeys()]
+      .map(key => context.listState().collection().getItem(key))
+      .filter(Boolean) as CollectionNode[];
+  };
 
-    createEffect(() => onCleanup(context.registerValueId(local.id!)));
+  createEffect(() => onCleanup(context.registerValueId(local.id!)));
 
-    return (
-      <Dynamic
-        component={local.as}
-        id={local.id}
-        data-placeholder-shown={isSelectionEmpty() ? "" : undefined}
-        {...formControlContext.dataset()}
-        {...others}
-      >
-        <Show when={!isSelectionEmpty()} fallback={local.placeholder}>
-          <MultiSelectValueChild state={{ selectedItems }} children={local.children} />
-        </Show>
-      </Dynamic>
-    );
-  }
-);
+  return (
+    <Polymorphic
+      fallback="span"
+      id={local.id}
+      data-placeholder-shown={isSelectionEmpty() ? "" : undefined}
+      {...formControlContext.dataset()}
+      {...others}
+    >
+      <Show when={!isSelectionEmpty()} fallback={local.placeholder}>
+        <MultiSelectValueChild state={{ selectedItems }} children={local.children} />
+      </Show>
+    </Polymorphic>
+  );
+}
 
 interface MultiSelectValueChildProps extends Pick<MultiSelectValueOptions, "children"> {
   state: MultiSelectValueState;

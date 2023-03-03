@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-spectrum/checkbox/test/Checkbox.test.js
  */
 
-import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
+import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "solid-testing-library";
 
 import * as Checkbox from ".";
