@@ -17,7 +17,6 @@ import {
   ComponentProps,
   For,
   JSX,
-  ParentProps,
   Show,
   splitProps,
   ValidComponent,
@@ -28,21 +27,36 @@ import { Dynamic, DynamicProps } from "solid-js/web";
  * Polymorphic
  * -----------------------------------------------------------------------------------------------*/
 
+export interface AsChildProp {
+  /** Whether the component should render as its direct `As` child component. */
+  asChild?: true;
+}
+
 export type PolymorphicProps<T extends ValidComponent, P = ComponentProps<T>> = {
   [K in keyof P]: P[K];
-} & {
-  /** The component to render when `children` doesn't contain any `Slottable` or `As` component as direct child. */
-  fallback: T;
-};
+} & AsChildProp & {
+    /** The component to render when `children` doesn't contain any `Slottable` or `As` component as direct child. */
+    fallback: T;
+  };
 
 /**
  * A utility component that render either `As` or its `fallback` component.
  */
 export function Polymorphic<T extends ValidComponent>(props: PolymorphicProps<T>) {
   const [local, others] = splitProps(props as PolymorphicProps<ValidComponent>, [
+    "asChild",
     "fallback",
     "children",
   ]);
+
+  // Prevent the extra computation below when polymorphism is not needed.
+  if (!local.asChild) {
+    return (
+      <Dynamic component={local.fallback} {...others}>
+        {local.children}
+      </Dynamic>
+    );
+  }
 
   const resolvedChildren = children(() => local.children) as Accessor<any>;
 
@@ -51,45 +65,29 @@ export function Polymorphic<T extends ValidComponent>(props: PolymorphicProps<T>
     return <Dynamic {...combineProps(others, resolvedChildren()?.props ?? {})} />;
   }
 
-  // Multiple children, find a `Slottable` if any.
+  // Multiple children, find an `As` if any.
   if (isArray(resolvedChildren())) {
-    const slottable = resolvedChildren().find(isSlottable);
+    const newElement = resolvedChildren().find(isAs);
 
-    if (slottable) {
-      // The new element to render may be the one passed as a child of `Slottable`.
-      const newElement = slottable.props.children as any;
-
-      // Get the correct content to render depending on if `Slottable` children is `As` or not.
+    if (newElement) {
+      // because the new element will be the one rendered, we are only interested
+      // in grabbing its children (`newElement.props.children`)
       const newChildren = () => (
         <For each={resolvedChildren()}>
           {(child: any) => (
-            <Show when={child === slottable} fallback={child}>
-              <Show when={isAs(newElement)} fallback={newElement}>
-                {newElement.props.children}
-              </Show>
+            <Show when={child === newElement} fallback={child}>
+              {newElement.props.children}
             </Show>
           )}
         </For>
       );
 
-      if (isAs(newElement)) {
-        return <Dynamic {...combineProps(others, newElement?.props ?? {})}>{newChildren}</Dynamic>;
-      }
-
-      // No `Slottable` containing `As`, render the fallback with the new children.
-      return (
-        <Dynamic component={local.fallback} {...others}>
-          {newChildren}
-        </Dynamic>
-      );
+      return <Dynamic {...combineProps(others, newElement?.props ?? {})}>{newChildren}</Dynamic>;
     }
   }
 
-  // No `As` or `Slottable`, render the fallback with the original children.
-  return (
-    <Dynamic component={local.fallback} {...others}>
-      {resolvedChildren}
-    </Dynamic>
+  throw new Error(
+    "[kobalte]: Component is expected to render `asChild` but no children `As` component was found."
   );
 }
 
@@ -110,32 +108,11 @@ export function As<T extends ValidComponent>(props: DynamicProps<T>) {
 }
 
 /* -------------------------------------------------------------------------------------------------
- * Slottable
- * -----------------------------------------------------------------------------------------------*/
-
-const SLOTTABLE_COMPONENT_SYMBOL = Symbol("$$KobalteSlottableComponent");
-
-/**
- * A utility component used to tell `Polymorphic` where to potentially find an `As` child component.
- * Must be used when `Polymorphic` has more than one child.
- */
-export function Slottable(props: ParentProps) {
-  return {
-    [SLOTTABLE_COMPONENT_SYMBOL]: true,
-    props,
-  } as unknown as JSX.Element;
-}
-
-/* -------------------------------------------------------------------------------------------------
  * Utils
  * -----------------------------------------------------------------------------------------------*/
 
 function isAs(component: any): boolean {
   return component?.[AS_COMPONENT_SYMBOL] === true;
-}
-
-function isSlottable(component: any): boolean {
-  return component?.[SLOTTABLE_COMPONENT_SYMBOL] === true;
 }
 
 function combineProps(baseProps: any, overrideProps: any) {

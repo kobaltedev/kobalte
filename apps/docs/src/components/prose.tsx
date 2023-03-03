@@ -1,14 +1,11 @@
-import { createPolymorphicComponent } from "@kobalte/core";
 import { clsx } from "clsx";
-import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { ComponentProps, splitProps } from "solid-js";
 
-export const Prose = createPolymorphicComponent<"div">(props => {
-  const [local, others] = splitProps(props, ["as", "class"]);
+export function Prose(props: ComponentProps<"div">) {
+  const [local, others] = splitProps(props, ["class"]);
 
   return (
-    <Dynamic
-      component={local.as ?? "div"}
+    <div
       class={clsx(
         local.class,
         "prose prose-zinc max-w-none dark:prose-invert dark:text-zinc-400",
@@ -26,4 +23,4 @@ export const Prose = createPolymorphicComponent<"div">(props => {
       {...others}
     />
   );
-});
+}

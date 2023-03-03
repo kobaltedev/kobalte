@@ -15,11 +15,11 @@
 import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createMemo, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createTagName } from "../primitives";
 import { isButton } from "./is-button";
 
-export interface ButtonRootOptions {
+export interface ButtonRootOptions extends AsChildProp {
   /** Whether the button is disabled. */
   isDisabled?: boolean;
 }

@@ -9,10 +9,10 @@
 import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createTagName } from "../primitives";
 
-export interface LinkRootOptions {
+export interface LinkRootOptions extends AsChildProp {
   /** Whether the link is disabled. */
   isDisabled?: boolean;
 }

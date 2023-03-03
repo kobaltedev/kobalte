@@ -1,5 +1,4 @@
 import {
-  createPolymorphicComponent,
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,

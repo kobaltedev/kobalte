@@ -9,20 +9,20 @@
 import { ComponentProps, JSX, splitProps } from "solid-js";
 import { fireEvent, render, screen } from "solid-testing-library";
 
-import { As, Polymorphic, Slottable } from "./polymorphic";
+import { As, AsChildProp, Polymorphic } from "./polymorphic";
 
 type ButtonExampleProps = ComponentProps<"button"> & {
   leftIcon?: JSX.Element;
   rightIcon?: JSX.Element;
 };
 
-function ButtonExample(props: ButtonExampleProps) {
+function ButtonExample(props: ButtonExampleProps & AsChildProp) {
   const [local, others] = splitProps(props, ["leftIcon", "rightIcon", "children"]);
 
   return (
     <Polymorphic fallback="button" {...others}>
       {local.leftIcon}
-      <Slottable>{local.children}</Slottable>
+      {local.children}
       {local.rightIcon}
     </Polymorphic>
   );
@@ -30,7 +30,7 @@ function ButtonExample(props: ButtonExampleProps) {
 
 describe("Polymorphic", () => {
   describe("render", () => {
-    it("should render the fallback if children is not 'As'", () => {
+    it("should render the fallback if no 'asChild' prop", () => {
       render(() => (
         <Polymorphic data-testid="polymorphic" fallback="button">
           Button
@@ -42,9 +42,9 @@ describe("Polymorphic", () => {
       expect(polymorphic).toBeInstanceOf(HTMLButtonElement);
     });
 
-    it("should render the component from 'As' when the only direct child is 'As'", () => {
+    it("should render the component from 'As' when 'asChild' prop is true and the only direct child is 'As'", () => {
       render(() => (
-        <Polymorphic data-testid="polymorphic" fallback="button">
+        <Polymorphic data-testid="polymorphic" fallback="button" asChild>
           <As component="a">Link</As>
         </Polymorphic>
       ));
@@ -54,9 +54,9 @@ describe("Polymorphic", () => {
       expect(polymorphic).toBeInstanceOf(HTMLAnchorElement);
     });
 
-    it("should render the component from 'As' when using a render prop and the only direct child is 'As'", () => {
+    it("should render the component from 'As' when 'asChild' prop is true and using a render prop and the only direct child is 'As'", () => {
       render(() => (
-        <Polymorphic data-testid="polymorphic" fallback="button">
+        <Polymorphic data-testid="polymorphic" fallback="button" asChild>
           {() => <As component="a">Link</As>}
         </Polymorphic>
       ));
@@ -66,13 +66,11 @@ describe("Polymorphic", () => {
       expect(polymorphic).toBeInstanceOf(HTMLAnchorElement);
     });
 
-    it("should render the component from 'As' when one of the direct children is a 'Slottable' containing 'As'", () => {
+    it("should render the component from 'As' when 'asChild' prop is true and one of the direct children is 'As'", () => {
       render(() => (
-        <Polymorphic data-testid="polymorphic" fallback="button">
+        <Polymorphic data-testid="polymorphic" fallback="button" asChild>
           <span>before</span>
-          <Slottable>
-            <As component="a">Link</As>
-          </Slottable>
+          <As component="a">Link</As>
           <span>after</span>
         </Polymorphic>
       ));
@@ -82,15 +80,13 @@ describe("Polymorphic", () => {
       expect(polymorphic).toBeInstanceOf(HTMLAnchorElement);
     });
 
-    it("should render the component from 'As' when using a render prop and one of the direct children is a 'Slottable' containing 'As'", () => {
+    it("should render the component from 'As' when 'asChild' prop is true and using a render prop and one of the direct children is 'As'", () => {
       render(() => (
-        <Polymorphic data-testid="polymorphic" fallback="button">
+        <Polymorphic data-testid="polymorphic" fallback="button" asChild>
           {() => (
             <>
               <span>before</span>
-              <Slottable>
-                <As component="a">Link</As>
-              </Slottable>
+              <As component="a">Link</As>
               <span>after</span>
             </>
           )}
@@ -101,28 +97,12 @@ describe("Polymorphic", () => {
 
       expect(polymorphic).toBeInstanceOf(HTMLAnchorElement);
     });
-
-    it("should not render the component from 'As' when 'As' is in another DOM element", () => {
-      render(() => (
-        <Polymorphic data-testid="polymorphic" fallback="button">
-          <span>before</span>
-          <span>
-            <As component="a">Link</As>
-          </span>
-          <span>after</span>
-        </Polymorphic>
-      ));
-
-      const polymorphic = screen.getByTestId("polymorphic");
-
-      expect(polymorphic).toBeInstanceOf(HTMLButtonElement);
-    });
   });
 
   describe("style", () => {
     it("should apply Polymorphic string 'style' on child", () => {
       render(() => (
-        <Polymorphic fallback="div" style={{ "background-color": "red" }}>
+        <Polymorphic fallback="div" style={{ "background-color": "red" }} asChild>
           <As component="button" type="button">
             Click me
           </As>
@@ -134,7 +114,7 @@ describe("Polymorphic", () => {
 
     it("should apply Polymorphic string 'style' on child when child's 'style' is undefined", () => {
       render(() => (
-        <Polymorphic fallback="div" style={{ "background-color": "red" }}>
+        <Polymorphic fallback="div" style={{ "background-color": "red" }} asChild>
           <As component="button" type="button" style={undefined}>
             Click me
           </As>
@@ -146,7 +126,7 @@ describe("Polymorphic", () => {
 
     it("should apply child's string 'style' on child", () => {
       render(() => (
-        <Polymorphic fallback="div">
+        <Polymorphic fallback="div" asChild>
           <As component="button" type="button" style={{ "background-color": "red" }}>
             Click me
           </As>
@@ -158,7 +138,7 @@ describe("Polymorphic", () => {
 
     it("should apply child's string 'style' on child when Polymorphic 'style' is undefined", () => {
       render(() => (
-        <Polymorphic fallback="div" style={undefined}>
+        <Polymorphic fallback="div" style={undefined} asChild>
           <As component="button" type="button" style={{ "background-color": "red" }}>
             Click me
           </As>
@@ -170,7 +150,7 @@ describe("Polymorphic", () => {
 
     it("should apply both Polymorphic and child's string 'style' on child", () => {
       render(() => (
-        <Polymorphic fallback="div" style={{ "background-color": "red" }}>
+        <Polymorphic fallback="div" style={{ "background-color": "red" }} asChild>
           <As component="button" type="button" style={{ color: "white" }}>
             Click me
           </As>
@@ -182,7 +162,7 @@ describe("Polymorphic", () => {
 
     it("support overriding same style attribute by child when using string 'sytle'", () => {
       render(() => (
-        <Polymorphic fallback="div" style={{ "background-color": "red" }}>
+        <Polymorphic fallback="div" style={{ "background-color": "red" }} asChild>
           <As component="button" type="button" style={{ "background-color": "blue" }}>
             Click me
           </As>
@@ -194,7 +174,7 @@ describe("Polymorphic", () => {
 
     it("should apply Polymorphic object 'style' on child", () => {
       render(() => (
-        <Polymorphic fallback="div" style={{ "background-color": "red" }}>
+        <Polymorphic fallback="div" style={{ "background-color": "red" }} asChild>
           <As component="button" type="button">
             Click me
           </As>
@@ -206,7 +186,7 @@ describe("Polymorphic", () => {
 
     it("should apply Polymorphic object 'style' on child when child's style is undefined", () => {
       render(() => (
-        <Polymorphic fallback="div" style={{ "background-color": "red" }}>
+        <Polymorphic fallback="div" style={{ "background-color": "red" }} asChild>
           <As component="button" type="button" style={undefined}>
             Click me
           </As>
@@ -218,7 +198,7 @@ describe("Polymorphic", () => {
 
     it("should apply child's object 'style' on child", () => {
       render(() => (
-        <Polymorphic fallback="div">
+        <Polymorphic fallback="div" asChild>
           <As component="button" type="button" style={{ "background-color": "red" }}>
             Click me
           </As>
@@ -230,7 +210,7 @@ describe("Polymorphic", () => {
 
     it("should apply child's object 'style' on child when Polymorphic 'style' is undefined", () => {
       render(() => (
-        <Polymorphic fallback="div" style={undefined}>
+        <Polymorphic fallback="div" style={undefined} asChild>
           <As component="button" type="button" style={{ "background-color": "red" }}>
             Click me
           </As>
@@ -242,7 +222,7 @@ describe("Polymorphic", () => {
 
     it("should apply both Polymorphic and child's object 'style' on child", () => {
       render(() => (
-        <Polymorphic fallback="div" style={{ "background-color": "red" }}>
+        <Polymorphic fallback="div" style={{ "background-color": "red" }} asChild>
           <As component="button" type="button" style={{ color: "white" }}>
             Click me
           </As>
@@ -254,7 +234,7 @@ describe("Polymorphic", () => {
 
     it("support overriding same style attribute by child when using object 'sytle'", () => {
       render(() => (
-        <Polymorphic fallback="div" style={{ "background-color": "red" }}>
+        <Polymorphic fallback="div" style={{ "background-color": "red" }} asChild>
           <As component="button" type="button" style={{ "background-color": "blue" }}>
             Click me
           </As>
@@ -266,7 +246,7 @@ describe("Polymorphic", () => {
 
     it("support mixing object and string 'style'", () => {
       render(() => (
-        <Polymorphic fallback="div" style={{ "background-color": "red", padding: "14px" }}>
+        <Polymorphic fallback="div" style={{ "background-color": "red", padding: "14px" }} asChild>
           <As
             component="button"
             type="button"
@@ -286,7 +266,7 @@ describe("Polymorphic", () => {
   describe("class", () => {
     it("should apply Polymorphic 'class' on child", () => {
       render(() => (
-        <Polymorphic fallback="div" class="foo">
+        <Polymorphic fallback="div" class="foo" asChild>
           <As component="button" type="button">
             Click me
           </As>
@@ -298,7 +278,7 @@ describe("Polymorphic", () => {
 
     it("should apply Polymorphic 'class' on child when child's 'class' is undefined", () => {
       render(() => (
-        <Polymorphic fallback="div" class="foo">
+        <Polymorphic fallback="div" class="foo" asChild>
           <As component="button" type="button" class={undefined}>
             Click me
           </As>
@@ -310,7 +290,7 @@ describe("Polymorphic", () => {
 
     it("should apply child's 'class' on child", () => {
       render(() => (
-        <Polymorphic fallback="div">
+        <Polymorphic fallback="div" asChild>
           <As component="button" type="button" class="foo">
             Click me
           </As>
@@ -322,7 +302,7 @@ describe("Polymorphic", () => {
 
     it("should apply child's 'class' on child when Polymorphic 'class' is undefined", () => {
       render(() => (
-        <Polymorphic fallback="div" class={undefined}>
+        <Polymorphic fallback="div" class={undefined} asChild>
           <As component="button" type="button" class="foo">
             Click me
           </As>
@@ -334,7 +314,7 @@ describe("Polymorphic", () => {
 
     it("should apply both Polymorphic and child's 'class' on child", () => {
       render(() => (
-        <Polymorphic fallback="div" class="foo">
+        <Polymorphic fallback="div" class="foo" asChild>
           <As component="button" type="button" class="bar">
             Click me
           </As>
@@ -353,7 +333,7 @@ describe("Polymorphic", () => {
       const onPolymorphicClickSpy = jest.fn();
 
       render(() => (
-        <Polymorphic fallback="div" onClick={onPolymorphicClickSpy}>
+        <Polymorphic fallback="div" onClick={onPolymorphicClickSpy} asChild>
           <As component="button" type="button">
             Click me
           </As>
@@ -369,7 +349,7 @@ describe("Polymorphic", () => {
       const onChildClickSpy = jest.fn();
 
       render(() => (
-        <Polymorphic fallback="div">
+        <Polymorphic fallback="div" asChild>
           <As component="button" type="button" onClick={onChildClickSpy}>
             Click me
           </As>
@@ -386,7 +366,7 @@ describe("Polymorphic", () => {
       const onChildClickSpy = jest.fn();
 
       render(() => (
-        <Polymorphic fallback="div" onClick={onPolymorphicClickSpy}>
+        <Polymorphic fallback="div" onClick={onPolymorphicClickSpy} asChild>
           <As component="button" type="button" onClick={onChildClickSpy}>
             Click me
           </As>
@@ -403,7 +383,7 @@ describe("Polymorphic", () => {
       const onPolymorphicClickSpy = jest.fn();
 
       render(() => (
-        <Polymorphic fallback="div" onClick={onPolymorphicClickSpy}>
+        <Polymorphic fallback="div" onClick={onPolymorphicClickSpy} asChild>
           <As component="button" type="button" onClick={undefined}>
             Click me
           </As>
@@ -419,7 +399,7 @@ describe("Polymorphic", () => {
       const onChildClickSpy = jest.fn();
 
       render(() => (
-        <Polymorphic fallback="div" onClick={undefined}>
+        <Polymorphic fallback="div" onClick={undefined} asChild>
           <As component="button" type="button" onClick={onChildClickSpy}>
             Click me
           </As>
@@ -433,7 +413,7 @@ describe("Polymorphic", () => {
   });
 
   describe("With slottable content", () => {
-    it("should render a button with icon on the left/right", () => {
+    it("should render a button with icon on the left/right when no 'asChild' prop", () => {
       render(() => (
         <ButtonExample leftIcon={<span>left</span>} rightIcon={<span>right</span>}>
           Button <em>text</em>
@@ -446,12 +426,47 @@ describe("Polymorphic", () => {
       expect(button).toContainHTML("<span>left</span>Button <em>text</em><span>right</span>");
     });
 
-    it("should render a link with icon on the left/right", () => {
+    it("should render a button with icon on the left/right when content is a render prop and no 'asChild' prop", () => {
       render(() => (
         <ButtonExample leftIcon={<span>left</span>} rightIcon={<span>right</span>}>
+          {() => (
+            <>
+              Button <em>text</em>
+            </>
+          )}
+        </ButtonExample>
+      ));
+
+      const button = screen.getByRole("button");
+
+      expect(button).toBeInstanceOf(HTMLButtonElement);
+      expect(button).toContainHTML("<span>left</span>Button <em>text</em><span>right</span>");
+    });
+
+    it("should render a link with icon on the left/right when 'asChild' prop is true and content is 'As'", () => {
+      render(() => (
+        <ButtonExample leftIcon={<span>left</span>} rightIcon={<span>right</span>} asChild>
           <As component="a" href="https://kobalte.dev">
             Button <em>text</em>
           </As>
+        </ButtonExample>
+      ));
+
+      const link = screen.getByRole("link");
+
+      expect(link).toBeInstanceOf(HTMLAnchorElement);
+      expect(link).toHaveAttribute("href", "https://kobalte.dev");
+      expect(link).toContainHTML("<span>left</span>Button <em>text</em><span>right</span>");
+    });
+
+    it("should render a link with icon on the left/right when 'asChild' prop is true and content is a render prop with 'As'", () => {
+      render(() => (
+        <ButtonExample leftIcon={<span>left</span>} rightIcon={<span>right</span>} asChild>
+          {() => (
+            <As component="a" href="https://kobalte.dev">
+              Button <em>text</em>
+            </As>
+          )}
         </ButtonExample>
       ));
 

@@ -1,13 +1,8 @@
-import {
-  createPolymorphicComponent,
-  mergeDefaultProps,
-  OverrideComponentProps,
-} from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
-import { useListboxItemContext } from "./listbox-item-context";
 import { Polymorphic } from "../polymorphic";
+import { useListboxItemContext } from "./listbox-item-context";
 
 export interface ListboxItemIndicatorOptions {
   /**

@@ -46,7 +46,7 @@ describe("Separator", () => {
 
   it("should have 'role=separator' when rendered element is not 'hr'", () => {
     render(() => (
-      <Separator.Root>
+      <Separator.Root asChild>
         <As component="span" />
       </Separator.Root>
     ));

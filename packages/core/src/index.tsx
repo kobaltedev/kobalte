@@ -4,9 +4,9 @@ export * from "./form-control";
 export * from "./i18n";
 export * from "./list";
 export * from "./live-announcer";
+export * from "./polymorphic";
 export * from "./primitives";
 export * from "./selection";
-export { createPolymorphicComponent } from "@kobalte/utils";
 
 // components
 export * as Accordion from "./accordion";
@@ -23,7 +23,6 @@ export * as Image from "./image";
 export * as Link from "./link";
 export * as Listbox from "./listbox";
 export * as MultiSelect from "./multi-select";
-export * from "./polymorphic";
 export * as Popover from "./popover";
 export * as Progress from "./progress";
 export * as RadioGroup from "./radio-group";

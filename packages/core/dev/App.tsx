@@ -1,4 +1,4 @@
-import { As, I18nProvider, Polymorphic } from "../src";
+import { I18nProvider } from "../src";
 
 export default function App() {
   return <I18nProvider></I18nProvider>;

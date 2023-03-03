@@ -1,16 +1,10 @@
-import {
-  createPolymorphicComponent,
-  isFunction,
-  mergeDefaultProps,
-  OverrideComponentProps,
-} from "@kobalte/utils";
+import { isFunction, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, children, createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { useFormControlContext } from "../form-control";
-import { useSelectContext } from "../select/select-context";
-import { CollectionNode } from "../primitives";
 import { Polymorphic } from "../polymorphic";
+import { CollectionNode } from "../primitives";
+import { useSelectContext } from "../select/select-context";
 
 interface MultiSelectValueState {
   /** The selected items of the multi-select. */

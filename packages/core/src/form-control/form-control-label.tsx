@@ -1,14 +1,14 @@
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { ComponentProps, createEffect, onCleanup, splitProps } from "solid-js";
+import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createTagName } from "../primitives";
 import { useFormControlContext } from "./form-control-context";
 
 /**
  * The label that gives the user information on the form control.
  */
-export function FormControlLabel(props: ComponentProps<"label">) {
+export function FormControlLabel(props: OverrideComponentProps<"label", AsChildProp>) {
   let ref: HTMLElement | undefined;
 
   const context = useFormControlContext();

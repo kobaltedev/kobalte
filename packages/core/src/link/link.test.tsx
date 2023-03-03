@@ -32,7 +32,7 @@ describe("Link", () => {
 
   it("should have attribute 'role=link' when it's not a native link", () => {
     render(() => (
-      <Link.Root data-testid="link">
+      <Link.Root data-testid="link" asChild>
         <As component="div">Link</As>
       </Link.Root>
     ));
@@ -44,7 +44,7 @@ describe("Link", () => {
 
   it("should have attribute 'tabindex=0' when it's not a native link and is not disabled", () => {
     render(() => (
-      <Link.Root data-testid="link">
+      <Link.Root data-testid="link" asChild>
         <As component="div">Link</As>
       </Link.Root>
     ));
@@ -68,7 +68,7 @@ describe("Link", () => {
 
   it("should not have attribute 'tabindex=0' when it's disabled", () => {
     render(() => (
-      <Link.Root data-testid="link" isDisabled>
+      <Link.Root data-testid="link" isDisabled asChild>
         <As component="div">Link</As>
       </Link.Root>
     ));
