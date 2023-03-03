@@ -6,22 +6,17 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/avatar/src/Avatar.tsx
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, createSignal, onCleanup, Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { ComponentProps, createEffect, createSignal, onCleanup, Show } from "solid-js";
 
+import { Polymorphic } from "../polymorphic";
 import { useImageContext } from "./image-context";
 
 /**
  * An element that renders when the image hasn't loaded.
  * This means whilst it's loading, or if there was an error.
  */
-export const ImageFallback = createPolymorphicComponent<"span">(props => {
+export function ImageFallback(props: ComponentProps<"span">) {
   const context = useImageContext();
-
-  props = mergeDefaultProps({ as: "span" }, props);
-
-  const [local, others] = splitProps(props, ["as"]);
 
   const [canRender, setCanRender] = createSignal(context.fallbackDelay() === undefined);
 
@@ -36,7 +31,7 @@ export const ImageFallback = createPolymorphicComponent<"span">(props => {
 
   return (
     <Show when={canRender() && context.imageLoadingStatus() !== "loaded"}>
-      <Dynamic component={local.as} {...others} />
+      <Polymorphic fallback="span" {...props} />
     </Show>
   );
-});
+}
