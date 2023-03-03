@@ -7,10 +7,10 @@
  */
 
 import {
-  createPolymorphicComponent,
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, onCleanup, Show, splitProps } from "solid-js";
 
@@ -66,14 +66,13 @@ export interface DialogContentOptions {
 /**
  * Contains the content to be rendered when the dialog is open.
  */
-export const DialogContent = createPolymorphicComponent<"div", DialogContentOptions>(props => {
+export function DialogContent(props: OverrideComponentProps<"div", DialogContentOptions>) {
   let ref: HTMLElement | undefined;
 
   const context = useDialogContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: context.generateId("content"),
     },
     props
@@ -187,4 +186,4 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentOpti
       />
     </Show>
   );
-});
+}
