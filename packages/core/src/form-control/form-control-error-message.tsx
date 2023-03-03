@@ -1,7 +1,7 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { Polymorphic } from "../polymorphic";
 import { useFormControlContext } from "./form-control-context";
 
 export interface FormControlErrorMessageOptions {
@@ -15,21 +15,19 @@ export interface FormControlErrorMessageOptions {
 /**
  * The error message that gives the user information about how to fix a validation error on the form control.
  */
-export const FormControlErrorMessage = createPolymorphicComponent<
-  "div",
-  FormControlErrorMessageOptions
->(props => {
+export function FormControlErrorMessage(
+  props: OverrideComponentProps<"div", FormControlErrorMessageOptions>
+) {
   const context = useFormControlContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: context.generateId("error-message"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "id", "forceMount"]);
+  const [local, others] = splitProps(props, ["id", "forceMount"]);
 
   const isInvalid = () => context.validationState() === "invalid";
 
@@ -43,7 +41,7 @@ export const FormControlErrorMessage = createPolymorphicComponent<
 
   return (
     <Show when={local.forceMount || isInvalid()}>
-      <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />
+      <Polymorphic fallback="div" id={local.id} {...context.dataset()} {...others} />
     </Show>
   );
-});
+}
