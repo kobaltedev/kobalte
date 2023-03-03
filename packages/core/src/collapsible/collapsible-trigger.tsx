@@ -6,8 +6,8 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import { callHandler, createPolymorphicComponent } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { callHandler } from "@kobalte/utils";
+import { ComponentProps, JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { useCollapsibleContext } from "./collapsible-context";
@@ -15,7 +15,7 @@ import { useCollapsibleContext } from "./collapsible-context";
 /**
  * The button that expands/collapses the collapsible content.
  */
-export const CollapsibleTrigger = createPolymorphicComponent<"button">(props => {
+export function CollapsibleTrigger(props: ComponentProps<"button">) {
   const context = useCollapsibleContext();
 
   const [local, others] = splitProps(props, ["onClick"]);
@@ -35,4 +35,4 @@ export const CollapsibleTrigger = createPolymorphicComponent<"button">(props => 
       {...others}
     />
   );
-});
+}

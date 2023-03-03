@@ -7,17 +7,16 @@
  */
 
 import {
-  access,
   composeEventHandlers,
   createGenerateId,
-  createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createSignal, createUniqueId, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { createListState, createSelectableList } from "../list";
+import { Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { AccordionContext, AccordionContextValue } from "./accordion-context";
@@ -48,14 +47,13 @@ export interface AccordionRootOptions {
 /**
  * A vertically stacked set of interactive headings that each reveal an associated section of content.
  */
-export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOptions>(props => {
+export function AccordionRoot(props: OverrideComponentProps<"div", AccordionRootOptions>) {
   let ref: HTMLDivElement | undefined;
 
   const defaultId = `accordion-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: defaultId,
       isMultiple: false,
       isCollapsible: false,
@@ -65,7 +63,6 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "value",
     "defaultValue",
@@ -112,8 +109,8 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
   return (
     <DomCollectionProvider>
       <AccordionContext.Provider value={context}>
-        <Dynamic
-          component={local.as}
+        <Polymorphic
+          fallback="div"
           ref={mergeRefs(el => (ref = el), local.ref)}
           onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.onKeyDown])}
           onMouseDown={composeEventHandlers([local.onMouseDown, selectableList.onMouseDown])}
@@ -124,4 +121,4 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
       </AccordionContext.Provider>
     </DomCollectionProvider>
   );
-});
+}

@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/accordion/src/useAccordion.ts
  */
 
-import { createGenerateId, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, splitProps } from "solid-js";
 
 import * as Collapsible from "../collapsible";
@@ -31,18 +31,12 @@ export interface AccordionItemOptions {
 /**
  * An item of the accordion, contains all the parts of a collapsible section.
  */
-export const AccordionItem = createPolymorphicComponent<"div", AccordionItemOptions>(props => {
+export function AccordionItem(props: OverrideComponentProps<"div", AccordionItemOptions>) {
   const accordionContext = useAccordionContext();
 
   const defaultId = `${accordionContext.generateId("item")}-${createUniqueId()}`;
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      id: defaultId,
-    },
-    props
-  );
+  props = mergeDefaultProps({ id: defaultId }, props);
 
   const [local, others] = splitProps(props, ["value", "isDisabled"]);
 
@@ -69,4 +63,4 @@ export const AccordionItem = createPolymorphicComponent<"div", AccordionItemOpti
       <Collapsible.Root isOpen={isExpanded()} isDisabled={local.isDisabled} {...others} />
     </AccordionItemContext.Provider>
   );
-});
+}
