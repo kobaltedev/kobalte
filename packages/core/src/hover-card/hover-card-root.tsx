@@ -20,7 +20,7 @@ import {
   createSignal,
   createUniqueId,
   onCleanup,
-  ParentComponent,
+  ParentProps,
   splitProps,
 } from "solid-js";
 import { isServer } from "solid-js/web";
@@ -71,7 +71,7 @@ export interface HoverCardRootOptions
 /**
  * A popover that allows sighted users to preview content available behind a link.
  */
-export const HoverCardRoot: ParentComponent<HoverCardRootOptions> = props => {
+export function HoverCardRoot(props: ParentProps<HoverCardRootOptions>) {
   const defaultId = `hovercard-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -244,4 +244,4 @@ export const HoverCardRoot: ParentComponent<HoverCardRootOptions> = props => {
       />
     </HoverCardContext.Provider>
   );
-};
+}

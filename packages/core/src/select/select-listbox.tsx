@@ -1,5 +1,5 @@
-import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { createEffect, onCleanup, onMount, splitProps } from "solid-js";
+import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, onCleanup, splitProps } from "solid-js";
 
 import * as Listbox from "../listbox";
 import { useSelectContext } from "./select-context";
@@ -10,12 +10,11 @@ export interface SelectListboxOptions
 /**
  * Contains all the items of a `Select`.
  */
-export const SelectListbox = createPolymorphicComponent<"ul", SelectListboxOptions>(props => {
+export function SelectListbox(props: OverrideComponentProps<"ul", SelectListboxOptions>) {
   const context = useSelectContext();
 
   props = mergeDefaultProps(
     {
-      as: "ul",
       id: context.generateId("listbox"),
     },
     props
@@ -59,4 +58,4 @@ export const SelectListbox = createPolymorphicComponent<"ul", SelectListboxOptio
       {...others}
     />
   );
-});
+}
