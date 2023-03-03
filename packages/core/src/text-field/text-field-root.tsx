@@ -1,9 +1,9 @@
 import {
   access,
   createGenerateId,
-  createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
   ValidationState,
 } from "@kobalte/utils";
 import { createUniqueId, JSX, splitProps } from "solid-js";
@@ -12,6 +12,7 @@ import { Dynamic } from "solid-js/web";
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
 import { createControllableSignal, createFormResetListener } from "../primitives";
 import { TextFieldContext, TextFieldContextValue } from "./text-field-context";
+import { Polymorphic } from "../polymorphic";
 
 export interface TextFieldRootOptions {
   /** The controlled value of the textfield. */
@@ -55,22 +56,16 @@ export interface TextFieldRootOptions {
 /**
  * A text input that allow users to input custom text entries with a keyboard.
  */
-export const TextFieldRoot = createPolymorphicComponent<"div", TextFieldRootOptions>(props => {
+export function TextFieldRoot(props: OverrideComponentProps<"div", TextFieldRootOptions>) {
   let ref: HTMLDivElement | undefined;
 
   const defaultId = `textfield-${createUniqueId()}`;
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      id: defaultId,
-    },
-    props
-  );
+  props = mergeDefaultProps({ id: defaultId }, props);
 
   const [local, formControlProps, others] = splitProps(
     props,
-    ["as", "ref", "value", "defaultValue", "onValueChange"],
+    ["ref", "value", "defaultValue", "onValueChange"],
     FORM_CONTROL_PROP_NAMES
   );
 
@@ -113,8 +108,8 @@ export const TextFieldRoot = createPolymorphicComponent<"div", TextFieldRootOpti
   return (
     <FormControlContext.Provider value={formControlContext}>
       <TextFieldContext.Provider value={context}>
-        <Dynamic
-          component={local.as}
+        <Polymorphic
+          fallback="div"
           ref={mergeRefs(el => (ref = el), local.ref)}
           role="group"
           {...formControlContext.dataset()}
@@ -123,4 +118,4 @@ export const TextFieldRoot = createPolymorphicComponent<"div", TextFieldRootOpti
       </TextFieldContext.Provider>
     </FormControlContext.Provider>
   );
-});
+}
