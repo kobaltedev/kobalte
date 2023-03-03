@@ -10,15 +10,14 @@ import {
   access,
   composeEventHandlers,
   createGenerateId,
-  createPolymorphicComponent,
-  Key,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createUniqueId, JSX, Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { Accessor, createMemo, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { createListState, createSelectableList, ListState } from "../list";
+import { Polymorphic } from "../polymorphic";
 import { Collection, CollectionNode } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, SelectionBehavior, SelectionMode } from "../selection";
 import { ListboxContext, ListboxContextValue } from "./listbox-context";
@@ -115,14 +114,13 @@ export interface ListboxRootOptions {
 /**
  * Listbox presents a list of options and allows a user to select one or more of them.
  */
-export const ListboxRoot = createPolymorphicComponent<"ul", ListboxRootOptions>(props => {
+export function ListboxRoot(props: OverrideComponentProps<"ul", ListboxRootOptions>) {
   let ref: HTMLElement | undefined;
 
   const defaultId = `listbox-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
-      as: "ul",
       id: defaultId,
       selectionMode: "single",
     },
@@ -130,7 +128,6 @@ export const ListboxRoot = createPolymorphicComponent<"ul", ListboxRootOptions>(
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "children",
     "value",
@@ -217,8 +214,8 @@ export const ListboxRoot = createPolymorphicComponent<"ul", ListboxRootOptions>(
 
   return (
     <ListboxContext.Provider value={context}>
-      <Dynamic
-        component={local.as}
+      <Polymorphic
+        fallback="ul"
         ref={mergeRefs(el => (ref = el), local.ref)}
         role="listbox"
         tabIndex={selectableList.tabIndex()}
@@ -232,7 +229,7 @@ export const ListboxRoot = createPolymorphicComponent<"ul", ListboxRootOptions>(
         {...others}
       >
         {local.children?.(listState().collection)}
-      </Dynamic>
+      </Polymorphic>
     </ListboxContext.Provider>
   );
-});
+}

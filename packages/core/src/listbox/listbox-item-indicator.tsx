@@ -1,8 +1,13 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import {
+  createPolymorphicComponent,
+  mergeDefaultProps,
+  OverrideComponentProps,
+} from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { useListboxItemContext } from "./listbox-item-context";
+import { Polymorphic } from "../polymorphic";
 
 export interface ListboxItemIndicatorOptions {
   /**
@@ -16,24 +21,23 @@ export interface ListboxItemIndicatorOptions {
  * The visual indicator rendered when the item is selected.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export const ListboxItemIndicator = createPolymorphicComponent<"div", ListboxItemIndicatorOptions>(
-  props => {
-    const context = useListboxItemContext();
+export function ListboxItemIndicator(
+  props: OverrideComponentProps<"div", ListboxItemIndicatorOptions>
+) {
+  const context = useListboxItemContext();
 
-    props = mergeDefaultProps(
-      {
-        as: "div",
-        id: context.generateId("indicator"),
-      },
-      props
-    );
+  props = mergeDefaultProps(
+    {
+      id: context.generateId("indicator"),
+    },
+    props
+  );
 
-    const [local, others] = splitProps(props, ["as", "forceMount"]);
+  const [local, others] = splitProps(props, ["forceMount"]);
 
-    return (
-      <Show when={local.forceMount || context.isSelected()}>
-        <Dynamic component={local.as} aria-hidden="true" {...context.dataset()} {...others} />
-      </Show>
-    );
-  }
-);
+  return (
+    <Show when={local.forceMount || context.isSelected()}>
+      <Polymorphic fallback="div" aria-hidden="true" {...context.dataset()} {...others} />
+    </Show>
+  );
+}

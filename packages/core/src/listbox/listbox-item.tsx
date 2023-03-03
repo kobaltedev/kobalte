@@ -10,16 +10,16 @@ import {
   callHandler,
   composeEventHandlers,
   createGenerateId,
-  createPolymorphicComponent,
   focusWithoutScrolling,
   isMac,
   isWebKit,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { Polymorphic } from "../polymorphic";
 import { CollectionNode, createRegisterId, getItemCount } from "../primitives";
 import { createSelectableItem } from "../selection";
 import { useListboxContext } from "./listbox-context";
@@ -37,23 +37,16 @@ export interface ListboxItemOptions {
 /**
  * An item of the listbox.
  */
-export const ListboxItem = createPolymorphicComponent<"li", ListboxItemOptions>(props => {
+export function ListboxItem(props: OverrideComponentProps<"li", ListboxItemOptions>) {
   let ref: HTMLElement | undefined;
 
   const listBoxContext = useListboxContext();
 
   const defaultId = `${listBoxContext.generateId("item")}-${createUniqueId()}`;
 
-  props = mergeDefaultProps(
-    {
-      as: "li",
-      id: defaultId,
-    },
-    props
-  );
+  props = mergeDefaultProps({ id: defaultId }, props);
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "item",
     "aria-label",
@@ -165,8 +158,8 @@ export const ListboxItem = createPolymorphicComponent<"li", ListboxItemOptions>(
 
   return (
     <ListboxItemContext.Provider value={context}>
-      <Dynamic
-        component={local.as}
+      <Polymorphic
+        fallback="li"
         ref={mergeRefs(el => (ref = el), local.ref)}
         role="option"
         tabIndex={selectableItem.tabIndex()}
@@ -190,4 +183,4 @@ export const ListboxItem = createPolymorphicComponent<"li", ListboxItemOptions>(
       />
     </ListboxItemContext.Provider>
   );
-});
+}
