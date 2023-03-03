@@ -3,8 +3,8 @@ import { ParentProps, splitProps } from "solid-js";
 import { createControllableSetSignal } from "../primitives";
 import { SelectBase, SelectBaseOptions } from "./select-base";
 
-export interface SelectRootOptions
-  extends Omit<SelectBaseOptions, "value" | "defaultValue" | "onValueChange" | "selectionMode"> {
+export interface SelectRootOptions<T>
+  extends Omit<SelectBaseOptions<T>, "value" | "defaultValue" | "onValueChange" | "selectionMode"> {
   /** The controlled value of the select. */
   value?: string;
 
@@ -21,7 +21,7 @@ export interface SelectRootOptions
 /**
  * Displays a list of options for the user to pick from — triggered by a button.
  */
-export function SelectRoot(props: ParentProps<SelectRootOptions>) {
+export function SelectRoot<T>(props: ParentProps<SelectRootOptions<T>>) {
   const [local, others] = splitProps(props, ["value", "defaultValue", "onValueChange"]);
 
   const [value, setValue] = createControllableSetSignal({

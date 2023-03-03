@@ -170,23 +170,23 @@ importers:
       '@kobalte/utils': ^0.5.1
       autoprefixer: 10.4.13
       postcss: 8.4.21
-      solid-js: ^1.6.10
-      tailwindcss: 3.2.4
-      typescript: ^4.7.4
-      vite: ^3.0.3
-      vite-plugin-solid: ^2.3.0
+      solid-js: 1.6.10
+      tailwindcss: 3.2.7
+      typescript: 4.9.5
+      vite: 3.2.5
+      vite-plugin-solid: 2.5.0
     dependencies:
       '@kobalte/core': link:../../packages/core
       '@kobalte/utils': link:../../packages/utils
-      solid-js: 1.6.11
+      solid-js: 1.6.10
     devDependencies:
       '@kobalte/tailwindcss': link:../../packages/tailwindcss
       autoprefixer: 10.4.13_postcss@8.4.21
       postcss: 8.4.21
-      tailwindcss: 3.2.4_postcss@8.4.21
+      tailwindcss: 3.2.7_postcss@8.4.21
       typescript: 4.9.5
       vite: 3.2.5
-      vite-plugin-solid: 2.6.1_solid-js@1.6.11+vite@3.2.5
+      vite-plugin-solid: 2.5.0_solid-js@1.6.10+vite@3.2.5
 
   packages/core:
     specifiers:
@@ -3359,7 +3359,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.14.5
+      '@types/node': 18.13.0
       '@types/yargs': 15.0.15
       chalk: 4.1.2
 
@@ -4000,10 +4000,10 @@ packages:
 
   /@types/node/18.13.0:
     resolution: {integrity: sha512-gC3TazRzGoOnoKAhUx+Q0t8S9Tzs74z7m0ipwGpSqQrleP14hKxP4/JUeEQcD3W1/aIpnWl8pHowI7WokuZpXg==}
-    dev: true
 
   /@types/node/18.14.5:
     resolution: {integrity: sha512-CRT4tMK/DHYhw1fcCEBwME9CSaZNclxfzVMe7GsO6ULSwsttbj70wSiX6rZdIjGblu93sTJxLdhNIT85KKI7Qw==}
+    dev: true
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -4868,7 +4868,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001460
-      electron-to-chromium: 1.4.317
+      electron-to-chromium: 1.4.318
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
@@ -5683,8 +5683,8 @@ packages:
     resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
     dev: true
 
-  /electron-to-chromium/1.4.317:
-    resolution: {integrity: sha512-JhCRm9v30FMNzQSsjl4kXaygU+qHBD0Yh7mKxyjmF0V8VwYVB6qpBRX28GyAucrM9wDCpSUctT6FpMUQxbyKuA==}
+  /electron-to-chromium/1.4.318:
+    resolution: {integrity: sha512-EQHZE/yO9Sg6gIP9VezPltDWFA8pMnv7dNRb4Y0ukels3iyXTH313gbHvK/tZwUF+jeh5F5fDf1rqWb8ZWX8fw==}
     dev: true
 
   /emittery/0.10.2:
@@ -10789,7 +10789,6 @@ packages:
     resolution: {integrity: sha512-Sf0e6PQCEFkFtbPq0L+93Ua81YQOefBEbvDJ0YXT92b6Lzw0k7UvzSd2l1BbYM+yzE3UmepU1tyMDc/3nIByjA==}
     dependencies:
       csstype: 3.1.1
-    dev: true
 
   /solid-js/1.6.11:
     resolution: {integrity: sha512-JquQQHPArGq+i2PLURxJ99Pcz2/1docpbycSio/cKSA0SeI3z5zRjy0TNcH4NRYvbOLrcini+iovXwnexKabyw==}
@@ -12055,13 +12054,13 @@ packages:
       solid-js: ^1.3.17 || ^1.4.0 || ^1.5.0 || ^1.6.0
       vite: ^3.0.0 || ^4.0.0
     dependencies:
-      '@babel/core': 7.20.12
-      '@babel/preset-typescript': 7.21.0_@babel+core@7.20.12
-      babel-preset-solid: 1.6.10_@babel+core@7.20.12
+      '@babel/core': 7.21.0
+      '@babel/preset-typescript': 7.21.0_@babel+core@7.21.0
+      babel-preset-solid: 1.6.10_@babel+core@7.21.0
       merge-anything: 5.1.4
       solid-js: 1.6.10
       solid-refresh: 0.4.3_solid-js@1.6.10
-      vite: 3.2.5_@types+node@18.13.0
+      vite: 3.2.5
       vitefu: 0.2.4_vite@3.2.5
     transitivePeerDependencies:
       - supports-color

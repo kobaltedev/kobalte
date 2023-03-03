@@ -261,28 +261,3 @@ export const PopoverTrigger = (props: ComponentProps<typeof KPopover.Trigger>) =
   return <KPopover.Trigger {...props} />;
 };
 ```
-
-## Changing the rendered element
-
-Kobalte Elements are polymorphic, meaning you can use the `as` prop to change the rendered node.
-
-For example, you can use a custom button called `MyButton` as the trigger for a `Popover.Trigger` like below:
-
-```tsx
-import { Popover as KPopover } from "@kobalte/core";
-import { MyButton } from "./my-button";
-
-export const Popover = () => {
-  return (
-    <KPopover.Root>
-      <KPopover.Trigger as={MyButton}>Open</KPopover.Trigger>
-      <KPopover.Content>...</KPopover.Content>
-    </KPopover.Root>
-  );
-};
-```
-
-<Callout type="warning">
-  If you decide to change the default rendered node (e.g. change a `button` to a `div`) then it's up
-  to you to ensure the correct accessibility and functionality of your chosen node type.
-</Callout>

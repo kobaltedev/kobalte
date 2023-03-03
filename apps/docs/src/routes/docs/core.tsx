@@ -24,6 +24,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/overview/animation",
       },
       {
+        title: "Polymorphism",
+        href: "/docs/core/overview/polymorphism",
+      },
+      {
         title: "Server side rendering",
         href: "/docs/core/overview/ssr",
       },

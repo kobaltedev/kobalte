@@ -22,7 +22,7 @@ import { Collection, CollectionNode } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, SelectionBehavior, SelectionMode } from "../selection";
 import { ListboxContext, ListboxContextValue } from "./listbox-context";
 
-export interface ListboxRootOptions extends AsChildProp {
+export interface ListboxRootOptions<T> extends AsChildProp {
   /** The controlled value of the listbox. */
   value?: Iterable<string>;
 
@@ -36,22 +36,22 @@ export interface ListboxRootOptions extends AsChildProp {
   onValueChange?: (value: Set<string>) => void;
 
   /** An array of options to display as the available options. */
-  options?: any[];
+  options?: T[];
 
   /** Property name or getter function to use as the value of an option. */
-  optionValue?: string | ((option: any) => string);
+  optionValue?: string | ((option: T) => string);
 
   /** Property name or getter function to use as the text value of an option for typeahead purpose. */
-  optionTextValue?: string | ((option: any) => string);
+  optionTextValue?: string | ((option: T) => string);
 
   /** Property name or getter function to use as the disabled flag of an option. */
-  optionDisabled?: string | ((option: any) => boolean);
+  optionDisabled?: string | ((option: T) => boolean);
 
   /** Property name or getter function that refers to the children options of option group. */
-  optionGroupChildren?: string | ((optGroup: any) => any[]);
+  optionGroupChildren?: string | ((optGroup: T) => T[]);
 
   /** Function used to check if an option is an option group. */
-  isOptionGroup?: (maybeOptGroup: any) => boolean;
+  isOptionGroup?: (maybeOptGroup: T) => boolean;
 
   /** The controlled state of the listbox. */
   state?: ListState;
@@ -114,7 +114,7 @@ export interface ListboxRootOptions extends AsChildProp {
 /**
  * Listbox presents a list of options and allows a user to select one or more of them.
  */
-export function ListboxRoot(props: OverrideComponentProps<"ul", ListboxRootOptions>) {
+export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOptions<T>>) {
   let ref: HTMLElement | undefined;
 
   const defaultId = `listbox-${createUniqueId()}`;

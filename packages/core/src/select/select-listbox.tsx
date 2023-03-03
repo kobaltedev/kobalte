@@ -5,7 +5,7 @@ import * as Listbox from "../listbox";
 import { useSelectContext } from "./select-context";
 
 export interface SelectListboxOptions
-  extends Pick<Listbox.ListboxRootOptions, "scrollRef" | "children" | "scrollToKey"> {}
+  extends Pick<Listbox.ListboxRootOptions<any>, "scrollRef" | "children" | "scrollToKey"> {}
 
 /**
  * Contains all the items of a `Select`.

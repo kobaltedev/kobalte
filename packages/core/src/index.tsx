@@ -7,6 +7,7 @@ export * from "./live-announcer";
 export * from "./polymorphic";
 export * from "./primitives";
 export * from "./selection";
+export { Key } from "@kobalte/utils";
 
 // components
 export * as Accordion from "./accordion";

@@ -1,0 +1,36 @@
+import { Callout } from "../../../../components";
+
+# Polymorphism
+
+All component parts that render a DOM element have an `asChild` prop.
+
+Paired with the `<As>` component this allows you to attach a component accessibility and functional requirements onto your own element instead.
+
+The below example demonstrate how to use a custom button called `MyButton` as the trigger for a `Popover`:
+
+```tsx {6-8}
+import { As, Popover as KPopover } from "@kobalte/core";
+import { MyButton } from "./my-button";
+
+export const Popover = () => {
+  return (
+    <KPopover.Root>
+      <KPopover.Trigger asChild>
+        <As component={MyButton}>Open</As>
+      </KPopover.Trigger>
+      <KPopover.Content>...</KPopover.Content>
+    </KPopover.Root>
+  );
+};
+```
+
+When using this pattern the following rules apply to the component with the `asChild` prop, and it's child `<As>` component :
+
+- CSS classes are combined.
+- Styles are combined, if same attribute exists the one from `<As>` win.
+- Event handlers are chained, The one from `<As>` get called first.
+
+<Callout type="warning">
+  If you decide to change the default rendered node (e.g. change a `button` to a `div`) then it's up
+  to you to ensure the correct accessibility and functionality of your chosen node type.
+</Callout>

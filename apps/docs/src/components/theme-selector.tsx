@@ -1,28 +1,35 @@
-import { ConfigColorMode, Select, useColorMode } from "@kobalte/core";
+import { ConfigColorMode, Select, useColorMode, Key } from "@kobalte/core";
 import { clsx } from "clsx";
 import { ComponentProps, Show, splitProps } from "solid-js";
 
 import { DesktopIcon, MoonIcon, SunIcon } from "./icons";
 
-function Item(props: ComponentProps<typeof Select.Item>) {
-  const [local, others] = splitProps(props, ["class"]);
-
-  return (
-    <Select.Item
-      class={clsx(
-        "flex items-center space-x-2 px-3 py-1 text-sm outline-none ui-selected:text-sky-700 ui-highlighted:bg-zinc-100 transition-colors cursor-default dark:ui-selected:text-sky-400 dark:ui-highlighted:bg-zinc-700",
-        local.class
-      )}
-      {...others}
-    />
-  );
-}
+const options = [
+  {
+    value: "light",
+    label: "Light",
+    icon: () => <SunIcon class="h-4 w-4" />,
+  },
+  {
+    value: "dark",
+    label: "Dark",
+    icon: () => <MoonIcon class="h-4 w-4" />,
+  },
+  {
+    value: "system",
+    label: "System",
+    icon: () => <DesktopIcon class="h-4 w-4" />,
+  },
+];
 
 export function ThemeSelector(props: ComponentProps<typeof Select.Root>) {
   const { colorMode, setColorMode } = useColorMode();
 
   return (
     <Select.Root
+      options={options}
+      optionValue="value"
+      optionTextValue="label"
       defaultValue={colorMode()}
       onValueChange={value => setColorMode(value as ConfigColorMode)}
       gutter={8}
@@ -43,18 +50,19 @@ export function ThemeSelector(props: ComponentProps<typeof Select.Root>) {
       <Select.Portal>
         <Select.Content class="bg-white border border-zinc-300 rounded shadow-md py-1 z-50 dark:text-zinc-300 dark:bg-zinc-800 dark:border-none dark:shadow-none">
           <Select.Listbox>
-            <Item value="light">
-              <SunIcon class="h-4 w-4" />
-              <Select.ItemLabel>Light</Select.ItemLabel>
-            </Item>
-            <Item value="dark">
-              <MoonIcon class="h-4 w-4" />
-              <Select.ItemLabel>Dark</Select.ItemLabel>
-            </Item>
-            <Item value="system">
-              <DesktopIcon class="h-4 w-4" />
-              <Select.ItemLabel>System</Select.ItemLabel>
-            </Item>
+            {items => (
+              <Key each={[...items()]} by="key">
+                {item => (
+                  <Select.Item
+                    item={item()}
+                    class="flex items-center space-x-2 px-3 py-1 text-sm outline-none ui-selected:text-sky-700 ui-highlighted:bg-zinc-100 transition-colors cursor-default dark:ui-selected:text-sky-400 dark:ui-highlighted:bg-zinc-700"
+                  >
+                    {item().rawValue.icon}
+                    <Select.ItemLabel>{item().rawValue.label}</Select.ItemLabel>
+                  </Select.Item>
+                )}
+              </Key>
+            )}
           </Select.Listbox>
         </Select.Content>
       </Select.Portal>
