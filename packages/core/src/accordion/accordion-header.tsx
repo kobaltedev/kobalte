@@ -1,13 +1,13 @@
-import { ComponentProps } from "solid-js";
+import { OverrideComponentProps } from "@kobalte/utils";
 
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 
 /**
  * Wraps an `Accordion.Trigger`.
  * Use the `as` prop to update it to the appropriate heading level for your page.
  */
-export function AccordionHeader(props: ComponentProps<"h3">) {
+export function AccordionHeader(props: OverrideComponentProps<"h3", AsChildProp>) {
   // `Accordion.Item` is a `Collapsible.Root`.
   const context = useCollapsibleContext();
 

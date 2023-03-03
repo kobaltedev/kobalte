@@ -4,8 +4,9 @@ import { JSX, Show, splitProps } from "solid-js";
 import { DismissableLayer } from "../dismissable-layer";
 import { PopperPositioner } from "../popper";
 import { useHoverCardContext } from "./hover-card-context";
+import { AsChildProp } from "../polymorphic";
 
-export interface HoverCardContentOptions {
+export interface HoverCardContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }

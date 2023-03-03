@@ -6,17 +6,17 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/listbox/src/useOption.ts
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
-import { ComponentProps, createEffect, onCleanup, splitProps } from "solid-js";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useMenuItemContext } from "./menu-item.context";
 
 /**
  * An optional accessible description to be announced for the menu item.
  * Useful for menu items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
-export function MenuItemDescription(props: ComponentProps<"div">) {
+export function MenuItemDescription(props: OverrideComponentProps<"div", AsChildProp>) {
   const context = useMenuItemContext();
 
   props = mergeDefaultProps(

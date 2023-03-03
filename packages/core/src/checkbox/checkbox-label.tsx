@@ -1,13 +1,12 @@
-import { mergeDefaultProps } from "@kobalte/utils";
-import { ComponentProps } from "solid-js";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useCheckboxContext } from "./checkbox-context";
 
 /**
  * The label that gives the user information on the checkbox.
  */
-export function CheckboxLabel(props: ComponentProps<"span">) {
+export function CheckboxLabel(props: OverrideComponentProps<"span", AsChildProp>) {
   const context = useCheckboxContext();
 
   props = mergeDefaultProps(

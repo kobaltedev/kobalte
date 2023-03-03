@@ -1,13 +1,13 @@
-import { mergeDefaultProps } from "@kobalte/utils";
-import { ComponentProps, createEffect, onCleanup, splitProps } from "solid-js";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useDialogContext } from "./dialog-context";
 
 /**
  * An accessible title to be announced when the dialog is open.
  */
-export function DialogTitle(props: ComponentProps<"h2">) {
+export function DialogTitle(props: OverrideComponentProps<"h2", AsChildProp>) {
   const context = useDialogContext();
 
   props = mergeDefaultProps(

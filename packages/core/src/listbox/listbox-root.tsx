@@ -17,12 +17,12 @@ import {
 import { Accessor, createMemo, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { createListState, createSelectableList, ListState } from "../list";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { Collection, CollectionNode } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, SelectionBehavior, SelectionMode } from "../selection";
 import { ListboxContext, ListboxContextValue } from "./listbox-context";
 
-export interface ListboxRootOptions {
+export interface ListboxRootOptions extends AsChildProp {
   /** The controlled value of the listbox. */
   value?: Iterable<string>;
 

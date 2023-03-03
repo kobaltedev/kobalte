@@ -1,11 +1,11 @@
 import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createPresence } from "../primitives";
 import { useRadioGroupItemContext } from "./radio-group-item-context";
 
-export interface RadioGroupItemIndicatorOptions {
+export interface RadioGroupItemIndicatorOptions extends AsChildProp {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.

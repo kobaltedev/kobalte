@@ -1,13 +1,12 @@
-import { mergeDefaultProps } from "@kobalte/utils";
-import { ComponentProps } from "solid-js";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useCheckboxContext } from "./checkbox-context";
 
 /**
  * The element that visually represents a checkbox.
  */
-export function CheckboxControl(props: ComponentProps<"div">) {
+export function CheckboxControl(props: OverrideComponentProps<"div", AsChildProp>) {
   const context = useCheckboxContext();
 
   props = mergeDefaultProps(

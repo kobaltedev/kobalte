@@ -10,10 +10,10 @@ import { OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, createSignal, JSX, on, onMount, splitProps } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsIndicatorOptions {
+export interface TabsIndicatorOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }

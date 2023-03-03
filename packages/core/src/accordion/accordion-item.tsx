@@ -10,11 +10,12 @@ import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@ko
 import { createSignal, createUniqueId, splitProps } from "solid-js";
 
 import * as Collapsible from "../collapsible";
+import { AsChildProp } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { useAccordionContext } from "./accordion-context";
 import { AccordionItemContext, AccordionItemContextValue } from "./accordion-item-context";
 
-export interface AccordionItemOptions {
+export interface AccordionItemOptions extends AsChildProp {
   /** A unique value for the item. */
   value: string;
 

@@ -12,10 +12,10 @@ import { isServer } from "solid-js/web";
 
 import { useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useContextMenuContext } from "./context-menu-context";
 
-export interface ContextMenuTriggerOptions {
+export interface ContextMenuTriggerOptions extends AsChildProp {
   /** Whether the context menu trigger is disabled. */
   isDisabled?: boolean;
 

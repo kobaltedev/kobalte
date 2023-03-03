@@ -7,14 +7,13 @@ import {
   ValidationState,
 } from "@kobalte/utils";
 import { createUniqueId, JSX, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createControllableSignal, createFormResetListener } from "../primitives";
 import { TextFieldContext, TextFieldContextValue } from "./text-field-context";
-import { Polymorphic } from "../polymorphic";
 
-export interface TextFieldRootOptions {
+export interface TextFieldRootOptions extends AsChildProp {
   /** The controlled value of the textfield. */
   value?: string;
 

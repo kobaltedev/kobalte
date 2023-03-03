@@ -1,13 +1,13 @@
-import { mergeDefaultProps } from "@kobalte/utils";
-import { ComponentProps, createEffect, onCleanup, splitProps } from "solid-js";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { usePopoverContext } from "./popover-context";
 
 /**
  * An accessible title to be announced when the popover is open.
  */
-export function PopoverTitle(props: ComponentProps<"h2">) {
+export function PopoverTitle(props: OverrideComponentProps<"h2", AsChildProp>) {
   const context = usePopoverContext();
 
   props = mergeDefaultProps(

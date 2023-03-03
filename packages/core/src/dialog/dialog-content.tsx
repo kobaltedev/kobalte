@@ -24,8 +24,9 @@ import {
   PointerDownOutsideEvent,
 } from "../primitives";
 import { useDialogContext } from "./dialog-context";
+import { AsChildProp } from "../polymorphic";
 
-export interface DialogContentOptions {
+export interface DialogContentOptions extends AsChildProp {
   /**
    * Event handler called when focus moves into the component after opening.
    * It can be prevented by calling `event.preventDefault`.

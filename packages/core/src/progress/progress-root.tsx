@@ -10,7 +10,7 @@ import { clamp, createGenerateId, mergeDefaultProps, OverrideComponentProps } fr
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 
 import { createNumberFormatter } from "../i18n";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { ProgressContext, ProgressContextValue, ProgressDataSet } from "./progress-context";
 
@@ -20,7 +20,7 @@ interface GetValueLabelParams {
   max: number;
 }
 
-export interface ProgressRootOptions {
+export interface ProgressRootOptions extends AsChildProp {
   /**
    * The progress value.
    * @default 0

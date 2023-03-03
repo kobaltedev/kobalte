@@ -18,6 +18,7 @@ import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "
 
 import { DismissableLayer } from "../dismissable-layer";
 import { createSelectableList } from "../list";
+import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
   createFocusScope,
@@ -28,7 +29,7 @@ import {
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuContentBaseOptions {
+export interface MenuContentBaseOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 

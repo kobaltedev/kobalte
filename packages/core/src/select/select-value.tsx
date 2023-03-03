@@ -2,7 +2,7 @@ import { isFunction, mergeDefaultProps, OverrideComponentProps } from "@kobalte/
 import { Accessor, children, createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionNode } from "../primitives";
 import { useSelectContext } from "./select-context";
 
@@ -11,7 +11,7 @@ interface SelectValueState {
   selectedItem: Accessor<CollectionNode>;
 }
 
-export interface SelectValueOptions {
+export interface SelectValueOptions extends AsChildProp {
   /** The content that will be rendered when no value or defaultValue is set. */
   placeholder?: JSX.Element;
 

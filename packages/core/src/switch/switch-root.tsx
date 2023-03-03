@@ -14,15 +14,7 @@ import {
   OverrideComponentProps,
   ValidationState,
 } from "@kobalte/utils";
-import {
-  Accessor,
-  Component,
-  createMemo,
-  createSignal,
-  createUniqueId,
-  JSX,
-  splitProps,
-} from "solid-js";
+import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { createFormResetListener, createToggleState } from "../primitives";
 import { SwitchContext, SwitchContextValue, SwitchDataSet } from "./switch-context";

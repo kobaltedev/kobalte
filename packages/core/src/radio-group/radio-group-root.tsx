@@ -18,11 +18,11 @@ import {
 import { createUniqueId, splitProps } from "solid-js";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createControllableSignal, createFormResetListener } from "../primitives";
 import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context";
 
-export interface RadioGroupRootOptions {
+export interface RadioGroupRootOptions extends AsChildProp {
   /** The controlled value of the radio button to check. */
   value?: string;
 

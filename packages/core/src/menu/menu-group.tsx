@@ -6,10 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/e6808d1b5e80cef7af7e63974f658043593b2e1e/packages/@react-aria/menu/src/useMenuSection.ts
  */
 
-import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { ComponentProps, createSignal, createUniqueId } from "solid-js";
+import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { createSignal, createUniqueId } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { MenuGroupContext, MenuGroupContextValue } from "./menu-group-context";
 import { useMenuRootContext } from "./menu-root-context";
@@ -17,7 +17,7 @@ import { useMenuRootContext } from "./menu-root-context";
 /**
  * A container used to group multiple `Menu.Item`s.
  */
-export function MenuGroup(props: ComponentProps<"div">) {
+export function MenuGroup(props: OverrideComponentProps<"div", AsChildProp>) {
   const rootContext = useMenuRootContext();
 
   props = mergeDefaultProps(

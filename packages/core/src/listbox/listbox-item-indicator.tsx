@@ -1,10 +1,10 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useListboxItemContext } from "./listbox-item-context";
 
-export interface ListboxItemIndicatorOptions {
+export interface ListboxItemIndicatorOptions extends AsChildProp {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.

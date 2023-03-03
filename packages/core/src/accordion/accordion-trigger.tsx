@@ -6,11 +6,18 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/accordion/src/useAccordion.ts
  */
 
-import { callHandler, composeEventHandlers, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { ComponentProps, createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import {
+  callHandler,
+  composeEventHandlers,
+  mergeDefaultProps,
+  mergeRefs,
+  OverrideComponentProps,
+} from "@kobalte/utils";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Collapsible from "../collapsible";
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
+import { AsChildProp } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -20,7 +27,7 @@ import { useAccordionItemContext } from "./accordion-item-context";
 /**
  * Toggles the collapsed state of its associated item. It should be nested inside an `Accordion.Header`.
  */
-export function AccordionTrigger(props: ComponentProps<"button">) {
+export function AccordionTrigger(props: OverrideComponentProps<"button", AsChildProp>) {
   let ref: HTMLElement | undefined;
 
   const accordionContext = useAccordionContext();

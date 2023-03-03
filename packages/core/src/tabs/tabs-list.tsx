@@ -6,11 +6,11 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
-import { composeEventHandlers, mergeRefs } from "@kobalte/utils";
-import { ComponentProps, createEffect, splitProps } from "solid-js";
+import { composeEventHandlers, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, splitProps } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createSelectableCollection } from "../selection";
 import { useTabsContext } from "./tabs-context";
 import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate";
@@ -18,7 +18,7 @@ import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate";
 /**
  * Contains the tabs that are aligned along the edge of the active tab panel.
  */
-export function TabsList(props: ComponentProps<"div">) {
+export function TabsList(props: OverrideComponentProps<"div", AsChildProp>) {
   let ref: HTMLElement | undefined;
 
   const context = useTabsContext();

@@ -24,13 +24,13 @@ import { createEffect, createUniqueId, JSX, on, onCleanup, splitProps } from "so
 import { isServer } from "solid-js/web";
 
 import { Direction, useLocale } from "../i18n";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 import { getPointerGraceArea, Side } from "./utils";
 
-export interface MenuSubTriggerOptions {
+export interface MenuSubTriggerOptions extends AsChildProp {
   /**
    * Optional text used for typeahead purposes.
    * By default, the typeahead behavior will use the .textContent of the Menu.SubTrigger.

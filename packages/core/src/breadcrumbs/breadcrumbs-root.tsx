@@ -10,11 +10,11 @@ import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import { createLocalizedStringFormatter } from "../i18n";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { BREADCRUMBS_INTL_MESSAGES } from "./breadcrumbs.intl";
 import { BreadcrumbsContext, BreadcrumbsContextValue } from "./breadcrumbs-context";
 
-export interface BreadcrumbsRootOptions {
+export interface BreadcrumbsRootOptions extends AsChildProp {
   /**
    * The visual separator between each breadcrumb item.
    * It will be used as the default children of `Breadcrumbs.Separator`.

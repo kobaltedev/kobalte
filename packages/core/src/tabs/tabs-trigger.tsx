@@ -14,13 +14,13 @@ import {
 } from "@kobalte/utils";
 import { createEffect, on, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsTriggerOptions {
+export interface TabsTriggerOptions extends AsChildProp {
   /** The unique key that associates the tab with a tab panel. */
   value: string;
 

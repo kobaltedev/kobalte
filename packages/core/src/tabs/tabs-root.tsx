@@ -11,13 +11,13 @@ import { mergeDefaultProps, Orientation, OverrideComponentProps } from "@kobalte
 import { createEffect, createSignal, createUniqueId, on, splitProps } from "solid-js";
 
 import { createSingleSelectListState } from "../list";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { TabsContext, TabsContextValue } from "./tabs-context";
 import { TabsActivationMode } from "./types";
 
-export interface TabsRootOptions {
+export interface TabsRootOptions extends AsChildProp {
   /** The controlled value of the tab to activate. */
   value?: string;
 

@@ -10,8 +10,9 @@ import {
   FocusOutsideEvent,
 } from "../primitives";
 import { useSelectContext } from "./select-context";
+import { AsChildProp } from "../polymorphic";
 
-export interface SelectContentOptions {
+export interface SelectContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }

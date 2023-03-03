@@ -9,11 +9,11 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { createSignal, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { ImageContext, ImageContextValue } from "./image-context";
 import { ImageLoadingStatus } from "./types";
 
-export interface AvatarRootOptions {
+export interface AvatarRootOptions extends AsChildProp {
   /**
    * The delay (in ms) before displaying the image fallback.
    * Useful if you notice a flash during loading for delaying rendering,

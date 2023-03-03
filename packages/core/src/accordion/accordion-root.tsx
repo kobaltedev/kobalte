@@ -16,12 +16,12 @@ import {
 import { createSignal, createUniqueId, splitProps } from "solid-js";
 
 import { createListState, createSelectableList } from "../list";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { AccordionContext, AccordionContextValue } from "./accordion-context";
 
-export interface AccordionRootOptions {
+export interface AccordionRootOptions extends AsChildProp {
   /** The controlled value of the accordion item(s) to expand. */
   value?: string[];
 

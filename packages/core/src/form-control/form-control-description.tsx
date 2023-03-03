@@ -1,13 +1,13 @@
-import { mergeDefaultProps } from "@kobalte/utils";
-import { ComponentProps, createEffect, onCleanup, splitProps } from "solid-js";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useFormControlContext } from "./form-control-context";
 
 /**
  * The description that gives the user more information on the form control.
  */
-export function FormControlDescription(props: ComponentProps<"div">) {
+export function FormControlDescription(props: OverrideComponentProps<"div", AsChildProp>) {
   const context = useFormControlContext();
 
   props = mergeDefaultProps(

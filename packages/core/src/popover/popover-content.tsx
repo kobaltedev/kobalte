@@ -17,8 +17,9 @@ import {
   PointerDownOutsideEvent,
 } from "../primitives";
 import { usePopoverContext } from "./popover-context";
+import { AsChildProp } from "../polymorphic";
 
-export interface PopoverContentOptions {
+export interface PopoverContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 

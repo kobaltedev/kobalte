@@ -6,25 +6,25 @@
  * https://github.com/adobe/react-spectrum/blob/0af91c08c745f4bb35b6ad4932ca17a0d85dd02c/packages/@react-aria/textfield/src/useTextField.ts
  */
 
-import { composeEventHandlers, mergeDefaultProps } from "@kobalte/utils";
-import { ComponentProps, splitProps } from "solid-js";
+import { composeEventHandlers, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { splitProps } from "solid-js";
 
 import {
   createFormControlField,
   FORM_CONTROL_FIELD_PROP_NAMES,
   useFormControlContext,
 } from "../form-control";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useTextFieldContext } from "./text-field-context";
 
 /**
  * The native html input of the textfield.
  */
-export function TextFieldInput(props: ComponentProps<"input">) {
+export function TextFieldInput(props: OverrideComponentProps<"input", AsChildProp>) {
   return <TextFieldInputBase type="text" {...props} />;
 }
 
-export function TextFieldInputBase(props: ComponentProps<"input">) {
+export function TextFieldInputBase(props: OverrideComponentProps<"input", AsChildProp>) {
   const formControlContext = useFormControlContext();
   const context = useTextFieldContext();
 

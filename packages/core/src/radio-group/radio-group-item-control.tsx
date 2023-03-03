@@ -1,13 +1,12 @@
-import { mergeDefaultProps } from "@kobalte/utils";
-import { ComponentProps } from "solid-js";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useRadioGroupItemContext } from "./radio-group-item-context";
 
 /**
  * The element that visually represents a radio button.
  */
-export function RadioGroupItemControl(props: ComponentProps<"div">) {
+export function RadioGroupItemControl(props: OverrideComponentProps<"div", AsChildProp>) {
   const context = useRadioGroupItemContext();
 
   props = mergeDefaultProps(
