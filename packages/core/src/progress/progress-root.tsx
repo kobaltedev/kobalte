@@ -6,16 +6,11 @@
  * https://github.com/adobe/react-spectrum/blob/1ddcde7b4fef9af7f08e11bb78d71fe60bbcc64b/packages/@react-aria/progress/src/useProgressBar.ts
  */
 
-import {
-  clamp,
-  createGenerateId,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-} from "@kobalte/utils";
+import { clamp, createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { createNumberFormatter } from "../i18n";
+import { Polymorphic } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { ProgressContext, ProgressContextValue, ProgressDataSet } from "./progress-context";
 
@@ -57,12 +52,11 @@ export interface ProgressRootOptions {
 /**
  * Progress show either determinate or indeterminate progress of an operation over time.
  */
-export const ProgressRoot = createPolymorphicComponent<"div", ProgressRootOptions>(props => {
+export function ProgressRoot(props: OverrideComponentProps<"div", ProgressRootOptions>) {
   const defaultId = `progress-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: defaultId,
       value: 0,
       minValue: 0,
@@ -72,7 +66,6 @@ export const ProgressRoot = createPolymorphicComponent<"div", ProgressRootOption
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "value",
     "minValue",
     "maxValue",
@@ -138,8 +131,8 @@ export const ProgressRoot = createPolymorphicComponent<"div", ProgressRootOption
 
   return (
     <ProgressContext.Provider value={context}>
-      <Dynamic
-        component={local.as}
+      <Polymorphic
+        fallback="div"
         role="progressbar"
         aria-valuenow={local.isIndeterminate ? undefined : value()}
         aria-valuemin={local.minValue!}
@@ -151,4 +144,4 @@ export const ProgressRoot = createPolymorphicComponent<"div", ProgressRootOption
       />
     </ProgressContext.Provider>
   );
-});
+}
