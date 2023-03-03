@@ -2,7 +2,7 @@ import { Link, useMatch } from "@solidjs/router";
 import { clsx } from "clsx";
 
 import { NavSection } from "../model/navigation";
-import { LATEST_CORE_CHANGELOG_URL } from "../VERSIONS";
+import { LATEST_CORE_CHANGELOG_URL, LATEST_CORE_VERSION_NAME } from "../VERSIONS";
 import { GitHubIcon } from "./icons";
 import { MobileNavigation } from "./mobile-navigation";
 import { ThemeSelector } from "./theme-selector";
@@ -32,7 +32,7 @@ export function Header(props: HeaderProps) {
           <span class="text-3xl leading-[0] text-sky-600">.</span>
         </Link>
         <span class="rounded bg-zinc-100 px-1.5 py-1 text-sm leading-none dark:bg-zinc-800 dark:text-zinc-300">
-          v0.6.2
+          {LATEST_CORE_VERSION_NAME}
         </span>
       </div>
 

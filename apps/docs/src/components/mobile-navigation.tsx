@@ -4,7 +4,7 @@ import { clsx } from "clsx";
 import { ComponentProps, createComputed, splitProps } from "solid-js";
 
 import { NavSection } from "../model/navigation";
-import { LATEST_CORE_CHANGELOG_URL } from "../VERSIONS";
+import { LATEST_CORE_CHANGELOG_URL, LATEST_CORE_VERSION_NAME } from "../VERSIONS";
 import { CrossIcon, HamburgerMenuIcon } from "./icons";
 import { Navigation } from "./navigation";
 
@@ -43,7 +43,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
                   <span class="text-3xl leading-[0] text-sky-600">.</span>
                 </Link>
                 <span class="rounded bg-zinc-100 px-1.5 py-1 text-sm leading-none dark:bg-zinc-800 dark:text-zinc-300">
-                  v0.6.2
+                  {LATEST_CORE_VERSION_NAME}
                 </span>
               </div>
               <button
