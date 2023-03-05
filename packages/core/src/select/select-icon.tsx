@@ -12,13 +12,5 @@ export function SelectIcon(props: OverrideComponentProps<"div", AsChildProp>) {
 
   props = mergeDefaultProps({ children: "▼" }, props);
 
-  return (
-    <Polymorphic
-      fallback="div"
-      aria-hidden="true"
-      data-expanded={context.isOpen() ? "" : undefined}
-      data-closed={!context.isOpen() ? "" : undefined}
-      {...props}
-    />
-  );
+  return <Polymorphic fallback="div" aria-hidden="true" {...context.dataset()} {...props} />;
 }

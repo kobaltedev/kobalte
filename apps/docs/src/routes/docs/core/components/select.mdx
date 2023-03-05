@@ -30,7 +30,7 @@ import { Select, MultiSelect } from "@kobalte/core";
 - Keyboard support for opening the listbox using the arrow keys, including automatically focusing the first or last item accordingly.
 - Typeahead to allow selecting options by typing text, even without opening the listbox.
 - Browser autofill integration via a hidden native `<select>` element.
-- Supports items, labels, groups of items.
+- Supports items, and groups of items.
 - Supports custom placeholder.
 - Can be controlled or uncontrolled.
 
@@ -49,24 +49,16 @@ The select consists of:
 - **Select.Content:** Contains the content to be rendered when the select is open.
 - **Select.Arrow:** An optional arrow element to render alongside the select content.
 - **Select.Listbox:** Contains a list of items and allows a user to select one or more of them.
-- **Select.Separator:** Used to visually separate items in the select.
-- **Select.Group:** Used to group multiple items. Use in conjunction with `Select.GroupLabel` to ensure good accessibility via automatic labelling.
-- **Select.GroupLabel:** Used to render the label of a group. It won't be focusable using arrow keys.
-
-The select item consists of:
-
+- **Select.Section:** Used to render the label of an option group. It won't be focusable using arrow keys.
 - **Select.Item:** An item of the select.
 - **Select.ItemLabel:** An accessible label to be announced for the item.
 - **Select.ItemDescription:** An optional accessible description to be announced for the item.
 - **Select.ItemIndicator:** The visual indicator rendered when the item is selected.
 
-The multi-select consists of:
-
-- **MultiSelect.Root:** The root container for a multi-select component.
-- All the parts above in form of `MultiSelect.*`.
+The multi-select consists of all the parts above in form of `MultiSelect.*`.
 
 ```tsx
-<Select.Root> {/* <MultiSelect.Root> */}
+<Select.Root>
   <Select.Label />
   <Select.Trigger>
     <Select.Value />
@@ -78,27 +70,10 @@ The multi-select consists of:
   <Select.Portal>
     <Select.Content>
       <Select.Arrow />
-      <Select.Listbox>
-        <Select.Item>
-          <Select.ItemLabel />
-          <Select.ItemDescription />
-          <Select.ItemIndicator />
-        </Select.Item>
-
-        <Select.Group>
-          <Select.GroupLabel />
-          <Select.Item>
-            <Select.ItemLabel />
-            <Select.ItemDescription />
-            <Select.ItemIndicator />
-          </Select.Item>
-        </Select.Group>
-
-        <Select.Separator />
-      </Select.Listbox>
+      <Select.Listbox />
     </Select.Content>
   </Select.Portal>
-</Select.Root> {/* </MultiSelect.Root> */}
+</Select.Root>
 ```
 
 ## Example
@@ -117,64 +92,32 @@ The multi-select consists of:
     ```tsx
     import { Select } from "@kobalte/core";
     import { CaretSortIcon, CheckIcon } from "some-icon-library";
-    import { ComponentProps, splitProps } from "solid-js";
     import "./style.css";
-
-    function SelectItem(props: ComponentProps<typeof Select.Item\>) {
-      const [local, others] = splitProps(props, ["children"]);
-
-      return (
-        <Select.Item class="select__item" {...others}>
-          <Select.ItemLabel>{local.children}</Select.ItemLabel>
-          <Select.ItemIndicator class="select__item-indicator">
-            <CheckIcon />
-          </Select.ItemIndicator>
-        </Select.Item>
-      );
-    }
 
     function App() {
       return (
-        <Select.Root>
-          <Select.Trigger class="select__trigger" aria-label="Food">
-            <Select.Value class="select__value" placeholder="Select a food…" />
+        <Select.Root
+          options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+          placeholder="Select a fruit…"
+          renderValue={selectedOption => selectedOption()}
+          renderItem={item => (
+            <Select.Item item={item()} class="select__item">
+              <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
+              <Select.ItemIndicator class="select__item-indicator">
+                <CheckIcon />
+              </Select.ItemIndicator>
+            </Select.Item>
+          )}
+        >
+          <Select.Trigger class="select__trigger" aria-label="Fruit">
+            <Select.Value class="select__value" />
             <Select.Icon class="select__icon">
               <CaretSortIcon />
             </Select.Icon>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content class="select__content">
-              <Select.Listbox class="select__listbox">
-                <Select.Group>
-                  <Select.GroupLabel class="select__group-label">Fruits</Select.GroupLabel>
-                  <SelectItem value="apple">Apple</SelectItem>
-                  <SelectItem value="banana">Banana</SelectItem>
-                  <SelectItem value="blueberry">Blueberry</SelectItem>
-                  <SelectItem value="grapes">Grapes</SelectItem>
-                  <SelectItem value="pineapple">Pineapple</SelectItem>
-                </Select.Group>
-
-                <Select.Separator class="select__separator" />
-
-                <Select.Group>
-                  <Select.GroupLabel class="select__group-label">Vegetables</Select.GroupLabel>
-                  <SelectItem value="aubergine">Aubergine</SelectItem>
-                  <SelectItem value="broccoli">Broccoli</SelectItem>
-                  <SelectItem value="carrot" isDisabled>Carrot</SelectItem>
-                  <SelectItem value="courgette">Courgette</SelectItem>
-                  <SelectItem value="leek">Leek</SelectItem>
-                </Select.Group>
-
-                <Select.Separator class="select__separator" />
-
-                <Select.Group>
-                  <Select.GroupLabel class="select__group-label">Meat</Select.GroupLabel>
-                  <SelectItem value="beef">Beef</SelectItem>
-                  <SelectItem value="chicken">Chicken</SelectItem>
-                  <SelectItem value="lamb">Lamb</SelectItem>
-                  <SelectItem value="pork">Pork</SelectItem>
-                </Select.Group>
-              </Select.Listbox>
+              <Select.Listbox class="select__listbox" />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -251,6 +194,12 @@ The multi-select consists of:
       border-radius: 6px;
       border: 1px solid hsl(240 6% 90%);
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      transform-origin: var(--kb-select-content-transform-origin);
+      animation: contentHide 250ms ease-in forwards;
+    }
+
+    .select__content[data-expanded] {
+      animation: contentShow 250ms ease-out;
     }
 
     .select__listbox {
@@ -285,17 +234,11 @@ The multi-select consists of:
       color: white;
     }
 
-    .select__group-label {
+    .select__section {
       padding: 0 24px;
       font-size: 14px;
       line-height: 32px;
       color: hsl(240 4% 46%);
-    }
-
-    .select__separator {
-      height: 1px;
-      border-top: 1px solid hsl(240 6% 90%);
-      margin: 6px;
     }
 
     .select__item-indicator {
@@ -306,6 +249,28 @@ The multi-select consists of:
       display: inline-flex;
       align-items: center;
       justify-content: center;
+    }
+
+    @keyframes contentShow {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes contentHide {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
     }
     ```
 
@@ -323,28 +288,30 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
   <DefaultValueExample />
 </Preview>
 
-```tsx {0}
-<Select.Root defaultValue="Blueberry">
+```tsx {1}
+<Select.Root
+  defaultValue="Blueberry"
+  options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+  placeholder="Select a fruit…"
+  renderValue={selectedOption => selectedOption()}
+  renderItem={item => (
+    <Select.Item item={item()}>
+      <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
+      <Select.ItemIndicator>
+        <CheckIcon />
+      </Select.ItemIndicator>
+    </Select.Item>
+  )}
+>
   <Select.Trigger aria-label="Fruit">
-    <Select.Value placeholder="Select a fruit…" />
+    <Select.Value />
     <Select.Icon>
       <CaretSortIcon />
     </Select.Icon>
   </Select.Trigger>
   <Select.Portal>
     <Select.Content>
-      <Select.Listbox>
-        <For each={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}>
-          {fruit => (
-            <Select.Item value={fruit}>
-              <Select.ItemLabel>{fruit}</Select.ItemLabel>
-              <Select.ItemIndicator>
-                <CheckIcon />
-              </Select.ItemIndicator>
-            </Select.Item>
-          )}
-        </For>
-      </Select.Listbox>
+      <Select.Listbox />
     </Select.Content>
   </Select.Portal>
 </Select.Root>
@@ -358,35 +325,38 @@ The `value` prop, which accepts a value corresponding with the `value` prop of e
   <ControlledExample />
 </Preview>
 
-```tsx {3,7}
+```tsx {3,8-9}
 import { createSignal } from "solid-js";
 
-function ControlledExample() {
+export function ControlledExample() {
   const [value, setValue] = createSignal("Blueberry");
 
   return (
     <>
-      <Select.Root value={value()} onValueChange={setValue}>
+      <Select.Root
+        value={value()}
+        onValueChange={setValue}
+        options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+        placeholder="Select a fruit…"
+        renderValue={selectedOption => selectedOption()}
+        renderItem={item => (
+          <Select.Item item={item()}>
+            <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
+            <Select.ItemIndicator>
+              <CheckIcon />
+            </Select.ItemIndicator>
+          </Select.Item>
+        )}
+      >
         <Select.Trigger aria-label="Fruit">
-          <Select.Value placeholder="Select a fruit…" />
+          <Select.Value />
           <Select.Icon>
             <CaretSortIcon />
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
           <Select.Content>
-            <Select.Listbox>
-              <For each={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}>
-                {fruit => (
-                  <Select.Item value={fruit}>
-                    <Select.ItemLabel>{fruit}</Select.ItemLabel>
-                    <Select.ItemIndicator>
-                      <CheckIcon />
-                    </Select.ItemIndicator>
-                  </Select.Item>
-                )}
-              </For>
-            </Select.Listbox>
+            <Select.Listbox />
           </Select.Content>
         </Select.Portal>
       </Select.Root>
@@ -404,35 +374,38 @@ The `MultiSelect.*` components can be used to create a select that allow multi-s
   <MultiSelectExample />
 </Preview>
 
-```tsx {3,7,30}
+```tsx {3,8-9,12}
 import { createSignal } from "solid-js";
 
-function MultiSelectExample() {
+export function MultiSelectExample() {
   const [values, setValues] = createSignal(new Set(["Blueberry", "Pineapple"]));
 
   return (
     <>
-      <MultiSelect.Root value={values()} onValueChange={setValues}>
+      <MultiSelect.Root
+        value={values()}
+        onValueChange={setValues}
+        options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+        placeholder="Select some fruits…"
+        renderValue={selectedOptions => selectedOptions().join(", ")}
+        renderItem={item => (
+          <MultiSelect.Item item={item()}>
+            <MultiSelect.ItemLabel>{item().rawValue}</MultiSelect.ItemLabel>
+            <MultiSelect.ItemIndicator>
+              <CheckIcon />
+            </MultiSelect.ItemIndicator>
+          </MultiSelect.Item>
+        )}
+      >
         <MultiSelect.Trigger aria-label="Fruits">
-          <MultiSelect.Value placeholder="Select some fruits…" />
+          <MultiSelect.Value />
           <MultiSelect.Icon>
             <CaretSortIcon />
           </MultiSelect.Icon>
         </MultiSelect.Trigger>
         <MultiSelect.Portal>
           <MultiSelect.Content>
-            <MultiSelect.Listbox>
-              <For each={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}>
-                {fruit => (
-                  <MultiSelect.Item value={fruit}>
-                    <MultiSelect.ItemLabel>{fruit}</Select.ItemLabel>
-                    <MultiSelect.ItemIndicator>
-                      <CheckIcon />
-                    </MultiSelect.ItemIndicator>
-                  </MultiSelect.Item>
-                )}
-              </For>
-            </MultiSelect.Listbox>
+            <MultiSelect.Listbox />
           </MultiSelect.Content>
         </MultiSelect.Portal>
       </MultiSelect.Root>
@@ -450,10 +423,22 @@ The `Select.Description` component can be used to associate additional help text
   <DescriptionExample />
 </Preview>
 
-```tsx {7}
-<Select.Root>
+```tsx {19}
+<Select.Root
+  options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+  placeholder="Select a fruit…"
+  renderValue={selectedOption => selectedOption()}
+  renderItem={item => (
+    <Select.Item item={item()}>
+      <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
+      <Select.ItemIndicator>
+        <CheckIcon />
+      </Select.ItemIndicator>
+    </Select.Item>
+  )}
+>
   <Select.Trigger aria-label="Fruit">
-    <Select.Value placeholder="Select a fruit…" />
+    <Select.Value />
     <Select.Icon>
       <CaretSortIcon />
     </Select.Icon>
@@ -461,18 +446,7 @@ The `Select.Description` component can be used to associate additional help text
   <Select.Description>Choose the fruit you like the most.</Select.Description>
   <Select.Portal>
     <Select.Content>
-      <Select.Listbox>
-        <For each={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}>
-          {fruit => (
-            <Select.Item value={fruit}>
-              <Select.ItemLabel>{fruit}</Select.ItemLabel>
-              <Select.ItemIndicator>
-                <CheckIcon />
-              </Select.ItemIndicator>
-            </Select.Item>
-          )}
-        </For>
-      </Select.Listbox>
+      <Select.Listbox />
     </Select.Content>
   </Select.Portal>
 </Select.Root>
@@ -488,10 +462,10 @@ By default, it will render only when the `validationState` prop is set to `inval
   <ErrorMessageExample />
 </Preview>
 
-```tsx {9,17}
+```tsx {28}
 import { createSignal } from "solid-js";
 
-function ErrorMessageExample() {
+export function ErrorMessageExample() {
   const [value, setValue] = createSignal("Grapes");
 
   return (
@@ -499,9 +473,20 @@ function ErrorMessageExample() {
       value={value()}
       onValueChange={setValue}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
+      options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+      placeholder="Select a fruit…"
+      renderValue={selectedOption => selectedOption()}
+      renderItem={item => (
+        <Select.Item item={item()}>
+          <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
+          <Select.ItemIndicator>
+            <CheckIcon />
+          </Select.ItemIndicator>
+        </Select.Item>
+      )}
     >
       <Select.Trigger aria-label="Fruit">
-        <Select.Value placeholder="Select a fruit…" />
+        <Select.Value />
         <Select.Icon>
           <CaretSortIcon />
         </Select.Icon>
@@ -509,21 +494,10 @@ function ErrorMessageExample() {
       <Select.ErrorMessage>Hmm, I prefer apples.</Select.ErrorMessage>
       <Select.Portal>
         <Select.Content>
-          <Select.Listbox>
-            <For each={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}>
-              {fruit => (
-                <Select.Item value={fruit}>
-                  <Select.ItemLabel>{fruit}</Select.ItemLabel>
-                  <Select.ItemIndicator>
-                    <CheckIcon />
-                  </Select.ItemIndicator>
-                </Select.Item>
-              )}
-            </For>
-          </Select.Listbox>
+          <Select.Listbox />
         </Select.Content>
       </Select.Portal>
-    </Select>
+    </Select.Root>
   );
 }
 ```
@@ -536,7 +510,7 @@ The select `name` prop, paired with the item `value` prop, can be used for integ
   <HTMLFormExample />
 </Preview>
 
-```tsx {7,19}
+```tsx {8,21}
 function HTMLFormExample() {
   const onSubmit = (e: SubmitEvent) => {
     // handle form submission.
@@ -544,30 +518,33 @@ function HTMLFormExample() {
 
   return (
     <form onSubmit={onSubmit}>
-      <Select.Root name="fruit">
+      <Select.Root
+        name="fruit"
+        options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+        placeholder="Select a fruit…"
+        renderValue={selectedOption => selectedOption()}
+        renderItem={item => (
+          <Select.Item item={item()}>
+            <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
+            <Select.ItemIndicator>
+              <CheckIcon />
+            </Select.ItemIndicator>
+          </Select.Item>
+        )}
+      >
+        <Select.HiddenSelect />
         <Select.Trigger aria-label="Fruit">
-          <Select.Value placeholder="Select a fruit…" />
+          <Select.Value />
           <Select.Icon>
             <CaretSortIcon />
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
           <Select.Content>
-            <Select.Listbox>
-              <For each={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}>
-                {fruit => (
-                  <Select.Item value={fruit}>
-                    <Select.ItemLabel>{fruit}</Select.ItemLabel>
-                    <Select.ItemIndicator>
-                      <CheckIcon />
-                    </Select.ItemIndicator>
-                  </Select.Item>
-                )}
-              </For>
-            </Select.Listbox>
+            <Select.Listbox />
           </Select.Content>
         </Select.Portal>
-      </Select>
+      </Select.Root>
       <div>
         <button type="reset">Reset</button>
         <button>Submit</button>
@@ -576,6 +553,12 @@ function HTMLFormExample() {
   );
 }
 ```
+
+### Using object as options
+
+### Using option groups
+
+### Virtual scrolling
 
 ### Origin-aware animations
 
@@ -748,11 +731,9 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | `Select.Portal`          | `Portal`                 |
 | `Select.Content`         | `div`                    |
 | `Select.Arrow`           | `div`                    |
-| `Select.Listbox`         | `div`                    |
-| `Select.Separator`       | `hr`                     |
-| `Select.Group`           | `div`                    |
-| `Select.GroupLabel`      | `span`                   |
-| `Select.Item`            | `div`                    |
+| `Select.Listbox`         | `ul`                     |
+| `Select.Section`         | `li`                     |
+| `Select.Item`            | `li`                     |
 | `Select.ItemLabel`       | `div`                    |
 | `Select.ItemDescription` | `div`                    |
 | `Select.ItemIndicator`   | `div`                    |

@@ -4,15 +4,20 @@ import { createEffect, onCleanup, splitProps } from "solid-js";
 import * as Listbox from "../listbox";
 import { useSelectContext } from "./select-context";
 
-export interface SelectListboxOptions<T>
-  extends Pick<Listbox.ListboxRootOptions<T>, "scrollRef" | "children" | "scrollToItem"> {}
+export interface SelectListboxOptions<Option, OptGroup = never>
+  extends Pick<Listbox.ListboxRootOptions<Option, OptGroup>, "scrollRef" | "children"> {}
 
-export type SelectListboxProps<T> = OverrideComponentProps<"ul", SelectListboxOptions<T>>;
+export type SelectListboxProps<Option, OptGroup = never> = OverrideComponentProps<
+  "ul",
+  SelectListboxOptions<Option, OptGroup>
+>;
 
 /**
  * Contains all the items of a `Select`.
  */
-export function SelectListbox<T = any>(props: SelectListboxProps<T>) {
+export function SelectListbox<Option = any, OptGroup = never>(
+  props: SelectListboxProps<Option, OptGroup>
+) {
   const context = useSelectContext();
 
   props = mergeDefaultProps(
@@ -57,6 +62,9 @@ export function SelectListbox<T = any>(props: SelectListboxProps<T>) {
       shouldSelectOnPressUp
       shouldFocusOnHover
       aria-labelledby={context.listboxAriaLabelledBy()}
+      scrollToItem={context.scrollToItem}
+      renderItem={context.renderItem}
+      renderSection={context.renderSection}
       {...others}
     />
   );

@@ -1,10 +1,13 @@
-import { ParentProps, splitProps } from "solid-js";
+import { Accessor, JSX, ParentProps, splitProps } from "solid-js";
 
 import { createControllableSetSignal } from "../primitives";
 import { SelectBase, SelectBaseOptions } from "./select-base";
 
-export interface SelectRootOptions<T>
-  extends Omit<SelectBaseOptions<T>, "value" | "defaultValue" | "onValueChange" | "selectionMode"> {
+export interface SelectRootOptions<Option, OptGroup = never>
+  extends Omit<
+    SelectBaseOptions<Option, OptGroup>,
+    "value" | "defaultValue" | "onValueChange" | "renderValue" | "selectionMode"
+  > {
   /** The controlled value of the select. */
   value?: string;
 
@@ -16,13 +19,23 @@ export interface SelectRootOptions<T>
 
   /** Event handler called when the value changes. */
   onValueChange?: (value: string) => void;
+
+  /** A map function that receives a _selectedOption_ signal representing the selected option. */
+  renderValue?: (selectedOption: Accessor<Option>) => JSX.Element;
 }
 
 /**
  * Displays a list of options for the user to pick from — triggered by a button.
  */
-export function SelectRoot<T>(props: ParentProps<SelectRootOptions<T>>) {
-  const [local, others] = splitProps(props, ["value", "defaultValue", "onValueChange"]);
+export function SelectRoot<Option, OptGroup = never>(
+  props: ParentProps<SelectRootOptions<Option, OptGroup>>
+) {
+  const [local, others] = splitProps(props, [
+    "value",
+    "defaultValue",
+    "onValueChange",
+    "renderValue",
+  ]);
 
   const [value, setValue] = createControllableSetSignal({
     value: () => (local.value != null ? new Set([local.value]) : undefined),
@@ -30,12 +43,17 @@ export function SelectRoot<T>(props: ParentProps<SelectRootOptions<T>>) {
     onChange: value => local.onValueChange?.(value.values().next().value),
   });
 
+  const renderValue = (selectedOptions: Accessor<Option[]>) => {
+    return local.renderValue?.(() => selectedOptions()[0]);
+  };
+
   return (
     <SelectBase
       value={value()}
       onValueChange={setValue}
       selectionMode="single"
       disallowEmptySelection
+      renderValue={renderValue}
       {...others}
     />
   );
