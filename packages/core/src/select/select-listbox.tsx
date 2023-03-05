@@ -4,13 +4,15 @@ import { createEffect, onCleanup, splitProps } from "solid-js";
 import * as Listbox from "../listbox";
 import { useSelectContext } from "./select-context";
 
-export interface SelectListboxOptions
-  extends Pick<Listbox.ListboxRootOptions<any>, "scrollRef" | "children" | "scrollToKey"> {}
+export interface SelectListboxOptions<T>
+  extends Pick<Listbox.ListboxRootOptions<T>, "scrollRef" | "children" | "scrollToItem"> {}
+
+export type SelectListboxProps<T> = OverrideComponentProps<"ul", SelectListboxOptions<T>>;
 
 /**
  * Contains all the items of a `Select`.
  */
-export function SelectListbox(props: OverrideComponentProps<"ul", SelectListboxOptions>) {
+export function SelectListbox<T = any>(props: SelectListboxProps<T>) {
   const context = useSelectContext();
 
   props = mergeDefaultProps(

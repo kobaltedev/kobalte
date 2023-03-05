@@ -104,17 +104,19 @@ export interface ListboxRootOptions<T> extends AsChildProp {
   /** Whether the listbox uses virtual scrolling. */
   isVirtualized?: boolean;
 
-  /** When virtualized, the Virtualizer function used to scroll to the item of the key provided. */
-  scrollToKey?: (key: string) => void;
+  /** When virtualized, the Virtualizer function used to scroll to the item of the given key. */
+  scrollToItem?: (key: string) => void;
 
   /** A function that receives an _items_ signal representing all listbox items and returns a JSX-Element. */
-  children?: (items: Accessor<Collection<CollectionNode>>) => JSX.Element;
+  children?: (items: Accessor<Collection<CollectionNode<T>>>) => JSX.Element;
 }
+
+export type ListboxRootProps<T> = OverrideComponentProps<"ul", ListboxRootOptions<T>>;
 
 /**
  * Listbox presents a list of options and allows a user to select one or more of them.
  */
-export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOptions<T>>) {
+export function ListboxRoot<T>(props: ListboxRootProps<T>) {
   let ref: HTMLElement | undefined;
 
   const defaultId = `listbox-${createUniqueId()}`;
@@ -123,6 +125,7 @@ export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOp
     {
       id: defaultId,
       selectionMode: "single",
+      isVirtualized: false,
     },
     props
   );
@@ -154,7 +157,7 @@ export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOp
     "disallowTypeAhead",
     "allowsTabNavigation",
     "isVirtualized",
-    "scrollToKey",
+    "scrollToItem",
     "scrollRef",
     "onKeyDown",
     "onMouseDown",
@@ -197,7 +200,7 @@ export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOp
       shouldUseVirtualFocus: () => access(local.shouldUseVirtualFocus),
       allowsTabNavigation: () => access(local.allowsTabNavigation),
       isVirtualized: () => local.isVirtualized,
-      scrollToKey: () => local.scrollToKey,
+      scrollToKey: () => local.scrollToItem,
     },
     () => ref,
     () => local.scrollRef?.()
