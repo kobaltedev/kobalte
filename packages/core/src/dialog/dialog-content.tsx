@@ -147,6 +147,7 @@ export function DialogContent(props: OverrideComponentProps<"div", DialogContent
   });
 
   createPreventScroll({
+    ownerRef: () => ref,
     isDisabled: () => !(context.isOpen() && context.isModal()),
   });
 

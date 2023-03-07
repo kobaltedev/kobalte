@@ -145,6 +145,7 @@ export function PopoverContent(props: OverrideComponentProps<"div", PopoverConte
   });
 
   createPreventScroll({
+    ownerRef: () => ref,
     isDisabled: () => !(context.isOpen() && context.isModal()),
   });
 

@@ -47,6 +47,7 @@ export function SelectContent(props: OverrideComponentProps<"div", SelectContent
   });
 
   createPreventScroll({
+    ownerRef: () => ref,
     isDisabled: () => !context.isOpen(),
   });
 
