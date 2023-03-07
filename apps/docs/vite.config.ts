@@ -212,4 +212,7 @@ export default defineConfig({
     }),
     solid({ adapter, extensions: [".mdx", ".md"] }),
   ],
+  ssr: {
+    noExternal: ["@kobalte/core", "@tanstack/solid-virtual"],
+  },
 });
