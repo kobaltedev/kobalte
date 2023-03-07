@@ -381,12 +381,6 @@ interface Item {
   disabled: boolean;
 }
 
-const VIRTUALIZED_OPTIONS: Item[] = Array.from({ length: 100_000 }, (_, i) => ({
-  value: `${i}`,
-  label: `Item #${i + 1}`,
-  disabled: false,
-}));
-
 function SelectContent(props: { options: Item[] }) {
   let listboxRef: HTMLUListElement | undefined;
 
@@ -452,10 +446,16 @@ function SelectContent(props: { options: Item[] }) {
 }
 
 export function VirtualizedExample() {
+  const options: Item[] = Array.from({ length: 100_000 }, (_, i) => ({
+    value: `${i}`,
+    label: `Item #${i + 1}`,
+    disabled: false,
+  }));
+
   return (
     <Select.Root
       isVirtualized
-      options={VIRTUALIZED_OPTIONS}
+      options={options}
       optionValue="value"
       optionTextValue="label"
       optionDisabled="disabled"
@@ -469,7 +469,7 @@ export function VirtualizedExample() {
         </Select.Icon>
       </Select.Trigger>
       <Select.Portal>
-        <SelectContent options={VIRTUALIZED_OPTIONS} />
+        <SelectContent options={options} />
       </Select.Portal>
     </Select.Root>
   );
