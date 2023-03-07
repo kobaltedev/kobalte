@@ -263,10 +263,13 @@ export function HTMLFormExample() {
   );
 }
 
-/*
+interface Food {
+  value: string;
+  label: string;
+  disabled: boolean;
+}
 
-
-const BASIC_OBJECT_EXAMPLE_OPTIONS = [
+const OBJECT_OPTIONS: Food[] = [
   { value: "apple", label: "Apple", disabled: false },
   { value: "banana", label: "Banana", disabled: false },
   { value: "blueberry", label: "Blueberry", disabled: false },
@@ -274,35 +277,37 @@ const BASIC_OBJECT_EXAMPLE_OPTIONS = [
   { value: "pineapple", label: "Pineapple", disabled: false },
 ];
 
-export function BasicObjectExample() {
+export function ObjectExample() {
   return (
-    <Listbox.Root
-      options={BASIC_OBJECT_EXAMPLE_OPTIONS}
+    <Select.Root
+      options={OBJECT_OPTIONS}
       optionValue="value"
       optionTextValue="label"
       optionDisabled="disabled"
-      class={style["listbox"]}
-    >
-      {items => (
-        <Key each={[...items()]} by="key">
-          {item => (
-            <Listbox.Item item={item()} class={style["select__item"]}>
-              <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
-              <Listbox.ItemIndicator class={style["select__item-indicator"]}>
-                <CheckIcon />
-              </Listbox.ItemIndicator>
-            </Listbox.Item>
-          )}
-        </Key>
+      placeholder="Select a food…"
+      renderValue={selectedOption => selectedOption().label}
+      renderItem={item => (
+        <Select.Item item={item()} class={style["select__item"]}>
+          <Select.ItemLabel>{item().rawValue.label}</Select.ItemLabel>
+          <Select.ItemIndicator class={style["select__item-indicator"]}>
+            <CheckIcon />
+          </Select.ItemIndicator>
+        </Select.Item>
       )}
-    </Listbox.Root>
+    >
+      <Select.Trigger class={style["select__trigger"]} aria-label="Food">
+        <Select.Value class={style["select__value"]} />
+        <Select.Icon class={style["select__icon"]}>
+          <CaretSortIcon />
+        </Select.Icon>
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Content class={style["select__content"]}>
+          <Select.Listbox class={style["select__listbox"]} />
+        </Select.Content>
+      </Select.Portal>
+    </Select.Root>
   );
-}
-
-interface Food {
-  value: string;
-  label: string;
-  disabled: boolean;
 }
 
 interface Category {
@@ -310,7 +315,7 @@ interface Category {
   options: Food[];
 }
 
-const GROUP_OBJECT_EXAMPLE_OPTIONS: Category[] = [
+const GROUP_OBJECT_OPTIONS: Category[] = [
   {
     label: "Fruits",
     options: [
@@ -332,40 +337,39 @@ const GROUP_OBJECT_EXAMPLE_OPTIONS: Category[] = [
   },
 ];
 
-export function GroupObjectExample() {
+export function OptionGroupExample() {
   return (
-    <Listbox.Root<Food, Category>
-      options={GROUP_OBJECT_EXAMPLE_OPTIONS}
+    <Select.Root<Food, Category>
+      options={GROUP_OBJECT_OPTIONS}
       optionValue="value"
       optionTextValue="label"
       optionDisabled="disabled"
       optionGroupChildren="options"
-      class={style["listbox"]}
-    >
-      {items => (
-        <Key each={[...items()]} by="key">
-          {item => (
-            <Switch>
-              <Match when={item().type === "section"}>
-                <Listbox.Section class={style["select__section"]}>
-                  {(item().rawValue as Category).label}
-                </Listbox.Section>
-              </Match>
-              <Match when={item().type === "item"}>
-                <Listbox.Item item={item()} class={style["select__item"]}>
-                  <Listbox.ItemLabel>{(item().rawValue as Food).label}</Listbox.ItemLabel>
-                  <Listbox.ItemIndicator class={style["select__item-indicator"]}>
-                    <CheckIcon />
-                  </Listbox.ItemIndicator>
-                </Listbox.Item>
-              </Match>
-            </Switch>
-          )}
-        </Key>
+      placeholder="Select a food…"
+      renderValue={selectedOption => selectedOption().label}
+      renderItem={item => (
+        <Select.Item item={item()} class={style["select__item"]}>
+          <Select.ItemLabel>{item().rawValue.label}</Select.ItemLabel>
+          <Select.ItemIndicator class={style["select__item-indicator"]}>
+            <CheckIcon />
+          </Select.ItemIndicator>
+        </Select.Item>
       )}
-    </Listbox.Root>
+      renderSection={section => (
+        <Select.Section class={style["select__section"]}>{section().rawValue.label}</Select.Section>
+      )}
+    >
+      <Select.Trigger class={style["select__trigger"]} aria-label="Food">
+        <Select.Value class={style["select__value"]} />
+        <Select.Icon class={style["select__icon"]}>
+          <CaretSortIcon />
+        </Select.Icon>
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Content class={style["select__content"]}>
+          <Select.Listbox class={style["select__listbox"]} />
+        </Select.Content>
+      </Select.Portal>
+    </Select.Root>
   );
 }
-
-
-*/

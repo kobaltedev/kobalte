@@ -1,4 +1,4 @@
-import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
 import {
   ControlledExample,
   DefaultValueExample,
@@ -7,6 +7,8 @@ import {
   DescriptionExample,
   ErrorMessageExample,
   MultiSelectExample,
+  ObjectExample,
+  OptionGroupExample,
 } from "../../../../examples/select";
 
 # Select
@@ -282,7 +284,7 @@ The multi-select consists of all the parts above in form of `MultiSelect.*`.
 
 ### Default value
 
-An initial, uncontrolled value can be provided using the `defaultValue` prop, which accepts a value corresponding with the `value` prop of each item.
+An initial, uncontrolled value can be provided using the `defaultValue` prop, which accepts a value corresponding with the `options`.
 
 <Preview>
   <DefaultValueExample />
@@ -319,7 +321,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 
 ### Controlled value
 
-The `value` prop, which accepts a value corresponding with the `value` prop of each item, can be used to make the value controlled. The `onValueChange` event is fired when the user selects an item, and receives the new value.
+The `value` prop, which accepts a value corresponding with the `options` prop, can be used to make the value controlled. The `onValueChange` event is fired when the user selects an item, and receives the new value.
 
 <Preview>
   <ControlledExample />
@@ -361,55 +363,6 @@ export function ControlledExample() {
         </Select.Portal>
       </Select.Root>
       <p>Your favorite fruit is: {value()}.</p>
-    </>
-  );
-}
-```
-
-### MultiSelect
-
-The `MultiSelect.*` components can be used to create a select that allow multi-selection. In this case the value provided to `value`, `defaultValue` and `onValueChange` props are of type `Set<string>` instead of `string`.
-
-<Preview>
-  <MultiSelectExample />
-</Preview>
-
-```tsx {3,8-9,12}
-import { createSignal } from "solid-js";
-
-export function MultiSelectExample() {
-  const [values, setValues] = createSignal(new Set(["Blueberry", "Pineapple"]));
-
-  return (
-    <>
-      <MultiSelect.Root
-        value={values()}
-        onValueChange={setValues}
-        options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
-        placeholder="Select some fruits…"
-        renderValue={selectedOptions => selectedOptions().join(", ")}
-        renderItem={item => (
-          <MultiSelect.Item item={item()}>
-            <MultiSelect.ItemLabel>{item().rawValue}</MultiSelect.ItemLabel>
-            <MultiSelect.ItemIndicator>
-              <CheckIcon />
-            </MultiSelect.ItemIndicator>
-          </MultiSelect.Item>
-        )}
-      >
-        <MultiSelect.Trigger aria-label="Fruits">
-          <MultiSelect.Value />
-          <MultiSelect.Icon>
-            <CaretSortIcon />
-          </MultiSelect.Icon>
-        </MultiSelect.Trigger>
-        <MultiSelect.Portal>
-          <MultiSelect.Content>
-            <MultiSelect.Listbox />
-          </MultiSelect.Content>
-        </MultiSelect.Portal>
-      </MultiSelect.Root>
-      <p>Your favorite fruits are: {[...values()].join(", ")}.</p>
     </>
   );
 }
@@ -504,7 +457,7 @@ export function ErrorMessageExample() {
 
 ### HTML forms
 
-The select `name` prop, paired with the item `value` prop, can be used for integration with HTML forms.
+The select `name` prop, paired with the `Select.HiddenSelect` component, can be used for integration with HTML forms.
 
 <Preview>
   <HTMLFormExample />
@@ -556,7 +509,202 @@ function HTMLFormExample() {
 
 ### Using object as options
 
+Objects can be used as options instead of plain strings. In this case you have to tell the select how it should work with the provided options. For this you can use the following props :
+
+- `optionValue`: The property name to use as the value of an option.
+- `optionTextValue`: The property name to use as the text value of an option for keyboard navigation.
+- `optionDisabled`: The property name to use as the disabled flag of an option.
+
+<Preview>
+  <ObjectExample />
+</Preview>
+
+```tsx {18-20}
+interface Fruit {
+  value: string;
+  label: string;
+  disabled: boolean;
+}
+
+const options: Fruit[] = [
+  { value: "apple", label: "Apple", disabled: false },
+  { value: "banana", label: "Banana", disabled: false },
+  { value: "blueberry", label: "Blueberry", disabled: false },
+  { value: "grapes", label: "Grapes", disabled: true },
+  { value: "pineapple", label: "Pineapple", disabled: false },
+];
+
+export function ObjectExample() {
+  return (
+    <Select.Root
+      options={options}
+      optionValue="value"
+      optionTextValue="label"
+      optionDisabled="disabled"
+      placeholder="Select a fruit…"
+      renderValue={selectedOption => selectedOption().label}
+      renderItem={item => (
+        <Select.Item item={item()}>
+          <Select.ItemLabel>{item().rawValue.label}</Select.ItemLabel>
+          <Select.ItemIndicator>
+            <CheckIcon />
+          </Select.ItemIndicator>
+        </Select.Item>
+      )}
+    >
+      <Select.Trigger aria-label="Food">
+        <Select.Value />
+        <Select.Icon>
+          <CaretSortIcon />
+        </Select.Icon>
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Content>
+          <Select.Listbox />
+        </Select.Content>
+      </Select.Portal>
+    </Select.Root>
+  );
+}
+```
+
 ### Using option groups
+
+When using option groups you have to tell the select how to distinguish an option from a group. For this you can use the following props :
+
+- `optionGroupChildren`: The property name that refers to the children options of an option group.
+- `isOptionGroup`: A function used to check if an option is an option group.
+
+By default, an option will be considered as an option group if the value returned by accessing the `optionGroupChildren` on the option is not `null`.
+
+Additionally, the `renderSection` prop is used to display the option group label in the select.
+
+<Preview>
+  <OptionGroupExample />
+</Preview>
+
+```tsx {35,40,51}
+interface Food {
+  value: string;
+  label: string;
+  disabled: boolean;
+}
+
+interface Category {
+  label: string;
+  options: Food[];
+}
+
+const options: Category[] = [
+  {
+    label: "Fruits",
+    options: [
+      { value: "apple", label: "Apple", disabled: false },
+      { value: "banana", label: "Banana", disabled: false },
+      { value: "blueberry", label: "Blueberry", disabled: false },
+      { value: "grapes", label: "Grapes", disabled: true },
+      { value: "pineapple", label: "Pineapple", disabled: false },
+    ],
+  },
+  {
+    label: "Meat",
+    options: [
+      { value: "beef", label: "Beef", disabled: false },
+      { value: "chicken", label: "Chicken", disabled: false },
+      { value: "lamb", label: "Lamb", disabled: false },
+      { value: "pork", label: "Pork", disabled: false },
+    ],
+  },
+];
+
+export function OptionGroupExample() {
+  return (
+    <Select.Root<Food, Category>
+      options={options}
+      optionValue="value"
+      optionTextValue="label"
+      optionDisabled="disabled"
+      optionGroupChildren="options"
+      placeholder="Select a food…"
+      renderValue={selectedOption => selectedOption().label}
+      renderItem={item => (
+        <Select.Item item={item()}>
+          <Select.ItemLabel>{item().rawValue.label}</Select.ItemLabel>
+          <Select.ItemIndicator>
+            <CheckIcon />
+          </Select.ItemIndicator>
+        </Select.Item>
+      )}
+      renderSection={section => <Select.Section>{section().rawValue.label}</Select.Section>}
+    >
+      <Select.Trigger aria-label="Food">
+        <Select.Value />
+        <Select.Icon>
+          <CaretSortIcon />
+        </Select.Icon>
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Content>
+          <Select.Listbox />
+        </Select.Content>
+      </Select.Portal>
+    </Select.Root>
+  );
+}
+```
+
+<Callout type="note">
+  Notice the usage of generics on `Select.Root` for proper TypeScript support.
+</Callout>
+
+### MultiSelect
+
+The `MultiSelect.*` components can be used to create a select that allow multi-selection. In this case the value provided to `value`, `defaultValue` and `onValueChange` props are of type `Set<string>` instead of `string`, and the `renderValue` prop expose an array of selected options instead of a single one.
+
+<Preview>
+  <MultiSelectExample />
+</Preview>
+
+```tsx {3,8-9,12}
+import { createSignal } from "solid-js";
+
+export function MultiSelectExample() {
+  const [values, setValues] = createSignal(new Set(["Blueberry", "Pineapple"]));
+
+  return (
+    <>
+      <MultiSelect.Root
+        value={values()}
+        onValueChange={setValues}
+        options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+        placeholder="Select some fruits…"
+        renderValue={selectedOptions => selectedOptions().join(", ")}
+        renderItem={item => (
+          <MultiSelect.Item item={item()}>
+            <MultiSelect.ItemLabel>{item().rawValue}</MultiSelect.ItemLabel>
+            <MultiSelect.ItemIndicator>
+              <CheckIcon />
+            </MultiSelect.ItemIndicator>
+          </MultiSelect.Item>
+        )}
+      >
+        <MultiSelect.Trigger aria-label="Fruits">
+          <MultiSelect.Value />
+          <MultiSelect.Icon>
+            <CaretSortIcon />
+          </MultiSelect.Icon>
+        </MultiSelect.Trigger>
+        <MultiSelect.Portal>
+          <MultiSelect.Content>
+            <MultiSelect.Listbox />
+          </MultiSelect.Content>
+        </MultiSelect.Portal>
+      </MultiSelect.Root>
+      <p>Your favorite fruits are: {[...values()].join(", ")}.</p>
+    </>
+  );
+}
+```
 
 ### Virtual scrolling
 
@@ -570,6 +718,14 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 | Prop                          | Description                                                                                                                                                                                         |
 | :---------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| options                       | `Array<T \| U>` <br/> An array of options to display as the available options.                                                                                                                      |
+| optionValue                   | `keyof T \| ((option: T) => string)` <br/> Property name or getter function to use as the value of an option.                                                                                       |
+| optionTextValue               | `keyof T \| ((option: T) => string)` <br/> Property name or getter function to use as the text value of an option for typeahead purpose.                                                            |
+| optionDisabled                | `keyof T \| ((option: T) => boolean)` <br/> Property name or getter function to use as the disabled flag of an option.                                                                              |
+| optionGroupChildren           | `keyof U \| ((optGroup: U) => T[])` <br/> Property name or getter function that refers to the children options of an option group.                                                                  |
+| isOptionGroup                 | `(maybeOptGroup: U) => boolean` <br/> Function used to check if an option is an option group.                                                                                                       |
+| placeholder                   | `JSX.Element` <br/> The content that will be rendered when no value or defaultValue is set.                                                                                                         |
+| renderValue                   | `(selectedOption: Accessor<T>) => JSX.Element` <br/> A map function that receives a _selectedOption_ signal representing the selected option.                                                       |
 | value                         | `string` <br/> The controlled value of the select.                                                                                                                                                  |
 | defaultValue                  | `string` <br/> The value of the select when initially rendered. Useful when you do not need to control the value.                                                                                   |
 | onValueChange                 | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                                                        |
@@ -579,6 +735,11 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | allowDuplicateSelectionEvents | `boolean` <br/> Whether `onValueChange` should fire even if the new value is the same as the last.                                                                                                  |
 | disallowEmptySelection        | `boolean` <br/> Whether the select allows empty selection or not.                                                                                                                                   |
 | selectionBehavior             | `'toggle' \| 'replace'` <br/> How selection should behave in the select.                                                                                                                            |
+| isVirtualized                 | `boolean` <br/> Whether the select uses virtual scrolling.                                                                                                                                          |
+| renderItem                    | `(item: Accessor<CollectionNode<T>>) => JSX.Element` <br/> When NOT virtualized, a map function that receives an _item_ signal representing an item.                                                |
+| renderSection                 | `(section: Accessor<CollectionNode<U>>) => JSX.Element` <br/> When NOT virtualized, a map function that receives a _section_ signal representing a section.                                         |
+| scrollToItem                  | `(key: string) => void` <br/> When virtualized, the Virtualizer function used to scroll to the item of the given key.                                                                               |
+| forceMount                    | `boolean` <br/> Used to force mounting the select (portal, positioner and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                 |
 | name                          | `string` <br/> The name of the select. Submitted with its owning form as part of a name/value pair.                                                                                                 |
 | validationState               | `'valid' \| 'invalid'` <br/> Whether the select should display its "valid" or "invalid" visual styling.                                                                                             |
 | isRequired                    | `boolean` <br/> Whether the user must select an item before the owning form can be submitted.                                                                                                       |
@@ -626,15 +787,6 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 ### Select.Value
 
-| Prop        | Description                                                                                                            |
-| :---------- | :--------------------------------------------------------------------------------------------------------------------- |
-| placeholder | `JSX.Element` <br/> The content that will be rendered when no value or defaultValue is set.                            |
-| children    | `JSX.Element \| (state: SelectValueState) => JSX.Element` <br/> The content that will be rendered when a value is set. |
-
-| Render Prop   | Description                                  |
-| :------------ | :------------------------------------------- |
-| selectedValue | `Accessor<string>` <br/> The selected value. |
-
 | Data attribute         | Description                                                         |
 | :--------------------- | :------------------------------------------------------------------ |
 | data-placeholder-shown | Present when the select placeholder is visible (no value selected). |
@@ -654,9 +806,10 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 ### Select.Content
 
-| Prop       | Description                                                                                                                                                |
-| :--------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| forceMount | `boolean` <br/> Used to force keeping the content visible when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+| Data attribute | Description                       |
+| :------------- | :-------------------------------- |
+| data-expanded  | Present when the select is open.  |
+| data-closed    | Present when the select is close. |
 
 ### Select.Arrow
 
@@ -672,11 +825,9 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 ### Select.Item
 
-| Prop       | Description                                                                                                                                                                                                                                                                                            |
-| :--------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value      | `string` <br/> The value of the item, used when submitting an HTML form.                                                                                                                                                                                                                               |
-| textValue  | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `Select.ItemLabel` part if provided, or fallback to the .textContent of the `Select.Item`. Use this when the content is complex, or you have non-textual content inside. |
-| isDisabled | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                   |
+| Prop | Description                                           |
+| :--- | :---------------------------------------------------- |
+| item | `CollectionNode` <br/> The collection node to render. |
 
 | Data attribute   | Description                           |
 | :--------------- | :------------------------------------ |
@@ -696,26 +847,12 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 `MultiSelect.Root` consists of [Select.Root](/docs/components/select#selectroot) and additional props.
 
-| Prop          | Description                                                                                                            |
-| :------------ | :--------------------------------------------------------------------------------------------------------------------- |
-| value         | `Set<string>` <br/> The controlled value of the select.                                                                |
-| defaultValue  | `Set<string>` <br/> The value of the select when initially rendered. Useful when you do not need to control the state. |
-| onValueChange | `(value: Set<string>) => void` <br/> Event handler called when the value changes.                                      |
-
-### MultiSelect.Value
-
-| Prop        | Description                                                                                                                 |
-| :---------- | :-------------------------------------------------------------------------------------------------------------------------- |
-| placeholder | `JSX.Element` <br/> The content that will be rendered when no value or defaultValue is set.                                 |
-| children    | `JSX.Element \| (state: MultiSelectValueState) => JSX.Element` <br/> The content that will be rendered when a value is set. |
-
-| Render Prop    | Description                                        |
-| :------------- | :------------------------------------------------- |
-| selectedValues | `Accessor<Set<string>>` <br/> The selected values. |
-
-| Data attribute         | Description                                                         |
-| :--------------------- | :------------------------------------------------------------------ |
-| data-placeholder-shown | Present when the select placeholder is visible (no value selected). |
+| Prop          | Description                                                                                                                                        |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value         | `Set<string>` <br/> The controlled value of the select.                                                                                            |
+| defaultValue  | `Set<string>` <br/> The value of the select when initially rendered. Useful when you do not need to control the state.                             |
+| onValueChange | `(value: Set<string>) => void` <br/> Event handler called when the value changes.                                                                  |
+| renderValue   | `(selectedOptions: Accessor<T[]>) => JSX.Element` <br/> A map function that receives a _selectedOptions_ signal representing the selected options. |
 
 ## Rendered elements
 
@@ -737,7 +874,6 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | `Select.ItemLabel`       | `div`                    |
 | `Select.ItemDescription` | `div`                    |
 | `Select.ItemIndicator`   | `div`                    |
-| `MultiSelect.Root`       | none                     |
 
 ## Accessibility
 

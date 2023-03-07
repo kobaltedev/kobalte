@@ -87,7 +87,7 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   /** Property name or getter function to use as the disabled flag of an option. */
   optionDisabled?: keyof Option | ((option: Option) => boolean);
 
-  /** Property name or getter function that refers to the children options of option group. */
+  /** Property name or getter function that refers to the children options of an option group. */
   optionGroupChildren?: keyof OptGroup | ((optGroup: OptGroup) => Option[]);
 
   /** Function used to check if an option is an option group. */
