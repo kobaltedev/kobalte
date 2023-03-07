@@ -85,6 +85,7 @@ export function SelectContent(props: OverrideComponentProps<"div", SelectContent
           onEscapeKeyDown={onEscapeKeyDown}
           onFocusOutside={onFocusOutside}
           onDismiss={context.close}
+          {...context.dataset()}
           {...others}
         />
       </PopperPositioner>

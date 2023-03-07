@@ -6,7 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/892d41e82dc781fb4651455d0e29c324376659ed/packages/@react-aria/overlays/src/usePreventScroll.ts
  */
 
-import { access, chain, getScrollParent, isIOS, MaybeAccessor } from "@kobalte/utils";
+import {
+  access,
+  chain,
+  getScrollParent,
+  isIOS,
+  MaybeAccessor,
+  runAfterTransition,
+} from "@kobalte/utils";
 import { createEffect, on, onCleanup } from "solid-js";
 
 export interface PreventScrollOptions {
@@ -29,6 +36,10 @@ const nonTextInputTypes = new Set([
   "reset",
 ]);
 
+// The number of active usePreventScroll calls. Used to determine whether to revert back to the original page style/scroll position
+let preventScrollCount = 0;
+let restore: () => void;
+
 /**
  * Prevents scrolling on the document body on mount, and
  * restores it on unmount. Also ensures that content does not
@@ -43,11 +54,22 @@ export function createPreventScroll(options: PreventScrollOptions) {
           return;
         }
 
-        if (isIOS()) {
-          onCleanup(preventScrollMobileSafari());
-        } else {
-          onCleanup(preventScrollStandard());
+        preventScrollCount++;
+
+        if (preventScrollCount === 1) {
+          if (isIOS()) {
+            restore = preventScrollMobileSafari();
+          } else {
+            restore = preventScrollStandard();
+          }
         }
+
+        onCleanup(() => {
+          preventScrollCount--;
+          if (preventScrollCount === 0) {
+            restore();
+          }
+        });
       }
     )
   );
@@ -166,7 +188,7 @@ function preventScrollMobileSafari() {
               scrollIntoView(target);
             });
           } else {
-            // Otherwise, wait for the visual viewport to resize before scrolling, so we can
+            // Otherwise, wait for the visual viewport to resize before scrolling so we can
             // measure the correct position to scroll to.
             visualViewport.addEventListener("resize", () => scrollIntoView(target), { once: true });
           }
@@ -186,6 +208,7 @@ function preventScrollMobileSafari() {
   // enable us to scroll the window to the top, which is required for the rest of this to work.
   const scrollX = window.pageXOffset;
   const scrollY = window.pageYOffset;
+
   const restoreStyles = chain([
     setStyle(
       document.documentElement,
@@ -200,18 +223,9 @@ function preventScrollMobileSafari() {
   window.scrollTo(0, 0);
 
   const removeEvents = chain([
-    addEvent(document, "touchstart", onTouchStart, {
-      passive: false,
-      capture: true,
-    }),
-    addEvent(document, "touchmove", onTouchMove, {
-      passive: false,
-      capture: true,
-    }),
-    addEvent(document, "touchend", onTouchEnd, {
-      passive: false,
-      capture: true,
-    }),
+    addEvent(document, "touchstart", onTouchStart, { passive: false, capture: true }),
+    addEvent(document, "touchmove", onTouchMove, { passive: false, capture: true }),
+    addEvent(document, "touchend", onTouchEnd, { passive: false, capture: true }),
     addEvent(document, "focus", onFocus, true),
     addEvent(window, "scroll", onWindowScroll),
   ]);
@@ -224,9 +238,7 @@ function preventScrollMobileSafari() {
   };
 }
 
-/**
- * Sets a CSS property on an element, and returns a function to revert it to the previous value.
- */
+// Sets a CSS property on an element, and returns a function to revert it to the previous value.
 function setStyle(element: HTMLElement, style: string, value: string) {
   const cur = element.style[style as any];
   element.style[style as any] = value;
@@ -236,9 +248,7 @@ function setStyle(element: HTMLElement, style: string, value: string) {
   };
 }
 
-/**
- * Adds an event listener to an element, and returns a function to remove it.
- */
+// Adds an event listener to an element, and returns a function to remove it.
 function addEvent<K extends keyof GlobalEventHandlersEventMap>(
   target: EventTarget,
   event: K,

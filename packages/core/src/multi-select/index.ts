@@ -18,12 +18,10 @@ import {
   type SelectItemIndicatorOptions as MultiSelectItemIndicatorOptions,
   type SelectItemOptions as MultiSelectItemOptions,
   type SelectListboxOptions as MultiSelectListboxOptions,
-  type SelectSeparatorOptions as MultiSelectSeparatorOptions,
-  Separator,
   Trigger,
+  Value,
 } from "../select";
 import { MultiSelectRoot as Root, type MultiSelectRootOptions } from "./multi-select-root";
-import { MultiSelectValue as Value, type MultiSelectValueOptions } from "./multi-select-value";
 
 export type {
   MultiSelectArrowOptions,
@@ -32,8 +30,6 @@ export type {
   MultiSelectItemOptions,
   MultiSelectListboxOptions,
   MultiSelectRootOptions,
-  MultiSelectSeparatorOptions,
-  MultiSelectValueOptions,
 };
 
 export {
@@ -52,7 +48,6 @@ export {
   Portal,
   Root,
   Section,
-  Separator,
   Trigger,
   Value,
 };

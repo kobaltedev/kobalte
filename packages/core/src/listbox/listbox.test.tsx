@@ -6,7 +6,6 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-spectrum/listbox/test/Listbox.test.js
  */
 
-import { Key } from "@kobalte/utils";
 import { fireEvent, render, screen } from "solid-testing-library";
 
 import * as Listbox from ".";
@@ -35,13 +34,11 @@ describe("Listbox", () => {
 
   it("renders properly", () => {
     render(() => (
-      <Listbox.Root options={DATA_SOURCE} selectionMode="single">
-        {collection => (
-          <Key each={[...collection()]} by="key">
-            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-          </Key>
-        )}
-      </Listbox.Root>
+      <Listbox.Root
+        options={DATA_SOURCE}
+        selectionMode="single"
+        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -61,13 +58,10 @@ describe("Listbox", () => {
 
   it("allows user to change option focus via up/down arrow keys", async () => {
     render(() => (
-      <Listbox.Root options={DATA_SOURCE}>
-        {collection => (
-          <Key each={[...collection()]} by="key">
-            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-          </Key>
-        )}
-      </Listbox.Root>
+      <Listbox.Root
+        options={DATA_SOURCE}
+        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -91,13 +85,11 @@ describe("Listbox", () => {
 
   it("wraps focus from first to last/last to first option if up/down arrow is pressed if shouldFocusWrap is true", async () => {
     render(() => (
-      <Listbox.Root options={DATA_SOURCE} shouldFocusWrap>
-        {collection => (
-          <Key each={[...collection()]} by="key">
-            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-          </Key>
-        )}
-      </Listbox.Root>
+      <Listbox.Root
+        options={DATA_SOURCE}
+        shouldFocusWrap
+        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -124,13 +116,12 @@ describe("Listbox", () => {
       const defaultValue = new Set(["2"]);
 
       render(() => (
-        <Listbox.Root options={DATA_SOURCE} selectionMode="single" defaultValue={defaultValue}>
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-            </Key>
-          )}
-        </Listbox.Root>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          selectionMode="single"
+          defaultValue={defaultValue}
+          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -155,13 +146,8 @@ describe("Listbox", () => {
           selectionMode="single"
           value={value}
           onValueChange={onValueChangeSpy}
-        >
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-            </Key>
-          )}
-        </Listbox.Root>
+          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -193,13 +179,12 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox.Root options={DATA_SOURCE} selectionMode="single" onValueChange={onValueChangeSpy}>
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-            </Key>
-          )}
-        </Listbox.Root>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          selectionMode="single"
+          onValueChange={onValueChangeSpy}
+          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -224,13 +209,12 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox.Root options={DATA_SOURCE} selectionMode="single" onValueChange={onValueChangeSpy}>
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-            </Key>
-          )}
-        </Listbox.Root>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          selectionMode="single"
+          onValueChange={onValueChangeSpy}
+          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -261,13 +245,12 @@ describe("Listbox", () => {
       ];
 
       render(() => (
-        <Listbox.Root options={dataSource} selectionMode="single" onValueChange={onValueChangeSpy}>
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-            </Key>
-          )}
-        </Listbox.Root>
+        <Listbox.Root
+          options={dataSource}
+          selectionMode="single"
+          onValueChange={onValueChangeSpy}
+          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -306,13 +289,8 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="multiple"
           onValueChange={onValueChangeSpy}
-        >
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-            </Key>
-          )}
-        </Listbox.Root>
+          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -345,13 +323,8 @@ describe("Listbox", () => {
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
-        >
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-            </Key>
-          )}
-        </Listbox.Root>
+          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const options = screen.getAllByRole("option");
@@ -386,13 +359,8 @@ describe("Listbox", () => {
           selectionMode="multiple"
           value={value}
           onValueChange={onValueChangeSpy}
-        >
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-            </Key>
-          )}
-        </Listbox.Root>
+          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const options = screen.getAllByRole("option");
@@ -425,13 +393,8 @@ describe("Listbox", () => {
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
-        >
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-            </Key>
-          )}
-        </Listbox.Root>
+          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const options = screen.getAllByRole("option");
@@ -469,13 +432,8 @@ describe("Listbox", () => {
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
-        >
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-            </Key>
-          )}
-        </Listbox.Root>
+          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const options = screen.getAllByRole("option");
@@ -508,13 +466,8 @@ describe("Listbox", () => {
         defaultValue={defaultValue}
         onValueChange={onValueChangeSpy}
         disallowEmptySelection={false}
-      >
-        {collection => (
-          <Key each={[...collection()]} by="key">
-            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-          </Key>
-        )}
-      </Listbox.Root>
+        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const options = screen.getAllByRole("option");
@@ -535,13 +488,10 @@ describe("Listbox", () => {
 
   it("supports type to select", async () => {
     render(() => (
-      <Listbox.Root options={DATA_SOURCE}>
-        {collection => (
-          <Key each={[...collection()]} by="key">
-            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-          </Key>
-        )}
-      </Listbox.Root>
+      <Listbox.Root
+        options={DATA_SOURCE}
+        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -567,13 +517,10 @@ describe("Listbox", () => {
 
   it("resets the search text after a timeout", async () => {
     render(() => (
-      <Listbox.Root options={DATA_SOURCE}>
-        {collection => (
-          <Key each={[...collection()]} by="key">
-            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-          </Key>
-        )}
-      </Listbox.Root>
+      <Listbox.Root
+        options={DATA_SOURCE}
+        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -599,17 +546,14 @@ describe("Listbox", () => {
     const dataSource = [{ key: "1", label: "One", textValue: "One", isDisabled: false }];
 
     render(() => (
-      <Listbox.Root options={dataSource}>
-        {collection => (
-          <Key each={[...collection()]} by="key">
-            {item => (
-              <Listbox.Item item={item()} aria-label="Item">
-                {item().rawValue.label}
-              </Listbox.Item>
-            )}
-          </Key>
+      <Listbox.Root
+        options={dataSource}
+        renderItem={item => (
+          <Listbox.Item item={item()} aria-label="Item">
+            {item().rawValue.label}
+          </Listbox.Item>
         )}
-      </Listbox.Root>
+      />
     ));
 
     jest.runAllTimers();
@@ -633,18 +577,15 @@ describe("Listbox", () => {
     ];
 
     render(() => (
-      <Listbox.Root options={dataSource}>
-        {collection => (
-          <Key each={[...collection()]} by="key">
-            {item => (
-              <Listbox.Item item={item()}>
-                <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
-                <Listbox.ItemDescription>{item().rawValue.description}</Listbox.ItemDescription>
-              </Listbox.Item>
-            )}
-          </Key>
+      <Listbox.Root
+        options={dataSource}
+        renderItem={item => (
+          <Listbox.Item item={item()}>
+            <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+            <Listbox.ItemDescription>{item().rawValue.description}</Listbox.ItemDescription>
+          </Listbox.Item>
         )}
-      </Listbox.Root>
+      />
     ));
 
     jest.runAllTimers();
@@ -659,13 +600,11 @@ describe("Listbox", () => {
 
   it("supports aria-label", () => {
     render(() => (
-      <Listbox.Root options={DATA_SOURCE} aria-label="Test">
-        {collection => (
-          <Key each={[...collection()]} by="key">
-            {item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
-          </Key>
-        )}
-      </Listbox.Root>
+      <Listbox.Root
+        options={DATA_SOURCE}
+        aria-label="Test"
+        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -676,18 +615,15 @@ describe("Listbox", () => {
   describe("item indicator", () => {
     it("should not display item indicator by default", async () => {
       render(() => (
-        <Listbox.Root options={DATA_SOURCE}>
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => (
-                <Listbox.Item item={item()}>
-                  <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
-                  <Listbox.ItemIndicator data-testid="indicator" />
-                </Listbox.Item>
-              )}
-            </Key>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          renderItem={item => (
+            <Listbox.Item item={item()}>
+              <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+              <Listbox.ItemIndicator data-testid="indicator" />
+            </Listbox.Item>
           )}
-        </Listbox.Root>
+        />
       ));
 
       expect(screen.queryByTestId("indicator")).toBeNull();
@@ -695,18 +631,16 @@ describe("Listbox", () => {
 
     it("should display item indicator when 'selected'", async () => {
       render(() => (
-        <Listbox.Root options={DATA_SOURCE} value={["2"]}>
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => (
-                <Listbox.Item item={item()}>
-                  <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
-                  <Listbox.ItemIndicator data-testid="indicator" />
-                </Listbox.Item>
-              )}
-            </Key>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          value={["2"]}
+          renderItem={item => (
+            <Listbox.Item item={item()}>
+              <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+              <Listbox.ItemIndicator data-testid="indicator" />
+            </Listbox.Item>
           )}
-        </Listbox.Root>
+        />
       ));
 
       expect(screen.getByTestId("indicator")).toBeInTheDocument();
@@ -714,18 +648,15 @@ describe("Listbox", () => {
 
     it("should display item indicator when 'forceMount'", async () => {
       render(() => (
-        <Listbox.Root options={DATA_SOURCE}>
-          {collection => (
-            <Key each={[...collection()]} by="key">
-              {item => (
-                <Listbox.Item item={item()}>
-                  <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
-                  <Listbox.ItemIndicator data-testid="indicator" forceMount />
-                </Listbox.Item>
-              )}
-            </Key>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          renderItem={item => (
+            <Listbox.Item item={item()}>
+              <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+              <Listbox.ItemIndicator data-testid="indicator" forceMount />
+            </Listbox.Item>
           )}
-        </Listbox.Root>
+        />
       ));
 
       screen.getAllByTestId("indicator").forEach(indicator => {

@@ -12,19 +12,19 @@ import {
   Section,
 } from "../listbox";
 import { PopperArrow as Arrow, type PopperArrowOptions as SelectArrowOptions } from "../popper";
-import {
-  Root as Separator,
-  type SeparatorRootOptions as SelectSeparatorOptions,
-} from "../separator";
 import { HiddenSelect as HiddenSelect } from "./hidden-select";
 import { SelectContent as Content, type SelectContentOptions } from "./select-content";
 import { SelectIcon as Icon } from "./select-icon";
 import { SelectLabel as Label } from "./select-label";
-import { SelectListbox as Listbox, type SelectListboxOptions } from "./select-listbox";
+import {
+  SelectListbox as Listbox,
+  type SelectListboxOptions,
+  type SelectListboxProps,
+} from "./select-listbox";
 import { SelectPortal as Portal } from "./select-portal";
 import { SelectRoot as Root, type SelectRootOptions } from "./select-root";
 import { SelectTrigger as Trigger } from "./select-trigger";
-import { SelectValue as Value, type SelectValueOptions } from "./select-value";
+import { SelectValue as Value } from "./select-value";
 
 export type {
   SelectArrowOptions,
@@ -32,9 +32,8 @@ export type {
   SelectItemIndicatorOptions,
   SelectItemOptions,
   SelectListboxOptions,
+  SelectListboxProps,
   SelectRootOptions,
-  SelectSeparatorOptions,
-  SelectValueOptions,
 };
 
 export {
@@ -53,7 +52,6 @@ export {
   Portal,
   Root,
   Section,
-  Separator,
   Trigger,
   Value,
 };

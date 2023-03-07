@@ -10,11 +10,21 @@ import {
   access,
   composeEventHandlers,
   createGenerateId,
+  Key,
   mergeDefaultProps,
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createUniqueId, JSX, splitProps } from "solid-js";
+import {
+  Accessor,
+  createMemo,
+  createUniqueId,
+  JSX,
+  Match,
+  Show,
+  splitProps,
+  Switch,
+} from "solid-js";
 
 import { createListState, createSelectableList, ListState } from "../list";
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -22,7 +32,7 @@ import { Collection, CollectionNode } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, SelectionBehavior, SelectionMode } from "../selection";
 import { ListboxContext, ListboxContextValue } from "./listbox-context";
 
-export interface ListboxRootOptions<T> extends AsChildProp {
+export interface ListboxRootOptions<Option, OptGroup = never> extends AsChildProp {
   /** The controlled value of the listbox. */
   value?: Iterable<string>;
 
@@ -36,22 +46,22 @@ export interface ListboxRootOptions<T> extends AsChildProp {
   onValueChange?: (value: Set<string>) => void;
 
   /** An array of options to display as the available options. */
-  options?: T[];
+  options?: Array<Option | OptGroup>;
 
   /** Property name or getter function to use as the value of an option. */
-  optionValue?: string | ((option: T) => string);
+  optionValue?: keyof Option | ((option: Option) => string);
 
   /** Property name or getter function to use as the text value of an option for typeahead purpose. */
-  optionTextValue?: string | ((option: T) => string);
+  optionTextValue?: keyof Option | ((option: Option) => string);
 
   /** Property name or getter function to use as the disabled flag of an option. */
-  optionDisabled?: string | ((option: T) => boolean);
+  optionDisabled?: keyof Option | ((option: Option) => boolean);
 
   /** Property name or getter function that refers to the children options of option group. */
-  optionGroupChildren?: string | ((optGroup: T) => T[]);
+  optionGroupChildren?: keyof OptGroup | ((optGroup: OptGroup) => Option[]);
 
   /** Function used to check if an option is an option group. */
-  isOptionGroup?: (maybeOptGroup: T) => boolean;
+  isOptionGroup?: (maybeOptGroup: OptGroup) => boolean;
 
   /** The controlled state of the listbox. */
   state?: ListState;
@@ -104,17 +114,28 @@ export interface ListboxRootOptions<T> extends AsChildProp {
   /** Whether the listbox uses virtual scrolling. */
   isVirtualized?: boolean;
 
-  /** When virtualized, the Virtualizer function used to scroll to the item of the key provided. */
-  scrollToKey?: (key: string) => void;
+  /** When NOT virtualized, a map function that receives an _item_ signal representing a listbox item. */
+  renderItem?: (item: Accessor<CollectionNode<Option>>) => JSX.Element;
 
-  /** A function that receives an _items_ signal representing all listbox items and returns a JSX-Element. */
-  children?: (items: Accessor<Collection<CollectionNode>>) => JSX.Element;
+  /** When NOT virtualized, a map function that receives a _section_ signal representing a listbox section. */
+  renderSection?: (section: Accessor<CollectionNode<OptGroup>>) => JSX.Element;
+
+  /** When virtualized, the Virtualizer function used to scroll to the item of the given key. */
+  scrollToItem?: (key: string) => void;
+
+  /** When virtualized, a map function that receives an _items_ signal representing all listbox items and sections. */
+  children?: (items: Accessor<Collection<CollectionNode<Option | OptGroup>>>) => JSX.Element;
 }
+
+export type ListboxRootProps<Option, OptGroup = never> = OverrideComponentProps<
+  "ul",
+  ListboxRootOptions<Option, OptGroup>
+>;
 
 /**
  * Listbox presents a list of options and allows a user to select one or more of them.
  */
-export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOptions<T>>) {
+export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Option, OptGroup>) {
   let ref: HTMLElement | undefined;
 
   const defaultId = `listbox-${createUniqueId()}`;
@@ -123,6 +144,7 @@ export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOp
     {
       id: defaultId,
       selectionMode: "single",
+      isVirtualized: false,
     },
     props
   );
@@ -130,6 +152,8 @@ export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOp
   const [local, others] = splitProps(props, [
     "ref",
     "children",
+    "renderItem",
+    "renderSection",
     "value",
     "defaultValue",
     "onValueChange",
@@ -154,7 +178,7 @@ export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOp
     "disallowTypeAhead",
     "allowsTabNavigation",
     "isVirtualized",
-    "scrollToKey",
+    "scrollToItem",
     "scrollRef",
     "onKeyDown",
     "onMouseDown",
@@ -176,10 +200,10 @@ export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOp
       selectionBehavior: () => access(local.selectionBehavior),
       selectionMode: () => access(local.selectionMode),
       dataSource: () => local.options ?? [],
-      getKey: () => local.optionValue,
-      getTextValue: () => local.optionTextValue,
-      getIsDisabled: () => local.optionDisabled,
-      getSectionChildren: () => local.optionGroupChildren,
+      getKey: () => local.optionValue?.toString(),
+      getTextValue: () => local.optionTextValue?.toString(),
+      getIsDisabled: () => local.optionDisabled?.toString(),
+      getSectionChildren: () => local.optionGroupChildren?.toString(),
       getIsSection: () => local.isOptionGroup,
     });
   });
@@ -197,7 +221,7 @@ export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOp
       shouldUseVirtualFocus: () => access(local.shouldUseVirtualFocus),
       allowsTabNavigation: () => access(local.allowsTabNavigation),
       isVirtualized: () => local.isVirtualized,
-      scrollToKey: () => local.scrollToKey,
+      scrollToKey: () => local.scrollToItem,
     },
     () => ref,
     () => local.scrollRef?.()
@@ -228,7 +252,16 @@ export function ListboxRoot<T>(props: OverrideComponentProps<"ul", ListboxRootOp
         onFocusOut={composeEventHandlers([local.onFocusOut, selectableList.onFocusOut])}
         {...others}
       >
-        {local.children?.(listState().collection)}
+        <Show when={!local.isVirtualized} fallback={local.children?.(listState().collection)}>
+          <Key each={[...listState().collection()]} by="key">
+            {item => (
+              <Switch>
+                <Match when={item().type === "section"}>{local.renderSection?.(item)}</Match>
+                <Match when={item().type === "item"}>{local.renderItem?.(item)}</Match>
+              </Switch>
+            )}
+          </Key>
+        </Show>
       </Polymorphic>
     </ListboxContext.Provider>
   );

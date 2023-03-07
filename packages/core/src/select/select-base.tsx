@@ -13,13 +13,14 @@ import {
   mergeDefaultProps,
   ValidationState,
 } from "@kobalte/utils";
-import { createMemo, createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
+import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
 import { createCollator } from "../i18n";
 import { createListState, ListKeyboardDelegate } from "../list";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
+  CollectionNode,
   createDisclosureState,
   createFormResetListener,
   createPresence,
@@ -32,9 +33,9 @@ import {
   SelectionBehavior,
   SelectionMode,
 } from "../selection";
-import { SelectContext, SelectContextValue } from "./select-context";
+import { SelectContext, SelectContextValue, SelectDataSet } from "./select-context";
 
-export interface SelectBaseOptions<T>
+export interface SelectBaseOptions<Option, OptGroup = never>
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the select. */
   isOpen?: boolean;
@@ -60,23 +61,29 @@ export interface SelectBaseOptions<T>
   /** Event handler called when the value changes. */
   onValueChange?: (value: Set<string>) => void;
 
+  /** A map function that receives a _selectedOptions_ signal representing the selected options. */
+  renderValue?: (selectedOptions: Accessor<Option[]>) => JSX.Element;
+
+  /** The content that will be rendered when no value or defaultValue is set. */
+  placeholder?: JSX.Element;
+
   /** An array of options to display as the available options. */
-  options?: T[];
+  options?: Array<Option | OptGroup>;
 
   /** Property name or getter function to use as the value of an option. */
-  optionValue?: string | ((option: T) => string);
+  optionValue?: keyof Option | ((option: Option) => string);
 
   /** Property name or getter function to use as the text value of an option for typeahead purpose. */
-  optionTextValue?: string | ((option: T) => string);
+  optionTextValue?: keyof Option | ((option: Option) => string);
 
   /** Property name or getter function to use as the disabled flag of an option. */
-  optionDisabled?: string | ((option: T) => boolean);
+  optionDisabled?: keyof Option | ((option: Option) => boolean);
 
-  /** Property name or getter function that refers to the children options of option group. */
-  optionGroupChildren?: string | ((optGroup: T) => T[]);
+  /** Property name or getter function that refers to the children options of an option group. */
+  optionGroupChildren?: keyof OptGroup | ((optGroup: OptGroup) => Option[]);
 
   /** Function used to check if an option is an option group. */
-  isOptionGroup?: (maybeOptGroup: T) => boolean;
+  isOptionGroup?: (maybeOptGroup: OptGroup) => boolean;
 
   /** An optional keyboard delegate implementation for type to select, to override the default. */
   keyboardDelegate?: KeyboardDelegate;
@@ -95,6 +102,12 @@ export interface SelectBaseOptions<T>
 
   /** Whether the select uses virtual scrolling. */
   isVirtualized?: boolean;
+
+  /** When NOT virtualized, a map function that receives an _item_ signal representing an item. */
+  renderItem?: (item: Accessor<CollectionNode<Option>>) => JSX.Element;
+
+  /** When NOT virtualized, a map function that receives a _section_ signal representing a section. */
+  renderSection?: (section: Accessor<CollectionNode<OptGroup>>) => JSX.Element;
 
   /**
    * Used to force mounting the select (portal, positioner and content) when more control is needed.
@@ -126,13 +139,16 @@ export interface SelectBaseOptions<T>
 
   /** Whether the select is read only. */
   isReadOnly?: boolean;
+
+  /** The children of the select. */
+  children?: JSX.Element;
 }
 
 /**
  * Base component for a select, provide context for its children.
  * Used to build single and multi-select.
  */
-export function SelectBase<T>(props: ParentProps<SelectBaseOptions<T>>) {
+export function SelectBase<Option, OptGroup = never>(props: SelectBaseOptions<Option, OptGroup>) {
   const defaultId = `select-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -150,12 +166,16 @@ export function SelectBase<T>(props: ParentProps<SelectBaseOptions<T>>) {
     props,
     [
       "children",
+      "renderItem",
+      "renderSection",
       "isOpen",
       "defaultIsOpen",
       "onOpenChange",
       "value",
       "defaultValue",
       "onValueChange",
+      "renderValue",
+      "placeholder",
       "options",
       "optionValue",
       "optionTextValue",
@@ -263,10 +283,10 @@ export function SelectBase<T>(props: ParentProps<SelectBaseOptions<T>>) {
     selectionBehavior: () => access(local.selectionBehavior),
     selectionMode: () => local.selectionMode,
     dataSource: () => local.options ?? [],
-    getKey: () => local.optionValue,
-    getTextValue: () => local.optionTextValue,
-    getIsDisabled: () => local.optionDisabled,
-    getSectionChildren: () => local.optionGroupChildren,
+    getKey: () => local.optionValue?.toString(),
+    getTextValue: () => local.optionTextValue?.toString(),
+    getIsDisabled: () => local.optionDisabled?.toString(),
+    getSectionChildren: () => local.optionGroupChildren?.toString(),
     getIsSection: () => local.isOptionGroup,
   });
 
@@ -290,7 +310,13 @@ export function SelectBase<T>(props: ParentProps<SelectBaseOptions<T>>) {
     return new ListKeyboardDelegate(listState.collection, undefined, collator);
   });
 
+  const dataset: Accessor<SelectDataSet> = createMemo(() => ({
+    "data-expanded": disclosureState.isOpen() ? "" : undefined,
+    "data-closed": !disclosureState.isOpen() ? "" : undefined,
+  }));
+
   const context: SelectContextValue = {
+    dataset,
     isOpen: disclosureState.isOpen,
     isDisabled: () => formControlContext.isDisabled() ?? false,
     isMultiple: () => access(local.selectionMode) === "multiple",
@@ -311,6 +337,10 @@ export function SelectBase<T>(props: ParentProps<SelectBaseOptions<T>>) {
     open,
     close,
     toggle,
+    placeholder: () => local.placeholder,
+    renderItem: item => local.renderItem?.(item),
+    renderSection: section => local.renderSection?.(section),
+    renderValue: selectedOptions => local.renderValue?.(selectedOptions),
     generateId: createGenerateId(() => access(formControlProps.id)!),
     registerTriggerId: createRegisterId(setTriggerId),
     registerValueId: createRegisterId(setValueId),
