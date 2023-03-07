@@ -1,5 +1,11 @@
 # @kobalte/tailwindcss
 
+## 0.5.0
+
+### Minor Changes
+
+- 0a1b042: New Select and Polymorphism API
+
 ## 0.4.2
 
 ### Patch Changes

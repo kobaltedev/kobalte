@@ -92,8 +92,8 @@ importers:
 
   apps/docs:
     specifiers:
-      '@kobalte/core': 0.6.2
-      '@kobalte/tailwindcss': 0.4.2
+      '@kobalte/core': 0.7.0
+      '@kobalte/tailwindcss': 0.5.0
       '@mdx-js/mdx': 2.3.0
       '@mdx-js/rollup': 2.3.0
       '@solidjs/meta': 0.28.2
@@ -167,9 +167,9 @@ importers:
 
   apps/playground:
     specifiers:
-      '@kobalte/core': ^0.6.2
-      '@kobalte/tailwindcss': ^0.4.2
-      '@kobalte/utils': ^0.5.1
+      '@kobalte/core': ^0.7.0
+      '@kobalte/tailwindcss': ^0.5.0
+      '@kobalte/utils': ^0.6.0
       autoprefixer: 10.4.13
       postcss: 8.4.21
       solid-js: 1.6.12
@@ -196,8 +196,8 @@ importers:
       '@internationalized/date': ^3.1.0
       '@internationalized/number': ^3.2.0
       '@internationalized/string': ^3.1.0
-      '@kobalte/tests': ^0.2.1
-      '@kobalte/utils': ^0.5.1
+      '@kobalte/tests': ^0.3.0
+      '@kobalte/utils': ^0.6.0
       solid-js: ^1.6.12
     dependencies:
       '@floating-ui/dom': 1.2.3
