@@ -1,5 +1,16 @@
 # @kobalte/core
 
+## 0.7.0
+
+### Minor Changes
+
+- 0a1b042: New Select and Polymorphism API
+
+### Patch Changes
+
+- Updated dependencies [0a1b042]
+  - @kobalte/utils@0.6.0
+
 ## 0.6.2
 
 ### Patch Changes

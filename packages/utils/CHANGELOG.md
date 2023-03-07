@@ -1,5 +1,11 @@
 # @kobalte/utils
 
+## 0.6.0
+
+### Minor Changes
+
+- 0a1b042: New Select and Polymorphism API
+
 ## 0.5.1
 
 ### Patch Changes

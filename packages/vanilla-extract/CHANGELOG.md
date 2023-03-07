@@ -1,5 +1,11 @@
 # @kobalte/vanilla-extract
 
+## 0.3.0
+
+### Minor Changes
+
+- 0a1b042: New Select and Polymorphism API
+
 ## 0.2.1
 
 ### Patch Changes
