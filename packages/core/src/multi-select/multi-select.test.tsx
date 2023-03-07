@@ -7,9 +7,16 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
+import { Key } from "@kobalte/utils";
 import { fireEvent, render, screen, within } from "solid-testing-library";
 
 import * as MultiSelect from ".";
+
+const DATA_SOURCE = [
+  { key: "1", label: "One", textValue: "One", isDisabled: false },
+  { key: "2", label: "Two", textValue: "Two", isDisabled: false },
+  { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+];
 
 describe("MultiSelect", () => {
   installPointerEvent();
@@ -27,18 +34,26 @@ describe("MultiSelect", () => {
 
   it("supports selecting multiple options", async () => {
     render(() => (
-      <MultiSelect.Root onValueChange={onValueChange}>
+      <MultiSelect.Root
+        options={DATA_SOURCE}
+        placeholder="Placeholder"
+        renderValue={selectedOptions =>
+          selectedOptions()
+            .map(item => item.label)
+            .join(", ")
+        }
+        onValueChange={onValueChange}
+        renderItem={item => (
+          <MultiSelect.Item item={item()}>{item().rawValue.label}</MultiSelect.Item>
+        )}
+      >
         <MultiSelect.Label>Label</MultiSelect.Label>
         <MultiSelect.Trigger>
-          <MultiSelect.Value placeholder="Placeholder" />
+          <MultiSelect.Value />
         </MultiSelect.Trigger>
         <MultiSelect.Portal>
           <MultiSelect.Content>
-            <MultiSelect.Listbox>
-              <MultiSelect.Item value="1">One</MultiSelect.Item>
-              <MultiSelect.Item value="2">Two</MultiSelect.Item>
-              <MultiSelect.Item value="3">Three</MultiSelect.Item>
-            </MultiSelect.Listbox>
+            <MultiSelect.Listbox />
           </MultiSelect.Content>
         </MultiSelect.Portal>
       </MultiSelect.Root>
@@ -90,18 +105,27 @@ describe("MultiSelect", () => {
     const defaultValue = new Set(["1", "2"]);
 
     render(() => (
-      <MultiSelect.Root defaultValue={defaultValue} onValueChange={onValueChange}>
+      <MultiSelect.Root
+        options={DATA_SOURCE}
+        placeholder="Placeholder"
+        renderValue={selectedOptions =>
+          selectedOptions()
+            .map(item => item.label)
+            .join(", ")
+        }
+        defaultValue={defaultValue}
+        onValueChange={onValueChange}
+        renderItem={item => (
+          <MultiSelect.Item item={item()}>{item().rawValue.label}</MultiSelect.Item>
+        )}
+      >
         <MultiSelect.Label>Label</MultiSelect.Label>
         <MultiSelect.Trigger>
-          <MultiSelect.Value placeholder="Placeholder" />
+          <MultiSelect.Value />
         </MultiSelect.Trigger>
         <MultiSelect.Portal>
           <MultiSelect.Content>
-            <MultiSelect.Listbox>
-              <MultiSelect.Item value="1">One</MultiSelect.Item>
-              <MultiSelect.Item value="2">Two</MultiSelect.Item>
-              <MultiSelect.Item value="3">Three</MultiSelect.Item>
-            </MultiSelect.Listbox>
+            <MultiSelect.Listbox />
           </MultiSelect.Content>
         </MultiSelect.Portal>
       </MultiSelect.Root>
@@ -134,18 +158,27 @@ describe("MultiSelect", () => {
     const value = new Set(["1", "2"]);
 
     render(() => (
-      <MultiSelect.Root value={value} onValueChange={onValueChange}>
+      <MultiSelect.Root
+        options={DATA_SOURCE}
+        placeholder="Placeholder"
+        renderValue={selectedOptions =>
+          selectedOptions()
+            .map(item => item.label)
+            .join(", ")
+        }
+        value={value}
+        onValueChange={onValueChange}
+        renderItem={item => (
+          <MultiSelect.Item item={item()}>{item().rawValue.label}</MultiSelect.Item>
+        )}
+      >
         <MultiSelect.Label>Label</MultiSelect.Label>
         <MultiSelect.Trigger>
-          <MultiSelect.Value placeholder="Placeholder" />
+          <MultiSelect.Value />
         </MultiSelect.Trigger>
         <MultiSelect.Portal>
           <MultiSelect.Content>
-            <MultiSelect.Listbox>
-              <MultiSelect.Item value="1">One</MultiSelect.Item>
-              <MultiSelect.Item value="2">Two</MultiSelect.Item>
-              <MultiSelect.Item value="3">Three</MultiSelect.Item>
-            </MultiSelect.Listbox>
+            <MultiSelect.Listbox />
           </MultiSelect.Content>
         </MultiSelect.Portal>
       </MultiSelect.Root>
@@ -176,18 +209,27 @@ describe("MultiSelect", () => {
     const defaultValue = new Set(["1", "2"]);
 
     render(() => (
-      <MultiSelect.Root defaultValue={defaultValue} onValueChange={onValueChange}>
+      <MultiSelect.Root
+        options={DATA_SOURCE}
+        placeholder="Placeholder"
+        renderValue={selectedOptions =>
+          selectedOptions()
+            .map(item => item.label)
+            .join(", ")
+        }
+        defaultValue={defaultValue}
+        onValueChange={onValueChange}
+        renderItem={item => (
+          <MultiSelect.Item item={item()}>{item().rawValue.label}</MultiSelect.Item>
+        )}
+      >
         <MultiSelect.Label>Label</MultiSelect.Label>
         <MultiSelect.Trigger>
-          <MultiSelect.Value placeholder="Placeholder" />
+          <MultiSelect.Value />
         </MultiSelect.Trigger>
         <MultiSelect.Portal>
           <MultiSelect.Content>
-            <MultiSelect.Listbox>
-              <MultiSelect.Item value="1">One</MultiSelect.Item>
-              <MultiSelect.Item value="2">Two</MultiSelect.Item>
-              <MultiSelect.Item value="3">Three</MultiSelect.Item>
-            </MultiSelect.Listbox>
+            <MultiSelect.Listbox />
           </MultiSelect.Content>
         </MultiSelect.Portal>
       </MultiSelect.Root>

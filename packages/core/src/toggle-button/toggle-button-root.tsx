@@ -12,7 +12,7 @@
  * https://github.com/adobe/react-spectrum/blob/a13802d8be6f83af1450e56f7a88527b10d9cadf/packages/@react-aria/button/src/useToggleButton.ts
  */
 
-import { callHandler, createPolymorphicComponent, isFunction } from "@kobalte/utils";
+import { callHandler, isFunction, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, children, JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
@@ -47,40 +47,38 @@ export interface ToggleButtonRootOptions extends Button.ButtonRootOptions {
  * A two-state button that allow users to toggle a selection on or off.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export const ToggleButtonRoot = createPolymorphicComponent<"button", ToggleButtonRootOptions>(
-  props => {
-    const [local, others] = splitProps(props, [
-      "children",
-      "isPressed",
-      "defaultIsPressed",
-      "onPressedChange",
-      "onClick",
-    ]);
+export function ToggleButtonRoot(props: OverrideComponentProps<"button", ToggleButtonRootOptions>) {
+  const [local, others] = splitProps(props, [
+    "children",
+    "isPressed",
+    "defaultIsPressed",
+    "onPressedChange",
+    "onClick",
+  ]);
 
-    const state = createToggleState({
-      isSelected: () => local.isPressed,
-      defaultIsSelected: () => local.defaultIsPressed,
-      onSelectedChange: selected => local.onPressedChange?.(selected),
-      isDisabled: () => others.isDisabled,
-    });
+  const state = createToggleState({
+    isSelected: () => local.isPressed,
+    defaultIsSelected: () => local.defaultIsPressed,
+    onSelectedChange: selected => local.onPressedChange?.(selected),
+    isDisabled: () => others.isDisabled,
+  });
 
-    const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-      callHandler(e, local.onClick);
-      state.toggle();
-    };
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    callHandler(e, local.onClick);
+    state.toggle();
+  };
 
-    return (
-      <Button.Root
-        aria-pressed={state.isSelected()}
-        data-pressed={state.isSelected() ? "" : undefined}
-        onClick={onClick}
-        {...others}
-      >
-        <ToggleButtonRootChild state={{ isPressed: state.isSelected }} children={local.children} />
-      </Button.Root>
-    );
-  }
-);
+  return (
+    <Button.Root
+      aria-pressed={state.isSelected()}
+      data-pressed={state.isSelected() ? "" : undefined}
+      onClick={onClick}
+      {...others}
+    >
+      <ToggleButtonRootChild state={{ isPressed: state.isSelected }} children={local.children} />
+    </Button.Root>
+  );
+}
 
 interface ToggleButtonRootChildProps extends Pick<ToggleButtonRootOptions, "children"> {
   state: ToggleButtonRootState;

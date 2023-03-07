@@ -1,4 +1,4 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { OverrideComponentProps } from "@kobalte/utils";
 
 import { MenuItemBase, MenuItemBaseOptions } from "./menu-item-base";
 
@@ -8,14 +8,6 @@ export interface MenuItemOptions
 /**
  * An item of the menu.
  */
-export const MenuItem = createPolymorphicComponent<"div", MenuItemOptions>(props => {
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      closeOnSelect: true,
-    },
-    props
-  );
-
-  return <MenuItemBase role="menuitem" {...props} />;
-});
+export function MenuItem(props: OverrideComponentProps<"div", MenuItemOptions>) {
+  return <MenuItemBase role="menuitem" closeOnSelect {...props} />;
+}

@@ -7,10 +7,10 @@
  */
 
 import {
-  createPolymorphicComponent,
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, onCleanup, Show, splitProps } from "solid-js";
 
@@ -24,8 +24,9 @@ import {
   PointerDownOutsideEvent,
 } from "../primitives";
 import { useDialogContext } from "./dialog-context";
+import { AsChildProp } from "../polymorphic";
 
-export interface DialogContentOptions {
+export interface DialogContentOptions extends AsChildProp {
   /**
    * Event handler called when focus moves into the component after opening.
    * It can be prevented by calling `event.preventDefault`.
@@ -66,14 +67,13 @@ export interface DialogContentOptions {
 /**
  * Contains the content to be rendered when the dialog is open.
  */
-export const DialogContent = createPolymorphicComponent<"div", DialogContentOptions>(props => {
+export function DialogContent(props: OverrideComponentProps<"div", DialogContentOptions>) {
   let ref: HTMLElement | undefined;
 
   const context = useDialogContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: context.generateId("content"),
     },
     props
@@ -187,4 +187,4 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentOpti
       />
     </Show>
   );
-});
+}

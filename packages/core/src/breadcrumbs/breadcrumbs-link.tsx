@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/38a57d3360268fb0cb55c6b42b9a5f6f13bb57d6/packages/@react-aria/breadcrumbs/src/useBreadcrumbItem.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { OverrideComponentProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import * as Link from "../link";
@@ -22,9 +22,7 @@ export interface BreadcrumbsLinkOptions extends Link.LinkRootOptions {
 /**
  * The breadcrumbs link.
  */
-export const BreadcrumbsLink = createPolymorphicComponent<"a", BreadcrumbsLinkOptions>(props => {
-  props = mergeDefaultProps({ as: "a" }, props);
-
+export function BreadcrumbsLink(props: OverrideComponentProps<"a", BreadcrumbsLinkOptions>) {
   const [local, others] = splitProps(props, ["isCurrent", "isDisabled", "aria-current"]);
 
   const ariaCurrent = () => {
@@ -43,4 +41,4 @@ export const BreadcrumbsLink = createPolymorphicComponent<"a", BreadcrumbsLinkOp
       {...others}
     />
   );
-});
+}

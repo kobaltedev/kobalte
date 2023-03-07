@@ -11,10 +11,10 @@ import {
   callHandler,
   mergeDefaultProps,
   mergeRefs,
-  OverrideProps,
+  OverrideComponentProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { ComponentProps, createEffect, JSX, on, splitProps } from "solid-js";
+import { createEffect, JSX, on, splitProps } from "solid-js";
 
 import { useCheckboxContext } from "./checkbox-context";
 
@@ -26,7 +26,7 @@ export interface CheckboxInputOptions {
 /**
  * The native html input that is visually hidden in the checkbox.
  */
-export function CheckboxInput(props: OverrideProps<ComponentProps<"input">, CheckboxInputOptions>) {
+export function CheckboxInput(props: OverrideComponentProps<"input", CheckboxInputOptions>) {
   let ref: HTMLInputElement | undefined;
 
   const context = useCheckboxContext();

@@ -44,6 +44,11 @@ export function createListState(props: CreateListStateProps): ListState {
   const collection = createCollection(
     {
       dataSource: () => access(props.dataSource),
+      getKey: () => access(props.getKey),
+      getTextValue: () => access(props.getTextValue),
+      getIsDisabled: () => access(props.getIsDisabled),
+      getSectionChildren: () => access(props.getSectionChildren),
+      getIsSection: () => access(props.getIsSection),
       factory,
     },
     [() => props.filter]

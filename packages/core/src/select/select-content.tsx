@@ -1,10 +1,5 @@
-import {
-  createPolymorphicComponent,
-  focusWithoutScrolling,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { focusWithoutScrolling, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { JSX, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
 import { PopperPositioner } from "../popper";
@@ -15,31 +10,22 @@ import {
   FocusOutsideEvent,
 } from "../primitives";
 import { useSelectContext } from "./select-context";
+import { AsChildProp } from "../polymorphic";
 
-export interface SelectContentOptions {
+export interface SelectContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
-
-  /**
-   * Used to force keeping the content visible when more control is needed.
-   * Useful when controlling animation with SolidJS animation libraries.
-   */
-  forceMount?: boolean;
 }
 
 /**
  * The component that pops out when the select is open.
  */
-export const SelectContent = createPolymorphicComponent<"div", SelectContentOptions>(props => {
+export function SelectContent(props: OverrideComponentProps<"div", SelectContentOptions>) {
   let ref: HTMLElement | undefined;
 
   const context = useSelectContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
-
-  const [local, others] = splitProps(props, ["ref", "id", "style", "forceMount"]);
-
-  const forceMount = () => local.forceMount || context.isOpen();
+  const [local, others] = splitProps(props, ["ref", "id", "style"]);
 
   const onEscapeKeyDown = (e: KeyboardEvent) => {
     // `createSelectableList` prevent escape key down,
@@ -80,27 +66,29 @@ export const SelectContent = createPolymorphicComponent<"div", SelectContentOpti
   );
 
   return (
-    <PopperPositioner>
-      <DismissableLayer
-        ref={mergeRefs(el => {
-          context.setContentRef(el);
-          ref = el;
-        }, local.ref)}
-        isDismissed={!context.isOpen()}
-        disableOutsidePointerEvents={context.isOpen()}
-        excludedElements={[context.triggerRef]}
-        hidden={!forceMount()}
-        style={{
-          "--kb-select-content-transform-origin": "var(--kb-popper-content-transform-origin)",
-          position: "relative",
-          display: !forceMount() ? "none" : undefined,
-          ...local.style,
-        }}
-        onEscapeKeyDown={onEscapeKeyDown}
-        onFocusOutside={onFocusOutside}
-        onDismiss={context.close}
-        {...others}
-      />
-    </PopperPositioner>
+    <Show when={context.contentPresence.isPresent()}>
+      <PopperPositioner>
+        <DismissableLayer
+          ref={mergeRefs(el => {
+            context.setContentRef(el);
+            context.contentPresence.setRef(el);
+            ref = el;
+          }, local.ref)}
+          isDismissed={!context.isOpen()}
+          disableOutsidePointerEvents={context.isOpen()}
+          excludedElements={[context.triggerRef]}
+          style={{
+            "--kb-select-content-transform-origin": "var(--kb-popper-content-transform-origin)",
+            position: "relative",
+            ...local.style,
+          }}
+          onEscapeKeyDown={onEscapeKeyDown}
+          onFocusOutside={onFocusOutside}
+          onDismiss={context.close}
+          {...context.dataset()}
+          {...others}
+        />
+      </PopperPositioner>
+    </Show>
   );
-});
+}

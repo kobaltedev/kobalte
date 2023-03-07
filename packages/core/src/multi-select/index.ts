@@ -1,16 +1,9 @@
 import {
-  type SelectArrowOptions as MultiSelectArrowOptions,
-  type SelectContentOptions as MultiSelectContentOptions,
-  type SelectItemIndicatorOptions as MultiSelectItemIndicatorOptions,
-  type SelectItemOptions as MultiSelectItemOptions,
-  type SelectListboxOptions as MultiSelectListboxOptions,
-  type SelectSeparatorOptions as MultiSelectSeparatorOptions,
   Arrow,
   Content,
   Description,
   ErrorMessage,
-  Group,
-  GroupLabel,
+  HiddenSelect,
   Icon,
   Item,
   ItemDescription,
@@ -19,11 +12,16 @@ import {
   Label,
   Listbox,
   Portal,
-  Separator,
+  Section,
+  type SelectArrowOptions as MultiSelectArrowOptions,
+  type SelectContentOptions as MultiSelectContentOptions,
+  type SelectItemIndicatorOptions as MultiSelectItemIndicatorOptions,
+  type SelectItemOptions as MultiSelectItemOptions,
+  type SelectListboxOptions as MultiSelectListboxOptions,
   Trigger,
+  Value,
 } from "../select";
-import { type MultiSelectRootOptions, MultiSelectRoot as Root } from "./multi-select-root";
-import { type MultiSelectValueOptions, MultiSelectValue as Value } from "./multi-select-value";
+import { MultiSelectRoot as Root, type MultiSelectRootOptions } from "./multi-select-root";
 
 export type {
   MultiSelectArrowOptions,
@@ -32,8 +30,6 @@ export type {
   MultiSelectItemOptions,
   MultiSelectListboxOptions,
   MultiSelectRootOptions,
-  MultiSelectSeparatorOptions,
-  MultiSelectValueOptions,
 };
 
 export {
@@ -41,8 +37,7 @@ export {
   Content,
   Description,
   ErrorMessage,
-  Group,
-  GroupLabel,
+  HiddenSelect,
   Icon,
   Item,
   ItemDescription,
@@ -52,7 +47,7 @@ export {
   Listbox,
   Portal,
   Root,
-  Separator,
+  Section,
   Trigger,
   Value,
 };

@@ -264,18 +264,17 @@ describe("Accordion", () => {
 
       const buttons = screen.getAllByRole("button");
       const [firstItem] = buttons;
-      const contentOne = screen.getByText("Content one");
 
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
 
       await userEvent.click(firstItem);
       expect(firstItem).toHaveAttribute("aria-expanded", "false");
-      expect(contentOne).not.toBeVisible();
+      expect(screen.queryByText("Content one")).not.toBeInTheDocument();
 
       await userEvent.click(firstItem);
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
     });
 
     it("should allows users to open and close accordion item with enter / space key when collapsible", async () => {
@@ -283,10 +282,9 @@ describe("Accordion", () => {
 
       const buttons = screen.getAllByRole("button");
       const [firstItem] = buttons;
-      const contentOne = screen.getByText("Content one");
 
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
 
       firstItem.focus();
       expect(document.activeElement).toBe(firstItem);
@@ -296,14 +294,14 @@ describe("Accordion", () => {
       await Promise.resolve();
 
       expect(firstItem).toHaveAttribute("aria-expanded", "false");
-      expect(contentOne).not.toBeVisible();
+      expect(screen.queryByText("Content one")).not.toBeInTheDocument();
 
       fireEvent.keyDown(firstItem, { key: "Enter" });
       fireEvent.keyUp(firstItem, { key: "Enter" });
       await Promise.resolve();
 
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
     });
   });
 
@@ -334,18 +332,17 @@ describe("Accordion", () => {
 
       const buttons = screen.getAllByRole("button");
       const [firstItem] = buttons;
-      const contentOne = screen.getByText("Content one");
 
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
 
       await userEvent.click(firstItem);
       expect(firstItem).toHaveAttribute("aria-expanded", "false");
-      expect(contentOne).not.toBeVisible();
+      expect(screen.queryByText("Content one")).not.toBeInTheDocument();
 
       await userEvent.click(firstItem);
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
     });
 
     it("should allows users to open and close accordion item with enter / space key when multiple", async () => {
@@ -353,10 +350,9 @@ describe("Accordion", () => {
 
       const buttons = screen.getAllByRole("button");
       const [firstItem] = buttons;
-      const contentOne = screen.getByText("Content one");
 
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
 
       firstItem.focus();
       expect(document.activeElement).toBe(firstItem);
@@ -366,14 +362,14 @@ describe("Accordion", () => {
       await Promise.resolve();
 
       expect(firstItem).toHaveAttribute("aria-expanded", "false");
-      expect(contentOne).not.toBeVisible();
+      expect(screen.queryByText("Content one")).not.toBeInTheDocument();
 
       fireEvent.keyDown(firstItem, { key: "Enter" });
       fireEvent.keyUp(firstItem, { key: "Enter" });
       await Promise.resolve();
 
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
     });
 
     it("should call 'onValueChange' when clicking triggers", async () => {

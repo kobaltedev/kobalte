@@ -1,4 +1,4 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import { MenuItemBase, MenuItemBaseOptions } from "./menu-item-base";
@@ -13,16 +13,10 @@ export interface MenuRadioItemOptions
 /**
  * An item that can be controlled and rendered like a radio.
  */
-export const MenuRadioItem = createPolymorphicComponent<"div", MenuRadioItemOptions>(props => {
+export function MenuRadioItem(props: OverrideComponentProps<"div", MenuRadioItemOptions>) {
   const context = useMenuRadioGroupContext();
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      closeOnSelect: false,
-    },
-    props
-  );
+  props = mergeDefaultProps({ closeOnSelect: false }, props);
 
   const [local, others] = splitProps(props, ["value", "onSelect"]);
 
@@ -39,4 +33,4 @@ export const MenuRadioItem = createPolymorphicComponent<"div", MenuRadioItemOpti
       {...others}
     />
   );
-});
+}

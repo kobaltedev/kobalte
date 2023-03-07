@@ -10,18 +10,17 @@ import {
   callHandler,
   composeEventHandlers,
   createGenerateId,
-  createPolymorphicComponent,
   focusWithoutScrolling,
   isMac,
   isWebKit,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
-import { CollectionItem, createRegisterId } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
+import { AsChildProp, Polymorphic } from "../polymorphic";
+import { CollectionNode, createRegisterId, getItemCount } from "../primitives";
 import { createSelectableItem } from "../selection";
 import { useListboxContext } from "./listbox-context";
 import {
@@ -30,46 +29,26 @@ import {
   ListboxItemDataSet,
 } from "./listbox-item-context";
 
-export interface ListboxItemOptions {
-  /** A unique value for the item. */
-  value: string;
-
-  /**
-   * Optional text used for typeahead purposes.
-   * By default, the typeahead behavior will use the .textContent of the `Listbox.ItemLabel` part
-   * if provided, or fallback to the .textContent of the `Listbox.Item`.
-   * Use this when the content is complex, or you have non-textual content inside.
-   */
-  textValue?: string;
-
-  /** Whether the item is disabled. */
-  isDisabled?: boolean;
+export interface ListboxItemOptions extends AsChildProp {
+  /** The collection node to render. */
+  item: CollectionNode;
 }
 
 /**
  * An item of the listbox.
  */
-export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>(props => {
+export function ListboxItem(props: OverrideComponentProps<"li", ListboxItemOptions>) {
   let ref: HTMLElement | undefined;
 
   const listBoxContext = useListboxContext();
 
   const defaultId = `${listBoxContext.generateId("item")}-${createUniqueId()}`;
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      id: defaultId,
-    },
-    props
-  );
+  props = mergeDefaultProps({ id: defaultId }, props);
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
-    "value",
-    "textValue",
-    "isDisabled",
+    "item",
     "aria-label",
     "aria-labelledby",
     "aria-describedby",
@@ -84,32 +63,21 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
 
   const [labelId, setLabelId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
-  const [labelRef, setLabelRef] = createSignal<HTMLElement>();
 
   const selectionManager = () => listBoxContext.listState().selectionManager();
 
-  const isHighlighted = () => selectionManager().focusedKey() === local.value;
-
-  createDomCollectionItem<CollectionItem>({
-    getItem: () => ({
-      ref: () => ref,
-      key: local.value,
-      label: labelRef()?.textContent ?? ref?.textContent ?? "",
-      textValue: local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
-      isDisabled: local.isDisabled ?? false,
-    }),
-  });
+  const isHighlighted = () => selectionManager().focusedKey() === local.item.key;
 
   const selectableItem = createSelectableItem(
     {
-      key: () => local.value,
+      key: () => local.item.key,
       selectionManager: selectionManager,
       shouldSelectOnPressUp: listBoxContext.shouldSelectOnPressUp,
       allowsDifferentPressOrigin: () => {
         return listBoxContext.shouldSelectOnPressUp() && listBoxContext.shouldFocusOnHover();
       },
       shouldUseVirtualFocus: listBoxContext.shouldUseVirtualFocus,
-      isDisabled: () => local.isDisabled,
+      isDisabled: () => local.item.isDisabled,
     },
     () => ref
   );
@@ -130,6 +98,24 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
   const ariaLabel = () => (isNotSafariMacOS() ? local["aria-label"] : undefined);
   const ariaLabelledBy = () => (isNotSafariMacOS() ? labelId() : undefined);
   const ariaDescribedBy = () => (isNotSafariMacOS() ? descriptionId() : undefined);
+
+  const ariaPosInSet = () => {
+    if (!listBoxContext.isVirtualized()) {
+      return undefined;
+    }
+
+    const index = listBoxContext.listState().collection().getItem(local.item.key)?.index;
+
+    return index != null ? index + 1 : undefined;
+  };
+
+  const ariaSetSize = () => {
+    if (!listBoxContext.isVirtualized()) {
+      return undefined;
+    }
+
+    return getItemCount(listBoxContext.listState().collection());
+  };
 
   /**
    * We focus items on `pointerMove` to achieve the following:
@@ -152,7 +138,7 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
     if (!selectableItem.isDisabled() && listBoxContext.shouldFocusOnHover()) {
       focusWithoutScrolling(e.currentTarget);
       selectionManager().setFocused(true);
-      selectionManager().setFocusedKey(local.value);
+      selectionManager().setFocusedKey(local.item.key);
     }
   };
 
@@ -165,7 +151,6 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
   const context: ListboxItemContextValue = {
     isSelected: selectableItem.isSelected,
     dataset,
-    setLabelRef,
     generateId: createGenerateId(() => others.id!),
     registerLabelId: createRegisterId(setLabelId),
     registerDescriptionId: createRegisterId(setDescriptionId),
@@ -173,8 +158,8 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
 
   return (
     <ListboxItemContext.Provider value={context}>
-      <Dynamic
-        component={local.as}
+      <Polymorphic
+        fallback="li"
         ref={mergeRefs(el => (ref = el), local.ref)}
         role="option"
         tabIndex={selectableItem.tabIndex()}
@@ -183,6 +168,8 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
         aria-label={ariaLabel()}
         aria-labelledby={ariaLabelledBy()}
         aria-describedby={ariaDescribedBy()}
+        aria-posinset={ariaPosInSet()}
+        aria-setsize={ariaSetSize()}
         data-key={selectableItem.dataKey()}
         onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
         onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}
@@ -196,4 +183,4 @@ export const ListboxItem = createPolymorphicComponent<"div", ListboxItemOptions>
       />
     </ListboxItemContext.Provider>
   );
-});
+}

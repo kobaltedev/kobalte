@@ -6,12 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuTrigger.ts
  */
 
-import {
-  callHandler,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
+import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Button from "../button";
@@ -23,7 +18,7 @@ export interface MenuTriggerOptions extends Button.ButtonRootOptions {}
 /**
  * The button that toggles the menu.
  */
-export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerOptions>(props => {
+export function MenuTrigger(props: OverrideComponentProps<"button", MenuTriggerOptions>) {
   const rootContext = useMenuRootContext();
   const context = useMenuContext();
 
@@ -103,4 +98,4 @@ export const MenuTrigger = createPolymorphicComponent<"button", MenuTriggerOptio
       {...others}
     />
   );
-});
+}

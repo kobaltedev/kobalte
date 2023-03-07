@@ -7,13 +7,14 @@
  * https://github.com/adobe/react-spectrum/blob/0af91c08c745f4bb35b6ad4932ca17a0d85dd02c/packages/@react-spectrum/textfield/src/TextArea.tsx
  */
 
-import { mergeDefaultProps, mergeRefs, OverrideProps } from "@kobalte/utils";
-import { ComponentProps, createEffect, on, splitProps } from "solid-js";
+import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, on, splitProps } from "solid-js";
 
+import { As, AsChildProp, Polymorphic } from "../polymorphic";
 import { useTextFieldContext } from "./text-field-context";
 import { TextFieldInputBase } from "./text-field-input";
 
-export interface TextFieldAreaOptions {
+export interface TextFieldAreaOptions extends AsChildProp {
   /** Whether the textarea should adjust its height when the value changes. */
   autoResize?: boolean;
 }
@@ -21,9 +22,7 @@ export interface TextFieldAreaOptions {
 /**
  * The native html textarea of the textfield.
  */
-export function TextFieldTextArea(
-  props: OverrideProps<ComponentProps<"textarea">, TextFieldAreaOptions>
-) {
+export function TextFieldTextArea(props: OverrideComponentProps<"textarea", TextFieldAreaOptions>) {
   let ref: HTMLTextAreaElement | undefined;
 
   const context = useTextFieldContext();
@@ -48,7 +47,14 @@ export function TextFieldTextArea(
   );
 
   return (
-    <TextFieldInputBase as="textarea" ref={mergeRefs(el => (ref = el), local.ref)} {...others} />
+    <TextFieldInputBase asChild>
+      <As
+        component={Polymorphic}
+        fallback="textarea"
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        {...others}
+      />
+    </TextFieldInputBase>
   );
 }
 

@@ -15,21 +15,22 @@
 import {
   callHandler,
   composeEventHandlers,
-  createPolymorphicComponent,
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, on, onCleanup, splitProps } from "solid-js";
-import { Dynamic, isServer } from "solid-js/web";
+import { isServer } from "solid-js/web";
 
 import { Direction, useLocale } from "../i18n";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 import { getPointerGraceArea, Side } from "./utils";
 
-export interface MenuSubTriggerOptions {
+export interface MenuSubTriggerOptions extends AsChildProp {
   /**
    * Optional text used for typeahead purposes.
    * By default, the typeahead behavior will use the .textContent of the Menu.SubTrigger.
@@ -50,7 +51,7 @@ const SUB_OPEN_KEYS: Record<Direction, string[]> = {
 /**
  * An item that opens a submenu.
  */
-export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOptions>(props => {
+export function MenuSubTrigger(props: OverrideComponentProps<"div", MenuSubTriggerOptions>) {
   let ref: HTMLDivElement | undefined;
 
   const rootContext = useMenuRootContext();
@@ -58,14 +59,12 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: rootContext.generateId(`sub-trigger-${createUniqueId()}`),
     },
     props
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "id",
     "textValue",
@@ -260,8 +259,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
     // Register the item trigger on the parent menu that contains it.
     const unregister = context.registerItemToParentDomCollection({
       ref: () => ref,
+      type: "item",
       key: key(),
-      label: "", // not applicable here
       textValue: local.textValue ?? ref?.textContent ?? "",
       isDisabled: local.isDisabled ?? false,
     });
@@ -288,8 +287,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
   });
 
   return (
-    <Dynamic
-      component={local.as!}
+    <Polymorphic
+      fallback="div"
       ref={mergeRefs(el => {
         context.setTriggerRef(el);
         ref = el;
@@ -316,4 +315,4 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
       {...others}
     />
   );
-});
+}

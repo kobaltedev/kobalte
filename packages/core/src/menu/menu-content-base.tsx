@@ -10,14 +10,15 @@ import {
   callHandler,
   composeEventHandlers,
   contains,
-  createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
 import { createSelectableList } from "../list";
+import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
   createFocusScope,
@@ -28,7 +29,7 @@ import {
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuContentBaseOptions {
+export interface MenuContentBaseOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 
@@ -69,7 +70,7 @@ export interface MenuContentBaseOptions {
   onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBaseOptions>(props => {
+export function MenuContentBase(props: OverrideComponentProps<"div", MenuContentBaseOptions>) {
   let ref: HTMLElement | undefined;
 
   const rootContext = useMenuRootContext();
@@ -77,7 +78,6 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: rootContext.generateId(`content-${createUniqueId()}`),
     },
     props
@@ -226,4 +226,4 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
       </PopperPositioner>
     </Show>
   );
-});
+}

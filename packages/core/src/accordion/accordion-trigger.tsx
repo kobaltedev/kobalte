@@ -9,15 +9,16 @@
 import {
   callHandler,
   composeEventHandlers,
-  createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Collapsible from "../collapsible";
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
-import { CollectionItem } from "../primitives";
+import { AsChildProp } from "../polymorphic";
+import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useAccordionContext } from "./accordion-context";
@@ -26,7 +27,7 @@ import { useAccordionItemContext } from "./accordion-item-context";
 /**
  * Toggles the collapsed state of its associated item. It should be nested inside an `Accordion.Header`.
  */
-export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
+export function AccordionTrigger(props: OverrideComponentProps<"button", AsChildProp>) {
   let ref: HTMLElement | undefined;
 
   const accordionContext = useAccordionContext();
@@ -35,13 +36,7 @@ export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
 
   const defaultId = itemContext.generateId("trigger");
 
-  props = mergeDefaultProps(
-    {
-      as: "button",
-      id: defaultId,
-    },
-    props
-  );
+  props = mergeDefaultProps({ id: defaultId }, props);
 
   const [local, others] = splitProps(props, [
     "ref",
@@ -53,13 +48,13 @@ export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
     "onFocus",
   ]);
 
-  createDomCollectionItem<CollectionItem>({
+  createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
       ref: () => ref,
+      type: "item",
       key: itemContext.value(),
       isDisabled: collapsibleContext.isDisabled(),
-      label: "", // not applicable
-      textValue: "", // not applicable
+      textValue: "", // not applicable here
     }),
   });
 
@@ -98,4 +93,4 @@ export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
       {...others}
     />
   );
-});
+}

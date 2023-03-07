@@ -1,6 +1,7 @@
 import { render, screen } from "solid-testing-library";
 
 import * as Separator from ".";
+import { As } from "../polymorphic";
 
 describe("Separator", () => {
   it("should render an 'hr' by default", () => {
@@ -44,7 +45,11 @@ describe("Separator", () => {
   });
 
   it("should have 'role=separator' when rendered element is not 'hr'", () => {
-    render(() => <Separator.Root as="span" />);
+    render(() => (
+      <Separator.Root asChild>
+        <As component="span" />
+      </Separator.Root>
+    ));
 
     const separator = screen.getByRole("separator");
 

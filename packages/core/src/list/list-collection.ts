@@ -37,7 +37,9 @@ export class ListCollection implements Collection<CollectionNode> {
         node.prevKey = undefined;
       }
 
-      node.index = index++;
+      if (node.type === "item") {
+        node.index = index++;
+      }
 
       last = node;
 

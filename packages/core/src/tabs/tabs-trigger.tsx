@@ -8,19 +8,19 @@
 
 import {
   composeEventHandlers,
-  createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, on, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
-import { CollectionItem } from "../primitives";
+import { AsChildProp, Polymorphic } from "../polymorphic";
+import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsTriggerOptions {
+export interface TabsTriggerOptions extends AsChildProp {
   /** The unique key that associates the tab with a tab panel. */
   value: string;
 
@@ -31,21 +31,19 @@ export interface TabsTriggerOptions {
 /**
  * The button that activates its associated tab panel.
  */
-export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptions>(props => {
+export function TabsTrigger(props: OverrideComponentProps<"button", TabsTriggerOptions>) {
   let ref: HTMLButtonElement | undefined;
 
   const context = useTabsContext();
 
   props = mergeDefaultProps(
     {
-      as: "button",
       type: "button",
     },
     props
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "id",
     "value",
@@ -66,11 +64,11 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
 
   const contentId = () => context.contentIdsMap().get(local.value);
 
-  createDomCollectionItem<CollectionItem>({
+  createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
       ref: () => ref,
+      type: "item",
       key: local.value,
-      label: "", // not applicable here
       textValue: "", // not applicable here
       isDisabled: isDisabled(),
     }),
@@ -92,8 +90,8 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
   );
 
   return (
-    <Dynamic
-      component={local.as}
+    <Polymorphic
+      fallback="button"
       ref={mergeRefs(el => (ref = el), local.ref)}
       id={id()}
       role="tab"
@@ -116,4 +114,4 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
       {...others}
     />
   );
-});
+}

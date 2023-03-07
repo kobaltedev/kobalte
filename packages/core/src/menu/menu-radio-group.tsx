@@ -7,15 +7,16 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-stately/radio/src/useRadioGroupState.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
 
+import { AsChildProp } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import { MenuGroup } from "./menu-group";
 import { MenuRadioGroupContext, MenuRadioGroupContextValue } from "./menu-radio-group-context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuRadioGroupOptions {
+export interface MenuRadioGroupOptions extends AsChildProp {
   /** The controlled value of the item radio to check. */
   value?: string;
 
@@ -35,14 +36,13 @@ export interface MenuRadioGroupOptions {
 /**
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
-export const MenuRadioGroup = createPolymorphicComponent<"div", MenuRadioGroupOptions>(props => {
+export function MenuRadioGroup(props: OverrideComponentProps<"div", MenuRadioGroupOptions>) {
   const rootContext = useMenuRootContext();
 
   const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: defaultId,
     },
     props
@@ -72,4 +72,4 @@ export const MenuRadioGroup = createPolymorphicComponent<"div", MenuRadioGroupOp
       <MenuGroup {...others} />
     </MenuRadioGroupContext.Provider>
   );
-});
+}

@@ -7,10 +7,15 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { For } from "solid-js";
 import { fireEvent, render, screen, within } from "solid-testing-library";
 
 import * as Select from ".";
+
+const DATA_SOURCE = [
+  { key: "1", label: "One", textValue: "One", isDisabled: false },
+  { key: "2", label: "Two", textValue: "Two", isDisabled: false },
+  { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+];
 
 describe("Select", () => {
   installPointerEvent();
@@ -28,18 +33,20 @@ describe("Select", () => {
 
   it("renders correctly", () => {
     render(() => (
-      <Select.Root>
+      <Select.Root
+        options={DATA_SOURCE}
+        placeholder="Placeholder"
+        renderValue={selectedOption => selectedOption().label}
+        renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+      >
+        <Select.HiddenSelect />
         <Select.Label>Label</Select.Label>
         <Select.Trigger>
-          <Select.Value placeholder="Placeholder" />
+          <Select.Value />
         </Select.Trigger>
         <Select.Portal>
           <Select.Content>
-            <Select.Listbox>
-              <Select.Item value="1">One</Select.Item>
-              <Select.Item value="2">Two</Select.Item>
-              <Select.Item value="3">Three</Select.Item>
-            </Select.Listbox>
+            <Select.Listbox />
           </Select.Content>
         </Select.Portal>
       </Select.Root>
@@ -65,18 +72,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -116,18 +125,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -180,18 +191,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -227,18 +240,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -274,18 +289,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -321,18 +338,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -368,18 +387,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -433,18 +454,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root isOpen onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          isOpen
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -476,18 +500,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root defaultIsOpen onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          defaultIsOpen
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -521,18 +548,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -573,18 +602,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -635,18 +666,20 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -683,18 +716,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root isOpen onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          isOpen
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -723,18 +759,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root defaultIsOpen onOpenChange={onOpenChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          defaultIsOpen
+          onOpenChange={onOpenChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -765,18 +804,20 @@ describe("Select", () => {
   describe("labeling", () => {
     it("focuses on the trigger when you click the label", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -794,18 +835,20 @@ describe("Select", () => {
 
     it("supports labeling with a visible label", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -832,17 +875,19 @@ describe("Select", () => {
 
     it("supports labeling via aria-label", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Trigger aria-label="foo">
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -867,17 +912,19 @@ describe("Select", () => {
 
     it("supports labeling via aria-labelledby", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Trigger aria-labelledby="foo">
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -901,17 +948,19 @@ describe("Select", () => {
 
     it("supports labeling via aria-label and aria-labelledby", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Trigger aria-label="bar" aria-labelledby="foo">
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -937,19 +986,21 @@ describe("Select", () => {
   describe("help text", () => {
     it("supports description", () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Description>Description</Select.Description>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -964,19 +1015,22 @@ describe("Select", () => {
 
     it("supports error message", () => {
       render(() => (
-        <Select.Root validationState="invalid" onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          validationState="invalid"
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.ErrorMessage>ErrorMessage</Select.ErrorMessage>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -993,18 +1047,20 @@ describe("Select", () => {
   describe("selection", () => {
     it("can select items on press", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1048,18 +1104,20 @@ describe("Select", () => {
 
     it("can select items with the Space key", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1111,18 +1169,20 @@ describe("Select", () => {
 
     it("can select items with the Enter key", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1173,18 +1233,20 @@ describe("Select", () => {
 
     it("focuses items on hover", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1252,18 +1314,21 @@ describe("Select", () => {
     it("does not clear selection on escape closing the listbox", async () => {
       const onOpenChangeSpy = jest.fn();
       render(() => (
-        <Select.Root onValueChange={onValueChange} onOpenChange={onOpenChangeSpy}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          onOpenChange={onOpenChangeSpy}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1326,18 +1391,21 @@ describe("Select", () => {
 
     it("supports controlled selection", async () => {
       render(() => (
-        <Select.Root value="2" onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          value="2"
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1389,18 +1457,21 @@ describe("Select", () => {
 
     it("supports default selection", async () => {
       render(() => (
-        <Select.Root defaultValue="2" onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          defaultValue="2"
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1451,21 +1522,27 @@ describe("Select", () => {
     });
 
     it("skips disabled items", async () => {
+      const dataSource = [
+        { key: "1", label: "One", textValue: "One", isDisabled: false },
+        { key: "2", label: "Two", textValue: "Two", isDisabled: true },
+        { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+      ];
+
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={dataSource}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2" isDisabled>
-                  Two
-                </Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1523,20 +1600,28 @@ describe("Select", () => {
     });
 
     it("supports type to select", async () => {
+      const dataSource = [
+        { key: "1", label: "One", textValue: "One", isDisabled: false },
+        { key: "2", label: "Two", textValue: "Two", isDisabled: false },
+        { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+        { key: "4", label: "Four", textValue: "Four", isDisabled: false },
+      ];
+
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={dataSource}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-                <Select.Item value="4">Four</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1591,8 +1676,6 @@ describe("Select", () => {
       expect(listbox).not.toBeVisible();
       expect(trigger).toHaveTextContent("Three");
 
-      jest.advanceTimersByTime(500);
-
       fireEvent.focus(trigger);
       await Promise.resolve();
 
@@ -1621,18 +1704,21 @@ describe("Select", () => {
 
     it("does not deselect when pressing an already selected item", async () => {
       render(() => (
-        <Select.Root defaultValue="2" onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          defaultValue="2"
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1666,18 +1752,20 @@ describe("Select", () => {
 
     it("move selection on Arrow-Left/Right", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1728,18 +1816,20 @@ describe("Select", () => {
   describe("type to select", () => {
     it("supports focusing items by typing letters in rapid succession without opening the menu", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1775,18 +1865,20 @@ describe("Select", () => {
 
     it("resets the search text after a timeout", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1825,18 +1917,20 @@ describe("Select", () => {
 
     it("wraps around when no items past the current one match", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1875,25 +1969,28 @@ describe("Select", () => {
 
   describe("autofill", () => {
     it("should have a hidden select element for form autocomplete", async () => {
-      const ADDRESS_DATA = [
-        { label: "Germany", value: "DE" },
-        { label: "France", value: "FR" },
-        { label: "Italy", value: "IT" },
+      const dataSource = [
+        { key: "DE", label: "Germany", textValue: "Germany", isDisabled: false },
+        { key: "FR", label: "France", textValue: "France", isDisabled: false },
+        { key: "IT", label: "Italy", textValue: "Italy", isDisabled: false },
       ];
 
       render(() => (
-        <Select.Root autoComplete="address-level1" onValueChange={onValueChange}>
+        <Select.Root
+          options={dataSource}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
+          <Select.HiddenSelect autocomplete="address-level1" />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <For each={ADDRESS_DATA}>
-                  {data => <Select.Item value={data.value}>{data.label}</Select.Item>}
-                </For>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1914,7 +2011,7 @@ describe("Select", () => {
 
       options.forEach(
         (option, index) =>
-          index > 0 && expect(option).toHaveTextContent(ADDRESS_DATA[index - 1].label)
+          index > 0 && expect(option).toHaveTextContent(dataSource[index - 1].label)
       );
 
       fireEvent.change(hiddenSelectBase, { target: { value: "FR" } });
@@ -1927,18 +2024,21 @@ describe("Select", () => {
 
     it("should have a hidden input to marshall focus to the button", async () => {
       render(() => (
-        <Select.Root onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
+          <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1968,18 +2068,22 @@ describe("Select", () => {
   describe("disabled", () => {
     it("disables the hidden select when isDisabled is true", async () => {
       render(() => (
-        <Select.Root isDisabled onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          isDisabled
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
+          <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -1994,18 +2098,21 @@ describe("Select", () => {
       const onOpenChange = jest.fn();
 
       render(() => (
-        <Select.Root isDisabled onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          isDisabled
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -2028,18 +2135,21 @@ describe("Select", () => {
     it("does not open on Space key press when isDisabled is true", async () => {
       const onOpenChange = jest.fn();
       render(() => (
-        <Select.Root isDisabled onValueChange={onValueChange}>
+        <Select.Root
+          options={DATA_SOURCE}
+          placeholder="Placeholder"
+          renderValue={selectedOption => selectedOption().label}
+          isDisabled
+          onValueChange={onValueChange}
+          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value placeholder="Placeholder" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
-              <Select.Listbox>
-                <Select.Item value="1">One</Select.Item>
-                <Select.Item value="2">Two</Select.Item>
-                <Select.Item value="3">Three</Select.Item>
-              </Select.Listbox>
+              <Select.Listbox />
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -2076,18 +2186,21 @@ describe("Select", () => {
 
       render(() => (
         <form data-testid="form" onSubmit={onSubmit}>
-          <Select.Root name="test">
+          <Select.Root
+            options={DATA_SOURCE}
+            placeholder="Placeholder"
+            renderValue={selectedOption => selectedOption().label}
+            name="test"
+            renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          >
+            <Select.HiddenSelect />
             <Select.Label>Label</Select.Label>
             <Select.Trigger autofocus>
-              <Select.Value placeholder="Placeholder" />
+              <Select.Value />
             </Select.Trigger>
             <Select.Portal>
               <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
+                <Select.Listbox />
               </Select.Content>
             </Select.Portal>
           </Select.Root>
@@ -2115,18 +2228,22 @@ describe("Select", () => {
 
       render(() => (
         <form data-testid="form" onSubmit={onSubmit}>
-          <Select.Root name="test" defaultValue="1">
+          <Select.Root
+            options={DATA_SOURCE}
+            placeholder="Placeholder"
+            renderValue={selectedOption => selectedOption().label}
+            name="test"
+            defaultValue="1"
+            renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          >
+            <Select.HiddenSelect />
             <Select.Label>Label</Select.Label>
             <Select.Trigger autofocus>
-              <Select.Value placeholder="Placeholder" />
+              <Select.Value />
             </Select.Trigger>
             <Select.Portal>
               <Select.Content>
-                <Select.Listbox>
-                  <Select.Item value="1">One</Select.Item>
-                  <Select.Item value="2">Two</Select.Item>
-                  <Select.Item value="3">Three</Select.Item>
-                </Select.Listbox>
+                <Select.Listbox />
               </Select.Content>
             </Select.Portal>
           </Select.Root>

@@ -9,8 +9,8 @@
 import {
   callHandler,
   contains,
-  createPolymorphicComponent,
   focusWithoutScrolling,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
@@ -30,7 +30,7 @@ const SUB_CLOSE_KEYS: Record<Direction, string[]> = {
 /**
  * The component that pops out when a submenu is open.
  */
-export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOptions>(props => {
+export function MenuSubContent(props: OverrideComponentProps<"div", MenuSubContentOptions>) {
   const context = useMenuContext();
 
   const [local, others] = splitProps(props, ["onFocusOutside", "onKeyDown", "onFocusOut"]);
@@ -85,4 +85,4 @@ export const MenuSubContent = createPolymorphicComponent<"div", MenuSubContentOp
       {...others}
     />
   );
-});
+}

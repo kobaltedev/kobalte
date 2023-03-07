@@ -12,14 +12,12 @@ import {
   isFunction,
   mergeDefaultProps,
   mergeRefs,
-  OverrideProps,
+  OverrideComponentProps,
   ValidationState,
 } from "@kobalte/utils";
 import {
   Accessor,
   children,
-  Component,
-  ComponentProps,
   createMemo,
   createSignal,
   createUniqueId,
@@ -92,9 +90,7 @@ export interface CheckboxRootOptions {
 /**
  * A control that allows the user to toggle between checked and not checked.
  */
-export const CheckboxRoot: Component<
-  OverrideProps<ComponentProps<"label">, CheckboxRootOptions>
-> = props => {
+export function CheckboxRoot(props: OverrideComponentProps<"label", CheckboxRootOptions>) {
   let ref: HTMLLabelElement | undefined;
 
   const defaultId = `checkbox-${createUniqueId()}`;
@@ -185,7 +181,7 @@ export const CheckboxRoot: Component<
       </label>
     </CheckboxContext.Provider>
   );
-};
+}
 
 interface CheckboxRootChildProps extends Pick<CheckboxRootOptions, "children"> {
   state: CheckboxRootState;

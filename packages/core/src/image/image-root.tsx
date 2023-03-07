@@ -6,14 +6,14 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/avatar/src/Avatar.tsx
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { OverrideComponentProps } from "@kobalte/utils";
 import { createSignal, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { ImageContext, ImageContextValue } from "./image-context";
 import { ImageLoadingStatus } from "./types";
 
-export interface AvatarRootOptions {
+export interface AvatarRootOptions extends AsChildProp {
   /**
    * The delay (in ms) before displaying the image fallback.
    * Useful if you notice a flash during loading for delaying rendering,
@@ -31,10 +31,8 @@ export interface AvatarRootOptions {
 /**
  * An image element with an optional fallback for loading and error status.
  */
-export const ImageRoot = createPolymorphicComponent<"span", AvatarRootOptions>(props => {
-  props = mergeDefaultProps({ as: "span" }, props);
-
-  const [local, others] = splitProps(props, ["as", "fallbackDelay", "onLoadingStatusChange"]);
+export function ImageRoot(props: OverrideComponentProps<"span", AvatarRootOptions>) {
+  const [local, others] = splitProps(props, ["fallbackDelay", "onLoadingStatusChange"]);
 
   const [imageLoadingStatus, setImageLoadingStatus] = createSignal<ImageLoadingStatus>("idle");
 
@@ -49,7 +47,7 @@ export const ImageRoot = createPolymorphicComponent<"span", AvatarRootOptions>(p
 
   return (
     <ImageContext.Provider value={context}>
-      <Dynamic component={local.as} {...others} />
+      <Polymorphic fallback="span" {...others} />
     </ImageContext.Provider>
   );
-});
+}

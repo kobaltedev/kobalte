@@ -1,7 +1,6 @@
 import {
   checkAccessibility,
   installPointerEvent,
-  itIsPolymorphic,
   itRendersChildren,
   itSupportsClass,
   itSupportsRef,
@@ -17,7 +16,6 @@ describe("ToggleButton", () => {
   installPointerEvent();
 
   checkAccessibility([<ToggleButton.Root>Button</ToggleButton.Root>]);
-  itIsPolymorphic(ToggleButton.Root as any, defaultProps);
   itRendersChildren(ToggleButton.Root as any, defaultProps);
   itSupportsClass(ToggleButton.Root as any, defaultProps);
   itSupportsRef(ToggleButton.Root as any, defaultProps, HTMLButtonElement);

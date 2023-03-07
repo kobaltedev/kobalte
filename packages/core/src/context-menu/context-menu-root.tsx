@@ -7,7 +7,7 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
+import { createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
 
 import { useLocale } from "../i18n";
 import { MenuRoot, MenuRootOptions } from "../menu";
@@ -20,7 +20,7 @@ export interface ContextMenuRootOptions
 /**
  * Displays a menu located at the pointer, triggered by a right-click or a long-press.
  */
-export const ContextMenuRoot: ParentComponent<ContextMenuRootOptions> = props => {
+export function ContextMenuRoot(props: ParentProps<ContextMenuRootOptions>) {
   const defaultId = `contextmenu-${createUniqueId()}`;
 
   const { direction } = useLocale();
@@ -58,4 +58,4 @@ export const ContextMenuRoot: ParentComponent<ContextMenuRootOptions> = props =>
       />
     </ContextMenuContext.Provider>
   );
-};
+}

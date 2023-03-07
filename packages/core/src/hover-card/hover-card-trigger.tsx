@@ -6,12 +6,7 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard-anchor.ts
  */
 
-import {
-  callHandler,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
+import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Link from "../link";
@@ -20,10 +15,8 @@ import { useHoverCardContext } from "./hover-card-context";
 /**
  * The link that opens the hovercard when hovered.
  */
-export const HoverCardTrigger = createPolymorphicComponent<"a", Link.LinkRootOptions>(props => {
+export function HoverCardTrigger(props: OverrideComponentProps<"a", Link.LinkRootOptions>) {
   const context = useHoverCardContext();
-
-  props = mergeDefaultProps({ as: "a" }, props);
 
   const [local, others] = splitProps(props, [
     "ref",
@@ -86,13 +79,6 @@ export const HoverCardTrigger = createPolymorphicComponent<"a", Link.LinkRootOpt
     context.closeWithDelay();
   };
 
-  const onTouchStart: JSX.EventHandlerUnion<HTMLAnchorElement, TouchEvent> = e => {
-    callHandler(e, local.onTouchStart);
-
-    // prevent focus event on touch devices
-    e.preventDefault();
-  };
-
   onCleanup(context.cancelOpening);
 
   return (
@@ -102,9 +88,8 @@ export const HoverCardTrigger = createPolymorphicComponent<"a", Link.LinkRootOpt
       onPointerLeave={onPointerLeave}
       onFocus={onFocus}
       onBlur={onBlur}
-      onTouchStart={onTouchStart}
       {...context.dataset()}
       {...others}
     />
   );
-});
+}
