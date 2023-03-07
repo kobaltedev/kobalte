@@ -5,7 +5,10 @@ import * as Listbox from "../listbox";
 import { useSelectContext } from "./select-context";
 
 export interface SelectListboxOptions<Option, OptGroup = never>
-  extends Pick<Listbox.ListboxRootOptions<Option, OptGroup>, "scrollRef" | "children"> {}
+  extends Pick<
+    Listbox.ListboxRootOptions<Option, OptGroup>,
+    "scrollRef" | "scrollToItem" | "children"
+  > {}
 
 export type SelectListboxProps<Option, OptGroup = never> = OverrideComponentProps<
   "ul",
@@ -62,7 +65,6 @@ export function SelectListbox<Option = any, OptGroup = never>(
       shouldSelectOnPressUp
       shouldFocusOnHover
       aria-labelledby={context.listboxAriaLabelledBy()}
-      scrollToItem={context.scrollToItem}
       renderItem={context.renderItem}
       renderSection={context.renderSection}
       {...others}

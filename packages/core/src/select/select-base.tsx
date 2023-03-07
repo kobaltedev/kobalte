@@ -13,15 +13,7 @@ import {
   mergeDefaultProps,
   ValidationState,
 } from "@kobalte/utils";
-import {
-  Accessor,
-  createMemo,
-  createSignal,
-  createUniqueId,
-  JSX,
-  ParentProps,
-  splitProps,
-} from "solid-js";
+import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
 import { createCollator } from "../i18n";
@@ -117,9 +109,6 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   /** When NOT virtualized, a map function that receives a _section_ signal representing a section. */
   renderSection?: (section: Accessor<CollectionNode<OptGroup>>) => JSX.Element;
 
-  /** When virtualized, the Virtualizer function used to scroll to the item of the given key. */
-  scrollToItem?: (key: string) => void;
-
   /**
    * Used to force mounting the select (portal, positioner and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -150,15 +139,16 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 
   /** Whether the select is read only. */
   isReadOnly?: boolean;
+
+  /** The children of the select. */
+  children?: JSX.Element;
 }
 
 /**
  * Base component for a select, provide context for its children.
  * Used to build single and multi-select.
  */
-export function SelectBase<Option, OptGroup = never>(
-  props: ParentProps<SelectBaseOptions<Option, OptGroup>>
-) {
+export function SelectBase<Option, OptGroup = never>(props: SelectBaseOptions<Option, OptGroup>) {
   const defaultId = `select-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -198,7 +188,6 @@ export function SelectBase<Option, OptGroup = never>(
       "selectionBehavior",
       "selectionMode",
       "isVirtualized",
-      "scrollToItem",
       "forceMount",
     ],
     FORM_CONTROL_PROP_NAMES
@@ -349,7 +338,6 @@ export function SelectBase<Option, OptGroup = never>(
     close,
     toggle,
     placeholder: () => local.placeholder,
-    scrollToItem: key => local.scrollToItem?.(key),
     renderItem: item => local.renderItem?.(item),
     renderSection: section => local.renderSection?.(section),
     renderValue: selectedOptions => local.renderValue?.(selectedOptions),

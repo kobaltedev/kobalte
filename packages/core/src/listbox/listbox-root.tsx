@@ -123,8 +123,8 @@ export interface ListboxRootOptions<Option, OptGroup = never> extends AsChildPro
   /** When virtualized, the Virtualizer function used to scroll to the item of the given key. */
   scrollToItem?: (key: string) => void;
 
-  /** When virtualized, a map function that receives a _collection_ signal representing all listbox items and sections. */
-  children?: (collection: Accessor<Collection<CollectionNode<Option | OptGroup>>>) => JSX.Element;
+  /** When virtualized, a map function that receives an _items_ signal representing all listbox items and sections. */
+  children?: (items: Accessor<Collection<CollectionNode<Option | OptGroup>>>) => JSX.Element;
 }
 
 export type ListboxRootProps<Option, OptGroup = never> = OverrideComponentProps<

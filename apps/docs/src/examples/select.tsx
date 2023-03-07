@@ -1,5 +1,6 @@
 import { MultiSelect, Select } from "@kobalte/core";
-import { createSignal } from "solid-js";
+import { createVirtualizer } from "@tanstack/solid-virtual";
+import { createSignal, For } from "solid-js";
 
 import { CaretSortIcon, CheckIcon } from "../components";
 import style from "./select.module.css";
@@ -369,6 +370,106 @@ export function OptionGroupExample() {
         <Select.Content class={style["select__content"]}>
           <Select.Listbox class={style["select__listbox"]} />
         </Select.Content>
+      </Select.Portal>
+    </Select.Root>
+  );
+}
+
+interface Item {
+  value: string;
+  label: string;
+  disabled: boolean;
+}
+
+const VIRTUALIZED_OPTIONS: Item[] = Array.from({ length: 100_000 }, (_, i) => ({
+  value: `${i}`,
+  label: `Item #${i + 1}`,
+  disabled: false,
+}));
+
+function SelectContent(props: { options: Item[] }) {
+  let listboxRef: HTMLUListElement | undefined;
+
+  const virtualizer = createVirtualizer({
+    count: props.options.length,
+    getScrollElement: () => listboxRef,
+    getItemKey: (index: number) => props.options[index].value,
+    estimateSize: () => 32,
+    enableSmoothScroll: false,
+    overscan: 5,
+  });
+
+  return (
+    <Select.Content class={style["select__content"]}>
+      <Select.Listbox
+        ref={listboxRef}
+        scrollToItem={key =>
+          virtualizer.scrollToIndex(props.options.findIndex(option => option.value === key))
+        }
+        class={style["select__listbox"]}
+        style={{ height: "200px", width: "100%", overflow: "auto" }}
+      >
+        {items => (
+          <div
+            style={{
+              height: `${virtualizer.getTotalSize()}px`,
+              width: "100%",
+              position: "relative",
+            }}
+          >
+            <For each={virtualizer.getVirtualItems()}>
+              {virtualRow => {
+                const item = items().getItem(virtualRow.key);
+
+                if (item) {
+                  return (
+                    <Select.Item
+                      item={item}
+                      class={style["select__item"]}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: `${virtualRow.size}px`,
+                        transform: `translateY(${virtualRow.start}px)`,
+                      }}
+                    >
+                      <Select.ItemLabel>{item.rawValue.label}</Select.ItemLabel>
+                      <Select.ItemIndicator class={style["select__item-indicator"]}>
+                        <CheckIcon />
+                      </Select.ItemIndicator>
+                    </Select.Item>
+                  );
+                }
+              }}
+            </For>
+          </div>
+        )}
+      </Select.Listbox>
+    </Select.Content>
+  );
+}
+
+export function VirtualizedExample() {
+  return (
+    <Select.Root
+      isVirtualized
+      options={VIRTUALIZED_OPTIONS}
+      optionValue="value"
+      optionTextValue="label"
+      optionDisabled="disabled"
+      placeholder="Select an item…"
+      renderValue={selectedOption => selectedOption().label}
+    >
+      <Select.Trigger class={style["select__trigger"]} aria-label="Food">
+        <Select.Value class={style["select__value"]} />
+        <Select.Icon class={style["select__icon"]}>
+          <CaretSortIcon />
+        </Select.Icon>
+      </Select.Trigger>
+      <Select.Portal>
+        <SelectContent options={VIRTUALIZED_OPTIONS} />
       </Select.Portal>
     </Select.Root>
   );

@@ -99,6 +99,7 @@ importers:
       '@solidjs/meta': 0.28.2
       '@solidjs/router': 0.7.0
       '@tailwindcss/typography': 0.5.9
+      '@tanstack/solid-virtual': 3.0.0-beta.6
       acorn: 8.8.2
       autoprefixer: 10.4.13
       babel-preset-solid: 1.6.10
@@ -130,6 +131,7 @@ importers:
       '@kobalte/core': link:../../packages/core
       '@solidjs/meta': 0.28.2_solid-js@1.6.11
       '@solidjs/router': 0.7.0_solid-js@1.6.11
+      '@tanstack/solid-virtual': 3.0.0-beta.6
       clsx: 1.2.1
     devDependencies:
       '@kobalte/tailwindcss': link:../../packages/tailwindcss
@@ -3534,6 +3536,10 @@ packages:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
     dev: true
 
+  /@reach/observe-rect/1.2.0:
+    resolution: {integrity: sha512-Ba7HmkFgfQxZqqaeIWWkNK0rEhpxVQHIoVyW1YDSkGsGIXzcaW4deC8B0pZrNSSyLTdIk7y+5olKt5+g0GmFIQ==}
+    dev: false
+
   /@rollup/plugin-babel/6.0.3_a5lozykpytg33uq3o54uvv7c3m:
     resolution: {integrity: sha512-fKImZKppa1A/gX73eg4JGo+8kQr/q1HBQaCGKECZ0v4YBBv3lFqi14+7xyApECzvkLTHCifx+7ntcrvtBIRcpg==}
     engines: {node: '>=14.0.0'}
@@ -3773,6 +3779,13 @@ packages:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.2.7_postcss@8.4.21
     dev: true
+
+  /@tanstack/solid-virtual/3.0.0-beta.6:
+    resolution: {integrity: sha512-/HjeHZb4UZxxFSAkICUEWOozGwHQpKlvtnUoS5uSMSuLOz0XM5vFq6zR6ENwAczKWDtkh8ntddk+zXAhyXOlEw==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@reach/observe-rect': 1.2.0
+    dev: false
 
   /@testing-library/dom/7.31.2:
     resolution: {integrity: sha512-3UqjCpey6HiTZT92vODYLPxTBWlM8ZOOjr3LX5F37/VRipW2M1kX6I/Cm4VXzteZqfGfagg8yXywpcOgQBlNsQ==}
@@ -12060,7 +12073,7 @@ packages:
       merge-anything: 5.1.4
       solid-js: 1.6.10
       solid-refresh: 0.4.3_solid-js@1.6.10
-      vite: 3.2.5
+      vite: 3.2.5_@types+node@18.13.0
       vitefu: 0.2.4_vite@3.2.5
     transitivePeerDependencies:
       - supports-color
@@ -12160,7 +12173,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 3.2.5
+      vite: 3.2.5_@types+node@18.13.0
     dev: true
 
   /vscode-oniguruma/1.7.0:

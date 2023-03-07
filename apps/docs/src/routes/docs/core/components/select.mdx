@@ -9,6 +9,7 @@ import {
   MultiSelectExample,
   ObjectExample,
   OptionGroupExample,
+  VirtualizedExample,
 } from "../../../../examples/select";
 
 # Select
@@ -708,9 +709,154 @@ export function MultiSelectExample() {
 
 ### Virtual scrolling
 
+When dealing with large collection of items, it's recommended to use a virtual scrolling solution to improve performance.
+
+While Kobalte doesn't provide any built-in virtual scrolling API, it can easily be integrated with a 3rd party library. The example below demonstrate how to virtualize an array of 100,000 options using the [`@tanstack/solid-virtual`](https://tanstack.com/virtual/v3) package.
+
+<Preview>
+  <VirtualizedExample />
+</Preview>
+
+```tsx {18-25,31-33,46,80,95}
+import { Select } from "@kobalte/core";
+import { createVirtualizer } from "@tanstack/solid-virtual";
+
+interface Item {
+  value: string;
+  label: string;
+  disabled: boolean;
+}
+
+const options: Item[] = Array.from({ length: 100_000 }, (_, i) => ({
+  value: `${i}`,
+  label: `Item #${i + 1}`,
+  disabled: false,
+}));
+
+function SelectContent(props: { options: Item[] }) {
+  let listboxRef: HTMLUListElement | undefined;
+
+  const virtualizer = createVirtualizer({
+    count: props.options.length,
+    getScrollElement: () => listboxRef,
+    getItemKey: (index: number) => props.options[index].value,
+    estimateSize: () => 32,
+    enableSmoothScroll: false,
+    overscan: 5,
+  });
+
+  return (
+    <Select.Content>
+      <Select.Listbox
+        ref={listboxRef}
+        scrollToItem={key =>
+          virtualizer.scrollToIndex(props.options.findIndex(option => option.value === key))
+        }
+        style={{ height: "200px", width: "100%", overflow: "auto" }}
+      >
+        {items => (
+          <div
+            style={{
+              height: `${virtualizer.getTotalSize()}px`,
+              width: "100%",
+              position: "relative",
+            }}
+          >
+            <For each={virtualizer.getVirtualItems()}>
+              {virtualRow => {
+                const item = items().getItem(virtualRow.key);
+
+                if (item) {
+                  return (
+                    <Select.Item
+                      item={item}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: `${virtualRow.size}px`,
+                        transform: `translateY(${virtualRow.start}px)`,
+                      }}
+                    >
+                      <Select.ItemLabel>{item.rawValue.label}</Select.ItemLabel>
+                      <Select.ItemIndicator>
+                        <CheckIcon />
+                      </Select.ItemIndicator>
+                    </Select.Item>
+                  );
+                }
+              }}
+            </For>
+          </div>
+        )}
+      </Select.Listbox>
+    </Select.Content>
+  );
+}
+
+export function VirtualizedExample() {
+  return (
+    <Select.Root
+      isVirtualized
+      options={options}
+      optionValue="value"
+      optionTextValue="label"
+      optionDisabled="disabled"
+      placeholder="Select an item…"
+      renderValue={selectedOption => selectedOption().label}
+    >
+      <Select.Trigger aria-label="Food">
+        <Select.Value />
+        <Select.Icon>
+          <CaretSortIcon />
+        </Select.Icon>
+      </Select.Trigger>
+      <Select.Portal>
+        <SelectContent options={options} />
+      </Select.Portal>
+    </Select.Root>
+  );
+}
+```
+
 ### Origin-aware animations
 
-We expose a CSS custom property `--kb-popper-content-transform-origin` which can be used to animate the content from its computed origin.
+We expose a CSS custom property `--kb-select-content-transform-origin` which can be used to animate the content from its computed origin.
+
+```css {2}
+/* style.css */
+.select__content {
+  transform-origin: var(--kb-select-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
+
+.select__content[data-expanded] {
+  animation: contentShow 250ms ease-out;
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+```
 
 ## API Reference
 
@@ -738,7 +884,6 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | isVirtualized                 | `boolean` <br/> Whether the select uses virtual scrolling.                                                                                                                                          |
 | renderItem                    | `(item: Accessor<CollectionNode<T>>) => JSX.Element` <br/> When NOT virtualized, a map function that receives an _item_ signal representing an item.                                                |
 | renderSection                 | `(section: Accessor<CollectionNode<U>>) => JSX.Element` <br/> When NOT virtualized, a map function that receives a _section_ signal representing a section.                                         |
-| scrollToItem                  | `(key: string) => void` <br/> When virtualized, the Virtualizer function used to scroll to the item of the given key.                                                                               |
 | forceMount                    | `boolean` <br/> Used to force mounting the select (portal, positioner and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                 |
 | name                          | `string` <br/> The name of the select. Submitted with its owning form as part of a name/value pair.                                                                                                 |
 | validationState               | `'valid' \| 'invalid'` <br/> Whether the select should display its "valid" or "invalid" visual styling.                                                                                             |
@@ -819,9 +964,11 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 ### Select.Listbox
 
-| Prop      | Description                                                                                                                                                                         |
-| :-------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| scrollRef | `Accessor<HTMLElement \| undefined>` <br/> The ref attached to the scrollable element, used to provide automatic scrolling on item focus. If not provided, defaults to the listbox. |
+| Prop         | Description                                                                                                                                                                         |
+| :----------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| scrollRef    | `Accessor<HTMLElement \| undefined>` <br/> The ref attached to the scrollable element, used to provide automatic scrolling on item focus. If not provided, defaults to the listbox. |
+| scrollToItem | `(key: string) => void` <br/> When virtualized, the Virtualizer function used to scroll to the item of the given key.                                                               |
+| children     | `(items: Accessor<Collection<CollectionNode<T \| U>>>) => JSX.Element` <br/> When virtualized, a map function that receives an _items_ signal representing all items and sections.  |
 
 ### Select.Item
 
