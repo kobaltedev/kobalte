@@ -336,7 +336,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     isDisabled: () => formControlContext.isDisabled() ?? false,
     isMultiple: () => access(local.selectionMode) === "multiple",
     isVirtualized: () => local.isVirtualized,
-    isModal: () => local.isModal!,
+    isModal: () => local.isModal ?? false,
     contentPresence,
     autoFocus: focusStrategy,
     triggerRef,
