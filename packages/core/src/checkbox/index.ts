@@ -1,11 +1,29 @@
-import { CheckboxControl as Control } from "./checkbox-control";
+import { CheckboxControl as Control, type CheckboxControlProps } from "./checkbox-control";
 import {
-  type CheckboxIndicatorOptions,
   CheckboxIndicator as Indicator,
+  type CheckboxIndicatorOptions,
+  type CheckboxIndicatorProps,
 } from "./checkbox-indicator";
-import { type CheckboxInputOptions, CheckboxInput as Input } from "./checkbox-input";
-import { CheckboxLabel as Label } from "./checkbox-label";
-import { type CheckboxRootOptions, CheckboxRoot as Root } from "./checkbox-root";
+import {
+  CheckboxInput as Input,
+  type CheckboxInputOptions,
+  type CheckboxInputProps,
+} from "./checkbox-input";
+import { CheckboxLabel as Label, type CheckboxLabelProps } from "./checkbox-label";
+import {
+  CheckboxRoot as Root,
+  type CheckboxRootOptions,
+  type CheckboxRootProps,
+} from "./checkbox-root";
 
-export type { CheckboxIndicatorOptions, CheckboxInputOptions, CheckboxRootOptions };
+export type {
+  CheckboxControlProps,
+  CheckboxIndicatorOptions,
+  CheckboxIndicatorProps,
+  CheckboxInputOptions,
+  CheckboxInputProps,
+  CheckboxLabelProps,
+  CheckboxRootOptions,
+  CheckboxRootProps,
+};
 export { Control, Indicator, Input, Label, Root };

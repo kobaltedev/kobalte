@@ -4,12 +4,14 @@ import { ComponentProps, createEffect, onCleanup, Show, splitProps } from "solid
 import { useFormControlContext } from "../form-control";
 import { useSelectContext } from "./select-context";
 
+export interface SelectValueProps extends ComponentProps<"span"> {}
+
 /**
  * The part that reflects the selected value. By default, the selected item's text will be rendered.
  * If you require more control, you can instead control the select and pass your own children.
  * An optional placeholder prop is also available for when the select has no value.
  */
-export function SelectValue(props: ComponentProps<"span">) {
+export function SelectValue(props: SelectValueProps) {
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
 

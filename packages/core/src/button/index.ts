@@ -1,4 +1,4 @@
-import { type ButtonRootOptions, ButtonRoot as Root } from "./button-root";
+import { ButtonRoot as Root, type ButtonRootOptions, type ButtonRootProps } from "./button-root";
 
-export type { ButtonRootOptions };
+export type { ButtonRootOptions, ButtonRootProps };
 export { Root };

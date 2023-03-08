@@ -87,10 +87,12 @@ export interface CheckboxRootOptions {
   children?: JSX.Element | ((state: CheckboxRootState) => JSX.Element);
 }
 
+export interface CheckboxRootProps extends OverrideComponentProps<"label", CheckboxRootOptions> {}
+
 /**
  * A control that allows the user to toggle between checked and not checked.
  */
-export function CheckboxRoot(props: OverrideComponentProps<"label", CheckboxRootOptions>) {
+export function CheckboxRoot(props: CheckboxRootProps) {
   let ref: HTMLLabelElement | undefined;
 
   const defaultId = `checkbox-${createUniqueId()}`;

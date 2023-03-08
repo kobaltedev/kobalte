@@ -5,12 +5,13 @@ import * as Button from "../button";
 import { COMMON_INTL_MESSAGES, createLocalizedStringFormatter } from "../i18n";
 import { usePopoverContext } from "./popover-context";
 
+export interface PopoverCloseButtonProps
+  extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
+
 /**
  * The button that closes the popover.
  */
-export function PopoverCloseButton(
-  props: OverrideComponentProps<"button", Button.ButtonRootOptions>
-) {
+export function PopoverCloseButton(props: PopoverCloseButtonProps) {
   const context = usePopoverContext();
 
   const [local, others] = splitProps(props, ["aria-label", "onClick"]);

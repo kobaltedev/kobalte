@@ -15,6 +15,7 @@ import {
 import { createEffect, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
+import { AsChildProp } from "../polymorphic";
 import {
   createFocusScope,
   createHideOutside,
@@ -24,7 +25,6 @@ import {
   PointerDownOutsideEvent,
 } from "../primitives";
 import { useDialogContext } from "./dialog-context";
-import { AsChildProp } from "../polymorphic";
 
 export interface DialogContentOptions extends AsChildProp {
   /**
@@ -64,10 +64,12 @@ export interface DialogContentOptions extends AsChildProp {
   onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
+export interface DialogContentProps extends OverrideComponentProps<"div", DialogContentOptions> {}
+
 /**
  * Contains the content to be rendered when the dialog is open.
  */
-export function DialogContent(props: OverrideComponentProps<"div", DialogContentOptions>) {
+export function DialogContent(props: DialogContentProps) {
   let ref: HTMLElement | undefined;
 
   const context = useDialogContext();
@@ -147,6 +149,7 @@ export function DialogContent(props: OverrideComponentProps<"div", DialogContent
   });
 
   createPreventScroll({
+    ownerRef: () => ref,
     isDisabled: () => !(context.isOpen() && context.isModal()),
   });
 

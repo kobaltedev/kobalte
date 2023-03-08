@@ -127,10 +127,8 @@ export interface ListboxRootOptions<Option, OptGroup = never> extends AsChildPro
   children?: (items: Accessor<Collection<CollectionNode<Option | OptGroup>>>) => JSX.Element;
 }
 
-export type ListboxRootProps<Option, OptGroup = never> = OverrideComponentProps<
-  "ul",
-  ListboxRootOptions<Option, OptGroup>
->;
+export interface ListboxRootProps<Option, OptGroup = never>
+  extends OverrideComponentProps<"ul", ListboxRootOptions<Option, OptGroup>> {}
 
 /**
  * Listbox presents a list of options and allows a user to select one or more of them.

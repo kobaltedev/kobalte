@@ -30,11 +30,13 @@ export interface MenuRootOptions extends MenuOptions {
   forceMount?: boolean;
 }
 
+export interface MenuRootProps extends ParentProps<MenuRootOptions> {}
+
 /**
  * Root component for a menu, provide context for its children.
  * Used to build dropdown menu, context menu and menubar.
  */
-export function MenuRoot(props: ParentProps<MenuRootOptions>) {
+export function MenuRoot(props: MenuRootProps) {
   const defaultId = `menu-${createUniqueId()}`;
 
   props = mergeDefaultProps(

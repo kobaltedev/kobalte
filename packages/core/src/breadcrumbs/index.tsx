@@ -1,6 +1,23 @@
-import { type BreadcrumbsLinkOptions, BreadcrumbsLink as Link } from "./breadcrumbs-link";
-import { BreadcrumbsRoot as Root } from "./breadcrumbs-root";
-import { BreadcrumbsSeparator as Separator } from "./breadcrumbs-separator";
+import {
+  BreadcrumbsLink as Link,
+  type BreadcrumbsLinkOptions,
+  type BreadcrumbsLinkProps,
+} from "./breadcrumbs-link";
+import {
+  BreadcrumbsRoot as Root,
+  type BreadcrumbsRootOptions,
+  type BreadcrumbsRootProps,
+} from "./breadcrumbs-root";
+import {
+  BreadcrumbsSeparator as Separator,
+  type BreadcrumbsSeparatorProps,
+} from "./breadcrumbs-separator";
 
-export type { BreadcrumbsLinkOptions };
+export type {
+  BreadcrumbsLinkOptions,
+  BreadcrumbsLinkProps,
+  BreadcrumbsRootOptions,
+  BreadcrumbsRootProps,
+  BreadcrumbsSeparatorProps,
+};
 export { Link, Root, Separator };

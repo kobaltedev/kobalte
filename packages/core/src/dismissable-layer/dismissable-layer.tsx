@@ -31,7 +31,7 @@ import {
 import { layerStack } from "./layer-stack";
 
 export interface DismissableLayerOptions extends AsChildProp {
-  /** Whether the layer is dismissed or not. */
+  /** Whether the layer is considered dismissed, regardless if it is mounted or not. */
   isDismissed: boolean;
 
   /**
@@ -73,7 +73,10 @@ export interface DismissableLayerOptions extends AsChildProp {
   onDismiss?: () => void;
 }
 
-export function DismissableLayer(props: OverrideComponentProps<"div", DismissableLayerOptions>) {
+export interface DismissableLayerProps
+  extends OverrideComponentProps<"div", DismissableLayerOptions> {}
+
+export function DismissableLayer(props: DismissableLayerProps) {
   let ref: HTMLElement | undefined;
 
   const parentContext = useOptionalDismissableLayerContext();

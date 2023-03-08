@@ -110,6 +110,16 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   renderSection?: (section: Accessor<CollectionNode<OptGroup>>) => JSX.Element;
 
   /**
+   * Whether the select should be the only visible content for screen readers.
+   * When set to `true`:
+   * - interaction with outside elements will be disabled.
+   * - scroll will be locked.
+   * - focus will be locked inside the select content.
+   * - elements outside the select content will not be visible for screen readers.
+   */
+  isModal?: boolean;
+
+  /**
    * Used to force mounting the select (portal, positioner and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
    */
@@ -144,11 +154,14 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   children?: JSX.Element;
 }
 
+export interface SelectBaseProps<Option, OptGroup = never>
+  extends SelectBaseOptions<Option, OptGroup> {}
+
 /**
  * Base component for a select, provide context for its children.
  * Used to build single and multi-select.
  */
-export function SelectBase<Option, OptGroup = never>(props: SelectBaseOptions<Option, OptGroup>) {
+export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Option, OptGroup>) {
   const defaultId = `select-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -158,6 +171,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseOptions<Op
       allowDuplicateSelectionEvents: true,
       disallowEmptySelection: props.selectionMode !== "multiple",
       gutter: 8,
+      isModal: false,
     },
     props
   );
@@ -188,6 +202,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseOptions<Op
       "selectionBehavior",
       "selectionMode",
       "isVirtualized",
+      "isModal",
       "forceMount",
     ],
     FORM_CONTROL_PROP_NAMES
@@ -321,6 +336,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseOptions<Op
     isDisabled: () => formControlContext.isDisabled() ?? false,
     isMultiple: () => access(local.selectionMode) === "multiple",
     isVirtualized: () => local.isVirtualized,
+    isModal: () => local.isModal ?? false,
     contentPresence,
     autoFocus: focusStrategy,
     triggerRef,

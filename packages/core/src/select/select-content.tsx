@@ -2,6 +2,7 @@ import { focusWithoutScrolling, mergeRefs, OverrideComponentProps } from "@kobal
 import { JSX, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
+import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
   createFocusScope,
@@ -10,17 +11,18 @@ import {
   FocusOutsideEvent,
 } from "../primitives";
 import { useSelectContext } from "./select-context";
-import { AsChildProp } from "../polymorphic";
 
 export interface SelectContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }
 
+export interface SelectContentProps extends OverrideComponentProps<"div", SelectContentOptions> {}
+
 /**
  * The component that pops out when the select is open.
  */
-export function SelectContent(props: OverrideComponentProps<"div", SelectContentOptions>) {
+export function SelectContent(props: SelectContentProps) {
   let ref: HTMLElement | undefined;
 
   const context = useSelectContext();
@@ -42,17 +44,18 @@ export function SelectContent(props: OverrideComponentProps<"div", SelectContent
 
   // aria-hide everything except the content (better supported equivalent to setting aria-modal)
   createHideOutside({
-    isDisabled: () => !context.isOpen(),
+    isDisabled: () => !(context.isOpen() && context.isModal()),
     targets: () => (ref ? [ref] : []),
   });
 
   createPreventScroll({
-    isDisabled: () => !context.isOpen(),
+    ownerRef: () => ref,
+    isDisabled: () => !(context.isOpen() && context.isModal()),
   });
 
   createFocusScope(
     {
-      trapFocus: context.isOpen,
+      trapFocus: context.isOpen() && context.isModal(),
       onMountAutoFocus: e => {
         // We prevent open autofocus because it's handled by the `Listbox`.
         e.preventDefault();
@@ -75,7 +78,7 @@ export function SelectContent(props: OverrideComponentProps<"div", SelectContent
             ref = el;
           }, local.ref)}
           isDismissed={!context.isOpen()}
-          disableOutsidePointerEvents={context.isOpen()}
+          disableOutsidePointerEvents={context.isOpen() && context.isModal()}
           excludedElements={[context.triggerRef]}
           style={{
             "--kb-select-content-transform-origin": "var(--kb-popper-content-transform-origin)",

@@ -40,10 +40,13 @@ export interface CollapsibleRootOptions extends AsChildProp {
   forceMount?: boolean;
 }
 
+export interface CollapsibleRootProps
+  extends OverrideComponentProps<"div", CollapsibleRootOptions> {}
+
 /**
  * An interactive component which expands/collapses a content.
  */
-export function CollapsibleRoot(props: OverrideComponentProps<"div", CollapsibleRootOptions>) {
+export function CollapsibleRoot(props: CollapsibleRootProps) {
   const defaultId = `collapsible-${createUniqueId()}`;
 
   props = mergeDefaultProps({ id: defaultId }, props);

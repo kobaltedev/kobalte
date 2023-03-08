@@ -14,10 +14,12 @@ import { createRegisterId } from "../primitives";
 import { MenuGroupContext, MenuGroupContextValue } from "./menu-group-context";
 import { useMenuRootContext } from "./menu-root-context";
 
+export interface MenuGroupProps extends OverrideComponentProps<"div", AsChildProp> {}
+
 /**
  * A container used to group multiple `Menu.Item`s.
  */
-export function MenuGroup(props: OverrideComponentProps<"div", AsChildProp>) {
+export function MenuGroup(props: MenuGroupProps) {
   const rootContext = useMenuRootContext();
 
   props = mergeDefaultProps(

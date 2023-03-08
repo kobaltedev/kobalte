@@ -15,10 +15,12 @@ import { createSelectableCollection } from "../selection";
 import { useTabsContext } from "./tabs-context";
 import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate";
 
+export interface TabsListProps extends OverrideComponentProps<"div", AsChildProp> {}
+
 /**
  * Contains the tabs that are aligned along the edge of the active tab panel.
  */
-export function TabsList(props: OverrideComponentProps<"div", AsChildProp>) {
+export function TabsList(props: TabsListProps) {
   let ref: HTMLElement | undefined;
 
   const context = useTabsContext();

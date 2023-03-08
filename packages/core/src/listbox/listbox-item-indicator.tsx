@@ -12,13 +12,14 @@ export interface ListboxItemIndicatorOptions extends AsChildProp {
   forceMount?: boolean;
 }
 
+export interface ListboxItemIndicatorProps
+  extends OverrideComponentProps<"div", ListboxItemIndicatorOptions> {}
+
 /**
  * The visual indicator rendered when the item is selected.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export function ListboxItemIndicator(
-  props: OverrideComponentProps<"div", ListboxItemIndicatorOptions>
-) {
+export function ListboxItemIndicator(props: ListboxItemIndicatorProps) {
   const context = useListboxItemContext();
 
   props = mergeDefaultProps(

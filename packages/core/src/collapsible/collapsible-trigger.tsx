@@ -13,10 +13,12 @@ import * as Button from "../button";
 import { AsChildProp } from "../polymorphic";
 import { useCollapsibleContext } from "./collapsible-context";
 
+export interface CollapsibleTriggerProps extends OverrideComponentProps<"button", AsChildProp> {}
+
 /**
  * The button that expands/collapses the collapsible content.
  */
-export function CollapsibleTrigger(props: OverrideComponentProps<"button", AsChildProp>) {
+export function CollapsibleTrigger(props: CollapsibleTriggerProps) {
   const context = useCollapsibleContext();
 
   const [local, others] = splitProps(props, ["onClick"]);

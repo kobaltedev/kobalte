@@ -4,10 +4,12 @@ import { createEffect, onCleanup, splitProps } from "solid-js";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useDialogContext } from "./dialog-context";
 
+export interface DialogTitleProps extends OverrideComponentProps<"h2", AsChildProp> {}
+
 /**
  * An accessible title to be announced when the dialog is open.
  */
-export function DialogTitle(props: OverrideComponentProps<"h2", AsChildProp>) {
+export function DialogTitle(props: DialogTitleProps) {
   const context = useDialogContext();
 
   props = mergeDefaultProps(

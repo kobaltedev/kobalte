@@ -64,10 +64,12 @@ export interface PopoverRootOptions
   forceMount?: boolean;
 }
 
+export interface PopoverRootProps extends ParentProps<PopoverRootOptions> {}
+
 /**
  * A popover is a dialog positioned relative to an anchor element.
  */
-export function PopoverRoot(props: ParentProps<PopoverRootOptions>) {
+export function PopoverRoot(props: PopoverRootProps) {
   const defaultId = `popover-${createUniqueId()}`;
 
   props = mergeDefaultProps(

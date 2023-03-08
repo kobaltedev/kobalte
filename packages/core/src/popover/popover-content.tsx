@@ -7,6 +7,7 @@ import {
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
+import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
   createFocusScope,
@@ -17,7 +18,6 @@ import {
   PointerDownOutsideEvent,
 } from "../primitives";
 import { usePopoverContext } from "./popover-context";
-import { AsChildProp } from "../polymorphic";
 
 export interface PopoverContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
@@ -60,10 +60,12 @@ export interface PopoverContentOptions extends AsChildProp {
   onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
+export interface PopoverContentProps extends OverrideComponentProps<"div", PopoverContentOptions> {}
+
 /**
  * Contains the content to be rendered when the popover is open.
  */
-export function PopoverContent(props: OverrideComponentProps<"div", PopoverContentOptions>) {
+export function PopoverContent(props: PopoverContentProps) {
   let ref: HTMLElement | undefined;
 
   const context = usePopoverContext();
@@ -145,6 +147,7 @@ export function PopoverContent(props: OverrideComponentProps<"div", PopoverConte
   });
 
   createPreventScroll({
+    ownerRef: () => ref,
     isDisabled: () => !(context.isOpen() && context.isModal()),
   });
 

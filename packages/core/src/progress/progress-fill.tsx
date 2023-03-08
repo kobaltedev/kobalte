@@ -9,11 +9,13 @@ export interface ProgressFillOptions extends AsChildProp {
   style?: JSX.CSSProperties;
 }
 
+export interface ProgressFillProps extends OverrideComponentProps<"div", ProgressFillOptions> {}
+
 /**
  * The component that visually represents the progress value.
  * Used to visually show the fill of `Progress.Track`.
  */
-export function ProgressFill(props: OverrideComponentProps<"div", ProgressFillOptions>) {
+export function ProgressFill(props: ProgressFillProps) {
   const context = useProgressContext();
 
   const [local, others] = splitProps(props, ["style"]);

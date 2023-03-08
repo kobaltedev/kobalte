@@ -12,11 +12,13 @@ import { createEffect, onCleanup, splitProps } from "solid-js";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useListboxItemContext } from "./listbox-item-context";
 
+export interface ListboxItemDescriptionProps extends OverrideComponentProps<"div", AsChildProp> {}
+
 /**
  * An optional accessible description to be announced for the item.
  * Useful for items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
-export function ListboxItemDescription(props: OverrideComponentProps<"div", AsChildProp>) {
+export function ListboxItemDescription(props: ListboxItemDescriptionProps) {
   const context = useListboxItemContext();
 
   props = mergeDefaultProps(

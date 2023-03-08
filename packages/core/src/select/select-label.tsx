@@ -5,10 +5,12 @@ import { FormControlLabel } from "../form-control";
 import { As, AsChildProp, Polymorphic } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
+export interface SelectLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
+
 /**
  * The label that gives the user information on the select.
  */
-export function SelectLabel(props: OverrideComponentProps<"span", AsChildProp>) {
+export function SelectLabel(props: SelectLabelProps) {
   const context = useSelectContext();
 
   const [local, others] = splitProps(props, ["onClick"]);

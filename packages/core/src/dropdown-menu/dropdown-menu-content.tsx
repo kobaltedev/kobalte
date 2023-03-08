@@ -6,10 +6,13 @@ import { useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
 import { InteractOutsideEvent } from "../primitives";
 
+export interface DropdownMenuContentProps
+  extends OverrideComponentProps<"div", MenuContentOptions> {}
+
 /**
  * Contains the content to be rendered when the dropdown menu is open.
  */
-export function DropdownMenuContent(props: OverrideComponentProps<"div", MenuContentOptions>) {
+export function DropdownMenuContent(props: DropdownMenuContentProps) {
   const rootContext = useMenuRootContext();
   const context = useMenuContext();
 

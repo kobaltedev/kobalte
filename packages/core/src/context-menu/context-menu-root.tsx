@@ -17,10 +17,12 @@ import { ContextMenuContext, ContextMenuContextValue } from "./context-menu-cont
 export interface ContextMenuRootOptions
   extends Omit<MenuRootOptions, "isOpen" | "defaultIsOpen" | "getAnchorRect"> {}
 
+export interface ContextMenuRootProps extends ParentProps<ContextMenuRootOptions> {}
+
 /**
  * Displays a menu located at the pointer, triggered by a right-click or a long-press.
  */
-export function ContextMenuRoot(props: ParentProps<ContextMenuRootOptions>) {
+export function ContextMenuRoot(props: ContextMenuRootProps) {
   const defaultId = `contextmenu-${createUniqueId()}`;
 
   const { direction } = useLocale();

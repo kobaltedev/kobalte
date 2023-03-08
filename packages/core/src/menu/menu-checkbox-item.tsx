@@ -18,10 +18,13 @@ export interface MenuCheckboxItemOptions extends Omit<MenuItemBaseOptions, "isCh
   onCheckedChange?: (isChecked: boolean) => void;
 }
 
+export interface MenuCheckboxItemProps
+  extends OverrideComponentProps<"div", MenuCheckboxItemOptions> {}
+
 /**
  * An item that can be controlled and rendered like a checkbox.
  */
-export function MenuCheckboxItem(props: OverrideComponentProps<"div", MenuCheckboxItemOptions>) {
+export function MenuCheckboxItem(props: MenuCheckboxItemProps) {
   props = mergeDefaultProps(
     {
       closeOnSelect: false,

@@ -24,10 +24,12 @@ import { createSelectableItem } from "../selection";
 import { useAccordionContext } from "./accordion-context";
 import { useAccordionItemContext } from "./accordion-item-context";
 
+export interface AccordionTriggerProps extends OverrideComponentProps<"button", AsChildProp> {}
+
 /**
  * Toggles the collapsed state of its associated item. It should be nested inside an `Accordion.Header`.
  */
-export function AccordionTrigger(props: OverrideComponentProps<"button", AsChildProp>) {
+export function AccordionTrigger(props: AccordionTriggerProps) {
   let ref: HTMLElement | undefined;
 
   const accordionContext = useAccordionContext();

@@ -13,13 +13,14 @@ export interface RadioGroupItemIndicatorOptions extends AsChildProp {
   forceMount?: boolean;
 }
 
+export interface RadioGroupItemIndicatorProps
+  extends OverrideComponentProps<"div", RadioGroupItemIndicatorOptions> {}
+
 /**
  * The visual indicator rendered when the radio item is in a checked state.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export function RadioGroupItemIndicator(
-  props: OverrideComponentProps<"div", RadioGroupItemIndicatorOptions>
-) {
+export function RadioGroupItemIndicator(props: RadioGroupItemIndicatorProps) {
   const context = useRadioGroupItemContext();
 
   props = mergeDefaultProps(

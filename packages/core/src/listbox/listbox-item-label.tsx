@@ -12,11 +12,13 @@ import { ComponentProps, createEffect, onCleanup, splitProps } from "solid-js";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useListboxItemContext } from "./listbox-item-context";
 
+export interface ListboxItemLabelProps extends OverrideComponentProps<"div", AsChildProp> {}
+
 /**
  * An accessible label to be announced for the item.
  * Useful for items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
-export function ListboxItemLabel(props: OverrideComponentProps<"div", AsChildProp>) {
+export function ListboxItemLabel(props: ListboxItemLabelProps) {
   const context = useListboxItemContext();
 
   props = mergeDefaultProps(

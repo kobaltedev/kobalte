@@ -12,11 +12,13 @@ import { createEffect, onCleanup, splitProps } from "solid-js";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useMenuGroupContext } from "./menu-group-context";
 
+export interface MenuGroupLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
+
 /**
  * A component used to render the label of a `Menu.Group`.
  * It won't be focusable using arrow keys.
  */
-export function MenuGroupLabel(props: OverrideComponentProps<"span", AsChildProp>) {
+export function MenuGroupLabel(props: MenuGroupLabelProps) {
   const context = useMenuGroupContext();
 
   props = mergeDefaultProps(

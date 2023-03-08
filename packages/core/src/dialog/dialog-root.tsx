@@ -41,10 +41,12 @@ export interface DialogRootOptions {
   forceMount?: boolean;
 }
 
+export interface DialogRootProps extends ParentProps<DialogRootOptions> {}
+
 /**
  * A dialog is a window overlaid on either the primary window or another dialog window.
  */
-export function DialogRoot(props: ParentProps<DialogRootOptions>) {
+export function DialogRoot(props: DialogRootProps) {
   const defaultId = `dialog-${createUniqueId()}`;
 
   props = mergeDefaultProps(

@@ -13,10 +13,12 @@ import { ComponentProps, createEffect, createSignal, on, onCleanup, Show } from 
 import { useImageContext } from "./image-context";
 import { ImageLoadingStatus } from "./types";
 
+export interface ImageImgProps extends ComponentProps<"img"> {}
+
 /**
  * The image to render. By default, it will only render when it has loaded.
  */
-export function ImageImg(props: ComponentProps<"img">) {
+export function ImageImg(props: ImageImgProps) {
   const context = useImageContext();
 
   const [loadingStatus, setLoadingStatus] = createSignal<ImageLoadingStatus>("idle");

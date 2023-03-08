@@ -9,10 +9,12 @@ export interface DialogOverlayOptions extends AsChildProp {
   style?: JSX.CSSProperties;
 }
 
+export interface DialogOverlayProps extends OverrideComponentProps<"div", DialogOverlayOptions> {}
+
 /**
  * A layer that covers the inert portion of the view when the dialog is open.
  */
-export function DialogOverlay(props: OverrideComponentProps<"div", DialogOverlayOptions>) {
+export function DialogOverlay(props: DialogOverlayProps) {
   const context = useDialogContext();
 
   const [local, others] = splitProps(props, ["ref", "style", "onPointerDown"]);

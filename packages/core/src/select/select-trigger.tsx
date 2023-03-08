@@ -19,7 +19,10 @@ import {
 import { createTypeSelect } from "../selection";
 import { useSelectContext } from "./select-context";
 
-export function SelectTrigger(props: OverrideComponentProps<"button", Button.ButtonRootOptions>) {
+export interface SelectTriggerProps
+  extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
+
+export function SelectTrigger(props: SelectTriggerProps) {
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
 

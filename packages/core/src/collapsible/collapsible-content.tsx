@@ -27,12 +27,13 @@ export interface CollapsibleContentOptions extends AsChildProp {
   style?: JSX.CSSProperties;
 }
 
+export interface CollapsibleContentProps
+  extends OverrideComponentProps<"div", CollapsibleContentOptions> {}
+
 /**
  * Contains the content to be rendered when the collapsible is expanded.
  */
-export function CollapsibleContent(
-  props: OverrideComponentProps<"div", CollapsibleContentOptions>
-) {
+export function CollapsibleContent(props: CollapsibleContentProps) {
   let ref: HTMLDivElement | undefined;
 
   const context = useCollapsibleContext();

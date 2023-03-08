@@ -24,10 +24,12 @@ export interface TabsContentOptions extends AsChildProp {
   forceMount?: boolean;
 }
 
+export interface TabsContentProps extends OverrideComponentProps<"div", TabsContentOptions> {}
+
 /**
  * Contains the content associated with a tab trigger.
  */
-export function TabsContent(props: OverrideComponentProps<"div", TabsContentOptions>) {
+export function TabsContent(props: TabsContentProps) {
   let ref!: HTMLElement;
 
   const context = useTabsContext();

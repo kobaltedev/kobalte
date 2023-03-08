@@ -12,11 +12,13 @@ import { createEffect, onCleanup, splitProps } from "solid-js";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useMenuItemContext } from "./menu-item.context";
 
+export interface MenuItemLabelProps extends OverrideComponentProps<"div", AsChildProp> {}
+
 /**
  * An accessible label to be announced for the menu item.
  * Useful for menu items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
-export function MenuItemLabel(props: OverrideComponentProps<"div", AsChildProp>) {
+export function MenuItemLabel(props: MenuItemLabelProps) {
   const context = useMenuItemContext();
 
   props = mergeDefaultProps(

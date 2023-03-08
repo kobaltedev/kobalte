@@ -35,11 +35,13 @@ export interface PopperArrowOptions extends AsChildProp {
   size?: number;
 }
 
+export interface PopperArrowProps extends OverrideComponentProps<"div", PopperArrowOptions> {}
+
 /**
  * An optional arrow element to render alongside the popper content.
  * Must be rendered in the popper content.
  */
-export function PopperArrow(props: OverrideComponentProps<"div", PopperArrowOptions>) {
+export function PopperArrow(props: PopperArrowProps) {
   const context = usePopperContext();
 
   props = mergeDefaultProps(

@@ -12,6 +12,8 @@ import { ComponentProps, For, Match, splitProps, Switch } from "solid-js";
 import { useFormControlContext } from "../form-control";
 import { useSelectContext } from "./select-context";
 
+export type HiddenSelectProps = ComponentProps<"select"> & ComponentProps<"input">;
+
 // In Safari, the <select> cannot have `display: none` or `hidden` for autofill to work.
 // In Firefox, there must be a <label> to identify the <select> whereas other browsers
 // seem to identify it just by surrounding text.
@@ -34,7 +36,7 @@ import { useSelectContext } from "./select-context";
  * Renders a hidden native `<select>` element, which can be used to support browser
  * form autofill, mobile form navigation, and native form submission.
  */
-export function HiddenSelect(props: ComponentProps<"select"> & ComponentProps<"input">) {
+export function HiddenSelect(props: HiddenSelectProps) {
   const [local, others] = splitProps(props, ["onChange"]);
 
   const formControlContext = useFormControlContext();

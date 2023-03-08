@@ -48,10 +48,12 @@ const SUB_OPEN_KEYS: Record<Direction, string[]> = {
   rtl: [...SELECTION_KEYS, "ArrowLeft"],
 };
 
+export interface MenuSubTriggerProps extends OverrideComponentProps<"div", MenuSubTriggerOptions> {}
+
 /**
  * An item that opens a submenu.
  */
-export function MenuSubTrigger(props: OverrideComponentProps<"div", MenuSubTriggerOptions>) {
+export function MenuSubTrigger(props: MenuSubTriggerProps) {
   let ref: HTMLDivElement | undefined;
 
   const rootContext = useMenuRootContext();

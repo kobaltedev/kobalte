@@ -52,10 +52,12 @@ export interface TextFieldRootOptions extends AsChildProp {
   isReadOnly?: boolean;
 }
 
+export interface TextFieldRootProps extends OverrideComponentProps<"div", TextFieldRootOptions> {}
+
 /**
  * A text input that allow users to input custom text entries with a keyboard.
  */
-export function TextFieldRoot(props: OverrideComponentProps<"div", TextFieldRootOptions>) {
+export function TextFieldRoot(props: TextFieldRootProps) {
   let ref: HTMLDivElement | undefined;
 
   const defaultId = `textfield-${createUniqueId()}`;

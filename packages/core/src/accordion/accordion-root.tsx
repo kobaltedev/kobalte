@@ -44,10 +44,12 @@ export interface AccordionRootOptions extends AsChildProp {
   shouldFocusWrap?: boolean;
 }
 
+export interface AccordionRootProps extends OverrideComponentProps<"div", AccordionRootOptions> {}
+
 /**
  * A vertically stacked set of interactive headings that each reveal an associated section of content.
  */
-export function AccordionRoot(props: OverrideComponentProps<"div", AccordionRootOptions>) {
+export function AccordionRoot(props: AccordionRootProps) {
   let ref: HTMLDivElement | undefined;
 
   const defaultId = `accordion-${createUniqueId()}`;

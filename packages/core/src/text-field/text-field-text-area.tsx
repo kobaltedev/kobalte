@@ -14,15 +14,18 @@ import { As, AsChildProp, Polymorphic } from "../polymorphic";
 import { useTextFieldContext } from "./text-field-context";
 import { TextFieldInputBase } from "./text-field-input";
 
-export interface TextFieldAreaOptions extends AsChildProp {
+export interface TextFieldTextAreaOptions extends AsChildProp {
   /** Whether the textarea should adjust its height when the value changes. */
   autoResize?: boolean;
 }
 
+export interface TextFieldTextAreaProps
+  extends OverrideComponentProps<"textarea", TextFieldTextAreaOptions> {}
+
 /**
  * The native html textarea of the textfield.
  */
-export function TextFieldTextArea(props: OverrideComponentProps<"textarea", TextFieldAreaOptions>) {
+export function TextFieldTextArea(props: TextFieldTextAreaProps) {
   let ref: HTMLTextAreaElement | undefined;
 
   const context = useTextFieldContext();

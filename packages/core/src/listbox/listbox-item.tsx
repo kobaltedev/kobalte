@@ -34,10 +34,12 @@ export interface ListboxItemOptions extends AsChildProp {
   item: CollectionNode;
 }
 
+export interface ListboxItemProps extends OverrideComponentProps<"li", ListboxItemOptions> {}
+
 /**
  * An item of the listbox.
  */
-export function ListboxItem(props: OverrideComponentProps<"li", ListboxItemOptions>) {
+export function ListboxItem(props: ListboxItemProps) {
   let ref: HTMLElement | undefined;
 
   const listBoxContext = useListboxContext();

@@ -43,11 +43,14 @@ export interface ToggleButtonRootOptions extends Button.ButtonRootOptions {
   children?: JSX.Element | ((state: ToggleButtonRootState) => JSX.Element);
 }
 
+export interface ToggleButtonRootProps
+  extends OverrideComponentProps<"button", ToggleButtonRootOptions> {}
+
 /**
  * A two-state button that allow users to toggle a selection on or off.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export function ToggleButtonRoot(props: OverrideComponentProps<"button", ToggleButtonRootOptions>) {
+export function ToggleButtonRoot(props: ToggleButtonRootProps) {
   const [local, others] = splitProps(props, [
     "children",
     "isPressed",

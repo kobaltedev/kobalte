@@ -9,10 +9,13 @@ export interface PopperPositionerOptions extends AsChildProp {
   style?: JSX.CSSProperties;
 }
 
+export interface PopperPositionerProps
+  extends OverrideComponentProps<"div", PopperPositionerOptions> {}
+
 /**
  * The wrapper component that positions the popper content relative to the popper anchor.
  */
-export function PopperPositioner(props: OverrideComponentProps<"div", PopperPositionerOptions>) {
+export function PopperPositioner(props: PopperPositionerProps) {
   const context = usePopperContext();
 
   const [local, others] = splitProps(props, ["ref", "style"]);

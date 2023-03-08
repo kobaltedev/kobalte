@@ -49,10 +49,12 @@ export interface ProgressRootOptions extends AsChildProp {
   getValueLabel?: (params: GetValueLabelParams) => string;
 }
 
+export interface ProgressRootProps extends OverrideComponentProps<"div", ProgressRootOptions> {}
+
 /**
  * Progress show either determinate or indeterminate progress of an operation over time.
  */
-export function ProgressRoot(props: OverrideComponentProps<"div", ProgressRootOptions>) {
+export function ProgressRoot(props: ProgressRootProps) {
   const defaultId = `progress-${createUniqueId()}`;
 
   props = mergeDefaultProps(
