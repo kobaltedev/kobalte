@@ -31,7 +31,7 @@
     "start": "solid-start start"
   },
   "dependencies": {
-    "@kobalte/core": "0.7.1",
+    "@kobalte/core": "0.7.2",
     "@solidjs/meta": "0.28.2",
     "@solidjs/router": "0.7.0",
     "@tanstack/solid-virtual": "3.0.0-beta.6",
