@@ -29,10 +29,12 @@ export interface AccordionItemOptions extends AsChildProp {
   forceMount?: boolean;
 }
 
+export interface AccordionItemProps extends OverrideComponentProps<"div", AccordionItemOptions> {}
+
 /**
  * An item of the accordion, contains all the parts of a collapsible section.
  */
-export function AccordionItem(props: OverrideComponentProps<"div", AccordionItemOptions>) {
+export function AccordionItem(props: AccordionItemProps) {
   const accordionContext = useAccordionContext();
 
   const defaultId = `${accordionContext.generateId("item")}-${createUniqueId()}`;

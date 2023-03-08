@@ -14,10 +14,13 @@ import { useAccordionItemContext } from "./accordion-item-context";
 
 export interface AccordionContentOptions extends Collapsible.CollapsibleContentOptions {}
 
+export interface AccordionContentProps
+  extends OverrideComponentProps<"div", AccordionContentOptions> {}
+
 /**
  * Contains the content to be rendered when the `Accordion.Item` is expanded.
  */
-export function AccordionContent(props: OverrideComponentProps<"div", AccordionContentOptions>) {
+export function AccordionContent(props: AccordionContentProps) {
   const itemContext = useAccordionItemContext();
 
   const defaultId = itemContext.generateId("content");
