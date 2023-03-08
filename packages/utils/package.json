@@ -28,6 +28,7 @@
   "type": "module",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "solid": "./dist/index.jsx",
       "import": {
         "types": "./dist/index.d.ts",
