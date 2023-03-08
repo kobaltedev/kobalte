@@ -24,12 +24,14 @@ export interface ButtonRootOptions extends AsChildProp {
   isDisabled?: boolean;
 }
 
+export interface ButtonRootProps extends OverrideComponentProps<"button", ButtonRootOptions> {}
+
 /**
  * Button enables users to trigger an action or event, such as submitting a form,
  * opening a dialog, canceling an action, or performing a delete operation.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export function ButtonRoot(props: OverrideComponentProps<"button", ButtonRootOptions>) {
+export function ButtonRoot(props: ButtonRootProps) {
   let ref: HTMLButtonElement | undefined;
 
   props = mergeDefaultProps({ type: "button" }, props);

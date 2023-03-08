@@ -4,10 +4,12 @@ import { createEffect, onCleanup, splitProps } from "solid-js";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useFormControlContext } from "./form-control-context";
 
+export interface FormControlDescriptionProps extends OverrideComponentProps<"div", AsChildProp> {}
+
 /**
  * The description that gives the user more information on the form control.
  */
-export function FormControlDescription(props: OverrideComponentProps<"div", AsChildProp>) {
+export function FormControlDescription(props: FormControlDescriptionProps) {
   const context = useFormControlContext();
 
   props = mergeDefaultProps(

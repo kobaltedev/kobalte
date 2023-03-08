@@ -108,10 +108,12 @@ export interface PopperRootOptions {
   overflowPadding?: number;
 }
 
+export interface PopperRootProps extends ParentProps<PopperRootOptions> {}
+
 /**
  * Display a floating content relative to an anchor element with an optional arrow.
  */
-export function PopperRoot(props: ParentProps<PopperRootOptions>) {
+export function PopperRoot(props: PopperRootProps) {
   props = mergeDefaultProps(
     {
       getAnchorRect: anchor => anchor?.getBoundingClientRect(),

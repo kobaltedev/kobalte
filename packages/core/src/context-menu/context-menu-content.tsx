@@ -13,7 +13,10 @@ import { MenuContent, MenuContentOptions } from "../menu";
 import { useMenuRootContext } from "../menu/menu-root-context";
 import { InteractOutsideEvent } from "../primitives";
 
-export function ContextMenuContent(props: OverrideComponentProps<"div", MenuContentOptions>) {
+export interface ContextMenuContentProps
+  extends OverrideComponentProps<"div", MenuContentOptions> {}
+
+export function ContextMenuContent(props: ContextMenuContentProps) {
   const rootContext = useMenuRootContext();
 
   const [local, others] = splitProps(props, ["onCloseAutoFocus", "onInteractOutside"]);

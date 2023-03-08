@@ -12,10 +12,13 @@ import { JSX, splitProps } from "solid-js";
 import * as Button from "../button";
 import { usePopoverContext } from "./popover-context";
 
+export interface PopoverTriggerProps
+  extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
+
 /**
  * The button that opens the popover.
  */
-export function PopoverTrigger(props: OverrideComponentProps<"button", Button.ButtonRootOptions>) {
+export function PopoverTrigger(props: PopoverTriggerProps) {
   const context = usePopoverContext();
 
   const [local, others] = splitProps(props, ["ref", "onClick"]);

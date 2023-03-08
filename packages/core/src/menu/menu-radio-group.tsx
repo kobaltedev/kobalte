@@ -33,10 +33,12 @@ export interface MenuRadioGroupOptions extends AsChildProp {
   isDisabled?: boolean;
 }
 
+export interface MenuRadioGroupProps extends OverrideComponentProps<"div", MenuRadioGroupOptions> {}
+
 /**
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
-export function MenuRadioGroup(props: OverrideComponentProps<"div", MenuRadioGroupOptions>) {
+export function MenuRadioGroup(props: MenuRadioGroupProps) {
   const rootContext = useMenuRootContext();
 
   const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);

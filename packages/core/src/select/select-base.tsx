@@ -154,11 +154,14 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   children?: JSX.Element;
 }
 
+export interface SelectBaseProps<Option, OptGroup = never>
+  extends SelectBaseOptions<Option, OptGroup> {}
+
 /**
  * Base component for a select, provide context for its children.
  * Used to build single and multi-select.
  */
-export function SelectBase<Option, OptGroup = never>(props: SelectBaseOptions<Option, OptGroup>) {
+export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Option, OptGroup>) {
   const defaultId = `select-${createUniqueId()}`;
 
   props = mergeDefaultProps(

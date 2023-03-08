@@ -10,10 +10,8 @@ export interface SelectListboxOptions<Option, OptGroup = never>
     "scrollRef" | "scrollToItem" | "children"
   > {}
 
-export type SelectListboxProps<Option, OptGroup = never> = OverrideComponentProps<
-  "ul",
-  SelectListboxOptions<Option, OptGroup>
->;
+export interface SelectListboxProps<Option, OptGroup = never>
+  extends OverrideComponentProps<"ul", SelectListboxOptions<Option, OptGroup>> {}
 
 /**
  * Contains all the items of a `Select`.

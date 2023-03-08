@@ -12,11 +12,14 @@ export interface MenuItemIndicatorOptions extends AsChildProp {
   forceMount?: boolean;
 }
 
+export interface MenuItemIndicatorProps
+  extends OverrideComponentProps<"div", MenuItemIndicatorOptions> {}
+
 /**
  * The visual indicator rendered when the parent menu `CheckboxItem` or `RadioItem` is checked.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export function MenuItemIndicator(props: OverrideComponentProps<"div", MenuItemIndicatorOptions>) {
+export function MenuItemIndicator(props: MenuItemIndicatorProps) {
   const context = useMenuItemContext();
 
   props = mergeDefaultProps(

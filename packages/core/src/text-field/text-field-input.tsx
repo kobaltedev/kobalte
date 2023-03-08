@@ -17,14 +17,16 @@ import {
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useTextFieldContext } from "./text-field-context";
 
+export interface TextFieldInputProps extends OverrideComponentProps<"input", AsChildProp> {}
+
 /**
  * The native html input of the textfield.
  */
-export function TextFieldInput(props: OverrideComponentProps<"input", AsChildProp>) {
+export function TextFieldInput(props: TextFieldInputProps) {
   return <TextFieldInputBase type="text" {...props} />;
 }
 
-export function TextFieldInputBase(props: OverrideComponentProps<"input", AsChildProp>) {
+export function TextFieldInputBase(props: TextFieldInputProps) {
   const formControlContext = useFormControlContext();
   const context = useTextFieldContext();
 

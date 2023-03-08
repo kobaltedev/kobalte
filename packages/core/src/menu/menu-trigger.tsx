@@ -15,10 +15,12 @@ import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuTriggerOptions extends Button.ButtonRootOptions {}
 
+export interface MenuTriggerProps extends OverrideComponentProps<"button", MenuTriggerOptions> {}
+
 /**
  * The button that toggles the menu.
  */
-export function MenuTrigger(props: OverrideComponentProps<"button", MenuTriggerOptions>) {
+export function MenuTrigger(props: MenuTriggerProps) {
   const rootContext = useMenuRootContext();
   const context = useMenuContext();
 

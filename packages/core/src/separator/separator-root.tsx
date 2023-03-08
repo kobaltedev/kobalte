@@ -17,10 +17,12 @@ export interface SeparatorRootOptions extends AsChildProp {
   orientation?: Orientation;
 }
 
+export interface SeparatorRootProps extends OverrideComponentProps<"hr", SeparatorRootOptions> {}
+
 /**
  * A separator visually or semantically separates content.
  */
-export function SeparatorRoot(props: OverrideComponentProps<"hr", SeparatorRootOptions>) {
+export function SeparatorRoot(props: SeparatorRootProps) {
   let ref: HTMLElement | undefined;
 
   props = mergeDefaultProps(

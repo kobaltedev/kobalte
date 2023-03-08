@@ -13,7 +13,7 @@ import { AsChildProp, Polymorphic } from "../polymorphic";
 import { ImageContext, ImageContextValue } from "./image-context";
 import { ImageLoadingStatus } from "./types";
 
-export interface AvatarRootOptions extends AsChildProp {
+export interface ImageRootOptions extends AsChildProp {
   /**
    * The delay (in ms) before displaying the image fallback.
    * Useful if you notice a flash during loading for delaying rendering,
@@ -28,10 +28,12 @@ export interface AvatarRootOptions extends AsChildProp {
   onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
 }
 
+export interface ImageRootProps extends OverrideComponentProps<"span", ImageRootOptions> {}
+
 /**
  * An image element with an optional fallback for loading and error status.
  */
-export function ImageRoot(props: OverrideComponentProps<"span", AvatarRootOptions>) {
+export function ImageRoot(props: ImageRootProps) {
   const [local, others] = splitProps(props, ["fallbackDelay", "onLoadingStatusChange"]);
 
   const [imageLoadingStatus, setImageLoadingStatus] = createSignal<ImageLoadingStatus>("idle");

@@ -64,11 +64,13 @@ export interface RadioGroupRootOptions extends AsChildProp {
   isReadOnly?: boolean;
 }
 
+export interface RadioGroupRootProps extends OverrideComponentProps<"div", RadioGroupRootOptions> {}
+
 /**
  * A set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time.
  * This component is based on the [WAI-ARIA Radio Group Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radiobutton/)
  */
-export function RadioGroupRoot(props: OverrideComponentProps<"div", RadioGroupRootOptions>) {
+export function RadioGroupRoot(props: RadioGroupRootProps) {
   let ref: HTMLDivElement | undefined;
 
   const defaultId = `radiogroup-${createUniqueId()}`;

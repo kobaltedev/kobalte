@@ -4,10 +4,12 @@ import { createEffect, onCleanup, splitProps } from "solid-js";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { usePopoverContext } from "./popover-context";
 
+export interface PopoverTitleProps extends OverrideComponentProps<"h2", AsChildProp> {}
+
 /**
  * An accessible title to be announced when the popover is open.
  */
-export function PopoverTitle(props: OverrideComponentProps<"h2", AsChildProp>) {
+export function PopoverTitle(props: PopoverTitleProps) {
   const context = usePopoverContext();
 
   props = mergeDefaultProps(

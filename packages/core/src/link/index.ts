@@ -1,4 +1,4 @@
-import { type LinkRootOptions, LinkRoot as Root } from "./link-root";
+import { LinkRoot as Root, type LinkRootOptions, type LinkRootProps } from "./link-root";
 
-export type { LinkRootOptions };
+export type { LinkRootOptions, LinkRootProps };
 export { Root };

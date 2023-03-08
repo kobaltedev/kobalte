@@ -24,10 +24,13 @@ export interface SelectRootOptions<Option, OptGroup = never>
   renderValue?: (selectedOption: Accessor<Option>) => JSX.Element;
 }
 
+export interface SelectRootProps<Option, OptGroup = never>
+  extends SelectRootOptions<Option, OptGroup> {}
+
 /**
  * Displays a list of options for the user to pick from — triggered by a button.
  */
-export function SelectRoot<Option, OptGroup = never>(props: SelectRootOptions<Option, OptGroup>) {
+export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Option, OptGroup>) {
   const [local, others] = splitProps(props, [
     "value",
     "defaultValue",

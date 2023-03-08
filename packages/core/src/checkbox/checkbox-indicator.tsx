@@ -13,11 +13,14 @@ export interface CheckboxIndicatorOptions extends AsChildProp {
   forceMount?: boolean;
 }
 
+export interface CheckboxIndicatorProps
+  extends OverrideComponentProps<"div", CheckboxIndicatorOptions> {}
+
 /**
  * The visual indicator rendered when the checkbox is in a checked or indeterminate state.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export function CheckboxIndicator(props: OverrideComponentProps<"div", CheckboxIndicatorOptions>) {
+export function CheckboxIndicator(props: CheckboxIndicatorProps) {
   const context = useCheckboxContext();
 
   props = mergeDefaultProps(

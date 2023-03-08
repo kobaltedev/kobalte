@@ -22,10 +22,13 @@ export interface BreadcrumbsRootOptions extends AsChildProp {
   separator?: string | JSX.Element;
 }
 
+export interface BreadcrumbsRootProps
+  extends OverrideComponentProps<"nav", BreadcrumbsRootOptions> {}
+
 /**
  * Breadcrumbs show hierarchy and navigational context for a user’s location within an application.
  */
-export function BreadcrumbsRoot(props: OverrideComponentProps<"nav", BreadcrumbsRootOptions>) {
+export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
   props = mergeDefaultProps({ separator: "/" }, props);
 
   const [local, others] = splitProps(props, ["separator"]);

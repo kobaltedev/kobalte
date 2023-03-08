@@ -22,10 +22,12 @@ export interface SwitchInputOptions {
   style?: JSX.CSSProperties;
 }
 
+export interface SwitchInputProps extends OverrideComponentProps<"input", SwitchInputOptions> {}
+
 /**
  * The native html input that is visually hidden in the switch.
  */
-export function SwitchInput(props: OverrideComponentProps<"input", SwitchInputOptions>) {
+export function SwitchInput(props: SwitchInputProps) {
   const context = useSwitchContext();
 
   props = mergeDefaultProps({ id: context.generateId("input") }, props);

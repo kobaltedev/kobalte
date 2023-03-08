@@ -33,10 +33,13 @@ export interface RadioGroupItemOptions {
   isDisabled?: boolean;
 }
 
+export interface RadioGroupItemProps
+  extends OverrideComponentProps<"label", RadioGroupItemOptions> {}
+
 /**
  * The root container for a radio button.
  */
-export function RadioGroupItem(props: OverrideComponentProps<"label", RadioGroupItemOptions>) {
+export function RadioGroupItem(props: RadioGroupItemProps) {
   const formControlContext = useFormControlContext();
   const radioGroupContext = useRadioGroupContext();
 

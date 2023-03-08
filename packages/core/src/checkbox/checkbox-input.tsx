@@ -23,10 +23,12 @@ export interface CheckboxInputOptions {
   style?: JSX.CSSProperties;
 }
 
+export interface CheckboxInputProps extends OverrideComponentProps<"input", CheckboxInputOptions> {}
+
 /**
  * The native html input that is visually hidden in the checkbox.
  */
-export function CheckboxInput(props: OverrideComponentProps<"input", CheckboxInputOptions>) {
+export function CheckboxInput(props: CheckboxInputProps) {
   let ref: HTMLInputElement | undefined;
 
   const context = useCheckboxContext();

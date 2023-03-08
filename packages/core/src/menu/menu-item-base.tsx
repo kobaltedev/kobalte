@@ -54,10 +54,12 @@ export interface MenuItemBaseOptions extends AsChildProp {
   onSelect?: () => void;
 }
 
+export interface MenuItemBaseProps extends OverrideComponentProps<"div", MenuItemBaseOptions> {}
+
 /**
  * Base component for a menu item.
  */
-export function MenuItemBase(props: OverrideComponentProps<"div", MenuItemBaseOptions>) {
+export function MenuItemBase(props: MenuItemBaseProps) {
   let ref: HTMLDivElement | undefined;
 
   const rootContext = useMenuRootContext();

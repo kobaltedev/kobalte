@@ -19,10 +19,12 @@ export interface BreadcrumbsLinkOptions extends Link.LinkRootOptions {
   isDisabled?: boolean;
 }
 
+export interface BreadcrumbsLinkProps extends OverrideComponentProps<"a", BreadcrumbsLinkOptions> {}
+
 /**
  * The breadcrumbs link.
  */
-export function BreadcrumbsLink(props: OverrideComponentProps<"a", BreadcrumbsLinkOptions>) {
+export function BreadcrumbsLink(props: BreadcrumbsLinkProps) {
   const [local, others] = splitProps(props, ["isCurrent", "isDisabled", "aria-current"]);
 
   const ariaCurrent = () => {

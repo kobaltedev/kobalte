@@ -8,7 +8,9 @@ import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuContentOptions extends MenuContentBaseOptions {}
 
-export function MenuContent(props: OverrideComponentProps<"div", MenuContentOptions>) {
+export interface MenuContentProps extends OverrideComponentProps<"div", MenuContentOptions> {}
+
+export function MenuContent(props: MenuContentProps) {
   let ref: HTMLElement | undefined;
 
   const rootContext = useMenuRootContext();

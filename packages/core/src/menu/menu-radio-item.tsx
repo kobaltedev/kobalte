@@ -10,10 +10,12 @@ export interface MenuRadioItemOptions
   value: string;
 }
 
+export interface MenuRadioItemProps extends OverrideComponentProps<"div", MenuRadioItemOptions> {}
+
 /**
  * An item that can be controlled and rendered like a radio.
  */
-export function MenuRadioItem(props: OverrideComponentProps<"div", MenuRadioItemOptions>) {
+export function MenuRadioItem(props: MenuRadioItemProps) {
   const context = useMenuRadioGroupContext();
 
   props = mergeDefaultProps({ closeOnSelect: false }, props);

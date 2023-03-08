@@ -23,9 +23,10 @@ export interface ContextMenuTriggerOptions extends AsChildProp {
   style?: JSX.CSSProperties;
 }
 
-export function ContextMenuTrigger(
-  props: OverrideComponentProps<"div", ContextMenuTriggerOptions>
-) {
+export interface ContextMenuTriggerProps
+  extends OverrideComponentProps<"div", ContextMenuTriggerOptions> {}
+
+export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
   const rootContext = useMenuRootContext();
   const menuContext = useMenuContext();
   const context = useContextMenuContext();

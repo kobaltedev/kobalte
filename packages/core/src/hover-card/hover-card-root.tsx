@@ -68,10 +68,12 @@ export interface HoverCardRootOptions
   forceMount?: boolean;
 }
 
+export interface HoverCardRootProps extends ParentProps<HoverCardRootOptions> {}
+
 /**
  * A popover that allows sighted users to preview content available behind a link.
  */
-export function HoverCardRoot(props: ParentProps<HoverCardRootOptions>) {
+export function HoverCardRoot(props: HoverCardRootProps) {
   const defaultId = `hovercard-${createUniqueId()}`;
 
   props = mergeDefaultProps(

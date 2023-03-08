@@ -70,7 +70,10 @@ export interface MenuContentBaseOptions extends AsChildProp {
   onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export function MenuContentBase(props: OverrideComponentProps<"div", MenuContentBaseOptions>) {
+export interface MenuContentBaseProps
+  extends OverrideComponentProps<"div", MenuContentBaseOptions> {}
+
+export function MenuContentBase(props: MenuContentBaseProps) {
   let ref: HTMLElement | undefined;
 
   const rootContext = useMenuRootContext();

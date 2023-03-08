@@ -40,11 +40,13 @@ export interface TabsRootOptions extends AsChildProp {
   isDisabled?: boolean;
 }
 
+export interface TabsRootProps extends OverrideComponentProps<"div", TabsRootOptions> {}
+
 /**
  * A set of layered sections of content, known as tab panels, that display one panel of content at a time.
  * `Tabs` contains all the parts of a tabs component and provide context for its children.
  */
-export function TabsRoot(props: OverrideComponentProps<"div", TabsRootOptions>) {
+export function TabsRoot(props: TabsRootProps) {
   const defaultId = `tabs-${createUniqueId()}`;
 
   props = mergeDefaultProps(

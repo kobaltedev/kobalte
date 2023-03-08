@@ -1,8 +1,20 @@
-import { SwitchControl as Control } from "./switch-control";
-import { type SwitchInputOptions, SwitchInput as Input } from "./switch-input";
-import { SwitchLabel as Label } from "./switch-label";
-import { type SwitchRootOptions, SwitchRoot as Root } from "./switch-root";
-import { SwitchThumb as Thumb } from "./switch-thumb";
+import { SwitchControl as Control, type SwitchControlProps } from "./switch-control";
+import {
+  SwitchInput as Input,
+  type SwitchInputOptions,
+  type SwitchInputProps,
+} from "./switch-input";
+import { SwitchLabel as Label, type SwitchLabelProps } from "./switch-label";
+import { SwitchRoot as Root, type SwitchRootOptions, type SwitchRootProps } from "./switch-root";
+import { SwitchThumb as Thumb, type SwitchThumbProps } from "./switch-thumb";
 
-export type { SwitchInputOptions, SwitchRootOptions };
+export type {
+  SwitchControlProps,
+  SwitchInputOptions,
+  SwitchInputProps,
+  SwitchLabelProps,
+  SwitchRootOptions,
+  SwitchRootProps,
+  SwitchThumbProps,
+};
 export { Control, Input, Label, Root, Thumb };

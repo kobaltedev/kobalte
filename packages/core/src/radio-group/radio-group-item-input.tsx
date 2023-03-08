@@ -23,12 +23,13 @@ export interface RadioGroupItemInputOptions {
   style?: JSX.CSSProperties;
 }
 
+export interface RadioGroupItemInputProps
+  extends OverrideComponentProps<"input", RadioGroupItemInputOptions> {}
+
 /**
  * The native html input that is visually hidden in the radio button.
  */
-export function RadioGroupItemInput(
-  props: OverrideComponentProps<"input", RadioGroupItemInputOptions>
-) {
+export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
   const formControlContext = useFormControlContext();
   const radioGroupContext = useRadioGroupContext();
   const radioContext = useRadioGroupItemContext();

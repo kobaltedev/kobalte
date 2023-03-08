@@ -12,10 +12,12 @@ import { JSX, onCleanup, splitProps } from "solid-js";
 import * as Link from "../link";
 import { useHoverCardContext } from "./hover-card-context";
 
+export interface HoverCardTriggerProps extends OverrideComponentProps<"a", Link.LinkRootOptions> {}
+
 /**
  * The link that opens the hovercard when hovered.
  */
-export function HoverCardTrigger(props: OverrideComponentProps<"a", Link.LinkRootOptions>) {
+export function HoverCardTrigger(props: HoverCardTriggerProps) {
   const context = useHoverCardContext();
 
   const [local, others] = splitProps(props, [

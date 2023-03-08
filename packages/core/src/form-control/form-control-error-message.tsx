@@ -12,12 +12,13 @@ export interface FormControlErrorMessageOptions extends AsChildProp {
   forceMount?: boolean;
 }
 
+export interface FormControlErrorMessageProps
+  extends OverrideComponentProps<"div", FormControlErrorMessageOptions> {}
+
 /**
  * The error message that gives the user information about how to fix a validation error on the form control.
  */
-export function FormControlErrorMessage(
-  props: OverrideComponentProps<"div", FormControlErrorMessageOptions>
-) {
+export function FormControlErrorMessage(props: FormControlErrorMessageProps) {
   const context = useFormControlContext();
 
   props = mergeDefaultProps(

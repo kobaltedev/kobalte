@@ -18,11 +18,13 @@ export interface TabsIndicatorOptions extends AsChildProp {
   style?: JSX.CSSProperties;
 }
 
+export interface TabsIndicatorProps extends OverrideComponentProps<"div", TabsIndicatorOptions> {}
+
 /**
  * The visual indicator displayed at the bottom of the tab list to indicate the selected tab.
  * It provides the base style needed to display a smooth transition to the new selected tab.
  */
-export function TabsIndicator(props: OverrideComponentProps<"div", TabsIndicatorOptions>) {
+export function TabsIndicator(props: TabsIndicatorProps) {
   const context = useTabsContext();
 
   const [local, others] = splitProps(props, ["style"]);

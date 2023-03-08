@@ -51,10 +51,12 @@ export interface MenuOptions
   onOpenChange?: (isOpen: boolean) => void;
 }
 
+export interface MenuProps extends ParentProps<MenuOptions> {}
+
 /**
  * Container for menu items and nested menu, provide context for its children.
  */
-export function Menu(props: ParentProps<MenuOptions>) {
+export function Menu(props: MenuProps) {
   const rootContext = useMenuRootContext();
   const parentDomCollectionContext = useOptionalDomCollectionContext();
   const parentMenuContext = useOptionalMenuContext();

@@ -12,10 +12,13 @@ import { JSX, splitProps } from "solid-js";
 import * as Button from "../button";
 import { useDialogContext } from "./dialog-context";
 
+export interface DialogTriggerProps
+  extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
+
 /**
  * The button that opens the dialog.
  */
-export function DialogTrigger(props: OverrideComponentProps<"button", Button.ButtonRootOptions>) {
+export function DialogTrigger(props: DialogTriggerProps) {
   const context = useDialogContext();
 
   const [local, others] = splitProps(props, ["ref", "onClick"]);

@@ -57,10 +57,12 @@ export interface SwitchRootOptions {
   isReadOnly?: boolean;
 }
 
+export interface SwitchRootProps extends OverrideComponentProps<"label", SwitchRootOptions> {}
+
 /**
  * A control that allows users to choose one of two values: on or off.
  */
-export function SwitchRoot(props: OverrideComponentProps<"label", SwitchRootOptions>) {
+export function SwitchRoot(props: SwitchRootProps) {
   let ref: HTMLLabelElement | undefined;
 
   const defaultId = `switch-${createUniqueId()}`;

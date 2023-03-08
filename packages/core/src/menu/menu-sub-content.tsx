@@ -27,10 +27,12 @@ const SUB_CLOSE_KEYS: Record<Direction, string[]> = {
   rtl: ["ArrowRight"],
 };
 
+export interface MenuSubContentProps extends OverrideComponentProps<"div", MenuSubContentOptions> {}
+
 /**
  * The component that pops out when a submenu is open.
  */
-export function MenuSubContent(props: OverrideComponentProps<"div", MenuSubContentOptions>) {
+export function MenuSubContent(props: MenuSubContentProps) {
   const context = useMenuContext();
 
   const [local, others] = splitProps(props, ["onFocusOutside", "onKeyDown", "onFocusOut"]);

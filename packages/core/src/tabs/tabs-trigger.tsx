@@ -28,10 +28,12 @@ export interface TabsTriggerOptions extends AsChildProp {
   isDisabled?: boolean;
 }
 
+export interface TabsTriggerProps extends OverrideComponentProps<"button", TabsTriggerOptions> {}
+
 /**
  * The button that activates its associated tab panel.
  */
-export function TabsTrigger(props: OverrideComponentProps<"button", TabsTriggerOptions>) {
+export function TabsTrigger(props: TabsTriggerProps) {
   let ref: HTMLButtonElement | undefined;
 
   const context = useTabsContext();

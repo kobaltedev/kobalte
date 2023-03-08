@@ -12,11 +12,13 @@ import { createEffect, createSignal, onCleanup, Show } from "solid-js";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useImageContext } from "./image-context";
 
+export interface ImageFallbackProps extends OverrideComponentProps<"span", AsChildProp> {}
+
 /**
  * An element that renders when the image hasn't loaded.
  * This means whilst it's loading, or if there was an error.
  */
-export function ImageFallback(props: OverrideComponentProps<"span", AsChildProp>) {
+export function ImageFallback(props: ImageFallbackProps) {
   const context = useImageContext();
 
   const [canRender, setCanRender] = createSignal(context.fallbackDelay() === undefined);

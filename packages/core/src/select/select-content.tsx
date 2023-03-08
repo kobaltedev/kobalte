@@ -17,10 +17,12 @@ export interface SelectContentOptions extends AsChildProp {
   style?: JSX.CSSProperties;
 }
 
+export interface SelectContentProps extends OverrideComponentProps<"div", SelectContentOptions> {}
+
 /**
  * The component that pops out when the select is open.
  */
-export function SelectContent(props: OverrideComponentProps<"div", SelectContentOptions>) {
+export function SelectContent(props: SelectContentProps) {
   let ref: HTMLElement | undefined;
 
   const context = useSelectContext();

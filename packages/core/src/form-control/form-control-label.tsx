@@ -5,10 +5,12 @@ import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createTagName } from "../primitives";
 import { useFormControlContext } from "./form-control-context";
 
+export interface FormControlLabelProps extends OverrideComponentProps<"label", AsChildProp> {}
+
 /**
  * The label that gives the user information on the form control.
  */
-export function FormControlLabel(props: OverrideComponentProps<"label", AsChildProp>) {
+export function FormControlLabel(props: FormControlLabelProps) {
   let ref: HTMLElement | undefined;
 
   const context = useFormControlContext();

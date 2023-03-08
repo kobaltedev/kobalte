@@ -17,10 +17,12 @@ export interface LinkRootOptions extends AsChildProp {
   isDisabled?: boolean;
 }
 
+export interface LinkRootProps extends OverrideComponentProps<"a", LinkRootOptions> {}
+
 /**
  * Link allows a user to navigate to another page or resource within a web page or application.
  */
-export function LinkRoot(props: OverrideComponentProps<"a", LinkRootOptions>) {
+export function LinkRoot(props: LinkRootProps) {
   let ref: HTMLAnchorElement | undefined;
 
   const [local, others] = splitProps(props, ["ref", "type", "isDisabled", "onClick"]);
