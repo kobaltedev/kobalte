@@ -1,5 +1,13 @@
 # @kobalte/core
 
+## 0.7.2
+
+### Patch Changes
+
+- 81d2e40: fix: nexgen ts module resolutions
+- Updated dependencies [81d2e40]
+  - @kobalte/utils@0.6.1
+
 ## 0.7.1
 
 ### Patch Changes
