@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.7.1
+
+### Patch Changes
+
+- b8fd112: New scroll-lock implementation + export all components props type
+
 ## 0.7.0
 
 ### Minor Changes
