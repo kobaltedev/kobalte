@@ -8,6 +8,7 @@ export default function App() {
       <Toast.Root id={id} class="ToastRoot">
         <Toast.Title class="ToastTitle">Title</Toast.Title>
         <Toast.Description class="ToastDescription">Description</Toast.Description>
+        <button onClick={() => console.log("foo")}>Foo</button>
       </Toast.Root>
     ));
   };

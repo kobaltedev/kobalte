@@ -215,6 +215,11 @@ export function createFocusScope<T extends HTMLElement>(
     const onFocusIn = (event: FocusEvent) => {
       const target = event.target as HTMLElement | null;
 
+      // If the element is within a top layer element (e.g. toasts), always allow moving focus there.
+      if (target?.closest(`[${DATA_TOP_LAYER_ATTR}]`)) {
+        return;
+      }
+
       if (contains(container, target)) {
         lastFocusedElement = target;
       } else {

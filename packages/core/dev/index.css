@@ -4,7 +4,7 @@
   bottom: 0;
   right: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   padding: var(--viewport-padding);
   gap: 10px;
   width: 390px;

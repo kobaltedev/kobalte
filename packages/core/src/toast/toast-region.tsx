@@ -15,12 +15,12 @@
 import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
+import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
 import { createLocalizedStringFormatter } from "../i18n";
 import { TOAST_HOTKEY_PLACEHOLDER, TOAST_INTL_MESSAGES } from "./toast.intl";
 import { ToastRegionContext, ToastRegionContextValue } from "./toast-region-context";
 import { toastStore } from "./toaster";
 import { ToastSwipeDirection } from "./types";
-import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
 
 export interface ToastRegionOptions {
   /**
@@ -140,10 +140,11 @@ export function ToastRegion(props: ToastRegionProps) {
         role="region"
         tabIndex={-1}
         aria-label={ariaLabel()}
-        // in case list has size when empty (e.g. padding), we remove pointer events,
-        // so it doesn't prevent interactions with page elements that it overlays
+        // In case list has size when empty (e.g. padding), we remove pointer events,
+        // so it doesn't prevent interactions with page elements that it overlays.
+        // In case list is a top layer, we explicitly enable pointer-events prevented by a `DismissableLayer`.
         style={{
-          "pointer-events": hasToasts() ? undefined : "none",
+          "pointer-events": hasToasts() ? (local.isTopLayer ? "auto" : undefined) : "none",
           ...local.style,
         }}
         {...topLayerAttr}

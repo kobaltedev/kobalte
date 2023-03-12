@@ -85,11 +85,8 @@ export function createInteractOutside<T extends HTMLElement>(
       return false;
     }
 
-    console.log(target);
-
     // If the target is within a top layer element (e.g. toasts), ignore.
     if (target.closest(`[${DATA_TOP_LAYER_ATTR}]`)) {
-      console.log("fired");
       return false;
     }
 
