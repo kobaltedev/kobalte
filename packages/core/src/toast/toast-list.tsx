@@ -25,7 +25,6 @@ import {
 import { createEffect, JSX, on, onCleanup, splitProps } from "solid-js";
 
 import { useToastRegionContext } from "./toast-region-context";
-import { toastStore } from "./toaster";
 
 export interface ToastListOptions {}
 
@@ -130,7 +129,7 @@ export function ToastList(props: ToastListProps) {
       onPointerLeave={onPointerLeave}
       {...others}
     >
-      <Key each={toastStore.toasts()} by="id">
+      <Key each={context.toasts()} by="id">
         {toast => toast().render(toast().id)}
       </Key>
     </ol>

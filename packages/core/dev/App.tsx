@@ -6,9 +6,13 @@ export default function App() {
   const showToast = () => {
     toaster.show(id => (
       <Toast.Root id={id} class="ToastRoot">
-        <Toast.Title class="ToastTitle">Title</Toast.Title>
+        <Toast.Title class="ToastTitle">Title - {id}</Toast.Title>
         <Toast.Description class="ToastDescription">Description</Toast.Description>
+        <button onClick={() => toaster.dismiss(id)}>Accept</button>
         <Toast.CloseButton onClick={() => console.log("foo")}>X</Toast.CloseButton>
+        <div class="ToastProgressTrack">
+          <div class="ToastProgressFill" />
+        </div>
       </Toast.Root>
     ));
   };

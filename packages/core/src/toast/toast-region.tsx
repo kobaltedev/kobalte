@@ -13,13 +13,13 @@
  */
 
 import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, JSX, splitProps } from "solid-js";
+import { createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
 import { createLocalizedStringFormatter } from "../i18n";
 import { TOAST_HOTKEY_PLACEHOLDER, TOAST_INTL_MESSAGES } from "./toast.intl";
 import { ToastRegionContext, ToastRegionContextValue } from "./toast-region-context";
-import { toastStore } from "./toaster";
+import { toastStore } from "./toast-store";
 import { ToastSwipeDirection } from "./types";
 
 export interface ToastRegionOptions {
@@ -34,11 +34,15 @@ export interface ToastRegionOptions {
    * The keys to use as the keyboard shortcut that will move focus to the toast viewport.
    * Use `event.code` value for each key from [keycode.info](https://www.toptal.com/developers/keycode).
    * For meta keys, use `ctrlKey`, `shiftKey`, `altKey` and/or `metaKey`.
+   * @default alt + T
    */
   hotkey?: string[];
 
   /** The time in milliseconds that should elapse before automatically closing each toast. */
   duration?: number;
+
+  /** The maximum amount of toasts that can be displayed at the same time. */
+  limit?: number;
 
   /** The direction of the pointer swipe that should close the toast. */
   swipeDirection?: ToastSwipeDirection;
@@ -81,10 +85,11 @@ export function ToastRegion(props: ToastRegionProps) {
       id: defaultId,
       hotkey: ["altKey", "KeyT"],
       duration: 5000,
+      limit: 3,
       swipeDirection: "right",
       swipeThreshold: 50,
       pauseOnInteraction: true,
-      pauseOnPageIdle: true,
+      pauseOnPageIdle: false,
       isTopLayer: true,
     },
     props
@@ -94,6 +99,7 @@ export function ToastRegion(props: ToastRegionProps) {
     "style",
     "hotkey",
     "duration",
+    "limit",
     "swipeDirection",
     "swipeThreshold",
     "pauseOnInteraction",
@@ -102,11 +108,13 @@ export function ToastRegion(props: ToastRegionProps) {
     "aria-label",
   ]);
 
+  const toasts = createMemo(() => toastStore.toasts().slice(0, local.limit!));
+
   const [isPaused, setIsPaused] = createSignal(false);
 
   const stringFormatter = createLocalizedStringFormatter(() => TOAST_INTL_MESSAGES);
 
-  const hasToasts = () => toastStore.toasts().length > 0;
+  const hasToasts = () => toasts().length > 0;
 
   const hotkeyLabel = () => {
     return local.hotkey!.join("+").replace(/Key/g, "").replace(/Digit/g, "");
@@ -123,6 +131,7 @@ export function ToastRegion(props: ToastRegionProps) {
 
   const context: ToastRegionContextValue = {
     isPaused,
+    toasts,
     hotkey: () => local.hotkey!,
     duration: () => local.duration!,
     swipeDirection: () => local.swipeDirection!,

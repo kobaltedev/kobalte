@@ -36,7 +36,7 @@ import { createPresence, createRegisterId } from "../primitives";
 import { ToastContext, ToastContextValue } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
 import { ToastSwipeDirection } from "./types";
-import { toastStore } from "./toaster";
+import { toastStore } from "./toast-store";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
 const TOAST_SWIPE_MOVE_EVENT = "toast.swipeMove";
@@ -147,16 +147,17 @@ export function ToastRoot(props: ToastRootProps) {
   const [isOpen, setIsOpen] = createSignal(true);
   const [titleId, setTitleId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
+  const [lifeTime, setLifeTime] = createSignal(100);
 
   const presence = createPresence(isOpen);
 
   const domId = createMemo(() => rootContext.generateId(`toast-${local.id}`));
-  const toast = createMemo(() => toastStore.toasts().find(toast => toast.id === local.id));
   const duration = createMemo(() => local.duration || rootContext.duration());
 
   let closeTimerId: number;
   let closeTimerStartTime = 0;
   let closeTimerRemainingTime = duration();
+  let totalElapsedTime = 0;
 
   let pointerStart: { x: number; y: number } | null = null;
   let swipeDelta: { x: number; y: number } | null = null;
@@ -339,7 +340,30 @@ export function ToastRoot(props: ToastRootProps) {
     })
   );
 
-  createEffect(on(toast, toast => toast?.dismiss && close()));
+  createEffect(() => {
+    if (rootContext.isPaused() || duration() === Infinity) {
+      return;
+    }
+
+    const intervalId = setInterval(() => {
+      const elapsedTime = new Date().getTime() - closeTimerStartTime + totalElapsedTime;
+
+      const life = Math.trunc(100 - (elapsedTime / duration()) * 100);
+      setLifeTime(life < 0 ? 0 : life);
+    });
+
+    onCleanup(() => {
+      totalElapsedTime += new Date().getTime() - closeTimerStartTime;
+      clearInterval(intervalId);
+    });
+  });
+
+  createEffect(
+    on(
+      () => toastStore.get(local.id)?.dismiss,
+      dismiss => dismiss && close()
+    )
+  );
 
   createEffect(
     on(
@@ -366,7 +390,12 @@ export function ToastRoot(props: ToastRootProps) {
           id={domId()}
           role="status"
           tabIndex={0}
-          style={{ "user-select": "none", "touch-action": "none", ...local.style }}
+          style={{
+            "--kb-toast-progress-fill-width": `${lifeTime()}%`,
+            "user-select": "none",
+            "touch-action": "none",
+            ...local.style,
+          }}
           aria-live={local.priority === "high" ? "assertive" : "polite"}
           aria-atomic="true"
           aria-labelledby={titleId()}

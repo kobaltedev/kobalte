@@ -1,36 +1,30 @@
 import { JSX } from "solid-js";
-import { createStore } from "solid-js/store";
 
-import { Toast } from "./types";
+import { toastStore } from "./toast-store";
 
 let toastsCounter = 0;
 
-const [state, setState] = createStore({
-  toasts: [] as Toast[],
-});
-
-function remove(id: number) {
-  setState("toasts", prev => prev.filter(toast => toast.id !== id));
-  return id;
-}
-
+/** Adds a new toast to the visible toasts or queue depending on current state and limit. */
 function show(render: (id: number) => JSX.Element) {
   const id = toastsCounter++;
-  setState("toasts", prev => [...prev, { id, render, dismiss: false }]);
+  toastStore.add({ id, render, dismiss: false });
   return id;
 }
 
+/** Removes toast with given id from visible toasts and queue. */
 function dismiss(id: number) {
-  setState("toasts", toast => toast.id === id, "dismiss", true);
+  toastStore.dismiss(id);
   return id;
 }
 
-export const toastStore = {
-  toasts: () => state.toasts,
-  remove,
-};
+/** Removes all toasts from visible toasts and queue. */
+function clear() {
+  toastStore.clear();
+}
 
+// User facing API.
 export const toaster = {
   show,
   dismiss,
+  clear,
 };
