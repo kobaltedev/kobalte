@@ -14,7 +14,13 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import {
+  callHandler,
+  createGenerateId,
+  mergeDefaultProps,
+  mergeRefs,
+  OverrideComponentProps,
+} from "@kobalte/utils";
 import {
   createEffect,
   createMemo,
@@ -26,7 +32,7 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createPresence } from "../primitives";
+import { createPresence, createRegisterId } from "../primitives";
 import { ToastContext, ToastContextValue } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
 import { ToastSwipeDirection } from "./types";
@@ -139,9 +145,12 @@ export function ToastRoot(props: ToastRootProps) {
   ]);
 
   const [isOpen, setIsOpen] = createSignal(true);
+  const [titleId, setTitleId] = createSignal<string>();
+  const [descriptionId, setDescriptionId] = createSignal<string>();
 
   const presence = createPresence(isOpen);
 
+  const domId = createMemo(() => rootContext.generateId(`toast-${local.id}`));
   const toast = createMemo(() => toastStore.toasts().find(toast => toast.id === local.id));
   const duration = createMemo(() => local.duration || rootContext.duration());
 
@@ -151,6 +160,10 @@ export function ToastRoot(props: ToastRootProps) {
 
   let pointerStart: { x: number; y: number } | null = null;
   let swipeDelta: { x: number; y: number } | null = null;
+
+  const close = () => {
+    setIsOpen(false);
+  };
 
   const deleteToast = () => {
     toastStore.remove(local.id);
@@ -164,7 +177,7 @@ export function ToastRoot(props: ToastRootProps) {
     window.clearTimeout(closeTimerId);
 
     closeTimerStartTime = new Date().getTime();
-    closeTimerId = window.setTimeout(() => setIsOpen(false), duration);
+    closeTimerId = window.setTimeout(close, duration);
   };
 
   const resumeTimer = () => {
@@ -192,7 +205,7 @@ export function ToastRoot(props: ToastRootProps) {
     local.onEscapeKeyDown?.(e);
 
     if (!e.defaultPrevented) {
-      setIsOpen(false);
+      close();
     }
   };
 
@@ -280,7 +293,7 @@ export function ToastRoot(props: ToastRootProps) {
         e.currentTarget.style.setProperty("--kb-toast-swipe-end-x", `${x}px`);
         e.currentTarget.style.setProperty("--kb-toast-swipe-end-y", `${y}px`);
 
-        setIsOpen(false);
+        close();
       } else {
         handleAndDispatchCustomEvent(TOAST_SWIPE_CANCEL_EVENT, local.onSwipeCancel, eventDetail);
 
@@ -326,7 +339,7 @@ export function ToastRoot(props: ToastRootProps) {
     })
   );
 
-  createEffect(on(toast, toast => toast?.dismiss && setIsOpen(false)));
+  createEffect(on(toast, toast => toast?.dismiss && close()));
 
   createEffect(
     on(
@@ -335,7 +348,12 @@ export function ToastRoot(props: ToastRootProps) {
     )
   );
 
-  const context: ToastContextValue = {};
+  const context: ToastContextValue = {
+    close,
+    generateId: createGenerateId(domId),
+    registerTitleId: createRegisterId(setTitleId),
+    registerDescriptionId: createRegisterId(setDescriptionId),
+  };
 
   return (
     <Show when={presence.isPresent()}>
@@ -345,12 +363,14 @@ export function ToastRoot(props: ToastRootProps) {
             presence.setRef(el);
             ref = el;
           }, local.ref)}
-          id={rootContext.generateId(`toast-${local.id}`)}
+          id={domId()}
           role="status"
           tabIndex={0}
           style={{ "user-select": "none", "touch-action": "none", ...local.style }}
           aria-live={local.priority === "high" ? "assertive" : "polite"}
           aria-atomic="true"
+          aria-labelledby={titleId()}
+          aria-describedby={descriptionId()}
           data-opened={isOpen() ? "" : undefined}
           data-closed={!isOpen() ? "" : undefined}
           data-swipe-direction={rootContext.swipeDirection()}

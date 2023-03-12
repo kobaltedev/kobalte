@@ -1,19 +1,29 @@
-/*!
- * Portions of this file are based on code from radix-ui-primitives.
- * MIT Licensed, Copyright (c) 2022 WorkOS.
- *
- * Credits to the Radix UI team:
- * https://github.com/radix-ui/primitives/blob/72018163e1fdb79b51d322d471c8fc7d14df2b59/packages/react/toast/src/Toast.tsx
- */
-
-import { OverrideComponentProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, onCleanup, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
+import { useToastContext } from "./toast-context";
 
 export interface ToastTitleOptions extends AsChildProp {}
 
 export type ToastTitleProps = OverrideComponentProps<"div", ToastTitleOptions>;
 
+/**
+ * An accessible title to be announced when the toast is open.
+ */
 export function ToastTitle(props: ToastTitleProps) {
-  return <Polymorphic fallback="div" {...props} />;
+  const context = useToastContext();
+
+  props = mergeDefaultProps(
+    {
+      id: context.generateId("title"),
+    },
+    props
+  );
+
+  const [local, others] = splitProps(props, ["id"]);
+
+  createEffect(() => onCleanup(context.registerTitleId(local.id!)));
+
+  return <Polymorphic fallback="div" id={local.id} {...others} />;
 }

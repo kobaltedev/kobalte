@@ -6,14 +6,38 @@
  * https://github.com/radix-ui/primitives/blob/72018163e1fdb79b51d322d471c8fc7d14df2b59/packages/react/toast/src/Toast.tsx
  */
 
-import { OverrideComponentProps } from "@kobalte/utils";
+import { callHandler, OverrideComponentProps } from "@kobalte/utils";
+import { JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
+import { createLocalizedStringFormatter } from "../i18n";
+import { TOAST_INTL_MESSAGES } from "./toast.intl";
+import { useToastContext } from "./toast-context";
 
 export interface ToastCloseButtonOptions extends Button.ButtonRootOptions {}
 
 export type ToastCloseButtonProps = OverrideComponentProps<"button", ToastCloseButtonOptions>;
 
+/**
+ * The button that closes the toast.
+ */
 export function ToastCloseButton(props: ToastCloseButtonProps) {
-  return <Button.Root {...props} />;
+  const context = useToastContext();
+
+  const [local, others] = splitProps(props, ["aria-label", "onClick"]);
+
+  const stringFormatter = createLocalizedStringFormatter(() => TOAST_INTL_MESSAGES);
+
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    callHandler(e, local.onClick);
+    context.close();
+  };
+
+  return (
+    <Button.Root
+      aria-label={local["aria-label"] || stringFormatter().format("close")}
+      onClick={onClick}
+      {...others}
+    />
+  );
 }

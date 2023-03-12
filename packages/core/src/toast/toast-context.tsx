@@ -1,6 +1,11 @@
 import { createContext, useContext } from "solid-js";
 
-export interface ToastContextValue {}
+export interface ToastContextValue {
+  close: () => void;
+  generateId: (part: string) => string;
+  registerTitleId: (id: string) => () => void;
+  registerDescriptionId: (id: string) => () => void;
+}
 
 export const ToastContext = createContext<ToastContextValue>();
 
