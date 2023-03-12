@@ -1,40 +1,36 @@
-/*!
- * Portions of this file are based on code from sonner.
- * MIT Licensed, Copyright (c) 2023 Emil Kowalski.
- *
- * Credits to the sonner team:
- * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
- */
-
 import { JSX } from "solid-js";
+import { createStore } from "solid-js/store";
 
-import { ToastConfig, ToastState } from "./types";
+import { Toast } from "./types";
 
 let toastsCounter = 0;
 
-const subscribers: Array<(toast: ToastConfig) => void> = [];
+const [state, setState] = createStore({
+  toasts: [] as Toast[],
+});
 
-function subscribe(subscriber: (toast: ToastConfig) => void) {
-  subscribers.push(subscriber);
-
-  return () => {
-    const index = subscribers.indexOf(subscriber);
-    subscribers.splice(index, 1);
-  };
-}
-
-function show(render: (state: ToastState) => JSX.Element) {
-  const id = toastsCounter++;
-  subscribers.forEach(subscriber => subscriber({ id, render }));
-}
-
-function dismiss(id: number) {
-  subscribers.forEach(subscriber => subscriber({ id, dismiss: true }));
+function remove(id: number) {
+  setState("toasts", prev => prev.filter(toast => toast.id !== id));
   return id;
 }
 
+function show(render: (id: number) => JSX.Element) {
+  const id = toastsCounter++;
+  setState("toasts", prev => [...prev, { id, render, dismiss: false }]);
+  return id;
+}
+
+function dismiss(id: number) {
+  setState("toasts", toast => toast.id === id, "dismiss", true);
+  return id;
+}
+
+export const toastStore = {
+  toasts: () => state.toasts,
+  remove,
+};
+
 export const toaster = {
-  subscribe,
   show,
   dismiss,
 };

@@ -17,6 +17,7 @@ import {
   contains,
   focusWithoutScrolling,
   getDocument,
+  getWindow,
   Key,
   mergeRefs,
   OverrideComponentProps,
@@ -24,6 +25,7 @@ import {
 import { createEffect, JSX, on, onCleanup, splitProps } from "solid-js";
 
 import { useToastRegionContext } from "./toast-region-context";
+import { toastStore } from "./toaster";
 
 export interface ToastListOptions {}
 
@@ -48,29 +50,35 @@ export function ToastList(props: ToastListProps) {
 
   const onFocusIn: JSX.EventHandlerUnion<HTMLOListElement, FocusEvent> = e => {
     callHandler(e, local.onFocusIn);
-    context.setIsInteracting(true);
+
+    if (context.pauseOnInteraction() && !context.isPaused()) {
+      context.pauseAllTimer();
+    }
   };
 
   const onFocusOut: JSX.EventHandlerUnion<HTMLOListElement, FocusEvent> = e => {
     callHandler(e, local.onFocusOut);
 
-    // The newly focused element isn't inside the toast list
+    // The newly focused element isn't inside the toast list.
     if (!contains(ref, e.relatedTarget as HTMLElement)) {
-      context.setIsInteracting(false);
+      context.resumeAllTimer();
     }
   };
 
   const onPointerMove: JSX.EventHandlerUnion<HTMLOListElement, PointerEvent> = e => {
     callHandler(e, local.onPointerMove);
-    context.setIsInteracting(true);
+
+    if (context.pauseOnInteraction() && !context.isPaused()) {
+      context.pauseAllTimer();
+    }
   };
 
   const onPointerLeave: JSX.EventHandlerUnion<HTMLOListElement, PointerEvent> = e => {
     callHandler(e, local.onPointerLeave);
 
-    // The current active element isn't inside the toast list
+    // The current active element isn't inside the toast list.
     if (!contains(ref, getDocument(ref).activeElement)) {
-      context.setIsInteracting(false);
+      context.resumeAllTimer();
     }
   };
 
@@ -96,6 +104,22 @@ export function ToastList(props: ToastListProps) {
     })
   );
 
+  createEffect(() => {
+    if (!context.pauseOnPageIdle()) {
+      return;
+    }
+
+    const win = getWindow(ref);
+
+    win.addEventListener("blur", context.pauseAllTimer);
+    win.addEventListener("focus", context.resumeAllTimer);
+
+    onCleanup(() => {
+      win.removeEventListener("blur", context.pauseAllTimer);
+      win.removeEventListener("focus", context.resumeAllTimer);
+    });
+  });
+
   return (
     <ol
       ref={mergeRefs(el => (ref = el), local.ref)}
@@ -106,8 +130,8 @@ export function ToastList(props: ToastListProps) {
       onPointerLeave={onPointerLeave}
       {...others}
     >
-      <Key each={context.toasts()} by="id">
-        {toast => toast().render?.(toast())}
+      <Key each={toastStore.toasts()} by="id">
+        {toast => toast().render(toast().id)}
       </Key>
     </ol>
   );

@@ -22,6 +22,7 @@ import {
   noop,
 } from "@kobalte/utils";
 import { Accessor, createEffect, onCleanup } from "solid-js";
+import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
 
 type EventDetails<T> = {
   originalEvent: T;
@@ -81,6 +82,14 @@ export function createInteractOutside<T extends HTMLElement>(
     const target = e.target as HTMLElement | null;
 
     if (!(target instanceof HTMLElement)) {
+      return false;
+    }
+
+    console.log(target);
+
+    // If the target is within a top layer element (e.g. toasts), ignore.
+    if (target.closest(`[${DATA_TOP_LAYER_ATTR}]`)) {
+      console.log("fired");
       return false;
     }
 

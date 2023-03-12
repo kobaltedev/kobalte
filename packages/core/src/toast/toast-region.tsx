@@ -12,14 +12,15 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-import { createSignal, JSX, onCleanup, onMount, splitProps } from "solid-js";
+import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { createLocalizedStringFormatter } from "../i18n";
 import { TOAST_HOTKEY_PLACEHOLDER, TOAST_INTL_MESSAGES } from "./toast.intl";
 import { ToastRegionContext, ToastRegionContextValue } from "./toast-region-context";
-import { toaster } from "./toaster";
-import { ToastConfig, ToastSwipeDirection } from "./types";
+import { toastStore } from "./toaster";
+import { ToastSwipeDirection } from "./types";
+import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
 
 export interface ToastRegionOptions {
   /**
@@ -27,7 +28,7 @@ export interface ToastRegionOptions {
    * The available `{hotkey}` placeholder will be replaced for you.
    * @default "Notifications ({hotkey})"
    */
-  label?: string;
+  "aria-label"?: string;
 
   /**
    * The keys to use as the keyboard shortcut that will move focus to the toast viewport.
@@ -39,17 +40,28 @@ export interface ToastRegionOptions {
   /** The time in milliseconds that should elapse before automatically closing each toast. */
   duration?: number;
 
-  /**
-   * The delay in milliseconds before removing a toast from the DOM when its visible duration has elapsed.
-   * Useful to animate the toast out.
-   */
-  unmountDelay?: number;
-
   /** The direction of the pointer swipe that should close the toast. */
   swipeDirection?: ToastSwipeDirection;
 
   /** The distance in pixels that the swipe gesture must travel before a close is triggered. */
   swipeThreshold?: number;
+
+  /** Whether the toasts close timeout should pause when a toast is hovered or focused. */
+  pauseOnInteraction?: boolean;
+
+  /**
+   * Whether the toasts close timeout should pause when the document loses focus or the page is idle
+   * (e.g. switching to a new browser tab).
+   */
+  pauseOnPageIdle?: boolean;
+
+  /**
+   * Whether the toast region is marked as a "top layer", so that it:
+   *  - is not aria-hidden when opening an overlay.
+   *  - allows focus even outside a containing focus scope.
+   *  - doesn’t dismiss overlays when clicking on it, even though it is outside.
+   */
+  isTopLayer?: boolean;
 
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
@@ -62,70 +74,64 @@ export interface ToastRegionProps extends OverrideComponentProps<"div", ToastReg
  * It is up to you to ensure the discoverability of the hotkey for keyboard users.
  */
 export function ToastRegion(props: ToastRegionProps) {
+  const defaultId = `toast-region-${createUniqueId()}`;
+
   props = mergeDefaultProps(
     {
+      id: defaultId,
       hotkey: ["altKey", "KeyT"],
       duration: 5000,
-      unmountDelay: 500,
       swipeDirection: "right",
       swipeThreshold: 50,
+      pauseOnInteraction: true,
+      pauseOnPageIdle: true,
+      isTopLayer: true,
     },
     props
   );
 
   const [local, others] = splitProps(props, [
     "style",
-    "label",
     "hotkey",
     "duration",
-    "unmountDelay",
     "swipeDirection",
     "swipeThreshold",
+    "pauseOnInteraction",
+    "pauseOnPageIdle",
+    "isTopLayer",
+    "aria-label",
   ]);
 
-  const [toasts, setToasts] = createSignal<ToastConfig[]>([]);
-  const [isInteracting, setIsInteracting] = createSignal(false);
+  const [isPaused, setIsPaused] = createSignal(false);
 
-  // TODO: add i18n
-  // @ts-ignore
   const stringFormatter = createLocalizedStringFormatter(() => TOAST_INTL_MESSAGES);
+
+  const hasToasts = () => toastStore.toasts().length > 0;
 
   const hotkeyLabel = () => {
     return local.hotkey!.join("+").replace(/Key/g, "").replace(/Digit/g, "");
   };
 
   const ariaLabel = () => {
-    const label = local.label || stringFormatter().format("notifications");
+    const label = local["aria-label"] || stringFormatter().format("notifications");
     return label.replace(TOAST_HOTKEY_PLACEHOLDER, hotkeyLabel());
   };
 
-  const removeToast = (id: number) => {
-    setToasts(toasts => toasts.filter(toast => toast.id !== id));
-  };
-
-  onMount(() => {
-    const cleanup = toaster.subscribe(toast => {
-      if (toast.dismiss) {
-        setToasts(toasts => toasts.map(t => (t.id === toast.id ? { ...t, delete: true } : t)));
-        return;
-      }
-
-      setToasts(toasts => [toast, ...toasts]);
-    });
-
-    onCleanup(cleanup);
+  const topLayerAttr = () => ({
+    [DATA_TOP_LAYER_ATTR]: local.isTopLayer ? "" : undefined,
   });
 
   const context: ToastRegionContextValue = {
+    isPaused,
     hotkey: () => local.hotkey!,
     duration: () => local.duration!,
-    unmountDelay: () => local.unmountDelay!,
     swipeDirection: () => local.swipeDirection!,
     swipeThreshold: () => local.swipeThreshold!,
-    toasts,
-    isInteracting,
-    setIsInteracting,
-    removeToast,
+    pauseOnInteraction: () => local.pauseOnInteraction!,
+    pauseOnPageIdle: () => local.pauseOnPageIdle!,
+    pauseAllTimer: () => setIsPaused(true),
+    resumeAllTimer: () => setIsPaused(false),
+    generateId: createGenerateId(() => others.id!),
   };
 
   return (
@@ -137,9 +143,10 @@ export function ToastRegion(props: ToastRegionProps) {
         // in case list has size when empty (e.g. padding), we remove pointer events,
         // so it doesn't prevent interactions with page elements that it overlays
         style={{
-          "pointer-events": toasts().length > 0 ? undefined : "none",
+          "pointer-events": hasToasts() ? undefined : "none",
           ...local.style,
         }}
+        {...topLayerAttr}
         {...others}
       />
     </ToastRegionContext.Provider>

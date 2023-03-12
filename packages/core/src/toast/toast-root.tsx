@@ -14,13 +14,23 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { createEffect, createSignal, JSX, on, onCleanup, Show, splitProps } from "solid-js";
+import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import {
+  createEffect,
+  createMemo,
+  createSignal,
+  JSX,
+  on,
+  onCleanup,
+  Show,
+  splitProps,
+} from "solid-js";
 
+import { createPresence } from "../primitives";
 import { ToastContext, ToastContextValue } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
-import { ToastState, ToastSwipeDirection } from "./types";
-import { createPresence } from "../primitives";
+import { ToastSwipeDirection } from "./types";
+import { toastStore } from "./toaster";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
 const TOAST_SWIPE_MOVE_EVENT = "toast.swipeMove";
@@ -33,15 +43,15 @@ export type SwipeEvent = { currentTarget: EventTarget & HTMLLIElement } & Omit<
 >;
 
 export interface ToastRootOptions {
-  /** The state of the toast provided by the `toaster`. */
-  state: ToastState;
+  /** The id of the toast provided by the `toaster`. */
+  id: number;
 
   /**
    * Control the sensitivity of the toast for accessibility purposes.
    * For toasts that are the result of a user action, choose `high`.
    * Toasts generated from background tasks should use `low`.
    */
-  severity?: "high" | "low";
+  priority?: "high" | "low";
 
   /**
    * The time in milliseconds that should elapse before automatically closing the toast.
@@ -100,13 +110,20 @@ export type ToastRootProps = OverrideComponentProps<"li", ToastRootOptions>;
 export function ToastRoot(props: ToastRootProps) {
   let ref: HTMLLIElement | undefined;
 
-  const toastRegionContext = useToastRegionContext();
+  const rootContext = useToastRegionContext();
+
+  props = mergeDefaultProps(
+    {
+      priority: "high",
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, [
     "ref",
+    "id",
     "style",
-    "state",
-    "severity",
+    "priority",
     "duration",
     "onPause",
     "onResume",
@@ -121,39 +138,48 @@ export function ToastRoot(props: ToastRootProps) {
     "onPointerUp",
   ]);
 
-  const [isOpen, setIsOpen] = createSignal(!local.state.delete);
+  const [isOpen, setIsOpen] = createSignal(true);
 
   const presence = createPresence(isOpen);
 
-  let timeoutId: number;
+  const toast = createMemo(() => toastStore.toasts().find(toast => toast.id === local.id));
+  const duration = createMemo(() => local.duration || rootContext.duration());
+
+  let closeTimerId: number;
   let closeTimerStartTime = 0;
-  let lastCloseTimerStartTime = 0;
-  let closeTimerRemainingTime = local.duration || toastRegionContext.duration();
+  let closeTimerRemainingTime = duration();
 
   let pointerStart: { x: number; y: number } | null = null;
   let swipeDelta: { x: number; y: number } | null = null;
 
   const deleteToast = () => {
-    toastRegionContext.removeToast(local.state.id);
+    toastStore.remove(local.id);
   };
 
-  const pauseTimer = () => {
-    if (lastCloseTimerStartTime < closeTimerStartTime) {
-      const elapsedTime = new Date().getTime() - closeTimerStartTime;
-      closeTimerRemainingTime = closeTimerRemainingTime - elapsedTime;
+  const startTimer = (duration: number) => {
+    if (!duration || duration === Infinity) {
+      return;
     }
 
-    lastCloseTimerStartTime = new Date().getTime();
+    window.clearTimeout(closeTimerId);
 
-    local.onPause?.();
+    closeTimerStartTime = new Date().getTime();
+    closeTimerId = window.setTimeout(() => setIsOpen(false), duration);
   };
 
   const resumeTimer = () => {
-    closeTimerStartTime = new Date().getTime();
-
-    timeoutId = window.setTimeout(() => setIsOpen(false), closeTimerRemainingTime);
+    startTimer(closeTimerRemainingTime);
 
     local.onResume?.();
+  };
+
+  const pauseTimer = () => {
+    const elapsedTime = new Date().getTime() - closeTimerStartTime;
+    closeTimerRemainingTime = closeTimerRemainingTime - elapsedTime;
+
+    window.clearTimeout(closeTimerId);
+
+    local.onPause?.();
   };
 
   const onKeyDown: JSX.EventHandlerUnion<HTMLLIElement, KeyboardEvent> = e => {
@@ -192,11 +218,9 @@ export function ToastRoot(props: ToastRootProps) {
 
     const hasSwipeMoveStarted = Boolean(swipeDelta);
 
-    const isHorizontalSwipe = ["left", "right"].includes(toastRegionContext.swipeDirection());
+    const isHorizontalSwipe = ["left", "right"].includes(rootContext.swipeDirection());
 
-    const clamp = ["left", "up"].includes(toastRegionContext.swipeDirection())
-      ? Math.min
-      : Math.max;
+    const clamp = ["left", "up"].includes(rootContext.swipeDirection()) ? Math.min : Math.max;
 
     const clampedX = isHorizontalSwipe ? clamp(0, x) : 0;
     const clampedY = !isHorizontalSwipe ? clamp(0, y) : 0;
@@ -215,7 +239,7 @@ export function ToastRoot(props: ToastRootProps) {
       e.currentTarget.setAttribute("data-swipe", "move");
       e.currentTarget.style.setProperty("--kb-toast-swipe-move-x", `${x}px`);
       e.currentTarget.style.setProperty("--kb-toast-swipe-move-y", `${y}px`);
-    } else if (isDeltaInDirection(delta, toastRegionContext.swipeDirection(), moveStartBuffer)) {
+    } else if (isDeltaInDirection(delta, rootContext.swipeDirection(), moveStartBuffer)) {
       swipeDelta = delta;
 
       handleAndDispatchCustomEvent(TOAST_SWIPE_START_EVENT, local.onSwipeStart, eventDetail);
@@ -246,13 +270,7 @@ export function ToastRoot(props: ToastRootProps) {
       const toast = e.currentTarget;
 
       const eventDetail = { originalEvent: e, delta };
-      if (
-        isDeltaInDirection(
-          delta,
-          toastRegionContext.swipeDirection(),
-          toastRegionContext.swipeThreshold()
-        )
-      ) {
+      if (isDeltaInDirection(delta, rootContext.swipeDirection(), rootContext.swipeThreshold())) {
         handleAndDispatchCustomEvent(TOAST_SWIPE_END_EVENT, local.onSwipeEnd, eventDetail);
 
         const { x, y } = delta;
@@ -283,23 +301,32 @@ export function ToastRoot(props: ToastRootProps) {
 
   createEffect(
     on(
-      () => toastRegionContext.isInteracting(),
-      isInteracting => {
-        isInteracting ? pauseTimer() : resumeTimer();
-        onCleanup(() => clearTimeout(timeoutId));
+      () => rootContext.isPaused(),
+      isPaused => {
+        if (isPaused) {
+          pauseTimer();
+        } else {
+          resumeTimer();
+        }
+      },
+      {
+        defer: true,
       }
     )
   );
 
+  // start timer when toast opens or duration changes.
+  // we include `open` in deps because closed !== unmounted when animating,
+  // so it could reopen before being completely unmounted
   createEffect(
-    on(
-      () => local.state,
-      state => {
-        console.log("fired");
-        state.delete && setIsOpen(false);
+    on([isOpen, duration], ([isOpen, duration]) => {
+      if (isOpen && !rootContext.isPaused()) {
+        startTimer(duration);
       }
-    )
+    })
   );
+
+  createEffect(on(toast, toast => toast?.dismiss && setIsOpen(false)));
 
   createEffect(
     on(
@@ -318,14 +345,15 @@ export function ToastRoot(props: ToastRootProps) {
             presence.setRef(el);
             ref = el;
           }, local.ref)}
+          id={rootContext.generateId(`toast-${local.id}`)}
           role="status"
           tabIndex={0}
           style={{ "user-select": "none", "touch-action": "none", ...local.style }}
-          aria-live={local.severity === "high" ? "assertive" : "polite"}
+          aria-live={local.priority === "high" ? "assertive" : "polite"}
           aria-atomic="true"
-          data-expanded={isOpen() ? "" : undefined}
+          data-opened={isOpen() ? "" : undefined}
           data-closed={!isOpen() ? "" : undefined}
-          data-swipe-direction={toastRegionContext.swipeDirection()}
+          data-swipe-direction={rootContext.swipeDirection()}
           onKeyDown={onKeyDown}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}

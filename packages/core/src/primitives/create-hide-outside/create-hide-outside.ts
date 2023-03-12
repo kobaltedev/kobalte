@@ -9,6 +9,9 @@
 import { access, MaybeAccessor } from "@kobalte/utils";
 import { createEffect, onCleanup } from "solid-js";
 
+import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
+import { DATA_LIVE_ANNOUNCER_ATTR } from "../../live-announcer";
+
 export interface CreateHideOutsideProps {
   /** The elements that should remain visible. */
   targets: MaybeAccessor<Array<Element>>;
@@ -58,22 +61,22 @@ const observerStack: Array<ObserverWrapper> = [];
 export function ariaHideOutside(targets: Element[], root = document.body) {
   const visibleNodes = new Set<Element>(targets);
   const hiddenNodes = new Set<Element>();
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
-    acceptNode(node) {
-      // If this node is a live announcer, add it to the set of nodes to keep visible.
-      if (
-        (node instanceof HTMLElement || node instanceof SVGElement) &&
-        node.dataset.liveAnnouncer === "true"
-      ) {
-        visibleNodes.add(node);
-      }
 
+  const walk = (root: Element) => {
+    // Keep live announcer and top layer elements (e.g. toasts) visible.
+    for (const element of root.querySelectorAll(
+      `[${DATA_LIVE_ANNOUNCER_ATTR}], [${DATA_TOP_LAYER_ATTR}]`
+    )) {
+      visibleNodes.add(element);
+    }
+
+    const acceptNode = (node: Element) => {
       // Skip this node and its children if it is one of the target nodes, or a live announcer.
       // Also skip children of already hidden nodes, as aria-hidden is recursive. An exception is
       // made for elements with role="row" since VoiceOver on iOS has issues hiding elements with role="row".
       // For that case we want to hide the cells inside as well (https://bugs.webkit.org/show_bug.cgi?id=222623).
       if (
-        visibleNodes.has(node as Element) ||
+        visibleNodes.has(node) ||
         (node.parentElement &&
           hiddenNodes.has(node.parentElement) &&
           node.parentElement.getAttribute("role") !== "row")
@@ -82,13 +85,31 @@ export function ariaHideOutside(targets: Element[], root = document.body) {
       }
 
       // Skip this node but continue to children if one of the targets is inside the node.
-      if (targets.some(target => node.contains(target))) {
-        return NodeFilter.FILTER_SKIP;
+      for (const target of visibleNodes) {
+        if (node.contains(target)) {
+          return NodeFilter.FILTER_SKIP;
+        }
       }
 
       return NodeFilter.FILTER_ACCEPT;
-    },
-  });
+    };
+
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, { acceptNode });
+
+    // TreeWalker does not include the root.
+    const acceptRoot = acceptNode(root);
+    if (acceptRoot === NodeFilter.FILTER_ACCEPT) {
+      hide(root);
+    }
+
+    if (acceptRoot !== NodeFilter.FILTER_REJECT) {
+      let node = walker.nextNode() as Element;
+      while (node != null) {
+        hide(node);
+        node = walker.nextNode() as Element;
+      }
+    }
+  };
 
   const hide = (node: Element) => {
     const refCount = refCountMap.get(node) ?? 0;
@@ -113,11 +134,7 @@ export function ariaHideOutside(targets: Element[], root = document.body) {
     observerStack[observerStack.length - 1].disconnect();
   }
 
-  let node = walker.nextNode() as Element;
-  while (node != null) {
-    hide(node);
-    node = walker.nextNode() as Element;
-  }
+  walk(root);
 
   const observer = new MutationObserver(changes => {
     for (const change of changes) {
@@ -126,16 +143,23 @@ export function ariaHideOutside(targets: Element[], root = document.body) {
       }
 
       // If the parent element of the added nodes is not within one of the targets,
-      // and not already inside a hidden node, hide all the new children.
+      // and not already inside a hidden node, hide all of the new children.
       if (![...visibleNodes, ...hiddenNodes].some(node => node.contains(change.target))) {
+        for (const node of change.removedNodes) {
+          if (node instanceof Element) {
+            visibleNodes.delete(node);
+            hiddenNodes.delete(node);
+          }
+        }
+
         for (const node of change.addedNodes) {
           if (
             (node instanceof HTMLElement || node instanceof SVGElement) &&
-            node.dataset.liveAnnouncer === "true"
+            (node.dataset.liveAnnouncer === "true" || node.dataset.reactAriaTopLayer === "true")
           ) {
             visibleNodes.add(node);
           } else if (node instanceof Element) {
-            hide(node);
+            walk(node);
           }
         }
       }
