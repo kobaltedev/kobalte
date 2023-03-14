@@ -1,0 +1,17 @@
+import { OverrideComponentProps } from "@kobalte/utils";
+
+import { AsChildProp, Polymorphic } from "../polymorphic";
+import { useSliderContext } from "./slider-context";
+
+export interface SliderValueLabelProps extends OverrideComponentProps<"div", AsChildProp> {}
+
+/**
+ * The accessible label text representing the current value in a human-readable format.
+ */
+export function SliderValueLabel(props: SliderValueLabelProps) {
+  const context = useSliderContext();
+
+  return (
+    <Polymorphic fallback="div" children={context.valueLabel()} {...context.dataset()} {...props} />
+  );
+}
