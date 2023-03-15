@@ -115,7 +115,6 @@ export function createSliderState(props: StateOpts): SliderState {
   const [focusedIndex, setFocusedIndex] = createSignal<number | undefined>(undefined);
 
   const getValuePercent = (value: number) => {
-    console.log("Change", value);
     return (value - props.minValue!) / (props.maxValue! - props.minValue!);
   };
 

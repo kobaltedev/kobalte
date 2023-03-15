@@ -4,7 +4,7 @@ import {
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, onMount, splitProps } from "solid-js";
+import { JSX, onCleanup, onMount, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useSliderContext } from "./slider-context";
@@ -21,7 +21,7 @@ export function SliderThumb(props: SliderThumbProps) {
   props = mergeDefaultProps({ id: context.generateId("thumb") }, props);
   const [local, others] = splitProps(props, ["ref", "style", "index"]);
 
-  const value = () => context.state.getThumbValue(local.index) as number | undefined;
+  const value = () => context.state.values()[local.index];
   const position = () => context.state.getThumbPercent(local.index);
 
   onMount(() => {
@@ -37,13 +37,13 @@ export function SliderThumb(props: SliderThumbProps) {
       fallback="span"
       children={props.children}
       aria-label={others["aria-label"]}
-      aria-valuetext={context.state.getThumbValueLabel(local.index)}
-      aria-valuemin={context.state.getThumbMinValue(local.index)}
+      // aria-valuetext={context.state.getThumbValueLabel(local.index)}
+      aria-valuemin={context.minValue}
       aria-valuenow={value()}
-      aria-valuemax={context.state.getThumbMaxValue(local.index)}
+      aria-valuemax={context.maxValue}
       aria-orientation={context.orientation}
       {...context.dataset()}
-      tabIndex={context.state.isDisabled ? undefined : 0}
+      tabIndex={context.isDisabled() ? undefined : 0}
       onFocus={composeEventHandlers([
         props.onFocus,
         () => {

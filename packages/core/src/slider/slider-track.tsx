@@ -1,5 +1,4 @@
-import { composeEventHandlers, OverrideComponentProps } from "@kobalte/utils";
-import { createSignal } from "solid-js";
+import { OverrideComponentProps } from "@kobalte/utils";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useSliderContext } from "./slider-context";
