@@ -1,26 +1,32 @@
 import { Accessor, createContext, useContext } from "solid-js";
+
 import { SliderState } from "../primitives/create-slider-state/create-slider-state";
+import { GetValueLabelParams } from "./slider-root";
 
 export interface SliderDataSet {
-  "data-progress": "loading" | "complete" | undefined;
-  "data-indeterminate": string | undefined;
+  "data-disabled": "" | undefined;
+  "data-orientation": "vertical" | "horizontal" | undefined;
 }
+
+export type Side = "left" | "top" | "bottom" | "right";
 
 export interface SliderContextValue {
   dataset: Accessor<SliderDataSet>;
   state: SliderState;
   orientation: "horizontal" | "vertical";
-  sliderFillWidth: Accessor<string | undefined>;
   labelId: Accessor<string | undefined>;
   thumbs: Set<HTMLElement>;
   onSlideStart: (value: number) => void;
   onSlideMove: (value: number) => void;
   onSlideEnd: () => void;
+  startEdge: Side;
+  endEdge: Side;
   minValue: number;
   maxValue: number;
   inverted: boolean;
   generateId: (part: string) => string;
   registerLabelId: (id: string) => () => void;
+  getValueLabel: ((params: GetValueLabelParams) => string) | undefined;
 }
 
 export const SliderContext = createContext<SliderContextValue>();

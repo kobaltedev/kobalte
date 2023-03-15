@@ -17,12 +17,5 @@ export interface SliderTrackProps extends OverrideComponentProps<"div", AsChildP
 export function SliderTrack(props: SliderTrackProps) {
   const context = useSliderContext();
 
-  return (
-    <Polymorphic
-      fallback="div"
-      data-disabled={context.state.isDisabled ? "" : undefined}
-      data-orientation={context.orientation}
-      {...props}
-    />
-  );
+  return <Polymorphic fallback="div" {...context.dataset()} {...props} />;
 }

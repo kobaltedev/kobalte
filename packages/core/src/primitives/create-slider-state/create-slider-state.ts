@@ -101,7 +101,9 @@ export function createSliderState(props: StateOpts): SliderState {
   const [values, setValues] = createControllableArraySignal<number>({
     value,
     defaultValue,
-    onChange,
+    onChange: value => {
+      props.onChange?.(value);
+    },
   });
 
   createEffect(() => {

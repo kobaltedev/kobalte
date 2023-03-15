@@ -22,11 +22,7 @@ export function SliderThumb(props: SliderThumbProps) {
   const [local, others] = splitProps(props, ["ref", "style", "index"]);
 
   const value = () => context.state.getThumbValue(local.index) as number | undefined;
-  const position = () => context.state.getValuePercent(context.state.values()[local.index]);
-
-  createEffect(() => {
-    console.log(context.state.values());
-  });
+  const position = () => context.state.getThumbPercent(local.index);
 
   onMount(() => {
     if (ref) context.thumbs.add(ref);
@@ -46,8 +42,7 @@ export function SliderThumb(props: SliderThumbProps) {
       aria-valuenow={value()}
       aria-valuemax={context.state.getThumbMaxValue(local.index)}
       aria-orientation={context.orientation}
-      data-orientation={context.orientation}
-      data-disabled={context.state.isDisabled ? "" : undefined}
+      {...context.dataset()}
       tabIndex={context.state.isDisabled ? undefined : 0}
       onFocus={composeEventHandlers([
         props.onFocus,
@@ -58,7 +53,7 @@ export function SliderThumb(props: SliderThumbProps) {
       style={{
         display: value() === undefined ? "none" : undefined,
         position: "absolute",
-        [context.state.orientation === "vertical" ? "top" : "left"]: `${position() * 100}%`,
+        [context.startEdge]: `${position() * 100}%`,
         transform: "translate(-50%, -50%)",
         "touch-action": "none",
         ...local.style,

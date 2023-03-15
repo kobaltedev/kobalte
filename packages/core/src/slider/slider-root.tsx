@@ -21,10 +21,22 @@ import { createNumberFormatter } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { createSliderState } from "../primitives/create-slider-state/create-slider-state";
-import { SliderContext, SliderContextValue, SliderDataSet } from "./slider-context";
+import { Side, SliderContext, SliderContextValue, SliderDataSet } from "./slider-context";
 
-interface GetValueLabelParams {
-  value: number[];
+type Direction = "ltr" | "rtl";
+
+const PAGE_KEYS = ["PageUp", "PageDown"];
+const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+
+type SlideDirection = "from-left" | "from-right" | "from-bottom" | "from-top";
+const BACK_KEYS: Record<SlideDirection, string[]> = {
+  "from-left": ["Home", "PageDown", "ArrowDown", "ArrowLeft"],
+  "from-right": ["Home", "PageDown", "ArrowDown", "ArrowRight"],
+  "from-bottom": ["Home", "PageDown", "ArrowDown", "ArrowLeft"],
+  "from-top": ["Home", "PageDown", "ArrowUp", "ArrowLeft"],
+};
+export interface GetValueLabelParams {
+  values: number[];
   min: number;
   max: number;
 }
@@ -91,7 +103,9 @@ export function SliderRoot(props: SliderRootProps) {
       step: 1,
       orientation: "horizontal",
       disabled: false,
-      inverted: true,
+      inverted: false,
+      minStepsBetweenThumbs: 0,
+      defaultValue: [props.minValue ?? 0],
     },
     props
   );
@@ -112,37 +126,32 @@ export function SliderRoot(props: SliderRootProps) {
     "inverted",
     "minStepsBetweenThumbs",
     "step",
+    "orientation",
   ]);
 
   const [labelId, setLabelId] = createSignal<string>();
   const defaultFormatter = createNumberFormatter(() => ({ style: "percent" }));
   const state = createSliderState({
-    defaultValue: props.defaultValue!,
+    defaultValue: local.defaultValue!,
     numberFormatter: defaultFormatter(),
-    value: props.value,
+    value: local.value,
     isDisabled: props.disabled,
-    maxValue: props.maxValue!,
-    minValue: props.minValue!,
-    onChange: props.onChange,
-    onChangeEnd: props.onChangeEnd,
-    orientation: props.orientation!,
-    step: props.step!,
+    maxValue: local.maxValue!,
+    minValue: local.minValue!,
+    onChange: local.onChange,
+    onChangeEnd: local.onChangeEnd,
+    orientation: local.orientation!,
+    step: local.step!,
   });
   const thumbs = new Set<HTMLElement>([]);
-  const sliderFillWidth = () => {
-    return local.isIndeterminate ? undefined : `${Math.round(1 * 100)}%`;
-  };
+
+  const isSlidingFromLeft = () => !local.inverted;
+  const isSlidingFromBottom = () => !local.inverted;
 
   const dataset: Accessor<SliderDataSet> = createMemo(() => {
-    const dataProgress: SliderDataSet["data-progress"] = undefined;
-
-    if (!local.isIndeterminate) {
-      // dataProgress = true ? "complete" : "loading";
-    }
-
     return {
-      "data-progress": dataProgress,
-      "data-indeterminate": local.isIndeterminate ? "" : undefined,
+      "data-disabled": (state.isDisabled ? "" : undefined) as SliderDataSet["data-disabled"],
+      "data-orientation": local.orientation,
     };
   });
 
@@ -158,7 +167,33 @@ export function SliderRoot(props: SliderRootProps) {
     const prevValue = beforeStart[state.focusedThumb()!];
     const nextValue = state.values()[state.focusedThumb()!];
     const hasChanged = prevValue !== nextValue;
-    if (hasChanged) props.onChangeEnd?.(state.values());
+    if (hasChanged) local.onChangeEnd?.(state.values());
+  };
+
+  const onHomeKeyDown = () => {
+    !state.isDisabled && updateValues(local.minValue!, 0, { commit: true });
+  };
+
+  const onEndKeyDown = () => {
+    !state.isDisabled && updateValues(local.maxValue!, state.values().length - 1, { commit: true });
+  };
+
+  const onStepKeyDown = ({
+    event,
+    direction: stepDirection,
+  }: {
+    event: KeyboardEvent;
+    direction: number;
+  }) => {
+    if (!state.isDisabled) {
+      const isPageKey = PAGE_KEYS.includes(event.key);
+      const isSkipKey = isPageKey || (event.shiftKey && ARROW_KEYS.includes(event.key));
+      const multiplier = isSkipKey ? 10 : 1;
+      const atIndex = state.focusedThumb() ?? 0;
+      const value = state.values()[atIndex];
+      const stepInDirection = local.step! * multiplier * stepDirection;
+      updateValues(value + stepInDirection, atIndex, { commit: true });
+    }
   };
 
   function updateValues(value: number, atIndex: number, { commit } = { commit: false }) {
@@ -190,30 +225,47 @@ export function SliderRoot(props: SliderRootProps) {
   function getValueFromPointer(pointerPosition: number) {
     const rect = sRect() || slider!.getBoundingClientRect();
     const input: [number, number] = [0, rect.width];
-    const output: [number, number] = context.inverted
-      ? [context.minValue, context.maxValue]
-      : [context.maxValue, context.minValue];
+    const output: [number, number] =
+      isSlidingFromBottom() || isSlidingFromLeft()
+        ? [context.minValue, context.maxValue]
+        : [context.maxValue, context.minValue];
     const value = linearScale(input, output);
 
     setRect(rect);
     return value(pointerPosition - rect.left);
   }
 
+  const startEdge = () => {
+    const isVertical = local.orientation === "vertical";
+    const direction: [Side, Side] = isVertical ? ["top", "bottom"] : ["right", "left"];
+
+    return isVertical ? direction[+isSlidingFromBottom()] : direction[+isSlidingFromLeft()];
+  };
+
+  const endEdge = () => {
+    const isVertical = local.orientation === "vertical";
+    const direction: [Side, Side] = isVertical ? ["bottom", "top"] : ["left", "right"];
+
+    return isVertical ? direction[+isSlidingFromBottom()] : direction[+isSlidingFromLeft()];
+  };
+
   const context: SliderContextValue = {
     dataset,
     state,
     labelId,
-    sliderFillWidth,
     thumbs,
     onSlideStart,
     onSlideMove,
     onSlideEnd,
-    minValue: props.minValue!,
-    maxValue: props.maxValue!,
-    inverted: props.inverted!,
+    minValue: local.minValue!,
+    maxValue: local.maxValue!,
+    inverted: local.inverted!,
+    startEdge: startEdge(),
+    endEdge: endEdge(),
     generateId: createGenerateId(() => others.id!),
     registerLabelId: createRegisterId(setLabelId),
     orientation: "horizontal",
+    getValueLabel: local.getValueLabel,
   };
 
   return (
@@ -224,6 +276,33 @@ export function SliderRoot(props: SliderRootProps) {
         role="group"
         aria-label={props["aria-label"]}
         aria-labelledby={labelId()}
+        onKeyDown={composeEventHandlers<HTMLDivElement>([
+          props.onKeyDown,
+          event => {
+            if (event.key === "Home") {
+              onHomeKeyDown();
+              // Prevent scrolling to page start
+              event.preventDefault();
+            } else if (event.key === "End") {
+              onEndKeyDown();
+              // Prevent scrolling to page end
+              event.preventDefault();
+            } else if (PAGE_KEYS.concat(ARROW_KEYS).includes(event.key)) {
+              const slideDirection =
+                local.orientation === "horizontal"
+                  ? isSlidingFromLeft()
+                    ? "from-left"
+                    : "from-right"
+                  : isSlidingFromBottom()
+                  ? "from-bottom"
+                  : "from-top";
+              const isBackKey = BACK_KEYS[slideDirection].includes(event.key);
+              onStepKeyDown({ event, direction: isBackKey ? -1 : 1 });
+              // Prevent scrolling for directional key presses
+              event.preventDefault();
+            }
+          },
+        ])}
         onPointerDown={composeEventHandlers<HTMLDivElement>([
           props.onPointerDown,
           e => {
@@ -233,7 +312,6 @@ export function SliderRoot(props: SliderRootProps) {
 
             e.preventDefault();
             if (context.thumbs.has(target)) {
-              console.log("ON thumb");
               target.focus();
             } else {
               const value = getValueFromPointer(

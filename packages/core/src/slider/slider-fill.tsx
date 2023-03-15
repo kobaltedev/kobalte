@@ -12,23 +12,42 @@ export interface SliderFillOptions extends AsChildProp {
 export interface SliderFillProps extends OverrideComponentProps<"div", SliderFillOptions> {}
 
 /**
- * The component that visually represents the progress value.
- * Used to visually show the fill of `Progress.Track`.
+ * The component that visually represents the slider value.
+ * Used to visually show the fill of `Slider.Track`.
  */
 export function SliderFill(props: SliderFillProps) {
   const context = useSliderContext();
 
   const [local, others] = splitProps(props, ["style"]);
 
+  const percentages = () =>
+    context.state
+      .values()
+      .map(value => convertValueToPercentage(value, context.minValue, context.maxValue));
+
+  const offsetStart = () => {
+    return context.state.values().length > 1 ? Math.min(...percentages()) : 0;
+  };
+
+  const offsetEnd = () => {
+    return 100 - Math.max(...percentages());
+  };
+
   return (
     <Polymorphic
       fallback="div"
       style={{
-        "--kb-slider-fill-width": context.sliderFillWidth(),
+        [context.startEdge]: `${offsetStart()}%`,
+        [context.endEdge]: `${offsetEnd()}%`,
         ...local.style,
       }}
       {...context.dataset()}
       {...others}
     />
   );
+}
+function convertValueToPercentage(value: number, min: number, max: number) {
+  const maxSteps = max - min;
+  const percentPerStep = 100 / maxSteps;
+  return percentPerStep * (value - min);
 }

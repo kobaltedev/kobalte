@@ -12,6 +12,15 @@ export function SliderValueLabel(props: SliderValueLabelProps) {
   const context = useSliderContext();
 
   return (
-    <Polymorphic fallback="div" children={context.valueLabel()} {...context.dataset()} {...props} />
+    <Polymorphic
+      fallback="div"
+      children={context.getValueLabel?.({
+        values: context.state.values(),
+        max: context.maxValue,
+        min: context.minValue,
+      })}
+      {...context.dataset()}
+      {...props}
+    />
   );
 }
