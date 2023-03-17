@@ -8,11 +8,13 @@
 
 import {
   composeEventHandlers,
+  focusWithoutScrolling,
+  isWebKit,
   mergeDefaultProps,
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, on, splitProps } from "solid-js";
+import { createEffect, JSX, on, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
@@ -85,6 +87,13 @@ export function TabsTrigger(props: TabsTriggerProps) {
     () => ref
   );
 
+  const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
+    // Force focusing the trigger on click on safari.
+    if (isWebKit()) {
+      focusWithoutScrolling(e.currentTarget);
+    }
+  };
+
   createEffect(
     on([() => local.value, id], ([value, id]) => {
       context.triggerIdsMap().set(value, id);
@@ -109,7 +118,7 @@ export function TabsTrigger(props: TabsTriggerProps) {
       data-disabled={isDisabled() ? "" : undefined}
       onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
       onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}
-      onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
+      onClick={composeEventHandlers([local.onClick, selectableItem.onClick, onClick])}
       onKeyDown={composeEventHandlers([local.onKeyDown, selectableItem.onKeyDown])}
       onMouseDown={composeEventHandlers([local.onMouseDown, selectableItem.onMouseDown])}
       onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}

@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.7.3
+
+### Patch Changes
+
+- 20cd441: fix #118
+
 ## 0.7.2
 
 ### Patch Changes
