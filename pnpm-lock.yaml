@@ -92,7 +92,7 @@ importers:
 
   apps/docs:
     specifiers:
-      '@kobalte/core': 0.7.2
+      '@kobalte/core': 0.7.3
       '@kobalte/tailwindcss': 0.5.0
       '@mdx-js/mdx': 2.3.0
       '@mdx-js/rollup': 2.3.0
@@ -167,7 +167,7 @@ importers:
 
   apps/playground:
     specifiers:
-      '@kobalte/core': ^0.7.2
+      '@kobalte/core': ^0.7.3
       '@kobalte/tailwindcss': ^0.5.0
       '@kobalte/utils': ^0.6.1
       autoprefixer: 10.4.13
