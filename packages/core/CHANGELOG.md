@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.7.4
+
+### Patch Changes
+
+- 2b46afb: Unnecessary re-renders when using polymorphic `<As>` component.
+
 ## 0.7.3
 
 ### Patch Changes
