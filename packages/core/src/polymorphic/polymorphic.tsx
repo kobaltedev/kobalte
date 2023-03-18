@@ -62,7 +62,8 @@ export function Polymorphic<T extends ValidComponent>(props: PolymorphicProps<T>
 
   // Single child is `As`.
   if (isAs(resolvedChildren())) {
-    return <Dynamic {...combineProps(others, resolvedChildren()?.props ?? {})} />;
+    const combinedProps = combineProps(others, resolvedChildren()?.props ?? {});
+    return <Dynamic {...combinedProps} />;
   }
 
   // Multiple children, find an `As` if any.
@@ -82,7 +83,9 @@ export function Polymorphic<T extends ValidComponent>(props: PolymorphicProps<T>
         </For>
       );
 
-      return <Dynamic {...combineProps(others, newElement?.props ?? {})}>{newChildren}</Dynamic>;
+      const combinedProps = combineProps(others, newElement?.props ?? {});
+
+      return <Dynamic {...combinedProps}>{newChildren}</Dynamic>;
     }
   }
 
