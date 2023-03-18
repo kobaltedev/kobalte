@@ -33,7 +33,7 @@
   "dependencies": {
     "@kobalte/core": "^0.7.3",
     "@kobalte/utils": "^0.6.1",
-    "solid-js": "1.6.12"
+    "solid-js": "1.6.15"
   },
   "devDependencies": {
     "@kobalte/tailwindcss": "^0.5.0",
