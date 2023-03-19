@@ -45,6 +45,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/alert",
       },
       {
+        title: "Alert Dialog",
+        href: "/docs/core/components/alert-dialog",
+      },
+      {
         title: "Breadcrumbs",
         href: "/docs/core/components/breadcrumbs",
       },
