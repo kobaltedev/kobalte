@@ -4,7 +4,7 @@ import {
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import { JSX, onCleanup, onMount, splitProps } from "solid-js";
+import { createEffect, createMemo, JSX, onCleanup, onMount, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useSliderContext } from "./slider-context";
@@ -22,10 +22,13 @@ export function SliderThumb(props: SliderThumbProps) {
   const [local, others] = splitProps(props, ["ref", "style", "index"]);
 
   const value = () => context.state.values()[local.index];
-  const position = () => context.state.getThumbPercent(local.index);
+  const position = () => {
+    return context.state.getThumbPercent(local.index);
+  };
 
   onMount(() => {
     if (ref) context.thumbs.add(ref);
+    context.state.setThumbEditable(local.index, !context.isDisabled());
     onCleanup(() => {
       if (ref) context.thumbs.delete(ref);
     });

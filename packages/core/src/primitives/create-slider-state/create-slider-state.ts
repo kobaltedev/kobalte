@@ -51,63 +51,57 @@ export interface SliderState {
 
   decrementThumb(index: number, stepSize?: number): void;
 
-  readonly step: number;
+  readonly step: Accessor<number>;
 
   readonly pageSize: Accessor<number>;
 
-  readonly orientation: "horizontal" | "vertical";
+  readonly orientation: Accessor<"horizontal" | "vertical">;
 
-  readonly isDisabled: boolean;
+  readonly isDisabled: Accessor<boolean>;
 
   setValues: (next: number[] | ((prev: number[]) => number[])) => void;
 }
 
 interface StateOpts {
   defaultValue: number[];
-  value: number[] | undefined;
-  orientation?: "horizontal" | "vertical";
-  isDisabled?: boolean;
+  value: Accessor<number[] | undefined>;
+  orientation?: Accessor<"horizontal" | "vertical">;
+  isDisabled?: Accessor<boolean>;
   onChangeEnd?: (value: number[]) => void;
   onChange?: (value: number[]) => void;
-  minValue?: number;
-  maxValue?: number;
-  step?: number;
+  minValue?: Accessor<number>;
+  maxValue?: Accessor<number>;
+  step?: Accessor<number>;
   numberFormatter: Intl.NumberFormat;
 }
 
 export function createSliderState(props: StateOpts): SliderState {
   props = mergeDefaultProps(
     {
-      isDisabled: false,
-      maxValue: 100,
-      minValue: 0,
-      step: 1,
-      orientation: "horizontal",
+      isDisabled: () => false,
+      maxValue: () => 100,
+      minValue: () => 0,
+      step: () => 1,
+      orientation: () => "horizontal",
     },
     props
   );
 
   const pageSize = createMemo(() => {
-    let calcPageSize = (props.maxValue! - props.minValue!) / 10;
-    calcPageSize = snapValueToStep(calcPageSize, 0, calcPageSize + props.step!, props.step!);
-    return Math.max(calcPageSize, props.step!);
+    let calcPageSize = (props.maxValue!() - props.minValue!()) / 10;
+    calcPageSize = snapValueToStep(calcPageSize, 0, calcPageSize + props.step!(), props.step!());
+    return Math.max(calcPageSize, props.step!());
   });
 
-  const value = createMemo(() => (props.value ? convertValue(props.value) : undefined));
-  const defaultValue = createMemo(() => convertValue(props.defaultValue) ?? [props.minValue!]);
+  const value = createMemo(() => (props.value() ? convertValue(props.value()!) : undefined));
+  const defaultValue = createMemo(() => convertValue(props.defaultValue) ?? [props.minValue!()]);
   const onChange = createOnChange(value() ?? [], props.defaultValue, props.onChange);
   const onChangeEnd = createOnChange(value() ?? [], props.defaultValue, props.onChangeEnd);
 
   const [values, setValues] = createControllableArraySignal<number>({
     value,
     defaultValue,
-    onChange: value => {
-      props.onChange?.(value);
-    },
-  });
-
-  createEffect(() => {
-    console.log(values());
+    onChange,
   });
 
   const [isDragging, setIsDragging] = createSignal(new Array(values().length).fill(false));
@@ -115,15 +109,15 @@ export function createSliderState(props: StateOpts): SliderState {
   const [focusedIndex, setFocusedIndex] = createSignal<number | undefined>(undefined);
 
   const getValuePercent = (value: number) => {
-    return (value - props.minValue!) / (props.maxValue! - props.minValue!);
+    return (value - props.minValue!()) / (props.maxValue!() - props.minValue!());
   };
 
   const getThumbMinValue = (index: number) => {
-    return index === 0 ? props.minValue! : values()[index - 1];
+    return index === 0 ? props.minValue!() : values()[index - 1];
   };
 
   const getThumbMaxValue = (index: number) => {
-    return index === values().length - 1 ? props.maxValue! : values()[index + 1];
+    return index === values().length - 1 ? props.maxValue!() : values()[index + 1];
   };
 
   const isThumbEditable = (index: number) => {
@@ -138,21 +132,21 @@ export function createSliderState(props: StateOpts): SliderState {
   };
 
   const updateValue = (index: number, value: number) => {
-    if (props.isDisabled || !isThumbEditable(index)) return;
+    if (props.isDisabled!() || !isThumbEditable(index)) return;
 
     const thumbMin = getThumbMinValue(index);
     const thumbMax = getThumbMaxValue(index);
 
-    value = snapValueToStep(value, thumbMin, thumbMax, props.step!);
+    value = snapValueToStep(value, thumbMin, thumbMax, props.step!());
 
-    setValues(p => replaceIndex(p, index, value));
+    setValues(p => [...replaceIndex(p, index, value)]);
   };
 
   const updateDragging = (index: number, dragging: boolean) => {
-    if (props.isDisabled || !isThumbEditable(index)) return;
+    if (props.isDisabled!() || !isThumbEditable(index)) return;
 
     const wasDragging = isDragging()[index];
-    setIsDragging(p => replaceIndex(p, index, dragging));
+    setIsDragging(p => [...replaceIndex(p, index, dragging)]);
 
     if (wasDragging && !isDragging().some(Boolean)) {
       onChangeEnd(values());
@@ -168,27 +162,29 @@ export function createSliderState(props: StateOpts): SliderState {
   };
 
   const getRoundedValue = (value: number) => {
-    return Math.round((value - props.minValue!) / props.step!) * props.step! + props.minValue!;
+    return (
+      Math.round((value - props.minValue!()) / props.step!()) * props.step!() + props.minValue!()
+    );
   };
 
   const getPercentValue = (percent: number) => {
-    const val = percent * (props.maxValue! - props.minValue!) + props.minValue!;
-    return clamp(getRoundedValue(val), props.minValue!, props.maxValue!);
+    const val = percent * (props.maxValue!() - props.minValue!()) + props.minValue!();
+    return clamp(getRoundedValue(val), props.minValue!(), props.maxValue!());
   };
 
   const incrementThumb = (index: number, stepSize = 1) => {
-    const s = Math.max(stepSize, props.step!);
+    const s = Math.max(stepSize, props.step!());
     updateValue(
       index,
-      snapValueToStep(values()[index] + s, props.minValue!, props.maxValue!, props.step!)
+      snapValueToStep(values()[index] + s, props.minValue!(), props.maxValue!(), props.step!())
     );
   };
 
   const decrementThumb = (index: number, stepSize = 1) => {
-    const s = Math.max(stepSize, props.step!);
+    const s = Math.max(stepSize, props.step!());
     updateValue(
       index,
-      snapValueToStep(values()[index] - s, props.minValue!, props.maxValue!, props.step!)
+      snapValueToStep(values()[index] - s, props.minValue!(), props.maxValue!(), props.step!())
     );
   };
 

@@ -147,14 +147,14 @@ export function SliderRoot(props: SliderRootProps) {
   const state = createSliderState({
     defaultValue: local.defaultValue!,
     numberFormatter: defaultFormatter(),
-    value: local.value,
-    isDisabled: props.isDisabled,
-    maxValue: local.maxValue!,
-    minValue: local.minValue!,
+    value: () => local.value,
+    isDisabled: () => props.isDisabled!,
+    maxValue: () => local.maxValue!,
+    minValue: () => local.minValue!,
     onChange: local.onChange,
     onChangeEnd: local.onChangeEnd,
-    orientation: local.orientation!,
-    step: local.step!,
+    orientation: () => local.orientation!,
+    step: () => local.step!,
   });
 
   const thumbs = new Set<HTMLElement>([]);
@@ -168,87 +168,6 @@ export function SliderRoot(props: SliderRootProps) {
       "data-orientation": local.orientation,
     };
   });
-
-  const beforeStart = state.values();
-
-  const onSlideStart = (value: number) => {
-    const closestIndex = getClosestValueIndex(state.values(), value);
-    updateValues(value, closestIndex);
-    local.onSlideStart?.(value);
-  };
-
-  const onSlideMove = (value: number) => {
-    updateValues(value, state.focusedThumb()!);
-    local.onSlideMove?.(value);
-  };
-
-  const onSlideEnd = () => {
-    const prevValue = beforeStart[state.focusedThumb()!];
-    const nextValue = state.values()[state.focusedThumb()!];
-    const hasChanged = prevValue !== nextValue;
-    if (hasChanged) local.onChangeEnd?.(state.values());
-    local.onSlideEnd?.();
-  };
-
-  const onHomeKeyDown = () => {
-    !local.isDisabled && updateValues(local.minValue!, 0, { commit: true });
-  };
-
-  const onEndKeyDown = () => {
-    !local.isDisabled && updateValues(local.maxValue!, state.values().length - 1, { commit: true });
-  };
-
-  const onStepKeyDown = ({
-    event,
-    direction: stepDirection,
-  }: {
-    event: KeyboardEvent;
-    direction: number;
-  }) => {
-    if (!local.isDisabled) {
-      const isPageKey = PAGE_KEYS.includes(event.key);
-      const isSkipKey = isPageKey || (event.shiftKey && ARROW_KEYS.includes(event.key));
-      const multiplier = isSkipKey ? 10 : 1;
-      const atIndex = state.focusedThumb() ?? 0;
-      const value = state.values()[atIndex];
-      const stepInDirection = local.step! * multiplier * stepDirection;
-      updateValues(value + stepInDirection, atIndex, { commit: true });
-    }
-  };
-
-  function updateValues(value: number, atIndex: number, { commit } = { commit: false }) {
-    const decimalCount = getDecimalCount(local.step!);
-    const snapToStep = roundValue(
-      Math.round((value - local.minValue!) / local.step!) * local.step! + local.minValue!,
-      decimalCount
-    );
-    const nextValue = clamp(snapToStep, local.minValue!, local.maxValue!);
-
-    state.setValues((prevValues = []) => {
-      const nextValues = getNextSortedValues(prevValues, nextValue, atIndex);
-      if (hasMinStepsBetweenValues(nextValues, local.minStepsBetweenThumbs! * local.step!)) {
-        state.setFocusedThumb(nextValues.indexOf(nextValue));
-        const hasChanged = String(nextValues) !== String(prevValues);
-        if (hasChanged && commit) local.onChangeEnd?.(nextValues);
-        return hasChanged ? nextValues : prevValues;
-      } else {
-        return prevValues;
-      }
-    });
-  }
-
-  function getValueFromPointer(pointerPosition: number) {
-    const rect = sRect() || slider!.getBoundingClientRect();
-    const input: [number, number] = [0, rect.width];
-    const output: [number, number] =
-      isSlidingFromBottom() || isSlidingFromLeft()
-        ? [context.minValue, context.maxValue]
-        : [context.maxValue, context.minValue];
-    const value = linearScale(input, output);
-
-    setRect(rect);
-    return value(pointerPosition - rect.left);
-  }
 
   const startEdge = () => {
     const isVertical = local.orientation === "vertical";
@@ -270,9 +189,9 @@ export function SliderRoot(props: SliderRootProps) {
     isDisabled: () => local.isDisabled!,
     labelId,
     thumbs,
-    onSlideStart,
-    onSlideMove,
-    onSlideEnd,
+    onSlideStart: local.onSlideStart,
+    onSlideMove: local.onSlideMove,
+    onSlideEnd: local.onSlideEnd,
     minValue: local.minValue!,
     maxValue: local.maxValue!,
     step: local.step!,
@@ -293,72 +212,6 @@ export function SliderRoot(props: SliderRootProps) {
         role="group"
         aria-label={props["aria-label"]}
         aria-labelledby={labelId()}
-        onKeyDown={composeEventHandlers<HTMLDivElement>([
-          props.onKeyDown,
-          event => {
-            if (event.key === "Home") {
-              onHomeKeyDown();
-              // Prevent scrolling to page start
-              event.preventDefault();
-            } else if (event.key === "End") {
-              onEndKeyDown();
-              // Prevent scrolling to page end
-              event.preventDefault();
-            } else if (PAGE_KEYS.concat(ARROW_KEYS).includes(event.key)) {
-              const slideDirection =
-                local.orientation === "horizontal"
-                  ? isSlidingFromLeft()
-                    ? "from-left"
-                    : "from-right"
-                  : isSlidingFromBottom()
-                  ? "from-bottom"
-                  : "from-top";
-              const isBackKey = BACK_KEYS[slideDirection].includes(event.key);
-              onStepKeyDown({ event, direction: isBackKey ? -1 : 1 });
-              // Prevent scrolling for directional key presses
-              event.preventDefault();
-            }
-          },
-        ])}
-        onPointerDown={composeEventHandlers<HTMLDivElement>([
-          props.onPointerDown,
-          e => {
-            const target = e.target as HTMLElement;
-
-            target.setPointerCapture(e.pointerId);
-
-            e.preventDefault();
-            if (context.thumbs.has(target)) {
-              target.focus();
-            } else {
-              const value = getValueFromPointer(
-                context.orientation === "horizontal" ? e.clientX : e.clientY
-              );
-              onSlideStart(value);
-            }
-          },
-        ])}
-        onPointerMove={composeEventHandlers<HTMLDivElement>([
-          props.onPointerMove,
-          e => {
-            const target = e.target as HTMLElement;
-            const value = getValueFromPointer(
-              context.orientation === "horizontal" ? e.clientX : e.clientY
-            );
-            if (target.hasPointerCapture(e.pointerId)) onSlideMove(value);
-          },
-        ])}
-        onPointerUp={composeEventHandlers<HTMLDivElement>([
-          props.onPointerUp,
-          e => {
-            const target = e.target as HTMLElement;
-            if (target.hasPointerCapture(e.pointerId)) {
-              target.releasePointerCapture(e.pointerId);
-              setRect(undefined);
-              onSlideEnd();
-            }
-          },
-        ])}
         {...dataset()}
         {...others}
       />

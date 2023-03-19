@@ -17,9 +17,9 @@ export interface SliderContextValue {
   orientation: "horizontal" | "vertical";
   labelId: Accessor<string | undefined>;
   thumbs: Set<HTMLElement>;
-  onSlideStart: (value: number) => void;
-  onSlideMove: (value: number) => void;
-  onSlideEnd: () => void;
+  onSlideStart: ((value: number) => void) | undefined;
+  onSlideMove: ((value: number) => void) | undefined;
+  onSlideEnd: (() => void) | undefined;
   startEdge: Side;
   endEdge: Side;
   minValue: number;
