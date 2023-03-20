@@ -1,7 +1,12 @@
-import { mergeDefaultProps, OverrideComponentProps, visuallyHiddenStyles } from "@kobalte/utils";
-import { createEffect, createMemo, JSX, on, onCleanup, splitProps } from "solid-js";
+import {
+  focusWithoutScrolling,
+  mergeDefaultProps,
+  OverrideComponentProps,
+  visuallyHiddenStyles,
+} from "@kobalte/utils";
+import { createEffect, JSX, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { AsChildProp } from "../polymorphic";
 import { useSliderContext } from "./slider-context";
 
 export interface SliderInputProps extends OverrideComponentProps<"input", AsChildProp> {
@@ -13,6 +18,7 @@ export interface SliderInputProps extends OverrideComponentProps<"input", AsChil
  * An accessible label that gives the user information on the progress.
  */
 export function SliderInput(props: SliderInputProps) {
+  let inputRef!: HTMLInputElement;
   const context = useSliderContext();
 
   props = mergeDefaultProps(
@@ -23,9 +29,17 @@ export function SliderInput(props: SliderInputProps) {
   );
 
   const [local, others] = splitProps(props, ["id", "style", "index"]);
+  const isFocused = () =>
+    context.state.focusedThumb() && context.state.focusedThumb() === local.index;
+  createEffect(() => {
+    if (isFocused()) {
+      focusWithoutScrolling(inputRef);
+    }
+  });
 
   return (
     <input
+      ref={inputRef}
       type="range"
       tabIndex={!context.isDisabled() ? 0 : undefined}
       min={context.state.getThumbMinValue(local.index)}

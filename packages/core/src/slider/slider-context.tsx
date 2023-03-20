@@ -16,7 +16,6 @@ export interface SliderContextValue {
   isDisabled: Accessor<boolean>;
   orientation: "horizontal" | "vertical";
   labelId: Accessor<string | undefined>;
-  thumbs: Set<HTMLElement>;
   onSlideStart: ((value: number) => void) | undefined;
   onSlideMove: ((value: number) => void) | undefined;
   onSlideEnd: (() => void) | undefined;

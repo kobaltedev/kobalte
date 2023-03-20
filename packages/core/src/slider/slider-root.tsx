@@ -138,9 +138,6 @@ export function SliderRoot(props: SliderRootProps) {
     "isDisabled",
   ]);
 
-  let slider: HTMLDivElement | undefined;
-  const [sRect, setRect] = createSignal<DOMRect>();
-
   const [labelId, setLabelId] = createSignal<string>();
   const defaultFormatter = createNumberFormatter(() => ({ style: "percent" }));
 
@@ -156,8 +153,6 @@ export function SliderRoot(props: SliderRootProps) {
     orientation: () => local.orientation!,
     step: () => local.step!,
   });
-
-  const thumbs = new Set<HTMLElement>([]);
 
   const isSlidingFromLeft = () => !local.inverted;
   const isSlidingFromBottom = () => !local.inverted;
@@ -188,7 +183,6 @@ export function SliderRoot(props: SliderRootProps) {
     state,
     isDisabled: () => local.isDisabled!,
     labelId,
-    thumbs,
     onSlideStart: local.onSlideStart,
     onSlideMove: local.onSlideMove,
     onSlideEnd: local.onSlideEnd,
@@ -207,7 +201,6 @@ export function SliderRoot(props: SliderRootProps) {
   return (
     <SliderContext.Provider value={context}>
       <Polymorphic
-        ref={slider}
         fallback="div"
         role="group"
         aria-label={props["aria-label"]}

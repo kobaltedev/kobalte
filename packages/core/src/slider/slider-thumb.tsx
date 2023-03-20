@@ -4,7 +4,15 @@ import {
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, createMemo, JSX, onCleanup, onMount, splitProps } from "solid-js";
+import {
+  createEffect,
+  createMemo,
+  createSignal,
+  JSX,
+  onCleanup,
+  onMount,
+  splitProps,
+} from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useSliderContext } from "./slider-context";
@@ -21,17 +29,51 @@ export function SliderThumb(props: SliderThumbProps) {
   props = mergeDefaultProps({ id: context.generateId("thumb") }, props);
   const [local, others] = splitProps(props, ["ref", "style", "index"]);
 
+  const [startPosition, setStartPosition] = createSignal(0);
+
+  const isVertical = () => context.orientation === "vertical";
   const value = () => context.state.values()[local.index];
   const position = () => {
     return context.state.getThumbPercent(local.index);
   };
+  const isFocused = () =>
+    context.state.focusedThumb() && context.state.focusedThumb() === local.index;
 
+  const onPointerDown = (e: PointerEvent) => {
+    e.stopPropagation();
+    const target = e.currentTarget as HTMLElement;
+    context.state.setThumbDragging(local.index, true);
+    target.setPointerCapture(e.pointerId);
+    const clickPosition = isVertical() ? e.clientY : e.clientX;
+    setStartPosition(clickPosition);
+  };
+
+  let currentPosition: number | null = null;
+  const onPointerMove = (e: PointerEvent) => {
+    // if (!isFocused()) return;
+
+    const target = e.currentTarget as HTMLElement;
+
+    if (target.hasPointerCapture(e.pointerId)) {
+      if (currentPosition === null) {
+        currentPosition = value();
+      }
+      const clickPosition = isVertical() ? e.clientY : e.clientX;
+      const delta = clickPosition - startPosition();
+      console.log(currentPosition + delta);
+      context.state.setThumbValue(local.index, (currentPosition += delta));
+    }
+  };
+  const onPointerUp = (e: PointerEvent) => {
+    const target = e.currentTarget as HTMLElement;
+    if (target.hasPointerCapture(e.pointerId)) {
+      target.releasePointerCapture(e.pointerId);
+      context.state.setThumbDragging(local.index, false);
+      currentPosition = null;
+    }
+  };
   onMount(() => {
-    if (ref) context.thumbs.add(ref);
     context.state.setThumbEditable(local.index, !context.isDisabled());
-    onCleanup(() => {
-      if (ref) context.thumbs.delete(ref);
-    });
   });
 
   return (
@@ -53,6 +95,9 @@ export function SliderThumb(props: SliderThumbProps) {
           context.state.setFocusedThumb(props.index);
         },
       ])}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
       style={{
         display: value() === undefined ? "none" : undefined,
         position: "absolute",

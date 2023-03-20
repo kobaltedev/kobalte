@@ -19,12 +19,10 @@ export function SliderTrack(props: SliderTrackProps) {
   const context = useSliderContext();
 
   const [startPosition, setStartPosition] = createSignal(0);
-  const [currentId, setCurrentId] = createSignal<number>();
-  const { addGlobalListener, removeGlobalListener } = createGlobalListeners();
   const isVertical = () => context.orientation === "vertical";
 
   let currentPosition: number | null = null;
-  const onDownTrack = (e: Event, id: number | undefined, clientX: number, clientY: number) => {
+  const onDownTrack = (e: PointerEvent) => {
     const track = trackRef;
     if (
       track &&
@@ -34,7 +32,7 @@ export function SliderTrack(props: SliderTrackProps) {
       const { height, width, top, left } = track.getBoundingClientRect();
       const size = isVertical() ? height : width;
       const trackPosition = isVertical() ? top : left;
-      const clickPosition = isVertical() ? clientY : clientX;
+      const clickPosition = isVertical() ? e.clientY : e.clientX;
       const offset = clickPosition - trackPosition;
       let percent = offset / size;
       if (isVertical()) {
@@ -64,13 +62,12 @@ export function SliderTrack(props: SliderTrackProps) {
         context.state.setFocusedThumb(closestThumb);
         context.state.setThumbDragging(closestThumb, true);
         context.state.setThumbValue(closestThumb, value);
-        setCurrentId(id);
+
         setStartPosition(clickPosition);
         currentPosition = null;
-        addGlobalListener(window, "mouseup", onUpTrack, false);
-        addGlobalListener(window, "pointerup", onUpTrack, false);
-        addGlobalListener(window, "touchend", onUpTrack, false);
-        addGlobalListener(window, "pointermove", onMove, false);
+        if (e.currentTarget instanceof HTMLElement) {
+          e.currentTarget.setPointerCapture(e.pointerId);
+        }
       }
     }
   };
@@ -78,7 +75,11 @@ export function SliderTrack(props: SliderTrackProps) {
   const onMove = (e: PointerEvent) => {
     const track = trackRef;
     const active = context.state.focusedThumb();
-    if (track && active !== undefined) {
+    if (
+      track &&
+      active !== undefined &&
+      (e.currentTarget as HTMLElement).hasPointerCapture(e.pointerId)
+    ) {
       const { height, width } = track.getBoundingClientRect();
       const size = isVertical() ? height : width;
 
@@ -97,49 +98,29 @@ export function SliderTrack(props: SliderTrackProps) {
     }
   };
 
-  const onUpTrack = (e: PointerEvent | MouseEvent | TouchEvent) => {
-    let id;
-    if ("pointerId" in e) {
-      id = e.pointerId;
-    } else if ("changedTouches" in e) {
-      id = e.changedTouches[0].identifier;
-    }
-    if (id === currentId()) {
+  const onUpTrack = (e: PointerEvent) => {
+    const id = e.pointerId;
+    const target = e.currentTarget as HTMLElement;
+    if (target.hasPointerCapture(id)) {
       const active = context.state.focusedThumb();
       if (active !== undefined) {
         context.state.setThumbDragging(active, false);
-        setCurrentId(undefined);
       }
-      removeGlobalListener(window, "mouseup", onUpTrack, false);
-      removeGlobalListener(window, "pointerup", onUpTrack, false);
-      removeGlobalListener(window, "touchend", onUpTrack, false);
-      removeGlobalListener(window, "pointermove", onMove, false);
+      target.releasePointerCapture(id);
     }
   };
   return (
     <Polymorphic
       ref={mergeRefs(el => (trackRef = el), props.ref)}
       fallback="div"
-      onMouseDown={(e: MouseEvent) => {
-        if (e.button !== 0 || e.altKey || e.ctrlKey || e.metaKey) {
-          return;
-        }
-        onDownTrack(e, undefined, e.clientX, e.clientY);
-      }}
       onPointerDown={(e: PointerEvent) => {
         if (e.pointerType === "mouse" && (e.button !== 0 || e.altKey || e.ctrlKey || e.metaKey)) {
           return;
         }
-        onDownTrack(e, e.pointerId, e.clientX, e.clientY);
+        onDownTrack(e);
       }}
-      onTouchStart={(e: TouchEvent) => {
-        onDownTrack(
-          e,
-          e.changedTouches[0].identifier,
-          e.changedTouches[0].clientX,
-          e.changedTouches[0].clientY
-        );
-      }}
+      onPointerMove={onMove}
+      onPointerUp={onUpTrack}
       {...context.dataset()}
       {...props}
     />
