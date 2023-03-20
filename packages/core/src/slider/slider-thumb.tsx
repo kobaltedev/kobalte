@@ -4,21 +4,14 @@ import {
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import {
-  createEffect,
-  createMemo,
-  createSignal,
-  JSX,
-  onCleanup,
-  onMount,
-  splitProps,
-} from "solid-js";
+import { createEffect, JSX, onCleanup, onMount, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
+import { CollectionItemWithRef } from "../primitives";
+import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { useSliderContext } from "./slider-context";
 
 export interface SliderThumbProps extends OverrideComponentProps<"span", AsChildProp> {
-  index: number;
   style?: JSX.CSSProperties;
 }
 
@@ -27,53 +20,34 @@ export function SliderThumb(props: SliderThumbProps) {
   const context = useSliderContext();
 
   props = mergeDefaultProps({ id: context.generateId("thumb") }, props);
-  const [local, others] = splitProps(props, ["ref", "style", "index"]);
+  const [local, others] = splitProps(props, ["ref", "style"]);
 
-  const [startPosition, setStartPosition] = createSignal(0);
-
-  const isVertical = () => context.orientation === "vertical";
-  const value = () => context.state.values()[local.index];
+  createDomCollectionItem<CollectionItemWithRef>({
+    getItem: () => ({
+      ref: () => ref,
+      isDisabled: context.state.isDisabled(),
+      key: others.id!,
+      textValue: "",
+      type: "item",
+    }),
+  });
+  const index = () => (ref ? context.thumbs().findIndex(v => v.ref() === ref) : -1);
+  const value = () => context.state.getThumbValue(index()) as number | undefined;
   const position = () => {
-    return context.state.getThumbPercent(local.index);
+    return context.state.getThumbPercent(index());
   };
-  const isFocused = () =>
-    context.state.focusedThumb() && context.state.focusedThumb() === local.index;
+  const isFocused = () => context.state.focusedThumb() && context.state.focusedThumb() === index();
+  createEffect(() => {
+    console.log(context.thumbs());
+  });
 
-  const onPointerDown = (e: PointerEvent) => {
-    e.stopPropagation();
-    const target = e.currentTarget as HTMLElement;
-    context.state.setThumbDragging(local.index, true);
-    target.setPointerCapture(e.pointerId);
-    const clickPosition = isVertical() ? e.clientY : e.clientX;
-    setStartPosition(clickPosition);
-  };
-
-  let currentPosition: number | null = null;
-  const onPointerMove = (e: PointerEvent) => {
-    // if (!isFocused()) return;
-
-    const target = e.currentTarget as HTMLElement;
-
-    if (target.hasPointerCapture(e.pointerId)) {
-      if (currentPosition === null) {
-        currentPosition = value();
-      }
-      const clickPosition = isVertical() ? e.clientY : e.clientX;
-      const delta = clickPosition - startPosition();
-      console.log(currentPosition + delta);
-      context.state.setThumbValue(local.index, (currentPosition += delta));
-    }
-  };
-  const onPointerUp = (e: PointerEvent) => {
-    const target = e.currentTarget as HTMLElement;
-    if (target.hasPointerCapture(e.pointerId)) {
-      target.releasePointerCapture(e.pointerId);
-      context.state.setThumbDragging(local.index, false);
-      currentPosition = null;
-    }
-  };
   onMount(() => {
-    context.state.setThumbEditable(local.index, !context.isDisabled());
+    context.state.setThumbEditable(index(), !context.isDisabled());
+    onCleanup(() => {
+      if (ref) {
+        // context.setThumbs(p => p.delete(ref!));
+      }
+    });
   });
 
   return (
@@ -92,12 +66,9 @@ export function SliderThumb(props: SliderThumbProps) {
       onFocus={composeEventHandlers([
         props.onFocus,
         () => {
-          context.state.setFocusedThumb(props.index);
+          context.state.setFocusedThumb(index());
         },
       ])}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
       style={{
         display: value() === undefined ? "none" : undefined,
         position: "absolute",
