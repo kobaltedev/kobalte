@@ -1,4 +1,4 @@
-import { createGlobalListeners, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { clamp, createGlobalListeners, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createSignal } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -18,9 +18,12 @@ export function SliderTrack(props: SliderTrackProps) {
   let trackRef!: HTMLDivElement;
   const context = useSliderContext();
 
+  const [startPosition, setStartPosition] = createSignal(0);
   const [currentId, setCurrentId] = createSignal<number>();
   const { addGlobalListener, removeGlobalListener } = createGlobalListeners();
   const isVertical = () => context.orientation === "vertical";
+
+  let currentPosition: number | null = null;
   const onDownTrack = (e: Event, id: number | undefined, clientX: number, clientY: number) => {
     const track = trackRef;
     if (
@@ -62,11 +65,35 @@ export function SliderTrack(props: SliderTrackProps) {
         context.state.setThumbDragging(closestThumb, true);
         context.state.setThumbValue(closestThumb, value);
         setCurrentId(id);
-
+        setStartPosition(clickPosition);
+        currentPosition = null;
         addGlobalListener(window, "mouseup", onUpTrack, false);
         addGlobalListener(window, "pointerup", onUpTrack, false);
         addGlobalListener(window, "touchend", onUpTrack, false);
+        addGlobalListener(window, "pointermove", onMove, false);
       }
+    }
+  };
+
+  const onMove = (e: PointerEvent) => {
+    const track = trackRef;
+    const active = context.state.focusedThumb();
+    if (track && active !== undefined) {
+      const { height, width } = track.getBoundingClientRect();
+      const size = isVertical() ? height : width;
+
+      if (currentPosition === null) {
+        currentPosition = context.state.getThumbPercent(active) * size;
+      }
+      let delta = isVertical() ? e.clientY - startPosition() : e.clientX - startPosition();
+
+      if (isVertical()) {
+        delta = -delta;
+      }
+      currentPosition += delta;
+      const percent = clamp(currentPosition / size, 0, 1);
+      context.state.setThumbPercent(active, percent);
+      setStartPosition(isVertical() ? e.clientY : e.clientX);
     }
   };
 
@@ -86,6 +113,7 @@ export function SliderTrack(props: SliderTrackProps) {
       removeGlobalListener(window, "mouseup", onUpTrack, false);
       removeGlobalListener(window, "pointerup", onUpTrack, false);
       removeGlobalListener(window, "touchend", onUpTrack, false);
+      removeGlobalListener(window, "pointermove", onMove, false);
     }
   };
   return (
