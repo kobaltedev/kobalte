@@ -8,6 +8,8 @@
 
 import { isAppleDevice, isMac } from "@kobalte/utils";
 
+import { Selection } from "./types";
+
 interface Event {
   altKey: boolean;
   ctrlKey: boolean;
@@ -26,4 +28,22 @@ export function isCtrlKeyPressed(e: Event) {
   }
 
   return e.ctrlKey;
+}
+
+export function convertSelection(selection: Iterable<string>): Selection {
+  return new Selection(selection);
+}
+
+export function isSameSelection(setA: Set<string>, setB: Set<string>): boolean {
+  if (setA.size !== setB.size) {
+    return false;
+  }
+
+  for (const item of setA) {
+    if (!setB.has(item)) {
+      return false;
+    }
+  }
+
+  return true;
 }

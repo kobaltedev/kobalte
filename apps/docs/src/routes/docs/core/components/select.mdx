@@ -678,7 +678,12 @@ export function MultiSelectExample() {
         onValueChange={setValues}
         options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
         placeholder="Select some fruits…"
-        renderValue={selection => selection.items().join(", ")}
+        renderValue={selection =>
+          selection
+            .items()
+            .map(item => item.rawValue)
+            .join(", ")
+        }
         renderItem={item => (
           <MultiSelect.Item item={item()}>
             <MultiSelect.ItemLabel>{item().rawValue}</MultiSelect.ItemLabel>
