@@ -25,26 +25,17 @@ import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "../primitives/create-slider-state/create-slider-state";
 import { Side, SliderContext, SliderContextValue, SliderDataSet } from "./slider-context";
 import {
+  ARROW_KEYS,
+  BACK_KEYS,
   getClosestValueIndex,
   getDecimalCount,
   getNextSortedValues,
   hasMinStepsBetweenValues,
   linearScale,
+  PAGE_KEYS,
   roundValue,
 } from "./utils";
 
-type Direction = "ltr" | "rtl";
-
-const PAGE_KEYS = ["PageUp", "PageDown"];
-const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-
-type SlideDirection = "from-left" | "from-right" | "from-bottom" | "from-top";
-const BACK_KEYS: Record<SlideDirection, string[]> = {
-  "from-left": ["Home", "PageDown", "ArrowDown", "ArrowLeft"],
-  "from-right": ["Home", "PageDown", "ArrowDown", "ArrowRight"],
-  "from-bottom": ["Home", "PageDown", "ArrowDown", "ArrowLeft"],
-  "from-top": ["Home", "PageDown", "ArrowUp", "ArrowLeft"],
-};
 export interface GetValueLabelParams {
   values: number[];
   min: number;
