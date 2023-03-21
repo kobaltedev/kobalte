@@ -4,7 +4,7 @@ import {
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, onMount, splitProps } from "solid-js";
+import { Accessor, createContext, JSX, onMount, splitProps, useContext } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
@@ -36,48 +36,53 @@ export function SliderThumb(props: SliderThumbProps) {
   const position = () => {
     return context.state.getThumbPercent(index());
   };
-  const isFocused = () => context.state.focusedThumb() && context.state.focusedThumb() === index();
-  createEffect(() => {
-    console.log(context.thumbs());
-  });
 
   onMount(() => {
-    context.state.setThumbEditable(index(), !context.isDisabled());
-    onCleanup(() => {
-      if (ref) {
-        // context.setThumbs(p => p.delete(ref!));
-      }
-    });
+    context.state.setThumbEditable(index(), !context.state.isDisabled());
   });
 
   return (
-    <Polymorphic
-      ref={mergeRefs(el => (ref = el), local.ref)}
-      fallback="span"
-      children={props.children}
-      aria-label={others["aria-label"]}
-      // aria-valuetext={context.state.getThumbValueLabel(local.index)}
-      aria-valuemin={context.minValue}
-      aria-valuenow={value()}
-      aria-valuemax={context.maxValue}
-      aria-orientation={context.orientation}
-      {...context.dataset()}
-      tabIndex={context.isDisabled() ? undefined : 0}
-      onFocus={composeEventHandlers([
-        props.onFocus,
-        () => {
-          context.state.setFocusedThumb(index());
-        },
-      ])}
-      style={{
-        display: value() === undefined ? "none" : undefined,
-        position: "absolute",
-        [context.startEdge]: `${position() * 100}%`,
-        transform: "translate(-50%, -50%)",
-        "touch-action": "none",
-        ...local.style,
-      }}
-      {...others}
-    />
+    <ThumbContext.Provider value={{ index: index }}>
+      <Polymorphic
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        fallback="span"
+        children={props.children}
+        aria-label={others["aria-label"]}
+        aria-valuetext={context.state.getThumbValueLabel(index())}
+        aria-valuemin={context.minValue()}
+        aria-valuenow={value()}
+        aria-valuemax={context.maxValue()}
+        aria-orientation={context.state.orientation()}
+        {...context.dataset()}
+        tabIndex={context.state.isDisabled() ? undefined : 0}
+        onFocus={composeEventHandlers([
+          props.onFocus,
+          () => {
+            context.state.setFocusedThumb(index());
+          },
+        ])}
+        style={{
+          display: value() === undefined ? "none" : undefined,
+          position: "absolute",
+          [context.startEdge]: `${position() * 100}%`,
+          transform: "translate(-50%, -50%)",
+          "touch-action": "none",
+          ...local.style,
+        }}
+        {...others}
+      />
+    </ThumbContext.Provider>
   );
+}
+
+const ThumbContext = createContext<{ index: Accessor<number> }>();
+
+export function useThumbContext() {
+  const context = useContext(ThumbContext);
+
+  if (context === undefined) {
+    throw new Error("[kobalte]: `useThumbContext` must be used within a `Slider.Thumb` component");
+  }
+
+  return context;
 }

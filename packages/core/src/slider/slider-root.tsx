@@ -19,11 +19,7 @@ import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "
 
 import { createNumberFormatter } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
-import {
-  CollectionItemWithRef,
-  createControllableSetSignal,
-  createRegisterId,
-} from "../primitives";
+import { CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "../primitives/create-slider-state/create-slider-state";
 import { Side, SliderContext, SliderContextValue, SliderDataSet } from "./slider-context";
@@ -60,9 +56,6 @@ export interface SliderRootOptions extends AsChildProp {
   defaultValue?: number[];
   onChange?: (value: number[]) => void;
   onChangeEnd?: (value: number[]) => void;
-  onSlideStart?: (value: number) => void;
-  onSlideMove?: (value: number) => void;
-  onSlideEnd?: () => void;
   inverted?: boolean;
   /**
    * The slider value.
@@ -131,9 +124,6 @@ export function SliderRoot(props: SliderRootProps) {
     "getValueLabel",
     "onChangeEnd",
     "onChange",
-    "onSlideStart",
-    "onSlideMove",
-    "onSlideEnd",
     "defaultValue",
     "name",
     "inverted",
@@ -180,13 +170,12 @@ export function SliderRoot(props: SliderRootProps) {
 
   const onSlideStart = (value: number) => {
     const closestIndex = getClosestValueIndex(state.values(), value);
+    state.setFocusedThumb(closestIndex);
     updateValues(value, closestIndex);
-    local.onSlideStart?.(value);
   };
 
   const onSlideMove = (value: number) => {
     updateValues(value, state.focusedThumb()!);
-    local.onSlideMove?.(value);
   };
 
   const onSlideEnd = () => {
@@ -194,7 +183,6 @@ export function SliderRoot(props: SliderRootProps) {
     const nextValue = state.values()[state.focusedThumb()!];
     const hasChanged = prevValue !== nextValue;
     if (hasChanged) local.onChangeEnd?.(state.values());
-    local.onSlideEnd?.();
   };
 
   const onHomeKeyDown = () => {
@@ -249,8 +237,8 @@ export function SliderRoot(props: SliderRootProps) {
     const input: [number, number] = [0, rect.width];
     const output: [number, number] =
       isSlidingFromBottom() || isSlidingFromLeft()
-        ? [context.minValue, context.maxValue]
-        : [context.maxValue, context.minValue];
+        ? [local.minValue!, local.maxValue!]
+        : [local.maxValue!, local.minValue!];
     const value = linearScale(input, output);
 
     setRect(rect);
@@ -274,22 +262,19 @@ export function SliderRoot(props: SliderRootProps) {
   const context: SliderContextValue = {
     dataset,
     state,
-    isDisabled: () => local.isDisabled!,
     labelId,
     thumbs,
     setThumbs,
     onSlideStart,
     onSlideMove,
     onSlideEnd,
-    minValue: local.minValue!,
-    maxValue: local.maxValue!,
-    step: local.step!,
+    minValue: () => local.minValue!,
+    maxValue: () => local.maxValue!,
     inverted: local.inverted!,
     startEdge: startEdge(),
     endEdge: endEdge(),
     generateId: createGenerateId(() => others.id!),
     registerLabelId: createRegisterId(setLabelId),
-    orientation: "horizontal",
     getValueLabel: local.getValueLabel,
   };
 
@@ -341,7 +326,7 @@ export function SliderRoot(props: SliderRootProps) {
                 target.focus();
               } else {
                 const value = getValueFromPointer(
-                  context.orientation === "horizontal" ? e.clientX : e.clientY
+                  state.orientation() === "horizontal" ? e.clientX : e.clientY
                 );
                 onSlideStart(value);
               }
@@ -352,7 +337,7 @@ export function SliderRoot(props: SliderRootProps) {
             e => {
               const target = e.target as HTMLElement;
               const value = getValueFromPointer(
-                context.orientation === "horizontal" ? e.clientX : e.clientY
+                state.orientation() === "horizontal" ? e.clientX : e.clientY
               );
               if (target.hasPointerCapture(e.pointerId)) onSlideMove(value);
             },

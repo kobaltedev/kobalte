@@ -1,6 +1,6 @@
 import { Accessor, createContext, Setter, useContext } from "solid-js";
-import { CollectionItemWithRef } from "../primitives";
 
+import { CollectionItemWithRef } from "../primitives";
 import { SliderState } from "../primitives/create-slider-state/create-slider-state";
 import { GetValueLabelParams } from "./slider-root";
 
@@ -14,8 +14,6 @@ export type Side = "left" | "top" | "bottom" | "right";
 export interface SliderContextValue {
   dataset: Accessor<SliderDataSet>;
   state: SliderState;
-  isDisabled: Accessor<boolean>;
-  orientation: "horizontal" | "vertical";
   labelId: Accessor<string | undefined>;
   thumbs: Accessor<CollectionItemWithRef[]>;
   setThumbs: Setter<CollectionItemWithRef[]>;
@@ -24,9 +22,8 @@ export interface SliderContextValue {
   onSlideEnd: (() => void) | undefined;
   startEdge: Side;
   endEdge: Side;
-  minValue: number;
-  maxValue: number;
-  step: number;
+  minValue: Accessor<number>;
+  maxValue: Accessor<number>;
   inverted: boolean;
   generateId: (part: string) => string;
   registerLabelId: (id: string) => () => void;

@@ -16,8 +16,8 @@ export function SliderValueLabel(props: SliderValueLabelProps) {
       fallback="div"
       children={context.getValueLabel?.({
         values: context.state.values(),
-        max: context.maxValue,
-        min: context.minValue,
+        max: context.maxValue(),
+        min: context.minValue(),
       })}
       {...context.dataset()}
       {...props}

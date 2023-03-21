@@ -23,7 +23,7 @@ export function SliderFill(props: SliderFillProps) {
   const percentages = () =>
     context.state
       .values()
-      .map(value => convertValueToPercentage(value, context.minValue, context.maxValue));
+      .map(value => convertValueToPercentage(value, context.minValue(), context.maxValue()));
 
   const offsetStart = () => {
     return context.state.values().length > 1 ? Math.min(...percentages()) : 0;
