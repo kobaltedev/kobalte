@@ -18,7 +18,7 @@ export interface SliderInputProps extends OverrideComponentProps<"input", AsChil
 }
 
 /**
- * An accessible label that gives the user information on the progress.
+ * The native html input that is visually hidden in the slider thumb.
  */
 export function SliderInput(props: SliderInputProps) {
   let inputRef!: HTMLInputElement;

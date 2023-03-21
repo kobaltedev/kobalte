@@ -7,7 +7,7 @@ import { useSliderContext } from "./slider-context";
 export interface SliderLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
 
 /**
- * An accessible label that gives the user information on the progress.
+ * An accessible label that gives the user information on the slider.
  */
 export function SliderLabel(props: SliderLabelProps) {
   const context = useSliderContext();

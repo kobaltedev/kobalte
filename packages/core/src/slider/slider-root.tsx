@@ -1,11 +1,11 @@
 /* eslint-disable solid/reactivity */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*!
- * Portions of this file are based on code from react-spectrum.
- * Apache License Version 2.0, Copyright 2020 Adobe.
+ * Portions of this file are based on code from radix-ui-primitives.
+ * MIT Licensed, Copyright (c) 2022 WorkOS.
  *
- * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/1ddcde7b4fef9af7f08e11bb78d71fe60bbcc64b/packages/@react-aria/progress/src/useProgressBar.ts
+ * Credits to the Radix UI team:
+ * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/slider/src/Slider.tsx
  */
 
 import {
@@ -13,6 +13,7 @@ import {
   composeEventHandlers,
   createGenerateId,
   mergeDefaultProps,
+  mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
@@ -95,9 +96,6 @@ export interface SliderRootOptions extends AsChildProp {
 
 export interface SliderRootProps extends OverrideComponentProps<"div", SliderRootOptions> {}
 
-/**
- * Progress show either determinate or indeterminate progress of an operation over time.
- */
 export function SliderRoot(props: SliderRootProps) {
   const defaultId = `slider-${createUniqueId()}`;
 
@@ -282,7 +280,7 @@ export function SliderRoot(props: SliderRootProps) {
     <DomCollectionProvider>
       <SliderContext.Provider value={context}>
         <Polymorphic
-          ref={slider}
+          ref={mergeRefs(el => (slider = el), others.ref)}
           fallback="div"
           role="group"
           aria-label={props["aria-label"]}

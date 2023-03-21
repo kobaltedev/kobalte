@@ -7,9 +7,9 @@ export interface SliderTrackProps extends OverrideComponentProps<"div", AsChildP
 
 /**
 
- * The component that visually represents the progress track.
+ * The component that visually represents the slider track.
 
- * Act as a container for `Progress.Fill`.
+ * Act as a container for `Slider.Fill`.
 
  */
 
