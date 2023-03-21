@@ -53,14 +53,35 @@ export interface GetValueLabelParams {
 
 export interface SliderRootOptions extends AsChildProp {
   name?: string;
+
+  /**
+   * The minimum permitted steps between multiple thumbs.
+   * @default 0
+   */
   minStepsBetweenThumbs?: number;
+
+  /**
+   * The value of the slider when initially rendered.
+   */
   defaultValue?: number[];
+
+  /**
+   * Called whne the value changes.
+   */
   onChange?: (value: number[]) => void;
+
+  /**
+   * Called when the value changes at the end of an interaction.
+   */
   onChangeEnd?: (value: number[]) => void;
+
+  /**
+   * Whether the slider is visually inverted.
+   * @default false
+   */
   inverted?: boolean;
   /**
-   * The slider value.
-   * @default 0
+   * The slider values.
    */
   value?: number[];
 
@@ -82,15 +103,21 @@ export interface SliderRootOptions extends AsChildProp {
    */
   step?: number;
 
-  /** Whether the slider is in an indeterminate state. */
-  isIndeterminate?: boolean;
-
   /**
    * A function to get the accessible label text representing the current value in a human-readable format.
    * If not provided, the value label will be read as a percentage of the max value.
    */
   getValueLabel?: (params: GetValueLabelParams) => string;
+
+  /**
+   * The orientation of the slider.
+   * @default horizontal
+   */
   orientation?: "horizontal" | "vertical";
+
+  /**
+   * Whether the slider is disabled.
+   */
   isDisabled?: boolean;
 }
 
@@ -118,7 +145,6 @@ export function SliderRoot(props: SliderRootProps) {
     "value",
     "minValue",
     "maxValue",
-    "isIndeterminate",
     "getValueLabel",
     "onChangeEnd",
     "onChange",
