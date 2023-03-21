@@ -9,6 +9,7 @@
 import { fireEvent, render, screen } from "solid-testing-library";
 
 import * as Listbox from ".";
+import { createPointerEvent } from "@kobalte/tests";
 
 const DATA_SOURCE = [
   { key: "1", label: "One", textValue: "One", isDisabled: false },
@@ -205,7 +206,7 @@ describe("Listbox", () => {
       expect(onValueChangeSpy.mock.calls[0][0].has("3")).toBeTruthy();
     });
 
-    it("supports using click to change option selection", async () => {
+    it("supports using pointer up to change option selection", async () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
@@ -225,8 +226,16 @@ describe("Listbox", () => {
 
       const nextSelectedItem = options[2];
 
-      // Select an option via click
-      fireEvent.click(nextSelectedItem);
+      fireEvent(
+        nextSelectedItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        nextSelectedItem,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       expect(nextSelectedItem).toHaveAttribute("aria-selected", "true");
@@ -261,7 +270,16 @@ describe("Listbox", () => {
       expect(disabledItem).toHaveAttribute("aria-disabled", "true");
 
       // Try select the disabled option
-      fireEvent.click(disabledItem);
+      fireEvent(
+        disabledItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        disabledItem,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       // Verify onValueChange is not called
@@ -298,10 +316,28 @@ describe("Listbox", () => {
 
       expect(listbox).toHaveAttribute("aria-multiselectable", "true");
 
-      fireEvent.click(options[0]);
+      fireEvent(
+        options[0],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
-      fireEvent.click(options[2]);
+      fireEvent(
+        options[0],
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        options[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        options[2],
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       expect(options[0]).toHaveAttribute("aria-selected", "true");
@@ -337,7 +373,13 @@ describe("Listbox", () => {
       expect(secondItem).toHaveAttribute("aria-selected", "true");
 
       // Select a different option
-      fireEvent.click(thirdItem);
+      fireEvent(
+        thirdItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(thirdItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(thirdItem).toHaveAttribute("aria-selected", "true");
@@ -373,7 +415,13 @@ describe("Listbox", () => {
       expect(secondItem).toHaveAttribute("aria-selected", "true");
 
       // Select a different option
-      fireEvent.click(thirdItem);
+      fireEvent(
+        thirdItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(thirdItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(thirdItem).toHaveAttribute("aria-selected", "false");
@@ -406,7 +454,13 @@ describe("Listbox", () => {
       expect(secondItem).toHaveAttribute("aria-selected", "true");
 
       // Deselect first option
-      fireEvent.click(firstItem);
+      fireEvent(
+        firstItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(firstItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(firstItem).toHaveAttribute("aria-selected", "false");
@@ -444,7 +498,16 @@ describe("Listbox", () => {
 
       expect(disabledItem).toHaveAttribute("aria-disabled", "true");
 
-      fireEvent.click(disabledItem);
+      fireEvent(
+        disabledItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        disabledItem,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       expect(onValueChangeSpy).not.toHaveBeenCalled();
@@ -477,7 +540,13 @@ describe("Listbox", () => {
     expect(secondItem).toHaveAttribute("aria-selected", "true");
 
     // Deselect second option
-    fireEvent.click(secondItem);
+    fireEvent(
+      secondItem,
+      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+    );
+    await Promise.resolve();
+
+    fireEvent(secondItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
     await Promise.resolve();
 
     expect(secondItem).toHaveAttribute("aria-selected", "false");

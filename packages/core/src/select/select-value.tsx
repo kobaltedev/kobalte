@@ -24,14 +24,7 @@ export function SelectValue(props: SelectValueProps) {
 
   const [local, others] = splitProps(props, ["id", "children"]);
 
-  const selectionManager = () => context.listState().selectionManager();
-  const isSelectionEmpty = () => selectionManager().isEmpty();
-
-  const selectedOptions = () => {
-    return [...selectionManager().selectedKeys()]
-      .map(key => context.listState().collection().getItem(key)?.rawValue)
-      .filter(Boolean);
-  };
+  const isSelectionEmpty = () => context.listState().selectionManager().isEmpty();
 
   createEffect(() => onCleanup(context.registerValueId(local.id!)));
 
@@ -43,7 +36,7 @@ export function SelectValue(props: SelectValueProps) {
       {...others}
     >
       <Show when={!isSelectionEmpty()} fallback={context.placeholder()}>
-        {context.renderValue(selectedOptions)}
+        {context.renderValue()}
       </Show>
     </span>
   );

@@ -36,7 +36,7 @@ describe("Select", () => {
       <Select.Root
         options={DATA_SOURCE}
         placeholder="Placeholder"
-        renderValue={selectedOption => selectedOption().label}
+        renderValue={selection => selection.item().rawValue.label}
         renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
       >
         <Select.HiddenSelect />
@@ -75,7 +75,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -128,7 +128,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -194,7 +194,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -243,7 +243,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -292,7 +292,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -341,7 +341,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -390,7 +390,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -457,7 +457,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           isOpen
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
@@ -503,7 +503,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           defaultIsOpen
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
@@ -551,7 +551,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -605,7 +605,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -669,7 +669,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -719,7 +719,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           isOpen
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
@@ -762,7 +762,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           defaultIsOpen
           onOpenChange={onOpenChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
@@ -807,7 +807,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -838,7 +838,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -878,7 +878,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -915,7 +915,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -951,7 +951,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -989,7 +989,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -1018,7 +1018,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           validationState="invalid"
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
@@ -1050,7 +1050,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -1087,7 +1087,13 @@ describe("Select", () => {
 
       expect(document.activeElement).toBe(listbox);
 
-      fireEvent.click(items[2]);
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
@@ -1107,7 +1113,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -1172,7 +1178,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -1236,7 +1242,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -1317,7 +1323,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           onOpenChange={onOpenChangeSpy}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
@@ -1358,7 +1364,10 @@ describe("Select", () => {
       expect(item2).toBeTruthy();
       expect(item3).toBeTruthy();
 
-      fireEvent.click(item3);
+      fireEvent(item3, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(item3, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
@@ -1394,7 +1403,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           value="2"
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
@@ -1460,7 +1469,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           defaultValue="2"
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
@@ -1532,7 +1541,7 @@ describe("Select", () => {
         <Select.Root
           options={dataSource}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -1611,7 +1620,7 @@ describe("Select", () => {
         <Select.Root
           options={dataSource}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -1707,7 +1716,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           defaultValue="2"
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
@@ -1735,7 +1744,13 @@ describe("Select", () => {
 
       expect(document.activeElement).toBe(items[1]);
 
-      fireEvent.click(items[1]);
+      fireEvent(
+        items[1],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[1], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
@@ -1755,7 +1770,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -1819,7 +1834,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -1868,7 +1883,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -1920,7 +1935,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -1979,7 +1994,7 @@ describe("Select", () => {
         <Select.Root
           options={dataSource}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -2027,7 +2042,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
         >
@@ -2071,7 +2086,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           isDisabled
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
@@ -2101,7 +2116,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           isDisabled
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
@@ -2138,7 +2153,7 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selectedOption => selectedOption().label}
+          renderValue={selection => selection.item().rawValue.label}
           isDisabled
           onValueChange={onValueChange}
           renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
@@ -2189,7 +2204,7 @@ describe("Select", () => {
           <Select.Root
             options={DATA_SOURCE}
             placeholder="Placeholder"
-            renderValue={selectedOption => selectedOption().label}
+            renderValue={selection => selection.item().rawValue.label}
             name="test"
             renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
           >
@@ -2231,7 +2246,7 @@ describe("Select", () => {
           <Select.Root
             options={DATA_SOURCE}
             placeholder="Placeholder"
-            renderValue={selectedOption => selectedOption().label}
+            renderValue={selection => selection.item().rawValue.label}
             name="test"
             defaultValue="1"
             renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}

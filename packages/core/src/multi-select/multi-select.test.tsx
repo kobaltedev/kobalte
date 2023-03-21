@@ -7,7 +7,6 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { Key } from "@kobalte/utils";
 import { fireEvent, render, screen, within } from "solid-testing-library";
 
 import * as MultiSelect from ".";
@@ -37,9 +36,10 @@ describe("MultiSelect", () => {
       <MultiSelect.Root
         options={DATA_SOURCE}
         placeholder="Placeholder"
-        renderValue={selectedOptions =>
-          selectedOptions()
-            .map(item => item.label)
+        renderValue={selection =>
+          selection
+            .items()
+            .map(item => item.rawValue.label)
             .join(", ")
         }
         onValueChange={onValueChange}
@@ -82,10 +82,16 @@ describe("MultiSelect", () => {
 
     expect(document.activeElement).toBe(listbox);
 
-    fireEvent.click(items[0]);
+    fireEvent(items[0], createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
     await Promise.resolve();
 
-    fireEvent.click(items[2]);
+    fireEvent(items[0], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
+
+    fireEvent(items[2], createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
+
+    fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
     await Promise.resolve();
 
     expect(items[0]).toHaveAttribute("aria-selected", "true");
@@ -108,9 +114,10 @@ describe("MultiSelect", () => {
       <MultiSelect.Root
         options={DATA_SOURCE}
         placeholder="Placeholder"
-        renderValue={selectedOptions =>
-          selectedOptions()
-            .map(item => item.label)
+        renderValue={selection =>
+          selection
+            .items()
+            .map(item => item.rawValue.label)
             .join(", ")
         }
         defaultValue={defaultValue}
@@ -143,7 +150,10 @@ describe("MultiSelect", () => {
     expect(items[1]).toHaveAttribute("aria-selected", "true");
 
     // SelectBase a different option
-    fireEvent.click(items[2]);
+    fireEvent(items[2], createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
+
+    fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
     await Promise.resolve();
 
     expect(items[2]).toHaveAttribute("aria-selected", "true");
@@ -161,9 +171,10 @@ describe("MultiSelect", () => {
       <MultiSelect.Root
         options={DATA_SOURCE}
         placeholder="Placeholder"
-        renderValue={selectedOptions =>
-          selectedOptions()
-            .map(item => item.label)
+        renderValue={selection =>
+          selection
+            .items()
+            .map(item => item.rawValue.label)
             .join(", ")
         }
         value={value}
@@ -196,7 +207,10 @@ describe("MultiSelect", () => {
     expect(items[1]).toHaveAttribute("aria-selected", "true");
 
     // SelectBase a different option
-    fireEvent.click(items[2]);
+    fireEvent(items[2], createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
+
+    fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
     await Promise.resolve();
 
     expect(items[2]).toHaveAttribute("aria-selected", "false");
@@ -212,9 +226,10 @@ describe("MultiSelect", () => {
       <MultiSelect.Root
         options={DATA_SOURCE}
         placeholder="Placeholder"
-        renderValue={selectedOptions =>
-          selectedOptions()
-            .map(item => item.label)
+        renderValue={selection =>
+          selection
+            .items()
+            .map(item => item.rawValue.label)
             .join(", ")
         }
         defaultValue={defaultValue}
@@ -247,7 +262,10 @@ describe("MultiSelect", () => {
     expect(items[1]).toHaveAttribute("aria-selected", "true");
 
     // Deselect first option
-    fireEvent.click(items[0]);
+    fireEvent(items[0], createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+    await Promise.resolve();
+
+    fireEvent(items[0], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
     await Promise.resolve();
 
     expect(items[0]).toHaveAttribute("aria-selected", "false");

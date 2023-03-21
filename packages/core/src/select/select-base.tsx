@@ -35,6 +35,17 @@ import {
 } from "../selection";
 import { SelectContext, SelectContextValue, SelectDataSet } from "./select-context";
 
+export interface MultiSelectionState<T> {
+  /** The selected items. */
+  items: Accessor<CollectionNode<T>[]>;
+
+  /** A function to remove an item from the selection. */
+  remove: (item: CollectionNode<T>) => void;
+
+  /** A function to clear the selection. */
+  clear: () => void;
+}
+
 export interface SelectBaseOptions<Option, OptGroup = never>
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the select. */
@@ -61,8 +72,8 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   /** Event handler called when the value changes. */
   onValueChange?: (value: Set<string>) => void;
 
-  /** A map function that receives a _selectedOptions_ signal representing the selected options. */
-  renderValue?: (selectedOptions: Accessor<Option[]>) => JSX.Element;
+  /** A map function that receives the selection state. */
+  renderValue?: (selection: MultiSelectionState<Option>) => JSX.Element;
 
   /** The content that will be rendered when no value or defaultValue is set. */
   placeholder?: JSX.Element;
@@ -325,6 +336,18 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     return new ListKeyboardDelegate(listState.collection, undefined, collator);
   });
 
+  const selectedItems = createMemo(() => {
+    return [...listState.selectionManager().selectedKeys()]
+      .map(key => listState.collection().getItem(key))
+      .filter(Boolean) as CollectionNode[];
+  });
+
+  const selectionState: MultiSelectionState<Option> = {
+    items: selectedItems,
+    remove: item => listState.selectionManager().toggleSelection(item.key),
+    clear: () => listState.selectionManager().clearSelection(),
+  };
+
   const dataset: Accessor<SelectDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
     "data-closed": !disclosureState.isOpen() ? "" : undefined,
@@ -356,7 +379,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     placeholder: () => local.placeholder,
     renderItem: item => local.renderItem?.(item),
     renderSection: section => local.renderSection?.(section),
-    renderValue: selectedOptions => local.renderValue?.(selectedOptions),
+    renderValue: () => local.renderValue?.(selectionState),
     generateId: createGenerateId(() => access(formControlProps.id)!),
     registerTriggerId: createRegisterId(setTriggerId),
     registerValueId: createRegisterId(setValueId),

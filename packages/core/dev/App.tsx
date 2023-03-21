@@ -1,6 +1,7 @@
 import { Portal } from "solid-js/web";
 
-import { Dialog, I18nProvider, Toast, toaster } from "../src";
+import { Dialog, I18nProvider, Toast, toaster, MultiSelect } from "../src";
+import { For } from "solid-js";
 
 export default function App() {
   const showToast = () => {
@@ -45,6 +46,43 @@ export default function App() {
           <Toast.List class="ToastViewport" />
         </Toast.Region>
       </Portal>
+      <MultiSelect.Root
+        options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+        placeholder="Select some fruits…"
+        renderValue={selection => (
+          <>
+            <For each={selection.items()}>
+              {item => (
+                <button
+                  onPointerDown={e => e.stopPropagation()}
+                  onClick={() => selection.remove(item)}
+                >
+                  {item.rawValue}
+                </button>
+              )}
+            </For>
+            <button onPointerDown={e => e.stopPropagation()} onClick={selection.clear}>
+              X
+            </button>
+          </>
+        )}
+        renderItem={item => (
+          <MultiSelect.Item item={item()}>
+            <MultiSelect.ItemLabel>{item().rawValue}</MultiSelect.ItemLabel>
+            <MultiSelect.ItemIndicator>X</MultiSelect.ItemIndicator>
+          </MultiSelect.Item>
+        )}
+      >
+        <MultiSelect.Trigger aria-label="Fruits">
+          <MultiSelect.Value />
+          <MultiSelect.Icon>V</MultiSelect.Icon>
+        </MultiSelect.Trigger>
+        <MultiSelect.Portal>
+          <MultiSelect.Content>
+            <MultiSelect.Listbox />
+          </MultiSelect.Content>
+        </MultiSelect.Portal>
+      </MultiSelect.Root>
     </I18nProvider>
   );
 }

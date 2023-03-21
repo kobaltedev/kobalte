@@ -92,17 +92,13 @@ export function createSelectableItem<T extends HTMLElement>(
 
   const allowsSelection = () => !isDisabled() && manager().canSelectItem(key());
 
-  let pointerDownType: PointerEvent["pointerType"] | null = null;
-
   const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
     if (!allowsSelection()) {
       return;
     }
 
-    pointerDownType = e.pointerType;
-
-    // Selection occurs on mouse down.
-    if (e.pointerType === "mouse" && !access(props.shouldSelectOnPressUp)) {
+    // Selection occurs on pointer down.
+    if (!access(props.shouldSelectOnPressUp)) {
       onSelect(e);
     }
   };
@@ -127,11 +123,7 @@ export function createSelectableItem<T extends HTMLElement>(
       return;
     }
 
-    // If not allowsDifferentPressOrigin or pointerType is touch/pen, make selection happen on click.
-    if (
-      (access(props.shouldSelectOnPressUp) && !access(props.allowsDifferentPressOrigin)) ||
-      pointerDownType !== "mouse"
-    ) {
+    if (access(props.shouldSelectOnPressUp) && !access(props.allowsDifferentPressOrigin)) {
       onSelect(e);
     }
   };

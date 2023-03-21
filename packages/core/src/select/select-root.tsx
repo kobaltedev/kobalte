@@ -1,7 +1,15 @@
 import { Accessor, JSX, splitProps } from "solid-js";
 
-import { createControllableSetSignal } from "../primitives";
-import { SelectBase, SelectBaseOptions } from "./select-base";
+import { CollectionNode, createControllableSetSignal } from "../primitives";
+import { MultiSelectionState, SelectBase, SelectBaseOptions } from "./select-base";
+
+export interface SingleSelectionState<T> {
+  /** The selected item. */
+  item: Accessor<CollectionNode<T>>;
+
+  /** A function to clear the selection. */
+  clear: () => void;
+}
 
 export interface SelectRootOptions<Option, OptGroup = never>
   extends Omit<
@@ -20,8 +28,8 @@ export interface SelectRootOptions<Option, OptGroup = never>
   /** Event handler called when the value changes. */
   onValueChange?: (value: string) => void;
 
-  /** A map function that receives a _selectedOption_ signal representing the selected option. */
-  renderValue?: (selectedOption: Accessor<Option>) => JSX.Element;
+  /** A map function that receives the selection state. */
+  renderValue?: (selection: SingleSelectionState<Option>) => JSX.Element;
 }
 
 export interface SelectRootProps<Option, OptGroup = never>
@@ -44,8 +52,11 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
     onChange: value => local.onValueChange?.(value.values().next().value),
   });
 
-  const renderValue = (selectedOptions: Accessor<Option[]>) => {
-    return local.renderValue?.(() => selectedOptions()[0]);
+  const renderValue = (selection: MultiSelectionState<Option>) => {
+    return local.renderValue?.({
+      item: () => selection.items()[0],
+      clear: () => selection.clear(),
+    });
   };
 
   return (
