@@ -52,6 +52,11 @@ describe("Select", () => {
       </Select.Root>
     ));
 
+    const root = screen.getByRole("group");
+
+    expect(root).toBeInTheDocument();
+    expect(root).toBeInstanceOf(HTMLDivElement);
+
     const select = screen.getByRole("textbox", { hidden: true });
 
     expect(select).not.toBeDisabled();

@@ -35,9 +35,9 @@ export function ThemeSelector() {
       gutter={8}
       sameWidth={false}
       placement="bottom"
-      renderValue={selectedOption => (
+      renderValue={selection => (
         <Dynamic
-          component={selectedOption().value === "dark" ? MoonIcon : SunIcon}
+          component={selection.item().rawValue.value === "dark" ? MoonIcon : SunIcon}
           class="h-5 w-5"
         />
       )}

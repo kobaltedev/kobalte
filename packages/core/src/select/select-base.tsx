@@ -18,6 +18,7 @@ import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } f
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
 import { createCollator } from "../i18n";
 import { createListState, ListKeyboardDelegate } from "../list";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
   CollectionNode,
@@ -47,7 +48,8 @@ export interface MultiSelectionState<T> {
 }
 
 export interface SelectBaseOptions<Option, OptGroup = never>
-  extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
+  extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange">,
+    AsChildProp {
   /** The controlled open state of the select. */
   isOpen?: boolean;
 
@@ -182,15 +184,15 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       allowDuplicateSelectionEvents: true,
       disallowEmptySelection: props.selectionMode !== "multiple",
       gutter: 8,
+      sameWidth: true,
       isModal: false,
     },
     props
   );
 
-  const [local, formControlProps, others] = splitProps(
+  const [local, popperProps, formControlProps, others] = splitProps(
     props,
     [
-      "children",
       "renderItem",
       "renderSection",
       "isOpen",
@@ -215,6 +217,21 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       "isVirtualized",
       "isModal",
       "forceMount",
+    ],
+    [
+      "getAnchorRect",
+      "placement",
+      "gutter",
+      "shift",
+      "flip",
+      "slide",
+      "overlap",
+      "sameWidth",
+      "fitViewport",
+      "hideWhenDetached",
+      "detachedPadding",
+      "arrowPadding",
+      "overflowPadding",
     ],
     FORM_CONTROL_PROP_NAMES
   );
@@ -389,8 +406,15 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
   return (
     <FormControlContext.Provider value={formControlContext}>
       <SelectContext.Provider value={context}>
-        <PopperRoot anchorRef={triggerRef} contentRef={contentRef} sameWidth {...others}>
-          {local.children}
+        <PopperRoot anchorRef={triggerRef} contentRef={contentRef} {...popperProps}>
+          <Polymorphic
+            fallback="div"
+            role="group"
+            id={access(formControlProps.id)}
+            {...formControlContext.dataset()}
+            {...dataset()}
+            {...others}
+          />
         </PopperRoot>
       </SelectContext.Provider>
     </FormControlContext.Provider>

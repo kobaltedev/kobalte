@@ -102,7 +102,7 @@ The multi-select consists of all the parts above in form of `MultiSelect.*`.
         <Select.Root
           options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
           placeholder="Select a fruit…"
-          renderValue={selectedOption => selectedOption()}
+          renderValue={selection => selection.item().rawValue}
           renderItem={item => (
             <Select.Item item={item()} class="select__item">
               <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
@@ -295,7 +295,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
   defaultValue="Blueberry"
   options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
   placeholder="Select a fruit…"
-  renderValue={selectedOption => selectedOption()}
+  renderValue={selection => selection.item().rawValue}
   renderItem={item => (
     <Select.Item item={item()}>
       <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
@@ -340,7 +340,7 @@ export function ControlledExample() {
         onValueChange={setValue}
         options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
         placeholder="Select a fruit…"
-        renderValue={selectedOption => selectedOption()}
+        renderValue={selection => selection.item().rawValue}
         renderItem={item => (
           <Select.Item item={item()}>
             <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
@@ -380,7 +380,7 @@ The `Select.Description` component can be used to associate additional help text
 <Select.Root
   options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
   placeholder="Select a fruit…"
-  renderValue={selectedOption => selectedOption()}
+  renderValue={selection => selection.item().rawValue}
   renderItem={item => (
     <Select.Item item={item()}>
       <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
@@ -428,7 +428,7 @@ export function ErrorMessageExample() {
       validationState={value() !== "Apple" ? "invalid" : "valid"}
       options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
       placeholder="Select a fruit…"
-      renderValue={selectedOption => selectedOption()}
+      renderValue={selection => selection.item().rawValue}
       renderItem={item => (
         <Select.Item item={item()}>
           <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
@@ -475,7 +475,7 @@ function HTMLFormExample() {
         name="fruit"
         options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
         placeholder="Select a fruit…"
-        renderValue={selectedOption => selectedOption()}
+        renderValue={selection => selection.item().rawValue}
         renderItem={item => (
           <Select.Item item={item()}>
             <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
@@ -542,7 +542,7 @@ export function ObjectExample() {
       optionTextValue="label"
       optionDisabled="disabled"
       placeholder="Select a fruit…"
-      renderValue={selectedOption => selectedOption().label}
+      renderValue={selection => selection.item().rawValue.label}
       renderItem={item => (
         <Select.Item item={item()}>
           <Select.ItemLabel>{item().rawValue.label}</Select.ItemLabel>
@@ -626,7 +626,7 @@ export function OptionGroupExample() {
       optionDisabled="disabled"
       optionGroupChildren="options"
       placeholder="Select a food…"
-      renderValue={selectedOption => selectedOption().label}
+      renderValue={selection => selection.item().rawValue.label}
       renderItem={item => (
         <Select.Item item={item()}>
           <Select.ItemLabel>{item().rawValue.label}</Select.ItemLabel>
@@ -678,7 +678,7 @@ export function MultiSelectExample() {
         onValueChange={setValues}
         options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
         placeholder="Select some fruits…"
-        renderValue={selectedOptions => selectedOptions().join(", ")}
+        renderValue={selection => selection.items().join(", ")}
         renderItem={item => (
           <MultiSelect.Item item={item()}>
             <MultiSelect.ItemLabel>{item().rawValue}</MultiSelect.ItemLabel>
@@ -803,7 +803,7 @@ export function VirtualizedExample() {
       optionTextValue="label"
       optionDisabled="disabled"
       placeholder="Select an item…"
-      renderValue={selectedOption => selectedOption().label}
+      renderValue={selection => selection.item().rawValue.label}
     >
       <Select.Trigger aria-label="Food">
         <Select.Value />
@@ -909,8 +909,6 @@ We expose a CSS custom property `--kb-select-content-transform-origin` which can
 | arrowPadding     | `number` <br/> The minimum padding between the arrow and the select content corner.                                                                                                                                                                                                                                                                                       |
 | overflowPadding  | `number` <br/> The minimum padding between the select content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                                       |
 
-### Select.Label
-
 | Data attribute | Description                                                                        |
 | :------------- | :--------------------------------------------------------------------------------- |
 | data-valid     | Present when the select is valid according to the validation rules.                |
@@ -919,7 +917,7 @@ We expose a CSS custom property `--kb-select-content-transform-origin` which can
 | data-disabled  | Present when the select is disabled.                                               |
 | data-readonly  | Present when the select is read only.                                              |
 
-`Select.Trigger`, `Select.Value`, `Select.Description` and `Select.ErrorMesssage` shares the same data-attributes.
+`Select.Label`, `Select.Trigger`, `Select.Value`, `Select.Description` and `Select.ErrorMesssage` shares the same data-attributes.
 
 ### Select.Trigger
 
@@ -1005,7 +1003,7 @@ We expose a CSS custom property `--kb-select-content-transform-origin` which can
 
 | Component                | Default rendered element |
 | :----------------------- | :----------------------- |
-| `Select.Root`            | none                     |
+| `Select.Root`            | `div`                    |
 | `Select.Label`           | `span`                   |
 | `Select.Description`     | `div`                    |
 | `Select.ErrorMessage`    | `div`                    |
