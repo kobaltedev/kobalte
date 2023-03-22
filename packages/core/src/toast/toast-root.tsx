@@ -147,7 +147,6 @@ export function ToastRoot(props: ToastRootProps) {
   const [isOpen, setIsOpen] = createSignal(true);
   const [titleId, setTitleId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
-  const [lifeTime, setLifeTime] = createSignal(100);
 
   const presence = createPresence(isOpen);
 
@@ -157,7 +156,6 @@ export function ToastRoot(props: ToastRootProps) {
   let closeTimerId: number;
   let closeTimerStartTime = 0;
   let closeTimerRemainingTime = duration();
-  let totalElapsedTime = 0;
 
   let pointerStart: { x: number; y: number } | null = null;
   let swipeDelta: { x: number; y: number } | null = null;
@@ -340,24 +338,6 @@ export function ToastRoot(props: ToastRootProps) {
     })
   );
 
-  createEffect(() => {
-    if (rootContext.isPaused() || duration() === Infinity) {
-      return;
-    }
-
-    const intervalId = setInterval(() => {
-      const elapsedTime = new Date().getTime() - closeTimerStartTime + totalElapsedTime;
-
-      const life = Math.trunc(100 - (elapsedTime / duration()) * 100);
-      setLifeTime(life < 0 ? 0 : life);
-    });
-
-    onCleanup(() => {
-      totalElapsedTime += new Date().getTime() - closeTimerStartTime;
-      clearInterval(intervalId);
-    });
-  });
-
   createEffect(
     on(
       () => toastStore.get(local.id)?.dismiss,
@@ -374,6 +354,8 @@ export function ToastRoot(props: ToastRootProps) {
 
   const context: ToastContextValue = {
     close,
+    duration,
+    closeTimerStartTime: () => closeTimerStartTime,
     generateId: createGenerateId(domId),
     registerTitleId: createRegisterId(setTitleId),
     registerDescriptionId: createRegisterId(setDescriptionId),
@@ -391,7 +373,6 @@ export function ToastRoot(props: ToastRootProps) {
           role="status"
           tabIndex={0}
           style={{
-            "--kb-toast-progress-fill-width": `${lifeTime()}%`,
             "user-select": "none",
             "touch-action": "none",
             ...local.style,

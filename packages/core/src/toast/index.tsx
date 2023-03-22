@@ -1,21 +1,30 @@
 import {
   ToastCloseButton as CloseButton,
-  type ToastCloseButtonProps,
   type ToastCloseButtonOptions,
+  type ToastCloseButtonProps,
 } from "./toast-close-button";
 import {
   ToastDescription as Description,
-  type ToastDescriptionProps,
   type ToastDescriptionOptions,
+  type ToastDescriptionProps,
 } from "./toast-description";
-import { ToastTitle as Title, type ToastTitleProps, type ToastTitleOptions } from "./toast-title";
-import { ToastRoot as Root, type ToastRootOptions, type ToastRootProps } from "./toast-root";
+import { ToastList as List, type ToastListOptions, type ToastListProps } from "./toast-list";
+import {
+  ToastProgressFill as ProgressFill,
+  type ToastProgressFillOptions,
+  type ToastProgressFillProps,
+} from "./toast-progress-fill";
+import {
+  ToastProgressTrack as ProgressTrack,
+  type ToastProgressTrackProps,
+} from "./toast-progress-track";
 import {
   ToastRegion as Region,
   type ToastRegionOptions,
   type ToastRegionProps,
 } from "./toast-region";
-import { ToastList as List, type ToastListOptions, type ToastListProps } from "./toast-list";
+import { ToastRoot as Root, type ToastRootOptions, type ToastRootProps } from "./toast-root";
+import { ToastTitle as Title, type ToastTitleOptions, type ToastTitleProps } from "./toast-title";
 
 export type {
   ToastCloseButtonOptions,
@@ -24,6 +33,9 @@ export type {
   ToastDescriptionProps,
   ToastListOptions,
   ToastListProps,
+  ToastProgressFillOptions,
+  ToastProgressFillProps,
+  ToastProgressTrackProps,
   ToastRegionOptions,
   ToastRegionProps,
   ToastRootOptions,
@@ -32,4 +44,4 @@ export type {
   ToastTitleProps,
 };
 
-export { CloseButton, Description, List, Region, Root, Title };
+export { CloseButton, Description, List, ProgressFill, ProgressTrack, Region, Root, Title };

@@ -10,9 +10,9 @@ export default function App() {
         <Toast.Description class="ToastDescription">Description</Toast.Description>
         <button onClick={() => toaster.dismiss(id)}>Accept</button>
         <Toast.CloseButton onClick={() => console.log("foo")}>X</Toast.CloseButton>
-        <div class="ToastProgressTrack">
-          <div class="ToastProgressFill" />
-        </div>
+        <Toast.ProgressTrack class="ToastProgressTrack">
+          <Toast.ProgressFill class="ToastProgressFill" />
+        </Toast.ProgressTrack>
       </Toast.Root>
     ));
   };
