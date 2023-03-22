@@ -13,7 +13,15 @@ import {
   mergeDefaultProps,
   ValidationState,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
+import {
+  Accessor,
+  Component,
+  createMemo,
+  createSignal,
+  createUniqueId,
+  JSX,
+  splitProps,
+} from "solid-js";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
 import { createCollator } from "../i18n";
@@ -36,15 +44,25 @@ import {
 } from "../selection";
 import { SelectContext, SelectContextValue, SelectDataSet } from "./select-context";
 
-export interface MultiSelectionState<T> {
+export interface SelectBaseValueComponentProps<T> {
   /** The selected items. */
-  items: Accessor<CollectionNode<T>[]>;
+  items: CollectionNode<T>[];
 
   /** A function to remove an item from the selection. */
   remove: (item: CollectionNode<T>) => void;
 
   /** A function to clear the selection. */
   clear: () => void;
+}
+
+export interface SelectBaseItemComponentProps<T> {
+  /** The item to render. */
+  item: CollectionNode<T>;
+}
+
+export interface SelectBaseSectionComponentProps<T> {
+  /** The section to render. */
+  section: CollectionNode<T>;
 }
 
 export interface SelectBaseOptions<Option, OptGroup = never>
@@ -73,9 +91,6 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 
   /** Event handler called when the value changes. */
   onValueChange?: (value: Set<string>) => void;
-
-  /** A map function that receives the selection state. */
-  renderValue?: (selection: MultiSelectionState<Option>) => JSX.Element;
 
   /** The content that will be rendered when no value or defaultValue is set. */
   placeholder?: JSX.Element;
@@ -116,11 +131,14 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   /** Whether the select uses virtual scrolling. */
   isVirtualized?: boolean;
 
-  /** When NOT virtualized, a map function that receives an _item_ signal representing an item. */
-  renderItem?: (item: Accessor<CollectionNode<Option>>) => JSX.Element;
+  /** The component to render inside `Select.Value`. */
+  valueComponent?: Component<SelectBaseValueComponentProps<Option>>;
 
-  /** When NOT virtualized, a map function that receives a _section_ signal representing a section. */
-  renderSection?: (section: Accessor<CollectionNode<OptGroup>>) => JSX.Element;
+  /** When NOT virtualized, the component to render as an item in the `Select.Listbox`. */
+  itemComponent?: Component<SelectBaseItemComponentProps<Option>>;
+
+  /** When NOT virtualized, the component to render as a section in the `Select.Listbox`. */
+  sectionComponent?: Component<SelectBaseSectionComponentProps<OptGroup>>;
 
   /**
    * Whether the select should be the only visible content for screen readers.
@@ -193,15 +211,15 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
   const [local, popperProps, formControlProps, others] = splitProps(
     props,
     [
-      "renderItem",
-      "renderSection",
+      "valueComponent",
+      "itemComponent",
+      "sectionComponent",
       "isOpen",
       "defaultIsOpen",
       "onOpenChange",
       "value",
       "defaultValue",
       "onValueChange",
-      "renderValue",
       "placeholder",
       "options",
       "optionValue",
@@ -359,10 +377,22 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       .filter(Boolean) as CollectionNode[];
   });
 
-  const selectionState: MultiSelectionState<Option> = {
-    items: selectedItems,
-    remove: item => listState.selectionManager().toggleSelection(item.key),
-    clear: () => listState.selectionManager().clearSelection(),
+  const renderValue = () => {
+    return local.valueComponent?.({
+      get items() {
+        return selectedItems();
+      },
+      remove: item => listState.selectionManager().toggleSelection(item.key),
+      clear: () => listState.selectionManager().clearSelection(),
+    });
+  };
+
+  const renderItem = (item: CollectionNode) => {
+    return local.itemComponent?.({ item });
+  };
+
+  const renderSection = (section: CollectionNode) => {
+    return local.sectionComponent?.({ section });
   };
 
   const dataset: Accessor<SelectDataSet> = createMemo(() => ({
@@ -394,9 +424,9 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     close,
     toggle,
     placeholder: () => local.placeholder,
-    renderItem: item => local.renderItem?.(item),
-    renderSection: section => local.renderSection?.(section),
-    renderValue: () => local.renderValue?.(selectionState),
+    renderValue,
+    renderItem,
+    renderSection,
     generateId: createGenerateId(() => access(formControlProps.id)!),
     registerTriggerId: createRegisterId(setTriggerId),
     registerValueId: createRegisterId(setValueId),

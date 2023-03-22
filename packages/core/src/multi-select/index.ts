@@ -39,9 +39,12 @@ import {
   Value,
 } from "../select";
 import {
+  type MultiSelectItemComponentProps,
   MultiSelectRoot as Root,
   type MultiSelectRootOptions,
   type MultiSelectRootProps,
+  type MultiSelectSectionComponentProps,
+  type MultiSelectValueComponentProps,
 } from "./multi-select-root";
 
 export type {
@@ -54,6 +57,7 @@ export type {
   MultiSelectErrorMessageProps,
   MultiSelectHiddenSelectProps,
   MultiSelectIconProps,
+  MultiSelectItemComponentProps,
   MultiSelectItemDescriptionProps,
   MultiSelectItemIndicatorOptions,
   MultiSelectItemIndicatorProps,
@@ -66,8 +70,10 @@ export type {
   MultiSelectPortalProps,
   MultiSelectRootOptions,
   MultiSelectRootProps,
+  MultiSelectSectionComponentProps,
   MultiSelectSectionProps,
   MultiSelectTriggerProps,
+  MultiSelectValueComponentProps,
   MultiSelectValueProps,
 };
 

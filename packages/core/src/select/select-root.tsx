@@ -1,20 +1,35 @@
-import { Accessor, JSX, splitProps } from "solid-js";
+import { Component, splitProps } from "solid-js";
 
 import { CollectionNode, createControllableSetSignal } from "../primitives";
-import { MultiSelectionState, SelectBase, SelectBaseOptions } from "./select-base";
+import {
+  SelectBase,
+  SelectBaseItemComponentProps,
+  SelectBaseOptions,
+  SelectBaseSectionComponentProps,
+  SelectBaseValueComponentProps,
+} from "./select-base";
 
-export interface SingleSelectionState<T> {
+export interface SelectValueComponentProps<T> {
   /** The selected item. */
-  item: Accessor<CollectionNode<T>>;
+  item: CollectionNode<T>;
 
   /** A function to clear the selection. */
   clear: () => void;
 }
 
+export interface SelectItemComponentProps<T> extends SelectBaseItemComponentProps<T> {}
+export interface SelectSectionComponentProps<T> extends SelectBaseSectionComponentProps<T> {}
+
 export interface SelectRootOptions<Option, OptGroup = never>
   extends Omit<
     SelectBaseOptions<Option, OptGroup>,
-    "value" | "defaultValue" | "onValueChange" | "renderValue" | "selectionMode"
+    | "valueComponent"
+    | "itemComponent"
+    | "sectionComponent"
+    | "value"
+    | "defaultValue"
+    | "onValueChange"
+    | "selectionMode"
   > {
   /** The controlled value of the select. */
   value?: string;
@@ -28,8 +43,14 @@ export interface SelectRootOptions<Option, OptGroup = never>
   /** Event handler called when the value changes. */
   onValueChange?: (value: string) => void;
 
-  /** A map function that receives the selection state. */
-  renderValue?: (selection: SingleSelectionState<Option>) => JSX.Element;
+  /** The component to render inside `Select.Value`. */
+  valueComponent?: Component<SelectValueComponentProps<Option>>;
+
+  /** When NOT virtualized, the component to render as an item in the `Select.Listbox`. */
+  itemComponent?: Component<SelectItemComponentProps<Option>>;
+
+  /** When NOT virtualized, the component to render as a section in the `Select.Listbox`. */
+  sectionComponent?: Component<SelectSectionComponentProps<OptGroup>>;
 }
 
 export interface SelectRootProps<Option, OptGroup = never>
@@ -40,10 +61,10 @@ export interface SelectRootProps<Option, OptGroup = never>
  */
 export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Option, OptGroup>) {
   const [local, others] = splitProps(props, [
+    "valueComponent",
     "value",
     "defaultValue",
     "onValueChange",
-    "renderValue",
   ]);
 
   const [value, setValue] = createControllableSetSignal({
@@ -52,10 +73,12 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
     onChange: value => local.onValueChange?.(value.values().next().value),
   });
 
-  const renderValue = (selection: MultiSelectionState<Option>) => {
-    return local.renderValue?.({
-      item: () => selection.items()[0],
-      clear: () => selection.clear(),
+  const valueComponent = (props: SelectBaseValueComponentProps<Option>) => {
+    return local.valueComponent?.({
+      get item() {
+        return props.items[0];
+      },
+      clear: () => props.clear(),
     });
   };
 
@@ -65,7 +88,7 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
       onValueChange={setValue}
       selectionMode="single"
       disallowEmptySelection
-      renderValue={renderValue}
+      valueComponent={valueComponent}
       {...others}
     />
   );

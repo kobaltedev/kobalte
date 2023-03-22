@@ -115,10 +115,10 @@ export interface ListboxRootOptions<Option, OptGroup = never> extends AsChildPro
   isVirtualized?: boolean;
 
   /** When NOT virtualized, a map function that receives an _item_ signal representing a listbox item. */
-  renderItem?: (item: Accessor<CollectionNode<Option>>) => JSX.Element;
+  renderItem?: (item: CollectionNode<Option>) => JSX.Element;
 
   /** When NOT virtualized, a map function that receives a _section_ signal representing a listbox section. */
-  renderSection?: (section: Accessor<CollectionNode<OptGroup>>) => JSX.Element;
+  renderSection?: (section: CollectionNode<OptGroup>) => JSX.Element;
 
   /** When virtualized, the Virtualizer function used to scroll to the item of the given key. */
   scrollToItem?: (key: string) => void;
@@ -254,8 +254,8 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
           <Key each={[...listState().collection()]} by="key">
             {item => (
               <Switch>
-                <Match when={item().type === "section"}>{local.renderSection?.(item)}</Match>
-                <Match when={item().type === "item"}>{local.renderItem?.(item)}</Match>
+                <Match when={item().type === "section"}>{local.renderSection?.(item())}</Match>
+                <Match when={item().type === "item"}>{local.renderItem?.(item())}</Match>
               </Switch>
             )}
           </Key>

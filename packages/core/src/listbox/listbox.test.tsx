@@ -6,10 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-spectrum/listbox/test/Listbox.test.js
  */
 
+import { createPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "solid-testing-library";
 
 import * as Listbox from ".";
-import { createPointerEvent } from "@kobalte/tests";
 
 const DATA_SOURCE = [
   { key: "1", label: "One", textValue: "One", isDisabled: false },
@@ -38,7 +38,7 @@ describe("Listbox", () => {
       <Listbox.Root
         options={DATA_SOURCE}
         selectionMode="single"
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -61,7 +61,7 @@ describe("Listbox", () => {
     render(() => (
       <Listbox.Root
         options={DATA_SOURCE}
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -89,7 +89,7 @@ describe("Listbox", () => {
       <Listbox.Root
         options={DATA_SOURCE}
         shouldFocusWrap
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -121,7 +121,7 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="single"
           defaultValue={defaultValue}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -147,7 +147,7 @@ describe("Listbox", () => {
           selectionMode="single"
           value={value}
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -184,7 +184,7 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="single"
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -214,7 +214,7 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="single"
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -258,7 +258,7 @@ describe("Listbox", () => {
           options={dataSource}
           selectionMode="single"
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -307,7 +307,7 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="multiple"
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -359,7 +359,7 @@ describe("Listbox", () => {
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -401,7 +401,7 @@ describe("Listbox", () => {
           selectionMode="multiple"
           value={value}
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -441,7 +441,7 @@ describe("Listbox", () => {
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -486,7 +486,7 @@ describe("Listbox", () => {
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -529,7 +529,7 @@ describe("Listbox", () => {
         defaultValue={defaultValue}
         onValueChange={onValueChangeSpy}
         disallowEmptySelection={false}
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -559,7 +559,7 @@ describe("Listbox", () => {
     render(() => (
       <Listbox.Root
         options={DATA_SOURCE}
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -588,7 +588,7 @@ describe("Listbox", () => {
     render(() => (
       <Listbox.Root
         options={DATA_SOURCE}
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -618,8 +618,8 @@ describe("Listbox", () => {
       <Listbox.Root
         options={dataSource}
         renderItem={item => (
-          <Listbox.Item item={item()} aria-label="Item">
-            {item().rawValue.label}
+          <Listbox.Item item={item} aria-label="Item">
+            {item.rawValue.label}
           </Listbox.Item>
         )}
       />
@@ -649,9 +649,9 @@ describe("Listbox", () => {
       <Listbox.Root
         options={dataSource}
         renderItem={item => (
-          <Listbox.Item item={item()}>
-            <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
-            <Listbox.ItemDescription>{item().rawValue.description}</Listbox.ItemDescription>
+          <Listbox.Item item={item}>
+            <Listbox.ItemLabel>{item.rawValue.label}</Listbox.ItemLabel>
+            <Listbox.ItemDescription>{item.rawValue.description}</Listbox.ItemDescription>
           </Listbox.Item>
         )}
       />
@@ -672,7 +672,7 @@ describe("Listbox", () => {
       <Listbox.Root
         options={DATA_SOURCE}
         aria-label="Test"
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -687,8 +687,8 @@ describe("Listbox", () => {
         <Listbox.Root
           options={DATA_SOURCE}
           renderItem={item => (
-            <Listbox.Item item={item()}>
-              <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+            <Listbox.Item item={item}>
+              <Listbox.ItemLabel>{item.rawValue.label}</Listbox.ItemLabel>
               <Listbox.ItemIndicator data-testid="indicator" />
             </Listbox.Item>
           )}
@@ -704,8 +704,8 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           value={["2"]}
           renderItem={item => (
-            <Listbox.Item item={item()}>
-              <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+            <Listbox.Item item={item}>
+              <Listbox.ItemLabel>{item.rawValue.label}</Listbox.ItemLabel>
               <Listbox.ItemIndicator data-testid="indicator" />
             </Listbox.Item>
           )}
@@ -720,8 +720,8 @@ describe("Listbox", () => {
         <Listbox.Root
           options={DATA_SOURCE}
           renderItem={item => (
-            <Listbox.Item item={item()}>
-              <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+            <Listbox.Item item={item}>
+              <Listbox.ItemLabel>{item.rawValue.label}</Listbox.ItemLabel>
               <Listbox.ItemIndicator data-testid="indicator" forceMount />
             </Listbox.Item>
           )}

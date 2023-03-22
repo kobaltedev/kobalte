@@ -36,8 +36,10 @@ describe("Select", () => {
       <Select.Root
         options={DATA_SOURCE}
         placeholder="Placeholder"
-        renderValue={selection => selection.item().rawValue.label}
-        renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+        valueComponent={props => props.item.rawValue.label}
+        itemComponent={props => (
+          <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+        )}
       >
         <Select.HiddenSelect />
         <Select.Label>Label</Select.Label>
@@ -80,9 +82,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -133,9 +137,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -199,9 +205,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -248,9 +256,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -297,9 +307,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -346,9 +358,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -395,9 +409,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -462,10 +478,12 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           isOpen
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -508,10 +526,12 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           defaultIsOpen
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -556,9 +576,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -610,9 +632,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -674,9 +698,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -724,10 +750,12 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           isOpen
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -767,10 +795,12 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           defaultIsOpen
           onOpenChange={onOpenChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -812,9 +842,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -843,9 +875,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -883,9 +917,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Trigger aria-label="foo">
             <Select.Value />
@@ -920,9 +956,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Trigger aria-labelledby="foo">
             <Select.Value />
@@ -956,9 +994,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Trigger aria-label="bar" aria-labelledby="foo">
             <Select.Value />
@@ -994,9 +1034,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1023,10 +1065,12 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           validationState="invalid"
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1055,9 +1099,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1118,9 +1164,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1183,9 +1231,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1247,9 +1297,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1328,10 +1380,12 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
           onOpenChange={onOpenChangeSpy}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1408,10 +1462,12 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           value="2"
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1474,10 +1530,12 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           defaultValue="2"
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1546,9 +1604,11 @@ describe("Select", () => {
         <Select.Root
           options={dataSource}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1625,9 +1685,11 @@ describe("Select", () => {
         <Select.Root
           options={dataSource}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1721,10 +1783,12 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           defaultValue="2"
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1775,9 +1839,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1839,9 +1905,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1888,9 +1956,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1940,9 +2010,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -1999,9 +2071,11 @@ describe("Select", () => {
         <Select.Root
           options={dataSource}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.HiddenSelect autocomplete="address-level1" />
           <Select.Label>Label</Select.Label>
@@ -2047,9 +2121,11 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
@@ -2091,10 +2167,12 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           isDisabled
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
@@ -2121,10 +2199,12 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           isDisabled
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -2158,10 +2238,12 @@ describe("Select", () => {
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
-          renderValue={selection => selection.item().rawValue.label}
+          valueComponent={props => props.item.rawValue.label}
           isDisabled
           onValueChange={onValueChange}
-          renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
@@ -2209,9 +2291,11 @@ describe("Select", () => {
           <Select.Root
             options={DATA_SOURCE}
             placeholder="Placeholder"
-            renderValue={selection => selection.item().rawValue.label}
+            valueComponent={props => props.item.rawValue.label}
             name="test"
-            renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+            itemComponent={props => (
+              <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+            )}
           >
             <Select.HiddenSelect />
             <Select.Label>Label</Select.Label>
@@ -2251,10 +2335,12 @@ describe("Select", () => {
           <Select.Root
             options={DATA_SOURCE}
             placeholder="Placeholder"
-            renderValue={selection => selection.item().rawValue.label}
+            valueComponent={props => props.item.rawValue.label}
             name="test"
             defaultValue="1"
-            renderItem={item => <Select.Item item={item()}>{item().rawValue.label}</Select.Item>}
+            itemComponent={props => (
+              <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+            )}
           >
             <Select.HiddenSelect />
             <Select.Label>Label</Select.Label>

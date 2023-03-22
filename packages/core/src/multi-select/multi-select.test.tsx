@@ -36,15 +36,10 @@ describe("MultiSelect", () => {
       <MultiSelect.Root
         options={DATA_SOURCE}
         placeholder="Placeholder"
-        renderValue={selection =>
-          selection
-            .items()
-            .map(item => item.rawValue.label)
-            .join(", ")
-        }
         onValueChange={onValueChange}
-        renderItem={item => (
-          <MultiSelect.Item item={item()}>{item().rawValue.label}</MultiSelect.Item>
+        valueComponent={props => props.items.map(item => item.rawValue.label).join(", ")}
+        itemComponent={props => (
+          <MultiSelect.Item item={props.item}>{props.item.rawValue.label}</MultiSelect.Item>
         )}
       >
         <MultiSelect.Label>Label</MultiSelect.Label>
@@ -114,16 +109,11 @@ describe("MultiSelect", () => {
       <MultiSelect.Root
         options={DATA_SOURCE}
         placeholder="Placeholder"
-        renderValue={selection =>
-          selection
-            .items()
-            .map(item => item.rawValue.label)
-            .join(", ")
-        }
         defaultValue={defaultValue}
         onValueChange={onValueChange}
-        renderItem={item => (
-          <MultiSelect.Item item={item()}>{item().rawValue.label}</MultiSelect.Item>
+        valueComponent={props => props.items.map(item => item.rawValue.label).join(", ")}
+        itemComponent={props => (
+          <MultiSelect.Item item={props.item}>{props.item.rawValue.label}</MultiSelect.Item>
         )}
       >
         <MultiSelect.Label>Label</MultiSelect.Label>
@@ -171,16 +161,11 @@ describe("MultiSelect", () => {
       <MultiSelect.Root
         options={DATA_SOURCE}
         placeholder="Placeholder"
-        renderValue={selection =>
-          selection
-            .items()
-            .map(item => item.rawValue.label)
-            .join(", ")
-        }
         value={value}
         onValueChange={onValueChange}
-        renderItem={item => (
-          <MultiSelect.Item item={item()}>{item().rawValue.label}</MultiSelect.Item>
+        valueComponent={props => props.items.map(item => item.rawValue.label).join(", ")}
+        itemComponent={props => (
+          <MultiSelect.Item item={props.item}>{props.item.rawValue.label}</MultiSelect.Item>
         )}
       >
         <MultiSelect.Label>Label</MultiSelect.Label>
@@ -226,16 +211,11 @@ describe("MultiSelect", () => {
       <MultiSelect.Root
         options={DATA_SOURCE}
         placeholder="Placeholder"
-        renderValue={selection =>
-          selection
-            .items()
-            .map(item => item.rawValue.label)
-            .join(", ")
-        }
         defaultValue={defaultValue}
         onValueChange={onValueChange}
-        renderItem={item => (
-          <MultiSelect.Item item={item()}>{item().rawValue.label}</MultiSelect.Item>
+        valueComponent={props => props.items.map(item => item.rawValue.label).join(", ")}
+        itemComponent={props => (
+          <MultiSelect.Item item={props.item}>{props.item.rawValue.label}</MultiSelect.Item>
         )}
       >
         <MultiSelect.Label>Label</MultiSelect.Label>
