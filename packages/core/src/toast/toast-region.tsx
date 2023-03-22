@@ -149,9 +149,9 @@ export function ToastRegion(props: ToastRegionProps) {
         role="region"
         tabIndex={-1}
         aria-label={ariaLabel()}
-        // In case list has size when empty (e.g. padding), we remove pointer events,
+        // In case it has size when empty (e.g. padding), we remove pointer events,
         // so it doesn't prevent interactions with page elements that it overlays.
-        // In case list is a top layer, we explicitly enable pointer-events prevented by a `DismissableLayer`.
+        // In case it is a top layer, we explicitly enable pointer-events prevented by a `DismissableLayer`.
         style={{
           "pointer-events": hasToasts() ? (local.isTopLayer ? "auto" : undefined) : "none",
           ...local.style,

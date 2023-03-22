@@ -9,5 +9,5 @@ export interface ToastProgressTrackProps extends OverrideComponentProps<"div", A
  * Act as a container for `Toast.ProgressFill`.
  */
 export function ToastProgressTrack(props: ToastProgressTrackProps) {
-  return <Polymorphic fallback="div" {...props} />;
+  return <Polymorphic fallback="div" aria-hidden="true" role="presentation" {...props} />;
 }

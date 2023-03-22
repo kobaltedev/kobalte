@@ -32,7 +32,7 @@ export default function App() {
   };
 
   const promiseToast = () => {
-    const promise = () => new Promise(resolve => setTimeout(resolve, 2000));
+    const promise = () => new Promise((resolve, reject) => setTimeout(resolve, 2000));
 
     toaster.promise(promise, props => (
       <Toast.Root
