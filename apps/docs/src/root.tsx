@@ -1,9 +1,11 @@
 // @refresh reload
 import "./root.css";
 
-import { ColorModeProvider, ColorModeScript, cookieStorageManagerSSR } from "@kobalte/core";
+import toastStyles from "./examples/toast.module.css";
+
+import { ColorModeProvider, ColorModeScript, cookieStorageManagerSSR, Toast } from "@kobalte/core";
 import { Suspense, useContext } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer, Portal } from "solid-js/web";
 import { MDXProvider } from "solid-mdx";
 import {
   Body,
@@ -67,6 +69,11 @@ export default function Root() {
                 <Routes>
                   <FileRoutes />
                 </Routes>
+                <Portal>
+                  <Toast.Region>
+                    <Toast.List class={toastStyles["toast__list"]} />
+                  </Toast.Region>
+                </Portal>
               </MDXProvider>
             </ColorModeProvider>
           </Suspense>
