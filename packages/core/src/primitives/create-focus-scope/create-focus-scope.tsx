@@ -25,6 +25,7 @@ import {
   visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
+import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
 
 const AUTOFOCUS_ON_MOUNT_EVENT = "focusScope.autoFocusOnMount";
 const AUTOFOCUS_ON_UNMOUNT_EVENT = "focusScope.autoFocusOnUnmount";
@@ -214,6 +215,11 @@ export function createFocusScope<T extends HTMLElement>(
     const onFocusIn = (event: FocusEvent) => {
       const target = event.target as HTMLElement | null;
 
+      // If the element is within a top layer element (e.g. toasts), always allow moving focus there.
+      if (target?.closest(`[${DATA_TOP_LAYER_ATTR}]`)) {
+        return;
+      }
+
       if (contains(container, target)) {
         lastFocusedElement = target;
       } else {
@@ -224,6 +230,11 @@ export function createFocusScope<T extends HTMLElement>(
     const onFocusOut = (event: FocusEvent) => {
       const relatedTarget = event.relatedTarget as HTMLElement | null;
       const target = relatedTarget ?? getActiveElement(container);
+
+      // If the element is within a top layer element (e.g. toasts), always allow moving focus there.
+      if (target?.closest(`[${DATA_TOP_LAYER_ATTR}]`)) {
+        return;
+      }
 
       if (!contains(container, target)) {
         focusWithoutScrolling(lastFocusedElement);

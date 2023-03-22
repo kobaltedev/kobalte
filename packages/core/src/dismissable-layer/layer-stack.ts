@@ -20,6 +20,8 @@ export interface LayerModel {
   dismiss?: VoidFunction;
 }
 
+export const DATA_TOP_LAYER_ATTR = "data-kb-top-layer";
+
 let originalBodyPointerEvents: string;
 let hasDisabledBodyPointerEvents = false;
 

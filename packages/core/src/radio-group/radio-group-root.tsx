@@ -152,8 +152,8 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
         <Polymorphic
           fallback="div"
           ref={mergeRefs(el => (ref = el), local.ref)}
-          id={access(formControlProps.id)}
           role="radiogroup"
+          id={access(formControlProps.id)}
           aria-invalid={formControlContext.validationState() === "invalid" || undefined}
           aria-required={formControlContext.isRequired() || undefined}
           aria-disabled={formControlContext.isDisabled() || undefined}

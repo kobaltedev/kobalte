@@ -11,6 +11,7 @@ import { createEffect, createMemo, createSignal } from "solid-js";
 
 import { createControllableSelectionSignal } from "./create-controllable-selection-signal";
 import { MultipleSelection, MultipleSelectionState, Selection, SelectionBehavior } from "./types";
+import { convertSelection, isSameSelection } from "./utils";
 
 export interface CreateMultipleSelectionStateProps extends MultipleSelection {
   /** How multiple selection should behave in the collection. */
@@ -108,22 +109,4 @@ export function createMultipleSelectionState(
     selectedKeys,
     setSelectedKeys,
   };
-}
-
-function convertSelection(selection: Iterable<string>): Selection {
-  return new Selection(selection);
-}
-
-function isSameSelection(setA: Set<string>, setB: Set<string>): boolean {
-  if (setA.size !== setB.size) {
-    return false;
-  }
-
-  for (const item of setA) {
-    if (!setB.has(item)) {
-      return false;
-    }
-  }
-
-  return true;
 }

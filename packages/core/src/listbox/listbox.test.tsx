@@ -6,6 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-spectrum/listbox/test/Listbox.test.js
  */
 
+import { createPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "solid-testing-library";
 
 import * as Listbox from ".";
@@ -37,7 +38,7 @@ describe("Listbox", () => {
       <Listbox.Root
         options={DATA_SOURCE}
         selectionMode="single"
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -60,7 +61,7 @@ describe("Listbox", () => {
     render(() => (
       <Listbox.Root
         options={DATA_SOURCE}
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -88,7 +89,7 @@ describe("Listbox", () => {
       <Listbox.Root
         options={DATA_SOURCE}
         shouldFocusWrap
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -120,7 +121,7 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="single"
           defaultValue={defaultValue}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -146,7 +147,7 @@ describe("Listbox", () => {
           selectionMode="single"
           value={value}
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -183,7 +184,7 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="single"
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -205,7 +206,7 @@ describe("Listbox", () => {
       expect(onValueChangeSpy.mock.calls[0][0].has("3")).toBeTruthy();
     });
 
-    it("supports using click to change option selection", async () => {
+    it("supports using pointer up to change option selection", async () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
@@ -213,7 +214,7 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="single"
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -225,8 +226,16 @@ describe("Listbox", () => {
 
       const nextSelectedItem = options[2];
 
-      // Select an option via click
-      fireEvent.click(nextSelectedItem);
+      fireEvent(
+        nextSelectedItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        nextSelectedItem,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       expect(nextSelectedItem).toHaveAttribute("aria-selected", "true");
@@ -249,7 +258,7 @@ describe("Listbox", () => {
           options={dataSource}
           selectionMode="single"
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -261,7 +270,16 @@ describe("Listbox", () => {
       expect(disabledItem).toHaveAttribute("aria-disabled", "true");
 
       // Try select the disabled option
-      fireEvent.click(disabledItem);
+      fireEvent(
+        disabledItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        disabledItem,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       // Verify onValueChange is not called
@@ -289,7 +307,7 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="multiple"
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -298,10 +316,28 @@ describe("Listbox", () => {
 
       expect(listbox).toHaveAttribute("aria-multiselectable", "true");
 
-      fireEvent.click(options[0]);
+      fireEvent(
+        options[0],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
-      fireEvent.click(options[2]);
+      fireEvent(
+        options[0],
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        options[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        options[2],
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       expect(options[0]).toHaveAttribute("aria-selected", "true");
@@ -323,7 +359,7 @@ describe("Listbox", () => {
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -337,7 +373,13 @@ describe("Listbox", () => {
       expect(secondItem).toHaveAttribute("aria-selected", "true");
 
       // Select a different option
-      fireEvent.click(thirdItem);
+      fireEvent(
+        thirdItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(thirdItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(thirdItem).toHaveAttribute("aria-selected", "true");
@@ -359,7 +401,7 @@ describe("Listbox", () => {
           selectionMode="multiple"
           value={value}
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -373,7 +415,13 @@ describe("Listbox", () => {
       expect(secondItem).toHaveAttribute("aria-selected", "true");
 
       // Select a different option
-      fireEvent.click(thirdItem);
+      fireEvent(
+        thirdItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(thirdItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(thirdItem).toHaveAttribute("aria-selected", "false");
@@ -393,7 +441,7 @@ describe("Listbox", () => {
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -406,7 +454,13 @@ describe("Listbox", () => {
       expect(secondItem).toHaveAttribute("aria-selected", "true");
 
       // Deselect first option
-      fireEvent.click(firstItem);
+      fireEvent(
+        firstItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(firstItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(firstItem).toHaveAttribute("aria-selected", "false");
@@ -432,7 +486,7 @@ describe("Listbox", () => {
           selectionMode="multiple"
           defaultValue={defaultValue}
           onValueChange={onValueChangeSpy}
-          renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
 
@@ -444,7 +498,16 @@ describe("Listbox", () => {
 
       expect(disabledItem).toHaveAttribute("aria-disabled", "true");
 
-      fireEvent.click(disabledItem);
+      fireEvent(
+        disabledItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        disabledItem,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       expect(onValueChangeSpy).not.toHaveBeenCalled();
@@ -466,7 +529,7 @@ describe("Listbox", () => {
         defaultValue={defaultValue}
         onValueChange={onValueChangeSpy}
         disallowEmptySelection={false}
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -477,7 +540,13 @@ describe("Listbox", () => {
     expect(secondItem).toHaveAttribute("aria-selected", "true");
 
     // Deselect second option
-    fireEvent.click(secondItem);
+    fireEvent(
+      secondItem,
+      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+    );
+    await Promise.resolve();
+
+    fireEvent(secondItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
     await Promise.resolve();
 
     expect(secondItem).toHaveAttribute("aria-selected", "false");
@@ -490,7 +559,7 @@ describe("Listbox", () => {
     render(() => (
       <Listbox.Root
         options={DATA_SOURCE}
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -519,7 +588,7 @@ describe("Listbox", () => {
     render(() => (
       <Listbox.Root
         options={DATA_SOURCE}
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -549,8 +618,8 @@ describe("Listbox", () => {
       <Listbox.Root
         options={dataSource}
         renderItem={item => (
-          <Listbox.Item item={item()} aria-label="Item">
-            {item().rawValue.label}
+          <Listbox.Item item={item} aria-label="Item">
+            {item.rawValue.label}
           </Listbox.Item>
         )}
       />
@@ -580,9 +649,9 @@ describe("Listbox", () => {
       <Listbox.Root
         options={dataSource}
         renderItem={item => (
-          <Listbox.Item item={item()}>
-            <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
-            <Listbox.ItemDescription>{item().rawValue.description}</Listbox.ItemDescription>
+          <Listbox.Item item={item}>
+            <Listbox.ItemLabel>{item.rawValue.label}</Listbox.ItemLabel>
+            <Listbox.ItemDescription>{item.rawValue.description}</Listbox.ItemDescription>
           </Listbox.Item>
         )}
       />
@@ -603,7 +672,7 @@ describe("Listbox", () => {
       <Listbox.Root
         options={DATA_SOURCE}
         aria-label="Test"
-        renderItem={item => <Listbox.Item item={item()}>{item().rawValue.label}</Listbox.Item>}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
     ));
 
@@ -618,8 +687,8 @@ describe("Listbox", () => {
         <Listbox.Root
           options={DATA_SOURCE}
           renderItem={item => (
-            <Listbox.Item item={item()}>
-              <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+            <Listbox.Item item={item}>
+              <Listbox.ItemLabel>{item.rawValue.label}</Listbox.ItemLabel>
               <Listbox.ItemIndicator data-testid="indicator" />
             </Listbox.Item>
           )}
@@ -635,8 +704,8 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           value={["2"]}
           renderItem={item => (
-            <Listbox.Item item={item()}>
-              <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+            <Listbox.Item item={item}>
+              <Listbox.ItemLabel>{item.rawValue.label}</Listbox.ItemLabel>
               <Listbox.ItemIndicator data-testid="indicator" />
             </Listbox.Item>
           )}
@@ -651,8 +720,8 @@ describe("Listbox", () => {
         <Listbox.Root
           options={DATA_SOURCE}
           renderItem={item => (
-            <Listbox.Item item={item()}>
-              <Listbox.ItemLabel>{item().rawValue.label}</Listbox.ItemLabel>
+            <Listbox.Item item={item}>
+              <Listbox.ItemLabel>{item.rawValue.label}</Listbox.ItemLabel>
               <Listbox.ItemIndicator data-testid="indicator" forceMount />
             </Listbox.Item>
           )}
