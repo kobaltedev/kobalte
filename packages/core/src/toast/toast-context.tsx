@@ -3,6 +3,7 @@ import { Accessor, createContext, useContext } from "solid-js";
 export interface ToastContextValue {
   close: () => void;
   duration: Accessor<number>;
+  isPersistent: Accessor<boolean>;
   closeTimerStartTime: Accessor<number>;
   generateId: (part: string) => string;
   registerTitleId: (id: string) => () => void;

@@ -25,10 +25,20 @@ import {
 } from "./toast-region";
 import { ToastRoot as Root, type ToastRootOptions, type ToastRootProps } from "./toast-root";
 import { ToastTitle as Title, type ToastTitleOptions, type ToastTitleProps } from "./toast-title";
+import {
+  type ToastComponent,
+  type ToastComponentProps,
+  type ToastPromiseComponent,
+  type ToastPromiseComponentProps,
+  type ToastPromiseState,
+  type ToastSwipeDirection,
+} from "./types";
 
 export type {
   ToastCloseButtonOptions,
   ToastCloseButtonProps,
+  ToastComponent,
+  ToastComponentProps,
   ToastDescriptionOptions,
   ToastDescriptionProps,
   ToastListOptions,
@@ -36,10 +46,14 @@ export type {
   ToastProgressFillOptions,
   ToastProgressFillProps,
   ToastProgressTrackProps,
+  ToastPromiseComponent,
+  ToastPromiseComponentProps,
+  ToastPromiseState,
   ToastRegionOptions,
   ToastRegionProps,
   ToastRootOptions,
   ToastRootProps,
+  ToastSwipeDirection,
   ToastTitleOptions,
   ToastTitleProps,
 };

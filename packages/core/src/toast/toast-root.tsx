@@ -25,9 +25,10 @@ import {
   createEffect,
   createMemo,
   createSignal,
+  createUniqueId,
   JSX,
   on,
-  onCleanup,
+  onMount,
   Show,
   splitProps,
 } from "solid-js";
@@ -35,8 +36,8 @@ import {
 import { createPresence, createRegisterId } from "../primitives";
 import { ToastContext, ToastContextValue } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
-import { ToastSwipeDirection } from "./types";
 import { toastStore } from "./toast-store";
+import { ToastSwipeDirection } from "./types";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
 const TOAST_SWIPE_MOVE_EVENT = "toast.swipeMove";
@@ -50,7 +51,7 @@ export type SwipeEvent = { currentTarget: EventTarget & HTMLLIElement } & Omit<
 
 export interface ToastRootOptions {
   /** The id of the toast provided by the `toaster`. */
-  id: number;
+  toastId: number;
 
   /**
    * Control the sensitivity of the toast for accessibility purposes.
@@ -64,6 +65,9 @@ export interface ToastRootOptions {
    * This will override the value supplied to `Toast.Region`.
    */
   duration?: number;
+
+  /** Whether the toast should ignore duration and disappear only by a user action. */
+  isPersistent?: boolean;
 
   /**
    * Event handler called when the dismiss timer is paused.
@@ -114,12 +118,15 @@ export interface ToastRootOptions {
 export type ToastRootProps = OverrideComponentProps<"li", ToastRootOptions>;
 
 export function ToastRoot(props: ToastRootProps) {
+  const defaultId = `toast-${createUniqueId()}`;
+
   let ref: HTMLLIElement | undefined;
 
   const rootContext = useToastRegionContext();
 
   props = mergeDefaultProps(
     {
+      id: defaultId,
       priority: "high",
     },
     props
@@ -127,10 +134,11 @@ export function ToastRoot(props: ToastRootProps) {
 
   const [local, others] = splitProps(props, [
     "ref",
-    "id",
+    "toastId",
     "style",
     "priority",
     "duration",
+    "isPersistent",
     "onPause",
     "onResume",
     "onSwipeStart",
@@ -147,10 +155,10 @@ export function ToastRoot(props: ToastRootProps) {
   const [isOpen, setIsOpen] = createSignal(true);
   const [titleId, setTitleId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
+  const [isAnimationEnabled, setIsAnimationEnabled] = createSignal(true);
 
   const presence = createPresence(isOpen);
 
-  const domId = createMemo(() => rootContext.generateId(`toast-${local.id}`));
   const duration = createMemo(() => local.duration || rootContext.duration());
 
   let closeTimerId: number;
@@ -162,14 +170,17 @@ export function ToastRoot(props: ToastRootProps) {
 
   const close = () => {
     setIsOpen(false);
+
+    // Restore animation for the exit phase, which have been disabled if it's a toast update.
+    setIsAnimationEnabled(true);
   };
 
   const deleteToast = () => {
-    toastStore.remove(local.id);
+    toastStore.remove(local.toastId);
   };
 
   const startTimer = (duration: number) => {
-    if (!duration || duration === Infinity) {
+    if (!duration || local.isPersistent) {
       return;
     }
 
@@ -311,6 +322,13 @@ export function ToastRoot(props: ToastRootProps) {
     }
   };
 
+  onMount(() => {
+    // Disable animation for updated toast.
+    if (rootContext.toasts().find(toast => toast.id === local.toastId && toast.update)) {
+      setIsAnimationEnabled(false);
+    }
+  });
+
   createEffect(
     on(
       () => rootContext.isPaused(),
@@ -340,7 +358,7 @@ export function ToastRoot(props: ToastRootProps) {
 
   createEffect(
     on(
-      () => toastStore.get(local.id)?.dismiss,
+      () => toastStore.get(local.toastId)?.dismiss,
       dismiss => dismiss && close()
     )
   );
@@ -355,8 +373,9 @@ export function ToastRoot(props: ToastRootProps) {
   const context: ToastContextValue = {
     close,
     duration,
+    isPersistent: () => local.isPersistent ?? false,
     closeTimerStartTime: () => closeTimerStartTime,
-    generateId: createGenerateId(domId),
+    generateId: createGenerateId(() => others.id!),
     registerTitleId: createRegisterId(setTitleId),
     registerDescriptionId: createRegisterId(setDescriptionId),
   };
@@ -369,10 +388,10 @@ export function ToastRoot(props: ToastRootProps) {
             presence.setRef(el);
             ref = el;
           }, local.ref)}
-          id={domId()}
           role="status"
           tabIndex={0}
           style={{
+            animation: isAnimationEnabled() ? undefined : "none",
             "user-select": "none",
             "touch-action": "none",
             ...local.style,

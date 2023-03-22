@@ -18,11 +18,10 @@ import {
   focusWithoutScrolling,
   getDocument,
   getWindow,
-  Key,
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, JSX, on, onCleanup, splitProps } from "solid-js";
+import { createEffect, For, JSX, on, onCleanup, splitProps } from "solid-js";
 
 import { useToastRegionContext } from "./toast-region-context";
 
@@ -129,9 +128,15 @@ export function ToastList(props: ToastListProps) {
       onPointerLeave={onPointerLeave}
       {...others}
     >
-      <Key each={context.toasts()} by="id">
-        {toast => toast().render(toast().id)}
-      </Key>
+      <For each={context.toasts()}>
+        {toast =>
+          toast.toastComponent({
+            get toastId() {
+              return toast.id;
+            },
+          })
+        }
+      </For>
     </ol>
   );
 }

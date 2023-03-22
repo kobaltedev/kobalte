@@ -7,17 +7,42 @@
  *
  */
 
-import { JSX } from "solid-js";
+import { Component } from "solid-js";
 
 export type ToastSwipeDirection = "up" | "down" | "left" | "right";
+
+export type ToastPromiseState = "pending" | "fulfilled" | "rejected";
+
+export interface ToastComponentProps {
+  /** A unique id for the toast. */
+  toastId: number;
+}
+
+export type ToastComponent = Component<ToastComponentProps>;
+
+export interface ToastPromiseComponentProps<T, U = any> extends ToastComponentProps {
+  /** The state of the promise. */
+  state: ToastPromiseState;
+
+  /** The resolved data of the promise when fulfilled. */
+  data?: T;
+
+  /** The error of the promise when rejected. */
+  error?: U;
+}
+
+export type ToastPromiseComponent<T, U = any> = Component<ToastPromiseComponentProps<T, U>>;
 
 export interface Toast {
   /** The unique id of the toast. */
   id: number;
 
-  /** The component to be rendered as a toast. */
-  render: (id: number) => JSX.Element;
-
   /** Whether the toast should be marked for dismiss. */
   dismiss: boolean;
+
+  /** Whether the toast should be marked as an update. */
+  update: boolean;
+
+  /** The toast component to render. */
+  toastComponent: ToastComponent;
 }

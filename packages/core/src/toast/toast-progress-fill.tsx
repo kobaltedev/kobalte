@@ -27,7 +27,7 @@ export function ToastProgressFill(props: ToastProgressFillProps) {
   let totalElapsedTime = 0;
 
   createEffect(() => {
-    if (rootContext.isPaused() || context.duration() === Infinity) {
+    if (rootContext.isPaused() || context.isPersistent()) {
       return;
     }
 

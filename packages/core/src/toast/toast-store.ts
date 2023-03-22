@@ -14,6 +14,14 @@ function get(id: number) {
   return state.toasts.find(toast => toast.id === id);
 }
 
+function update(id: number, toast: Toast) {
+  const index = state.toasts.findIndex(toast => toast.id === id);
+
+  if (index != -1) {
+    setState("toasts", prev => [...prev.slice(0, index), toast, ...prev.slice(index + 1)]);
+  }
+}
+
 function dismiss(id: number) {
   setState("toasts", toast => toast.id === id, "dismiss", true);
 }
@@ -28,8 +36,9 @@ function clear() {
 
 export const toastStore = {
   toasts: () => state.toasts,
-  get,
   add,
+  get,
+  update,
   dismiss,
   remove,
   clear,
