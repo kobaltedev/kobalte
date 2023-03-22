@@ -37,7 +37,7 @@ export function SliderInput(props: SliderInputProps) {
     context.state.focusedThumb() !== undefined && context.state.focusedThumb() === thumb.index();
   createEffect(() => {
     if (isFocused()) {
-      focusWithoutScrolling(inputRef);
+      // usWithoutScrolling(inputRef);
     }
   });
 

@@ -65,6 +65,35 @@ export function SliderThumb(props: SliderThumbProps) {
     context.state.setThumbEditable(index(), !context.state.isDisabled());
   });
 
+  const onThumbDown = (e: PointerEvent) => {
+    const target = e.currentTarget as HTMLElement;
+
+    target.setPointerCapture(e.pointerId);
+    e.preventDefault();
+    startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
+    context.onSlideStart?.(context.state.getThumbValue(index()));
+  };
+  const onThumbMove = (e: PointerEvent) => {
+    const target = e.currentTarget as HTMLElement;
+
+    if (target.hasPointerCapture(e.pointerId)) {
+      const delta = {
+        deltaX: e.clientX - startPosition,
+        deltaY: e.clientY - startPosition,
+      };
+      context.onSlideMove?.(delta);
+      startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
+    }
+  };
+
+  const onThumbUp = (e: PointerEvent) => {
+    const target = e.currentTarget as HTMLElement;
+    if (target.hasPointerCapture(e.pointerId)) {
+      target.releasePointerCapture(e.pointerId);
+      context.onSlideEnd?.();
+    }
+  };
+
   return (
     <ThumbContext.Provider value={{ index: index }}>
       <Polymorphic
@@ -85,42 +114,9 @@ export function SliderThumb(props: SliderThumbProps) {
             context.onStepKeyDown(e, index());
           },
         ])}
-        onPointerDown={composeEventHandlers<HTMLSpanElement>([
-          props.onPointerDown,
-          e => {
-            const target = e.currentTarget as HTMLElement;
-
-            target.setPointerCapture(e.pointerId);
-            e.preventDefault();
-            startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
-            context.onSlideStart?.(context.state.getThumbValue(index()));
-          },
-        ])}
-        onPointerMove={composeEventHandlers<HTMLSpanElement>([
-          props.onPointerMove,
-          e => {
-            const target = e.currentTarget as HTMLElement;
-
-            if (target.hasPointerCapture(e.pointerId)) {
-              const delta = {
-                deltaX: e.clientX - startPosition,
-                deltaY: e.clientY - startPosition,
-              };
-              context.onSlideMove?.(delta);
-              startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
-            }
-          },
-        ])}
-        onPointerUp={composeEventHandlers<HTMLSpanElement>([
-          props.onPointerUp,
-          e => {
-            const target = e.currentTarget as HTMLElement;
-            if (target.hasPointerCapture(e.pointerId)) {
-              target.releasePointerCapture(e.pointerId);
-              context.onSlideEnd?.();
-            }
-          },
-        ])}
+        onPointerDown={composeEventHandlers([props.onPointerDown, onThumbDown])}
+        onPointerMove={composeEventHandlers([props.onPointerMove, onThumbMove])}
+        onPointerUp={composeEventHandlers([props.onPointerUp, onThumbUp])}
         onFocus={composeEventHandlers([
           props.onFocus,
           () => {

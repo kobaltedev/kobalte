@@ -33,49 +33,44 @@ export function SliderTrack(props: SliderTrackProps) {
   }
 
   let startPosition = 0;
+  const onDownTrack = (e: PointerEvent) => {
+    const target = e.target as HTMLElement;
+    target.setPointerCapture(e.pointerId);
+
+    e.preventDefault();
+    const value = getValueFromPointer(
+      context.state.orientation() === "horizontal" ? e.clientX : e.clientY
+    );
+    startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
+    context.onSlideStart?.(value);
+  };
+
+  const onPointerMove = (e: PointerEvent) => {
+    const target = e.target as HTMLElement;
+
+    if (target.hasPointerCapture(e.pointerId)) {
+      context.onSlideMove?.({
+        deltaX: e.clientX - startPosition,
+        deltaY: e.clientY - startPosition,
+      });
+      startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
+    }
+  };
+  const onPointerUp = (e: PointerEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.hasPointerCapture(e.pointerId)) {
+      target.releasePointerCapture(e.pointerId);
+      setRect(undefined);
+      context.onSlideEnd?.();
+    }
+  };
   return (
     <Polymorphic
       ref={mergeRefs(context.registerTrack, props.ref)}
       fallback="div"
-      onPointerDown={composeEventHandlers<HTMLDivElement>([
-        props.onPointerDown,
-        e => {
-          const target = e.target as HTMLElement;
-          target.setPointerCapture(e.pointerId);
-
-          e.preventDefault();
-          const value = getValueFromPointer(
-            context.state.orientation() === "horizontal" ? e.clientX : e.clientY
-          );
-          startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
-          context.onSlideStart?.(value);
-        },
-      ])}
-      onPointerMove={composeEventHandlers<HTMLDivElement>([
-        props.onPointerMove,
-        e => {
-          const target = e.target as HTMLElement;
-
-          if (target.hasPointerCapture(e.pointerId)) {
-            context.onSlideMove?.({
-              deltaX: e.clientX - startPosition,
-              deltaY: e.clientY - startPosition,
-            });
-            startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
-          }
-        },
-      ])}
-      onPointerUp={composeEventHandlers<HTMLDivElement>([
-        props.onPointerUp,
-        e => {
-          const target = e.target as HTMLElement;
-          if (target.hasPointerCapture(e.pointerId)) {
-            target.releasePointerCapture(e.pointerId);
-            setRect(undefined);
-            context.onSlideEnd?.();
-          }
-        },
-      ])}
+      onPointerDown={composeEventHandlers([props.onPointerDown, onDownTrack])}
+      onPointerMove={composeEventHandlers([props.onPointerMove, onPointerMove])}
+      onPointerUp={composeEventHandlers([props.onPointerUp, onPointerUp])}
       {...context.dataset()}
       {...props}
     />

@@ -28,7 +28,7 @@ export interface SliderContextValue {
   endEdge: Side;
   minValue: Accessor<number>;
   maxValue: Accessor<number>;
-  inverted: boolean;
+  inverted: Accessor<boolean>;
   registerTrack: (ref: HTMLElement) => void;
   generateId: (part: string) => string;
   registerLabelId: (id: string) => () => void;

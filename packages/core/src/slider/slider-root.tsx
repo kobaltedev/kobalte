@@ -8,7 +8,14 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/slider/src/Slider.tsx
  */
 
-import { clamp, createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import {
+  clamp,
+  composeEventHandlers,
+  createGenerateId,
+  mergeDefaultProps,
+  mergeRefs,
+  OverrideComponentProps,
+} from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 
 import { createNumberFormatter } from "../i18n";
@@ -17,7 +24,17 @@ import { CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "../primitives/create-slider-state/create-slider-state";
 import { Side, SliderContext, SliderContextValue, SliderDataSet } from "./slider-context";
-import { getClosestValueIndex } from "./utils";
+import {
+  ARROW_KEYS,
+  BACK_KEYS,
+  getClosestValueIndex,
+  getDecimalCount,
+  getNextSortedValues,
+  hasMinStepsBetweenValues,
+  linearScale,
+  PAGE_KEYS,
+  roundValue,
+} from "./utils";
 
 export interface GetValueLabelParams {
   values: number[];
@@ -220,37 +237,25 @@ export function SliderRoot(props: SliderRootProps) {
         case "ArrowLeft":
           event.preventDefault();
           event.stopPropagation();
-          context.state.decrementThumb(
-            index,
-            event.shiftKey ? context.state.pageSize() : context.state.step()
-          );
+          state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
           break;
         case "Right":
         case "ArrowRight":
           event.preventDefault();
           event.stopPropagation();
-          context.state.incrementThumb(
-            index,
-            event.shiftKey ? context.state.pageSize() : context.state.step()
-          );
+          state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
           break;
         case "Up":
         case "ArrowUp":
           event.preventDefault();
           event.stopPropagation();
-          context.state.incrementThumb(
-            index,
-            event.shiftKey ? context.state.pageSize() : context.state.step()
-          );
+          context.state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
           break;
         case "Down":
         case "ArrowDown":
           event.preventDefault();
           event.stopPropagation();
-          context.state.decrementThumb(
-            index,
-            event.shiftKey ? context.state.pageSize() : context.state.step()
-          );
+          state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
           break;
         case "Home":
           onHomeKeyDown();
@@ -297,7 +302,7 @@ export function SliderRoot(props: SliderRootProps) {
     trackRef,
     minValue: () => local.minValue!,
     maxValue: () => local.maxValue!,
-    inverted: local.inverted!,
+    inverted: () => local.inverted!,
     startEdge: startEdge(),
     endEdge: endEdge(),
     registerTrack: (ref: HTMLElement) => setTrackRef(ref),
