@@ -158,6 +158,7 @@ export function SliderRoot(props: SliderRootProps) {
     isDisabled: () => props.isDisabled!,
     maxValue: () => local.maxValue!,
     minValue: () => local.minValue!,
+    minStepsBetweenThumbs: () => local.minStepsBetweenThumbs!,
     onChange: local.onChange,
     onChangeEnd: local.onChangeEnd,
     orientation: () => local.orientation!,
@@ -208,13 +209,18 @@ export function SliderRoot(props: SliderRootProps) {
     }
     currentPosition += delta;
     const percent = clamp(currentPosition / size, 0, 1);
-    state.setThumbPercent(state.focusedThumb()!, percent);
+    const nextValues = getNextSortedValues(state.values(), state.getPercentValue(percent), active);
+    if (hasMinStepsBetweenValues(nextValues, local.minStepsBetweenThumbs! * state.step())) {
+      state.setThumbPercent(state.focusedThumb()!, percent);
+      local.onChange?.(state.values());
+    }
   };
 
   const onSlideEnd = () => {
     const activeThumb = state.focusedThumb();
     if (activeThumb !== undefined) {
       state.setThumbDragging(activeThumb, false);
+      local.onChangeEnd?.(state.values());
     }
   };
 

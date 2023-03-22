@@ -70,8 +70,11 @@ export function SliderThumb(props: SliderThumbProps) {
 
     target.setPointerCapture(e.pointerId);
     e.preventDefault();
+    target.focus();
     startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
-    context.onSlideStart?.(context.state.getThumbValue(index()));
+    if (value()) {
+      context.onSlideStart?.(value()!);
+    }
   };
   const onThumbMove = (e: PointerEvent) => {
     const target = e.currentTarget as HTMLElement;

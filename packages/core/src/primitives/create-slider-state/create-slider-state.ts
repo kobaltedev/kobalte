@@ -9,6 +9,7 @@
 
 import { clamp, mergeDefaultProps, snapValueToStep } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, createSignal } from "solid-js";
+import { getNextSortedValues, hasMinStepsBetweenValues } from "../../slider/utils";
 
 import { createControllableArraySignal } from "../create-controllable-signal";
 
@@ -73,6 +74,7 @@ interface StateOpts {
   maxValue?: Accessor<number>;
   step?: Accessor<number>;
   numberFormatter: Intl.NumberFormat;
+  minStepsBetweenThumbs?: Accessor<number>;
 }
 
 export function createSliderState(props: StateOpts): SliderState {
@@ -83,6 +85,7 @@ export function createSliderState(props: StateOpts): SliderState {
       minValue: () => 0,
       step: () => 1,
       orientation: () => "horizontal",
+      minStepsBetweenThumbs: () => 0,
     },
     props
   );
@@ -134,10 +137,7 @@ export function createSliderState(props: StateOpts): SliderState {
   const updateValue = (index: number, value: number) => {
     if (props.isDisabled!() || !isThumbEditable(index)) return;
 
-    const thumbMin = getThumbMinValue(index);
-    const thumbMax = getThumbMaxValue(index);
-
-    value = snapValueToStep(value, thumbMin, thumbMax, props.step!());
+    value = snapValueToStep(value, props.minValue!(), props.maxValue!(), props.step!());
 
     setValues(p => [...replaceIndex(p, index, value)]);
   };
@@ -174,10 +174,14 @@ export function createSliderState(props: StateOpts): SliderState {
 
   const incrementThumb = (index: number, stepSize = 1) => {
     const s = Math.max(stepSize, props.step!());
-    updateValue(
-      index,
-      snapValueToStep(values()[index] + s, props.minValue!(), props.maxValue!(), props.step!())
-    );
+    const nextValue = values()[index] + s;
+    const nextValues = getNextSortedValues(values(), nextValue, index);
+    if (hasMinStepsBetweenValues(nextValues, props.minStepsBetweenThumbs!() * props.step!())) {
+      updateValue(
+        index,
+        snapValueToStep(nextValue, props.minValue!(), props.maxValue!(), props.step!())
+      );
+    }
   };
 
   const decrementThumb = (index: number, stepSize = 1) => {
