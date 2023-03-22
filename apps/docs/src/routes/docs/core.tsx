@@ -121,6 +121,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/text-field",
       },
       {
+        title: "Toast",
+        href: "/docs/core/components/toast",
+      },
+      {
         title: "Toggle Button",
         href: "/docs/core/components/toggle-button",
       },

@@ -74,7 +74,7 @@ export interface ToastRegionOptions {
 export interface ToastRegionProps extends OverrideComponentProps<"div", ToastRegionOptions> {}
 
 /**
- * The fixed area where toasts appear. Users can jump to the viewport by pressing a hotkey.
+ * The fixed area where toasts appear. Users can jump to by pressing a hotkey.
  * It is up to you to ensure the discoverability of the hotkey for keyboard users.
  */
 export function ToastRegion(props: ToastRegionProps) {

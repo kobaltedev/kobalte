@@ -14,7 +14,7 @@ export interface ToastProgressFillProps
   extends OverrideComponentProps<"div", ToastProgressFillOptions> {}
 
 /**
- * The component that visually represents the toast remaining lifetime value.
+ * The component that visually represents the toast remaining lifetime.
  * Used to visually show the fill of `Toast.ProgressTrack`.
  */
 export function ToastProgressFill(props: ToastProgressFillProps) {

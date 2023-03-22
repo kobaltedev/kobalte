@@ -1,0 +1,58 @@
+import { Preview, TabsSnippets } from "../../../../components";
+import {
+
+} from "../../../../examples/toast";
+
+# Toast
+
+A succinct message that is displayed temporarily.
+
+## Import
+
+```ts
+import { Toast, toaster } from "@kobalte/core";
+```
+
+## Features
+
+- Automatically closes.
+- Pauses closing on hover, focus and window blur.
+- Supports hotkey to jump to toast region.
+- Supports closing via swipe gesture.
+- Exposes CSS variables for swipe gesture animations.
+- Limit the number of visible toasts.
+- Manage promises within toast.
+- Can remove or update toast programmatically.
+
+## Anatomy
+
+The toast region consists of:
+
+- **Toast.Region:** The fixed area where toasts appear. Users can jump to the viewport by pressing a hotkey.
+- **Toast.List:** The list containing all rendered toasts.
+
+```tsx
+<Toast.Region>
+  <Toast.List />
+</Toast.Region>
+```
+
+The toast consists of:
+
+- **Toast.Root:** The root container for a toast.
+- **Toast.CloseButton:** The button that closes the toast.
+- **Toast.Title:** An accessible title to be announced when the toast is opened.
+- **Toast.Description:** An optional accessible description to be announced when the toast is opened.
+- **Toast.ProgressTrack:** The component that visually represents the lifetime of the toast.
+- **Toast.ProgressFill:** The component that visually represents the remaining lifetime of the toast.
+
+```tsx
+<Toast.Root>
+  <Toast.CloseButton />
+  <Toast.Title />
+  <Toast.Description />
+  <Toast.ProgressTrack>
+    <Toast.ProgressFill />
+  </Toast.ProgressTrack>
+</Toast.Root>
+```
