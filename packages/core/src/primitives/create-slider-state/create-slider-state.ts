@@ -186,10 +186,14 @@ export function createSliderState(props: StateOpts): SliderState {
 
   const decrementThumb = (index: number, stepSize = 1) => {
     const s = Math.max(stepSize, props.step!());
-    updateValue(
-      index,
-      snapValueToStep(values()[index] - s, props.minValue!(), props.maxValue!(), props.step!())
-    );
+    const nextValue = values()[index] - s;
+    const nextValues = getNextSortedValues(values(), nextValue, index);
+    if (hasMinStepsBetweenValues(nextValues, props.minStepsBetweenThumbs!() * props.step!())) {
+      updateValue(
+        index,
+        snapValueToStep(nextValue, props.minValue!(), props.maxValue!(), props.step!())
+      );
+    }
   };
 
   return {

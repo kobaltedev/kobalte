@@ -227,13 +227,16 @@ export function SliderRoot(props: SliderRootProps) {
   const onHomeKeyDown = () => {
     !local.isDisabled &&
       state.focusedThumb() !== undefined &&
-      state.setThumbValue(state.focusedThumb()!, state.getThumbMinValue(state.focusedThumb()!));
+      state.setThumbValue(0, state.getThumbMinValue(0));
   };
 
   const onEndKeyDown = () => {
     !local.isDisabled &&
       state.focusedThumb() !== undefined &&
-      state.setThumbValue(state.focusedThumb()!, state.getThumbMaxValue(state.focusedThumb()!));
+      state.setThumbValue(
+        state.values().length - 1,
+        state.getThumbMaxValue(state.values().length - 1)
+      );
   };
 
   const onStepKeyDown = (event: KeyboardEvent, index: number) => {
