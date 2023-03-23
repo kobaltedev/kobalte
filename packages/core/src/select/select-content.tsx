@@ -9,7 +9,6 @@ import {
   createHideOutside,
   createPreventScroll,
   FocusOutsideEvent,
-  PointerDownOutsideEvent,
 } from "../primitives";
 import { useSelectContext } from "./select-context";
 
@@ -19,18 +18,6 @@ export interface SelectContentOptions extends AsChildProp {
    * It can be prevented by calling `event.preventDefault`.
    */
   onCloseAutoFocus?: (event: Event) => void;
-
-  /**
-   * Event handler called when the escape key is down.
-   * It can be prevented by calling `event.preventDefault`.
-   */
-  onEscapeKeyDown?: (event: KeyboardEvent) => void;
-
-  /**
-   * Event handler called when a pointer event occurs outside the bounds of the component.
-   * It can be prevented by calling `event.preventDefault`.
-   */
-  onPointerDownOutside?: (event: PointerDownOutsideEvent) => void;
 
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
@@ -46,23 +33,13 @@ export function SelectContent(props: SelectContentProps) {
 
   const context = useSelectContext();
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    "id",
-    "style",
-    "onCloseAutoFocus",
-    "onEscapeKeyDown",
-  ]);
+  const [local, others] = splitProps(props, ["ref", "id", "style", "onCloseAutoFocus"]);
 
   const onEscapeKeyDown = (e: KeyboardEvent) => {
-    local.onEscapeKeyDown?.(e);
-
     // `createSelectableList` prevent escape key down,
     // which prevent our `onDismiss` in `DismissableLayer` to run,
     // so we force "close on escape" here.
-    if (!e.defaultPrevented) {
-      context.close();
-    }
+    context.close();
   };
 
   const onFocusOutside = (e: FocusOutsideEvent) => {
