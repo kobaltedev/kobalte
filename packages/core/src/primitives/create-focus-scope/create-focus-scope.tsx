@@ -20,11 +20,13 @@ import {
   getActiveElement,
   getAllTabbableIn,
   getDocument,
+  isFocusable,
   MaybeAccessor,
   removeItemFromArray,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
+
 import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
 
 const AUTOFOCUS_ON_MOUNT_EVENT = "focusScope.autoFocusOnMount";
@@ -124,6 +126,28 @@ export function createFocusScope<T extends HTMLElement>(
     return items.length > 0 ? items[items.length - 1] : null;
   };
 
+  const shouldPreventUnmountAutoFocus = () => {
+    const container = ref();
+
+    if (!container) {
+      return false;
+    }
+
+    const activeElement = getActiveElement(container);
+
+    if (!activeElement) {
+      return false;
+    }
+
+    if (contains(container, activeElement)) {
+      return false;
+    }
+
+    // Don't autofocus the previously focused element on unmount
+    // if a focusable element outside the container is already focused.
+    return isFocusable(activeElement);
+  };
+
   // Handle dispatching mount and unmount autofocus events.
   createEffect(() => {
     const container = ref();
@@ -161,6 +185,10 @@ export function createFocusScope<T extends HTMLElement>(
 
       setTimeout(() => {
         const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT_EVENT, EVENT_OPTIONS);
+
+        if (shouldPreventUnmountAutoFocus()) {
+          unmountEvent.preventDefault();
+        }
 
         container.addEventListener(AUTOFOCUS_ON_UNMOUNT_EVENT, onUnmountAutoFocus);
         container.dispatchEvent(unmountEvent);

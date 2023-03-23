@@ -9,10 +9,29 @@ import {
   createHideOutside,
   createPreventScroll,
   FocusOutsideEvent,
+  PointerDownOutsideEvent,
 } from "../primitives";
 import { useSelectContext } from "./select-context";
 
 export interface SelectContentOptions extends AsChildProp {
+  /**
+   * Event handler called when focus moves to the trigger after closing.
+   * It can be prevented by calling `event.preventDefault`.
+   */
+  onCloseAutoFocus?: (event: Event) => void;
+
+  /**
+   * Event handler called when the escape key is down.
+   * It can be prevented by calling `event.preventDefault`.
+   */
+  onEscapeKeyDown?: (event: KeyboardEvent) => void;
+
+  /**
+   * Event handler called when a pointer event occurs outside the bounds of the component.
+   * It can be prevented by calling `event.preventDefault`.
+   */
+  onPointerDownOutside?: (event: PointerDownOutsideEvent) => void;
+
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }
@@ -27,19 +46,31 @@ export function SelectContent(props: SelectContentProps) {
 
   const context = useSelectContext();
 
-  const [local, others] = splitProps(props, ["ref", "id", "style"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "id",
+    "style",
+    "onCloseAutoFocus",
+    "onEscapeKeyDown",
+  ]);
 
   const onEscapeKeyDown = (e: KeyboardEvent) => {
+    local.onEscapeKeyDown?.(e);
+
     // `createSelectableList` prevent escape key down,
     // which prevent our `onDismiss` in `DismissableLayer` to run,
     // so we force "close on escape" here.
-    context.close();
+    if (!e.defaultPrevented) {
+      context.close();
+    }
   };
 
   const onFocusOutside = (e: FocusOutsideEvent) => {
-    // When focus is trapped, a `focusout` event may still happen.
+    // When focus is trapped (in modal mode), a `focusout` event may still happen.
     // We make sure we don't trigger our `onDismiss` in such case.
-    e.preventDefault();
+    if (context.isOpen() && context.isModal()) {
+      e.preventDefault();
+    }
   };
 
   // aria-hide everything except the content (better supported equivalent to setting aria-modal)
@@ -61,8 +92,12 @@ export function SelectContent(props: SelectContentProps) {
         e.preventDefault();
       },
       onUnmountAutoFocus: e => {
-        focusWithoutScrolling(context.triggerRef());
-        e.preventDefault();
+        local.onCloseAutoFocus?.(e);
+
+        if (!e.defaultPrevented) {
+          focusWithoutScrolling(context.triggerRef());
+          e.preventDefault();
+        }
       },
     },
     () => ref
