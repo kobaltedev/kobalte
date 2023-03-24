@@ -1,7 +1,6 @@
 // @refresh reload
+import "@docsearch/css";
 import "./root.css";
-
-import toastStyles from "./examples/toast.module.css";
 
 import { ColorModeProvider, ColorModeScript, cookieStorageManagerSSR, Toast } from "@kobalte/core";
 import { Suspense, useContext } from "solid-js";
@@ -18,10 +17,10 @@ import {
   Routes,
   Scripts,
   ServerContext,
-  Stylesheet,
   Title,
 } from "solid-start";
 
+import toastStyles from "./examples/toast.module.css";
 import { mdxComponents } from "./mdx-components";
 
 export const mods = /*#__PURE__*/ import.meta.glob<
@@ -58,7 +57,6 @@ export default function Root() {
         <Link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <Link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <Link rel="manifest" href="/site.webmanifest" />
-        <Stylesheet href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
       </Head>
       <Body>
         <ErrorBoundary>
@@ -78,16 +76,6 @@ export default function Root() {
             </ColorModeProvider>
           </Suspense>
         </ErrorBoundary>
-        <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
-        <script>
-          {`docsearch({
-              appId: "H7ZQSI0SAN",
-              apiKey: "c9354456dd4bb74c37e4d2b762b89b88",
-              indexName: "kobalte",
-              container: "#docsearch",
-              debug: false
-            });`}
-        </script>
         <Scripts />
       </Body>
     </Html>

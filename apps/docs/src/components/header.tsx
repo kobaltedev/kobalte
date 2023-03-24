@@ -1,5 +1,7 @@
+import docsearch from "@docsearch/js";
 import { Link, useMatch } from "@solidjs/router";
 import { clsx } from "clsx";
+import { onMount } from "solid-js";
 
 import { NavSection } from "../model/navigation";
 import { LATEST_CORE_CHANGELOG_URL, LATEST_CORE_VERSION_NAME } from "../VERSIONS";
@@ -13,6 +15,15 @@ interface HeaderProps {
 
 export function Header(props: HeaderProps) {
   const isChangelogPath = useMatch(() => "/docs/changelog/*");
+
+  onMount(() => {
+    docsearch({
+      appId: "H7ZQSI0SAN",
+      apiKey: "c9354456dd4bb74c37e4d2b762b89b88",
+      indexName: "kobalte",
+      container: "#docsearch",
+    });
+  });
 
   return (
     <header
@@ -36,13 +47,13 @@ export function Header(props: HeaderProps) {
         </span>
       </div>
 
-      <div class="relative flex basis-0 justify-end md:flex-grow">
+      <div class="relative flex basis-0 justify-end md:flex-grow items-center py-2">
         <div id="docsearch" class="px-1 flex items-center justify-center" />
         <div class="hidden lg:flex text-sm">
           <Link
             href="/docs/core/overview/introduction"
             class={clsx(
-              "px-3 py-4 flex items-center justify-center transition",
+              "px-3 py-2 rounded-md flex items-center justify-center transition",
               !isChangelogPath()
                 ? "text-sky-700 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200 hover:bg-sky-100 dark:hover:bg-sky-800"
                 : "text-zinc-700 hover:text-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
@@ -53,7 +64,7 @@ export function Header(props: HeaderProps) {
           <Link
             href={LATEST_CORE_CHANGELOG_URL}
             class={clsx(
-              "px-3 py-4 flex items-center justify-center transition",
+              "px-3 py-2 rounded-md flex items-center justify-center transition",
               isChangelogPath()
                 ? "text-sky-700 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200 hover:bg-sky-100 dark:hover:bg-sky-800"
                 : "text-zinc-700 hover:text-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
@@ -66,7 +77,7 @@ export function Header(props: HeaderProps) {
           href="https://github.com/kobaltedev/kobalte"
           target="_blank"
           rel="noopener noreferrer"
-          class="p-4 flex items-center justify-center transition rounded text-zinc-700 hover:text-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+          class="p-2.5 mx-2 rounded-md flex items-center justify-center transition rounded text-zinc-700 hover:text-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
           aria-label="GitHub"
         >
           <GitHubIcon class="h-5 w-5" />

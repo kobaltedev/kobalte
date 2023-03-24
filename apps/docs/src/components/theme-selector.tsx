@@ -52,7 +52,7 @@ export function ThemeSelector() {
     >
       <Select.Trigger
         aria-label="toggle color mode"
-        class="flex p-4 items-center justify-center transition rounded text-zinc-700 hover:text-zinc-800 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:text-zinc-200 dark:hover:bg-zinc-800"
+        class="flex p-2.5 rounded-md cursor-pointer items-center justify-center transition rounded text-zinc-700 hover:text-zinc-800 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:text-zinc-200 dark:hover:bg-zinc-800"
       >
         <Select.Value />
       </Select.Trigger>
