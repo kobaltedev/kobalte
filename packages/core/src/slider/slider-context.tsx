@@ -24,8 +24,8 @@ export interface SliderContextValue {
   isSlidingFromLeft: () => boolean;
   isSlidingFromBottom: () => boolean;
   trackRef: Accessor<HTMLElement | undefined>;
-  startEdge: Side;
-  endEdge: Side;
+  startEdge: Accessor<Side>;
+  endEdge: Accessor<Side>;
   minValue: Accessor<number>;
   maxValue: Accessor<number>;
   inverted: Accessor<boolean>;

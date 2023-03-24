@@ -21,10 +21,7 @@ export function SliderFill(props: SliderFillProps) {
   const [local, others] = splitProps(props, ["style"]);
 
   const percentages = () =>
-    context.state
-      .values()
-      .map(value => convertValueToPercentage(value, context.minValue(), context.maxValue()));
-
+    context.state.values().map(value => context.state.getValuePercent(value) * 100);
   const offsetStart = () => {
     return context.state.values().length > 1 ? Math.min(...percentages()) : 0;
   };
@@ -37,17 +34,10 @@ export function SliderFill(props: SliderFillProps) {
     <Polymorphic
       fallback="div"
       style={{
-        [context.startEdge]: `${offsetStart()}%`,
-        [context.endEdge]: `${offsetEnd()}%`,
         ...local.style,
       }}
       {...context.dataset()}
       {...others}
     />
   );
-}
-function convertValueToPercentage(value: number, min: number, max: number) {
-  const maxSteps = max - min;
-  const percentPerStep = 100 / maxSteps;
-  return percentPerStep * (value - min);
 }

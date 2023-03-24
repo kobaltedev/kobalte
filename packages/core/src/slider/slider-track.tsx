@@ -21,15 +21,24 @@ export function SliderTrack(props: SliderTrackProps) {
   const [sRect, setRect] = createSignal<DOMRect>();
   function getValueFromPointer(pointerPosition: number) {
     const rect = sRect() || context.trackRef()!.getBoundingClientRect();
-    const input: [number, number] = [0, rect.width];
-    const output: [number, number] =
-      context.isSlidingFromBottom() || context.isSlidingFromLeft()
-        ? [context.minValue()!, context.maxValue()!]
-        : [context.maxValue!(), context.minValue()!];
+    const input: [number, number] = [
+      0,
+      context.state.orientation() === "vertical" ? rect.height : rect.width,
+    ];
+    let output: [number, number] = context.isSlidingFromLeft()
+      ? [context.minValue()!, context.maxValue()!]
+      : [context.maxValue!(), context.minValue()!];
+    if (context.state.orientation() === "vertical") {
+      output = context.isSlidingFromBottom()
+        ? [context.maxValue!(), context.minValue()!]
+        : [context.minValue()!, context.maxValue()!];
+    }
     const value = linearScale(input, output);
 
     setRect(rect);
-    return value(pointerPosition - rect.left);
+    return value(
+      pointerPosition - (context.state.orientation() === "vertical" ? rect.top : rect.left)
+    );
   }
 
   let startPosition = 0;

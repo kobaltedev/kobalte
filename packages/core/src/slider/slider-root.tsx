@@ -8,33 +8,16 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/slider/src/Slider.tsx
  */
 
-import {
-  clamp,
-  composeEventHandlers,
-  createGenerateId,
-  mergeDefaultProps,
-  mergeRefs,
-  OverrideComponentProps,
-} from "@kobalte/utils";
+import { clamp, createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 
-import { createNumberFormatter } from "../i18n";
+import { createNumberFormatter, useLocale } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "../primitives/create-slider-state/create-slider-state";
 import { Side, SliderContext, SliderContextValue, SliderDataSet } from "./slider-context";
-import {
-  ARROW_KEYS,
-  BACK_KEYS,
-  getClosestValueIndex,
-  getDecimalCount,
-  getNextSortedValues,
-  hasMinStepsBetweenValues,
-  linearScale,
-  PAGE_KEYS,
-  roundValue,
-} from "./utils";
+import { getClosestValueIndex, getNextSortedValues, hasMinStepsBetweenValues } from "./utils";
 
 export interface GetValueLabelParams {
   values: number[];
@@ -150,6 +133,7 @@ export function SliderRoot(props: SliderRootProps) {
 
   const [labelId, setLabelId] = createSignal<string>();
   const defaultFormatter = createNumberFormatter(() => ({ style: "percent" }));
+  const { direction } = useLocale();
 
   const state = createSliderState({
     defaultValue: local.defaultValue!,
@@ -170,8 +154,14 @@ export function SliderRoot(props: SliderRootProps) {
     items: thumbs,
     onItemsChange: setThumbs,
   });
-  const isSlidingFromLeft = () => !local.inverted;
-  const isSlidingFromBottom = () => !local.inverted;
+
+  const isDirectionLTR = () => direction() === "ltr";
+
+  const isSlidingFromLeft = () => {
+    return (isDirectionLTR() && !local.inverted!) || (!isDirectionLTR() && local.inverted!);
+  };
+  const isSlidingFromBottom = () => !local.inverted!;
+
   const isVertical = () => state.orientation() === "vertical";
 
   const dataset: Accessor<SliderDataSet> = createMemo(() => {
@@ -204,12 +194,12 @@ export function SliderRoot(props: SliderRootProps) {
       currentPosition = state.getThumbPercent(state.focusedThumb()!) * size;
     }
     let delta = isVertical() ? deltaY : deltaX;
-    if (isVertical()) {
+    if (isVertical() || !isDirectionLTR()) {
       delta = -delta;
     }
     currentPosition += delta;
     const percent = clamp(currentPosition / size, 0, 1);
-    const nextValues = getNextSortedValues(state.values(), state.getPercentValue(percent), active);
+    const nextValues = getNextSortedValues(state.values(), currentPosition, active);
     if (hasMinStepsBetweenValues(nextValues, local.minStepsBetweenThumbs! * state.step())) {
       state.setThumbPercent(state.focusedThumb()!, percent);
       local.onChange?.(state.values());
@@ -246,25 +236,41 @@ export function SliderRoot(props: SliderRootProps) {
         case "ArrowLeft":
           event.preventDefault();
           event.stopPropagation();
-          state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
+          if (!isDirectionLTR()) {
+            state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
+          } else {
+            state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
+          }
           break;
         case "Right":
         case "ArrowRight":
           event.preventDefault();
           event.stopPropagation();
-          state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
+          if (!isDirectionLTR()) {
+            state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
+          } else {
+            state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
+          }
           break;
         case "Up":
         case "ArrowUp":
           event.preventDefault();
           event.stopPropagation();
-          context.state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
+          if (!isDirectionLTR()) {
+            state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
+          } else {
+            state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
+          }
           break;
         case "Down":
         case "ArrowDown":
           event.preventDefault();
           event.stopPropagation();
-          state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
+          if (!isDirectionLTR()) {
+            state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
+          } else {
+            state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
+          }
           break;
         case "Home":
           onHomeKeyDown();
@@ -312,8 +318,8 @@ export function SliderRoot(props: SliderRootProps) {
     minValue: () => local.minValue!,
     maxValue: () => local.maxValue!,
     inverted: () => local.inverted!,
-    startEdge: startEdge(),
-    endEdge: endEdge(),
+    startEdge,
+    endEdge,
     registerTrack: (ref: HTMLElement) => setTrackRef(ref),
     generateId: createGenerateId(() => others.id!),
     registerLabelId: createRegisterId(setLabelId),

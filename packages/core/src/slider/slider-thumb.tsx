@@ -28,6 +28,7 @@ import {
   splitProps,
   useContext,
 } from "solid-js";
+import { useLocale } from "../i18n";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
@@ -44,6 +45,8 @@ export function SliderThumb(props: SliderThumbProps) {
 
   props = mergeDefaultProps({ id: context.generateId("thumb") }, props);
   const [local, others] = splitProps(props, ["ref", "style"]);
+  const { direction } = useLocale();
+  const isDirectionLTR = () => direction() === "ltr";
 
   createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
@@ -135,7 +138,7 @@ export function SliderThumb(props: SliderThumbProps) {
         style={{
           display: value() === undefined ? "none" : undefined,
           position: "absolute",
-          [context.startEdge]: `${position() * 100}%`,
+          [context.startEdge()]: `${position() * 100}%`,
           transform: "translate(-50%, -50%)",
           "touch-action": "none",
           ...local.style,
