@@ -3,7 +3,7 @@ import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useMenuContext } from "./menu-context";
 
-export interface MenuIconProps extends OverrideComponentProps<"div", AsChildProp> {}
+export interface MenuIconProps extends OverrideComponentProps<"span", AsChildProp> {}
 
 /**
  * A small icon often displayed inside the menu trigger as a visual affordance for the fact it can be open.
@@ -14,5 +14,5 @@ export function MenuIcon(props: MenuIconProps) {
 
   props = mergeDefaultProps({ children: "▼" }, props);
 
-  return <Polymorphic fallback="div" aria-hidden="true" {...context.dataset()} {...props} />;
+  return <Polymorphic fallback="span" aria-hidden="true" {...context.dataset()} {...props} />;
 }

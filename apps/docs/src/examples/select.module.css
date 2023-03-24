@@ -7,7 +7,7 @@
   padding: 0 10px 0 16px;
   font-size: 16px;
   line-height: 1;
-  height: 40px;
+  min-height: 40px;
   outline: none;
   background-color: white;
   border: 1px solid hsl(240 6% 90%);
@@ -29,9 +29,21 @@
   color: hsl(0 72% 51%);
 }
 
+.select__trigger_multi {
+  width: 100%;
+  min-width: 200px;
+  max-width: 300px;
+  padding-left: 8px;
+}
+
 .select__value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-grow: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding: 4px 0;
   overflow: hidden;
 }
 
@@ -110,7 +122,7 @@
 }
 
 .select__section {
-  padding: 0 24px;
+  padding: 8px 0 0 8px;
   font-size: 14px;
   line-height: 32px;
   color: hsl(240 4% 46%);

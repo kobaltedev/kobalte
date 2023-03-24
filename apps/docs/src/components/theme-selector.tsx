@@ -1,5 +1,4 @@
 import { ConfigColorMode, Select, useColorMode } from "@kobalte/core";
-import { ComponentProps, JSX } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { DesktopIcon, MoonIcon, SunIcon } from "./icons";
@@ -35,25 +34,25 @@ export function ThemeSelector() {
       gutter={8}
       sameWidth={false}
       placement="bottom"
-      renderValue={selectedOption => (
+      valueComponent={props => (
         <Dynamic
-          component={selectedOption().value === "dark" ? MoonIcon : SunIcon}
+          component={props.item.rawValue.value === "dark" ? MoonIcon : SunIcon}
           class="h-5 w-5"
         />
       )}
-      renderItem={item => (
+      itemComponent={props => (
         <Select.Item
-          item={item()}
+          item={props.item}
           class="flex items-center space-x-2 px-3 py-1 text-sm outline-none ui-selected:text-sky-700 ui-highlighted:bg-zinc-100 transition-colors cursor-default dark:ui-selected:text-sky-400 dark:ui-highlighted:bg-zinc-700"
         >
-          {item().rawValue.icon}
-          <Select.ItemLabel>{item().rawValue.label}</Select.ItemLabel>
+          {props.item.rawValue.icon}
+          <Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
         </Select.Item>
       )}
     >
       <Select.Trigger
         aria-label="toggle color mode"
-        class="flex p-4 items-center justify-center transition rounded text-zinc-700 hover:text-zinc-800 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:text-zinc-200 dark:hover:bg-zinc-800"
+        class="flex p-2.5 rounded-md cursor-pointer items-center justify-center transition rounded text-zinc-700 hover:text-zinc-800 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:text-zinc-200 dark:hover:bg-zinc-800"
       >
         <Select.Value />
       </Select.Trigger>

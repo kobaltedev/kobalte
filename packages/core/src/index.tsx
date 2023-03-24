@@ -7,10 +7,12 @@ export * from "./live-announcer";
 export * from "./polymorphic";
 export * from "./primitives";
 export * from "./selection";
+export * from "./toast/toaster";
 
 // components
 export * as Accordion from "./accordion";
 export * as Alert from "./alert";
+export * as AlertDialog from "./alert-dialog";
 export * as Breadcrumbs from "./breadcrumbs";
 export * as Button from "./button";
 export * as Checkbox from "./checkbox";
@@ -31,4 +33,5 @@ export * as Separator from "./separator";
 export * as Switch from "./switch";
 export * as Tabs from "./tabs";
 export * as TextField from "./text-field";
+export * as Toast from "./toast";
 export * as ToggleButton from "./toggle-button";

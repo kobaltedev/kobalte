@@ -6,13 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/HiddenSelect.tsx
  */
 
-import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
-import { ComponentProps, For, Match, splitProps, Switch } from "solid-js";
+import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
+import { ComponentProps, createEffect, createSignal, For, on, Show, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
+import { isSameSelection } from "../selection/utils";
 import { useSelectContext } from "./select-context";
 
-export type HiddenSelectProps = ComponentProps<"select"> & ComponentProps<"input">;
+export type HiddenSelectProps = ComponentProps<"select">;
 
 // In Safari, the <select> cannot have `display: none` or `hidden` for autofill to work.
 // In Firefox, there must be a <label> to identify the <select> whereas other browsers
@@ -37,76 +38,93 @@ export type HiddenSelectProps = ComponentProps<"select"> & ComponentProps<"input
  * form autofill, mobile form navigation, and native form submission.
  */
 export function HiddenSelect(props: HiddenSelectProps) {
-  const [local, others] = splitProps(props, ["onChange"]);
+  let ref: HTMLSelectElement | undefined;
 
+  const [local, others] = splitProps(props, ["ref", "onChange"]);
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
+
+  const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
 
   const selectionManager = () => context.listState().selectionManager();
   const collection = () => context.listState().collection();
 
-  // If used in a <form>, use a hidden input so the value can be submitted to a server.
-  // If the collection isn't too big, use a hidden <select> element for this so that browser
-  // autofill will work. Otherwise, use an <input type="hidden">.
+  const renderOption = (key: string) => {
+    const item = collection().getItem(key);
+
+    return (
+      <Show when={item?.type === "item"}>
+        <option value={key} selected={selectionManager().isSelected(key)}>
+          {item?.textValue}
+        </option>
+      </Show>
+    );
+  };
+
+  // Dispatch native event on selection change for form libraries.
+  createEffect(
+    on(
+      () => selectionManager().selectedKeys(),
+      (keys, prevKeys) => {
+        if (prevKeys && isSameSelection(keys, prevKeys)) {
+          return;
+        }
+
+        setIsInternalChangeEvent(true);
+
+        ref?.dispatchEvent(new Event("input", { bubbles: true, cancelable: true }));
+        ref?.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
+      },
+      {
+        defer: true,
+      }
+    )
+  );
+
+  // If virtualized, only render the selected options in the hidden <select> so the value can be submitted to a server.
+  // Otherwise, render all options so that browser autofill will work.
   return (
-    <Switch fallback={null}>
-      <Match when={collection().getSize() <= 300}>
-        <div style={visuallyHiddenStyles} aria-hidden="true">
-          <input
-            type="text"
-            tabIndex={selectionManager().isFocused() || context.isOpen() ? -1 : 0}
-            style={{ "font-size": "16px" }}
-            required={formControlContext.isRequired()}
-            disabled={formControlContext.isDisabled()}
-            readOnly={formControlContext.isReadOnly()}
-            onFocus={() => context.triggerRef()?.focus()}
-          />
-          <select
-            tabIndex={-1}
-            multiple={context.isMultiple()}
-            name={formControlContext.name()}
-            required={formControlContext.isRequired()}
-            disabled={formControlContext.isDisabled()}
-            size={collection().getSize()}
-            value={selectionManager().firstSelectedKey() ?? ""}
-            onChange={e => {
-              callHandler(e, local.onChange);
-              selectionManager().setSelectedKeys(new Set([(e.target as HTMLSelectElement).value]));
-            }}
-            {...(others as any)}
-          >
-            <option />
-            <For each={[...collection().getKeys()]}>
-              {key => {
-                const item = collection().getItem(key);
-                if (item && item.type === "item") {
-                  return (
-                    <option value={item.key} selected={selectionManager().isSelected(item.key)}>
-                      {item.textValue}
-                    </option>
-                  );
-                }
-              }}
-            </For>
-          </select>
-        </div>
-      </Match>
-      <Match when={formControlContext.name() != null}>
-        <For each={[...selectionManager().selectedKeys()]}>
-          {key => (
-            <input
-              type="hidden"
-              name={formControlContext.name()}
-              required={formControlContext.isRequired()}
-              disabled={formControlContext.isDisabled()}
-              readOnly={formControlContext.isReadOnly()}
-              value={key ?? ""}
-              onChange={local.onChange}
-              {...(others as any)}
-            />
-          )}
-        </For>
-      </Match>
-    </Switch>
+    <div style={visuallyHiddenStyles} aria-hidden="true">
+      <input
+        type="text"
+        tabIndex={selectionManager().isFocused() || context.isOpen() ? -1 : 0}
+        style={{ "font-size": "16px" }}
+        required={formControlContext.isRequired()}
+        disabled={formControlContext.isDisabled()}
+        readOnly={formControlContext.isReadOnly()}
+        onFocus={() => context.triggerRef()?.focus()}
+      />
+      <select
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        tabIndex={-1}
+        multiple={context.isMultiple()}
+        name={formControlContext.name()}
+        required={formControlContext.isRequired()}
+        disabled={formControlContext.isDisabled()}
+        size={collection().getSize()}
+        value={selectionManager().firstSelectedKey() ?? ""}
+        onChange={e => {
+          callHandler(e, local.onChange);
+
+          // Prevent internally fired change event to update the selection
+          // which would result in an infinite loop.
+          if (!isInternalChangeEvent()) {
+            // enable form autofill
+            selectionManager().setSelectedKeys(new Set([(e.target as HTMLSelectElement).value]));
+          }
+
+          setIsInternalChangeEvent(false);
+        }}
+        {...others}
+      >
+        <option />
+        <Show
+          when={context.isVirtualized()}
+          fallback={<For each={[...collection().getKeys()]}>{renderOption}</For>}
+        >
+          <For each={[...selectionManager().selectedKeys()]}>{renderOption}</For>
+        </Show>
+      </select>
+    </div>
   );
 }

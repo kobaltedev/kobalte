@@ -33,9 +33,9 @@ export interface SelectContextValue {
   close: () => void;
   toggle: (focusStrategy: FocusStrategy | boolean) => void;
   placeholder: Accessor<JSX.Element>;
-  renderItem: (item: Accessor<CollectionNode>) => JSX.Element;
-  renderSection: (section: Accessor<CollectionNode>) => JSX.Element;
-  renderValue: (selectedOptions: Accessor<any[]>) => JSX.Element;
+  renderItem: (item: CollectionNode) => JSX.Element;
+  renderSection: (section: CollectionNode) => JSX.Element;
+  renderValue: () => JSX.Element;
   generateId: (part: string) => string;
   registerTriggerId: (id: string) => () => void;
   registerValueId: (id: string) => () => void;

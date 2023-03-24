@@ -53,7 +53,7 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
         rawValue: data,
         key: data,
         textValue: data,
-        isDisabled: false, // not applicable here
+        isDisabled: getIsDisabled(data) ?? false,
         level,
         index,
       });

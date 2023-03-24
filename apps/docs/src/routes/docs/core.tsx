@@ -45,6 +45,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/alert",
       },
       {
+        title: "Alert Dialog",
+        href: "/docs/core/components/alert-dialog",
+        status: "new",
+      },
+      {
         title: "Breadcrumbs",
         href: "/docs/core/components/breadcrumbs",
       },
@@ -99,6 +104,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Select",
         href: "/docs/core/components/select",
+        status: "updated",
       },
       {
         title: "Separator",
@@ -115,6 +121,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Text Field",
         href: "/docs/core/components/text-field",
+      },
+      {
+        title: "Toast",
+        href: "/docs/core/components/toast",
+        status: "new",
       },
       {
         title: "Toggle Button",

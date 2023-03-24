@@ -31,6 +31,8 @@
     "start": "solid-start start"
   },
   "dependencies": {
+    "@docsearch/css": "3.3.3",
+    "@docsearch/js": "3.3.3",
     "@kobalte/core": "0.7.4",
     "@solidjs/meta": "0.28.2",
     "@solidjs/router": "0.7.1",

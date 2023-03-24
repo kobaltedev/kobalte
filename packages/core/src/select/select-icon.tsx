@@ -3,7 +3,7 @@ import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
-export interface SelectIconProps extends OverrideComponentProps<"div", AsChildProp> {}
+export interface SelectIconProps extends OverrideComponentProps<"span", AsChildProp> {}
 
 /**
  * A small icon often displayed next to the value as a visual affordance for the fact it can be open.
@@ -14,5 +14,5 @@ export function SelectIcon(props: SelectIconProps) {
 
   props = mergeDefaultProps({ children: "▼" }, props);
 
-  return <Polymorphic fallback="div" aria-hidden="true" {...context.dataset()} {...props} />;
+  return <Polymorphic fallback="span" aria-hidden="true" {...context.dataset()} {...props} />;
 }

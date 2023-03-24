@@ -1,9 +1,10 @@
 // @refresh reload
+import "@docsearch/css";
 import "./root.css";
 
-import { ColorModeProvider, ColorModeScript, cookieStorageManagerSSR } from "@kobalte/core";
+import { ColorModeProvider, ColorModeScript, cookieStorageManagerSSR, Toast } from "@kobalte/core";
 import { Suspense, useContext } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer, Portal } from "solid-js/web";
 import { MDXProvider } from "solid-mdx";
 import {
   Body,
@@ -16,10 +17,10 @@ import {
   Routes,
   Scripts,
   ServerContext,
-  Stylesheet,
   Title,
 } from "solid-start";
 
+import toastStyles from "./examples/toast.module.css";
 import { mdxComponents } from "./mdx-components";
 
 export const mods = /*#__PURE__*/ import.meta.glob<
@@ -56,7 +57,6 @@ export default function Root() {
         <Link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <Link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <Link rel="manifest" href="/site.webmanifest" />
-        <Stylesheet href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
       </Head>
       <Body>
         <ErrorBoundary>
@@ -67,20 +67,15 @@ export default function Root() {
                 <Routes>
                   <FileRoutes />
                 </Routes>
+                <Portal>
+                  <Toast.Region>
+                    <Toast.List class={toastStyles["toast__list"]} />
+                  </Toast.Region>
+                </Portal>
               </MDXProvider>
             </ColorModeProvider>
           </Suspense>
         </ErrorBoundary>
-        <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
-        <script>
-          {`docsearch({
-              appId: "H7ZQSI0SAN",
-              apiKey: "c9354456dd4bb74c37e4d2b762b89b88",
-              indexName: "kobalte",
-              container: "#docsearch",
-              debug: false
-            });`}
-        </script>
         <Scripts />
       </Body>
     </Html>
