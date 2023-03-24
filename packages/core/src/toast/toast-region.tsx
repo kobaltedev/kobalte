@@ -25,13 +25,13 @@ import { ToastSwipeDirection } from "./types";
 export interface ToastRegionOptions {
   /**
    * A label for the toast region to provide context for screen reader users when navigating page landmarks.
-   * The available `{hotkey}` placeholder will be replaced for you.
+   * Can contain a `{hotkey}` placeholder which will be replaced for you.
    * @default "Notifications ({hotkey})"
    */
   "aria-label"?: string;
 
   /**
-   * The keys to use as the keyboard shortcut that will move focus to the toast viewport.
+   * The keys to use as the keyboard shortcut that will move focus to the toast region.
    * Use `event.code` value for each key from [keycode.info](https://www.toptal.com/developers/keycode).
    * For meta keys, use `ctrlKey`, `shiftKey`, `altKey` and/or `metaKey`.
    * @default alt + T
@@ -74,7 +74,7 @@ export interface ToastRegionOptions {
 export interface ToastRegionProps extends OverrideComponentProps<"div", ToastRegionOptions> {}
 
 /**
- * The fixed area where toasts appear. Users can jump to the viewport by pressing a hotkey.
+ * The fixed area where toasts appear. Users can jump to by pressing a hotkey.
  * It is up to you to ensure the discoverability of the hotkey for keyboard users.
  */
 export function ToastRegion(props: ToastRegionProps) {
@@ -89,7 +89,7 @@ export function ToastRegion(props: ToastRegionProps) {
       swipeDirection: "right",
       swipeThreshold: 50,
       pauseOnInteraction: true,
-      pauseOnPageIdle: false,
+      pauseOnPageIdle: true,
       isTopLayer: true,
     },
     props
@@ -149,9 +149,9 @@ export function ToastRegion(props: ToastRegionProps) {
         role="region"
         tabIndex={-1}
         aria-label={ariaLabel()}
-        // In case list has size when empty (e.g. padding), we remove pointer events,
+        // In case it has size when empty (e.g. padding), we remove pointer events,
         // so it doesn't prevent interactions with page elements that it overlays.
-        // In case list is a top layer, we explicitly enable pointer-events prevented by a `DismissableLayer`.
+        // In case it is a top layer, we explicitly enable pointer-events prevented by a `DismissableLayer`.
         style={{
           "pointer-events": hasToasts() ? (local.isTopLayer ? "auto" : undefined) : "none",
           ...local.style,

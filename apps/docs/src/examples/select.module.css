@@ -30,7 +30,9 @@
 }
 
 .select__trigger_multi {
-  width: 400px;
+  width: 100%;
+  min-width: 200px;
+  max-width: 300px;
   padding-left: 8px;
 }
 

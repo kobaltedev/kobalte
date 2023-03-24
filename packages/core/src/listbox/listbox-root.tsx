@@ -198,10 +198,10 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
       selectionBehavior: () => access(local.selectionBehavior),
       selectionMode: () => access(local.selectionMode),
       dataSource: () => local.options ?? [],
-      getKey: () => local.optionValue?.toString(),
-      getTextValue: () => local.optionTextValue?.toString(),
-      getIsDisabled: () => local.optionDisabled?.toString(),
-      getSectionChildren: () => local.optionGroupChildren?.toString(),
+      getKey: () => local.optionValue as any,
+      getTextValue: () => local.optionTextValue as any,
+      getIsDisabled: () => local.optionDisabled as any,
+      getSectionChildren: () => local.optionGroupChildren as any,
       getIsSection: () => local.isOptionGroup,
     });
   });

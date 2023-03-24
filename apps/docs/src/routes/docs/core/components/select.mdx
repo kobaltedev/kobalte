@@ -663,15 +663,17 @@ The `MultiSelect.*` components can be used to create a select that allow multi-s
 
 The `valueComponent` prop expose an array of selected items instead of a single one, and two method for removing an item from the selection and clear the selection.
 
+Additionally, the example below uses the `asChild` pattern to render a `div` for the `MultiSelect.Trigger` since HTML button can't contain interactive elements according to the [W3C](https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element).
+
 <Preview>
   <MultiSelectExample />
 </Preview>
 
-```tsx {3,8-9,12,15,21,29}
+```tsx {3,8-9,12,15,21,29,43-44}
 import { createSignal } from "solid-js";
 
 export function MultiSelectExample() {
-  const [values, setValues] = createSignal(new Set(["Blueberry", "Pineapple"]));
+  const [values, setValues] = createSignal(new Set(["Blueberry", "Grapes"]));
 
   return (
     <>
@@ -711,11 +713,13 @@ export function MultiSelectExample() {
           </MultiSelect.Item>
         )}
       >
-        <MultiSelect.Trigger aria-label="Fruits">
-          <MultiSelect.Value />
-          <MultiSelect.Icon>
-            <CaretSortIcon />
-          </MultiSelect.Icon>
+        <MultiSelect.Trigger aria-label="Fruits" asChild>
+          <As component="div">
+            <MultiSelect.Value />
+            <MultiSelect.Icon>
+              <CaretSortIcon />
+            </MultiSelect.Icon>
+          </As>
         </MultiSelect.Trigger>
         <MultiSelect.Portal>
           <MultiSelect.Content>

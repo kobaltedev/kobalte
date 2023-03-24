@@ -1,4 +1,4 @@
-import { MultiSelect, Select } from "@kobalte/core";
+import { As, MultiSelect, Select } from "@kobalte/core";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { createSignal, For } from "solid-js";
 
@@ -341,7 +341,7 @@ export function OptionGroupExample() {
 }
 
 export function MultiSelectExample() {
-  const [values, setValues] = createSignal(new Set(["Blueberry", "Pineapple"]));
+  const [values, setValues] = createSignal(new Set(["Blueberry", "Grapes"]));
 
   return (
     <>
@@ -355,12 +355,12 @@ export function MultiSelectExample() {
             <div class="flex items-center gap-2 flex-wrap">
               <For each={props.items}>
                 {item => (
-                  <span class="bg-zinc-100 text-sm px-2 py-0.5 rounded inline-flex items-center gap-x-2">
+                  <span class="bg-zinc-100 dark:bg-zinc-700 text-sm px-2 py-0.5 rounded inline-flex items-center gap-x-2">
                     {item.rawValue}
                     <button
                       onPointerDown={e => e.stopPropagation()}
                       onClick={() => props.remove(item)}
-                      class="rounded-full hover:bg-zinc-300 p-1"
+                      class="rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600 p-1"
                     >
                       <CrossIcon class="h3 w-3" />
                     </button>
@@ -371,7 +371,7 @@ export function MultiSelectExample() {
             <button
               onPointerDown={e => e.stopPropagation()}
               onClick={props.clear}
-              class="ml-auto mr-2 rounded-full hover:bg-zinc-100 p-1"
+              class="ml-auto mr-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-600 p-1"
             >
               <CrossIcon class="h-3.5 w-3.5" />
             </button>
@@ -389,11 +389,14 @@ export function MultiSelectExample() {
         <MultiSelect.Trigger
           class={`${style["select__trigger"]} ${style["select__trigger_multi"]}`}
           aria-label="Fruits"
+          asChild
         >
-          <MultiSelect.Value class={style["select__value"]} />
-          <MultiSelect.Icon class={style["select__icon"]}>
-            <CaretSortIcon />
-          </MultiSelect.Icon>
+          <As component="div">
+            <MultiSelect.Value class={style["select__value"]} />
+            <MultiSelect.Icon class={style["select__icon"]}>
+              <CaretSortIcon />
+            </MultiSelect.Icon>
+          </As>
         </MultiSelect.Trigger>
         <MultiSelect.Portal>
           <MultiSelect.Content class={style["select__content"]}>

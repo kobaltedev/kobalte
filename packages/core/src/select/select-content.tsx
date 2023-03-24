@@ -13,6 +13,12 @@ import {
 import { useSelectContext } from "./select-context";
 
 export interface SelectContentOptions extends AsChildProp {
+  /**
+   * Event handler called when focus moves to the trigger after closing.
+   * It can be prevented by calling `event.preventDefault`.
+   */
+  onCloseAutoFocus?: (event: Event) => void;
+
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }
@@ -27,7 +33,7 @@ export function SelectContent(props: SelectContentProps) {
 
   const context = useSelectContext();
 
-  const [local, others] = splitProps(props, ["ref", "id", "style"]);
+  const [local, others] = splitProps(props, ["ref", "id", "style", "onCloseAutoFocus"]);
 
   const onEscapeKeyDown = (e: KeyboardEvent) => {
     // `createSelectableList` prevent escape key down,
@@ -37,9 +43,11 @@ export function SelectContent(props: SelectContentProps) {
   };
 
   const onFocusOutside = (e: FocusOutsideEvent) => {
-    // When focus is trapped, a `focusout` event may still happen.
+    // When focus is trapped (in modal mode), a `focusout` event may still happen.
     // We make sure we don't trigger our `onDismiss` in such case.
-    e.preventDefault();
+    if (context.isOpen() && context.isModal()) {
+      e.preventDefault();
+    }
   };
 
   // aria-hide everything except the content (better supported equivalent to setting aria-modal)
@@ -61,8 +69,12 @@ export function SelectContent(props: SelectContentProps) {
         e.preventDefault();
       },
       onUnmountAutoFocus: e => {
-        focusWithoutScrolling(context.triggerRef());
-        e.preventDefault();
+        local.onCloseAutoFocus?.(e);
+
+        if (!e.defaultPrevented) {
+          focusWithoutScrolling(context.triggerRef());
+          e.preventDefault();
+        }
       },
     },
     () => ref

@@ -344,10 +344,10 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     selectionBehavior: () => access(local.selectionBehavior),
     selectionMode: () => local.selectionMode,
     dataSource: () => local.options ?? [],
-    getKey: () => local.optionValue?.toString(),
-    getTextValue: () => local.optionTextValue?.toString(),
-    getIsDisabled: () => local.optionDisabled?.toString(),
-    getSectionChildren: () => local.optionGroupChildren?.toString(),
+    getKey: () => local.optionValue as any,
+    getTextValue: () => local.optionTextValue as any,
+    getIsDisabled: () => local.optionDisabled as any,
+    getSectionChildren: () => local.optionGroupChildren as any,
     getIsSection: () => local.isOptionGroup,
   });
 

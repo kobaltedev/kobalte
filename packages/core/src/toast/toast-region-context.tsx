@@ -1,10 +1,10 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { Toast, ToastSwipeDirection } from "./types";
+import { ToastConfig, ToastSwipeDirection } from "./types";
 
 export interface ToastRegionContextValue {
   isPaused: Accessor<boolean>;
-  toasts: Accessor<Toast[]>;
+  toasts: Accessor<ToastConfig[]>;
   hotkey: Accessor<string[]>;
   duration: Accessor<number>;
   swipeDirection: Accessor<ToastSwipeDirection>;

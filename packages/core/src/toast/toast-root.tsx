@@ -25,9 +25,10 @@ import {
   createEffect,
   createMemo,
   createSignal,
+  createUniqueId,
   JSX,
   on,
-  onCleanup,
+  onMount,
   Show,
   splitProps,
 } from "solid-js";
@@ -35,8 +36,8 @@ import {
 import { createPresence, createRegisterId } from "../primitives";
 import { ToastContext, ToastContextValue } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
-import { ToastSwipeDirection } from "./types";
 import { toastStore } from "./toast-store";
+import { ToastSwipeDirection } from "./types";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
 const TOAST_SWIPE_MOVE_EVENT = "toast.swipeMove";
@@ -50,7 +51,7 @@ export type SwipeEvent = { currentTarget: EventTarget & HTMLLIElement } & Omit<
 
 export interface ToastRootOptions {
   /** The id of the toast provided by the `toaster`. */
-  id: number;
+  toastId: number;
 
   /**
    * Control the sensitivity of the toast for accessibility purposes.
@@ -65,6 +66,9 @@ export interface ToastRootOptions {
    */
   duration?: number;
 
+  /** Whether the toast should ignore duration and disappear only by a user action. */
+  isPersistent?: boolean;
+
   /**
    * Event handler called when the dismiss timer is paused.
    * This occurs when the pointer is moved over the region or the region is focused.
@@ -77,28 +81,16 @@ export interface ToastRootOptions {
    */
   onResume?: () => void;
 
-  /**
-   * Event handler called when starting a swipe interaction.
-   * It can be prevented by calling `event.preventDefault`.
-   */
+  /** Event handler called when starting a swipe interaction. */
   onSwipeStart?: (event: SwipeEvent) => void;
 
-  /**
-   * Event handler called during a swipe interaction.
-   * It can be prevented by calling `event.preventDefault`.
-   */
+  /** Event handler called during a swipe interaction. */
   onSwipeMove?: (event: SwipeEvent) => void;
 
-  /**
-   * Event handler called when a swipe interaction is cancelled.
-   * It can be prevented by calling `event.preventDefault`.
-   */
+  /** Event handler called when a swipe interaction is cancelled. */
   onSwipeCancel?: (event: SwipeEvent) => void;
 
-  /**
-   * Event handler called at the end of a swipe interaction.
-   * It can be prevented by calling `event.preventDefault`.
-   */
+  /** Event handler called at the end of a swipe interaction. */
   onSwipeEnd?: (event: SwipeEvent) => void;
 
   /**
@@ -114,12 +106,13 @@ export interface ToastRootOptions {
 export type ToastRootProps = OverrideComponentProps<"li", ToastRootOptions>;
 
 export function ToastRoot(props: ToastRootProps) {
-  let ref: HTMLLIElement | undefined;
+  const defaultId = `toast-${createUniqueId()}`;
 
   const rootContext = useToastRegionContext();
 
   props = mergeDefaultProps(
     {
+      id: defaultId,
       priority: "high",
     },
     props
@@ -127,10 +120,11 @@ export function ToastRoot(props: ToastRootProps) {
 
   const [local, others] = splitProps(props, [
     "ref",
-    "id",
+    "toastId",
     "style",
     "priority",
     "duration",
+    "isPersistent",
     "onPause",
     "onResume",
     "onSwipeStart",
@@ -147,31 +141,32 @@ export function ToastRoot(props: ToastRootProps) {
   const [isOpen, setIsOpen] = createSignal(true);
   const [titleId, setTitleId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
-  const [lifeTime, setLifeTime] = createSignal(100);
+  const [isAnimationEnabled, setIsAnimationEnabled] = createSignal(true);
 
   const presence = createPresence(isOpen);
 
-  const domId = createMemo(() => rootContext.generateId(`toast-${local.id}`));
   const duration = createMemo(() => local.duration || rootContext.duration());
 
   let closeTimerId: number;
   let closeTimerStartTime = 0;
   let closeTimerRemainingTime = duration();
-  let totalElapsedTime = 0;
 
   let pointerStart: { x: number; y: number } | null = null;
   let swipeDelta: { x: number; y: number } | null = null;
 
   const close = () => {
     setIsOpen(false);
+
+    // Restore animation for the exit phase, which have been disabled if it's a toast update.
+    setIsAnimationEnabled(true);
   };
 
   const deleteToast = () => {
-    toastStore.remove(local.id);
+    toastStore.remove(local.toastId);
   };
 
   const startTimer = (duration: number) => {
-    if (!duration || duration === Infinity) {
+    if (!duration || local.isPersistent) {
       return;
     }
 
@@ -313,6 +308,13 @@ export function ToastRoot(props: ToastRootProps) {
     }
   };
 
+  onMount(() => {
+    // Disable animation for updated toast.
+    if (rootContext.toasts().find(toast => toast.id === local.toastId && toast.update)) {
+      setIsAnimationEnabled(false);
+    }
+  });
+
   createEffect(
     on(
       () => rootContext.isPaused(),
@@ -340,27 +342,9 @@ export function ToastRoot(props: ToastRootProps) {
     })
   );
 
-  createEffect(() => {
-    if (rootContext.isPaused() || duration() === Infinity) {
-      return;
-    }
-
-    const intervalId = setInterval(() => {
-      const elapsedTime = new Date().getTime() - closeTimerStartTime + totalElapsedTime;
-
-      const life = Math.trunc(100 - (elapsedTime / duration()) * 100);
-      setLifeTime(life < 0 ? 0 : life);
-    });
-
-    onCleanup(() => {
-      totalElapsedTime += new Date().getTime() - closeTimerStartTime;
-      clearInterval(intervalId);
-    });
-  });
-
   createEffect(
     on(
-      () => toastStore.get(local.id)?.dismiss,
+      () => toastStore.get(local.toastId)?.dismiss,
       dismiss => dismiss && close()
     )
   );
@@ -374,7 +358,10 @@ export function ToastRoot(props: ToastRootProps) {
 
   const context: ToastContextValue = {
     close,
-    generateId: createGenerateId(domId),
+    duration,
+    isPersistent: () => local.isPersistent ?? false,
+    closeTimerStartTime: () => closeTimerStartTime,
+    generateId: createGenerateId(() => others.id!),
     registerTitleId: createRegisterId(setTitleId),
     registerDescriptionId: createRegisterId(setDescriptionId),
   };
@@ -383,15 +370,11 @@ export function ToastRoot(props: ToastRootProps) {
     <Show when={presence.isPresent()}>
       <ToastContext.Provider value={context}>
         <li
-          ref={mergeRefs(el => {
-            presence.setRef(el);
-            ref = el;
-          }, local.ref)}
-          id={domId()}
+          ref={mergeRefs(presence.setRef, local.ref)}
           role="status"
           tabIndex={0}
           style={{
-            "--kb-toast-progress-fill-width": `${lifeTime()}%`,
+            animation: isAnimationEnabled() ? undefined : "none",
             "user-select": "none",
             "touch-action": "none",
             ...local.style,
