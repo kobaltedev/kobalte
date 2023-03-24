@@ -7,9 +7,10 @@
  */
 
 import { createPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen } from "solid-testing-library";
+import { fireEvent, render, screen, within } from "solid-testing-library";
 
 import * as Listbox from ".";
+import * as Select from "../select";
 
 const DATA_SOURCE = [
   { key: "1", label: "One", textValue: "One", isDisabled: false },
@@ -110,6 +111,107 @@ describe("Listbox", () => {
     await Promise.resolve();
 
     expect(document.activeElement).toBe(options[0]);
+  });
+
+  describe("option mapping", () => {
+    const CUSTOM_DATA_SOURCE = [
+      {
+        name: "Section 1",
+        items: [
+          { id: "1", name: "One", valueText: "One", disabled: false },
+          { id: "2", name: "Two", valueText: "Two", disabled: true },
+          { id: "3", name: "Three", valueText: "Three", disabled: false },
+        ],
+      },
+    ];
+
+    it("supports string based option mapping for object options", async () => {
+      render(() => (
+        <Listbox.Root<any, any>
+          options={CUSTOM_DATA_SOURCE}
+          optionValue="id"
+          optionTextValue="valueText"
+          optionDisabled="disabled"
+          optionGroupChildren="items"
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.name}</Listbox.Item>}
+          renderSection={section => <Listbox.Section>{section.rawValue.name}</Listbox.Section>}
+        />
+      ));
+
+      const items = screen.getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[0]).toHaveAttribute("data-key", "1");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[1]).toHaveAttribute("data-key", "2");
+      expect(items[1]).toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("Three");
+      expect(items[2]).toHaveAttribute("data-key", "3");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+    });
+
+    it("supports function based option mapping for object options", async () => {
+      render(() => (
+        <Listbox.Root<any, any>
+          options={CUSTOM_DATA_SOURCE}
+          optionValue={option => option.id}
+          optionTextValue={option => option.valueText}
+          optionDisabled={option => option.disabled}
+          optionGroupChildren={optGroup => optGroup.items}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.name}</Listbox.Item>}
+          renderSection={section => <Listbox.Section>{section.rawValue.name}</Listbox.Section>}
+        />
+      ));
+
+      const items = screen.getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[0]).toHaveAttribute("data-key", "1");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[1]).toHaveAttribute("data-key", "2");
+      expect(items[1]).toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("Three");
+      expect(items[2]).toHaveAttribute("data-key", "3");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+    });
+
+    it("supports function based option mapping for string options", async () => {
+      render(() => (
+        <Listbox.Root
+          options={["One", "Two", "Three"]}
+          optionValue={option => option}
+          optionTextValue={option => option}
+          optionDisabled={option => option === "Two"}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue}</Listbox.Item>}
+        />
+      ));
+
+      const items = screen.getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[0]).toHaveAttribute("data-key", "One");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[1]).toHaveAttribute("data-key", "Two");
+      expect(items[1]).toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("Three");
+      expect(items[2]).toHaveAttribute("data-key", "Three");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+    });
   });
 
   describe("supports single selection", () => {
