@@ -17,6 +17,7 @@
 
 .toast {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
@@ -48,10 +49,17 @@
   animation: swipeOut 100ms ease-out;
 }
 
+.toast__content {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
 .toast__close-button {
   flex-shrink: 0;
   height: 16px;
   width: 16px;
+  margin-left: auto;
   color: hsl(240 5% 34%);
 }
 
@@ -64,6 +72,21 @@
 .toast__description {
   font-size: 14px;
   color: hsl(240 5% 26%);
+}
+
+.toast__progress-track {
+  height: 8px;
+  width: 100%;
+  background-color: hsl(240 6% 90%);
+  border-radius: 3px;
+}
+
+.toast__progress-fill {
+  background-color: hsl(200 98% 39%);
+  border-radius: 3px;
+  height: 100%;
+  width: var(--kb-toast-progress-fill-width);
+  transition: width 250ms linear;
 }
 
 @keyframes hide {
@@ -93,7 +116,7 @@
   }
 }
 
-[data-kb-theme="dark"] .toast__content {
+[data-kb-theme="dark"] .toast {
   border: 1px solid hsl(240 5% 26%);
   background-color: hsl(240 4% 16%);
   box-shadow: none;
@@ -109,4 +132,8 @@
 
 [data-kb-theme="dark"] .toast__description {
   color: hsl(0 100% 100% / 0.7);
+}
+
+[data-kb-theme="dark"] .toast__progress-track {
+  background-color: hsl(240 5% 26%);
 }

@@ -48,8 +48,8 @@ export function Header(props: HeaderProps) {
       </div>
 
       <div class="relative flex basis-0 justify-end md:flex-grow items-center py-2">
-        <div id="docsearch" class="px-1 flex items-center justify-center" />
-        <div class="hidden lg:flex text-sm">
+        <div id="docsearch" class="mx-3.5 flex items-center justify-center" />
+        <div class="hidden lg:flex lg:space-x-1.5 text-sm">
           <Link
             href="/docs/core/overview/introduction"
             class={clsx(

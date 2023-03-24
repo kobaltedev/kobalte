@@ -25,13 +25,13 @@ import { ToastSwipeDirection } from "./types";
 export interface ToastRegionOptions {
   /**
    * A label for the toast region to provide context for screen reader users when navigating page landmarks.
-   * The available `{hotkey}` placeholder will be replaced for you.
+   * Can contain a `{hotkey}` placeholder which will be replaced for you.
    * @default "Notifications ({hotkey})"
    */
   "aria-label"?: string;
 
   /**
-   * The keys to use as the keyboard shortcut that will move focus to the toast viewport.
+   * The keys to use as the keyboard shortcut that will move focus to the toast region.
    * Use `event.code` value for each key from [keycode.info](https://www.toptal.com/developers/keycode).
    * For meta keys, use `ctrlKey`, `shiftKey`, `altKey` and/or `metaKey`.
    * @default alt + T
@@ -89,7 +89,7 @@ export function ToastRegion(props: ToastRegionProps) {
       swipeDirection: "right",
       swipeThreshold: 50,
       pauseOnInteraction: true,
-      pauseOnPageIdle: false,
+      pauseOnPageIdle: true,
       isTopLayer: true,
     },
     props

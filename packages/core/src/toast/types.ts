@@ -33,7 +33,7 @@ export interface ToastPromiseComponentProps<T, U = any> extends ToastComponentPr
 
 export type ToastPromiseComponent<T, U = any> = Component<ToastPromiseComponentProps<T, U>>;
 
-export interface Toast {
+export interface ToastConfig {
   /** The unique id of the toast. */
   id: number;
 

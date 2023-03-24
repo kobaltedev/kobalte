@@ -1,12 +1,12 @@
 import { createStore } from "solid-js/store";
 
-import { Toast } from "./types";
+import { ToastConfig } from "./types";
 
 const [state, setState] = createStore({
-  toasts: [] as Toast[],
+  toasts: [] as ToastConfig[],
 });
 
-function add(toast: Toast) {
+function add(toast: ToastConfig) {
   setState("toasts", prev => [...prev, toast]);
 }
 
@@ -14,7 +14,7 @@ function get(id: number) {
   return state.toasts.find(toast => toast.id === id);
 }
 
-function update(id: number, toast: Toast) {
+function update(id: number, toast: ToastConfig) {
   const index = state.toasts.findIndex(toast => toast.id === id);
 
   if (index != -1) {

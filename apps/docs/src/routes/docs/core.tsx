@@ -47,6 +47,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Alert Dialog",
         href: "/docs/core/components/alert-dialog",
+        status: "new",
       },
       {
         title: "Breadcrumbs",
@@ -103,6 +104,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Select",
         href: "/docs/core/components/select",
+        status: "updated",
       },
       {
         title: "Separator",
@@ -123,6 +125,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Toast",
         href: "/docs/core/components/toast",
+        status: "new",
       },
       {
         title: "Toggle Button",

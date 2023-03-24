@@ -81,28 +81,16 @@ export interface ToastRootOptions {
    */
   onResume?: () => void;
 
-  /**
-   * Event handler called when starting a swipe interaction.
-   * It can be prevented by calling `event.preventDefault`.
-   */
+  /** Event handler called when starting a swipe interaction. */
   onSwipeStart?: (event: SwipeEvent) => void;
 
-  /**
-   * Event handler called during a swipe interaction.
-   * It can be prevented by calling `event.preventDefault`.
-   */
+  /** Event handler called during a swipe interaction. */
   onSwipeMove?: (event: SwipeEvent) => void;
 
-  /**
-   * Event handler called when a swipe interaction is cancelled.
-   * It can be prevented by calling `event.preventDefault`.
-   */
+  /** Event handler called when a swipe interaction is cancelled. */
   onSwipeCancel?: (event: SwipeEvent) => void;
 
-  /**
-   * Event handler called at the end of a swipe interaction.
-   * It can be prevented by calling `event.preventDefault`.
-   */
+  /** Event handler called at the end of a swipe interaction. */
   onSwipeEnd?: (event: SwipeEvent) => void;
 
   /**
@@ -119,8 +107,6 @@ export type ToastRootProps = OverrideComponentProps<"li", ToastRootOptions>;
 
 export function ToastRoot(props: ToastRootProps) {
   const defaultId = `toast-${createUniqueId()}`;
-
-  let ref: HTMLLIElement | undefined;
 
   const rootContext = useToastRegionContext();
 
@@ -384,10 +370,7 @@ export function ToastRoot(props: ToastRootProps) {
     <Show when={presence.isPresent()}>
       <ToastContext.Provider value={context}>
         <li
-          ref={mergeRefs(el => {
-            presence.setRef(el);
-            ref = el;
-          }, local.ref)}
+          ref={mergeRefs(presence.setRef, local.ref)}
           role="status"
           tabIndex={0}
           style={{
