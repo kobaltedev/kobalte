@@ -240,14 +240,14 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
       parentSelectionManager().setFocused(false);
       parentSelectionManager().setFocusedKey(undefined);
 
-      // We focus manually because we prevented it in MenuSubContent's `onOpenAutoFocus`.
-      if (context.isOpen()) {
-        context.focusContent();
-        context.listState().selectionManager().setFocused(true);
-        context.listState().selectionManager().setFocusedKey(collection().getFirstKey());
-      } else {
+      if (!context.isOpen()) {
         context.open("first");
       }
+
+      // We focus manually because we prevented it in MenuSubContent's `onOpenAutoFocus`.
+      context.focusContent();
+      context.listState().selectionManager().setFocused(true);
+      context.listState().selectionManager().setFocusedKey(collection().getFirstKey());
     }
   };
 
