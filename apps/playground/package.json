@@ -31,7 +31,7 @@
     "start": "vite"
   },
   "dependencies": {
-    "@kobalte/core": "^0.7.4",
+    "@kobalte/core": "^0.8.0",
     "@kobalte/utils": "^0.6.1",
     "solid-js": "1.6.15"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@kobalte/core",
-  "version": "0.7.4",
+  "version": "0.8.0",
   "private": false,
   "description": "Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
   "keywords": [
