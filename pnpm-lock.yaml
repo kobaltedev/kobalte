@@ -36,6 +36,8 @@ importers:
       lint-staged: 13.1.1
       prettier: 2.8.4
       prettier-plugin-tailwindcss: 0.2.2
+      rollup: 3.20.2
+      rollup-preset-solid: 2.0.1
       solid-js: 1.6.15
       solid-testing-library: 0.3.0
       sort-package-json: 2.4.1
@@ -79,6 +81,8 @@ importers:
       lint-staged: 13.1.1
       prettier: 2.8.4
       prettier-plugin-tailwindcss: 0.2.2_prettier@2.8.4
+      rollup: 3.20.2
+      rollup-preset-solid: 2.0.1
       solid-js: 1.6.15
       solid-testing-library: 0.3.0_solid-js@1.6.15
       sort-package-json: 2.4.1
@@ -2584,7 +2588,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.13.0
+      '@types/node': 18.15.7
       '@types/yargs': 15.0.15
       chalk: 4.1.2
 
@@ -2826,6 +2830,37 @@ packages:
       is-module: 1.0.0
       resolve: 1.22.1
       rollup: 3.20.2
+    dev: true
+
+  /@rollup/plugin-node-resolve/15.0.1_rollup@3.20.2:
+    resolution: {integrity: sha512-ReY88T7JhJjeRVbfCyNj+NXAG3IIsVMsX9b5/9jC98dRP8/yxlZdz7mHZbHk5zHr24wZZICS5AcXsFZAXYUQEg==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.78.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': 5.0.2_rollup@3.20.2
+      '@types/resolve': 1.20.2
+      deepmerge: 4.3.1
+      is-builtin-module: 3.2.1
+      is-module: 1.0.0
+      resolve: 1.22.1
+      rollup: 3.20.2
+    dev: true
+
+  /@rollup/plugin-terser/0.1.0_rollup@3.20.2:
+    resolution: {integrity: sha512-N2KK+qUfHX2hBzVzM41UWGLrEmcjVC37spC8R3c9mt3oEDFKh3N2e12/lLp9aVSt86veR0TQiCNQXrm8C6aiUQ==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.x || ^3.x
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      rollup: 3.20.2
+      terser: 5.16.8
     dev: true
 
   /@rollup/pluginutils/3.1.0_rollup@3.20.2:
@@ -3217,10 +3252,10 @@ packages:
 
   /@types/node/18.13.0:
     resolution: {integrity: sha512-gC3TazRzGoOnoKAhUx+Q0t8S9Tzs74z7m0ipwGpSqQrleP14hKxP4/JUeEQcD3W1/aIpnWl8pHowI7WokuZpXg==}
+    dev: true
 
   /@types/node/18.15.7:
     resolution: {integrity: sha512-LFmUbFunqmBn26wJZgZPYZPrDR1RwGOu2v79Mgcka1ndO6V0/cwjivPTc4yoK6n9kmw4/ls1r8cLrvh2iMibFA==}
-    dev: true
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -3238,6 +3273,10 @@ packages:
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
     dependencies:
       '@types/node': 18.15.7
+    dev: true
+
+  /@types/resolve/1.20.2:
+    resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
     dev: true
 
   /@types/semver/6.2.3:
@@ -9753,6 +9792,26 @@ packages:
       rollup: 3.20.2
       source-map: 0.7.4
       yargs: 17.7.1
+    dev: true
+
+  /rollup-preset-solid/2.0.1:
+    resolution: {integrity: sha512-CPJn3SqADlIxhAW3jwZuAFRyZcz7HPeUAz4f+6BzulxHnK4v6tgoTbMvk8vEsfsvHwiTmX93KHIKdf79aTdVSA==}
+    dependencies:
+      '@babel/core': 7.21.3
+      '@babel/preset-env': 7.20.2_@babel+core@7.21.3
+      '@babel/preset-typescript': 7.21.0_@babel+core@7.21.3
+      '@rollup/plugin-babel': 6.0.3_jurz42ukfq4yatoqnmhqydiffu
+      '@rollup/plugin-node-resolve': 15.0.1_rollup@3.20.2
+      '@rollup/plugin-terser': 0.1.0_rollup@3.20.2
+      babel-preset-solid: 1.6.13_@babel+core@7.21.3
+      colorette: 2.0.19
+      esbuild: 0.15.18
+      merge-anything: 5.1.4
+      rollup: 3.20.2
+      typescript: 4.9.5
+    transitivePeerDependencies:
+      - '@types/babel__core'
+      - supports-color
     dev: true
 
   /rollup-route-manifest/1.0.0_rollup@3.20.2:
