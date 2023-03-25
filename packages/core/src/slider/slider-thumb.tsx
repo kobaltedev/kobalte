@@ -14,22 +14,13 @@
 
 import {
   composeEventHandlers,
-  focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import {
-  Accessor,
-  createContext,
-  createEffect,
-  JSX,
-  onMount,
-  splitProps,
-  useContext,
-} from "solid-js";
-import { useLocale } from "../i18n";
+import { Accessor, createContext, JSX, onMount, splitProps, useContext } from "solid-js";
 
+import { useLocale } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";

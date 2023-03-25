@@ -34,6 +34,8 @@ export function SliderFill(props: SliderFillProps) {
     <Polymorphic
       fallback="div"
       style={{
+        [context.startEdge()]: `${offsetStart()}%`,
+        [context.endEdge()]: `${offsetEnd()}%`,
         ...local.style,
       }}
       {...context.dataset()}

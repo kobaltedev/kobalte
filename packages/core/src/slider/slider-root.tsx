@@ -288,19 +288,22 @@ export function SliderRoot(props: SliderRootProps) {
     }
   };
 
-  const startEdge = () => {
-    const isVertical = local.orientation === "vertical";
-    const direction: [Side, Side] = isVertical ? ["top", "bottom"] : ["right", "left"];
+  const startEdge = createMemo(() => {
+    if (isVertical()) {
+      console.log(isSlidingFromBottom() ? "bottom" : "top");
+      return isSlidingFromBottom() ? "bottom" : "top";
+    }
 
-    return isVertical ? direction[+isSlidingFromBottom()] : direction[+isSlidingFromLeft()];
-  };
+    return isSlidingFromLeft() ? "left" : "right";
+  });
 
-  const endEdge = () => {
-    const isVertical = local.orientation === "vertical";
-    const direction: [Side, Side] = isVertical ? ["bottom", "top"] : ["left", "right"];
+  const endEdge = createMemo(() => {
+    if (isVertical()) {
+      return isSlidingFromBottom() ? "top" : "bottom";
+    }
 
-    return isVertical ? direction[+isSlidingFromBottom()] : direction[+isSlidingFromLeft()];
-  };
+    return isSlidingFromLeft() ? "right" : "left";
+  });
 
   const context: SliderContextValue = {
     dataset,
