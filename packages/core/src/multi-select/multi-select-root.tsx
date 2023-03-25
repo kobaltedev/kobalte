@@ -1,5 +1,7 @@
+import { OverrideComponentProps } from "@kobalte/utils";
 import { Component } from "solid-js";
 
+import { AsChildProp } from "../polymorphic";
 import {
   SelectBase,
   SelectBaseItemComponentProps,
@@ -28,7 +30,8 @@ export interface MultiSelectRootOptions<Option, OptGroup = never>
 }
 
 export interface MultiSelectRootProps<Option, OptGroup = never>
-  extends MultiSelectRootOptions<Option, OptGroup> {}
+  extends OverrideComponentProps<"div", MultiSelectRootOptions<Option, OptGroup>>,
+    AsChildProp {}
 
 /**
  * Displays a list of options for the user to pick multiples from — triggered by a button.
