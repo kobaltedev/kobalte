@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.8.1
+
+### Patch Changes
+
+- 4d669ee: fix: `Select.Root` missing type definition
+
 ## 0.8.0
 
 ### Minor Changes
