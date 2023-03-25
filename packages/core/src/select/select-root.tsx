@@ -1,5 +1,7 @@
+import { OverrideComponentProps } from "@kobalte/utils";
 import { Component, splitProps } from "solid-js";
 
+import { AsChildProp } from "../polymorphic";
 import { CollectionNode, createControllableSetSignal } from "../primitives";
 import {
   SelectBase,
@@ -54,7 +56,8 @@ export interface SelectRootOptions<Option, OptGroup = never>
 }
 
 export interface SelectRootProps<Option, OptGroup = never>
-  extends SelectRootOptions<Option, OptGroup> {}
+  extends OverrideComponentProps<"div", SelectRootOptions<Option, OptGroup>>,
+    AsChildProp {}
 
 /**
  * Displays a list of options for the user to pick from — triggered by a button.

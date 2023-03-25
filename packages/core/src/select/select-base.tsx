@@ -11,6 +11,7 @@ import {
   createGenerateId,
   focusWithoutScrolling,
   mergeDefaultProps,
+  OverrideComponentProps,
   ValidationState,
 } from "@kobalte/utils";
 import {
@@ -186,7 +187,8 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 }
 
 export interface SelectBaseProps<Option, OptGroup = never>
-  extends SelectBaseOptions<Option, OptGroup> {}
+  extends OverrideComponentProps<"div", SelectBaseOptions<Option, OptGroup>>,
+    AsChildProp {}
 
 /**
  * Base component for a select, provide context for its children.
