@@ -33,7 +33,7 @@
   "dependencies": {
     "@docsearch/css": "3.3.3",
     "@docsearch/js": "3.3.3",
-    "@kobalte/core": "0.8.0",
+    "@kobalte/core": "0.8.1",
     "@solidjs/meta": "0.28.2",
     "@solidjs/router": "0.7.1",
     "@tanstack/solid-virtual": "3.0.0-beta.6",
