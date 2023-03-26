@@ -83,10 +83,8 @@ export function DialogContent(props: DialogContentProps) {
 
   const [local, others] = splitProps(props, [
     "ref",
-    "id",
     "onOpenAutoFocus",
     "onCloseAutoFocus",
-    "onEscapeKeyDown",
     "onPointerDownOutside",
     "onFocusOutside",
     "onInteractOutside",
@@ -162,7 +160,7 @@ export function DialogContent(props: DialogContentProps) {
     () => ref
   );
 
-  createEffect(() => onCleanup(context.registerContentId(local.id!)));
+  createEffect(() => onCleanup(context.registerContentId(others.id!)));
 
   return (
     <Show when={context.contentPresence.isPresent()}>
@@ -172,7 +170,6 @@ export function DialogContent(props: DialogContentProps) {
           ref = el;
         }, local.ref)}
         role="dialog"
-        id={local.id}
         tabIndex={-1}
         isDismissed={!context.isOpen()}
         disableOutsidePointerEvents={context.isOpen() && context.isModal()}
@@ -181,7 +178,6 @@ export function DialogContent(props: DialogContentProps) {
         aria-describedby={context.descriptionId()}
         data-expanded={context.isOpen() ? "" : undefined}
         data-closed={!context.isOpen() ? "" : undefined}
-        onEscapeKeyDown={local.onEscapeKeyDown}
         onPointerDownOutside={onPointerDownOutside}
         onFocusOutside={onFocusOutside}
         onInteractOutside={onInteractOutside}

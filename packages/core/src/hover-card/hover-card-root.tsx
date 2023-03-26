@@ -45,20 +45,13 @@ export interface HoverCardRootOptions
   /** Event handler called when the open state of the hovercard changes. */
   onOpenChange?: (isOpen: boolean) => void;
 
-  /**
-   * A unique identifier for the component.
-   * The id is used to generate id attributes for nested components.
-   * If no id prop is provided, a generated id will be used.
-   */
-  id?: string;
-
   /** The duration from when the mouse enters the trigger until the hovercard opens. */
   openDelay?: number;
 
   /** The duration from when the mouse leaves the trigger or content until the hovercard closes. */
   closeDelay?: number;
 
-  /** Whether to close the hover card even if the user cursor is inside the safe area between the trigger and hovercard. */
+  /** Whether to close the hovercard even if the user cursor is inside the safe area between the trigger and hovercard. */
   ignoreSafeArea?: boolean;
 
   /**
@@ -66,6 +59,13 @@ export interface HoverCardRootOptions
    * Useful when controlling animation with SolidJS animation libraries.
    */
   forceMount?: boolean;
+
+  /**
+   * A unique identifier for the component.
+   * The id is used to generate id attributes for nested components.
+   * If no id prop is provided, a generated id will be used.
+   */
+  id?: string;
 }
 
 export interface HoverCardRootProps extends ParentProps<HoverCardRootOptions> {}
