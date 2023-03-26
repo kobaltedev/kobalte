@@ -6,7 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/1b05a8e35cf35f3020484979086d70aefbaf4095/packages/react/tooltip/src/Tooltip.tsx
  */
 
-import { getWindow, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
@@ -68,7 +68,7 @@ export function TooltipContent(props: TooltipContentProps) {
             ...local.style,
           }}
           onFocusOutside={e => e.preventDefault()}
-          onDismiss={() => context.close(true)}
+          onDismiss={() => context.hideTooltip(true)}
           {...context.dataset()}
           {...others}
         />

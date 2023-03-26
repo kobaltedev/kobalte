@@ -14,8 +14,8 @@ export interface TooltipContextValue {
   triggerOnFocusOnly: Accessor<boolean>;
   contentId: Accessor<string | undefined>;
   contentPresence: CreatePresenceResult;
-  open: (immediate?: boolean) => void;
-  close: (immediate?: boolean) => void;
+  openTooltip: (immediate?: boolean) => void;
+  hideTooltip: (immediate?: boolean) => void;
   generateId: (part: string) => string;
   registerContentId: (id: string) => () => void;
   isTargetOnTooltip: (target: Node | null) => boolean;

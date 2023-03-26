@@ -15,7 +15,7 @@
 import {
   contains,
   createGenerateId,
-  createGlobalListeners,
+  getDocument,
   getEventPoint,
   getWindow,
   isPointInPolygon,
@@ -141,10 +141,6 @@ export function TooltipRoot(props: TooltipRootProps) {
 
   const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
 
-  const { addGlobalListener, removeGlobalListener } = createGlobalListeners();
-
-  //
-
   const ensureTooltipEntry = () => {
     tooltips[tooltipId] = hideTooltip;
   };
@@ -158,22 +154,11 @@ export function TooltipRoot(props: TooltipRootProps) {
     }
   };
 
-  const showTooltip = () => {
-    clearTimeout(closeTimeoutId);
-    closeTimeoutId = undefined;
-    closeOpenTooltips();
-    ensureTooltipEntry();
-    globalWarmedUp = true;
-    disclosureState.open();
-
-    window.clearTimeout(globalWarmUpTimeout);
-    globalWarmUpTimeout = undefined;
-
-    window.clearTimeout(globalCoolDownTimeout);
-    globalCoolDownTimeout = undefined;
-  };
-
   const hideTooltip = (immediate = false) => {
+    if (isServer) {
+      return;
+    }
+
     if (immediate || (local.closeDelay && local.closeDelay <= 0)) {
       window.clearTimeout(closeTimeoutId);
       closeTimeoutId = undefined;
@@ -199,7 +184,30 @@ export function TooltipRoot(props: TooltipRootProps) {
     }
   };
 
+  const showTooltip = () => {
+    if (isServer) {
+      return;
+    }
+
+    clearTimeout(closeTimeoutId);
+    closeTimeoutId = undefined;
+    closeOpenTooltips();
+    ensureTooltipEntry();
+    globalWarmedUp = true;
+    disclosureState.open();
+
+    window.clearTimeout(globalWarmUpTimeout);
+    globalWarmUpTimeout = undefined;
+
+    window.clearTimeout(globalCoolDownTimeout);
+    globalCoolDownTimeout = undefined;
+  };
+
   const warmupTooltip = () => {
+    if (isServer) {
+      return;
+    }
+
     closeOpenTooltips();
     ensureTooltipEntry();
 
@@ -215,6 +223,10 @@ export function TooltipRoot(props: TooltipRootProps) {
   };
 
   const openTooltip = (immediate = false) => {
+    if (isServer) {
+      return;
+    }
+
     if (!immediate && local.openDelay && local.openDelay > 0 && !closeTimeoutId) {
       warmupTooltip();
     } else {
@@ -279,12 +291,14 @@ export function TooltipRoot(props: TooltipRootProps) {
       return;
     }
 
+    const doc = getDocument();
+
     // Checks whether the mouse is moving outside the tooltip.
-    // If yes, hide the card after the close delay.
-    addGlobalListener(document, "pointermove", onHoverOutside, true);
+    // If yes, hide the tooltip after the close delay.
+    doc.addEventListener("pointermove", onHoverOutside, true);
 
     onCleanup(() => {
-      removeGlobalListener(document, "pointermove", onHoverOutside, true);
+      doc.removeEventListener("pointermove", onHoverOutside, true);
     });
   });
 
@@ -335,8 +349,8 @@ export function TooltipRoot(props: TooltipRootProps) {
     triggerOnFocusOnly: () => local.triggerOnFocusOnly ?? false,
     contentId,
     contentPresence,
-    open: openTooltip,
-    close: hideTooltip,
+    openTooltip,
+    hideTooltip,
     generateId: createGenerateId(() => props.id!),
     registerContentId: createRegisterId(setContentId),
     isTargetOnTooltip,
