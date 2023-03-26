@@ -33,13 +33,6 @@ export function SliderInput(props: SliderInputProps) {
   );
 
   const [local, others] = splitProps(props, ["id", "style", "isRequired", "validationState"]);
-  const isFocused = () =>
-    context.state.focusedThumb() !== undefined && context.state.focusedThumb() === thumb.index();
-  createEffect(() => {
-    if (isFocused()) {
-      // usWithoutScrolling(inputRef);
-    }
-  });
 
   return (
     // eslint-disable-next-line jsx-a11y/role-supports-aria-props

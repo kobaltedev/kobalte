@@ -16,7 +16,7 @@ import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "../primitives/create-slider-state/create-slider-state";
-import { Side, SliderContext, SliderContextValue, SliderDataSet } from "./slider-context";
+import { SliderContext, SliderContextValue, SliderDataSet } from "./slider-context";
 import { getClosestValueIndex, getNextSortedValues, hasMinStepsBetweenValues } from "./utils";
 
 export interface GetValueLabelParams {
@@ -194,7 +194,7 @@ export function SliderRoot(props: SliderRootProps) {
       currentPosition = state.getThumbPercent(state.focusedThumb()!) * size;
     }
     let delta = isVertical() ? deltaY : deltaX;
-    if (isVertical() || !isDirectionLTR()) {
+    if ((!isVertical() && local.inverted!) || (isVertical() && isSlidingFromBottom())) {
       delta = -delta;
     }
     currentPosition += delta;
@@ -290,7 +290,6 @@ export function SliderRoot(props: SliderRootProps) {
 
   const startEdge = createMemo(() => {
     if (isVertical()) {
-      console.log(isSlidingFromBottom() ? "bottom" : "top");
       return isSlidingFromBottom() ? "bottom" : "top";
     }
 

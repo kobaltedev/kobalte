@@ -20,7 +20,6 @@ import {
 } from "@kobalte/utils";
 import { Accessor, createContext, JSX, onMount, splitProps, useContext } from "solid-js";
 
-import { useLocale } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
@@ -36,8 +35,6 @@ export function SliderThumb(props: SliderThumbProps) {
 
   props = mergeDefaultProps({ id: context.generateId("thumb") }, props);
   const [local, others] = splitProps(props, ["ref", "style"]);
-  const { direction } = useLocale();
-  const isDirectionLTR = () => direction() === "ltr";
 
   createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
@@ -48,13 +45,28 @@ export function SliderThumb(props: SliderThumbProps) {
       type: "item",
     }),
   });
+
   const index = () => (ref ? context.thumbs().findIndex(v => v.ref() === ref) : -1);
   const value = () => context.state.getThumbValue(index()) as number | undefined;
+
   const position = () => {
     return context.state.getThumbPercent(index());
   };
 
+  const transform = () => {
+    let value = 50;
+    const isVertical = context.state.orientation() === "vertical";
+
+    if (isVertical) {
+      value *= context.isSlidingFromBottom() ? 1 : -1;
+    } else {
+      value *= context.isSlidingFromLeft() ? -1 : 1;
+    }
+    return isVertical ? `translate(-50%, ${value}%)` : `translate(${value}%, -50%)`;
+  };
+
   let startPosition = 0;
+
   onMount(() => {
     context.state.setThumbEditable(index(), !context.state.isDisabled());
   });
@@ -129,8 +141,8 @@ export function SliderThumb(props: SliderThumbProps) {
         style={{
           display: value() === undefined ? "none" : undefined,
           position: "absolute",
-          [context.startEdge()]: `${position() * 100}%`,
-          transform: "translate(-50%, -50%)",
+          [context.startEdge()]: `calc(${position() * 100}%)`,
+          transform: transform(),
           "touch-action": "none",
           ...local.style,
         }}

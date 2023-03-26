@@ -1,4 +1,4 @@
-import { OverrideComponentProps } from "@kobalte/utils";
+import { clamp, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -20,8 +20,9 @@ export function SliderFill(props: SliderFillProps) {
 
   const [local, others] = splitProps(props, ["style"]);
 
-  const percentages = () =>
-    context.state.values().map(value => context.state.getValuePercent(value) * 100);
+  const percentages = () => {
+    return context.state.values().map(value => context.state.getValuePercent(value) * 100);
+  };
   const offsetStart = () => {
     return context.state.values().length > 1 ? Math.min(...percentages()) : 0;
   };
