@@ -5,7 +5,7 @@ import {
   ValidationState,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { createEffect, JSX, splitProps } from "solid-js";
+import { createEffect, createSignal, JSX, splitProps } from "solid-js";
 
 import { AsChildProp } from "../polymorphic";
 import { useSliderContext } from "./slider-context";
@@ -34,6 +34,12 @@ export function SliderInput(props: SliderInputProps) {
 
   const [local, others] = splitProps(props, ["id", "style", "isRequired", "validationState"]);
 
+  const [valueText, setValueText] = createSignal("");
+
+  createEffect(() => {
+    setValueText(thumb.index() === -1 ? "" : context.state.getThumbValueLabel(thumb.index()));
+  });
+
   return (
     // eslint-disable-next-line jsx-a11y/role-supports-aria-props
     <input
@@ -46,7 +52,7 @@ export function SliderInput(props: SliderInputProps) {
       value={context.state.values()[thumb.index()]}
       disabled={context.state.isDisabled()}
       aria-orientation={context.state.orientation()}
-      aria-valuetext={context.state.getThumbValueLabel(thumb.index())}
+      aria-valuetext={valueText()}
       aria-required={local.isRequired || undefined}
       aria-invalid={local.validationState === "invalid" || undefined}
       aria-errormessage={others["aria-errormessage"]}

@@ -138,7 +138,10 @@ export function createSliderState(props: StateOpts): SliderState {
     if (props.isDisabled!() || !isThumbEditable(index)) return;
 
     value = snapValueToStep(value, props.minValue!(), props.maxValue!(), props.step!());
-
+    const nextValues = getNextSortedValues(values(), value, index);
+    if (!hasMinStepsBetweenValues(nextValues, props.minStepsBetweenThumbs!() * props.step!())) {
+      return;
+    }
     setValues(p => [...replaceIndex(p, index, value)]);
   };
 

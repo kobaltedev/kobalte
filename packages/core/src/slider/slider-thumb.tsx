@@ -104,7 +104,7 @@ export function SliderThumb(props: SliderThumbProps) {
   };
 
   return (
-    <ThumbContext.Provider value={{ index: index }}>
+    <ThumbContext.Provider value={{ index }}>
       <Polymorphic
         ref={mergeRefs(el => (ref = el), local.ref)}
         fallback="span"

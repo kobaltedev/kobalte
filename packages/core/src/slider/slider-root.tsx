@@ -132,7 +132,7 @@ export function SliderRoot(props: SliderRootProps) {
   ]);
 
   const [labelId, setLabelId] = createSignal<string>();
-  const defaultFormatter = createNumberFormatter(() => ({ style: "percent" }));
+  const defaultFormatter = createNumberFormatter(() => ({ style: "decimal" }));
   const { direction } = useLocale();
 
   const state = createSliderState({
