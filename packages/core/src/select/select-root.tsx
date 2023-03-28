@@ -1,12 +1,37 @@
-import { Accessor, JSX, splitProps } from "solid-js";
+import { OverrideComponentProps } from "@kobalte/utils";
+import { Component, splitProps } from "solid-js";
 
-import { createControllableSetSignal } from "../primitives";
-import { SelectBase, SelectBaseOptions } from "./select-base";
+import { AsChildProp } from "../polymorphic";
+import { CollectionNode, createControllableSetSignal } from "../primitives";
+import {
+  SelectBase,
+  SelectBaseItemComponentProps,
+  SelectBaseOptions,
+  SelectBaseSectionComponentProps,
+  SelectBaseValueComponentProps,
+} from "./select-base";
+
+export interface SelectValueComponentProps<T> {
+  /** The selected item. */
+  item: CollectionNode<T>;
+
+  /** A function to clear the selection. */
+  clear: () => void;
+}
+
+export interface SelectItemComponentProps<T> extends SelectBaseItemComponentProps<T> {}
+export interface SelectSectionComponentProps<T> extends SelectBaseSectionComponentProps<T> {}
 
 export interface SelectRootOptions<Option, OptGroup = never>
   extends Omit<
     SelectBaseOptions<Option, OptGroup>,
-    "value" | "defaultValue" | "onValueChange" | "renderValue" | "selectionMode"
+    | "valueComponent"
+    | "itemComponent"
+    | "sectionComponent"
+    | "value"
+    | "defaultValue"
+    | "onValueChange"
+    | "selectionMode"
   > {
   /** The controlled value of the select. */
   value?: string;
@@ -20,22 +45,29 @@ export interface SelectRootOptions<Option, OptGroup = never>
   /** Event handler called when the value changes. */
   onValueChange?: (value: string) => void;
 
-  /** A map function that receives a _selectedOption_ signal representing the selected option. */
-  renderValue?: (selectedOption: Accessor<Option>) => JSX.Element;
+  /** The component to render inside `Select.Value`. */
+  valueComponent?: Component<SelectValueComponentProps<Option>>;
+
+  /** When NOT virtualized, the component to render as an item in the `Select.Listbox`. */
+  itemComponent?: Component<SelectItemComponentProps<Option>>;
+
+  /** When NOT virtualized, the component to render as a section in the `Select.Listbox`. */
+  sectionComponent?: Component<SelectSectionComponentProps<OptGroup>>;
 }
 
 export interface SelectRootProps<Option, OptGroup = never>
-  extends SelectRootOptions<Option, OptGroup> {}
+  extends OverrideComponentProps<"div", SelectRootOptions<Option, OptGroup>>,
+    AsChildProp {}
 
 /**
  * Displays a list of options for the user to pick from — triggered by a button.
  */
 export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Option, OptGroup>) {
   const [local, others] = splitProps(props, [
+    "valueComponent",
     "value",
     "defaultValue",
     "onValueChange",
-    "renderValue",
   ]);
 
   const [value, setValue] = createControllableSetSignal({
@@ -44,8 +76,13 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
     onChange: value => local.onValueChange?.(value.values().next().value),
   });
 
-  const renderValue = (selectedOptions: Accessor<Option[]>) => {
-    return local.renderValue?.(() => selectedOptions()[0]);
+  const valueComponent = (props: SelectBaseValueComponentProps<Option>) => {
+    return local.valueComponent?.({
+      get item() {
+        return props.items[0];
+      },
+      clear: () => props.clear(),
+    });
   };
 
   return (
@@ -54,7 +91,7 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
       onValueChange={setValue}
       selectionMode="single"
       disallowEmptySelection
-      renderValue={renderValue}
+      valueComponent={valueComponent}
       {...others}
     />
   );

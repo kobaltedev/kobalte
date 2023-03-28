@@ -71,7 +71,11 @@ export const mdxComponents = {
   table: (props: ComponentProps<"table">) => {
     const [local, others] = splitProps(props, ["class"]);
 
-    return <table class={clsx(local.class, "kb-table")} {...others} />;
+    return (
+      <div style={{ "overflow-x": "auto" }}>
+        <table class={clsx(local.class, "kb-table")} {...others} />
+      </div>
+    );
   },
   a: (props: ComponentProps<"a">) => {
     // eslint-disable-next-line jsx-a11y/anchor-has-content

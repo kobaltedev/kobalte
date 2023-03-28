@@ -1,8 +1,8 @@
-import { MultiSelect, Select } from "@kobalte/core";
+import { As, MultiSelect, Select } from "@kobalte/core";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { createSignal, For } from "solid-js";
 
-import { CaretSortIcon, CheckIcon } from "../components";
+import { CaretSortIcon, CheckIcon, CrossIcon } from "../components";
 import style from "./select.module.css";
 
 const STRING_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
@@ -12,10 +12,10 @@ export function BasicExample() {
     <Select.Root
       options={STRING_OPTIONS}
       placeholder="Select a fruit…"
-      renderValue={selectedOption => selectedOption()}
-      renderItem={item => (
-        <Select.Item item={item()} class={style["select__item"]}>
-          <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
+      valueComponent={props => props.item.rawValue}
+      itemComponent={props => (
+        <Select.Item item={props.item} class={style["select__item"]}>
+          <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
           <Select.ItemIndicator class={style["select__item-indicator"]}>
             <CheckIcon />
           </Select.ItemIndicator>
@@ -43,10 +43,10 @@ export function DefaultValueExample() {
       defaultValue="Blueberry"
       options={STRING_OPTIONS}
       placeholder="Select a fruit…"
-      renderValue={selectedOption => selectedOption()}
-      renderItem={item => (
-        <Select.Item item={item()} class={style["select__item"]}>
-          <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
+      valueComponent={props => props.item.rawValue}
+      itemComponent={props => (
+        <Select.Item item={props.item} class={style["select__item"]}>
+          <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
           <Select.ItemIndicator class={style["select__item-indicator"]}>
             <CheckIcon />
           </Select.ItemIndicator>
@@ -78,10 +78,10 @@ export function ControlledExample() {
         onValueChange={setValue}
         options={STRING_OPTIONS}
         placeholder="Select a fruit…"
-        renderValue={selectedOption => selectedOption()}
-        renderItem={item => (
-          <Select.Item item={item()} class={style["select__item"]}>
-            <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
+        valueComponent={props => props.item.rawValue}
+        itemComponent={props => (
+          <Select.Item item={props.item} class={style["select__item"]}>
+            <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
             <Select.ItemIndicator class={style["select__item-indicator"]}>
               <CheckIcon />
             </Select.ItemIndicator>
@@ -105,52 +105,15 @@ export function ControlledExample() {
   );
 }
 
-export function MultiSelectExample() {
-  const [values, setValues] = createSignal(new Set(["Blueberry", "Pineapple"]));
-
-  return (
-    <>
-      <MultiSelect.Root
-        value={values()}
-        onValueChange={setValues}
-        options={STRING_OPTIONS}
-        placeholder="Select some fruits…"
-        renderValue={selectedOptions => selectedOptions().join(", ")}
-        renderItem={item => (
-          <MultiSelect.Item item={item()} class={style["select__item"]}>
-            <MultiSelect.ItemLabel>{item().rawValue}</MultiSelect.ItemLabel>
-            <MultiSelect.ItemIndicator class={style["select__item-indicator"]}>
-              <CheckIcon />
-            </MultiSelect.ItemIndicator>
-          </MultiSelect.Item>
-        )}
-      >
-        <MultiSelect.Trigger class={style["select__trigger"]} aria-label="Fruits">
-          <MultiSelect.Value class={style["select__value"]} />
-          <MultiSelect.Icon class={style["select__icon"]}>
-            <CaretSortIcon />
-          </MultiSelect.Icon>
-        </MultiSelect.Trigger>
-        <MultiSelect.Portal>
-          <MultiSelect.Content class={style["select__content"]}>
-            <MultiSelect.Listbox class={style["select__listbox"]} />
-          </MultiSelect.Content>
-        </MultiSelect.Portal>
-      </MultiSelect.Root>
-      <p class="not-prose text-sm mt-4">Your favorite fruits are: {[...values()].join(", ")}.</p>
-    </>
-  );
-}
-
 export function DescriptionExample() {
   return (
     <Select.Root
       options={STRING_OPTIONS}
       placeholder="Select a fruit…"
-      renderValue={selectedOption => selectedOption()}
-      renderItem={item => (
-        <Select.Item item={item()} class={style["select__item"]}>
-          <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
+      valueComponent={props => props.item.rawValue}
+      itemComponent={props => (
+        <Select.Item item={props.item} class={style["select__item"]}>
+          <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
           <Select.ItemIndicator class={style["select__item-indicator"]}>
             <CheckIcon />
           </Select.ItemIndicator>
@@ -185,10 +148,10 @@ export function ErrorMessageExample() {
       validationState={value() !== "Apple" ? "invalid" : "valid"}
       options={STRING_OPTIONS}
       placeholder="Select a fruit…"
-      renderValue={selectedOption => selectedOption()}
-      renderItem={item => (
-        <Select.Item item={item()} class={style["select__item"]}>
-          <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
+      valueComponent={props => props.item.rawValue}
+      itemComponent={props => (
+        <Select.Item item={props.item} class={style["select__item"]}>
+          <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
           <Select.ItemIndicator class={style["select__item-indicator"]}>
             <CheckIcon />
           </Select.ItemIndicator>
@@ -231,10 +194,10 @@ export function HTMLFormExample() {
         name="fruit"
         options={STRING_OPTIONS}
         placeholder="Select a fruit…"
-        renderValue={selectedOption => selectedOption()}
-        renderItem={item => (
-          <Select.Item item={item()} class={style["select__item"]}>
-            <Select.ItemLabel>{item().rawValue}</Select.ItemLabel>
+        valueComponent={props => props.item.rawValue}
+        itemComponent={props => (
+          <Select.Item item={props.item} class={style["select__item"]}>
+            <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
             <Select.ItemIndicator class={style["select__item-indicator"]}>
               <CheckIcon />
             </Select.ItemIndicator>
@@ -286,10 +249,10 @@ export function ObjectExample() {
       optionTextValue="label"
       optionDisabled="disabled"
       placeholder="Select a food…"
-      renderValue={selectedOption => selectedOption().label}
-      renderItem={item => (
-        <Select.Item item={item()} class={style["select__item"]}>
-          <Select.ItemLabel>{item().rawValue.label}</Select.ItemLabel>
+      valueComponent={props => props.item.rawValue.label}
+      itemComponent={props => (
+        <Select.Item item={props.item} class={style["select__item"]}>
+          <Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
           <Select.ItemIndicator class={style["select__item-indicator"]}>
             <CheckIcon />
           </Select.ItemIndicator>
@@ -347,17 +310,19 @@ export function OptionGroupExample() {
       optionDisabled="disabled"
       optionGroupChildren="options"
       placeholder="Select a food…"
-      renderValue={selectedOption => selectedOption().label}
-      renderItem={item => (
-        <Select.Item item={item()} class={style["select__item"]}>
-          <Select.ItemLabel>{item().rawValue.label}</Select.ItemLabel>
+      valueComponent={props => props.item.rawValue.label}
+      itemComponent={props => (
+        <Select.Item item={props.item} class={style["select__item"]}>
+          <Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
           <Select.ItemIndicator class={style["select__item-indicator"]}>
             <CheckIcon />
           </Select.ItemIndicator>
         </Select.Item>
       )}
-      renderSection={section => (
-        <Select.Section class={style["select__section"]}>{section().rawValue.label}</Select.Section>
+      sectionComponent={props => (
+        <Select.Section class={style["select__section"]}>
+          {props.section.rawValue.label}
+        </Select.Section>
       )}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Food">
@@ -372,6 +337,75 @@ export function OptionGroupExample() {
         </Select.Content>
       </Select.Portal>
     </Select.Root>
+  );
+}
+
+export function MultiSelectExample() {
+  const [values, setValues] = createSignal(new Set(["Blueberry", "Grapes"]));
+
+  return (
+    <>
+      <MultiSelect.Root
+        value={values()}
+        onValueChange={setValues}
+        options={STRING_OPTIONS}
+        placeholder="Select some fruits…"
+        valueComponent={props => (
+          <>
+            <div class="flex items-center gap-2 flex-wrap">
+              <For each={props.items}>
+                {item => (
+                  <span class="bg-zinc-100 dark:bg-zinc-700 text-sm px-2 py-0.5 rounded inline-flex items-center gap-x-2">
+                    {item.rawValue}
+                    <button
+                      onPointerDown={e => e.stopPropagation()}
+                      onClick={() => props.remove(item)}
+                      class="rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600 p-1"
+                    >
+                      <CrossIcon class="h3 w-3" />
+                    </button>
+                  </span>
+                )}
+              </For>
+            </div>
+            <button
+              onPointerDown={e => e.stopPropagation()}
+              onClick={props.clear}
+              class="ml-auto mr-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-600 p-1"
+            >
+              <CrossIcon class="h-3.5 w-3.5" />
+            </button>
+          </>
+        )}
+        itemComponent={props => (
+          <MultiSelect.Item item={props.item} class={style["select__item"]}>
+            <MultiSelect.ItemLabel>{props.item.rawValue}</MultiSelect.ItemLabel>
+            <MultiSelect.ItemIndicator class={style["select__item-indicator"]}>
+              <CheckIcon />
+            </MultiSelect.ItemIndicator>
+          </MultiSelect.Item>
+        )}
+      >
+        <MultiSelect.Trigger
+          class={`${style["select__trigger"]} ${style["select__trigger_multi"]}`}
+          aria-label="Fruits"
+          asChild
+        >
+          <As component="div">
+            <MultiSelect.Value class={style["select__value"]} />
+            <MultiSelect.Icon class={style["select__icon"]}>
+              <CaretSortIcon />
+            </MultiSelect.Icon>
+          </As>
+        </MultiSelect.Trigger>
+        <MultiSelect.Portal>
+          <MultiSelect.Content class={style["select__content"]}>
+            <MultiSelect.Listbox class={style["select__listbox"]} />
+          </MultiSelect.Content>
+        </MultiSelect.Portal>
+      </MultiSelect.Root>
+      <p class="not-prose text-sm mt-4">Your favorite fruits are: {[...values()].join(", ")}.</p>
+    </>
   );
 }
 
@@ -460,7 +494,7 @@ export function VirtualizedExample() {
       optionTextValue="label"
       optionDisabled="disabled"
       placeholder="Select an item…"
-      renderValue={selectedOption => selectedOption().label}
+      valueComponent={props => props.item.rawValue.label}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Food">
         <Select.Value class={style["select__value"]} />

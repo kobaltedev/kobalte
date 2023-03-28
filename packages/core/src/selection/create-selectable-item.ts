@@ -115,9 +115,13 @@ export function createSelectableItem<T extends HTMLElement>(
       return;
     }
 
-    // If allowsDifferentPressOrigin, make selection happen on pointer up.
+    // If allowsDifferentPressOrigin, make selection happen on mouse up.
     // Otherwise, have selection happen on click.
-    if (access(props.shouldSelectOnPressUp) && access(props.allowsDifferentPressOrigin)) {
+    if (
+      e.pointerType === "mouse" &&
+      access(props.shouldSelectOnPressUp) &&
+      access(props.allowsDifferentPressOrigin)
+    ) {
       onSelect(e);
     }
   };

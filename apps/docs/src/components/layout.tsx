@@ -15,10 +15,10 @@ interface LayoutProps extends ParentProps {
 export function Layout(props: LayoutProps) {
   const location = useLocation();
 
-  const allLinks = props.navSections.flatMap(section => section.links);
-  const linkIndex = () => allLinks.findIndex(link => link.href === location.pathname);
-  const previousPage = () => allLinks[linkIndex() - 1];
-  const nextPage = () => allLinks[linkIndex() + 1];
+  const allLinks = () => props.navSections.flatMap(section => section.links);
+  const linkIndex = () => allLinks().findIndex(link => link.href === location.pathname);
+  const previousPage = () => allLinks()[linkIndex() - 1];
+  const nextPage = () => allLinks()[linkIndex() + 1];
 
   return (
     <>

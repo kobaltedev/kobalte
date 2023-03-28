@@ -11,13 +11,23 @@ import {
   createGenerateId,
   focusWithoutScrolling,
   mergeDefaultProps,
+  OverrideComponentProps,
   ValidationState,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
+import {
+  Accessor,
+  Component,
+  createMemo,
+  createSignal,
+  createUniqueId,
+  JSX,
+  splitProps,
+} from "solid-js";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
 import { createCollator } from "../i18n";
 import { createListState, ListKeyboardDelegate } from "../list";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
   CollectionNode,
@@ -35,8 +45,30 @@ import {
 } from "../selection";
 import { SelectContext, SelectContextValue, SelectDataSet } from "./select-context";
 
+export interface SelectBaseValueComponentProps<T> {
+  /** The selected items. */
+  items: CollectionNode<T>[];
+
+  /** A function to remove an item from the selection. */
+  remove: (item: CollectionNode<T>) => void;
+
+  /** A function to clear the selection. */
+  clear: () => void;
+}
+
+export interface SelectBaseItemComponentProps<T> {
+  /** The item to render. */
+  item: CollectionNode<T>;
+}
+
+export interface SelectBaseSectionComponentProps<T> {
+  /** The section to render. */
+  section: CollectionNode<T>;
+}
+
 export interface SelectBaseOptions<Option, OptGroup = never>
-  extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
+  extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange">,
+    AsChildProp {
   /** The controlled open state of the select. */
   isOpen?: boolean;
 
@@ -60,9 +92,6 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 
   /** Event handler called when the value changes. */
   onValueChange?: (value: Set<string>) => void;
-
-  /** A map function that receives a _selectedOptions_ signal representing the selected options. */
-  renderValue?: (selectedOptions: Accessor<Option[]>) => JSX.Element;
 
   /** The content that will be rendered when no value or defaultValue is set. */
   placeholder?: JSX.Element;
@@ -103,11 +132,14 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   /** Whether the select uses virtual scrolling. */
   isVirtualized?: boolean;
 
-  /** When NOT virtualized, a map function that receives an _item_ signal representing an item. */
-  renderItem?: (item: Accessor<CollectionNode<Option>>) => JSX.Element;
+  /** The component to render inside `Select.Value`. */
+  valueComponent?: Component<SelectBaseValueComponentProps<Option>>;
 
-  /** When NOT virtualized, a map function that receives a _section_ signal representing a section. */
-  renderSection?: (section: Accessor<CollectionNode<OptGroup>>) => JSX.Element;
+  /** When NOT virtualized, the component to render as an item in the `Select.Listbox`. */
+  itemComponent?: Component<SelectBaseItemComponentProps<Option>>;
+
+  /** When NOT virtualized, the component to render as a section in the `Select.Listbox`. */
+  sectionComponent?: Component<SelectBaseSectionComponentProps<OptGroup>>;
 
   /**
    * Whether the select should be the only visible content for screen readers.
@@ -155,7 +187,8 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 }
 
 export interface SelectBaseProps<Option, OptGroup = never>
-  extends SelectBaseOptions<Option, OptGroup> {}
+  extends OverrideComponentProps<"div", SelectBaseOptions<Option, OptGroup>>,
+    AsChildProp {}
 
 /**
  * Base component for a select, provide context for its children.
@@ -171,24 +204,24 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       allowDuplicateSelectionEvents: true,
       disallowEmptySelection: props.selectionMode !== "multiple",
       gutter: 8,
+      sameWidth: true,
       isModal: false,
     },
     props
   );
 
-  const [local, formControlProps, others] = splitProps(
+  const [local, popperProps, formControlProps, others] = splitProps(
     props,
     [
-      "children",
-      "renderItem",
-      "renderSection",
+      "valueComponent",
+      "itemComponent",
+      "sectionComponent",
       "isOpen",
       "defaultIsOpen",
       "onOpenChange",
       "value",
       "defaultValue",
       "onValueChange",
-      "renderValue",
       "placeholder",
       "options",
       "optionValue",
@@ -204,6 +237,21 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       "isVirtualized",
       "isModal",
       "forceMount",
+    ],
+    [
+      "getAnchorRect",
+      "placement",
+      "gutter",
+      "shift",
+      "flip",
+      "slide",
+      "overlap",
+      "sameWidth",
+      "fitViewport",
+      "hideWhenDetached",
+      "detachedPadding",
+      "arrowPadding",
+      "overflowPadding",
     ],
     FORM_CONTROL_PROP_NAMES
   );
@@ -298,10 +346,10 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     selectionBehavior: () => access(local.selectionBehavior),
     selectionMode: () => local.selectionMode,
     dataSource: () => local.options ?? [],
-    getKey: () => local.optionValue?.toString(),
-    getTextValue: () => local.optionTextValue?.toString(),
-    getIsDisabled: () => local.optionDisabled?.toString(),
-    getSectionChildren: () => local.optionGroupChildren?.toString(),
+    getKey: () => local.optionValue as any,
+    getTextValue: () => local.optionTextValue as any,
+    getIsDisabled: () => local.optionDisabled as any,
+    getSectionChildren: () => local.optionGroupChildren as any,
     getIsSection: () => local.isOptionGroup,
   });
 
@@ -324,6 +372,30 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 
     return new ListKeyboardDelegate(listState.collection, undefined, collator);
   });
+
+  const selectedItems = createMemo(() => {
+    return [...listState.selectionManager().selectedKeys()]
+      .map(key => listState.collection().getItem(key))
+      .filter(Boolean) as CollectionNode[];
+  });
+
+  const renderValue = () => {
+    return local.valueComponent?.({
+      get items() {
+        return selectedItems();
+      },
+      remove: item => listState.selectionManager().toggleSelection(item.key),
+      clear: () => listState.selectionManager().clearSelection(),
+    });
+  };
+
+  const renderItem = (item: CollectionNode) => {
+    return local.itemComponent?.({ item });
+  };
+
+  const renderSection = (section: CollectionNode) => {
+    return local.sectionComponent?.({ section });
+  };
 
   const dataset: Accessor<SelectDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
@@ -354,9 +426,9 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     close,
     toggle,
     placeholder: () => local.placeholder,
-    renderItem: item => local.renderItem?.(item),
-    renderSection: section => local.renderSection?.(section),
-    renderValue: selectedOptions => local.renderValue?.(selectedOptions),
+    renderValue,
+    renderItem,
+    renderSection,
     generateId: createGenerateId(() => access(formControlProps.id)!),
     registerTriggerId: createRegisterId(setTriggerId),
     registerValueId: createRegisterId(setValueId),
@@ -366,8 +438,15 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
   return (
     <FormControlContext.Provider value={formControlContext}>
       <SelectContext.Provider value={context}>
-        <PopperRoot anchorRef={triggerRef} contentRef={contentRef} sameWidth {...others}>
-          {local.children}
+        <PopperRoot anchorRef={triggerRef} contentRef={contentRef} {...popperProps}>
+          <Polymorphic
+            fallback="div"
+            role="group"
+            id={access(formControlProps.id)}
+            {...formControlContext.dataset()}
+            {...dataset()}
+            {...others}
+          />
         </PopperRoot>
       </SelectContext.Provider>
     </FormControlContext.Provider>

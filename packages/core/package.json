@@ -1,6 +1,6 @@
 {
   "name": "@kobalte/core",
-  "version": "0.7.1",
+  "version": "0.8.1",
   "private": false,
   "description": "Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
   "keywords": [
@@ -28,23 +28,25 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "solid": "./dist/index.jsx",
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
+      "types": "./dist/types/index.d.ts",
+      "solid": "./dist/source/index.jsx",
+      "import": "./dist/esm/index.js",
+      "browser": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js"
       },
-      "require": "./dist/index.cjs"
+      "require": "./dist/cjs/index.js",
+      "node": "./dist/cjs/index.js"
     }
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "rollup -c",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "vite serve dev --host",
     "test": "jest --passWithNoTests",
@@ -55,13 +57,13 @@
     "@internationalized/date": "^3.1.0",
     "@internationalized/number": "^3.2.0",
     "@internationalized/string": "^3.1.0",
-    "@kobalte/utils": "^0.6.0"
+    "@kobalte/utils": "^0.6.1"
   },
   "devDependencies": {
-    "@kobalte/tests": "^0.3.0"
+    "@kobalte/tests": "^0.3.1"
   },
   "peerDependencies": {
-    "solid-js": "^1.6.12"
+    "solid-js": "^1.6.15"
   },
   "publishConfig": {
     "access": "public"

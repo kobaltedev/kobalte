@@ -1,5 +1,11 @@
 # @kobalte/utils
 
+## 0.6.1
+
+### Patch Changes
+
+- 81d2e40: fix: nexgen ts module resolutions
+
 ## 0.6.0
 
 ### Minor Changes

@@ -113,6 +113,7 @@ export function TextFieldRoot(props: TextFieldRootProps) {
           fallback="div"
           ref={mergeRefs(el => (ref = el), local.ref)}
           role="group"
+          id={access(formControlProps.id)}
           {...formControlContext.dataset()}
           {...others}
         />

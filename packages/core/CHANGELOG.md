@@ -1,5 +1,59 @@
 # @kobalte/core
 
+## 0.8.1
+
+### Patch Changes
+
+- 4d669ee: fix: `Select.Root` missing type definition
+
+## 0.8.0
+
+### Minor Changes
+
+- 721c0ad: ## Breaking changes
+
+  - `Select` and `MultiSelect`:
+    - `.Root` component renders a `div` by default.
+    - renderItem prop is now itemComponent.
+    - renderSection prop is now sectionComponent.
+    - renderValue prop is now valueComponent.
+
+  ## New features
+
+  - Added `AlertDialog` component.
+  - Added `Toast` component.
+  - Ability to clear and remove an item from selection in `Select.Value` and `MultiSelect.Value` using the `.Root`’s valueComponent prop.
+  - `Select` and `MultiSelect` better integration with form libraries.
+
+  ## Bug fixes
+
+  - #146
+  - #147
+  - #148
+  - #150
+  - #152
+  - #153
+
+## 0.7.4
+
+### Patch Changes
+
+- 2b46afb: Unnecessary re-renders when using polymorphic `<As>` component.
+
+## 0.7.3
+
+### Patch Changes
+
+- 20cd441: fix #118
+
+## 0.7.2
+
+### Patch Changes
+
+- 81d2e40: fix: nexgen ts module resolutions
+- Updated dependencies [81d2e40]
+  - @kobalte/utils@0.6.1
+
 ## 0.7.1
 
 ### Patch Changes
