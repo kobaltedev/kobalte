@@ -62,6 +62,7 @@ export function SelectListbox<Option = any, OptGroup = never>(
       autoFocus={context.autoFocus()}
       shouldSelectOnPressUp
       shouldFocusOnHover
+      disallowTypeAhead={context.disallowTypeAhead()}
       aria-labelledby={context.listboxAriaLabelledBy()}
       renderItem={context.renderItem}
       renderSection={context.renderSection}
