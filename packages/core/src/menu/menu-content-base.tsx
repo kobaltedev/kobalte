@@ -205,7 +205,6 @@ export function MenuContentBase(props: MenuContentBaseProps) {
           role="menu"
           id={local.id}
           tabIndex={selectableList.tabIndex()}
-          isDismissed={!context.isOpen()}
           disableOutsidePointerEvents={isRootModalContent() && context.isOpen()}
           excludedElements={[context.triggerRef]}
           style={{

@@ -30,7 +30,6 @@ export function HoverCardContent(props: HoverCardContentProps) {
             context.setContentRef(el);
             context.contentPresence.setRef(el);
           }, local.ref)}
-          isDismissed={!context.isOpen()}
           disableOutsidePointerEvents={false}
           style={{
             "--kb-hovercard-content-transform-origin": "var(--kb-popper-content-transform-origin)",
