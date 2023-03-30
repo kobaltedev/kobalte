@@ -89,8 +89,7 @@ export function SelectContent(props: SelectContentProps) {
             context.contentPresence.setRef(el);
             ref = el;
           }, local.ref)}
-          isDismissed={!context.isOpen()}
-          disableOutsidePointerEvents={context.isOpen() && context.isModal()}
+          disableOutsidePointerEvents={context.isModal() && context.isOpen()}
           excludedElements={[context.triggerRef]}
           style={{
             "--kb-select-content-transform-origin": "var(--kb-popper-content-transform-origin)",
