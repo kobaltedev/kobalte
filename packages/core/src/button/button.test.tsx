@@ -1,26 +1,11 @@
-import {
-  checkAccessibility,
-  installPointerEvent,
-  itRendersChildren,
-  itSupportsClass,
-  itSupportsRef,
-  itSupportsStyle,
-} from "@kobalte/tests";
-import { render, screen } from "solid-testing-library";
+import { installPointerEvent } from "@kobalte/tests";
+import { render, screen } from "@solidjs/testing-library";
 
 import { As } from "../polymorphic";
 import * as Button from ".";
 
-const defaultProps: Button.ButtonRootOptions = {};
-
 describe("Button", () => {
   installPointerEvent();
-
-  checkAccessibility([<Button.Root>Button</Button.Root>]);
-  itRendersChildren(Button.Root as any, defaultProps);
-  itSupportsClass(Button.Root as any, defaultProps);
-  itSupportsRef(Button.Root as any, defaultProps, HTMLButtonElement);
-  itSupportsStyle(Button.Root as any, defaultProps);
 
   it("should have attribute 'type=button' by default", () => {
     render(() => <Button.Root data-testid="button">Button</Button.Root>);

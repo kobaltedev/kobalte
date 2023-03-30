@@ -1,6 +1,6 @@
 import { installPointerEvent } from "@kobalte/tests";
 import userEvent from "@testing-library/user-event";
-import { render, screen } from "solid-testing-library";
+import { render, screen } from "@solidjs/testing-library";
 
 import * as TextField from ".";
 

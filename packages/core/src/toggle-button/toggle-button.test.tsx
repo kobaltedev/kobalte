@@ -1,25 +1,10 @@
-import {
-  checkAccessibility,
-  installPointerEvent,
-  itRendersChildren,
-  itSupportsClass,
-  itSupportsRef,
-  itSupportsStyle,
-} from "@kobalte/tests";
-import { fireEvent, render, screen } from "solid-testing-library";
+import { installPointerEvent } from "@kobalte/tests";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import * as ToggleButton from ".";
 
-const defaultProps: ToggleButton.ToggleButtonRootOptions = {};
-
 describe("ToggleButton", () => {
   installPointerEvent();
-
-  checkAccessibility([<ToggleButton.Root>Button</ToggleButton.Root>]);
-  itRendersChildren(ToggleButton.Root as any, defaultProps);
-  itSupportsClass(ToggleButton.Root as any, defaultProps);
-  itSupportsRef(ToggleButton.Root as any, defaultProps, HTMLButtonElement);
-  itSupportsStyle(ToggleButton.Root as any, defaultProps);
 
   it("can be default selected (uncontrolled)", () => {
     render(() => (

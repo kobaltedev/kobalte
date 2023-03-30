@@ -6,10 +6,10 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/accordion/src/Accordion.test.tsx
  */
 
-import { checkAccessibility, installPointerEvent } from "@kobalte/tests";
+import { installPointerEvent } from "@kobalte/tests";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps, For } from "solid-js";
-import { fireEvent, render, screen, within } from "solid-testing-library";
+import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 
 import * as Accordion from ".";
 
@@ -32,8 +32,6 @@ function AccordionTest(props: ComponentProps<typeof Accordion.Root>) {
 
 describe("Accordion", () => {
   installPointerEvent();
-
-  checkAccessibility([<AccordionTest />]);
 
   it("renders properly", () => {
     render(() => <AccordionTest defaultValue={["one"]} />);

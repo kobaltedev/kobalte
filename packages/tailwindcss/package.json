@@ -32,10 +32,10 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
-    "tailwindcss": "3.2.7"
+    "tailwindcss": "3.3.0"
   },
   "peerDependencies": {
-    "tailwindcss": "^3.2.7"
+    "tailwindcss": "^3.3.0"
   },
   "publishConfig": {
     "access": "public"

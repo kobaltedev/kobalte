@@ -88,8 +88,10 @@ interface ToggleButtonRootChildProps extends Pick<ToggleButtonRootOptions, "chil
 }
 
 function ToggleButtonRootChild(props: ToggleButtonRootChildProps) {
-  return children(() => {
+  const resolvedChildren = children(() => {
     const body = props.children;
     return isFunction(body) ? body(props.state) : body;
   });
+
+  return <>{resolvedChildren()}</>;
 }
