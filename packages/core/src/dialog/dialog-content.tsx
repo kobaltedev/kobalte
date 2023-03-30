@@ -171,8 +171,7 @@ export function DialogContent(props: DialogContentProps) {
         }, local.ref)}
         role="dialog"
         tabIndex={-1}
-        isDismissed={!context.isOpen()}
-        disableOutsidePointerEvents={context.isOpen() && context.isModal()}
+        disableOutsidePointerEvents={context.isModal() && context.isOpen()}
         excludedElements={[context.triggerRef]}
         aria-labelledby={context.titleId()}
         aria-describedby={context.descriptionId()}

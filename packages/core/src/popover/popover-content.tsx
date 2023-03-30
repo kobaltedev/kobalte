@@ -174,8 +174,7 @@ export function PopoverContent(props: PopoverContentProps) {
           role="dialog"
           id={local.id}
           tabIndex={-1}
-          isDismissed={!context.isOpen()}
-          disableOutsidePointerEvents={context.isOpen() && context.isModal()}
+          disableOutsidePointerEvents={context.isModal() && context.isOpen()}
           excludedElements={[context.triggerRef]}
           style={{
             "--kb-popover-content-transform-origin": "var(--kb-popper-content-transform-origin)",
