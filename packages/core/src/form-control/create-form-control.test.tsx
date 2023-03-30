@@ -8,7 +8,7 @@
  */
 
 import { ParentProps } from "solid-js";
-import { render, screen } from "solid-testing-library";
+import { render, screen } from "@solidjs/testing-library";
 
 import { createFormControl, CreateFormControlProps } from "./create-form-control";
 import { FormControlContext } from "./form-control-context";

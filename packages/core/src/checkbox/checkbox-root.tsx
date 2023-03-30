@@ -190,8 +190,10 @@ interface CheckboxRootChildProps extends Pick<CheckboxRootOptions, "children"> {
 }
 
 function CheckboxRootChild(props: CheckboxRootChildProps) {
-  return children(() => {
+  const resolvedChildren = children(() => {
     const body = props.children;
     return isFunction(body) ? body(props.state) : body;
   });
+
+  return <>{resolvedChildren()}</>;
 }

@@ -7,7 +7,7 @@
  */
 
 import { ComponentProps, JSX, splitProps } from "solid-js";
-import { fireEvent, render, screen } from "solid-testing-library";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import { As, AsChildProp, Polymorphic } from "./polymorphic";
 
@@ -54,42 +54,12 @@ describe("Polymorphic", () => {
       expect(polymorphic).toBeInstanceOf(HTMLAnchorElement);
     });
 
-    it("should render the component from 'As' when 'asChild' prop is true and using a render prop and the only direct child is 'As'", () => {
-      render(() => (
-        <Polymorphic data-testid="polymorphic" fallback="button" asChild>
-          {() => <As component="a">Link</As>}
-        </Polymorphic>
-      ));
-
-      const polymorphic = screen.getByTestId("polymorphic");
-
-      expect(polymorphic).toBeInstanceOf(HTMLAnchorElement);
-    });
-
     it("should render the component from 'As' when 'asChild' prop is true and one of the direct children is 'As'", () => {
       render(() => (
         <Polymorphic data-testid="polymorphic" fallback="button" asChild>
           <span>before</span>
           <As component="a">Link</As>
           <span>after</span>
-        </Polymorphic>
-      ));
-
-      const polymorphic = screen.getByTestId("polymorphic");
-
-      expect(polymorphic).toBeInstanceOf(HTMLAnchorElement);
-    });
-
-    it("should render the component from 'As' when 'asChild' prop is true and using a render prop and one of the direct children is 'As'", () => {
-      render(() => (
-        <Polymorphic data-testid="polymorphic" fallback="button" asChild>
-          {() => (
-            <>
-              <span>before</span>
-              <As component="a">Link</As>
-              <span>after</span>
-            </>
-          )}
         </Polymorphic>
       ));
 
@@ -426,47 +396,12 @@ describe("Polymorphic", () => {
       expect(button).toContainHTML("<span>left</span>Button <em>text</em><span>right</span>");
     });
 
-    it("should render a button with icon on the left/right when content is a render prop and no 'asChild' prop", () => {
-      render(() => (
-        <ButtonExample leftIcon={<span>left</span>} rightIcon={<span>right</span>}>
-          {() => (
-            <>
-              Button <em>text</em>
-            </>
-          )}
-        </ButtonExample>
-      ));
-
-      const button = screen.getByRole("button");
-
-      expect(button).toBeInstanceOf(HTMLButtonElement);
-      expect(button).toContainHTML("<span>left</span>Button <em>text</em><span>right</span>");
-    });
-
     it("should render a link with icon on the left/right when 'asChild' prop is true and content is 'As'", () => {
       render(() => (
         <ButtonExample leftIcon={<span>left</span>} rightIcon={<span>right</span>} asChild>
           <As component="a" href="https://kobalte.dev">
             Button <em>text</em>
           </As>
-        </ButtonExample>
-      ));
-
-      const link = screen.getByRole("link");
-
-      expect(link).toBeInstanceOf(HTMLAnchorElement);
-      expect(link).toHaveAttribute("href", "https://kobalte.dev");
-      expect(link).toContainHTML("<span>left</span>Button <em>text</em><span>right</span>");
-    });
-
-    it("should render a link with icon on the left/right when 'asChild' prop is true and content is a render prop with 'As'", () => {
-      render(() => (
-        <ButtonExample leftIcon={<span>left</span>} rightIcon={<span>right</span>} asChild>
-          {() => (
-            <As component="a" href="https://kobalte.dev">
-              Button <em>text</em>
-            </As>
-          )}
         </ButtonExample>
       ));
 

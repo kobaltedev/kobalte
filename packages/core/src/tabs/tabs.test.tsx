@@ -7,8 +7,8 @@
  */
 
 import { createPointerEvent } from "@kobalte/tests";
+import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
-import { fireEvent, render, screen, waitFor, within } from "solid-testing-library";
 
 import * as Tabs from ".";
 
@@ -282,8 +282,10 @@ describe("Tabs", function () {
   });
 
   it("supports using click to change tab", async () => {
+    const onValueChangeSpy = jest.fn();
+
     render(() => (
-      <Tabs.Root activationMode="manual" defaultValue="one" onValueChange={onValueChangeSpy}>
+      <Tabs.Root defaultValue="one" onValueChange={onValueChangeSpy}>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -305,6 +307,9 @@ describe("Tabs", function () {
       secondItem,
       createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
     );
+    await Promise.resolve();
+
+    fireEvent(secondItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
     await Promise.resolve();
 
     expect(secondItem).toHaveAttribute("aria-selected", "true");
@@ -395,6 +400,8 @@ describe("Tabs", function () {
   });
 
   it("disabled tabs cannot be pressed", async () => {
+    const onValueChangeSpy = jest.fn();
+
     render(() => (
       <Tabs.Root defaultValue="one" onValueChange={onValueChangeSpy}>
         <Tabs.List>

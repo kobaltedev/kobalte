@@ -7,7 +7,7 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen } from "solid-testing-library";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import * as RadioGroup from ".";
 
@@ -40,7 +40,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
     expect(radioGroup).toBeInTheDocument();
@@ -98,7 +98,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
     expect(radioGroup).toBeTruthy();
@@ -223,7 +223,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const label = screen.getByText("Favorite Pet");
 
     expect(radioGroup).toHaveAttribute("aria-labelledby", label.id);
@@ -254,7 +254,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-labelledby", "foo");
   });
@@ -283,7 +283,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const label = screen.getByText("Favorite Pet");
 
     expect(radioGroup).toHaveAttribute("aria-labelledby", `foo ${label.id}`);
@@ -312,7 +312,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-label", "My Favorite Pet");
   });
@@ -341,7 +341,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const label = screen.getByText("Favorite Pet");
 
     expect(radioGroup).toHaveAttribute("aria-labelledby", `foo ${label.id} ${radioGroup.id}`);
@@ -372,7 +372,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const description = screen.getByText("Description");
 
     expect(description.id).toBeDefined();
@@ -407,7 +407,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-describedby", "foo");
   });
@@ -437,7 +437,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const description = screen.getByText("Description");
 
     expect(radioGroup).toHaveAttribute("aria-describedby", `${description.id} foo`);
@@ -468,7 +468,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const errorMessage = screen.getByText("ErrorMessage");
 
     expect(errorMessage.id).toBeDefined();
@@ -504,7 +504,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).not.toHaveAttribute("aria-describedby");
   });
@@ -534,7 +534,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const errorMessage = screen.getByText("ErrorMessage");
 
     expect(radioGroup).toHaveAttribute("aria-describedby", `${errorMessage.id} foo`);
@@ -566,7 +566,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const description = screen.getByText("Description");
     const errorMessage = screen.getByText("ErrorMessage");
 
@@ -585,7 +585,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).not.toHaveAttribute("data-valid");
     expect(radioGroup).not.toHaveAttribute("data-invalid");
@@ -603,7 +603,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("data-valid");
   });
@@ -617,7 +617,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("data-invalid");
   });
@@ -631,7 +631,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("data-required");
   });
@@ -645,7 +645,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("data-disabled");
   });
@@ -659,7 +659,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("data-readonly");
   });
@@ -688,7 +688,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-orientation", "vertical");
   });
@@ -717,7 +717,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-orientation", "horizontal");
   });
@@ -746,7 +746,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-invalid", "true");
   });
@@ -775,7 +775,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-invalid", "true");
     expect(radioGroup).toHaveAttribute("aria-errormessage", "test");
@@ -805,7 +805,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-required", "true");
 
@@ -842,7 +842,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-disabled", "true");
 
@@ -941,7 +941,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).not.toHaveAttribute("aria-disabled");
 
@@ -976,7 +976,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).not.toHaveAttribute("aria-disabled");
 
@@ -1012,7 +1012,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
