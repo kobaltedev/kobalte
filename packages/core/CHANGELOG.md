@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.8.2
+
+### Patch Changes
+
+- 8a1b75a: fix: #160
+
 ## 0.8.1
 
 ### Patch Changes
