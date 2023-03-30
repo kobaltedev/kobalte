@@ -1,4 +1,4 @@
-import { fireEvent } from "solid-testing-library";
+import { fireEvent } from "@solidjs/testing-library";
 
 import { createPointerEvent } from "./utils";
 

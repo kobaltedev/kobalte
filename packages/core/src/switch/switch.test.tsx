@@ -7,7 +7,7 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen } from "solid-testing-library";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import * as Switch from ".";
 

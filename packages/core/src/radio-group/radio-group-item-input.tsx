@@ -69,7 +69,7 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
     );
   };
 
-  const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = e => {
+  const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = e => {
     callHandler(e, local.onChange);
 
     e.stopPropagation();
@@ -88,12 +88,12 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
     target.checked = radioContext.isSelected();
   };
 
-  const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+  const onFocus: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onFocus);
     radioContext.setIsFocused(true);
   };
 
-  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+  const onBlur: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onBlur);
     radioContext.setIsFocused(false);
   };

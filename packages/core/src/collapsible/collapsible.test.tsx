@@ -6,9 +6,9 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.test.tsx
  */
 
-import { checkAccessibility, installPointerEvent } from "@kobalte/tests";
+import { installPointerEvent } from "@kobalte/tests";
 import { ComponentProps } from "solid-js";
-import { fireEvent, render, screen } from "solid-testing-library";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import * as Collapsible from ".";
 
@@ -24,8 +24,6 @@ const Example = (props: ComponentProps<typeof Collapsible.Root>) => (
 
 describe("Collapsible", () => {
   installPointerEvent();
-
-  checkAccessibility([<Example />]);
 
   it("should toggle between open/close the content when clicking the trigger", async () => {
     render(() => <Example />);

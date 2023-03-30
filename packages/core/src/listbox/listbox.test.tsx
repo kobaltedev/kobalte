@@ -7,7 +7,7 @@
  */
 
 import { createPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen, within } from "solid-testing-library";
+import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 
 import * as Listbox from ".";
 import * as Select from "../select";

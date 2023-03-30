@@ -7,7 +7,7 @@
  */
 
 import { createEffect } from "solid-js";
-import { render } from "solid-testing-library";
+import { render } from "@solidjs/testing-library";
 
 import { createTagName } from "./create-tag-name";
 

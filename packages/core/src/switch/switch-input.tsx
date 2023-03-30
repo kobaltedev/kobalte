@@ -52,7 +52,7 @@ export function SwitchInput(props: SwitchInputProps) {
     );
   };
 
-  const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = e => {
+  const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = e => {
     callHandler(e, local.onChange);
 
     e.stopPropagation();
@@ -71,12 +71,12 @@ export function SwitchInput(props: SwitchInputProps) {
     target.checked = context.isChecked();
   };
 
-  const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+  const onFocus: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onFocus);
     context.setIsFocused(true);
   };
 
-  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+  const onBlur: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onBlur);
     context.setIsFocused(false);
   };
