@@ -60,7 +60,6 @@ export function TooltipContent(props: TooltipContentProps) {
             context.contentPresence.setRef(el);
           }, local.ref)}
           role="tooltip"
-          isDismissed={!context.isOpen()}
           disableOutsidePointerEvents={false}
           style={{
             "--kb-tooltip-content-transform-origin": "var(--kb-popper-content-transform-origin)",
