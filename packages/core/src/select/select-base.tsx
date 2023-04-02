@@ -279,14 +279,6 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 
   const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
 
-  const focusTrigger = () => {
-    const triggerEl = triggerRef();
-
-    if (triggerEl) {
-      focusWithoutScrolling(triggerEl);
-    }
-  };
-
   const focusListbox = () => {
     const listboxEl = listboxRef();
 
@@ -324,7 +316,6 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 
     listState.selectionManager().setFocused(false);
     listState.selectionManager().setFocusedKey(undefined);
-    focusTrigger();
   };
 
   const toggle = (focusStrategy: FocusStrategy | boolean) => {
