@@ -23,5 +23,5 @@ export function DialogTitle(props: DialogTitleProps) {
 
   createEffect(() => onCleanup(context.registerTitleId(local.id!)));
 
-  return <Polymorphic fallback="h2" id={local.id} {...others} />;
+  return <Polymorphic as="h2" id={local.id} {...others} />;
 }

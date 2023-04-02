@@ -23,5 +23,5 @@ export function ProgressLabel(props: ProgressLabelProps) {
 
   createEffect(() => onCleanup(context.registerLabelId(local.id!)));
 
-  return <Polymorphic fallback="span" id={local.id} {...context.dataset()} {...others} />;
+  return <Polymorphic as="span" id={local.id} {...context.dataset()} {...others} />;
 }

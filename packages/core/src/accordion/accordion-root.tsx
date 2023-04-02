@@ -112,7 +112,7 @@ export function AccordionRoot(props: AccordionRootProps) {
     <DomCollectionProvider>
       <AccordionContext.Provider value={context}>
         <Polymorphic
-          fallback="div"
+          as="div"
           ref={mergeRefs(el => (ref = el), local.ref)}
           onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.onKeyDown])}
           onMouseDown={composeEventHandlers([local.onMouseDown, selectableList.onMouseDown])}

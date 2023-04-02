@@ -67,7 +67,7 @@ export function PopperArrow(props: PopperArrowProps) {
 
   return (
     <Polymorphic
-      fallback="div"
+      as="div"
       ref={mergeRefs(context.setArrowRef, local.ref)}
       aria-hidden="true"
       style={

@@ -63,7 +63,7 @@ export function ButtonRoot(props: ButtonRootProps) {
 
   return (
     <Polymorphic
-      fallback="button"
+      as="button"
       ref={mergeRefs(el => (ref = el), local.ref)}
       type={isNativeButton() || isNativeInput() ? local.type : undefined}
       role={!isNativeButton() && !isNativeLink() ? "button" : undefined}

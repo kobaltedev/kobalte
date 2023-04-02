@@ -231,7 +231,7 @@ export function DismissableLayer(props: DismissableLayerProps) {
 
   return (
     <DismissableLayerContext.Provider value={context}>
-      <Polymorphic fallback="div" ref={mergeRefs(el => (ref = el), local.ref)} {...others} />
+      <Polymorphic as="div" ref={mergeRefs(el => (ref = el), local.ref)} {...others} />
     </DismissableLayerContext.Provider>
   );
 }

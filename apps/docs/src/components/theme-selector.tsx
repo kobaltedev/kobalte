@@ -30,7 +30,7 @@ export function ThemeSelector() {
       optionValue="value"
       optionTextValue="label"
       defaultValue={colorMode()}
-      onValueChange={value => setColorMode(value as ConfigColorMode)}
+      onChange={value => setColorMode(value as ConfigColorMode)}
       gutter={8}
       sameWidth={false}
       placement="bottom"
@@ -45,7 +45,7 @@ export function ThemeSelector() {
           item={props.item}
           class="flex items-center space-x-2 px-3 py-1 text-sm outline-none ui-selected:text-sky-700 ui-highlighted:bg-zinc-100 transition-colors cursor-default dark:ui-selected:text-sky-400 dark:ui-highlighted:bg-zinc-700"
         >
-          {props.item.rawValue.icon}
+          {props.item.rawValue.icon()}
           <Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
         </Select.Item>
       )}

@@ -38,7 +38,7 @@ export function MenuGroup(props: MenuGroupProps) {
 
   return (
     <MenuGroupContext.Provider value={context}>
-      <Polymorphic fallback="div" role="group" aria-labelledby={labelId()} {...props} />
+      <Polymorphic as="div" role="group" aria-labelledby={labelId()} {...props} />
     </MenuGroupContext.Provider>
   );
 }

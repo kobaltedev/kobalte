@@ -34,7 +34,7 @@ export function MenuItemLabel(props: MenuItemLabelProps) {
 
   return (
     <Polymorphic
-      fallback="div"
+      as="div"
       ref={mergeRefs(context.setLabelRef, local.ref)}
       id={local.id}
       {...context.dataset()}

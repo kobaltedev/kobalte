@@ -42,7 +42,7 @@ export function FormControlErrorMessage(props: FormControlErrorMessageProps) {
 
   return (
     <Show when={local.forceMount || isInvalid()}>
-      <Polymorphic fallback="div" id={local.id} {...context.dataset()} {...others} />
+      <Polymorphic as="div" id={local.id} {...context.dataset()} {...others} />
     </Show>
   );
 }

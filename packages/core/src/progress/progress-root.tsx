@@ -134,7 +134,7 @@ export function ProgressRoot(props: ProgressRootProps) {
   return (
     <ProgressContext.Provider value={context}>
       <Polymorphic
-        fallback="div"
+        as="div"
         role="progressbar"
         aria-valuenow={local.indeterminate ? undefined : value()}
         aria-valuemin={local.minValue!}

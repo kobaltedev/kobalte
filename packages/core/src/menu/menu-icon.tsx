@@ -14,5 +14,5 @@ export function MenuIcon(props: MenuIconProps) {
 
   props = mergeDefaultProps({ children: "▼" }, props);
 
-  return <Polymorphic fallback="span" aria-hidden="true" {...context.dataset()} {...props} />;
+  return <Polymorphic as="span" aria-hidden="true" {...context.dataset()} {...props} />;
 }

@@ -43,7 +43,7 @@ export function LinkRoot(props: LinkRootProps) {
 
   return (
     <Polymorphic
-      fallback="a"
+      as="a"
       ref={mergeRefs(el => (ref = el), local.ref)}
       role={tagName() !== "a" ? "link" : undefined}
       tabIndex={tagName() !== "a" && !local.disabled ? 0 : undefined}

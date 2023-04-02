@@ -41,7 +41,7 @@ export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
 
   return (
     <BreadcrumbsContext.Provider value={context}>
-      <Polymorphic fallback="nav" aria-label={formatter().format("breadcrumbs")} {...others} />
+      <Polymorphic as="nav" aria-label={formatter().format("breadcrumbs")} {...others} />
     </BreadcrumbsContext.Provider>
   );
 }

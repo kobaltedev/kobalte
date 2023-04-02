@@ -25,5 +25,5 @@ export function ToastDescription(props: ToastDescriptionProps) {
 
   createEffect(() => onCleanup(context.registerDescriptionId(local.id!)));
 
-  return <Polymorphic fallback="div" id={local.id} {...others} />;
+  return <Polymorphic as="div" id={local.id} {...others} />;
 }

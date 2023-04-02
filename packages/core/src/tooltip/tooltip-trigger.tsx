@@ -149,7 +149,7 @@ export function TooltipTrigger(props: TooltipTriggerProps) {
   // and should not always be announced as a button to screen readers.
   return (
     <Polymorphic
-      fallback="button"
+      as="button"
       ref={mergeRefs(el => {
         context.setTriggerRef(el);
         ref = el;

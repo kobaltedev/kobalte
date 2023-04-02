@@ -161,7 +161,7 @@ export function ListboxItem(props: ListboxItemProps) {
   return (
     <ListboxItemContext.Provider value={context}>
       <Polymorphic
-        fallback="li"
+        as="li"
         ref={mergeRefs(el => (ref = el), local.ref)}
         role="option"
         tabIndex={selectableItem.tabIndex()}

@@ -55,8 +55,8 @@ export function AccordionTrigger(props: AccordionTriggerProps) {
       ref: () => ref,
       type: "item",
       key: itemContext.value(),
-      disabled: collapsibleContext.disabled(),
       textValue: "", // not applicable here
+      disabled: collapsibleContext.disabled(),
     }),
   });
 

@@ -321,7 +321,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 
 ### Controlled value
 
-The `value` prop, which accepts a value corresponding with the `options` prop, can be used to make the value controlled. The `onValueChange` event is fired when the user selects an item, and receives the new value.
+The `value` prop, which accepts a value corresponding with the `options` prop, can be used to make the value controlled. The `onChange` event is fired when the user selects an item, and receives the new value.
 
 <Preview>
   <ControlledExample />
@@ -337,7 +337,7 @@ export function ControlledExample() {
     <>
       <Select.Root
         value={value()}
-        onValueChange={setValue}
+        onChange={setValue}
         options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
         placeholder="Select a fruit…"
         valueComponent={props => props.item.rawValue}
@@ -424,7 +424,7 @@ export function ErrorMessageExample() {
   return (
     <Select.Root
       value={value()}
-      onValueChange={setValue}
+      onChange={setValue}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
       options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
       placeholder="Select a fruit…"
@@ -659,7 +659,7 @@ export function OptionGroupExample() {
 
 ### MultiSelect
 
-The `MultiSelect.*` components can be used to create a select that allow multi-selection. In this case the value provided to `value`, `defaultValue` and `onValueChange` props are of type `Set<string>` instead of `string`.
+The `MultiSelect.*` components can be used to create a select that allow multi-selection. In this case the value provided to `value`, `defaultValue` and `onChange` props are of type `Set<string>` instead of `string`.
 
 The `valueComponent` prop expose an array of selected items instead of a single one, and two method for removing an item from the selection and clear the selection.
 
@@ -679,7 +679,7 @@ export function MultiSelectExample() {
     <>
       <MultiSelect.Root
         value={values()}
-        onValueChange={setValues}
+        onChange={setValues}
         options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
         placeholder="Select some fruits…"
         valueComponent={props => (
@@ -824,7 +824,7 @@ function SelectContent(props: { options: Item[] }) {
 export function VirtualizedExample() {
   return (
     <Select.Root
-      isVirtualized
+      virtualized
       options={options}
       optionValue="value"
       optionTextValue="label"
@@ -902,21 +902,21 @@ We expose a CSS custom property `--kb-select-content-transform-origin` which can
 | placeholder                   | `JSX.Element` <br/> The content that will be rendered when no value or defaultValue is set.                                                                                                                                                                                                                                                          |
 | value                         | `string` <br/> The controlled value of the select.                                                                                                                                                                                                                                                                                                   |
 | defaultValue                  | `string` <br/> The value of the select when initially rendered. Useful when you do not need to control the value.                                                                                                                                                                                                                                    |
-| onValueChange                 | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                                                                                                                                                                                                         |
-| isOpen                        | `boolean` <br/> The controlled open state of the select.                                                                                                                                                                                                                                                                                             |
-| defaultIsOpen                 | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                                                                                                                                                                                                               |
-| onOpenChange                  | `(isOpen: boolean) => void` <br/> Event handler called when the open state of the select changes.                                                                                                                                                                                                                                                    |
-| allowDuplicateSelectionEvents | `boolean` <br/> Whether `onValueChange` should fire even if the new value is the same as the last.                                                                                                                                                                                                                                                   |
+| onChange                      | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                                                                                                                                                                                                         |
+| open                          | `boolean` <br/> The controlled open state of the select.                                                                                                                                                                                                                                                                                             |
+| defaultOpen                   | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                                                                                                                                                                                                               |
+| onOpenChange                  | `(open: boolean) => void` <br/> Event handler called when the open state of the select changes.                                                                                                                                                                                                                                                      |
+| allowDuplicateSelectionEvents | `boolean` <br/> Whether `onChange` should fire even if the new value is the same as the last.                                                                                                                                                                                                                                                        |
 | disallowEmptySelection        | `boolean` <br/> Whether the select allows empty selection or not.                                                                                                                                                                                                                                                                                    |
 | selectionBehavior             | `'toggle' \| 'replace'` <br/> How selection should behave in the select.                                                                                                                                                                                                                                                                             |
-| isVirtualized                 | `boolean` <br/> Whether the select uses virtual scrolling.                                                                                                                                                                                                                                                                                           |
-| isModal                       | `boolean` <br/> Whether the select should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the select content. <br/> - elements outside the select content will not be visible for screen readers. |
+| virtualized                   | `boolean` <br/> Whether the select uses virtual scrolling.                                                                                                                                                                                                                                                                                           |
+| modal                         | `boolean` <br/> Whether the select should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the select content. <br/> - elements outside the select content will not be visible for screen readers. |
 | forceMount                    | `boolean` <br/> Used to force mounting the select (portal, positioner and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                  |
 | name                          | `string` <br/> The name of the select. Submitted with its owning form as part of a name/value pair.                                                                                                                                                                                                                                                  |
 | validationState               | `'valid' \| 'invalid'` <br/> Whether the select should display its "valid" or "invalid" visual styling.                                                                                                                                                                                                                                              |
-| isRequired                    | `boolean` <br/> Whether the user must select an item before the owning form can be submitted.                                                                                                                                                                                                                                                        |
-| isDisabled                    | `boolean` <br/> Whether the select is disabled.                                                                                                                                                                                                                                                                                                      |
-| isReadOnly                    | `boolean` <br/> Whether the select items can be selected but not changed by the user.                                                                                                                                                                                                                                                                |
+| required                      | `boolean` <br/> Whether the user must select an item before the owning form can be submitted.                                                                                                                                                                                                                                                        |
+| disabled                      | `boolean` <br/> Whether the select is disabled.                                                                                                                                                                                                                                                                                                      |
+| readOnly                      | `boolean` <br/> Whether the select items can be selected but not changed by the user.                                                                                                                                                                                                                                                                |
 | autoComplete                  | `string` <br/> Describes the type of autocomplete functionality the input should provide if any. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete)                                                                                                                                                  |
 
 `Select.Root` also accepts the following props to customize the placement of the `Select.Content`.
@@ -1023,7 +1023,7 @@ We expose a CSS custom property `--kb-select-content-transform-origin` which can
 | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
 | value            | `Set<string>` <br/> The controlled value of the select.                                                                                         |
 | defaultValue     | `Set<string>` <br/> The value of the select when initially rendered. Useful when you do not need to control the state.                          |
-| onValueChange    | `(value: Set<string>) => void` <br/> Event handler called when the value changes.                                                               |
+| onChange         | `(value: Set<string>) => void` <br/> Event handler called when the value changes.                                                               |
 | valueComponent   | `Component<MultiSelectValueComponentProps<T>>` <br/> The component to render inside `MultiSelect.Value`.                                        |
 | itemComponent    | `Component<MultiSelectItemComponentProps<T>>` <br/> When NOT virtualized, the component to render as an item in the `MultiSelect.Listbox`.      |
 | sectionComponent | `Component<MultiSelectSectionComponentProps<U>>` <br/> When NOT virtualized, the component to render as a section in the `MultiSelect.Listbox`. |

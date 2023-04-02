@@ -86,7 +86,7 @@ export function CollapsibleRoot(props: CollapsibleRootProps) {
 
   return (
     <CollapsibleContext.Provider value={context}>
-      <Polymorphic fallback="div" {...dataset()} {...others} />
+      <Polymorphic as="div" {...dataset()} {...others} />
     </CollapsibleContext.Provider>
   );
 }

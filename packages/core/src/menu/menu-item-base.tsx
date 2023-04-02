@@ -232,7 +232,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
   return (
     <MenuItemContext.Provider value={context}>
       <Polymorphic
-        fallback="div"
+        as="div"
         ref={mergeRefs(el => (ref = el), local.ref)}
         tabIndex={selectableItem.tabIndex()}
         aria-checked={ariaChecked()}

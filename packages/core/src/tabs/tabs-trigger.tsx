@@ -102,7 +102,7 @@ export function TabsTrigger(props: TabsTriggerProps) {
 
   return (
     <Polymorphic
-      fallback="button"
+      as="button"
       ref={mergeRefs(el => (ref = el), local.ref)}
       id={id()}
       role="tab"

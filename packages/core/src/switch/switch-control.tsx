@@ -18,5 +18,5 @@ export function SwitchControl(props: SwitchControlProps) {
     props
   );
 
-  return <Polymorphic fallback="div" {...context.dataset()} {...props} />;
+  return <Polymorphic as="div" {...context.dataset()} {...props} />;
 }

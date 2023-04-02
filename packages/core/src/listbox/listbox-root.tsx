@@ -237,7 +237,7 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
   return (
     <ListboxContext.Provider value={context}>
       <Polymorphic
-        fallback="ul"
+        as="ul"
         ref={mergeRefs(el => (ref = el), local.ref)}
         role="listbox"
         tabIndex={selectableList.tabIndex()}

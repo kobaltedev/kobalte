@@ -150,7 +150,7 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
     <FormControlContext.Provider value={formControlContext}>
       <RadioGroupContext.Provider value={context}>
         <Polymorphic
-          fallback="div"
+          as="div"
           ref={mergeRefs(el => (ref = el), local.ref)}
           role="radiogroup"
           id={access(formControlProps.id)}

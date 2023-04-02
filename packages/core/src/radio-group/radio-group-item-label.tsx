@@ -18,5 +18,5 @@ export function RadioGroupItemLabel(props: RadioGroupItemLabelProps) {
     props
   );
 
-  return <Polymorphic fallback="span" {...context.dataset()} {...props} />;
+  return <Polymorphic as="span" {...context.dataset()} {...props} />;
 }

@@ -110,7 +110,7 @@ export function TextFieldRoot(props: TextFieldRootProps) {
     <FormControlContext.Provider value={formControlContext}>
       <TextFieldContext.Provider value={context}>
         <Polymorphic
-          fallback="div"
+          as="div"
           ref={mergeRefs(el => (ref = el), local.ref)}
           role="group"
           id={access(formControlProps.id)}

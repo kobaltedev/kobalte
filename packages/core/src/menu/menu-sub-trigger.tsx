@@ -290,7 +290,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
 
   return (
     <Polymorphic
-      fallback="div"
+      as="div"
       ref={mergeRefs(el => {
         context.setTriggerRef(el);
         ref = el;

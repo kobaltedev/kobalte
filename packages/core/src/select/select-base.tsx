@@ -435,7 +435,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       <SelectContext.Provider value={context}>
         <PopperRoot anchorRef={triggerRef} contentRef={contentRef} {...popperProps}>
           <Polymorphic
-            fallback="div"
+            as="div"
             role="group"
             id={access(formControlProps.id)}
             {...formControlContext.dataset()}

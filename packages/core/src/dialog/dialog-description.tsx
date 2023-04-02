@@ -23,5 +23,5 @@ export function DialogDescription(props: DialogDescriptionProps) {
 
   createEffect(() => onCleanup(context.registerDescriptionId(local.id!)));
 
-  return <Polymorphic fallback="p" id={local.id} {...others} />;
+  return <Polymorphic as="p" id={local.id} {...others} />;
 }

@@ -18,5 +18,5 @@ export function CheckboxLabel(props: CheckboxLabelProps) {
     props
   );
 
-  return <Polymorphic fallback="span" {...context.dataset()} {...props} />;
+  return <Polymorphic as="span" {...context.dataset()} {...props} />;
 }

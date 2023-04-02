@@ -150,7 +150,7 @@ export function TabsRoot(props: TabsRootProps) {
   return (
     <DomCollectionProvider>
       <TabsContext.Provider value={context}>
-        <Polymorphic fallback="div" data-orientation={context.orientation()} {...others} />
+        <Polymorphic as="div" data-orientation={context.orientation()} {...others} />
       </TabsContext.Provider>
     </DomCollectionProvider>
   );

@@ -124,7 +124,7 @@ export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
 
   return (
     <Polymorphic
-      fallback="div"
+      as="div"
       ref={mergeRefs(menuContext.setTriggerRef, local.ref)}
       style={{
         // prevent iOS context menu from appearing
