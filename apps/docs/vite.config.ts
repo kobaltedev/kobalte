@@ -9,9 +9,9 @@ import remarkGfm from "remark-gfm";
 import remarkShikiTwoslash from "remark-shiki-twoslash";
 import solid from "solid-start/vite";
 // @ts-ignore
-import node from "solid-start-node";
-// @ts-ignore
 import netlify from "solid-start-netlify";
+// @ts-ignore
+import node from "solid-start-node";
 import { visit } from "unist-util-visit";
 import { defineConfig } from "vite";
 
@@ -206,6 +206,7 @@ const adapter = process.env.GITHUB_ACTIONS ? node() : netlify();
 
 export default defineConfig({
   plugins: [
+    // @ts-ignore
     await mdx({
       rehypePlugins: [rehypePrettyCode],
       remarkPlugins: [remarkGfm],

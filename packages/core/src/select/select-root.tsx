@@ -1,8 +1,8 @@
 import { OverrideComponentProps } from "@kobalte/utils";
-import { Component, splitProps } from "solid-js";
+import { Component, createMemo, splitProps } from "solid-js";
 
 import { AsChildProp } from "../polymorphic";
-import { CollectionNode, createControllableSetSignal } from "../primitives";
+import { CollectionNode } from "../primitives";
 import {
   SelectBase,
   SelectBaseItemComponentProps,
@@ -70,11 +70,17 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
     "onValueChange",
   ]);
 
-  const [value, setValue] = createControllableSetSignal({
-    value: () => (local.value != null ? new Set([local.value]) : undefined),
-    defaultValue: () => (local.defaultValue != null ? new Set([local.defaultValue]) : undefined),
-    onChange: value => local.onValueChange?.(value.values().next().value),
+  const value = createMemo(() => {
+    return local.value != null ? new Set([local.value]) : undefined;
   });
+
+  const defaultValue = createMemo(() => {
+    return local.defaultValue != null ? new Set([local.defaultValue]) : undefined;
+  });
+
+  const onValueChange = (value: Set<string>) => {
+    local.onValueChange?.(value.values().next().value);
+  };
 
   const valueComponent = (props: SelectBaseValueComponentProps<Option>) => {
     return local.valueComponent?.({
@@ -88,7 +94,8 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
   return (
     <SelectBase
       value={value()}
-      onValueChange={setValue}
+      defaultValue={defaultValue()}
+      onValueChange={onValueChange}
       selectionMode="single"
       disallowEmptySelection
       valueComponent={valueComponent}

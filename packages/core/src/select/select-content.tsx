@@ -9,6 +9,8 @@ import {
   createHideOutside,
   createPreventScroll,
   FocusOutsideEvent,
+  InteractOutsideEvent,
+  PointerDownOutsideEvent,
 } from "../primitives";
 import { useSelectContext } from "./select-context";
 
@@ -18,6 +20,24 @@ export interface SelectContentOptions extends AsChildProp {
    * It can be prevented by calling `event.preventDefault`.
    */
   onCloseAutoFocus?: (event: Event) => void;
+
+  /**
+   * Event handler called when a pointer event occurs outside the bounds of the component.
+   * It can be prevented by calling `event.preventDefault`.
+   */
+  onPointerDownOutside?: (event: PointerDownOutsideEvent) => void;
+
+  /**
+   * Event handler called when the focus moves outside the bounds of the component.
+   * It can be prevented by calling `event.preventDefault`.
+   */
+  onFocusOutside?: (event: FocusOutsideEvent) => void;
+
+  /**
+   * Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component.
+   * It can be prevented by calling `event.preventDefault`.
+   */
+  onInteractOutside?: (event: InteractOutsideEvent) => void;
 
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
@@ -33,7 +53,13 @@ export function SelectContent(props: SelectContentProps) {
 
   const context = useSelectContext();
 
-  const [local, others] = splitProps(props, ["ref", "id", "style", "onCloseAutoFocus"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "id",
+    "style",
+    "onCloseAutoFocus",
+    "onFocusOutside",
+  ]);
 
   const onEscapeKeyDown = (e: KeyboardEvent) => {
     // `createSelectableList` prevent escape key down,
@@ -43,6 +69,8 @@ export function SelectContent(props: SelectContentProps) {
   };
 
   const onFocusOutside = (e: FocusOutsideEvent) => {
+    local.onFocusOutside?.(e);
+
     // When focus is trapped (in modal mode), a `focusout` event may still happen.
     // We make sure we don't trigger our `onDismiss` in such case.
     if (context.isOpen() && context.isModal()) {

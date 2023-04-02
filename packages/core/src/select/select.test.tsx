@@ -922,6 +922,8 @@ describe("Select", () => {
       expect(onOpenChange).toBeCalledTimes(2);
       expect(onOpenChange).toHaveBeenCalledWith(false);
 
+      jest.runAllTimers();
+
       expect(document.activeElement).toBe(trigger);
     });
 
