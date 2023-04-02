@@ -129,6 +129,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/toggle-button",
       },
       {
+        title: "Tooltip",
+        href: "/docs/core/components/tooltip",
+        status: "new",
+      },
+      {
         title: "I18nProvider",
         href: "/docs/core/components/i18n-provider",
       },
