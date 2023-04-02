@@ -40,7 +40,7 @@ export interface ProgressRootOptions extends AsChildProp {
   maxValue?: number;
 
   /** Whether the progress is in an indeterminate state. */
-  isIndeterminate?: boolean;
+  indeterminate?: boolean;
 
   /**
    * A function to get the accessible label text representing the current value in a human-readable format.
@@ -71,7 +71,7 @@ export function ProgressRoot(props: ProgressRootProps) {
     "value",
     "minValue",
     "maxValue",
-    "isIndeterminate",
+    "indeterminate",
     "getValueLabel",
   ]);
 
@@ -88,7 +88,7 @@ export function ProgressRoot(props: ProgressRootProps) {
   };
 
   const valueLabel = () => {
-    if (local.isIndeterminate) {
+    if (local.indeterminate) {
       return undefined;
     }
 
@@ -104,19 +104,19 @@ export function ProgressRoot(props: ProgressRootProps) {
   };
 
   const progressFillWidth = () => {
-    return local.isIndeterminate ? undefined : `${Math.round(valuePercent() * 100)}%`;
+    return local.indeterminate ? undefined : `${Math.round(valuePercent() * 100)}%`;
   };
 
   const dataset: Accessor<ProgressDataSet> = createMemo(() => {
     let dataProgress: ProgressDataSet["data-progress"] = undefined;
 
-    if (!local.isIndeterminate) {
+    if (!local.indeterminate) {
       dataProgress = valuePercent() === 1 ? "complete" : "loading";
     }
 
     return {
       "data-progress": dataProgress,
-      "data-indeterminate": local.isIndeterminate ? "" : undefined,
+      "data-indeterminate": local.indeterminate ? "" : undefined,
     };
   });
 
@@ -136,7 +136,7 @@ export function ProgressRoot(props: ProgressRootProps) {
       <Polymorphic
         fallback="div"
         role="progressbar"
-        aria-valuenow={local.isIndeterminate ? undefined : value()}
+        aria-valuenow={local.indeterminate ? undefined : value()}
         aria-valuemin={local.minValue!}
         aria-valuemax={local.maxValue!}
         aria-valuetext={valueLabel()}

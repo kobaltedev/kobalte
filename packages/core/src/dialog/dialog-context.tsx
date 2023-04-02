@@ -4,7 +4,7 @@ import { CreatePresenceResult } from "../primitives";
 
 export interface DialogContextValue {
   isOpen: Accessor<boolean>;
-  isModal: Accessor<boolean>;
+  modal: Accessor<boolean>;
   contentId: Accessor<string | undefined>;
   titleId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;

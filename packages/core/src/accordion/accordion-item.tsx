@@ -20,7 +20,7 @@ export interface AccordionItemOptions extends AsChildProp {
   value: string;
 
   /** Whether the item is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /**
    * Used to force mounting the item content when more control is needed.
@@ -41,7 +41,7 @@ export function AccordionItem(props: AccordionItemProps) {
 
   props = mergeDefaultProps({ id: defaultId }, props);
 
-  const [local, others] = splitProps(props, ["value", "isDisabled"]);
+  const [local, others] = splitProps(props, ["value", "disabled"]);
 
   const [triggerId, setTriggerId] = createSignal<string>();
   const [contentId, setContentId] = createSignal<string>();
@@ -63,7 +63,7 @@ export function AccordionItem(props: AccordionItemProps) {
 
   return (
     <AccordionItemContext.Provider value={context}>
-      <Collapsible.Root isOpen={isExpanded()} isDisabled={local.isDisabled} {...others} />
+      <Collapsible.Root open={isExpanded()} disabled={local.disabled} {...others} />
     </AccordionItemContext.Provider>
   );
 }

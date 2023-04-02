@@ -67,9 +67,9 @@ describe("Accordion", () => {
   });
 
   it("can be controlled", async () => {
-    const onValueChangeSpy = jest.fn();
+    const onChangeSpy = jest.fn();
 
-    render(() => <AccordionTest value={["one"]} onValueChange={onValueChangeSpy} />);
+    render(() => <AccordionTest value={["one"]} onChange={onChangeSpy} />);
 
     const buttons = screen.getAllByRole("button");
     const [firstItem, secondItem] = buttons;
@@ -80,8 +80,8 @@ describe("Accordion", () => {
     expect(secondItem).toHaveAttribute("aria-expanded", "false");
 
     await userEvent.click(secondItem);
-    expect(onValueChangeSpy).toHaveBeenCalledWith(["two"]);
-    expect(onValueChangeSpy).toHaveBeenCalledTimes(1);
+    expect(onChangeSpy).toHaveBeenCalledWith(["two"]);
+    expect(onChangeSpy).toHaveBeenCalledTimes(1);
 
     // First item is still expanded because Accordion is controlled.
     expect(firstItem).toHaveAttribute("aria-expanded", "true");
@@ -235,30 +235,30 @@ describe("Accordion", () => {
     expect(contentOne).toBeVisible();
   });
 
-  it("should call 'onValueChange' when clicking a trigger", async () => {
-    const onValueChangeSpy = jest.fn();
+  it("should call 'onChange' when clicking a trigger", async () => {
+    const onChangeSpy = jest.fn();
 
-    render(() => <AccordionTest onValueChange={onValueChangeSpy} />);
+    render(() => <AccordionTest onChange={onChangeSpy} />);
 
     const buttons = screen.getAllByRole("button");
     const [firstItem, secondItem] = buttons;
 
     await userEvent.click(firstItem);
-    expect(onValueChangeSpy).toHaveBeenCalledWith(["one"]);
+    expect(onChangeSpy).toHaveBeenCalledWith(["one"]);
 
     await userEvent.click(firstItem);
 
     // Called once because Accordion is not `multiple` or `collapsible`.
-    expect(onValueChangeSpy).toHaveBeenCalledTimes(1);
+    expect(onChangeSpy).toHaveBeenCalledTimes(1);
 
     await userEvent.click(secondItem);
-    expect(onValueChangeSpy).toHaveBeenCalledWith(["two"]);
-    expect(onValueChangeSpy).toHaveBeenCalledTimes(2);
+    expect(onChangeSpy).toHaveBeenCalledWith(["two"]);
+    expect(onChangeSpy).toHaveBeenCalledTimes(2);
   });
 
   describe("collapsible", () => {
     it("should toggle the same accordion item when clicking its trigger if collapsible", async () => {
-      render(() => <AccordionTest isCollapsible defaultValue={["one"]} />);
+      render(() => <AccordionTest collapsible defaultValue={["one"]} />);
 
       const buttons = screen.getAllByRole("button");
       const [firstItem] = buttons;
@@ -276,7 +276,7 @@ describe("Accordion", () => {
     });
 
     it("should allows users to open and close accordion item with enter / space key when collapsible", async () => {
-      render(() => <AccordionTest isCollapsible defaultValue={["one"]} />);
+      render(() => <AccordionTest collapsible defaultValue={["one"]} />);
 
       const buttons = screen.getAllByRole("button");
       const [firstItem] = buttons;
@@ -305,7 +305,7 @@ describe("Accordion", () => {
 
   describe("multiple", () => {
     it("should expand multiple accordion items when clicking triggers", async () => {
-      render(() => <AccordionTest isMultiple />);
+      render(() => <AccordionTest multiple />);
 
       const buttons = screen.getAllByRole("button");
       const [firstItem, secondItem] = buttons;
@@ -326,7 +326,7 @@ describe("Accordion", () => {
     });
 
     it("should toggle the same accordion item when clicking its trigger if multiple", async () => {
-      render(() => <AccordionTest isMultiple defaultValue={["one"]} />);
+      render(() => <AccordionTest multiple defaultValue={["one"]} />);
 
       const buttons = screen.getAllByRole("button");
       const [firstItem] = buttons;
@@ -344,7 +344,7 @@ describe("Accordion", () => {
     });
 
     it("should allows users to open and close accordion item with enter / space key when multiple", async () => {
-      render(() => <AccordionTest isMultiple defaultValue={["one"]} />);
+      render(() => <AccordionTest multiple defaultValue={["one"]} />);
 
       const buttons = screen.getAllByRole("button");
       const [firstItem] = buttons;
@@ -370,21 +370,21 @@ describe("Accordion", () => {
       expect(screen.getByText("Content one")).toBeVisible();
     });
 
-    it("should call 'onValueChange' when clicking triggers", async () => {
-      const onValueChangeSpy = jest.fn();
+    it("should call 'onChange' when clicking triggers", async () => {
+      const onChangeSpy = jest.fn();
 
-      render(() => <AccordionTest isMultiple onValueChange={onValueChangeSpy} />);
+      render(() => <AccordionTest multiple onChange={onChangeSpy} />);
 
       const buttons = screen.getAllByRole("button");
       const [firstItem, secondItem] = buttons;
 
       await userEvent.click(firstItem);
-      expect(onValueChangeSpy).toHaveBeenCalledWith(["one"]);
+      expect(onChangeSpy).toHaveBeenCalledWith(["one"]);
 
       await userEvent.click(secondItem);
-      expect(onValueChangeSpy).toHaveBeenCalledWith(["one", "two"]);
+      expect(onChangeSpy).toHaveBeenCalledWith(["one", "two"]);
 
-      expect(onValueChangeSpy).toHaveBeenCalledTimes(2);
+      expect(onChangeSpy).toHaveBeenCalledTimes(2);
     });
   });
 });

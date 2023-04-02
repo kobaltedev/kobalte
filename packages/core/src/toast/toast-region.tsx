@@ -65,7 +65,7 @@ export interface ToastRegionOptions {
    *  - allows focus even outside a containing focus scope.
    *  - doesn’t dismiss overlays when clicking on it, even though it is outside.
    */
-  isTopLayer?: boolean;
+  topLayer?: boolean;
 
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
@@ -90,7 +90,7 @@ export function ToastRegion(props: ToastRegionProps) {
       swipeThreshold: 50,
       pauseOnInteraction: true,
       pauseOnPageIdle: true,
-      isTopLayer: true,
+      topLayer: true,
     },
     props
   );
@@ -104,7 +104,7 @@ export function ToastRegion(props: ToastRegionProps) {
     "swipeThreshold",
     "pauseOnInteraction",
     "pauseOnPageIdle",
-    "isTopLayer",
+    "topLayer",
     "aria-label",
   ]);
 
@@ -126,7 +126,7 @@ export function ToastRegion(props: ToastRegionProps) {
   };
 
   const topLayerAttr = () => ({
-    [DATA_TOP_LAYER_ATTR]: local.isTopLayer ? "" : undefined,
+    [DATA_TOP_LAYER_ATTR]: local.topLayer ? "" : undefined,
   });
 
   const context: ToastRegionContextValue = {
@@ -153,7 +153,7 @@ export function ToastRegion(props: ToastRegionProps) {
         // so it doesn't prevent interactions with page elements that it overlays.
         // In case it is a top layer, we explicitly enable pointer-events prevented by a `DismissableLayer`.
         style={{
-          "pointer-events": hasToasts() ? (local.isTopLayer ? "auto" : undefined) : "none",
+          "pointer-events": hasToasts() ? (local.topLayer ? "auto" : undefined) : "none",
           ...local.style,
         }}
         {...topLayerAttr}

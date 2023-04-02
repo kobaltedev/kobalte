@@ -19,19 +19,19 @@ import {
 
 export interface CollapsibleRootOptions extends AsChildProp {
   /** The controlled open state of the collapsible. */
-  isOpen?: boolean;
+  open?: boolean;
 
   /**
    * The default open state when initially rendered.
    * Useful when you do not need to control the open state.
    */
-  defaultIsOpen?: boolean;
+  defaultOpen?: boolean;
 
   /** Event handler called when the open state of the collapsible changes. */
   onOpenChange?: (isOpen: boolean) => void;
 
   /** Whether the collapsible is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /**
    * Used to force mounting the collapsible content when more control is needed.
@@ -52,31 +52,31 @@ export function CollapsibleRoot(props: CollapsibleRootProps) {
   props = mergeDefaultProps({ id: defaultId }, props);
 
   const [local, others] = splitProps(props, [
-    "isOpen",
-    "defaultIsOpen",
+    "open",
+    "defaultOpen",
     "onOpenChange",
-    "isDisabled",
+    "disabled",
     "forceMount",
   ]);
 
   const [contentId, setContentId] = createSignal<string>();
 
   const disclosureState = createDisclosureState({
-    isOpen: () => local.isOpen,
-    defaultIsOpen: () => local.defaultIsOpen,
+    open: () => local.open,
+    defaultOpen: () => local.defaultOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
   const dataset: Accessor<CollapsibleDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
     "data-closed": !disclosureState.isOpen() ? "" : undefined,
-    "data-disabled": local.isDisabled ? "" : undefined,
+    "data-disabled": local.disabled ? "" : undefined,
   }));
 
   const context: CollapsibleContextValue = {
     dataset,
     isOpen: disclosureState.isOpen,
-    isDisabled: () => local.isDisabled ?? false,
+    disabled: () => local.disabled ?? false,
     shouldMount: () => local.forceMount || disclosureState.isOpen(),
     contentId,
     toggle: disclosureState.toggle,

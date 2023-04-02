@@ -18,7 +18,7 @@ describe("RadioGroup", () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup.Root onValueChange={onChangeSpy}>
+      <RadioGroup.Root onChange={onChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -76,7 +76,7 @@ describe("RadioGroup", () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup.Root defaultValue="cats" onValueChange={onChangeSpy}>
+      <RadioGroup.Root defaultValue="cats" onChange={onChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -125,7 +125,7 @@ describe("RadioGroup", () => {
   it("value can be controlled", async () => {
     const onChangeSpy = jest.fn();
     render(() => (
-      <RadioGroup.Root value="cats" onValueChange={onChangeSpy}>
+      <RadioGroup.Root value="cats" onChange={onChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -624,7 +624,7 @@ describe("RadioGroup", () => {
 
   it("should have 'data-required' attribute when required", async () => {
     render(() => (
-      <RadioGroup.Root isRequired>
+      <RadioGroup.Root required>
         <RadioGroup.Item value="cats">
           <RadioGroup.ItemInput />
         </RadioGroup.Item>
@@ -638,7 +638,7 @@ describe("RadioGroup", () => {
 
   it("should have 'data-disabled' attribute when disabled", async () => {
     render(() => (
-      <RadioGroup.Root isDisabled>
+      <RadioGroup.Root disabled>
         <RadioGroup.Item value="cats">
           <RadioGroup.ItemInput />
         </RadioGroup.Item>
@@ -652,7 +652,7 @@ describe("RadioGroup", () => {
 
   it("should have 'data-readonly' attribute when readonly", async () => {
     render(() => (
-      <RadioGroup.Root isReadOnly>
+      <RadioGroup.Root readOnly>
         <RadioGroup.Item value="cats">
           <RadioGroup.ItemInput />
         </RadioGroup.Item>
@@ -783,7 +783,7 @@ describe("RadioGroup", () => {
 
   it("sets 'aria-required' when 'isRequired' is true", () => {
     render(() => (
-      <RadioGroup.Root isRequired>
+      <RadioGroup.Root required>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -820,7 +820,7 @@ describe("RadioGroup", () => {
     const groupOnChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup.Root isDisabled onValueChange={groupOnChangeSpy}>
+      <RadioGroup.Root disabled onChange={groupOnChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -865,7 +865,7 @@ describe("RadioGroup", () => {
     const groupOnChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup.Root onValueChange={groupOnChangeSpy}>
+      <RadioGroup.Root onChange={groupOnChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -873,7 +873,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Dogs</RadioGroup.ItemLabel>
           </RadioGroup.Item>
-          <RadioGroup.Item value="cats" isDisabled>
+          <RadioGroup.Item value="cats" disabled>
             <RadioGroup.ItemInput />
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
@@ -954,7 +954,7 @@ describe("RadioGroup", () => {
 
   it("doesn't set 'aria-disabled' or make radios disabled when 'isDisabled' is false", () => {
     render(() => (
-      <RadioGroup.Root isDisabled={false}>
+      <RadioGroup.Root disabled={false}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -990,7 +990,7 @@ describe("RadioGroup", () => {
   it("sets 'aria-readonly=true' on radio group", async () => {
     const groupOnChangeSpy = jest.fn();
     render(() => (
-      <RadioGroup.Root isReadOnly onValueChange={groupOnChangeSpy}>
+      <RadioGroup.Root readOnly onChange={groupOnChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -1032,7 +1032,7 @@ describe("RadioGroup", () => {
     const groupOnChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup.Root isReadOnly onValueChange={groupOnChangeSpy}>
+      <RadioGroup.Root readOnly onChange={groupOnChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -1334,7 +1334,7 @@ describe("RadioGroup", () => {
 
       it("should have 'data-disabled' attribute on radios when radio group is disabled", async () => {
         render(() => (
-          <RadioGroup.Root isDisabled value="cats">
+          <RadioGroup.Root disabled value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
@@ -1355,7 +1355,7 @@ describe("RadioGroup", () => {
       it("should have 'data-disabled' attribute on single disabled radio", async () => {
         render(() => (
           <RadioGroup.Root value="cats">
-            <RadioGroup.Item data-testid="radio-root" value="cats" isDisabled>
+            <RadioGroup.Item data-testid="radio-root" value="cats" disabled>
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
                 <RadioGroup.ItemIndicator data-testid="radio-indicator" />

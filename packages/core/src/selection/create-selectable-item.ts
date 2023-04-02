@@ -35,10 +35,10 @@ export interface CreateSelectableItemProps {
   allowsDifferentPressOrigin?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the option is contained in a virtual scroller. */
-  isVirtualized?: MaybeAccessor<boolean | undefined>;
+  virtualized?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the item is disabled. */
-  isDisabled?: MaybeAccessor<boolean | undefined>;
+  disabled?: MaybeAccessor<boolean | undefined>;
 
   /** Function to focus the item. */
   focus?: () => void;
@@ -88,7 +88,7 @@ export function createSelectableItem<T extends HTMLElement>(
   // Clicking the checkbox enters selection mode, after which clicking anywhere on any row toggles selection for that row.
   // With highlight selection, onAction is secondary, and occurs on double click. Single click selects the row.
   // With touch, onAction occurs on single tap, and long press enters selection mode.
-  const isDisabled = () => access(props.isDisabled) || manager().isDisabled(key());
+  const isDisabled = () => access(props.disabled) || manager().isDisabled(key());
 
   const allowsSelection = () => !isDisabled() && manager().canSelectItem(key());
 
@@ -186,7 +186,7 @@ export function createSelectableItem<T extends HTMLElement>(
 
   // data-attribute used in selection manager and keyboard delegate
   const dataKey = createMemo(() => {
-    return access(props.isVirtualized) ? undefined : key();
+    return access(props.virtualized) ? undefined : key();
   });
 
   // Focus the associated DOM node when this item becomes the focusedKey.

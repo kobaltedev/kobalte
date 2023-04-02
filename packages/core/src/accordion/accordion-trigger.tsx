@@ -55,7 +55,7 @@ export function AccordionTrigger(props: AccordionTriggerProps) {
       ref: () => ref,
       type: "item",
       key: itemContext.value(),
-      isDisabled: collapsibleContext.isDisabled(),
+      disabled: collapsibleContext.disabled(),
       textValue: "", // not applicable here
     }),
   });
@@ -64,7 +64,7 @@ export function AccordionTrigger(props: AccordionTriggerProps) {
     {
       key: () => itemContext.value(),
       selectionManager: () => accordionContext.listState().selectionManager(),
-      isDisabled: () => collapsibleContext.isDisabled(),
+      disabled: () => collapsibleContext.disabled(),
       shouldSelectOnPressUp: true,
     },
     () => ref

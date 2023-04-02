@@ -8,7 +8,7 @@ describe("ToggleButton", () => {
 
   it("can be default selected (uncontrolled)", () => {
     render(() => (
-      <ToggleButton.Root data-testid="toggle" defaultIsPressed>
+      <ToggleButton.Root data-testid="toggle" defaultPressed>
         Button
       </ToggleButton.Root>
     ));
@@ -23,7 +23,7 @@ describe("ToggleButton", () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <ToggleButton.Root data-testid="toggle" isPressed onPressedChange={onChangeSpy}>
+      <ToggleButton.Root data-testid="toggle" pressed onChange={onChangeSpy}>
         Button
       </ToggleButton.Root>
     ));
@@ -53,7 +53,7 @@ describe("ToggleButton", () => {
 
   it("should have correct attributes when the toggle button is on (selected)", () => {
     render(() => (
-      <ToggleButton.Root data-testid="toggle" isPressed>
+      <ToggleButton.Root data-testid="toggle" pressed>
         Button
       </ToggleButton.Root>
     ));

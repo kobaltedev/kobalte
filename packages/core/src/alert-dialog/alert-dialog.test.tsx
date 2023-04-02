@@ -13,7 +13,7 @@ import * as AlertDialog from ".";
 describe("AlertDialog", () => {
   it("should be labelled by its alert dialog title", function () {
     render(() => (
-      <AlertDialog.Root isOpen>
+      <AlertDialog.Root open>
         <AlertDialog.Content>
           <AlertDialog.Title data-testid="title">title</AlertDialog.Title>
         </AlertDialog.Content>
@@ -28,7 +28,7 @@ describe("AlertDialog", () => {
 
   it("should be described by its alert dialog description", function () {
     render(() => (
-      <AlertDialog.Root isOpen>
+      <AlertDialog.Root open>
         <AlertDialog.Content>
           <AlertDialog.Description data-testid="description">description</AlertDialog.Description>
         </AlertDialog.Content>

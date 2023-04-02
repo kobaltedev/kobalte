@@ -30,31 +30,31 @@ import { CheckboxContext, CheckboxContextValue, CheckboxDataSet } from "./checkb
 
 interface CheckboxRootState {
   /** Whether the checkbox is checked or not. */
-  isChecked: Accessor<boolean>;
+  checked: Accessor<boolean>;
 
   /** Whether the checkbox is in an indeterminate state. */
-  isIndeterminate: Accessor<boolean>;
+  indeterminate: Accessor<boolean>;
 }
 
 export interface CheckboxRootOptions {
   /** The controlled checked state of the checkbox. */
-  isChecked?: boolean;
+  checked?: boolean;
 
   /**
    * The default checked state when initially rendered.
    * Useful when you do not need to control the checked state.
    */
-  defaultIsChecked?: boolean;
+  defaultChecked?: boolean;
 
   /** Event handler called when the checked state of the checkbox changes. */
-  onCheckedChange?: (isChecked: boolean) => void;
+  onChange?: (checked: boolean) => void;
 
   /**
    * Whether the checkbox is in an indeterminate state.
    * Indeterminism is presentational only.
    * The indeterminate visual representation remains regardless of user interaction.
    */
-  isIndeterminate?: boolean;
+  indeterminate?: boolean;
 
   /**
    * The name of the checkbox, used when submitting an HTML form.
@@ -72,13 +72,13 @@ export interface CheckboxRootOptions {
   validationState?: ValidationState;
 
   /** Whether the user must check the checkbox before the owning form can be submitted. */
-  isRequired?: boolean;
+  required?: boolean;
 
   /** Whether the checkbox is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /** Whether the checkbox is read only. */
-  isReadOnly?: boolean;
+  readOnly?: boolean;
 
   /**
    * The children of the checkbox.
@@ -109,32 +109,32 @@ export function CheckboxRoot(props: CheckboxRootProps) {
     "ref",
     "children",
     "value",
-    "isChecked",
-    "defaultIsChecked",
-    "onCheckedChange",
+    "checked",
+    "defaultChecked",
+    "onChange",
     "name",
     "value",
     "validationState",
-    "isRequired",
-    "isDisabled",
-    "isReadOnly",
-    "isIndeterminate",
+    "required",
+    "disabled",
+    "readOnly",
+    "indeterminate",
     "onPointerDown",
   ]);
 
   const [isFocused, setIsFocused] = createSignal(false);
 
   const state = createToggleState({
-    isSelected: () => local.isChecked,
-    defaultIsSelected: () => local.defaultIsChecked,
-    onSelectedChange: selected => local.onCheckedChange?.(selected),
-    isDisabled: () => local.isDisabled,
-    isReadOnly: () => local.isReadOnly,
+    isSelected: () => local.checked,
+    defaultIsSelected: () => local.defaultChecked,
+    onSelectedChange: selected => local.onChange?.(selected),
+    isDisabled: () => local.disabled,
+    isReadOnly: () => local.readOnly,
   });
 
   createFormResetListener(
     () => ref,
-    () => state.setIsSelected(local.defaultIsChecked ?? false)
+    () => state.setIsSelected(local.defaultChecked ?? false)
   );
 
   const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
@@ -150,10 +150,10 @@ export function CheckboxRoot(props: CheckboxRootProps) {
     "data-valid": local.validationState === "valid" ? "" : undefined,
     "data-invalid": local.validationState === "invalid" ? "" : undefined,
     "data-checked": state.isSelected() ? "" : undefined,
-    "data-indeterminate": local.isIndeterminate ? "" : undefined,
-    "data-required": local.isRequired ? "" : undefined,
-    "data-disabled": local.isDisabled ? "" : undefined,
-    "data-readonly": local.isReadOnly ? "" : undefined,
+    "data-indeterminate": local.indeterminate ? "" : undefined,
+    "data-required": local.required ? "" : undefined,
+    "data-disabled": local.disabled ? "" : undefined,
+    "data-readonly": local.readOnly ? "" : undefined,
   }));
 
   const context: CheckboxContextValue = {
@@ -161,11 +161,11 @@ export function CheckboxRoot(props: CheckboxRootProps) {
     value: () => local.value!,
     dataset,
     validationState: () => local.validationState,
-    isChecked: () => state.isSelected(),
-    isRequired: () => local.isRequired ?? false,
-    isDisabled: () => local.isDisabled ?? false,
-    isReadOnly: () => local.isReadOnly ?? false,
-    isIndeterminate: () => local.isIndeterminate ?? false,
+    checked: () => state.isSelected(),
+    required: () => local.required ?? false,
+    disabled: () => local.disabled ?? false,
+    readOnly: () => local.readOnly ?? false,
+    indeterminate: () => local.indeterminate ?? false,
     generateId: createGenerateId(() => others.id!),
     setIsChecked: isChecked => state.setIsSelected(isChecked),
     setIsFocused,

@@ -30,7 +30,7 @@ export interface SelectRootOptions<Option, OptGroup = never>
     | "sectionComponent"
     | "value"
     | "defaultValue"
-    | "onValueChange"
+    | "onChange"
     | "selectionMode"
   > {
   /** The controlled value of the select. */
@@ -43,7 +43,7 @@ export interface SelectRootOptions<Option, OptGroup = never>
   defaultValue?: string;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string) => void;
+  onChange?: (value: string) => void;
 
   /** The component to render inside `Select.Value`. */
   valueComponent?: Component<SelectValueComponentProps<Option>>;
@@ -67,7 +67,7 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
     "valueComponent",
     "value",
     "defaultValue",
-    "onValueChange",
+    "onChange",
   ]);
 
   const value = createMemo(() => {
@@ -78,8 +78,8 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
     return local.defaultValue != null ? new Set([local.defaultValue]) : undefined;
   });
 
-  const onValueChange = (value: Set<string>) => {
-    local.onValueChange?.(value.values().next().value);
+  const onChange = (value: Set<string>) => {
+    local.onChange?.(value.values().next().value);
   };
 
   const valueComponent = (props: SelectBaseValueComponentProps<Option>) => {
@@ -95,7 +95,7 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
     <SelectBase
       value={value()}
       defaultValue={defaultValue()}
-      onValueChange={onValueChange}
+      onChange={onChange}
       selectionMode="single"
       disallowEmptySelection
       valueComponent={valueComponent}

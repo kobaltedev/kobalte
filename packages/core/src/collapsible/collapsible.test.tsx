@@ -43,7 +43,7 @@ describe("Collapsible", () => {
   });
 
   it("should not open the content when clicking the trigger if disabled", async () => {
-    render(() => <Example isDisabled />);
+    render(() => <Example disabled />);
 
     const trigger = screen.getByText(TRIGGER_TEXT);
 
@@ -57,7 +57,7 @@ describe("Collapsible", () => {
   it("should close content when clicking the trigger and collapsible is open uncontrolled", async () => {
     const onOpenChangeSpy = jest.fn();
 
-    render(() => <Example defaultIsOpen onOpenChange={onOpenChangeSpy} />);
+    render(() => <Example defaultOpen onOpenChange={onOpenChangeSpy} />);
 
     const trigger = screen.getByText(TRIGGER_TEXT);
     const content = screen.getByText(CONTENT_TEXT);
@@ -72,7 +72,7 @@ describe("Collapsible", () => {
   it("should not close content when clicking the trigger and collapsible is open controlled", async () => {
     const onOpenChangeSpy = jest.fn();
 
-    render(() => <Example isOpen onOpenChange={onOpenChangeSpy} />);
+    render(() => <Example open onOpenChange={onOpenChangeSpy} />);
 
     const trigger = screen.getByText(TRIGGER_TEXT);
     const content = screen.getByText(CONTENT_TEXT);

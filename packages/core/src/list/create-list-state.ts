@@ -46,7 +46,7 @@ export function createListState(props: CreateListStateProps): ListState {
       dataSource: () => access(props.dataSource),
       getKey: () => access(props.getKey),
       getTextValue: () => access(props.getTextValue),
-      getIsDisabled: () => access(props.getIsDisabled),
+      getDisabled: () => access(props.getDisabled),
       getSectionChildren: () => access(props.getSectionChildren),
       getIsSection: () => access(props.getIsSection),
       factory,

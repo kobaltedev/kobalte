@@ -144,7 +144,7 @@ describe("Switch", () => {
 
   it("ensure default unchecked can be checked", async () => {
     render(() => (
-      <Switch.Root onCheckedChange={onChangeSpy}>
+      <Switch.Root onChange={onChangeSpy}>
         <Switch.Input />
       </Switch.Root>
     ));
@@ -169,7 +169,7 @@ describe("Switch", () => {
 
   it("can be default checked", async () => {
     render(() => (
-      <Switch.Root defaultIsChecked onCheckedChange={onChangeSpy}>
+      <Switch.Root defaultChecked onChange={onChangeSpy}>
         <Switch.Input />
       </Switch.Root>
     ));
@@ -188,7 +188,7 @@ describe("Switch", () => {
 
   it("can be controlled checked", async () => {
     render(() => (
-      <Switch.Root isChecked onCheckedChange={onChangeSpy}>
+      <Switch.Root checked onChange={onChangeSpy}>
         <Switch.Input />
       </Switch.Root>
     ));
@@ -207,7 +207,7 @@ describe("Switch", () => {
 
   it("can be controlled unchecked", async () => {
     render(() => (
-      <Switch.Root isChecked={false} onCheckedChange={onChangeSpy}>
+      <Switch.Root checked={false} onChange={onChangeSpy}>
         <Switch.Input />
       </Switch.Root>
     ));
@@ -226,7 +226,7 @@ describe("Switch", () => {
 
   it("can be disabled", async () => {
     render(() => (
-      <Switch.Root isDisabled onCheckedChange={onChangeSpy}>
+      <Switch.Root disabled onChange={onChangeSpy}>
         <Switch.Input />
         <Switch.Label data-testid="label">Label</Switch.Label>
       </Switch.Root>
@@ -250,7 +250,7 @@ describe("Switch", () => {
 
   it("can be invalid", async () => {
     render(() => (
-      <Switch.Root validationState="invalid" onCheckedChange={onChangeSpy}>
+      <Switch.Root validationState="invalid" onChange={onChangeSpy}>
         <Switch.Input />
       </Switch.Root>
     ));
@@ -263,7 +263,7 @@ describe("Switch", () => {
 
   it("passes through 'aria-errormessage'", async () => {
     render(() => (
-      <Switch.Root validationState="invalid" onCheckedChange={onChangeSpy}>
+      <Switch.Root validationState="invalid" onChange={onChangeSpy}>
         <Switch.Input aria-errormessage="test" />
       </Switch.Root>
     ));
@@ -330,7 +330,7 @@ describe("Switch", () => {
 
   it("can be read only", async () => {
     render(() => (
-      <Switch.Root isChecked isReadOnly onCheckedChange={onChangeSpy}>
+      <Switch.Root checked readOnly onChange={onChangeSpy}>
         <Switch.Input />
       </Switch.Root>
     ));
@@ -350,7 +350,7 @@ describe("Switch", () => {
 
   it("supports uncontrolled read only", async () => {
     render(() => (
-      <Switch.Root isReadOnly onCheckedChange={onChangeSpy}>
+      <Switch.Root readOnly onChange={onChangeSpy}>
         <Switch.Input />
       </Switch.Root>
     ));
@@ -406,7 +406,7 @@ describe("Switch", () => {
 
     it("should have 'data-checked' attribute when switch is checked", async () => {
       render(() => (
-        <Switch.Root data-testid="switch-root" isChecked>
+        <Switch.Root data-testid="switch-root" checked>
           <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
@@ -424,7 +424,7 @@ describe("Switch", () => {
 
     it("should have 'data-required' attribute when switch is required", async () => {
       render(() => (
-        <Switch.Root data-testid="switch-root" isRequired>
+        <Switch.Root data-testid="switch-root" required>
           <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
@@ -442,7 +442,7 @@ describe("Switch", () => {
 
     it("should have 'data-disabled' attribute when switch is disabled", async () => {
       render(() => (
-        <Switch.Root data-testid="switch-root" isDisabled>
+        <Switch.Root data-testid="switch-root" disabled>
           <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">
@@ -460,7 +460,7 @@ describe("Switch", () => {
 
     it("should have 'data-readonly' attribute when switch is read only", async () => {
       render(() => (
-        <Switch.Root data-testid="switch-root" isReadOnly>
+        <Switch.Root data-testid="switch-root" readOnly>
           <Switch.Input />
           <Switch.Label data-testid="switch-label">Label</Switch.Label>
           <Switch.Control data-testid="switch-control">

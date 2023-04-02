@@ -53,7 +53,7 @@ describe("Link", () => {
 
   it("should not have attribute 'tabindex=0' when it's disabled", () => {
     render(() => (
-      <Link.Root data-testid="link" isDisabled asChild>
+      <Link.Root data-testid="link" disabled asChild>
         <As component="div">Link</As>
       </Link.Root>
     ));
@@ -65,7 +65,7 @@ describe("Link", () => {
 
   it("should have attribute 'aria-disabled=true' when disabled", () => {
     render(() => (
-      <Link.Root data-testid="link" isDisabled>
+      <Link.Root data-testid="link" disabled>
         Link
       </Link.Root>
     ));
@@ -85,7 +85,7 @@ describe("Link", () => {
 
   it("should have attribute 'data-disabled' when disabled", () => {
     render(() => (
-      <Link.Root data-testid="link" isDisabled>
+      <Link.Root data-testid="link" disabled>
         Link
       </Link.Root>
     ));

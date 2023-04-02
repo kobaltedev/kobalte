@@ -27,10 +27,10 @@ export interface MenuRadioGroupOptions extends AsChildProp {
   defaultValue?: string;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string) => void;
+  onChange?: (value: string) => void;
 
   /** Whether the menu radio group is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
 
 export interface MenuRadioGroupProps extends OverrideComponentProps<"div", MenuRadioGroupOptions> {}
@@ -50,21 +50,16 @@ export function MenuRadioGroup(props: MenuRadioGroupProps) {
     props
   );
 
-  const [local, others] = splitProps(props, [
-    "value",
-    "defaultValue",
-    "onValueChange",
-    "isDisabled",
-  ]);
+  const [local, others] = splitProps(props, ["value", "defaultValue", "onChange", "disabled"]);
 
   const [selected, setSelected] = createControllableSignal<string>({
     value: () => local.value,
     defaultValue: () => local.defaultValue,
-    onChange: value => local.onValueChange?.(value),
+    onChange: value => local.onChange?.(value),
   });
 
   const context: MenuRadioGroupContextValue = {
-    isDisabled: () => local.isDisabled,
+    isDisabled: () => local.disabled,
     isSelectedValue: (value: string) => value === selected(),
     setSelectedValue: setSelected,
   };

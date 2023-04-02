@@ -70,13 +70,13 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange">,
     AsChildProp {
   /** The controlled open state of the select. */
-  isOpen?: boolean;
+  open?: boolean;
 
   /**
    * The default open state when initially rendered.
    * Useful when you do not need to control the open state.
    */
-  defaultIsOpen?: boolean;
+  defaultOpen?: boolean;
 
   /** Event handler called when the open state of the select changes. */
   onOpenChange?: (isOpen: boolean) => void;
@@ -91,7 +91,7 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   defaultValue?: Iterable<string>;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: Set<string>) => void;
+  onChange?: (value: Set<string>) => void;
 
   /** The content that will be rendered when no value or defaultValue is set. */
   placeholder?: JSX.Element;
@@ -133,7 +133,7 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   disallowTypeAhead?: boolean;
 
   /** Whether the select uses virtual scrolling. */
-  isVirtualized?: boolean;
+  virtualized?: boolean;
 
   /** The component to render inside `Select.Value`. */
   valueComponent?: Component<SelectBaseValueComponentProps<Option>>;
@@ -152,7 +152,7 @@ export interface SelectBaseOptions<Option, OptGroup = never>
    * - focus will be locked inside the select content.
    * - elements outside the select content will not be visible for screen readers.
    */
-  isModal?: boolean;
+  modal?: boolean;
 
   /**
    * Used to force mounting the select (portal, positioner and content) when more control is needed.
@@ -177,13 +177,13 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   validationState?: ValidationState;
 
   /** Whether the user must select an item before the owning form can be submitted. */
-  isRequired?: boolean;
+  required?: boolean;
 
   /** Whether the select is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /** Whether the select is read only. */
-  isReadOnly?: boolean;
+  readOnly?: boolean;
 
   /** The children of the select. */
   children?: JSX.Element;
@@ -208,7 +208,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       disallowEmptySelection: props.selectionMode !== "multiple",
       gutter: 8,
       sameWidth: true,
-      isModal: false,
+      modal: false,
     },
     props
   );
@@ -219,12 +219,12 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       "valueComponent",
       "itemComponent",
       "sectionComponent",
-      "isOpen",
-      "defaultIsOpen",
+      "open",
+      "defaultOpen",
       "onOpenChange",
       "value",
       "defaultValue",
-      "onValueChange",
+      "onChange",
       "placeholder",
       "options",
       "optionValue",
@@ -238,8 +238,8 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       "disallowTypeAhead",
       "selectionBehavior",
       "selectionMode",
-      "isVirtualized",
-      "isModal",
+      "virtualized",
+      "modal",
       "forceMount",
     ],
     [
@@ -272,8 +272,8 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(true);
 
   const disclosureState = createDisclosureState({
-    isOpen: () => local.isOpen,
-    defaultIsOpen: () => local.defaultIsOpen,
+    open: () => local.open,
+    defaultOpen: () => local.defaultOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
@@ -330,7 +330,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     selectedKeys: () => local.value,
     defaultSelectedKeys: () => local.defaultValue,
     onSelectionChange: keys => {
-      local.onValueChange?.(keys);
+      local.onChange?.(keys);
 
       if (local.selectionMode === "single") {
         close();
@@ -343,7 +343,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     dataSource: () => local.options ?? [],
     getKey: () => local.optionValue as any,
     getTextValue: () => local.optionTextValue as any,
-    getIsDisabled: () => local.optionDisabled as any,
+    getDisabled: () => local.optionDisabled as any,
     getSectionChildren: () => local.optionGroupChildren as any,
     getIsSection: () => local.isOptionGroup,
   });
@@ -401,8 +401,8 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     isOpen: disclosureState.isOpen,
     isDisabled: () => formControlContext.isDisabled() ?? false,
     isMultiple: () => access(local.selectionMode) === "multiple",
-    isVirtualized: () => local.isVirtualized,
-    isModal: () => local.isModal ?? false,
+    isVirtualized: () => local.virtualized,
+    isModal: () => local.modal ?? false,
     disallowTypeAhead: () => local.disallowTypeAhead ?? false,
     contentPresence,
     autoFocus: focusStrategy,

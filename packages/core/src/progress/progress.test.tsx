@@ -131,7 +131,7 @@ describe("Progress", () => {
 
   it("supports indeterminate state", () => {
     render(() => (
-      <Progress.Root isIndeterminate>
+      <Progress.Root indeterminate>
         <Progress.Label>Progress Bar</Progress.Label>
         <Progress.ValueLabel data-testid="value-label" />
         <Progress.Track>
@@ -207,7 +207,7 @@ describe("Progress", () => {
 
     it("should have 'data-indeterminate' attribute when indeterminate", () => {
       render(() => (
-        <Progress.Root isIndeterminate data-testid="progress-root">
+        <Progress.Root indeterminate data-testid="progress-root">
           <Progress.Label data-testid="progress-label">Progress Bar</Progress.Label>
           <Progress.ValueLabel data-testid="progress-value-label" />
           <Progress.Track data-testid="progress-track">

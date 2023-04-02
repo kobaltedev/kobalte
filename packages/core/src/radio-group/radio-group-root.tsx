@@ -33,7 +33,7 @@ export interface RadioGroupRootOptions extends AsChildProp {
   defaultValue?: string;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string) => void;
+  onChange?: (value: string) => void;
 
   /** The axis the radio group items should align with. */
   orientation?: Orientation;
@@ -55,13 +55,13 @@ export interface RadioGroupRootOptions extends AsChildProp {
   validationState?: ValidationState;
 
   /** Whether the user must select an item before the owning form can be submitted. */
-  isRequired?: boolean;
+  required?: boolean;
 
   /** Whether the radio group is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /** Whether the radio group is read only. */
-  isReadOnly?: boolean;
+  readOnly?: boolean;
 }
 
 export interface RadioGroupRootProps extends OverrideComponentProps<"div", RadioGroupRootOptions> {}
@@ -89,7 +89,7 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
       "ref",
       "value",
       "defaultValue",
-      "onValueChange",
+      "onChange",
       "orientation",
       "aria-labelledby",
       "aria-describedby",
@@ -100,7 +100,7 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
   const [selected, setSelected] = createControllableSignal<string>({
     value: () => local.value,
     defaultValue: () => local.defaultValue,
-    onChange: value => local.onValueChange?.(value),
+    onChange: value => local.onChange?.(value),
   });
 
   const { formControlContext } = createFormControl(formControlProps);

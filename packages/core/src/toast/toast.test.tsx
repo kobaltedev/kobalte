@@ -202,7 +202,7 @@ describe("Toast", () => {
 
     render(() => (
       <>
-        <button data-testid="trigger" onClick={() => showToast({ isPersistent: true })}>
+        <button data-testid="trigger" onClick={() => showToast({ persistent: true })}>
           Show
         </button>
         <Toast.Region duration={duration}>

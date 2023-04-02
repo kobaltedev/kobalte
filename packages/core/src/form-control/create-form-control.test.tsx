@@ -7,8 +7,8 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/label/test/useField.test.js
  */
 
-import { ParentProps } from "solid-js";
 import { render, screen } from "@solidjs/testing-library";
+import { ParentProps } from "solid-js";
 
 import { createFormControl, CreateFormControlProps } from "./create-form-control";
 import { FormControlContext } from "./form-control-context";
@@ -140,7 +140,7 @@ describe("createFormControl", () => {
 
     it("should have 'data-required' attribute when form control is required", () => {
       render(() => (
-        <FormControl isRequired>
+        <FormControl required>
           <FormControlLabel>Label</FormControlLabel>
           <FormControlDescription>Description</FormControlDescription>
         </FormControl>
@@ -156,7 +156,7 @@ describe("createFormControl", () => {
 
     it("should have 'data-disabled' attribute when form control is disabled", () => {
       render(() => (
-        <FormControl isDisabled>
+        <FormControl disabled>
           <FormControlLabel>Label</FormControlLabel>
           <FormControlDescription>Description</FormControlDescription>
         </FormControl>
@@ -172,7 +172,7 @@ describe("createFormControl", () => {
 
     it("should have 'data-readonly' attribute when form control is readonly", () => {
       render(() => (
-        <FormControl isReadOnly>
+        <FormControl readOnly>
           <FormControlLabel>Label</FormControlLabel>
           <FormControlDescription>Description</FormControlDescription>
         </FormControl>
@@ -203,7 +203,7 @@ describe("createFormControl", () => {
 
     it("should add 'data-required' attribute on error message when form control is invalid", () => {
       render(() => (
-        <FormControl validationState="invalid" isRequired>
+        <FormControl validationState="invalid" required>
           <FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
         </FormControl>
       ));
@@ -215,7 +215,7 @@ describe("createFormControl", () => {
 
     it("should add 'data-disabled' attribute on error message when form control is invalid", () => {
       render(() => (
-        <FormControl validationState="invalid" isDisabled>
+        <FormControl validationState="invalid" disabled>
           <FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
         </FormControl>
       ));
@@ -227,7 +227,7 @@ describe("createFormControl", () => {
 
     it("should add 'data-readonly' attribute on error message when form control is invalid", () => {
       render(() => (
-        <FormControl validationState="invalid" isReadOnly>
+        <FormControl validationState="invalid" readOnly>
           <FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
         </FormControl>
       ));

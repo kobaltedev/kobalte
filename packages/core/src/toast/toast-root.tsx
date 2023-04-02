@@ -67,7 +67,7 @@ export interface ToastRootOptions {
   duration?: number;
 
   /** Whether the toast should ignore duration and disappear only by a user action. */
-  isPersistent?: boolean;
+  persistent?: boolean;
 
   /**
    * Event handler called when the dismiss timer is paused.
@@ -124,7 +124,7 @@ export function ToastRoot(props: ToastRootProps) {
     "style",
     "priority",
     "duration",
-    "isPersistent",
+    "persistent",
     "onPause",
     "onResume",
     "onSwipeStart",
@@ -166,7 +166,7 @@ export function ToastRoot(props: ToastRootProps) {
   };
 
   const startTimer = (duration: number) => {
-    if (!duration || local.isPersistent) {
+    if (!duration || local.persistent) {
       return;
     }
 
@@ -359,7 +359,7 @@ export function ToastRoot(props: ToastRootProps) {
   const context: ToastContextValue = {
     close,
     duration,
-    isPersistent: () => local.isPersistent ?? false,
+    isPersistent: () => local.persistent ?? false,
     closeTimerStartTime: () => closeTimerStartTime,
     generateId: createGenerateId(() => others.id!),
     registerTitleId: createRegisterId(setTitleId),

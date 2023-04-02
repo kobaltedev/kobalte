@@ -115,7 +115,7 @@ describe("Button", () => {
 
   it("should not have attribute 'tabindex=0' when it's disabled", () => {
     render(() => (
-      <Button.Root data-testid="button" isDisabled asChild>
+      <Button.Root data-testid="button" disabled asChild>
         <As component="div">Button</As>
       </Button.Root>
     ));
@@ -127,7 +127,7 @@ describe("Button", () => {
 
   it("should have correct 'disabled' attribute when disabled and it's a native button", () => {
     render(() => (
-      <Button.Root data-testid="button" isDisabled>
+      <Button.Root data-testid="button" disabled>
         Button
       </Button.Root>
     ));
@@ -140,7 +140,7 @@ describe("Button", () => {
 
   it("should have correct 'disabled' attribute when disabled and it's an input", () => {
     render(() => (
-      <Button.Root data-testid="button" isDisabled asChild>
+      <Button.Root data-testid="button" disabled asChild>
         <As component="input">Button</As>
       </Button.Root>
     ));
@@ -153,7 +153,7 @@ describe("Button", () => {
 
   it("should have correct 'disabled' attribute when disabled and it's not a native button nor input", () => {
     render(() => (
-      <Button.Root data-testid="button" isDisabled asChild>
+      <Button.Root data-testid="button" disabled asChild>
         <As component="div">Button</As>
       </Button.Root>
     ));
@@ -174,7 +174,7 @@ describe("Button", () => {
 
   it("should have attribute 'data-disabled' when disabled", () => {
     render(() => (
-      <Button.Root data-testid="button" isDisabled>
+      <Button.Root data-testid="button" disabled>
         Button
       </Button.Root>
     ));

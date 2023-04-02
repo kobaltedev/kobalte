@@ -240,7 +240,7 @@ describe("Tabs", function () {
 
   it("does not select via left / right keys if 'activationMode' is manual, select on enter / spacebar", async () => {
     render(() => (
-      <Tabs.Root activationMode="manual" defaultValue="one" onValueChange={onValueChangeSpy}>
+      <Tabs.Root activationMode="manual" defaultValue="one" onChange={onValueChangeSpy}>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -285,7 +285,7 @@ describe("Tabs", function () {
     const onValueChangeSpy = jest.fn();
 
     render(() => (
-      <Tabs.Root defaultValue="one" onValueChange={onValueChangeSpy}>
+      <Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -348,7 +348,7 @@ describe("Tabs", function () {
 
   it("should not focus any tabs when isDisabled tabbing in for the first time", async () => {
     render(() => (
-      <Tabs.Root defaultValue="two" isDisabled>
+      <Tabs.Root defaultValue="two" disabled>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>
@@ -368,11 +368,13 @@ describe("Tabs", function () {
   });
 
   it("disabled tabs cannot be keyboard navigated to", async () => {
+    const onValueChangeSpy = jest.fn();
+
     render(() => (
-      <Tabs.Root defaultValue="one" onValueChange={onValueChangeSpy}>
+      <Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two" isDisabled>
+          <Tabs.Trigger value="two" disabled>
             Two
           </Tabs.Trigger>
           <Tabs.Trigger value="three">Three</Tabs.Trigger>
@@ -403,10 +405,10 @@ describe("Tabs", function () {
     const onValueChangeSpy = jest.fn();
 
     render(() => (
-      <Tabs.Root defaultValue="one" onValueChange={onValueChangeSpy}>
+      <Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two" isDisabled>
+          <Tabs.Trigger value="two" disabled>
             Two
           </Tabs.Trigger>
           <Tabs.Trigger value="three">Three</Tabs.Trigger>
@@ -431,15 +433,15 @@ describe("Tabs", function () {
 
   it("selects first tab if all tabs are disabled", async () => {
     render(() => (
-      <Tabs.Root onValueChange={onValueChangeSpy}>
+      <Tabs.Root onChange={onValueChangeSpy}>
         <Tabs.List>
-          <Tabs.Trigger value="one" isDisabled>
+          <Tabs.Trigger value="one" disabled>
             One
           </Tabs.Trigger>
-          <Tabs.Trigger value="two" isDisabled>
+          <Tabs.Trigger value="two" disabled>
             Two
           </Tabs.Trigger>
-          <Tabs.Trigger value="three" isDisabled>
+          <Tabs.Trigger value="three" disabled>
             Three
           </Tabs.Trigger>
         </Tabs.List>
@@ -510,7 +512,7 @@ describe("Tabs", function () {
 
   it("fires onValueChange when clicking on the current tab", async () => {
     render(() => (
-      <Tabs.Root defaultValue="one" onValueChange={onValueChangeSpy}>
+      <Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
         <Tabs.List>
           <Tabs.Trigger value="one">One</Tabs.Trigger>
           <Tabs.Trigger value="two">Two</Tabs.Trigger>

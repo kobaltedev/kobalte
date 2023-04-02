@@ -48,19 +48,19 @@ let globalCoolDownTimeout: number | undefined;
 export interface TooltipRootOptions
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the tooltip. */
-  isOpen?: boolean;
+  open?: boolean;
 
   /**
    * The default open state when initially rendered.
    * Useful when you do not need to control the open state.
    */
-  defaultIsOpen?: boolean;
+  defaultOpen?: boolean;
 
   /** Event handler called when the open state of the tooltip changes. */
   onOpenChange?: (isOpen: boolean) => void;
 
   /** Whether the tooltip should be disabled, independent of the trigger. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /**
    * Whether to open the tooltip only when the trigger is focused.
@@ -114,10 +114,10 @@ export function TooltipRoot(props: TooltipRootProps) {
 
   const [local, others] = splitProps(props, [
     "id",
-    "isOpen",
-    "defaultIsOpen",
+    "open",
+    "defaultOpen",
     "onOpenChange",
-    "isDisabled",
+    "disabled",
     "triggerOnFocusOnly",
     "openDelay",
     "closeDelay",
@@ -134,8 +134,8 @@ export function TooltipRoot(props: TooltipRootProps) {
   const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(others.placement!);
 
   const disclosureState = createDisclosureState({
-    isOpen: () => local.isOpen,
-    defaultIsOpen: () => local.defaultIsOpen,
+    open: () => local.open,
+    defaultOpen: () => local.defaultOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
@@ -345,7 +345,7 @@ export function TooltipRoot(props: TooltipRootProps) {
   const context: TooltipContextValue = {
     dataset,
     isOpen: disclosureState.isOpen,
-    isDisabled: () => local.isDisabled ?? false,
+    isDisabled: () => local.disabled ?? false,
     triggerOnFocusOnly: () => local.triggerOnFocusOnly ?? false,
     contentId,
     contentPresence,

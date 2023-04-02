@@ -72,7 +72,7 @@ export function CheckboxInput(props: CheckboxInputProps) {
     // clicking on the input will change its internal `checked` state.
     //
     // To prevent this, we need to force the input `checked` state to be in sync with the toggle state.
-    target.checked = context.isChecked();
+    target.checked = context.checked();
   };
 
   const onFocus: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
@@ -91,9 +91,9 @@ export function CheckboxInput(props: CheckboxInputProps) {
   // Clicking on the input will change its internal `indeterminate` state.
   // To prevent this, we need to force the input `indeterminate` state to be in sync with our.
   createEffect(
-    on([() => ref, () => context.isChecked()], ([ref]) => {
+    on([() => ref, () => context.checked()], ([ref]) => {
       if (ref) {
-        ref.indeterminate = context.isIndeterminate() || false;
+        ref.indeterminate = context.indeterminate() || false;
       }
     })
   );
@@ -104,16 +104,16 @@ export function CheckboxInput(props: CheckboxInputProps) {
       type="checkbox"
       name={context.name()}
       value={context.value()}
-      checked={context.isChecked()}
-      required={context.isRequired()}
-      disabled={context.isDisabled()}
-      readonly={context.isReadOnly()}
+      checked={context.checked()}
+      required={context.required()}
+      disabled={context.disabled()}
+      readonly={context.readOnly()}
       style={{ ...visuallyHiddenStyles, ...local.style }}
       aria-labelledby={ariaLabelledBy()}
       aria-invalid={context.validationState() === "invalid" || undefined}
-      aria-required={context.isRequired() || undefined}
-      aria-disabled={context.isDisabled() || undefined}
-      aria-readonly={context.isReadOnly() || undefined}
+      aria-required={context.required() || undefined}
+      aria-disabled={context.disabled() || undefined}
+      aria-readonly={context.readOnly() || undefined}
       onChange={onChange}
       onFocus={onFocus}
       onBlur={onBlur}

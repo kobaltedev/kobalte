@@ -24,7 +24,7 @@ export interface TextFieldRootOptions extends AsChildProp {
   defaultValue?: string;
 
   /** Event handler called when the value of the textfield changes. */
-  onValueChange?: (value: string) => void;
+  onChange?: (value: string) => void;
 
   /**
    * A unique identifier for the component.
@@ -43,13 +43,13 @@ export interface TextFieldRootOptions extends AsChildProp {
   validationState?: ValidationState;
 
   /** Whether the user must fill the textfield before the owning form can be submitted. */
-  isRequired?: boolean;
+  required?: boolean;
 
   /** Whether the textfield is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /** Whether the textfield is read only. */
-  isReadOnly?: boolean;
+  readOnly?: boolean;
 }
 
 export interface TextFieldRootProps extends OverrideComponentProps<"div", TextFieldRootOptions> {}
@@ -66,14 +66,14 @@ export function TextFieldRoot(props: TextFieldRootProps) {
 
   const [local, formControlProps, others] = splitProps(
     props,
-    ["ref", "value", "defaultValue", "onValueChange"],
+    ["ref", "value", "defaultValue", "onChange"],
     FORM_CONTROL_PROP_NAMES
   );
 
   const [value, setValue] = createControllableSignal({
     value: () => local.value,
     defaultValue: () => local.defaultValue,
-    onChange: value => local.onValueChange?.(value),
+    onChange: value => local.onChange?.(value),
   });
 
   const { formControlContext } = createFormControl(formControlProps);

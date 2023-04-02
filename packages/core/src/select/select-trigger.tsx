@@ -30,14 +30,14 @@ export function SelectTrigger(props: SelectTriggerProps) {
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
-    ["ref", "isDisabled", "onPointerDown", "onClick", "onKeyDown", "onFocus", "onBlur"],
+    ["ref", "disabled", "onPointerDown", "onClick", "onKeyDown", "onFocus", "onBlur"],
     FORM_CONTROL_FIELD_PROP_NAMES
   );
 
   const selectionManager = () => context.listState().selectionManager();
   const keyboardDelegate = () => context.keyboardDelegate();
 
-  const isDisabled = () => local.isDisabled || context.isDisabled();
+  const isDisabled = () => local.disabled || context.isDisabled();
 
   const { fieldProps } = createFormControlField(formControlFieldProps);
 
@@ -176,7 +176,7 @@ export function SelectTrigger(props: SelectTriggerProps) {
     <Button.Root
       ref={mergeRefs(context.setTriggerRef, local.ref)}
       id={fieldProps.id()}
-      isDisabled={isDisabled()}
+      disabled={isDisabled()}
       aria-haspopup="listbox"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.listboxId() : undefined}

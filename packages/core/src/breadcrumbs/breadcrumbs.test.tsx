@@ -32,7 +32,7 @@ describe("Breadcrumbs", () => {
             <Breadcrumbs.Separator />
           </li>
           <li>
-            <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+            <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
           </li>
         </ol>
       </Breadcrumbs.Root>
@@ -55,7 +55,7 @@ describe("Breadcrumbs", () => {
             <Breadcrumbs.Separator />
           </li>
           <li>
-            <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+            <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
           </li>
         </ol>
       </Breadcrumbs.Root>
@@ -78,7 +78,7 @@ describe("Breadcrumbs", () => {
             <Breadcrumbs.Separator />
           </li>
           <li>
-            <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+            <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
           </li>
         </ol>
       </Breadcrumbs.Root>
@@ -101,7 +101,7 @@ describe("Breadcrumbs", () => {
             <Breadcrumbs.Separator />
           </li>
           <li>
-            <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+            <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
           </li>
         </ol>
       </Breadcrumbs.Root>
@@ -128,7 +128,7 @@ describe("Breadcrumbs", () => {
               <Breadcrumbs.Separator />
             </li>
             <li>
-              <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+              <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
             </li>
           </ol>
         </Breadcrumbs.Root>
@@ -151,7 +151,7 @@ describe("Breadcrumbs", () => {
               <Breadcrumbs.Separator />
             </li>
             <li>
-              <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+              <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
             </li>
           </ol>
         </Breadcrumbs.Root>
@@ -174,7 +174,7 @@ describe("Breadcrumbs", () => {
               <Breadcrumbs.Separator />
             </li>
             <li>
-              <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+              <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
             </li>
           </ol>
         </Breadcrumbs.Root>

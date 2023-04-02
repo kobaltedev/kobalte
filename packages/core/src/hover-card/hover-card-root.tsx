@@ -34,13 +34,13 @@ import { getHoverCardSafeArea } from "./utils";
 export interface HoverCardRootOptions
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the hovercard. */
-  isOpen?: boolean;
+  open?: boolean;
 
   /**
    * The default open state when initially rendered.
    * Useful when you do not need to control the open state.
    */
-  defaultIsOpen?: boolean;
+  defaultOpen?: boolean;
 
   /** Event handler called when the open state of the hovercard changes. */
   onOpenChange?: (isOpen: boolean) => void;
@@ -87,8 +87,8 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 
   const [local, others] = splitProps(props, [
     "id",
-    "isOpen",
-    "defaultIsOpen",
+    "open",
+    "defaultOpen",
     "onOpenChange",
     "openDelay",
     "closeDelay",
@@ -105,8 +105,8 @@ export function HoverCardRoot(props: HoverCardRootProps) {
   const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(others.placement!);
 
   const disclosureState = createDisclosureState({
-    isOpen: () => local.isOpen,
-    defaultIsOpen: () => local.defaultIsOpen,
+    open: () => local.open,
+    defaultOpen: () => local.defaultOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 

@@ -39,7 +39,7 @@ export interface MenuSubTriggerOptions extends AsChildProp {
   textValue?: string;
 
   /** Whether the sub menu trigger is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
 
 const SELECTION_KEYS = ["Enter", " "];
@@ -70,7 +70,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
     "ref",
     "id",
     "textValue",
-    "isDisabled",
+    "disabled",
     "onPointerMove",
     "onPointerLeave",
     "onPointerDown",
@@ -119,7 +119,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
       selectionManager: parentSelectionManager,
       shouldSelectOnPressUp: true,
       allowsDifferentPressOrigin: true,
-      isDisabled: () => local.isDisabled,
+      disabled: () => local.disabled,
     },
     () => ref
   );
@@ -127,7 +127,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     callHandler(e, local.onClick);
 
-    if (!context.isOpen() && !local.isDisabled) {
+    if (!context.isOpen() && !local.disabled) {
       context.open(true);
     }
   };
@@ -147,7 +147,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
       return;
     }
 
-    if (local.isDisabled) {
+    if (local.disabled) {
       parentMenuContext?.onItemLeave(e);
       return;
     }
@@ -227,7 +227,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
       return;
     }
 
-    if (local.isDisabled) {
+    if (local.disabled) {
       return;
     }
 
@@ -264,7 +264,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
       type: "item",
       key: key(),
       textValue: local.textValue ?? ref?.textContent ?? "",
-      isDisabled: local.isDisabled ?? false,
+      disabled: local.disabled ?? false,
     });
 
     onCleanup(unregister);
@@ -301,10 +301,10 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
       aria-haspopup="true"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.contentId() : undefined}
-      aria-disabled={local.isDisabled}
+      aria-disabled={local.disabled}
       data-key={selectableItem.dataKey()}
       data-highlighted={isHighlighted() ? "" : undefined}
-      data-disabled={local.isDisabled ? "" : undefined}
+      data-disabled={local.disabled ? "" : undefined}
       onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
       onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}
       onClick={composeEventHandlers([onClick, selectableItem.onClick])}

@@ -12,9 +12,9 @@ import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 import * as Select from ".";
 
 const DATA_SOURCE = [
-  { key: "1", label: "One", textValue: "One", isDisabled: false },
-  { key: "2", label: "Two", textValue: "Two", isDisabled: false },
-  { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+  { key: "1", label: "One", textValue: "One", disabled: false },
+  { key: "2", label: "Two", textValue: "Two", disabled: false },
+  { key: "3", label: "Three", textValue: "Three", disabled: false },
 ];
 
 describe("Select", () => {
@@ -661,7 +661,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          isOpen
+          open
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -709,7 +709,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          defaultIsOpen
+          defaultOpen
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -935,7 +935,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          isOpen
+          open
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -980,7 +980,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          defaultIsOpen
+          defaultOpen
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -1027,7 +1027,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1060,7 +1060,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1102,7 +1102,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1141,7 +1141,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1179,7 +1179,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1219,7 +1219,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1251,7 +1251,7 @@ describe("Select", () => {
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
           validationState="invalid"
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1284,7 +1284,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1349,7 +1349,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1416,7 +1416,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1482,7 +1482,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1565,7 +1565,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           onOpenChange={onOpenChangeSpy}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -1648,7 +1648,7 @@ describe("Select", () => {
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
           value="2"
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1716,7 +1716,7 @@ describe("Select", () => {
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
           defaultValue="2"
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1779,9 +1779,9 @@ describe("Select", () => {
 
     it("skips disabled items", async () => {
       const dataSource = [
-        { key: "1", label: "One", textValue: "One", isDisabled: false },
-        { key: "2", label: "Two", textValue: "Two", isDisabled: true },
-        { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+        { key: "1", label: "One", textValue: "One", disabled: false },
+        { key: "2", label: "Two", textValue: "Two", disabled: true },
+        { key: "3", label: "Three", textValue: "Three", disabled: false },
       ];
 
       render(() => (
@@ -1789,7 +1789,7 @@ describe("Select", () => {
           options={dataSource}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1859,10 +1859,10 @@ describe("Select", () => {
 
     it("supports type to select", async () => {
       const dataSource = [
-        { key: "1", label: "One", textValue: "One", isDisabled: false },
-        { key: "2", label: "Two", textValue: "Two", isDisabled: false },
-        { key: "3", label: "Three", textValue: "Three", isDisabled: false },
-        { key: "4", label: "Four", textValue: "Four", isDisabled: false },
+        { key: "1", label: "One", textValue: "One", disabled: false },
+        { key: "2", label: "Two", textValue: "Two", disabled: false },
+        { key: "3", label: "Three", textValue: "Three", disabled: false },
+        { key: "4", label: "Four", textValue: "Four", disabled: false },
       ];
 
       render(() => (
@@ -1870,7 +1870,7 @@ describe("Select", () => {
           options={dataSource}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -1969,7 +1969,7 @@ describe("Select", () => {
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
           defaultValue="2"
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -2024,7 +2024,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -2090,7 +2090,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -2141,7 +2141,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -2195,7 +2195,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -2246,9 +2246,9 @@ describe("Select", () => {
   describe("autofill", () => {
     it("should have a hidden select element for form autocomplete", async () => {
       const dataSource = [
-        { key: "DE", label: "Germany", textValue: "Germany", isDisabled: false },
-        { key: "FR", label: "France", textValue: "France", isDisabled: false },
-        { key: "IT", label: "Italy", textValue: "Italy", isDisabled: false },
+        { key: "DE", label: "Germany", textValue: "Germany", disabled: false },
+        { key: "FR", label: "France", textValue: "France", disabled: false },
+        { key: "IT", label: "Italy", textValue: "Italy", disabled: false },
       ];
 
       render(() => (
@@ -2256,7 +2256,7 @@ describe("Select", () => {
           options={dataSource}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -2306,7 +2306,7 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -2346,14 +2346,14 @@ describe("Select", () => {
   });
 
   describe("disabled", () => {
-    it("disables the hidden select when isDisabled is true", async () => {
+    it("disables the hidden select when disabled is true", async () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          isDisabled
-          onValueChange={onValueChange}
+          disabled
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -2376,7 +2376,7 @@ describe("Select", () => {
       expect(select).toBeDisabled();
     });
 
-    it("does not open on mouse down when isDisabled is true", async () => {
+    it("does not open on mouse down when disabled is true", async () => {
       const onOpenChange = jest.fn();
 
       render(() => (
@@ -2384,8 +2384,8 @@ describe("Select", () => {
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          isDisabled
-          onValueChange={onValueChange}
+          disabled
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -2416,15 +2416,15 @@ describe("Select", () => {
       expect(trigger).toHaveAttribute("aria-expanded", "false");
     });
 
-    it("does not open on Space key press when isDisabled is true", async () => {
+    it("does not open on Space key press when disabled is true", async () => {
       const onOpenChange = jest.fn();
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
           placeholder="Placeholder"
           valueComponent={props => props.item.rawValue.label}
-          isDisabled
-          onValueChange={onValueChange}
+          disabled
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}

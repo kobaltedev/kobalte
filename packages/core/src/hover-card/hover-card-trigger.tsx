@@ -32,7 +32,7 @@ export function HoverCardTrigger(props: HoverCardTriggerProps) {
   const onPointerEnter: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> = e => {
     callHandler(e, local.onPointerEnter);
 
-    if (e.pointerType === "touch" || others.isDisabled || e.defaultPrevented) {
+    if (e.pointerType === "touch" || others.disabled || e.defaultPrevented) {
       return;
     }
 
@@ -56,7 +56,7 @@ export function HoverCardTrigger(props: HoverCardTriggerProps) {
   const onFocus: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = e => {
     callHandler(e, local.onFocus);
 
-    if (others.isDisabled || e.defaultPrevented) {
+    if (others.disabled || e.defaultPrevented) {
       return;
     }
 

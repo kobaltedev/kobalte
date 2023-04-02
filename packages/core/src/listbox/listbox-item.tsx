@@ -79,7 +79,7 @@ export function ListboxItem(props: ListboxItemProps) {
         return listBoxContext.shouldSelectOnPressUp() && listBoxContext.shouldFocusOnHover();
       },
       shouldUseVirtualFocus: listBoxContext.shouldUseVirtualFocus,
-      isDisabled: () => local.item.isDisabled,
+      disabled: () => local.item.disabled,
     },
     () => ref
   );
