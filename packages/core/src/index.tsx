@@ -17,6 +17,7 @@ export * as Breadcrumbs from "./breadcrumbs";
 export * as Button from "./button";
 export * as Checkbox from "./checkbox";
 export * as Collapsible from "./collapsible";
+export * as Combobox from "./combobox";
 export * as ContextMenu from "./context-menu";
 export * as Dialog from "./dialog";
 export * as DropdownMenu from "./dropdown-menu";

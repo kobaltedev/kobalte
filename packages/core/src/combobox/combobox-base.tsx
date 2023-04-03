@@ -1,11 +1,3 @@
-/*!
- * Portions of this file are based on code from react-spectrum.
- * Apache License Version 2.0, Copyright 2020 Adobe.
- *
- * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/useSelect.ts
- */
-
 import {
   access,
   createGenerateId,
@@ -31,21 +23,24 @@ import { AsChildProp, Polymorphic } from "../polymorphic";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
   CollectionNode,
+  createControllableSignal,
   createDisclosureState,
   createFormResetListener,
   createPresence,
   createRegisterId,
 } from "../primitives";
 import {
+  createSelectableCollection,
   FocusStrategy,
   KeyboardDelegate,
   Selection,
   SelectionBehavior,
   SelectionMode,
 } from "../selection";
-import { SelectContext, SelectContextValue, SelectDataSet } from "./select-context";
+import { ComboboxContext, ComboboxContextValue, ComboboxDataSet } from "./combobox-context";
+import { ComboboxTriggerMode } from "./types";
 
-export interface SelectBaseValueComponentProps<T> {
+export interface ComboboxBaseValueComponentProps<T> {
   /** The selected items. */
   items: CollectionNode<T>[];
 
@@ -56,20 +51,20 @@ export interface SelectBaseValueComponentProps<T> {
   clear: () => void;
 }
 
-export interface SelectBaseItemComponentProps<T> {
+export interface ComboboxBaseItemComponentProps<T> {
   /** The item to render. */
   item: CollectionNode<T>;
 }
 
-export interface SelectBaseSectionComponentProps<T> {
+export interface ComboboxBaseSectionComponentProps<T> {
   /** The section to render. */
   section: CollectionNode<T>;
 }
 
-export interface SelectBaseOptions<Option, OptGroup = never>
+export interface ComboboxBaseOptions<Option, OptGroup = never>
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange">,
     AsChildProp {
-  /** The controlled open state of the select. */
+  /** The controlled open state of the combobox. */
   open?: boolean;
 
   /**
@@ -78,10 +73,22 @@ export interface SelectBaseOptions<Option, OptGroup = never>
    */
   defaultOpen?: boolean;
 
-  /** Event handler called when the open state of the select changes. */
-  onOpenChange?: (isOpen: boolean) => void;
+  /**
+   * Event handler called when the open state of the combobox changes.
+   * Returns the new open state and the action that caused the opening of the menu.
+   */
+  onOpenChange?: (isOpen: boolean, triggerMode?: ComboboxTriggerMode) => void;
 
-  /** The controlled value of the select. */
+  /** The value of the Combobox input (controlled). */
+  inputValue?: string;
+
+  /** The default value of the Combobox input (uncontrolled). */
+  defaultInputValue?: string;
+
+  /** Handler that is called when the Combobox input value changes. */
+  onInputChange?: (value: string) => void;
+
+  /** The controlled value of the combobox. */
   value?: Iterable<string>;
 
   /**
@@ -92,6 +99,12 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 
   /** Event handler called when the value changes. */
   onChange?: (value: Set<string>) => void;
+
+  /** Whether the Combobox allows a non-item matching input value to be set. */
+  allowsCustomValue?: boolean;
+
+  /** The interaction required to display the Combobox menu. */
+  triggerMode?: ComboboxTriggerMode;
 
   /** The content that will be rendered when no value or defaultValue is set. */
   placeholder?: JSX.Element;
@@ -120,6 +133,12 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   /** Whether focus should wrap around when the end/start is reached. */
   shouldFocusWrap?: boolean;
 
+  /** Whether the combobox allows the menu to be open when the collection is empty. */
+  allowsEmptyCollection?: boolean;
+
+  /** Whether the combobox menu should close on blur. */
+  shouldCloseOnBlur?: boolean;
+
   /** The type of selection that is allowed in the select. */
   selectionMode?: Exclude<SelectionMode, "none">;
 
@@ -132,20 +151,17 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   /** Whether the select allows empty selection. */
   disallowEmptySelection?: boolean;
 
-  /** Whether typeahead is disabled. */
-  disallowTypeAhead?: boolean;
-
   /** Whether the select uses virtual scrolling. */
   virtualized?: boolean;
 
-  /** The component to render inside `Select.Value`. */
-  valueComponent?: Component<SelectBaseValueComponentProps<Option>>;
+  /** The component to render inside `Combobox.Value`. */
+  valueComponent?: Component<ComboboxBaseValueComponentProps<Option>>;
 
-  /** When NOT virtualized, the component to render as an item in the `Select.Listbox`. */
-  itemComponent?: Component<SelectBaseItemComponentProps<Option>>;
+  /** When NOT virtualized, the component to render as an item in the `Combobox.Listbox`. */
+  itemComponent?: Component<ComboboxBaseItemComponentProps<Option>>;
 
-  /** When NOT virtualized, the component to render as a section in the `Select.Listbox`. */
-  sectionComponent?: Component<SelectBaseSectionComponentProps<OptGroup>>;
+  /** When NOT virtualized, the component to render as a section in the `Combobox.Listbox`. */
+  sectionComponent?: Component<ComboboxBaseSectionComponentProps<OptGroup>>;
 
   /**
    * Whether the select should be the only visible content for screen readers.
@@ -192,16 +208,16 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   children?: JSX.Element;
 }
 
-export interface SelectBaseProps<Option, OptGroup = never>
-  extends OverrideComponentProps<"div", SelectBaseOptions<Option, OptGroup>>,
+export interface ComboboxBaseProps<Option, OptGroup = never>
+  extends OverrideComponentProps<"div", ComboboxBaseOptions<Option, OptGroup>>,
     AsChildProp {}
 
 /**
  * Base component for a select, provide context for its children.
  * Used to build single and multi-select.
  */
-export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Option, OptGroup>) {
-  const defaultId = `select-${createUniqueId()}`;
+export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<Option, OptGroup>) {
+  const defaultId = `combobox-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
@@ -212,6 +228,8 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       gutter: 8,
       sameWidth: true,
       modal: false,
+      triggerMode: "input",
+      shouldCloseOnBlur: true,
     },
     props
   );
@@ -225,9 +243,14 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       "open",
       "defaultOpen",
       "onOpenChange",
+      "inputValue",
+      "defaultInputValue",
+      "onInputChange",
       "value",
       "defaultValue",
       "onChange",
+      "allowsCustomValue",
+      "triggerMode",
       "placeholder",
       "options",
       "optionValue",
@@ -238,8 +261,9 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       "keyboardDelegate",
       "allowDuplicateSelectionEvents",
       "disallowEmptySelection",
-      "disallowTypeAhead",
       "shouldFocusWrap",
+      "shouldCloseOnBlur",
+      "allowsEmptyCollection",
       "selectionBehavior",
       "selectionMode",
       "virtualized",
@@ -264,21 +288,31 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     FORM_CONTROL_PROP_NAMES
   );
 
-  const [triggerId, setTriggerId] = createSignal<string>();
-  const [valueId, setValueId] = createSignal<string>();
+  const [inputId, setInputId] = createSignal<string>();
   const [listboxId, setListboxId] = createSignal<string>();
 
-  const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
+  const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
+  const [buttonRef, setButtonRef] = createSignal<HTMLButtonElement>();
   const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
   const [listboxRef, setListboxRef] = createSignal<HTMLUListElement>();
 
   const [listboxAriaLabelledBy, setListboxAriaLabelledBy] = createSignal<string>();
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(true);
 
+  const [isFocused, setIsFocusedState] = createSignal(false);
+  const [inputValue, setInputValue] = createControllableSignal({
+    value: () => local.inputValue,
+    defaultValue: () => local.defaultInputValue ?? "",
+    onChange: value => local.onInputChange?.(value),
+  });
+
+  // Track what action is attempting to open the menu
+  let menuOpenTrigger: ComboboxTriggerMode | undefined = "focus";
+
   const disclosureState = createDisclosureState({
     open: () => local.open,
     defaultOpen: () => local.defaultOpen,
-    onOpenChange: isOpen => local.onOpenChange?.(isOpen),
+    onOpenChange: isOpen => local.onOpenChange?.(isOpen, menuOpenTrigger),
   });
 
   const listState = createListState({
@@ -305,20 +339,13 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 
   const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
 
-  const focusListbox = () => {
-    const listboxEl = listboxRef();
-
-    if (listboxEl) {
-      focusWithoutScrolling(listboxEl);
-    }
-  };
-
-  const open = (focusStrategy: FocusStrategy | boolean) => {
+  const open = (focusStrategy: FocusStrategy | boolean, triggerMode?: ComboboxTriggerMode) => {
     // Don't open if the collection is empty.
-    if (listState.collection().getSize() <= 0) {
+    if (!local.allowsEmptyCollection && listState.collection().getSize() <= 0) {
       return;
     }
 
+    menuOpenTrigger = triggerMode;
     setFocusStrategy(focusStrategy);
     disclosureState.open();
 
@@ -332,7 +359,6 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       }
     }
 
-    focusListbox();
     listState.selectionManager().setFocused(true);
     listState.selectionManager().setFocusedKey(focusedKey);
   };
@@ -344,21 +370,19 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     listState.selectionManager().setFocusedKey(undefined);
   };
 
-  const toggle = (focusStrategy: FocusStrategy | boolean) => {
+  const toggle = (focusStrategy: FocusStrategy | boolean, triggerMode?: ComboboxTriggerMode) => {
     if (disclosureState.isOpen()) {
       close();
     } else {
-      open(focusStrategy);
+      open(focusStrategy, triggerMode);
     }
   };
 
   const { formControlContext } = createFormControl(formControlProps);
 
-  createFormResetListener(triggerRef, () => {
+  createFormResetListener(inputRef, () => {
     listState.selectionManager().setSelectedKeys(local.defaultValue ?? new Selection());
   });
-
-  const collator = createCollator({ usage: "search", sensitivity: "base" });
 
   // By default, a KeyboardDelegate is provided which uses the DOM to query layout information (e.g. for page up/page down).
   const delegate = createMemo(() => {
@@ -368,8 +392,34 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       return keyboardDelegate;
     }
 
-    return new ListKeyboardDelegate(listState.collection, undefined, collator);
+    return new ListKeyboardDelegate(listState.collection, listboxRef, undefined);
   });
+
+  // Use `createSelectableCollection` to get the keyboard handlers to apply to the input.
+  const selectableCollection = createSelectableCollection(
+    {
+      selectionManager: () => listState.selectionManager(),
+      keyboardDelegate: delegate,
+      disallowTypeAhead: true,
+      disallowEmptySelection: true,
+      shouldFocusWrap: () => local.shouldFocusWrap,
+      // Prevent item scroll behavior from being applied here, handled in the Listbox component.
+      isVirtualized: true,
+    },
+    inputRef
+  );
+
+  const setIsFocused = (isFocused: boolean) => {
+    if (isFocused) {
+      if (local.triggerMode === "focus") {
+        open(true, "focus");
+      }
+    } else if (local.shouldCloseOnBlur) {
+      close();
+    }
+
+    setIsFocusedState(isFocused);
+  };
 
   const selectedItems = createMemo(() => {
     return [...listState.selectionManager().selectedKeys()]
@@ -395,31 +445,36 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     return local.sectionComponent?.({ section });
   };
 
-  const dataset: Accessor<SelectDataSet> = createMemo(() => ({
+  const dataset: Accessor<ComboboxDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
     "data-closed": !disclosureState.isOpen() ? "" : undefined,
   }));
 
-  const context: SelectContextValue = {
+  const context: ComboboxContextValue = {
     dataset,
     isOpen: disclosureState.isOpen,
     isDisabled: () => formControlContext.isDisabled() ?? false,
     isMultiple: () => access(local.selectionMode) === "multiple",
     isVirtualized: () => local.virtualized,
     isModal: () => local.modal ?? false,
-    disallowTypeAhead: () => local.disallowTypeAhead ?? false,
+    isFocused,
+    inputValue,
     shouldFocusWrap: () => local.shouldFocusWrap ?? false,
     contentPresence,
     autoFocus: focusStrategy,
-    triggerRef,
+    inputRef,
+    buttonRef,
+    contentRef,
     listState: () => listState,
     keyboardDelegate: delegate,
-    triggerId,
-    valueId,
+    inputId,
     listboxId,
     listboxAriaLabelledBy,
     setListboxAriaLabelledBy,
-    setTriggerRef,
+    setIsFocused,
+    setInputValue,
+    setInputRef,
+    setButtonRef,
     setContentRef,
     setListboxRef,
     open,
@@ -429,16 +484,16 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     renderValue,
     renderItem,
     renderSection,
+    onInputKeyDown: e => selectableCollection.onKeyDown(e),
     generateId: createGenerateId(() => access(formControlProps.id)!),
-    registerTriggerId: createRegisterId(setTriggerId),
-    registerValueId: createRegisterId(setValueId),
+    registerInputId: createRegisterId(setInputId),
     registerListboxId: createRegisterId(setListboxId),
   };
 
   return (
     <FormControlContext.Provider value={formControlContext}>
-      <SelectContext.Provider value={context}>
-        <PopperRoot anchorRef={triggerRef} contentRef={contentRef} {...popperProps}>
+      <ComboboxContext.Provider value={context}>
+        <PopperRoot anchorRef={inputRef} contentRef={contentRef} {...popperProps}>
           <Polymorphic
             as="div"
             role="group"
@@ -448,7 +503,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
             {...others}
           />
         </PopperRoot>
-      </SelectContext.Provider>
+      </ComboboxContext.Provider>
     </FormControlContext.Provider>
   );
 }
