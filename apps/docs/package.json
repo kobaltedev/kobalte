@@ -38,7 +38,7 @@
     "@solidjs/router": "0.8.2",
     "@tanstack/solid-virtual": "3.0.0-beta.6",
     "clsx": "1.2.1",
-    "solid-js": "1.7.0",
+    "solid-js": "1.7.1",
     "solid-start": "0.2.24",
     "undici": "5.21.0"
   },
