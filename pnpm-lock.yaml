@@ -170,7 +170,7 @@ importers:
       tailwindcss: 3.3.0
       typescript: 4.9.5
       vite: 3.2.5
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: 2.6.1
     dependencies:
       '@kobalte/core': link:../../packages/core
       '@kobalte/utils': link:../../packages/utils
