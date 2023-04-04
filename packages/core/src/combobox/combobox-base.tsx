@@ -2,6 +2,7 @@ import {
   access,
   createGenerateId,
   focusWithoutScrolling,
+  isAppleDevice,
   mergeDefaultProps,
   OverrideComponentProps,
   ValidationState,
@@ -9,16 +10,19 @@ import {
 import {
   Accessor,
   Component,
+  createEffect,
   createMemo,
   createSignal,
   createUniqueId,
   JSX,
+  on,
   splitProps,
 } from "solid-js";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import { createCollator } from "../i18n";
+import { createLocalizedStringFormatter } from "../i18n";
 import { createListState, ListKeyboardDelegate } from "../list";
+import { announce } from "../live-announcer";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
@@ -28,6 +32,7 @@ import {
   createFormResetListener,
   createPresence,
   createRegisterId,
+  getItemCount,
 } from "../primitives";
 import {
   createSelectableCollection,
@@ -37,12 +42,13 @@ import {
   SelectionBehavior,
   SelectionMode,
 } from "../selection";
+import { COMBOBOX_INTL_MESSAGES } from "./combobox.intl";
 import { ComboboxContext, ComboboxContextValue, ComboboxDataSet } from "./combobox-context";
 import { ComboboxTriggerMode } from "./types";
 
 export interface ComboboxBaseValueComponentProps<T> {
-  /** The selected items. */
-  items: CollectionNode<T>[];
+  /** The selected item values. */
+  values: string[];
 
   /** A function to remove an item from the selection. */
   remove: (item: CollectionNode<T>) => void;
@@ -100,9 +106,6 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
   /** Event handler called when the value changes. */
   onChange?: (value: Set<string>) => void;
 
-  /** Whether the Combobox allows a non-item matching input value to be set. */
-  allowsCustomValue?: boolean;
-
   /** The interaction required to display the Combobox menu. */
   triggerMode?: ComboboxTriggerMode;
 
@@ -135,9 +138,6 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
 
   /** Whether the combobox allows the menu to be open when the collection is empty. */
   allowsEmptyCollection?: boolean;
-
-  /** Whether the combobox menu should close on blur. */
-  shouldCloseOnBlur?: boolean;
 
   /** The type of selection that is allowed in the select. */
   selectionMode?: Exclude<SelectionMode, "none">;
@@ -229,7 +229,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       sameWidth: true,
       modal: false,
       triggerMode: "input",
-      shouldCloseOnBlur: true,
+      allowsEmptyCollection: false,
     },
     props
   );
@@ -249,7 +249,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       "value",
       "defaultValue",
       "onChange",
-      "allowsCustomValue",
       "triggerMode",
       "placeholder",
       "options",
@@ -262,7 +261,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       "allowDuplicateSelectionEvents",
       "disallowEmptySelection",
       "shouldFocusWrap",
-      "shouldCloseOnBlur",
       "allowsEmptyCollection",
       "selectionBehavior",
       "selectionMode",
@@ -289,25 +287,29 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   );
 
   const [inputId, setInputId] = createSignal<string>();
+  const [valueId, setValueId] = createSignal<string>();
   const [listboxId, setListboxId] = createSignal<string>();
 
+  const [triggerRef, setTriggerRef] = createSignal<HTMLDivElement>();
   const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
   const [buttonRef, setButtonRef] = createSignal<HTMLButtonElement>();
   const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
   const [listboxRef, setListboxRef] = createSignal<HTMLUListElement>();
 
-  const [listboxAriaLabelledBy, setListboxAriaLabelledBy] = createSignal<string>();
-  const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(true);
+  const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(false);
 
-  const [isFocused, setIsFocusedState] = createSignal(false);
-  const [inputValue, setInputValue] = createControllableSignal({
-    value: () => local.inputValue,
-    defaultValue: () => local.defaultInputValue ?? "",
-    onChange: value => local.onInputChange?.(value),
-  });
+  const [isInputFocused, setIsInputFocusedState] = createSignal(false);
+
+  const stringFormatter = createLocalizedStringFormatter(() => COMBOBOX_INTL_MESSAGES);
 
   // Track what action is attempting to open the menu
   let menuOpenTrigger: ComboboxTriggerMode | undefined = "focus";
+
+  const [inputValue, setInputValue] = createControllableSignal({
+    value: () => local.inputValue,
+    defaultValue: () => local.defaultInputValue,
+    onChange: value => local.onInputChange?.(value),
+  });
 
   const disclosureState = createDisclosureState({
     open: () => local.open,
@@ -323,6 +325,9 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 
       if (local.selectionMode === "single") {
         close();
+      } else {
+        // Bring back focus to the input after selection in multiple mode.
+        focusWithoutScrolling(inputRef());
       }
     },
     allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
@@ -409,28 +414,18 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     inputRef
   );
 
-  const setIsFocused = (isFocused: boolean) => {
-    if (isFocused) {
-      if (local.triggerMode === "focus") {
-        open(true, "focus");
-      }
-    } else if (local.shouldCloseOnBlur) {
-      close();
+  const setIsInputFocused = (isFocused: boolean) => {
+    if (isFocused && local.triggerMode === "focus") {
+      open(false, "focus");
     }
 
-    setIsFocusedState(isFocused);
+    setIsInputFocusedState(isFocused);
   };
-
-  const selectedItems = createMemo(() => {
-    return [...listState.selectionManager().selectedKeys()]
-      .map(key => listState.collection().getItem(key))
-      .filter(Boolean) as CollectionNode[];
-  });
 
   const renderValue = () => {
     return local.valueComponent?.({
-      get items() {
-        return selectedItems();
+      get values() {
+        return [...listState.selectionManager().selectedKeys()];
       },
       remove: item => listState.selectionManager().toggleSelection(item.key),
       clear: () => listState.selectionManager().clearSelection(),
@@ -445,6 +440,110 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     return local.sectionComponent?.({ section });
   };
 
+  const focusedItem = createMemo(() => {
+    const focusedKey = listState.selectionManager().focusedKey();
+
+    if (focusedKey != null && disclosureState.isOpen()) {
+      return listState.collection().getItem(focusedKey);
+    }
+
+    return undefined;
+  });
+
+  const activeDescendant = createMemo(() => {
+    const focusedKey = focusedItem()?.key;
+
+    if (focusedKey) {
+      return listboxRef()?.querySelector(`[data-key="${focusedKey}"]`)?.id;
+    }
+
+    return undefined;
+  });
+
+  let preventReOpen = false;
+
+  createEffect(
+    on(listState.collection, () => {
+      if (preventReOpen) {
+        preventReOpen = false;
+        return;
+      }
+
+      // Open menu automatically when the input value changes if the input is focused.
+      if (isInputFocused() && !disclosureState.isOpen() && local.triggerMode !== "manual") {
+        open(false, "input");
+      }
+    })
+  );
+
+  // Reset input when content hide.
+  createEffect(
+    on(
+      () => contentPresence.isPresent(),
+      isPresent => {
+        if (!isPresent) {
+          setInputValue("");
+          preventReOpen = true;
+
+          setTimeout(() => {
+            preventReOpen = false;
+          }, 0);
+        }
+      },
+      {
+        defer: true,
+      }
+    )
+  );
+
+  // VoiceOver has issues with announcing aria-activedescendant properly on change.
+  // We use a live region announcer to announce focus changes manually.
+  createEffect(() => {
+    const itemKey = listState.selectionManager().focusedKey() ?? "";
+
+    if (isAppleDevice() && focusedItem() != null) {
+      const isSelected = listState.selectionManager().isSelected(itemKey);
+
+      const announcement = stringFormatter().format("focusAnnouncement", {
+        optionText: focusedItem()?.textValue || "",
+        isSelected,
+      });
+
+      announce(announcement);
+    }
+  });
+
+  // Announce the number of available suggestions when it changes
+  createEffect(() => {
+    const optionCount = getItemCount(listState.collection());
+
+    // Only announce the number of options available when the menu opens if there is no
+    // focused item, otherwise screen readers will typically read e.g. "1 of 6".
+    // The exception is VoiceOver since this isn't included in the message above.
+    if (
+      disclosureState.isOpen() &&
+      (listState.selectionManager().focusedKey() == null || isAppleDevice())
+    ) {
+      const announcement = stringFormatter().format("countAnnouncement", { optionCount });
+      announce(announcement);
+    }
+  });
+
+  // Announce when a selection occurs for VoiceOver.
+  // Other screen readers typically do this automatically.
+  createEffect(() => {
+    const lastSelectedKey = listState.selectionManager().lastSelectedKey() ?? "";
+    const lastSelectedItem = listState.collection().getItem(lastSelectedKey);
+
+    if (isAppleDevice() && isInputFocused() && lastSelectedItem) {
+      const announcement = stringFormatter().format("selectedAnnouncement", {
+        optionText: lastSelectedItem?.textValue || "",
+      });
+
+      announce(announcement);
+    }
+  });
+
   const dataset: Accessor<ComboboxDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
     "data-closed": !disclosureState.isOpen() ? "" : undefined,
@@ -457,22 +556,28 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     isMultiple: () => access(local.selectionMode) === "multiple",
     isVirtualized: () => local.virtualized,
     isModal: () => local.modal ?? false,
-    isFocused,
-    inputValue,
+    isInputFocused,
+    allowsEmptyCollection: () => local.allowsEmptyCollection ?? false,
     shouldFocusWrap: () => local.shouldFocusWrap ?? false,
     contentPresence,
     autoFocus: focusStrategy,
+    inputValue,
+    triggerMode: () => local.triggerMode!,
+    activeDescendant,
+    triggerRef,
     inputRef,
     buttonRef,
     contentRef,
     listState: () => listState,
     keyboardDelegate: delegate,
     inputId,
+    valueId,
     listboxId,
-    listboxAriaLabelledBy,
-    setListboxAriaLabelledBy,
-    setIsFocused,
+    buttonAriaLabel: () => stringFormatter().format("buttonLabel"),
+    listboxAriaLabel: () => stringFormatter().format("listboxLabel"),
+    setIsInputFocused,
     setInputValue,
+    setTriggerRef,
     setInputRef,
     setButtonRef,
     setContentRef,
@@ -487,13 +592,14 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     onInputKeyDown: e => selectableCollection.onKeyDown(e),
     generateId: createGenerateId(() => access(formControlProps.id)!),
     registerInputId: createRegisterId(setInputId),
+    registerValueId: createRegisterId(setValueId),
     registerListboxId: createRegisterId(setListboxId),
   };
 
   return (
     <FormControlContext.Provider value={formControlContext}>
       <ComboboxContext.Provider value={context}>
-        <PopperRoot anchorRef={inputRef} contentRef={contentRef} {...popperProps}>
+        <PopperRoot anchorRef={triggerRef} contentRef={contentRef} {...popperProps}>
           <Polymorphic
             as="div"
             role="group"

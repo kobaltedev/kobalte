@@ -1,4 +1,4 @@
-.combobox__input {
+.combobox__trigger {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -14,14 +14,14 @@
   color: hsl(240 4% 16%);
   transition: border-color 250ms, color 250ms;
 }
-.combobox__input:hover {
+.combobox__trigger:hover {
   border-color: hsl(240 5% 65%);
 }
-.combobox__input:focus-visible {
+.combobox__trigger:focus-visible {
   outline: 2px solid hsl(200 98% 39%);
   outline-offset: 2px;
 }
-.combobox__input[data-invalid] {
+.combobox__trigger[data-invalid] {
   border-color: hsl(0 72% 51%);
   color: hsl(0 72% 51%);
 }

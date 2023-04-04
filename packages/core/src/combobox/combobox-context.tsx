@@ -17,22 +17,28 @@ export interface ComboboxContextValue {
   isMultiple: Accessor<boolean>;
   isVirtualized: Accessor<boolean | undefined>;
   isModal: Accessor<boolean>;
-  isFocused: Accessor<boolean>;
+  isInputFocused: Accessor<boolean>;
+  allowsEmptyCollection: Accessor<boolean>;
   shouldFocusWrap: Accessor<boolean>;
   contentPresence: CreatePresenceResult;
   autoFocus: Accessor<FocusStrategy | boolean>;
+  activeDescendant: Accessor<string | undefined>;
   inputValue: Accessor<string | undefined>;
+  triggerMode: Accessor<ComboboxTriggerMode>;
+  triggerRef: Accessor<HTMLDivElement | undefined>;
   inputRef: Accessor<HTMLInputElement | undefined>;
   buttonRef: Accessor<HTMLButtonElement | undefined>;
   contentRef: Accessor<HTMLDivElement | undefined>;
   inputId: Accessor<string | undefined>;
+  valueId: Accessor<string | undefined>;
   listboxId: Accessor<string | undefined>;
-  listboxAriaLabelledBy: Accessor<string | undefined>;
+  buttonAriaLabel: Accessor<string | undefined>;
+  listboxAriaLabel: Accessor<string | undefined>;
   listState: Accessor<ListState>;
   keyboardDelegate: Accessor<KeyboardDelegate>;
-  setListboxAriaLabelledBy: Setter<string | undefined>;
-  setIsFocused: (isFocused: boolean) => void;
+  setIsInputFocused: (isFocused: boolean) => void;
   setInputValue: (value: string) => void;
+  setTriggerRef: (el: HTMLDivElement) => void;
   setInputRef: (el: HTMLInputElement) => void;
   setButtonRef: (el: HTMLButtonElement) => void;
   setContentRef: (el: HTMLDivElement) => void;
@@ -47,6 +53,7 @@ export interface ComboboxContextValue {
   onInputKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent>;
   generateId: (part: string) => string;
   registerInputId: (id: string) => () => void;
+  registerValueId: (id: string) => () => void;
   registerListboxId: (id: string) => () => void;
 }
 

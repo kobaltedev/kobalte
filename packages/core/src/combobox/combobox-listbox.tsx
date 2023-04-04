@@ -44,7 +44,7 @@ export function ComboboxListbox<Option = any, OptGroup = never>(
       shouldUseVirtualFocus
       shouldSelectOnPressUp
       shouldFocusOnHover
-      aria-labelledby={context.listboxAriaLabelledBy()}
+      aria-label={context.listboxAriaLabel()}
       renderItem={context.renderItem}
       renderSection={context.renderSection}
       {...others}

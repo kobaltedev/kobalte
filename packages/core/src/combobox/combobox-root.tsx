@@ -12,8 +12,8 @@ import {
 } from "./combobox-base";
 
 export interface ComboboxValueComponentProps<T> {
-  /** The selected item. */
-  item: CollectionNode<T>;
+  /** The selected item value. */
+  value: string;
 
   /** A function to clear the selection. */
   clear: () => void;
@@ -84,8 +84,8 @@ export function ComboboxRoot<Option, OptGroup = never>(props: ComboboxRootProps<
 
   const valueComponent = (props: ComboboxBaseValueComponentProps<Option>) => {
     return local.valueComponent?.({
-      get item() {
-        return props.items[0];
+      get value() {
+        return props.values[0];
       },
       clear: () => props.clear(),
     });

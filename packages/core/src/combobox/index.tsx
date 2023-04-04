@@ -47,6 +47,8 @@ import {
   type ComboboxSectionComponentProps,
   type ComboboxValueComponentProps,
 } from "./combobox-root";
+import { ComboboxTrigger as Trigger, type ComboboxTriggerProps } from "./combobox-trigger";
+import { ComboboxValue as Value, type ComboboxValueProps } from "./combobox-value";
 
 export type {
   ComboboxArrowOptions,
@@ -73,7 +75,9 @@ export type {
   ComboboxRootProps,
   ComboboxSectionComponentProps,
   ComboboxSectionProps,
+  ComboboxTriggerProps,
   ComboboxValueComponentProps,
+  ComboboxValueProps,
 };
 
 export {
@@ -92,24 +96,6 @@ export {
   Portal,
   Root,
   Section,
+  Trigger,
+  Value,
 };
-
-/*
-
-<Combobox.Root>
-  <Combobox.Label />
-  <Combobox.Trigger>
-    <Combobox.Input />
-    <Combobox.Button />
-  </Combobox.Trigger>
-  <Combobox.Description />
-  <Combobox.ErrorMessage />
-  <Combobox.Portal>
-    <Combobox.Content>
-      </Combobox.Arrow />
-      <Combobox.Listbox />
-    </Combobox.Content>
-  </Combobox.Portal>
-</Combobox.Root>
-
-*/

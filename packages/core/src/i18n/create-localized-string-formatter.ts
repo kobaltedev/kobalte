@@ -12,7 +12,7 @@ import {
   LocalizedStringFormatter,
   LocalizedStrings,
 } from "@internationalized/string";
-import { Accessor, createEffect, createMemo, createSignal, on } from "solid-js";
+import { Accessor, createMemo } from "solid-js";
 
 import { useLocale } from "./i18n-provider";
 

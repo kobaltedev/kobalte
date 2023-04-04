@@ -2,16 +2,16 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import { ComponentProps, createEffect, onCleanup, Show, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { useSelectContext } from "./select-context";
+import { useComboboxContext } from "./combobox-context";
 
-export interface SelectValueProps extends ComponentProps<"span"> {}
+export interface ComboboxValueProps extends ComponentProps<"span"> {}
 
 /**
  * The part that reflects the selected value.
  */
-export function SelectValue(props: SelectValueProps) {
+export function ComboboxValue(props: ComboboxValueProps) {
   const formControlContext = useFormControlContext();
-  const context = useSelectContext();
+  const context = useComboboxContext();
 
   props = mergeDefaultProps(
     {
@@ -37,15 +37,10 @@ export function SelectValue(props: SelectValueProps) {
   createEffect(() => onCleanup(context.registerValueId(local.id!)));
 
   return (
-    <span
-      id={local.id}
-      data-placeholder-shown={isSelectionEmpty() ? "" : undefined}
-      {...formControlContext.dataset()}
-      {...others}
-    >
-      <Show when={!isSelectionEmpty()} fallback={context.placeholder()}>
+    <Show when={!isSelectionEmpty()}>
+      <span id={local.id} {...formControlContext.dataset()} {...others}>
         {context.renderValue()}
-      </Show>
-    </span>
+      </span>
+    </Show>
   );
 }
