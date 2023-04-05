@@ -5,7 +5,7 @@ import { useFormControlContext } from "../form-control";
 import { Polymorphic } from "../polymorphic";
 import { useComboboxContext } from "./combobox-context";
 
-export interface MultiComboboxTriggerState {
+export interface ComboboxTriggerBaseState {
   /** The selected values. */
   values: Accessor<string[]>;
 
@@ -16,21 +16,21 @@ export interface MultiComboboxTriggerState {
   clear: () => void;
 }
 
-export interface MultiComboboxTriggerOptions {
+export interface ComboboxTriggerBaseOptions {
   /**
    * The children of the combobox trigger.
    * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
    */
-  children?: JSX.Element | ((state: MultiComboboxTriggerState) => JSX.Element);
+  children?: JSX.Element | ((state: ComboboxTriggerBaseState) => JSX.Element);
 }
 
-export interface MultiComboboxTriggerProps
-  extends OverrideComponentProps<"div", MultiComboboxTriggerOptions> {}
+export interface ComboboxTriggerBaseProps
+  extends OverrideComponentProps<"div", ComboboxTriggerBaseOptions> {}
 
 /**
  * Contains the combobox input and button.
  */
-export function MultiComboboxTrigger(props: MultiComboboxTriggerProps) {
+export function ComboboxTriggerBase(props: ComboboxTriggerBaseProps) {
   const formControlContext = useFormControlContext();
   const context = useComboboxContext();
 
@@ -46,7 +46,7 @@ export function MultiComboboxTrigger(props: MultiComboboxTriggerProps) {
       {...formControlContext.dataset()}
       {...others}
     >
-      <MultiComboboxTriggerChild
+      <ComboboxTriggerBaseChild
         state={{
           values: () => [...selectionManager().selectedKeys()],
           remove: value => selectionManager().toggleSelection(value),
@@ -58,11 +58,11 @@ export function MultiComboboxTrigger(props: MultiComboboxTriggerProps) {
   );
 }
 
-interface MultiComboboxTriggerChildProps extends Pick<MultiComboboxTriggerOptions, "children"> {
-  state: MultiComboboxTriggerState;
+interface ComboboxTriggerBaseChildProps extends Pick<ComboboxTriggerBaseOptions, "children"> {
+  state: ComboboxTriggerBaseState;
 }
 
-function MultiComboboxTriggerChild(props: MultiComboboxTriggerChildProps) {
+function ComboboxTriggerBaseChild(props: ComboboxTriggerBaseChildProps) {
   const resolvedChildren = children(() => {
     const body = props.children;
     return isFunction(body) ? body(props.state) : body;

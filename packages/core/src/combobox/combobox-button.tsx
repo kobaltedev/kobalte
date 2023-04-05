@@ -5,10 +5,10 @@ import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
 import { useComboboxContext } from "./combobox-context";
 
-export interface MultiComboboxButtonProps
+export interface ComboboxButtonProps
   extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
 
-export function MultiComboboxButton(props: MultiComboboxButtonProps) {
+export function ComboboxButton(props: ComboboxButtonProps) {
   const formControlContext = useFormControlContext();
   const context = useComboboxContext();
 

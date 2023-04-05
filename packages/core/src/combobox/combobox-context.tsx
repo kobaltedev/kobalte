@@ -18,7 +18,6 @@ export interface ComboboxContextValue {
   isVirtualized: Accessor<boolean | undefined>;
   isModal: Accessor<boolean>;
   isInputFocused: Accessor<boolean>;
-  isValidInputValue: Accessor<boolean>;
   allowsEmptyCollection: Accessor<boolean>;
   shouldFocusWrap: Accessor<boolean>;
   contentPresence: CreatePresenceResult;

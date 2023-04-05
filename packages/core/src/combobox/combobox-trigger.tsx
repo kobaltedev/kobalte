@@ -1,7 +1,7 @@
 import { isFunction, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, children, JSX, splitProps } from "solid-js";
 
-import { MultiComboboxTrigger } from "../multi-combobox/multi-combobox-trigger";
+import { ComboboxTriggerBase } from "./combobox-trigger-base";
 
 export interface ComboboxTriggerState {
   /** The selected value. */
@@ -29,7 +29,7 @@ export function ComboboxTrigger(props: ComboboxTriggerProps) {
   const [local, others] = splitProps(props, ["children"]);
 
   return (
-    <MultiComboboxTrigger {...others}>
+    <ComboboxTriggerBase {...others}>
       {state => (
         <ComboboxTriggerChild
           state={{
@@ -39,7 +39,7 @@ export function ComboboxTrigger(props: ComboboxTriggerProps) {
           children={local.children}
         />
       )}
-    </MultiComboboxTrigger>
+    </ComboboxTriggerBase>
   );
 }
 

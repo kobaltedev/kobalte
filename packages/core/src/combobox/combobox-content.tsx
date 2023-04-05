@@ -14,7 +14,7 @@ import {
 } from "../primitives";
 import { useComboboxContext } from "./combobox-context";
 
-export interface MultiComboboxContentOptions extends AsChildProp {
+export interface ComboboxContentOptions extends AsChildProp {
   /**
    * Event handler called when focus moves to the trigger after closing.
    * It can be prevented by calling `event.preventDefault`.
@@ -43,13 +43,13 @@ export interface MultiComboboxContentOptions extends AsChildProp {
   style?: JSX.CSSProperties;
 }
 
-export interface MultiComboboxContentProps
-  extends OverrideComponentProps<"div", MultiComboboxContentOptions> {}
+export interface ComboboxContentProps
+  extends OverrideComponentProps<"div", ComboboxContentOptions> {}
 
 /**
  * The component that pops out when the combobox is open.
  */
-export function MultiComboboxContent(props: MultiComboboxContentProps) {
+export function ComboboxContent(props: ComboboxContentProps) {
   let ref: HTMLElement | undefined;
 
   const context = useComboboxContext();

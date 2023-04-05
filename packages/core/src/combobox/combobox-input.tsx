@@ -5,7 +5,7 @@ import {
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, createMemo, JSX, onCleanup, splitProps } from "solid-js";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import {
   createFormControlField,
@@ -15,12 +15,11 @@ import {
 import { Polymorphic } from "../polymorphic";
 import { useComboboxContext } from "./combobox-context";
 
-export interface MultiComboboxInputOptions {}
+export interface ComboboxInputOptions {}
 
-export interface MultiComboboxInputProps
-  extends OverrideComponentProps<"input", MultiComboboxInputOptions> {}
+export interface ComboboxInputProps extends OverrideComponentProps<"input", ComboboxInputOptions> {}
 
-export function MultiComboboxInput(props: MultiComboboxInputProps) {
+export function ComboboxInput(props: ComboboxInputProps) {
   let ref: HTMLInputElement | undefined;
 
   const formControlContext = useFormControlContext();
@@ -70,12 +69,8 @@ export function MultiComboboxInput(props: MultiComboboxInputProps) {
     if (!context.isOpen()) {
       context.open(false, "input");
     } else {
-      if (collection().getSize() > 0) {
-        //selectionManager().setFocusedKey(collection().getFirstKey());
-      } else {
-        if (!context.allowsEmptyCollection()) {
-          context.close();
-        }
+      if (collection().getSize() <= 0 && !context.allowsEmptyCollection()) {
+        context.close();
       }
     }
   };
@@ -101,14 +96,6 @@ export function MultiComboboxInput(props: MultiComboboxInputProps) {
 
           if (focusedKey != null) {
             selectionManager().select(focusedKey);
-
-            if (selectionManager().isSelected(focusedKey)) {
-              if (selectionManager().selectionMode() === "multiple") {
-                context.setInputValue("");
-              } else {
-                context.setInputValue(collection().getItem(focusedKey)?.textValue ?? "");
-              }
-            }
           }
         }
 

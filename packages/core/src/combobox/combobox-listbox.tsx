@@ -5,23 +5,23 @@ import { useFormControlContext } from "../form-control";
 import * as Listbox from "../listbox";
 import { useComboboxContext } from "./combobox-context";
 
-export interface MultiComboboxListboxOptions<Option, OptGroup = never>
+export interface ComboboxListboxOptions<Option, OptGroup = never>
   extends Pick<
     Listbox.ListboxRootOptions<Option, OptGroup>,
     "scrollRef" | "scrollToItem" | "children"
   > {}
 
-export interface MultiComboboxListboxProps<Option, OptGroup = never>
+export interface ComboboxListboxProps<Option, OptGroup = never>
   extends Omit<
-    OverrideComponentProps<"ul", MultiComboboxListboxOptions<Option, OptGroup>>,
+    OverrideComponentProps<"ul", ComboboxListboxOptions<Option, OptGroup>>,
     "onChange"
   > {}
 
 /**
  * Contains all the items of a `Combobox`.
  */
-export function MultiComboboxListbox<Option = any, OptGroup = never>(
-  props: MultiComboboxListboxProps<Option, OptGroup>
+export function ComboboxListbox<Option = any, OptGroup = never>(
+  props: ComboboxListboxProps<Option, OptGroup>
 ) {
   const formControlContext = useFormControlContext();
   const context = useComboboxContext();

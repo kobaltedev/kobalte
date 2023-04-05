@@ -2,7 +2,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  width: 200px;
+  width: 350px;
   border-radius: 6px;
   padding: 0 10px 0 16px;
   font-size: 16px;
@@ -56,9 +56,12 @@
   border: 1px solid hsl(240 6% 90%);
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   transform-origin: var(--kb-combobox-content-transform-origin);
+}
+
+.combobox__content.animated {
   animation: contentHide 250ms ease-in forwards;
 }
-.combobox__content[data-expanded] {
+.combobox__content.animated[data-expanded] {
   animation: contentShow 250ms ease-out;
 }
 .combobox__listbox {
