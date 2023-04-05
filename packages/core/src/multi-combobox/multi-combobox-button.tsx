@@ -5,10 +5,10 @@ import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
 import { useComboboxContext } from "./combobox-context";
 
-export interface ComboboxButtonProps
+export interface MultiComboboxButtonProps
   extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
 
-export function ComboboxButton(props: ComboboxButtonProps) {
+export function MultiComboboxButton(props: MultiComboboxButtonProps) {
   const formControlContext = useFormControlContext();
   const context = useComboboxContext();
 
@@ -63,6 +63,7 @@ export function ComboboxButton(props: ComboboxButtonProps) {
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.listboxId() : undefined}
       aria-label={context.buttonAriaLabel()}
+      aria-labelledby={formControlContext.labelId()}
       onPointerDown={onPointerDown}
       onClick={onClick}
       {...context.dataset()}

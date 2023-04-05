@@ -1,54 +1,47 @@
 import {
-  FormControlDescription as Description,
-  type FormControlDescriptionProps as ComboboxDescriptionProps,
-  FormControlErrorMessage as ErrorMessage,
-  type FormControlErrorMessageOptions as ComboboxErrorMessageOptions,
-  type FormControlErrorMessageProps as ComboboxErrorMessageProps,
-  FormControlLabel as Label,
-  type FormControlLabelProps as ComboboxLabelProps,
-} from "../form-control";
-import {
+  Arrow,
+  Button,
+  Content,
+  Description,
+  ErrorMessage,
+  Input,
   Item,
   ItemDescription,
   ItemIndicator,
   ItemLabel,
-  type ListboxItemDescriptionProps as ComboboxItemDescriptionProps,
-  type ListboxItemIndicatorOptions as ComboboxItemIndicatorOptions,
-  type ListboxItemIndicatorProps as ComboboxItemIndicatorProps,
-  type ListboxItemLabelProps as ComboboxItemLabelProps,
-  type ListboxItemOptions as ComboboxItemOptions,
-  type ListboxItemProps as ComboboxItemProps,
-  type ListboxSectionProps as ComboboxSectionProps,
+  Label,
+  Listbox,
+  type MultiComboboxArrowOptions as ComboboxArrowOptions,
+  type MultiComboboxArrowProps as ComboboxArrowProps,
+  type MultiComboboxButtonProps as ComboboxButtonProps,
+  type MultiComboboxContentOptions as ComboboxContentOptions,
+  type MultiComboboxContentProps as ComboboxContentProps,
+  type MultiComboboxDescriptionProps as ComboboxDescriptionProps,
+  type MultiComboboxErrorMessageOptions as ComboboxErrorMessageOptions,
+  type MultiComboboxErrorMessageProps as ComboboxErrorMessageProps,
+  type MultiComboboxInputProps as ComboboxInputProps,
+  type MultiComboboxItemDescriptionProps as ComboboxItemDescriptionProps,
+  type MultiComboboxItemIndicatorOptions as ComboboxItemIndicatorOptions,
+  type MultiComboboxItemIndicatorProps as ComboboxItemIndicatorProps,
+  type MultiComboboxItemLabelProps as ComboboxItemLabelProps,
+  type MultiComboboxItemOptions as ComboboxItemOptions,
+  type MultiComboboxItemProps as ComboboxItemProps,
+  type MultiComboboxLabelProps as ComboboxLabelProps,
+  type MultiComboboxListboxOptions as ComboboxListboxOptions,
+  type MultiComboboxListboxProps as ComboboxListboxProps,
+  type MultiComboboxPortalProps as ComboboxPortalProps,
+  type MultiComboboxSectionProps as ComboboxSectionProps,
+  Portal,
   Section,
-} from "../listbox";
+} from "../multi-combobox";
 import {
-  PopperArrow as Arrow,
-  type PopperArrowOptions as ComboboxArrowOptions,
-  type PopperArrowProps as ComboboxArrowProps,
-} from "../popper";
-import { ComboboxButton as Button, type ComboboxButtonProps } from "./combobox-button";
-import {
-  ComboboxContent as Content,
-  type ComboboxContentOptions,
-  type ComboboxContentProps,
-} from "./combobox-content";
-import { ComboboxInput as Input, type ComboboxInputProps } from "./combobox-input";
-import {
-  ComboboxListbox as Listbox,
-  type ComboboxListboxOptions,
-  type ComboboxListboxProps,
-} from "./combobox-listbox";
-import { ComboboxPortal as Portal, type ComboboxPortalProps } from "./combobox-portal";
-import {
-  type ComboboxItemComponentProps,
   ComboboxRoot as Root,
+  type ComboboxRootItemComponentProps,
   type ComboboxRootOptions,
   type ComboboxRootProps,
-  type ComboboxSectionComponentProps,
-  type ComboboxValueComponentProps,
+  type ComboboxRootSectionComponentProps,
 } from "./combobox-root";
 import { ComboboxTrigger as Trigger, type ComboboxTriggerProps } from "./combobox-trigger";
-import { ComboboxValue as Value, type ComboboxValueProps } from "./combobox-value";
 
 export type {
   ComboboxArrowOptions,
@@ -60,7 +53,6 @@ export type {
   ComboboxErrorMessageOptions,
   ComboboxErrorMessageProps,
   ComboboxInputProps,
-  ComboboxItemComponentProps,
   ComboboxItemDescriptionProps,
   ComboboxItemIndicatorOptions,
   ComboboxItemIndicatorProps,
@@ -71,13 +63,12 @@ export type {
   ComboboxListboxOptions,
   ComboboxListboxProps,
   ComboboxPortalProps,
+  ComboboxRootItemComponentProps,
   ComboboxRootOptions,
   ComboboxRootProps,
-  ComboboxSectionComponentProps,
+  ComboboxRootSectionComponentProps,
   ComboboxSectionProps,
   ComboboxTriggerProps,
-  ComboboxValueComponentProps,
-  ComboboxValueProps,
 };
 
 export {
@@ -97,5 +88,4 @@ export {
   Root,
   Section,
   Trigger,
-  Value,
 };

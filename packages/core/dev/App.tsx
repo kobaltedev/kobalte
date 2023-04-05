@@ -22,18 +22,13 @@ export default function App() {
   });
 
   return (
-    <I18nProvider>
+    <I18nProvider locale="en-US">
       <MultiCombobox.Root
+        placeholder="Select some animal"
         options={filteredOptions()}
         optionValue="id"
         optionTextValue="name"
         onInputChange={setQuery}
-        valueComponent={props =>
-          optionList
-            .filter(option => props.values.includes(option.id))
-            .map(option => option.name)
-            .join(", ")
-        }
         itemComponent={props => (
           <MultiCombobox.Item item={props.item} class="combobox__item">
             <MultiCombobox.ItemLabel>{props.item.rawValue.name}</MultiCombobox.ItemLabel>
@@ -44,9 +39,18 @@ export default function App() {
         )}
       >
         <MultiCombobox.Trigger class="combobox__trigger">
-          <MultiCombobox.Value />
-          <MultiCombobox.Input />
-          <MultiCombobox.Button class="combobox__button">V</MultiCombobox.Button>
+          {({ values }) => (
+            <>
+              <span>
+                {optionList
+                  .filter(option => values().includes(option.id))
+                  .map(option => option.name)
+                  .join(", ")}
+              </span>
+              <MultiCombobox.Input />
+              <MultiCombobox.Button class="combobox__button">V</MultiCombobox.Button>
+            </>
+          )}
         </MultiCombobox.Trigger>
         <MultiCombobox.Portal>
           <MultiCombobox.Content class="combobox__content">
@@ -54,6 +58,29 @@ export default function App() {
           </MultiCombobox.Content>
         </MultiCombobox.Portal>
       </MultiCombobox.Root>
+      <Combobox.Root
+        placeholder="Select an animal"
+        options={filteredOptions()}
+        optionValue="id"
+        optionTextValue="name"
+        onInputChange={setQuery}
+        itemComponent={props => (
+          <Combobox.Item item={props.item} class="combobox__item">
+            <Combobox.ItemLabel>{props.item.rawValue.name}</Combobox.ItemLabel>
+            <Combobox.ItemIndicator class="combobox__item-indicator">X</Combobox.ItemIndicator>
+          </Combobox.Item>
+        )}
+      >
+        <Combobox.Trigger class="combobox__trigger">
+          <MultiCombobox.Input />
+          <MultiCombobox.Button class="combobox__button">V</MultiCombobox.Button>
+        </Combobox.Trigger>
+        <Combobox.Portal>
+          <Combobox.Content class="combobox__content">
+            <Combobox.Listbox class="combobox__listbox" />
+          </Combobox.Content>
+        </Combobox.Portal>
+      </Combobox.Root>
     </I18nProvider>
   );
 }

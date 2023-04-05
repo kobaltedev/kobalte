@@ -65,6 +65,7 @@
   overflow-y: auto;
   max-height: 360px;
   padding: 8px;
+  margin: 0;
 }
 .combobox__item {
   font-size: 16px;

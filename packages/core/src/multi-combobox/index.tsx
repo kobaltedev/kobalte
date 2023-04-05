@@ -1,51 +1,61 @@
 import {
-  Arrow,
-  Button,
-  type ComboboxArrowOptions as MultiComboboxArrowOptions,
-  type ComboboxArrowProps as MultiComboboxArrowProps,
-  type ComboboxButtonProps as MultiComboboxButtonProps,
-  type ComboboxContentOptions as MultiComboboxContentOptions,
-  type ComboboxContentProps as MultiComboboxContentProps,
-  type ComboboxDescriptionProps as MultiComboboxDescriptionProps,
-  type ComboboxErrorMessageOptions as MultiComboboxErrorMessageOptions,
-  type ComboboxErrorMessageProps as MultiComboboxErrorMessageProps,
-  type ComboboxInputProps as MultiComboboxInputProps,
-  type ComboboxItemDescriptionProps as MultiComboboxItemDescriptionProps,
-  type ComboboxItemIndicatorOptions as MultiComboboxItemIndicatorOptions,
-  type ComboboxItemIndicatorProps as MultiComboboxItemIndicatorProps,
-  type ComboboxItemLabelProps as MultiComboboxItemLabelProps,
-  type ComboboxItemOptions as MultiComboboxItemOptions,
-  type ComboboxItemProps as MultiComboboxItemProps,
-  type ComboboxLabelProps as MultiComboboxLabelProps,
-  type ComboboxListboxOptions as MultiComboboxListboxOptions,
-  type ComboboxListboxProps as MultiComboboxListboxProps,
-  type ComboboxPortalProps as MultiComboboxPortalProps,
-  type ComboboxSectionProps as MultiComboboxSectionProps,
-  type ComboboxTriggerProps as MultiComboboxTriggerProps,
-  type ComboboxValueProps as MultiComboboxValueProps,
-  Content,
-  Description,
-  ErrorMessage,
-  Input,
+  FormControlDescription as Description,
+  type FormControlDescriptionProps as MultiComboboxDescriptionProps,
+  FormControlErrorMessage as ErrorMessage,
+  type FormControlErrorMessageOptions as MultiComboboxErrorMessageOptions,
+  type FormControlErrorMessageProps as MultiComboboxErrorMessageProps,
+  FormControlLabel as Label,
+  type FormControlLabelProps as MultiComboboxLabelProps,
+} from "../form-control";
+import {
   Item,
   ItemDescription,
   ItemIndicator,
   ItemLabel,
-  Label,
-  Listbox,
-  Portal,
+  type ListboxItemDescriptionProps as MultiComboboxItemDescriptionProps,
+  type ListboxItemIndicatorOptions as MultiComboboxItemIndicatorOptions,
+  type ListboxItemIndicatorProps as MultiComboboxItemIndicatorProps,
+  type ListboxItemLabelProps as MultiComboboxItemLabelProps,
+  type ListboxItemOptions as MultiComboboxItemOptions,
+  type ListboxItemProps as MultiComboboxItemProps,
+  type ListboxSectionProps as MultiComboboxSectionProps,
   Section,
-  Trigger,
-  Value,
-} from "../combobox";
+} from "../listbox";
 import {
-  type MultiComboboxItemComponentProps,
+  PopperArrow as Arrow,
+  type PopperArrowOptions as MultiComboboxArrowOptions,
+  type PopperArrowProps as MultiComboboxArrowProps,
+} from "../popper";
+import {
+  MultiComboboxButton as Button,
+  type MultiComboboxButtonProps,
+} from "./multi-combobox-button";
+import {
+  MultiComboboxContent as Content,
+  type MultiComboboxContentOptions,
+  type MultiComboboxContentProps,
+} from "./multi-combobox-content";
+import { MultiComboboxInput as Input, type MultiComboboxInputProps } from "./multi-combobox-input";
+import {
+  MultiComboboxListbox as Listbox,
+  type MultiComboboxListboxOptions,
+  type MultiComboboxListboxProps,
+} from "./multi-combobox-listbox";
+import {
+  MultiComboboxPortal as Portal,
+  type MultiComboboxPortalProps,
+} from "./multi-combobox-portal";
+import {
   MultiComboboxRoot as Root,
+  type MultiComboboxRootItemComponentProps,
   type MultiComboboxRootOptions,
   type MultiComboboxRootProps,
-  type MultiComboboxSectionComponentProps,
-  type MultiComboboxValueComponentProps,
+  type MultiComboboxRootSectionComponentProps,
 } from "./multi-combobox-root";
+import {
+  MultiComboboxTrigger as Trigger,
+  type MultiComboboxTriggerProps,
+} from "./multi-combobox-trigger";
 
 export type {
   MultiComboboxArrowOptions,
@@ -57,7 +67,6 @@ export type {
   MultiComboboxErrorMessageOptions,
   MultiComboboxErrorMessageProps,
   MultiComboboxInputProps,
-  MultiComboboxItemComponentProps,
   MultiComboboxItemDescriptionProps,
   MultiComboboxItemIndicatorOptions,
   MultiComboboxItemIndicatorProps,
@@ -68,13 +77,12 @@ export type {
   MultiComboboxListboxOptions,
   MultiComboboxListboxProps,
   MultiComboboxPortalProps,
+  MultiComboboxRootItemComponentProps,
   MultiComboboxRootOptions,
   MultiComboboxRootProps,
-  MultiComboboxSectionComponentProps,
+  MultiComboboxRootSectionComponentProps,
   MultiComboboxSectionProps,
   MultiComboboxTriggerProps,
-  MultiComboboxValueComponentProps,
-  MultiComboboxValueProps,
 };
 
 export {
@@ -94,5 +102,4 @@ export {
   Root,
   Section,
   Trigger,
-  Value,
 };

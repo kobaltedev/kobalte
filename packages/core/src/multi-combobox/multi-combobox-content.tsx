@@ -14,7 +14,7 @@ import {
 } from "../primitives";
 import { useComboboxContext } from "./combobox-context";
 
-export interface ComboboxContentOptions extends AsChildProp {
+export interface MultiComboboxContentOptions extends AsChildProp {
   /**
    * Event handler called when focus moves to the trigger after closing.
    * It can be prevented by calling `event.preventDefault`.
@@ -43,13 +43,13 @@ export interface ComboboxContentOptions extends AsChildProp {
   style?: JSX.CSSProperties;
 }
 
-export interface ComboboxContentProps
-  extends OverrideComponentProps<"div", ComboboxContentOptions> {}
+export interface MultiComboboxContentProps
+  extends OverrideComponentProps<"div", MultiComboboxContentOptions> {}
 
 /**
  * The component that pops out when the combobox is open.
  */
-export function ComboboxContent(props: ComboboxContentProps) {
+export function MultiComboboxContent(props: MultiComboboxContentProps) {
   let ref: HTMLElement | undefined;
 
   const context = useComboboxContext();
@@ -62,10 +62,8 @@ export function ComboboxContent(props: ComboboxContentProps) {
     "onFocusOutside",
   ]);
 
-  const onEscapeKeyDown = (e: KeyboardEvent) => {
-    // `createSelectableList` prevent escape key down,
-    // which prevent our `onDismiss` in `DismissableLayer` to run,
-    // so we force "close on escape" here.
+  const close = () => {
+    context.resetInputAfterClose();
     context.close();
   };
 
@@ -82,7 +80,30 @@ export function ComboboxContent(props: ComboboxContentProps) {
   // aria-hide everything except the content (better supported equivalent to setting aria-modal)
   createHideOutside({
     isDisabled: () => !(context.isOpen() && context.isModal()),
-    targets: () => (ref ? [ref] : []),
+    targets: () => {
+      const excludedElements = [];
+
+      if (ref) {
+        excludedElements.push(ref);
+      }
+
+      const triggerEl = context.triggerRef();
+      if (triggerEl) {
+        excludedElements.push(triggerEl);
+      }
+
+      const inputEl = context.inputRef();
+      if (inputEl) {
+        excludedElements.push(inputEl);
+      }
+
+      const buttonEl = context.buttonRef();
+      if (buttonEl) {
+        excludedElements.push(buttonEl);
+      }
+
+      return excludedElements;
+    },
   });
 
   createPreventScroll({
@@ -119,15 +140,14 @@ export function ComboboxContent(props: ComboboxContentProps) {
             ref = el;
           }, local.ref)}
           disableOutsidePointerEvents={context.isModal() && context.isOpen()}
-          excludedElements={[context.inputRef, context.buttonRef]}
+          excludedElements={[context.triggerRef, context.inputRef, context.buttonRef]}
           style={{
             "--kb-combobox-content-transform-origin": "var(--kb-popper-content-transform-origin)",
             position: "relative",
             ...local.style,
           }}
-          onEscapeKeyDown={onEscapeKeyDown}
           onFocusOutside={onFocusOutside}
-          onDismiss={context.close}
+          onDismiss={close}
           {...context.dataset()}
           {...others}
         />

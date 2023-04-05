@@ -3,12 +3,12 @@ import { Portal } from "solid-js/web";
 
 import { useComboboxContext } from "./combobox-context";
 
-export interface ComboboxPortalProps extends ComponentProps<typeof Portal> {}
+export interface MultiComboboxPortalProps extends ComponentProps<typeof Portal> {}
 
 /**
  * Portals its children into the `body` when the combobox is open.
  */
-export function ComboboxPortal(props: ComboboxPortalProps) {
+export function MultiComboboxPortal(props: MultiComboboxPortalProps) {
   const context = useComboboxContext();
 
   return (

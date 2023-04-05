@@ -1,27 +1,29 @@
 import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
+import { useFormControlContext } from "../form-control";
 import * as Listbox from "../listbox";
 import { useComboboxContext } from "./combobox-context";
 
-export interface ComboboxListboxOptions<Option, OptGroup = never>
+export interface MultiComboboxListboxOptions<Option, OptGroup = never>
   extends Pick<
     Listbox.ListboxRootOptions<Option, OptGroup>,
     "scrollRef" | "scrollToItem" | "children"
   > {}
 
-export interface ComboboxListboxProps<Option, OptGroup = never>
+export interface MultiComboboxListboxProps<Option, OptGroup = never>
   extends Omit<
-    OverrideComponentProps<"ul", ComboboxListboxOptions<Option, OptGroup>>,
+    OverrideComponentProps<"ul", MultiComboboxListboxOptions<Option, OptGroup>>,
     "onChange"
   > {}
 
 /**
  * Contains all the items of a `Combobox`.
  */
-export function ComboboxListbox<Option = any, OptGroup = never>(
-  props: ComboboxListboxProps<Option, OptGroup>
+export function MultiComboboxListbox<Option = any, OptGroup = never>(
+  props: MultiComboboxListboxProps<Option, OptGroup>
 ) {
+  const formControlContext = useFormControlContext();
   const context = useComboboxContext();
 
   props = mergeDefaultProps(
@@ -31,20 +33,20 @@ export function ComboboxListbox<Option = any, OptGroup = never>(
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "id"]);
+  const [local, others] = splitProps(props, ["ref"]);
 
-  createEffect(() => onCleanup(context.registerListboxId(local.id!)));
+  createEffect(() => onCleanup(context.registerListboxId(others.id!)));
 
   return (
     <Listbox.Root
       ref={mergeRefs(context.setListboxRef, local.ref)}
-      id={local.id}
       state={context.listState()}
       autoFocus={context.autoFocus()}
       shouldUseVirtualFocus
       shouldSelectOnPressUp
       shouldFocusOnHover
       aria-label={context.listboxAriaLabel()}
+      aria-labelledby={formControlContext.labelId()}
       renderItem={context.renderItem}
       renderSection={context.renderSection}
       {...others}

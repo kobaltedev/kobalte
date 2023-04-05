@@ -5,7 +5,7 @@ import {
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import { createEffect, createMemo, JSX, onCleanup, splitProps } from "solid-js";
 
 import {
   createFormControlField,
@@ -15,11 +15,12 @@ import {
 import { Polymorphic } from "../polymorphic";
 import { useComboboxContext } from "./combobox-context";
 
-export interface ComboboxInputOptions {}
+export interface MultiComboboxInputOptions {}
 
-export interface ComboboxInputProps extends OverrideComponentProps<"input", ComboboxInputOptions> {}
+export interface MultiComboboxInputProps
+  extends OverrideComponentProps<"input", MultiComboboxInputOptions> {}
 
-export function ComboboxInput(props: ComboboxInputProps) {
+export function MultiComboboxInput(props: MultiComboboxInputProps) {
   let ref: HTMLInputElement | undefined;
 
   const formControlContext = useFormControlContext();
@@ -38,6 +39,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
     FORM_CONTROL_FIELD_PROP_NAMES
   );
 
+  const collection = () => context.listState().collection();
   const selectionManager = () => context.listState().selectionManager();
 
   const isDisabled = () => local.disabled || context.isDisabled();
@@ -64,6 +66,18 @@ export function ComboboxInput(props: ComboboxInputProps) {
     //
     // To prevent this, we need to force the input `value` to be in sync with the textfield value state.
     target.value = context.inputValue() ?? "";
+
+    if (!context.isOpen()) {
+      context.open(false, "input");
+    } else {
+      if (collection().getSize() > 0) {
+        //selectionManager().setFocusedKey(collection().getFirstKey());
+      } else {
+        if (!context.allowsEmptyCollection()) {
+          context.close();
+        }
+      }
+    }
   };
 
   const onKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = e => {
@@ -87,29 +101,44 @@ export function ComboboxInput(props: ComboboxInputProps) {
 
           if (focusedKey != null) {
             selectionManager().select(focusedKey);
-            context.setInputValue("");
+
+            if (selectionManager().isSelected(focusedKey)) {
+              if (selectionManager().selectionMode() === "multiple") {
+                context.setInputValue("");
+              } else {
+                context.setInputValue(collection().getItem(focusedKey)?.textValue ?? "");
+              }
+            }
           }
         }
 
         break;
       case "Tab":
-        context.isOpen() && context.close();
-        break;
       case "Escape":
-        context.isOpen() && context.close();
+        if (context.contentPresence.isPresent()) {
+          context.resetInputAfterClose();
+          context.close();
+        } else {
+          context.resetInputValue();
+        }
         break;
       case "ArrowDown":
-        !context.isOpen() && context.open("first", "manual");
+        if (!context.isOpen()) {
+          context.open("first", "manual");
+        }
         break;
       case "ArrowUp":
-        !context.isOpen() && context.open("last", "manual");
+        if (!context.isOpen()) {
+          context.open("last", "manual");
+        }
         break;
       case "ArrowLeft":
       case "ArrowRight":
         selectionManager().setFocusedKey(undefined);
         break;
       case "Backspace":
-        if (context.inputValue() === "") {
+        // Remove last selection in multiple mode if input is empty.
+        if (selectionManager().selectionMode() === "multiple" && context.inputValue() === "") {
           selectionManager().toggleSelection(selectionManager().lastSelectedKey() ?? "");
         }
         break;
@@ -125,15 +154,21 @@ export function ComboboxInput(props: ComboboxInputProps) {
   const onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = e => {
     callHandler(e, local.onBlur);
 
-    // Ignore blur if focused moved to the button or into the menu.
+    // Ignore blur if focused moved into the trigger or menu.
     if (
-      e.relatedTarget === context.buttonRef() ||
+      contains(context.triggerRef(), e.relatedTarget as any) ||
       contains(context.contentRef(), e.relatedTarget as any)
     ) {
       return;
     }
 
     context.setIsInputFocused(false);
+
+    if (context.contentPresence.isPresent()) {
+      context.resetInputAfterClose();
+    } else {
+      context.resetInputValue();
+    }
   };
 
   // If a touch happens on direct center of Combobox input, might be virtual click from iPad so open ComboBox menu
@@ -179,10 +214,9 @@ export function ComboboxInput(props: ComboboxInputProps) {
       id={fieldProps.id()}
       disabled={isDisabled()}
       role="combobox"
+      placeholder={selectionManager().isEmpty() ? context.placeholder() : undefined}
       autoComplete="off"
-      // Disable iOS's autocorrect suggestions, since the combo box provides its own suggestions.
       autoCorrect="off"
-      // Disable the macOS Safari spell check auto corrections.
       spellCheck="false"
       aria-haspopup="listbox"
       aria-autocomplete="list"

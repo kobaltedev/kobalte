@@ -1,4 +1,4 @@
-import { Accessor, createContext, JSX, Setter, useContext } from "solid-js";
+import { Accessor, createContext, JSX, useContext } from "solid-js";
 
 import { ListState } from "../list";
 import { CollectionNode, CreatePresenceResult } from "../primitives";
@@ -18,6 +18,7 @@ export interface ComboboxContextValue {
   isVirtualized: Accessor<boolean | undefined>;
   isModal: Accessor<boolean>;
   isInputFocused: Accessor<boolean>;
+  isValidInputValue: Accessor<boolean>;
   allowsEmptyCollection: Accessor<boolean>;
   shouldFocusWrap: Accessor<boolean>;
   contentPresence: CreatePresenceResult;
@@ -36,6 +37,8 @@ export interface ComboboxContextValue {
   listboxAriaLabel: Accessor<string | undefined>;
   listState: Accessor<ListState>;
   keyboardDelegate: Accessor<KeyboardDelegate>;
+  resetInputAfterClose: () => void;
+  resetInputValue: () => void;
   setIsInputFocused: (isFocused: boolean) => void;
   setInputValue: (value: string) => void;
   setTriggerRef: (el: HTMLDivElement) => void;
@@ -49,7 +52,6 @@ export interface ComboboxContextValue {
   placeholder: Accessor<JSX.Element>;
   renderItem: (item: CollectionNode) => JSX.Element;
   renderSection: (section: CollectionNode) => JSX.Element;
-  renderValue: () => JSX.Element;
   onInputKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent>;
   generateId: (part: string) => string;
   registerInputId: (id: string) => () => void;

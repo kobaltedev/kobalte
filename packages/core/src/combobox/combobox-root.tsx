@@ -1,37 +1,22 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { Component, createMemo, splitProps } from "solid-js";
 
-import { AsChildProp } from "../polymorphic";
-import { CollectionNode } from "../primitives";
 import {
-  ComboboxBase,
-  ComboboxBaseItemComponentProps,
-  ComboboxBaseOptions,
-  ComboboxBaseSectionComponentProps,
-  ComboboxBaseValueComponentProps,
-} from "./combobox-base";
+  MultiComboboxRootItemComponentProps,
+  MultiComboboxRootOptions,
+  MultiComboboxRootSectionComponentProps,
+} from "../multi-combobox";
+import { MultiComboboxRoot } from "../multi-combobox/multi-combobox-root";
+import { AsChildProp } from "../polymorphic";
 
-export interface ComboboxValueComponentProps<T> {
-  /** The selected item value. */
-  value: string;
-
-  /** A function to clear the selection. */
-  clear: () => void;
-}
-
-export interface ComboboxItemComponentProps<T> extends ComboboxBaseItemComponentProps<T> {}
-export interface ComboboxSectionComponentProps<T> extends ComboboxBaseSectionComponentProps<T> {}
+export interface ComboboxRootItemComponentProps<T> extends MultiComboboxRootItemComponentProps<T> {}
+export interface ComboboxRootSectionComponentProps<T>
+  extends MultiComboboxRootSectionComponentProps<T> {}
 
 export interface ComboboxRootOptions<Option, OptGroup = never>
   extends Omit<
-    ComboboxBaseOptions<Option, OptGroup>,
-    | "valueComponent"
-    | "itemComponent"
-    | "sectionComponent"
-    | "value"
-    | "defaultValue"
-    | "onChange"
-    | "selectionMode"
+    MultiComboboxRootOptions<Option, OptGroup>,
+    "itemComponent" | "sectionComponent" | "value" | "defaultValue" | "onChange" | "selectionMode"
   > {
   /** The controlled value of the select. */
   value?: string;
@@ -45,14 +30,11 @@ export interface ComboboxRootOptions<Option, OptGroup = never>
   /** Event handler called when the value changes. */
   onChange?: (value: string) => void;
 
-  /** The component to render inside `Combobox.Value`. */
-  valueComponent?: Component<ComboboxValueComponentProps<Option>>;
-
   /** When NOT virtualized, the component to render as an item in the `Combobox.Listbox`. */
-  itemComponent?: Component<ComboboxItemComponentProps<Option>>;
+  itemComponent?: Component<ComboboxRootItemComponentProps<Option>>;
 
   /** When NOT virtualized, the component to render as a section in the `Combobox.Listbox`. */
-  sectionComponent?: Component<ComboboxSectionComponentProps<OptGroup>>;
+  sectionComponent?: Component<ComboboxRootSectionComponentProps<OptGroup>>;
 }
 
 export interface ComboboxRootProps<Option, OptGroup = never>
@@ -63,12 +45,7 @@ export interface ComboboxRootProps<Option, OptGroup = never>
  * Displays a list of options for the user to pick from — triggered by a button.
  */
 export function ComboboxRoot<Option, OptGroup = never>(props: ComboboxRootProps<Option, OptGroup>) {
-  const [local, others] = splitProps(props, [
-    "valueComponent",
-    "value",
-    "defaultValue",
-    "onChange",
-  ]);
+  const [local, others] = splitProps(props, ["value", "defaultValue", "onChange"]);
 
   const value = createMemo(() => {
     return local.value != null ? new Set([local.value]) : undefined;
@@ -82,23 +59,13 @@ export function ComboboxRoot<Option, OptGroup = never>(props: ComboboxRootProps<
     local.onChange?.(value.values().next().value);
   };
 
-  const valueComponent = (props: ComboboxBaseValueComponentProps<Option>) => {
-    return local.valueComponent?.({
-      get value() {
-        return props.values[0];
-      },
-      clear: () => props.clear(),
-    });
-  };
-
   return (
-    <ComboboxBase
+    <MultiComboboxRoot
       value={value()}
       defaultValue={defaultValue()}
       onChange={onChange}
       selectionMode="single"
       disallowEmptySelection
-      valueComponent={valueComponent}
       {...others}
     />
   );
