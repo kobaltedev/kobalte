@@ -298,16 +298,8 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   // Track the text value to display in the input (in single selection mode).
   let lastDisplayValue = "";
 
-  // Track last focused key.
-  let lastFocusedKey = "";
-
   const resetInputAfterClose = () => {
     setShouldResetInputAfterClose(true);
-  };
-
-  const focusLastFocusedItem = () => {
-    listState.selectionManager().setFocusedKey(undefined);
-    listState.selectionManager().setFocusedKey(lastFocusedKey);
   };
 
   const [inputValue, setInputValue] = createControllableSignal({
@@ -322,12 +314,13 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
         !listState.selectionManager().isEmpty() &&
         value === ""
       ) {
-        // Bypass single selection close behavior and  `disallowEmptySelection`.
+        // Bypass single selection close behavior and `disallowEmptySelection`.
         setCloseOnSingleSelect(false);
         listState.selectionManager().setSelectedKeys([]);
       }
 
-      focusLastFocusedItem();
+      // Clear focused key when input value changes.
+      listState.selectionManager().setFocusedKey(undefined);
     },
   });
 
@@ -356,13 +349,15 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
           resetInputValue();
         }
       } else {
-        // Bring back focus to the input after selection.
-        focusWithoutScrolling(inputRef());
-
+        // Clear and bring back focus to the input after selection.
         setInputValue("");
+        focusWithoutScrolling(inputRef());
       }
 
-      setCloseOnSingleSelect(true);
+      // Restore the signal to initial value.
+      if (!closeOnSingleSelect()) {
+        setCloseOnSingleSelect(true);
+      }
     },
     allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
     disallowEmptySelection: () => access(local.disallowEmptySelection),
@@ -399,9 +394,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     }
 
     listState.selectionManager().setFocused(true);
-
-    // `focusedKey` may be the `lastFocusedKey` so we need to force the focus.
-    listState.selectionManager().setFocusedKey(undefined);
     listState.selectionManager().setFocusedKey(focusedKey);
   };
 
@@ -484,14 +476,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   const renderSection = (section: CollectionNode) => {
     return local.sectionComponent?.({ section });
   };
-
-  createEffect(() => {
-    const focusedKey = listState.selectionManager().focusedKey();
-
-    if (focusedKey) {
-      lastFocusedKey = focusedKey;
-    }
-  });
 
   // Reset input only after combobox close animation is done
   // to prevent a collection update when animating out.

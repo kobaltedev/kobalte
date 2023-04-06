@@ -309,7 +309,7 @@ export default function App() {
             </MultiCombobox.Button>
           </Combobox.Trigger>
           <Combobox.Portal>
-            <Combobox.Content class="combobox__content">
+            <Combobox.Content class="combobox__content animated">
               <Combobox.Listbox class="combobox__listbox" />
             </Combobox.Content>
           </Combobox.Portal>

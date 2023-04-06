@@ -54,9 +54,6 @@ export function ComboboxInput(props: ComboboxInputProps) {
       return;
     }
 
-    // Clear focused key when input value changes.
-    selectionManager().setFocusedKey(undefined);
-
     const target = e.target as HTMLInputElement;
 
     context.setInputValue(target.value);
