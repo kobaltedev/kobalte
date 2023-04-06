@@ -538,11 +538,10 @@ toaster.show(props => <Toast.Root toastId={props.toastId}>...</Toast.Root>, {
 
 Inside your application, use add your custom region:
 
-```tsx {1, 5}
+```tsx {2, 6}
 <Portal>
+  // Default region
   <Toast.Region>
-    {" "}
-    // Default region
     <Toast.List />
   </Toast.Region>
 
