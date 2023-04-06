@@ -544,7 +544,6 @@ Inside your application, use add your custom region:
   <Toast.Region>
     <Toast.List />
   </Toast.Region>
-
   <Toast.Region regionId="custom-region-id">
     <Toast.List />
   </Toast.Region>
@@ -559,13 +558,13 @@ Inside your application, use add your custom region:
 
 ### toaster
 
-| Method  | Description                                                                                                                                                                                                                                            |
-| :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| show    | `(toastComponent: ToastComponent, options?: ShowToastOptions) => number` <br/> Adds a new toast to the visible toasts or queue depending on current state, region and limit, and return the id of the created toast.                                   |
-| update  | `(id: number, toastComponent: ToastComponent) => void` <br/> Update the toast of the given id with a new rendered component.                                                                                                                           |
-| promise | `(promise: Promise<T> \| (() => Promise<T>), toastComponent: ToastPromiseComponent<T, U>) => number` <br/> Adds a new promise-based toast to the visible toasts or queue depending on current state and limit, and return the id of the created toast. |
-| dismiss | `(id: number) => void` <br/> Removes toast with given id from visible toasts and queue.                                                                                                                                                                |
-| clear   | `() => void` <br/> Removes all toasts from visible toasts and queue.                                                                                                                                                                                   |
+| Method  | Description                                                                                                                                                                                                                                                                        |
+| :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| show    | `(toastComponent: ToastComponent, options?: ShowToastOptions) => number` <br/> Adds a new toast to the visible toasts or queue depending on current state, region and limit, and return the id of the created toast.                                                               |
+| update  | `(id: number, toastComponent: ToastComponent) => void` <br/> Update the toast of the given id with a new rendered component.                                                                                                                                                       |
+| promise | `(promise: Promise<T> \| (() => Promise<T>), toastComponent: ToastPromiseComponent<T, U>, options?: ShowToastOptions) => number` <br/> Adds a new promise-based toast to the visible toasts or queue depending on current state and limit, and return the id of the created toast. |
+| dismiss | `(id: number) => void` <br/> Removes toast with given id from visible toasts and queue.                                                                                                                                                                                            |
+| clear   | `() => void` <br/> Removes all toasts from visible toasts and queue.                                                                                                                                                                                                               |
 
 ### Toast.Region
 

@@ -20,7 +20,8 @@ function update(id: number, toastComponent: ToastComponent) {
 /** Adds a new promise-based toast to the visible toasts or queue depending on current state and limit, and return the id of the created toast. */
 function promise<T, U = any>(
   promise: Promise<T> | (() => Promise<T>),
-  toastComponent: ToastPromiseComponent<T, U>
+  toastComponent: ToastPromiseComponent<T, U>,
+  options?: ShowToastOptions
 ) {
   const id = show(props => {
     return toastComponent({
@@ -29,7 +30,7 @@ function promise<T, U = any>(
       },
       state: "pending",
     });
-  });
+  }, options);
 
   (isFunction(promise) ? promise() : promise)
     .then(data =>
