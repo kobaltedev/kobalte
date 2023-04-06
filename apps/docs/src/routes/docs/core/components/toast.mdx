@@ -530,7 +530,7 @@ function App() {
 
 The `region` option in `toaster.show()` allows you to display toast in multiple regions at the same time. Not providing a region uses the default one.
 
-```tsx {3}
+```tsx {1}
 toaster.show(props => <Toast.Root toastId={props.toastId}>...</Toast.Root>, {
   region: "custom-region-id",
 });
