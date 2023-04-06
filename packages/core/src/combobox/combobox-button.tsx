@@ -54,6 +54,10 @@ export function ComboboxButton(props: ComboboxButtonProps) {
     }
   };
 
+  const ariaLabelledBy = () => {
+    return formControlContext.getAriaLabelledBy(others.id, context.buttonAriaLabel(), undefined);
+  };
+
   return (
     <Button.Root
       ref={mergeRefs(context.setButtonRef, local.ref)}
@@ -63,7 +67,7 @@ export function ComboboxButton(props: ComboboxButtonProps) {
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.listboxId() : undefined}
       aria-label={context.buttonAriaLabel()}
-      aria-labelledby={formControlContext.labelId()}
+      aria-labelledby={ariaLabelledBy()}
       onPointerDown={onPointerDown}
       onClick={onClick}
       {...context.dataset()}

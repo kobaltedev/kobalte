@@ -41,14 +41,16 @@ export function ComboboxInput(props: ComboboxInputProps) {
   const collection = () => context.listState().collection();
   const selectionManager = () => context.listState().selectionManager();
 
-  const isDisabled = () => local.disabled || context.isDisabled();
+  const isDisabled = () => {
+    return local.disabled || context.isDisabled() || formControlContext.isDisabled();
+  };
 
   const { fieldProps } = createFormControlField(formControlFieldProps);
 
   const onInput: JSX.InputEventHandlerUnion<HTMLInputElement, InputEvent> = e => {
     callHandler(e, local.onInput);
 
-    if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
+    if (formControlContext.isReadOnly() || isDisabled()) {
       return;
     }
 
@@ -78,7 +80,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
   const onKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
 
-    if (isDisabled()) {
+    if (formControlContext.isReadOnly() || isDisabled()) {
       return;
     }
 
@@ -162,7 +164,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
   let lastEventTime = 0;
 
   const onTouchEnd: JSX.EventHandlerUnion<HTMLInputElement, TouchEvent> = e => {
-    if (!ref || isDisabled()) {
+    if (!ref || formControlContext.isReadOnly() || isDisabled()) {
       return;
     }
 
@@ -197,11 +199,14 @@ export function ComboboxInput(props: ComboboxInputProps) {
         context.setInputRef(el);
         ref = el;
       }, local.ref)}
-      value={context.inputValue()}
       id={fieldProps.id()}
-      disabled={isDisabled()}
-      role="combobox"
+      name={formControlContext.name()}
+      value={context.inputValue()}
+      required={formControlContext.isRequired()}
+      disabled={formControlContext.isDisabled()}
+      readonly={formControlContext.isReadOnly()}
       placeholder={selectionManager().isEmpty() ? context.placeholder() : undefined}
+      role="combobox"
       autoComplete="off"
       autoCorrect="off"
       spellCheck="false"
@@ -211,7 +216,12 @@ export function ComboboxInput(props: ComboboxInputProps) {
       aria-controls={context.isOpen() ? context.listboxId() : undefined}
       aria-activedescendant={context.activeDescendant()}
       aria-label={fieldProps.ariaLabel()}
+      aria-labelledby={fieldProps.ariaLabelledBy()}
       aria-describedby={fieldProps.ariaDescribedBy()}
+      aria-invalid={formControlContext.validationState() === "invalid" || undefined}
+      aria-required={formControlContext.isRequired() || undefined}
+      aria-disabled={formControlContext.isDisabled() || undefined}
+      aria-readonly={formControlContext.isReadOnly() || undefined}
       onInput={onInput}
       onKeyDown={onKeyDown}
       onFocus={onFocus}

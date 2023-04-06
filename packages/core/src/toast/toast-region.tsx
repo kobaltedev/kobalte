@@ -16,7 +16,7 @@ import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@ko
 import { createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
-import { createLocalizedStringFormatter } from "../i18n";
+import { createMessageFormatter } from "../i18n";
 import { TOAST_HOTKEY_PLACEHOLDER, TOAST_INTL_MESSAGES } from "./toast.intl";
 import { ToastRegionContext, ToastRegionContextValue } from "./toast-region-context";
 import { toastStore } from "./toast-store";
@@ -112,7 +112,7 @@ export function ToastRegion(props: ToastRegionProps) {
 
   const [isPaused, setIsPaused] = createSignal(false);
 
-  const stringFormatter = createLocalizedStringFormatter(() => TOAST_INTL_MESSAGES);
+  const messageFormatter = createMessageFormatter(() => TOAST_INTL_MESSAGES);
 
   const hasToasts = () => toasts().length > 0;
 
@@ -121,7 +121,7 @@ export function ToastRegion(props: ToastRegionProps) {
   };
 
   const ariaLabel = () => {
-    const label = local["aria-label"] || stringFormatter().format("notifications");
+    const label = local["aria-label"] || messageFormatter().format("notifications");
     return label.replace(TOAST_HOTKEY_PLACEHOLDER, hotkeyLabel());
   };
 

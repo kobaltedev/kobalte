@@ -35,6 +35,10 @@ export function ComboboxListbox<Option = any, OptGroup = never>(
 
   const [local, others] = splitProps(props, ["ref"]);
 
+  const ariaLabelledBy = () => {
+    return formControlContext.getAriaLabelledBy(others.id, context.listboxAriaLabel(), undefined);
+  };
+
   createEffect(() => onCleanup(context.registerListboxId(others.id!)));
 
   return (
@@ -46,7 +50,7 @@ export function ComboboxListbox<Option = any, OptGroup = never>(
       shouldSelectOnPressUp
       shouldFocusOnHover
       aria-label={context.listboxAriaLabel()}
-      aria-labelledby={formControlContext.labelId()}
+      aria-labelledby={ariaLabelledBy()}
       renderItem={context.renderItem}
       renderSection={context.renderSection}
       {...others}

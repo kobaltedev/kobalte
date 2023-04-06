@@ -20,7 +20,7 @@ import {
 } from "solid-js";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import { createLocalizedStringFormatter } from "../i18n";
+import { createMessageFormatter } from "../i18n";
 import { createListState, ListKeyboardDelegate } from "../list";
 import { announce } from "../live-announcer";
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -290,7 +290,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   const [shouldResetInputAfterClose, setShouldResetInputAfterClose] = createSignal(false);
   const [closeOnSingleSelect, setCloseOnSingleSelect] = createSignal(true);
 
-  const stringFormatter = createLocalizedStringFormatter(() => COMBOBOX_INTL_MESSAGES);
+  const messageFormatter = createMessageFormatter(() => COMBOBOX_INTL_MESSAGES);
 
   // Track what action is attempting to open the combobox.
   let openTriggerMode: ComboboxTriggerMode | undefined = "focus";
@@ -512,50 +512,74 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 
   // VoiceOver has issues with announcing aria-activedescendant properly on change.
   // We use a live region announcer to announce focus changes manually.
+  let lastAnnouncedFocusedKey = "";
+
   createEffect(() => {
     const focusedKey = listState.selectionManager().focusedKey() ?? "";
     const focusedItem = listState.collection().getItem(focusedKey);
 
-    if (isAppleDevice() && focusedItem != null) {
+    if (isAppleDevice() && focusedItem != null && focusedKey !== lastAnnouncedFocusedKey) {
       const isSelected = listState.selectionManager().isSelected(focusedKey);
 
-      const announcement = stringFormatter().format("focusAnnouncement", {
+      const announcement = messageFormatter().format("focusAnnouncement", {
         optionText: focusedItem?.textValue || "",
         isSelected,
       });
 
       announce(announcement);
     }
+
+    if (focusedKey) {
+      lastAnnouncedFocusedKey = focusedKey;
+    }
   });
 
-  // Announce the number of available suggestions when it changes
+  // Announce the number of available suggestions when it changes.
+  let lastOptionCount = getItemCount(listState.collection());
+  let lastOpen = disclosureState.isOpen();
+
   createEffect(() => {
     const optionCount = getItemCount(listState.collection());
+    const isOpen = disclosureState.isOpen();
 
     // Only announce the number of options available when the menu opens if there is no
     // focused item, otherwise screen readers will typically read e.g. "1 of 6".
     // The exception is VoiceOver since this isn't included in the message above.
-    if (
-      disclosureState.isOpen() &&
-      (listState.selectionManager().focusedKey() == null || isAppleDevice())
-    ) {
-      const announcement = stringFormatter().format("countAnnouncement", { optionCount });
+    const didOpenWithoutFocusedItem =
+      isOpen !== lastOpen && (listState.selectionManager().focusedKey() == null || isAppleDevice());
+
+    if (isOpen && (didOpenWithoutFocusedItem || optionCount !== lastOptionCount)) {
+      const announcement = messageFormatter().format("countAnnouncement", { optionCount });
       announce(announcement);
     }
+
+    lastOptionCount = optionCount;
+    lastOpen = isOpen;
   });
 
   // Announce when a selection occurs for VoiceOver.
   // Other screen readers typically do this automatically.
+  let lastAnnouncedSelectedKey = "";
+
   createEffect(() => {
-    const lastSelectedKey = listState.selectionManager().lastSelectedKey() ?? "";
+    const lastSelectedKey = [...listState.selectionManager().selectedKeys()].pop() ?? "";
     const lastSelectedItem = listState.collection().getItem(lastSelectedKey);
 
-    if (isAppleDevice() && isInputFocused() && lastSelectedItem) {
-      const announcement = stringFormatter().format("selectedAnnouncement", {
+    if (
+      isAppleDevice() &&
+      isInputFocused() &&
+      lastSelectedItem &&
+      lastSelectedKey !== lastAnnouncedSelectedKey
+    ) {
+      const announcement = messageFormatter().format("selectedAnnouncement", {
         optionText: lastSelectedItem?.textValue || "",
       });
 
       announce(announcement);
+    }
+
+    if (lastSelectedKey) {
+      lastAnnouncedSelectedKey = lastSelectedKey;
     }
   });
 
@@ -588,8 +612,8 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     inputId,
     valueId,
     listboxId,
-    buttonAriaLabel: () => stringFormatter().format("buttonLabel"),
-    listboxAriaLabel: () => stringFormatter().format("listboxLabel"),
+    buttonAriaLabel: () => messageFormatter().format("buttonLabel"),
+    listboxAriaLabel: () => messageFormatter().format("listboxLabel"),
     setIsInputFocused,
     resetInputAfterClose,
     resetInputValue,

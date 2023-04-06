@@ -1,7 +1,6 @@
 export const COMBOBOX_INTL_MESSAGES = {
   "en-US": {
-    focusAnnouncement:
-      "{isGroupChange, select, true {Entered group {groupTitle}, with {groupCount, plural, one {# option} other {# options}}. } other {}}{optionText}{isSelected, select, true {, selected} other {}}",
+    focusAnnouncement: "{optionText}{isSelected, select, true {, selected} other {}}",
     countAnnouncement: "{optionCount, plural, one {# option} other {# options}} available.",
     selectedAnnouncement: "{optionText}, selected",
     buttonLabel: "Show suggestions",
