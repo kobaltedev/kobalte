@@ -45,4 +45,9 @@ export interface ToastConfig {
 
   /** The toast component to render. */
   toastComponent: ToastComponent;
+
+  /** The id of the <Toast.Region/> to display the toast in. */
+  region?: string;
 }
+
+export interface ShowToastOptions extends Pick<ToastConfig, "region"> {}

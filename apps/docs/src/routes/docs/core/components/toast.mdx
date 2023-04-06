@@ -1,5 +1,5 @@
 import { Preview, TabsSnippets, Callout, Kbd } from "../../../../components";
-import { BasicExample } from "../../../../examples/toast";
+import { BasicExample, MultipleRegionsExample } from "../../../../examples/toast";
 
 # Toast
 
@@ -21,6 +21,7 @@ import { Toast, toaster } from "@kobalte/core";
 - Limit the number of visible toasts.
 - Manage promises within toast.
 - Can remove or update toast programmatically.
+- Multiple toast regions.
 
 ## Anatomy
 
@@ -525,13 +526,43 @@ function App() {
 }
 ```
 
+### Multiple regions
+
+The `region` option in `toaster.show()` allows you to display toast in multiple regions at the same time. Not providing a region uses the default one.
+
+```tsx {3}
+toaster.show(props => <Toast.Root toastId={props.toastId}>...</Toast.Root>, {
+  region: "custom-region-id",
+});
+```
+
+Inside your application, use add your custom region:
+
+```tsx {1, 5}
+<Portal>
+  <Toast.Region>
+    {" "}
+    // Default region
+    <Toast.List />
+  </Toast.Region>
+
+  <Toast.Region regionId="custom-region-id">
+    <Toast.List />
+  </Toast.Region>
+</Portal>
+```
+
+<Preview>
+  <MultipleRegionsExample />
+</Preview>
+
 ## API reference
 
 ### toaster
 
 | Method  | Description                                                                                                                                                                                                                                            |
 | :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| show    | `(toastComponent: ToastComponent) => number` <br/> Adds a new toast to the visible toasts or queue depending on current state and limit, and return the id of the created toast.                                                                       |
+| show    | `(toastComponent: ToastComponent, options?: ShowToastOptions) => number` <br/> Adds a new toast to the visible toasts or queue depending on current state, region and limit, and return the id of the created toast.                                   |
 | update  | `(id: number, toastComponent: ToastComponent) => void` <br/> Update the toast of the given id with a new rendered component.                                                                                                                           |
 | promise | `(promise: Promise<T> \| (() => Promise<T>), toastComponent: ToastPromiseComponent<T, U>) => number` <br/> Adds a new promise-based toast to the visible toasts or queue depending on current state and limit, and return the id of the created toast. |
 | dismiss | `(id: number) => void` <br/> Removes toast with given id from visible toasts and queue.                                                                                                                                                                |
@@ -550,6 +581,7 @@ function App() {
 | pauseOnInteraction | `boolean` <br/> **default:** true <br/> Whether the toasts close timeout should pause when a toast is hovered or focused.                                                                                                                                                                                 |
 | pauseOnPageIdle    | `boolean` <br/> **default:** true <br/> Whether the toasts close timeout should pause when the document loses focus or the page is idle (e.g. switching to a new browser tab).                                                                                                                            |
 | isTopLayer         | `boolean` <br/> **default:** true <br/> Whether the toast region is marked as a "top layer", so that it: <br/> - is not aria-hidden when opening an overlay. <br/> - allows focus even outside a containing focus scope. <br/> - doesn’t dismiss overlays when clicking on it, even though it is outside. |
+| regionId           | `string` <br/> The custom id of the region used for multiple regions.                                                                                                                                                                                                                                     |
 
 ### Toast.Root
 

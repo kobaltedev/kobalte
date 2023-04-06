@@ -1,14 +1,14 @@
 import { isFunction } from "@kobalte/utils";
 
 import { toastStore } from "./toast-store";
-import { ToastComponent, ToastPromiseComponent } from "./types";
+import { ToastComponent, ShowToastOptions, ToastPromiseComponent } from "./types";
 
 let toastsCounter = 0;
 
 /** Adds a new toast to the visible toasts or queue depending on current state and limit, and return the id of the created toast. */
-function show(toastComponent: ToastComponent) {
+function show(toastComponent: ToastComponent, options?: ShowToastOptions) {
   const id = toastsCounter++;
-  toastStore.add({ id, toastComponent, dismiss: false, update: false });
+  toastStore.add({ id, toastComponent, dismiss: false, update: false, region: options?.region });
   return id;
 }
 
