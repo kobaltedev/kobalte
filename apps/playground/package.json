@@ -33,7 +33,7 @@
   "dependencies": {
     "@kobalte/core": "^0.8.2",
     "@kobalte/utils": "^0.6.1",
-    "solid-js": "1.7.1"
+    "solid-js": "1.7.2"
   },
   "devDependencies": {
     "@kobalte/tailwindcss": "^0.5.0",
@@ -42,6 +42,6 @@
     "tailwindcss": "3.3.0",
     "typescript": "4.9.5",
     "vite": "3.2.5",
-    "vite-plugin-solid": "2.6.1"
+    "vite-plugin-solid": "2.7.0"
   }
 }

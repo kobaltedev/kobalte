@@ -71,6 +71,9 @@ export default function Root() {
                   <Toast.Region>
                     <Toast.List class={toastStyles["toast__list"]} />
                   </Toast.Region>
+                  <Toast.Region regionId="custom-region-id">
+                    <Toast.List class={toastStyles["toast__list-custom-region"]} />
+                  </Toast.Region>
                 </Portal>
               </MDXProvider>
             </ColorModeProvider>

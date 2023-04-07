@@ -15,6 +15,23 @@
   outline: none;
 }
 
+.toast__list-custom-region {
+  --viewport-padding: 16px;
+  position: fixed;
+  top: 0;
+  left: calc(50vw - 50%);
+  display: flex;
+  flex-direction: column;
+  padding: var(--viewport-padding);
+  gap: 8px;
+  width: 400px;
+  max-width: 100vw;
+  margin: 0;
+  list-style: none;
+  z-index: 9999;
+  outline: none;
+}
+
 .toast {
   display: flex;
   flex-direction: column;

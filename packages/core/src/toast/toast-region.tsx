@@ -67,6 +67,12 @@ export interface ToastRegionOptions {
    */
   topLayer?: boolean;
 
+  /** The id of the toast region, used for multiple toast regions. */
+  regionId?: string;
+
+  /** The id of the toast region, used for multiple toast regions. */
+  regionId?: string;
+
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }
@@ -106,9 +112,15 @@ export function ToastRegion(props: ToastRegionProps) {
     "pauseOnPageIdle",
     "topLayer",
     "aria-label",
+    "regionId",
   ]);
 
-  const toasts = createMemo(() => toastStore.toasts().slice(0, local.limit!));
+  const toasts = createMemo(() =>
+    toastStore
+      .toasts()
+      .filter(toast => toast.region === local.regionId)
+      .slice(0, local.limit!)
+  );
 
   const [isPaused, setIsPaused] = createSignal(false);
 
