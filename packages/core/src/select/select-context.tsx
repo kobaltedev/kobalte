@@ -17,6 +17,7 @@ export interface SelectContextValue {
   isVirtualized: Accessor<boolean | undefined>;
   isModal: Accessor<boolean>;
   disallowTypeAhead: Accessor<boolean>;
+  shouldFocusWrap: Accessor<boolean>;
   contentPresence: CreatePresenceResult;
   autoFocus: Accessor<FocusStrategy | boolean>;
   triggerRef: Accessor<HTMLButtonElement | undefined>;

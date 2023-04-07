@@ -7,9 +7,7 @@ import { useSelectContext } from "./select-context";
 export interface SelectValueProps extends ComponentProps<"span"> {}
 
 /**
- * The part that reflects the selected value. By default, the selected item's text will be rendered.
- * If you require more control, you can instead control the select and pass your own children.
- * An optional placeholder prop is also available for when the select has no value.
+ * The part that reflects the selected value.
  */
 export function SelectValue(props: SelectValueProps) {
   const formControlContext = useFormControlContext();

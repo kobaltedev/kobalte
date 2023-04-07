@@ -26,7 +26,12 @@ export function SelectTrigger(props: SelectTriggerProps) {
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
-  props = mergeDefaultProps({ id: context.generateId("trigger") }, props);
+  props = mergeDefaultProps(
+    {
+      id: context.generateId("trigger"),
+    },
+    props
+  );
 
   const [local, formControlFieldProps, others] = splitProps(
     props,

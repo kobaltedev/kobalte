@@ -117,6 +117,9 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   /** An optional keyboard delegate implementation for type to select, to override the default. */
   keyboardDelegate?: KeyboardDelegate;
 
+  /** Whether focus should wrap around when the end/start is reached. */
+  shouldFocusWrap?: boolean;
+
   /** The type of selection that is allowed in the select. */
   selectionMode?: Exclude<SelectionMode, "none">;
 
@@ -236,6 +239,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       "allowDuplicateSelectionEvents",
       "disallowEmptySelection",
       "disallowTypeAhead",
+      "shouldFocusWrap",
       "selectionBehavior",
       "selectionMode",
       "virtualized",
@@ -275,6 +279,28 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     open: () => local.open,
     defaultOpen: () => local.defaultOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
+  });
+
+  const listState = createListState({
+    selectedKeys: () => local.value,
+    defaultSelectedKeys: () => local.defaultValue,
+    onSelectionChange: keys => {
+      local.onChange?.(keys);
+
+      if (local.selectionMode === "single") {
+        close();
+      }
+    },
+    allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
+    disallowEmptySelection: () => access(local.disallowEmptySelection),
+    selectionBehavior: () => access(local.selectionBehavior),
+    selectionMode: () => local.selectionMode,
+    dataSource: () => local.options ?? [],
+    getKey: () => local.optionValue as any,
+    getTextValue: () => local.optionTextValue as any,
+    getDisabled: () => local.optionDisabled as any,
+    getSectionChildren: () => local.optionGroupChildren as any,
+    getIsSection: () => local.isOptionGroup,
   });
 
   const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
@@ -325,28 +351,6 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       open(focusStrategy);
     }
   };
-
-  const listState = createListState({
-    selectedKeys: () => local.value,
-    defaultSelectedKeys: () => local.defaultValue,
-    onSelectionChange: keys => {
-      local.onChange?.(keys);
-
-      if (local.selectionMode === "single") {
-        close();
-      }
-    },
-    allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
-    disallowEmptySelection: () => access(local.disallowEmptySelection),
-    selectionBehavior: () => access(local.selectionBehavior),
-    selectionMode: () => local.selectionMode,
-    dataSource: () => local.options ?? [],
-    getKey: () => local.optionValue as any,
-    getTextValue: () => local.optionTextValue as any,
-    getDisabled: () => local.optionDisabled as any,
-    getSectionChildren: () => local.optionGroupChildren as any,
-    getIsSection: () => local.isOptionGroup,
-  });
 
   const { formControlContext } = createFormControl(formControlProps);
 
@@ -404,6 +408,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     isVirtualized: () => local.virtualized,
     isModal: () => local.modal ?? false,
     disallowTypeAhead: () => local.disallowTypeAhead ?? false,
+    shouldFocusWrap: () => local.shouldFocusWrap ?? false,
     contentPresence,
     autoFocus: focusStrategy,
     triggerRef,

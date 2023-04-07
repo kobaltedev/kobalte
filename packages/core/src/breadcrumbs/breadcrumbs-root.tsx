@@ -9,7 +9,7 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { createLocalizedStringFormatter } from "../i18n";
+import { createMessageFormatter } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { BREADCRUMBS_INTL_MESSAGES } from "./breadcrumbs.intl";
 import { BreadcrumbsContext, BreadcrumbsContextValue } from "./breadcrumbs-context";
@@ -33,7 +33,7 @@ export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
 
   const [local, others] = splitProps(props, ["separator"]);
 
-  const formatter = createLocalizedStringFormatter(() => BREADCRUMBS_INTL_MESSAGES);
+  const messageFormatter = createMessageFormatter(() => BREADCRUMBS_INTL_MESSAGES);
 
   const context: BreadcrumbsContextValue = {
     separator: () => local.separator,
@@ -41,7 +41,7 @@ export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
 
   return (
     <BreadcrumbsContext.Provider value={context}>
-      <Polymorphic as="nav" aria-label={formatter().format("breadcrumbs")} {...others} />
+      <Polymorphic as="nav" aria-label={messageFormatter().format("breadcrumbs")} {...others} />
     </BreadcrumbsContext.Provider>
   );
 }
