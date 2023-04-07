@@ -70,9 +70,6 @@ export interface ToastRegionOptions {
   /** The id of the toast region, used for multiple toast regions. */
   regionId?: string;
 
-  /** The id of the toast region, used for multiple toast regions. */
-  regionId?: string;
-
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }
