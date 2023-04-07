@@ -121,7 +121,12 @@ export function ToastRegion(props: ToastRegionProps) {
   };
 
   const ariaLabel = () => {
-    const label = local["aria-label"] || messageFormatter().format("notifications");
+    const label =
+      local["aria-label"] ||
+      messageFormatter().format("notifications", {
+        hotkey: hotkeyLabel(),
+      });
+
     return label.replace(TOAST_HOTKEY_PLACEHOLDER, hotkeyLabel());
   };
 

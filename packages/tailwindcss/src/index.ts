@@ -6,9 +6,7 @@
  * https://github.com/tailwindlabs/headlessui/blob/8e1e19f94c28af68c05becc80bf89575e1fa1d36/packages/@headlessui-tailwindcss/src/index.ts
  */
 
-/* eslint-disable @typescript-eslint/no-var-requires */
-
-const plugin = require("tailwindcss/plugin");
+import plugin from "tailwindcss/plugin";
 
 const STATES = [
   "valid",
@@ -28,16 +26,21 @@ const STATES = [
 
 const ORIENTATIONS = ["horizontal", "vertical"];
 
-module.exports = plugin.withOptions(({ prefix = "ui" } = {}) => {
+export interface KobalteTailwindPluginOptions {
+  /** The prefix of generated classes. */
+  prefix?: string;
+}
+
+export default plugin.withOptions<KobalteTailwindPluginOptions>(({ prefix = "ui" } = {}) => {
   return ({ addVariant }) => {
-    for (let state of STATES) {
+    for (const state of STATES) {
       addVariant(`${prefix}-${state}`, [`&[data-${state}]`]);
       addVariant(`${prefix}-not-${state}`, [`&:not([data-${state}])`]);
       addVariant(`${prefix}-group-${state}`, `:merge(.group)[data-${state}] &`);
       addVariant(`${prefix}-peer-${state}`, `:merge(.peer)[data-${state}] ~ &`);
     }
 
-    for (let orientation of ORIENTATIONS) {
+    for (const orientation of ORIENTATIONS) {
       addVariant(`${prefix}-${orientation}`, [`&[data-orientation='${orientation}']`]);
       addVariant(`${prefix}-not-${orientation}`, [`&:not([data-orientation='${orientation}'])`]);
       addVariant(
