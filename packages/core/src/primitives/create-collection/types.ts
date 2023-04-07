@@ -13,7 +13,7 @@ export interface CollectionItem {
   textValue: string;
 
   /** Whether the item is disabled. */
-  isDisabled: boolean;
+  disabled: boolean;
 }
 
 export interface CollectionItemWithRef extends CollectionItem, DomCollectionItem {}
@@ -32,7 +32,7 @@ export interface CollectionNode<T = any> {
   textValue: string;
 
   /** Whether the node is disabled. */
-  isDisabled: boolean;
+  disabled: boolean;
 
   /** The level of depth this node is at in the hierarchy. */
   level: number;
@@ -58,7 +58,7 @@ export interface CollectionBase {
   getTextValue?: MaybeAccessor<string | ((data: any) => string) | undefined>;
 
   /** Property name or getter function to use as the disabled flag of an item. */
-  getIsDisabled?: MaybeAccessor<string | ((data: any) => boolean) | undefined>;
+  getDisabled?: MaybeAccessor<string | ((data: any) => boolean) | undefined>;
 
   /** Property name or getter function that refers to the children items of a section. */
   getSectionChildren?: MaybeAccessor<string | ((section: any) => any[]) | undefined>;

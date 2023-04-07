@@ -31,7 +31,7 @@ export function DialogOverlay(props: DialogOverlayProps) {
   return (
     <Show when={context.overlayPresence.isPresent()}>
       <Polymorphic
-        fallback="div"
+        as="div"
         ref={mergeRefs(context.overlayPresence.setRef, local.ref)}
         // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling.
         style={{ "pointer-events": "auto", ...local.style }}

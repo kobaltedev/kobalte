@@ -14,7 +14,7 @@ import { createTagName } from "../primitives";
 
 export interface LinkRootOptions extends AsChildProp {
   /** Whether the link is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
 
 export interface LinkRootProps extends OverrideComponentProps<"a", LinkRootOptions> {}
@@ -25,7 +25,7 @@ export interface LinkRootProps extends OverrideComponentProps<"a", LinkRootOptio
 export function LinkRoot(props: LinkRootProps) {
   let ref: HTMLAnchorElement | undefined;
 
-  const [local, others] = splitProps(props, ["ref", "type", "isDisabled", "onClick"]);
+  const [local, others] = splitProps(props, ["ref", "type", "disabled", "onClick"]);
 
   const tagName = createTagName(
     () => ref,
@@ -33,7 +33,7 @@ export function LinkRoot(props: LinkRootProps) {
   );
 
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-    if (local.isDisabled) {
+    if (local.disabled) {
       e.preventDefault();
       return;
     }
@@ -43,12 +43,12 @@ export function LinkRoot(props: LinkRootProps) {
 
   return (
     <Polymorphic
-      fallback="a"
+      as="a"
       ref={mergeRefs(el => (ref = el), local.ref)}
       role={tagName() !== "a" ? "link" : undefined}
-      tabIndex={tagName() !== "a" && !local.isDisabled ? 0 : undefined}
-      aria-disabled={local.isDisabled ? true : undefined}
-      data-disabled={local.isDisabled ? "" : undefined}
+      tabIndex={tagName() !== "a" && !local.disabled ? 0 : undefined}
+      aria-disabled={local.disabled ? true : undefined}
+      data-disabled={local.disabled ? "" : undefined}
       onClick={onClick}
       {...others}
     />

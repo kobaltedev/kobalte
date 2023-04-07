@@ -28,7 +28,7 @@ export interface TabsRootOptions extends AsChildProp {
   defaultValue?: string;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string) => void;
+  onChange?: (value: string) => void;
 
   /** The orientation of the tabs. */
   orientation?: Orientation;
@@ -37,7 +37,7 @@ export interface TabsRootOptions extends AsChildProp {
   activationMode?: TabsActivationMode;
 
   /** Whether the tabs are disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
 
 export interface TabsRootProps extends OverrideComponentProps<"div", TabsRootOptions> {}
@@ -61,10 +61,10 @@ export function TabsRoot(props: TabsRootProps) {
   const [local, others] = splitProps(props, [
     "value",
     "defaultValue",
-    "onValueChange",
+    "onChange",
     "orientation",
     "activationMode",
-    "isDisabled",
+    "disabled",
   ]);
 
   const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
@@ -75,7 +75,7 @@ export function TabsRoot(props: TabsRootProps) {
   const listState = createSingleSelectListState({
     selectedKey: () => local.value,
     defaultSelectedKey: () => local.defaultValue,
-    onSelectionChange: key => local.onValueChange?.(String(key)),
+    onSelectionChange: key => local.onChange?.(String(key)),
     dataSource: items,
   });
 
@@ -98,13 +98,13 @@ export function TabsRoot(props: TabsRootProps) {
           let selectedItem = selectedKey != null ? collection.getItem(selectedKey) : undefined;
 
           // loop over tabs until we find one that isn't disabled and select that
-          while (selectedItem?.isDisabled && selectedItem.key !== collection.getLastKey()) {
+          while (selectedItem?.disabled && selectedItem.key !== collection.getLastKey()) {
             selectedKey = collection.getKeyAfter(selectedItem.key);
             selectedItem = selectedKey != null ? collection.getItem(selectedKey) : undefined;
           }
 
           // if this check is true, then every item is disabled, it makes more sense to default to the first key than the last
-          if (selectedItem?.isDisabled && selectedKey === collection.getLastKey()) {
+          if (selectedItem?.disabled && selectedKey === collection.getLastKey()) {
             selectedKey = collection.getFirstKey();
           }
 
@@ -135,7 +135,7 @@ export function TabsRoot(props: TabsRootProps) {
   const contentIdsMap = new Map<string, string>();
 
   const context: TabsContextValue = {
-    isDisabled: () => local.isDisabled ?? false,
+    isDisabled: () => local.disabled ?? false,
     orientation: () => local.orientation!,
     activationMode: () => local.activationMode!,
     triggerIdsMap: () => triggerIdsMap,
@@ -150,7 +150,7 @@ export function TabsRoot(props: TabsRootProps) {
   return (
     <DomCollectionProvider>
       <TabsContext.Provider value={context}>
-        <Polymorphic fallback="div" data-orientation={context.orientation()} {...others} />
+        <Polymorphic as="div" data-orientation={context.orientation()} {...others} />
       </TabsContext.Provider>
     </DomCollectionProvider>
   );

@@ -132,19 +132,19 @@ The switch consists of:
 
 ### Default checked
 
-An initial, uncontrolled value can be provided using the `defaultIsChecked` prop.
+An initial, uncontrolled value can be provided using the `defaultChecked` prop.
 
 <Preview>
   <DefaultCheckedExample />
 </Preview>
 
 ```tsx
-<Switch.Root defaultIsChecked>...</Switch.Root>
+<Switch.Root defaultChecked>...</Switch.Root>
 ```
 
 ### Controlled checked
 
-The `isChecked` prop can be used to make the checked state controlled. The `onCheckedChange` event is fired when the user toggle the switch, and receives the new value.
+The `checked` prop can be used to make the checked state controlled. The `onChange` event is fired when the user toggle the switch, and receives the new value.
 
 <Preview>
   <ControlledExample />
@@ -158,7 +158,7 @@ export function ControlledExample() {
 
   return (
     <>
-      <Switch.Root isChecked={checked()} onCheckedChange={setChecked}>
+      <Switch.Root checked={checked()} onChange={setChecked}>
         ...
       </Switch.Root>
       <p>Airplane mode is {checked() ? "active" : "inactive"}.</p>
@@ -198,17 +198,17 @@ function HTMLFormExample() {
 
 ### Switch.Root
 
-| Prop             | Description                                                                                                                                                             |
-| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| isChecked        | `boolean` <br/> The controlled checked state of the switch.                                                                                                             |
-| defaultIsChecked | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                            |
-| onCheckedChange  | `(isChecked: boolean) => void` <br/> Event handler called when the checked state of the switch changes.                                                                 |
-| name             | `string` <br/> The name of the switch, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).   |
-| value            | `string` <br/> The value of the switch, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefvalue). |
-| validationState  | `'valid' \| 'invalid'` <br/> Whether the switch should display its "valid" or "invalid" visual styling.                                                                 |
-| isRequired       | `boolean` <br/> Whether the user must check the switch before the owning form can be submitted.                                                                         |
-| isDisabled       | `boolean` <br/> Whether the switch is disabled.                                                                                                                         |
-| isReadOnly       | `boolean` <br/> Whether the switch can be checked but not changed by the user.                                                                                          |
+| Prop            | Description                                                                                                                                                             |
+| :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| checked         | `boolean` <br/> The controlled checked state of the switch.                                                                                                             |
+| defaultChecked  | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                            |
+| onChange        | `(checked: boolean) => void` <br/> Event handler called when the checked state of the switch changes.                                                                   |
+| name            | `string` <br/> The name of the switch, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).   |
+| value           | `string` <br/> The value of the switch, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefvalue). |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the switch should display its "valid" or "invalid" visual styling.                                                                 |
+| required        | `boolean` <br/> Whether the user must check the switch before the owning form can be submitted.                                                                         |
+| disabled        | `boolean` <br/> Whether the switch is disabled.                                                                                                                         |
+| readOnly        | `boolean` <br/> Whether the switch can be checked but not changed by the user.                                                                                          |
 
 | Data attribute | Description                                                           |
 | :------------- | :-------------------------------------------------------------------- |

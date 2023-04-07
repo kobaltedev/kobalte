@@ -94,7 +94,7 @@ export function TabsIndicator(props: TabsIndicatorProps) {
 
   return (
     <Polymorphic
-      fallback="div"
+      as="div"
       role="presentation"
       style={{ ...style(), ...local.style }}
       data-orientation={context.orientation()}

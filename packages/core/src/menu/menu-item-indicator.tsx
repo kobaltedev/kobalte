@@ -33,7 +33,7 @@ export function MenuItemIndicator(props: MenuItemIndicatorProps) {
 
   return (
     <Show when={local.forceMount || context.isChecked()}>
-      <Polymorphic fallback="div" {...context.dataset()} {...others} />
+      <Polymorphic as="div" {...context.dataset()} {...others} />
     </Show>
   );
 }

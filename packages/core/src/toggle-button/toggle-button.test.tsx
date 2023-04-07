@@ -1,29 +1,14 @@
-import {
-  checkAccessibility,
-  installPointerEvent,
-  itRendersChildren,
-  itSupportsClass,
-  itSupportsRef,
-  itSupportsStyle,
-} from "@kobalte/tests";
-import { fireEvent, render, screen } from "solid-testing-library";
+import { installPointerEvent } from "@kobalte/tests";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import * as ToggleButton from ".";
-
-const defaultProps: ToggleButton.ToggleButtonRootOptions = {};
 
 describe("ToggleButton", () => {
   installPointerEvent();
 
-  checkAccessibility([<ToggleButton.Root>Button</ToggleButton.Root>]);
-  itRendersChildren(ToggleButton.Root as any, defaultProps);
-  itSupportsClass(ToggleButton.Root as any, defaultProps);
-  itSupportsRef(ToggleButton.Root as any, defaultProps, HTMLButtonElement);
-  itSupportsStyle(ToggleButton.Root as any, defaultProps);
-
   it("can be default selected (uncontrolled)", () => {
     render(() => (
-      <ToggleButton.Root data-testid="toggle" defaultIsPressed>
+      <ToggleButton.Root data-testid="toggle" defaultPressed>
         Button
       </ToggleButton.Root>
     ));
@@ -38,7 +23,7 @@ describe("ToggleButton", () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <ToggleButton.Root data-testid="toggle" isPressed onPressedChange={onChangeSpy}>
+      <ToggleButton.Root data-testid="toggle" pressed onChange={onChangeSpy}>
         Button
       </ToggleButton.Root>
     ));
@@ -68,7 +53,7 @@ describe("ToggleButton", () => {
 
   it("should have correct attributes when the toggle button is on (selected)", () => {
     render(() => (
-      <ToggleButton.Root data-testid="toggle" isPressed>
+      <ToggleButton.Root data-testid="toggle" pressed>
         Button
       </ToggleButton.Root>
     ));

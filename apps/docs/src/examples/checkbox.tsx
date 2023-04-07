@@ -20,7 +20,7 @@ export function BasicExample() {
 
 export function DefaultCheckedExample() {
   return (
-    <Checkbox.Root class={style["checkbox"]} defaultIsChecked>
+    <Checkbox.Root class={style["checkbox"]} defaultChecked>
       <Checkbox.Input class={style["checkbox__input"]} />
       <Checkbox.Control class={style["checkbox__control"]}>
         <Checkbox.Indicator>
@@ -37,7 +37,7 @@ export function ControlledExample() {
 
   return (
     <>
-      <Checkbox.Root class={style["checkbox"]} isChecked={checked()} onCheckedChange={setChecked}>
+      <Checkbox.Root class={style["checkbox"]} checked={checked()} onChange={setChecked}>
         <Checkbox.Input class={style["checkbox__input"]} />
         <Checkbox.Control class={style["checkbox__control"]}>
           <Checkbox.Indicator>

@@ -26,7 +26,7 @@ export function ControlledExample() {
 
   return (
     <>
-      <TextField.Root class={style["text-field"]} value={value()} onValueChange={setValue}>
+      <TextField.Root class={style["text-field"]} value={value()} onChange={setValue}>
         <TextField.Label class={style["text-field__label"]}>Favorite fruit</TextField.Label>
         <TextField.Input class={style["text-field__input"]} />
       </TextField.Root>
@@ -72,7 +72,7 @@ export function ErrorMessageExample() {
     <TextField.Root
       class={style["text-field"]}
       value={value()}
-      onValueChange={setValue}
+      onChange={setValue}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
     >
       <TextField.Label class={style["text-field__label"]}>Favorite fruit</TextField.Label>

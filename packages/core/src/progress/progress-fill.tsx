@@ -22,7 +22,7 @@ export function ProgressFill(props: ProgressFillProps) {
 
   return (
     <Polymorphic
-      fallback="div"
+      as="div"
       style={{
         "--kb-progress-fill-width": context.progressFillWidth(),
         ...local.style,

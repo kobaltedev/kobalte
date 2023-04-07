@@ -35,17 +35,17 @@ export interface MenuItemBaseOptions extends AsChildProp {
   textValue?: string;
 
   /** Whether the menu item is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /** Whether the menu item is checked (item radio or item checkbox). */
-  isChecked?: boolean;
+  checked?: boolean;
 
   /**
    * When using menu item checkbox, whether the checked state is in an indeterminate mode.
    * Indeterminism is presentational only.
    * The indeterminate visual representation remains regardless of user interaction.
    */
-  isIndeterminate?: boolean;
+  indeterminate?: boolean;
 
   /** Whether the menu should close when the menu item is activated/selected. */
   closeOnSelect?: boolean;
@@ -75,10 +75,10 @@ export function MenuItemBase(props: MenuItemBaseProps) {
   const [local, others] = splitProps(props, [
     "ref",
     "textValue",
-    "isDisabled",
+    "disabled",
     "closeOnSelect",
-    "isChecked",
-    "isIndeterminate",
+    "checked",
+    "indeterminate",
     "onSelect",
     "onPointerMove",
     "onPointerLeave",
@@ -114,7 +114,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
       type: "item",
       key: key(),
       textValue: local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
-      isDisabled: local.isDisabled ?? false,
+      disabled: local.disabled ?? false,
     }),
   });
 
@@ -124,7 +124,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
       selectionManager: selectionManager,
       shouldSelectOnPressUp: true,
       allowsDifferentPressOrigin: true,
-      isDisabled: () => local.isDisabled,
+      disabled: () => local.disabled,
     },
     () => ref
   );
@@ -147,7 +147,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
       return;
     }
 
-    if (local.isDisabled) {
+    if (local.disabled) {
       menuContext.onItemLeave(e);
     } else {
       menuContext.onItemEnter(e);
@@ -173,7 +173,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
   const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
     callHandler(e, local.onPointerUp);
 
-    if (local.isDisabled) {
+    if (local.disabled) {
       return;
     }
 
@@ -189,7 +189,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
       return;
     }
 
-    if (local.isDisabled) {
+    if (local.disabled) {
       return;
     }
 
@@ -202,26 +202,26 @@ export function MenuItemBase(props: MenuItemBaseProps) {
   };
 
   const ariaChecked = createMemo(() => {
-    if (local.isIndeterminate) {
+    if (local.indeterminate) {
       return "mixed";
     }
 
-    if (local.isChecked == null) {
+    if (local.checked == null) {
       return undefined;
     }
 
-    return local.isChecked;
+    return local.checked;
   });
 
   const dataset: Accessor<MenuItemDataSet> = createMemo(() => ({
-    "data-indeterminate": local.isIndeterminate ? "" : undefined,
-    "data-checked": local.isChecked && !local.isIndeterminate ? "" : undefined,
-    "data-disabled": local.isDisabled ? "" : undefined,
+    "data-indeterminate": local.indeterminate ? "" : undefined,
+    "data-checked": local.checked && !local.indeterminate ? "" : undefined,
+    "data-disabled": local.disabled ? "" : undefined,
     "data-highlighted": isHighlighted() ? "" : undefined,
   }));
 
   const context: MenuItemContextValue = {
-    isChecked: () => local.isChecked,
+    isChecked: () => local.checked,
     dataset,
     setLabelRef,
     generateId: createGenerateId(() => others.id!),
@@ -232,11 +232,11 @@ export function MenuItemBase(props: MenuItemBaseProps) {
   return (
     <MenuItemContext.Provider value={context}>
       <Polymorphic
-        fallback="div"
+        as="div"
         ref={mergeRefs(el => (ref = el), local.ref)}
         tabIndex={selectableItem.tabIndex()}
         aria-checked={ariaChecked()}
-        aria-disabled={local.isDisabled}
+        aria-disabled={local.disabled}
         aria-labelledby={labelId()}
         aria-describedby={descriptionId()}
         data-key={selectableItem.dataKey()}

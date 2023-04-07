@@ -1,5 +1,5 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen } from "solid-testing-library";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import * as Toast from ".";
 import { toaster } from "./toaster";
@@ -206,7 +206,7 @@ describe("Toast", () => {
 
     render(() => (
       <>
-        <button data-testid="trigger" onClick={() => showToast({ isPersistent: true })}>
+        <button data-testid="trigger" onClick={() => showToast({ persistent: true })}>
           Show
         </button>
         <Toast.Region duration={duration}>

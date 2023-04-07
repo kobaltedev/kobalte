@@ -20,7 +20,7 @@ export function BasicExample() {
           <Breadcrumbs.Separator class={style["breadcrumbs__separator"]} />
         </li>
         <li class={style["breadcrumbs__item"]}>
-          <Breadcrumbs.Link isCurrent class={style["breadcrumbs__link"]}>
+          <Breadcrumbs.Link current class={style["breadcrumbs__link"]}>
             Breadcrumbs
           </Breadcrumbs.Link>
         </li>
@@ -46,7 +46,7 @@ export function CustomSeparatorExample() {
           <Breadcrumbs.Separator class={style["breadcrumbs__separator"]} />
         </li>
         <li class={style["breadcrumbs__item"]}>
-          <Breadcrumbs.Link isCurrent class={style["breadcrumbs__link"]}>
+          <Breadcrumbs.Link current class={style["breadcrumbs__link"]}>
             Breadcrumbs
           </Breadcrumbs.Link>
         </li>

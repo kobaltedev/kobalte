@@ -33,7 +33,7 @@ export function FormControlLabel(props: FormControlLabelProps) {
 
   return (
     <Polymorphic
-      fallback="label"
+      as="label"
       ref={mergeRefs(el => (ref = el), local.ref)}
       id={local.id}
       for={tagName() === "label" ? context.fieldId() : undefined}

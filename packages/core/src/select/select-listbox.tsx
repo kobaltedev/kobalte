@@ -11,7 +11,7 @@ export interface SelectListboxOptions<Option, OptGroup = never>
   > {}
 
 export interface SelectListboxProps<Option, OptGroup = never>
-  extends OverrideComponentProps<"ul", SelectListboxOptions<Option, OptGroup>> {}
+  extends Omit<OverrideComponentProps<"ul", SelectListboxOptions<Option, OptGroup>>, "onChange"> {}
 
 /**
  * Contains all the items of a `Select`.
@@ -58,10 +58,11 @@ export function SelectListbox<Option = any, OptGroup = never>(
       ref={mergeRefs(context.setListboxRef, local.ref)}
       id={local.id}
       state={context.listState()}
-      isVirtualized={context.isVirtualized()}
+      virtualized={context.isVirtualized()}
       autoFocus={context.autoFocus()}
       shouldSelectOnPressUp
       shouldFocusOnHover
+      disallowTypeAhead={context.disallowTypeAhead()}
       aria-labelledby={context.listboxAriaLabelledBy()}
       renderItem={context.renderItem}
       renderSection={context.renderSection}

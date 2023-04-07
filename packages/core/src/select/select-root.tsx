@@ -1,8 +1,8 @@
 import { OverrideComponentProps } from "@kobalte/utils";
-import { Component, splitProps } from "solid-js";
+import { Component, createMemo, splitProps } from "solid-js";
 
 import { AsChildProp } from "../polymorphic";
-import { CollectionNode, createControllableSetSignal } from "../primitives";
+import { CollectionNode } from "../primitives";
 import {
   SelectBase,
   SelectBaseItemComponentProps,
@@ -30,7 +30,7 @@ export interface SelectRootOptions<Option, OptGroup = never>
     | "sectionComponent"
     | "value"
     | "defaultValue"
-    | "onValueChange"
+    | "onChange"
     | "selectionMode"
   > {
   /** The controlled value of the select. */
@@ -43,7 +43,7 @@ export interface SelectRootOptions<Option, OptGroup = never>
   defaultValue?: string;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string) => void;
+  onChange?: (value: string) => void;
 
   /** The component to render inside `Select.Value`. */
   valueComponent?: Component<SelectValueComponentProps<Option>>;
@@ -67,14 +67,20 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
     "valueComponent",
     "value",
     "defaultValue",
-    "onValueChange",
+    "onChange",
   ]);
 
-  const [value, setValue] = createControllableSetSignal({
-    value: () => (local.value != null ? new Set([local.value]) : undefined),
-    defaultValue: () => (local.defaultValue != null ? new Set([local.defaultValue]) : undefined),
-    onChange: value => local.onValueChange?.(value.values().next().value),
+  const value = createMemo(() => {
+    return local.value != null ? new Set([local.value]) : undefined;
   });
+
+  const defaultValue = createMemo(() => {
+    return local.defaultValue != null ? new Set([local.defaultValue]) : undefined;
+  });
+
+  const onChange = (value: Set<string>) => {
+    local.onChange?.(value.values().next().value);
+  };
 
   const valueComponent = (props: SelectBaseValueComponentProps<Option>) => {
     return local.valueComponent?.({
@@ -88,7 +94,8 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
   return (
     <SelectBase
       value={value()}
-      onValueChange={setValue}
+      defaultValue={defaultValue()}
+      onChange={onChange}
       selectionMode="single"
       disallowEmptySelection
       valueComponent={valueComponent}

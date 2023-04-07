@@ -2,7 +2,7 @@ import { callHandler, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import { FormControlLabel } from "../form-control";
-import { As, AsChildProp, Polymorphic } from "../polymorphic";
+import { AsChildProp } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
 export interface SelectLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
@@ -23,9 +23,5 @@ export function SelectLabel(props: SelectLabelProps) {
     }
   };
 
-  return (
-    <FormControlLabel asChild>
-      <As component={Polymorphic} fallback="span" onClick={onClick} {...others} />
-    </FormControlLabel>
-  );
+  return <FormControlLabel as="span" onClick={onClick} {...(others as any)} />;
 }

@@ -331,7 +331,9 @@ export function PopperRoot(props: PopperRootProps) {
       return;
     }
 
-    positioner.style.zIndex = getComputedStyle(content).zIndex;
+    queueMicrotask(() => {
+      positioner.style.zIndex = getComputedStyle(content).zIndex;
+    });
   });
 
   const context: PopperContextValue = {

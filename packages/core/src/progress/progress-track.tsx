@@ -12,5 +12,5 @@ export interface ProgressTrackProps extends OverrideComponentProps<"div", AsChil
 export function ProgressTrack(props: ProgressTrackProps) {
   const context = useProgressContext();
 
-  return <Polymorphic fallback="div" {...context.dataset()} {...props} />;
+  return <Polymorphic as="div" {...context.dataset()} {...props} />;
 }

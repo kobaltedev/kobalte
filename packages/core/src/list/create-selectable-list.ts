@@ -74,7 +74,6 @@ export function createSelectableList<T extends HTMLElement, U extends HTMLElemen
   const collator = createCollator({ usage: "search", sensitivity: "base" });
 
   // By default, a KeyboardDelegate is provided which uses the DOM to query layout information (e.g. for page up/page down).
-  // When virtualized, the layout object will be passed in as a prop and override this.
   const delegate = createMemo(() => {
     const keyboardDelegate = access(props.keyboardDelegate);
 

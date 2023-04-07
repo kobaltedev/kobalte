@@ -79,7 +79,7 @@ export function ListboxItem(props: ListboxItemProps) {
         return listBoxContext.shouldSelectOnPressUp() && listBoxContext.shouldFocusOnHover();
       },
       shouldUseVirtualFocus: listBoxContext.shouldUseVirtualFocus,
-      isDisabled: () => local.item.isDisabled,
+      disabled: () => local.item.disabled,
     },
     () => ref
   );
@@ -161,7 +161,7 @@ export function ListboxItem(props: ListboxItemProps) {
   return (
     <ListboxItemContext.Provider value={context}>
       <Polymorphic
-        fallback="li"
+        as="li"
         ref={mergeRefs(el => (ref = el), local.ref)}
         role="option"
         tabIndex={selectableItem.tabIndex()}

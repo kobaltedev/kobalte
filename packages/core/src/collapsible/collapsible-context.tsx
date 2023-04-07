@@ -9,7 +9,7 @@ export interface CollapsibleDataSet {
 export interface CollapsibleContextValue {
   dataset: Accessor<CollapsibleDataSet>;
   isOpen: Accessor<boolean>;
-  isDisabled: Accessor<boolean>;
+  disabled: Accessor<boolean>;
   shouldMount: Accessor<boolean>;
   contentId: Accessor<string | undefined>;
   toggle: () => void;

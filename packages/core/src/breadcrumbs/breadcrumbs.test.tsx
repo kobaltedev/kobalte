@@ -7,7 +7,7 @@
  * https://github.com/adobe/react-spectrum/blob/38a57d3360268fb0cb55c6b42b9a5f6f13bb57d6/packages/@react-aria/breadcrumbs/test/useBreadcrumbItem.test.js
  */
 
-import { render, screen } from "solid-testing-library";
+import { render, screen } from "@solidjs/testing-library";
 
 import * as Breadcrumbs from ".";
 
@@ -32,7 +32,7 @@ describe("Breadcrumbs", () => {
             <Breadcrumbs.Separator />
           </li>
           <li>
-            <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+            <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
           </li>
         </ol>
       </Breadcrumbs.Root>
@@ -55,7 +55,7 @@ describe("Breadcrumbs", () => {
             <Breadcrumbs.Separator />
           </li>
           <li>
-            <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+            <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
           </li>
         </ol>
       </Breadcrumbs.Root>
@@ -78,7 +78,7 @@ describe("Breadcrumbs", () => {
             <Breadcrumbs.Separator />
           </li>
           <li>
-            <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+            <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
           </li>
         </ol>
       </Breadcrumbs.Root>
@@ -101,7 +101,7 @@ describe("Breadcrumbs", () => {
             <Breadcrumbs.Separator />
           </li>
           <li>
-            <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+            <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
           </li>
         </ol>
       </Breadcrumbs.Root>
@@ -128,7 +128,7 @@ describe("Breadcrumbs", () => {
               <Breadcrumbs.Separator />
             </li>
             <li>
-              <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+              <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
             </li>
           </ol>
         </Breadcrumbs.Root>
@@ -151,7 +151,7 @@ describe("Breadcrumbs", () => {
               <Breadcrumbs.Separator />
             </li>
             <li>
-              <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+              <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
             </li>
           </ol>
         </Breadcrumbs.Root>
@@ -174,7 +174,7 @@ describe("Breadcrumbs", () => {
               <Breadcrumbs.Separator />
             </li>
             <li>
-              <Breadcrumbs.Link isCurrent>Breadcrumbs</Breadcrumbs.Link>
+              <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
             </li>
           </ol>
         </Breadcrumbs.Root>

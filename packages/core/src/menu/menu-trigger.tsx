@@ -34,7 +34,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
   const [local, others] = splitProps(props, [
     "ref",
     "id",
-    "isDisabled",
+    "disabled",
     "onPointerDown",
     "onClick",
     "onKeyDown",
@@ -46,7 +46,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
     e.currentTarget.dataset.pointerType = e.pointerType;
 
     // For consistency with native, open the select on mouse down, but touch up.
-    if (!local.isDisabled && e.pointerType !== "touch") {
+    if (!local.disabled && e.pointerType !== "touch") {
       context.toggle(true);
     }
   };
@@ -54,7 +54,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     callHandler(e, local.onClick);
 
-    if (!local.isDisabled && e.currentTarget.dataset.pointerType === "touch") {
+    if (!local.disabled && e.currentTarget.dataset.pointerType === "touch") {
       context.toggle(true);
     }
   };
@@ -62,7 +62,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
   const onKeyDown: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
 
-    if (local.isDisabled) {
+    if (local.disabled) {
       return;
     }
 
@@ -89,7 +89,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
     <Button.Root
       ref={mergeRefs(context.setTriggerRef, local.ref)}
       id={local.id}
-      isDisabled={local.isDisabled}
+      disabled={local.disabled}
       aria-haspopup="true"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.contentId() : undefined}

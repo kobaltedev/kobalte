@@ -15,7 +15,7 @@ import { createDisclosureState } from "../primitives";
 import { ContextMenuContext, ContextMenuContextValue } from "./context-menu-context";
 
 export interface ContextMenuRootOptions
-  extends Omit<MenuRootOptions, "isOpen" | "defaultIsOpen" | "getAnchorRect"> {}
+  extends Omit<MenuRootOptions, "open" | "defaultOpen" | "getAnchorRect"> {}
 
 export interface ContextMenuRootProps extends ParentProps<ContextMenuRootOptions> {}
 
@@ -42,7 +42,7 @@ export function ContextMenuRoot(props: ContextMenuRootProps) {
   const [anchorRect, setAnchorRect] = createSignal({ x: 0, y: 0 });
 
   const disclosureState = createDisclosureState({
-    defaultIsOpen: false,
+    defaultOpen: false,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
@@ -53,7 +53,7 @@ export function ContextMenuRoot(props: ContextMenuRootProps) {
   return (
     <ContextMenuContext.Provider value={context}>
       <MenuRoot
-        isOpen={disclosureState.isOpen()}
+        open={disclosureState.isOpen()}
         onOpenChange={disclosureState.setIsOpen}
         getAnchorRect={anchorRect}
         {...others}

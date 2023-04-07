@@ -35,3 +35,4 @@ export * as Tabs from "./tabs";
 export * as TextField from "./text-field";
 export * as Toast from "./toast";
 export * as ToggleButton from "./toggle-button";
+export * as Tooltip from "./tooltip";

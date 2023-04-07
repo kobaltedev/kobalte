@@ -105,11 +105,7 @@ export function ControlledExample() {
 
   return (
     <>
-      <Accordion.Root
-        class={style["accordion"]}
-        value={expandedItem()}
-        onValueChange={setExpandedItem}
-      >
+      <Accordion.Root class={style["accordion"]} value={expandedItem()} onChange={setExpandedItem}>
         <Accordion.Item class={style["accordion__item"]} value="item-1">
           <Accordion.Header class={style["accordion__item-header"]}>
             <Accordion.Trigger class={style["accordion__item-trigger"]}>
@@ -159,7 +155,7 @@ export function ControlledExample() {
 
 export function CollapsibleExample() {
   return (
-    <Accordion.Root class={style["accordion"]} isCollapsible>
+    <Accordion.Root class={style["accordion"]} collapsible>
       <Accordion.Item class={style["accordion__item"]} value="item-1">
         <Accordion.Header class={style["accordion__item-header"]}>
           <Accordion.Trigger class={style["accordion__item-trigger"]}>
@@ -207,7 +203,7 @@ export function CollapsibleExample() {
 
 export function AllowMultipleExample() {
   return (
-    <Accordion.Root class={style["accordion"]} isMultiple>
+    <Accordion.Root class={style["accordion"]} multiple>
       <Accordion.Item class={style["accordion__item"]} value="item-1">
         <Accordion.Header class={style["accordion__item-header"]}>
           <Accordion.Trigger class={style["accordion__item-trigger"]}>

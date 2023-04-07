@@ -7,14 +7,14 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen, within } from "solid-testing-library";
+import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 
 import * as MultiSelect from ".";
 
 const DATA_SOURCE = [
-  { key: "1", label: "One", textValue: "One", isDisabled: false },
-  { key: "2", label: "Two", textValue: "Two", isDisabled: false },
-  { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+  { key: "1", label: "One", textValue: "One", disabled: false },
+  { key: "2", label: "Two", textValue: "Two", disabled: false },
+  { key: "3", label: "Three", textValue: "Three", disabled: false },
 ];
 
 describe("MultiSelect", () => {
@@ -36,7 +36,7 @@ describe("MultiSelect", () => {
       <MultiSelect.Root
         options={DATA_SOURCE}
         placeholder="Placeholder"
-        onValueChange={onValueChange}
+        onChange={onValueChange}
         valueComponent={props => props.items.map(item => item.rawValue.label).join(", ")}
         itemComponent={props => (
           <MultiSelect.Item item={props.item}>{props.item.rawValue.label}</MultiSelect.Item>
@@ -110,7 +110,7 @@ describe("MultiSelect", () => {
         options={DATA_SOURCE}
         placeholder="Placeholder"
         defaultValue={defaultValue}
-        onValueChange={onValueChange}
+        onChange={onValueChange}
         valueComponent={props => props.items.map(item => item.rawValue.label).join(", ")}
         itemComponent={props => (
           <MultiSelect.Item item={props.item}>{props.item.rawValue.label}</MultiSelect.Item>
@@ -162,7 +162,7 @@ describe("MultiSelect", () => {
         options={DATA_SOURCE}
         placeholder="Placeholder"
         value={value}
-        onValueChange={onValueChange}
+        onChange={onValueChange}
         valueComponent={props => props.items.map(item => item.rawValue.label).join(", ")}
         itemComponent={props => (
           <MultiSelect.Item item={props.item}>{props.item.rawValue.label}</MultiSelect.Item>
@@ -212,7 +212,7 @@ describe("MultiSelect", () => {
         options={DATA_SOURCE}
         placeholder="Placeholder"
         defaultValue={defaultValue}
-        onValueChange={onValueChange}
+        onChange={onValueChange}
         valueComponent={props => props.items.map(item => item.rawValue.label).join(", ")}
         itemComponent={props => (
           <MultiSelect.Item item={props.item}>{props.item.rawValue.label}</MultiSelect.Item>

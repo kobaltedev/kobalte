@@ -1,4 +1,4 @@
-import { render, screen } from "solid-testing-library";
+import { render, screen } from "@solidjs/testing-library";
 
 import * as Separator from ".";
 import { As } from "../polymorphic";

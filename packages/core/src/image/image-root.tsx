@@ -49,7 +49,7 @@ export function ImageRoot(props: ImageRootProps) {
 
   return (
     <ImageContext.Provider value={context}>
-      <Polymorphic fallback="span" {...others} />
+      <Polymorphic as="span" {...others} />
     </ImageContext.Provider>
   );
 }

@@ -30,7 +30,7 @@ export interface RadioGroupItemOptions {
   value: string;
 
   /** Whether the radio button is disabled or not. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
 
 export interface RadioGroupItemProps
@@ -47,7 +47,7 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
 
   props = mergeDefaultProps({ id: defaultId }, props);
 
-  const [local, others] = splitProps(props, ["value", "isDisabled", "onPointerDown"]);
+  const [local, others] = splitProps(props, ["value", "disabled", "onPointerDown"]);
 
   const [isFocused, setIsFocused] = createSignal(false);
 
@@ -56,7 +56,7 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
   });
 
   const isDisabled = createMemo(() => {
-    return local.isDisabled || formControlContext.isDisabled() || false;
+    return local.disabled || formControlContext.isDisabled() || false;
   });
 
   const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {

@@ -7,7 +7,7 @@
  */
 
 import { installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen } from "solid-testing-library";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import * as Checkbox from ".";
 
@@ -132,7 +132,7 @@ describe("Checkbox", () => {
 
   it("ensure default unchecked can be checked", async () => {
     render(() => (
-      <Checkbox.Root onCheckedChange={onChangeSpy}>
+      <Checkbox.Root onChange={onChangeSpy}>
         <Checkbox.Input />
       </Checkbox.Root>
     ));
@@ -157,7 +157,7 @@ describe("Checkbox", () => {
 
   it("can be default checked", async () => {
     render(() => (
-      <Checkbox.Root defaultIsChecked onCheckedChange={onChangeSpy}>
+      <Checkbox.Root defaultChecked onChange={onChangeSpy}>
         <Checkbox.Input />
       </Checkbox.Root>
     ));
@@ -176,7 +176,7 @@ describe("Checkbox", () => {
 
   it("can be controlled checked", async () => {
     render(() => (
-      <Checkbox.Root isChecked onCheckedChange={onChangeSpy}>
+      <Checkbox.Root checked onChange={onChangeSpy}>
         <Checkbox.Input />
       </Checkbox.Root>
     ));
@@ -195,7 +195,7 @@ describe("Checkbox", () => {
 
   it("can be controlled unchecked", async () => {
     render(() => (
-      <Checkbox.Root isChecked={false} onCheckedChange={onChangeSpy}>
+      <Checkbox.Root checked={false} onChange={onChangeSpy}>
         <Checkbox.Input />
       </Checkbox.Root>
     ));
@@ -214,7 +214,7 @@ describe("Checkbox", () => {
 
   it("can be indeterminate", async () => {
     render(() => (
-      <Checkbox.Root isIndeterminate onCheckedChange={onChangeSpy}>
+      <Checkbox.Root indeterminate onChange={onChangeSpy}>
         <Checkbox.Input />
       </Checkbox.Root>
     ));
@@ -243,7 +243,7 @@ describe("Checkbox", () => {
 
   it("can be disabled", async () => {
     render(() => (
-      <Checkbox.Root isDisabled onCheckedChange={onChangeSpy}>
+      <Checkbox.Root disabled onChange={onChangeSpy}>
         <Checkbox.Input />
         <Checkbox.Label data-testid="label">Label</Checkbox.Label>
       </Checkbox.Root>
@@ -266,7 +266,7 @@ describe("Checkbox", () => {
 
   it("can be invalid", async () => {
     render(() => (
-      <Checkbox.Root validationState="invalid" onCheckedChange={onChangeSpy}>
+      <Checkbox.Root validationState="invalid" onChange={onChangeSpy}>
         <Checkbox.Input />
       </Checkbox.Root>
     ));
@@ -279,7 +279,7 @@ describe("Checkbox", () => {
 
   it("passes through 'aria-errormessage'", async () => {
     render(() => (
-      <Checkbox.Root validationState="invalid" onCheckedChange={onChangeSpy}>
+      <Checkbox.Root validationState="invalid" onChange={onChangeSpy}>
         <Checkbox.Input aria-errormessage="test" />
       </Checkbox.Root>
     ));
@@ -345,7 +345,7 @@ describe("Checkbox", () => {
 
   it("can be read only", async () => {
     render(() => (
-      <Checkbox.Root isChecked isReadOnly onCheckedChange={onChangeSpy}>
+      <Checkbox.Root checked readOnly onChange={onChangeSpy}>
         <Checkbox.Input />
       </Checkbox.Root>
     ));
@@ -365,7 +365,7 @@ describe("Checkbox", () => {
 
   it("supports uncontrolled read only", async () => {
     render(() => (
-      <Checkbox.Root isReadOnly onCheckedChange={onChangeSpy}>
+      <Checkbox.Root readOnly onChange={onChangeSpy}>
         <Checkbox.Input />
       </Checkbox.Root>
     ));
@@ -426,7 +426,7 @@ describe("Checkbox", () => {
 
     it("should display indicator when 'indeterminate'", async () => {
       render(() => (
-        <Checkbox.Root isIndeterminate>
+        <Checkbox.Root indeterminate>
           <Checkbox.Input />
           <Checkbox.Control>
             <Checkbox.Indicator data-testid="indicator" />
@@ -490,7 +490,7 @@ describe("Checkbox", () => {
 
     it("should have 'data-checked' attribute when checkbox is checked", async () => {
       render(() => (
-        <Checkbox.Root data-testid="checkbox-root" isChecked>
+        <Checkbox.Root data-testid="checkbox-root" checked>
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
@@ -508,7 +508,7 @@ describe("Checkbox", () => {
 
     it("should have 'data-indeterminate' attribute when checkbox is indeterminate", async () => {
       render(() => (
-        <Checkbox.Root data-testid="checkbox-root" isIndeterminate>
+        <Checkbox.Root data-testid="checkbox-root" indeterminate>
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
@@ -526,7 +526,7 @@ describe("Checkbox", () => {
 
     it("should have 'data-required' attribute when checkbox is required", async () => {
       render(() => (
-        <Checkbox.Root data-testid="checkbox-root" isRequired>
+        <Checkbox.Root data-testid="checkbox-root" required>
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
@@ -544,7 +544,7 @@ describe("Checkbox", () => {
 
     it("should have 'data-disabled' attribute when checkbox is disabled", async () => {
       render(() => (
-        <Checkbox.Root data-testid="checkbox-root" isDisabled>
+        <Checkbox.Root data-testid="checkbox-root" disabled>
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">
@@ -562,7 +562,7 @@ describe("Checkbox", () => {
 
     it("should have 'data-readonly' attribute when checkbox is read only", async () => {
       render(() => (
-        <Checkbox.Root data-testid="checkbox-root" isReadOnly>
+        <Checkbox.Root data-testid="checkbox-root" readOnly>
           <Checkbox.Input />
           <Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
           <Checkbox.Control data-testid="checkbox-control">

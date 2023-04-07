@@ -75,7 +75,7 @@ export function ControlledExample() {
     <>
       <Select.Root
         value={value()}
-        onValueChange={setValue}
+        onChange={setValue}
         options={STRING_OPTIONS}
         placeholder="Select a fruit…"
         valueComponent={props => props.item.rawValue}
@@ -144,7 +144,7 @@ export function ErrorMessageExample() {
   return (
     <Select.Root
       value={value()}
-      onValueChange={setValue}
+      onChange={setValue}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
       options={STRING_OPTIONS}
       placeholder="Select a fruit…"
@@ -347,7 +347,7 @@ export function MultiSelectExample() {
     <>
       <MultiSelect.Root
         value={values()}
-        onValueChange={setValues}
+        onChange={setValues}
         options={STRING_OPTIONS}
         placeholder="Select some fruits…"
         valueComponent={props => (
@@ -488,7 +488,7 @@ export function VirtualizedExample() {
 
   return (
     <Select.Root
-      isVirtualized
+      virtualized
       options={options}
       optionValue="value"
       optionTextValue="label"
