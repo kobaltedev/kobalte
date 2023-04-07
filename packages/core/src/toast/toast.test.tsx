@@ -4,6 +4,7 @@ import { fireEvent, render, screen } from "@solidjs/testing-library";
 import * as Toast from ".";
 import { toaster } from "./toaster";
 import { I18nProvider } from "../i18n";
+import { ShowToastOptions } from "./types";
 
 describe("Toast", () => {
   installPointerEvent();
@@ -18,15 +19,18 @@ describe("Toast", () => {
     jest.clearAllTimers();
   });
 
-  const showToast = (rootProps: Partial<Toast.ToastRootProps> = {}) => {
-    toaster.show(props => (
-      <Toast.Root {...rootProps} toastId={props.toastId}>
-        <Toast.Title data-testid="title">Title</Toast.Title>
-        <Toast.Description data-testid="description">Description</Toast.Description>
-        <Toast.CloseButton data-testid="close-button" />
-        <button data-testid="manual-dismiss" onClick={() => toaster.dismiss(props.toastId)} />
-      </Toast.Root>
-    ));
+  const showToast = (rootProps: Partial<Toast.ToastRootProps> = {}, options?: ShowToastOptions) => {
+    toaster.show(
+      props => (
+        <Toast.Root {...rootProps} toastId={props.toastId}>
+          <Toast.Title data-testid="title">Title</Toast.Title>
+          <Toast.Description data-testid="description">Description</Toast.Description>
+          <Toast.CloseButton data-testid="close-button" />
+          <button data-testid="manual-dismiss" onClick={() => toaster.dismiss(props.toastId)} />
+        </Toast.Root>
+      ),
+      options
+    );
   };
 
   it("renders correctly", async () => {
@@ -457,6 +461,53 @@ describe("Toast", () => {
       const toasts = screen.getAllByRole("status");
 
       expect(toasts.length).toBe(limit);
+    });
+
+    it("should render multiple regions simultaneously", async () => {
+      render(() => (
+        <>
+          <button
+            data-testid="trigger"
+            onClick={() => {
+              showToast(
+                {},
+                {
+                  region: "custom-id",
+                }
+              );
+              showToast();
+              showToast();
+              showToast();
+              showToast(
+                {},
+                {
+                  region: "custom-id",
+                }
+              );
+            }}
+          >
+            Show more than limit
+          </button>
+          <Toast.Region>
+            <Toast.List data-testid="default-region" />
+          </Toast.Region>
+          <Toast.Region regionId="custom-id">
+            <Toast.List data-testid="custom-region" />
+          </Toast.Region>
+        </>
+      ));
+
+      fireEvent.click(screen.getByTestId("trigger"));
+
+      const defaultRegionToasts = screen
+        .getByTestId("default-region")
+        .querySelectorAll('[role="status"]');
+      const customRegionToasts = screen
+        .getByTestId("custom-region")
+        .querySelectorAll('[role="status"]');
+
+      expect(defaultRegionToasts.length).toBe(3);
+      expect(customRegionToasts.length).toBe(2);
     });
   });
 
