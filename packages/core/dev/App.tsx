@@ -1,4 +1,4 @@
-import { createMemo, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 
 import { Combobox, createFilter, I18nProvider, MultiCombobox } from "../src";
 
@@ -284,10 +284,23 @@ export default function App() {
     }
   };
 
+  let formRef: HTMLFormElement | undefined;
+
+  const onSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const formData = new FormData(formRef);
+
+    alert(JSON.stringify(Object.fromEntries(formData), null, 2));
+  };
+
   return (
     <I18nProvider locale="en-US">
-      <div style={{ display: "flex" }}>
+      <button>before</button>
+      <form style={{ display: "flex" }} ref={formRef} onSubmit={onSubmit}>
         <Combobox.Root
+          name="country"
           placeholder="Select a country"
           options={filteredOptions()}
           optionValue="code"
@@ -302,25 +315,21 @@ export default function App() {
             </Combobox.Item>
           )}
         >
-          <Combobox.Trigger class="combobox__trigger">
-            <MultiCombobox.Input />
-            <MultiCombobox.Button class="combobox__button">
+          <Combobox.HiddenSelect />
+          <Combobox.Control class="combobox__control">
+            <Combobox.Input />
+            <Combobox.Trigger class="combobox__trigger">
               <DropdownIcon />
-            </MultiCombobox.Button>
-          </Combobox.Trigger>
+            </Combobox.Trigger>
+          </Combobox.Control>
           <Combobox.Portal>
             <Combobox.Content class="combobox__content animated">
               <Combobox.Listbox class="combobox__listbox" />
             </Combobox.Content>
           </Combobox.Portal>
         </Combobox.Root>
-      </div>
-    </I18nProvider>
-  );
-}
-
-/*
         <MultiCombobox.Root
+          name="countries"
           placeholder="Select some countries"
           options={filteredOptions()}
           optionValue="code"
@@ -336,7 +345,8 @@ export default function App() {
             </MultiCombobox.Item>
           )}
         >
-          <MultiCombobox.Trigger class="combobox__trigger">
+          <MultiCombobox.HiddenSelect />
+          <MultiCombobox.Control class="combobox__control">
             {({ values }) => (
               <>
                 <span>
@@ -346,16 +356,25 @@ export default function App() {
                     .join(", ")}
                 </span>
                 <MultiCombobox.Input />
-                <MultiCombobox.Button class="combobox__button">
+                <MultiCombobox.Trigger class="combobox__trigger">
                   <DropdownIcon />
-                </MultiCombobox.Button>
+                </MultiCombobox.Trigger>
               </>
             )}
-          </MultiCombobox.Trigger>
+          </MultiCombobox.Control>
           <MultiCombobox.Portal>
             <MultiCombobox.Content class="combobox__content animated">
               <MultiCombobox.Listbox class="combobox__listbox" />
             </MultiCombobox.Content>
           </MultiCombobox.Portal>
         </MultiCombobox.Root>
-*/
+        <div class="flex space-x-2">
+          <button type="reset" class="kb-button">
+            Reset
+          </button>
+          <button class="kb-button-primary">Submit</button>
+        </div>
+      </form>
+    </I18nProvider>
+  );
+}

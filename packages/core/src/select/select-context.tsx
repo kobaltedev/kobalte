@@ -14,7 +14,7 @@ export interface SelectContextValue {
   isOpen: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
   isMultiple: Accessor<boolean>;
-  isVirtualized: Accessor<boolean | undefined>;
+  isVirtualized: Accessor<boolean>;
   isModal: Accessor<boolean>;
   disallowTypeAhead: Accessor<boolean>;
   shouldFocusWrap: Accessor<boolean>;

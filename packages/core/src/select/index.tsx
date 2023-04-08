@@ -25,14 +25,14 @@ import {
   type PopperArrowProps as SelectArrowProps,
 } from "../popper";
 import {
-  HiddenSelect as HiddenSelect,
-  type HiddenSelectProps as SelectHiddenSelectProps,
-} from "./hidden-select";
-import {
   SelectContent as Content,
   type SelectContentOptions,
   type SelectContentProps,
 } from "./select-content";
+import {
+  SelectHiddenSelect as HiddenSelect,
+  type SelectHiddenSelectProps,
+} from "./select-hidden-select";
 import { SelectIcon as Icon, type SelectIconProps } from "./select-icon";
 import { SelectLabel as Label, type SelectLabelProps } from "./select-label";
 import {

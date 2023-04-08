@@ -87,7 +87,7 @@ export function ComboboxContent(props: ComboboxContentProps) {
         excludedElements.push(ref);
       }
 
-      const triggerEl = context.triggerRef();
+      const triggerEl = context.controlRef();
       if (triggerEl) {
         excludedElements.push(triggerEl);
       }
@@ -97,7 +97,7 @@ export function ComboboxContent(props: ComboboxContentProps) {
         excludedElements.push(inputEl);
       }
 
-      const buttonEl = context.buttonRef();
+      const buttonEl = context.triggerRef();
       if (buttonEl) {
         excludedElements.push(buttonEl);
       }
@@ -140,7 +140,7 @@ export function ComboboxContent(props: ComboboxContentProps) {
             ref = el;
           }, local.ref)}
           disableOutsidePointerEvents={context.isModal() && context.isOpen()}
-          excludedElements={[context.triggerRef, context.inputRef, context.buttonRef]}
+          excludedElements={[context.controlRef, context.inputRef, context.triggerRef]}
           style={{
             "--kb-combobox-content-transform-origin": "var(--kb-popper-content-transform-origin)",
             position: "relative",
