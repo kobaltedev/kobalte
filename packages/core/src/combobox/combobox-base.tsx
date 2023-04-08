@@ -278,9 +278,9 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   const [valueId, setValueId] = createSignal<string>();
   const [listboxId, setListboxId] = createSignal<string>();
 
-  const [triggerRef, setTriggerRef] = createSignal<HTMLDivElement>();
+  const [controlRef, setControlRef] = createSignal<HTMLDivElement>();
   const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
-  const [buttonRef, setButtonRef] = createSignal<HTMLButtonElement>();
+  const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
   const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
   const [listboxRef, setListboxRef] = createSignal<HTMLUListElement>();
 
@@ -463,9 +463,13 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 
   const resetInputValue = () => {
     if (listState.selectionManager().selectionMode() === "single") {
-      setInputValue(lastDisplayValue);
+      if (inputValue() !== lastDisplayValue) {
+        setInputValue(lastDisplayValue);
+      }
     } else {
-      setInputValue("");
+      if (inputValue() !== "") {
+        setInputValue("");
+      }
     }
   };
 
@@ -577,7 +581,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     isOpen: disclosureState.isOpen,
     isDisabled: () => formControlContext.isDisabled() ?? false,
     isMultiple: () => access(local.selectionMode) === "multiple",
-    isVirtualized: () => local.virtualized,
+    isVirtualized: () => local.virtualized ?? false,
     isModal: () => local.modal ?? false,
     allowsEmptyCollection: () => local.allowsEmptyCollection ?? false,
     shouldFocusWrap: () => local.shouldFocusWrap ?? false,
@@ -587,24 +591,24 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     inputValue,
     triggerMode: () => local.triggerMode!,
     activeDescendant,
-    triggerRef,
+    controlRef,
     inputRef,
-    buttonRef,
+    triggerRef,
     contentRef,
     listState: () => listState,
     keyboardDelegate: delegate,
     inputId,
     valueId,
     listboxId,
-    buttonAriaLabel: () => messageFormatter().format("buttonLabel"),
+    triggerAriaLabel: () => messageFormatter().format("triggerLabel"),
     listboxAriaLabel: () => messageFormatter().format("listboxLabel"),
     setIsInputFocused,
     resetInputAfterClose,
     resetInputValue,
     setInputValue,
-    setTriggerRef,
+    setControlRef,
     setInputRef,
-    setButtonRef,
+    setTriggerRef,
     setContentRef,
     setListboxRef,
     open,
@@ -623,7 +627,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   return (
     <FormControlContext.Provider value={formControlContext}>
       <ComboboxContext.Provider value={context}>
-        <PopperRoot anchorRef={triggerRef} contentRef={contentRef} {...popperProps}>
+        <PopperRoot anchorRef={controlRef} contentRef={contentRef} {...popperProps}>
           <Polymorphic
             as="div"
             role="group"

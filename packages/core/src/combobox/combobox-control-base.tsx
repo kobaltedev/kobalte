@@ -5,7 +5,7 @@ import { useFormControlContext } from "../form-control";
 import { Polymorphic } from "../polymorphic";
 import { useComboboxContext } from "./combobox-context";
 
-export interface ComboboxTriggerBaseState {
+export interface ComboboxControlBaseState {
   /** The selected values. */
   values: Accessor<string[]>;
 
@@ -16,21 +16,21 @@ export interface ComboboxTriggerBaseState {
   clear: () => void;
 }
 
-export interface ComboboxTriggerBaseOptions {
+export interface ComboboxControlBaseOptions {
   /**
-   * The children of the combobox trigger.
+   * The children of the combobox control.
    * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
    */
-  children?: JSX.Element | ((state: ComboboxTriggerBaseState) => JSX.Element);
+  children?: JSX.Element | ((state: ComboboxControlBaseState) => JSX.Element);
 }
 
-export interface ComboboxTriggerBaseProps
-  extends OverrideComponentProps<"div", ComboboxTriggerBaseOptions> {}
+export interface ComboboxControlBaseProps
+  extends OverrideComponentProps<"div", ComboboxControlBaseOptions> {}
 
 /**
- * Contains the combobox input and button.
+ * Contains the combobox input and trigger.
  */
-export function ComboboxTriggerBase(props: ComboboxTriggerBaseProps) {
+export function ComboboxControlBase(props: ComboboxControlBaseProps) {
   const formControlContext = useFormControlContext();
   const context = useComboboxContext();
 
@@ -41,12 +41,12 @@ export function ComboboxTriggerBase(props: ComboboxTriggerBaseProps) {
   return (
     <Polymorphic
       as="div"
-      ref={mergeRefs(context.setTriggerRef, local.ref)}
+      ref={mergeRefs(context.setControlRef, local.ref)}
       {...context.dataset()}
       {...formControlContext.dataset()}
       {...others}
     >
-      <ComboboxTriggerBaseChild
+      <ComboboxControlBaseChild
         state={{
           values: () => [...selectionManager().selectedKeys()],
           remove: value => selectionManager().toggleSelection(value),
@@ -58,11 +58,11 @@ export function ComboboxTriggerBase(props: ComboboxTriggerBaseProps) {
   );
 }
 
-interface ComboboxTriggerBaseChildProps extends Pick<ComboboxTriggerBaseOptions, "children"> {
-  state: ComboboxTriggerBaseState;
+interface ComboboxControlBaseChildProps extends Pick<ComboboxControlBaseOptions, "children"> {
+  state: ComboboxControlBaseState;
 }
 
-function ComboboxTriggerBaseChild(props: ComboboxTriggerBaseChildProps) {
+function ComboboxControlBaseChild(props: ComboboxControlBaseChildProps) {
   const resolvedChildren = children(() => {
     const body = props.children;
     return isFunction(body) ? body(props.state) : body;

@@ -1,14 +1,13 @@
 import {
   Arrow,
-  Button,
   type ComboboxArrowOptions as MultiComboboxArrowOptions,
   type ComboboxArrowProps as MultiComboboxArrowProps,
-  type ComboboxButtonProps as MultiComboboxButtonProps,
   type ComboboxContentOptions as MultiComboboxContentOptions,
   type ComboboxContentProps as MultiComboboxContentProps,
   type ComboboxDescriptionProps as MultiComboboxDescriptionProps,
   type ComboboxErrorMessageOptions as MultiComboboxErrorMessageOptions,
   type ComboboxErrorMessageProps as MultiComboboxErrorMessageProps,
+  type ComboboxHiddenSelectProps as MultiComboboxHiddenSelectProps,
   type ComboboxInputProps as MultiComboboxInputProps,
   type ComboboxItemDescriptionProps as MultiComboboxItemDescriptionProps,
   type ComboboxItemIndicatorOptions as MultiComboboxItemIndicatorOptions,
@@ -21,9 +20,11 @@ import {
   type ComboboxListboxProps as MultiComboboxListboxProps,
   type ComboboxPortalProps as MultiComboboxPortalProps,
   type ComboboxSectionProps as MultiComboboxSectionProps,
+  type ComboboxTriggerProps as MultiComboboxTriggerProps,
   Content,
   Description,
   ErrorMessage,
+  HiddenSelect,
   Input,
   Item,
   ItemDescription,
@@ -33,11 +34,12 @@ import {
   Listbox,
   Portal,
   Section,
+  Trigger,
 } from "../combobox";
 import {
-  ComboboxTriggerBase as Trigger,
-  type ComboboxTriggerBaseProps as MultiComboboxTriggerProps,
-} from "../combobox/combobox-trigger-base";
+  ComboboxControlBase as Control,
+  type ComboboxControlBaseProps as MultiComboboxControlProps,
+} from "../combobox/combobox-control-base";
 import {
   MultiComboboxRoot as Root,
   type MultiComboboxRootItemComponentProps,
@@ -49,12 +51,13 @@ import {
 export type {
   MultiComboboxArrowOptions,
   MultiComboboxArrowProps,
-  MultiComboboxButtonProps,
   MultiComboboxContentOptions,
   MultiComboboxContentProps,
+  MultiComboboxControlProps,
   MultiComboboxDescriptionProps,
   MultiComboboxErrorMessageOptions,
   MultiComboboxErrorMessageProps,
+  MultiComboboxHiddenSelectProps,
   MultiComboboxInputProps,
   MultiComboboxItemDescriptionProps,
   MultiComboboxItemIndicatorOptions,
@@ -76,10 +79,11 @@ export type {
 
 export {
   Arrow,
-  Button,
   Content,
+  Control,
   Description,
   ErrorMessage,
+  HiddenSelect,
   Input,
   Item,
   ItemDescription,

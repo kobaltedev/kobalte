@@ -1,4 +1,3 @@
-import { ComboboxButton as Button, type ComboboxButtonProps } from "../combobox/combobox-button";
 import {
   ComboboxContent as Content,
   type ComboboxContentOptions,
@@ -40,27 +39,34 @@ import {
   type PopperArrowProps as ComboboxArrowProps,
 } from "../popper";
 import {
+  ComboboxControl as Control,
+  type ComboboxControlOptions,
+  type ComboboxControlProps,
+} from "./combobox-control";
+import {
   ComboboxRoot as Root,
   type ComboboxRootItemComponentProps,
   type ComboboxRootOptions,
   type ComboboxRootProps,
   type ComboboxRootSectionComponentProps,
 } from "./combobox-root";
+import { ComboboxTrigger as Trigger, type ComboboxTriggerProps } from "./combobox-trigger";
 import {
-  ComboboxTrigger as Trigger,
-  type ComboboxTriggerOptions,
-  type ComboboxTriggerProps,
-} from "./combobox-trigger";
+  ComboboxHiddenSelect as HiddenSelect,
+  type ComboboxHiddenSelectProps,
+} from "./combobox-hidden-select";
 
 export type {
   ComboboxArrowOptions,
   ComboboxArrowProps,
-  ComboboxButtonProps,
   ComboboxContentOptions,
   ComboboxContentProps,
+  ComboboxControlOptions,
+  ComboboxControlProps,
   ComboboxDescriptionProps,
   ComboboxErrorMessageOptions,
   ComboboxErrorMessageProps,
+  ComboboxHiddenSelectProps,
   ComboboxInputProps,
   ComboboxItemDescriptionProps,
   ComboboxItemIndicatorOptions,
@@ -77,16 +83,16 @@ export type {
   ComboboxRootProps,
   ComboboxRootSectionComponentProps,
   ComboboxSectionProps,
-  ComboboxTriggerOptions,
   ComboboxTriggerProps,
 };
 
 export {
   Arrow,
-  Button,
   Content,
+  Control,
   Description,
   ErrorMessage,
+  HiddenSelect,
   Input,
   Item,
   ItemDescription,

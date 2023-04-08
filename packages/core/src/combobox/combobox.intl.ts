@@ -3,7 +3,7 @@ export const COMBOBOX_INTL_MESSAGES = {
     focusAnnouncement: "{optionText}{isSelected, select, true {, selected} other {}}",
     countAnnouncement: "{optionCount, plural, one {# option} other {# options}} available.",
     selectedAnnouncement: "{optionText}, selected",
-    buttonLabel: "Show suggestions",
+    triggerLabel: "Show suggestions",
     listboxLabel: "Suggestions",
   },
 };

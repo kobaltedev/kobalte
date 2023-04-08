@@ -3,17 +3,16 @@
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *
  * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/HiddenSelect.tsx
+ * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/@react-aria/select/src/HiddenSelect.tsx
  */
 
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
 import { ComponentProps, createEffect, createSignal, For, on, Show, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
+import { Collection, CollectionNode } from "../primitives";
+import { SelectionManager } from "../selection";
 import { isSameSelection } from "../selection/utils";
-import { useSelectContext } from "./select-context";
-
-export type HiddenSelectProps = ComponentProps<"select">;
 
 // In Safari, the <select> cannot have `display: none` or `hidden` for autofill to work.
 // In Firefox, there must be a <label> to identify the <select> whereas other browsers
@@ -33,28 +32,44 @@ export type HiddenSelectProps = ComponentProps<"select">;
 // If the current interaction modality is null, then the user hasn't interacted with the page yet.
 // In this case, we set the tabIndex to -1 on the input element so that automated accessibility
 // checkers don't throw false-positives about focusable elements inside an aria-hidden parent.
+
+export interface HiddenSelectBaseProps extends ComponentProps<"select"> {
+  collection: Collection<CollectionNode>;
+  selectionManager: SelectionManager;
+  isOpen: boolean;
+  isMultiple: boolean;
+  isVirtualized: boolean;
+  focusTrigger: () => void;
+}
+
 /**
  * Renders a hidden native `<select>` element, which can be used to support browser
  * form autofill, mobile form navigation, and native form submission.
  */
-export function HiddenSelect(props: HiddenSelectProps) {
+export function HiddenSelectBase(props: HiddenSelectBaseProps) {
   let ref: HTMLSelectElement | undefined;
 
-  const [local, others] = splitProps(props, ["ref", "onChange"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "onChange",
+    "collection",
+    "selectionManager",
+    "isOpen",
+    "isMultiple",
+    "isVirtualized",
+    "focusTrigger",
+  ]);
+
   const formControlContext = useFormControlContext();
-  const context = useSelectContext();
 
   const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
 
-  const selectionManager = () => context.listState().selectionManager();
-  const collection = () => context.listState().collection();
-
   const renderOption = (key: string) => {
-    const item = collection().getItem(key);
+    const item = local.collection.getItem(key);
 
     return (
       <Show when={item?.type === "item"}>
-        <option value={key} selected={selectionManager().isSelected(key)}>
+        <option value={key} selected={local.selectionManager.isSelected(key)}>
           {item?.textValue}
         </option>
       </Show>
@@ -64,7 +79,7 @@ export function HiddenSelect(props: HiddenSelectProps) {
   // Dispatch native event on selection change for form libraries.
   createEffect(
     on(
-      () => selectionManager().selectedKeys(),
+      () => local.selectionManager.selectedKeys(),
       (keys, prevKeys) => {
         if (prevKeys && isSameSelection(keys, prevKeys)) {
           return;
@@ -87,22 +102,22 @@ export function HiddenSelect(props: HiddenSelectProps) {
     <div style={visuallyHiddenStyles} aria-hidden="true">
       <input
         type="text"
-        tabIndex={selectionManager().isFocused() || context.isOpen() ? -1 : 0}
+        tabIndex={local.selectionManager.isFocused() || local.isOpen ? -1 : 0}
         style={{ "font-size": "16px" }}
         required={formControlContext.isRequired()}
         disabled={formControlContext.isDisabled()}
         readOnly={formControlContext.isReadOnly()}
-        onFocus={() => context.triggerRef()?.focus()}
+        onFocus={() => local.focusTrigger()}
       />
       <select
         ref={mergeRefs(el => (ref = el), local.ref)}
         tabIndex={-1}
-        multiple={context.isMultiple()}
+        multiple={local.isMultiple}
         name={formControlContext.name()}
         required={formControlContext.isRequired()}
         disabled={formControlContext.isDisabled()}
-        size={collection().getSize()}
-        value={selectionManager().firstSelectedKey() ?? ""}
+        size={local.collection.getSize()}
+        value={local.selectionManager.firstSelectedKey() ?? ""}
         onChange={e => {
           callHandler(e, local.onChange);
 
@@ -110,7 +125,9 @@ export function HiddenSelect(props: HiddenSelectProps) {
           // which would result in an infinite loop.
           if (!isInternalChangeEvent()) {
             // enable form autofill
-            selectionManager().setSelectedKeys(new Set([(e.target as HTMLSelectElement).value]));
+            local.selectionManager.setSelectedKeys(
+              new Set([(e.target as HTMLSelectElement).value])
+            );
           }
 
           setIsInternalChangeEvent(false);
@@ -119,10 +136,10 @@ export function HiddenSelect(props: HiddenSelectProps) {
       >
         <option />
         <Show
-          when={context.isVirtualized()}
-          fallback={<For each={[...collection().getKeys()]}>{renderOption}</For>}
+          when={local.isVirtualized}
+          fallback={<For each={[...local.collection.getKeys()]}>{renderOption}</For>}
         >
-          <For each={[...selectionManager().selectedKeys()]}>{renderOption}</For>
+          <For each={[...local.selectionManager.selectedKeys()]}>{renderOption}</For>
         </Show>
       </select>
     </div>

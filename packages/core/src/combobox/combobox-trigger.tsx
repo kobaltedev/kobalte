@@ -1,57 +1,77 @@
-import { isFunction, OverrideComponentProps } from "@kobalte/utils";
-import { Accessor, children, JSX, splitProps } from "solid-js";
+import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { JSX, splitProps } from "solid-js";
 
-import { ComboboxTriggerBase } from "./combobox-trigger-base";
-
-export interface ComboboxTriggerState {
-  /** The selected value. */
-  value: Accessor<string>;
-
-  /** A function to clear the selection. */
-  clear: () => void;
-}
-
-export interface ComboboxTriggerOptions {
-  /**
-   * The children of the combobox trigger.
-   * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
-   */
-  children?: JSX.Element | ((state: ComboboxTriggerState) => JSX.Element);
-}
+import * as Button from "../button";
+import { useFormControlContext } from "../form-control";
+import { useComboboxContext } from "./combobox-context";
 
 export interface ComboboxTriggerProps
-  extends OverrideComponentProps<"div", ComboboxTriggerOptions> {}
+  extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
 
-/**
- * Contains the combobox input and button.
- */
 export function ComboboxTrigger(props: ComboboxTriggerProps) {
-  const [local, others] = splitProps(props, ["children"]);
+  const formControlContext = useFormControlContext();
+  const context = useComboboxContext();
+
+  props = mergeDefaultProps(
+    {
+      id: context.generateId("trigger"),
+    },
+    props
+  );
+
+  const [local, others] = splitProps(props, ["ref", "disabled", "onPointerDown", "onClick"]);
+
+  const isDisabled = () => {
+    return (
+      local.disabled ||
+      context.isDisabled() ||
+      formControlContext.isDisabled() ||
+      formControlContext.isReadOnly()
+    );
+  };
+
+  const onPointerDown: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> = e => {
+    callHandler(e, local.onPointerDown);
+
+    e.currentTarget.dataset.pointerType = e.pointerType;
+
+    // For consistency with native, open the combobox on mouse down, but touch up.
+    if (!isDisabled() && e.pointerType !== "touch") {
+      context.toggle(false, "manual");
+    }
+  };
+
+  const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
+    callHandler(e, local.onClick);
+
+    if (!isDisabled()) {
+      if (e.currentTarget.dataset.pointerType === "touch") {
+        context.toggle(false, "manual");
+      }
+
+      // Focus the input field in case it isn't focused yet.
+      context.inputRef()?.focus();
+    }
+  };
+
+  const ariaLabelledBy = () => {
+    return formControlContext.getAriaLabelledBy(others.id, context.triggerAriaLabel(), undefined);
+  };
 
   return (
-    <ComboboxTriggerBase {...others}>
-      {state => (
-        <ComboboxTriggerChild
-          state={{
-            value: () => state.values()[0],
-            clear: () => state.clear(),
-          }}
-          children={local.children}
-        />
-      )}
-    </ComboboxTriggerBase>
+    <Button.Root
+      ref={mergeRefs(context.setTriggerRef, local.ref)}
+      disabled={isDisabled()}
+      tabIndex="-1"
+      aria-haspopup="listbox"
+      aria-expanded={context.isOpen()}
+      aria-controls={context.isOpen() ? context.listboxId() : undefined}
+      aria-label={context.triggerAriaLabel()}
+      aria-labelledby={ariaLabelledBy()}
+      onPointerDown={onPointerDown}
+      onClick={onClick}
+      {...context.dataset()}
+      {...others}
+    />
   );
-}
-
-interface ComboboxTriggerChildProps extends Pick<ComboboxTriggerOptions, "children"> {
-  state: ComboboxTriggerState;
-}
-
-function ComboboxTriggerChild(props: ComboboxTriggerChildProps) {
-  const resolvedChildren = children(() => {
-    const body = props.children;
-    return isFunction(body) ? body(props.state) : body;
-  });
-
-  return <>{resolvedChildren()}</>;
 }

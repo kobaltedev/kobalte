@@ -405,7 +405,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     isOpen: disclosureState.isOpen,
     isDisabled: () => formControlContext.isDisabled() ?? false,
     isMultiple: () => access(local.selectionMode) === "multiple",
-    isVirtualized: () => local.virtualized,
+    isVirtualized: () => local.virtualized ?? false,
     isModal: () => local.modal ?? false,
     disallowTypeAhead: () => local.disallowTypeAhead ?? false,
     shouldFocusWrap: () => local.shouldFocusWrap ?? false,

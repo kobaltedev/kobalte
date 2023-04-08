@@ -99,7 +99,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
         }
 
         break;
-      case "Tab":
+      //case "Tab":
       case "Escape":
         if (context.contentPresence.isPresent()) {
           context.resetInputAfterClose();
@@ -142,7 +142,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
 
     // Ignore blur if focused moved into the trigger or menu.
     if (
-      contains(context.triggerRef(), e.relatedTarget as any) ||
+      contains(context.controlRef(), e.relatedTarget as any) ||
       contains(context.contentRef(), e.relatedTarget as any)
     ) {
       return;

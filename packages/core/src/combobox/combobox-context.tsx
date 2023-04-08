@@ -15,7 +15,7 @@ export interface ComboboxContextValue {
   isOpen: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
   isMultiple: Accessor<boolean>;
-  isVirtualized: Accessor<boolean | undefined>;
+  isVirtualized: Accessor<boolean>;
   isModal: Accessor<boolean>;
   isInputFocused: Accessor<boolean>;
   allowsEmptyCollection: Accessor<boolean>;
@@ -25,14 +25,14 @@ export interface ComboboxContextValue {
   activeDescendant: Accessor<string | undefined>;
   inputValue: Accessor<string | undefined>;
   triggerMode: Accessor<ComboboxTriggerMode>;
-  triggerRef: Accessor<HTMLDivElement | undefined>;
+  controlRef: Accessor<HTMLDivElement | undefined>;
   inputRef: Accessor<HTMLInputElement | undefined>;
-  buttonRef: Accessor<HTMLButtonElement | undefined>;
+  triggerRef: Accessor<HTMLButtonElement | undefined>;
   contentRef: Accessor<HTMLDivElement | undefined>;
   inputId: Accessor<string | undefined>;
   valueId: Accessor<string | undefined>;
   listboxId: Accessor<string | undefined>;
-  buttonAriaLabel: Accessor<string | undefined>;
+  triggerAriaLabel: Accessor<string | undefined>;
   listboxAriaLabel: Accessor<string | undefined>;
   listState: Accessor<ListState>;
   keyboardDelegate: Accessor<KeyboardDelegate>;
@@ -40,9 +40,9 @@ export interface ComboboxContextValue {
   resetInputValue: () => void;
   setIsInputFocused: (isFocused: boolean) => void;
   setInputValue: (value: string) => void;
-  setTriggerRef: (el: HTMLDivElement) => void;
+  setControlRef: (el: HTMLDivElement) => void;
   setInputRef: (el: HTMLInputElement) => void;
-  setButtonRef: (el: HTMLButtonElement) => void;
+  setTriggerRef: (el: HTMLButtonElement) => void;
   setContentRef: (el: HTMLDivElement) => void;
   setListboxRef: (el: HTMLUListElement) => void;
   open: (focusStrategy: FocusStrategy | boolean, triggerMode?: ComboboxTriggerMode) => void;
