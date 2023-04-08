@@ -12,7 +12,10 @@ import {
   CalendarDate,
   DateDuration,
   DateFormatter,
+  getDayOfWeek,
   GregorianCalendar,
+  isSameDay,
+  startOfWeek,
   toCalendar,
   toCalendarDate,
   today,
@@ -20,26 +23,31 @@ import {
 import { mergeDefaultProps, OverrideComponentProps, ValidationState } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, createSignal, on, splitProps } from "solid-js";
 
-import { createMessageFormatter } from "../i18n";
+import { createMessageFormatter, getReadingDirection } from "../i18n";
 import { announce } from "../live-announcer";
 import { Polymorphic } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
 import { CalendarContext, CalendarContextValue, CalendarDataSet } from "./calendar-context";
-import { DateAlignment, DateValue } from "./types";
+import { CalendarSelectionMode, DateAlignment, DateValue } from "./types";
 import {
   alignCenter,
   alignDate,
-  alignStartDate,
   constrainValue,
   getAdjustedDateFn,
   getEndDate,
+  getNextPage,
+  getNextRow,
+  getNextSection,
   getPreviousAvailableDate,
+  getPreviousPage,
+  getPreviousRow,
+  getPreviousSection,
+  getSectionEnd,
+  getSectionStart,
   getSelectedDateDescription,
   getVisibleRangeDescription,
   isDateInvalid,
-  isNextVisibleRangeInvalid,
-  isPreviousVisibleRangeInvalid,
 } from "./utils";
 
 export interface CalendarBaseOptions {
@@ -59,6 +67,14 @@ export interface CalendarBaseOptions {
 
   /** Determines how to align the initial selection relative to the visible date range. */
   selectionAlignment?: DateAlignment;
+
+  /**
+   * The selection mode of the calendar.
+   * - `single` - only one date can be selected
+   * - `multiple` - multiple dates can be selected
+   * - `range` - a range of dates can be selected
+   */
+  selectionMode: CalendarSelectionMode;
 
   /** The controlled selected date of the calendar. */
   value?: DateValue;
@@ -110,11 +126,17 @@ export function CalendarBase(props: CalendarBaseProps) {
     {
       visibleDuration: { months: 1 },
       selectionAlignment: "center",
+      selectionMode: "single",
     },
     props
   );
 
   const [local, others] = splitProps(props, [
+    "locale",
+    "createCalendar",
+    "visibleDuration",
+    "selectionAlignment",
+    "selectionMode",
     "value",
     "defaultValue",
     "onChange",
@@ -128,10 +150,6 @@ export function CalendarBase(props: CalendarBaseProps) {
     "validationState",
     "disabled",
     "readOnly",
-    "locale",
-    "createCalendar",
-    "visibleDuration",
-    "selectionAlignment",
     "aria-label",
   ]);
 
@@ -139,6 +157,10 @@ export function CalendarBase(props: CalendarBaseProps) {
 
   const resolvedOptions = createMemo(() => {
     return new DateFormatter(local.locale).resolvedOptions();
+  });
+
+  const direction = createMemo(() => {
+    return getReadingDirection(local.locale);
   });
 
   const calendar = createMemo(() => {
@@ -260,12 +282,37 @@ export function CalendarBase(props: CalendarBaseProps) {
     return [local["aria-label"], visibleRangeDescription()].filter(Boolean).join(", ");
   };
 
-  // Sets focus to a specific cell date.
-  const focusCell = (date: CalendarDate) => {
-    setFocusedDate(constrainValue(date, local.min, local.max));
+  const isCellDisabled = (date: DateValue) => {
+    return (
+      local.disabled ||
+      date.compare(startDate()) < 0 ||
+      date.compare(endDate()) > 0 ||
+      isDateInvalid(date, local.min, local.max)
+    );
   };
 
-  const setValue = (date: CalendarDate) => {
+  const isCellUnavailable = (date: DateValue) => {
+    return local.isDateUnavailable?.(date) ?? false;
+  };
+
+  const isCellFocused = (date: DateValue) => {
+    const resolvedFocusedDate = focusedDate();
+
+    return isFocused() && resolvedFocusedDate != null && isSameDay(date, resolvedFocusedDate);
+  };
+
+  const isCellSelected = (date: DateValue) => {
+    const resolvedCalendarDateValue = calendarDateValue();
+
+    return (
+      resolvedCalendarDateValue != null &&
+      isSameDay(date, resolvedCalendarDateValue) &&
+      !isCellDisabled(date) &&
+      !isCellUnavailable(date)
+    );
+  };
+
+  const setValue = (date: DateValue) => {
     if (local.readOnly || local.disabled) {
       return;
     }
@@ -292,6 +339,179 @@ export function CalendarBase(props: CalendarBaseProps) {
     } else {
       setControlledValue(newValue);
     }
+  };
+
+  const selectFocusedDate = () => {
+    setValue(focusedDate()!);
+  };
+
+  function focusCell(date: DateValue) {
+    setFocusedDate(constrainValue(date, local.min, local.max));
+  }
+
+  const focusNextDay = () => {
+    focusCell(focusedDate()!.add({ days: 1 }));
+  };
+
+  const focusPreviousDay = () => {
+    focusCell(focusedDate()!.subtract({ days: 1 }));
+  };
+
+  const focusNextPage = () => {
+    const page = getNextPage(
+      focusedDate()!,
+      startDate(),
+      local.visibleDuration!,
+      local.locale,
+      local.min,
+      local.max
+    );
+
+    setStartDate(page.startDate);
+    focusCell(page.focusedDate);
+  };
+
+  const focusPreviousPage = () => {
+    const page = getPreviousPage(
+      focusedDate()!,
+      startDate(),
+      local.visibleDuration!,
+      local.locale,
+      local.min,
+      local.max
+    );
+
+    setStartDate(page.startDate);
+    focusCell(page.focusedDate);
+  };
+
+  const focusNextRow = () => {
+    const row = getNextRow(
+      focusedDate()!,
+      startDate(),
+      local.visibleDuration!,
+      local.locale,
+      local.min,
+      local.max
+    );
+
+    if (row) {
+      setStartDate(row.startDate);
+      focusCell(row.focusedDate);
+    }
+  };
+
+  const focusPreviousRow = () => {
+    const row = getPreviousRow(
+      focusedDate()!,
+      startDate(),
+      local.visibleDuration!,
+      local.locale,
+      local.min,
+      local.max
+    );
+
+    if (row) {
+      setStartDate(row.startDate);
+      focusCell(row.focusedDate);
+    }
+  };
+
+  const focusSectionStart = () => {
+    const section = getSectionStart(
+      focusedDate()!,
+      startDate(),
+      local.visibleDuration!,
+      local.locale,
+      local.min,
+      local.max
+    );
+
+    if (section) {
+      setStartDate(section.startDate);
+      focusCell(section.focusedDate);
+    }
+  };
+
+  const focusSectionEnd = () => {
+    const section = getSectionEnd(
+      focusedDate()!,
+      startDate(),
+      local.visibleDuration!,
+      local.locale,
+      local.min,
+      local.max
+    );
+
+    if (section) {
+      setStartDate(section.startDate);
+      focusCell(section.focusedDate);
+    }
+  };
+
+  const focusNextSection = (larger: boolean) => {
+    const section = getNextSection(
+      focusedDate()!,
+      startDate(),
+      larger,
+      local.visibleDuration!,
+      local.locale,
+      local.min,
+      local.max
+    );
+
+    if (section) {
+      setStartDate(section.startDate);
+      focusCell(section.focusedDate);
+    }
+  };
+
+  const focusPreviousSection = (larger: boolean) => {
+    const section = getPreviousSection(
+      focusedDate()!,
+      startDate(),
+      larger,
+      local.visibleDuration!,
+      local.locale,
+      local.min,
+      local.max
+    );
+
+    if (section) {
+      setStartDate(section.startDate);
+      focusCell(section.focusedDate);
+    }
+  };
+
+  const getDatesInWeek = (weekIndex: number, from: DateValue) => {
+    let date = from.add({ weeks: weekIndex });
+    const dates = [];
+
+    date = startOfWeek(date, local.locale);
+
+    // startOfWeek will clamp dates within the calendar system's valid range, which may
+    // start in the middle of a week. In this case, add null placeholders.
+    const dayOfWeek = getDayOfWeek(date, local.locale);
+    for (let i = 0; i < dayOfWeek; i++) {
+      dates.push(null);
+    }
+
+    while (dates.length < 7) {
+      dates.push(date);
+      const nextDate = date.add({ days: 1 });
+      if (isSameDay(date, nextDate)) {
+        // If the next day is the same, we have hit the end of the calendar system.
+        break;
+      }
+      date = nextDate;
+    }
+
+    // Add null placeholders if at the end of the calendar system.
+    while (dates.length < 7) {
+      dates.push(null);
+    }
+
+    return dates;
   };
 
   // Reset focused date and visible range when calendar changes.
@@ -345,18 +565,40 @@ export function CalendarBase(props: CalendarBaseProps) {
 
   const context: CalendarContextValue = {
     dataset,
+    value,
     isDisabled: () => local.disabled ?? false,
+    isReadOnly: () => local.readOnly ?? false,
+    isCellUnavailable,
+    isCellDisabled,
+    isCellSelected,
+    isCellFocused,
+    validationState,
     startDate,
     endDate,
     focusedDate: () => focusedDate()!,
     visibleDuration: () => local.visibleDuration!,
+    selectionMode: () => local.selectionMode!,
     locale: () => local.locale,
+    direction,
     min: () => local.min,
     max: () => local.max,
+    timeZone,
     messageFormatter,
     setFocusedDate,
     setStartDate,
     setIsFocused,
+    selectFocusedDate,
+    focusNextDay,
+    focusPreviousDay,
+    focusNextPage,
+    focusPreviousPage,
+    focusNextRow,
+    focusPreviousRow,
+    focusSectionStart,
+    focusSectionEnd,
+    focusNextSection,
+    focusPreviousSection,
+    getDatesInWeek,
   };
 
   return (

@@ -53,6 +53,7 @@
     "@solid-primitives/keyed": "^1.1.10",
     "@solid-primitives/media": "^2.1.5",
     "@solid-primitives/props": "^3.1.3",
+    "@solid-primitives/range": "^0.1.11",
     "@solid-primitives/refs": "^1.0.1",
     "@solid-primitives/utils": "^5.5.2"
   },

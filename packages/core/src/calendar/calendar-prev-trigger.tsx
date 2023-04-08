@@ -36,17 +36,7 @@ export function CalendarPrevTrigger(props: CalendarPrevTriggerProps) {
   const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
     callHandler(e, local.onClick);
 
-    const page = getPreviousPage(
-      context.focusedDate(),
-      context.startDate(),
-      context.visibleDuration(),
-      context.locale(),
-      context.min(),
-      context.max()
-    );
-
-    context.setStartDate(page.startDate);
-    context.setFocusedDate(page.focusedDate);
+    context.focusPreviousPage();
   };
 
   const onFocus: JSX.FocusEventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {

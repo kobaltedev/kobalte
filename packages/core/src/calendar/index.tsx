@@ -1,4 +1,23 @@
 import {
+  CalendarGrid as Grid,
+  type CalendarGridOptions,
+  type CalendarGridProps,
+} from "./calendar-grid";
+import {
+  CalendarGridBody as GridBody,
+  type CalendarGridBodyOptions,
+  type CalendarGridBodyProps,
+} from "./calendar-grid-body";
+import {
+  CalendarGridHeader as GridHeader,
+  type CalendarGridHeaderProps,
+} from "./calendar-grid-header";
+import {
+  CalendarHeaderCell as HeaderCell,
+  type CalendarHeaderCellProps,
+} from "./calendar-header-cell";
+import { CalendarHeaderRow as HeaderRow, type CalendarHeaderRowProps } from "./calendar-header-row";
+import {
   CalendarNextTrigger as NextTrigger,
   type CalendarNextTriggerOptions,
   type CalendarNextTriggerProps,
@@ -8,75 +27,55 @@ import {
   type CalendarPrevTriggerOptions,
   type CalendarPrevTriggerProps,
 } from "./calendar-prev-trigger";
-import { CalendarRoot as Root, type CalendarRootOptions, CalendarRootProps } from "./calendar-root";
+import {
+  CalendarRoot as Root,
+  type CalendarRootOptions,
+  type CalendarRootProps,
+} from "./calendar-root";
+import { CalendarRow as Row, type CalendarRowOptions, type CalendarRowProps } from "./calendar-row";
 
 export type {
+  CalendarGridBodyOptions,
+  CalendarGridBodyProps,
+  CalendarGridHeaderProps,
+  CalendarGridOptions,
+  CalendarGridProps,
+  CalendarHeaderCellProps,
+  CalendarHeaderRowProps,
   CalendarNextTriggerOptions,
   CalendarNextTriggerProps,
   CalendarPrevTriggerOptions,
   CalendarPrevTriggerProps,
   CalendarRootOptions,
   CalendarRootProps,
+  CalendarRowOptions,
+  CalendarRowProps,
 };
 
-export { NextTrigger, PrevTrigger, Root };
+export { Grid, GridBody, GridHeader, HeaderCell, HeaderRow, NextTrigger, PrevTrigger, Root, Row };
 
 /*
 
 <Calendar.Root>
-  <Calendar.View type="month">
-    <Calendar.Header>
-      <Calendar.PrevTrigger/>
-      <Calendar.ViewTrigger/>
-      <Calendar.NextTrigger/>
-    </Calendar.Header>
-    <Calendar.Grid>
-      <Calendar.GridHeader>
-        <Calendar.HeaderRow>
-          <Calendar.HeaderCell/>
-        </Calendar.HeaderRow>
-      </Calendar.GridHeader>
-      <Calendar.GridBody>
-        <Calendar.Row>
-          <Calendar.DayCell>
-            <Calendar.DayCellTrigger/>
-          </Calendar.DayCell>
-        </Calendar.Row>
-      </Calendar.GridBody>
-    </Calendar.Grid>
-  </Calendar.View>
-  <Calendar.View type="year">
-    <Calendar.Header>
-      <Calendar.PrevTrigger/>
-      <Calendar.ViewTrigger/>
-      <Calendar.NextTrigger/>
-    </Calendar.Header>
-    <Calendar.Grid>
-      <Calendar.GridBody>
-        <Calendar.Row>
-          <Calendar.MonthCell>
-            <Calendar.MonthCellTrigger/>
-          </Calendar.MonthCell>
-        </Calendar.Row>
-      </Calendar.GridBody>
-    </Calendar.Grid>
-  </Calendar.View>
-  <Calendar.View type="decade">
-    <Calendar.Header>
-      <Calendar.PrevTrigger/>
-      <Calendar.ViewTrigger/>
-      <Calendar.NextTrigger/>
-    </Calendar.Header>
-    <Calendar.Grid>
-      <Calendar.GridBody>
-        <Calendar.Row>
-          <Calendar.YearCell>
-            <Calendar.YearCellTrigger/>
-          </Calendar.YearCell>
-        </Calendar.Row>
-      </Calendar.GridBody>
-    </Calendar.Grid>
-  </Calendar.View>
+  <Calendar.Header>
+    <Calendar.PrevTrigger/>
+    <Calendar.ViewTrigger/>
+    <Calendar.NextTrigger/>
+  </Calendar.Header>
+  <Calendar.Grid>
+    <Calendar.GridHeader>
+      <Calendar.HeaderRow>
+        <Calendar.HeaderCell/>
+      </Calendar.HeaderRow>
+    </Calendar.GridHeader>
+    <Calendar.GridBody>
+      <Calendar.Row>
+        <Calendar.Cell>
+          <Calendar.CellTrigger/>
+        </Calendar.Cell>
+      </Calendar.Row>
+    </Calendar.GridBody>
+  </Calendar.Grid>
 </Calendar.Root>
 
 */

@@ -10,3 +10,5 @@ import { CalendarDate, CalendarDateTime, ZonedDateTime } from "@internationalize
 
 export type DateValue = CalendarDate | CalendarDateTime | ZonedDateTime;
 export type DateAlignment = "start" | "center" | "end";
+
+export type CalendarSelectionMode = "single" | "multiple" | "range";

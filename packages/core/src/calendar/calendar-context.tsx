@@ -1,25 +1,48 @@
 import { DateDuration } from "@internationalized/date";
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { LocalizedMessageFormatter } from "../i18n";
-import { DateValue } from "./types";
+import { Direction, LocalizedMessageFormatter } from "../i18n";
+import { CalendarSelectionMode, DateValue } from "./types";
+import { ValidationState } from "@kobalte/utils";
 
 export interface CalendarDataSet {}
 
 export interface CalendarContextValue {
   dataset: Accessor<CalendarDataSet>;
+  value: Accessor<DateValue | undefined>;
   startDate: Accessor<DateValue>;
   endDate: Accessor<DateValue>;
   focusedDate: Accessor<DateValue>;
   visibleDuration: Accessor<DateDuration>;
+  selectionMode: Accessor<CalendarSelectionMode>;
   locale: Accessor<string>;
+  direction: Accessor<Direction>;
   min: Accessor<DateValue | undefined>;
   max: Accessor<DateValue | undefined>;
+  timeZone: Accessor<string>;
+  validationState: Accessor<ValidationState | null>;
   messageFormatter: Accessor<LocalizedMessageFormatter>;
   isDisabled: Accessor<boolean>;
+  isReadOnly: Accessor<boolean>;
+  isCellSelected: (date: DateValue) => boolean;
+  isCellFocused: (date: DateValue) => boolean;
+  isCellDisabled: (date: DateValue) => boolean;
+  isCellUnavailable: (date: DateValue) => boolean;
   setStartDate: (date: DateValue) => void;
   setFocusedDate: (date: DateValue) => void;
   setIsFocused: (value: boolean) => void;
+  selectFocusedDate: () => void;
+  focusNextDay: () => void;
+  focusPreviousDay: () => void;
+  focusNextPage: () => void;
+  focusPreviousPage: () => void;
+  focusNextRow: () => void;
+  focusPreviousRow: () => void;
+  focusSectionStart: () => void;
+  focusSectionEnd: () => void;
+  focusNextSection: (larger: boolean) => void;
+  focusPreviousSection: (larger: boolean) => void;
+  getDatesInWeek: (weekIndex: number, from: DateValue) => Array<DateValue | null>;
 }
 
 export const CalendarContext = createContext<CalendarContextValue>();

@@ -4,12 +4,19 @@
  *
  * Credits to the React Spectrum team:
  * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/@react-stately/calendar/src/utils.ts
+ *
+ * Portions of this file are based on code from zag, based on code from react-spectrum.
+ * MIT Licensed, Copyright (c) 2021 Chakra UI.
+ *
+ * Credits to the Chakra UI team:
+ * https://github.com/chakra-ui/zag/blob/main/packages/utilities/date-utils/src/pagination.ts
  */
 
 import {
   DateDuration,
   DateFormatter,
   endOfMonth,
+  endOfWeek,
   isSameDay,
   maxDate,
   minDate,
@@ -233,8 +240,8 @@ export function getAdjustedDateFn(
     if (isDateInvalid(focusedDate, min, max)) {
       return {
         startDate,
-        focusedDate: constrainValue(focusedDate, min, max),
         endDate,
+        focusedDate: constrainValue(focusedDate, min, max),
       };
     }
 
@@ -485,4 +492,188 @@ export function getPreviousPage(
       locale
     ),
   });
+}
+
+export function getNextRow(
+  focusedDate: DateValue,
+  startDate: DateValue,
+  visibleDuration: DateDuration,
+  locale: string,
+  min?: DateValue,
+  max?: DateValue
+) {
+  const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
+
+  if (visibleDuration.days) {
+    return getNextPage(focusedDate, startDate, visibleDuration, locale, min, max);
+  }
+
+  if (visibleDuration.weeks || visibleDuration.months || visibleDuration.years) {
+    return adjust({
+      focusedDate: focusedDate.add({ weeks: 1 }),
+      startDate,
+    });
+  }
+}
+
+export function getPreviousRow(
+  focusedDate: DateValue,
+  startDate: DateValue,
+  visibleDuration: DateDuration,
+  locale: string,
+  min?: DateValue,
+  max?: DateValue
+) {
+  const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
+
+  if (visibleDuration.days) {
+    return getPreviousPage(focusedDate, startDate, visibleDuration, locale, min, max);
+  }
+
+  if (visibleDuration.weeks || visibleDuration.months || visibleDuration.years) {
+    return adjust({
+      focusedDate: focusedDate.subtract({ weeks: 1 }),
+      startDate,
+    });
+  }
+}
+
+export function getSectionStart(
+  focusedDate: DateValue,
+  startDate: DateValue,
+  visibleDuration: DateDuration,
+  locale: string,
+  min?: DateValue,
+  max?: DateValue
+) {
+  const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
+
+  if (visibleDuration.days) {
+    return adjust({
+      focusedDate: startDate,
+      startDate,
+    });
+  }
+
+  if (visibleDuration.weeks) {
+    return adjust({
+      focusedDate: startOfWeek(focusedDate, locale),
+      startDate,
+    });
+  }
+
+  if (visibleDuration.months || visibleDuration.years) {
+    return adjust({
+      focusedDate: startOfMonth(focusedDate),
+      startDate,
+    });
+  }
+}
+
+export function getSectionEnd(
+  focusedDate: DateValue,
+  startDate: DateValue,
+  visibleDuration: DateDuration,
+  locale: string,
+  min?: DateValue,
+  max?: DateValue
+) {
+  const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
+  const endDate = getEndDate(startDate, visibleDuration);
+
+  if (visibleDuration.days) {
+    return adjust({
+      focusedDate: endDate,
+      startDate,
+    });
+  }
+
+  if (visibleDuration.weeks) {
+    return adjust({
+      //@ts-expect-error - endOfWeek is loosely typed
+      focusedDate: endOfWeek(focusedDate, locale),
+      startDate,
+    });
+  }
+
+  if (visibleDuration.months || visibleDuration.years) {
+    return adjust({
+      focusedDate: endOfMonth(focusedDate),
+      startDate,
+    });
+  }
+}
+
+export function getNextSection(
+  focusedDate: DateValue,
+  startDate: DateValue,
+  larger: boolean,
+  visibleDuration: DateDuration,
+  locale: string,
+  min?: DateValue,
+  max?: DateValue
+) {
+  const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
+
+  if (!larger && !visibleDuration.days) {
+    return adjust({
+      focusedDate: focusedDate.add(getUnitDuration(visibleDuration)),
+      startDate,
+    });
+  }
+
+  if (visibleDuration.days) {
+    return getNextPage(focusedDate, startDate, visibleDuration, locale, min, max);
+  }
+
+  if (visibleDuration.weeks) {
+    return adjust({
+      focusedDate: focusedDate.add({ months: 1 }),
+      startDate,
+    });
+  }
+
+  if (visibleDuration.months || visibleDuration.years) {
+    return adjust({
+      focusedDate: focusedDate.add({ years: 1 }),
+      startDate,
+    });
+  }
+}
+
+export function getPreviousSection(
+  focusedDate: DateValue,
+  startDate: DateValue,
+  larger: boolean,
+  visibleDuration: DateDuration,
+  locale: string,
+  min?: DateValue,
+  max?: DateValue
+) {
+  const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
+
+  if (!larger && !visibleDuration.days) {
+    return adjust({
+      focusedDate: focusedDate.subtract(getUnitDuration(visibleDuration)),
+      startDate,
+    });
+  }
+
+  if (visibleDuration.days) {
+    return getPreviousPage(focusedDate, startDate, visibleDuration, locale, min, max);
+  }
+
+  if (visibleDuration.weeks) {
+    return adjust({
+      focusedDate: focusedDate.subtract({ months: 1 }),
+      startDate,
+    });
+  }
+
+  if (visibleDuration.months || visibleDuration.years) {
+    return adjust({
+      focusedDate: focusedDate.subtract({ years: 1 }),
+      startDate,
+    });
+  }
 }
