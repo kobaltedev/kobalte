@@ -4,6 +4,7 @@
  *
  * Credits to the React Spectrum team:
  * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/@react-stately/calendar/src/useCalendarState.ts
+ * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/@react-aria/calendar/src/useCalendarBase.ts
  */
 
 import {
@@ -17,27 +18,48 @@ import {
   today,
 } from "@internationalized/date";
 import { mergeDefaultProps, OverrideComponentProps, ValidationState } from "@kobalte/utils";
-import { createEffect, createMemo, createSignal, on, splitProps } from "solid-js";
+import { Accessor, createEffect, createMemo, createSignal, on, splitProps } from "solid-js";
 
 import { createMessageFormatter } from "../i18n";
 import { announce } from "../live-announcer";
 import { Polymorphic } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
+import { CalendarContext, CalendarContextValue, CalendarDataSet } from "./calendar-context";
 import { DateAlignment, DateValue } from "./types";
 import {
   alignCenter,
   alignDate,
   alignStartDate,
   constrainValue,
+  getAdjustedDateFn,
   getEndDate,
   getPreviousAvailableDate,
   getSelectedDateDescription,
   getVisibleRangeDescription,
   isDateInvalid,
+  isNextVisibleRangeInvalid,
+  isPreviousVisibleRangeInvalid,
 } from "./utils";
 
 export interface CalendarBaseOptions {
+  /** The locale to display and edit the value according to. */
+  locale: string;
+
+  /**
+   * A function that creates a [Calendar](https://react-spectrum.adobe.com/internationalized/date/Calendar.html)
+   * object for a given calendar identifier. Such a function may be imported from the
+   * `@internationalized/date` package, or manually implemented to include support for
+   * only certain calendars.
+   */
+  createCalendar: (name: string) => Calendar;
+
+  /** The amount of days that will be displayed at once. This affects how pagination works. */
+  visibleDuration?: DateDuration;
+
+  /** Determines how to align the initial selection relative to the visible date range. */
+  selectionAlignment?: DateAlignment;
+
   /** The controlled selected date of the calendar. */
   value?: DateValue;
 
@@ -79,23 +101,6 @@ export interface CalendarBaseOptions {
 
   /** Whether the calendar value is immutable. */
   readOnly?: boolean;
-
-  /** The locale to display and edit the value according to. */
-  locale: string;
-
-  /**
-   * A function that creates a [Calendar](https://react-spectrum.adobe.com/internationalized/date/Calendar.html)
-   * object for a given calendar identifier. Such a function may be imported from the
-   * `@internationalized/date` package, or manually implemented to include support for
-   * only certain calendars.
-   */
-  createCalendar: (name: string) => Calendar;
-
-  /** The amount of days that will be displayed at once. This affects how pagination works. */
-  visibleDuration?: DateDuration;
-
-  /** Determines how to align the initial selection relative to the visible date range. */
-  selectionAlignment?: DateAlignment;
 }
 
 export type CalendarBaseProps = OverrideComponentProps<"div", CalendarBaseOptions>;
@@ -127,6 +132,7 @@ export function CalendarBase(props: CalendarBaseProps) {
     "createCalendar",
     "visibleDuration",
     "selectionAlignment",
+    "aria-label",
   ]);
 
   const messageFormatter = createMessageFormatter(() => CALENDAR_INTL_MESSAGES);
@@ -250,6 +256,10 @@ export function CalendarBase(props: CalendarBaseProps) {
     }
   });
 
+  const ariaLabel = () => {
+    return [local["aria-label"], visibleRangeDescription()].filter(Boolean).join(", ");
+  };
+
   // Sets focus to a specific cell date.
   const focusCell = (date: CalendarDate) => {
     setFocusedDate(constrainValue(date, local.min, local.max));
@@ -304,24 +314,15 @@ export function CalendarBase(props: CalendarBaseProps) {
   );
 
   createEffect(() => {
-    const resolvedFocusedDate = focusedDate()!;
+    const adjust = getAdjustedDateFn(local.visibleDuration!, local.locale, local.min, local.max);
 
-    if (isDateInvalid(resolvedFocusedDate, local.min, local.max)) {
-      // If the focused date was moved to an invalid value, it can't be focused, so constrain it.
-      setFocusedDate(constrainValue(resolvedFocusedDate, local.min, local.max));
-    } else {
-      const newStartDate = alignStartDate(
-        resolvedFocusedDate,
-        startDate(),
-        endDate(),
-        local.visibleDuration!,
-        local.locale,
-        local.min,
-        local.max
-      );
+    const adjustment = adjust({
+      startDate: startDate(),
+      focusedDate: focusedDate()!,
+    });
 
-      setStartDate(newStartDate);
-    }
+    setStartDate(adjustment.startDate);
+    setFocusedDate(adjustment.focusedDate);
   });
 
   // Announce when the visible date range changes only when pressing the Previous or Next triggers.
@@ -340,5 +341,27 @@ export function CalendarBase(props: CalendarBaseProps) {
     }
   });
 
-  return <Polymorphic as="div" {...others} />;
+  const dataset: Accessor<CalendarDataSet> = createMemo(() => ({}));
+
+  const context: CalendarContextValue = {
+    dataset,
+    isDisabled: () => local.disabled ?? false,
+    startDate,
+    endDate,
+    focusedDate: () => focusedDate()!,
+    visibleDuration: () => local.visibleDuration!,
+    locale: () => local.locale,
+    min: () => local.min,
+    max: () => local.max,
+    messageFormatter,
+    setFocusedDate,
+    setStartDate,
+    setIsFocused,
+  };
+
+  return (
+    <CalendarContext.Provider value={context}>
+      <Polymorphic as="div" role="group" aria-label={ariaLabel()} {...others} />
+    </CalendarContext.Provider>
+  );
 }

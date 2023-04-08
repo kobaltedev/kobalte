@@ -181,6 +181,28 @@ export function isDateInvalid(
   );
 }
 
+export function isPreviousVisibleRangeInvalid(
+  startDate: DateValue,
+  min?: DateValue | null,
+  max?: DateValue | null
+) {
+  const prevDate = startDate.subtract({ days: 1 });
+
+  return isSameDay(prevDate, startDate) || isDateInvalid(prevDate, min, max);
+}
+
+export function isNextVisibleRangeInvalid(
+  endDate: DateValue,
+  min?: DateValue | null,
+  max?: DateValue | null
+) {
+  // Adding may return the same date if we reached the end of time
+  // according to the calendar system (e.g. 9999-12-31).
+  const nextDate = endDate.add({ days: 1 });
+
+  return isSameDay(nextDate, endDate) || isDateInvalid(nextDate, min, max);
+}
+
 /* -----------------------------------------------------------------------------
  * Getters
  * -----------------------------------------------------------------------------*/
@@ -195,6 +217,49 @@ export function getEndDate(startDate: DateValue, duration: DateDuration) {
   }
 
   return startDate.add(d);
+}
+
+export function getAdjustedDateFn(
+  visibleDuration: DateDuration,
+  locale: string,
+  min?: DateValue,
+  max?: DateValue
+) {
+  return function getDate(options: { startDate: DateValue; focusedDate: DateValue }) {
+    const { startDate, focusedDate } = options;
+    const endDate = getEndDate(startDate, visibleDuration);
+
+    // If the focused date was moved to an invalid value, it can't be focused, so constrain it.
+    if (isDateInvalid(focusedDate, min, max)) {
+      return {
+        startDate,
+        focusedDate: constrainValue(focusedDate, min, max),
+        endDate,
+      };
+    }
+
+    if (focusedDate.compare(startDate) < 0) {
+      return {
+        startDate: alignEnd(focusedDate, visibleDuration, locale, min, max),
+        endDate,
+        focusedDate: constrainValue(focusedDate, min, max),
+      };
+    }
+
+    if (focusedDate.compare(endDate) > 0) {
+      return {
+        startDate: alignStart(focusedDate, visibleDuration, locale, min, max),
+        endDate,
+        focusedDate: constrainValue(focusedDate, min, max),
+      };
+    }
+
+    return {
+      startDate,
+      endDate,
+      focusedDate: constrainValue(focusedDate, min, max),
+    };
+  };
 }
 
 export function getPreviousAvailableDate(
@@ -374,4 +439,50 @@ export function getVisibleRangeDescription(
   }
 
   return dateFormatter().formatRange(startDate.toDate(timeZone), endDate.toDate(timeZone));
+}
+
+/* -----------------------------------------------------------------------------
+ *  Pagination
+ * -----------------------------------------------------------------------------*/
+
+export function getNextPage(
+  focusedDate: DateValue,
+  startDate: DateValue,
+  visibleDuration: DateDuration,
+  locale: string,
+  min?: DateValue,
+  max?: DateValue
+) {
+  const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
+  const start = startDate.add(visibleDuration);
+
+  return adjust({
+    focusedDate: focusedDate.add(visibleDuration),
+    startDate: alignStart(
+      constrainStart(focusedDate, start, visibleDuration, locale, min, max),
+      visibleDuration,
+      locale
+    ),
+  });
+}
+
+export function getPreviousPage(
+  focusedDate: DateValue,
+  startDate: DateValue,
+  visibleDuration: DateDuration,
+  locale: string,
+  min?: DateValue,
+  max?: DateValue
+) {
+  const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
+  const start = startDate.subtract(visibleDuration);
+
+  return adjust({
+    focusedDate: focusedDate.subtract(visibleDuration),
+    startDate: alignStart(
+      constrainStart(focusedDate, start, visibleDuration, locale, min, max),
+      visibleDuration,
+      locale
+    ),
+  });
 }
