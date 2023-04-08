@@ -1,4 +1,4 @@
-import { createMemo, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 
 import { Combobox, createFilter, I18nProvider, MultiCombobox } from "../src";
 
@@ -297,6 +297,7 @@ export default function App() {
 
   return (
     <I18nProvider locale="en-US">
+      <button>before</button>
       <form style={{ display: "flex" }} ref={formRef} onSubmit={onSubmit}>
         <Combobox.Root
           name="country"
@@ -314,36 +315,20 @@ export default function App() {
             </Combobox.Item>
           )}
         >
+          <Combobox.HiddenSelect />
           <Combobox.Control class="combobox__control">
             <Combobox.Input />
             <Combobox.Trigger class="combobox__trigger">
               <DropdownIcon />
             </Combobox.Trigger>
           </Combobox.Control>
-          <Combobox.HiddenSelect />
           <Combobox.Portal>
             <Combobox.Content class="combobox__content animated">
               <Combobox.Listbox class="combobox__listbox" />
             </Combobox.Content>
           </Combobox.Portal>
         </Combobox.Root>
-        <div class="flex space-x-2">
-          <button type="reset" class="kb-button">
-            Reset
-          </button>
-          <button class="kb-button-primary">Submit</button>
-        </div>
-      </form>
-    </I18nProvider>
-  );
-}
-
-/*
-
-
-
-
-<MultiCombobox.Root
+        <MultiCombobox.Root
           name="countries"
           placeholder="Select some countries"
           options={filteredOptions()}
@@ -360,6 +345,7 @@ export default function App() {
             </MultiCombobox.Item>
           )}
         >
+          <MultiCombobox.HiddenSelect />
           <MultiCombobox.Control class="combobox__control">
             {({ values }) => (
               <>
@@ -376,11 +362,19 @@ export default function App() {
               </>
             )}
           </MultiCombobox.Control>
-          <MultiCombobox.HiddenSelect />
           <MultiCombobox.Portal>
             <MultiCombobox.Content class="combobox__content animated">
               <MultiCombobox.Listbox class="combobox__listbox" />
             </MultiCombobox.Content>
           </MultiCombobox.Portal>
         </MultiCombobox.Root>
-*/
+        <div class="flex space-x-2">
+          <button type="reset" class="kb-button">
+            Reset
+          </button>
+          <button class="kb-button-primary">Submit</button>
+        </div>
+      </form>
+    </I18nProvider>
+  );
+}

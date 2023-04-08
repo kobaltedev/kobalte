@@ -449,6 +449,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     }
 
     setIsInputFocusedState(isFocused);
+    listState.selectionManager().setFocused(isFocused);
   };
 
   const activeDescendant = createMemo(() => {

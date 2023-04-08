@@ -99,7 +99,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
         }
 
         break;
-      //case "Tab":
+      case "Tab":
       case "Escape":
         if (context.contentPresence.isPresent()) {
           context.resetInputAfterClose();
@@ -134,13 +134,17 @@ export function ComboboxInput(props: ComboboxInputProps) {
   const onFocus: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = e => {
     callHandler(e, local.onFocus);
 
+    if (context.isInputFocused()) {
+      return;
+    }
+
     context.setIsInputFocused(true);
   };
 
   const onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = e => {
     callHandler(e, local.onBlur);
 
-    // Ignore blur if focused moved into the trigger or menu.
+    // Ignore blur if focused moved into the control or menu.
     if (
       contains(context.controlRef(), e.relatedTarget as any) ||
       contains(context.contentRef(), e.relatedTarget as any)
@@ -189,6 +193,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
 
   createEffect(() => onCleanup(context.registerInputId(fieldProps.id()!)));
 
+  // Omit `formControlContext.name()` here because it's used in the hidden select.
   return (
     <Polymorphic
       as="input"
@@ -197,7 +202,6 @@ export function ComboboxInput(props: ComboboxInputProps) {
         ref = el;
       }, local.ref)}
       id={fieldProps.id()}
-      name={formControlContext.name()}
       value={context.inputValue()}
       required={formControlContext.isRequired()}
       disabled={formControlContext.isDisabled()}
