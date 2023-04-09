@@ -1,18 +1,28 @@
-import { Show } from "solid-js";
+import { getLocalTimeZone, parseDate } from "@internationalized/date";
+import { createSignal, Show } from "solid-js";
 
-import { Calendar, I18nProvider } from "../src";
+import { Calendar, createDateFormatter, I18nProvider } from "../src";
 
-export default function App() {
+function CalendarPlayground() {
+  const [value, setValue] = createSignal(parseDate("2020-02-03"));
+  const formatter = createDateFormatter({ dateStyle: "full" });
+
   return (
-    <I18nProvider locale="en-US">
-      <div class="app">
-        <Calendar.Root class="calendar">
-          <header class="header">
-            <Calendar.PrevTrigger class="button">&lsaquo;</Calendar.PrevTrigger>
-            <Calendar.Heading class="heading" />
-            <Calendar.NextTrigger class="button">&rsaquo;</Calendar.NextTrigger>
-          </header>
-          <Calendar.Grid class="grid">
+    <div class="app">
+      <p>Selected date: {formatter().format(value().toDate(getLocalTimeZone()))}</p>
+      <Calendar.Root
+        class="calendar"
+        visibleDuration={{ months: 2 }}
+        value={value()}
+        onChange={setValue}
+      >
+        <header class="header">
+          <Calendar.PrevTrigger class="button">&lsaquo;</Calendar.PrevTrigger>
+          <Calendar.Heading class="heading" />
+          <Calendar.NextTrigger class="button">&rsaquo;</Calendar.NextTrigger>
+        </header>
+        <div style={{ display: "flex", gap: "8px", "align-items": "flex-start" }}>
+          <Calendar.Grid class="grid" weekDayFormat="short">
             <Calendar.GridHeader>
               <Calendar.HeaderRow>
                 {weekDay => <Calendar.HeaderCell>{weekDay}</Calendar.HeaderCell>}
@@ -32,8 +42,36 @@ export default function App() {
               )}
             </Calendar.GridBody>
           </Calendar.Grid>
-        </Calendar.Root>
-      </div>
+          <Calendar.Grid class="grid" weekDayFormat="short" offset={{ months: 1 }}>
+            <Calendar.GridHeader>
+              <Calendar.HeaderRow>
+                {weekDay => <Calendar.HeaderCell>{weekDay}</Calendar.HeaderCell>}
+              </Calendar.HeaderRow>
+            </Calendar.GridHeader>
+            <Calendar.GridBody>
+              {weekIndex => (
+                <Calendar.Row weekIndex={weekIndex}>
+                  {date => (
+                    <Show when={date} fallback={<td />}>
+                      <Calendar.Cell date={date!}>
+                        <Calendar.CellTrigger as="div" class="cell" />
+                      </Calendar.Cell>
+                    </Show>
+                  )}
+                </Calendar.Row>
+              )}
+            </Calendar.GridBody>
+          </Calendar.Grid>
+        </div>
+      </Calendar.Root>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <I18nProvider locale="en-US">
+      <CalendarPlayground />
     </I18nProvider>
   );
 }

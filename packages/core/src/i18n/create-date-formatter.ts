@@ -7,6 +7,7 @@
  */
 
 import { DateFormatter } from "@internationalized/date";
+import { access, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createMemo } from "solid-js";
 
 import { useLocale } from "./i18n-provider";
@@ -21,9 +22,9 @@ export interface DateFormatterOptions extends Intl.DateTimeFormatOptions {
  * @param options - Formatting options.
  */
 export function createDateFormatter(
-  options: Accessor<DateFormatterOptions>
+  options: MaybeAccessor<DateFormatterOptions>
 ): Accessor<DateFormatter> {
   const { locale } = useLocale();
 
-  return createMemo(() => new DateFormatter(locale(), options()));
+  return createMemo(() => new DateFormatter(locale(), access(options)));
 }

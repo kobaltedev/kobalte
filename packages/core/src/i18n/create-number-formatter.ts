@@ -7,6 +7,7 @@
  */
 
 import { NumberFormatOptions, NumberFormatter } from "@internationalized/number";
+import { access, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createMemo } from "solid-js";
 
 import { useLocale } from "./i18n-provider";
@@ -17,9 +18,9 @@ import { useLocale } from "./i18n-provider";
  * @param options - Formatting options.
  */
 export function createNumberFormatter(
-  options: Accessor<NumberFormatOptions>
+  options: MaybeAccessor<NumberFormatOptions>
 ): Accessor<Intl.NumberFormat> {
   const { locale } = useLocale();
 
-  return createMemo(() => new NumberFormatter(locale(), options()));
+  return createMemo(() => new NumberFormatter(locale(), access(options)));
 }

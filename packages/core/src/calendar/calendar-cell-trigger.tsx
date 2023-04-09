@@ -2,6 +2,7 @@ import { isSameDay, isSameMonth, isWeekend } from "@internationalized/date";
 import {
   callHandler,
   focusWithoutScrolling,
+  getDocument,
   getScrollParent,
   mergeRefs,
   OverrideComponentProps,
@@ -27,7 +28,6 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
   const [local, others] = splitProps(props, [
     "ref",
     "disabled",
-    "onFocus",
     "onPointerEnter",
     "onPointerLeave",
     "onPointerDown",
@@ -138,14 +138,6 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
     isAnchorPressed = false;
     window.clearTimeout(touchDragTimerRef);
     touchDragTimerRef = undefined;
-  };
-
-  const onFocus: JSX.FocusEventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    callHandler(e, local.onFocus);
-
-    if (!isDisabled()) {
-      rootContext.focusCell(context.date());
-    }
   };
 
   const onPointerEnter: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> = e => {
@@ -291,20 +283,10 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
     }
   };
 
-  // Focus the button in the DOM when the state updates.
+  // Focus the button in the DOM when the date become the focused/highlighted one.
   createEffect(() => {
     if (ref && context.isFocused()) {
       focusWithoutScrolling(ref);
-
-      // Scroll into view if navigating with a keyboard, otherwise
-      // try not to shift the view under the user's mouse/finger.
-      // If in an overlay, scrollIntoViewport will only cause scrolling
-      // up to the overlay scroll body to prevent overlay shifting.
-      /*
-      if (getInteractionModality() !== "pointer") {
-        scrollIntoViewport(ref, { containingElement: getScrollParent(ref) });
-      }
-      */
     }
   });
 
@@ -328,7 +310,6 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
       //data-selection-end={isSelectionEnd || undefined} // TODO: RangeCalendar
       data-outside-visible-range={isOutsideVisibleRange() || undefined}
       data-outside-month={isOutsideMonth() || undefined}
-      onFocus={onFocus}
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
       onPointerDown={onPointerDown}

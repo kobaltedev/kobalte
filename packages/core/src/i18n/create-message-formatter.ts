@@ -7,6 +7,7 @@
  */
 
 import { LocalizedStrings, MessageDictionary, MessageFormatter } from "@internationalized/message";
+import { access, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createMemo } from "solid-js";
 
 import { useLocale } from "./i18n-provider";
@@ -34,12 +35,12 @@ function getCachedDictionary(strings: LocalizedStrings): MessageDictionary {
  * @param strings - A mapping of languages to strings by key.
  */
 export function createMessageFormatter(
-  strings: Accessor<LocalizedStrings>
+  strings: MaybeAccessor<LocalizedStrings>
 ): Accessor<LocalizedMessageFormatter> {
   const { locale } = useLocale();
 
   const messageFormatter = createMemo(() => {
-    return new MessageFormatter(locale(), getCachedDictionary(strings()));
+    return new MessageFormatter(locale(), getCachedDictionary(access(strings)));
   });
 
   // Re-export as a new object with narrowed type for the `format()` method.
