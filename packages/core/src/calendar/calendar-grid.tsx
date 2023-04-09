@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/@react-aria/calendar/src/useCalendarGrid.ts
  */
 
-import { startOfWeek, today } from "@internationalized/date";
+import { DateDuration, endOfMonth, startOfWeek, today } from "@internationalized/date";
 import { callHandler, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createMemo, JSX, splitProps } from "solid-js";
 
@@ -14,23 +14,14 @@ import { createDateFormatter } from "../i18n";
 import { Polymorphic } from "../polymorphic";
 import { useCalendarContext } from "./calendar-context";
 import { CalendarGridContext, CalendarGridContextValue } from "./calendar-grid-context";
-import { DateValue } from "./types";
 import { getVisibleRangeDescription } from "./utils";
 
 export interface CalendarGridOptions {
   /**
-   * The first date displayed in the calendar grid.
-   * Defaults to the first visible date in the calendar.
-   * Override this to display multiple date grids in a calendar.
+   * An offset from the beginning of the visible date range that this grid should display.
+   * Useful when displaying more than one month at a time.
    */
-  startDate?: DateValue;
-
-  /**
-   * The last date displayed in the calendar grid.
-   * Defaults to the last visible date in the calendar.
-   * Override this to display multiple date grids in a calendar.
-   */
-  endDate?: DateValue;
+  offset?: DateDuration;
 
   /** The format in which to display the week days inside the `Calendar.GridHeader`. */
   weekDayFormat?: "narrow" | "short" | "long";
@@ -53,8 +44,7 @@ export function CalendarGrid(props: CalendarGridProps) {
   );
 
   const [local, others] = splitProps(props, [
-    "startDate",
-    "endDate",
+    "offset",
     "weekDayFormat",
     "onKeyDown",
     "onFocusIn",
@@ -62,8 +52,15 @@ export function CalendarGrid(props: CalendarGridProps) {
     "aria-label",
   ]);
 
-  const startDate = () => local.startDate ?? rootContext.startDate();
-  const endDate = () => local.endDate ?? rootContext.endDate();
+  const startDate = createMemo(() => {
+    if (local.offset) {
+      return rootContext.startDate().add(local.offset);
+    }
+
+    return rootContext.startDate();
+  });
+
+  const endDate = createMemo(() => endOfMonth(startDate()));
 
   const dayFormatter = createDateFormatter(() => ({
     weekday: local.weekDayFormat,
@@ -151,7 +148,7 @@ export function CalendarGrid(props: CalendarGridProps) {
         rootContext.focusNextRow();
         break;
       case "Escape":
-        // TODO: RangeCalendar mode: Cancel the selection.
+        // TODO: RangeCalendar - Cancel the selection.
         if (rootContext.selectionMode() === "range") {
           e.preventDefault();
           //state.setAnchorDate(null);
@@ -182,8 +179,8 @@ export function CalendarGrid(props: CalendarGridProps) {
       <Polymorphic
         as="table"
         role="grid"
-        aria-readonly={rootContext.isReadOnly()}
-        aria-disabled={rootContext.isDisabled()}
+        aria-readonly={rootContext.isReadOnly() || undefined}
+        aria-disabled={rootContext.isDisabled() || undefined}
         aria-multiselectable={rootContext.selectionMode() !== "single"}
         aria-label={ariaLabel()}
         onKeyDown={onKeyDown}

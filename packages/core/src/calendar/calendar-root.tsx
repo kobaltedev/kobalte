@@ -8,6 +8,9 @@ export interface CalendarRootOptions extends Partial<CalendarBaseOptions> {}
 
 export type CalendarRootProps = OverrideComponentProps<"div", CalendarRootOptions>;
 
+/**
+ * A calendar displays one or more date grids and allows users to select a single date.
+ */
 export function CalendarRoot(props: CalendarRootProps) {
   const { locale } = useLocale();
 

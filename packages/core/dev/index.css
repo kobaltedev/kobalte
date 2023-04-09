@@ -1,0 +1,97 @@
+.app {
+  font-family: sans-serif;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  --accent-color: rgb(255, 0, 128);
+}
+
+.calendar {
+  display: inline-block;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 8px 12px 8px;
+}
+
+.heading {
+  flex-grow: 1;
+}
+
+.header .dropdowns {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.select {
+  user-select: none;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 4px;
+  border-radius: 4px;
+  outline-color: var(--accent-color);
+  font-size: 15px;
+}
+
+.button {
+  user-select: none;
+  border: 1px solid #ddd;
+  background: transparent;
+  padding: 0 10px;
+  border-radius: 4px;
+  outline-color: var(--accent-color);
+  font-size: 24px;
+  line-height: 26px;
+  color: #333;
+}
+
+.button:active {
+  background: #eee;
+}
+
+.grid {
+  width: 100%;
+}
+
+.grid th {
+  font-size: 12px;
+  color: #444;
+}
+
+.cell {
+  cursor: default;
+  text-align: center;
+  padding: 6px 8px;
+  margin: 2px;
+  border-radius: 6px;
+  position: relative;
+  outline: none;
+  color: #333;
+}
+
+.cell:hover {
+  background: #eee;
+}
+
+.cell[data-selected] {
+  background: var(--accent-color);
+  color: white;
+}
+
+.cell[data-highlighted]:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 9px;
+  z-index: -1;
+  border: 2px solid var(--accent-color);
+}
+
+.cell[data-disabled] {
+  color: gray;
+}

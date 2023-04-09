@@ -1,4 +1,13 @@
 import {
+  CalendarCell as Cell,
+  type CalendarCellOptions,
+  type CalendarCellProps,
+} from "./calendar-cell";
+import {
+  CalendarCellTrigger as CellTrigger,
+  type CalendarCellTriggerProps,
+} from "./calendar-cell-trigger";
+import {
   CalendarGrid as Grid,
   type CalendarGridOptions,
   type CalendarGridProps,
@@ -17,6 +26,7 @@ import {
   type CalendarHeaderCellProps,
 } from "./calendar-header-cell";
 import { CalendarHeaderRow as HeaderRow, type CalendarHeaderRowProps } from "./calendar-header-row";
+import { CalendarHeading as Heading, type CalendarHeadingProps } from "./calendar-heading";
 import {
   CalendarNextTrigger as NextTrigger,
   type CalendarNextTriggerOptions,
@@ -35,6 +45,9 @@ import {
 import { CalendarRow as Row, type CalendarRowOptions, type CalendarRowProps } from "./calendar-row";
 
 export type {
+  CalendarCellOptions,
+  CalendarCellProps,
+  CalendarCellTriggerProps,
   CalendarGridBodyOptions,
   CalendarGridBodyProps,
   CalendarGridHeaderProps,
@@ -42,6 +55,7 @@ export type {
   CalendarGridProps,
   CalendarHeaderCellProps,
   CalendarHeaderRowProps,
+  CalendarHeadingProps,
   CalendarNextTriggerOptions,
   CalendarNextTriggerProps,
   CalendarPrevTriggerOptions,
@@ -52,7 +66,20 @@ export type {
   CalendarRowProps,
 };
 
-export { Grid, GridBody, GridHeader, HeaderCell, HeaderRow, NextTrigger, PrevTrigger, Root, Row };
+export {
+  Cell,
+  CellTrigger,
+  Grid,
+  GridBody,
+  GridHeader,
+  HeaderCell,
+  HeaderRow,
+  Heading,
+  NextTrigger,
+  PrevTrigger,
+  Root,
+  Row,
+};
 
 /*
 

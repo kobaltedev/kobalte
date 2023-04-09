@@ -28,10 +28,12 @@ export interface CalendarContextValue {
   isCellFocused: (date: DateValue) => boolean;
   isCellDisabled: (date: DateValue) => boolean;
   isCellUnavailable: (date: DateValue) => boolean;
+  isDateInvalid: (date: DateValue) => boolean;
   setStartDate: (date: DateValue) => void;
-  setFocusedDate: (date: DateValue) => void;
   setIsFocused: (value: boolean) => void;
   selectFocusedDate: () => void;
+  setValue: (date: DateValue) => void;
+  focusCell: (date: DateValue) => void;
   focusNextDay: () => void;
   focusPreviousDay: () => void;
   focusNextPage: () => void;

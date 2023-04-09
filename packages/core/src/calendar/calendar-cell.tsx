@@ -1,13 +1,14 @@
 import { OverrideComponentProps } from "@kobalte/utils";
-import { ComponentProps, splitProps } from "solid-js";
+import { ComponentProps, createMemo, splitProps } from "solid-js";
 
 import { Polymorphic } from "../polymorphic";
 import { DateValue } from "./types";
 import { getEraFormat } from "./utils";
-import { useCalendarContext } from "./calendar-context";
+import { CalendarContextValue, useCalendarContext } from "./calendar-context";
 import { createDateFormatter } from "../i18n";
 import { root } from "solid-js/web/types/core";
-import { isSameDay } from "@internationalized/date";
+import { isSameDay, isToday } from "@internationalized/date";
+import { CalendarCellContext, CalendarCellContextValue } from "./calendar-cell-context";
 
 export interface CalendarCellOptions {
   /** The date that this cell represents. */
@@ -30,26 +31,27 @@ export function CalendarCell(props: CalendarCellProps) {
 
   const [local, others] = splitProps(props, ["date", "disabled"]);
 
-  const dateFormatter = createDateFormatter(() => ({
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    era: getEraFormat(local.date),
-    timeZone: rootContext.timeZone(),
-  }));
+  const isSelected = createMemo(() => {
+    return rootContext.isCellSelected(local.date);
+  });
 
-  const isSelected = () => rootContext.isCellSelected(local.date);
+  const isFocused = createMemo(() => {
+    return rootContext.isCellFocused(local.date);
+  });
 
-  const isFocused = () => rootContext.isCellFocused(local.date);
+  const isDisabled = createMemo(() => {
+    return local.disabled || rootContext.isCellDisabled(local.date);
+  });
 
-  const isDisabled = () => local.disabled || rootContext.isCellDisabled(local.date);
+  const isUnavailable = createMemo(() => {
+    return rootContext.isCellUnavailable(local.date);
+  });
 
-  const isUnavailable = () => rootContext.isCellUnavailable(local.date);
+  const isSelectable = () => {
+    return !rootContext.isReadOnly() && !isDisabled() && !isUnavailable();
+  };
 
-  const isSelectable = () => !isDisabled() && !isUnavailable();
-
-  const isInvalid = () => {
+  const isInvalid = createMemo(() => {
     if (rootContext.validationState() !== "invalid") {
       return false;
     }
@@ -68,8 +70,34 @@ export function CalendarCell(props: CalendarCellProps) {
 
     const value = rootContext.value();
 
-    return value && isSameDay(value, local.date);
+    return value != null && isSameDay(value, local.date);
+  });
+
+  const isDateToday = () => isToday(local.date, rootContext.timeZone());
+
+  const context: CalendarCellContextValue = {
+    date: () => local.date,
+    isSelected,
+    isFocused,
+    isUnavailable,
+    isSelectable,
+    isDisabled,
+    isInvalid,
+    isDateToday,
   };
 
-  return <Polymorphic as="td" {...others} />;
+  return (
+    <CalendarCellContext.Provider value={context}>
+      <Polymorphic
+        as="td"
+        role="gridcell"
+        aria-disabled={!isSelectable() || undefined}
+        aria-selected={isSelected() || undefined}
+        aria-invalid={isInvalid() || undefined}
+        aria-current={isDateToday() ? "date" : undefined}
+        data-value={local.date.toString()}
+        {...others}
+      />
+    </CalendarCellContext.Provider>
+  );
 }

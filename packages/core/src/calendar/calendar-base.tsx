@@ -9,7 +9,6 @@
 
 import {
   Calendar,
-  CalendarDate,
   DateDuration,
   DateFormatter,
   getDayOfWeek,
@@ -74,7 +73,7 @@ export interface CalendarBaseOptions {
    * - `multiple` - multiple dates can be selected
    * - `range` - a range of dates can be selected
    */
-  selectionMode: CalendarSelectionMode;
+  selectionMode?: CalendarSelectionMode;
 
   /** The controlled selected date of the calendar. */
   value?: DateValue;
@@ -256,16 +255,6 @@ export function CalendarBase(props: CalendarBaseProps) {
     return local.validationState || (isDateUnavailable() ? "invalid" : null);
   });
 
-  const title = createMemo(() => {
-    return getVisibleRangeDescription(
-      messageFormatter(),
-      startDate(),
-      endDate(),
-      timeZone(),
-      false
-    );
-  });
-
   const visibleRangeDescription = createMemo(() => {
     return getVisibleRangeDescription(messageFormatter(), startDate(), endDate(), timeZone(), true);
   });
@@ -347,6 +336,10 @@ export function CalendarBase(props: CalendarBaseProps) {
 
   function focusCell(date: DateValue) {
     setFocusedDate(constrainValue(date, local.min, local.max));
+
+    if (!isFocused()) {
+      setIsFocused(true);
+    }
   }
 
   const focusNextDay = () => {
@@ -572,6 +565,7 @@ export function CalendarBase(props: CalendarBaseProps) {
     isCellDisabled,
     isCellSelected,
     isCellFocused,
+    isDateInvalid,
     validationState,
     startDate,
     endDate,
@@ -584,10 +578,11 @@ export function CalendarBase(props: CalendarBaseProps) {
     max: () => local.max,
     timeZone,
     messageFormatter,
-    setFocusedDate,
     setStartDate,
     setIsFocused,
     selectFocusedDate,
+    setValue,
+    focusCell,
     focusNextDay,
     focusPreviousDay,
     focusNextPage,
