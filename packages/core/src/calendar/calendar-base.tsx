@@ -47,6 +47,7 @@ import {
   getSelectedDateDescription,
   getVisibleRangeDescription,
   isDateInvalid,
+  sortDates,
 } from "./utils";
 
 export interface CalendarBaseOptions {
@@ -321,13 +322,15 @@ export function CalendarBase(props: CalendarBaseProps) {
         }
 
         if (local.selectionMode === "multiple") {
-          const index = prev.findIndex(date => (newValue ? isSameDay(date, newValue) : false));
+          const index = prev.findIndex(date => newValue != null && isSameDay(date, newValue));
 
-          // If date is already selected, remove it.
+          // If new value is already selected, remove it.
           if (index !== -1) {
-            return [...prev.slice(0, index), ...prev.slice(index + 1)];
+            const nextValues = [...prev];
+            nextValues.splice(index, 1);
+            return sortDates(nextValues);
           } else {
-            return [...prev, newValue];
+            return sortDates([...prev, newValue]);
           }
         }
 

@@ -685,3 +685,11 @@ export function getPreviousSection(
     });
   }
 }
+
+/* -----------------------------------------------------------------------------
+ *  Misc.
+ * -----------------------------------------------------------------------------*/
+
+export function sortDates(values: DateValue[]) {
+  return values.sort((a, b) => a.compare(b));
+}

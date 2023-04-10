@@ -20,7 +20,7 @@ function CalendarPlayground() {
         visibleDuration={{ months: 2 }}
         value={value()}
         onChange={setValue}
-        selectionMode="single"
+        selectionMode="multiple"
       >
         <header class="header">
           <Calendar.PrevTrigger class="button">&lsaquo;</Calendar.PrevTrigger>
