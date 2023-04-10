@@ -9,17 +9,26 @@
 
 import {
   Calendar,
+  CalendarDate,
   DateDuration,
   DateFormatter,
   getDayOfWeek,
   GregorianCalendar,
+  isEqualDay,
   isSameDay,
+  maxDate,
+  minDate,
   startOfWeek,
   toCalendar,
   toCalendarDate,
   today,
 } from "@internationalized/date";
-import { mergeDefaultProps, OverrideComponentProps, ValidationState } from "@kobalte/utils";
+import {
+  mergeDefaultProps,
+  OverrideComponentProps,
+  RangeValue,
+  ValidationState,
+} from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, createSignal, on, splitProps } from "solid-js";
 
 import { createMessageFormatter, getReadingDirection } from "../i18n";
@@ -47,6 +56,8 @@ import {
   getSelectedDateDescription,
   getVisibleRangeDescription,
   isDateInvalid,
+  makeCalendarDateRange,
+  getNextUnavailableDate,
   sortDates,
 } from "./utils";
 
@@ -94,8 +105,17 @@ export interface CalendarBaseOptions {
   /** The maximum allowed date that a user may select. */
   max?: DateValue;
 
-  /** Callback that is called for each date of the calendar. If it returns true, then the date is unavailable. */
+  /**
+   * Callback that is called for each date of the calendar.
+   * If it returns true, then the date is unavailable.
+   */
   isDateUnavailable?: (date: DateValue) => boolean;
+
+  /**
+   * In "range" selection mode, when combined with `isDateUnavailable`,
+   * determines whether non-contiguous ranges, i.e. ranges containing unavailable dates, may be selected.
+   */
+  allowsNonContiguousRanges?: boolean;
 
   /** Whether to automatically focus the calendar when it mounts. */
   autoFocus?: boolean;
@@ -125,7 +145,6 @@ export function CalendarBase(props: CalendarBaseProps) {
   props = mergeDefaultProps(
     {
       visibleDuration: { months: 1 },
-      selectionAlignment: "center",
       selectionMode: "single",
     },
     props
@@ -143,6 +162,7 @@ export function CalendarBase(props: CalendarBaseProps) {
     "min",
     "max",
     "isDateUnavailable",
+    "allowsNonContiguousRanges",
     "autoFocus",
     "focusedValue",
     "defaultFocusedValue",
@@ -169,8 +189,56 @@ export function CalendarBase(props: CalendarBaseProps) {
 
   const [value, setControlledValue] = createControllableArraySignal({
     value: () => local.value,
-    defaultValue: () => local.defaultValue,
+    defaultValue: () => local.defaultValue ?? [],
     onChange: value => local.onChange?.(value),
+  });
+
+  const [availableRange, setAvailableRange] = createSignal<RangeValue<DateValue | undefined>>();
+
+  const selectionAlignment = createMemo(() => {
+    if (local.selectionMode === "range") {
+      const [valueStart, valueEnd] = value();
+
+      if (valueStart && valueEnd) {
+        const start = alignCenter(
+          toCalendarDate(valueStart),
+          local.visibleDuration!,
+          local.locale,
+          local.min,
+          local.max
+        );
+
+        const end = start.add(local.visibleDuration!).subtract({ days: 1 });
+
+        if (valueEnd.compare(end) > 0) {
+          return "start";
+        }
+      }
+
+      return "center";
+    }
+
+    return local.selectionAlignment ?? "center";
+  });
+
+  const min = createMemo(() => {
+    const startRange = availableRange()?.start;
+
+    if (local.selectionMode === "range" && local.min && startRange) {
+      return maxDate(local.min, startRange);
+    }
+
+    return local.min;
+  });
+
+  const max = createMemo(() => {
+    const endRange = availableRange()?.end;
+
+    if (local.selectionMode === "range" && local.max && endRange) {
+      return minDate(local.max, endRange);
+    }
+
+    return local.max;
   });
 
   const calendarDateValue = createMemo(() => {
@@ -191,8 +259,8 @@ export function CalendarBase(props: CalendarBaseProps) {
     if (local.focusedValue) {
       return constrainValue(
         toCalendar(toCalendarDate(local.focusedValue), calendar()),
-        local.min,
-        local.max
+        min(),
+        max()
       );
     }
 
@@ -204,8 +272,8 @@ export function CalendarBase(props: CalendarBaseProps) {
       local.defaultFocusedValue
         ? toCalendar(toCalendarDate(local.defaultFocusedValue), calendar())
         : calendarDateValue()[0] || toCalendar(today(timeZone()), calendar()),
-      local.min,
-      local.max
+      min(),
+      max()
     );
   });
 
@@ -218,11 +286,11 @@ export function CalendarBase(props: CalendarBaseProps) {
   const [startDate, setStartDate] = createSignal(
     alignDate(
       focusedDate()!,
-      local.selectionAlignment!,
+      selectionAlignment(),
       local.visibleDuration!,
       local.locale,
-      local.min,
-      local.max
+      min(),
+      max()
     )
   );
 
@@ -242,7 +310,7 @@ export function CalendarBase(props: CalendarBaseProps) {
     }
 
     const isSomeDateInvalid = calendarDateValue().some(date => {
-      return local.isDateUnavailable?.(date) || isDateInvalid(date, local.min, local.max);
+      return local.isDateUnavailable?.(date) || isDateInvalid(date, min(), max());
     });
 
     return isSomeDateInvalid ? "invalid" : null;
@@ -261,7 +329,7 @@ export function CalendarBase(props: CalendarBaseProps) {
       local.disabled ||
       date.compare(startDate()) < 0 ||
       date.compare(endDate()) > 0 ||
-      isDateInvalid(date, local.min, local.max)
+      isDateInvalid(date, min(), max())
     );
   };
 
@@ -283,13 +351,40 @@ export function CalendarBase(props: CalendarBaseProps) {
     );
   };
 
+  const updateAvailableRange = (date: DateValue | undefined) => {
+    if (date && local.isDateUnavailable && !local.allowsNonContiguousRanges) {
+      setAvailableRange({
+        start: getNextUnavailableDate(date, startDate(), endDate(), isCellUnavailable, -1),
+        end: getNextUnavailableDate(date, startDate(), endDate(), isCellUnavailable, 1),
+      });
+    } else {
+      setAvailableRange(undefined);
+    }
+  };
+
+  const [anchorDate, setAnchorDate] = createControllableSignal<DateValue | undefined>({
+    onChange: value => updateAvailableRange(value),
+  });
+
+  const highlightedRange = createMemo(() => {
+    const resolvedAnchorDate = anchorDate();
+
+    if (resolvedAnchorDate) {
+      return makeCalendarDateRange(resolvedAnchorDate, focusedDate()!);
+    }
+
+    const [start, end] = value();
+
+    return makeCalendarDateRange(start, end);
+  });
+
   const selectDate = (date: DateValue) => {
     if (local.readOnly || local.disabled) {
       return;
     }
 
     let newValue = getPreviousAvailableDate(
-      constrainValue(date, local.min, local.max),
+      constrainValue(date, min(), max()),
       startDate(),
       local.isDateUnavailable
     );
@@ -299,23 +394,30 @@ export function CalendarBase(props: CalendarBaseProps) {
     }
 
     if (local.selectionMode === "range") {
-      // TODO: RangeCalendar
+      if (!anchorDate()) {
+        setAnchorDate(newValue);
+      } else {
+        setControlledValue(prev => {
+          const [prevStart, prevEnd] = prev;
+
+          const range = makeCalendarDateRange(anchorDate(), newValue);
+
+          if (!range) {
+            return prev;
+          }
+
+          return [convertValue(range.start, prevStart), convertValue(range.end, prevEnd)];
+        });
+
+        setAnchorDate(undefined);
+      }
     } else {
       setControlledValue(prev => {
         if (!newValue) {
           return prev;
         }
 
-        const firstValue = prev[0];
-
-        // The display calendar should not have any effect on the emitted value.
-        // Emit dates in the same calendar as the original value, if any, otherwise gregorian.
-        newValue = toCalendar(newValue, firstValue?.calendar || new GregorianCalendar());
-
-        // Preserve time if the input value had one.
-        if (firstValue && "hour" in firstValue) {
-          newValue = firstValue.set(newValue);
-        }
+        newValue = convertValue(newValue, prev[0]);
 
         if (local.selectionMode === "single") {
           return [newValue];
@@ -344,7 +446,7 @@ export function CalendarBase(props: CalendarBaseProps) {
   };
 
   function focusCell(date: DateValue) {
-    setFocusedDate(constrainValue(date, local.min, local.max));
+    setFocusedDate(constrainValue(date, min(), max()));
 
     if (!isFocused()) {
       setIsFocused(true);
@@ -365,8 +467,8 @@ export function CalendarBase(props: CalendarBaseProps) {
       startDate(),
       local.visibleDuration!,
       local.locale,
-      local.min,
-      local.max
+      min(),
+      max()
     );
 
     setStartDate(page.startDate);
@@ -379,8 +481,8 @@ export function CalendarBase(props: CalendarBaseProps) {
       startDate(),
       local.visibleDuration!,
       local.locale,
-      local.min,
-      local.max
+      min(),
+      max()
     );
 
     setStartDate(page.startDate);
@@ -393,8 +495,8 @@ export function CalendarBase(props: CalendarBaseProps) {
       startDate(),
       local.visibleDuration!,
       local.locale,
-      local.min,
-      local.max
+      min(),
+      max()
     );
 
     if (row) {
@@ -409,8 +511,8 @@ export function CalendarBase(props: CalendarBaseProps) {
       startDate(),
       local.visibleDuration!,
       local.locale,
-      local.min,
-      local.max
+      min(),
+      max()
     );
 
     if (row) {
@@ -425,8 +527,8 @@ export function CalendarBase(props: CalendarBaseProps) {
       startDate(),
       local.visibleDuration!,
       local.locale,
-      local.min,
-      local.max
+      min(),
+      max()
     );
 
     if (section) {
@@ -441,8 +543,8 @@ export function CalendarBase(props: CalendarBaseProps) {
       startDate(),
       local.visibleDuration!,
       local.locale,
-      local.min,
-      local.max
+      min(),
+      max()
     );
 
     if (section) {
@@ -458,8 +560,8 @@ export function CalendarBase(props: CalendarBaseProps) {
       larger,
       local.visibleDuration!,
       local.locale,
-      local.min,
-      local.max
+      min(),
+      max()
     );
 
     if (section) {
@@ -475,8 +577,8 @@ export function CalendarBase(props: CalendarBaseProps) {
       larger,
       local.visibleDuration!,
       local.locale,
-      local.min,
-      local.max
+      min(),
+      max()
     );
 
     if (section) {
@@ -525,7 +627,7 @@ export function CalendarBase(props: CalendarBaseProps) {
         const newFocusedDate = toCalendar(focusedDate()!, calendar);
 
         setStartDate(
-          alignCenter(newFocusedDate, local.visibleDuration!, local.locale, local.min, local.max)
+          alignCenter(newFocusedDate, local.visibleDuration!, local.locale, min(), max())
         );
 
         setFocusedDate(newFocusedDate);
@@ -536,7 +638,7 @@ export function CalendarBase(props: CalendarBaseProps) {
   );
 
   createEffect(() => {
-    const adjust = getAdjustedDateFn(local.visibleDuration!, local.locale, local.min, local.max);
+    const adjust = getAdjustedDateFn(local.visibleDuration!, local.locale, min(), max());
 
     const adjustment = adjust({
       startDate: startDate(),
@@ -563,6 +665,15 @@ export function CalendarBase(props: CalendarBaseProps) {
     }
   });
 
+  // In "range" selection mode, update the available range if the visible range changes.
+  createEffect(
+    on([startDate, endDate], () => {
+      if (local.selectionMode === "range") {
+        updateAvailableRange(anchorDate());
+      }
+    })
+  );
+
   const dataset: Accessor<CalendarDataSet> = createMemo(() => ({}));
 
   const context: CalendarContextValue = {
@@ -583,8 +694,8 @@ export function CalendarBase(props: CalendarBaseProps) {
     selectionMode: () => local.selectionMode!,
     locale: () => local.locale,
     direction,
-    min: () => local.min,
-    max: () => local.max,
+    min,
+    max,
     timeZone,
     messageFormatter,
     setStartDate,
@@ -610,4 +721,17 @@ export function CalendarBase(props: CalendarBaseProps) {
       <Polymorphic as="div" role="group" aria-label={ariaLabel()} {...others} />
     </CalendarContext.Provider>
   );
+}
+
+function convertValue(newValue: DateValue, oldValue?: DateValue): DateValue {
+  // The display calendar should not have any effect on the emitted value.
+  // Emit dates in the same calendar as the original value, if any, otherwise gregorian.
+  newValue = toCalendar(newValue, oldValue?.calendar || new GregorianCalendar());
+
+  // Preserve time if the input value had one.
+  if (oldValue && "hour" in oldValue) {
+    return oldValue.set(newValue);
+  }
+
+  return newValue;
 }

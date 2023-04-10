@@ -13,6 +13,7 @@
  */
 
 import {
+  CalendarDate,
   DateDuration,
   DateFormatter,
   endOfMonth,
@@ -25,6 +26,7 @@ import {
   startOfYear,
   toCalendarDate,
 } from "@internationalized/date";
+import { RangeValue } from "@kobalte/utils";
 
 import { createDateFormatter, LocalizedMessageFormatter } from "../i18n";
 import { DateAlignment, DateValue } from "./types";
@@ -269,6 +271,39 @@ export function getAdjustedDateFn(
   };
 }
 
+export function getUnitDuration(duration: DateDuration) {
+  const unit = { ...duration };
+
+  for (const key in unit) {
+    // @ts-ignore
+    unit[key] = 1;
+  }
+
+  return unit;
+}
+
+export function getNextUnavailableDate(
+  anchorDate: DateValue,
+  start: DateValue,
+  end: DateValue,
+  isDateUnavailableFn: (date: DateValue) => boolean,
+  dir: number
+): DateValue | undefined {
+  let nextDate = anchorDate.add({ days: dir });
+  while (
+    (dir < 0 ? nextDate.compare(start) >= 0 : nextDate.compare(end) <= 0) &&
+    !isDateUnavailableFn(nextDate)
+  ) {
+    nextDate = nextDate.add({ days: dir });
+  }
+
+  if (isDateUnavailableFn(nextDate)) {
+    return nextDate.add({ days: -dir });
+  }
+
+  return undefined;
+}
+
 export function getPreviousAvailableDate(
   date: DateValue,
   min: DateValue,
@@ -285,17 +320,6 @@ export function getPreviousAvailableDate(
   if (date.compare(min) >= 0) {
     return date;
   }
-}
-
-export function getUnitDuration(duration: DateDuration) {
-  const unit = { ...duration };
-
-  for (const key in unit) {
-    // @ts-ignore
-    unit[key] = 1;
-  }
-
-  return unit;
 }
 
 export function getEraFormat(date: DateValue): "short" | undefined {
@@ -692,4 +716,19 @@ export function getPreviousSection(
 
 export function sortDates(values: DateValue[]) {
   return values.sort((a, b) => a.compare(b));
+}
+
+export function makeCalendarDateRange(
+  start?: DateValue,
+  end?: DateValue
+): RangeValue<CalendarDate> | undefined {
+  if (!start || !end) {
+    return undefined;
+  }
+
+  if (end.compare(start) < 0) {
+    [start, end] = [end, start];
+  }
+
+  return { start: toCalendarDate(start), end: toCalendarDate(end) };
 }
