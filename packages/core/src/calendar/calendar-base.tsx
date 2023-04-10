@@ -24,12 +24,26 @@ import {
   today,
 } from "@internationalized/date";
 import {
+  callHandler,
+  contains,
+  getDocument,
+  getWindow,
   mergeDefaultProps,
+  mergeRefs,
   OverrideComponentProps,
   RangeValue,
   ValidationState,
 } from "@kobalte/utils";
-import { Accessor, createEffect, createMemo, createSignal, on, splitProps } from "solid-js";
+import {
+  Accessor,
+  createEffect,
+  createMemo,
+  createSignal,
+  JSX,
+  on,
+  onCleanup,
+  splitProps,
+} from "solid-js";
 
 import { createMessageFormatter, getReadingDirection } from "../i18n";
 import { announce } from "../live-announcer";
@@ -142,6 +156,8 @@ export interface CalendarBaseOptions {
 export type CalendarBaseProps = OverrideComponentProps<"div", CalendarBaseOptions>;
 
 export function CalendarBase(props: CalendarBaseProps) {
+  let ref: HTMLDivElement | undefined;
+
   props = mergeDefaultProps(
     {
       visibleDuration: { months: 1 },
@@ -151,6 +167,7 @@ export function CalendarBase(props: CalendarBaseProps) {
   );
 
   const [local, others] = splitProps(props, [
+    "ref",
     "locale",
     "createCalendar",
     "visibleDuration",
@@ -170,6 +187,7 @@ export function CalendarBase(props: CalendarBaseProps) {
     "validationState",
     "disabled",
     "readOnly",
+    "onFocusOut",
     "aria-label",
   ]);
 
@@ -193,11 +211,17 @@ export function CalendarBase(props: CalendarBaseProps) {
     onChange: value => local.onChange?.(value),
   });
 
+  // The selected values as range, for "range" selection mode.
+  const valueRange: Accessor<RangeValue<DateValue | undefined>> = createMemo(() => {
+    const [start, end] = value();
+    return { start, end };
+  });
+
   const [availableRange, setAvailableRange] = createSignal<RangeValue<DateValue | undefined>>();
 
   const selectionAlignment = createMemo(() => {
     if (local.selectionMode === "range") {
-      const [valueStart, valueEnd] = value();
+      const { start: valueStart, end: valueEnd } = valueRange();
 
       if (valueStart && valueEnd) {
         const start = alignCenter(
@@ -300,21 +324,7 @@ export function CalendarBase(props: CalendarBaseProps) {
 
   const [isFocused, setIsFocused] = createSignal(local.autoFocus || false);
 
-  const validationState = createMemo(() => {
-    if (local.validationState) {
-      return local.validationState;
-    }
-
-    if (calendarDateValue().length <= 0) {
-      return null;
-    }
-
-    const isSomeDateInvalid = calendarDateValue().some(date => {
-      return local.isDateUnavailable?.(date) || isDateInvalid(date, min(), max());
-    });
-
-    return isSomeDateInvalid ? "invalid" : null;
-  });
+  const [isDragging, setIsDragging] = createSignal(false);
 
   const visibleRangeDescription = createMemo(() => {
     return getVisibleRangeDescription(messageFormatter(), startDate(), endDate(), timeZone(), true);
@@ -335,20 +345,6 @@ export function CalendarBase(props: CalendarBaseProps) {
 
   const isCellUnavailable = (date: DateValue) => {
     return local.isDateUnavailable?.(date) ?? false;
-  };
-
-  const isCellFocused = (date: DateValue) => {
-    const resolvedFocusedDate = focusedDate();
-
-    return isFocused() && resolvedFocusedDate != null && isSameDay(date, resolvedFocusedDate);
-  };
-
-  const isCellSelected = (cellDate: DateValue) => {
-    return (
-      calendarDateValue().some(date => isSameDay(cellDate, date)) &&
-      !isCellDisabled(cellDate) &&
-      !isCellUnavailable(cellDate)
-    );
   };
 
   const updateAvailableRange = (date: DateValue | undefined) => {
@@ -373,10 +369,62 @@ export function CalendarBase(props: CalendarBaseProps) {
       return makeCalendarDateRange(resolvedAnchorDate, focusedDate()!);
     }
 
-    const [start, end] = value();
+    const { start, end } = valueRange();
 
     return makeCalendarDateRange(start, end);
   });
+
+  const validationState = createMemo(() => {
+    if (local.validationState) {
+      return local.validationState;
+    }
+
+    if (calendarDateValue().length <= 0) {
+      return null;
+    }
+
+    if (local.selectionMode === "range" && anchorDate()) {
+      return null;
+    }
+
+    const isSomeDateInvalid = calendarDateValue().some(date => {
+      return local.isDateUnavailable?.(date) || isDateInvalid(date, min(), max());
+    });
+
+    return isSomeDateInvalid ? "invalid" : null;
+  });
+
+  const isCellSelected = (cellDate: DateValue) => {
+    const isAvailable = !isCellDisabled(cellDate) && !isCellUnavailable(cellDate);
+
+    if (local.selectionMode === "range") {
+      const { start, end } = highlightedRange() ?? {};
+
+      const isInRange =
+        start != null && cellDate.compare(start) >= 0 && end != null && cellDate.compare(end) <= 0;
+
+      return isInRange && isAvailable;
+    }
+
+    return calendarDateValue().some(date => isSameDay(cellDate, date)) && isAvailable;
+  };
+
+  const isCellFocused = (date: DateValue) => {
+    const resolvedFocusedDate = focusedDate();
+
+    return isFocused() && resolvedFocusedDate != null && isSameDay(date, resolvedFocusedDate);
+  };
+
+  const isCellInvalid = (date: DateValue) => {
+    if (local.selectionMode === "range") {
+      return (
+        isDateInvalid(date, min(), max()) ||
+        isDateInvalid(date, availableRange()?.start, availableRange()?.end)
+      );
+    }
+
+    return isDateInvalid(date, min(), max());
+  };
 
   const selectDate = (date: DateValue) => {
     if (local.readOnly || local.disabled) {
@@ -445,13 +493,19 @@ export function CalendarBase(props: CalendarBaseProps) {
     selectDate(focusedDate()!);
   };
 
-  function focusCell(date: DateValue) {
+  const focusCell = (date: DateValue) => {
     setFocusedDate(constrainValue(date, min(), max()));
 
     if (!isFocused()) {
       setIsFocused(true);
     }
-  }
+  };
+
+  const highlightDate = (date: DateValue) => {
+    if (anchorDate()) {
+      focusCell(date);
+    }
+  };
 
   const focusNextDay = () => {
     focusCell(focusedDate()!.add({ days: 1 }));
@@ -618,6 +672,22 @@ export function CalendarBase(props: CalendarBaseProps) {
     return dates;
   };
 
+  const onFocusOut: JSX.FocusEventHandlerUnion<HTMLDivElement, FocusEvent> = e => {
+    callHandler(e, local.onFocusOut);
+
+    const relatedTarget = e.relatedTarget as Element | null;
+
+    // Stop range selection on focus out, e.g. tabbing away from the calendar.
+    if (
+      local.selectionMode === "range" &&
+      ref &&
+      (!relatedTarget || !contains(ref, relatedTarget)) &&
+      anchorDate()
+    ) {
+      selectFocusedDate();
+    }
+  };
+
   // Reset focused date and visible range when calendar changes.
   let lastCalendarIdentifier = calendar().identifier;
 
@@ -658,7 +728,8 @@ export function CalendarBase(props: CalendarBaseProps) {
 
   // Announce when the selected value changes
   createEffect(() => {
-    const description = getSelectedDateDescription(messageFormatter(), value(), timeZone());
+    // TODO
+    const description = ""; //getSelectedDateDescription(messageFormatter(), value(), timeZone());
 
     if (description) {
       announce(description, "polite", 4000);
@@ -674,34 +745,100 @@ export function CalendarBase(props: CalendarBaseProps) {
     })
   );
 
+  let isVirtualClick = false;
+
+  createEffect(() => {
+    if (local.selectionMode !== "range" || !ref) {
+      return;
+    }
+
+    const win = getWindow(ref);
+    const doc = getDocument(ref);
+
+    // We need to ignore virtual pointer events from VoiceOver due to these bugs.
+    // https://bugs.webkit.org/show_bug.cgi?id=222627
+    // https://bugs.webkit.org/show_bug.cgi?id=223202
+    const onWindowPointerDown = (e: PointerEvent) => {
+      isVirtualClick = e.width === 0 && e.height === 0;
+    };
+
+    // Stop range selection when pressing or releasing a pointer outside the calendar body,
+    // except when pressing the next or previous buttons to switch months.
+    const endDragging = (e: PointerEvent) => {
+      if (isVirtualClick) {
+        isVirtualClick = false;
+        return;
+      }
+
+      setIsDragging(false);
+      if (!anchorDate()) {
+        return;
+      }
+
+      const target = e.target as Element;
+      if (
+        contains(ref, doc.activeElement) &&
+        (!contains(ref, target) || !target.closest('button, [role="button"]'))
+      ) {
+        selectFocusedDate();
+      }
+    };
+
+    // Prevent touch scrolling while dragging
+    const onTouchMove = (e: TouchEvent) => {
+      if (isDragging()) {
+        e.preventDefault();
+      }
+    };
+
+    win.addEventListener("pointerdown", onWindowPointerDown);
+    win.addEventListener("pointerup", endDragging);
+    win.addEventListener("pointercancel", endDragging);
+    ref.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
+
+    onCleanup(() => {
+      win.removeEventListener("pointerdown", onWindowPointerDown);
+      win.removeEventListener("pointerup", endDragging);
+      win.removeEventListener("pointercancel", endDragging);
+      ref?.removeEventListener("touchmove", onTouchMove, { capture: true });
+    });
+  });
+
   const dataset: Accessor<CalendarDataSet> = createMemo(() => ({}));
 
   const context: CalendarContextValue = {
     dataset,
     value,
+    valueRange,
     isDisabled: () => local.disabled ?? false,
     isReadOnly: () => local.readOnly ?? false,
+    isDragging,
     isCellUnavailable,
     isCellDisabled,
     isCellSelected,
     isCellFocused,
-    isDateInvalid,
+    isCellInvalid,
     validationState,
     startDate,
     endDate,
+    anchorDate,
     focusedDate: () => focusedDate()!,
     visibleDuration: () => local.visibleDuration!,
     selectionMode: () => local.selectionMode!,
     locale: () => local.locale,
+    highlightedRange,
     direction,
     min,
     max,
     timeZone,
     messageFormatter,
     setStartDate,
+    setAnchorDate,
     setIsFocused,
+    setIsDragging,
     selectFocusedDate,
     selectDate,
+    highlightDate,
     focusCell,
     focusNextDay,
     focusPreviousDay,
@@ -718,7 +855,14 @@ export function CalendarBase(props: CalendarBaseProps) {
 
   return (
     <CalendarContext.Provider value={context}>
-      <Polymorphic as="div" role="group" aria-label={ariaLabel()} {...others} />
+      <Polymorphic
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        as="div"
+        role="group"
+        aria-label={ariaLabel()}
+        onFocusOut={onFocusOut}
+        {...others}
+      />
     </CalendarContext.Provider>
   );
 }

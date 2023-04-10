@@ -1,5 +1,5 @@
-import { DateDuration } from "@internationalized/date";
-import { ValidationState } from "@kobalte/utils";
+import { CalendarDate, DateDuration } from "@internationalized/date";
+import { RangeValue, ValidationState } from "@kobalte/utils";
 import { Accessor, createContext, useContext } from "solid-js";
 
 import { Direction, LocalizedMessageFormatter } from "../i18n";
@@ -10,9 +10,12 @@ export interface CalendarDataSet {}
 export interface CalendarContextValue {
   dataset: Accessor<CalendarDataSet>;
   value: Accessor<DateValue[]>;
+  valueRange: Accessor<RangeValue<DateValue | undefined>>;
   startDate: Accessor<DateValue>;
   endDate: Accessor<DateValue>;
+  anchorDate: Accessor<DateValue | undefined>;
   focusedDate: Accessor<DateValue>;
+  highlightedRange: Accessor<RangeValue<CalendarDate> | undefined>;
   visibleDuration: Accessor<DateDuration>;
   selectionMode: Accessor<CalendarSelectionMode>;
   locale: Accessor<string>;
@@ -24,15 +27,19 @@ export interface CalendarContextValue {
   messageFormatter: Accessor<LocalizedMessageFormatter>;
   isDisabled: Accessor<boolean>;
   isReadOnly: Accessor<boolean>;
+  isDragging: Accessor<boolean>;
   isCellSelected: (date: DateValue) => boolean;
   isCellFocused: (date: DateValue) => boolean;
   isCellDisabled: (date: DateValue) => boolean;
   isCellUnavailable: (date: DateValue) => boolean;
-  isDateInvalid: (date: DateValue) => boolean;
+  isCellInvalid: (date: DateValue) => boolean;
   setStartDate: (date: DateValue) => void;
+  setAnchorDate: (date: DateValue | undefined) => void;
   setIsFocused: (value: boolean) => void;
+  setIsDragging: (value: boolean) => void;
   selectFocusedDate: () => void;
   selectDate: (date: DateValue) => void;
+  highlightDate: (date: DateValue) => void;
   focusCell: (date: DateValue) => void;
   focusNextDay: () => void;
   focusPreviousDay: () => void;

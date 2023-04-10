@@ -49,23 +49,7 @@ export function CalendarCell(props: CalendarCellProps) {
   };
 
   const isInvalid = createMemo(() => {
-    if (rootContext.validationState() !== "invalid") {
-      return false;
-    }
-
-    /*
-    // TODO: RangeCalendar
-    if (rootContext.selectionMode() === "range") {
-      return (
-        !rootContext.anchorDate() &&
-        rootContext.highlightedRange() &&
-        local.date.compare(rootContext.highlightedRange().start) >= 0 &&
-        local.date.compare(rootContext.highlightedRange().end) <= 0
-      );
-    }
-    */
-
-    return rootContext.value().some(date => isSameDay(date, local.date));
+    return rootContext.validationState() === "invalid" && isSelected();
   });
 
   const isDateToday = () => isToday(local.date, rootContext.timeZone());

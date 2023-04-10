@@ -374,28 +374,20 @@ function formatRange(
 
 export function getSelectedDateDescription(
   messageFormatter: LocalizedMessageFormatter,
-  value: DateValue[],
+  value: DateValue,
   timeZone: string
 ) {
-  if (value.length <= 0) {
-    return "";
-  }
-
   const dateFormatter = createDateFormatter(() => ({
     weekday: "long",
     month: "long",
     year: "numeric",
     day: "numeric",
-    era: getEraFormat(value[0]),
+    era: getEraFormat(value),
     timeZone: timeZone,
   }));
 
-  const formattedValue = value
-    .map(date => dateFormatter().format(date.toDate(timeZone)))
-    .join(", ");
-
   return messageFormatter.format("selectedDateDescription", {
-    date: formattedValue,
+    date: dateFormatter().format(value.toDate(timeZone)),
   });
 }
 

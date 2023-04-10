@@ -148,10 +148,9 @@ export function CalendarGrid(props: CalendarGridProps) {
         rootContext.focusNextRow();
         break;
       case "Escape":
-        // TODO: RangeCalendar - Cancel the selection.
         if (rootContext.selectionMode() === "range") {
           e.preventDefault();
-          //state.setAnchorDate(null);
+          rootContext.setAnchorDate(undefined);
         }
         break;
     }
