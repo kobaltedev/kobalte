@@ -1,15 +1,15 @@
 import { DateDuration } from "@internationalized/date";
+import { ValidationState } from "@kobalte/utils";
 import { Accessor, createContext, useContext } from "solid-js";
 
 import { Direction, LocalizedMessageFormatter } from "../i18n";
 import { CalendarSelectionMode, DateValue } from "./types";
-import { ValidationState } from "@kobalte/utils";
 
 export interface CalendarDataSet {}
 
 export interface CalendarContextValue {
   dataset: Accessor<CalendarDataSet>;
-  value: Accessor<DateValue | undefined>;
+  value: Accessor<DateValue[]>;
   startDate: Accessor<DateValue>;
   endDate: Accessor<DateValue>;
   focusedDate: Accessor<DateValue>;
@@ -32,7 +32,7 @@ export interface CalendarContextValue {
   setStartDate: (date: DateValue) => void;
   setIsFocused: (value: boolean) => void;
   selectFocusedDate: () => void;
-  setValue: (date: DateValue) => void;
+  selectDate: (date: DateValue) => void;
   focusCell: (date: DateValue) => void;
   focusNextDay: () => void;
   focusPreviousDay: () => void;

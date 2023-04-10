@@ -2,8 +2,6 @@ import { isSameDay, isSameMonth, isWeekend } from "@internationalized/date";
 import {
   callHandler,
   focusWithoutScrolling,
-  getDocument,
-  getScrollParent,
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
@@ -13,8 +11,8 @@ import * as Button from "../button";
 import { createDateFormatter } from "../i18n";
 import { useCalendarCellContext } from "./calendar-cell-context";
 import { useCalendarContext } from "./calendar-context";
-import { getEraFormat } from "./utils";
 import { useCalendarGridContext } from "./calendar-grid-context";
+import { getEraFormat } from "./utils";
 
 export type CalendarCellTriggerProps = OverrideComponentProps<"button", Button.ButtonRootOptions>;
 
@@ -235,7 +233,7 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
     // timer will still be in progress. In this case, select the date on touch up.
     // Timer is cleared in onPressEnd.
     if (rootContext.selectionMode() === "range" && touchDragTimerRef) {
-      rootContext.setValue(context.date());
+      rootContext.selectDate(context.date());
       rootContext.focusCell(context.date());
     }
 
@@ -249,14 +247,14 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
         rootContext.setAnchorDate(context.date());
       } else if (rootContext.anchorDate() && !isAnchorPressed) {
         // When releasing a drag or pressing the end date of a range, select it.
-        rootContext.setValue(context.date());
+        rootContext.selectDate(context.date());
         rootContext.focusCell(context.date());
       } else if (e.pointerType === "keyboard" && !rootContext.anchorDate()) {
         // For range selection, auto-advance the focused date by one if using keyboard.
         // This gives an indication that you're selecting a range rather than a single date.
         // For mouse, this is unnecessary because users will see the indication on hover. For screen readers,
         // there will be an announcement to "click to finish selecting range" (above).
-        rootContext.setValue(context.date());
+        rootContext.selectDate(context.date());
         let nextDay = context.date().add({ days: 1 });
         if (rootContext.isDateInvalid(nextDay)) {
           nextDay = context.date().subtract({ days: 1 });
@@ -266,7 +264,7 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
         }
       } else if (e.pointerType === "virtual") {
         // For screen readers, just select the date on click.
-        rootContext.setValue(context.date());
+        rootContext.selectDate(context.date());
         rootContext.focusCell(context.date());
       }
     }
@@ -278,7 +276,7 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
 
     // For non-range selection, always select on press up.
     if (rootContext.selectionMode() !== "range" && context.isSelectable()) {
-      rootContext.setValue(context.date());
+      rootContext.selectDate(context.date());
       rootContext.focusCell(context.date());
     }
   };
@@ -292,6 +290,7 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
 
   return (
     <Button.Root
+      as="div"
       ref={mergeRefs(el => (ref = el), local.ref)}
       tabIndex={tabIndex()}
       disabled={isDisabled()}

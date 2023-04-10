@@ -1,14 +1,11 @@
+import { isSameDay, isToday } from "@internationalized/date";
 import { OverrideComponentProps } from "@kobalte/utils";
-import { ComponentProps, createMemo, splitProps } from "solid-js";
+import { createMemo, splitProps } from "solid-js";
 
 import { Polymorphic } from "../polymorphic";
-import { DateValue } from "./types";
-import { getEraFormat } from "./utils";
-import { CalendarContextValue, useCalendarContext } from "./calendar-context";
-import { createDateFormatter } from "../i18n";
-import { root } from "solid-js/web/types/core";
-import { isSameDay, isToday } from "@internationalized/date";
 import { CalendarCellContext, CalendarCellContextValue } from "./calendar-cell-context";
+import { useCalendarContext } from "./calendar-context";
+import { DateValue } from "./types";
 
 export interface CalendarCellOptions {
   /** The date that this cell represents. */
@@ -68,9 +65,7 @@ export function CalendarCell(props: CalendarCellProps) {
     }
     */
 
-    const value = rootContext.value();
-
-    return value != null && isSameDay(value, local.date);
+    return rootContext.value().some(date => isSameDay(date, local.date));
   });
 
   const isDateToday = () => isToday(local.date, rootContext.timeZone());

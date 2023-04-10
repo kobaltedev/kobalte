@@ -25,7 +25,7 @@ import { Accessor, createEffect, createMemo, createSignal, on, splitProps } from
 import { createMessageFormatter, getReadingDirection } from "../i18n";
 import { announce } from "../live-announcer";
 import { Polymorphic } from "../polymorphic";
-import { createControllableSignal } from "../primitives";
+import { createControllableArraySignal, createControllableSignal } from "../primitives";
 import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
 import { CalendarContext, CalendarContextValue, CalendarDataSet } from "./calendar-context";
 import { CalendarSelectionMode, DateAlignment, DateValue } from "./types";
@@ -75,17 +75,17 @@ export interface CalendarBaseOptions {
    */
   selectionMode?: CalendarSelectionMode;
 
-  /** The controlled selected date of the calendar. */
-  value?: DateValue;
+  /** The controlled selected dates of the calendar. */
+  value?: Array<DateValue>;
 
   /**
-   * The date of the calendar that should be selected when initially rendered.
+   * The dates of the calendar that should be selected when initially rendered.
    * Useful when you do not need to control the state of the calendar.
    */
-  defaultValue?: DateValue;
+  defaultValue?: Array<DateValue>;
 
-  /** Event handler called when the selected date changes. */
-  onChange?: (value: DateValue) => void;
+  /** Event handler called when the selected dates change. */
+  onChange?: (value: Array<DateValue>) => void;
 
   /** The minimum allowed date that a user may select. */
   min?: DateValue;
@@ -166,27 +166,21 @@ export function CalendarBase(props: CalendarBaseProps) {
     return local.createCalendar(resolvedOptions().calendar);
   });
 
-  const [value, setControlledValue] = createControllableSignal({
+  const [value, setControlledValue] = createControllableArraySignal({
     value: () => local.value,
     defaultValue: () => local.defaultValue,
     onChange: value => local.onChange?.(value),
   });
 
   const calendarDateValue = createMemo(() => {
-    const resolvedValue = value();
-
-    if (resolvedValue) {
-      return toCalendar(toCalendarDate(resolvedValue), calendar());
-    }
-
-    return null;
+    return value().map(date => toCalendar(toCalendarDate(date), calendar()));
   });
 
   const timeZone = createMemo(() => {
-    const resolvedValue = value();
+    const firstValue = value()[0];
 
-    if (resolvedValue && "timeZone" in resolvedValue) {
-      return resolvedValue.timeZone;
+    if (firstValue && "timeZone" in firstValue) {
+      return firstValue.timeZone;
     }
 
     return resolvedOptions().timeZone;
@@ -208,7 +202,7 @@ export function CalendarBase(props: CalendarBaseProps) {
     return constrainValue(
       local.defaultFocusedValue
         ? toCalendar(toCalendarDate(local.defaultFocusedValue), calendar())
-        : calendarDateValue() || toCalendar(today(timeZone()), calendar()),
+        : calendarDateValue()[0] || toCalendar(today(timeZone()), calendar()),
       local.min,
       local.max
     );
@@ -237,34 +231,24 @@ export function CalendarBase(props: CalendarBaseProps) {
 
   const [isFocused, setIsFocused] = createSignal(local.autoFocus || false);
 
-  const isDateUnavailable = createMemo(() => {
-    const resolvedCalendarDateValue = calendarDateValue();
-
-    if (!resolvedCalendarDateValue) {
-      return false;
-    }
-
-    if (local.isDateUnavailable?.(resolvedCalendarDateValue)) {
-      return true;
-    }
-
-    return isDateInvalid(resolvedCalendarDateValue, local.min, local.max);
-  });
-
   const validationState = createMemo(() => {
-    return local.validationState || (isDateUnavailable() ? "invalid" : null);
+    if (local.validationState) {
+      return local.validationState;
+    }
+
+    if (calendarDateValue().length <= 0) {
+      return null;
+    }
+
+    const isSomeDateInvalid = calendarDateValue().some(date => {
+      return local.isDateUnavailable?.(date) || isDateInvalid(date, local.min, local.max);
+    });
+
+    return isSomeDateInvalid ? "invalid" : null;
   });
 
   const visibleRangeDescription = createMemo(() => {
     return getVisibleRangeDescription(messageFormatter(), startDate(), endDate(), timeZone(), true);
-  });
-
-  const selectedDateDescription = createMemo(() => {
-    const resolvedValue = value();
-
-    if (resolvedValue) {
-      return getSelectedDateDescription(messageFormatter(), resolvedValue, timeZone());
-    }
   });
 
   const ariaLabel = () => {
@@ -290,18 +274,15 @@ export function CalendarBase(props: CalendarBaseProps) {
     return isFocused() && resolvedFocusedDate != null && isSameDay(date, resolvedFocusedDate);
   };
 
-  const isCellSelected = (date: DateValue) => {
-    const resolvedCalendarDateValue = calendarDateValue();
-
+  const isCellSelected = (cellDate: DateValue) => {
     return (
-      resolvedCalendarDateValue != null &&
-      isSameDay(date, resolvedCalendarDateValue) &&
-      !isCellDisabled(date) &&
-      !isCellUnavailable(date)
+      calendarDateValue().some(date => isSameDay(cellDate, date)) &&
+      !isCellDisabled(cellDate) &&
+      !isCellUnavailable(cellDate)
     );
   };
 
-  const setValue = (date: DateValue) => {
+  const selectDate = (date: DateValue) => {
     if (local.readOnly || local.disabled) {
       return;
     }
@@ -316,22 +297,47 @@ export function CalendarBase(props: CalendarBaseProps) {
       return;
     }
 
-    const resolvedValue = value();
-
-    // The display calendar should not have any effect on the emitted value.
-    // Emit dates in the same calendar as the original value, if any, otherwise gregorian.
-    newValue = toCalendar(newValue, resolvedValue?.calendar || new GregorianCalendar());
-
-    // Preserve time if the input value had one.
-    if (resolvedValue && "hour" in resolvedValue) {
-      setControlledValue(resolvedValue.set(newValue));
+    if (local.selectionMode === "range") {
+      // TODO: RangeCalendar
     } else {
-      setControlledValue(newValue);
+      setControlledValue(prev => {
+        if (!newValue) {
+          return prev;
+        }
+
+        const firstValue = prev[0];
+
+        // The display calendar should not have any effect on the emitted value.
+        // Emit dates in the same calendar as the original value, if any, otherwise gregorian.
+        newValue = toCalendar(newValue, firstValue?.calendar || new GregorianCalendar());
+
+        // Preserve time if the input value had one.
+        if (firstValue && "hour" in firstValue) {
+          newValue = firstValue.set(newValue);
+        }
+
+        if (local.selectionMode === "single") {
+          return [newValue];
+        }
+
+        if (local.selectionMode === "multiple") {
+          const index = prev.findIndex(date => (newValue ? isSameDay(date, newValue) : false));
+
+          // If date is already selected, remove it.
+          if (index !== -1) {
+            return [...prev.slice(0, index), ...prev.slice(index + 1)];
+          } else {
+            return [...prev, newValue];
+          }
+        }
+
+        return prev;
+      });
     }
   };
 
   const selectFocusedDate = () => {
-    setValue(focusedDate()!);
+    selectDate(focusedDate()!);
   };
 
   function focusCell(date: DateValue) {
@@ -547,10 +553,10 @@ export function CalendarBase(props: CalendarBaseProps) {
 
   // Announce when the selected value changes
   createEffect(() => {
-    const resolvedDescription = selectedDateDescription();
+    const description = getSelectedDateDescription(messageFormatter(), value(), timeZone());
 
-    if (resolvedDescription) {
-      announce(resolvedDescription, "polite", 4000);
+    if (description) {
+      announce(description, "polite", 4000);
     }
   });
 
@@ -581,7 +587,7 @@ export function CalendarBase(props: CalendarBaseProps) {
     setStartDate,
     setIsFocused,
     selectFocusedDate,
-    setValue,
+    selectDate,
     focusCell,
     focusNextDay,
     focusPreviousDay,
