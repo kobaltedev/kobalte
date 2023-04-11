@@ -1,7 +1,16 @@
+/*!
+ * Portions of this file are based on code from react-spectrum.
+ * Apache License Version 2.0, Copyright 2020 Adobe.
+ *
+ * Credits to the React Spectrum team:
+ * https://github.com/adobe/react-spectrum/blob/a8903d3b8c462b85cc34e8565e1a1084827d0a29/packages/@react-aria/calendar/src/useCalendarCell.ts
+ */
+
 import { isSameDay, isSameMonth, isWeekend } from "@internationalized/date";
 import {
   callHandler,
   focusWithoutScrolling,
+  getWindow,
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
@@ -30,6 +39,7 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
     "onPointerEnter",
     "onPointerDown",
     "onPointerUp",
+    "onPointerLeave",
     "onClick",
     "onKeyDown",
   ]);
@@ -149,6 +159,7 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
     return label;
   });
 
+  let isPointerDown = false;
   let isAnchorPressed = false;
   let isRangeBoundaryPressed = false;
   let touchDragTimerRef: number | undefined;
@@ -156,8 +167,11 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
   const onPressEnd = () => {
     isRangeBoundaryPressed = false;
     isAnchorPressed = false;
-    window.clearTimeout(touchDragTimerRef);
-    touchDragTimerRef = undefined;
+
+    if (touchDragTimerRef != null) {
+      getWindow(ref).clearTimeout(touchDragTimerRef);
+      touchDragTimerRef = undefined;
+    }
   };
 
   const onPointerEnter: JSX.EventHandlerUnion<HTMLDivElement, PointerEvent> = e => {
@@ -173,12 +187,20 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
     }
   };
 
+  const onPointerLeave: JSX.EventHandlerUnion<HTMLDivElement, PointerEvent> = e => {
+    callHandler(e, local.onPointerLeave);
+
+    if (isPointerDown) {
+      onPressEnd();
+    }
+  };
+
   const onPointerDown: JSX.EventHandlerUnion<HTMLDivElement, PointerEvent> = e => {
     callHandler(e, local.onPointerDown);
+    isPointerDown = true;
 
     // This is necessary on touch devices to allow dragging
     // outside the original pressed element.
-    // (JSDOM does not support this)
     if ("releasePointerCapture" in e.target) {
       e.target.releasePointerCapture(e.pointerId);
     }
@@ -188,14 +210,11 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
       return;
     }
 
-    if (
-      rootContext.selectionMode() === "range" &&
-      !rootContext.anchorDate() &&
-      (e.pointerType === "mouse" || e.pointerType === "touch")
-    ) {
+    if (rootContext.selectionMode() === "range" && !rootContext.anchorDate()) {
       const highlightedRange = rootContext.highlightedRange();
 
-      // Allow dragging the start or end date of a range to modify it rather than starting a new selection.
+      // Allow dragging the start or end date of a range to modify it
+      // rather than starting a new selection.
       // Don't allow dragging when invalid, or weird jumping behavior may occur as date ranges
       // are constrained to available dates. The user will need to select a new range in this case.
       if (highlightedRange && !context.isInvalid()) {
@@ -226,7 +245,7 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
       // Start selection on mouse/touch down so users can drag to select a range.
       // On touch, delay dragging to determine if the user really meant to scroll.
       if (e.pointerType === "touch") {
-        touchDragTimerRef = window.setTimeout(startDragging, 200);
+        touchDragTimerRef = getWindow(ref).setTimeout(startDragging, 200);
       } else {
         startDragging();
       }
@@ -235,40 +254,36 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
 
   const onPointerUp: JSX.EventHandlerUnion<HTMLDivElement, PointerEvent> = e => {
     callHandler(e, local.onPointerUp);
+    isPointerDown = false;
 
-    if (rootContext.isReadOnly()) {
+    if (rootContext.isReadOnly() || rootContext.selectionMode() !== "range") {
+      onPressEnd();
       return;
     }
 
     // If the user tapped quickly, the date won't be selected yet and the
     // timer will still be in progress. In this case, select the date on touch up.
-    // Timer is cleared in onPressEnd.
-    if (rootContext.selectionMode() === "range" && touchDragTimerRef != null) {
+    if (touchDragTimerRef != null) {
       rootContext.selectDate(context.date());
       rootContext.focusCell(context.date());
     }
 
-    if (rootContext.selectionMode() === "range") {
-      if (isRangeBoundaryPressed) {
-        // When clicking on the start or end date of an already selected range,
-        // start a new selection on press up to also allow dragging the date to
-        // change the existing range.
-        rootContext.setAnchorDate(context.date());
-      } else if (rootContext.anchorDate() && !isAnchorPressed) {
-        // When releasing a drag or pressing the end date of a range, select it.
-        rootContext.selectDate(context.date());
-        rootContext.focusCell(context.date());
-      } else if (e.pointerType === "virtual") {
-        // For screen readers, just select the date on click.
-        rootContext.selectDate(context.date());
-        rootContext.focusCell(context.date());
-      }
+    if (isRangeBoundaryPressed) {
+      // When clicking on the start or end date of an already selected range,
+      // start a new selection on press up to also allow dragging the date to
+      // change the existing range.
+      rootContext.setAnchorDate(context.date());
+    } else if (rootContext.anchorDate() && !isAnchorPressed) {
+      // When releasing a drag or pressing the end date of a range, select it.
+      rootContext.selectDate(context.date());
+      rootContext.focusCell(context.date());
     }
+
+    onPressEnd();
   };
 
   const onClick: JSX.EventHandlerUnion<HTMLDivElement, MouseEvent> = e => {
     callHandler(e, local.onClick);
-    onPressEnd();
 
     // For non-range selection, always select on press up.
     if (rootContext.selectionMode() !== "range" && context.isSelectable()) {
@@ -279,49 +294,6 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
 
   const onKeyDown: JSX.EventHandlerUnion<HTMLDivElement, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
-
-    if (isDisabled() || rootContext.isReadOnly()) {
-      return;
-    }
-
-    // TODO: not working
-    if (["Enter", " "].includes(e.key)) {
-      //onPressEnd();
-
-      // If the user tapped quickly, the date won't be selected yet and the
-      // timer will still be in progress. In this case, select the date on touch up.
-      // Timer is cleared in onPressEnd.
-      if (rootContext.selectionMode() === "range" && touchDragTimerRef != null) {
-        rootContext.selectDate(context.date());
-        rootContext.focusCell(context.date());
-      }
-
-      if (rootContext.selectionMode() === "range") {
-        if (isRangeBoundaryPressed) {
-          // When clicking on the start or end date of an already selected range,
-          // start a new selection on press up to also allow dragging the date to
-          // change the existing range.
-          rootContext.setAnchorDate(context.date());
-        } else if (rootContext.anchorDate() && !isAnchorPressed) {
-          // When releasing a drag or pressing the end date of a range, select it.
-          rootContext.selectDate(context.date());
-          rootContext.focusCell(context.date());
-        } else if (!rootContext.anchorDate()) {
-          // For range selection, auto-advance the focused date by one if using keyboard.
-          // This gives an indication that you're selecting a range rather than a single date.
-          rootContext.selectDate(context.date());
-          let nextDay = context.date().add({ days: 1 });
-
-          if (rootContext.isCellInvalid(nextDay)) {
-            nextDay = context.date().subtract({ days: 1 });
-          }
-
-          if (!rootContext.isCellInvalid(nextDay)) {
-            rootContext.focusCell(nextDay);
-          }
-        }
-      }
-    }
   };
 
   // Focus the button in the DOM when the date become the focused/highlighted one.
@@ -356,6 +328,7 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
       data-outside-visible-range={isOutsideVisibleRange() || undefined}
       data-outside-month={isOutsideMonth() || undefined}
       onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onClick={onClick}

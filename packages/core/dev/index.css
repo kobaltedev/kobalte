@@ -48,6 +48,7 @@
   font-size: 24px;
   line-height: 26px;
   color: #333;
+  user-select: none;
 }
 
 .button:active {
@@ -72,6 +73,7 @@
   position: relative;
   outline: none;
   color: #333;
+  user-select: none;
 }
 
 .cell:hover {
