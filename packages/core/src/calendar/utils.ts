@@ -400,7 +400,6 @@ export function getSelectedDateRangeDescription(
   const start = highlightedRange.start;
   const end = highlightedRange.end;
 
-  // No message if currently selecting a range, or there is nothing highlighted.
   if (!anchorDate && start && end) {
     const dateFormatter = createDateFormatter(() => ({
       weekday: "long",
@@ -422,6 +421,7 @@ export function getSelectedDateRangeDescription(
     }
   }
 
+  // No message if currently selecting a range, or there is nothing highlighted.
   return "";
 }
 

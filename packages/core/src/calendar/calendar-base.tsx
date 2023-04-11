@@ -69,6 +69,7 @@ import {
   getSectionEnd,
   getSectionStart,
   getSelectedDateDescription,
+  getSelectedDateRangeDescription,
   getVisibleRangeDescription,
   isDateInvalid,
   makeCalendarDateRange,
@@ -723,8 +724,20 @@ export function CalendarBase(props: CalendarBaseProps) {
 
   // Announce when the selected value changes
   createEffect(() => {
-    // TODO
-    const description = ""; //getSelectedDateDescription(messageFormatter(), value(), timeZone());
+    let description: string;
+
+    if (local.selectionMode === "range") {
+      description = getSelectedDateRangeDescription(
+        messageFormatter(),
+        valueRange(),
+        anchorDate(),
+        timeZone()
+      );
+    } else {
+      description = value()
+        .map(date => getSelectedDateDescription(messageFormatter(), date, timeZone()))
+        .join(", ");
+    }
 
     if (description) {
       announce(description, "polite", 4000);
