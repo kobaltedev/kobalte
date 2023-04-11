@@ -294,6 +294,33 @@ export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
 
   const onKeyDown: JSX.EventHandlerUnion<HTMLDivElement, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
+
+    if (!["Enter", " "].includes(e.key)) {
+      return;
+    }
+
+    if (rootContext.isReadOnly()) {
+      rootContext.focusCell(context.date());
+      return;
+    }
+
+    if (rootContext.selectionMode() === "range" && !rootContext.anchorDate()) {
+      // Prevent `Calendar.Grid` to select the cell.
+      e.stopPropagation();
+
+      // For range selection, auto-advance the focused date by one if using keyboard.
+      // This gives an indication that you're selecting a range rather than a single date.
+      rootContext.selectDate(context.date());
+      let nextDay = context.date().add({ days: 1 });
+
+      if (rootContext.isCellInvalid(nextDay)) {
+        nextDay = context.date().subtract({ days: 1 });
+      }
+
+      if (!rootContext.isCellInvalid(nextDay)) {
+        rootContext.focusCell(nextDay);
+      }
+    }
   };
 
   // Focus the button in the DOM when the date become the focused/highlighted one.

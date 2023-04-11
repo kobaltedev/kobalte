@@ -1,8 +1,6 @@
 .app {
   font-family: sans-serif;
   text-align: center;
-  max-width: 600px;
-  margin: 0 auto;
   --accent-color: rgb(9, 101, 192);
 }
 

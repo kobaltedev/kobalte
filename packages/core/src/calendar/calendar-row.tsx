@@ -1,5 +1,5 @@
 import { OverrideComponentProps } from "@kobalte/utils";
-import { createMemo, For, JSX, splitProps } from "solid-js";
+import { Accessor, createMemo, Index, JSX, splitProps } from "solid-js";
 
 import { Polymorphic } from "../polymorphic";
 import { useCalendarContext } from "./calendar-context";
@@ -7,11 +7,14 @@ import { useCalendarGridContext } from "./calendar-grid-context";
 import { DateValue } from "./types";
 
 export interface CalendarRowOptions {
-  /** The index of the week in the month. */
+  /** The index of the week to render. */
   weekIndex: number;
 
-  /** A function to render a `<Calendar.Cell>` for a day. */
-  children?: (date: DateValue | null) => JSX.Element;
+  /**
+   * Render prop used to render each cell of the week row,
+   * it receives a date accessor as parameter.
+   */
+  children: (date: Accessor<DateValue | null>) => JSX.Element;
 }
 
 export type CalendarRowProps = OverrideComponentProps<"tr", CalendarRowOptions>;
@@ -31,7 +34,7 @@ export function CalendarRow(props: CalendarRowProps) {
 
   return (
     <Polymorphic as="tr" {...others}>
-      <For each={datesInWeek()}>{date => local.children?.(date)}</For>
+      <Index each={datesInWeek()}>{local.children}</Index>
     </Polymorphic>
   );
 }

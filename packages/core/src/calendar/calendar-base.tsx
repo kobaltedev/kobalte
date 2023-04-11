@@ -9,12 +9,10 @@
 
 import {
   Calendar,
-  CalendarDate,
   DateDuration,
   DateFormatter,
   getDayOfWeek,
   GregorianCalendar,
-  isEqualDay,
   isSameDay,
   maxDate,
   minDate,
@@ -24,7 +22,6 @@ import {
   today,
 } from "@internationalized/date";
 import {
-  callHandler,
   contains,
   getDocument,
   getWindow,
@@ -39,7 +36,6 @@ import {
   createEffect,
   createMemo,
   createSignal,
-  JSX,
   on,
   onCleanup,
   splitProps,
@@ -48,7 +44,11 @@ import {
 import { createMessageFormatter, getReadingDirection } from "../i18n";
 import { announce } from "../live-announcer";
 import { Polymorphic } from "../polymorphic";
-import { createControllableArraySignal, createControllableSignal } from "../primitives";
+import {
+  createControllableArraySignal,
+  createControllableSignal,
+  createInteractOutside,
+} from "../primitives";
 import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
 import { CalendarContext, CalendarContextValue, CalendarDataSet } from "./calendar-context";
 import { CalendarSelectionMode, DateAlignment, DateValue } from "./types";
@@ -61,6 +61,7 @@ import {
   getNextPage,
   getNextRow,
   getNextSection,
+  getNextUnavailableDate,
   getPreviousAvailableDate,
   getPreviousPage,
   getPreviousRow,
@@ -71,7 +72,6 @@ import {
   getVisibleRangeDescription,
   isDateInvalid,
   makeCalendarDateRange,
-  getNextUnavailableDate,
   sortDates,
 } from "./utils";
 
@@ -187,7 +187,6 @@ export function CalendarBase(props: CalendarBaseProps) {
     "validationState",
     "disabled",
     "readOnly",
-    "onFocusOut",
     "aria-label",
   ]);
 
@@ -515,34 +514,6 @@ export function CalendarBase(props: CalendarBaseProps) {
     focusCell(focusedDate()!.subtract({ days: 1 }));
   };
 
-  const focusNextPage = () => {
-    const page = getNextPage(
-      focusedDate()!,
-      startDate(),
-      local.visibleDuration!,
-      local.locale,
-      min(),
-      max()
-    );
-
-    setStartDate(page.startDate);
-    focusCell(page.focusedDate);
-  };
-
-  const focusPreviousPage = () => {
-    const page = getPreviousPage(
-      focusedDate()!,
-      startDate(),
-      local.visibleDuration!,
-      local.locale,
-      min(),
-      max()
-    );
-
-    setStartDate(page.startDate);
-    focusCell(page.focusedDate);
-  };
-
   const focusNextRow = () => {
     const row = getNextRow(
       focusedDate()!,
@@ -573,6 +544,34 @@ export function CalendarBase(props: CalendarBaseProps) {
       setStartDate(row.startDate);
       focusCell(row.focusedDate);
     }
+  };
+
+  const focusNextPage = () => {
+    const page = getNextPage(
+      focusedDate()!,
+      startDate(),
+      local.visibleDuration!,
+      local.locale,
+      min(),
+      max()
+    );
+
+    setFocusedDate(constrainValue(page.focusedDate, min(), max()));
+    setStartDate(page.startDate);
+  };
+
+  const focusPreviousPage = () => {
+    const page = getPreviousPage(
+      focusedDate()!,
+      startDate(),
+      local.visibleDuration!,
+      local.locale,
+      min(),
+      max()
+    );
+
+    setFocusedDate(constrainValue(page.focusedDate, min(), max()));
+    setStartDate(page.startDate);
   };
 
   const focusSectionStart = () => {
@@ -672,21 +671,17 @@ export function CalendarBase(props: CalendarBaseProps) {
     return dates;
   };
 
-  const onFocusOut: JSX.FocusEventHandlerUnion<HTMLDivElement, FocusEvent> = e => {
-    callHandler(e, local.onFocusOut);
-
-    const relatedTarget = e.relatedTarget as Element | null;
-
-    // Stop range selection on focus out, e.g. tabbing away from the calendar.
-    if (
-      local.selectionMode === "range" &&
-      ref &&
-      (!relatedTarget || !contains(ref, relatedTarget)) &&
-      anchorDate()
-    ) {
-      selectFocusedDate();
-    }
-  };
+  createInteractOutside(
+    {
+      onInteractOutside: e => {
+        // Stop range selection on interaction outside the calendar, e.g. tabbing away from the calendar.
+        if (local.selectionMode === "range" && anchorDate()) {
+          selectFocusedDate();
+        }
+      },
+    },
+    () => ref
+  );
 
   // Reset focused date and visible range when calendar changes.
   let lastCalendarIdentifier = calendar().identifier;
@@ -860,7 +855,6 @@ export function CalendarBase(props: CalendarBaseProps) {
         as="div"
         role="group"
         aria-label={ariaLabel()}
-        onFocusOut={onFocusOut}
         {...others}
       />
     </CalendarContext.Provider>

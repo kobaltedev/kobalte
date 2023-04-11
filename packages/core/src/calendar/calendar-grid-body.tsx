@@ -1,14 +1,17 @@
 import { getWeeksInMonth } from "@internationalized/date";
-import { OverrideComponentProps, Repeat } from "@kobalte/utils";
-import { createMemo, JSX, splitProps } from "solid-js";
+import { OverrideComponentProps } from "@kobalte/utils";
+import { Accessor, createMemo, Index, JSX, splitProps } from "solid-js";
 
 import { Polymorphic } from "../polymorphic";
 import { useCalendarContext } from "./calendar-context";
 import { useCalendarGridContext } from "./calendar-grid-context";
 
 export interface CalendarGridBodyOptions {
-  /** A function to render a `<Calendar.Row>` for a week. */
-  children?: (weekIndex: number) => JSX.Element;
+  /**
+   * Render prop used to render each row of the calendar grid,
+   * it receives a week index accessor as parameter.
+   */
+  children: (weekIndex: Accessor<number>) => JSX.Element;
 }
 
 export type CalendarGridBodyProps = OverrideComponentProps<"tbody", CalendarGridBodyOptions>;
@@ -22,14 +25,15 @@ export function CalendarGridBody(props: CalendarGridBodyProps) {
 
   const [local, others] = splitProps(props, ["children"]);
 
-  const weeksInMonth = createMemo(() => {
-    return getWeeksInMonth(context.startDate(), rootContext.locale());
+  const weekIndexes = createMemo(() => {
+    const weeksInMonth = getWeeksInMonth(context.startDate(), rootContext.locale());
+
+    return [...new Array(weeksInMonth).keys()];
   });
 
   return (
     <Polymorphic as="tbody" {...others}>
-      {/* @ts-ignore */}
-      <Repeat times={weeksInMonth()}>{weekIndex => local.children?.(weekIndex)}</Repeat>
+      <Index each={weekIndexes()}>{local.children}</Index>
     </Polymorphic>
   );
 }

@@ -35,19 +35,16 @@ export function CalendarNextTrigger(props: CalendarNextTriggerProps) {
 
   const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
     callHandler(e, local.onClick);
-
     context.focusNextPage();
   };
 
   const onFocus: JSX.FocusEventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
     callHandler(e, local.onFocus);
-
     nextTriggerFocused = true;
   };
 
   const onBlur: JSX.FocusEventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
     callHandler(e, local.onBlur);
-
     nextTriggerFocused = false;
   };
 
