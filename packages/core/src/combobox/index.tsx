@@ -44,6 +44,10 @@ import {
   type ComboboxControlProps,
 } from "./combobox-control";
 import {
+  ComboboxHiddenSelect as HiddenSelect,
+  type ComboboxHiddenSelectProps,
+} from "./combobox-hidden-select";
+import {
   ComboboxRoot as Root,
   type ComboboxRootItemComponentProps,
   type ComboboxRootOptions,
@@ -51,10 +55,6 @@ import {
   type ComboboxRootSectionComponentProps,
 } from "./combobox-root";
 import { ComboboxTrigger as Trigger, type ComboboxTriggerProps } from "./combobox-trigger";
-import {
-  ComboboxHiddenSelect as HiddenSelect,
-  type ComboboxHiddenSelectProps,
-} from "./combobox-hidden-select";
 
 export type {
   ComboboxArrowOptions,

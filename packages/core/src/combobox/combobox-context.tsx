@@ -29,8 +29,6 @@ export interface ComboboxContextValue {
   inputRef: Accessor<HTMLInputElement | undefined>;
   triggerRef: Accessor<HTMLButtonElement | undefined>;
   contentRef: Accessor<HTMLDivElement | undefined>;
-  inputId: Accessor<string | undefined>;
-  valueId: Accessor<string | undefined>;
   listboxId: Accessor<string | undefined>;
   triggerAriaLabel: Accessor<string | undefined>;
   listboxAriaLabel: Accessor<string | undefined>;
@@ -53,8 +51,6 @@ export interface ComboboxContextValue {
   renderSection: (section: CollectionNode) => JSX.Element;
   onInputKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent>;
   generateId: (part: string) => string;
-  registerInputId: (id: string) => () => void;
-  registerValueId: (id: string) => () => void;
   registerListboxId: (id: string) => () => void;
 }
 

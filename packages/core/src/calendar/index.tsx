@@ -1,12 +1,4 @@
-import {
-  CalendarCell as Cell,
-  type CalendarCellOptions,
-  type CalendarCellProps,
-} from "./calendar-cell";
-import {
-  CalendarCellTrigger as CellTrigger,
-  type CalendarCellTriggerProps,
-} from "./calendar-cell-trigger";
+import { CalendarBody as Body, type CalendarBodyProps } from "./calendar-body";
 import {
   CalendarGrid as Grid,
   type CalendarGridOptions,
@@ -18,14 +10,33 @@ import {
   type CalendarGridBodyProps,
 } from "./calendar-grid-body";
 import {
+  CalendarGridBodyCell as GridBodyCell,
+  type CalendarGridBodyCellOptions,
+  type CalendarGridBodyCellProps,
+} from "./calendar-grid-body-cell";
+import {
+  CalendarGridBodyCellTrigger as GridBodyCellTrigger,
+  type CalendarGridBodyCellTriggerOptions,
+  type CalendarGridBodyCellTriggerProps,
+} from "./calendar-grid-body-cell-trigger";
+import {
+  CalendarGridBodyRow as GridBodyRow,
+  type CalendarGridBodyRowOptions,
+  type CalendarGridBodyRowProps,
+} from "./calendar-grid-body-row";
+import {
   CalendarGridHeader as GridHeader,
   type CalendarGridHeaderProps,
 } from "./calendar-grid-header";
 import {
-  CalendarHeaderCell as HeaderCell,
-  type CalendarHeaderCellProps,
-} from "./calendar-header-cell";
-import { CalendarHeaderRow as HeaderRow, type CalendarHeaderRowProps } from "./calendar-header-row";
+  CalendarGridHeaderCell as GridHeaderCell,
+  type CalendarGridHeaderCellProps,
+} from "./calendar-grid-header-cell";
+import {
+  CalendarGridHeaderRow as GridHeaderRow,
+  type CalendarGridHeaderRowProps,
+} from "./calendar-grid-header-row";
+import { CalendarHeader as Header, type CalendarHeaderProps } from "./calendar-header";
 import { CalendarHeading as Heading, type CalendarHeadingProps } from "./calendar-heading";
 import {
   CalendarNextTrigger as NextTrigger,
@@ -42,19 +53,23 @@ import {
   type CalendarRootOptions,
   type CalendarRootProps,
 } from "./calendar-root";
-import { CalendarRow as Row, type CalendarRowOptions, type CalendarRowProps } from "./calendar-row";
 
 export type {
-  CalendarCellOptions,
-  CalendarCellProps,
-  CalendarCellTriggerProps,
+  CalendarBodyProps,
+  CalendarGridBodyCellOptions,
+  CalendarGridBodyCellProps,
+  CalendarGridBodyCellTriggerOptions,
+  CalendarGridBodyCellTriggerProps,
   CalendarGridBodyOptions,
   CalendarGridBodyProps,
+  CalendarGridBodyRowOptions,
+  CalendarGridBodyRowProps,
+  CalendarGridHeaderCellProps,
   CalendarGridHeaderProps,
+  CalendarGridHeaderRowProps,
   CalendarGridOptions,
   CalendarGridProps,
-  CalendarHeaderCellProps,
-  CalendarHeaderRowProps,
+  CalendarHeaderProps,
   CalendarHeadingProps,
   CalendarNextTriggerOptions,
   CalendarNextTriggerProps,
@@ -62,47 +77,21 @@ export type {
   CalendarPrevTriggerProps,
   CalendarRootOptions,
   CalendarRootProps,
-  CalendarRowOptions,
-  CalendarRowProps,
 };
 
 export {
-  Cell,
-  CellTrigger,
+  Body,
   Grid,
   GridBody,
+  GridBodyCell,
+  GridBodyCellTrigger,
+  GridBodyRow,
   GridHeader,
-  HeaderCell,
-  HeaderRow,
+  GridHeaderCell,
+  GridHeaderRow,
+  Header,
   Heading,
   NextTrigger,
   PrevTrigger,
   Root,
-  Row,
 };
-
-/*
-
-<Calendar.Root>
-  <Calendar.Header>
-    <Calendar.PrevTrigger/>
-    <Calendar.ViewTrigger/>
-    <Calendar.NextTrigger/>
-  </Calendar.Header>
-  <Calendar.Grid>
-    <Calendar.GridHeader>
-      <Calendar.HeaderRow>
-        <Calendar.HeaderCell/>
-      </Calendar.HeaderRow>
-    </Calendar.GridHeader>
-    <Calendar.GridBody>
-      <Calendar.Row>
-        <Calendar.Cell>
-          <Calendar.CellTrigger/>
-        </Calendar.Cell>
-      </Calendar.Row>
-    </Calendar.GridBody>
-  </Calendar.Grid>
-</Calendar.Root>
-
-*/

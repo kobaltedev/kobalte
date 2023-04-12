@@ -1,60 +1,69 @@
 import { CalendarDate, getLocalTimeZone } from "@internationalized/date";
 import { createSignal, For, Show } from "solid-js";
 
-import { Calendar, createDateFormatter, I18nProvider } from "../src";
+import { DatePicker, createDateFormatter, I18nProvider } from "../src";
 
 function CalendarPlayground(props: { months?: number; mode?: any }) {
   const [value, setValue] = createSignal<Array<CalendarDate>>([]);
   const formatter = createDateFormatter({ dateStyle: "short" });
 
   return (
-    <div class="app">
+    <>
       <p>
         Selected dates:{" "}
         {value()
           .map(date => formatter().format(date.toDate(getLocalTimeZone())))
           .join(", ")}
       </p>
-      <Calendar.Root
-        class="calendar"
-        visibleDuration={{ months: props.months ?? 1 }}
-        value={value()}
-        onChange={setValue}
-        selectionMode={props.mode ?? "single"}
-      >
-        <header class="header">
-          <Calendar.PrevTrigger class="button">&lsaquo;</Calendar.PrevTrigger>
-          <Calendar.Heading class="heading" />
-          <Calendar.NextTrigger class="button">&rsaquo;</Calendar.NextTrigger>
-        </header>
-        <div style={{ display: "flex", gap: "8px", "align-items": "flex-start" }}>
-          <For each={[...new Array(props.months ?? 1).keys()]}>
-            {offset => (
-              <Calendar.Grid class="grid" weekDayFormat="short" offset={{ months: offset }}>
-                <Calendar.GridHeader>
-                  <Calendar.HeaderRow>
-                    {weekDay => <Calendar.HeaderCell>{weekDay}</Calendar.HeaderCell>}
-                  </Calendar.HeaderRow>
-                </Calendar.GridHeader>
-                <Calendar.GridBody>
-                  {weekIndex => (
-                    <Calendar.Row weekIndex={weekIndex()}>
-                      {date => (
-                        <Show when={date()} fallback={<td />}>
-                          <Calendar.Cell date={date()!}>
-                            <Calendar.CellTrigger as="div" class="cell" />
-                          </Calendar.Cell>
-                        </Show>
+      <DatePicker.Root>
+        <DatePicker.Control class="control">
+          <input type="text" />
+          <DatePicker.Trigger>🗓</DatePicker.Trigger>
+        </DatePicker.Control>
+        <DatePicker.Portal>
+          <DatePicker.Content class="content">
+            {/* <DatePicker.Arrow /> */}
+            <DatePicker.Calendar class="calendar">
+              <DatePicker.CalendarHeader class="header">
+                <DatePicker.CalendarPrevTrigger class="button">
+                  &lsaquo;
+                </DatePicker.CalendarPrevTrigger>
+                <DatePicker.CalendarHeading class="heading" />
+                <DatePicker.CalendarNextTrigger class="button">
+                  &rsaquo;
+                </DatePicker.CalendarNextTrigger>
+              </DatePicker.CalendarHeader>
+              <DatePicker.CalendarBody>
+                <DatePicker.CalendarGrid class="grid">
+                  <DatePicker.CalendarGridHeader>
+                    <DatePicker.CalendarGridHeaderRow>
+                      {weekDay => (
+                        <DatePicker.CalendarGridHeaderCell>
+                          {weekDay()}
+                        </DatePicker.CalendarGridHeaderCell>
                       )}
-                    </Calendar.Row>
-                  )}
-                </Calendar.GridBody>
-              </Calendar.Grid>
-            )}
-          </For>
-        </div>
-      </Calendar.Root>
-    </div>
+                    </DatePicker.CalendarGridHeaderRow>
+                  </DatePicker.CalendarGridHeader>
+                  <DatePicker.CalendarGridBody>
+                    {weekIndex => (
+                      <DatePicker.CalendarGridBodyRow weekIndex={weekIndex()}>
+                        {date => (
+                          <Show when={date()} fallback={<td />}>
+                            <DatePicker.CalendarGridBodyCell date={date()!}>
+                              <DatePicker.CalendarGridBodyCellTrigger class="cell" />
+                            </DatePicker.CalendarGridBodyCell>
+                          </Show>
+                        )}
+                      </DatePicker.CalendarGridBodyRow>
+                    )}
+                  </DatePicker.CalendarGridBody>
+                </DatePicker.CalendarGrid>
+              </DatePicker.CalendarBody>
+            </DatePicker.Calendar>
+          </DatePicker.Content>
+        </DatePicker.Portal>
+      </DatePicker.Root>
+    </>
   );
 }
 

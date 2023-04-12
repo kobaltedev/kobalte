@@ -38,7 +38,7 @@ export function CalendarGrid(props: CalendarGridProps) {
 
   props = mergeDefaultProps(
     {
-      weekDayFormat: "narrow",
+      weekDayFormat: "short",
     },
     props
   );

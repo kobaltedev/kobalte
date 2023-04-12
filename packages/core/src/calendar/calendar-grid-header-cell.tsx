@@ -11,11 +11,11 @@ import { ComponentProps } from "solid-js";
 
 import { Polymorphic } from "../polymorphic";
 
-export type CalendarHeaderCellProps = ComponentProps<"th">;
+export type CalendarGridHeaderCellProps = ComponentProps<"th">;
 
 /**
- * A calendar header cell displays a week day name at the top of a column within a calendar.
+ * A calendar grid header cell displays a week day name at the top of a column within a calendar.
  */
-export function CalendarHeaderCell(props: CalendarHeaderCellProps) {
+export function CalendarGridHeaderCell(props: CalendarGridHeaderCellProps) {
   return <Polymorphic as="th" {...props} />;
 }

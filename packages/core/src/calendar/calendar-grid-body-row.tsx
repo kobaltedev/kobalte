@@ -6,7 +6,7 @@ import { useCalendarContext } from "./calendar-context";
 import { useCalendarGridContext } from "./calendar-grid-context";
 import { DateValue } from "./types";
 
-export interface CalendarRowOptions {
+export interface CalendarGridBodyRowOptions {
   /** The index of the week to render. */
   weekIndex: number;
 
@@ -17,12 +17,12 @@ export interface CalendarRowOptions {
   children: (date: Accessor<DateValue | null>) => JSX.Element;
 }
 
-export type CalendarRowProps = OverrideComponentProps<"tr", CalendarRowOptions>;
+export type CalendarGridBodyRowProps = OverrideComponentProps<"tr", CalendarGridBodyRowOptions>;
 
 /**
- * A calendar row displays a row of calendar cells within a month.
+ * A calendar grid body row displays a row of calendar cells within a month.
  */
-export function CalendarRow(props: CalendarRowProps) {
+export function CalendarGridBodyRow(props: CalendarGridBodyRowProps) {
   const rootContext = useCalendarContext();
   const context = useCalendarGridContext();
 

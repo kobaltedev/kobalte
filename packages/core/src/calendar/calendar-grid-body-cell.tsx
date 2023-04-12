@@ -11,11 +11,14 @@ import { OverrideComponentProps } from "@kobalte/utils";
 import { createMemo, splitProps } from "solid-js";
 
 import { Polymorphic } from "../polymorphic";
-import { CalendarCellContext, CalendarCellContextValue } from "./calendar-cell-context";
 import { useCalendarContext } from "./calendar-context";
+import {
+  CalendarGridBodyCellContext,
+  CalendarGridBodyCellContextValue,
+} from "./calendar-grid-body-cell-context";
 import { DateValue } from "./types";
 
-export interface CalendarCellOptions {
+export interface CalendarGridBodyCellOptions {
   /** The date that this cell represents. */
   date: DateValue;
 
@@ -26,12 +29,12 @@ export interface CalendarCellOptions {
   disabled?: boolean;
 }
 
-export type CalendarCellProps = OverrideComponentProps<"td", CalendarCellOptions>;
+export type CalendarGridBodyCellProps = OverrideComponentProps<"td", CalendarGridBodyCellOptions>;
 
 /**
- * A calendar cell displays a date cell within a calendar grid which can be selected by the user.
+ * A calendar grid body cell displays a date cell within a calendar grid which can be selected by the user.
  */
-export function CalendarCell(props: CalendarCellProps) {
+export function CalendarGridBodyCell(props: CalendarGridBodyCellProps) {
   const rootContext = useCalendarContext();
 
   const [local, others] = splitProps(props, ["date", "disabled"]);
@@ -62,7 +65,7 @@ export function CalendarCell(props: CalendarCellProps) {
 
   const isDateToday = () => isToday(local.date, rootContext.timeZone());
 
-  const context: CalendarCellContextValue = {
+  const context: CalendarGridBodyCellContextValue = {
     date: () => local.date,
     isSelected,
     isFocused,
@@ -74,7 +77,7 @@ export function CalendarCell(props: CalendarCellProps) {
   };
 
   return (
-    <CalendarCellContext.Provider value={context}>
+    <CalendarGridBodyCellContext.Provider value={context}>
       <Polymorphic
         as="td"
         role="gridcell"
@@ -85,6 +88,6 @@ export function CalendarCell(props: CalendarCellProps) {
         data-value={local.date.toString()}
         {...others}
       />
-    </CalendarCellContext.Provider>
+    </CalendarGridBodyCellContext.Provider>
   );
 }

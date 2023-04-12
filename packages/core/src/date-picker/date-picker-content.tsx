@@ -1,5 +1,10 @@
-import { focusWithoutScrolling, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { JSX, Show, splitProps } from "solid-js";
+import {
+  focusWithoutScrolling,
+  mergeDefaultProps,
+  mergeRefs,
+  OverrideComponentProps,
+} from "@kobalte/utils";
+import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
 import { AsChildProp } from "../polymorphic";
@@ -12,14 +17,29 @@ import {
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives";
-import { useComboboxContext } from "./combobox-context";
+import { useDatePickerContext } from "./date-picker-context";
 
-export interface ComboboxContentOptions extends AsChildProp {
+export interface DatePickerContentOptions extends AsChildProp {
+  /** The HTML styles attribute (object form only). */
+  style?: JSX.CSSProperties;
+
+  /**
+   * Event handler called when focus moves into the component after opening.
+   * It can be prevented by calling `event.preventDefault`.
+   */
+  onOpenAutoFocus?: (event: Event) => void;
+
   /**
    * Event handler called when focus moves to the trigger after closing.
    * It can be prevented by calling `event.preventDefault`.
    */
   onCloseAutoFocus?: (event: Event) => void;
+
+  /**
+   * Event handler called when the escape key is down.
+   * It can be prevented by calling `event.preventDefault`.
+   */
+  onEscapeKeyDown?: (event: KeyboardEvent) => void;
 
   /**
    * Event handler called when a pointer event occurs outside the bounds of the component.
@@ -38,48 +58,91 @@ export interface ComboboxContentOptions extends AsChildProp {
    * It can be prevented by calling `event.preventDefault`.
    */
   onInteractOutside?: (event: InteractOutsideEvent) => void;
-
-  /** The HTML styles attribute (object form only). */
-  style?: JSX.CSSProperties;
 }
 
-export interface ComboboxContentProps
-  extends OverrideComponentProps<"div", ComboboxContentOptions> {}
+export interface DatePickerContentProps
+  extends OverrideComponentProps<"div", DatePickerContentOptions> {}
 
 /**
- * The component that pops out when the combobox is open.
+ * The component that pops out when the date picker is open.
  */
-export function ComboboxContent(props: ComboboxContentProps) {
+export function DatePickerContent(props: DatePickerContentProps) {
   let ref: HTMLElement | undefined;
 
-  const context = useComboboxContext();
+  const context = useDatePickerContext();
+
+  props = mergeDefaultProps(
+    {
+      id: context.generateId("content"),
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, [
     "ref",
-    "id",
     "style",
+    "onOpenAutoFocus",
     "onCloseAutoFocus",
+    "onPointerDownOutside",
     "onFocusOutside",
+    "onInteractOutside",
   ]);
 
-  const close = () => {
-    context.resetInputAfterClose();
-    context.close();
+  let isRightClickOutside = false;
+  let hasInteractedOutside = false;
+
+  const onCloseAutoFocus = (e: Event) => {
+    local.onCloseAutoFocus?.(e);
+
+    if (context.isModal()) {
+      e.preventDefault();
+
+      if (!isRightClickOutside) {
+        focusWithoutScrolling(context.triggerRef());
+      }
+    } else {
+      if (!e.defaultPrevented) {
+        if (!hasInteractedOutside) {
+          focusWithoutScrolling(context.triggerRef());
+        }
+
+        // Always prevent autofocus because we either focus manually or want user agent focus
+        e.preventDefault();
+      }
+
+      hasInteractedOutside = false;
+    }
+  };
+
+  const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
+    local.onPointerDownOutside?.(e);
+
+    if (context.isModal()) {
+      isRightClickOutside = e.detail.isContextMenu;
+    }
   };
 
   const onFocusOutside = (e: FocusOutsideEvent) => {
     local.onFocusOutside?.(e);
 
-    // When focus is trapped (in modal mode), a `focusout` event may still happen.
+    // When focus is trapped, a `focusout` event may still happen.
     // We make sure we don't trigger our `onDismiss` in such case.
-    if (context.isOpen() && context.isModal()) {
+    if (context.isModal()) {
       e.preventDefault();
+    }
+  };
+
+  const onInteractOutside = (e: InteractOutsideEvent) => {
+    local.onInteractOutside?.(e);
+
+    if (!context.isModal() && !e.defaultPrevented) {
+      hasInteractedOutside = true;
     }
   };
 
   // aria-hide everything except the content (better supported equivalent to setting aria-modal)
   createHideOutside({
-    isDisabled: () => !(context.isOpen() && context.isModal()),
+    isDisabled: () => !(context.isModal() && context.isOpen()),
     targets: () => {
       const excludedElements = [];
 
@@ -108,27 +171,22 @@ export function ComboboxContent(props: ComboboxContentProps) {
 
   createPreventScroll({
     ownerRef: () => ref,
-    isDisabled: () => !(context.isOpen() && context.isModal()),
+    isDisabled: () => !(context.isModal() && context.isOpen()),
   });
 
   createFocusScope(
     {
-      trapFocus: () => context.isOpen() && context.isModal(),
+      trapFocus: () => context.isModal() && context.isOpen(),
       onMountAutoFocus: e => {
-        // We prevent open autofocus because it's handled by the `Listbox`.
+        // We prevent open autofocus because it's handled by the `Calendar`.
         e.preventDefault();
       },
-      onUnmountAutoFocus: e => {
-        local.onCloseAutoFocus?.(e);
-
-        if (!e.defaultPrevented) {
-          focusWithoutScrolling(context.inputRef());
-          e.preventDefault();
-        }
-      },
+      onUnmountAutoFocus: onCloseAutoFocus,
     },
     () => ref
   );
+
+  createEffect(() => onCleanup(context.registerContentId(others.id!)));
 
   return (
     <Show when={context.contentPresence.isPresent()}>
@@ -139,15 +197,20 @@ export function ComboboxContent(props: ComboboxContentProps) {
             context.contentPresence.setRef(el);
             ref = el;
           }, local.ref)}
+          role="dialog"
+          tabIndex={-1}
           disableOutsidePointerEvents={context.isModal() && context.isOpen()}
           excludedElements={[context.controlRef, context.inputRef, context.triggerRef]}
           style={{
-            "--kb-combobox-content-transform-origin": "var(--kb-popper-content-transform-origin)",
+            "--kb-date-picker-content-transform-origin":
+              "var(--kb-popper-content-transform-origin)",
             position: "relative",
             ...local.style,
           }}
+          onPointerDownOutside={onPointerDownOutside}
           onFocusOutside={onFocusOutside}
-          onDismiss={close}
+          onInteractOutside={onInteractOutside}
+          onDismiss={context.close}
           {...context.dataset()}
           {...others}
         />

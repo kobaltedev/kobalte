@@ -2,7 +2,7 @@ import { Accessor, createContext, useContext } from "solid-js";
 
 import { DateValue } from "./types";
 
-export interface CalendarCellContextValue {
+export interface CalendarGridBodyCellContextValue {
   date: Accessor<DateValue>;
   isSelected: Accessor<boolean>;
   isFocused: Accessor<boolean>;
@@ -13,14 +13,14 @@ export interface CalendarCellContextValue {
   isDateToday: Accessor<boolean>;
 }
 
-export const CalendarCellContext = createContext<CalendarCellContextValue>();
+export const CalendarGridBodyCellContext = createContext<CalendarGridBodyCellContextValue>();
 
-export function useCalendarCellContext() {
-  const context = useContext(CalendarCellContext);
+export function useCalendarGriBodyCellContext() {
+  const context = useContext(CalendarGridBodyCellContext);
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useCalendarCellContext` must be used within a `Calendar.Cell` component"
+      "[kobalte]: `useCalendarGriBodyCellContext` must be used within a `Calendar.GridBodyCell` component"
     );
   }
 

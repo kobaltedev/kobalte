@@ -16,22 +16,29 @@ import {
 } from "@kobalte/utils";
 import { createEffect, createMemo, JSX, splitProps } from "solid-js";
 
-import * as Button from "../button";
 import { createDateFormatter } from "../i18n";
-import { Polymorphic } from "../polymorphic";
-import { useCalendarCellContext } from "./calendar-cell-context";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useCalendarContext } from "./calendar-context";
+import { useCalendarGriBodyCellContext } from "./calendar-grid-body-cell-context";
 import { useCalendarGridContext } from "./calendar-grid-context";
 import { getEraFormat, getSelectedDateDescription } from "./utils";
 
-export type CalendarCellTriggerProps = OverrideComponentProps<"div", Button.ButtonRootOptions>;
+export interface CalendarGridBodyCellTriggerOptions extends AsChildProp {
+  /** Whether the cell trigger is disabled. */
+  disabled?: boolean;
+}
 
-export function CalendarCellTrigger(props: CalendarCellTriggerProps) {
+export type CalendarGridBodyCellTriggerProps = OverrideComponentProps<
+  "div",
+  CalendarGridBodyCellTriggerOptions
+>;
+
+export function CalendarGridBodyCellTrigger(props: CalendarGridBodyCellTriggerProps) {
   let ref: HTMLDivElement | undefined;
 
   const rootContext = useCalendarContext();
   const gridContext = useCalendarGridContext();
-  const context = useCalendarCellContext();
+  const context = useCalendarGriBodyCellContext();
 
   const [local, others] = splitProps(props, [
     "ref",

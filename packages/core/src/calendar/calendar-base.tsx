@@ -115,10 +115,10 @@ export interface CalendarBaseOptions {
   onChange?: (value: Array<DateValue>) => void;
 
   /** The minimum allowed date that a user may select. */
-  min?: DateValue;
+  minValue?: DateValue;
 
   /** The maximum allowed date that a user may select. */
-  max?: DateValue;
+  maxValue?: DateValue;
 
   /**
    * Callback that is called for each date of the calendar.
@@ -150,7 +150,7 @@ export interface CalendarBaseOptions {
   /** Whether the calendar is disabled. */
   disabled?: boolean;
 
-  /** Whether the calendar value is immutable. */
+  /** Whether the calendar value is read only. */
   readOnly?: boolean;
 }
 
@@ -177,8 +177,8 @@ export function CalendarBase(props: CalendarBaseProps) {
     "value",
     "defaultValue",
     "onChange",
-    "min",
-    "max",
+    "minValue",
+    "maxValue",
     "isDateUnavailable",
     "allowsNonContiguousRanges",
     "autoFocus",
@@ -228,8 +228,8 @@ export function CalendarBase(props: CalendarBaseProps) {
           toCalendarDate(valueStart),
           local.visibleDuration!,
           local.locale,
-          local.min,
-          local.max
+          local.minValue,
+          local.maxValue
         );
 
         const end = start.add(local.visibleDuration!).subtract({ days: 1 });
@@ -248,21 +248,21 @@ export function CalendarBase(props: CalendarBaseProps) {
   const min = createMemo(() => {
     const startRange = availableRange()?.start;
 
-    if (local.selectionMode === "range" && local.min && startRange) {
-      return maxDate(local.min, startRange);
+    if (local.selectionMode === "range" && local.minValue && startRange) {
+      return maxDate(local.minValue, startRange);
     }
 
-    return local.min;
+    return local.minValue;
   });
 
   const max = createMemo(() => {
     const endRange = availableRange()?.end;
 
-    if (local.selectionMode === "range" && local.max && endRange) {
-      return minDate(local.max, endRange);
+    if (local.selectionMode === "range" && local.maxValue && endRange) {
+      return minDate(local.maxValue, endRange);
     }
 
-    return local.max;
+    return local.maxValue;
   });
 
   const calendarDateValue = createMemo(() => {

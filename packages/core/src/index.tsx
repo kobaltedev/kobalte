@@ -20,6 +20,7 @@ export * as Checkbox from "./checkbox";
 export * as Collapsible from "./collapsible";
 export * as Combobox from "./combobox";
 export * as ContextMenu from "./context-menu";
+export * as DatePicker from "./date-picker";
 export * as Dialog from "./dialog";
 export * as DropdownMenu from "./dropdown-menu";
 export * as HoverCard from "./hover-card";

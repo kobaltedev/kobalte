@@ -5,7 +5,7 @@ import {
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import { JSX, splitProps } from "solid-js";
 
 import {
   createFormControlField,
@@ -190,8 +190,6 @@ export function ComboboxInput(props: ComboboxInputProps) {
       lastEventTime = e.timeStamp;
     }
   };
-
-  createEffect(() => onCleanup(context.registerInputId(fieldProps.id()!)));
 
   // Omit `formControlContext.name()` here because it's used in the hidden select.
   return (

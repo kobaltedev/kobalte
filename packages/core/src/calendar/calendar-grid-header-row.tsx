@@ -8,29 +8,32 @@
  */
 
 import { OverrideComponentProps } from "@kobalte/utils";
-import { For, JSX, splitProps } from "solid-js";
+import { Accessor, Index, JSX, splitProps } from "solid-js";
 
 import { Polymorphic } from "../polymorphic";
 import { useCalendarGridContext } from "./calendar-grid-context";
 
-export interface CalendarHeaderRowOptions {
-  /** A function to render a `<Calendar.HeaderCell>` for a weekday name. */
-  children?: (weekDay: string) => JSX.Element;
+export interface CalendarGridHeaderRowOptions {
+  /**
+   * Render prop used to render each cell of the header row,
+   * it receives a week day accessor as parameter.
+   */
+  children: (weekDay: Accessor<string>) => JSX.Element;
 }
 
-export type CalendarHeaderRowProps = OverrideComponentProps<"tr", CalendarHeaderRowOptions>;
+export type CalendarGridHeaderRowProps = OverrideComponentProps<"tr", CalendarGridHeaderRowOptions>;
 
 /**
- * A calendar header row displays week day names inside a `Calendar.GridHeader`.
+ * A calendar grid header row displays week day names inside a `Calendar.GridHeader`.
  */
-export function CalendarHeaderRow(props: CalendarHeaderRowProps) {
+export function CalendarGridHeaderRow(props: CalendarGridHeaderRowProps) {
   const [local, others] = splitProps(props, ["children"]);
 
   const context = useCalendarGridContext();
 
   return (
     <Polymorphic as="tr" {...others}>
-      <For each={context.weekDays()}>{weekDay => local.children?.(weekDay)}</For>
+      <Index each={context.weekDays()}>{local.children}</Index>
     </Polymorphic>
   );
 }
