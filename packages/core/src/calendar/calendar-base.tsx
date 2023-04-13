@@ -88,7 +88,10 @@ export interface CalendarBaseOptions {
    */
   createCalendar: (name: string) => Calendar;
 
-  /** The amount of days that will be displayed at once. This affects how pagination works. */
+  /**
+   * The amount of days that will be displayed at once.
+   * This affects how pagination works.
+   */
   visibleDuration?: DateDuration;
 
   /** Determines how to align the initial selection relative to the visible date range. */

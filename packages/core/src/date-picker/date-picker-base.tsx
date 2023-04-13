@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/950d45db36e63851f411ed0dc6a5aad0af57da68/packages/@react-types/datepicker/src/index.d.ts
  */
 
-import { Calendar } from "@internationalized/date";
+import { Calendar, DateDuration } from "@internationalized/date";
 import {
   access,
   createGenerateId,
@@ -16,9 +16,9 @@ import {
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
-import { DateValue } from "../calendar/types";
+import { CalendarSelectionMode, DateValue } from "../calendar/types";
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import { createMessageFormatter } from "../i18n";
+import { createMessageFormatter, getReadingDirection } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
@@ -48,6 +48,20 @@ export interface DatePickerBaseOptions
    * only certain calendars.
    */
   createCalendar: (name: string) => Calendar;
+
+  /**
+   * The amount of days that will be displayed at once.
+   * This affects how pagination works.
+   */
+  visibleDuration?: DateDuration;
+
+  /**
+   * The selection mode of the calendar.
+   * - `single` - only one date can be selected
+   * - `multiple` - multiple dates can be selected
+   * - `range` - a range of dates can be selected
+   */
+  selectionMode?: CalendarSelectionMode;
 
   /** The controlled open state of the date picker. */
   open?: boolean;
@@ -84,6 +98,15 @@ export interface DatePickerBaseOptions
    * If it returns true, then the date is unavailable.
    */
   isDateUnavailable?: (date: DateValue) => boolean;
+
+  /**
+   * In "range" selection mode, when combined with `isDateUnavailable`,
+   * determines whether non-contiguous ranges, i.e. ranges containing unavailable dates, may be selected.
+   */
+  allowsNonContiguousRanges?: boolean;
+
+  /** Whether the date picker should close automatically when a date is selected. */
+  closeOnSelect?: boolean;
 
   /**
    * A placeholder date that influences the format of the placeholder shown when no value is selected.
@@ -164,6 +187,9 @@ export function DatePickerBase(props: DatePickerBaseProps) {
   props = mergeDefaultProps(
     {
       id: defaultId,
+      visibleDuration: { months: 1 },
+      selectionMode: "single",
+      closeOnSelect: true,
       gutter: 8,
       sameWidth: false,
       modal: false,
@@ -177,6 +203,17 @@ export function DatePickerBase(props: DatePickerBaseProps) {
     [
       "locale",
       "createCalendar",
+      "visibleDuration",
+      "selectionMode",
+      "isDateUnavailable",
+      "allowsNonContiguousRanges",
+      "closeOnSelect",
+      "minValue",
+      "maxValue",
+      "placeholderValue",
+      "hourCycle",
+      "granularity",
+      "hideTimeZone",
       "open",
       "defaultOpen",
       "onOpenChange",
@@ -204,6 +241,7 @@ export function DatePickerBase(props: DatePickerBaseProps) {
     FORM_CONTROL_PROP_NAMES
   );
 
+  const [triggerId, setTriggerId] = createSignal<string>();
   const [contentId, setContentId] = createSignal<string>();
 
   const [controlRef, setControlRef] = createSignal<HTMLDivElement>();
@@ -212,6 +250,10 @@ export function DatePickerBase(props: DatePickerBaseProps) {
   const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
 
   const messageFormatter = createMessageFormatter(() => DATE_PICKER_INTL_MESSAGES);
+
+  const direction = createMemo(() => {
+    return getReadingDirection(local.locale);
+  });
 
   const disclosureState = createDisclosureState({
     open: () => local.open,
@@ -239,7 +281,14 @@ export function DatePickerBase(props: DatePickerBaseProps) {
     isModal: () => local.modal ?? false,
     contentPresence,
     messageFormatter,
+    visibleDuration: () => local.visibleDuration!,
+    selectionMode: () => local.selectionMode!,
+    allowsNonContiguousRanges: () => local.allowsNonContiguousRanges ?? false,
+    minValue: () => local.minValue,
+    maxValue: () => local.maxValue,
     locale: () => local.locale,
+    direction,
+    triggerId,
     contentId,
     controlRef,
     inputRef,
@@ -250,9 +299,12 @@ export function DatePickerBase(props: DatePickerBaseProps) {
     setTriggerRef,
     setContentRef,
     createCalendar: name => local.createCalendar(name),
+    isDateUnavailable: date => local.isDateUnavailable?.(date) ?? false,
+    open: disclosureState.open,
     close: disclosureState.close,
     toggle: disclosureState.toggle,
     generateId: createGenerateId(() => access(formControlProps.id)!),
+    registerTriggerId: createRegisterId(setTriggerId),
     registerContentId: createRegisterId(setContentId),
   };
 

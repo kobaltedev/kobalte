@@ -21,9 +21,15 @@ export function DatePickerCalendar(props: DatePickerCalendarProps) {
 
   return (
     <CalendarBase
+      autoFocus
       locale={context.locale()}
       createCalendar={context.createCalendar}
-      autoFocus
+      isDateUnavailable={context.isDateUnavailable}
+      visibleDuration={context.visibleDuration()}
+      selectionMode={context.selectionMode()}
+      allowsNonContiguousRanges={context.allowsNonContiguousRanges()}
+      minValue={context.minValue()}
+      maxValue={context.maxValue()}
       disabled={formControlContext.isDisabled()}
       readOnly={formControlContext.isReadOnly()}
       validationState={formControlContext.validationState()}

@@ -7,3 +7,7 @@
  */
 
 export type DateFieldGranularity = "day" | "hour" | "minute" | "second";
+export type DateTimeFormatOptions = Pick<
+  Intl.DateTimeFormatOptions,
+  "year" | "month" | "day" | "hour" | "minute" | "second"
+>;

@@ -19,7 +19,13 @@ export function ComboboxTrigger(props: ComboboxTriggerProps) {
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "disabled", "onPointerDown", "onClick"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "disabled",
+    "onPointerDown",
+    "onClick",
+    "aria-labelledby",
+  ]);
 
   const isDisabled = () => {
     return (
@@ -55,7 +61,11 @@ export function ComboboxTrigger(props: ComboboxTriggerProps) {
   };
 
   const ariaLabelledBy = () => {
-    return formControlContext.getAriaLabelledBy(others.id, context.triggerAriaLabel(), undefined);
+    return formControlContext.getAriaLabelledBy(
+      others.id,
+      context.triggerAriaLabel(),
+      local["aria-labelledby"]
+    );
   };
 
   return (

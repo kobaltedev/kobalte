@@ -7,6 +7,7 @@ import {
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
+import { useFormControlContext } from "../form-control";
 import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
@@ -22,12 +23,6 @@ import { useDatePickerContext } from "./date-picker-context";
 export interface DatePickerContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
-
-  /**
-   * Event handler called when focus moves into the component after opening.
-   * It can be prevented by calling `event.preventDefault`.
-   */
-  onOpenAutoFocus?: (event: Event) => void;
 
   /**
    * Event handler called when focus moves to the trigger after closing.
@@ -69,6 +64,7 @@ export interface DatePickerContentProps
 export function DatePickerContent(props: DatePickerContentProps) {
   let ref: HTMLElement | undefined;
 
+  const formControlContext = useFormControlContext();
   const context = useDatePickerContext();
 
   props = mergeDefaultProps(
@@ -81,15 +77,23 @@ export function DatePickerContent(props: DatePickerContentProps) {
   const [local, others] = splitProps(props, [
     "ref",
     "style",
-    "onOpenAutoFocus",
     "onCloseAutoFocus",
     "onPointerDownOutside",
     "onFocusOutside",
     "onInteractOutside",
+    "aria-labelledby",
   ]);
 
   let isRightClickOutside = false;
   let hasInteractedOutside = false;
+
+  const ariaLabelledBy = () => {
+    return formControlContext.getAriaLabelledBy(
+      context.triggerId(),
+      others["aria-label"],
+      local["aria-labelledby"]
+    );
+  };
 
   const onCloseAutoFocus = (e: Event) => {
     local.onCloseAutoFocus?.(e);
@@ -207,6 +211,7 @@ export function DatePickerContent(props: DatePickerContentProps) {
             position: "relative",
             ...local.style,
           }}
+          aria-labelledby={ariaLabelledBy()}
           onPointerDownOutside={onPointerDownOutside}
           onFocusOutside={onFocusOutside}
           onInteractOutside={onInteractOutside}

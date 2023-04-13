@@ -18,6 +18,8 @@ function CalendarPlayground(props: { months?: number; mode?: any }) {
       <DatePicker.Root>
         <DatePicker.Control class="control">
           <input type="text" />
+          <input type="text" />
+          <input type="text" />
           <DatePicker.Trigger>🗓</DatePicker.Trigger>
         </DatePicker.Control>
         <DatePicker.Portal>

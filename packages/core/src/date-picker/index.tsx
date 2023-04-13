@@ -136,7 +136,7 @@ export {
 <DatePicker.Root>
   <DatePicker.Label/>
   <DatePicker.Control>
-    <DatePicker.Input>
+    <DatePicker.Input> // DateField
       {segment => <DatePicker.Segment segment={segment} />}
     </DatePicker.Input>
     <DatePicker.Trigger/>

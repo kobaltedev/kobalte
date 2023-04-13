@@ -1,8 +1,8 @@
-import { Calendar } from "@internationalized/date";
+import { Calendar, DateDuration } from "@internationalized/date";
 import { Accessor, createContext, JSX, useContext } from "solid-js";
 
-import { DateValue } from "../calendar/types";
-import { LocalizedMessageFormatter } from "../i18n";
+import { CalendarSelectionMode, DateValue } from "../calendar/types";
+import { Direction, LocalizedMessageFormatter } from "../i18n";
 import { CreatePresenceResult } from "../primitives";
 
 export interface DatePickerDataSet {
@@ -17,7 +17,14 @@ export interface DatePickerContextValue {
   isModal: Accessor<boolean>;
   contentPresence: CreatePresenceResult;
   messageFormatter: Accessor<LocalizedMessageFormatter>;
+  visibleDuration: Accessor<DateDuration>;
+  allowsNonContiguousRanges: Accessor<boolean>;
+  selectionMode: Accessor<CalendarSelectionMode>;
+  minValue: Accessor<DateValue | undefined>;
+  maxValue: Accessor<DateValue | undefined>;
   locale: Accessor<string>;
+  direction: Accessor<Direction>;
+  triggerId: Accessor<string | undefined>;
   contentId: Accessor<string | undefined>;
   controlRef: Accessor<HTMLDivElement | undefined>;
   inputRef: Accessor<HTMLDivElement | undefined>;
@@ -28,9 +35,12 @@ export interface DatePickerContextValue {
   setTriggerRef: (el: HTMLButtonElement) => void;
   setContentRef: (el: HTMLDivElement) => void;
   createCalendar: (name: string) => Calendar;
+  isDateUnavailable: (date: DateValue) => boolean;
+  open: () => void;
   close: () => void;
   toggle: () => void;
   generateId: (part: string) => string;
+  registerTriggerId: (id: string) => () => void;
   registerContentId: (id: string) => () => void;
 }
 

@@ -1,5 +1,5 @@
 import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { createMemo, JSX, splitProps } from "solid-js";
+import { createEffect, createMemo, JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
@@ -19,7 +19,7 @@ export function DatePickerTrigger(props: DatePickerTriggerProps) {
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "disabled", "onClick"]);
+  const [local, others] = splitProps(props, ["ref", "disabled", "onClick", "aria-labelledby"]);
 
   const isDisabled = () => {
     return (
@@ -43,7 +43,7 @@ export function DatePickerTrigger(props: DatePickerTriggerProps) {
   });
 
   const ariaLabelledBy = () => {
-    return formControlContext.getAriaLabelledBy(others.id, ariaLabel(), undefined);
+    return formControlContext.getAriaLabelledBy(others.id, ariaLabel(), local["aria-labelledby"]);
   };
 
   const ariaDescribedBy = () => {
@@ -52,6 +52,8 @@ export function DatePickerTrigger(props: DatePickerTriggerProps) {
     const description = context.messageFormatter().format("selectedDateDescription", { date: "" });
     return formControlContext.getAriaDescribedBy(description);
   };
+
+  createEffect(() => onCleanup(context.registerTriggerId(others.id!)));
 
   return (
     <Button.Root
