@@ -19,7 +19,13 @@ export function DatePickerTrigger(props: DatePickerTriggerProps) {
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "disabled", "onClick", "aria-labelledby"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "disabled",
+    "onPointerDown",
+    "onClick",
+    "aria-labelledby",
+  ]);
 
   const isDisabled = () => {
     return (
@@ -30,8 +36,18 @@ export function DatePickerTrigger(props: DatePickerTriggerProps) {
     );
   };
 
+  const onPointerDown: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> = e => {
+    callHandler(e, local.onPointerDown);
+
+    // Prevent pointer events from reaching `DatePicker.Control`.
+    e.stopPropagation();
+  };
+
   const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
     callHandler(e, local.onClick);
+
+    // Prevent click events from reaching `DatePicker.Control`.
+    e.stopPropagation();
 
     if (!isDisabled()) {
       context.toggle();
@@ -46,13 +62,6 @@ export function DatePickerTrigger(props: DatePickerTriggerProps) {
     return formControlContext.getAriaLabelledBy(others.id, ariaLabel(), local["aria-labelledby"]);
   };
 
-  const ariaDescribedBy = () => {
-    // TODO: use date
-    //const description = date ? context.messageFormatter().format('selectedDateDescription', {date}) : '';
-    const description = context.messageFormatter().format("selectedDateDescription", { date: "" });
-    return formControlContext.getAriaDescribedBy(description);
-  };
-
   createEffect(() => onCleanup(context.registerTriggerId(others.id!)));
 
   return (
@@ -64,7 +73,8 @@ export function DatePickerTrigger(props: DatePickerTriggerProps) {
       aria-controls={context.isOpen() ? context.contentId() : undefined}
       aria-label={ariaLabel()}
       aria-labelledby={ariaLabelledBy()}
-      aria-describedby={ariaDescribedBy()}
+      aria-describedby={context.ariaDescribedBy()}
+      onPointerDown={onPointerDown}
       onClick={onClick}
       {...context.dataset()}
       {...others}

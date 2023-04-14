@@ -12,7 +12,7 @@ import { createEffect, createMemo, JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { useCalendarContext } from "./calendar-context";
-import { getPreviousPage, isPreviousVisibleRangeInvalid } from "./utils";
+import { isPreviousVisibleRangeInvalid } from "./utils";
 
 export interface CalendarPrevTriggerOptions extends Button.ButtonRootOptions {}
 

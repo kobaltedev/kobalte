@@ -29,7 +29,7 @@ import {
 import { RangeValue } from "@kobalte/utils";
 
 import { createDateFormatter, LocalizedMessageFormatter } from "../i18n";
-import { DateAlignment, DateValue } from "./types";
+import { CalendarSelectionMode, DateAlignment, DateValue } from "./types";
 
 /* -----------------------------------------------------------------------------
  * Constrain a date to a range
@@ -324,6 +324,44 @@ export function getPreviousAvailableDate(
 
 export function getEraFormat(date: DateValue): "short" | undefined {
   return date?.calendar.identifier === "gregory" && date.era === "BC" ? "short" : undefined;
+}
+
+/** Return the first value of the selection depending on the selection mode. */
+export function getFirstValueOfSelection(
+  selectionMode: CalendarSelectionMode,
+  value: DateValue | DateValue[] | RangeValue<DateValue> | undefined
+) {
+  let firstValue: DateValue | undefined;
+
+  if (selectionMode === "single") {
+    firstValue = asSingleValue(value);
+  } else if (selectionMode === "multiple") {
+    firstValue = asArrayValue(value)?.[0];
+  } else if (selectionMode === "range") {
+    const { start } = asRangeValue(value) ?? {};
+    firstValue = start;
+  }
+
+  return firstValue;
+}
+
+/** Return an array of values for the selection depending on the selection mode. */
+export function getArrayValueOfSelection(
+  selectionMode: CalendarSelectionMode,
+  value: DateValue | DateValue[] | RangeValue<DateValue> | undefined
+) {
+  let values: Array<DateValue | undefined> = [];
+
+  if (selectionMode === "single") {
+    values = [asSingleValue(value)];
+  } else if (selectionMode === "multiple") {
+    values = asArrayValue(value) ?? [];
+  } else if (selectionMode === "range") {
+    const { start, end } = asRangeValue(value) ?? {};
+    values = [start, end];
+  }
+
+  return values.filter(Boolean) as DateValue[];
 }
 
 /* -----------------------------------------------------------------------------
@@ -700,6 +738,25 @@ export function getPreviousSection(
       startDate,
     });
   }
+}
+
+/* -----------------------------------------------------------------------------
+ *  Type narrowing
+ * -----------------------------------------------------------------------------*/
+
+/** Narrow the type of `value` to `DateValue`. */
+export function asSingleValue(value: DateValue | DateValue[] | RangeValue<DateValue> | undefined) {
+  return value as DateValue | undefined;
+}
+
+/** Narrow the type of `value` to `DateValue[]`. */
+export function asArrayValue(value: DateValue | DateValue[] | RangeValue<DateValue> | undefined) {
+  return value as DateValue[] | undefined;
+}
+
+/** Narrow the type of `value` to `RangeValue<DateValue>`. */
+export function asRangeValue(value: DateValue | DateValue[] | RangeValue<DateValue> | undefined) {
+  return value as RangeValue<DateValue> | undefined;
 }
 
 /* -----------------------------------------------------------------------------

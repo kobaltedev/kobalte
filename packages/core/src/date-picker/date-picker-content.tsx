@@ -154,19 +154,9 @@ export function DatePickerContent(props: DatePickerContentProps) {
         excludedElements.push(ref);
       }
 
-      const triggerEl = context.controlRef();
-      if (triggerEl) {
-        excludedElements.push(triggerEl);
-      }
-
-      const inputEl = context.inputRef();
-      if (inputEl) {
-        excludedElements.push(inputEl);
-      }
-
-      const buttonEl = context.triggerRef();
-      if (buttonEl) {
-        excludedElements.push(buttonEl);
+      const controlEl = context.controlRef();
+      if (controlEl) {
+        excludedElements.push(controlEl);
       }
 
       return excludedElements;
@@ -204,7 +194,7 @@ export function DatePickerContent(props: DatePickerContentProps) {
           role="dialog"
           tabIndex={-1}
           disableOutsidePointerEvents={context.isModal() && context.isOpen()}
-          excludedElements={[context.controlRef, context.inputRef, context.triggerRef]}
+          excludedElements={[context.controlRef]}
           style={{
             "--kb-date-picker-content-transform-origin":
               "var(--kb-popper-content-transform-origin)",

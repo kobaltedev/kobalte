@@ -21,7 +21,7 @@ import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useCalendarContext } from "./calendar-context";
 import { useCalendarGriBodyCellContext } from "./calendar-grid-body-cell-context";
 import { useCalendarGridContext } from "./calendar-grid-context";
-import { getEraFormat, getSelectedDateDescription } from "./utils";
+import { asRangeValue, getEraFormat, getSelectedDateDescription } from "./utils";
 
 export interface CalendarGridBodyCellTriggerOptions extends AsChildProp {
   /** Whether the cell trigger is disabled. */
@@ -127,7 +127,7 @@ export function CalendarGridBodyCellTrigger(props: CalendarGridBodyCellTriggerPr
     // If this is a range calendar, add a description of the full selected range
     // to the first and last selected date.
     if (rootContext.selectionMode() === "range" && !rootContext.anchorDate()) {
-      const { start, end } = rootContext.valueRange();
+      const { start, end } = asRangeValue(rootContext.value()) ?? {};
 
       if (start && end && (isSameDay(context.date(), start) || isSameDay(context.date(), end))) {
         label =

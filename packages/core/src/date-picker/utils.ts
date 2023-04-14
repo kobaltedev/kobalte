@@ -30,7 +30,7 @@ const DEFAULT_FORMAT_OPTIONS: DateTimeFormatOptions = {
   second: "2-digit",
 };
 
-export function getFormatOptions(
+export function getDateTimeFormatOptions(
   formatOptions: DateTimeFormatOptions,
   formatterOptions: FormatterOptions
 ): Intl.DateTimeFormatOptions {
@@ -87,7 +87,7 @@ export function getPlaceholderTime(placeholderValue?: DateValue): TimeValue {
 export function createDefaultProps(props: {
   value: Accessor<DateValue | undefined>;
   granularity: Accessor<DateFieldGranularity | undefined>;
-}): [Accessor<DateFieldGranularity>, Accessor<string | undefined>] {
+}) {
   let lastValue: DateValue;
 
   // Compute default granularity and time zone from the value.
@@ -105,7 +105,7 @@ export function createDefaultProps(props: {
   const defaultTimeZone = createMemo(() => {
     const resolvedValue = value();
 
-    if ("timeZone" in resolvedValue) {
+    if (resolvedValue && "timeZone" in resolvedValue) {
       return resolvedValue.timeZone;
     }
 
@@ -113,7 +113,9 @@ export function createDefaultProps(props: {
   });
 
   const granularity = createMemo(() => {
-    return props.granularity() || ("minute" in value() ? "minute" : "day");
+    const resolvedValue = value();
+
+    return props.granularity() || (resolvedValue && "minute" in resolvedValue ? "minute" : "day");
   });
 
   createEffect(() => {
@@ -121,12 +123,12 @@ export function createDefaultProps(props: {
     const resolvedGranularity = granularity();
 
     // granularity must actually exist in the value if one is provided.
-    if (!(resolvedGranularity in resolvedValue)) {
+    if (resolvedValue && !(resolvedGranularity in resolvedValue)) {
       throw new Error(
         "Invalid granularity " + resolvedGranularity + " for value " + resolvedValue.toString()
       );
     }
   });
 
-  return [granularity, defaultTimeZone];
+  return { granularity, defaultTimeZone };
 }

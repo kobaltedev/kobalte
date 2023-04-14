@@ -11,10 +11,11 @@ import {
   createFocusManager,
   getFocusableTreeWalker,
   getWindow,
+  mergeDefaultProps,
   mergeRefs,
   OverrideComponentProps,
 } from "@kobalte/utils";
-import { createMemo, JSX, splitProps } from "solid-js";
+import { JSX, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { Polymorphic } from "../polymorphic";
@@ -34,15 +35,29 @@ export function DatePickerControl(props: DatePickerControlProps) {
   const formControlContext = useFormControlContext();
   const context = useDatePickerContext();
 
-  const [local, others] = splitProps(props, ["ref", "onPointerDown", "onClick", "onKeyDown"]);
+  props = mergeDefaultProps(
+    {
+      id: context.generateId("control"),
+    },
+    props
+  );
+
+  const [local, others] = splitProps(props, [
+    "ref",
+    "onPointerDown",
+    "onClick",
+    "onKeyDown",
+    "aria-labelledby",
+  ]);
 
   const focusManager = createFocusManager(() => ref);
 
-  const ariaDescribedBy = () => {
-    // TODO: use date
-    //const description = date ? context.messageFormatter().format('selectedDateDescription', {date}) : '';
-    const description = context.messageFormatter().format("selectedDateDescription", { date: "" });
-    return formControlContext.getAriaDescribedBy(description);
+  const ariaLabelledBy = () => {
+    return formControlContext.getAriaLabelledBy(
+      others.id,
+      others["aria-label"],
+      local["aria-labelledby"]
+    );
   };
 
   // Focus the first placeholder segment from the end on mouse down/touch up in the field.
@@ -151,8 +166,8 @@ export function DatePickerControl(props: DatePickerControlProps) {
         ref = el;
       }, local.ref)}
       aria-disabled={context.isDisabled() || undefined}
-      aria-labelledby={formControlContext.getAriaLabelledBy(undefined, undefined, undefined)}
-      aria-describedby={ariaDescribedBy()}
+      aria-labelledby={ariaLabelledBy()}
+      aria-describedby={context.ariaDescribedBy()}
       onPointerDown={onPointerDown}
       onClick={onClick}
       onKeyDown={onKeyDown}
