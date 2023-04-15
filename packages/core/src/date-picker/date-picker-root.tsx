@@ -285,10 +285,12 @@ export function DatePickerRoot(props: DatePickerRootProps) {
     onChange: value => local.onChange?.(value as any),
   });
 
+  // The date portion of the selected date, dates or range.
   const [selectedDate, setSelectedDate] = createSignal<
     DateValue | DateValue[] | RangeValue<DateValue> | undefined
   >();
 
+  // The time portion of the selected date or range.
   const [selectedTime, setSelectedTime] = createSignal<
     TimeValue | RangeValue<TimeValue> | undefined
   >();
@@ -385,11 +387,6 @@ export function DatePickerRoot(props: DatePickerRootProps) {
 
   const commitSingleValue = (date: DateValue, time: TimeValue) => {
     setValue("timeZone" in time ? time.set(toCalendarDate(date)) : toCalendarDateTime(date, time));
-    setSelectedDate(undefined);
-  };
-
-  const commitArrayValue = (dates: DateValue[]) => {
-    // TODO: MultiDatePicker
   };
 
   const commitRangeValue = (dateRange: RangeValue<DateValue>, timeRange: RangeValue<TimeValue>) => {
@@ -397,7 +394,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
   };
 
   // Intercept `setValue` to make sure the Time section is not changed by date selection in Calendar.
-  const setDateValue = (newValue: DateValue | DateValue[] | RangeValue<DateValue>) => {
+  const selectDate = (newValue: DateValue | DateValue[] | RangeValue<DateValue>) => {
     if (local.selectionMode === "single") {
       if (hasTime()) {
         const resolvedSelectedTime = selectedTime() as TimeValue | undefined;
@@ -418,13 +415,13 @@ export function DatePickerRoot(props: DatePickerRootProps) {
         disclosureState.close();
       }
     } else if (local.selectionMode === "multiple") {
-      // TODO: MultiDatePicker
+      setValue(newValue);
     } else if (local.selectionMode === "range") {
       // TODO: RangeDatePicker
     }
   };
 
-  const setTimeValue = (newValue: TimeValue | RangeValue<TimeValue>) => {
+  const selectTime = (newValue: TimeValue | RangeValue<TimeValue>) => {
     if (local.selectionMode === "single") {
       const resolvedSelectedDate = selectedDate() as DateValue | undefined;
 
@@ -444,16 +441,14 @@ export function DatePickerRoot(props: DatePickerRootProps) {
       const resolvedSelectedTime = selectedTime() as TimeValue | undefined;
 
       // Commit the selected date when the calendar is closed. Use a placeholder time if one wasn't set.
-      // If only the time was set and not the date, don't commit. The state will be preserved until
-      // the user opens the popover again.
+      // If only the time was set and not the date, don't commit.
+      // The state will be preserved until the user opens the popover again.
       if (!value() && resolvedSelectedDate && hasTime()) {
         commitSingleValue(
           resolvedSelectedDate,
           resolvedSelectedTime || getPlaceholderTime(local.placeholderValue)
         );
       }
-    } else if (local.selectionMode === "multiple") {
-      // TODO: MultiDatePicker
     } else if (local.selectionMode === "range") {
       // TODO: RangeDatePicker
     }
@@ -477,6 +472,8 @@ export function DatePickerRoot(props: DatePickerRootProps) {
   createEffect(
     on(value, value => {
       if (!value) {
+        setSelectedDate(undefined);
+        setSelectedTime(undefined);
         return;
       }
 
@@ -487,7 +484,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
           setSelectedTime(value);
         }
       } else if (local.selectionMode === "multiple") {
-        // TODO: MultiDatePicker
+        setSelectedDate(value);
       } else if (local.selectionMode === "range") {
         // TODO: RangeDatePicker
       }
@@ -523,8 +520,8 @@ export function DatePickerRoot(props: DatePickerRootProps) {
     setContentRef,
     createCalendar: name => local.createCalendar(name),
     isDateUnavailable: date => local.isDateUnavailable?.(date) ?? false,
-    setDateValue,
-    setTimeValue,
+    setDateValue: selectDate,
+    setTimeValue: selectTime,
     open: disclosureState.open,
     close,
     toggle,

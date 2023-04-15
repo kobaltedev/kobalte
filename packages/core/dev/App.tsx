@@ -1,14 +1,14 @@
 import type { DateValue } from "@internationalized/date";
 import { CalendarDate, createCalendar, getLocalTimeZone } from "@internationalized/date";
 import { RangeValue } from "@kobalte/utils";
-import { createSignal, For, Show } from "solid-js";
+import { createEffect, createSignal, For, Show } from "solid-js";
 
 import { Calendar, createDateFormatter, DatePicker, I18nProvider } from "../src";
 
 export default function App() {
-  const [value, setValue] = createSignal<DateValue>();
+  //const [value, setValue] = createSignal<DateValue>();
   //const [value, setValue] = createSignal<DateValue[]>([]);
-  //const [value, setValue] = createSignal<RangeValue<DateValue>>();
+  const [value, setValue] = createSignal<RangeValue<DateValue>>();
 
   const formatter = createDateFormatter({ dateStyle: "short" });
 
@@ -17,30 +17,30 @@ export default function App() {
   };
 
   const getDisplayedDate = () => {
-    return formatDate(value());
+    //return formatDate(value());
     //return value().map(formatDate).join(", ");
-    //return `${formatDate(value()?.start)} to ${formatDate(value()?.end)}`;
+    return `${formatDate(value()?.start)} to ${formatDate(value()?.end)}`;
   };
+
+  createEffect(() => {
+    console.log(value());
+  });
 
   return (
     <I18nProvider locale="en-US">
       <>
-        <p>Selected dates: {getDisplayedDate()}</p>
         <DatePicker.Root
           createCalendar={createCalendar}
-          selectionMode="single"
+          selectionMode="range"
           value={value()}
           onChange={setValue}
         >
           <DatePicker.Control class="control">
-            <input type="text" />
-            <input type="text" />
-            <input type="text" />
+            <span>{getDisplayedDate()}</span>
             <DatePicker.Trigger>🗓</DatePicker.Trigger>
           </DatePicker.Control>
           <DatePicker.Portal>
             <DatePicker.Content class="content">
-              <DatePicker.Arrow />
               <DatePicker.Calendar class="calendar">
                 <DatePicker.CalendarHeader class="header">
                   <DatePicker.CalendarPrevTrigger class="button">
