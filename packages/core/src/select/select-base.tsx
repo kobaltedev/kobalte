@@ -10,6 +10,7 @@ import {
   access,
   createGenerateId,
   focusWithoutScrolling,
+  isFunction,
   mergeDefaultProps,
   OverrideComponentProps,
   ValidationState,
@@ -45,17 +46,6 @@ import {
 } from "../selection";
 import { SelectContext, SelectContextValue, SelectDataSet } from "./select-context";
 
-export interface SelectBaseValueComponentProps<T> {
-  /** The selected items. */
-  items: CollectionNode<T>[];
-
-  /** A function to remove an item from the selection. */
-  remove: (item: CollectionNode<T>) => void;
-
-  /** A function to clear the selection. */
-  clear: () => void;
-}
-
 export interface SelectBaseItemComponentProps<T> {
   /** The item to render. */
   item: CollectionNode<T>;
@@ -82,16 +72,16 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   onOpenChange?: (isOpen: boolean) => void;
 
   /** The controlled value of the select. */
-  value?: Iterable<string>;
+  value?: Option[];
 
   /**
    * The value of the select when initially rendered.
    * Useful when you do not need to control the value.
    */
-  defaultValue?: Iterable<string>;
+  defaultValue?: Option[];
 
   /** Event handler called when the value changes. */
-  onChange?: (value: Set<string>) => void;
+  onChange?: (value: Option[]) => void;
 
   /** The content that will be rendered when no value or defaultValue is set. */
   placeholder?: JSX.Element;
@@ -100,7 +90,7 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   options?: Array<Option | OptGroup>;
 
   /** Property name or getter function to use as the value of an option. */
-  optionValue?: keyof Option | ((option: Option) => string);
+  optionValue?: keyof Option | ((option: Option) => string | number);
 
   /** Property name or getter function to use as the text value of an option for typeahead purpose. */
   optionTextValue?: keyof Option | ((option: Option) => string);
@@ -137,9 +127,6 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 
   /** Whether the select uses virtual scrolling. */
   virtualized?: boolean;
-
-  /** The component to render inside `Select.Value`. */
-  valueComponent?: Component<SelectBaseValueComponentProps<Option>>;
 
   /** When NOT virtualized, the component to render as an item in the `Select.Listbox`. */
   itemComponent?: Component<SelectBaseItemComponentProps<Option>>;
@@ -207,8 +194,8 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     {
       id: defaultId,
       selectionMode: "single",
+      disallowEmptySelection: true,
       allowDuplicateSelectionEvents: true,
-      disallowEmptySelection: props.selectionMode !== "multiple",
       gutter: 8,
       sameWidth: true,
       modal: false,
@@ -219,7 +206,6 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
   const [local, popperProps, formControlProps, others] = splitProps(
     props,
     [
-      "valueComponent",
       "itemComponent",
       "sectionComponent",
       "open",
@@ -275,6 +261,78 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
   const [listboxAriaLabelledBy, setListboxAriaLabelledBy] = createSignal<string>();
   const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(true);
 
+  const getOptionValue = (option: Option): string => {
+    const optionValue = local.optionValue;
+
+    if (optionValue == null) {
+      // If no `optionValue`, the option itself is the value (ex: string[] of options)
+      return String(option);
+    }
+
+    // Get the value from the option object as a string.
+    return String(isFunction(optionValue) ? optionValue(option) : option[optionValue]);
+  };
+
+  const getOptionGroupChildren = (optionGroup: OptGroup): Option[] | undefined => {
+    const optionGroupChildren = local.optionGroupChildren;
+
+    if (optionGroupChildren == null) {
+      // The combobox doesn't contains option groups.
+      return undefined;
+    }
+
+    return (
+      isFunction(optionGroupChildren)
+        ? optionGroupChildren(optionGroup)
+        : optionGroup[optionGroupChildren]
+    ) as Option[] | undefined;
+  };
+
+  const isOptionGroup = (value: any): value is OptGroup => {
+    // If no custom `isOptionGroup` is provided assume it's an option group if it has children.
+    return local.isOptionGroup?.(value) ?? getOptionGroupChildren(value) != null;
+  };
+
+  const retrieveOptionFromValue = (value: string): Option | undefined => {
+    const optionValue = local.optionValue;
+
+    if (optionValue == null) {
+      // If no `optionValue`, the value itself is the option (ex: string[] of options)
+      return value as Option;
+    }
+
+    // Retrieve the option object based on the value string in a flat list of options.
+    if (local.optionGroupChildren == null) {
+      // The combobox doesn't contains option groups.
+      return local.options?.find(option => getOptionValue(option as Option) === value) as
+        | Option
+        | undefined;
+    }
+
+    // Retrieve the option object based on the value string in a list of options and option groups.
+    let retrievedOption: Option | undefined;
+
+    for (const optionOrOptGroup of local.options ?? []) {
+      if (isOptionGroup(optionOrOptGroup)) {
+        retrievedOption = getOptionGroupChildren(optionOrOptGroup)?.find(
+          option => getOptionValue(option as Option) === value
+        );
+      } else if (getOptionValue(optionOrOptGroup as Option) === value) {
+        retrievedOption = optionOrOptGroup;
+      }
+
+      if (retrievedOption) {
+        break;
+      }
+    }
+
+    return retrievedOption;
+  };
+
+  const getSelectedOptionsFromValues = (values: Set<string>) => {
+    return [...values].map(retrieveOptionFromValue).filter(option => option != null) as Option[];
+  };
+
   const disclosureState = createDisclosureState({
     open: () => local.open,
     defaultOpen: () => local.defaultOpen,
@@ -282,10 +340,10 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
   });
 
   const listState = createListState({
-    selectedKeys: () => local.value,
-    defaultSelectedKeys: () => local.defaultValue,
+    selectedKeys: () => local.value && local.value.map(getOptionValue),
+    defaultSelectedKeys: () => local.defaultValue && local.defaultValue.map(getOptionValue),
     onSelectionChange: keys => {
-      local.onChange?.(keys);
+      local.onChange?.(getSelectedOptionsFromValues(keys));
 
       if (local.selectionMode === "single") {
         close();
@@ -302,6 +360,14 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     getSectionChildren: () => local.optionGroupChildren as any,
     getIsSection: () => local.isOptionGroup,
   });
+
+  const selectedOptions = createMemo(() => {
+    return getSelectedOptionsFromValues(listState.selectionManager().selectedKeys());
+  });
+
+  const removeOptionFromSelection = (option: Option) => {
+    listState.selectionManager().toggleSelection(getOptionValue(option));
+  };
 
   const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
 
@@ -355,7 +421,11 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
   const { formControlContext } = createFormControl(formControlProps);
 
   createFormResetListener(triggerRef, () => {
-    listState.selectionManager().setSelectedKeys(local.defaultValue ?? new Selection());
+    const defaultSelectedKeys = local.defaultValue
+      ? [...local.defaultValue].map(getOptionValue)
+      : new Selection();
+
+    listState.selectionManager().setSelectedKeys(defaultSelectedKeys);
   });
 
   const collator = createCollator({ usage: "search", sensitivity: "base" });
@@ -370,22 +440,6 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 
     return new ListKeyboardDelegate(listState.collection, undefined, collator);
   });
-
-  const selectedItems = createMemo(() => {
-    return [...listState.selectionManager().selectedKeys()]
-      .map(key => listState.collection().getItem(key))
-      .filter(Boolean) as CollectionNode[];
-  });
-
-  const renderValue = () => {
-    return local.valueComponent?.({
-      get items() {
-        return selectedItems();
-      },
-      remove: item => listState.selectionManager().toggleSelection(item.key),
-      clear: () => listState.selectionManager().clearSelection(),
-    });
-  };
 
   const renderItem = (item: CollectionNode) => {
     return local.itemComponent?.({ item });
@@ -409,6 +463,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     isModal: () => local.modal ?? false,
     disallowTypeAhead: () => local.disallowTypeAhead ?? false,
     shouldFocusWrap: () => local.shouldFocusWrap ?? false,
+    selectedOptions,
     contentPresence,
     autoFocus: focusStrategy,
     triggerRef,
@@ -426,9 +481,9 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     close,
     toggle,
     placeholder: () => local.placeholder,
-    renderValue,
     renderItem,
     renderSection,
+    removeOptionFromSelection,
     generateId: createGenerateId(() => access(formControlProps.id)!),
     registerTriggerId: createRegisterId(setTriggerId),
     registerValueId: createRegisterId(setValueId),

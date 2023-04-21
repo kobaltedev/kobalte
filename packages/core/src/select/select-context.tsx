@@ -18,6 +18,7 @@ export interface SelectContextValue {
   isModal: Accessor<boolean>;
   disallowTypeAhead: Accessor<boolean>;
   shouldFocusWrap: Accessor<boolean>;
+  selectedOptions: Accessor<any>;
   contentPresence: CreatePresenceResult;
   autoFocus: Accessor<FocusStrategy | boolean>;
   triggerRef: Accessor<HTMLButtonElement | undefined>;
@@ -37,7 +38,7 @@ export interface SelectContextValue {
   placeholder: Accessor<JSX.Element>;
   renderItem: (item: CollectionNode) => JSX.Element;
   renderSection: (section: CollectionNode) => JSX.Element;
-  renderValue: () => JSX.Element;
+  removeOptionFromSelection: (option: any) => void;
   generateId: (part: string) => string;
   registerTriggerId: (id: string) => () => void;
   registerValueId: (id: string) => () => void;

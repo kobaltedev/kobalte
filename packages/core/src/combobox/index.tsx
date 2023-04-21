@@ -39,6 +39,10 @@ import {
   type PopperArrowProps as ComboboxArrowProps,
 } from "../popper";
 import {
+  type ComboboxBaseItemComponentProps as ComboboxRootItemComponentProps,
+  type ComboboxBaseSectionComponentProps as ComboboxRootSectionComponentProps,
+} from "./combobox-base";
+import {
   ComboboxControl as Control,
   type ComboboxControlOptions,
   type ComboboxControlProps,
@@ -47,10 +51,6 @@ import {
   ComboboxHiddenSelect as HiddenSelect,
   type ComboboxHiddenSelectProps,
 } from "./combobox-hidden-select";
-import {
-  type ComboboxBaseItemComponentProps as ComboboxRootItemComponentProps,
-  type ComboboxBaseSectionComponentProps as ComboboxRootSectionComponentProps,
-} from "./combobox-base";
 import {
   ComboboxRoot as Root,
   type ComboboxRootOptions,

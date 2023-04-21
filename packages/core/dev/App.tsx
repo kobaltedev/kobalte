@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 
-import { Combobox, I18nProvider } from "../src";
+import { I18nProvider, Select } from "../src";
 
 interface Food {
   value: string;
@@ -40,7 +40,7 @@ export default function App() {
 
   return (
     <I18nProvider locale="en-US">
-      <Combobox.Root<Food, Category>
+      <Select.Root<Food, Category>
         options={options}
         optionValue="value"
         optionTextValue="label"
@@ -51,33 +51,32 @@ export default function App() {
         onChange={setValue}
         placeholder="Select a fruit..."
         itemComponent={props => (
-          <Combobox.Item item={props.item} class="combobox__item">
+          <Select.Item item={props.item} class="combobox__item">
             {props.item.rawValue.label}
-          </Combobox.Item>
+          </Select.Item>
         )}
         sectionComponent={props => (
-          <Combobox.Section class="combobox__section">
-            {props.section.rawValue.label}
-          </Combobox.Section>
+          <Select.Section class="combobox__section">{props.section.rawValue.label}</Select.Section>
         )}
       >
-        <Combobox.Control<Food> class="combobox__trigger">
-          {({ selectedOptions }) => (
-            <>
-              {selectedOptions()
-                .map(option => option.label)
-                .join(", ")}
-              <Combobox.Input />
-              <Combobox.Trigger class="combobox__icon" />
-            </>
-          )}
-        </Combobox.Control>
-        <Combobox.Portal>
-          <Combobox.Content class="combobox__content">
-            <Combobox.Listbox class="combobox__listbox" />
-          </Combobox.Content>
-        </Combobox.Portal>
-      </Combobox.Root>
+        <Select.Trigger class="combobox__trigger">
+          <Select.Value<Food>>
+            {({ selectedOptions }) => (
+              <>
+                {selectedOptions()
+                  .map(option => option.label)
+                  .join(", ")}
+              </>
+            )}
+          </Select.Value>
+          <Select.Icon class="combobox__icon">V</Select.Icon>
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Content class="combobox__content">
+            <Select.Listbox class="combobox__listbox" />
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
     </I18nProvider>
   );
 }

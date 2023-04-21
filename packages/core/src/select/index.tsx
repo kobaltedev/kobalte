@@ -25,6 +25,10 @@ import {
   type PopperArrowProps as SelectArrowProps,
 } from "../popper";
 import {
+  type SelectBaseItemComponentProps as SelectRootItemComponentProps,
+  type SelectBaseSectionComponentProps as SelectRootSectionComponentProps,
+} from "./select-base";
+import {
   SelectContent as Content,
   type SelectContentOptions,
   type SelectContentProps,
@@ -41,14 +45,7 @@ import {
   type SelectListboxProps,
 } from "./select-listbox";
 import { SelectPortal as Portal, type SelectPortalProps } from "./select-portal";
-import {
-  type SelectItemComponentProps,
-  SelectRoot as Root,
-  type SelectRootOptions,
-  type SelectRootProps,
-  type SelectSectionComponentProps,
-  type SelectValueComponentProps,
-} from "./select-root";
+import { SelectRoot as Root, type SelectRootOptions, type SelectRootProps } from "./select-root";
 import { SelectTrigger as Trigger, type SelectTriggerProps } from "./select-trigger";
 import { SelectValue as Value, type SelectValueProps } from "./select-value";
 
@@ -62,7 +59,6 @@ export type {
   SelectErrorMessageProps,
   SelectHiddenSelectProps,
   SelectIconProps,
-  SelectItemComponentProps,
   SelectItemDescriptionProps,
   SelectItemIndicatorOptions,
   SelectItemIndicatorProps,
@@ -73,12 +69,12 @@ export type {
   SelectListboxOptions,
   SelectListboxProps,
   SelectPortalProps,
+  SelectRootItemComponentProps,
   SelectRootOptions,
   SelectRootProps,
-  SelectSectionComponentProps,
+  SelectRootSectionComponentProps,
   SelectSectionProps,
   SelectTriggerProps,
-  SelectValueComponentProps,
   SelectValueProps,
 };
 
