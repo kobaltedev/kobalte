@@ -89,7 +89,10 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   /** An array of options to display as the available options. */
   options?: Array<Option | OptGroup>;
 
-  /** Property name or getter function to use as the value of an option. */
+  /**
+   * Property name or getter function to use as the value of an option.
+   * This is the value that will be submitted when the select is part of a `<form>`.
+   */
   optionValue?: keyof Option | ((option: Option) => string | number);
 
   /** Property name or getter function to use as the text value of an option for typeahead purpose. */
