@@ -63,8 +63,8 @@ export function SelectTrigger(props: SelectTriggerProps) {
 
     e.currentTarget.dataset.pointerType = e.pointerType;
 
-    // For consistency with native, open the select on mouse down, but touch up.
-    if (!isDisabled() && e.pointerType !== "touch") {
+    // For consistency with native, open the select on mouse down (main button), but touch up.
+    if (!isDisabled() && e.pointerType !== "touch" && e.button === 0) {
       context.toggle(true);
     }
   };

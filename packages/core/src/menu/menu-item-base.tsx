@@ -173,11 +173,10 @@ export function MenuItemBase(props: MenuItemBaseProps) {
   const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
     callHandler(e, local.onPointerUp);
 
-    if (local.disabled) {
-      return;
+    // Selection occurs on pointer up (main button).
+    if (!local.disabled && e.button === 0) {
+      onSelect();
     }
-
-    onSelect();
   };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {

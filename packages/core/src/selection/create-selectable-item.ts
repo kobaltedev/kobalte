@@ -101,8 +101,8 @@ export function createSelectableItem<T extends HTMLElement>(
 
     pointerDownType = e.pointerType;
 
-    // Selection occurs on mouse down.
-    if (e.pointerType === "mouse" && !access(props.shouldSelectOnPressUp)) {
+    // Selection occurs on mouse down (main button).
+    if (e.pointerType === "mouse" && e.button === 0 && !access(props.shouldSelectOnPressUp)) {
       onSelect(e);
     }
   };
@@ -115,10 +115,11 @@ export function createSelectableItem<T extends HTMLElement>(
       return;
     }
 
-    // If allowsDifferentPressOrigin, make selection happen on mouse up.
+    // If allowsDifferentPressOrigin, make selection happen on mouse up (main button).
     // Otherwise, have selection happen on click.
     if (
       e.pointerType === "mouse" &&
+      e.button === 0 &&
       access(props.shouldSelectOnPressUp) &&
       access(props.allowsDifferentPressOrigin)
     ) {

@@ -45,8 +45,8 @@ export function MenuTrigger(props: MenuTriggerProps) {
 
     e.currentTarget.dataset.pointerType = e.pointerType;
 
-    // For consistency with native, open the select on mouse down, but touch up.
-    if (!local.disabled && e.pointerType !== "touch") {
+    // For consistency with native, open the select on mouse down (main button), but touch up.
+    if (!local.disabled && e.pointerType !== "touch" && e.button === 0) {
       context.toggle(true);
     }
   };
