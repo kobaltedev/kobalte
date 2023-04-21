@@ -7,6 +7,7 @@ import {
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
+import { useFormControlContext } from "../form-control";
 import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
@@ -17,17 +18,11 @@ import {
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives";
-import { usePopoverContext } from "./popover-context";
+import { useDatePickerContext } from "./date-picker-context";
 
-export interface PopoverContentOptions extends AsChildProp {
+export interface DatePickerContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
-
-  /**
-   * Event handler called when focus moves into the component after opening.
-   * It can be prevented by calling `event.preventDefault`.
-   */
-  onOpenAutoFocus?: (event: Event) => void;
 
   /**
    * Event handler called when focus moves to the trigger after closing.
@@ -60,15 +55,17 @@ export interface PopoverContentOptions extends AsChildProp {
   onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export interface PopoverContentProps extends OverrideComponentProps<"div", PopoverContentOptions> {}
+export interface DatePickerContentProps
+  extends OverrideComponentProps<"div", DatePickerContentOptions> {}
 
 /**
- * Contains the content to be rendered when the popover is open.
+ * The component that pops out when the date picker is open.
  */
-export function PopoverContent(props: PopoverContentProps) {
+export function DatePickerContent(props: DatePickerContentProps) {
   let ref: HTMLElement | undefined;
 
-  const context = usePopoverContext();
+  const formControlContext = useFormControlContext();
+  const context = useDatePickerContext();
 
   props = mergeDefaultProps(
     {
@@ -80,15 +77,23 @@ export function PopoverContent(props: PopoverContentProps) {
   const [local, others] = splitProps(props, [
     "ref",
     "style",
-    "onOpenAutoFocus",
     "onCloseAutoFocus",
     "onPointerDownOutside",
     "onFocusOutside",
     "onInteractOutside",
+    "aria-labelledby",
   ]);
 
   let isRightClickOutside = false;
   let hasInteractedOutside = false;
+
+  const ariaLabelledBy = () => {
+    return formControlContext.getAriaLabelledBy(
+      context.triggerId(),
+      others["aria-label"],
+      local["aria-labelledby"]
+    );
+  };
 
   const onCloseAutoFocus = (e: Event) => {
     local.onCloseAutoFocus?.(e);
@@ -142,7 +147,20 @@ export function PopoverContent(props: PopoverContentProps) {
   // aria-hide everything except the content (better supported equivalent to setting aria-modal)
   createHideOutside({
     isDisabled: () => !(context.isModal() && context.isOpen()),
-    targets: () => (ref ? [ref] : []),
+    targets: () => {
+      const excludedElements = [];
+
+      if (ref) {
+        excludedElements.push(ref);
+      }
+
+      const controlEl = context.controlRef();
+      if (controlEl) {
+        excludedElements.push(controlEl);
+      }
+
+      return excludedElements;
+    },
   });
 
   createPreventScroll({
@@ -153,7 +171,10 @@ export function PopoverContent(props: PopoverContentProps) {
   createFocusScope(
     {
       trapFocus: () => context.isModal() && context.isOpen(),
-      onMountAutoFocus: local.onOpenAutoFocus,
+      onMountAutoFocus: e => {
+        // We prevent open autofocus because it's handled by the `Calendar`.
+        e.preventDefault();
+      },
       onUnmountAutoFocus: onCloseAutoFocus,
     },
     () => ref
@@ -173,14 +194,14 @@ export function PopoverContent(props: PopoverContentProps) {
           role="dialog"
           tabIndex={-1}
           disableOutsidePointerEvents={context.isModal() && context.isOpen()}
-          excludedElements={[context.triggerRef]}
+          excludedElements={[context.controlRef]}
           style={{
-            "--kb-popover-content-transform-origin": "var(--kb-popper-content-transform-origin)",
+            "--kb-date-picker-content-transform-origin":
+              "var(--kb-popper-content-transform-origin)",
             position: "relative",
             ...local.style,
           }}
-          aria-labelledby={context.titleId()}
-          aria-describedby={context.descriptionId()}
+          aria-labelledby={ariaLabelledBy()}
           onPointerDownOutside={onPointerDownOutside}
           onFocusOutside={onFocusOutside}
           onInteractOutside={onInteractOutside}

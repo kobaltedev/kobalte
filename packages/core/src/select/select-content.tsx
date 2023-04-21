@@ -91,7 +91,7 @@ export function SelectContent(props: SelectContentProps) {
 
   createFocusScope(
     {
-      trapFocus: context.isOpen() && context.isModal(),
+      trapFocus: () => context.isOpen() && context.isModal(),
       onMountAutoFocus: e => {
         // We prevent open autofocus because it's handled by the `Listbox`.
         e.preventDefault();

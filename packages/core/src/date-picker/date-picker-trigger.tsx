@@ -1,16 +1,16 @@
 import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { createEffect, createMemo, JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
-import { useComboboxContext } from "./combobox-context";
+import { useDatePickerContext } from "./date-picker-context";
 
-export interface ComboboxTriggerProps
+export interface DatePickerTriggerProps
   extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
 
-export function ComboboxTrigger(props: ComboboxTriggerProps) {
+export function DatePickerTrigger(props: DatePickerTriggerProps) {
   const formControlContext = useFormControlContext();
-  const context = useComboboxContext();
+  const context = useDatePickerContext();
 
   props = mergeDefaultProps(
     {
@@ -39,45 +39,41 @@ export function ComboboxTrigger(props: ComboboxTriggerProps) {
   const onPointerDown: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> = e => {
     callHandler(e, local.onPointerDown);
 
-    e.currentTarget.dataset.pointerType = e.pointerType;
-
-    // For consistency with native, open the combobox on mouse down, but touch up.
-    if (!isDisabled() && e.pointerType !== "touch") {
-      context.toggle(false, "manual");
-    }
+    // Prevent pointer events from reaching `DatePicker.Control`.
+    e.stopPropagation();
   };
 
   const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
     callHandler(e, local.onClick);
 
-    if (!isDisabled()) {
-      if (e.currentTarget.dataset.pointerType === "touch") {
-        context.toggle(false, "manual");
-      }
+    // Prevent click events from reaching `DatePicker.Control`.
+    e.stopPropagation();
 
-      // Focus the input field in case it isn't focused yet.
-      context.inputRef()?.focus();
+    if (!isDisabled()) {
+      context.toggle();
     }
   };
 
+  const ariaLabel = createMemo(() => {
+    return context.messageFormatter().format("calendar");
+  });
+
   const ariaLabelledBy = () => {
-    return formControlContext.getAriaLabelledBy(
-      others.id,
-      context.triggerAriaLabel(),
-      local["aria-labelledby"]
-    );
+    return formControlContext.getAriaLabelledBy(others.id, ariaLabel(), local["aria-labelledby"]);
   };
+
+  createEffect(() => onCleanup(context.registerTriggerId(others.id!)));
 
   return (
     <Button.Root
       ref={mergeRefs(context.setTriggerRef, local.ref)}
       disabled={isDisabled()}
-      tabIndex="-1"
-      aria-haspopup="listbox"
+      aria-haspopup="dialog"
       aria-expanded={context.isOpen()}
-      aria-controls={context.isOpen() ? context.listboxId() : undefined}
-      aria-label={context.triggerAriaLabel()}
+      aria-controls={context.isOpen() ? context.contentId() : undefined}
+      aria-label={ariaLabel()}
       aria-labelledby={ariaLabelledBy()}
+      aria-describedby={context.ariaDescribedBy()}
       onPointerDown={onPointerDown}
       onClick={onClick}
       {...context.dataset()}

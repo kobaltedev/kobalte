@@ -274,8 +274,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     FORM_CONTROL_PROP_NAMES
   );
 
-  const [inputId, setInputId] = createSignal<string>();
-  const [valueId, setValueId] = createSignal<string>();
   const [listboxId, setListboxId] = createSignal<string>();
 
   const [controlRef, setControlRef] = createSignal<HTMLDivElement>();
@@ -598,8 +596,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     contentRef,
     listState: () => listState,
     keyboardDelegate: delegate,
-    inputId,
-    valueId,
     listboxId,
     triggerAriaLabel: () => messageFormatter().format("triggerLabel"),
     listboxAriaLabel: () => messageFormatter().format("listboxLabel"),
@@ -620,8 +616,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     renderSection,
     onInputKeyDown: e => selectableCollection.onKeyDown(e),
     generateId: createGenerateId(() => access(formControlProps.id)!),
-    registerInputId: createRegisterId(setInputId),
-    registerValueId: createRegisterId(setValueId),
     registerListboxId: createRegisterId(setListboxId),
   };
 

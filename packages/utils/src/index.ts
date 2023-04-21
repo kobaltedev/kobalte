@@ -6,6 +6,7 @@ export * from "./dom";
 export * from "./enums";
 export * from "./events";
 export * from "./external";
+export * from "./focus-manager";
 export * from "./focus-without-scrolling";
 export * from "./get-scroll-parent";
 export * from "./is-virtual-event";

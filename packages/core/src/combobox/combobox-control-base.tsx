@@ -41,6 +41,7 @@ export function ComboboxControlBase(props: ComboboxControlBaseProps) {
   return (
     <Polymorphic
       as="div"
+      role="group"
       ref={mergeRefs(context.setControlRef, local.ref)}
       {...context.dataset()}
       {...formControlContext.dataset()}
