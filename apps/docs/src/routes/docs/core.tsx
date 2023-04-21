@@ -65,6 +65,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/collapsible",
       },
       {
+        title: "Combobox",
+        href: "/docs/core/components/combobox",
+      },
+      {
         title: "Context Menu",
         href: "/docs/core/components/context-menu",
       },

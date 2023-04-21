@@ -48,11 +48,13 @@ import {
   type ComboboxHiddenSelectProps,
 } from "./combobox-hidden-select";
 import {
+  type ComboboxBaseItemComponentProps as ComboboxRootItemComponentProps,
+  type ComboboxBaseSectionComponentProps as ComboboxRootSectionComponentProps,
+} from "./combobox-base";
+import {
   ComboboxRoot as Root,
-  type ComboboxRootItemComponentProps,
   type ComboboxRootOptions,
   type ComboboxRootProps,
-  type ComboboxRootSectionComponentProps,
 } from "./combobox-root";
 import { ComboboxTrigger as Trigger, type ComboboxTriggerProps } from "./combobox-trigger";
 

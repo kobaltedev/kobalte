@@ -3,6 +3,7 @@ import {
   createGenerateId,
   focusWithoutScrolling,
   isAppleDevice,
+  isFunction,
   mergeDefaultProps,
   OverrideComponentProps,
   ValidationState,
@@ -84,19 +85,22 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
   onInputChange?: (value: string) => void;
 
   /** The controlled value of the combobox. */
-  value?: Iterable<string>;
+  value?: Option[];
 
   /**
    * The value of the combobox when initially rendered.
    * Useful when you do not need to control the value.
    */
-  defaultValue?: Iterable<string>;
+  defaultValue?: Option[];
 
   /** Event handler called when the value changes. */
-  onChange?: (value: Set<string>) => void;
+  onChange?: (value: Option[]) => void;
 
-  /** The string representation of the selected values to display in the `Combobox.Input`.  */
-  displayValue?: (values: Set<string>) => string;
+  /**
+   * When `selectionMode` is "single".
+   * The string representation of the selected value to display in the `Combobox.Input`.
+   */
+  displayValue?: (value: Option) => string;
 
   /** The interaction required to display the combobox menu. */
   triggerMode?: ComboboxTriggerMode;
@@ -107,8 +111,11 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
   /** An array of options to display as the available options. */
   options?: Array<Option | OptGroup>;
 
-  /** Property name or getter function to use as the value of an option. */
-  optionValue?: keyof Option | ((option: Option) => string);
+  /**
+   * Property name or getter function to use as the value of an option.
+   * This is the value that will be submitted when the combobox is part of a `<form>`.
+   */
+  optionValue?: keyof Option | ((option: Option) => string | number);
 
   /** Property name or getter function to use as the text value of an option for typeahead purpose. */
   optionTextValue?: keyof Option | ((option: Option) => string);
@@ -142,6 +149,12 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
 
   /** Whether the combobox allows empty selection. */
   disallowEmptySelection?: boolean;
+
+  /**
+   * When `selectionMode` is "multiple".
+   * Whether the last selected option should be removed when the user press the Backspace key and the input is empty.
+   */
+  removeOnBackspace?: boolean;
 
   /** Whether the combobox uses virtual scrolling. */
   virtualized?: boolean;
@@ -213,6 +226,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       selectionMode: "single",
       disallowEmptySelection: true,
       allowDuplicateSelectionEvents: true,
+      removeOnBackspace: true,
       gutter: 8,
       sameWidth: true,
       modal: false,
@@ -250,6 +264,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       "disallowEmptySelection",
       "shouldFocusWrap",
       "allowsEmptyCollection",
+      "removeOnBackspace",
       "selectionBehavior",
       "selectionMode",
       "virtualized",
@@ -300,6 +315,78 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     setShouldResetInputAfterClose(true);
   };
 
+  const getOptionValue = (option: Option): string => {
+    const optionValue = local.optionValue;
+
+    if (optionValue == null) {
+      // If no `optionValue`, the option itself is the value (ex: string[] of options)
+      return String(option);
+    }
+
+    // Get the value from the option object as a string.
+    return String(isFunction(optionValue) ? optionValue(option) : option[optionValue]);
+  };
+
+  const getOptionGroupChildren = (optionGroup: OptGroup): Option[] | undefined => {
+    const optionGroupChildren = local.optionGroupChildren;
+
+    if (optionGroupChildren == null) {
+      // The combobox doesn't contains option groups.
+      return undefined;
+    }
+
+    return (
+      isFunction(optionGroupChildren)
+        ? optionGroupChildren(optionGroup)
+        : optionGroup[optionGroupChildren]
+    ) as Option[] | undefined;
+  };
+
+  const isOptionGroup = (value: any): value is OptGroup => {
+    // If no custom `isOptionGroup` is provided assume it's an option group if it has children.
+    return local.isOptionGroup?.(value) ?? getOptionGroupChildren(value) != null;
+  };
+
+  const retrieveOptionFromValue = (value: string): Option | undefined => {
+    const optionValue = local.optionValue;
+
+    if (optionValue == null) {
+      // If no `optionValue`, the value itself is the option (ex: string[] of options)
+      return value as Option;
+    }
+
+    // Retrieve the option object based on the value string in a flat list of options.
+    if (local.optionGroupChildren == null) {
+      // The combobox doesn't contains option groups.
+      return local.options?.find(option => getOptionValue(option as Option) === value) as
+        | Option
+        | undefined;
+    }
+
+    // Retrieve the option object based on the value string in a list of options and option groups.
+    let retrievedOption: Option | undefined;
+
+    for (const optionOrOptGroup of local.options ?? []) {
+      if (isOptionGroup(optionOrOptGroup)) {
+        retrievedOption = getOptionGroupChildren(optionOrOptGroup)?.find(
+          option => getOptionValue(option as Option) === value
+        );
+      } else if (getOptionValue(optionOrOptGroup as Option) === value) {
+        retrievedOption = optionOrOptGroup;
+      }
+
+      if (retrievedOption) {
+        break;
+      }
+    }
+
+    return retrievedOption;
+  };
+
+  const getSelectedOptionsFromValues = (values: Set<string>) => {
+    return [...values].map(retrieveOptionFromValue).filter(option => option != null) as Option[];
+  };
+
   const [inputValue, setInputValue] = createControllableSignal({
     value: () => local.inputValue,
     defaultValue: () => local.defaultInputValue,
@@ -329,13 +416,15 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   });
 
   const listState = createListState({
-    selectedKeys: () => local.value,
-    defaultSelectedKeys: () => local.defaultValue,
+    selectedKeys: () => local.value && local.value.map(getOptionValue),
+    defaultSelectedKeys: () => local.defaultValue && local.defaultValue.map(getOptionValue),
     onSelectionChange: keys => {
-      local.onChange?.(keys);
+      const selectedOptions = getSelectedOptionsFromValues(keys);
+
+      local.onChange?.(selectedOptions);
 
       if (local.selectionMode === "single") {
-        lastDisplayValue = local.displayValue?.(keys) ?? "";
+        lastDisplayValue = selectedOptions[0] ? local.displayValue?.(selectedOptions[0]) ?? "" : "";
 
         if (closeOnSingleSelect()) {
           close();
@@ -368,6 +457,14 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     getSectionChildren: () => local.optionGroupChildren as any,
     getIsSection: () => local.isOptionGroup,
   });
+
+  const selectedOptions = createMemo(() => {
+    return getSelectedOptionsFromValues(listState.selectionManager().selectedKeys());
+  });
+
+  const removeOptionFromSelection = (option: Option) => {
+    listState.selectionManager().toggleSelection(getOptionValue(option));
+  };
 
   const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
 
@@ -413,7 +510,11 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   const { formControlContext } = createFormControl(formControlProps);
 
   createFormResetListener(inputRef, () => {
-    listState.selectionManager().setSelectedKeys(local.defaultValue ?? new Selection());
+    const defaultSelectedKeys = local.defaultValue
+      ? [...local.defaultValue].map(getOptionValue)
+      : new Selection();
+
+    listState.selectionManager().setSelectedKeys(defaultSelectedKeys);
   });
 
   // By default, a KeyboardDelegate is provided which uses the DOM to query layout information (e.g. for page up/page down).
@@ -584,6 +685,8 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     isModal: () => local.modal ?? false,
     allowsEmptyCollection: () => local.allowsEmptyCollection ?? false,
     shouldFocusWrap: () => local.shouldFocusWrap ?? false,
+    removeOnBackspace: () => local.removeOnBackspace ?? true,
+    selectedOptions,
     isInputFocused,
     contentPresence,
     autoFocus: focusStrategy,
@@ -614,6 +717,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     placeholder: () => local.placeholder,
     renderItem,
     renderSection,
+    removeOptionFromSelection,
     onInputKeyDown: e => selectableCollection.onKeyDown(e),
     generateId: createGenerateId(() => access(formControlProps.id)!),
     registerListboxId: createRegisterId(setListboxId),

@@ -20,6 +20,8 @@ export interface ComboboxContextValue {
   isInputFocused: Accessor<boolean>;
   allowsEmptyCollection: Accessor<boolean>;
   shouldFocusWrap: Accessor<boolean>;
+  removeOnBackspace: Accessor<boolean>;
+  selectedOptions: Accessor<any>;
   contentPresence: CreatePresenceResult;
   autoFocus: Accessor<FocusStrategy | boolean>;
   activeDescendant: Accessor<string | undefined>;
@@ -49,6 +51,7 @@ export interface ComboboxContextValue {
   placeholder: Accessor<JSX.Element>;
   renderItem: (item: CollectionNode) => JSX.Element;
   renderSection: (section: CollectionNode) => JSX.Element;
+  removeOptionFromSelection: (option: any) => void;
   onInputKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent>;
   generateId: (part: string) => string;
   registerListboxId: (id: string) => () => void;

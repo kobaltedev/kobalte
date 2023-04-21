@@ -124,8 +124,13 @@ export function ComboboxInput(props: ComboboxInputProps) {
         break;
       case "Backspace":
         // Remove last selection in multiple mode if input is empty.
-        if (selectionManager().selectionMode() === "multiple" && context.inputValue() === "") {
-          selectionManager().toggleSelection(selectionManager().lastSelectedKey() ?? "");
+        if (
+          context.removeOnBackspace() &&
+          selectionManager().selectionMode() === "multiple" &&
+          context.inputValue() === ""
+        ) {
+          const lastSelectedKey = [...selectionManager().selectedKeys()].pop() ?? "";
+          selectionManager().toggleSelection(lastSelectedKey);
         }
         break;
     }

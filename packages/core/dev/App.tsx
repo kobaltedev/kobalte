@@ -1,127 +1,127 @@
-import type { DateValue } from "@internationalized/date";
-import { CalendarDate, createCalendar, getLocalTimeZone } from "@internationalized/date";
-import { RangeValue } from "@kobalte/utils";
-import { createEffect, createSignal, For, Show } from "solid-js";
+import { createSignal } from "solid-js";
 
-import { Calendar, createDateFormatter, DatePicker, I18nProvider } from "../src";
+import { Combobox, I18nProvider } from "../src";
+
+interface Food {
+  value: string;
+  label: string;
+  disabled: boolean;
+}
+
+interface Category {
+  label: string;
+  options: Food[];
+}
+
+const options: Category[] = [
+  {
+    label: "Fruits",
+    options: [
+      { value: "apple", label: "Apple", disabled: false },
+      { value: "banana", label: "Banana", disabled: false },
+      { value: "blueberry", label: "Blueberry", disabled: false },
+      { value: "grapes", label: "Grapes", disabled: true },
+      { value: "pineapple", label: "Pineapple", disabled: false },
+    ],
+  },
+  {
+    label: "Meat",
+    options: [
+      { value: "beef", label: "Beef", disabled: false },
+      { value: "chicken", label: "Chicken", disabled: false },
+      { value: "lamb", label: "Lamb", disabled: false },
+      { value: "pork", label: "Pork", disabled: false },
+    ],
+  },
+];
 
 export default function App() {
-  //const [value, setValue] = createSignal<DateValue>();
-  //const [value, setValue] = createSignal<DateValue[]>([]);
-  const [value, setValue] = createSignal<RangeValue<DateValue>>();
-
-  const formatter = createDateFormatter({ dateStyle: "short" });
-
-  const formatDate = (date: DateValue | undefined) => {
-    return date ? formatter().format(date.toDate(getLocalTimeZone())) : "--";
-  };
-
-  const getDisplayedDate = () => {
-    //return formatDate(value());
-    //return value().map(formatDate).join(", ");
-    return `${formatDate(value()?.start)} to ${formatDate(value()?.end)}`;
-  };
-
-  createEffect(() => {
-    console.log(value());
-  });
+  const [value, setValue] = createSignal<Food[]>([]);
 
   return (
     <I18nProvider locale="en-US">
-      <>
-        <DatePicker.Root
-          createCalendar={createCalendar}
-          selectionMode="range"
-          value={value()}
-          onChange={setValue}
-        >
-          <DatePicker.Control class="control">
-            <span>{getDisplayedDate()}</span>
-            <DatePicker.Trigger>🗓</DatePicker.Trigger>
-          </DatePicker.Control>
-          <DatePicker.Portal>
-            <DatePicker.Content class="content">
-              <DatePicker.Calendar class="calendar">
-                <DatePicker.CalendarHeader class="header">
-                  <DatePicker.CalendarPrevTrigger class="button">
-                    &lsaquo;
-                  </DatePicker.CalendarPrevTrigger>
-                  <DatePicker.CalendarHeading class="heading" />
-                  <DatePicker.CalendarNextTrigger class="button">
-                    &rsaquo;
-                  </DatePicker.CalendarNextTrigger>
-                </DatePicker.CalendarHeader>
-                <DatePicker.CalendarBody>
-                  <DatePicker.CalendarGrid class="grid">
-                    <DatePicker.CalendarGridHeader>
-                      <DatePicker.CalendarGridHeaderRow>
-                        {weekDay => (
-                          <DatePicker.CalendarGridHeaderCell>
-                            {weekDay()}
-                          </DatePicker.CalendarGridHeaderCell>
-                        )}
-                      </DatePicker.CalendarGridHeaderRow>
-                    </DatePicker.CalendarGridHeader>
-                    <DatePicker.CalendarGridBody>
-                      {weekIndex => (
-                        <DatePicker.CalendarGridBodyRow weekIndex={weekIndex()}>
-                          {date => (
-                            <Show when={date()} fallback={<td />}>
-                              <DatePicker.CalendarGridBodyCell date={date()!}>
-                                <DatePicker.CalendarGridBodyCellTrigger class="cell" />
-                              </DatePicker.CalendarGridBodyCell>
-                            </Show>
-                          )}
-                        </DatePicker.CalendarGridBodyRow>
-                      )}
-                    </DatePicker.CalendarGridBody>
-                  </DatePicker.CalendarGrid>
-                </DatePicker.CalendarBody>
-              </DatePicker.Calendar>
-            </DatePicker.Content>
-          </DatePicker.Portal>
-        </DatePicker.Root>
-      </>
+      <Combobox.Root<Food, Category>
+        options={options}
+        optionValue="value"
+        optionTextValue="label"
+        optionDisabled="disabled"
+        optionGroupChildren="options"
+        multiple
+        value={value()}
+        onChange={setValue}
+        placeholder="Select a fruit..."
+        itemComponent={props => (
+          <Combobox.Item item={props.item} class="combobox__item">
+            {props.item.rawValue.label}
+          </Combobox.Item>
+        )}
+        sectionComponent={props => (
+          <Combobox.Section class="combobox__section">
+            {props.section.rawValue.label}
+          </Combobox.Section>
+        )}
+      >
+        <Combobox.Control<Food> class="combobox__trigger">
+          {({ selectedOptions }) => (
+            <>
+              {selectedOptions()
+                .map(option => option.label)
+                .join(", ")}
+              <Combobox.Input />
+              <Combobox.Trigger class="combobox__icon" />
+            </>
+          )}
+        </Combobox.Control>
+        <Combobox.Portal>
+          <Combobox.Content class="combobox__content">
+            <Combobox.Listbox class="combobox__listbox" />
+          </Combobox.Content>
+        </Combobox.Portal>
+      </Combobox.Root>
     </I18nProvider>
   );
 }
 
 /*
 
-<Calendar.Root
-          class="calendar"
-          createCalendar={createCalendar}
-          selectionMode="single"
-          value={value()}
-          onChange={setValue}
-        >
-          <Calendar.Header class="header">
-            <Calendar.PrevTrigger class="button">&lsaquo;</Calendar.PrevTrigger>
-            <Calendar.Heading class="heading" />
-            <Calendar.NextTrigger class="button">&rsaquo;</Calendar.NextTrigger>
-          </Calendar.Header>
-          <Calendar.Body>
-            <Calendar.Grid class="grid">
-              <Calendar.GridHeader>
-                <Calendar.GridHeaderRow>
-                  {weekDay => <Calendar.GridHeaderCell>{weekDay()}</Calendar.GridHeaderCell>}
-                </Calendar.GridHeaderRow>
-              </Calendar.GridHeader>
-              <Calendar.GridBody>
-                {weekIndex => (
-                  <Calendar.GridBodyRow weekIndex={weekIndex()}>
-                    {date => (
-                      <Show when={date()} fallback={<td />}>
-                        <Calendar.GridBodyCell date={date()!}>
-                          <Calendar.GridBodyCellTrigger class="cell" />
-                        </Calendar.GridBodyCell>
-                      </Show>
-                    )}
-                  </Calendar.GridBodyRow>
-                )}
-              </Calendar.GridBody>
-            </Calendar.Grid>
-          </Calendar.Body>
-        </Calendar.Root>
+<Combobox.Root<Food, Category>
+        options={options}
+        optionValue="value"
+        optionTextValue="label"
+        optionDisabled="disabled"
+        optionGroupChildren="options"
+        multiple
+        value={value()}
+        onChange={setValue}
+        placeholder="Select a fruit..."
+        itemComponent={props => (
+          <Combobox.Item item={props.item} class="combobox__item">
+            {props.item.rawValue.label}
+          </Combobox.Item>
+        )}
+        sectionComponent={props => (
+          <Combobox.Section class="combobox__section">
+            {props.section.rawValue.label}
+          </Combobox.Section>
+        )}
+      >
+        <Combobox.Control<Food> class="combobox__trigger">
+          {({ selectedOptions }) => (
+            <>
+              {selectedOptions()
+                .map(option => option.label)
+                .join(", ")}
+              <Combobox.Input />
+              <Combobox.Trigger class="combobox__icon" />
+            </>
+          )}
+        </Combobox.Control>
+        <Combobox.Portal>
+          <Combobox.Content class="combobox__content">
+            <Combobox.Listbox class="combobox__listbox" />
+          </Combobox.Content>
+        </Combobox.Portal>
+      </Combobox.Root>
+
 
 */

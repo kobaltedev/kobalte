@@ -65,7 +65,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
                     : "text-zinc-600 dark:text-zinc-400"
                 )}
               >
-                Core
+                Components
               </Link>
               <Link
                 href={LATEST_CORE_CHANGELOG_URL}
