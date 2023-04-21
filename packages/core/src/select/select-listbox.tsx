@@ -1,5 +1,5 @@
-import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Listbox from "../listbox";
 import { useSelectContext } from "./select-context";
@@ -28,7 +28,7 @@ export function SelectListbox<Option = any, OptGroup = never>(
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "id"]);
+  const [local, others] = splitProps(props, ["ref", "id", "onKeyDown"]);
 
   createEffect(() => onCleanup(context.registerListboxId(local.id!)));
 
@@ -53,6 +53,15 @@ export function SelectListbox<Option = any, OptGroup = never>(
   });
   */
 
+  const onKeyDown: JSX.EventHandlerUnion<HTMLUListElement, KeyboardEvent> = e => {
+    callHandler(e, local.onKeyDown);
+
+    // Prevent from clearing the selection by `createSelectableCollection` on escape.
+    if (e.key === "Escape" && context.isMultiple()) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <Listbox.Root
       ref={mergeRefs(context.setListboxRef, local.ref)}
@@ -67,6 +76,7 @@ export function SelectListbox<Option = any, OptGroup = never>(
       aria-labelledby={context.listboxAriaLabelledBy()}
       renderItem={context.renderItem}
       renderSection={context.renderSection}
+      onKeyDown={onKeyDown}
       {...others}
     />
   );

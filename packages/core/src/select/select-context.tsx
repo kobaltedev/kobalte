@@ -18,7 +18,7 @@ export interface SelectContextValue {
   isModal: Accessor<boolean>;
   disallowTypeAhead: Accessor<boolean>;
   shouldFocusWrap: Accessor<boolean>;
-  selectedOptions: Accessor<any>;
+  selectedOptions: Accessor<any[]>;
   contentPresence: CreatePresenceResult;
   autoFocus: Accessor<FocusStrategy | boolean>;
   triggerRef: Accessor<HTMLButtonElement | undefined>;

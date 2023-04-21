@@ -53,13 +53,7 @@ describe("Select", () => {
         <Select.HiddenSelect />
         <Select.Label>Label</Select.Label>
         <Select.Trigger>
-          <Select.Value<DataSourceItem>>
-            {({ selectedOptions }) =>
-              selectedOptions()
-                .map(opt => opt.label)
-                .join(", ")
-            }
-          </Select.Value>
+          <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
         </Select.Trigger>
         <Select.Portal>
           <Select.Content>
@@ -118,13 +112,7 @@ describe("Select", () => {
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<any>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.name)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<any>>{state => state.selectedOption().name}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -180,13 +168,7 @@ describe("Select", () => {
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<any>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.name)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<any>>{state => state.selectedOption().name}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -237,9 +219,7 @@ describe("Select", () => {
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<string>>
-              {({ selectedOptions }) => selectedOptions().join(", ")}
-            </Select.Value>
+            <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -293,9 +273,7 @@ describe("Select", () => {
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<string>>
-              {({ selectedOptions }) => selectedOptions().join(", ")}
-            </Select.Value>
+            <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -353,13 +331,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -416,13 +388,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -492,13 +458,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -551,13 +511,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -610,13 +564,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -669,13 +617,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -728,13 +670,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -806,13 +742,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -862,13 +792,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -919,13 +843,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -983,13 +901,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1057,13 +969,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1120,13 +1026,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1173,13 +1073,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1227,13 +1121,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1268,13 +1156,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1317,13 +1199,7 @@ describe("Select", () => {
           )}
         >
           <Select.Trigger aria-label="foo">
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1364,13 +1240,7 @@ describe("Select", () => {
           )}
         >
           <Select.Trigger aria-labelledby="foo">
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1410,13 +1280,7 @@ describe("Select", () => {
           )}
         >
           <Select.Trigger aria-label="bar" aria-labelledby="foo">
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1459,13 +1323,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Description>Description</Select.Description>
           <Select.Portal>
@@ -1499,13 +1357,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.ErrorMessage>ErrorMessage</Select.ErrorMessage>
           <Select.Portal>
@@ -1540,13 +1392,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1613,13 +1459,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1688,13 +1528,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1762,13 +1596,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1854,13 +1682,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1944,13 +1766,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2020,13 +1836,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2101,13 +1911,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2190,13 +1994,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2297,13 +2095,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2360,13 +2152,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2711,13 +2497,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2770,13 +2550,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2832,13 +2606,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2902,13 +2670,7 @@ describe("Select", () => {
           <Select.HiddenSelect autocomplete="address-level1" />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2960,13 +2722,7 @@ describe("Select", () => {
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -3015,13 +2771,7 @@ describe("Select", () => {
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -3054,13 +2804,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -3101,13 +2845,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value<DataSourceItem>>
-              {({ selectedOptions }) =>
-                selectedOptions()
-                  .map(opt => opt.label)
-                  .join(", ")
-              }
-            </Select.Value>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -3162,13 +2900,7 @@ describe("Select", () => {
             <Select.HiddenSelect />
             <Select.Label>Label</Select.Label>
             <Select.Trigger autofocus>
-              <Select.Value<DataSourceItem>>
-                {({ selectedOptions }) =>
-                  selectedOptions()
-                    .map(opt => opt.label)
-                    .join(", ")
-                }
-              </Select.Value>
+              <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
             </Select.Trigger>
             <Select.Portal>
               <Select.Content>
@@ -3215,13 +2947,7 @@ describe("Select", () => {
             <Select.HiddenSelect />
             <Select.Label>Label</Select.Label>
             <Select.Trigger autofocus>
-              <Select.Value<DataSourceItem>>
-                {({ selectedOptions }) =>
-                  selectedOptions()
-                    .map(opt => opt.label)
-                    .join(", ")
-                }
-              </Select.Value>
+              <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
             </Select.Trigger>
             <Select.Portal>
               <Select.Content>

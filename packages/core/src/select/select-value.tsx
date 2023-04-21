@@ -5,7 +5,10 @@ import { useFormControlContext } from "../form-control";
 import { useSelectContext } from "./select-context";
 
 export interface SelectValueState<T> {
-  /** The selected options. */
+  /** The first (or only, in case of single select) selected option. */
+  selectedOption: Accessor<T>;
+
+  /** An array of selected options. It will contain only one value in case of single select. */
   selectedOptions: Accessor<T[]>;
 
   /** A function to remove an option from the selection. */
@@ -57,7 +60,6 @@ export function SelectValue<T>(props: SelectValueProps<T>) {
   };
 
   createEffect(() => onCleanup(context.registerValueId(local.id!)));
-
   return (
     <span
       id={local.id}
@@ -68,6 +70,7 @@ export function SelectValue<T>(props: SelectValueProps<T>) {
       <Show when={!isSelectionEmpty()} fallback={context.placeholder()}>
         <SelectValueChild
           state={{
+            selectedOption: () => context.selectedOptions()[0],
             selectedOptions: () => context.selectedOptions(),
             remove: option => context.removeOptionFromSelection(option),
             clear: () => selectionManager().clearSelection(),

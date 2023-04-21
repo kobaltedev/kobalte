@@ -22,8 +22,8 @@ export function BasicExample() {
       )}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-        <Select.Value class={style["select__value"]}>
-          {state => state.selectedOptions().join(", ")}
+        <Select.Value<string> class={style["select__value"]}>
+          {state => state.selectedOption()}
         </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
@@ -54,8 +54,8 @@ export function DefaultValueExample() {
       )}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-        <Select.Value class={style["select__value"]}>
-          {state => state.selectedOptions().join(", ")}
+        <Select.Value<string> class={style["select__value"]}>
+          {state => state.selectedOption()}
         </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
@@ -90,8 +90,8 @@ export function ControlledExample() {
         )}
       >
         <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-          <Select.Value class={style["select__value"]}>
-            {state => state.selectedOptions().join(", ")}
+          <Select.Value<string> class={style["select__value"]}>
+            {state => state.selectedOption()}
           </Select.Value>
           <Select.Icon class={style["select__icon"]}>
             <CaretSortIcon />
@@ -123,8 +123,8 @@ export function DescriptionExample() {
       )}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-        <Select.Value class={style["select__value"]}>
-          {state => state.selectedOptions().join(", ")}
+        <Select.Value<string> class={style["select__value"]}>
+          {state => state.selectedOption()}
         </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
@@ -162,8 +162,8 @@ export function ErrorMessageExample() {
       )}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-        <Select.Value class={style["select__value"]}>
-          {state => state.selectedOptions().join(", ")}
+        <Select.Value<string> class={style["select__value"]}>
+          {state => state.selectedOption()}
         </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
@@ -210,8 +210,8 @@ export function HTMLFormExample() {
       >
         <Select.HiddenSelect />
         <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-          <Select.Value class={style["select__value"]}>
-            {state => state.selectedOptions().join(", ")}
+          <Select.Value<string> class={style["select__value"]}>
+            {state => state.selectedOption()}
           </Select.Value>
           <Select.Icon class={style["select__icon"]}>
             <CaretSortIcon />
@@ -266,12 +266,7 @@ export function ObjectExample() {
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Food">
         <Select.Value<Food> class={style["select__value"]}>
-          {state =>
-            state
-              .selectedOptions()
-              .map(option => option.label)
-              .join(", ")
-          }
+          {state => state.selectedOption().label}
         </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
@@ -338,12 +333,7 @@ export function OptionGroupExample() {
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Food">
         <Select.Value<Food> class={style["select__value"]}>
-          {state =>
-            state
-              .selectedOptions()
-              .map(option => option.label)
-              .join(", ")
-          }
+          {state => state.selectedOption().label}
         </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
@@ -387,13 +377,13 @@ export function MultiSelectExample() {
             <Select.Value<string> class={style["select__value"]}>
               {state => (
                 <>
-                  <div
-                    class="flex items-center gap-2 flex-wrap"
-                    onPointerDown={e => e.stopPropagation()}
-                  >
+                  <div class="flex items-center gap-2 flex-wrap">
                     <For each={state.selectedOptions()}>
                       {option => (
-                        <span class="bg-zinc-100 dark:bg-zinc-700 text-sm px-2 py-0.5 rounded inline-flex items-center gap-x-2">
+                        <span
+                          class="bg-zinc-100 dark:bg-zinc-700 text-sm px-2 py-0.5 rounded inline-flex items-center gap-x-2"
+                          onPointerDown={e => e.stopPropagation()}
+                        >
                           {option}
                           <button
                             onClick={() => state.remove(option)}
@@ -519,12 +509,7 @@ export function VirtualizedExample() {
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Food">
         <Select.Value<Item> class={style["select__value"]}>
-          {state =>
-            state
-              .selectedOptions()
-              .map(option => option.label)
-              .join(", ")
-          }
+          {state => state.selectedOption().label}
         </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />

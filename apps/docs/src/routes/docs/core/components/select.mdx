@@ -111,7 +111,7 @@ The select consists of:
         >
           <Select.Trigger class="select__trigger" aria-label="Fruit">
             <Select.Value class="select__value">
-              {state => state.selectedOptions().join(", ")}
+              {state => state.selectedOption()}
             </Select.Value>
             <Select.Icon class="select__icon">
               <CaretSortIcon />
@@ -304,7 +304,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
   )}
 >
   <Select.Trigger aria-label="Fruit">
-    <Select.Value>{state => state.selectedOptions().join(", ")}</Select.Value>
+    <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
     <Select.Icon>
       <CaretSortIcon />
     </Select.Icon>
@@ -348,7 +348,7 @@ export function ControlledExample() {
         )}
       >
         <Select.Trigger aria-label="Fruit">
-          <Select.Value>{state => state.selectedOptions().join(", ")}</Select.Value>
+          <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
           <Select.Icon>
             <CaretSortIcon />
           </Select.Icon>
@@ -387,7 +387,7 @@ The `Select.Description` component can be used to associate additional help text
   )}
 >
   <Select.Trigger aria-label="Fruit">
-    <Select.Value>{state => state.selectedOptions().join(", ")}</Select.Value>
+    <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
     <Select.Icon>
       <CaretSortIcon />
     </Select.Icon>
@@ -434,7 +434,7 @@ export function ErrorMessageExample() {
       )}
     >
       <Select.Trigger aria-label="Fruit">
-        <Select.Value>{state => state.selectedOptions().join(", ")}</Select.Value>
+        <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
         <Select.Icon>
           <CaretSortIcon />
         </Select.Icon>
@@ -481,7 +481,7 @@ function HTMLFormExample() {
       >
         <Select.HiddenSelect />
         <Select.Trigger aria-label="Fruit">
-          <Select.Value>{state => state.selectedOptions().join(", ")}</Select.Value>
+          <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
           <Select.Icon>
             <CaretSortIcon />
           </Select.Icon>
@@ -545,15 +545,8 @@ export function ObjectExample() {
         </Select.Item>
       )}
     >
-      <Select.Trigger aria-label="Food">
-        <Select.Value>
-          {state =>
-            state
-              .selectedOptions()
-              .map(option => option.label)
-              .join(", ")
-          }
-        </Select.Value>
+      <Select.Trigger aria-label="Fruit">
+        <Select.Value<Fruit>>{state => state.selectedOption().label}</Select.Value>
         <Select.Icon>
           <CaretSortIcon />
         </Select.Icon>
@@ -637,14 +630,7 @@ export function OptionGroupExample() {
       sectionComponent={props => <Select.Section>{props.section.rawValue.label}</Select.Section>}
     >
       <Select.Trigger aria-label="Food">
-        <Select.Value>
-          {state =>
-            state
-              .selectedOptions()
-              .map(option => option.label)
-              .join(", ")
-          }
-        </Select.Value>
+        <Select.Value<Food>>{state => state.selectedOption().label}</Select.Value>
         <Select.Icon>
           <CaretSortIcon />
         </Select.Icon>
@@ -700,13 +686,13 @@ export function SelectExample() {
       >
         <Select.Trigger aria-label="Fruits" asChild>
           <As component="div">
-            <Select.Value>
+            <Select.Value<string>>
               {state => (
                 <>
-                  <div onPointerDown={e => e.stopPropagation()}>
+                  <div>
                     <For each={state.selectedOptions()}>
                       {option => (
-                        <span>
+                        <span onPointerDown={e => e.stopPropagation()}>
                           {option}
                           <button onClick={() => state.remove(option)}>
                             <CrossIcon />
@@ -837,14 +823,7 @@ export function VirtualizedExample() {
       placeholder="Select an item…"
     >
       <Select.Trigger aria-label="Food">
-        <Select.Value>
-          {state =>
-            state
-              .selectedOptions()
-              .map(option => option.label)
-              .join(", ")
-          }
-        </Select.Value>
+        <Select.Value<Item>>{state => state.selectedOption().label}</Select.Value>
         <Select.Icon>
           <CaretSortIcon />
         </Select.Icon>
@@ -968,11 +947,12 @@ We expose a CSS custom property `--kb-select-content-transform-origin` which can
 
 ### Select.Value
 
-| Render Prop     | Description                                                                    |
-| :-------------- | :----------------------------------------------------------------------------- |
-| selectedOptions | `Accessor<T[]>` <br/> The selected options.                                    |
-| remove          | `(option: T) => void` <br/> A function to remove an option from the selection. |
-| clear           | `() => void` <br/> A function to clear the selection.                          |
+| Render Prop     | Description                                                                                                  |
+| :-------------- | :----------------------------------------------------------------------------------------------------------- |
+| selectedOption  | `Accessor<T>` <br/> The first (or only, in case of single select) selected option.                           |
+| selectedOptions | `Accessor<T[]>` <br/> An array of selected options. It will contain only one value in case of single select. |
+| remove          | `(option: T) => void` <br/> A function to remove an option from the selection.                               |
+| clear           | `() => void` <br/> A function to clear the selection.                                                        |
 
 | Data attribute         | Description                                                         |
 | :--------------------- | :------------------------------------------------------------------ |
