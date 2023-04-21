@@ -17,6 +17,7 @@ import {
   createUniqueId,
   JSX,
   on,
+  onMount,
   splitProps,
 } from "solid-js";
 
@@ -96,12 +97,6 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
   /** Event handler called when the value changes. */
   onChange?: (value: Option[]) => void;
 
-  /**
-   * When `selectionMode` is "single".
-   * The string representation of the selected value to display in the `Combobox.Input`.
-   */
-  displayValue?: (value: Option) => string;
-
   /** The interaction required to display the combobox menu. */
   triggerMode?: ComboboxTriggerMode;
 
@@ -119,6 +114,12 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
 
   /** Property name or getter function to use as the text value of an option for typeahead purpose. */
   optionTextValue?: keyof Option | ((option: Option) => string);
+
+  /**
+   * Property name or getter function to use as the label of an option.
+   * This is the string representation of the option to display in the `Combobox.Input`.
+   */
+  optionLabel?: keyof Option | ((option: Option) => string);
 
   /** Property name or getter function to use as the disabled flag of an option. */
   optionDisabled?: keyof Option | ((option: Option) => boolean);
@@ -250,12 +251,12 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       "value",
       "defaultValue",
       "onChange",
-      "displayValue",
       "triggerMode",
       "placeholder",
       "options",
       "optionValue",
       "optionTextValue",
+      "optionLabel",
       "optionDisabled",
       "optionGroupChildren",
       "isOptionGroup",
@@ -319,12 +320,24 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     const optionValue = local.optionValue;
 
     if (optionValue == null) {
-      // If no `optionValue`, the option itself is the value (ex: string[] of options)
+      // If no `optionValue`, the option itself is the value (ex: string[] of options).
       return String(option);
     }
 
     // Get the value from the option object as a string.
     return String(isFunction(optionValue) ? optionValue(option) : option[optionValue]);
+  };
+
+  const getOptionLabel = (option: Option) => {
+    const optionLabel = local.optionLabel;
+
+    if (optionLabel == null) {
+      // If no `optionLabel`, the option itself is the label (ex: string[] of options).
+      return String(option);
+    }
+
+    // Get the label from the option object as a string.
+    return String(isFunction(optionLabel) ? optionLabel(option) : option[optionLabel]);
   };
 
   const getOptionGroupChildren = (optionGroup: OptGroup): Option[] | undefined => {
@@ -419,12 +432,10 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     selectedKeys: () => local.value && local.value.map(getOptionValue),
     defaultSelectedKeys: () => local.defaultValue && local.defaultValue.map(getOptionValue),
     onSelectionChange: keys => {
-      const selectedOptions = getSelectedOptionsFromValues(keys);
-
-      local.onChange?.(selectedOptions);
+      local.onChange?.(getSelectedOptionsFromValues(keys));
 
       if (local.selectionMode === "single") {
-        lastDisplayValue = selectedOptions[0] ? local.displayValue?.(selectedOptions[0]) ?? "" : "";
+        //lastDisplayValue = selectedOptions[0] ? getOptionLabel(selectedOptions[0]) : "";
 
         if (closeOnSingleSelect()) {
           close();
@@ -580,6 +591,38 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   const renderSection = (section: CollectionNode) => {
     return local.sectionComponent?.({ section });
   };
+
+  onMount(() => {
+    if (local.selectionMode === "single") {
+      // If `value` is controlled or combobox has a default value, set `lastDisplayValue` to match current selected key if any.
+      if (!listState.selectionManager().isEmpty()) {
+        const selectedOption = getSelectedOptionsFromValues(
+          listState.selectionManager().selectedKeys()
+        )[0];
+
+        lastDisplayValue = getOptionLabel(selectedOption);
+      }
+
+      // If `inputValue` isn't controlled nor has a default value, set input to match current selected key if any.
+      if (local.inputValue === undefined && local.defaultInputValue === undefined) {
+        resetInputValue();
+      }
+    }
+  });
+
+  createEffect(
+    on(
+      () => listState.selectionManager().selectedKeys(),
+      selectedKeys => {
+        // Always sync `lastDisplayValue` with the first selected key in single mode.
+        if (local.selectionMode === "single") {
+          const selectedOption = getSelectedOptionsFromValues(selectedKeys)[0];
+
+          lastDisplayValue = selectedOption ? getOptionLabel(selectedOption) : "";
+        }
+      }
+    )
+  );
 
   // Reset input only after combobox close animation is done
   // to prevent a collection update when animating out.

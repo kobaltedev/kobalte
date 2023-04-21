@@ -19,9 +19,6 @@ export interface ComboboxSingleSelectionOptions<T> {
 
   /** Whether the combobox allow multiple selection. */
   multiple?: false;
-
-  /** The string representation of the selected option to display in the `Combobox.Input`.  */
-  displayValue?: (option: T) => string;
 }
 
 export interface ComboboxMultipleSelectionOptions<T> {
@@ -39,8 +36,6 @@ export interface ComboboxMultipleSelectionOptions<T> {
 
   /** Whether the combobox allow multiple selection. */
   multiple: true;
-
-  displayValue?: never;
 }
 
 export type ComboboxRootOptions<Option, OptGroup = never> = (
@@ -50,7 +45,7 @@ export type ComboboxRootOptions<Option, OptGroup = never> = (
   AsChildProp &
   Omit<
     ComboboxBaseOptions<Option, OptGroup>,
-    "value" | "defaultValue" | "onChange" | "selectionMode" | "displayValue"
+    "value" | "defaultValue" | "onChange" | "selectionMode"
   >;
 
 export type ComboboxRootProps<Option, OptGroup = never> = OverrideComponentProps<
@@ -62,13 +57,7 @@ export type ComboboxRootProps<Option, OptGroup = never> = OverrideComponentProps
  * An  input widget with an associated popup that enables users to select a value from a collection of possible values.
  */
 export function ComboboxRoot<Option, OptGroup = never>(props: ComboboxRootProps<Option, OptGroup>) {
-  const [local, others] = splitProps(props, [
-    "value",
-    "defaultValue",
-    "onChange",
-    "multiple",
-    "displayValue",
-  ]);
+  const [local, others] = splitProps(props, ["value", "defaultValue", "onChange", "multiple"]);
 
   const value = createMemo(() => {
     if (local.value == null) {
@@ -90,10 +79,6 @@ export function ComboboxRoot<Option, OptGroup = never>(props: ComboboxRootProps<
     local.onChange?.(local.multiple ? value : (value[0] as any));
   };
 
-  const displayValue = (option: Option) => {
-    return local.displayValue?.(option) ?? "";
-  };
-
   return (
     <ComboboxBase
       value={value()}
@@ -101,7 +86,6 @@ export function ComboboxRoot<Option, OptGroup = never>(props: ComboboxRootProps<
       onChange={onChange}
       selectionMode={local.multiple ? "multiple" : "single"}
       disallowEmptySelection={!local.multiple}
-      displayValue={!local.multiple ? displayValue : undefined}
       {...others}
     />
   );
