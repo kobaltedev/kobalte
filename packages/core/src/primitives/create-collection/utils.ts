@@ -8,7 +8,6 @@ interface BuildNodesParams {
   getTextValue?: string | ((data: any) => string);
   getDisabled?: string | ((data: any) => boolean);
   getSectionChildren?: string | ((section: any) => any[]);
-  getIsSection?: (maybeSection: any) => boolean;
   startIndex?: number;
   startLevel?: number;
 }
@@ -63,10 +62,8 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
       continue;
     }
 
-    // If no custom `getIsSection` is provided assume it's a section if it has children.
-    const isSection = params.getIsSection?.(data) ?? getSectionChildren(data) != null;
-
-    if (isSection) {
+    // Assume it's a section if it has children.
+    if (getSectionChildren(data) != null) {
       nodes.push({
         type: "section",
         rawValue: data,
@@ -87,7 +84,6 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
           getKey: params.getKey,
           getTextValue: params.getTextValue,
           getDisabled: params.getDisabled,
-          getIsSection: params.getIsSection,
           getSectionChildren: params.getSectionChildren,
           startIndex: index,
           startLevel: level + 1,

@@ -57,6 +57,7 @@ import {
   type ComboboxRootProps,
 } from "./combobox-root";
 import { ComboboxTrigger as Trigger, type ComboboxTriggerProps } from "./combobox-trigger";
+import { type ComboboxTriggerMode } from "./types";
 
 export type {
   ComboboxArrowOptions,
@@ -85,6 +86,7 @@ export type {
   ComboboxRootProps,
   ComboboxRootSectionComponentProps,
   ComboboxSectionProps,
+  ComboboxTriggerMode,
   ComboboxTriggerProps,
 };
 

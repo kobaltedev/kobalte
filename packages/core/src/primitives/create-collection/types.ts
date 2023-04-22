@@ -62,9 +62,6 @@ export interface CollectionBase {
 
   /** Property name or getter function that refers to the children items of a section. */
   getSectionChildren?: MaybeAccessor<string | ((section: any) => any[]) | undefined>;
-
-  /** Function to check if the node is a section. */
-  getIsSection?: MaybeAccessor<((maybeSection: any) => boolean) | undefined>;
 }
 
 /**

@@ -1,3 +1,12 @@
+/*!
+ * Portions of this file are based on code from react-spectrum.
+ * Apache License Version 2.0, Copyright 2020 Adobe.
+ *
+ * Credits to the React Spectrum team:
+ * https://github.com/adobe/react-spectrum/blob/ba727bdc0c4a57626131e84d9c9b661d0b65b754/packages/@react-stately/combobox/src/useComboBoxState.ts
+ * https://github.com/adobe/react-spectrum/blob/ba727bdc0c4a57626131e84d9c9b661d0b65b754/packages/@react-aria/combobox/src/useComboBox.ts
+ */
+
 import {
   callHandler,
   contains,
@@ -62,7 +71,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
     // even if an input is controlled (ex: `<input value="foo" />`,
     // typing on the input will change its internal `value`.
     //
-    // To prevent this, we need to force the input `value` to be in sync with the textfield value state.
+    // To prevent this, we need to force the input `value` to be in sync with the input value state.
     target.value = context.inputValue() ?? "";
 
     if (!context.isOpen()) {
@@ -101,12 +110,8 @@ export function ComboboxInput(props: ComboboxInputProps) {
         break;
       case "Tab":
       case "Escape":
-        if (context.contentPresence.isPresent()) {
-          context.resetInputAfterClose();
-          context.close();
-        } else {
-          context.resetInputValue();
-        }
+        context.close();
+        context.resetInputValue();
         break;
       case "ArrowDown":
         if (!context.isOpen()) {
@@ -158,12 +163,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
     }
 
     context.setIsInputFocused(false);
-
-    if (context.contentPresence.isPresent()) {
-      context.resetInputAfterClose();
-    } else {
-      context.resetInputValue();
-    }
+    context.resetInputValue();
   };
 
   // If a touch happens on direct center of Combobox input, might be virtual click from iPad so open ComboBox menu
@@ -209,7 +209,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
       required={formControlContext.isRequired()}
       disabled={formControlContext.isDisabled()}
       readonly={formControlContext.isReadOnly()}
-      placeholder={selectionManager().isEmpty() ? context.placeholder() : undefined}
+      placeholder={context.placeholder()}
       role="combobox"
       autoComplete="off"
       autoCorrect="off"

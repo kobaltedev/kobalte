@@ -60,9 +60,6 @@ export interface ListboxRootOptions<Option, OptGroup = never> extends AsChildPro
   /** Property name or getter function that refers to the children options of option group. */
   optionGroupChildren?: keyof OptGroup | ((optGroup: OptGroup) => Option[]);
 
-  /** Function used to check if an option is an option group. */
-  isOptionGroup?: (maybeOptGroup: OptGroup) => boolean;
-
   /** The controlled state of the listbox. */
   state?: ListState;
 
@@ -160,7 +157,6 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
     "optionTextValue",
     "optionDisabled",
     "optionGroupChildren",
-    "isOptionGroup",
     "state",
     "keyboardDelegate",
     "autoFocus",
@@ -202,7 +198,6 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
       getTextValue: () => local.optionTextValue as any,
       getDisabled: () => local.optionDisabled as any,
       getSectionChildren: () => local.optionGroupChildren as any,
-      getIsSection: () => local.isOptionGroup,
     });
   });
 

@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 
-import { Combobox, I18nProvider } from "../src";
+import { Combobox, createFilter, I18nProvider } from "../src";
+import { ComboboxTriggerMode } from "../src/combobox";
 
 interface Food {
   value: string;
@@ -8,7 +9,7 @@ interface Food {
   disabled: boolean;
 }
 
-const options: Food[] = [
+const RAW_OPTIONS: Food[] = [
   { value: "apple", label: "Apple", disabled: false },
   { value: "banana", label: "Banana", disabled: false },
   { value: "blueberry", label: "Blueberry", disabled: false },
@@ -17,28 +18,45 @@ const options: Food[] = [
 ];
 
 export default function App() {
-  const [value, setValue] = createSignal<Food>(options[0]);
+  const filter = createFilter({ sensitivity: "base" });
+
+  const [options, setOptions] = createSignal<Food[]>(RAW_OPTIONS);
+
+  const [value, setValue] = createSignal<Food | undefined>(options()[0]);
+
+  const onOpenChange = (isOpen: boolean, triggerMode?: ComboboxTriggerMode) => {
+    // Show all options on ArrowDown/ArrowUp and button click.
+    if (isOpen && triggerMode === "manual") {
+      setOptions(RAW_OPTIONS);
+    }
+  };
+
+  const onInputChange = (value: string) => {
+    if (value === "") {
+      //setValue(undefined);
+    }
+
+    setOptions(RAW_OPTIONS.filter(option => filter.contains(option.label, value)));
+  };
 
   return (
     <I18nProvider locale="en-US">
-      <Combobox.Root
-        options={options}
+      {value()?.label ?? "Select an option"}
+      <Combobox.Root<Food>
+        options={options()}
         optionValue="value"
         optionTextValue="label"
         optionLabel="label"
         optionDisabled="disabled"
-        value={value()}
-        //onChange={setValue}
+        //value={value()}
+        onChange={setValue}
+        onInputChange={onInputChange}
+        onOpenChange={onOpenChange}
         placeholder="Select a fruit..."
         itemComponent={props => (
           <Combobox.Item item={props.item} class="combobox__item">
             {props.item.rawValue.label}
           </Combobox.Item>
-        )}
-        sectionComponent={props => (
-          <Combobox.Section class="combobox__section">
-            {props.section.rawValue.label}
-          </Combobox.Section>
         )}
       >
         <Combobox.Control<Food> class="combobox__trigger">
@@ -54,10 +72,3 @@ export default function App() {
     </I18nProvider>
   );
 }
-
-/*
-
-
-
-
-*/

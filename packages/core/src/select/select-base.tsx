@@ -87,7 +87,7 @@ export interface SelectBaseOptions<Option, OptGroup = never>
   placeholder?: JSX.Element;
 
   /** An array of options to display as the available options. */
-  options?: Array<Option | OptGroup>;
+  options: Array<Option | OptGroup>;
 
   /**
    * Property name or getter function to use as the value of an option.
@@ -103,9 +103,6 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 
   /** Property name or getter function that refers to the children options of an option group. */
   optionGroupChildren?: keyof OptGroup | ((optGroup: OptGroup) => Option[]);
-
-  /** Function used to check if an option is an option group. */
-  isOptionGroup?: (maybeOptGroup: OptGroup) => boolean;
 
   /** An optional keyboard delegate implementation for type to select, to override the default. */
   keyboardDelegate?: KeyboardDelegate;
@@ -223,7 +220,6 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       "optionTextValue",
       "optionDisabled",
       "optionGroupChildren",
-      "isOptionGroup",
       "keyboardDelegate",
       "allowDuplicateSelectionEvents",
       "disallowEmptySelection",
@@ -276,64 +272,35 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     return String(isFunction(optionValue) ? optionValue(option) : option[optionValue]);
   };
 
-  const getOptionGroupChildren = (optionGroup: OptGroup): Option[] | undefined => {
+  // Only options without option groups.
+  const flattenOptions = createMemo(() => {
     const optionGroupChildren = local.optionGroupChildren;
 
+    // The combobox doesn't contains option groups.
     if (optionGroupChildren == null) {
-      // The combobox doesn't contains option groups.
-      return undefined;
+      return local.options as Option[];
     }
 
-    return (
-      isFunction(optionGroupChildren)
-        ? optionGroupChildren(optionGroup)
-        : optionGroup[optionGroupChildren]
-    ) as Option[] | undefined;
-  };
+    if (isFunction(optionGroupChildren)) {
+      return local.options.flatMap(
+        item => optionGroupChildren(item as OptGroup) ?? (item as Option)
+      );
+    }
 
-  const isOptionGroup = (value: any): value is OptGroup => {
-    // If no custom `isOptionGroup` is provided assume it's an option group if it has children.
-    return local.isOptionGroup?.(value) ?? getOptionGroupChildren(value) != null;
-  };
+    return local.options.flatMap(
+      item => ((item as OptGroup)[optionGroupChildren] as Option[]) ?? (item as Option)
+    );
+  });
 
-  const retrieveOptionFromValue = (value: string): Option | undefined => {
+  const getOptionsFromValues = (values: Set<string>) => {
     const optionValue = local.optionValue;
 
     if (optionValue == null) {
-      // If no `optionValue`, the value itself is the option (ex: string[] of options)
-      return value as Option;
+      // If no `optionValue`, the values are the options (ex: string[] of options)
+      return [...values] as Option[];
     }
 
-    // Retrieve the option object based on the value string in a flat list of options.
-    if (local.optionGroupChildren == null) {
-      // The combobox doesn't contains option groups.
-      return local.options?.find(option => getOptionValue(option as Option) === value) as
-        | Option
-        | undefined;
-    }
-
-    // Retrieve the option object based on the value string in a list of options and option groups.
-    let retrievedOption: Option | undefined;
-
-    for (const optionOrOptGroup of local.options ?? []) {
-      if (isOptionGroup(optionOrOptGroup)) {
-        retrievedOption = getOptionGroupChildren(optionOrOptGroup)?.find(
-          option => getOptionValue(option as Option) === value
-        );
-      } else if (getOptionValue(optionOrOptGroup as Option) === value) {
-        retrievedOption = optionOrOptGroup;
-      }
-
-      if (retrievedOption) {
-        break;
-      }
-    }
-
-    return retrievedOption;
-  };
-
-  const getSelectedOptionsFromValues = (values: Set<string>) => {
-    return [...values].map(retrieveOptionFromValue).filter(option => option != null) as Option[];
+    return flattenOptions().filter(option => values.has(getOptionValue(option as Option)));
   };
 
   const disclosureState = createDisclosureState({
@@ -346,7 +313,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     selectedKeys: () => local.value && local.value.map(getOptionValue),
     defaultSelectedKeys: () => local.defaultValue && local.defaultValue.map(getOptionValue),
     onSelectionChange: keys => {
-      local.onChange?.(getSelectedOptionsFromValues(keys));
+      local.onChange?.(getOptionsFromValues(keys));
 
       if (local.selectionMode === "single") {
         close();
@@ -361,11 +328,10 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     getTextValue: () => local.optionTextValue as any,
     getDisabled: () => local.optionDisabled as any,
     getSectionChildren: () => local.optionGroupChildren as any,
-    getIsSection: () => local.isOptionGroup,
   });
 
   const selectedOptions = createMemo(() => {
-    return getSelectedOptionsFromValues(listState.selectionManager().selectedKeys());
+    return getOptionsFromValues(listState.selectionManager().selectedKeys());
   });
 
   const removeOptionFromSelection = (option: Option) => {
@@ -383,8 +349,8 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
   };
 
   const open = (focusStrategy: FocusStrategy | boolean) => {
-    // Don't open if the collection is empty.
-    if (listState.collection().getSize() <= 0) {
+    // Don't open if there is no option.
+    if (local.options.length <= 0) {
       return;
     }
 

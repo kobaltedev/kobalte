@@ -36,7 +36,6 @@ export interface ComboboxContextValue {
   listboxAriaLabel: Accessor<string | undefined>;
   listState: Accessor<ListState>;
   keyboardDelegate: Accessor<KeyboardDelegate>;
-  resetInputAfterClose: () => void;
   resetInputValue: () => void;
   setIsInputFocused: (isFocused: boolean) => void;
   setInputValue: (value: string) => void;
