@@ -397,7 +397,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     selectedKeys: () => local.value && local.value.map(getOptionValue),
     defaultSelectedKeys: () => local.defaultValue && local.defaultValue.map(getOptionValue),
     onSelectionChange: keys => {
-      console.log("fired");
       local.onChange?.(getOptionsFromValues(keys));
 
       if (local.selectionMode === "single") {
@@ -409,9 +408,16 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 
         resetInputValue();
       } else {
-        // Clear and bring back focus to the input after selection.
         setInputValue("");
-        focusWithoutScrolling(inputRef());
+      }
+
+      const inputEl = inputRef();
+
+      if (inputEl) {
+        // Move cursor to the end of the input.
+        inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
+
+        focusWithoutScrolling(inputEl);
       }
     },
     allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),

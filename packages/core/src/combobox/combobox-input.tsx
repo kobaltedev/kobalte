@@ -119,8 +119,8 @@ export function ComboboxInput(props: ComboboxInputProps) {
           context.close();
           context.resetInputValue();
         } else {
-          // Bypass potential `disallowEmptySelection`.
-          selectionManager().setSelectedKeys([]);
+          // trigger a remove selection.
+          context.setInputValue("");
         }
         break;
       case "ArrowDown":

@@ -12,15 +12,6 @@
   transition: border-color 250ms, color 250ms;
 }
 
-.combobox__control:hover {
-  border-color: hsl(240 5% 65%);
-}
-
-.combobox__control:focus-within {
-  outline: 2px solid hsl(200 98% 39%);
-  outline-offset: 2px;
-}
-
 .combobox__control[data-invalid] {
   border-color: hsl(0 72% 51%);
   color: hsl(0 72% 51%);
@@ -188,7 +179,7 @@
   color: hsl(0 72% 51%);
 }
 
-[data-kb-theme="dark"] .combobox__value[data-placeholder-shown] {
+[data-kb-theme="dark"] .combobox__input::placeholder {
   color: hsl(0 100% 100% / 0.5);
 }
 

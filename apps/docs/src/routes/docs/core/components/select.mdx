@@ -528,7 +528,7 @@ const options: Fruit[] = [
   { value: "pineapple", label: "Pineapple", disabled: false },
 ];
 
-export function ObjectExample() {
+function ObjectExample() {
   return (
     <Select.Root
       options={options}
@@ -566,9 +566,6 @@ export function ObjectExample() {
 When using option groups you have to tell the select how to distinguish an option from a group. For this you **have to use** the following props :
 
 - `optionGroupChildren`: The property name that refers to the children options of an option group.
-- `isOptionGroup`: A function used to check if an option is an option group.
-
-By default, an option will be considered as an option group if the value returned by accessing the `optionGroupChildren` on the option is not `null`.
 
 Additionally, the `sectionComponent` prop is used to display the option group label in the select.
 
@@ -610,7 +607,7 @@ const options: Category[] = [
   },
 ];
 
-export function OptionGroupExample() {
+function OptionGroupExample() {
   return (
     <Select.Root<Food, Category>
       options={options}
@@ -664,7 +661,7 @@ Additionally, the example below uses the `asChild` pattern to render a `div` for
 ```tsx {3,8-10,22-23,28,32,39}
 import { createSignal } from "solid-js";
 
-export function SelectExample() {
+function MultipleSelectionExample() {
   const [values, setValues] = createSignal(["Blueberry", "Grapes"]);
 
   return (
@@ -812,7 +809,7 @@ function SelectContent(props: { options: Item[] }) {
   );
 }
 
-export function VirtualizedExample() {
+function VirtualizedExample() {
   return (
     <Select.Root
       virtualized
