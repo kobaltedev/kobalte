@@ -348,7 +348,7 @@ export function OptionGroupExample() {
   );
 }
 
-export function MultiSelectExample() {
+export function MultipleSelectionExample() {
   const [values, setValues] = createSignal(["Blueberry", "Grapes"]);
 
   return (

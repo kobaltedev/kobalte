@@ -6,7 +6,7 @@ import {
   BasicExample,
   DescriptionExample,
   ErrorMessageExample,
-  MultiSelectExample,
+  MultipleSelectionExample,
   ObjectExample,
   OptionGroupExample,
   VirtualizedExample,
@@ -655,7 +655,7 @@ The `Select.Value` children _render prop_ expose an array of selected options, a
 Additionally, the example below uses the `asChild` pattern to render a `div` for the `Select.Trigger` since HTML button can't contain interactive elements according to the [W3C](https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element).
 
 <Preview>
-  <MultiSelectExample />
+  <MultipleSelectionExample />
 </Preview>
 
 ```tsx {3,8-10,22-23,28,32,39}
@@ -882,7 +882,6 @@ We expose a CSS custom property `--kb-select-content-transform-origin` which can
 | optionTextValue               | `keyof T \| ((option: T) => string)` <br/> Property name or getter function to use as the text value of an option for typeahead purpose.                                                                                                                                                                                                             |
 | optionDisabled                | `keyof T \| ((option: T) => boolean)` <br/> Property name or getter function to use as the disabled flag of an option.                                                                                                                                                                                                                               |
 | optionGroupChildren           | `keyof U \| ((optGroup: U) => T[])` <br/> Property name or getter function that refers to the children options of an option group.                                                                                                                                                                                                                   |
-| isOptionGroup                 | `(maybeOptGroup: U) => boolean` <br/> Function used to check if an option is an option group.                                                                                                                                                                                                                                                        |
 | itemComponent                 | `Component<SelectItemComponentProps<T>>` <br/> When NOT virtualized, the component to render as an item in the `Select.Listbox`.                                                                                                                                                                                                                     |
 | sectionComponent              | `Component<SelectSectionComponentProps<U>>` <br/> When NOT virtualized, the component to render as a section in the `Select.Listbox`.                                                                                                                                                                                                                |
 | multiple                      | `boolean` <br/> Whether the select allows multi-selection.                                                                                                                                                                                                                                                                                           |
