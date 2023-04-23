@@ -109,18 +109,33 @@ export function ComboboxInput(props: ComboboxInputProps) {
 
         break;
       case "Tab":
+        if (context.isOpen()) {
+          context.close();
+          context.resetInputValue();
+        }
+        break;
       case "Escape":
-        context.close();
-        context.resetInputValue();
+        if (context.isOpen()) {
+          context.close();
+          context.resetInputValue();
+        } else {
+          // Bypass potential `disallowEmptySelection`.
+          selectionManager().setSelectedKeys([]);
+        }
         break;
       case "ArrowDown":
         if (!context.isOpen()) {
-          context.open("first", "manual");
+          context.open(e.altKey ? false : "first", "manual");
         }
         break;
       case "ArrowUp":
         if (!context.isOpen()) {
           context.open("last", "manual");
+        } else {
+          if (e.altKey) {
+            context.close();
+            context.resetInputValue();
+          }
         }
         break;
       case "ArrowLeft":

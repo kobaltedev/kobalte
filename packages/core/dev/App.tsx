@@ -56,6 +56,7 @@ export default function App() {
         itemComponent={props => (
           <Combobox.Item item={props.item} class="combobox__item">
             {props.item.rawValue.label}
+            <Combobox.ItemIndicator>X</Combobox.ItemIndicator>
           </Combobox.Item>
         )}
       >
