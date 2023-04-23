@@ -1559,6 +1559,97 @@ describe("Combobox", () => {
       expect(screen.getByRole("combobox")).toHaveValue("Three");
     });
 
+    it("clear selection on escape when listbox is not visible", async () => {
+      const onOpenChangeSpy = jest.fn();
+      render(() => (
+        <Combobox.Root
+          options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
+          placeholder="Placeholder"
+          optionLabel="label"
+          onChange={onValueChange}
+          onOpenChange={onOpenChangeSpy}
+          itemComponent={props => (
+            <Combobox.Item item={props.item}>{props.item.rawValue.label}</Combobox.Item>
+          )}
+        >
+          <Combobox.Label>Label</Combobox.Label>
+          <Combobox.Control>
+            <Combobox.Input />
+            <Combobox.Trigger />
+          </Combobox.Control>
+          <Combobox.Portal>
+            <Combobox.Content>
+              <Combobox.Listbox />
+            </Combobox.Content>
+          </Combobox.Portal>
+        </Combobox.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+      const input = screen.getByRole("combobox");
+
+      expect(screen.getByRole("combobox")).toHaveAttribute("placeholder", "Placeholder");
+      expect(onOpenChangeSpy).toHaveBeenCalledTimes(0);
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
+
+      const listbox = screen.getByRole("listbox");
+
+      expect(listbox).toBeVisible();
+
+      const item1 = within(listbox).getByText("One");
+      const item2 = within(listbox).getByText("Two");
+      const item3 = within(listbox).getByText("Three");
+
+      expect(item1).toBeTruthy();
+      expect(item2).toBeTruthy();
+      expect(item3).toBeTruthy();
+
+      fireEvent(item3, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(item3, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+
+      expect(onOpenChangeSpy).toHaveBeenCalledTimes(2);
+      expect(screen.queryByRole("listbox")).toBeNull();
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onOpenChangeSpy).toHaveBeenCalledTimes(3);
+
+      fireEvent.keyDown(input, { key: "Escape" });
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1); // still expecting it to have only been called once
+
+      expect(onOpenChangeSpy).toHaveBeenCalledTimes(4);
+      expect(screen.queryByRole("listbox")).toBeNull();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(document.activeElement).toBe(input);
+      expect(screen.getByRole("combobox")).toHaveValue("Three");
+
+      fireEvent.keyDown(input, { key: "Escape" });
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(2);
+
+      expect(document.activeElement).toBe(input);
+      expect(screen.getByRole("combobox")).toHaveValue("");
+    });
+
     it("supports controlled selection", async () => {
       render(() => (
         <Combobox.Root

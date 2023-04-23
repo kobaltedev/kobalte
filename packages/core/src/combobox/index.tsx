@@ -51,6 +51,7 @@ import {
   ComboboxHiddenSelect as HiddenSelect,
   type ComboboxHiddenSelectProps,
 } from "./combobox-hidden-select";
+import { ComboboxIcon as Icon, type ComboboxIconProps } from "./combobox-icon";
 import {
   ComboboxRoot as Root,
   type ComboboxRootOptions,
@@ -70,6 +71,7 @@ export type {
   ComboboxErrorMessageOptions,
   ComboboxErrorMessageProps,
   ComboboxHiddenSelectProps,
+  ComboboxIconProps,
   ComboboxInputProps,
   ComboboxItemDescriptionProps,
   ComboboxItemIndicatorOptions,
@@ -97,6 +99,7 @@ export {
   Description,
   ErrorMessage,
   HiddenSelect,
+  Icon,
   Input,
   Item,
   ItemDescription,

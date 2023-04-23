@@ -1,1 +1,77 @@
+import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
+import { BasicExample } from "../../../../examples/combobox";
+
 # Combobox
+
+Combines a text input with a listbox, allowing users to filter a list of options to items matching a query.
+
+## Import
+
+```ts
+import { Combobox } from "@kobalte/core";
+```
+
+## Features
+
+- Exposed to assistive technology as a combobox using the [WAI ARIA Combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) design pattern.
+- Support for single and multiple selection.
+- Support for disabled options.
+- Labeling support for accessibility.
+- Support for description and error message help text linked to the button via ARIA.
+- Tab stop focus management.
+- Keyboard support for opening the listbox using the arrow keys, including automatically focusing the first or last item accordingly.
+- Support for opening the list box when typing, on focus, or manually.
+- Browser autofill integration via a hidden native `<select>` element.
+- Custom localized announcements for option focusing, filtering, and selection using an ARIA live region to work around VoiceOver bugs.
+- Supports items, and groups of items.
+- Supports custom placeholder.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The combobox consists of:
+
+- **Combobox.Root:** The root container for a combobox component.
+- **Combobox.Label:** The label that gives the user information on the combobox.
+- **Combobox.Description:** The description that gives the user more information on the combobox.
+- **Combobox.ErrorMessage:** The error message that gives the user information about how to fix a validation error on the combobox.
+- **Combobox.Control:** Contains the combobox input and trigger.
+- **Combobox.Input:** The input used to filter the combobox options and reflects the selected value.
+- **Combobox.Trigger:** The button that opens the combobox.
+- **Combobox.Icon:** A small icon often displayed next to the input as a visual affordance for the fact it can be open.
+- **Combobox.Portal:** Portals its children into the `body` when the combobox is open.
+- **Combobox.Content:** Contains the content to be rendered when the combobox is open.
+- **Combobox.Arrow:** An optional arrow element to render alongside the combobox content.
+- **Combobox.Listbox:** Contains a list of items and allows a user to combobox one or more of them.
+- **Combobox.Section:** Used to render the label of an option group. It won't be focusable using arrow keys.
+- **Combobox.Item:** An item of the combobox.
+- **Combobox.ItemLabel:** An accessible label to be announced for the item.
+- **Combobox.ItemDescription:** An optional accessible description to be announced for the item.
+- **Combobox.ItemIndicator:** The visual indicator rendered when the item is selected.
+
+```tsx
+<Combobox.Root>
+  <Combobox.Label />
+  <Combobox.Control>
+    <Combobox.Input />
+    <Combobox.Trigger>
+      <Combobox.Icon />
+    </Combobox.Trigger>
+  </Combobox.Control>
+  <Combobox.Description />
+  <Combobox.ErrorMessage />
+
+  <Combobox.Portal>
+    <Combobox.Content>
+      <Combobox.Arrow />
+      <Combobox.Listbox />
+    </Combobox.Content>
+  </Combobox.Portal>
+</Combobox.Root>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>

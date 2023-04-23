@@ -54,7 +54,7 @@ export type ComboboxRootProps<Option, OptGroup = never> = OverrideComponentProps
 >;
 
 /**
- * An  input widget with an associated popup that enables users to select a value from a collection of possible values.
+ * A combo box combines a text input with a listbox, allowing users to filter a list of options to items matching a query.
  */
 export function ComboboxRoot<Option, OptGroup = never>(props: ComboboxRootProps<Option, OptGroup>) {
   const [local, others] = splitProps(props, ["value", "defaultValue", "onChange", "multiple"]);

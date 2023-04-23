@@ -374,7 +374,12 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 
       // Remove selection when input is cleared and value is uncontrolled (in single selection mode).
       // If controlled, this is the application developer's responsibility.
-      if (local.selectionMode === "single" && value === "" && local.value === undefined) {
+      if (
+        value === "" &&
+        local.selectionMode === "single" &&
+        !listState.selectionManager().isEmpty() &&
+        local.value === undefined
+      ) {
         // Bypass `disallowEmptySelection`.
         listState.selectionManager().setSelectedKeys([]);
       }
@@ -392,6 +397,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     selectedKeys: () => local.value && local.value.map(getOptionValue),
     defaultSelectedKeys: () => local.defaultValue && local.defaultValue.map(getOptionValue),
     onSelectionChange: keys => {
+      console.log("fired");
       local.onChange?.(getOptionsFromValues(keys));
 
       if (local.selectionMode === "single") {

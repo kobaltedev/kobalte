@@ -225,6 +225,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
       disabled={formControlContext.isDisabled()}
       readonly={formControlContext.isReadOnly()}
       placeholder={context.placeholder()}
+      type="text"
       role="combobox"
       autoComplete="off"
       autoCorrect="off"
