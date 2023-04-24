@@ -292,14 +292,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     );
   });
 
-  const getOptionsFromValues = (values: Set<string>) => {
-    const optionValue = local.optionValue;
-
-    if (optionValue == null) {
-      // If no `optionValue`, the values are the options (ex: string[] of options)
-      return [...values] as Option[];
-    }
-
+  const getOptionsFromValues = (values: Set<string>): Option[] => {
     return flattenOptions().filter(option => values.has(getOptionValue(option as Option)));
   };
 

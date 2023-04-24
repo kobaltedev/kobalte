@@ -178,7 +178,6 @@ export function ComboboxInput(props: ComboboxInputProps) {
     }
 
     context.setIsInputFocused(false);
-    context.resetInputValue();
   };
 
   // If a touch happens on direct center of Combobox input, might be virtual click from iPad so open ComboBox menu

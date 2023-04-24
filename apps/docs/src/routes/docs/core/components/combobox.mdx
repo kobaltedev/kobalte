@@ -327,6 +327,43 @@ The combobox consists of:
 
 ## Usage
 
+### Filtering options
+
+Combobox doesn't apply any filter internally, it's the developer responsibility to provide a filtered list of options, whether by using a fuzzy search library client-side or by making server-side requests to an API.
+
+For convenience Kobalte exposes the `createFilter` primitive which provides functions for filtering or searching based on substring matches with locale sensitive matching support. It automatically uses the current locale set by the application, either via the default browser language or via the `I18nProvider`.
+
+The available filtering methods are:
+
+- **startWith**: Returns whether a string starts with a given substring.
+- **endWith**: Returns whether a string ends with a given substring.
+- **contains**: Returns whether a string contains a given substring.
+
+```tsx {6,13,15}
+import { Combobox, createFilter } from "@kobalte/core";
+import { createSignal } from "solid-js";
+
+const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
+
+function DefaultValueExample() {
+  const filter = createFilter({ sensitivity: "base" });
+
+  const [options, setOptions] = createSignal(ALL_OPTIONS);
+
+  const onInputChange = (value: string) => {
+    // or filter.startWith
+    // or filter.endWith
+    setOptions(ALL_OPTIONS.filter(option => filter.contains(option, value)));
+  };
+
+  return (
+    <Combobox.Root options={options()} onInputChange={onInputChange}>
+      //...rest of the component.
+    </Combobox.Root>
+  );
+}
+```
+
 ### Default value
 
 An initial, uncontrolled value can be provided using the `defaultValue` prop, which accepts a value corresponding with the `options`.
