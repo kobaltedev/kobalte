@@ -19,12 +19,14 @@ const STATES = [
   "selected",
   "pressed",
   "expanded",
+  "opened",
   "closed",
   "highlighted",
   "current",
 ];
-
 const ORIENTATIONS = ["horizontal", "vertical"];
+const SWIPE_STATES = ["start", "move", "cancel", "end"];
+const SWIPE_DIRECTIONS = ["up", "down", "left", "right"];
 
 export interface KobalteTailwindPluginOptions {
   /** The prefix of generated classes. */
@@ -50,6 +52,30 @@ export default plugin.withOptions<KobalteTailwindPluginOptions>(({ prefix = "ui"
       addVariant(
         `${prefix}-peer-${orientation}`,
         `:merge(.peer)[data-orientation='${orientation}'] ~ &`
+      );
+    }
+
+    for (const state of SWIPE_STATES) {
+      addVariant(`${prefix}-swipe-${state}`, [`&[data-swipe='${state}']`]);
+      addVariant(`${prefix}-not-swipe-${state}`, [`&:not([data-swipe='${state}'])`]);
+      addVariant(`${prefix}-group-swipe-${state}`, `:merge(.group)[data-swipe='${state}'] &`);
+      addVariant(`${prefix}-peer-swipe-${state}`, `:merge(.peer)[data-swipe='${state}'] ~ &`);
+    }
+
+    for (const direction of SWIPE_DIRECTIONS) {
+      addVariant(`${prefix}-swipe-direction-${direction}`, [
+        `&[data-swipe-direction='${direction}']`,
+      ]);
+      addVariant(`${prefix}-not-swipe-direction-${direction}`, [
+        `&:not([data-swipe-direction='${direction}'])`,
+      ]);
+      addVariant(
+        `${prefix}-group-swipe-direction-${direction}`,
+        `:merge(.group)[data-swipe-direction='${direction}'] &`
+      );
+      addVariant(
+        `${prefix}-peer-swipe-direction-${direction}`,
+        `:merge(.peer)[data-swipe-direction='${direction}'] ~ &`
       );
     }
   };
