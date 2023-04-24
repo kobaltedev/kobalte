@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.9.1
+
+### Patch Changes
+
+- 24aeebb: v0.9.1
+
 ## 0.9.0
 
 ### Minor Changes
