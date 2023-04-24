@@ -88,7 +88,7 @@ describe("Combobox", () => {
   });
 
   describe("option mapping", () => {
-    const CUSTOM_DATA_SOURCE = [
+    const CUSTOM_DATA_SOURCE_WITH_STRING_KEY = [
       {
         name: "Section 1",
         items: [
@@ -99,16 +99,17 @@ describe("Combobox", () => {
       },
     ];
 
-    it("supports string based option mapping for object options", async () => {
+    it("supports string based option mapping for object options with string keys", async () => {
       render(() => (
         <Combobox.Root<any, any>
-          options={CUSTOM_DATA_SOURCE}
+          options={CUSTOM_DATA_SOURCE_WITH_STRING_KEY}
           optionValue="id"
           optionTextValue="valueText"
           optionLabel="name"
           optionDisabled="disabled"
           optionGroupChildren="items"
           placeholder="Placeholder"
+          onChange={onValueChange}
           itemComponent={props => (
             <Combobox.Item item={props.item}>{props.item.rawValue.name}</Combobox.Item>
           )}
@@ -131,6 +132,7 @@ describe("Combobox", () => {
       ));
 
       const trigger = screen.getByRole("button");
+      const input = screen.getByRole("combobox");
 
       fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
@@ -157,18 +159,39 @@ describe("Combobox", () => {
       expect(items[2]).toHaveTextContent("Three");
       expect(items[2]).toHaveAttribute("data-key", "3");
       expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2]);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(input).toHaveValue("Three");
+      expect(document.activeElement).toBe(input);
     });
 
-    it("supports function based option mapping for object options", async () => {
+    it("supports function based option mapping for object options with string keys", async () => {
       render(() => (
         <Combobox.Root<any, any>
-          options={CUSTOM_DATA_SOURCE}
+          options={CUSTOM_DATA_SOURCE_WITH_STRING_KEY}
           optionValue={option => option.id}
           optionTextValue={option => option.valueText}
           optionLabel={option => option.name}
           optionDisabled={option => option.disabled}
           optionGroupChildren={optGroup => optGroup.items}
           placeholder="Placeholder"
+          onChange={onValueChange}
           itemComponent={props => (
             <Combobox.Item item={props.item}>{props.item.rawValue.name}</Combobox.Item>
           )}
@@ -191,6 +214,7 @@ describe("Combobox", () => {
       ));
 
       const trigger = screen.getByRole("button");
+      const input = screen.getByRole("combobox");
 
       fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
@@ -217,6 +241,201 @@ describe("Combobox", () => {
       expect(items[2]).toHaveTextContent("Three");
       expect(items[2]).toHaveAttribute("data-key", "3");
       expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2]);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(input).toHaveValue("Three");
+      expect(document.activeElement).toBe(input);
+    });
+
+    const CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY = [
+      {
+        name: "Section 1",
+        items: [
+          { id: 1, name: "One", valueText: "One", disabled: false },
+          { id: 2, name: "Two", valueText: "Two", disabled: true },
+          { id: 3, name: "Three", valueText: "Three", disabled: false },
+        ],
+      },
+    ];
+
+    it("supports string based option mapping for object options with number keys", async () => {
+      render(() => (
+        <Combobox.Root<any, any>
+          options={CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY}
+          optionValue="id"
+          optionTextValue="valueText"
+          optionLabel="name"
+          optionDisabled="disabled"
+          optionGroupChildren="items"
+          placeholder="Placeholder"
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Combobox.Item item={props.item}>{props.item.rawValue.name}</Combobox.Item>
+          )}
+          sectionComponent={props => (
+            <Combobox.Section>{props.section.rawValue.name}</Combobox.Section>
+          )}
+        >
+          <Combobox.HiddenSelect />
+          <Combobox.Label>Label</Combobox.Label>
+          <Combobox.Control>
+            <Combobox.Input />
+            <Combobox.Trigger />
+          </Combobox.Control>
+          <Combobox.Portal>
+            <Combobox.Content>
+              <Combobox.Listbox />
+            </Combobox.Content>
+          </Combobox.Portal>
+        </Combobox.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+      const input = screen.getByRole("combobox");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[0]).toHaveAttribute("data-key", "1");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[1]).toHaveAttribute("data-key", "2");
+      expect(items[1]).toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("Three");
+      expect(items[2]).toHaveAttribute("data-key", "3");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2]);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(input).toHaveValue("Three");
+      expect(document.activeElement).toBe(input);
+    });
+
+    it("supports function based option mapping for object options with number keys", async () => {
+      render(() => (
+        <Combobox.Root<any, any>
+          options={CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY}
+          optionValue={option => option.id}
+          optionTextValue={option => option.valueText}
+          optionLabel={option => option.name}
+          optionDisabled={option => option.disabled}
+          optionGroupChildren={optGroup => optGroup.items}
+          placeholder="Placeholder"
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Combobox.Item item={props.item}>{props.item.rawValue.name}</Combobox.Item>
+          )}
+          sectionComponent={props => (
+            <Combobox.Section>{props.section.rawValue.name}</Combobox.Section>
+          )}
+        >
+          <Combobox.HiddenSelect />
+          <Combobox.Label>Label</Combobox.Label>
+          <Combobox.Control>
+            <Combobox.Input />
+            <Combobox.Trigger />
+          </Combobox.Control>
+          <Combobox.Portal>
+            <Combobox.Content>
+              <Combobox.Listbox />
+            </Combobox.Content>
+          </Combobox.Portal>
+        </Combobox.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+      const input = screen.getByRole("combobox");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[0]).toHaveAttribute("data-key", "1");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[1]).toHaveAttribute("data-key", "2");
+      expect(items[1]).toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("Three");
+      expect(items[2]).toHaveAttribute("data-key", "3");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2]);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(input).toHaveValue("Three");
+      expect(document.activeElement).toBe(input);
     });
 
     it("supports string options without mapping", async () => {
@@ -224,6 +443,7 @@ describe("Combobox", () => {
         <Combobox.Root
           options={["One", "Two", "Three"]}
           placeholder="Placeholder"
+          onChange={onValueChange}
           itemComponent={props => (
             <Combobox.Item item={props.item}>{props.item.rawValue}</Combobox.Item>
           )}
@@ -243,6 +463,7 @@ describe("Combobox", () => {
       ));
 
       const trigger = screen.getByRole("button");
+      const input = screen.getByRole("combobox");
 
       fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
@@ -269,6 +490,26 @@ describe("Combobox", () => {
       expect(items[2]).toHaveTextContent("Three");
       expect(items[2]).toHaveAttribute("data-key", "Three");
       expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe("Three");
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(input).toHaveValue("Three");
+      expect(document.activeElement).toBe(input);
     });
 
     it("supports function based option mapping for string options", async () => {
@@ -280,6 +521,7 @@ describe("Combobox", () => {
           optionLabel={option => option}
           optionDisabled={option => option === "Two"}
           placeholder="Placeholder"
+          onChange={onValueChange}
           itemComponent={props => (
             <Combobox.Item item={props.item}>{props.item.rawValue}</Combobox.Item>
           )}
@@ -299,6 +541,7 @@ describe("Combobox", () => {
       ));
 
       const trigger = screen.getByRole("button");
+      const input = screen.getByRole("combobox");
 
       fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
@@ -325,6 +568,178 @@ describe("Combobox", () => {
       expect(items[2]).toHaveTextContent("Three");
       expect(items[2]).toHaveAttribute("data-key", "Three");
       expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe("Three");
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(input).toHaveValue("Three");
+      expect(document.activeElement).toBe(input);
+    });
+
+    it("supports number options without mapping", async () => {
+      render(() => (
+        <Combobox.Root
+          options={[1, 2, 3]}
+          placeholder="Placeholder"
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Combobox.Item item={props.item}>{props.item.rawValue}</Combobox.Item>
+          )}
+        >
+          <Combobox.HiddenSelect />
+          <Combobox.Label>Label</Combobox.Label>
+          <Combobox.Control>
+            <Combobox.Input />
+            <Combobox.Trigger />
+          </Combobox.Control>
+          <Combobox.Portal>
+            <Combobox.Content>
+              <Combobox.Listbox />
+            </Combobox.Content>
+          </Combobox.Portal>
+        </Combobox.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+      const input = screen.getByRole("combobox");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("1");
+      expect(items[0]).toHaveAttribute("data-key", "1");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("2");
+      expect(items[1]).toHaveAttribute("data-key", "2");
+      expect(items[1]).not.toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("3");
+      expect(items[2]).toHaveAttribute("data-key", "3");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(3);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(input).toHaveValue("3");
+      expect(document.activeElement).toBe(input);
+    });
+
+    it("supports function based option mapping for number options", async () => {
+      render(() => (
+        <Combobox.Root
+          options={[1, 2, 3]}
+          optionValue={option => option}
+          optionTextValue={option => option}
+          optionLabel={option => option}
+          optionDisabled={option => option === 2}
+          placeholder="Placeholder"
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Combobox.Item item={props.item}>{props.item.rawValue}</Combobox.Item>
+          )}
+        >
+          <Combobox.HiddenSelect />
+          <Combobox.Label>Label</Combobox.Label>
+          <Combobox.Control>
+            <Combobox.Input />
+            <Combobox.Trigger />
+          </Combobox.Control>
+          <Combobox.Portal>
+            <Combobox.Content>
+              <Combobox.Listbox />
+            </Combobox.Content>
+          </Combobox.Portal>
+        </Combobox.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+      const input = screen.getByRole("combobox");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("1");
+      expect(items[0]).toHaveAttribute("data-key", "1");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("2");
+      expect(items[1]).toHaveAttribute("data-key", "2");
+      expect(items[1]).toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("3");
+      expect(items[2]).toHaveAttribute("data-key", "3");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(3);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(input).toHaveValue("3");
+      expect(document.activeElement).toBe(input);
     });
   });
 

@@ -351,13 +351,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   });
 
   const getOptionsFromValues = (values: Set<string>): Option[] => {
-    const optionValue = local.optionValue;
-
-    if (optionValue == null) {
-      // If no `optionValue`, the values are the options (ex: string[] of options)
-      return [...values] as Option[];
-    }
-
     return flattenOptions().filter(option => values.has(getOptionValue(option as Option)));
   };
 

@@ -1,4 +1,4 @@
-import { isString } from "@kobalte/utils";
+import { isObject, isString } from "@kobalte/utils";
 
 import { CollectionNode } from "./types";
 
@@ -23,17 +23,19 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
 
   const getKey = (data: any): string => {
     const _getKey = params.getKey ?? "key";
-    return String(isString(_getKey) ? data[_getKey] : _getKey(data));
+    const dataKey = isString(_getKey) ? data[_getKey] : _getKey(data);
+    return dataKey != null ? String(dataKey) : "";
   };
 
-  const getTextValue = (data: any): string | undefined => {
+  const getTextValue = (data: any): string => {
     const _getTextValue = params.getTextValue ?? "textValue";
-    return isString(_getTextValue) ? data[_getTextValue] : _getTextValue(data);
+    const dataTextValue = isString(_getTextValue) ? data[_getTextValue] : _getTextValue(data);
+    return dataTextValue != null ? String(dataTextValue) : "";
   };
 
-  const getDisabled = (data: any): boolean | undefined => {
+  const getDisabled = (data: any): boolean => {
     const _getDisabled = params.getDisabled ?? "disabled";
-    return isString(_getDisabled) ? data[_getDisabled] : _getDisabled(data);
+    return (isString(_getDisabled) ? data[_getDisabled] : _getDisabled(data)) ?? false;
   };
 
   const getSectionChildren = (data: any): any[] | undefined => {
@@ -45,14 +47,14 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
   };
 
   for (const data of params.dataSource) {
-    // If it's just a string assume it's an item.
-    if (isString(data)) {
+    // If it's not an object assume it's an item.
+    if (!isObject(data)) {
       nodes.push({
         type: "item",
         rawValue: data,
-        key: data,
-        textValue: data,
-        disabled: getDisabled(data) ?? false,
+        key: String(data),
+        textValue: String(data),
+        disabled: getDisabled(data),
         level,
         index,
       });
@@ -98,8 +100,8 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
         type: "item",
         rawValue: data,
         key: getKey(data),
-        textValue: getTextValue(data) ?? "",
-        disabled: getDisabled(data) ?? false,
+        textValue: getTextValue(data),
+        disabled: getDisabled(data),
         level,
         index,
       });
