@@ -4,17 +4,18 @@ import { Combobox, createFilter, I18nProvider } from "../src";
 import { ComboboxTriggerMode } from "../src/combobox";
 
 interface Food {
+  id: number;
   value: string;
   label: string;
   disabled: boolean;
 }
 
 const RAW_OPTIONS: Food[] = [
-  { value: "apple", label: "Apple", disabled: false },
-  { value: "banana", label: "Banana", disabled: false },
-  { value: "blueberry", label: "Blueberry", disabled: false },
-  { value: "grapes", label: "Grapes", disabled: true },
-  { value: "pineapple", label: "Pineapple", disabled: false },
+  { id: 1, value: "apple", label: "Apple", disabled: false },
+  { id: 2, value: "banana", label: "Banana", disabled: false },
+  { id: 3, value: "blueberry", label: "Blueberry", disabled: false },
+  { id: 4, value: "grapes", label: "Grapes", disabled: true },
+  { id: 5, value: "pineapple", label: "Pineapple", disabled: false },
 ];
 
 export default function App() {
@@ -44,7 +45,7 @@ export default function App() {
       {value()?.label ?? "Select an option"}
       <Combobox.Root<Food>
         options={options()}
-        optionValue="value"
+        optionValue="id"
         optionTextValue="label"
         optionLabel="label"
         optionDisabled="disabled"

@@ -23,7 +23,7 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
 
   const getKey = (data: any): string => {
     const _getKey = params.getKey ?? "key";
-    return isString(_getKey) ? data[_getKey] : _getKey(data);
+    return String(isString(_getKey) ? data[_getKey] : _getKey(data));
   };
 
   const getTextValue = (data: any): string | undefined => {
