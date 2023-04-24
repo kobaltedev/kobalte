@@ -50,6 +50,6 @@
   },
   "peerDependencies": {
     "@solidjs/testing-library": "^0.7.0",
-    "solid-js": "^1.7.2"
+    "solid-js": "^1.7.3"
   }
 }
