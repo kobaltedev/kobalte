@@ -16,11 +16,11 @@ export interface CheckboxContextValue {
   value: Accessor<string>;
   dataset: Accessor<CheckboxDataSet>;
   validationState: Accessor<ValidationState | undefined>;
-  isChecked: Accessor<boolean>;
-  isRequired: Accessor<boolean>;
-  isDisabled: Accessor<boolean>;
-  isReadOnly: Accessor<boolean>;
-  isIndeterminate: Accessor<boolean>;
+  checked: Accessor<boolean>;
+  required: Accessor<boolean>;
+  disabled: Accessor<boolean>;
+  readOnly: Accessor<boolean>;
+  indeterminate: Accessor<boolean>;
   generateId: (part: string) => string;
   setIsChecked: (isChecked: boolean) => void;
   setIsFocused: (isFocused: boolean) => void;

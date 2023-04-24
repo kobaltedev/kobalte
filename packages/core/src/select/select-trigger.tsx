@@ -26,18 +26,23 @@ export function SelectTrigger(props: SelectTriggerProps) {
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
-  props = mergeDefaultProps({ id: context.generateId("trigger") }, props);
+  props = mergeDefaultProps(
+    {
+      id: context.generateId("trigger"),
+    },
+    props
+  );
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
-    ["ref", "isDisabled", "onPointerDown", "onClick", "onKeyDown", "onFocus", "onBlur"],
+    ["ref", "disabled", "onPointerDown", "onClick", "onKeyDown", "onFocus", "onBlur"],
     FORM_CONTROL_FIELD_PROP_NAMES
   );
 
   const selectionManager = () => context.listState().selectionManager();
   const keyboardDelegate = () => context.keyboardDelegate();
 
-  const isDisabled = () => local.isDisabled || context.isDisabled();
+  const isDisabled = () => local.disabled || context.isDisabled();
 
   const { fieldProps } = createFormControlField(formControlFieldProps);
 
@@ -58,8 +63,8 @@ export function SelectTrigger(props: SelectTriggerProps) {
 
     e.currentTarget.dataset.pointerType = e.pointerType;
 
-    // For consistency with native, open the select on mouse down, but touch up.
-    if (!isDisabled() && e.pointerType !== "touch") {
+    // For consistency with native, open the select on mouse down (main button), but touch up.
+    if (!isDisabled() && e.pointerType !== "touch" && e.button === 0) {
       context.toggle(true);
     }
   };
@@ -176,7 +181,7 @@ export function SelectTrigger(props: SelectTriggerProps) {
     <Button.Root
       ref={mergeRefs(context.setTriggerRef, local.ref)}
       id={fieldProps.id()}
-      isDisabled={isDisabled()}
+      disabled={isDisabled()}
       aria-haspopup="listbox"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.listboxId() : undefined}

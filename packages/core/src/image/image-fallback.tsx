@@ -34,7 +34,7 @@ export function ImageFallback(props: ImageFallbackProps) {
 
   return (
     <Show when={canRender() && context.imageLoadingStatus() !== "loaded"}>
-      <Polymorphic fallback="span" {...props} />
+      <Polymorphic as="span" {...props} />
     </Show>
   );
 }

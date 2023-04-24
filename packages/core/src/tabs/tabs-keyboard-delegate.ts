@@ -81,7 +81,7 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
 
     const item = this.collection().getItem(key);
 
-    if (item?.isDisabled) {
+    if (item?.disabled) {
       key = this.getNextKey(key);
     }
 
@@ -97,7 +97,7 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
 
     const item = this.collection().getItem(key);
 
-    if (item?.isDisabled) {
+    if (item?.disabled) {
       key = this.getPreviousKey(key);
     }
 
@@ -120,7 +120,7 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
       if (nextItem == null) {
         return;
       }
-    } while (nextItem.isDisabled);
+    } while (nextItem.disabled);
 
     return nextKey;
   }
@@ -141,7 +141,7 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
       if (previousItem == null) {
         return;
       }
-    } while (previousItem.isDisabled);
+    } while (previousItem.disabled);
 
     return previousKey;
   }

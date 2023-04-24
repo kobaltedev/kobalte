@@ -68,7 +68,7 @@ export function TabsList(props: TabsListProps) {
 
   return (
     <Polymorphic
-      fallback="div"
+      as="div"
       ref={mergeRefs(el => (ref = el), local.ref)}
       role="tablist"
       aria-orientation={context.orientation()}

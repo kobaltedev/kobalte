@@ -83,10 +83,8 @@ export function DialogContent(props: DialogContentProps) {
 
   const [local, others] = splitProps(props, [
     "ref",
-    "id",
     "onOpenAutoFocus",
     "onCloseAutoFocus",
-    "onEscapeKeyDown",
     "onPointerDownOutside",
     "onFocusOutside",
     "onInteractOutside",
@@ -99,7 +97,7 @@ export function DialogContent(props: DialogContentProps) {
 
     // If the event is a right-click, we shouldn't close because
     // it is effectively as if we right-clicked the `Overlay`.
-    if (context.isModal() && e.detail.isContextMenu) {
+    if (context.modal() && e.detail.isContextMenu) {
       e.preventDefault();
     }
   };
@@ -109,7 +107,7 @@ export function DialogContent(props: DialogContentProps) {
 
     // When focus is trapped, a `focusout` event may still happen.
     // We make sure we don't trigger our `onDismiss` in such case.
-    if (context.isModal()) {
+    if (context.modal()) {
       e.preventDefault();
     }
   };
@@ -117,7 +115,7 @@ export function DialogContent(props: DialogContentProps) {
   const onInteractOutside = (e: InteractOutsideEvent) => {
     local.onInteractOutside?.(e);
 
-    if (!context.isModal() && !e.defaultPrevented) {
+    if (!context.modal() && !e.defaultPrevented) {
       hasInteractedOutside = true;
     }
   };
@@ -125,7 +123,7 @@ export function DialogContent(props: DialogContentProps) {
   const onCloseAutoFocus = (e: Event) => {
     local.onCloseAutoFocus?.(e);
 
-    if (context.isModal()) {
+    if (context.modal()) {
       e.preventDefault();
       focusWithoutScrolling(context.triggerRef());
     } else {
@@ -144,25 +142,25 @@ export function DialogContent(props: DialogContentProps) {
 
   // aria-hide everything except the content (better supported equivalent to setting aria-modal)
   createHideOutside({
-    isDisabled: () => !(context.isOpen() && context.isModal()),
+    isDisabled: () => !(context.isOpen() && context.modal()),
     targets: () => (ref ? [ref] : []),
   });
 
   createPreventScroll({
     ownerRef: () => ref,
-    isDisabled: () => !(context.isOpen() && context.isModal()),
+    isDisabled: () => !(context.isOpen() && context.modal()),
   });
 
   createFocusScope(
     {
-      trapFocus: () => context.isOpen() && context.isModal(),
+      trapFocus: () => context.isOpen() && context.modal(),
       onMountAutoFocus: local.onOpenAutoFocus,
       onUnmountAutoFocus: onCloseAutoFocus,
     },
     () => ref
   );
 
-  createEffect(() => onCleanup(context.registerContentId(local.id!)));
+  createEffect(() => onCleanup(context.registerContentId(others.id!)));
 
   return (
     <Show when={context.contentPresence.isPresent()}>
@@ -172,15 +170,13 @@ export function DialogContent(props: DialogContentProps) {
           ref = el;
         }, local.ref)}
         role="dialog"
-        id={local.id}
         tabIndex={-1}
-        disableOutsidePointerEvents={context.isModal() && context.isOpen()}
+        disableOutsidePointerEvents={context.modal() && context.isOpen()}
         excludedElements={[context.triggerRef]}
         aria-labelledby={context.titleId()}
         aria-describedby={context.descriptionId()}
         data-expanded={context.isOpen() ? "" : undefined}
         data-closed={!context.isOpen() ? "" : undefined}
-        onEscapeKeyDown={local.onEscapeKeyDown}
         onPointerDownOutside={onPointerDownOutside}
         onFocusOutside={onFocusOutside}
         onInteractOutside={onInteractOutside}

@@ -29,9 +29,8 @@ export function createCollection<C extends Collection<CollectionNode>>(
     dataSource: access(props.dataSource),
     getKey: access(props.getKey),
     getTextValue: access(props.getTextValue),
-    getIsDisabled: access(props.getIsDisabled),
+    getDisabled: access(props.getDisabled),
     getSectionChildren: access(props.getSectionChildren),
-    getIsSection: access(props.getIsSection),
   });
 
   const [collection, setCollection] = createSignal<C>(props.factory(initialNodes));
@@ -42,28 +41,18 @@ export function createCollection<C extends Collection<CollectionNode>>(
         () => access(props.dataSource),
         () => access(props.getKey),
         () => access(props.getTextValue),
-        () => access(props.getIsDisabled),
+        () => access(props.getDisabled),
         () => access(props.getSectionChildren),
-        () => access(props.getIsSection),
         () => props.factory,
         ...deps,
       ],
-      ([
-        dataSource,
-        getKey,
-        getTextValue,
-        getIsDisabled,
-        getSectionChildren,
-        getIsSection,
-        factory,
-      ]) => {
+      ([dataSource, getKey, getTextValue, getDisabled, getSectionChildren, factory]) => {
         const nodes = buildNodes({
           dataSource,
           getKey,
           getTextValue,
-          getIsDisabled,
+          getDisabled,
           getSectionChildren,
-          getIsSection,
         });
 
         setCollection(() => factory(nodes));

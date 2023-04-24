@@ -21,16 +21,16 @@ import { SwitchContext, SwitchContextValue, SwitchDataSet } from "./switch-conte
 
 export interface SwitchRootOptions {
   /** The controlled checked state of the switch. */
-  isChecked?: boolean;
+  checked?: boolean;
 
   /**
    * The default checked state when initially rendered.
    * Useful when you do not need to control the checked state.
    */
-  defaultIsChecked?: boolean;
+  defaultChecked?: boolean;
 
   /** Event handler called when the checked state of the switch changes. */
-  onCheckedChange?: (isChecked: boolean) => void;
+  onChange?: (isChecked: boolean) => void;
 
   /**
    * The name of the switch, used when submitting an HTML form.
@@ -48,13 +48,13 @@ export interface SwitchRootOptions {
   validationState?: ValidationState;
 
   /** Whether the user must check the switch before the owning form can be submitted. */
-  isRequired?: boolean;
+  required?: boolean;
 
   /** Whether the switch is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /** Whether the switch is read only. */
-  isReadOnly?: boolean;
+  readOnly?: boolean;
 }
 
 export interface SwitchRootProps extends OverrideComponentProps<"label", SwitchRootOptions> {}
@@ -78,31 +78,31 @@ export function SwitchRoot(props: SwitchRootProps) {
   const [local, others] = splitProps(props, [
     "ref",
     "value",
-    "isChecked",
-    "defaultIsChecked",
-    "onCheckedChange",
+    "checked",
+    "defaultChecked",
+    "onChange",
     "name",
     "value",
     "validationState",
-    "isRequired",
-    "isDisabled",
-    "isReadOnly",
+    "required",
+    "disabled",
+    "readOnly",
     "onPointerDown",
   ]);
 
   const [isFocused, setIsFocused] = createSignal(false);
 
   const state = createToggleState({
-    isSelected: () => local.isChecked,
-    defaultIsSelected: () => local.defaultIsChecked,
-    onSelectedChange: selected => local.onCheckedChange?.(selected),
-    isDisabled: () => local.isDisabled,
-    isReadOnly: () => local.isReadOnly,
+    isSelected: () => local.checked,
+    defaultIsSelected: () => local.defaultChecked,
+    onSelectedChange: selected => local.onChange?.(selected),
+    isDisabled: () => local.disabled,
+    isReadOnly: () => local.readOnly,
   });
 
   createFormResetListener(
     () => ref,
-    () => state.setIsSelected(local.defaultIsChecked ?? false)
+    () => state.setIsSelected(local.defaultChecked ?? false)
   );
 
   const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
@@ -118,9 +118,9 @@ export function SwitchRoot(props: SwitchRootProps) {
     "data-valid": local.validationState === "valid" ? "" : undefined,
     "data-invalid": local.validationState === "invalid" ? "" : undefined,
     "data-checked": state.isSelected() ? "" : undefined,
-    "data-required": local.isRequired ? "" : undefined,
-    "data-disabled": local.isDisabled ? "" : undefined,
-    "data-readonly": local.isReadOnly ? "" : undefined,
+    "data-required": local.required ? "" : undefined,
+    "data-disabled": local.disabled ? "" : undefined,
+    "data-readonly": local.readOnly ? "" : undefined,
   }));
 
   const context: SwitchContextValue = {
@@ -129,9 +129,9 @@ export function SwitchRoot(props: SwitchRootProps) {
     dataset,
     validationState: () => local.validationState,
     isChecked: () => state.isSelected(),
-    isRequired: () => local.isRequired,
-    isDisabled: () => local.isDisabled,
-    isReadOnly: () => local.isReadOnly,
+    isRequired: () => local.required,
+    isDisabled: () => local.disabled,
+    isReadOnly: () => local.readOnly,
     generateId: createGenerateId(() => others.id!),
     setIsChecked: isChecked => state.setIsSelected(isChecked),
     setIsFocused,

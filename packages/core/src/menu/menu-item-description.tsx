@@ -32,5 +32,5 @@ export function MenuItemDescription(props: MenuItemDescriptionProps) {
 
   createEffect(() => onCleanup(context.registerDescription(local.id!)));
 
-  return <Polymorphic fallback="div" id={local.id} {...context.dataset()} {...others} />;
+  return <Polymorphic as="div" id={local.id} {...context.dataset()} {...others} />;
 }

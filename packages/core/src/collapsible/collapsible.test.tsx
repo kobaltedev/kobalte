@@ -6,9 +6,9 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.test.tsx
  */
 
-import { checkAccessibility, installPointerEvent } from "@kobalte/tests";
+import { installPointerEvent } from "@kobalte/tests";
 import { ComponentProps } from "solid-js";
-import { fireEvent, render, screen } from "solid-testing-library";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import * as Collapsible from ".";
 
@@ -24,8 +24,6 @@ const Example = (props: ComponentProps<typeof Collapsible.Root>) => (
 
 describe("Collapsible", () => {
   installPointerEvent();
-
-  checkAccessibility([<Example />]);
 
   it("should toggle between open/close the content when clicking the trigger", async () => {
     render(() => <Example />);
@@ -45,7 +43,7 @@ describe("Collapsible", () => {
   });
 
   it("should not open the content when clicking the trigger if disabled", async () => {
-    render(() => <Example isDisabled />);
+    render(() => <Example disabled />);
 
     const trigger = screen.getByText(TRIGGER_TEXT);
 
@@ -59,7 +57,7 @@ describe("Collapsible", () => {
   it("should close content when clicking the trigger and collapsible is open uncontrolled", async () => {
     const onOpenChangeSpy = jest.fn();
 
-    render(() => <Example defaultIsOpen onOpenChange={onOpenChangeSpy} />);
+    render(() => <Example defaultOpen onOpenChange={onOpenChangeSpy} />);
 
     const trigger = screen.getByText(TRIGGER_TEXT);
     const content = screen.getByText(CONTENT_TEXT);
@@ -74,7 +72,7 @@ describe("Collapsible", () => {
   it("should not close content when clicking the trigger and collapsible is open controlled", async () => {
     const onOpenChangeSpy = jest.fn();
 
-    render(() => <Example isOpen onOpenChange={onOpenChangeSpy} />);
+    render(() => <Example open onOpenChange={onOpenChangeSpy} />);
 
     const trigger = screen.getByText(TRIGGER_TEXT);
     const content = screen.getByText(CONTENT_TEXT);

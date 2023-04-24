@@ -33,7 +33,7 @@ export function ListboxItemIndicator(props: ListboxItemIndicatorProps) {
 
   return (
     <Show when={local.forceMount || context.isSelected()}>
-      <Polymorphic fallback="div" aria-hidden="true" {...context.dataset()} {...others} />
+      <Polymorphic as="div" aria-hidden="true" {...context.dataset()} {...others} />
     </Show>
   );
 }

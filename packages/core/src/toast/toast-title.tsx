@@ -25,5 +25,5 @@ export function ToastTitle(props: ToastTitleProps) {
 
   createEffect(() => onCleanup(context.registerTitleId(local.id!)));
 
-  return <Polymorphic fallback="div" id={local.id} {...others} />;
+  return <Polymorphic as="div" id={local.id} {...others} />;
 }

@@ -17,7 +17,7 @@ export function BasicExample() {
 
 export function DefaultCheckedExample() {
   return (
-    <Switch.Root class={style["switch"]} defaultIsChecked>
+    <Switch.Root class={style["switch"]} defaultChecked>
       <Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
       <Switch.Input class={style["switch__input"]} />
       <Switch.Control class={style["switch__control"]}>
@@ -32,7 +32,7 @@ export function ControlledExample() {
 
   return (
     <>
-      <Switch.Root class={style["switch"]} isChecked={checked()} onCheckedChange={setChecked}>
+      <Switch.Root class={style["switch"]} checked={checked()} onChange={setChecked}>
         <Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
         <Switch.Input class={style["switch__input"]} />
         <Switch.Control class={style["switch__control"]}>

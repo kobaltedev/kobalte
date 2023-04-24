@@ -37,7 +37,7 @@ export function RadioGroupItemIndicator(props: RadioGroupItemIndicatorProps) {
   return (
     <Show when={presence.isPresent()}>
       <Polymorphic
-        fallback="div"
+        as="div"
         ref={mergeRefs(presence.setRef, local.ref)}
         {...context.dataset()}
         {...others}

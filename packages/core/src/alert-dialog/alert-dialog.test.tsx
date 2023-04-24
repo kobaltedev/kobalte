@@ -6,14 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-spectrum/dialog/test/Dialog.test.js
  */
 
-import { render, screen } from "solid-testing-library";
+import { render, screen } from "@solidjs/testing-library";
 
 import * as AlertDialog from ".";
 
 describe("AlertDialog", () => {
   it("should be labelled by its alert dialog title", function () {
     render(() => (
-      <AlertDialog.Root isOpen>
+      <AlertDialog.Root open>
         <AlertDialog.Content>
           <AlertDialog.Title data-testid="title">title</AlertDialog.Title>
         </AlertDialog.Content>
@@ -28,7 +28,7 @@ describe("AlertDialog", () => {
 
   it("should be described by its alert dialog description", function () {
     render(() => (
-      <AlertDialog.Root isOpen>
+      <AlertDialog.Root open>
         <AlertDialog.Content>
           <AlertDialog.Description data-testid="description">description</AlertDialog.Description>
         </AlertDialog.Content>

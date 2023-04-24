@@ -140,7 +140,7 @@ The checkable menu item consists of:
               <DropdownMenu.Item class="dropdown-menu__item">
                 Push <div class="dropdown-menu__item-right-slot">⇧+⌘+K</div>
               </DropdownMenu.Item>
-              <DropdownMenu.Item class="dropdown-menu__item" isDisabled>
+              <DropdownMenu.Item class="dropdown-menu__item" disabled>
                 Update Project <div class="dropdown-menu__item-right-slot">⌘+T</div>
               </DropdownMenu.Item>
               <DropdownMenu.Sub overlap gutter={4} shift={-8}>
@@ -173,8 +173,8 @@ The checkable menu item consists of:
 
               <DropdownMenu.CheckboxItem
                 class="dropdown-menu__checkbox-item"
-                isChecked={showGitLog()}
-                onCheckedChange={setShowGitLog}
+                checked={showGitLog()}
+                onChange={setShowGitLog}
               >
                 <DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
                   <CheckIcon />
@@ -183,8 +183,8 @@ The checkable menu item consists of:
               </DropdownMenu.CheckboxItem>
               <DropdownMenu.CheckboxItem
                 class="dropdown-menu__checkbox-item"
-                isChecked={showHistory()}
-                onCheckedChange={setShowHistory}
+                checked={showHistory()}
+                onChange={setShowHistory}
               >
                 <DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
                   <CheckIcon />
@@ -198,7 +198,7 @@ The checkable menu item consists of:
                 <DropdownMenu.GroupLabel class="dropdown-menu__group-label">
                   Branches
                 </DropdownMenu.GroupLabel>
-                <DropdownMenu.RadioGroup value={branch()} onValueChange={setBranch}>
+                <DropdownMenu.RadioGroup value={branch()} onChange={setBranch}>
                   <DropdownMenu.RadioItem class="dropdown-menu__radio-item" value="main">
                     <DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
                       <DotFilledIcon />
@@ -395,15 +395,15 @@ The checkable menu item consists of:
 
 ### Default open
 
-An initial, uncontrolled open value can be provided using the `defaultIsOpen` prop.
+An initial, uncontrolled open value can be provided using the `defaultOpen` prop.
 
 ```tsx
-<DropdownMenu.Root defaultIsOpen>...</DropdownMenu.Root>
+<DropdownMenu.Root defaultOpen>...</DropdownMenu.Root>
 ```
 
 ### Controlled open
 
-The `isOpen` prop can be used to make the open state controlled. The `onOpenChange` event is fired when the user presses the trigger, an item or interact outside, and receives the new value.
+The `open` prop can be used to make the open state controlled. The `onOpenChange` event is fired when the user presses the trigger, an item or interact outside, and receives the new value.
 
 <Preview>
   <ControlledExample />
@@ -416,7 +416,7 @@ function ControlledExample() {
   const [open, setOpen] = createSignal(false);
 
   return (
-    <DropdownMenu.Root isOpen={open()} onOpenChange={setOpen}>
+    <DropdownMenu.Root open={open()} onOpenChange={setOpen}>
       <DropdownMenu.Trigger>{open() ? "Close" : "Open"}</DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content>...</DropdownMenu.Content>
@@ -470,14 +470,14 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 
 ### DropdownMenu.Root
 
-| Prop          | Description                                                                                                                                                                                                                                                                                                                                    |
-| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| isOpen        | `boolean` <br/> The controlled open state of the menu.                                                                                                                                                                                                                                                                                         |
-| defaultIsOpen | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                                                                                                                                                                                                         |
-| onOpenChange  | `(isOpen: boolean) => void` <br/> Event handler called when the open state of the menu changes.                                                                                                                                                                                                                                                |
-| id            | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used.                                                                                                                                                                  |
-| isModal       | `boolean` <br/> Whether the menu should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the menu content. <br/> - elements outside the menu content will not be visible for screen readers. |
-| forceMount    | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                          |
+| Prop         | Description                                                                                                                                                                                                                                                                                                                                    |
+| :----------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| open         | `boolean` <br/> The controlled open state of the menu.                                                                                                                                                                                                                                                                                         |
+| defaultOpen  | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                                                                                                                                                                                                         |
+| onOpenChange | `(open: boolean) => void` <br/> Event handler called when the open state of the menu changes.                                                                                                                                                                                                                                                  |
+| id           | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used.                                                                                                                                                                  |
+| modal        | `boolean` <br/> Whether the menu should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the menu content. <br/> - elements outside the menu content will not be visible for screen readers. |
+| forceMount   | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                          |
 
 `DropdownMenu.Root` also accepts the following props to customize the placement of the `DropdownMenu.Content`.
 
@@ -491,7 +491,7 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 | slide            | `boolean` <br/> Whether the menu content should slide when it overflows.                                                                                                                                                                                                                                                                                             |
 | overlap          | `boolean` <br/> Whether the menu content can overlap the trigger element when it overflows.                                                                                                                                                                                                                                                                          |
 | sameWidth        | `boolean` <br/> Whether the menu content should have the same width as the trigger element. This will be exposed to CSS as `--kb-popper-anchor-width`.                                                                                                                                                                                                               |
-| fitViewport      | `boolean` <br/> Whether the menu content should fit the viewport. If this is set to true, the menu content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-content-available-width` and `--kb-popper-content-available-height`.                                                                                           |
+| fitViewport      | `boolean` <br/> Whether the menu content should fit the viewport. If this is set to true, the menu content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-content-available-width` and `--kb-popper-content-available-height`.                                                                           |
 | hideWhenDetached | `boolean` <br/> Whether to hide the menu content when the trigger element becomes occluded.                                                                                                                                                                                                                                                                          |
 | detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                                                                                                |
 | arrowPadding     | `number` <br/> The minimum padding between the arrow and the menu content corner.                                                                                                                                                                                                                                                                                    |
@@ -530,7 +530,7 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 | Prop          | Description                                                                                                                                                                                                                                                                                                        |
 | :------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `DropdownMenu.ItemLabel` part if provided, or fallback to the .textContent of the `DropdownMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
-| isDisabled    | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                               |
+| disabled      | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                               |
 | closeOnSelect | `boolean` <br/> Whether the menu should close when the item is activated.                                                                                                                                                                                                                                          |
 | onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                     |
 
@@ -549,12 +549,12 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 
 ### DropdownMenu.RadioGroup
 
-| Prop          | Description                                                                                                                                                          |
-| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value         | `string` <br/> The controlled value of the menu radio item to check.                                                                                                 |
-| defaultValue  | `string` <br/> The value of the menu radio item that should be checked when initially rendered. Useful when you do not need to control the state of the radio group. |
-| onValueChange | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                         |
-| isDisabled    | `boolean` <br/> Whether the radio group is disabled or not.                                                                                                          |
+| Prop         | Description                                                                                                                                                          |
+| :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value        | `string` <br/> The controlled value of the menu radio item to check.                                                                                                 |
+| defaultValue | `string` <br/> The value of the menu radio item that should be checked when initially rendered. Useful when you do not need to control the state of the radio group. |
+| onChange     | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                         |
+| disabled     | `boolean` <br/> Whether the radio group is disabled or not.                                                                                                          |
 
 ### DropdownMenu.RadioItem
 
@@ -562,7 +562,7 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 | :------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | value         | `string` <br/> The value of the menu item radio.                                                                                                                                                                                                                                                                   |
 | textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `DropdownMenu.ItemLabel` part if provided, or fallback to the .textContent of the `DropdownMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
-| isDisabled    | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                               |
+| disabled      | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                               |
 | closeOnSelect | `boolean` <br/> Whether the menu should close when the item is checked.                                                                                                                                                                                                                                            |
 | onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                     |
 
@@ -574,16 +574,16 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 
 ### DropdownMenu.CheckboxItem
 
-| Prop             | Description                                                                                                                                                                                                                                                                                                        |
-| :--------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| isChecked        | `boolean` <br/> The controlled checked state of the item.                                                                                                                                                                                                                                                          |
-| defaultIsChecked | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                                                                                                                                                                       |
-| onCheckedChange  | `(isChecked: boolean) => void` <br/> Event handler called when the checked state of the item changes.                                                                                                                                                                                                              |
-| textValue        | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `DropdownMenu.ItemLabel` part if provided, or fallback to the .textContent of the `DropdownMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
-| isIndeterminate  | `boolean` <br/> Whether the item is in an indeterminate state.                                                                                                                                                                                                                                                     |
-| isDisabled       | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                               |
-| closeOnSelect    | `boolean` <br/> Whether the menu should close when the item is checked/unchecked.                                                                                                                                                                                                                                  |
-| onSelect         | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                     |
+| Prop           | Description                                                                                                                                                                                                                                                                                                        |
+| :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| checked        | `boolean` <br/> The controlled checked state of the item.                                                                                                                                                                                                                                                          |
+| defaultChecked | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                                                                                                                                                                       |
+| onChange       | `(checked: boolean) => void` <br/> Event handler called when the checked state of the item changes.                                                                                                                                                                                                                |
+| textValue      | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `DropdownMenu.ItemLabel` part if provided, or fallback to the .textContent of the `DropdownMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| indeterminate  | `boolean` <br/> Whether the item is in an indeterminate state.                                                                                                                                                                                                                                                     |
+| disabled       | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                               |
+| closeOnSelect  | `boolean` <br/> Whether the menu should close when the item is checked/unchecked.                                                                                                                                                                                                                                  |
+| onSelect       | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                     |
 
 | Data attribute     | Description                                         |
 | :----------------- | :-------------------------------------------------- |
@@ -594,33 +594,33 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 
 ### DropdownMenu.Sub
 
-| Prop          | Description                                                                                                            |
-| :------------ | :--------------------------------------------------------------------------------------------------------------------- |
-| isOpen        | `boolean` <br/> The controlled open state of the sub menu.                                                             |
-| defaultIsOpen | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state. |
-| onOpenChange  | `(isOpen: boolean) => void` <br/> Event handler called when the open state of the sub menu changes.                    |
+| Prop         | Description                                                                                                            |
+| :----------- | :--------------------------------------------------------------------------------------------------------------------- |
+| open         | `boolean` <br/> The controlled open state of the sub menu.                                                             |
+| defaultOpen  | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state. |
+| onOpenChange | `(open: boolean) => void` <br/> Event handler called when the open state of the sub menu changes.                      |
 
 `DropdownMenu.Sub` also accepts the following props to customize the placement of the `DropdownMenu.SubContent`.
 
-| Prop             | Description                                                                                                                                                                                                                                                                        |
-| :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| getAnchorRect    | `(anchor?: HTMLElement) => AnchorRect  \| undefined` <br/> Function that returns the trigger element's DOMRect.                                                                                                                                                                    |
-| gutter           | `number` <br/> The distance between the sub menu content and the trigger element. By default, it's 0 plus half of the arrow offset, if it exists.                                                                                                                                  |
-| shift            | `number` <br/> The skidding of the sub menu content along the trigger element.                                                                                                                                                                                                     |
-| slide            | `boolean` <br/> Whether the sub menu content should slide when it overflows.                                                                                                                                                                                                       |
-| overlap          | `boolean` <br/> Whether the sub menu content can overlap the trigger element when it overflows.                                                                                                                                                                                    |
+| Prop             | Description                                                                                                                                                                                                                                                                                        |
+| :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| getAnchorRect    | `(anchor?: HTMLElement) => AnchorRect  \| undefined` <br/> Function that returns the trigger element's DOMRect.                                                                                                                                                                                    |
+| gutter           | `number` <br/> The distance between the sub menu content and the trigger element. By default, it's 0 plus half of the arrow offset, if it exists.                                                                                                                                                  |
+| shift            | `number` <br/> The skidding of the sub menu content along the trigger element.                                                                                                                                                                                                                     |
+| slide            | `boolean` <br/> Whether the sub menu content should slide when it overflows.                                                                                                                                                                                                                       |
+| overlap          | `boolean` <br/> Whether the sub menu content can overlap the trigger element when it overflows.                                                                                                                                                                                                    |
 | fitViewport      | `boolean` <br/> Whether the sub menu content should fit the viewport. If this is set to true, the sub menu content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-content-available-width` and `--kb-popper-content-available-height`. |
-| hideWhenDetached | `boolean` <br/> Whether to hide the sub menu content when the trigger element becomes occluded.                                                                                                                                                                                    |
-| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                              |
-| arrowPadding     | `number` <br/> The minimum padding between the arrow and the sub menu content corner.                                                                                                                                                                                              |
-| overflowPadding  | `number` <br/> The minimum padding between the sub menu content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                              |
+| hideWhenDetached | `boolean` <br/> Whether to hide the sub menu content when the trigger element becomes occluded.                                                                                                                                                                                                    |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                              |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the sub menu content corner.                                                                                                                                                                                                              |
+| overflowPadding  | `number` <br/> The minimum padding between the sub menu content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                              |
 
 ### DropdownMenu.SubTrigger
 
-| Prop       | Description                                                                                                                                                                                                                            |
-| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| textValue  | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `DropdownMenu.SubTrigger`. Use this when the content is complex, or you have non-textual content inside. |
-| isDisabled | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                       |
+| Prop      | Description                                                                                                                                                                                                                            |
+| :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| textValue | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `DropdownMenu.SubTrigger`. Use this when the content is complex, or you have non-textual content inside. |
+| disabled  | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                       |
 
 | Data attribute   | Description                           |
 | :--------------- | :------------------------------------ |

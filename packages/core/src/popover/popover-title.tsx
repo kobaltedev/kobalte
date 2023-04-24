@@ -23,5 +23,5 @@ export function PopoverTitle(props: PopoverTitleProps) {
 
   createEffect(() => onCleanup(context.registerTitleId(local.id!)));
 
-  return <Polymorphic fallback="h2" id={local.id} {...context.dataset()} {...others} />;
+  return <Polymorphic as="h2" id={local.id} {...context.dataset()} {...others} />;
 }

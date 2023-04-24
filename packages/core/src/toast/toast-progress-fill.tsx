@@ -46,7 +46,7 @@ export function ToastProgressFill(props: ToastProgressFillProps) {
 
   return (
     <Polymorphic
-      fallback="div"
+      as="div"
       style={{
         "--kb-toast-progress-fill-width": `${lifeTime()}%`,
         ...local.style,

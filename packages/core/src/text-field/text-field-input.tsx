@@ -47,7 +47,7 @@ export function TextFieldInputBase(props: TextFieldInputProps) {
 
   return (
     <Polymorphic
-      fallback="input"
+      as="input"
       id={fieldProps.id()}
       name={formControlContext.name()}
       value={context.value()}

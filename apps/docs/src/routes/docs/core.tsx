@@ -47,7 +47,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Alert Dialog",
         href: "/docs/core/components/alert-dialog",
-        status: "new",
       },
       {
         title: "Breadcrumbs",
@@ -64,6 +63,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Collapsible",
         href: "/docs/core/components/collapsible",
+      },
+      {
+        title: "Combobox",
+        href: "/docs/core/components/combobox",
+        status: "new",
       },
       {
         title: "Context Menu",
@@ -125,11 +129,15 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Toast",
         href: "/docs/core/components/toast",
-        status: "new",
       },
       {
         title: "Toggle Button",
         href: "/docs/core/components/toggle-button",
+      },
+      {
+        title: "Tooltip",
+        href: "/docs/core/components/tooltip",
+        status: "new",
       },
       {
         title: "I18nProvider",

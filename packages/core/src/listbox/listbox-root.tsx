@@ -43,7 +43,7 @@ export interface ListboxRootOptions<Option, OptGroup = never> extends AsChildPro
   defaultValue?: Iterable<string>;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: Set<string>) => void;
+  onChange?: (value: Set<string>) => void;
 
   /** An array of options to display as the available options. */
   options?: Array<Option | OptGroup>;
@@ -59,9 +59,6 @@ export interface ListboxRootOptions<Option, OptGroup = never> extends AsChildPro
 
   /** Property name or getter function that refers to the children options of option group. */
   optionGroupChildren?: keyof OptGroup | ((optGroup: OptGroup) => Option[]);
-
-  /** Function used to check if an option is an option group. */
-  isOptionGroup?: (maybeOptGroup: OptGroup) => boolean;
 
   /** The controlled state of the listbox. */
   state?: ListState;
@@ -112,7 +109,7 @@ export interface ListboxRootOptions<Option, OptGroup = never> extends AsChildPro
   allowsTabNavigation?: boolean;
 
   /** Whether the listbox uses virtual scrolling. */
-  isVirtualized?: boolean;
+  virtualized?: boolean;
 
   /** When NOT virtualized, a map function that receives an _item_ signal representing a listbox item. */
   renderItem?: (item: CollectionNode<Option>) => JSX.Element;
@@ -142,7 +139,7 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
     {
       id: defaultId,
       selectionMode: "single",
-      isVirtualized: false,
+      virtualized: false,
     },
     props
   );
@@ -154,13 +151,12 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
     "renderSection",
     "value",
     "defaultValue",
-    "onValueChange",
+    "onChange",
     "options",
     "optionValue",
     "optionTextValue",
     "optionDisabled",
     "optionGroupChildren",
-    "isOptionGroup",
     "state",
     "keyboardDelegate",
     "autoFocus",
@@ -175,7 +171,7 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
     "selectOnFocus",
     "disallowTypeAhead",
     "allowsTabNavigation",
-    "isVirtualized",
+    "virtualized",
     "scrollToItem",
     "scrollRef",
     "onKeyDown",
@@ -192,7 +188,7 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
     return createListState({
       selectedKeys: () => local.value,
       defaultSelectedKeys: () => local.defaultValue,
-      onSelectionChange: local.onValueChange,
+      onSelectionChange: local.onChange,
       allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
       disallowEmptySelection: () => access(local.disallowEmptySelection),
       selectionBehavior: () => access(local.selectionBehavior),
@@ -200,9 +196,8 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
       dataSource: () => local.options ?? [],
       getKey: () => local.optionValue as any,
       getTextValue: () => local.optionTextValue as any,
-      getIsDisabled: () => local.optionDisabled as any,
+      getDisabled: () => local.optionDisabled as any,
       getSectionChildren: () => local.optionGroupChildren as any,
-      getIsSection: () => local.isOptionGroup,
     });
   });
 
@@ -218,7 +213,7 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
       disallowTypeAhead: () => access(local.disallowTypeAhead),
       shouldUseVirtualFocus: () => access(local.shouldUseVirtualFocus),
       allowsTabNavigation: () => access(local.allowsTabNavigation),
-      isVirtualized: () => local.isVirtualized,
+      isVirtualized: () => local.virtualized,
       scrollToKey: () => local.scrollToItem,
     },
     () => ref,
@@ -231,13 +226,13 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
     shouldUseVirtualFocus: () => props.shouldUseVirtualFocus,
     shouldSelectOnPressUp: () => props.shouldSelectOnPressUp,
     shouldFocusOnHover: () => props.shouldFocusOnHover,
-    isVirtualized: () => local.isVirtualized,
+    isVirtualized: () => local.virtualized,
   };
 
   return (
     <ListboxContext.Provider value={context}>
       <Polymorphic
-        fallback="ul"
+        as="ul"
         ref={mergeRefs(el => (ref = el), local.ref)}
         role="listbox"
         tabIndex={selectableList.tabIndex()}
@@ -250,7 +245,7 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
         onFocusOut={composeEventHandlers([local.onFocusOut, selectableList.onFocusOut])}
         {...others}
       >
-        <Show when={!local.isVirtualized} fallback={local.children?.(listState().collection)}>
+        <Show when={!local.virtualized} fallback={local.children?.(listState().collection)}>
           <Key each={[...listState().collection()]} by="key">
             {item => (
               <Switch>

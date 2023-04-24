@@ -17,7 +17,7 @@ export function PopoverAnchor(props: PopoverAnchorProps) {
 
   return (
     <Polymorphic
-      fallback="div"
+      as="div"
       ref={mergeRefs(context.setDefaultAnchorRef, local.ref)}
       {...context.dataset()}
       {...others}

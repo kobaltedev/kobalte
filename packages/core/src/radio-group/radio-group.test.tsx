@@ -7,7 +7,7 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen } from "solid-testing-library";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import * as RadioGroup from ".";
 
@@ -18,7 +18,7 @@ describe("RadioGroup", () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup.Root onValueChange={onChangeSpy}>
+      <RadioGroup.Root onChange={onChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -40,7 +40,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
     expect(radioGroup).toBeInTheDocument();
@@ -76,7 +76,7 @@ describe("RadioGroup", () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup.Root defaultValue="cats" onValueChange={onChangeSpy}>
+      <RadioGroup.Root defaultValue="cats" onChange={onChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -98,7 +98,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
     expect(radioGroup).toBeTruthy();
@@ -125,7 +125,7 @@ describe("RadioGroup", () => {
   it("value can be controlled", async () => {
     const onChangeSpy = jest.fn();
     render(() => (
-      <RadioGroup.Root value="cats" onValueChange={onChangeSpy}>
+      <RadioGroup.Root value="cats" onChange={onChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -223,7 +223,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const label = screen.getByText("Favorite Pet");
 
     expect(radioGroup).toHaveAttribute("aria-labelledby", label.id);
@@ -254,7 +254,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-labelledby", "foo");
   });
@@ -283,7 +283,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const label = screen.getByText("Favorite Pet");
 
     expect(radioGroup).toHaveAttribute("aria-labelledby", `foo ${label.id}`);
@@ -312,7 +312,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-label", "My Favorite Pet");
   });
@@ -341,7 +341,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const label = screen.getByText("Favorite Pet");
 
     expect(radioGroup).toHaveAttribute("aria-labelledby", `foo ${label.id} ${radioGroup.id}`);
@@ -372,7 +372,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const description = screen.getByText("Description");
 
     expect(description.id).toBeDefined();
@@ -407,7 +407,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-describedby", "foo");
   });
@@ -437,7 +437,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const description = screen.getByText("Description");
 
     expect(radioGroup).toHaveAttribute("aria-describedby", `${description.id} foo`);
@@ -468,7 +468,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const errorMessage = screen.getByText("ErrorMessage");
 
     expect(errorMessage.id).toBeDefined();
@@ -504,7 +504,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).not.toHaveAttribute("aria-describedby");
   });
@@ -534,7 +534,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const errorMessage = screen.getByText("ErrorMessage");
 
     expect(radioGroup).toHaveAttribute("aria-describedby", `${errorMessage.id} foo`);
@@ -566,7 +566,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
     const description = screen.getByText("Description");
     const errorMessage = screen.getByText("ErrorMessage");
 
@@ -585,7 +585,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).not.toHaveAttribute("data-valid");
     expect(radioGroup).not.toHaveAttribute("data-invalid");
@@ -603,7 +603,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("data-valid");
   });
@@ -617,49 +617,49 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("data-invalid");
   });
 
   it("should have 'data-required' attribute when required", async () => {
     render(() => (
-      <RadioGroup.Root isRequired>
+      <RadioGroup.Root required>
         <RadioGroup.Item value="cats">
           <RadioGroup.ItemInput />
         </RadioGroup.Item>
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("data-required");
   });
 
   it("should have 'data-disabled' attribute when disabled", async () => {
     render(() => (
-      <RadioGroup.Root isDisabled>
+      <RadioGroup.Root disabled>
         <RadioGroup.Item value="cats">
           <RadioGroup.ItemInput />
         </RadioGroup.Item>
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("data-disabled");
   });
 
   it("should have 'data-readonly' attribute when readonly", async () => {
     render(() => (
-      <RadioGroup.Root isReadOnly>
+      <RadioGroup.Root readOnly>
         <RadioGroup.Item value="cats">
           <RadioGroup.ItemInput />
         </RadioGroup.Item>
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("data-readonly");
   });
@@ -688,7 +688,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-orientation", "vertical");
   });
@@ -717,7 +717,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-orientation", "horizontal");
   });
@@ -746,7 +746,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-invalid", "true");
   });
@@ -775,7 +775,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-invalid", "true");
     expect(radioGroup).toHaveAttribute("aria-errormessage", "test");
@@ -783,7 +783,7 @@ describe("RadioGroup", () => {
 
   it("sets 'aria-required' when 'isRequired' is true", () => {
     render(() => (
-      <RadioGroup.Root isRequired>
+      <RadioGroup.Root required>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -805,7 +805,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-required", "true");
 
@@ -820,7 +820,7 @@ describe("RadioGroup", () => {
     const groupOnChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup.Root isDisabled onValueChange={groupOnChangeSpy}>
+      <RadioGroup.Root disabled onChange={groupOnChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -842,7 +842,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).toHaveAttribute("aria-disabled", "true");
 
@@ -865,7 +865,7 @@ describe("RadioGroup", () => {
     const groupOnChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup.Root onValueChange={groupOnChangeSpy}>
+      <RadioGroup.Root onChange={groupOnChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -873,7 +873,7 @@ describe("RadioGroup", () => {
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Dogs</RadioGroup.ItemLabel>
           </RadioGroup.Item>
-          <RadioGroup.Item value="cats" isDisabled>
+          <RadioGroup.Item value="cats" disabled>
             <RadioGroup.ItemInput />
             <RadioGroup.ItemControl />
             <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
@@ -941,7 +941,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).not.toHaveAttribute("aria-disabled");
 
@@ -954,7 +954,7 @@ describe("RadioGroup", () => {
 
   it("doesn't set 'aria-disabled' or make radios disabled when 'isDisabled' is false", () => {
     render(() => (
-      <RadioGroup.Root isDisabled={false}>
+      <RadioGroup.Root disabled={false}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -976,7 +976,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     expect(radioGroup).not.toHaveAttribute("aria-disabled");
 
@@ -990,7 +990,7 @@ describe("RadioGroup", () => {
   it("sets 'aria-readonly=true' on radio group", async () => {
     const groupOnChangeSpy = jest.fn();
     render(() => (
-      <RadioGroup.Root isReadOnly onValueChange={groupOnChangeSpy}>
+      <RadioGroup.Root readOnly onChange={groupOnChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -1012,7 +1012,7 @@ describe("RadioGroup", () => {
       </RadioGroup.Root>
     ));
 
-    const radioGroup = screen.getByRole("radiogroup", { exact: true });
+    const radioGroup = screen.getByRole("radiogroup");
 
     const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
 
@@ -1032,7 +1032,7 @@ describe("RadioGroup", () => {
     const groupOnChangeSpy = jest.fn();
 
     render(() => (
-      <RadioGroup.Root isReadOnly onValueChange={groupOnChangeSpy}>
+      <RadioGroup.Root readOnly onChange={groupOnChangeSpy}>
         <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
         <div>
           <RadioGroup.Item value="dogs">
@@ -1334,7 +1334,7 @@ describe("RadioGroup", () => {
 
       it("should have 'data-disabled' attribute on radios when radio group is disabled", async () => {
         render(() => (
-          <RadioGroup.Root isDisabled value="cats">
+          <RadioGroup.Root disabled value="cats">
             <RadioGroup.Item data-testid="radio-root" value="cats">
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
@@ -1355,7 +1355,7 @@ describe("RadioGroup", () => {
       it("should have 'data-disabled' attribute on single disabled radio", async () => {
         render(() => (
           <RadioGroup.Root value="cats">
-            <RadioGroup.Item data-testid="radio-root" value="cats" isDisabled>
+            <RadioGroup.Item data-testid="radio-root" value="cats" disabled>
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
                 <RadioGroup.ItemIndicator data-testid="radio-indicator" />

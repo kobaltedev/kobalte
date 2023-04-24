@@ -33,13 +33,13 @@ export function CheckboxIndicator(props: CheckboxIndicatorProps) {
   const [local, others] = splitProps(props, ["ref", "forceMount"]);
 
   const presence = createPresence(
-    () => local.forceMount || context.isIndeterminate() || context.isChecked()
+    () => local.forceMount || context.indeterminate() || context.checked()
   );
 
   return (
     <Show when={presence.isPresent()}>
       <Polymorphic
-        fallback="div"
+        as="div"
         ref={mergeRefs(presence.setRef, local.ref)}
         {...context.dataset()}
         {...others}

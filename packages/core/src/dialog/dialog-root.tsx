@@ -6,13 +6,13 @@ import { DialogContext, DialogContextValue } from "./dialog-context";
 
 export interface DialogRootOptions {
   /** The controlled open state of the dialog. */
-  isOpen?: boolean;
+  open?: boolean;
 
   /**
    * The default open state when initially rendered.
    * Useful when you do not need to control the open state.
    */
-  defaultIsOpen?: boolean;
+  defaultOpen?: boolean;
 
   /** Event handler called when the open state of the dialog changes. */
   onOpenChange?: (isOpen: boolean) => void;
@@ -32,7 +32,7 @@ export interface DialogRootOptions {
    * - focus will be locked inside the dialog content.
    * - elements outside the dialog content will not be visible for screen readers.
    */
-  isModal?: boolean;
+  modal?: boolean;
 
   /**
    * Used to force mounting the dialog (portal, overlay and content) when more control is needed.
@@ -52,7 +52,7 @@ export function DialogRoot(props: DialogRootProps) {
   props = mergeDefaultProps(
     {
       id: defaultId,
-      isModal: true,
+      modal: true,
     },
     props
   );
@@ -64,8 +64,8 @@ export function DialogRoot(props: DialogRootProps) {
   const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
 
   const disclosureState = createDisclosureState({
-    isOpen: () => props.isOpen,
-    defaultIsOpen: () => props.defaultIsOpen,
+    open: () => props.open,
+    defaultOpen: () => props.defaultOpen,
     onOpenChange: isOpen => props.onOpenChange?.(isOpen),
   });
 
@@ -76,7 +76,7 @@ export function DialogRoot(props: DialogRootProps) {
 
   const context: DialogContextValue = {
     isOpen: disclosureState.isOpen,
-    isModal: () => props.isModal!,
+    modal: () => props.modal!,
     contentId,
     titleId,
     descriptionId,

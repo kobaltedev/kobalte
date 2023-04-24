@@ -1,4 +1,4 @@
-import { As, MultiSelect, Select } from "@kobalte/core";
+import { As, Select } from "@kobalte/core";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { createSignal, For } from "solid-js";
 
@@ -12,7 +12,6 @@ export function BasicExample() {
     <Select.Root
       options={STRING_OPTIONS}
       placeholder="Select a fruit…"
-      valueComponent={props => props.item.rawValue}
       itemComponent={props => (
         <Select.Item item={props.item} class={style["select__item"]}>
           <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
@@ -23,7 +22,9 @@ export function BasicExample() {
       )}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-        <Select.Value class={style["select__value"]} />
+        <Select.Value<string> class={style["select__value"]}>
+          {state => state.selectedOption()}
+        </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
         </Select.Icon>
@@ -43,7 +44,6 @@ export function DefaultValueExample() {
       defaultValue="Blueberry"
       options={STRING_OPTIONS}
       placeholder="Select a fruit…"
-      valueComponent={props => props.item.rawValue}
       itemComponent={props => (
         <Select.Item item={props.item} class={style["select__item"]}>
           <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
@@ -54,7 +54,9 @@ export function DefaultValueExample() {
       )}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-        <Select.Value class={style["select__value"]} />
+        <Select.Value<string> class={style["select__value"]}>
+          {state => state.selectedOption()}
+        </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
         </Select.Icon>
@@ -75,10 +77,9 @@ export function ControlledExample() {
     <>
       <Select.Root
         value={value()}
-        onValueChange={setValue}
+        onChange={setValue}
         options={STRING_OPTIONS}
         placeholder="Select a fruit…"
-        valueComponent={props => props.item.rawValue}
         itemComponent={props => (
           <Select.Item item={props.item} class={style["select__item"]}>
             <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
@@ -89,7 +90,9 @@ export function ControlledExample() {
         )}
       >
         <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-          <Select.Value class={style["select__value"]} />
+          <Select.Value<string> class={style["select__value"]}>
+            {state => state.selectedOption()}
+          </Select.Value>
           <Select.Icon class={style["select__icon"]}>
             <CaretSortIcon />
           </Select.Icon>
@@ -110,7 +113,6 @@ export function DescriptionExample() {
     <Select.Root
       options={STRING_OPTIONS}
       placeholder="Select a fruit…"
-      valueComponent={props => props.item.rawValue}
       itemComponent={props => (
         <Select.Item item={props.item} class={style["select__item"]}>
           <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
@@ -121,7 +123,9 @@ export function DescriptionExample() {
       )}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-        <Select.Value class={style["select__value"]} />
+        <Select.Value<string> class={style["select__value"]}>
+          {state => state.selectedOption()}
+        </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
         </Select.Icon>
@@ -144,11 +148,10 @@ export function ErrorMessageExample() {
   return (
     <Select.Root
       value={value()}
-      onValueChange={setValue}
+      onChange={setValue}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
       options={STRING_OPTIONS}
       placeholder="Select a fruit…"
-      valueComponent={props => props.item.rawValue}
       itemComponent={props => (
         <Select.Item item={props.item} class={style["select__item"]}>
           <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
@@ -159,7 +162,9 @@ export function ErrorMessageExample() {
       )}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-        <Select.Value class={style["select__value"]} />
+        <Select.Value<string> class={style["select__value"]}>
+          {state => state.selectedOption()}
+        </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
         </Select.Icon>
@@ -194,7 +199,6 @@ export function HTMLFormExample() {
         name="fruit"
         options={STRING_OPTIONS}
         placeholder="Select a fruit…"
-        valueComponent={props => props.item.rawValue}
         itemComponent={props => (
           <Select.Item item={props.item} class={style["select__item"]}>
             <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
@@ -206,7 +210,9 @@ export function HTMLFormExample() {
       >
         <Select.HiddenSelect />
         <Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-          <Select.Value class={style["select__value"]} />
+          <Select.Value<string> class={style["select__value"]}>
+            {state => state.selectedOption()}
+          </Select.Value>
           <Select.Icon class={style["select__icon"]}>
             <CaretSortIcon />
           </Select.Icon>
@@ -249,7 +255,6 @@ export function ObjectExample() {
       optionTextValue="label"
       optionDisabled="disabled"
       placeholder="Select a food…"
-      valueComponent={props => props.item.rawValue.label}
       itemComponent={props => (
         <Select.Item item={props.item} class={style["select__item"]}>
           <Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
@@ -260,7 +265,9 @@ export function ObjectExample() {
       )}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Food">
-        <Select.Value class={style["select__value"]} />
+        <Select.Value<Food> class={style["select__value"]}>
+          {state => state.selectedOption().label}
+        </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
         </Select.Icon>
@@ -310,7 +317,6 @@ export function OptionGroupExample() {
       optionDisabled="disabled"
       optionGroupChildren="options"
       placeholder="Select a food…"
-      valueComponent={props => props.item.rawValue.label}
       itemComponent={props => (
         <Select.Item item={props.item} class={style["select__item"]}>
           <Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
@@ -326,7 +332,9 @@ export function OptionGroupExample() {
       )}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Food">
-        <Select.Value class={style["select__value"]} />
+        <Select.Value<Food> class={style["select__value"]}>
+          {state => state.selectedOption().label}
+        </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
         </Select.Icon>
@@ -340,71 +348,75 @@ export function OptionGroupExample() {
   );
 }
 
-export function MultiSelectExample() {
-  const [values, setValues] = createSignal(new Set(["Blueberry", "Grapes"]));
+export function MultipleSelectionExample() {
+  const [values, setValues] = createSignal(["Blueberry", "Grapes"]);
 
   return (
     <>
-      <MultiSelect.Root
+      <Select.Root<string>
+        multiple
         value={values()}
-        onValueChange={setValues}
+        onChange={setValues}
         options={STRING_OPTIONS}
         placeholder="Select some fruits…"
-        valueComponent={props => (
-          <>
-            <div class="flex items-center gap-2 flex-wrap">
-              <For each={props.items}>
-                {item => (
-                  <span class="bg-zinc-100 dark:bg-zinc-700 text-sm px-2 py-0.5 rounded inline-flex items-center gap-x-2">
-                    {item.rawValue}
-                    <button
-                      onPointerDown={e => e.stopPropagation()}
-                      onClick={() => props.remove(item)}
-                      class="rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600 p-1"
-                    >
-                      <CrossIcon class="h3 w-3" />
-                    </button>
-                  </span>
-                )}
-              </For>
-            </div>
-            <button
-              onPointerDown={e => e.stopPropagation()}
-              onClick={props.clear}
-              class="ml-auto mr-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-600 p-1"
-            >
-              <CrossIcon class="h-3.5 w-3.5" />
-            </button>
-          </>
-        )}
         itemComponent={props => (
-          <MultiSelect.Item item={props.item} class={style["select__item"]}>
-            <MultiSelect.ItemLabel>{props.item.rawValue}</MultiSelect.ItemLabel>
-            <MultiSelect.ItemIndicator class={style["select__item-indicator"]}>
+          <Select.Item item={props.item} class={style["select__item"]}>
+            <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
+            <Select.ItemIndicator class={style["select__item-indicator"]}>
               <CheckIcon />
-            </MultiSelect.ItemIndicator>
-          </MultiSelect.Item>
+            </Select.ItemIndicator>
+          </Select.Item>
         )}
       >
-        <MultiSelect.Trigger
+        <Select.Trigger
           class={`${style["select__trigger"]} ${style["select__trigger_multi"]}`}
           aria-label="Fruits"
           asChild
         >
           <As component="div">
-            <MultiSelect.Value class={style["select__value"]} />
-            <MultiSelect.Icon class={style["select__icon"]}>
+            <Select.Value<string> class={style["select__value"]}>
+              {state => (
+                <>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <For each={state.selectedOptions()}>
+                      {option => (
+                        <span
+                          class="bg-zinc-100 dark:bg-zinc-700 text-sm px-2 py-0.5 rounded inline-flex items-center gap-x-2"
+                          onPointerDown={e => e.stopPropagation()}
+                        >
+                          {option}
+                          <button
+                            onClick={() => state.remove(option)}
+                            class="rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600 p-1"
+                          >
+                            <CrossIcon class="h3 w-3" />
+                          </button>
+                        </span>
+                      )}
+                    </For>
+                  </div>
+                  <button
+                    onPointerDown={e => e.stopPropagation()}
+                    onClick={state.clear}
+                    class="ml-auto mr-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-600 p-1"
+                  >
+                    <CrossIcon class="h-3.5 w-3.5" />
+                  </button>
+                </>
+              )}
+            </Select.Value>
+            <Select.Icon class={style["select__icon"]}>
               <CaretSortIcon />
-            </MultiSelect.Icon>
+            </Select.Icon>
           </As>
-        </MultiSelect.Trigger>
-        <MultiSelect.Portal>
-          <MultiSelect.Content class={style["select__content"]}>
-            <MultiSelect.Listbox class={style["select__listbox"]} />
-          </MultiSelect.Content>
-        </MultiSelect.Portal>
-      </MultiSelect.Root>
-      <p class="not-prose text-sm mt-4">Your favorite fruits are: {[...values()].join(", ")}.</p>
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Content class={style["select__content"]}>
+            <Select.Listbox class={style["select__listbox"]} />
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
+      <p class="not-prose text-sm mt-4">Your favorite fruits are: {values().join(", ")}.</p>
     </>
   );
 }
@@ -488,16 +500,17 @@ export function VirtualizedExample() {
 
   return (
     <Select.Root
-      isVirtualized
+      virtualized
       options={options}
       optionValue="value"
       optionTextValue="label"
       optionDisabled="disabled"
       placeholder="Select an item…"
-      valueComponent={props => props.item.rawValue.label}
     >
       <Select.Trigger class={style["select__trigger"]} aria-label="Food">
-        <Select.Value class={style["select__value"]} />
+        <Select.Value<Item> class={style["select__value"]}>
+          {state => state.selectedOption().label}
+        </Select.Value>
         <Select.Icon class={style["select__icon"]}>
           <CaretSortIcon />
         </Select.Icon>

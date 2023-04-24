@@ -16,10 +16,10 @@ jobs:
 
       - uses: pnpm/action-setup@v2.2.4
 
-      - name: Setup Node.js 17.x
+      - name: Setup Node.js 18.x
         uses: actions/setup-node@v3
         with:
-          node-version: 17.x
+          node-version: 18.x
           cache: pnpm
 
       - name: Install Dependencies
@@ -33,3 +33,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_OPTIONS: "--max_old_space_size=4096"

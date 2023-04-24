@@ -9,5 +9,5 @@ export interface AlertRootProps extends OverrideComponentProps<"div", AsChildPro
  * in a way that attracts the user's attention without interrupting the user's task.
  */
 export function AlertRoot(props: AlertRootProps) {
-  return <Polymorphic fallback="div" role="alert" {...props} />;
+  return <Polymorphic as="div" role="alert" {...props} />;
 }
