@@ -300,6 +300,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   const [isInputFocused, setIsInputFocusedState] = createSignal(false);
 
   const [lastDisplayedOptions, setLastDisplayedOptions] = createSignal(local.options);
+  //const [selectedOptions, setSelectedOptions] = createSignal<Array<Option>>([]);
 
   const messageFormatter = createMessageFormatter(() => COMBOBOX_INTL_MESSAGES);
 
@@ -351,7 +352,9 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   });
 
   const getOptionsFromValues = (values: Set<string>): Option[] => {
-    return flattenOptions().filter(option => values.has(getOptionValue(option as Option)));
+    return [...values]
+      .map(value => flattenOptions().find(option => getOptionValue(option) === value))
+      .filter(option => option != null) as Option[];
   };
 
   const disclosureState = createDisclosureState({
@@ -555,6 +558,30 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       resetInputValue();
     }
   });
+
+  // Create a copy of the selected options when selection changes
+  // Prevent displayed selection from disappearing when filtering the options.
+  /*
+  createEffect(
+    on(
+      () => listState.selectionManager().selectedKeys(),
+      selectedKeys => {
+        setSelectedOptions(prev => {
+          const optionsToKeep = prev.filter(option => selectedKeys.has(getOptionValue(option)));
+
+          const keysToKeep = optionsToKeep.map(option => getOptionValue(option));
+
+          const newKeysToAdd = [...selectedKeys].filter(key => !keysToKeep.includes(key));
+
+          return [
+            ...optionsToKeep,
+            ...getOptionsFromValues(new Set(newKeysToAdd)).filter(option => option != null),
+          ];
+        });
+      }
+    )
+  );
+  */
 
   // VoiceOver has issues with announcing aria-activedescendant properly on change.
   // We use a live region announcer to announce focus changes manually.

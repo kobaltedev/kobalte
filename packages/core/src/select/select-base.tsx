@@ -300,7 +300,9 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
   });
 
   const getOptionsFromValues = (values: Set<string>): Option[] => {
-    return flattenOptions().filter(option => values.has(getOptionValue(option as Option)));
+    return [...values]
+      .map(value => flattenOptions().find(option => getOptionValue(option) === value))
+      .filter(option => option != null) as Option[];
   };
 
   const disclosureState = createDisclosureState({
@@ -420,13 +422,19 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 
   // Delete selected keys that do not match any option in the listbox.
   createEffect(
-    on([flattenOptionKeys], ([flattenOptionKeys]) => {
-      const currentSelectedKeys = [...listState.selectionManager().selectedKeys()];
+    on(
+      [flattenOptionKeys],
+      ([flattenOptionKeys]) => {
+        const currentSelectedKeys = [...listState.selectionManager().selectedKeys()];
 
-      const keysToKeep = currentSelectedKeys.filter(key => flattenOptionKeys.includes(key));
+        const keysToKeep = currentSelectedKeys.filter(key => flattenOptionKeys.includes(key));
 
-      listState.selectionManager().setSelectedKeys(keysToKeep);
-    })
+        listState.selectionManager().setSelectedKeys(keysToKeep);
+      },
+      {
+        defer: true,
+      }
+    )
   );
 
   const dataset: Accessor<SelectDataSet> = createMemo(() => ({
