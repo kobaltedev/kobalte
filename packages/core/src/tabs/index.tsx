@@ -2,19 +2,19 @@ import {
   TabsContent as Content,
   type TabsContentOptions,
   type TabsContentProps,
-} from "./tabs-content";
+} from "./tabs-content.js";
 import {
   TabsIndicator as Indicator,
   type TabsIndicatorOptions,
   type TabsIndicatorProps,
-} from "./tabs-indicator";
-import { TabsList as List, type TabsListProps } from "./tabs-list";
-import { TabsRoot as Root, type TabsRootOptions, type TabsRootProps } from "./tabs-root";
+} from "./tabs-indicator.js";
+import { TabsList as List, type TabsListProps } from "./tabs-list.js";
+import { TabsRoot as Root, type TabsRootOptions, type TabsRootProps } from "./tabs-root.js";
 import {
   TabsTrigger as Trigger,
   type TabsTriggerOptions,
   type TabsTriggerProps,
-} from "./tabs-trigger";
+} from "./tabs-trigger.js";
 
 export type {
   TabsContentOptions,

@@ -33,11 +33,11 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createPresence, createRegisterId } from "../primitives";
-import { ToastContext, ToastContextValue } from "./toast-context";
-import { useToastRegionContext } from "./toast-region-context";
-import { toastStore } from "./toast-store";
-import { ToastSwipeDirection } from "./types";
+import { createPresence, createRegisterId } from "../primitives/index.js";
+import { ToastContext, ToastContextValue } from "./toast-context.js";
+import { useToastRegionContext } from "./toast-region-context.js";
+import { toastStore } from "./toast-store.js";
+import { ToastSwipeDirection } from "./types.js";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
 const TOAST_SWIPE_MOVE_EVENT = "toast.swipeMove";
@@ -419,10 +419,16 @@ function handleAndDispatchCustomEvent<C extends CustomEvent, E extends Event>(
   detail: { originalEvent: E } & (C extends CustomEvent<infer D> ? D : never)
 ) {
   const currentTarget = detail.originalEvent.currentTarget as HTMLElement;
-  const event = new CustomEvent(name, { bubbles: true, cancelable: true, detail });
+  const event = new CustomEvent(name, {
+    bubbles: true,
+    cancelable: true,
+    detail,
+  });
 
   if (handler) {
-    currentTarget.addEventListener(name, handler as EventListener, { once: true });
+    currentTarget.addEventListener(name, handler as EventListener, {
+      once: true,
+    });
   }
 
   currentTarget.dispatchEvent(event);

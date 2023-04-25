@@ -1,8 +1,8 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useProgressContext } from "./progress-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useProgressContext } from "./progress-context.js";
 
 export interface ProgressFillOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */

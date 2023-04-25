@@ -11,10 +11,10 @@
 import { access, addItemToArray, MaybeAccessor } from "@kobalte/utils";
 import { createComponent, FlowComponent } from "solid-js";
 
-import { createControllableArraySignal } from "../index";
-import { DomCollectionContext, DomCollectionContextValue } from "./dom-collection-context";
-import { DomCollectionItem } from "./types";
-import { createSortBasedOnDOMPosition, findDOMIndex } from "./utils";
+import { createControllableArraySignal } from "../index.js";
+import { DomCollectionContext, DomCollectionContextValue } from "./dom-collection-context.js";
+import { DomCollectionItem } from "./types.js";
+import { createSortBasedOnDOMPosition, findDOMIndex } from "./utils.js";
 
 export interface CreateDomCollectionProps<T extends DomCollectionItem = DomCollectionItem> {
   /** The controlled items state of the collection. */

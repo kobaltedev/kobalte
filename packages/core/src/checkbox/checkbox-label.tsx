@@ -1,7 +1,7 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useCheckboxContext } from "./checkbox-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useCheckboxContext } from "./checkbox-context.js";
 
 export interface CheckboxLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
 

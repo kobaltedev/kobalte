@@ -9,9 +9,9 @@
 import { Orientation } from "@kobalte/utils";
 import { Accessor } from "solid-js";
 
-import { Direction } from "../i18n";
-import { Collection, CollectionNode } from "../primitives";
-import { KeyboardDelegate } from "../selection";
+import { Direction } from "../i18n/index.jsx";
+import { Collection, CollectionNode } from "../primitives/index.js";
+import { KeyboardDelegate } from "../selection/index.js";
 
 export class TabsKeyboardDelegate implements KeyboardDelegate {
   private collection: Accessor<Collection<CollectionNode>>;

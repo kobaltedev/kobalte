@@ -10,9 +10,9 @@
 import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import * as Button from "../button";
-import { useFormControlContext } from "../form-control";
-import { useComboboxContext } from "./combobox-context";
+import * as Button from "../button/index.js";
+import { useFormControlContext } from "../form-control/index.js";
+import { useComboboxContext } from "./combobox-context.js";
 
 export interface ComboboxTriggerProps
   extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}

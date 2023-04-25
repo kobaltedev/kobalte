@@ -1,5 +1,5 @@
-import { DialogContentProps } from "../dialog";
-import { DialogContent } from "../dialog/dialog-content";
+import { DialogContentProps } from "../dialog/index.js";
+import { DialogContent } from "../dialog/dialog-content.js";
 
 export interface AlertDialogContentProps extends DialogContentProps {}
 

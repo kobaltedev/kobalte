@@ -1,9 +1,9 @@
 import { Calendar, CalendarDate, DateDuration } from "@internationalized/date";
 import { Accessor, createContext, JSX, useContext } from "solid-js";
 
-import { CalendarSelectionMode, DateValue, TimeValue } from "../calendar/types";
-import { Direction, LocalizedMessageFormatter } from "../i18n";
-import { CreatePresenceResult } from "../primitives";
+import { CalendarSelectionMode, DateValue, TimeValue } from "../calendar/types.js";
+import { Direction, LocalizedMessageFormatter } from "../i18n/index.js";
+import { CreatePresenceResult } from "../primitives/index.js";
 import { RangeValue, ValidationState } from "@kobalte/utils";
 
 export interface DatePickerDataSet {

@@ -1,9 +1,9 @@
 import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, createMemo, JSX, onCleanup, splitProps } from "solid-js";
 
-import * as Button from "../button";
-import { useFormControlContext } from "../form-control";
-import { useDatePickerContext } from "./date-picker-context";
+import * as Button from "../button/index.js";
+import { useFormControlContext } from "../form-control/index.js";
+import { useDatePickerContext } from "./date-picker-context.js";
 
 export interface DatePickerTriggerProps
   extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}

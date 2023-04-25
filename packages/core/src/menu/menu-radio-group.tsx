@@ -10,11 +10,11 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
 
-import { AsChildProp } from "../polymorphic";
-import { createControllableSignal } from "../primitives";
-import { MenuGroup } from "./menu-group";
-import { MenuRadioGroupContext, MenuRadioGroupContextValue } from "./menu-radio-group-context";
-import { useMenuRootContext } from "./menu-root-context";
+import { AsChildProp } from "../polymorphic/index.js";
+import { createControllableSignal } from "../primitives/index.js";
+import { MenuGroup } from "./menu-group.js";
+import { MenuRadioGroupContext, MenuRadioGroupContextValue } from "./menu-radio-group-context.js";
+import { useMenuRootContext } from "./menu-root-context.js";
 
 export interface MenuRadioGroupOptions extends AsChildProp {
   /** The controlled value of the item radio to check. */

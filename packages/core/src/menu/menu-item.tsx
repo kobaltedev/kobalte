@@ -1,6 +1,6 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 
-import { MenuItemBase, MenuItemBaseOptions } from "./menu-item-base";
+import { MenuItemBase, MenuItemBaseOptions } from "./menu-item-base.js";
 
 export interface MenuItemOptions extends Omit<MenuItemBaseOptions, "checked" | "indeterminate"> {}
 

@@ -1,6 +1,6 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { Placement } from "./utils";
+import { Placement } from "./utils.js";
 
 export interface PopperContextValue {
   currentPlacement: Accessor<Placement>;

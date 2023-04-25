@@ -1,7 +1,7 @@
 import { Accessor } from "solid-js";
 
-import { createControllableSignal, CreateControllableSignalProps } from "../primitives";
-import { Selection } from "./types";
+import { createControllableSignal, CreateControllableSignalProps } from "../primitives/index.js";
+import { Selection } from "./types.js";
 
 /**
  * Creates a simple reactive `Selection` state with a getter, setter and a fallback value of an empty selection,

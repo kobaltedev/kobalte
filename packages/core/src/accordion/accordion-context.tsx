@@ -1,6 +1,6 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { ListState } from "../list";
+import { ListState } from "../list/index.js";
 
 export interface AccordionContextValue {
   listState: Accessor<ListState>;

@@ -1,8 +1,8 @@
 import { isFunction, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, children, createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { useSelectContext } from "./select-context";
+import { useFormControlContext } from "../form-control/index.js";
+import { useSelectContext } from "./select-context.js";
 
 export interface SelectValueState<T> {
   /** The first (or only, in case of single select) selected option. */

@@ -1,8 +1,8 @@
 import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { usePopoverContext } from "./popover-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { usePopoverContext } from "./popover-context.js";
 
 export interface PopoverAnchorProps extends OverrideComponentProps<"div", AsChildProp> {}
 

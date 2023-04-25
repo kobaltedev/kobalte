@@ -6,10 +6,10 @@ import {
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
-import { DismissableLayer } from "../dismissable-layer";
-import { useFormControlContext } from "../form-control";
-import { AsChildProp } from "../polymorphic";
-import { PopperPositioner } from "../popper";
+import { DismissableLayer } from "../dismissable-layer/index.js";
+import { useFormControlContext } from "../form-control/index.js";
+import { AsChildProp } from "../polymorphic/index.js";
+import { PopperPositioner } from "../popper/index.js";
 import {
   createFocusScope,
   createHideOutside,
@@ -17,8 +17,8 @@ import {
   FocusOutsideEvent,
   InteractOutsideEvent,
   PointerDownOutsideEvent,
-} from "../primitives";
-import { useDatePickerContext } from "./date-picker-context";
+} from "../primitives/index.js";
+import { useDatePickerContext } from "./date-picker-context.js";
 
 export interface DatePickerContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */

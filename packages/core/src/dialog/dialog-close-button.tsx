@@ -1,9 +1,9 @@
 import { callHandler, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import * as Button from "../button";
-import { COMMON_INTL_MESSAGES, createMessageFormatter } from "../i18n";
-import { useDialogContext } from "./dialog-context";
+import * as Button from "../button/index.js";
+import { COMMON_INTL_MESSAGES, createMessageFormatter } from "../i18n/index.js";
+import { useDialogContext } from "./dialog-context.js";
 
 export interface DialogCloseButtonProps
   extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}

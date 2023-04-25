@@ -9,11 +9,11 @@
 import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, splitProps } from "solid-js";
 
-import * as Collapsible from "../collapsible";
-import { AsChildProp } from "../polymorphic";
-import { createRegisterId } from "../primitives";
-import { useAccordionContext } from "./accordion-context";
-import { AccordionItemContext, AccordionItemContextValue } from "./accordion-item-context";
+import * as Collapsible from "../collapsible/index.js";
+import { AsChildProp } from "../polymorphic/index.js";
+import { createRegisterId } from "../primitives/index.js";
+import { useAccordionContext } from "./accordion-context.js";
+import { AccordionItemContext, AccordionItemContextValue } from "./accordion-item-context.js";
 
 export interface AccordionItemOptions extends AsChildProp {
   /** A unique value for the item. */

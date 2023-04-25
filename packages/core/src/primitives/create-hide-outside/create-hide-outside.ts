@@ -9,8 +9,8 @@
 import { access, MaybeAccessor } from "@kobalte/utils";
 import { createEffect, onCleanup } from "solid-js";
 
-import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
-import { DATA_LIVE_ANNOUNCER_ATTR } from "../../live-announcer";
+import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack.jsx";
+import { DATA_LIVE_ANNOUNCER_ATTR } from "../../live-announcer/index.jsx";
 
 export interface CreateHideOutsideProps {
   /** The elements that should remain visible. */

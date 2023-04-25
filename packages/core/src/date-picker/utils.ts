@@ -9,8 +9,8 @@
 import { Time } from "@internationalized/date";
 import { Accessor, createEffect, createMemo } from "solid-js";
 
-import { DateValue, TimeValue } from "../calendar/types";
-import { DateFieldGranularity, DateTimeFormatOptions } from "./types";
+import { DateValue, TimeValue } from "../calendar/types.js";
+import { DateFieldGranularity, DateTimeFormatOptions } from "./types.js";
 
 interface FormatterOptions {
   timeZone?: string;

@@ -1,9 +1,9 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, createSignal, JSX, onCleanup, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useToastContext } from "./toast-context";
-import { useToastRegionContext } from "./toast-region-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useToastContext } from "./toast-context.js";
+import { useToastRegionContext } from "./toast-region-context.js";
 
 export interface ToastProgressFillOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */

@@ -9,7 +9,7 @@
 
 import { Polygon } from "@kobalte/utils";
 
-import { BasePlacement, Placement } from "../popper/utils";
+import { BasePlacement, Placement } from "../popper/utils.js";
 
 /**
  * Construct a polygon based on the floating element placement relative to the anchor.

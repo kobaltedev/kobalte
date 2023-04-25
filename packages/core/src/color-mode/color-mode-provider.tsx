@@ -8,16 +8,21 @@
 
 import { createEffect, createSignal, onCleanup } from "solid-js";
 
-import { ColorModeContext } from "./color-mode-context";
-import { localStorageManager } from "./storage-manager";
-import { ColorMode, ColorModeContextType, ColorModeProviderProps, ConfigColorMode } from "./types";
+import { ColorModeContext } from "./color-mode-context.js";
+import { localStorageManager } from "./storage-manager.js";
+import {
+  ColorMode,
+  ColorModeContextType,
+  ColorModeProviderProps,
+  ConfigColorMode,
+} from "./types.js";
 import {
   addColorModeListener,
   FALLBACK_COLOR_MODE_VALUE,
   getInitialColorMode,
   getSystemColorMode,
   setColorModeDataset,
-} from "./utils";
+} from "./utils.js";
 
 /**
  * Provides context for the color mode based on config in `theme`

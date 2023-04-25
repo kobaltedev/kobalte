@@ -16,7 +16,7 @@ import {
 } from "@kobalte/utils";
 import { createEffect, JSX, on, splitProps } from "solid-js";
 
-import { useCheckboxContext } from "./checkbox-context";
+import { useCheckboxContext } from "./checkbox-context.js";
 
 export interface CheckboxInputOptions {
   /** The HTML styles attribute (object form only). */

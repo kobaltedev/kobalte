@@ -10,7 +10,7 @@ import { createPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
 
-import * as Tabs from ".";
+import * as Tabs from "./index.js";
 
 describe("Tabs", function () {
   // Make userEvent work with jest fakeTimers
@@ -93,13 +93,21 @@ describe("Tabs", function () {
     expect(selectedItem).toHaveAttribute("aria-selected", "true");
     selectedItem.focus();
 
-    fireEvent.keyDown(selectedItem, { key: "ArrowRight", code: 39, charCode: 39 });
+    fireEvent.keyDown(selectedItem, {
+      key: "ArrowRight",
+      code: 39,
+      charCode: 39,
+    });
     await Promise.resolve();
 
     const nextSelectedItem = tabs[1];
     expect(nextSelectedItem).toHaveAttribute("aria-selected", "true");
 
-    fireEvent.keyDown(nextSelectedItem, { key: "ArrowLeft", code: 37, charCode: 37 });
+    fireEvent.keyDown(nextSelectedItem, {
+      key: "ArrowLeft",
+      code: 37,
+      charCode: 37,
+    });
     await Promise.resolve();
 
     expect(selectedItem).toHaveAttribute("aria-selected", "true");
@@ -110,7 +118,11 @@ describe("Tabs", function () {
 
     expect(selectedItem).toHaveAttribute("aria-selected", "true");
 
-    fireEvent.keyDown(selectedItem, { key: "ArrowDown", code: 40, charCode: 40 });
+    fireEvent.keyDown(selectedItem, {
+      key: "ArrowDown",
+      code: 40,
+      charCode: 40,
+    });
     await Promise.resolve();
 
     expect(selectedItem).toHaveAttribute("aria-selected", "true");
@@ -141,24 +153,40 @@ describe("Tabs", function () {
     /** Doesn't change selection because its vertical tabs. */
     expect(selectedItem).toHaveAttribute("aria-selected", "true");
 
-    fireEvent.keyDown(selectedItem, { key: "ArrowRight", code: 39, charCode: 39 });
+    fireEvent.keyDown(selectedItem, {
+      key: "ArrowRight",
+      code: 39,
+      charCode: 39,
+    });
     await Promise.resolve();
 
     expect(selectedItem).toHaveAttribute("aria-selected", "true");
 
-    fireEvent.keyDown(selectedItem, { key: "ArrowLeft", code: 37, charCode: 37 });
+    fireEvent.keyDown(selectedItem, {
+      key: "ArrowLeft",
+      code: 37,
+      charCode: 37,
+    });
     await Promise.resolve();
 
     expect(selectedItem).toHaveAttribute("aria-selected", "true");
 
     const nextSelectedItem = tabs[1];
 
-    fireEvent.keyDown(selectedItem, { key: "ArrowDown", code: 40, charCode: 40 });
+    fireEvent.keyDown(selectedItem, {
+      key: "ArrowDown",
+      code: 40,
+      charCode: 40,
+    });
     await Promise.resolve();
 
     expect(nextSelectedItem).toHaveAttribute("aria-selected", "true");
 
-    fireEvent.keyDown(nextSelectedItem, { key: "ArrowUp", code: 38, charCode: 38 });
+    fireEvent.keyDown(nextSelectedItem, {
+      key: "ArrowUp",
+      code: 38,
+      charCode: 38,
+    });
     await Promise.resolve();
 
     expect(selectedItem).toHaveAttribute("aria-selected", "true");
@@ -266,7 +294,11 @@ describe("Tabs", function () {
     expect(secondItem).toHaveAttribute("aria-selected", "false");
     expect(document.activeElement).toBe(secondItem);
 
-    fireEvent.keyDown(secondItem, { key: "ArrowRight", code: 39, charCode: 39 });
+    fireEvent.keyDown(secondItem, {
+      key: "ArrowRight",
+      code: 39,
+      charCode: 39,
+    });
     await Promise.resolve();
 
     expect(thirdItem).toHaveAttribute("aria-selected", "false");

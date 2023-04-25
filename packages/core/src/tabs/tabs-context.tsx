@@ -1,8 +1,8 @@
 import { Orientation } from "@kobalte/utils";
 import { Accessor, createContext, Setter, useContext } from "solid-js";
 
-import { SingleSelectListState } from "../list";
-import { TabsActivationMode } from "./types";
+import { SingleSelectListState } from "../list/index.js";
+import { TabsActivationMode } from "./types.js";
 
 export interface TabsContextValue {
   isDisabled: Accessor<boolean>;

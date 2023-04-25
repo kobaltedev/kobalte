@@ -9,7 +9,7 @@
 import { createEffect } from "solid-js";
 import { render } from "@solidjs/testing-library";
 
-import { createTagName } from "./create-tag-name";
+import { createTagName } from "./create-tag-name.js";
 
 describe("createTagName", () => {
   it("should use 'tagName' from ref", () => {

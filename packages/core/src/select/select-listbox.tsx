@@ -1,8 +1,8 @@
 import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
-import * as Listbox from "../listbox";
-import { useSelectContext } from "./select-context";
+import * as Listbox from "../listbox/index.js";
+import { useSelectContext } from "./select-context.js";
 
 export interface SelectListboxOptions<Option, OptGroup = never>
   extends Pick<

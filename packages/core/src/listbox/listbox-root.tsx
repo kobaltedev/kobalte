@@ -26,11 +26,16 @@ import {
   Switch,
 } from "solid-js";
 
-import { createListState, createSelectableList, ListState } from "../list";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { Collection, CollectionNode } from "../primitives";
-import { FocusStrategy, KeyboardDelegate, SelectionBehavior, SelectionMode } from "../selection";
-import { ListboxContext, ListboxContextValue } from "./listbox-context";
+import { createListState, createSelectableList, ListState } from "../list/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { Collection, CollectionNode } from "../primitives/index.js";
+import {
+  FocusStrategy,
+  KeyboardDelegate,
+  SelectionBehavior,
+  SelectionMode,
+} from "../selection/index.js";
+import { ListboxContext, ListboxContextValue } from "./listbox-context.js";
 
 export interface ListboxRootOptions<Option, OptGroup = never> extends AsChildProp {
   /** The controlled value of the listbox. */

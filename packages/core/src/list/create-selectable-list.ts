@@ -9,15 +9,15 @@
 import { access, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createMemo } from "solid-js";
 
-import { createCollator } from "../i18n";
-import { Collection, CollectionNode } from "../primitives";
+import { createCollator } from "../i18n/index.jsx";
+import { Collection, CollectionNode } from "../primitives/index.js";
 import {
   createSelectableCollection,
   FocusStrategy,
   KeyboardDelegate,
   MultipleSelectionManager,
-} from "../selection";
-import { ListKeyboardDelegate } from "./list-keyboard-delegate";
+} from "../selection/index.js";
+import { ListKeyboardDelegate } from "./list-keyboard-delegate.js";
 
 export interface CreateSelectableListProps {
   /** State of the collection. */

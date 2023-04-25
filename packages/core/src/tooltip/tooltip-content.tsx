@@ -9,11 +9,11 @@
 import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
-import { DismissableLayer } from "../dismissable-layer";
-import { AsChildProp } from "../polymorphic";
-import { PopperPositioner } from "../popper";
-import { PointerDownOutsideEvent } from "../primitives";
-import { useTooltipContext } from "./tooltip-context";
+import { DismissableLayer } from "../dismissable-layer/index.js";
+import { AsChildProp } from "../polymorphic/index.js";
+import { PopperPositioner } from "../popper/index.js";
+import { PointerDownOutsideEvent } from "../primitives/index.js";
+import { useTooltipContext } from "./tooltip-context.js";
 
 export interface TooltipContentOptions extends AsChildProp {
   /**

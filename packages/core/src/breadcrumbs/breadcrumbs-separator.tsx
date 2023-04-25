@@ -1,7 +1,7 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useBreadcrumbsContext } from "./breadcrumbs-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useBreadcrumbsContext } from "./breadcrumbs-context.js";
 
 export interface BreadcrumbsSeparatorProps extends OverrideComponentProps<"span", AsChildProp> {}
 

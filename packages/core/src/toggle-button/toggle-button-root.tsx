@@ -15,8 +15,8 @@
 import { callHandler, isFunction, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, children, JSX, splitProps } from "solid-js";
 
-import * as Button from "../button";
-import { createToggleState } from "../primitives";
+import * as Button from "../button/index.js";
+import { createToggleState } from "../primitives/index.js";
 
 export interface ToggleButtonRootState {
   /** Whether the toggle button is on (pressed) or off (not pressed). */

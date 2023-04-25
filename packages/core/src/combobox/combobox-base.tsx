@@ -30,12 +30,16 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import { createMessageFormatter } from "../i18n";
-import { createListState, ListKeyboardDelegate } from "../list";
-import { announce } from "../live-announcer";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { PopperRoot, PopperRootOptions } from "../popper";
+import {
+  createFormControl,
+  FORM_CONTROL_PROP_NAMES,
+  FormControlContext,
+} from "../form-control/index.js";
+import { createMessageFormatter } from "../i18n/index.js";
+import { createListState, ListKeyboardDelegate } from "../list/index.js";
+import { announce } from "../live-announcer/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { PopperRoot, PopperRootOptions } from "../popper/index.js";
 import {
   CollectionNode,
   createControllableSignal,
@@ -44,7 +48,7 @@ import {
   createPresence,
   createRegisterId,
   getItemCount,
-} from "../primitives";
+} from "../primitives/index.js";
 import {
   createSelectableCollection,
   FocusStrategy,
@@ -52,10 +56,10 @@ import {
   Selection,
   SelectionBehavior,
   SelectionMode,
-} from "../selection";
-import { COMBOBOX_INTL_MESSAGES } from "./combobox.intl";
-import { ComboboxContext, ComboboxContextValue, ComboboxDataSet } from "./combobox-context";
-import { ComboboxTriggerMode } from "./types";
+} from "../selection/index.js";
+import { COMBOBOX_INTL_MESSAGES } from "./combobox.intl.js";
+import { ComboboxContext, ComboboxContextValue, ComboboxDataSet } from "./combobox-context.js";
+import { ComboboxTriggerMode } from "./types.js";
 
 export interface ComboboxBaseItemComponentProps<T> {
   /** The item to render. */
@@ -595,7 +599,9 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       isOpen !== lastOpen && (listState.selectionManager().focusedKey() == null || isAppleDevice());
 
     if (isOpen && (didOpenWithoutFocusedItem || optionCount !== lastOptionCount)) {
-      const announcement = messageFormatter().format("countAnnouncement", { optionCount });
+      const announcement = messageFormatter().format("countAnnouncement", {
+        optionCount,
+      });
       announce(announcement);
     }
 

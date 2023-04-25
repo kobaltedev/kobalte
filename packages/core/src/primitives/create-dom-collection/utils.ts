@@ -9,7 +9,7 @@
 import { getDocument } from "@kobalte/utils";
 import { Accessor, createEffect, onCleanup } from "solid-js";
 
-import { DomCollectionItem } from "./types";
+import { DomCollectionItem } from "./types.js";
 
 function isElementPreceding(a: Element, b: Element) {
   return Boolean(b.compareDocumentPosition(a) & Node.DOCUMENT_POSITION_PRECEDING);

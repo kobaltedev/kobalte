@@ -9,8 +9,8 @@
 import { access, focusWithoutScrolling, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, JSX, on } from "solid-js";
 
-import { MultipleSelectionManager } from "./types";
-import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
+import { MultipleSelectionManager } from "./types.js";
+import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils.js";
 
 export interface CreateSelectableItemProps {
   /** An interface for reading and updating multiple selection state. */

@@ -1,6 +1,6 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
 
 export interface AlertRootProps extends OverrideComponentProps<"div", AsChildProp> {}
 

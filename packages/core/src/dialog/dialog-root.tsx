@@ -1,8 +1,8 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, ParentProps } from "solid-js";
 
-import { createDisclosureState, createPresence, createRegisterId } from "../primitives";
-import { DialogContext, DialogContextValue } from "./dialog-context";
+import { createDisclosureState, createPresence, createRegisterId } from "../primitives/index.js";
+import { DialogContext, DialogContextValue } from "./dialog-context.js";
 
 export interface DialogRootOptions {
   /** The controlled open state of the dialog. */

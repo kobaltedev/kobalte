@@ -1,9 +1,9 @@
 import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import * as Listbox from "../listbox";
-import { useComboboxContext } from "./combobox-context";
+import { useFormControlContext } from "../form-control/index.js";
+import * as Listbox from "../listbox/index.js";
+import { useComboboxContext } from "./combobox-context.js";
 
 export interface ComboboxListboxOptions<Option, OptGroup = never>
   extends Pick<

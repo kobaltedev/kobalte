@@ -28,8 +28,8 @@ import {
 } from "@internationalized/date";
 import { RangeValue } from "@kobalte/utils";
 
-import { createDateFormatter, LocalizedMessageFormatter } from "../i18n";
-import { CalendarSelectionMode, DateAlignment, DateValue } from "./types";
+import { createDateFormatter, LocalizedMessageFormatter } from "../i18n/index.jsx";
+import { CalendarSelectionMode, DateAlignment, DateValue } from "./types.js";
 
 /* -----------------------------------------------------------------------------
  * Constrain a date to a range
