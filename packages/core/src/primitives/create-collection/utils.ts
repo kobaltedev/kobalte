@@ -1,4 +1,4 @@
-import { isObject, isString } from "@kobalte/utils";
+import { isNumber, isString } from "@kobalte/utils";
 
 import { CollectionNode } from "./types";
 
@@ -48,7 +48,7 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
 
   for (const data of params.dataSource) {
     // If it's not an object assume it's an item.
-    if (!isObject(data)) {
+    if (isString(data) || isNumber(data)) {
       nodes.push({
         type: "item",
         rawValue: data,

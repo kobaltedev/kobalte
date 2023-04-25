@@ -3817,7 +3817,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001481
-      electron-to-chromium: 1.4.370
+      electron-to-chromium: 1.4.371
       node-releases: 2.0.10
       update-browserslist-db: 1.0.11_browserslist@4.21.5
 
@@ -4576,8 +4576,8 @@ packages:
   /ee-first/1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  /electron-to-chromium/1.4.370:
-    resolution: {integrity: sha512-c+wzD4sCYQeNeasbnArwsU3ig6+lR6bwQmxfMjB6bx+XoopVSPFp+7ZLxqa90MTC+Tq9QQ5l7zsMNG9GgMBorg==}
+  /electron-to-chromium/1.4.371:
+    resolution: {integrity: sha512-jlBzY4tFcJaiUjzhRTCWAqRvTO/fWzjA3Bls0mykzGZ7zvcMP7h05W6UcgzfT9Ca1SW2xyKDOFRyI0pQeRNZGw==}
 
   /emittery/0.10.2:
     resolution: {integrity: sha512-aITqOwnLanpHLNXZJENbOgjUBeHocD+xsSJmNrjovKBW5HbSpW3d1pEls7GFQPUWXiwG9+0P4GtHfEqC/4M0Iw==}
@@ -6870,8 +6870,8 @@ packages:
     hasBin: true
     dev: true
 
-  /joi/17.9.1:
-    resolution: {integrity: sha512-FariIi9j6QODKATGBrEX7HZcja8Bsh3rfdGYy/Sb65sGlZWK/QWesU1ghk7aJWDj95knjXlQfSmzFSPPkLVsfw==}
+  /joi/17.9.2:
+    resolution: {integrity: sha512-Itk/r+V4Dx0V3c7RLFdRh12IOjySm2/WGPMubBT92cQvRfYZhPM2W0hZlctjj72iES8jsRCwp7S/cRmWBnJ4nw==}
     dependencies:
       '@hapi/hoek': 9.3.0
       '@hapi/topo': 5.1.0
@@ -9178,8 +9178,8 @@ packages:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
     dev: true
 
-  /sirv/2.0.2:
-    resolution: {integrity: sha512-4Qog6aE29nIjAOKe/wowFTxOdmbEZKb+3tsLljaBRzJwtqto0BChD2zzH0LhgCSXiI+V7X+Y45v14wBZQ1TK3w==}
+  /sirv/2.0.3:
+    resolution: {integrity: sha512-O9jm9BsID1P+0HOi81VpXPoDxYP374pkOLzACAoyUQ/3OUVndNpsz6wMnY2z+yOxzbllCKZrM+9QrWsv4THnyA==}
     engines: {node: '>= 10'}
     dependencies:
       '@polka/url': 1.0.0-next.21
@@ -9297,7 +9297,7 @@ packages:
       compression: 1.7.4
       polka: 1.0.0-next.22
       rollup: 3.21.0
-      sirv: 2.0.2
+      sirv: 2.0.3
       solid-start: 0.2.26_atrvsvgczxtdlhvj5sgwmbp3e4
       terser: 5.17.1
       undici: 5.22.0
@@ -9366,7 +9366,7 @@ packages:
       rollup-route-manifest: 1.0.0_rollup@3.21.0
       sade: 1.8.1
       set-cookie-parser: 2.6.0
-      sirv: 2.0.2
+      sirv: 2.0.3
       solid-js: 1.7.3
       solid-start-netlify: 0.2.26_solid-start@0.2.26
       solid-start-node: 0.2.26_dkaabl2ghywpmoj2pcuwaky7tm
@@ -10400,7 +10400,7 @@ packages:
       debug: 4.3.4
       fs-extra: 11.1.1
       picocolors: 1.0.0
-      sirv: 2.0.2
+      sirv: 2.0.3
       vite: 3.2.5
     transitivePeerDependencies:
       - rollup
@@ -10483,7 +10483,7 @@ packages:
     dependencies:
       '@types/node': 18.15.11
       esbuild: 0.15.18
-      postcss: 8.4.21
+      postcss: 8.4.23
       resolve: 1.22.2
       rollup: 2.79.1
     optionalDependencies:
@@ -10532,7 +10532,7 @@ packages:
     hasBin: true
     dependencies:
       axios: 0.25.0_debug@4.3.4
-      joi: 17.9.1
+      joi: 17.9.2
       lodash: 4.17.21
       minimist: 1.2.8
       rxjs: 7.8.0
