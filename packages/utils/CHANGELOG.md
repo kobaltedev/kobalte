@@ -1,5 +1,11 @@
 # @kobalte/utils
 
+## 0.7.1
+
+### Patch Changes
+
+- 1b87fc6: fix exports in `@kobalte/utils`
+
 ## 0.7.0
 
 ### Minor Changes

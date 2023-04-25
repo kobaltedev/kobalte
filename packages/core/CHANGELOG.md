@@ -1,5 +1,13 @@
 # @kobalte/core
 
+## 0.9.2
+
+### Patch Changes
+
+- 1b87fc6: fix exports in `@kobalte/utils`
+- Updated dependencies [1b87fc6]
+  - @kobalte/utils@0.7.1
+
 ## 0.9.1
 
 ### Patch Changes
