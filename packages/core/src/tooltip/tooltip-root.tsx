@@ -234,6 +234,16 @@ export function TooltipRoot(props: TooltipRootProps) {
     }
   };
 
+  const cancelOpening = () => {
+    if (isServer) {
+      return;
+    }
+
+    window.clearTimeout(globalWarmUpTimeout);
+    globalWarmUpTimeout = undefined;
+    globalWarmedUp = false;
+  };
+
   const cancelClosing = () => {
     if (isServer) {
       return;
@@ -351,6 +361,7 @@ export function TooltipRoot(props: TooltipRootProps) {
     contentPresence,
     openTooltip,
     hideTooltip,
+    cancelOpening,
     generateId: createGenerateId(() => props.id!),
     registerContentId: createRegisterId(setContentId),
     isTargetOnTooltip,

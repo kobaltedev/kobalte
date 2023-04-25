@@ -16,6 +16,7 @@ export interface TooltipContextValue {
   contentPresence: CreatePresenceResult;
   openTooltip: (immediate?: boolean) => void;
   hideTooltip: (immediate?: boolean) => void;
+  cancelOpening: () => void;
   generateId: (part: string) => string;
   registerContentId: (id: string) => () => void;
   isTargetOnTooltip: (target: Node | null) => boolean;
