@@ -1,5 +1,15 @@
 # @kobalte/core
 
+## 0.9.3
+
+### Patch Changes
+
+- 218c6bd: ## Bug fixes
+
+  - [#187](https://github.com/kobaltedev/kobalte/pull/187)
+  - [#188](https://github.com/kobaltedev/kobalte/pull/188)
+  - [#191](https://github.com/kobaltedev/kobalte/pull/191)
+
 ## 0.9.2
 
 ### Patch Changes
