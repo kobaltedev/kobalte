@@ -25,9 +25,3 @@ export function isString(value: any): value is string {
 export function isFunction<T extends Function = Function>(value: any): value is T {
   return typeof value === "function";
 }
-
-// Object assertions
-export function isObject(value: any): value is Record<string, any> {
-  const type = typeof value;
-  return value != null && (type === "object" || type === "function") && !isArray(value);
-}
