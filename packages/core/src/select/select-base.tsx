@@ -18,10 +18,12 @@ import {
 import {
   Accessor,
   Component,
+  createEffect,
   createMemo,
   createSignal,
   createUniqueId,
   JSX,
+  on,
   splitProps,
 } from "solid-js";
 
@@ -296,8 +298,15 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     );
   });
 
+  // Only option keys without option groups.
+  const flattenOptionKeys = createMemo(() => {
+    return flattenOptions().map(option => getOptionValue(option));
+  });
+
   const getOptionsFromValues = (values: Set<string>): Option[] => {
-    return flattenOptions().filter(option => values.has(getOptionValue(option as Option)));
+    return [...values]
+      .map(value => flattenOptions().find(option => getOptionValue(option) === value))
+      .filter(option => option != null) as Option[];
   };
 
   const disclosureState = createDisclosureState({
@@ -414,6 +423,23 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
   const renderSection = (section: CollectionNode) => {
     return local.sectionComponent?.({ section });
   };
+
+  // Delete selected keys that do not match any option in the listbox.
+  createEffect(
+    on(
+      [flattenOptionKeys],
+      ([flattenOptionKeys]) => {
+        const currentSelectedKeys = [...listState.selectionManager().selectedKeys()];
+
+        const keysToKeep = currentSelectedKeys.filter(key => flattenOptionKeys.includes(key));
+
+        listState.selectionManager().setSelectedKeys(keysToKeep);
+      },
+      {
+        defer: true,
+      }
+    )
+  );
 
   const dataset: Accessor<SelectDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,

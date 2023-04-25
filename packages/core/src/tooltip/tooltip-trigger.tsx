@@ -93,7 +93,11 @@ export function TooltipTrigger(props: TooltipTriggerProps) {
     isHovered = false;
     isFocused = false;
 
-    handleHide();
+    if (context.isOpen()) {
+      handleHide();
+    } else {
+      context.cancelOpening();
+    }
   };
 
   const onPointerDown: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> = e => {

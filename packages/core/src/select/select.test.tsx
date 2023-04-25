@@ -3044,6 +3044,92 @@ describe("Select", () => {
       expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[2])).toBeTruthy();
     });
 
+    it("should keep the selection order", async () => {
+      render(() => (
+        <Select.Root
+          multiple
+          options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
+          placeholder="Placeholder"
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
+        >
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value<DataSourceItem>>
+              {({ selectedOptions }) =>
+                selectedOptions()
+                  .map(opt => opt.label)
+                  .join(", ")
+              }
+            </Select.Value>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Listbox />
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+      expect(trigger).toHaveTextContent("Placeholder");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+      const items = within(listbox).getAllByRole("option");
+
+      expect(listbox).toHaveAttribute("aria-multiselectable", "true");
+
+      expect(items.length).toBe(3);
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[2]).toHaveTextContent("Three");
+
+      expect(document.activeElement).toBe(listbox);
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(
+        items[0],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[0], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      expect(items[2]).toHaveAttribute("aria-selected", "true");
+
+      expect(onValueChange).toBeCalledTimes(2);
+      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[2])).toBeTruthy();
+      expect(onValueChange.mock.calls[1][0].includes(DATA_SOURCE[0])).toBeTruthy();
+
+      // Does not close on multi-select
+      expect(listbox).toBeVisible();
+
+      expect(trigger).toHaveTextContent("Three, One");
+    });
+
     it("supports deselection", async () => {
       const defaultValue = [DATA_SOURCE[0], DATA_SOURCE[1]];
 

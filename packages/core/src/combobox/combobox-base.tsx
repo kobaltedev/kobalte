@@ -355,7 +355,9 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   });
 
   const getOptionsFromValues = (values: Set<string>): Option[] => {
-    return flattenOptions().filter(option => values.has(getOptionValue(option as Option)));
+    return [...values]
+      .map(value => flattenOptions().find(option => getOptionValue(option) === value))
+      .filter(option => option != null) as Option[];
   };
 
   const disclosureState = createDisclosureState({
