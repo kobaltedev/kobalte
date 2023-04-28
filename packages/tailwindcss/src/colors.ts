@@ -6,7 +6,7 @@
  * https://github.com/tailwindlabs/tailwindcss/blob/7f555c432d7f801fcac82fbf1331a5ed8986c4c1/src/public/colors.js
  */
 
-export const colors = {
+export const DEFAULT_COLORS = {
   /* Pure gray. */
   gray: {
     50: "#fafafa",

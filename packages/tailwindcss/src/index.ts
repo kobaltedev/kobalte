@@ -8,7 +8,7 @@
 
 import plugin from "tailwindcss/plugin";
 
-import { colors } from "./colors";
+import { DEFAULT_COLORS } from "./colors";
 
 const STATES = [
   "valid",
@@ -39,7 +39,7 @@ export interface KobalteTailwindPluginOptions {
 }
 
 export default plugin.withOptions<KobalteTailwindPluginOptions>(
-  ({ prefix = "ui", colors = false } = {}) => {
+  ({ prefix = "ui" } = {}) => {
     return ({ addVariant }) => {
       for (const state of STATES) {
         addVariant(`${prefix}-${state}`, [`&[data-${state}]`]);
@@ -86,15 +86,15 @@ export default plugin.withOptions<KobalteTailwindPluginOptions>(
       }
     };
   },
-  function (options) {
-    if (!options.colors) {
+  function ({ colors = false } = {}) {
+    if (!colors) {
       return {};
     }
 
     return {
       theme: {
         colors: {
-          ...colors,
+          ...DEFAULT_COLORS,
         },
       },
     };
