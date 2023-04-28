@@ -6,6 +6,7 @@
  * https://github.com/tailwindlabs/headlessui/blob/8e1e19f94c28af68c05becc80bf89575e1fa1d36/packages/@headlessui-tailwindcss/src/index.ts
  */
 
+import twColors from "tailwindcss/colors";
 import plugin from "tailwindcss/plugin";
 
 import { DEFAULT_COLORS } from "./colors";
@@ -94,6 +95,7 @@ export default plugin.withOptions<KobalteTailwindPluginOptions>(
     return {
       theme: {
         colors: {
+          ...twColors,
           ...DEFAULT_COLORS,
         },
       },
