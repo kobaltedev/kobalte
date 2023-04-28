@@ -1,5 +1,11 @@
 # @kobalte/tailwindcss
 
+## 0.6.2
+
+### Patch Changes
+
+- de2ba76: Add Kobalte UI color palettes
+
 ## 0.6.1
 
 ### Patch Changes
