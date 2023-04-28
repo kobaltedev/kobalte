@@ -97,7 +97,7 @@ importers:
       '@docsearch/css': 3.3.3
       '@docsearch/js': 3.3.3
       '@kobalte/core': 0.9.3
-      '@kobalte/tailwindcss': 0.6.2
+      '@kobalte/tailwindcss': 0.6.3
       '@mdx-js/mdx': 2.3.0
       '@mdx-js/rollup': 2.3.0
       '@solidjs/meta': 0.28.4
@@ -162,7 +162,7 @@ importers:
   apps/playground:
     specifiers:
       '@kobalte/core': ^0.9.3
-      '@kobalte/tailwindcss': ^0.6.2
+      '@kobalte/tailwindcss': ^0.6.3
       '@kobalte/utils': ^0.7.1
       autoprefixer: 10.4.14
       postcss: 8.4.21
