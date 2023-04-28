@@ -45,7 +45,13 @@ import {
   type SelectListboxProps,
 } from "./select-listbox";
 import { SelectPortal as Portal, type SelectPortalProps } from "./select-portal";
-import { SelectRoot as Root, type SelectRootOptions, type SelectRootProps } from "./select-root";
+import {
+  type SelectMultipleSelectionOptions,
+  SelectRoot as Root,
+  type SelectRootOptions,
+  type SelectRootProps,
+  type SelectSingleSelectionOptions,
+} from "./select-root";
 import { SelectTrigger as Trigger, type SelectTriggerProps } from "./select-trigger";
 import { SelectValue as Value, type SelectValueProps } from "./select-value";
 
@@ -68,12 +74,14 @@ export type {
   SelectLabelProps,
   SelectListboxOptions,
   SelectListboxProps,
+  SelectMultipleSelectionOptions,
   SelectPortalProps,
   SelectRootItemComponentProps,
   SelectRootOptions,
   SelectRootProps,
   SelectRootSectionComponentProps,
   SelectSectionProps,
+  SelectSingleSelectionOptions,
   SelectTriggerProps,
   SelectValueProps,
 };

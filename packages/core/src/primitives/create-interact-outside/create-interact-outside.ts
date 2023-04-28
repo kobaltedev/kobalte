@@ -22,6 +22,7 @@ import {
   noop,
 } from "@kobalte/utils";
 import { Accessor, createEffect, onCleanup } from "solid-js";
+
 import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
 
 type EventDetails<T> = {
