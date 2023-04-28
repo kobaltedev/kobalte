@@ -7,6 +7,12 @@
  */
 
 export const DEFAULT_COLORS = {
+  inherit: "inherit",
+  current: "currentColor",
+  transparent: "transparent",
+  black: "#000",
+  white: "#fff",
+
   /* Pure gray. */
   gray: {
     50: "#fafafa",
