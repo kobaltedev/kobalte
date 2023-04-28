@@ -43,7 +43,7 @@
     "undici": "5.22.0"
   },
   "devDependencies": {
-    "@kobalte/tailwindcss": "0.6.2",
+    "@kobalte/tailwindcss": "0.6.3",
     "@mdx-js/mdx": "2.3.0",
     "@mdx-js/rollup": "2.3.0",
     "@tailwindcss/typography": "0.5.9",
