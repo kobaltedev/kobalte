@@ -65,6 +65,9 @@ export function SelectTrigger(props: SelectTriggerProps) {
 
     // For consistency with native, open the select on mouse down (main button), but touch up.
     if (!isDisabled() && e.pointerType !== "touch" && e.button === 0) {
+      // prevent trigger from stealing focus from the active item after opening.
+      e.preventDefault();
+
       context.toggle(true);
     }
   };
