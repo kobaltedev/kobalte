@@ -52,6 +52,9 @@ export function ComboboxTrigger(props: ComboboxTriggerProps) {
 
     // For consistency with native, open the combobox on mouse down (main button), but touch up.
     if (!isDisabled() && e.pointerType !== "touch" && e.button === 0) {
+      // prevent trigger from stealing focus from the active item after opening.
+      e.preventDefault();
+
       context.toggle(false, "manual");
     }
   };

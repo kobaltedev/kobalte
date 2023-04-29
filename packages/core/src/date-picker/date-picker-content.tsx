@@ -1,4 +1,5 @@
 import {
+  contains,
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
@@ -86,6 +87,7 @@ export function DatePickerContent(props: DatePickerContentProps) {
 
   let isRightClickOutside = false;
   let hasInteractedOutside = false;
+  let hasPointerDownOutside = false;
 
   const ariaLabelledBy = () => {
     return formControlContext.getAriaLabelledBy(
@@ -115,6 +117,7 @@ export function DatePickerContent(props: DatePickerContentProps) {
       }
 
       hasInteractedOutside = false;
+      hasPointerDownOutside = false;
     }
   };
 
@@ -139,8 +142,33 @@ export function DatePickerContent(props: DatePickerContentProps) {
   const onInteractOutside = (e: InteractOutsideEvent) => {
     local.onInteractOutside?.(e);
 
-    if (!context.isModal() && !e.defaultPrevented) {
+    if (context.isModal()) {
+      return;
+    }
+
+    // Non-modal behavior below
+
+    if (!e.defaultPrevented) {
       hasInteractedOutside = true;
+
+      if (e.detail.originalEvent.type === "pointerdown") {
+        hasPointerDownOutside = true;
+      }
+    }
+
+    // Prevent dismissing when clicking the trigger.
+    // As the trigger is already setup to close, without doing so would
+    // cause it to close and immediately open.
+    if (contains(context.triggerRef(), e.target as HTMLElement)) {
+      e.preventDefault();
+    }
+
+    // On Safari if the trigger is inside a container with tabIndex={0}, when clicked
+    // we will get the pointer down outside event on the trigger, but then a subsequent
+    // focus outside event on the container, we ignore any focus outside event when we've
+    // already had a pointer down outside event.
+    if (e.detail.originalEvent.type === "focusin" && hasPointerDownOutside) {
+      e.preventDefault();
     }
   };
 
