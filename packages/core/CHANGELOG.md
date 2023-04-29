@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.9.4
+
+### Patch Changes
+
+- ae0ca30: fix: #195
+
 ## 0.9.3
 
 ### Patch Changes
