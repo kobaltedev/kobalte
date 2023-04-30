@@ -1,8 +1,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
-import { CalendarRoot } from "../calendar/calendar-root";
-import { useFormControlContext } from "../form-control";
-import { useDatePickerContext } from "./date-picker-context";
+import { CalendarRoot } from "../calendar/calendar-root.js";
+import { useFormControlContext } from "../form-control/index.js";
+import { useDatePickerContext } from "./date-picker-context.js";
 import { createEffect } from "solid-js";
 
 export interface DatePickerCalendarOptions {}

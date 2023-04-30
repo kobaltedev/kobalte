@@ -1,7 +1,7 @@
 import { createRoot, createSignal } from "solid-js";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 
-import { createControllableSignal } from "./create-controllable-signal";
+import { createControllableSignal } from "./create-controllable-signal.js";
 
 describe("createControllableSignal", () => {
   it("should handle setValue behavior (uncontrolled mode)", async () =>

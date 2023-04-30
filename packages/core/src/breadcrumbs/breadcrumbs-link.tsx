@@ -9,7 +9,7 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
-import * as Link from "../link";
+import * as Link from "../link/index.js";
 
 export interface BreadcrumbsLinkOptions extends Link.LinkRootOptions {
   /** Whether the breadcrumb link represents the current page. */

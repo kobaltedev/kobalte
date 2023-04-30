@@ -8,7 +8,7 @@
 
 import { Accessor, createMemo } from "solid-js";
 
-import { useLocale } from "./i18n-provider";
+import { useLocale } from "./i18n-provider.jsx";
 
 const cache = new Map<string, Intl.Collator>();
 

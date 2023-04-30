@@ -13,7 +13,7 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/focus/src/FocusScope.tsx
  */
 
-import { contains, getActiveElement, isFrame } from "./dom";
+import { contains, getActiveElement, isFrame } from "./dom.js";
 
 const focusableElements = [
   "input:not([type='hidden']):not([disabled])",

@@ -16,8 +16,8 @@ import {
   Root,
   Title,
   Trigger,
-} from "../dialog";
-import { AlertDialogContent as Content, AlertDialogContentProps } from "./alert-dialog-content";
+} from "../dialog/index.js";
+import { AlertDialogContent as Content, AlertDialogContentProps } from "./alert-dialog-content.js";
 
 export type {
   AlertDialogCloseButtonProps,

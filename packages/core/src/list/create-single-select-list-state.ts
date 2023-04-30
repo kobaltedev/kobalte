@@ -9,9 +9,9 @@
 import { access } from "@kobalte/utils";
 import { Accessor, createMemo, mergeProps, splitProps } from "solid-js";
 
-import { CollectionBase, CollectionNode, createControllableSignal } from "../primitives";
-import { SingleSelection } from "../selection";
-import { createListState, CreateListStateProps, ListState } from "./create-list-state";
+import { CollectionBase, CollectionNode, createControllableSignal } from "../primitives/index.js";
+import { SingleSelection } from "../selection/index.js";
+import { createListState, CreateListStateProps, ListState } from "./create-list-state.js";
 
 export interface CreateSingleSelectListStateProps
   extends CollectionBase,

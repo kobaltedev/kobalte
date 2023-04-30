@@ -8,7 +8,7 @@
 
 import { isPointInPolygon, Polygon } from "@kobalte/utils";
 
-import { BasePlacement, Placement } from "../popper/utils";
+import { BasePlacement, Placement } from "../popper/utils.js";
 
 export type Side = "left" | "right";
 export type GraceIntent = { area: Polygon; side: Side };

@@ -10,8 +10,8 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, Index, JSX, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
-import { useCalendarGridContext } from "./calendar-grid-context";
+import { Polymorphic } from "../polymorphic/index.js";
+import { useCalendarGridContext } from "./calendar-grid-context.js";
 
 export interface CalendarGridHeaderRowOptions {
   /**

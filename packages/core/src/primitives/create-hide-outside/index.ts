@@ -1,1 +1,1 @@
-export * from "./create-hide-outside";
+export * from "./create-hide-outside.js";

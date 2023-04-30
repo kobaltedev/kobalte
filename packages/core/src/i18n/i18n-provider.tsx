@@ -8,8 +8,8 @@
 
 import { Accessor, createContext, JSX, useContext } from "solid-js";
 
-import { createDefaultLocale } from "./create-default-locale";
-import { Direction, getReadingDirection } from "./utils";
+import { createDefaultLocale } from "./create-default-locale.js";
+import { Direction, getReadingDirection } from "./utils.js";
 
 interface I18nProviderProps {
   /** Contents that should have the locale applied. */

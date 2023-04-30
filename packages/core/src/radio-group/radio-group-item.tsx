@@ -14,13 +14,13 @@ import {
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { useRadioGroupContext } from "./radio-group-context";
+import { useFormControlContext } from "../form-control/index.js";
+import { useRadioGroupContext } from "./radio-group-context.js";
 import {
   RadioGroupItemContext,
   RadioGroupItemContextValue,
   RadioGroupItemDataSet,
-} from "./radio-group-item-context";
+} from "./radio-group-item-context.js";
 
 export interface RadioGroupItemOptions {
   /**

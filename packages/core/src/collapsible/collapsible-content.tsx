@@ -18,9 +18,9 @@ import {
   splitProps,
 } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { createPresence } from "../primitives";
-import { useCollapsibleContext } from "./collapsible-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { createPresence } from "../primitives/index.js";
+import { useCollapsibleContext } from "./collapsible-context.js";
 
 export interface CollapsibleContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */

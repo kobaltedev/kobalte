@@ -1,7 +1,7 @@
 import { access, MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup } from "solid-js";
 
-import { useFormControlContext } from "./form-control-context";
+import { useFormControlContext } from "./form-control-context.js";
 
 export interface CreateFormControlFieldProps {
   /**

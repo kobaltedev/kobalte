@@ -25,8 +25,8 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createFormResetListener, createToggleState } from "../primitives";
-import { CheckboxContext, CheckboxContextValue, CheckboxDataSet } from "./checkbox-context";
+import { createFormResetListener, createToggleState } from "../primitives/index.js";
+import { CheckboxContext, CheckboxContextValue, CheckboxDataSet } from "./checkbox-context.js";
 
 interface CheckboxRootState {
   /** Whether the checkbox is checked or not. */

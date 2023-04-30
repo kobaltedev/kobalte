@@ -9,10 +9,10 @@
 import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createSignal, createUniqueId } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { createRegisterId } from "../primitives";
-import { MenuGroupContext, MenuGroupContextValue } from "./menu-group-context";
-import { useMenuRootContext } from "./menu-root-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { createRegisterId } from "../primitives/index.js";
+import { MenuGroupContext, MenuGroupContextValue } from "./menu-group-context.js";
+import { useMenuRootContext } from "./menu-root-context.js";
 
 export interface MenuGroupProps extends OverrideComponentProps<"div", AsChildProp> {}
 

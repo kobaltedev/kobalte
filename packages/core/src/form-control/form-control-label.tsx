@@ -1,9 +1,9 @@
 import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { createTagName } from "../primitives";
-import { useFormControlContext } from "./form-control-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { createTagName } from "../primitives/index.js";
+import { useFormControlContext } from "./form-control-context.js";
 
 export interface FormControlLabelProps extends OverrideComponentProps<"label", AsChildProp> {}
 

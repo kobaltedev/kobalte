@@ -9,13 +9,18 @@
 import { access } from "@kobalte/utils";
 import { Accessor, createComputed } from "solid-js";
 
-import { Collection, CollectionBase, CollectionNode, createCollection } from "../primitives";
+import {
+  Collection,
+  CollectionBase,
+  CollectionNode,
+  createCollection,
+} from "../primitives/index.js";
 import {
   createMultipleSelectionState,
   CreateMultipleSelectionStateProps,
   SelectionManager,
-} from "../selection";
-import { ListCollection } from "./list-collection";
+} from "../selection/index.js";
+import { ListCollection } from "./list-collection.js";
 
 export interface CreateListStateProps extends CollectionBase, CreateMultipleSelectionStateProps {
   /** Filter function to generate a filtered list of nodes. */

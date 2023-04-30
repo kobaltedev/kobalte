@@ -2,23 +2,23 @@ import {
   ListboxItem as Item,
   type ListboxItemOptions,
   type ListboxItemProps,
-} from "./listbox-item";
+} from "./listbox-item.js";
 import {
   ListboxItemDescription as ItemDescription,
   type ListboxItemDescriptionProps,
-} from "./listbox-item-description";
+} from "./listbox-item-description.js";
 import {
   ListboxItemIndicator as ItemIndicator,
   type ListboxItemIndicatorOptions,
   type ListboxItemIndicatorProps,
-} from "./listbox-item-indicator";
-import { ListboxItemLabel as ItemLabel, type ListboxItemLabelProps } from "./listbox-item-label";
+} from "./listbox-item-indicator.js";
+import { ListboxItemLabel as ItemLabel, type ListboxItemLabelProps } from "./listbox-item-label.js";
 import {
   ListboxRoot as Root,
   type ListboxRootOptions,
   type ListboxRootProps,
-} from "./listbox-root";
-import { ListboxSection as Section, type ListboxSectionProps } from "./listbox-section";
+} from "./listbox-root.js";
+import { ListboxSection as Section, type ListboxSectionProps } from "./listbox-section.js";
 
 export type {
   ListboxItemDescriptionProps,

@@ -17,9 +17,9 @@ import {
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { Polymorphic } from "../polymorphic";
-import { useDatePickerContext } from "./date-picker-context";
+import { useFormControlContext } from "../form-control/index.js";
+import { Polymorphic } from "../polymorphic/index.js";
+import { useDatePickerContext } from "./date-picker-context.js";
 
 export interface DatePickerControlOptions {}
 

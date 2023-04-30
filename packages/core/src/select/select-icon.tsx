@@ -1,7 +1,7 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useSelectContext } from "./select-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useSelectContext } from "./select-context.js";
 
 export interface SelectIconProps extends OverrideComponentProps<"span", AsChildProp> {}
 

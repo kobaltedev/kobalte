@@ -15,7 +15,7 @@ import {
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { useSwitchContext } from "./switch-context";
+import { useSwitchContext } from "./switch-context.js";
 
 export interface SwitchInputOptions {
   /** The HTML styles attribute (object form only). */

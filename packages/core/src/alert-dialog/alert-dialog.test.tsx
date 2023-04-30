@@ -8,7 +8,7 @@
 
 import { render, screen } from "@solidjs/testing-library";
 
-import * as AlertDialog from ".";
+import * as AlertDialog from "./index.js";
 
 describe("AlertDialog", () => {
   it("should be labelled by its alert dialog title", function () {

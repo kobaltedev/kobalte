@@ -3,7 +3,7 @@ import {
   type ToggleButtonRootOptions,
   type ToggleButtonRootProps,
   type ToggleButtonRootState,
-} from "./toggle-button-root";
+} from "./toggle-button-root.js";
 
 export type { ToggleButtonRootOptions, ToggleButtonRootProps, ToggleButtonRootState };
 export { Root };

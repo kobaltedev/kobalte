@@ -1,6 +1,6 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { ToastConfig, ToastSwipeDirection } from "./types";
+import { ToastConfig, ToastSwipeDirection } from "./types.js";
 
 export interface ToastRegionContextValue {
   isPaused: Accessor<boolean>;

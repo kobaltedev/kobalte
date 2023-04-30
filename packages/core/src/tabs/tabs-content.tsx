@@ -9,9 +9,9 @@
 import { getFocusableTreeWalker, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, createSignal, on, onCleanup, Show, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { createPresence } from "../primitives";
-import { useTabsContext } from "./tabs-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { createPresence } from "../primitives/index.js";
+import { useTabsContext } from "./tabs-context.js";
 
 export interface TabsContentOptions extends AsChildProp {
   /** The unique key that associates the tab panel with a tab. */

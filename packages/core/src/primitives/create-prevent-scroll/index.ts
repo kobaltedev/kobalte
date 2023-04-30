@@ -1,1 +1,1 @@
-export * from "./create-prevent-scroll";
+export * from "./create-prevent-scroll.js";

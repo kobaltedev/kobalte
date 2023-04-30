@@ -1,9 +1,9 @@
 import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { createPresence } from "../primitives";
-import { useCheckboxContext } from "./checkbox-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { createPresence } from "../primitives/index.js";
+import { useCheckboxContext } from "./checkbox-context.js";
 
 export interface CheckboxIndicatorOptions extends AsChildProp {
   /**

@@ -2,8 +2,8 @@ import { CalendarDate, DateDuration } from "@internationalized/date";
 import { RangeValue, ValidationState } from "@kobalte/utils";
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { Direction, LocalizedMessageFormatter } from "../i18n";
-import { CalendarSelectionMode, DateValue } from "./types";
+import { Direction, LocalizedMessageFormatter } from "../i18n/index.js";
+import { CalendarSelectionMode, DateValue } from "./types.js";
 
 export interface CalendarDataSet {}
 

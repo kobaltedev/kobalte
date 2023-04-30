@@ -1,7 +1,7 @@
 import { ComponentProps, Show } from "solid-js";
 import { Portal } from "solid-js/web";
 
-import { useComboboxContext } from "./combobox-context";
+import { useComboboxContext } from "./combobox-context.js";
 
 export interface ComboboxPortalProps extends ComponentProps<typeof Portal> {}
 

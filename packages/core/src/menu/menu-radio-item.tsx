@@ -1,8 +1,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
-import { MenuItemBase, MenuItemBaseOptions } from "./menu-item-base";
-import { useMenuRadioGroupContext } from "./menu-radio-group-context";
+import { MenuItemBase, MenuItemBaseOptions } from "./menu-item-base.js";
+import { useMenuRadioGroupContext } from "./menu-radio-group-context.js";
 
 export interface MenuRadioItemOptions
   extends Omit<MenuItemBaseOptions, "checked" | "indeterminate"> {

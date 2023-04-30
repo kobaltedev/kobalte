@@ -1,8 +1,8 @@
 import { Accessor, createContext, JSX, Setter, useContext } from "solid-js";
 
-import { ListState } from "../list";
-import { CollectionNode, CreatePresenceResult } from "../primitives";
-import { FocusStrategy, KeyboardDelegate } from "../selection";
+import { ListState } from "../list/index.js";
+import { CollectionNode, CreatePresenceResult } from "../primitives/index.js";
+import { FocusStrategy, KeyboardDelegate } from "../selection/index.js";
 
 export interface SelectDataSet {
   "data-expanded": string | undefined;

@@ -1,8 +1,8 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { createMemo, splitProps } from "solid-js";
 
-import { AsChildProp } from "../polymorphic";
-import { ComboboxBase, ComboboxBaseOptions } from "./combobox-base";
+import { AsChildProp } from "../polymorphic/index.js";
+import { ComboboxBase, ComboboxBaseOptions } from "./combobox-base.js";
 
 export interface ComboboxSingleSelectionOptions<T> {
   /** The controlled value of the combobox. */

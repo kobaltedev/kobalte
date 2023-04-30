@@ -2,8 +2,8 @@ import { callHandler, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
-import { COMMON_INTL_MESSAGES, createMessageFormatter } from "../i18n";
-import { usePopoverContext } from "./popover-context";
+import { COMMON_INTL_MESSAGES, createMessageFormatter } from "../i18n/index.js";
+import { usePopoverContext } from "./popover-context.js";
 
 export interface PopoverCloseButtonProps
   extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}

@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-aria/i18n/src/useFilter.ts
  */
 
-import { createCollator } from "./create-collator";
+import { createCollator } from "./create-collator.js";
 
 export interface Filter {
   /** Returns whether a string starts with a given substring. */

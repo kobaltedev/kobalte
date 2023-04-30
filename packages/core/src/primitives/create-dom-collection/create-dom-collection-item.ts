@@ -1,8 +1,8 @@
 import { MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup } from "solid-js";
 
-import { useDomCollectionContext } from "./dom-collection-context";
-import { DomCollectionItem } from "./types";
+import { useDomCollectionContext } from "./dom-collection-context.js";
+import { DomCollectionItem } from "./types.js";
 
 export interface CreateDomCollectionItemProps<T extends DomCollectionItem = DomCollectionItem> {
   /** A function to map a data source item to a dom collection item. */

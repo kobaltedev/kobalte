@@ -60,7 +60,8 @@
     "@kobalte/utils": "^0.7.1"
   },
   "devDependencies": {
-    "@kobalte/tests": "^0.4.0"
+    "@kobalte/tests": "^0.4.0",
+    "rollup-plugin-ts": "^3.2.0"
   },
   "peerDependencies": {
     "solid-js": "^1.7.3"

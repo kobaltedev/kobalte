@@ -9,7 +9,7 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 
-import * as Combobox from ".";
+import * as Combobox from "./index.js";
 
 interface DataSourceItem {
   key: string;
@@ -134,7 +134,13 @@ describe("Combobox", () => {
       const trigger = screen.getByRole("button");
       const input = screen.getByRole("combobox");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -162,7 +168,10 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -216,7 +225,13 @@ describe("Combobox", () => {
       const trigger = screen.getByRole("button");
       const input = screen.getByRole("combobox");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -244,7 +259,10 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -309,7 +327,13 @@ describe("Combobox", () => {
       const trigger = screen.getByRole("button");
       const input = screen.getByRole("combobox");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -337,7 +361,10 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -391,7 +418,13 @@ describe("Combobox", () => {
       const trigger = screen.getByRole("button");
       const input = screen.getByRole("combobox");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -419,7 +452,10 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -465,7 +501,13 @@ describe("Combobox", () => {
       const trigger = screen.getByRole("button");
       const input = screen.getByRole("combobox");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -493,7 +535,10 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -543,7 +588,13 @@ describe("Combobox", () => {
       const trigger = screen.getByRole("button");
       const input = screen.getByRole("combobox");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -571,7 +622,10 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -617,7 +671,13 @@ describe("Combobox", () => {
       const trigger = screen.getByRole("button");
       const input = screen.getByRole("combobox");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -645,7 +705,10 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -695,7 +758,13 @@ describe("Combobox", () => {
       const trigger = screen.getByRole("button");
       const input = screen.getByRole("combobox");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -723,7 +792,10 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -778,7 +850,13 @@ describe("Combobox", () => {
       const trigger = screen.getByRole("button");
       const input = screen.getByRole("combobox");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -841,7 +919,13 @@ describe("Combobox", () => {
       const trigger = screen.getByRole("button");
       const input = screen.getByRole("combobox");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "touch",
+        })
+      );
       await Promise.resolve();
 
       expect(screen.queryByRole("listbox")).toBeNull();
@@ -1202,7 +1286,13 @@ describe("Combobox", () => {
 
       const trigger = screen.getByRole("button");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       jest.runAllTimers();
@@ -1215,7 +1305,13 @@ describe("Combobox", () => {
       expect(trigger).toHaveAttribute("aria-expanded", "true");
       expect(trigger).toHaveAttribute("aria-controls", listbox.id);
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       jest.runAllTimers();
@@ -1260,7 +1356,13 @@ describe("Combobox", () => {
 
       const trigger = screen.getByRole("button");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -1281,7 +1383,10 @@ describe("Combobox", () => {
 
       fireEvent(
         document.body,
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -1334,7 +1439,13 @@ describe("Combobox", () => {
       const trigger = screen.getByRole("button");
       const input = screen.getByRole("combobox");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
@@ -1498,7 +1609,13 @@ describe("Combobox", () => {
       expect(label).toHaveAttribute("id");
       expect(input).toHaveAttribute("aria-labelledby", `${label.id}`);
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
@@ -1538,7 +1655,13 @@ describe("Combobox", () => {
 
       expect(input).toHaveAttribute("aria-labelledby", `foo`);
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
@@ -1578,7 +1701,13 @@ describe("Combobox", () => {
       expect(input).toHaveAttribute("aria-label", "bar");
       expect(input).toHaveAttribute("aria-labelledby", `foo ${input.id}`);
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
@@ -1692,7 +1821,13 @@ describe("Combobox", () => {
 
       expect(screen.getByRole("combobox")).toHaveAttribute("placeholder", "Placeholder");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -1715,7 +1850,10 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -1837,7 +1975,13 @@ describe("Combobox", () => {
 
       expect(input).toHaveAttribute("placeholder", "Placeholder");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -1926,7 +2070,13 @@ describe("Combobox", () => {
       expect(screen.getByRole("combobox")).toHaveAttribute("placeholder", "Placeholder");
       expect(onOpenChangeSpy).toHaveBeenCalledTimes(0);
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
@@ -1943,7 +2093,13 @@ describe("Combobox", () => {
       expect(item2).toBeTruthy();
       expect(item3).toBeTruthy();
 
-      fireEvent(item3, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        item3,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(item3, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -1954,7 +2110,13 @@ describe("Combobox", () => {
       expect(onOpenChangeSpy).toHaveBeenCalledTimes(2);
       expect(screen.queryByRole("listbox")).toBeNull();
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       expect(onOpenChangeSpy).toHaveBeenCalledTimes(3);
@@ -2009,7 +2171,13 @@ describe("Combobox", () => {
       expect(screen.getByRole("combobox")).toHaveAttribute("placeholder", "Placeholder");
       expect(onOpenChangeSpy).toHaveBeenCalledTimes(0);
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
@@ -2026,7 +2194,13 @@ describe("Combobox", () => {
       expect(item2).toBeTruthy();
       expect(item3).toBeTruthy();
 
-      fireEvent(item3, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        item3,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(item3, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -2037,7 +2211,13 @@ describe("Combobox", () => {
       expect(onOpenChangeSpy).toHaveBeenCalledTimes(2);
       expect(screen.queryByRole("listbox")).toBeNull();
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       expect(onOpenChangeSpy).toHaveBeenCalledTimes(3);
@@ -2098,7 +2278,13 @@ describe("Combobox", () => {
 
       expect(input).toHaveValue("Two");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
@@ -2172,7 +2358,13 @@ describe("Combobox", () => {
 
       expect(input).toHaveValue("Two");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
@@ -2250,7 +2442,13 @@ describe("Combobox", () => {
 
       expect(input).toHaveAttribute("placeholder", "Placeholder");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       jest.runAllTimers();
@@ -2330,7 +2528,13 @@ describe("Combobox", () => {
 
       expect(input).toHaveValue("Two");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
@@ -2398,7 +2602,13 @@ describe("Combobox", () => {
       const trigger = screen.getByRole("button");
       expect(screen.getByRole("combobox")).toHaveAttribute("placeholder", "Placeholder");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
@@ -2421,7 +2631,10 @@ describe("Combobox", () => {
 
       fireEvent(
         items[0],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -2430,7 +2643,10 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -2492,7 +2708,13 @@ describe("Combobox", () => {
 
       const trigger = screen.getByRole("button");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
@@ -2504,7 +2726,10 @@ describe("Combobox", () => {
       // SelectBase a different option
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -2561,7 +2786,13 @@ describe("Combobox", () => {
 
       const trigger = screen.getByRole("button");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
@@ -2573,7 +2804,10 @@ describe("Combobox", () => {
       // SelectBase a different option
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -2628,7 +2862,13 @@ describe("Combobox", () => {
 
       const trigger = screen.getByRole("button");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       const listbox = screen.getByRole("listbox");
@@ -2640,7 +2880,10 @@ describe("Combobox", () => {
       // Deselect first option
       fireEvent(
         items[0],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
       );
       await Promise.resolve();
 
@@ -2694,12 +2937,16 @@ describe("Combobox", () => {
 
       expect(input).toHaveAttribute("placeholder", "Placeholder");
 
-      const hiddenSelectBase = screen.getAllByRole("listbox", { hidden: true })[0];
+      const hiddenSelectBase = screen.getAllByRole("listbox", {
+        hidden: true,
+      })[0];
 
       expect(hiddenSelectBase).toHaveAttribute("tabIndex", "-1");
       expect(hiddenSelectBase).toHaveAttribute("autocomplete", "address-level1");
 
-      const options = within(hiddenSelectBase).getAllByRole("option", { hidden: true });
+      const options = within(hiddenSelectBase).getAllByRole("option", {
+        hidden: true,
+      });
 
       expect(options.length).toBe(4);
 
@@ -2834,7 +3081,13 @@ describe("Combobox", () => {
 
       const trigger = screen.getByRole("button");
 
-      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        trigger,
+        createPointerEvent("pointerdown", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       expect(screen.queryByRole("listbox")).toBeNull();

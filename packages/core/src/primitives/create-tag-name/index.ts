@@ -1,1 +1,1 @@
-export * from "./create-tag-name";
+export * from "./create-tag-name.js";

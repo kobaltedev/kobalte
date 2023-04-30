@@ -1,10 +1,10 @@
 import { focusWithoutScrolling, OverrideComponentProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
-import { MenuContent, MenuContentOptions } from "../menu";
-import { useMenuContext } from "../menu/menu-context";
-import { useMenuRootContext } from "../menu/menu-root-context";
-import { InteractOutsideEvent } from "../primitives";
+import { MenuContent, MenuContentOptions } from "../menu/index.js";
+import { useMenuContext } from "../menu/menu-context.js";
+import { useMenuRootContext } from "../menu/menu-root-context.js";
+import { InteractOutsideEvent } from "../primitives/index.js";
 
 export interface DropdownMenuContentProps
   extends OverrideComponentProps<"div", MenuContentOptions> {}

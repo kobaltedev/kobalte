@@ -1,7 +1,7 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useMenuContext } from "./menu-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useMenuContext } from "./menu-context.js";
 
 export interface MenuIconProps extends OverrideComponentProps<"span", AsChildProp> {}
 

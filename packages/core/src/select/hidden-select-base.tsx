@@ -9,10 +9,10 @@
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
 import { ComponentProps, createEffect, createSignal, For, on, Show, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { Collection, CollectionNode } from "../primitives";
-import { SelectionManager } from "../selection";
-import { isSameSelection } from "../selection/utils";
+import { useFormControlContext } from "../form-control/index.js";
+import { Collection, CollectionNode } from "../primitives/index.js";
+import { SelectionManager } from "../selection/index.js";
+import { isSameSelection } from "../selection/utils.js";
 
 // In Safari, the <select> cannot have `display: none` or `hidden` for autofill to work.
 // In Firefox, there must be a <label> to identify the <select> whereas other browsers

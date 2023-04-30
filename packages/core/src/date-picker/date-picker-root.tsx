@@ -38,12 +38,16 @@ import {
   CalendarMultipleSelectionOptions,
   CalendarRangeSelectionOptions,
   CalendarSingleSelectionOptions,
-} from "../calendar/calendar-root";
-import { DateValue, TimeValue } from "../calendar/types";
-import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import { createMessageFormatter, getReadingDirection, useLocale } from "../i18n";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { PopperRoot, PopperRootOptions } from "../popper";
+} from "../calendar/calendar-root.js";
+import { DateValue, TimeValue } from "../calendar/types.js";
+import {
+  createFormControl,
+  FORM_CONTROL_PROP_NAMES,
+  FormControlContext,
+} from "../form-control/index.js";
+import { createMessageFormatter, getReadingDirection, useLocale } from "../i18n/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { PopperRoot, PopperRootOptions } from "../popper/index.js";
 import {
   createControllableArraySignal,
   createControllableSignal,
@@ -52,14 +56,14 @@ import {
   createPresence,
   createRegisterId,
 } from "../primitives";
-import { DATE_PICKER_INTL_MESSAGES } from "./date-picker.intl";
+import { DATE_PICKER_INTL_MESSAGES } from "./date-picker.intl.js";
 import {
   DatePickerContext,
   DatePickerContextValue,
   DatePickerDataSet,
-} from "./date-picker-context";
-import { DateFieldGranularity, DateTimeFormatOptions } from "./types";
-import { createDefaultProps, getDateTimeFormatOptions, getPlaceholderTime } from "./utils";
+} from "./date-picker-context.js";
+import { DateFieldGranularity, DateTimeFormatOptions } from "./types.js";
+import { createDefaultProps, getDateTimeFormatOptions, getPlaceholderTime } from "./utils.js";
 import {
   asArrayValue,
   asRangeValue,
@@ -67,7 +71,7 @@ import {
   getArrayValueOfSelection,
   getFirstValueOfSelection,
   isDateInvalid,
-} from "../calendar/utils";
+} from "../calendar/utils.js";
 
 export type DatePickerRootOptions = (
   | CalendarSingleSelectionOptions
@@ -377,7 +381,9 @@ export function DatePickerRoot(props: DatePickerRootProps) {
     let description = "";
 
     if (local.selectionMode === "single" || local.selectionMode === "multiple") {
-      description = messageFormatter().format("selectedDateDescription", { date: formattedValue });
+      description = messageFormatter().format("selectedDateDescription", {
+        date: formattedValue,
+      });
     } else if (local.selectionMode === "range") {
       // TODO: RangeDatePicker
     }

@@ -1,2 +1,2 @@
-export * from "./create-transition";
-export * from "./types";
+export * from "./create-transition.js";
+export * from "./types.js";

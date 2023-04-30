@@ -2,14 +2,14 @@ import {
   ComboboxContent as Content,
   type ComboboxContentOptions,
   type ComboboxContentProps,
-} from "../combobox/combobox-content";
-import { ComboboxInput as Input, type ComboboxInputProps } from "../combobox/combobox-input";
+} from "../combobox/combobox-content.js";
+import { ComboboxInput as Input, type ComboboxInputProps } from "../combobox/combobox-input.js";
 import {
   ComboboxListbox as Listbox,
   type ComboboxListboxOptions,
   type ComboboxListboxProps,
-} from "../combobox/combobox-listbox";
-import { ComboboxPortal as Portal, type ComboboxPortalProps } from "../combobox/combobox-portal";
+} from "../combobox/combobox-listbox.js";
+import { ComboboxPortal as Portal, type ComboboxPortalProps } from "../combobox/combobox-portal.js";
 import {
   FormControlDescription as Description,
   type FormControlDescriptionProps as ComboboxDescriptionProps,
@@ -18,7 +18,7 @@ import {
   type FormControlErrorMessageProps as ComboboxErrorMessageProps,
   FormControlLabel as Label,
   type FormControlLabelProps as ComboboxLabelProps,
-} from "../form-control";
+} from "../form-control/index.js";
 import {
   Item,
   ItemDescription,
@@ -32,35 +32,35 @@ import {
   type ListboxItemProps as ComboboxItemProps,
   type ListboxSectionProps as ComboboxSectionProps,
   Section,
-} from "../listbox";
+} from "../listbox/index.js";
 import {
   PopperArrow as Arrow,
   type PopperArrowOptions as ComboboxArrowOptions,
   type PopperArrowProps as ComboboxArrowProps,
-} from "../popper";
+} from "../popper/index.js";
 import {
   type ComboboxBaseItemComponentProps as ComboboxRootItemComponentProps,
   type ComboboxBaseSectionComponentProps as ComboboxRootSectionComponentProps,
-} from "./combobox-base";
+} from "./combobox-base.js";
 import {
   ComboboxControl as Control,
   type ComboboxControlOptions,
   type ComboboxControlProps,
-} from "./combobox-control";
+} from "./combobox-control.js";
 import {
   ComboboxHiddenSelect as HiddenSelect,
   type ComboboxHiddenSelectProps,
-} from "./combobox-hidden-select";
-import { ComboboxIcon as Icon, type ComboboxIconProps } from "./combobox-icon";
+} from "./combobox-hidden-select.js";
+import { ComboboxIcon as Icon, type ComboboxIconProps } from "./combobox-icon.js";
 import {
   type ComboboxMultipleSelectionOptions,
   ComboboxRoot as Root,
   type ComboboxRootOptions,
   type ComboboxRootProps,
   type ComboboxSingleSelectionOptions,
-} from "./combobox-root";
-import { ComboboxTrigger as Trigger, type ComboboxTriggerProps } from "./combobox-trigger";
-import { type ComboboxTriggerMode } from "./types";
+} from "./combobox-root.js";
+import { ComboboxTrigger as Trigger, type ComboboxTriggerProps } from "./combobox-trigger.js";
+import { type ComboboxTriggerMode } from "./types.js";
 
 export type {
   ComboboxArrowOptions,

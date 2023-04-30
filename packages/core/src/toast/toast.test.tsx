@@ -1,10 +1,10 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 
-import { I18nProvider } from "../i18n";
-import * as Toast from ".";
-import { toaster } from "./toaster";
-import { ShowToastOptions } from "./types";
+import { I18nProvider } from "../i18n/index.js";
+import * as Toast from "./index.js";
+import { toaster } from "./toaster.js";
+import { ShowToastOptions } from "./types.js";
 
 describe("Toast", () => {
   installPointerEvent();
@@ -534,14 +534,26 @@ describe("Toast", () => {
 
       const list = screen.getByTestId("list");
 
-      fireEvent(list, createPointerEvent("pointermove", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        list,
+        createPointerEvent("pointermove", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       jest.advanceTimersByTime(duration);
 
       expect(toast).toBeInTheDocument();
 
-      fireEvent(list, createPointerEvent("pointerleave", { pointerId: 1, pointerType: "mouse" }));
+      fireEvent(
+        list,
+        createPointerEvent("pointerleave", {
+          pointerId: 1,
+          pointerType: "mouse",
+        })
+      );
       await Promise.resolve();
 
       jest.advanceTimersByTime(duration);
