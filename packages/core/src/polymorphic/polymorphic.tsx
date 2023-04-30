@@ -29,7 +29,7 @@ import { Dynamic, DynamicProps } from "solid-js/web";
 
 export interface AsChildProp {
   /** Whether the component should render as its direct `As` child component. */
-  asChild?: true;
+  asChild?: boolean;
 
   /** The component to render when `children` doesn't contain any `<As>` component as direct child. */
   as?: ValidComponent;

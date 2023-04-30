@@ -45,7 +45,13 @@ import {
   type SelectListboxProps,
 } from "./select-listbox.js";
 import { SelectPortal as Portal, type SelectPortalProps } from "./select-portal.js";
-import { SelectRoot as Root, type SelectRootOptions, type SelectRootProps } from "./select-root.js";
+import {
+  type SelectMultipleSelectionOptions,
+  SelectRoot as Root,
+  type SelectRootOptions,
+  type SelectRootProps,
+  type SelectSingleSelectionOptions,
+} from "./select-root.js";
 import { SelectTrigger as Trigger, type SelectTriggerProps } from "./select-trigger.js";
 import { SelectValue as Value, type SelectValueProps } from "./select-value.js";
 
@@ -68,12 +74,14 @@ export type {
   SelectLabelProps,
   SelectListboxOptions,
   SelectListboxProps,
+  SelectMultipleSelectionOptions,
   SelectPortalProps,
   SelectRootItemComponentProps,
   SelectRootOptions,
   SelectRootProps,
   SelectRootSectionComponentProps,
   SelectSectionProps,
+  SelectSingleSelectionOptions,
   SelectTriggerProps,
   SelectValueProps,
 };

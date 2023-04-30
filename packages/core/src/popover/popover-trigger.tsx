@@ -21,7 +21,14 @@ export interface PopoverTriggerProps
 export function PopoverTrigger(props: PopoverTriggerProps) {
   const context = usePopoverContext();
 
-  const [local, others] = splitProps(props, ["ref", "onClick"]);
+  const [local, others] = splitProps(props, ["ref", "onClick", "onPointerDown"]);
+
+  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerDown);
+
+    // Prevent popover from opening then closing immediately when inside an overlay in safari.
+    e.preventDefault();
+  };
 
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     callHandler(e, local.onClick);
@@ -34,6 +41,7 @@ export function PopoverTrigger(props: PopoverTriggerProps) {
       aria-haspopup="dialog"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.contentId() : undefined}
+      onPointerDown={onPointerDown}
       onClick={onClick}
       {...context.dataset()}
       {...others}

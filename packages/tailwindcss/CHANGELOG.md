@@ -1,5 +1,23 @@
 # @kobalte/tailwindcss
 
+## 0.6.4
+
+### Patch Changes
+
+- 817f3f2: fix: remove tailwind warnings
+
+## 0.6.3
+
+### Patch Changes
+
+- 38933c8: fix: tailwind color not exported when using kobalte ui colors
+
+## 0.6.2
+
+### Patch Changes
+
+- de2ba76: Add Kobalte UI color palettes
+
 ## 0.6.1
 
 ### Patch Changes

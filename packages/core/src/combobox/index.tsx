@@ -53,9 +53,11 @@ import {
 } from "./combobox-hidden-select.js";
 import { ComboboxIcon as Icon, type ComboboxIconProps } from "./combobox-icon.js";
 import {
+  type ComboboxMultipleSelectionOptions,
   ComboboxRoot as Root,
   type ComboboxRootOptions,
   type ComboboxRootProps,
+  type ComboboxSingleSelectionOptions,
 } from "./combobox-root.js";
 import { ComboboxTrigger as Trigger, type ComboboxTriggerProps } from "./combobox-trigger.js";
 import { type ComboboxTriggerMode } from "./types.js";
@@ -82,12 +84,14 @@ export type {
   ComboboxLabelProps,
   ComboboxListboxOptions,
   ComboboxListboxProps,
+  ComboboxMultipleSelectionOptions,
   ComboboxPortalProps,
   ComboboxRootItemComponentProps,
   ComboboxRootOptions,
   ComboboxRootProps,
   ComboboxRootSectionComponentProps,
   ComboboxSectionProps,
+  ComboboxSingleSelectionOptions,
   ComboboxTriggerMode,
   ComboboxTriggerProps,
 };
