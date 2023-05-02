@@ -1,8 +1,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useProgressContext } from "./progress-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useProgressContext } from "./progress-context.js";
 
 export interface ProgressLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
 

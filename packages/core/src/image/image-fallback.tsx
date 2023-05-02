@@ -9,8 +9,8 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, createSignal, onCleanup, Show } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useImageContext } from "./image-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useImageContext } from "./image-context.js";
 
 export interface ImageFallbackProps extends OverrideComponentProps<"span", AsChildProp> {}
 

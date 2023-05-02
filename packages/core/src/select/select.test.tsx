@@ -9,7 +9,7 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 
-import * as Select from ".";
+import { Select } from "../index.js";
 
 interface DataSourceItem {
   key: string;

@@ -9,8 +9,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import * as Collapsible from "../collapsible";
-import { useAccordionItemContext } from "./accordion-item-context";
+import * as Collapsible from "../collapsible/index.js";
+import { useAccordionItemContext } from "./accordion-item-context.js";
 
 export interface AccordionContentOptions extends Collapsible.CollapsibleContentOptions {}
 

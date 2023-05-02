@@ -1,4 +1,4 @@
-import { Direction } from "../i18n";
+import { Direction } from "../i18n/index.js";
 
 export type BasePlacement = "top" | "bottom" | "left" | "right";
 

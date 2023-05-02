@@ -23,12 +23,12 @@ import {
 import { createEffect, createUniqueId, JSX, on, onCleanup, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { Direction, useLocale } from "../i18n";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { createSelectableItem } from "../selection";
-import { useMenuContext } from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
-import { getPointerGraceArea, Side } from "./utils";
+import { Direction, useLocale } from "../i18n/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { createSelectableItem } from "../selection/index.js";
+import { useMenuContext } from "./menu-context.js";
+import { useMenuRootContext } from "./menu-root-context.js";
+import { getPointerGraceArea, Side } from "./utils.js";
 
 export interface MenuSubTriggerOptions extends AsChildProp {
   /**

@@ -1,1 +1,1 @@
-export * from "./create-presence";
+export * from "./create-presence.js";

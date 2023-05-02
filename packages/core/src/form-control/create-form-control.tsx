@@ -15,8 +15,8 @@ import {
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId } from "solid-js";
 
-import { createRegisterId } from "../primitives";
-import { FormControlContextValue, FormControlDataSet } from "./form-control-context";
+import { createRegisterId } from "../primitives/index.js";
+import { FormControlContextValue, FormControlDataSet } from "./form-control-context.js";
 
 export interface CreateFormControlProps {
   /**

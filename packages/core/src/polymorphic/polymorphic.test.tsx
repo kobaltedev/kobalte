@@ -9,7 +9,7 @@
 import { ComponentProps, JSX, splitProps } from "solid-js";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 
-import { As, AsChildProp, Polymorphic } from "./polymorphic";
+import { As, AsChildProp, Polymorphic } from "./polymorphic.js";
 
 type ButtonExampleProps = ComponentProps<"button"> & {
   leftIcon?: JSX.Element;

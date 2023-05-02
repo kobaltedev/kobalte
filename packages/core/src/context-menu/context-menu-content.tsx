@@ -9,9 +9,9 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
-import { MenuContent, MenuContentOptions } from "../menu";
-import { useMenuRootContext } from "../menu/menu-root-context";
-import { InteractOutsideEvent } from "../primitives";
+import { MenuContent, MenuContentOptions } from "../menu/index.js";
+import { useMenuRootContext } from "../menu/menu-root-context.js";
+import { InteractOutsideEvent } from "../primitives/index.js";
 
 export interface ContextMenuContentProps
   extends OverrideComponentProps<"div", MenuContentOptions> {}

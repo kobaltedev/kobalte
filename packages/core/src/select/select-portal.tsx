@@ -1,7 +1,7 @@
 import { ComponentProps, Show } from "solid-js";
 import { Portal } from "solid-js/web";
 
-import { useSelectContext } from "./select-context";
+import { useSelectContext } from "./select-context.js";
 
 export interface SelectPortalProps extends ComponentProps<typeof Portal> {}
 

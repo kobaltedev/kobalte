@@ -1,1 +1,1 @@
-export * from "./live-announcer";
+export * from "./live-announcer.js";

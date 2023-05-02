@@ -33,11 +33,11 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { PopperRoot, PopperRootOptions } from "../popper";
-import { Placement } from "../popper/utils";
-import { createDisclosureState, createPresence, createRegisterId } from "../primitives";
-import { TooltipContext, TooltipContextValue, TooltipDataSet } from "./tooltip-context";
-import { getTooltipSafeArea } from "./utils";
+import { PopperRoot, PopperRootOptions } from "../popper/index.js";
+import { Placement } from "../popper/utils.js";
+import { createDisclosureState, createPresence, createRegisterId } from "../primitives/index.js";
+import { TooltipContext, TooltipContextValue, TooltipDataSet } from "./tooltip-context.js";
+import { getTooltipSafeArea } from "./utils.js";
 
 const tooltips: any = {};
 let tooltipsCounter = 0;

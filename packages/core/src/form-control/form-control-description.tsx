@@ -1,8 +1,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useFormControlContext } from "./form-control-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useFormControlContext } from "./form-control-context.js";
 
 export interface FormControlDescriptionProps extends OverrideComponentProps<"div", AsChildProp> {}
 

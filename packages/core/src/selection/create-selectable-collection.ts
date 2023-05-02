@@ -17,10 +17,10 @@ import {
 } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, JSX, mergeProps, on, onMount } from "solid-js";
 
-import { useLocale } from "../i18n";
-import { createTypeSelect } from "./create-type-select";
-import { FocusStrategy, KeyboardDelegate, MultipleSelectionManager } from "./types";
-import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
+import { useLocale } from "../i18n/index.js";
+import { createTypeSelect } from "./create-type-select.js";
+import { FocusStrategy, KeyboardDelegate, MultipleSelectionManager } from "./types.js";
+import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils.js";
 
 interface CreateSelectableCollectionProps {
   /** An interface for reading and updating multiple selection state. */

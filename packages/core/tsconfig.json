@@ -1,5 +1,8 @@
 {
   "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "nodenext"
+  },
   "include": ["./src", "./dev"],
   "exclude": ["node_modules", "./dist"]
 }

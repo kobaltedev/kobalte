@@ -27,7 +27,7 @@ import {
 } from "@kobalte/utils";
 import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
 
-import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
+import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack.js";
 
 const AUTOFOCUS_ON_MOUNT_EVENT = "focusScope.autoFocusOnMount";
 const AUTOFOCUS_ON_UNMOUNT_EVENT = "focusScope.autoFocusOnUnmount";

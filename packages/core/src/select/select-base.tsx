@@ -27,26 +27,30 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import { createCollator } from "../i18n";
-import { createListState, ListKeyboardDelegate } from "../list";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { PopperRoot, PopperRootOptions } from "../popper";
+import {
+  createFormControl,
+  FORM_CONTROL_PROP_NAMES,
+  FormControlContext,
+} from "../form-control/index.js";
+import { createCollator } from "../i18n/index.js";
+import { createListState, ListKeyboardDelegate } from "../list/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { PopperRoot, PopperRootOptions } from "../popper/index.js";
 import {
   CollectionNode,
   createDisclosureState,
   createFormResetListener,
   createPresence,
   createRegisterId,
-} from "../primitives";
+} from "../primitives/index.js";
 import {
   FocusStrategy,
   KeyboardDelegate,
   Selection,
   SelectionBehavior,
   SelectionMode,
-} from "../selection";
-import { SelectContext, SelectContextValue, SelectDataSet } from "./select-context";
+} from "../selection/index.js";
+import { SelectContext, SelectContextValue, SelectDataSet } from "./select-context.js";
 
 export interface SelectBaseItemComponentProps<T> {
   /** The item to render. */

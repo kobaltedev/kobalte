@@ -42,13 +42,13 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createMessageFormatter, getReadingDirection, useLocale } from "../i18n";
-import { announce } from "../live-announcer";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { createControllableSignal, createInteractOutside } from "../primitives";
-import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
-import { CalendarContext, CalendarContextValue, CalendarDataSet } from "./calendar-context";
-import { DateAlignment, DateValue } from "./types";
+import { createMessageFormatter, getReadingDirection, useLocale } from "../i18n/index.js";
+import { announce } from "../live-announcer/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { createControllableSignal, createInteractOutside } from "../primitives/index.js";
+import { CALENDAR_INTL_MESSAGES } from "./calendar.intl.js";
+import { CalendarContext, CalendarContextValue, CalendarDataSet } from "./calendar-context.js";
+import { DateAlignment, DateValue } from "./types.js";
 import {
   alignCenter,
   alignDate,
@@ -76,7 +76,7 @@ import {
   isDateInvalid,
   makeCalendarDateRange,
   sortDates,
-} from "./utils";
+} from "./utils.js";
 
 export interface CalendarSingleSelectionOptions {
   /** The selection mode of the calendar. */

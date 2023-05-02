@@ -9,8 +9,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useMenuGroupContext } from "./menu-group-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useMenuGroupContext } from "./menu-group-context.js";
 
 export interface MenuGroupLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
 

@@ -16,9 +16,9 @@ import {
   splitProps,
 } from "solid-js";
 
-import { PopperRoot, PopperRootOptions } from "../popper";
-import { createDisclosureState, createPresence, createRegisterId } from "../primitives";
-import { PopoverContext, PopoverContextValue, PopoverDataSet } from "./popover-context";
+import { PopperRoot, PopperRootOptions } from "../popper/index.js";
+import { createDisclosureState, createPresence, createRegisterId } from "../primitives/index.js";
+import { PopoverContext, PopoverContextValue, PopoverDataSet } from "./popover-context.js";
 
 export interface PopoverRootOptions
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {

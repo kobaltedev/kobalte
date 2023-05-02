@@ -15,11 +15,11 @@ import {
 } from "@kobalte/utils";
 import { createSignal, createUniqueId, splitProps } from "solid-js";
 
-import { createListState, createSelectableList } from "../list";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { CollectionItemWithRef } from "../primitives";
-import { createDomCollection } from "../primitives/create-dom-collection";
-import { AccordionContext, AccordionContextValue } from "./accordion-context";
+import { createListState, createSelectableList } from "../list/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { CollectionItemWithRef } from "../primitives/index.js";
+import { createDomCollection } from "../primitives/create-dom-collection/index.js";
+import { AccordionContext, AccordionContextValue } from "./accordion-context.js";
 
 export interface AccordionRootOptions extends AsChildProp {
   /** The controlled value of the accordion item(s) to expand. */

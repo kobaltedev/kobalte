@@ -8,10 +8,14 @@ import {
 } from "@kobalte/utils";
 import { createUniqueId, JSX, splitProps } from "solid-js";
 
-import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { createControllableSignal, createFormResetListener } from "../primitives";
-import { TextFieldContext, TextFieldContextValue } from "./text-field-context";
+import {
+  createFormControl,
+  FORM_CONTROL_PROP_NAMES,
+  FormControlContext,
+} from "../form-control/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { createControllableSignal, createFormResetListener } from "../primitives/index.js";
+import { TextFieldContext, TextFieldContextValue } from "./text-field-context.js";
 
 export interface TextFieldRootOptions extends AsChildProp {
   /** The controlled value of the textfield. */

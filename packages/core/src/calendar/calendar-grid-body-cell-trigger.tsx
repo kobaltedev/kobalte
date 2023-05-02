@@ -16,12 +16,12 @@ import {
 } from "@kobalte/utils";
 import { createEffect, createMemo, JSX, splitProps } from "solid-js";
 
-import { createDateFormatter } from "../i18n";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useCalendarContext } from "./calendar-context";
-import { useCalendarGriBodyCellContext } from "./calendar-grid-body-cell-context";
-import { useCalendarGridContext } from "./calendar-grid-context";
-import { asRangeValue, getEraFormat, getSelectedDateDescription } from "./utils";
+import { createDateFormatter } from "../i18n/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useCalendarContext } from "./calendar-context.js";
+import { useCalendarGriBodyCellContext } from "./calendar-grid-body-cell-context.js";
+import { useCalendarGridContext } from "./calendar-grid-context.js";
+import { asRangeValue, getEraFormat, getSelectedDateDescription } from "./utils.js";
 
 export interface CalendarGridBodyCellTriggerOptions extends AsChildProp {
   /** Whether the cell trigger is disabled. */

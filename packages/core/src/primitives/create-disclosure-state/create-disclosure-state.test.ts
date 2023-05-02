@@ -1,6 +1,6 @@
 import { createRoot } from "solid-js";
 
-import { createDisclosureState } from "./create-disclosure-state";
+import { createDisclosureState } from "./create-disclosure-state.js";
 
 describe("createDisclosureState", () => {
   it("can be default 'open' (uncontrolled)", () => {

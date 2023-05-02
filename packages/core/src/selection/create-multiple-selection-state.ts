@@ -9,9 +9,14 @@
 import { access, MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, createMemo, createSignal } from "solid-js";
 
-import { createControllableSelectionSignal } from "./create-controllable-selection-signal";
-import { MultipleSelection, MultipleSelectionState, Selection, SelectionBehavior } from "./types";
-import { convertSelection, isSameSelection } from "./utils";
+import { createControllableSelectionSignal } from "./create-controllable-selection-signal.js";
+import {
+  MultipleSelection,
+  MultipleSelectionState,
+  Selection,
+  SelectionBehavior,
+} from "./types.js";
+import { convertSelection, isSameSelection } from "./utils.js";
 
 export interface CreateMultipleSelectionStateProps extends MultipleSelection {
   /** How multiple selection should behave in the collection. */

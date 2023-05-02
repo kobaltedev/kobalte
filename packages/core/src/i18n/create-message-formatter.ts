@@ -10,7 +10,7 @@ import { LocalizedStrings, MessageDictionary, MessageFormatter } from "@internat
 import { access, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createMemo } from "solid-js";
 
-import { useLocale } from "./i18n-provider";
+import { useLocale } from "./i18n-provider.js";
 
 export interface LocalizedMessageFormatter {
   format: (key: string, variables?: { [key: string]: any }) => string;

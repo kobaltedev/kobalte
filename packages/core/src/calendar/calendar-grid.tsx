@@ -10,11 +10,11 @@ import { DateDuration, endOfMonth, startOfWeek, today } from "@internationalized
 import { callHandler, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createMemo, JSX, splitProps } from "solid-js";
 
-import { createDateFormatter } from "../i18n";
-import { Polymorphic } from "../polymorphic";
-import { useCalendarContext } from "./calendar-context";
-import { CalendarGridContext, CalendarGridContextValue } from "./calendar-grid-context";
-import { getVisibleRangeDescription } from "./utils";
+import { createDateFormatter } from "../i18n/index.js";
+import { Polymorphic } from "../polymorphic/index.js";
+import { useCalendarContext } from "./calendar-context.js";
+import { CalendarGridContext, CalendarGridContextValue } from "./calendar-grid-context.js";
+import { getVisibleRangeDescription } from "./utils.js";
 
 export interface CalendarGridOptions {
   /**

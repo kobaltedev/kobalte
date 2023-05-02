@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-stately/collections/src/getItemCount.ts
  */
 
-import { CollectionNode } from "./types";
+import { CollectionNode } from "./types.js";
 
 const cache = new WeakMap<Iterable<unknown>, number>();
 

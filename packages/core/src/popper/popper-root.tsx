@@ -21,8 +21,8 @@ import {
 import { mergeDefaultProps } from "@kobalte/utils";
 import { Accessor, createEffect, createSignal, onCleanup, ParentProps } from "solid-js";
 
-import { useLocale } from "../i18n";
-import { PopperContext, PopperContextValue } from "./popper-context";
+import { useLocale } from "../i18n/index.js";
+import { PopperContext, PopperContextValue } from "./popper-context.js";
 import {
   AnchorRect,
   BasePlacement,
@@ -30,7 +30,7 @@ import {
   getTransformOrigin,
   isValidPlacement,
   Placement,
-} from "./utils";
+} from "./utils.js";
 
 export interface PopperRootOptions {
   /** A ref for the anchor element. */

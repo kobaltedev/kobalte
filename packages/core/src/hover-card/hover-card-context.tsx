@@ -1,6 +1,6 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { CreatePresenceResult } from "../primitives";
+import { CreatePresenceResult } from "../primitives/index.js";
 
 export interface HoverCardDataSet {
   "data-expanded": string | undefined;

@@ -1,3 +1,3 @@
-export * from "./create-collection";
-export * from "./get-item-count";
-export * from "./types";
+export * from "./create-collection.js";
+export * from "./get-item-count.js";
+export * from "./types.js";

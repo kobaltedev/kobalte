@@ -8,7 +8,7 @@
 
 import { render, screen } from "@solidjs/testing-library";
 
-import * as Image from ".";
+import { Image } from "../index.js";
 
 const ROOT_TEST_ID = "image-root";
 const FALLBACK_TEXT = "AB";

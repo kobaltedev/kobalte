@@ -9,9 +9,9 @@
 
 import { ComponentProps, createMemo } from "solid-js";
 
-import { Polymorphic } from "../polymorphic";
-import { useCalendarContext } from "./calendar-context";
-import { getVisibleRangeDescription } from "./utils";
+import { Polymorphic } from "../polymorphic/index.js";
+import { useCalendarContext } from "./calendar-context.js";
+import { getVisibleRangeDescription } from "./utils.js";
 
 export type CalendarHeadingProps = ComponentProps<"h2">;
 

@@ -8,7 +8,7 @@
 
 import { isAppleDevice, isMac } from "@kobalte/utils";
 
-import { Selection } from "./types";
+import { Selection } from "./types.js";
 
 interface Event {
   altKey: boolean;

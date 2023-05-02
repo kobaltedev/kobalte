@@ -1,9 +1,9 @@
 import { callHandler, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { FormControlLabel } from "../form-control";
-import { AsChildProp } from "../polymorphic";
-import { useSelectContext } from "./select-context";
+import { FormControlLabel } from "../form-control/index.js";
+import { AsChildProp } from "../polymorphic/index.js";
+import { useSelectContext } from "./select-context.js";
 
 export interface SelectLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
 

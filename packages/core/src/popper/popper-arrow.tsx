@@ -10,9 +10,9 @@
 import { getWindow, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, createEffect, createSignal, JSX, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { usePopperContext } from "./popper-context";
-import { BasePlacement } from "./utils";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { usePopperContext } from "./popper-context.js";
+import { BasePlacement } from "./utils.js";
 
 const DEFAULT_SIZE = 30;
 const HALF_DEFAULT_SIZE = DEFAULT_SIZE / 2;

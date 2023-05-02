@@ -17,24 +17,29 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createListState } from "../list";
-import { PopperRoot, PopperRootOptions } from "../popper";
-import { Placement } from "../popper/utils";
+import { createListState } from "../list/index.js";
+import { PopperRoot, PopperRootOptions } from "../popper/index.js";
+import { Placement } from "../popper/utils.js";
 import {
   CollectionItemWithRef,
   createDisclosureState,
   createHideOutside,
   createPresence,
   createRegisterId,
-} from "../primitives";
+} from "../primitives/index.js";
 import {
   createDomCollection,
   useOptionalDomCollectionContext,
-} from "../primitives/create-dom-collection";
-import { FocusStrategy } from "../selection";
-import { MenuContext, MenuContextValue, MenuDataSet, useOptionalMenuContext } from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
-import { GraceIntent, isPointerInGraceArea, Side } from "./utils";
+} from "../primitives/create-dom-collection/index.js";
+import { FocusStrategy } from "../selection/index.js";
+import {
+  MenuContext,
+  MenuContextValue,
+  MenuDataSet,
+  useOptionalMenuContext,
+} from "./menu-context.js";
+import { useMenuRootContext } from "./menu-root-context.js";
+import { GraceIntent, isPointerInGraceArea, Side } from "./utils.js";
 
 export interface MenuOptions
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {

@@ -8,7 +8,7 @@
 
 import { isServer } from "solid-js/web";
 
-import { ColorModeStorageManager, MaybeConfigColorMode } from "./types";
+import { ColorModeStorageManager, MaybeConfigColorMode } from "./types.js";
 
 export const COLOR_MODE_STORAGE_KEY = "kb-color-mode";
 

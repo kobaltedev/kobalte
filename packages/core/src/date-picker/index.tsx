@@ -32,41 +32,44 @@ import {
   Heading as CalendarHeading,
   NextTrigger as CalendarNextTrigger,
   PrevTrigger as CalendarPrevTrigger,
-} from "../calendar";
+} from "../calendar/index.js";
 import {
   FormControlDescription as Description,
   type FormControlDescriptionProps as DatePickerDescriptionProps,
   FormControlErrorMessage as ErrorMessage,
   type FormControlErrorMessageOptions as DatePickerErrorMessageOptions,
   type FormControlErrorMessageProps as DatePickerErrorMessageProps,
-} from "../form-control";
+} from "../form-control/index.js";
 import {
   PopperArrow as Arrow,
   type PopperArrowOptions as DatePickerArrowOptions,
   type PopperArrowProps as DatePickerArrowProps,
-} from "../popper";
+} from "../popper/index.js";
 import {
   DatePickerCalendar as Calendar,
   type DatePickerCalendarOptions,
   type DatePickerCalendarProps,
-} from "./date-picker-calendar";
+} from "./date-picker-calendar.js";
 import {
   DatePickerContent as Content,
   type DatePickerContentOptions,
   type DatePickerContentProps,
-} from "./date-picker-content";
+} from "./date-picker-content.js";
 import {
   DatePickerControl as Control,
   type DatePickerControlOptions,
   type DatePickerControlProps,
-} from "./date-picker-control";
-import { DatePickerPortal as Portal, type DatePickerPortalProps } from "./date-picker-portal";
+} from "./date-picker-control.js";
+import { DatePickerPortal as Portal, type DatePickerPortalProps } from "./date-picker-portal.js";
 import {
   DatePickerRoot as Root,
   type DatePickerRootOptions,
   type DatePickerRootProps,
-} from "./date-picker-root";
-import { DatePickerTrigger as Trigger, type DatePickerTriggerProps } from "./date-picker-trigger";
+} from "./date-picker-root.js";
+import {
+  DatePickerTrigger as Trigger,
+  type DatePickerTriggerProps,
+} from "./date-picker-trigger.js";
 
 export type {
   DatePickerArrowOptions,

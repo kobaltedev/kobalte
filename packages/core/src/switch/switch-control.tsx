@@ -1,7 +1,7 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useSwitchContext } from "./switch-context";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useSwitchContext } from "./switch-context.js";
 
 export interface SwitchControlProps extends OverrideComponentProps<"div", AsChildProp> {}
 

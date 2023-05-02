@@ -15,12 +15,12 @@
 import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
-import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
-import { createMessageFormatter } from "../i18n";
-import { TOAST_HOTKEY_PLACEHOLDER, TOAST_INTL_MESSAGES } from "./toast.intl";
-import { ToastRegionContext, ToastRegionContextValue } from "./toast-region-context";
-import { toastStore } from "./toast-store";
-import { ToastSwipeDirection } from "./types";
+import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack.js";
+import { createMessageFormatter } from "../i18n/index.js";
+import { TOAST_HOTKEY_PLACEHOLDER, TOAST_INTL_MESSAGES } from "./toast.intl.js";
+import { ToastRegionContext, ToastRegionContextValue } from "./toast-region-context.js";
+import { toastStore } from "./toast-store.js";
+import { ToastSwipeDirection } from "./types.js";
 
 export interface ToastRegionOptions {
   /**

@@ -1,7 +1,7 @@
 import { ComponentProps, Show } from "solid-js";
 import { Portal } from "solid-js/web";
 
-import { useDatePickerContext } from "./date-picker-context";
+import { useDatePickerContext } from "./date-picker-context.js";
 
 export interface DatePickerPortalProps extends ComponentProps<typeof Portal> {}
 

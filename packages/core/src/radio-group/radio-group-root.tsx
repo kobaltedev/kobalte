@@ -17,10 +17,14 @@ import {
 } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
 
-import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { createControllableSignal, createFormResetListener } from "../primitives";
-import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context";
+import {
+  createFormControl,
+  FORM_CONTROL_PROP_NAMES,
+  FormControlContext,
+} from "../form-control/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { createControllableSignal, createFormResetListener } from "../primitives/index.js";
+import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context.js";
 
 export interface RadioGroupRootOptions extends AsChildProp {
   /** The controlled value of the radio button to check. */

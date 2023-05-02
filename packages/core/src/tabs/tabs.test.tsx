@@ -10,7 +10,7 @@ import { createPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
 
-import * as Tabs from ".";
+import { Tabs } from "../index.js";
 
 describe("Tabs", function () {
   // Make userEvent work with jest fakeTimers

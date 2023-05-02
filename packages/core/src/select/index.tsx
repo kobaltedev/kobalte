@@ -4,7 +4,7 @@ import {
   FormControlErrorMessage as ErrorMessage,
   type FormControlErrorMessageOptions as SelectErrorMessageOptions,
   type FormControlErrorMessageProps as SelectErrorMessageProps,
-} from "../form-control";
+} from "../form-control/index.js";
 import {
   Item,
   ItemDescription,
@@ -18,42 +18,42 @@ import {
   type ListboxItemProps as SelectItemProps,
   type ListboxSectionProps as SelectSectionProps,
   Section,
-} from "../listbox";
+} from "../listbox/index.js";
 import {
   PopperArrow as Arrow,
   type PopperArrowOptions as SelectArrowOptions,
   type PopperArrowProps as SelectArrowProps,
-} from "../popper";
+} from "../popper/index.js";
 import {
   type SelectBaseItemComponentProps as SelectRootItemComponentProps,
   type SelectBaseSectionComponentProps as SelectRootSectionComponentProps,
-} from "./select-base";
+} from "./select-base.js";
 import {
   SelectContent as Content,
   type SelectContentOptions,
   type SelectContentProps,
-} from "./select-content";
+} from "./select-content.js";
 import {
   SelectHiddenSelect as HiddenSelect,
   type SelectHiddenSelectProps,
-} from "./select-hidden-select";
-import { SelectIcon as Icon, type SelectIconProps } from "./select-icon";
-import { SelectLabel as Label, type SelectLabelProps } from "./select-label";
+} from "./select-hidden-select.js";
+import { SelectIcon as Icon, type SelectIconProps } from "./select-icon.js";
+import { SelectLabel as Label, type SelectLabelProps } from "./select-label.js";
 import {
   SelectListbox as Listbox,
   type SelectListboxOptions,
   type SelectListboxProps,
-} from "./select-listbox";
-import { SelectPortal as Portal, type SelectPortalProps } from "./select-portal";
+} from "./select-listbox.js";
+import { SelectPortal as Portal, type SelectPortalProps } from "./select-portal.js";
 import {
   type SelectMultipleSelectionOptions,
   SelectRoot as Root,
   type SelectRootOptions,
   type SelectRootProps,
   type SelectSingleSelectionOptions,
-} from "./select-root";
-import { SelectTrigger as Trigger, type SelectTriggerProps } from "./select-trigger";
-import { SelectValue as Value, type SelectValueProps } from "./select-value";
+} from "./select-root.js";
+import { SelectTrigger as Trigger, type SelectTriggerProps } from "./select-trigger.js";
+import { SelectValue as Value, type SelectValueProps } from "./select-value.js";
 
 export type {
   SelectArrowOptions,

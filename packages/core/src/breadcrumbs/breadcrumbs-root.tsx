@@ -9,10 +9,10 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { createMessageFormatter } from "../i18n";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { BREADCRUMBS_INTL_MESSAGES } from "./breadcrumbs.intl";
-import { BreadcrumbsContext, BreadcrumbsContextValue } from "./breadcrumbs-context";
+import { createMessageFormatter } from "../i18n/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { BREADCRUMBS_INTL_MESSAGES } from "./breadcrumbs.intl.js";
+import { BreadcrumbsContext, BreadcrumbsContextValue } from "./breadcrumbs-context.js";
 
 export interface BreadcrumbsRootOptions extends AsChildProp {
   /**

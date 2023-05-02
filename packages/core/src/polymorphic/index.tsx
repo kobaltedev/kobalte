@@ -1,1 +1,1 @@
-export * from "./polymorphic";
+export * from "./polymorphic.js";

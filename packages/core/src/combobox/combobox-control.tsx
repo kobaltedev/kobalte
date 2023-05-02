@@ -1,9 +1,9 @@
 import { isFunction, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, children, JSX, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { Polymorphic } from "../polymorphic";
-import { useComboboxContext } from "./combobox-context";
+import { useFormControlContext } from "../form-control/index.js";
+import { Polymorphic } from "../polymorphic/index.js";
+import { useComboboxContext } from "./combobox-context.js";
 
 export interface ComboboxControlState<T> {
   /** The selected options. */

@@ -10,9 +10,9 @@
 import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, on, splitProps } from "solid-js";
 
-import { AsChildProp } from "../polymorphic";
-import { useTextFieldContext } from "./text-field-context";
-import { TextFieldInputBase } from "./text-field-input";
+import { AsChildProp } from "../polymorphic/index.js";
+import { useTextFieldContext } from "./text-field-context.js";
+import { TextFieldInputBase } from "./text-field-input.js";
 
 export interface TextFieldTextAreaOptions extends AsChildProp {
   /** Whether the textarea should adjust its height when the value changes. */
