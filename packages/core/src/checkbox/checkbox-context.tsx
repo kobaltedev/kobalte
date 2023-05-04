@@ -6,7 +6,6 @@ export interface CheckboxDataSet {
 }
 
 export interface CheckboxContextValue {
-  name: Accessor<string | undefined>;
   value: Accessor<string>;
   dataset: Accessor<CheckboxDataSet>;
   checked: Accessor<boolean>;

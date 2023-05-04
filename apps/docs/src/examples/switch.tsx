@@ -1,4 +1,5 @@
 import { Switch } from "@kobalte/core";
+import { clsx } from "clsx";
 import { createSignal } from "solid-js";
 
 import style from "./switch.module.css";
@@ -41,6 +42,47 @@ export function ControlledExample() {
       </Switch.Root>
       <p class="not-prose text-sm mt-2">Airplane mode is {checked() ? "active" : "inactive"}.</p>
     </>
+  );
+}
+
+export function DescriptionExample() {
+  return (
+    <Switch.Root class={style["switch"]}>
+      <div class="flex flex-col items-start  mr-2">
+        <Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
+        <Switch.Description class={style["switch__description"]}>
+          Disable all network connections.
+        </Switch.Description>
+      </div>
+      <Switch.Input class={style["switch__input"]} />
+      <Switch.Control class={style["switch__control"]}>
+        <Switch.Thumb class={style["switch__thumb"]} />
+      </Switch.Control>
+    </Switch.Root>
+  );
+}
+
+export function ErrorMessageExample() {
+  const [checked, setChecked] = createSignal(false);
+
+  return (
+    <Switch.Root
+      class={style["switch"]}
+      checked={checked()}
+      onChange={setChecked}
+      validationState={!checked() ? "invalid" : "valid"}
+    >
+      <div class="flex flex-col items-start mr-2">
+        <Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
+        <Switch.ErrorMessage class={style["switch__error-message"]}>
+          You must enable airplane mode.
+        </Switch.ErrorMessage>
+      </div>
+      <Switch.Input class={style["switch__input"]} />
+      <Switch.Control class={style["switch__control"]}>
+        <Switch.Thumb class={style["switch__thumb"]} />
+      </Switch.Control>
+    </Switch.Root>
   );
 }
 

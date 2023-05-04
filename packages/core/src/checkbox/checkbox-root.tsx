@@ -116,9 +116,8 @@ export function CheckboxRoot(props: CheckboxRootProps) {
       "value",
       "checked",
       "defaultChecked",
-      "onChange",
-      "value",
       "indeterminate",
+      "onChange",
       "onPointerDown",
     ],
     FORM_CONTROL_PROP_NAMES
@@ -156,7 +155,6 @@ export function CheckboxRoot(props: CheckboxRootProps) {
   }));
 
   const context: CheckboxContextValue = {
-    name: () => formControlContext.name(),
     value: () => local.value!,
     dataset,
     checked: () => state.isSelected(),

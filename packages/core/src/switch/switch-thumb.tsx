@@ -1,5 +1,6 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
+import { useFormControlContext } from "../form-control";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useSwitchContext } from "./switch-context";
 
@@ -9,6 +10,7 @@ export interface SwitchThumbProps extends OverrideComponentProps<"div", AsChildP
  * The thumb that is used to visually indicate whether the switch is on or off.
  */
 export function SwitchThumb(props: SwitchThumbProps) {
+  const formControlContext = useFormControlContext();
   const context = useSwitchContext();
 
   props = mergeDefaultProps(
@@ -18,5 +20,7 @@ export function SwitchThumb(props: SwitchThumbProps) {
     props
   );
 
-  return <Polymorphic as="div" {...context.dataset()} {...props} />;
+  return (
+    <Polymorphic as="div" {...formControlContext.dataset()} {...context.dataset()} {...props} />
+  );
 }

@@ -101,7 +101,7 @@ export function CheckboxInput(props: CheckboxInputProps) {
       ref={mergeRefs(el => (ref = el), local.ref)}
       type="checkbox"
       id={fieldProps.id()}
-      name={context.name()}
+      name={formControlContext.name()}
       value={context.value()}
       checked={context.checked()}
       required={formControlContext.isRequired()}
