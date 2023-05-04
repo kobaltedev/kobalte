@@ -104,6 +104,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Radio Group",
         href: "/docs/core/components/radio-group",
+        status: "updated",
       },
       {
         title: "Select",
