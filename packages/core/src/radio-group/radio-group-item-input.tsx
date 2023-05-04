@@ -12,7 +12,7 @@ import {
   OverrideComponentProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { useRadioGroupContext } from "./radio-group-context";
@@ -54,6 +54,7 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
     return (
       [
         local["aria-labelledby"],
+        radioContext.labelId(),
         // If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
         local["aria-labelledby"] != null && others["aria-label"] != null ? others.id : undefined,
       ]
@@ -64,8 +65,9 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
 
   const ariaDescribedBy = () => {
     return (
-      [local["aria-describedby"], radioGroupContext.ariaDescribedBy()].filter(Boolean).join(" ") ||
-      undefined
+      [local["aria-describedby"], radioContext.descriptionId(), radioGroupContext.ariaDescribedBy()]
+        .filter(Boolean)
+        .join(" ") || undefined
     );
   };
 
@@ -97,6 +99,8 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
     callHandler(e, local.onBlur);
     radioContext.setIsFocused(false);
   };
+
+  createEffect(() => onCleanup(radioContext.registerInput(others.id!)));
 
   return (
     <input

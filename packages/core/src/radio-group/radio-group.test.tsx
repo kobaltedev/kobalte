@@ -168,6 +168,107 @@ describe("RadioGroup", () => {
     expect(inputs[2].checked).toBeFalsy();
   });
 
+  it("can select value by clicking on the item control", async () => {
+    const onChangeSpy = jest.fn();
+
+    render(() => (
+      <RadioGroup.Root onChange={onChangeSpy}>
+        <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+        <div>
+          <RadioGroup.Item value="dogs">
+            <RadioGroup.ItemInput />
+            <RadioGroup.ItemControl />
+            <RadioGroup.ItemLabel>Dogs</RadioGroup.ItemLabel>
+          </RadioGroup.Item>
+          <RadioGroup.Item value="cats">
+            <RadioGroup.ItemInput />
+            <RadioGroup.ItemControl />
+            <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
+          </RadioGroup.Item>
+          <RadioGroup.Item value="dragons">
+            <RadioGroup.ItemInput />
+            <RadioGroup.ItemControl data-testid="dragons-control" />
+            <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
+          </RadioGroup.Item>
+        </div>
+      </RadioGroup.Root>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup");
+    const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
+
+    expect(radioGroup).toBeTruthy();
+    expect(inputs.length).toBe(3);
+    expect(onChangeSpy).not.toHaveBeenCalled();
+
+    expect(inputs[0].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeFalsy();
+
+    const dragonsControl = screen.getByTestId("dragons-control");
+
+    fireEvent.click(dragonsControl);
+    await Promise.resolve();
+
+    expect(onChangeSpy).toHaveBeenCalledTimes(1);
+    expect(onChangeSpy).toHaveBeenCalledWith("dragons");
+
+    expect(inputs[0].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeTruthy();
+  });
+
+  it("can select value by pressing the Space key on the item control", async () => {
+    const onChangeSpy = jest.fn();
+
+    render(() => (
+      <RadioGroup.Root onChange={onChangeSpy}>
+        <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+        <div>
+          <RadioGroup.Item value="dogs">
+            <RadioGroup.ItemInput />
+            <RadioGroup.ItemControl />
+            <RadioGroup.ItemLabel>Dogs</RadioGroup.ItemLabel>
+          </RadioGroup.Item>
+          <RadioGroup.Item value="cats">
+            <RadioGroup.ItemInput />
+            <RadioGroup.ItemControl />
+            <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
+          </RadioGroup.Item>
+          <RadioGroup.Item value="dragons">
+            <RadioGroup.ItemInput />
+            <RadioGroup.ItemControl data-testid="dragons-control" />
+            <RadioGroup.ItemLabel>Dragons</RadioGroup.ItemLabel>
+          </RadioGroup.Item>
+        </div>
+      </RadioGroup.Root>
+    ));
+
+    const radioGroup = screen.getByRole("radiogroup");
+    const inputs = screen.getAllByRole("radio") as HTMLInputElement[];
+
+    expect(radioGroup).toBeTruthy();
+    expect(inputs.length).toBe(3);
+    expect(onChangeSpy).not.toHaveBeenCalled();
+
+    expect(inputs[0].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeFalsy();
+
+    const dragonsControl = screen.getByTestId("dragons-control");
+
+    fireEvent.keyDown(dragonsControl, { key: " " });
+    fireEvent.keyUp(dragonsControl, { key: " " });
+    await Promise.resolve();
+
+    expect(onChangeSpy).toHaveBeenCalledTimes(1);
+    expect(onChangeSpy).toHaveBeenCalledWith("dragons");
+
+    expect(inputs[0].checked).toBeFalsy();
+    expect(inputs[1].checked).toBeFalsy();
+    expect(inputs[2].checked).toBeTruthy();
+  });
+
   it("name can be controlled", () => {
     render(() => (
       <RadioGroup.Root name="test-name">
@@ -381,6 +482,29 @@ describe("RadioGroup", () => {
 
     // check that generated ids are unique
     expect(description.id).not.toBe(radioGroup.id);
+  });
+
+  it("supports visible description on single radio", () => {
+    render(() => (
+      <RadioGroup.Root>
+        <RadioGroup.Label>Favorite Pet</RadioGroup.Label>
+        <div>
+          <RadioGroup.Item value="dogs">
+            <RadioGroup.ItemInput />
+            <RadioGroup.ItemControl />
+            <RadioGroup.ItemLabel>Dogs</RadioGroup.ItemLabel>
+            <RadioGroup.ItemDescription>Description</RadioGroup.ItemDescription>
+          </RadioGroup.Item>
+        </div>
+      </RadioGroup.Root>
+    ));
+
+    const radio = screen.getByRole("radio");
+    const itemDescription = screen.getByText("Description");
+
+    expect(itemDescription.id).toBeDefined();
+    expect(radio.id).toBeDefined();
+    expect(radio).toHaveAttribute("aria-describedby", itemDescription.id);
   });
 
   it("supports 'aria-describedby'", () => {
@@ -893,9 +1017,8 @@ describe("RadioGroup", () => {
     expect(inputs[1]).toHaveAttribute("disabled");
     expect(inputs[2]).not.toHaveAttribute("disabled");
 
-    // have to click label or it won't work
-    const dogsLabel = screen.getByLabelText("Dogs").parentElement as HTMLLabelElement;
-    const catsLabel = screen.getByLabelText("Cats").parentElement as HTMLLabelElement;
+    const dogsLabel = screen.getByText("Dogs") as HTMLLabelElement;
+    const catsLabel = screen.getByText("Cats") as HTMLLabelElement;
 
     fireEvent.click(catsLabel);
     await Promise.resolve();
@@ -1155,14 +1278,15 @@ describe("RadioGroup", () => {
           <RadioGroup.Item value="cats">
             <RadioGroup.ItemInput aria-labelledby="foo" />
             <RadioGroup.ItemControl />
-            <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
+            <RadioGroup.ItemLabel data-testid="radio-label">Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </RadioGroup.Root>
       ));
 
+      const radioLabel = screen.getByTestId("radio-label");
       const radio = screen.getByRole("radio");
 
-      expect(radio).toHaveAttribute("aria-labelledby", "foo");
+      expect(radio).toHaveAttribute("aria-labelledby", `foo ${radioLabel.id}`);
     });
 
     it("should combine 'aria-label' and 'aria-labelledby'", () => {
@@ -1171,14 +1295,15 @@ describe("RadioGroup", () => {
           <RadioGroup.Item value="cats">
             <RadioGroup.ItemInput aria-label="Label" aria-labelledby="foo" />
             <RadioGroup.ItemControl />
-            <RadioGroup.ItemLabel>Cats</RadioGroup.ItemLabel>
+            <RadioGroup.ItemLabel data-testid="radio-label">Cats</RadioGroup.ItemLabel>
           </RadioGroup.Item>
         </RadioGroup.Root>
       ));
 
+      const radioLabel = screen.getByTestId("radio-label");
       const radio = screen.getByRole("radio");
 
-      expect(radio).toHaveAttribute("aria-labelledby", `foo ${radio.id}`);
+      expect(radio).toHaveAttribute("aria-labelledby", `foo ${radioLabel.id} ${radio.id}`);
     });
 
     it("supports 'aria-describedby'", () => {
