@@ -1,5 +1,16 @@
 # @kobalte/core
 
+## 0.9.5
+
+### Patch Changes
+
+- db7cc8d: fix:
+
+  - #205
+  - #206
+  - #207
+  - remove Kobalte UI colors
+
 ## 0.9.4
 
 ### Patch Changes

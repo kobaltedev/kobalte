@@ -1,5 +1,16 @@
 # @kobalte/tailwindcss
 
+## 0.6.5
+
+### Patch Changes
+
+- db7cc8d: fix:
+
+  - #205
+  - #206
+  - #207
+  - remove Kobalte UI colors
+
 ## 0.6.4
 
 ### Patch Changes
