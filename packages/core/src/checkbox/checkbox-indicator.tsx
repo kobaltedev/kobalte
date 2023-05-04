@@ -1,6 +1,7 @@
 import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 
+import { useFormControlContext } from "../form-control";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createPresence } from "../primitives";
 import { useCheckboxContext } from "./checkbox-context";
@@ -21,6 +22,7 @@ export interface CheckboxIndicatorProps
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
 export function CheckboxIndicator(props: CheckboxIndicatorProps) {
+  const formControlContext = useFormControlContext();
   const context = useCheckboxContext();
 
   props = mergeDefaultProps(
@@ -41,6 +43,7 @@ export function CheckboxIndicator(props: CheckboxIndicatorProps) {
       <Polymorphic
         as="div"
         ref={mergeRefs(presence.setRef, local.ref)}
+        {...formControlContext.dataset()}
         {...context.dataset()}
         {...others}
       />

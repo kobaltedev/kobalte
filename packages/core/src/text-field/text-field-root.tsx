@@ -14,7 +14,7 @@ import { createControllableSignal, createFormResetListener } from "../primitives
 import { TextFieldContext, TextFieldContextValue } from "./text-field-context";
 
 export interface TextFieldRootOptions extends AsChildProp {
-  /** The controlled value of the textfield. */
+  /** The controlled value of the text field. */
   value?: string;
 
   /**
@@ -23,7 +23,7 @@ export interface TextFieldRootOptions extends AsChildProp {
    */
   defaultValue?: string;
 
-  /** Event handler called when the value of the textfield changes. */
+  /** Event handler called when the value of the text field changes. */
   onChange?: (value: string) => void;
 
   /**
@@ -34,21 +34,21 @@ export interface TextFieldRootOptions extends AsChildProp {
   id?: string;
 
   /**
-   * The name of the textfield.
-   * Submitted with its owning form as part of a name/value pair.
+   * The name of the text field, used when submitting an HTML form.
+   * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).
    */
   name?: string;
 
-  /** Whether the textfield should display its "valid" or "invalid" visual styling. */
+  /** Whether the text field should display its "valid" or "invalid" visual styling. */
   validationState?: ValidationState;
 
-  /** Whether the user must fill the textfield before the owning form can be submitted. */
+  /** Whether the user must fill the text field before the owning form can be submitted. */
   required?: boolean;
 
-  /** Whether the textfield is disabled. */
+  /** Whether the text field is disabled. */
   disabled?: boolean;
 
-  /** Whether the textfield is read only. */
+  /** Whether the text field is read only. */
   readOnly?: boolean;
 }
 
@@ -96,7 +96,7 @@ export function TextFieldRoot(props: TextFieldRootProps) {
     // even if an input is controlled (ex: `<input value="foo" />`,
     // typing on the input will change its internal `value`.
     //
-    // To prevent this, we need to force the input `value` to be in sync with the textfield value state.
+    // To prevent this, we need to force the input `value` to be in sync with the text field value state.
     target.value = value() ?? "";
   };
 

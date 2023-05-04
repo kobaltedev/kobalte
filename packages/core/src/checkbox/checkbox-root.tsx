@@ -7,6 +7,7 @@
  */
 
 import {
+  access,
   callHandler,
   createGenerateId,
   isFunction,
@@ -25,6 +26,8 @@ import {
   splitProps,
 } from "solid-js";
 
+import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
+import { Polymorphic } from "../polymorphic";
 import { createFormResetListener, createToggleState } from "../primitives";
 import { CheckboxContext, CheckboxContextValue, CheckboxDataSet } from "./checkbox-context";
 
@@ -57,16 +60,16 @@ export interface CheckboxRootOptions {
   indeterminate?: boolean;
 
   /**
-   * The name of the checkbox, used when submitting an HTML form.
-   * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).
-   */
-  name?: string;
-
-  /**
    * The value of the checkbox, used when submitting an HTML form.
    * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefvalue).
    */
   value?: string;
+
+  /**
+   * The name of the checkbox, used when submitting an HTML form.
+   * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).
+   */
+  name?: string;
 
   /** Whether the checkbox should display its "valid" or "invalid" visual styling. */
   validationState?: ValidationState;
@@ -87,13 +90,13 @@ export interface CheckboxRootOptions {
   children?: JSX.Element | ((state: CheckboxRootState) => JSX.Element);
 }
 
-export interface CheckboxRootProps extends OverrideComponentProps<"label", CheckboxRootOptions> {}
+export interface CheckboxRootProps extends OverrideComponentProps<"div", CheckboxRootOptions> {}
 
 /**
  * A control that allows the user to toggle between checked and not checked.
  */
 export function CheckboxRoot(props: CheckboxRootProps) {
-  let ref: HTMLLabelElement | undefined;
+  let ref: HTMLDivElement | undefined;
 
   const defaultId = `checkbox-${createUniqueId()}`;
 
@@ -105,31 +108,32 @@ export function CheckboxRoot(props: CheckboxRootProps) {
     props
   );
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    "children",
-    "value",
-    "checked",
-    "defaultChecked",
-    "onChange",
-    "name",
-    "value",
-    "validationState",
-    "required",
-    "disabled",
-    "readOnly",
-    "indeterminate",
-    "onPointerDown",
-  ]);
+  const [local, formControlProps, others] = splitProps(
+    props,
+    [
+      "ref",
+      "children",
+      "value",
+      "checked",
+      "defaultChecked",
+      "onChange",
+      "value",
+      "indeterminate",
+      "onPointerDown",
+    ],
+    FORM_CONTROL_PROP_NAMES
+  );
 
   const [isFocused, setIsFocused] = createSignal(false);
+
+  const { formControlContext } = createFormControl(formControlProps);
 
   const state = createToggleState({
     isSelected: () => local.checked,
     defaultIsSelected: () => local.defaultChecked,
     onSelectedChange: selected => local.onChange?.(selected),
-    isDisabled: () => local.disabled,
-    isReadOnly: () => local.readOnly,
+    isDisabled: () => formControlContext.isDisabled(),
+    isReadOnly: () => formControlContext.isReadOnly(),
   });
 
   createFormResetListener(
@@ -147,41 +151,39 @@ export function CheckboxRoot(props: CheckboxRootProps) {
   };
 
   const dataset: Accessor<CheckboxDataSet> = createMemo(() => ({
-    "data-valid": local.validationState === "valid" ? "" : undefined,
-    "data-invalid": local.validationState === "invalid" ? "" : undefined,
     "data-checked": state.isSelected() ? "" : undefined,
     "data-indeterminate": local.indeterminate ? "" : undefined,
-    "data-required": local.required ? "" : undefined,
-    "data-disabled": local.disabled ? "" : undefined,
-    "data-readonly": local.readOnly ? "" : undefined,
   }));
 
   const context: CheckboxContextValue = {
-    name: () => local.name ?? others.id!,
+    name: () => formControlContext.name(),
     value: () => local.value!,
     dataset,
-    validationState: () => local.validationState,
     checked: () => state.isSelected(),
-    required: () => local.required ?? false,
-    disabled: () => local.disabled ?? false,
-    readOnly: () => local.readOnly ?? false,
     indeterminate: () => local.indeterminate ?? false,
-    generateId: createGenerateId(() => others.id!),
+    generateId: createGenerateId(() => access(formControlProps.id)!),
+    toggle: () => state.toggle(),
     setIsChecked: isChecked => state.setIsSelected(isChecked),
     setIsFocused,
   };
 
   return (
-    <CheckboxContext.Provider value={context}>
-      <label
-        ref={mergeRefs(el => (ref = el), local.ref)}
-        onPointerDown={onPointerDown}
-        {...dataset()}
-        {...others}
-      >
-        <CheckboxRootChild state={context} children={local.children} />
-      </label>
-    </CheckboxContext.Provider>
+    <FormControlContext.Provider value={formControlContext}>
+      <CheckboxContext.Provider value={context}>
+        <Polymorphic
+          as="div"
+          ref={mergeRefs(el => (ref = el), local.ref)}
+          role="group"
+          id={access(formControlProps.id)}
+          onPointerDown={onPointerDown}
+          {...formControlContext.dataset()}
+          {...dataset()}
+          {...others}
+        >
+          <CheckboxRootChild state={context} children={local.children} />
+        </Polymorphic>
+      </CheckboxContext.Provider>
+    </FormControlContext.Provider>
   );
 }
 
