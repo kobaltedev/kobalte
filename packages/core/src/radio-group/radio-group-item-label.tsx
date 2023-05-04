@@ -1,9 +1,9 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
+import { ComponentProps, createEffect, onCleanup } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useRadioGroupItemContext } from "./radio-group-item-context";
 
-export interface RadioGroupItemLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
+export interface RadioGroupItemLabelProps extends ComponentProps<"label"> {}
 
 /**
  * The label that gives the user information on the radio button.
@@ -18,5 +18,7 @@ export function RadioGroupItemLabel(props: RadioGroupItemLabelProps) {
     props
   );
 
-  return <Polymorphic as="span" {...context.dataset()} {...props} />;
+  createEffect(() => onCleanup(context.registerLabel(props.id!)));
+
+  return <label for={context.inputId()} {...context.dataset()} {...props} />;
 }

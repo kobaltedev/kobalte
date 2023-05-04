@@ -42,6 +42,7 @@ The radio item consists of:
 - **RadioGroup.ItemControl**: The element that visually represents a radio button.
 - **RadioGroup.ItemIndicator**: The visual indicator rendered when the radio button is in a checked state.
 - **RadioGroup.ItemLabel**: The label that gives the user information on the radio button.
+- **RadioGroup.ItemDescription**: The description that gives the user more information on the radio button.
 
 ```tsx
 <RadioGroup.Root>
@@ -52,6 +53,7 @@ The radio item consists of:
       <RadioGroup.ItemIndicator />
     </RadioGroup.ItemControl>
     <RadioGroup.ItemLabel />
+    <RadioGroup.ItemDescription />
   </RadioGroup.Item>
   <RadioGroup.Description />
   <RadioGroup.ErrorMessage />
@@ -374,17 +376,18 @@ function HTMLFormExample() {
 
 ## Rendered elements
 
-| Component                  | Default rendered element |
-| :------------------------- | :----------------------- |
-| `RadioGroup.Root`          | `div`                    |
-| `RadioGroup.Label`         | `span`                   |
-| `RadioGroup.Description`   | `div`                    |
-| `RadioGroup.ErrorMessage`  | `div`                    |
-| `RadioGroup.Item`          | `label`                  |
-| `RadioGroup.ItemInput`     | `input`                  |
-| `RadioGroup.ItemControl`   | `div`                    |
-| `RadioGroup.ItemIndicator` | `div`                    |
-| `RadioGroup.ItemLabel`     | `span`                   |
+| Component                    | Default rendered element |
+| :--------------------------- | :----------------------- |
+| `RadioGroup.Root`            | `div`                    |
+| `RadioGroup.Label`           | `span`                   |
+| `RadioGroup.Description`     | `div`                    |
+| `RadioGroup.ErrorMessage`    | `div`                    |
+| `RadioGroup.Item`            | `div`                    |
+| `RadioGroup.ItemInput`       | `input`                  |
+| `RadioGroup.ItemControl`     | `div`                    |
+| `RadioGroup.ItemIndicator`   | `div`                    |
+| `RadioGroup.ItemLabel`       | `label`                  |
+| `RadioGroup.ItemDescription` | `div`                    |
 
 ## Accessibility
 

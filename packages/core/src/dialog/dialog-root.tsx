@@ -34,6 +34,9 @@ export interface DialogRootOptions {
    */
   modal?: boolean;
 
+  /** Whether the scroll should be locked even if the dialog is not modal. */
+  preventScroll?: boolean;
+
   /**
    * Used to force mounting the dialog (portal, overlay and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -53,6 +56,7 @@ export function DialogRoot(props: DialogRootProps) {
     {
       id: defaultId,
       modal: true,
+      preventScroll: false,
     },
     props
   );
@@ -76,7 +80,8 @@ export function DialogRoot(props: DialogRootProps) {
 
   const context: DialogContextValue = {
     isOpen: disclosureState.isOpen,
-    modal: () => props.modal!,
+    modal: () => props.modal ?? true,
+    preventScroll: () => props.preventScroll ?? false,
     contentId,
     titleId,
     descriptionId,

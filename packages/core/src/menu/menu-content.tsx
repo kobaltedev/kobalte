@@ -20,7 +20,7 @@ export function MenuContent(props: MenuContentProps) {
 
   createPreventScroll({
     ownerRef: () => ref,
-    isDisabled: () => !(context.isOpen() && rootContext.isModal()),
+    isDisabled: () => !(context.isOpen() && (rootContext.isModal() || rootContext.preventScroll())),
   });
 
   return <MenuContentBase ref={mergeRefs(el => (ref = el), local.ref)} {...others} />;

@@ -1,9 +1,7 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { FormControlLabel, FormControlLabelProps } from "../form-control";
 import { useSwitchContext } from "./switch-context";
 
-export interface SwitchLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
+export interface SwitchLabelProps extends FormControlLabelProps {}
 
 /**
  * The label that gives the user information on the switch.
@@ -11,12 +9,5 @@ export interface SwitchLabelProps extends OverrideComponentProps<"span", AsChild
 export function SwitchLabel(props: SwitchLabelProps) {
   const context = useSwitchContext();
 
-  props = mergeDefaultProps(
-    {
-      id: context.generateId("label"),
-    },
-    props
-  );
-
-  return <Polymorphic as="span" {...context.dataset()} {...props} />;
+  return <FormControlLabel {...context.dataset()} {...props} />;
 }

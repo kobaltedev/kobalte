@@ -16,6 +16,11 @@ import {
 } from "@kobalte/utils";
 import { createEffect, JSX, on, splitProps } from "solid-js";
 
+import {
+  createFormControlField,
+  FORM_CONTROL_FIELD_PROP_NAMES,
+  useFormControlContext,
+} from "../form-control";
 import { useCheckboxContext } from "./checkbox-context";
 
 export interface CheckboxInputOptions {
@@ -31,30 +36,23 @@ export interface CheckboxInputProps extends OverrideComponentProps<"input", Chec
 export function CheckboxInput(props: CheckboxInputProps) {
   let ref: HTMLInputElement | undefined;
 
+  const formControlContext = useFormControlContext();
   const context = useCheckboxContext();
 
-  props = mergeDefaultProps({ id: context.generateId("input") }, props);
+  props = mergeDefaultProps(
+    {
+      id: context.generateId("input"),
+    },
+    props
+  );
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    "style",
-    "aria-labelledby",
-    "onChange",
-    "onFocus",
-    "onBlur",
-  ]);
+  const [local, formControlFieldProps, others] = splitProps(
+    props,
+    ["ref", "style", "onChange", "onFocus", "onBlur"],
+    FORM_CONTROL_FIELD_PROP_NAMES
+  );
 
-  const ariaLabelledBy = () => {
-    return (
-      [
-        local["aria-labelledby"],
-        // If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
-        local["aria-labelledby"] != null && others["aria-label"] != null ? others.id : undefined,
-      ]
-        .filter(Boolean)
-        .join(" ") || undefined
-    );
-  };
+  const { fieldProps } = createFormControlField(formControlFieldProps);
 
   const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = e => {
     callHandler(e, local.onChange);
@@ -102,21 +100,25 @@ export function CheckboxInput(props: CheckboxInputProps) {
     <input
       ref={mergeRefs(el => (ref = el), local.ref)}
       type="checkbox"
-      name={context.name()}
+      id={fieldProps.id()}
+      name={formControlContext.name()}
       value={context.value()}
       checked={context.checked()}
-      required={context.required()}
-      disabled={context.disabled()}
-      readonly={context.readOnly()}
+      required={formControlContext.isRequired()}
+      disabled={formControlContext.isDisabled()}
+      readonly={formControlContext.isReadOnly()}
       style={{ ...visuallyHiddenStyles, ...local.style }}
-      aria-labelledby={ariaLabelledBy()}
-      aria-invalid={context.validationState() === "invalid" || undefined}
-      aria-required={context.required() || undefined}
-      aria-disabled={context.disabled() || undefined}
-      aria-readonly={context.readOnly() || undefined}
+      aria-label={fieldProps.ariaLabel()}
+      aria-labelledby={fieldProps.ariaLabelledBy()}
+      aria-describedby={fieldProps.ariaDescribedBy()}
+      aria-invalid={formControlContext.validationState() === "invalid" || undefined}
+      aria-required={formControlContext.isRequired() || undefined}
+      aria-disabled={formControlContext.isDisabled() || undefined}
+      aria-readonly={formControlContext.isReadOnly() || undefined}
       onChange={onChange}
       onFocus={onFocus}
       onBlur={onBlur}
+      {...formControlContext.dataset()}
       {...context.dataset()}
       {...others}
     />
