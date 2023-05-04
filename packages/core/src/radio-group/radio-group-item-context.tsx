@@ -4,7 +4,9 @@ export interface RadioGroupItemDataSet {
   "data-valid": string | undefined;
   "data-invalid": string | undefined;
   "data-checked": string | undefined;
+  "data-required": string | undefined;
   "data-disabled": string | undefined;
+  "data-readonly": string | undefined;
 }
 
 export interface RadioGroupItemContextValue {

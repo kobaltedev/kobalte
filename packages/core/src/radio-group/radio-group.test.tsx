@@ -1312,9 +1312,9 @@ describe("RadioGroup", () => {
         }
       });
 
-      it("should have 'data-checked' attribute on checked radio", async () => {
+      it("should have 'data-required' attribute on radios when radio group is required", async () => {
         render(() => (
-          <RadioGroup.Root value="cats">
+          <RadioGroup.Root value="cats" required>
             <RadioGroup.Item data-testid="radio-root" value="cats">
               <RadioGroup.ItemInput />
               <RadioGroup.ItemControl data-testid="radio-control">
@@ -1328,7 +1328,27 @@ describe("RadioGroup", () => {
         const elements = screen.getAllByTestId(/^radio/);
 
         for (const el of elements) {
-          expect(el).toHaveAttribute("data-checked");
+          expect(el).toHaveAttribute("data-required");
+        }
+      });
+
+      it("should have 'data-readonly' attribute on radios when radio group is readonly", async () => {
+        render(() => (
+          <RadioGroup.Root value="cats" readOnly>
+            <RadioGroup.Item data-testid="radio-root" value="cats">
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl data-testid="radio-control">
+                <RadioGroup.ItemIndicator data-testid="radio-indicator" />
+              </RadioGroup.ItemControl>
+              <RadioGroup.ItemLabel data-testid="radio-label">Cats</RadioGroup.ItemLabel>
+            </RadioGroup.Item>
+          </RadioGroup.Root>
+        ));
+
+        const elements = screen.getAllByTestId(/^radio/);
+
+        for (const el of elements) {
+          expect(el).toHaveAttribute("data-readonly");
         }
       });
 
@@ -1369,6 +1389,26 @@ describe("RadioGroup", () => {
 
         for (const el of elements) {
           expect(el).toHaveAttribute("data-disabled");
+        }
+      });
+
+      it("should have 'data-checked' attribute on checked radio", async () => {
+        render(() => (
+          <RadioGroup.Root value="cats">
+            <RadioGroup.Item data-testid="radio-root" value="cats">
+              <RadioGroup.ItemInput />
+              <RadioGroup.ItemControl data-testid="radio-control">
+                <RadioGroup.ItemIndicator data-testid="radio-indicator" />
+              </RadioGroup.ItemControl>
+              <RadioGroup.ItemLabel data-testid="radio-label">Cats</RadioGroup.ItemLabel>
+            </RadioGroup.Item>
+          </RadioGroup.Root>
+        ));
+
+        const elements = screen.getAllByTestId(/^radio/);
+
+        for (const el of elements) {
+          expect(el).toHaveAttribute("data-checked");
         }
       });
     });

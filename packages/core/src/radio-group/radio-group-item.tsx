@@ -69,8 +69,7 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
   };
 
   const dataset: Accessor<RadioGroupItemDataSet> = createMemo(() => ({
-    "data-valid": formControlContext.dataset()["data-valid"],
-    "data-invalid": formControlContext.dataset()["data-invalid"],
+    ...formControlContext.dataset(),
     "data-checked": isSelected() ? "" : undefined,
     "data-disabled": isDisabled() ? "" : undefined,
   }));
