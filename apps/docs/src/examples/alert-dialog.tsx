@@ -5,7 +5,7 @@ import style from "./alert-dialog.module.css";
 
 export function BasicExample() {
   return (
-    <AlertDialog.Root>
+    <AlertDialog.Root modal={false} preventScroll>
       <AlertDialog.Trigger class={style["alert-dialog__trigger"]}>Open</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay class={style["alert-dialog__overlay"]} />

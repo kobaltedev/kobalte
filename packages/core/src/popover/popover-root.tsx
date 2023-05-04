@@ -57,6 +57,9 @@ export interface PopoverRootOptions
    */
   modal?: boolean;
 
+  /** Whether the scroll should be locked even if the popover is not modal. */
+  preventScroll?: boolean;
+
   /**
    * Used to force mounting the popover (portal, positioner and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -76,6 +79,7 @@ export function PopoverRoot(props: PopoverRootProps) {
     {
       id: defaultId,
       modal: false,
+      preventScroll: false,
     },
     props
   );
@@ -86,6 +90,7 @@ export function PopoverRoot(props: PopoverRootProps) {
     "defaultOpen",
     "onOpenChange",
     "modal",
+    "preventScroll",
     "forceMount",
     "anchorRef",
   ]);
@@ -118,7 +123,8 @@ export function PopoverRoot(props: PopoverRootProps) {
   const context: PopoverContextValue = {
     dataset,
     isOpen: disclosureState.isOpen,
-    isModal: () => local.modal!,
+    isModal: () => local.modal ?? false,
+    preventScroll: () => local.preventScroll ?? false,
     contentPresence,
     triggerRef,
     contentId,

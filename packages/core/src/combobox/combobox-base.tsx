@@ -176,6 +176,9 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
    */
   modal?: boolean;
 
+  /** Whether the scroll should be locked even if the combobox is not modal. */
+  preventScroll?: boolean;
+
   /**
    * Used to force mounting the combobox (portal, positioner and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -231,6 +234,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       gutter: 8,
       sameWidth: true,
       modal: false,
+      preventScroll: false,
       triggerMode: "input",
       allowsEmptyCollection: false,
     },
@@ -267,6 +271,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       "selectionMode",
       "virtualized",
       "modal",
+      "preventScroll",
       "forceMount",
     ],
     [
@@ -643,6 +648,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     isMultiple: () => access(local.selectionMode) === "multiple",
     isVirtualized: () => local.virtualized ?? false,
     isModal: () => local.modal ?? false,
+    preventScroll: () => local.preventScroll ?? false,
     allowsEmptyCollection: () => local.allowsEmptyCollection ?? false,
     shouldFocusWrap: () => local.shouldFocusWrap ?? false,
     removeOnBackspace: () => local.removeOnBackspace ?? true,

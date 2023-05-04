@@ -23,6 +23,9 @@ export interface MenuRootOptions extends MenuOptions {
    */
   modal?: boolean;
 
+  /** Whether the scroll should be locked even if the menu is not modal. */
+  preventScroll?: boolean;
+
   /**
    * Used to force mounting the menu (portal, positioner and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -43,6 +46,7 @@ export function MenuRoot(props: MenuRootProps) {
     {
       id: defaultId,
       modal: true,
+      preventScroll: false,
     },
     props
   );
@@ -50,6 +54,7 @@ export function MenuRoot(props: MenuRootProps) {
   const [local, others] = splitProps(props, [
     "id",
     "modal",
+    "preventScroll",
     "forceMount",
     "open",
     "defaultOpen",
@@ -64,6 +69,7 @@ export function MenuRoot(props: MenuRootProps) {
 
   const context: MenuRootContextValue = {
     isModal: () => local.modal ?? true,
+    preventScroll: () => local.preventScroll ?? false,
     forceMount: () => local.forceMount ?? false,
     generateId: createGenerateId(() => local.id!),
   };
