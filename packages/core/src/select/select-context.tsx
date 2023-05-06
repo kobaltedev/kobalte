@@ -14,8 +14,12 @@ export interface SelectContextValue {
   isOpen: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
   isMultiple: Accessor<boolean>;
-  isVirtualized: Accessor<boolean | undefined>;
+  isVirtualized: Accessor<boolean>;
   isModal: Accessor<boolean>;
+  preventScroll: Accessor<boolean>;
+  disallowTypeAhead: Accessor<boolean>;
+  shouldFocusWrap: Accessor<boolean>;
+  selectedOptions: Accessor<any[]>;
   contentPresence: CreatePresenceResult;
   autoFocus: Accessor<FocusStrategy | boolean>;
   triggerRef: Accessor<HTMLButtonElement | undefined>;
@@ -35,7 +39,7 @@ export interface SelectContextValue {
   placeholder: Accessor<JSX.Element>;
   renderItem: (item: CollectionNode) => JSX.Element;
   renderSection: (section: CollectionNode) => JSX.Element;
-  renderValue: () => JSX.Element;
+  removeOptionFromSelection: (option: any) => void;
   generateId: (part: string) => string;
   registerTriggerId: (id: string) => () => void;
   registerValueId: (id: string) => () => void;

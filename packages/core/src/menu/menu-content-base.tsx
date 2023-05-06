@@ -205,9 +205,9 @@ export function MenuContentBase(props: MenuContentBaseProps) {
           role="menu"
           id={local.id}
           tabIndex={selectableList.tabIndex()}
-          isDismissed={!context.isOpen()}
           disableOutsidePointerEvents={isRootModalContent() && context.isOpen()}
           excludedElements={[context.triggerRef]}
+          bypassTopMostLayerCheck
           style={{
             "--kb-menu-content-transform-origin": "var(--kb-popper-content-transform-origin)",
             position: "relative",

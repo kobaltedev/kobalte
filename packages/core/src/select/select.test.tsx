@@ -7,14 +7,21 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen, within } from "solid-testing-library";
+import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 
 import * as Select from ".";
 
-const DATA_SOURCE = [
-  { key: "1", label: "One", textValue: "One", isDisabled: false },
-  { key: "2", label: "Two", textValue: "Two", isDisabled: false },
-  { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+interface DataSourceItem {
+  key: string;
+  label: string;
+  textValue: string;
+  disabled: boolean;
+}
+
+const DATA_SOURCE: DataSourceItem[] = [
+  { key: "1", label: "One", textValue: "One", disabled: false },
+  { key: "2", label: "Two", textValue: "Two", disabled: false },
+  { key: "3", label: "Three", textValue: "Three", disabled: false },
 ];
 
 describe("Select", () => {
@@ -35,8 +42,10 @@ describe("Select", () => {
     render(() => (
       <Select.Root
         options={DATA_SOURCE}
+        optionValue="key"
+        optionTextValue="textValue"
+        optionDisabled="disabled"
         placeholder="Placeholder"
-        valueComponent={props => props.item.rawValue.label}
         itemComponent={props => (
           <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
         )}
@@ -44,7 +53,7 @@ describe("Select", () => {
         <Select.HiddenSelect />
         <Select.Label>Label</Select.Label>
         <Select.Trigger>
-          <Select.Value />
+          <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
         </Select.Trigger>
         <Select.Portal>
           <Select.Content>
@@ -75,7 +84,7 @@ describe("Select", () => {
   });
 
   describe("option mapping", () => {
-    const CUSTOM_DATA_SOURCE = [
+    const CUSTOM_DATA_SOURCE_WITH_STRING_KEY = [
       {
         name: "Section 1",
         items: [
@@ -86,16 +95,16 @@ describe("Select", () => {
       },
     ];
 
-    it("supports string based option mapping for object options", async () => {
+    it("supports string based option mapping for object options with string keys", async () => {
       render(() => (
         <Select.Root<any, any>
-          options={CUSTOM_DATA_SOURCE}
+          options={CUSTOM_DATA_SOURCE_WITH_STRING_KEY}
           optionValue="id"
           optionTextValue="valueText"
           optionDisabled="disabled"
           optionGroupChildren="items"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.name}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.name}</Select.Item>
           )}
@@ -104,7 +113,7 @@ describe("Select", () => {
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<any>>{state => state.selectedOption().name}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -141,18 +150,38 @@ describe("Select", () => {
       expect(items[2]).toHaveTextContent("Three");
       expect(items[2]).toHaveAttribute("data-key", "3");
       expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2]);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(document.activeElement).toBe(trigger);
+      expect(trigger).toHaveTextContent("Three");
     });
 
-    it("supports function based option mapping for object options", async () => {
+    it("supports function based option mapping for object options with string keys", async () => {
       render(() => (
         <Select.Root<any, any>
-          options={CUSTOM_DATA_SOURCE}
+          options={CUSTOM_DATA_SOURCE_WITH_STRING_KEY}
           optionValue={option => option.id}
           optionTextValue={option => option.valueText}
           optionDisabled={option => option.disabled}
           optionGroupChildren={optGroup => optGroup.items}
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.name}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.name}</Select.Item>
           )}
@@ -161,7 +190,7 @@ describe("Select", () => {
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<any>>{state => state.selectedOption().name}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -198,6 +227,263 @@ describe("Select", () => {
       expect(items[2]).toHaveTextContent("Three");
       expect(items[2]).toHaveAttribute("data-key", "3");
       expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2]);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(document.activeElement).toBe(trigger);
+      expect(trigger).toHaveTextContent("Three");
+    });
+
+    const CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY = [
+      {
+        name: "Section 1",
+        items: [
+          { id: 1, name: "One", valueText: "One", disabled: false },
+          { id: 2, name: "Two", valueText: "Two", disabled: true },
+          { id: 3, name: "Three", valueText: "Three", disabled: false },
+        ],
+      },
+    ];
+
+    it("supports string based option mapping for object options with number keys", async () => {
+      render(() => (
+        <Select.Root<any, any>
+          options={CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY}
+          optionValue="id"
+          optionTextValue="valueText"
+          optionDisabled="disabled"
+          optionGroupChildren="items"
+          placeholder="Placeholder"
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.name}</Select.Item>
+          )}
+          sectionComponent={props => <Select.Section>{props.section.rawValue.name}</Select.Section>}
+        >
+          <Select.HiddenSelect />
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value<any>>{state => state.selectedOption().name}</Select.Value>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Listbox />
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[0]).toHaveAttribute("data-key", "1");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[1]).toHaveAttribute("data-key", "2");
+      expect(items[1]).toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("Three");
+      expect(items[2]).toHaveAttribute("data-key", "3");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2]);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(document.activeElement).toBe(trigger);
+      expect(trigger).toHaveTextContent("Three");
+    });
+
+    it("supports function based option mapping for object options with number keys", async () => {
+      render(() => (
+        <Select.Root<any, any>
+          options={CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY}
+          optionValue={option => option.id}
+          optionTextValue={option => option.valueText}
+          optionDisabled={option => option.disabled}
+          optionGroupChildren={optGroup => optGroup.items}
+          placeholder="Placeholder"
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.name}</Select.Item>
+          )}
+          sectionComponent={props => <Select.Section>{props.section.rawValue.name}</Select.Section>}
+        >
+          <Select.HiddenSelect />
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value<any>>{state => state.selectedOption().name}</Select.Value>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Listbox />
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[0]).toHaveAttribute("data-key", "1");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[1]).toHaveAttribute("data-key", "2");
+      expect(items[1]).toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("Three");
+      expect(items[2]).toHaveAttribute("data-key", "3");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2]);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(document.activeElement).toBe(trigger);
+      expect(trigger).toHaveTextContent("Three");
+    });
+
+    it("supports string options without mapping", async () => {
+      render(() => (
+        <Select.Root
+          options={["One", "Two", "Three"]}
+          placeholder="Placeholder"
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue}</Select.Item>
+          )}
+        >
+          <Select.HiddenSelect />
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Listbox />
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[0]).toHaveAttribute("data-key", "One");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[1]).toHaveAttribute("data-key", "Two");
+      expect(items[1]).not.toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("Three");
+      expect(items[2]).toHaveAttribute("data-key", "Three");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe("Three");
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(document.activeElement).toBe(trigger);
+      expect(trigger).toHaveTextContent("Three");
     });
 
     it("supports function based option mapping for string options", async () => {
@@ -208,7 +494,7 @@ describe("Select", () => {
           optionTextValue={option => option}
           optionDisabled={option => option === "Two"}
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue}</Select.Item>
           )}
@@ -216,7 +502,7 @@ describe("Select", () => {
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -253,6 +539,173 @@ describe("Select", () => {
       expect(items[2]).toHaveTextContent("Three");
       expect(items[2]).toHaveAttribute("data-key", "Three");
       expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe("Three");
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(document.activeElement).toBe(trigger);
+      expect(trigger).toHaveTextContent("Three");
+    });
+
+    it("supports number options without mapping", async () => {
+      render(() => (
+        <Select.Root
+          options={[1, 2, 3]}
+          placeholder="Placeholder"
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue}</Select.Item>
+          )}
+        >
+          <Select.HiddenSelect />
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value<number>>{state => state.selectedOption()}</Select.Value>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Listbox />
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("1");
+      expect(items[0]).toHaveAttribute("data-key", "1");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("2");
+      expect(items[1]).toHaveAttribute("data-key", "2");
+      expect(items[1]).not.toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("3");
+      expect(items[2]).toHaveAttribute("data-key", "3");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(3);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(document.activeElement).toBe(trigger);
+      expect(trigger).toHaveTextContent("3");
+    });
+
+    it("supports function based option mapping for number options", async () => {
+      render(() => (
+        <Select.Root
+          options={[1, 2, 3]}
+          optionValue={option => option}
+          optionTextValue={option => option.toString()}
+          optionDisabled={option => option === 2}
+          placeholder="Placeholder"
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue}</Select.Item>
+          )}
+        >
+          <Select.HiddenSelect />
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value<number>>{state => state.selectedOption()}</Select.Value>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Listbox />
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("1");
+      expect(items[0]).toHaveAttribute("data-key", "1");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("2");
+      expect(items[1]).toHaveAttribute("data-key", "2");
+      expect(items[1]).toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("3");
+      expect(items[2]).toHaveAttribute("data-key", "3");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(3);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(document.activeElement).toBe(trigger);
+      expect(trigger).toHaveTextContent("3");
     });
   });
 
@@ -263,8 +716,10 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -272,7 +727,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -318,8 +773,10 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -327,7 +784,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -386,8 +843,10 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -395,7 +854,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -437,8 +896,10 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -446,7 +907,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -488,8 +949,10 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -497,7 +960,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -539,8 +1002,10 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -548,7 +1013,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -590,8 +1055,10 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -599,7 +1066,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -659,9 +1126,11 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          isOpen
+          open
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -669,7 +1138,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -707,9 +1176,11 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          defaultIsOpen
+          defaultOpen
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -717,7 +1188,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -757,8 +1228,10 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -766,7 +1239,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -813,8 +1286,10 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -822,7 +1297,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -879,8 +1354,10 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -888,7 +1365,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -922,6 +1399,8 @@ describe("Select", () => {
       expect(onOpenChange).toBeCalledTimes(2);
       expect(onOpenChange).toHaveBeenCalledWith(false);
 
+      jest.runAllTimers();
+
       expect(document.activeElement).toBe(trigger);
     });
 
@@ -931,9 +1410,11 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          isOpen
+          open
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -941,7 +1422,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -976,9 +1457,11 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          defaultIsOpen
+          defaultOpen
           onOpenChange={onOpenChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -986,7 +1469,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1023,16 +1506,18 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1056,16 +1541,18 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1098,15 +1585,17 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Trigger aria-label="foo">
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1137,15 +1626,17 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Trigger aria-labelledby="foo">
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1175,15 +1666,17 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Trigger aria-label="bar" aria-labelledby="foo">
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1215,16 +1708,18 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Description>Description</Select.Description>
           <Select.Portal>
@@ -1246,17 +1741,19 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
           validationState="invalid"
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.ErrorMessage>ErrorMessage</Select.ErrorMessage>
           <Select.Portal>
@@ -1280,16 +1777,18 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1330,7 +1829,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("3");
+      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[2]);
 
       expect(listbox).not.toBeVisible();
 
@@ -1345,16 +1844,18 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1397,7 +1898,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("1");
+      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[0]);
 
       expect(listbox).not.toBeVisible();
 
@@ -1412,16 +1913,18 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1468,7 +1971,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("2");
+      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[1]);
 
       expect(listbox).not.toBeVisible();
       expect(trigger).toHaveTextContent("Two");
@@ -1478,16 +1981,18 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1546,7 +2051,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("3");
+      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[2]);
       expect(listbox).not.toBeVisible();
 
       // run restore focus rAF
@@ -1561,9 +2066,11 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           onOpenChange={onOpenChangeSpy}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -1571,7 +2078,7 @@ describe("Select", () => {
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1643,17 +2150,19 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          value="2"
-          onValueChange={onValueChange}
+          value={DATA_SOURCE[1]}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1696,7 +2205,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("1");
+      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[0]);
 
       expect(listbox).not.toBeVisible();
 
@@ -1711,17 +2220,19 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          defaultValue="2"
-          onValueChange={onValueChange}
+          defaultValue={DATA_SOURCE[1]}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1764,7 +2275,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("1");
+      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[0]);
 
       expect(listbox).not.toBeVisible();
 
@@ -1777,24 +2288,26 @@ describe("Select", () => {
 
     it("skips disabled items", async () => {
       const dataSource = [
-        { key: "1", label: "One", textValue: "One", isDisabled: false },
-        { key: "2", label: "Two", textValue: "Two", isDisabled: true },
-        { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+        { key: "1", label: "One", textValue: "One", disabled: false },
+        { key: "2", label: "Two", textValue: "Two", disabled: true },
+        { key: "3", label: "Three", textValue: "Three", disabled: false },
       ];
 
       render(() => (
         <Select.Root
           options={dataSource}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1844,7 +2357,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("3");
+      expect(onValueChange.mock.calls[0][0]).toBe(dataSource[2]);
 
       expect(listbox).not.toBeVisible();
 
@@ -1856,26 +2369,28 @@ describe("Select", () => {
     });
 
     it("supports type to select", async () => {
-      const dataSource = [
-        { key: "1", label: "One", textValue: "One", isDisabled: false },
-        { key: "2", label: "Two", textValue: "Two", isDisabled: false },
-        { key: "3", label: "Three", textValue: "Three", isDisabled: false },
-        { key: "4", label: "Four", textValue: "Four", isDisabled: false },
+      const dataSource: DataSourceItem[] = [
+        { key: "1", label: "One", textValue: "One", disabled: false },
+        { key: "2", label: "Two", textValue: "Two", disabled: false },
+        { key: "3", label: "Three", textValue: "Three", disabled: false },
+        { key: "4", label: "Four", textValue: "Four", disabled: false },
       ];
 
       render(() => (
         <Select.Root
           options={dataSource}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -1929,7 +2444,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("3");
+      expect(onValueChange.mock.calls[0][0]).toBe(dataSource[2]);
 
       expect(listbox).not.toBeVisible();
       expect(trigger).toHaveTextContent("Three");
@@ -1957,24 +2472,26 @@ describe("Select", () => {
       expect(listbox).not.toBeVisible();
       expect(trigger).toHaveTextContent("Four");
       expect(onValueChange).toHaveBeenCalledTimes(2);
-      expect(onValueChange.mock.calls[1][0]).toBe("4");
+      expect(onValueChange.mock.calls[1][0]).toBe(dataSource[3]);
     });
 
     it("does not deselect when pressing an already selected item", async () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          defaultValue="2"
-          onValueChange={onValueChange}
+          defaultValue={DATA_SOURCE[1]}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2005,7 +2522,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("2");
+      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[1]);
 
       expect(listbox).not.toBeVisible();
 
@@ -2020,16 +2537,18 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2081,21 +2600,386 @@ describe("Select", () => {
     });
   });
 
-  describe("type to select", () => {
-    it("supports focusing items by typing letters in rapid succession without opening the menu", async () => {
+  describe("multi-select", () => {
+    it("supports selecting multiple options", async () => {
       render(() => (
         <Select.Root
+          multiple
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>
+              {({ selectedOptions }) =>
+                selectedOptions()
+                  .map(opt => opt.label)
+                  .join(", ")
+              }
+            </Select.Value>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Listbox />
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+      expect(trigger).toHaveTextContent("Placeholder");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+      const items = within(listbox).getAllByRole("option");
+
+      expect(listbox).toHaveAttribute("aria-multiselectable", "true");
+
+      expect(items.length).toBe(3);
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[2]).toHaveTextContent("Three");
+
+      expect(document.activeElement).toBe(listbox);
+
+      fireEvent(
+        items[0],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[0], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      expect(items[2]).toHaveAttribute("aria-selected", "true");
+
+      expect(onValueChange).toBeCalledTimes(2);
+      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[0])).toBeTruthy();
+      expect(onValueChange.mock.calls[1][0].includes(DATA_SOURCE[2])).toBeTruthy();
+
+      // Does not close on multi-select
+      expect(listbox).toBeVisible();
+
+      expect(trigger).toHaveTextContent("One, Three");
+    });
+
+    it("supports multiple defaultValue (uncontrolled)", async () => {
+      const defaultValue = [DATA_SOURCE[0], DATA_SOURCE[1]];
+
+      render(() => (
+        <Select.Root<DataSourceItem>
+          multiple
+          options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
+          placeholder="Placeholder"
+          defaultValue={defaultValue}
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
+        >
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value<DataSourceItem>>
+              {({ selectedOptions }) =>
+                selectedOptions()
+                  .map(opt => opt.label)
+                  .join(", ")
+              }
+            </Select.Value>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Listbox />
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      const listbox = screen.getByRole("listbox");
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      expect(items[1]).toHaveAttribute("aria-selected", "true");
+
+      // SelectBase a different option
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(items[2]).toHaveAttribute("aria-selected", "true");
+
+      expect(onValueChange).toBeCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[0])).toBeTruthy();
+      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[1])).toBeTruthy();
+      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[2])).toBeTruthy();
+    });
+
+    it("supports multiple value (controlled)", async () => {
+      const value = [DATA_SOURCE[0], DATA_SOURCE[1]];
+
+      render(() => (
+        <Select.Root<DataSourceItem>
+          multiple
+          options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
+          placeholder="Placeholder"
+          value={value}
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
+        >
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value<DataSourceItem>>
+              {({ selectedOptions }) =>
+                selectedOptions()
+                  .map(opt => opt.label)
+                  .join(", ")
+              }
+            </Select.Value>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Listbox />
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      const listbox = screen.getByRole("listbox");
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      expect(items[1]).toHaveAttribute("aria-selected", "true");
+
+      // SelectBase a different option
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(items[2]).toHaveAttribute("aria-selected", "false");
+
+      expect(onValueChange).toBeCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[2])).toBeTruthy();
+    });
+
+    it("should keep the selection order", async () => {
+      render(() => (
+        <Select.Root
+          multiple
+          options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
+          placeholder="Placeholder"
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
+        >
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value<DataSourceItem>>
+              {({ selectedOptions }) =>
+                selectedOptions()
+                  .map(opt => opt.label)
+                  .join(", ")
+              }
+            </Select.Value>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Listbox />
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+      expect(trigger).toHaveTextContent("Placeholder");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(trigger, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      jest.runAllTimers();
+
+      const listbox = screen.getByRole("listbox");
+      const items = within(listbox).getAllByRole("option");
+
+      expect(listbox).toHaveAttribute("aria-multiselectable", "true");
+
+      expect(items.length).toBe(3);
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[2]).toHaveTextContent("Three");
+
+      expect(document.activeElement).toBe(listbox);
+
+      fireEvent(
+        items[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[2], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      fireEvent(
+        items[0],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[0], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      expect(items[2]).toHaveAttribute("aria-selected", "true");
+
+      expect(onValueChange).toBeCalledTimes(2);
+      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[2])).toBeTruthy();
+      expect(onValueChange.mock.calls[1][0].includes(DATA_SOURCE[0])).toBeTruthy();
+
+      // Does not close on multi-select
+      expect(listbox).toBeVisible();
+
+      expect(trigger).toHaveTextContent("Three, One");
+    });
+
+    it("supports deselection", async () => {
+      const defaultValue = [DATA_SOURCE[0], DATA_SOURCE[1]];
+
+      render(() => (
+        <Select.Root<DataSourceItem>
+          multiple
+          options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
+          placeholder="Placeholder"
+          defaultValue={defaultValue}
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
+        >
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value<DataSourceItem>>
+              {({ selectedOptions }) =>
+                selectedOptions()
+                  .map(opt => opt.label)
+                  .join(", ")
+              }
+            </Select.Value>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Listbox />
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      ));
+
+      const trigger = screen.getByRole("button");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      const listbox = screen.getByRole("listbox");
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      expect(items[1]).toHaveAttribute("aria-selected", "true");
+
+      // Deselect first option
+      fireEvent(
+        items[0],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(items[0], createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      expect(items[0]).toHaveAttribute("aria-selected", "false");
+
+      expect(onValueChange).toBeCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[0])).toBeFalsy();
+      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[1])).toBeTruthy();
+    });
+  });
+
+  describe("type to select", () => {
+    it("supports focusing items by typing letters in rapid succession without opening the menu", async () => {
+      render(() => (
+        <Select.Root
+          options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
+          placeholder="Placeholder"
+          onChange={onValueChange}
+          itemComponent={props => (
+            <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+          )}
+        >
+          <Select.Label>Label</Select.Label>
+          <Select.Trigger>
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2119,7 +3003,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("2");
+      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[1]);
       expect(trigger).toHaveTextContent("Two");
 
       fireEvent.keyDown(trigger, { key: "h" });
@@ -2129,7 +3013,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(2);
-      expect(onValueChange.mock.calls[1][0]).toBe("3");
+      expect(onValueChange.mock.calls[1][0]).toBe(DATA_SOURCE[2]);
       expect(trigger).toHaveTextContent("Three");
     });
 
@@ -2137,16 +3021,18 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2172,7 +3058,7 @@ describe("Select", () => {
       jest.runAllTimers();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("2");
+      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[1]);
       expect(trigger).toHaveTextContent("Two");
 
       fireEvent.keyDown(trigger, { key: "h" });
@@ -2191,16 +3077,18 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2225,7 +3113,7 @@ describe("Select", () => {
       jest.runAllTimers();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("2");
+      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[1]);
       expect(trigger).toHaveTextContent("Two");
 
       fireEvent.keyDown(trigger, { key: "o" });
@@ -2243,18 +3131,20 @@ describe("Select", () => {
 
   describe("autofill", () => {
     it("should have a hidden select element for form autocomplete", async () => {
-      const dataSource = [
-        { key: "DE", label: "Germany", textValue: "Germany", isDisabled: false },
-        { key: "FR", label: "France", textValue: "France", isDisabled: false },
-        { key: "IT", label: "Italy", textValue: "Italy", isDisabled: false },
+      const dataSource: DataSourceItem[] = [
+        { key: "DE", label: "Germany", textValue: "Germany", disabled: false },
+        { key: "FR", label: "France", textValue: "France", disabled: false },
+        { key: "IT", label: "Italy", textValue: "Italy", disabled: false },
       ];
 
       render(() => (
         <Select.Root
           options={dataSource}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -2262,7 +3152,7 @@ describe("Select", () => {
           <Select.HiddenSelect autocomplete="address-level1" />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2294,7 +3184,7 @@ describe("Select", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe("FR");
+      expect(onValueChange.mock.calls[0][0]).toBe(dataSource[1]);
       expect(trigger).toHaveTextContent("France");
     });
 
@@ -2302,9 +3192,11 @@ describe("Select", () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -2312,7 +3204,7 @@ describe("Select", () => {
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2344,14 +3236,16 @@ describe("Select", () => {
   });
 
   describe("disabled", () => {
-    it("disables the hidden select when isDisabled is true", async () => {
+    it("disables the hidden select when disabled is true", async () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          isDisabled
-          onValueChange={onValueChange}
+          disabled
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
@@ -2359,7 +3253,7 @@ describe("Select", () => {
           <Select.HiddenSelect />
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2374,23 +3268,25 @@ describe("Select", () => {
       expect(select).toBeDisabled();
     });
 
-    it("does not open on mouse down when isDisabled is true", async () => {
+    it("does not open on mouse down when disabled is true", async () => {
       const onOpenChange = jest.fn();
 
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          isDisabled
-          onValueChange={onValueChange}
+          disabled
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2414,22 +3310,24 @@ describe("Select", () => {
       expect(trigger).toHaveAttribute("aria-expanded", "false");
     });
 
-    it("does not open on Space key press when isDisabled is true", async () => {
+    it("does not open on Space key press when disabled is true", async () => {
       const onOpenChange = jest.fn();
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
+          optionValue="key"
+          optionTextValue="textValue"
+          optionDisabled="disabled"
           placeholder="Placeholder"
-          valueComponent={props => props.item.rawValue.label}
-          isDisabled
-          onValueChange={onValueChange}
+          disabled
+          onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
           )}
         >
           <Select.Label>Label</Select.Label>
           <Select.Trigger>
-            <Select.Value />
+            <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
           </Select.Trigger>
           <Select.Portal>
             <Select.Content>
@@ -2472,8 +3370,10 @@ describe("Select", () => {
         <form data-testid="form" onSubmit={onSubmit}>
           <Select.Root
             options={DATA_SOURCE}
+            optionValue="key"
+            optionTextValue="textValue"
+            optionDisabled="disabled"
             placeholder="Placeholder"
-            valueComponent={props => props.item.rawValue.label}
             name="test"
             itemComponent={props => (
               <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
@@ -2482,7 +3382,7 @@ describe("Select", () => {
             <Select.HiddenSelect />
             <Select.Label>Label</Select.Label>
             <Select.Trigger autofocus>
-              <Select.Value />
+              <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
             </Select.Trigger>
             <Select.Portal>
               <Select.Content>
@@ -2516,10 +3416,12 @@ describe("Select", () => {
         <form data-testid="form" onSubmit={onSubmit}>
           <Select.Root
             options={DATA_SOURCE}
+            optionValue="key"
+            optionTextValue="textValue"
+            optionDisabled="disabled"
             placeholder="Placeholder"
-            valueComponent={props => props.item.rawValue.label}
             name="test"
-            defaultValue="1"
+            defaultValue={DATA_SOURCE[0]}
             itemComponent={props => (
               <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
             )}
@@ -2527,7 +3429,7 @@ describe("Select", () => {
             <Select.HiddenSelect />
             <Select.Label>Label</Select.Label>
             <Select.Trigger autofocus>
-              <Select.Value />
+              <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
             </Select.Trigger>
             <Select.Portal>
               <Select.Content>

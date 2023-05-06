@@ -6,8 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/avatar/src/Avatar.test.tsx
  */
 
-import { checkAccessibility } from "@kobalte/tests";
-import { render, screen } from "solid-testing-library";
+import { render, screen } from "@solidjs/testing-library";
 
 import * as Image from ".";
 
@@ -17,14 +16,6 @@ const IMAGE_ALT_TEXT = "Fake Image";
 const DELAY = 300;
 
 describe("Image", () => {
-  describe("with fallback and no image", () => {
-    checkAccessibility([
-      <Image.Root data-testid={ROOT_TEST_ID}>
-        <Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
-      </Image.Root>,
-    ]);
-  });
-
   describe("with fallback and a working image", () => {
     const originalGlobalImage = window.Image;
 

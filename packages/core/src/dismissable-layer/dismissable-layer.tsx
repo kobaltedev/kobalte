@@ -13,7 +13,7 @@
  */
 
 import { contains, getDocument, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { Accessor, createEffect, on, onCleanup, splitProps } from "solid-js";
+import { Accessor, createEffect, on, onCleanup, onMount, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import {
@@ -31,9 +31,6 @@ import {
 import { layerStack } from "./layer-stack";
 
 export interface DismissableLayerOptions extends AsChildProp {
-  /** Whether the layer is considered dismissed, regardless if it is mounted or not. */
-  isDismissed: boolean;
-
   /**
    * When `true`, hover/focus/click interactions will be disabled on elements outside
    * the layer. Users will need to click twice on outside elements to
@@ -71,6 +68,9 @@ export interface DismissableLayerOptions extends AsChildProp {
 
   /** Handler called when the layer should be dismissed. */
   onDismiss?: () => void;
+
+  /** Whether to ignore the "top most layer" check on interact outside. */
+  bypassTopMostLayerCheck?: boolean;
 }
 
 export interface DismissableLayerProps
@@ -83,7 +83,6 @@ export function DismissableLayer(props: DismissableLayerProps) {
 
   const [local, others] = splitProps(props, [
     "ref",
-    "isDismissed",
     "disableOutsidePointerEvents",
     "excludedElements",
     "onEscapeKeyDown",
@@ -91,6 +90,7 @@ export function DismissableLayer(props: DismissableLayerProps) {
     "onFocusOutside",
     "onInteractOutside",
     "onDismiss",
+    "bypassTopMostLayerCheck",
   ]);
 
   const nestedLayers = new Set<Element>([]);
@@ -122,6 +122,10 @@ export function DismissableLayer(props: DismissableLayerProps) {
       return;
     }
 
+    if (!local.bypassTopMostLayerCheck && !layerStack.isTopMostLayer(ref)) {
+      return;
+    }
+
     local.onPointerDownOutside?.(e);
     local.onInteractOutside?.(e);
 
@@ -141,7 +145,6 @@ export function DismissableLayer(props: DismissableLayerProps) {
 
   createInteractOutside(
     {
-      isDisabled: () => local.isDismissed,
       shouldExcludeElement,
       onPointerDownOutside,
       onFocusOutside,
@@ -150,7 +153,6 @@ export function DismissableLayer(props: DismissableLayerProps) {
   );
 
   createEscapeKeyDown({
-    isDisabled: () => local.isDismissed,
     ownerDocument: () => getDocument(ref),
     onEscapeKeyDown: e => {
       if (!ref || !layerStack.isTopMostLayer(ref)) {
@@ -166,46 +168,44 @@ export function DismissableLayer(props: DismissableLayerProps) {
     },
   });
 
-  createEffect(
-    on([() => ref, () => local.isDismissed], ([ref, isDismissed]) => {
-      if (!ref || isDismissed) {
+  onMount(() => {
+    if (!ref) {
+      return;
+    }
+
+    layerStack.addLayer({
+      node: ref,
+      isPointerBlocking: local.disableOutsidePointerEvents,
+      dismiss: local.onDismiss,
+    });
+
+    const unregisterFromParentLayer = parentContext?.registerNestedLayer(ref);
+
+    layerStack.assignPointerEventToLayers();
+
+    layerStack.disableBodyPointerEvents(ref);
+
+    onCleanup(() => {
+      if (!ref) {
         return;
       }
 
-      layerStack.addLayer({
-        node: ref,
-        isPointerBlocking: local.disableOutsidePointerEvents,
-        dismiss: local.onDismiss,
-      });
+      layerStack.removeLayer(ref);
 
-      const unregisterFromParentLayer = parentContext?.registerNestedLayer(ref);
+      unregisterFromParentLayer?.();
 
+      // Re-assign pointer event to remaining layers.
       layerStack.assignPointerEventToLayers();
 
-      layerStack.disableBodyPointerEvents(ref);
-
-      onCleanup(() => {
-        if (!ref) {
-          return;
-        }
-
-        layerStack.removeLayer(ref);
-
-        unregisterFromParentLayer?.();
-
-        // Re-assign pointer event to remaining layers.
-        layerStack.assignPointerEventToLayers();
-
-        layerStack.restoreBodyPointerEvents(ref);
-      });
-    })
-  );
+      layerStack.restoreBodyPointerEvents(ref);
+    });
+  });
 
   createEffect(
     on(
-      [() => ref, () => local.isDismissed, () => local.disableOutsidePointerEvents],
-      ([ref, isDismissed, disableOutsidePointerEvents]) => {
-        if (!ref || isDismissed) {
+      [() => ref, () => local.disableOutsidePointerEvents],
+      ([ref, disableOutsidePointerEvents]) => {
+        if (!ref) {
           return;
         }
 
@@ -239,7 +239,7 @@ export function DismissableLayer(props: DismissableLayerProps) {
 
   return (
     <DismissableLayerContext.Provider value={context}>
-      <Polymorphic fallback="div" ref={mergeRefs(el => (ref = el), local.ref)} {...others} />
+      <Polymorphic as="div" ref={mergeRefs(el => (ref = el), local.ref)} {...others} />
     </DismissableLayerContext.Provider>
   );
 }

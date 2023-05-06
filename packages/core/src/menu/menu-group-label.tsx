@@ -32,5 +32,5 @@ export function MenuGroupLabel(props: MenuGroupLabelProps) {
 
   createEffect(() => onCleanup(context.registerLabelId(local.id!)));
 
-  return <Polymorphic fallback="span" id={local.id} aria-hidden="true" {...others} />;
+  return <Polymorphic as="span" id={local.id} aria-hidden="true" {...others} />;
 }

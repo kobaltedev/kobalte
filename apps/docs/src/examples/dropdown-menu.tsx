@@ -25,7 +25,7 @@ export function BasicExample() {
           <DropdownMenu.Item class={style["dropdown-menu__item"]}>
             Push <div class={style["dropdown-menu__item-right-slot"]}>⇧+⌘+K</div>
           </DropdownMenu.Item>
-          <DropdownMenu.Item class={style["dropdown-menu__item"]} isDisabled>
+          <DropdownMenu.Item class={style["dropdown-menu__item"]} disabled>
             Update Project <div class={style["dropdown-menu__item-right-slot"]}>⌘+T</div>
           </DropdownMenu.Item>
           <DropdownMenu.Sub overlap gutter={4} shift={-8}>
@@ -58,8 +58,8 @@ export function BasicExample() {
 
           <DropdownMenu.CheckboxItem
             class={style["dropdown-menu__checkbox-item"]}
-            isChecked={showGitLog()}
-            onCheckedChange={setShowGitLog}
+            checked={showGitLog()}
+            onChange={setShowGitLog}
           >
             <DropdownMenu.ItemIndicator class={style["dropdown-menu__item-indicator"]}>
               <CheckIcon />
@@ -68,8 +68,8 @@ export function BasicExample() {
           </DropdownMenu.CheckboxItem>
           <DropdownMenu.CheckboxItem
             class={style["dropdown-menu__checkbox-item"]}
-            isChecked={showHistory()}
-            onCheckedChange={setShowHistory}
+            checked={showHistory()}
+            onChange={setShowHistory}
           >
             <DropdownMenu.ItemIndicator class={style["dropdown-menu__item-indicator"]}>
               <CheckIcon />
@@ -83,7 +83,7 @@ export function BasicExample() {
             <DropdownMenu.GroupLabel class={style["dropdown-menu__group-label"]}>
               Branches
             </DropdownMenu.GroupLabel>
-            <DropdownMenu.RadioGroup value={branch()} onValueChange={setBranch}>
+            <DropdownMenu.RadioGroup value={branch()} onChange={setBranch}>
               <DropdownMenu.RadioItem class={style["dropdown-menu__radio-item"]} value="main">
                 <DropdownMenu.ItemIndicator class={style["dropdown-menu__item-indicator"]}>
                   <DotFilledIcon />
@@ -110,7 +110,7 @@ export function ControlledExample() {
   const [open, setOpen] = createSignal(false);
 
   return (
-    <DropdownMenu.Root isOpen={open()} onOpenChange={setOpen} gutter={8}>
+    <DropdownMenu.Root open={open()} onOpenChange={setOpen} gutter={8}>
       <DropdownMenu.Trigger class={style["dropdown-menu__trigger"]}>
         {open() ? "Close" : "Open"}
       </DropdownMenu.Trigger>

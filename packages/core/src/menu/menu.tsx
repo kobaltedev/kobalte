@@ -39,13 +39,13 @@ import { GraceIntent, isPointerInGraceArea, Side } from "./utils";
 export interface MenuOptions
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the menu. */
-  isOpen?: boolean;
+  open?: boolean;
 
   /**
    * The default open state when initially rendered.
    * Useful when you do not need to control the open state.
    */
-  defaultIsOpen?: boolean;
+  defaultOpen?: boolean;
 
   /** Event handler called when the open state of the menu changes. */
   onOpenChange?: (isOpen: boolean) => void;
@@ -68,7 +68,7 @@ export function Menu(props: MenuProps) {
     props
   );
 
-  const [local, others] = splitProps(props, ["isOpen", "defaultIsOpen", "onOpenChange"]);
+  const [local, others] = splitProps(props, ["open", "defaultOpen", "onOpenChange"]);
 
   let pointerGraceTimeoutId = 0;
   let pointerGraceIntent: GraceIntent | null = null;
@@ -89,8 +89,8 @@ export function Menu(props: MenuProps) {
   const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
 
   const disclosureState = createDisclosureState({
-    isOpen: () => local.isOpen,
-    defaultIsOpen: () => local.defaultIsOpen,
+    open: () => local.open,
+    defaultOpen: () => local.defaultOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 

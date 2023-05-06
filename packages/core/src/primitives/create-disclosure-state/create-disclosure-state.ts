@@ -5,10 +5,10 @@ import { createControllableBooleanSignal } from "../create-controllable-signal";
 
 export interface CreateDisclosureStateProps {
   /** The value to be used, in controlled mode. */
-  isOpen?: MaybeAccessor<boolean | undefined>;
+  open?: MaybeAccessor<boolean | undefined>;
 
   /** The initial value to be used, in uncontrolled mode. */
-  defaultIsOpen?: MaybeAccessor<boolean | undefined>;
+  defaultOpen?: MaybeAccessor<boolean | undefined>;
 
   /** A function that will be called when the `isOpen` state changes. */
   onOpenChange?: (isOpen: boolean) => void;
@@ -39,8 +39,8 @@ export function createDisclosureState(
   props: CreateDisclosureStateProps = {}
 ): CreateDisclosureStateResult {
   const [isOpen, setIsOpen] = createControllableBooleanSignal({
-    value: () => access(props.isOpen),
-    defaultValue: () => !!access(props.defaultIsOpen),
+    value: () => access(props.open),
+    defaultValue: () => !!access(props.defaultOpen),
     onChange: value => props.onOpenChange?.(value),
   });
 

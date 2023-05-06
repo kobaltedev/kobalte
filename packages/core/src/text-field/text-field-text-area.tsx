@@ -10,7 +10,7 @@
 import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, on, splitProps } from "solid-js";
 
-import { As, AsChildProp, Polymorphic } from "../polymorphic";
+import { AsChildProp } from "../polymorphic";
 import { useTextFieldContext } from "./text-field-context";
 import { TextFieldInputBase } from "./text-field-input";
 
@@ -50,14 +50,11 @@ export function TextFieldTextArea(props: TextFieldTextAreaProps) {
   );
 
   return (
-    <TextFieldInputBase asChild>
-      <As
-        component={Polymorphic}
-        fallback="textarea"
-        ref={mergeRefs(el => (ref = el), local.ref)}
-        {...others}
-      />
-    </TextFieldInputBase>
+    <TextFieldInputBase
+      as="textarea"
+      ref={mergeRefs(el => (ref = el), local.ref) as any}
+      {...(others as any)}
+    />
   );
 }
 

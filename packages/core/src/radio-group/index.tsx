@@ -15,6 +15,10 @@ import {
   type RadioGroupItemControlProps,
 } from "./radio-group-item-control";
 import {
+  RadioGroupItemDescription as ItemDescription,
+  type RadioGroupItemDescriptionProps,
+} from "./radio-group-item-description";
+import {
   RadioGroupItemIndicator as ItemIndicator,
   type RadioGroupItemIndicatorOptions,
   type RadioGroupItemIndicatorProps,
@@ -40,6 +44,7 @@ export type {
   RadioGroupErrorMessageOptions,
   RadioGroupErrorMessageProps,
   RadioGroupItemControlProps,
+  RadioGroupItemDescriptionProps,
   RadioGroupItemIndicatorOptions,
   RadioGroupItemIndicatorProps,
   RadioGroupItemInputOptions,
@@ -57,6 +62,7 @@ export {
   ErrorMessage,
   Item,
   ItemControl,
+  ItemDescription,
   ItemIndicator,
   ItemInput,
   ItemLabel,

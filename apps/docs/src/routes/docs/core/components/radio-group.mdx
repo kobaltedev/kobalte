@@ -42,6 +42,7 @@ The radio item consists of:
 - **RadioGroup.ItemControl**: The element that visually represents a radio button.
 - **RadioGroup.ItemIndicator**: The visual indicator rendered when the radio button is in a checked state.
 - **RadioGroup.ItemLabel**: The label that gives the user information on the radio button.
+- **RadioGroup.ItemDescription**: The description that gives the user more information on the radio button.
 
 ```tsx
 <RadioGroup.Root>
@@ -52,6 +53,7 @@ The radio item consists of:
       <RadioGroup.ItemIndicator />
     </RadioGroup.ItemControl>
     <RadioGroup.ItemLabel />
+    <RadioGroup.ItemDescription />
   </RadioGroup.Item>
   <RadioGroup.Description />
   <RadioGroup.ErrorMessage />
@@ -203,7 +205,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 
 ### Controlled value
 
-The `value` prop, which accepts a value corresponding with the `value` prop of each radio, can be used to make the value controlled. The `onValueChange` event is fired when the user selects a radio, and receives the new value.
+The `value` prop, which accepts a value corresponding with the `value` prop of each radio, can be used to make the value controlled. The `onChange` event is fired when the user selects a radio, and receives the new value.
 
 <Preview>
   <ControlledExample />
@@ -217,7 +219,7 @@ function ControlledExample() {
 
   return (
     <>
-      <RadioGroup.Root value={value()} onValueChange={setValue}>
+      <RadioGroup.Root value={value()} onChange={setValue}>
         <RadioGroup.Label>Favorite fruit</RadioGroup.Label>
         <div>
           <For each={["Apple", "Orange", "Watermelon"]}>
@@ -270,7 +272,7 @@ function ErrorMessageExample() {
   return (
     <RadioGroup.Root
       value={value()}
-      onValueChange={setValue}
+      onChange={setValue}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
     >
       <RadioGroup.Label>Favorite fruit</RadioGroup.Label>
@@ -326,13 +328,13 @@ function HTMLFormExample() {
 | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | value           | `string` <br/> The controlled value of the radio button to check.                                                                                                   |
 | defaultValue    | `string` <br/> The value of the radio button that should be checked when initially rendered. Useful when you do not need to control the state of the radio buttons. |
-| onValueChange   | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                        |
+| onChange        | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                        |
 | orientation     | `'horizontal' \| 'vertical'` <br/> The axis the radio group items should align with.                                                                                |
 | name            | `string` <br/> The name of the radio group. Submitted with its owning form as part of a name/value pair.                                                            |
 | validationState | `'valid' \| 'invalid'` <br/> Whether the radio group should display its "valid" or "invalid" visual styling.                                                        |
-| isRequired      | `boolean` <br/> Whether the user must check a radio group item before the owning form can be submitted.                                                             |
-| isDisabled      | `boolean` <br/> Whether the radio group is disabled.                                                                                                                |
-| isReadOnly      | `boolean` <br/> Whether the radio group items can be selected but not changed by the user.                                                                          |
+| required        | `boolean` <br/> Whether the user must check a radio group item before the owning form can be submitted.                                                             |
+| disabled        | `boolean` <br/> Whether the radio group is disabled.                                                                                                                |
+| readOnly        | `boolean` <br/> Whether the radio group items can be selected but not changed by the user.                                                                          |
 
 | Data attribute | Description                                                                                  |
 | :------------- | :------------------------------------------------------------------------------------------- |
@@ -352,10 +354,10 @@ function HTMLFormExample() {
 
 ### RadioGroup.Item
 
-| Prop       | Description                                                                                                                                                              |
-| :--------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value      | `string` <br/> The value of the radio button, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio#Value). |
-| isDisabled | `boolean` <br/> Whether the radio button is disabled or not.                                                                                                             |
+| Prop     | Description                                                                                                                                                              |
+| :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value    | `string` <br/> The value of the radio button, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio#Value). |
+| disabled | `boolean` <br/> Whether the radio button is disabled or not.                                                                                                             |
 
 | Data attribute | Description                                                                       |
 | :------------- | :-------------------------------------------------------------------------------- |
@@ -374,17 +376,18 @@ function HTMLFormExample() {
 
 ## Rendered elements
 
-| Component                  | Default rendered element |
-| :------------------------- | :----------------------- |
-| `RadioGroup.Root`          | `div`                    |
-| `RadioGroup.Label`         | `span`                   |
-| `RadioGroup.Description`   | `div`                    |
-| `RadioGroup.ErrorMessage`  | `div`                    |
-| `RadioGroup.Item`          | `label`                  |
-| `RadioGroup.ItemInput`     | `input`                  |
-| `RadioGroup.ItemControl`   | `div`                    |
-| `RadioGroup.ItemIndicator` | `div`                    |
-| `RadioGroup.ItemLabel`     | `span`                   |
+| Component                    | Default rendered element |
+| :--------------------------- | :----------------------- |
+| `RadioGroup.Root`            | `div`                    |
+| `RadioGroup.Label`           | `span`                   |
+| `RadioGroup.Description`     | `div`                    |
+| `RadioGroup.ErrorMessage`    | `div`                    |
+| `RadioGroup.Item`            | `div`                    |
+| `RadioGroup.ItemInput`       | `input`                  |
+| `RadioGroup.ItemControl`     | `div`                    |
+| `RadioGroup.ItemIndicator`   | `div`                    |
+| `RadioGroup.ItemLabel`       | `label`                  |
+| `RadioGroup.ItemDescription` | `div`                    |
 
 ## Accessibility
 

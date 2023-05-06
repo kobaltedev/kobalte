@@ -1,6 +1,6 @@
 {
   "name": "@kobalte/tests",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "private": true,
   "description": "Helper package that is used to contain commonly repeated tests logic.",
   "keywords": [
@@ -29,7 +29,7 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "solid": "./dist/index.jsx",
+      "solid": "./dist/index.js",
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
@@ -48,14 +48,8 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "jest-axe": "6.0.0"
-  },
-  "devDependencies": {
-    "@types/jest-axe": "3.5.4"
-  },
   "peerDependencies": {
-    "solid-js": "^1.6.15",
-    "solid-testing-library": "^0.3.0"
+    "@solidjs/testing-library": "^0.7.0",
+    "solid-js": "^1.7.3"
   }
 }

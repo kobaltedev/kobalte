@@ -281,9 +281,11 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
         }
         break;
       case "Escape":
-        e.preventDefault();
-        if (!access(props.disallowEmptySelection)) {
-          manager.clearSelection();
+        if (!e.defaultPrevented) {
+          e.preventDefault();
+          if (!access(props.disallowEmptySelection)) {
+            manager.clearSelection();
+          }
         }
         break;
       case "Tab": {

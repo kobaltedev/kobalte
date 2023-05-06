@@ -13,5 +13,5 @@ export function AccordionHeader(props: AccordionHeaderProps) {
   // `Accordion.Item` is a `Collapsible.Root`.
   const context = useCollapsibleContext();
 
-  return <Polymorphic fallback="h3" {...context.dataset()} {...props} />;
+  return <Polymorphic as="h3" {...context.dataset()} {...props} />;
 }

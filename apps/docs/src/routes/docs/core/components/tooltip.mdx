@@ -1,0 +1,309 @@
+import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
+import { BasicExample, ControlledExample } from "../../../../examples/tooltip";
+
+# Tooltip
+
+A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
+
+## Import
+
+```ts
+import { Tooltip } from "@kobalte/core";
+```
+
+## Features
+
+- Exposed as a tooltip to assistive technology via ARIA.
+- Opens when the trigger is focused or hovered.
+- Closes when the trigger is activated or when pressing escape.
+- Only one tooltip shows at a time.
+- Labeling support for screen readers via `aria-describedby`.
+- Custom show and hide delay support.
+- Matches native tooltip behavior with delay on hover of first tooltip and no delay on subsequent tooltips.
+
+## Anatomy
+
+The tooltip consists of:
+
+- **Tooltip.Root:** The root container for a tooltip.
+- **Tooltip.Trigger:** The button that toggles the tooltip.
+- **Tooltip.Portal:** Portals its children into the `body` when the tooltip is open.
+- **Tooltip.Content:** Contains the content to be rendered when the tooltip is open.
+- **Tooltip.Arrow:** An optional arrow element to render alongside the tooltip.
+
+```tsx
+<Tooltip.Root>
+  <Tooltip.Trigger />
+  <Tooltip.Portal>
+    <Tooltip.Content>
+      <Tooltip.Arrow />
+    </Tooltip.Content>
+  </Tooltip.Portal>
+</Tooltip.Root>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Tooltip } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      return (
+        <Tooltip.Root>
+          <Tooltip.Trigger class="tooltip__trigger">Trigger</Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content class="tooltip__content">
+              <Tooltip.Arrow />
+              <p>Tooltip content</p>
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .tooltip__trigger {
+      appearance: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      width: auto;
+      outline: none;
+      border-radius: 6px;
+      padding: 0 16px;
+      background-color: hsl(200 98% 39%);
+      color: white;
+      font-size: 16px;
+      line-height: 0;
+      transition: 250ms background-color;
+    }
+
+    .tooltip__trigger:hover {
+      background-color: hsl(201 96% 32%);
+    }
+
+    .tooltip__trigger:focus-visible {
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+    }
+
+    .tooltip__trigger:active {
+      background-color: hsl(201 90% 27%);
+    }
+
+    .tooltip__content {
+      z-index: 50;
+      max-width: min(calc(100vw - 16px), 380px);
+      border: 1px solid hsl(240 5% 84%);
+      border-radius: 6px;
+      padding: 8px;
+      background-color: hsl(240 4% 16%);
+      color: white;
+      font-size: 14px;
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      transform-origin: var(--kb-tooltip-content-transform-origin);
+      animation: contentHide 250ms ease-in forwards;
+    }
+
+    .tooltip__content[data-expanded] {
+      animation: contentShow 250ms ease-out;
+    }
+
+    @keyframes contentShow {
+      from {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes contentHide {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Default open
+
+An initial, uncontrolled open value can be provided using the `defaultOpen` prop.
+
+```tsx
+<Tooltip.Root defaultOpen>...</Tooltip.Root>
+```
+
+### Controlled open
+
+The `open` prop can be used to make the open state controlled. The `onOpenChange` event is fired when the user presses the trigger, close button or interact outside, and receives the new value.
+
+<Preview>
+  <ControlledExample />
+</Preview>
+
+```tsx {3,8}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+  const [open, setOpen] = createSignal(false);
+
+  return (
+    <>
+      <p>Tooltip is {open() ? "showing" : "not showing"}.</p>
+      <Tooltip.Root open={open()} onOpenChange={setOpen}>
+        <Tooltip.Trigger>Trigger</Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Content>
+            <Tooltip.Arrow />
+            <p>Tooltip content</p>
+          </Tooltip.Content>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    </>
+  );
+}
+```
+
+### Origin-aware animations
+
+We expose a CSS custom property `--kb-tooltip-content-transform-origin` which can be used to animate the content from its computed origin.
+
+```css {2}
+/* style.css */
+.tooltip__content {
+  transform-origin: var(--kb-tooltip-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
+
+.tooltip__content[data-expanded] {
+  animation: contentShow 250ms ease-out;
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+```
+
+## API Reference
+
+### Tooltip.Root
+
+| Prop               | Description                                                                                                                                                                   |
+| :----------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| open               | `boolean` <br/> The controlled open state of the tooltip.                                                                                                                     |
+| defaultOpen        | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                                        |
+| onOpenChange       | `(open: boolean) => void` <br/> Event handler called when the open state of the tooltip changes.                                                                              |
+| triggerOnFocusOnly | `boolean` <br/> Whether to open the tooltip only when the trigger is focused. By default, opens for both focus and hover.                                                     |
+| openDelay          | `number` <br/> The duration from when the mouse enters the trigger until the tooltip opens.                                                                                   |
+| closeDelay         | `number` <br/> The duration from when the mouse leaves the trigger or content until the tooltip closes.                                                                       |
+| ignoreSafeArea     | `boolean` <br/> Whether to close the tooltip even if the user cursor is inside the safe area between the trigger and tooltip.                                                 |
+| id                 | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used. |
+| forceMount         | `boolean` <br/> Used to force mounting the tooltip (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.      |
+
+`Tooltip.Root` also accepts the following props to customize the placement of the `Tooltip.Content`.
+
+| Prop             | Description                                                                                                                                                                                                                                                                                                                                                |
+| :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| getAnchorRect    | `(anchor?: HTMLElement) => AnchorRect  \| undefined` <br/> Function that returns the anchor element's DOMRect.                                                                                                                                                                                                                                             |
+| placement        | `Placement` <br/> The placement of the tooltip.                                                                                                                                                                                                                                                                                                            |
+| gutter           | `number` <br/> The distance between the tooltip and the trigger/anchor element. By default, it's 0 plus half of the arrow offset, if it exists.                                                                                                                                                                                                            |
+| shift            | `number` <br/> The skidding of the tooltip along the anchor element.                                                                                                                                                                                                                                                                                       |
+| flip             | `boolean \| string` <br/> Controls the behavior of the tooltip when it overflows the viewport:<br/> - If a `boolean`, specifies whether the tooltip should flip to the opposite side when it overflows.<br/> - If a `string`, indicates the preferred fallback placements when it overflows.<br/>The placements must be spaced-delimited, e.g. "top left". |
+| slide            | `boolean` <br/> Whether the tooltip should slide when it overflows.                                                                                                                                                                                                                                                                                        |
+| overlap          | `boolean` <br/> Whether the tooltip can overlap the anchor element when it overflows.                                                                                                                                                                                                                                                                      |
+| sameWidth        | `boolean` <br/> Whether the tooltip should have the same width as the anchor element. This will be exposed to CSS as `--kb-popper-anchor-width`.                                                                                                                                                                                                           |
+| fitViewport      | `boolean` <br/> Whether the tooltip should fit the viewport. If this is set to true, the tooltip content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`.                                                                                   |
+| hideWhenDetached | `boolean` <br/> Whether to hide the tooltip when the anchor element becomes occluded.                                                                                                                                                                                                                                                                      |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the anchor element occluded.                                                                                                                                                                                                                                                                       |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the tooltip corner.                                                                                                                                                                                                                                                                               |
+| overflowPadding  | `number` <br/> The minimum padding between the tooltip and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                               |
+
+### Tooltip.Trigger
+
+| Data attribute | Description                        |
+| :------------- | :--------------------------------- |
+| data-expanded  | Present when the tooltip is open.  |
+| data-closed    | Present when the tooltip is close. |
+
+`Tooltip.Content` and `Tooltip.Arrow` share the same data-attributes.
+
+### Tooltip.Content
+
+| Prop                 | Description                                                                                                                                                                                   |
+| :------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| onEscapeKeyDown      | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                               |
+| onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
+
+### Tooltip.Arrow
+
+| Prop | Description                           |
+| :--- | :------------------------------------ |
+| size | `number` <br/> The size of the arrow. |
+
+## Rendered elements
+
+| Component         | Default rendered element |
+| :---------------- | :----------------------- |
+| `Tooltip.Root`    | none                     |
+| `Tooltip.Trigger` | `button`                 |
+| `Tooltip.Portal`  | `Portal`                 |
+| `Tooltip.Content` | `div`                    |
+| `Tooltip.Arrow`   | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description                                  |
+| :--------------- | :------------------------------------------- |
+| <Kbd>Tab</Kbd>   | Opens/closes the tooltip without delay.      |
+| <Kbd>Space</Kbd> | When open, closes the tooltip without delay. |
+| <Kbd>Enter</Kbd> | When open, closes the tooltip without delay. |
+| <Kbd>Esc</Kbd>   | When open, closes the tooltip without delay. |

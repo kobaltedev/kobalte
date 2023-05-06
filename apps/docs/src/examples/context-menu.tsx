@@ -22,7 +22,7 @@ export function BasicExample() {
           <ContextMenu.Item class={style["context-menu__item"]}>
             Push <div class={style["context-menu__item-right-slot"]}>⇧+⌘+K</div>
           </ContextMenu.Item>
-          <ContextMenu.Item class={style["context-menu__item"]} isDisabled>
+          <ContextMenu.Item class={style["context-menu__item"]} disabled>
             Update Project <div class={style["context-menu__item-right-slot"]}>⌘+T</div>
           </ContextMenu.Item>
           <ContextMenu.Sub overlap gutter={4} shift={-8}>
@@ -53,8 +53,8 @@ export function BasicExample() {
 
           <ContextMenu.CheckboxItem
             class={style["context-menu__checkbox-item"]}
-            isChecked={showGitLog()}
-            onCheckedChange={setShowGitLog}
+            checked={showGitLog()}
+            onChange={setShowGitLog}
           >
             <ContextMenu.ItemIndicator class={style["context-menu__item-indicator"]}>
               <CheckIcon />
@@ -63,8 +63,8 @@ export function BasicExample() {
           </ContextMenu.CheckboxItem>
           <ContextMenu.CheckboxItem
             class={style["context-menu__checkbox-item"]}
-            isChecked={showHistory()}
-            onCheckedChange={setShowHistory}
+            checked={showHistory()}
+            onChange={setShowHistory}
           >
             <ContextMenu.ItemIndicator class={style["context-menu__item-indicator"]}>
               <CheckIcon />
@@ -78,7 +78,7 @@ export function BasicExample() {
             <ContextMenu.GroupLabel class={style["context-menu__group-label"]}>
               Branches
             </ContextMenu.GroupLabel>
-            <ContextMenu.RadioGroup value={branch()} onValueChange={setBranch}>
+            <ContextMenu.RadioGroup value={branch()} onChange={setBranch}>
               <ContextMenu.RadioItem class={style["context-menu__radio-item"]} value="main">
                 <ContextMenu.ItemIndicator class={style["context-menu__item-indicator"]}>
                   <DotFilledIcon />

@@ -1,0 +1,89 @@
+.tooltip__trigger {
+  appearance: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: auto;
+  outline: none;
+  border-radius: 6px;
+  padding: 0 16px;
+  background-color: hsl(200 98% 39%);
+  color: white;
+  font-size: 16px;
+  line-height: 0;
+  transition: 250ms background-color;
+}
+
+.tooltip__trigger:hover {
+  background-color: hsl(201 96% 32%);
+}
+
+.tooltip__trigger:focus-visible {
+  outline: 2px solid hsl(200 98% 39%);
+  outline-offset: 2px;
+}
+
+.tooltip__trigger:active {
+  background-color: hsl(201 90% 27%);
+}
+
+.tooltip__content {
+  z-index: 50;
+  max-width: min(calc(100vw - 16px), 380px);
+  border: 1px solid hsl(240 5% 84%);
+  border-radius: 6px;
+  padding: 8px;
+  background-color: hsl(240 4% 16%);
+  color: white;
+  font-size: 14px;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transform-origin: var(--kb-tooltip-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
+
+.tooltip__content[data-expanded] {
+  animation: contentShow 250ms ease-out;
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+[data-kb-theme="dark"] .tooltip__trigger {
+  background-color: hsl(201 96% 32%);
+  color: hsla(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .tooltip__trigger:hover {
+  background-color: hsl(200 98% 39%);
+}
+
+[data-kb-theme="dark"] .tooltip__trigger:active {
+  background-color: hsl(199 89% 48%);
+}
+
+[data-kb-theme="dark"] .tooltip__content {
+  border: 1px solid hsl(240 5% 26%);
+  background-color: hsl(0 0% 100% / 0.9);
+  color: hsl(240 4% 16%);
+  box-shadow: none;
+}

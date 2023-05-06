@@ -16,7 +16,7 @@ import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@ko
 import { createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
-import { createLocalizedStringFormatter } from "../i18n";
+import { createMessageFormatter } from "../i18n";
 import { TOAST_HOTKEY_PLACEHOLDER, TOAST_INTL_MESSAGES } from "./toast.intl";
 import { ToastRegionContext, ToastRegionContextValue } from "./toast-region-context";
 import { toastStore } from "./toast-store";
@@ -65,7 +65,10 @@ export interface ToastRegionOptions {
    *  - allows focus even outside a containing focus scope.
    *  - doesn’t dismiss overlays when clicking on it, even though it is outside.
    */
-  isTopLayer?: boolean;
+  topLayer?: boolean;
+
+  /** The id of the toast region, used for multiple toast regions. */
+  regionId?: string;
 
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
@@ -90,7 +93,7 @@ export function ToastRegion(props: ToastRegionProps) {
       swipeThreshold: 50,
       pauseOnInteraction: true,
       pauseOnPageIdle: true,
-      isTopLayer: true,
+      topLayer: true,
     },
     props
   );
@@ -104,15 +107,21 @@ export function ToastRegion(props: ToastRegionProps) {
     "swipeThreshold",
     "pauseOnInteraction",
     "pauseOnPageIdle",
-    "isTopLayer",
+    "topLayer",
     "aria-label",
+    "regionId",
   ]);
 
-  const toasts = createMemo(() => toastStore.toasts().slice(0, local.limit!));
+  const toasts = createMemo(() =>
+    toastStore
+      .toasts()
+      .filter(toast => toast.region === local.regionId)
+      .slice(0, local.limit!)
+  );
 
   const [isPaused, setIsPaused] = createSignal(false);
 
-  const stringFormatter = createLocalizedStringFormatter(() => TOAST_INTL_MESSAGES);
+  const messageFormatter = createMessageFormatter(() => TOAST_INTL_MESSAGES);
 
   const hasToasts = () => toasts().length > 0;
 
@@ -121,12 +130,17 @@ export function ToastRegion(props: ToastRegionProps) {
   };
 
   const ariaLabel = () => {
-    const label = local["aria-label"] || stringFormatter().format("notifications");
+    const label =
+      local["aria-label"] ||
+      messageFormatter().format("notifications", {
+        hotkey: hotkeyLabel(),
+      });
+
     return label.replace(TOAST_HOTKEY_PLACEHOLDER, hotkeyLabel());
   };
 
   const topLayerAttr = () => ({
-    [DATA_TOP_LAYER_ATTR]: local.isTopLayer ? "" : undefined,
+    [DATA_TOP_LAYER_ATTR]: local.topLayer ? "" : undefined,
   });
 
   const context: ToastRegionContextValue = {
@@ -153,7 +167,7 @@ export function ToastRegion(props: ToastRegionProps) {
         // so it doesn't prevent interactions with page elements that it overlays.
         // In case it is a top layer, we explicitly enable pointer-events prevented by a `DismissableLayer`.
         style={{
-          "pointer-events": hasToasts() ? (local.isTopLayer ? "auto" : undefined) : "none",
+          "pointer-events": hasToasts() ? (local.topLayer ? "auto" : undefined) : "none",
           ...local.style,
         }}
         {...topLayerAttr}

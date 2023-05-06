@@ -23,5 +23,5 @@ export function PopoverDescription(props: PopoverDescriptionProps) {
 
   createEffect(() => onCleanup(context.registerDescriptionId(local.id!)));
 
-  return <Polymorphic fallback="p" id={local.id} {...context.dataset()} {...others} />;
+  return <Polymorphic as="p" id={local.id} {...context.dataset()} {...others} />;
 }

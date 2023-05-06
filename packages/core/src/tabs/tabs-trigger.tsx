@@ -27,7 +27,7 @@ export interface TabsTriggerOptions extends AsChildProp {
   value: string;
 
   /** Whether the tab should be disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
 
 export interface TabsTriggerProps extends OverrideComponentProps<"button", TabsTriggerOptions> {}
@@ -51,7 +51,7 @@ export function TabsTrigger(props: TabsTriggerProps) {
     "ref",
     "id",
     "value",
-    "isDisabled",
+    "disabled",
     "onPointerDown",
     "onPointerUp",
     "onClick",
@@ -64,7 +64,7 @@ export function TabsTrigger(props: TabsTriggerProps) {
 
   const isHighlighted = () => context.listState().selectionManager().focusedKey() === local.value;
 
-  const isDisabled = () => local.isDisabled || context.isDisabled();
+  const isDisabled = () => local.disabled || context.isDisabled();
 
   const contentId = () => context.contentIdsMap().get(local.value);
 
@@ -74,7 +74,7 @@ export function TabsTrigger(props: TabsTriggerProps) {
       type: "item",
       key: local.value,
       textValue: "", // not applicable here
-      isDisabled: isDisabled(),
+      disabled: isDisabled(),
     }),
   });
 
@@ -82,7 +82,7 @@ export function TabsTrigger(props: TabsTriggerProps) {
     {
       key: () => local.value,
       selectionManager: () => context.listState().selectionManager(),
-      isDisabled,
+      disabled: isDisabled,
     },
     () => ref
   );
@@ -102,7 +102,7 @@ export function TabsTrigger(props: TabsTriggerProps) {
 
   return (
     <Polymorphic
-      fallback="button"
+      as="button"
       ref={mergeRefs(el => (ref = el), local.ref)}
       id={id()}
       role="tab"

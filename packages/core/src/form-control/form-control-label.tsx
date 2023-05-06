@@ -22,20 +22,19 @@ export function FormControlLabel(props: FormControlLabelProps) {
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "id"]);
+  const [local, others] = splitProps(props, ["ref"]);
 
   const tagName = createTagName(
     () => ref,
     () => "label"
   );
 
-  createEffect(() => onCleanup(context.registerLabel(local.id!)));
+  createEffect(() => onCleanup(context.registerLabel(others.id!)));
 
   return (
     <Polymorphic
-      fallback="label"
+      as="label"
       ref={mergeRefs(el => (ref = el), local.ref)}
-      id={local.id}
       for={tagName() === "label" ? context.fieldId() : undefined}
       {...context.dataset()}
       {...others}

@@ -32,13 +32,13 @@ export interface AccordionRootOptions extends AsChildProp {
   defaultValue?: string[];
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string[]) => void;
+  onChange?: (value: string[]) => void;
 
   /** Whether multiple items can be opened at the same time. */
-  isMultiple?: boolean;
+  multiple?: boolean;
 
-  /** When `isMultiple` is `false`, allows closing content when clicking trigger for an open item. */
-  isCollapsible?: boolean;
+  /** When `multiple` is `false`, allows closing content when clicking trigger for an open item. */
+  collapsible?: boolean;
 
   /** Whether focus should wrap around when the end/start is reached. */
   shouldFocusWrap?: boolean;
@@ -57,8 +57,8 @@ export function AccordionRoot(props: AccordionRootProps) {
   props = mergeDefaultProps(
     {
       id: defaultId,
-      isMultiple: false,
-      isCollapsible: false,
+      multiple: false,
+      collapsible: false,
       shouldFocusWrap: true,
     },
     props
@@ -68,9 +68,9 @@ export function AccordionRoot(props: AccordionRootProps) {
     "ref",
     "value",
     "defaultValue",
-    "onValueChange",
-    "isMultiple",
-    "isCollapsible",
+    "onChange",
+    "multiple",
+    "collapsible",
     "shouldFocusWrap",
     "onKeyDown",
     "onMouseDown",
@@ -85,9 +85,9 @@ export function AccordionRoot(props: AccordionRootProps) {
   const listState = createListState({
     selectedKeys: () => local.value,
     defaultSelectedKeys: () => local.defaultValue,
-    onSelectionChange: value => local.onValueChange?.(Array.from(value)),
-    disallowEmptySelection: () => !local.isMultiple && !local.isCollapsible,
-    selectionMode: () => (local.isMultiple ? "multiple" : "single"),
+    onSelectionChange: value => local.onChange?.(Array.from(value)),
+    disallowEmptySelection: () => !local.multiple && !local.collapsible,
+    selectionMode: () => (local.multiple ? "multiple" : "single"),
     dataSource: items,
   });
 
@@ -112,7 +112,7 @@ export function AccordionRoot(props: AccordionRootProps) {
     <DomCollectionProvider>
       <AccordionContext.Provider value={context}>
         <Polymorphic
-          fallback="div"
+          as="div"
           ref={mergeRefs(el => (ref = el), local.ref)}
           onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.onKeyDown])}
           onMouseDown={composeEventHandlers([local.onMouseDown, selectableList.onMouseDown])}
