@@ -39,7 +39,7 @@ export function SliderThumb(props: SliderThumbProps) {
   createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
       ref: () => ref,
-      isDisabled: context.state.isDisabled(),
+      disabled: context.state.isDisabled(),
       key: others.id!,
       textValue: "",
       type: "item",
