@@ -1,5 +1,5 @@
-import { composeEventHandlers, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { createSignal } from "solid-js";
+import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { createSignal, JSX, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useSliderContext } from "./slider-context";
@@ -13,6 +13,8 @@ export interface SliderTrackProps extends OverrideComponentProps<"div", AsChildP
  */
 export function SliderTrack(props: SliderTrackProps) {
   const context = useSliderContext();
+
+  const [local, others] = splitProps(props, ["onPointerDown", "onPointerMove", "onPointerUp"]);
 
   const [sRect, setRect] = createSignal<DOMRect>();
 
@@ -45,7 +47,9 @@ export function SliderTrack(props: SliderTrackProps) {
 
   let startPosition = 0;
 
-  const onDownTrack = (e: PointerEvent) => {
+  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerDown);
+
     const target = e.target as HTMLElement;
     target.setPointerCapture(e.pointerId);
 
@@ -57,7 +61,9 @@ export function SliderTrack(props: SliderTrackProps) {
     context.onSlideStart?.(value);
   };
 
-  const onPointerMove = (e: PointerEvent) => {
+  const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerMove);
+
     const target = e.target as HTMLElement;
 
     if (target.hasPointerCapture(e.pointerId)) {
@@ -69,8 +75,11 @@ export function SliderTrack(props: SliderTrackProps) {
     }
   };
 
-  const onPointerUp = (e: PointerEvent) => {
+  const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerUp);
+
     const target = e.target as HTMLElement;
+
     if (target.hasPointerCapture(e.pointerId)) {
       target.releasePointerCapture(e.pointerId);
       setRect(undefined);
@@ -80,13 +89,13 @@ export function SliderTrack(props: SliderTrackProps) {
 
   return (
     <Polymorphic
-      ref={mergeRefs(context.registerTrack, props.ref)}
       as="div"
-      onPointerDown={composeEventHandlers([props.onPointerDown, onDownTrack])}
-      onPointerMove={composeEventHandlers([props.onPointerMove, onPointerMove])}
-      onPointerUp={composeEventHandlers([props.onPointerUp, onPointerUp])}
+      ref={mergeRefs(context.registerTrack, props.ref)}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
       {...context.dataset()}
-      {...props}
+      {...others}
     />
   );
 }

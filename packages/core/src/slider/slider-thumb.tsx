@@ -12,12 +12,7 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/slider/src/useSliderThumb.ts
  */
 
-import {
-  composeEventHandlers,
-  mergeDefaultProps,
-  mergeRefs,
-  OverrideComponentProps,
-} from "@kobalte/utils";
+import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, createContext, JSX, onMount, splitProps, useContext } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -26,6 +21,7 @@ import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { useSliderContext } from "./slider-context";
 
 export interface SliderThumbProps extends OverrideComponentProps<"span", AsChildProp> {
+  /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }
 
@@ -41,7 +37,16 @@ export function SliderThumb(props: SliderThumbProps) {
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "style"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "style",
+    "onKeyDown",
+    "onPointerDown",
+    "onPointerMove",
+    "onPointerUp",
+    "onFocus",
+    "onBlur",
+  ]);
 
   createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
@@ -74,18 +79,30 @@ export function SliderThumb(props: SliderThumbProps) {
 
   let startPosition = 0;
 
-  const onThumbDown = (e: PointerEvent) => {
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    callHandler(e, local.onKeyDown);
+    context.onStepKeyDown(e, index());
+  };
+
+  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerDown);
+
     const target = e.currentTarget as HTMLElement;
 
     target.setPointerCapture(e.pointerId);
     e.preventDefault();
     target.focus();
+
     startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
+
     if (value()) {
       context.onSlideStart?.(value()!);
     }
   };
-  const onThumbMove = (e: PointerEvent) => {
+
+  const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerMove);
+
     const target = e.currentTarget as HTMLElement;
 
     if (target.hasPointerCapture(e.pointerId)) {
@@ -93,17 +110,31 @@ export function SliderThumb(props: SliderThumbProps) {
         deltaX: e.clientX - startPosition,
         deltaY: e.clientY - startPosition,
       };
+
       context.onSlideMove?.(delta);
       startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
     }
   };
 
-  const onThumbUp = (e: PointerEvent) => {
+  const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    callHandler(e, local.onPointerUp);
+
     const target = e.currentTarget as HTMLElement;
+
     if (target.hasPointerCapture(e.pointerId)) {
       target.releasePointerCapture(e.pointerId);
       context.onSlideEnd?.();
     }
+  };
+
+  const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onFocus);
+    context.state.setFocusedThumb(index());
+  };
+
+  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onBlur);
+    context.state.setFocusedThumb(undefined);
   };
 
   onMount(() => {
@@ -113,8 +144,9 @@ export function SliderThumb(props: SliderThumbProps) {
   return (
     <ThumbContext.Provider value={{ index }}>
       <Polymorphic
-        ref={mergeRefs(el => (ref = el), local.ref)}
         as="span"
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        tabIndex={context.state.isDisabled() ? undefined : 0}
         style={{
           display: value() === undefined ? "none" : undefined,
           position: "absolute",
@@ -128,22 +160,12 @@ export function SliderThumb(props: SliderThumbProps) {
         aria-valuenow={value()}
         aria-valuemax={context.maxValue()}
         aria-orientation={context.state.orientation()}
-        tabIndex={context.state.isDisabled() ? undefined : 0}
-        onKeyDown={composeEventHandlers<HTMLSpanElement>([
-          props.onKeyDown,
-          e => context.onStepKeyDown(e, index()),
-        ])}
-        onPointerDown={composeEventHandlers([props.onPointerDown, onThumbDown])}
-        onPointerMove={composeEventHandlers([props.onPointerMove, onThumbMove])}
-        onPointerUp={composeEventHandlers([props.onPointerUp, onThumbUp])}
-        onFocus={composeEventHandlers([
-          props.onFocus,
-          () => context.state.setFocusedThumb(index()),
-        ])}
-        onBlur={composeEventHandlers([
-          props.onBlur,
-          () => context.state.setFocusedThumb(undefined),
-        ])}
+        onKeyDown={onKeyDown}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onFocus={onFocus}
+        onBlur={onBlur}
         {...context.dataset()}
         {...others}
       />

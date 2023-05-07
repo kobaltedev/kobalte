@@ -8,16 +8,25 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/slider/src/Slider.tsx
  */
 
-import { clamp, createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import {
+  access,
+  clamp,
+  createGenerateId,
+  mergeDefaultProps,
+  mergeRefs,
+  OverrideComponentProps,
+  ValidationState,
+} from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 
 import { createNumberFormatter, useLocale } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
-import { CollectionItemWithRef, createRegisterId } from "../primitives";
+import { CollectionItemWithRef, createFormResetListener } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
-import { createSliderState } from "../primitives/create-slider-state/create-slider-state";
+import { createSliderState } from "./create-slider-state";
 import { SliderContext, SliderContextValue, SliderDataSet } from "./slider-context";
 import { getClosestValueIndex, getNextSortedValues, hasMinStepsBetweenValues } from "./utils";
+import { createFormControl, FormControlContext, FORM_CONTROL_PROP_NAMES } from "../form-control";
 
 export interface GetValueLabelParams {
   values: number[];
@@ -80,15 +89,37 @@ export interface SliderRootOptions extends AsChildProp {
    */
   orientation?: "horizontal" | "vertical";
 
+  /**
+   * A unique identifier for the component.
+   * The id is used to generate id attributes for nested components.
+   * If no id prop is provided, a generated id will be used.
+   */
+  id?: string;
+
+  /**
+   * The name of the slider, used when submitting an HTML form.
+   * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).
+   */
   name?: string;
+
+  /** Whether the slider should display its "valid" or "invalid" visual styling. */
+  validationState?: ValidationState;
+
+  /** Whether the user must fill the slider before the owning form can be submitted. */
+  required?: boolean;
 
   /** Whether the slider is disabled. */
   disabled?: boolean;
+
+  /** Whether the slider is read only. */
+  readOnly?: boolean;
 }
 
 export interface SliderRootProps extends OverrideComponentProps<"div", SliderRootOptions> {}
 
 export function SliderRoot(props: SliderRootProps) {
+  let ref: HTMLDivElement | undefined;
+
   const defaultId = `slider-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -106,23 +137,27 @@ export function SliderRoot(props: SliderRootProps) {
     props
   );
 
-  const [local, others] = splitProps(props, [
-    "value",
-    "defaultValue",
-    "onChange",
-    "onChangeEnd",
-    "inverted",
-    "minValue",
-    "maxValue",
-    "step",
-    "minStepsBetweenThumbs",
-    "getValueLabel",
-    "orientation",
-    "name",
-    "disabled",
-  ]);
+  const [local, formControlProps, others] = splitProps(
+    props,
+    [
+      "ref",
+      "value",
+      "defaultValue",
+      "onChange",
+      "onChangeEnd",
+      "inverted",
+      "minValue",
+      "maxValue",
+      "step",
+      "minStepsBetweenThumbs",
+      "getValueLabel",
+      "orientation",
+    ],
+    FORM_CONTROL_PROP_NAMES
+  );
 
-  const [labelId, setLabelId] = createSignal<string>();
+  const { formControlContext } = createFormControl(formControlProps);
+
   const defaultFormatter = createNumberFormatter(() => ({ style: "decimal" }));
   const { direction } = useLocale();
 
@@ -130,7 +165,7 @@ export function SliderRoot(props: SliderRootProps) {
     defaultValue: local.defaultValue!,
     numberFormatter: defaultFormatter(),
     value: () => local.value,
-    isDisabled: () => props.disabled!,
+    isDisabled: () => formControlContext.isDisabled() ?? false,
     maxValue: () => local.maxValue!,
     minValue: () => local.minValue!,
     minStepsBetweenThumbs: () => local.minStepsBetweenThumbs!,
@@ -139,6 +174,11 @@ export function SliderRoot(props: SliderRootProps) {
     orientation: () => local.orientation!,
     step: () => local.step!,
   });
+
+  createFormResetListener(
+    () => ref,
+    () => state.setValues(local.defaultValue!)
+  );
 
   const [thumbs, setThumbs] = createSignal<CollectionItemWithRef[]>([]);
   const { DomCollectionProvider } = createDomCollection({
@@ -157,7 +197,7 @@ export function SliderRoot(props: SliderRootProps) {
 
   const dataset: Accessor<SliderDataSet> = createMemo(() => {
     return {
-      "data-disabled": (local.disabled ? "" : undefined) as SliderDataSet["data-disabled"],
+      ...formControlContext.dataset(),
       "data-orientation": local.orientation,
     };
   });
@@ -206,13 +246,13 @@ export function SliderRoot(props: SliderRootProps) {
   };
 
   const onHomeKeyDown = () => {
-    !local.disabled &&
+    !formControlContext.isDisabled() &&
       state.focusedThumb() !== undefined &&
       state.setThumbValue(0, state.getThumbMinValue(0));
   };
 
   const onEndKeyDown = () => {
-    !local.disabled &&
+    !formControlContext.isDisabled() &&
       state.focusedThumb() !== undefined &&
       state.setThumbValue(
         state.values().length - 1,
@@ -221,7 +261,7 @@ export function SliderRoot(props: SliderRootProps) {
   };
 
   const onStepKeyDown = (event: KeyboardEvent, index: number) => {
-    if (!local.disabled) {
+    if (!formControlContext.isDisabled()) {
       switch (event.key) {
         case "Left":
         case "ArrowLeft":
@@ -298,7 +338,6 @@ export function SliderRoot(props: SliderRootProps) {
   const context: SliderContextValue = {
     dataset,
     state,
-    labelId,
     thumbs,
     setThumbs,
     onSlideStart,
@@ -314,23 +353,24 @@ export function SliderRoot(props: SliderRootProps) {
     startEdge,
     endEdge,
     registerTrack: (ref: HTMLElement) => setTrackRef(ref),
-    generateId: createGenerateId(() => others.id!),
-    registerLabelId: createRegisterId(setLabelId),
+    generateId: createGenerateId(() => access(formControlProps.id)!),
     getValueLabel: local.getValueLabel,
   };
 
   return (
     <DomCollectionProvider>
-      <SliderContext.Provider value={context}>
-        <Polymorphic
-          as="div"
-          role="group"
-          aria-label={props["aria-label"]}
-          aria-labelledby={labelId()}
-          {...dataset()}
-          {...others}
-        />
-      </SliderContext.Provider>
+      <FormControlContext.Provider value={formControlContext}>
+        <SliderContext.Provider value={context}>
+          <Polymorphic
+            as="div"
+            ref={mergeRefs(el => (ref = el), local.ref)}
+            role="group"
+            id={access(formControlProps.id)}
+            {...dataset()}
+            {...others}
+          />
+        </SliderContext.Provider>
+      </FormControlContext.Provider>
     </DomCollectionProvider>
   );
 }

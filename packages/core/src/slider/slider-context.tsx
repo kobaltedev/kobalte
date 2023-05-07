@@ -1,11 +1,11 @@
 import { Accessor, createContext, Setter, useContext } from "solid-js";
 
+import { FormControlDataSet } from "../form-control";
 import { CollectionItemWithRef } from "../primitives";
-import { SliderState } from "../primitives/create-slider-state/create-slider-state";
+import { SliderState } from "./create-slider-state";
 import { GetValueLabelParams } from "./slider-root";
 
-export interface SliderDataSet {
-  "data-disabled": "" | undefined;
+export interface SliderDataSet extends FormControlDataSet {
   "data-orientation": "vertical" | "horizontal" | undefined;
 }
 
@@ -14,7 +14,6 @@ export type Side = "left" | "top" | "bottom" | "right";
 export interface SliderContextValue {
   dataset: Accessor<SliderDataSet>;
   state: SliderState;
-  labelId: Accessor<string | undefined>;
   thumbs: Accessor<CollectionItemWithRef[]>;
   setThumbs: Setter<CollectionItemWithRef[]>;
   onSlideStart: ((value: number) => void) | undefined;
@@ -31,7 +30,6 @@ export interface SliderContextValue {
   inverted: Accessor<boolean>;
   registerTrack: (ref: HTMLElement) => void;
   generateId: (part: string) => string;
-  registerLabelId: (id: string) => () => void;
   getValueLabel: ((params: GetValueLabelParams) => string) | undefined;
 }
 
