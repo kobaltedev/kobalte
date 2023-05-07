@@ -1,4 +1,4 @@
-import { clamp, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -33,7 +33,7 @@ export function SliderFill(props: SliderFillProps) {
 
   return (
     <Polymorphic
-      fallback="div"
+      as="div"
       style={{
         [context.startEdge()]: `${offsetStart()}%`,
         [context.endEdge()]: `${offsetEnd()}%`,

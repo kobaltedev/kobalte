@@ -1,6 +1,6 @@
 import {
-  focusWithoutScrolling,
   mergeDefaultProps,
+  mergeRefs,
   OverrideComponentProps,
   ValidationState,
   visuallyHiddenStyles,
@@ -21,7 +21,7 @@ export interface SliderInputProps extends OverrideComponentProps<"input", AsChil
  * The native html input that is visually hidden in the slider thumb.
  */
 export function SliderInput(props: SliderInputProps) {
-  let inputRef!: HTMLInputElement;
+  let ref: HTMLInputElement | undefined;
   const context = useSliderContext();
   const thumb = useThumbContext();
 
@@ -32,7 +32,13 @@ export function SliderInput(props: SliderInputProps) {
     props
   );
 
-  const [local, others] = splitProps(props, ["id", "style", "isRequired", "validationState"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "id",
+    "style",
+    "isRequired",
+    "validationState",
+  ]);
 
   const [valueText, setValueText] = createSignal("");
 
@@ -43,7 +49,7 @@ export function SliderInput(props: SliderInputProps) {
   return (
     // eslint-disable-next-line jsx-a11y/role-supports-aria-props
     <input
-      ref={inputRef}
+      ref={mergeRefs(el => (ref = el), local.ref)}
       type="range"
       tabIndex={!context.state.isDisabled() ? 0 : undefined}
       min={context.state.getThumbMinValue(thumb.index())}
@@ -51,6 +57,7 @@ export function SliderInput(props: SliderInputProps) {
       step={context.state.step()}
       value={context.state.values()[thumb.index()]}
       disabled={context.state.isDisabled()}
+      style={{ ...visuallyHiddenStyles, ...local.style }}
       aria-orientation={context.state.orientation()}
       aria-valuetext={valueText()}
       aria-required={local.isRequired || undefined}
@@ -59,7 +66,6 @@ export function SliderInput(props: SliderInputProps) {
       onChange={e => {
         context.state.setThumbValue(thumb.index(), parseFloat(e.currentTarget.value));
       }}
-      style={{ ...visuallyHiddenStyles, ...local.style }}
       {...others}
     />
   );

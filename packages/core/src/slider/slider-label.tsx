@@ -1,5 +1,5 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+import { createEffect, onCleanup } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useSliderContext } from "./slider-context";
@@ -19,9 +19,7 @@ export function SliderLabel(props: SliderLabelProps) {
     props
   );
 
-  const [local, others] = splitProps(props, ["id"]);
+  createEffect(() => onCleanup(context.registerLabelId(props.id!)));
 
-  createEffect(() => onCleanup(context.registerLabelId(local.id!)));
-
-  return <Polymorphic fallback="span" id={local.id} {...context.dataset()} {...others} />;
+  return <Polymorphic as="span" {...context.dataset()} {...props} />;
 }

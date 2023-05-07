@@ -26,27 +26,16 @@ export interface GetValueLabelParams {
 }
 
 export interface SliderRootOptions extends AsChildProp {
-  name?: string;
+  /** The slider values. */
+  value?: number[];
 
-  /**
-   * The minimum permitted steps between multiple thumbs.
-   * @default 0
-   */
-  minStepsBetweenThumbs?: number;
-
-  /**
-   * The value of the slider when initially rendered.
-   */
+  /** The value of the slider when initially rendered. */
   defaultValue?: number[];
 
-  /**
-   * Called whne the value changes.
-   */
+  /** Called when the value changes. */
   onChange?: (value: number[]) => void;
 
-  /**
-   * Called when the value changes at the end of an interaction.
-   */
+  /** Called when the value changes at the end of an interaction. */
   onChangeEnd?: (value: number[]) => void;
 
   /**
@@ -54,10 +43,6 @@ export interface SliderRootOptions extends AsChildProp {
    * @default false
    */
   inverted?: boolean;
-  /**
-   * The slider values.
-   */
-  value?: number[];
 
   /**
    * The minimum slider value.
@@ -78,6 +63,12 @@ export interface SliderRootOptions extends AsChildProp {
   step?: number;
 
   /**
+   * The minimum permitted steps between multiple thumbs.
+   * @default 0
+   */
+  minStepsBetweenThumbs?: number;
+
+  /**
    * A function to get the accessible label text representing the current value in a human-readable format.
    * If not provided, the value label will be read as a percentage of the max value.
    */
@@ -89,10 +80,10 @@ export interface SliderRootOptions extends AsChildProp {
    */
   orientation?: "horizontal" | "vertical";
 
-  /**
-   * Whether the slider is disabled.
-   */
-  isDisabled?: boolean;
+  name?: string;
+
+  /** Whether the slider is disabled. */
+  disabled?: boolean;
 }
 
 export interface SliderRootProps extends OverrideComponentProps<"div", SliderRootOptions> {}
@@ -107,7 +98,7 @@ export function SliderRoot(props: SliderRootProps) {
       maxValue: 100,
       step: 1,
       orientation: "horizontal",
-      isDisabled: false,
+      disabled: false,
       inverted: false,
       minStepsBetweenThumbs: 0,
       defaultValue: [props.minValue ?? 0],
@@ -117,18 +108,18 @@ export function SliderRoot(props: SliderRootProps) {
 
   const [local, others] = splitProps(props, [
     "value",
+    "defaultValue",
+    "onChange",
+    "onChangeEnd",
+    "inverted",
     "minValue",
     "maxValue",
-    "getValueLabel",
-    "onChangeEnd",
-    "onChange",
-    "defaultValue",
-    "name",
-    "inverted",
-    "minStepsBetweenThumbs",
     "step",
+    "minStepsBetweenThumbs",
+    "getValueLabel",
     "orientation",
-    "isDisabled",
+    "name",
+    "disabled",
   ]);
 
   const [labelId, setLabelId] = createSignal<string>();
@@ -139,7 +130,7 @@ export function SliderRoot(props: SliderRootProps) {
     defaultValue: local.defaultValue!,
     numberFormatter: defaultFormatter(),
     value: () => local.value,
-    isDisabled: () => props.isDisabled!,
+    isDisabled: () => props.disabled!,
     maxValue: () => local.maxValue!,
     minValue: () => local.minValue!,
     minStepsBetweenThumbs: () => local.minStepsBetweenThumbs!,
@@ -166,7 +157,7 @@ export function SliderRoot(props: SliderRootProps) {
 
   const dataset: Accessor<SliderDataSet> = createMemo(() => {
     return {
-      "data-disabled": (local.isDisabled ? "" : undefined) as SliderDataSet["data-disabled"],
+      "data-disabled": (local.disabled ? "" : undefined) as SliderDataSet["data-disabled"],
       "data-orientation": local.orientation,
     };
   });
@@ -215,13 +206,13 @@ export function SliderRoot(props: SliderRootProps) {
   };
 
   const onHomeKeyDown = () => {
-    !local.isDisabled &&
+    !local.disabled &&
       state.focusedThumb() !== undefined &&
       state.setThumbValue(0, state.getThumbMinValue(0));
   };
 
   const onEndKeyDown = () => {
-    !local.isDisabled &&
+    !local.disabled &&
       state.focusedThumb() !== undefined &&
       state.setThumbValue(
         state.values().length - 1,
@@ -230,7 +221,7 @@ export function SliderRoot(props: SliderRootProps) {
   };
 
   const onStepKeyDown = (event: KeyboardEvent, index: number) => {
-    if (!local.isDisabled) {
+    if (!local.disabled) {
       switch (event.key) {
         case "Left":
         case "ArrowLeft":
@@ -332,7 +323,7 @@ export function SliderRoot(props: SliderRootProps) {
     <DomCollectionProvider>
       <SliderContext.Provider value={context}>
         <Polymorphic
-          fallback="div"
+          as="div"
           role="group"
           aria-label={props["aria-label"]}
           aria-labelledby={labelId()}

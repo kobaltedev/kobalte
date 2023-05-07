@@ -31,9 +31,16 @@ export interface SliderThumbProps extends OverrideComponentProps<"span", AsChild
 
 export function SliderThumb(props: SliderThumbProps) {
   let ref: HTMLElement | undefined;
+
   const context = useSliderContext();
 
-  props = mergeDefaultProps({ id: context.generateId("thumb") }, props);
+  props = mergeDefaultProps(
+    {
+      id: context.generateId("thumb"),
+    },
+    props
+  );
+
   const [local, others] = splitProps(props, ["ref", "style"]);
 
   createDomCollectionItem<CollectionItemWithRef>({
@@ -67,10 +74,6 @@ export function SliderThumb(props: SliderThumbProps) {
 
   let startPosition = 0;
 
-  onMount(() => {
-    context.state.setThumbEditable(index(), !context.state.isDisabled());
-  });
-
   const onThumbDown = (e: PointerEvent) => {
     const target = e.currentTarget as HTMLElement;
 
@@ -103,41 +106,15 @@ export function SliderThumb(props: SliderThumbProps) {
     }
   };
 
+  onMount(() => {
+    context.state.setThumbEditable(index(), !context.state.isDisabled());
+  });
+
   return (
     <ThumbContext.Provider value={{ index }}>
       <Polymorphic
         ref={mergeRefs(el => (ref = el), local.ref)}
-        fallback="span"
-        children={props.children}
-        aria-label={others["aria-label"]}
-        aria-valuetext={context.state.getThumbValueLabel(index())}
-        aria-valuemin={context.minValue()}
-        aria-valuenow={value()}
-        aria-valuemax={context.maxValue()}
-        aria-orientation={context.state.orientation()}
-        {...context.dataset()}
-        tabIndex={context.state.isDisabled() ? undefined : 0}
-        onKeyDown={composeEventHandlers<HTMLSpanElement>([
-          props.onKeyDown,
-          e => {
-            context.onStepKeyDown(e, index());
-          },
-        ])}
-        onPointerDown={composeEventHandlers([props.onPointerDown, onThumbDown])}
-        onPointerMove={composeEventHandlers([props.onPointerMove, onThumbMove])}
-        onPointerUp={composeEventHandlers([props.onPointerUp, onThumbUp])}
-        onFocus={composeEventHandlers([
-          props.onFocus,
-          () => {
-            context.state.setFocusedThumb(index());
-          },
-        ])}
-        onBlur={composeEventHandlers([
-          props.onBlur,
-          () => {
-            context.state.setFocusedThumb(undefined);
-          },
-        ])}
+        as="span"
         style={{
           display: value() === undefined ? "none" : undefined,
           position: "absolute",
@@ -146,6 +123,28 @@ export function SliderThumb(props: SliderThumbProps) {
           "touch-action": "none",
           ...local.style,
         }}
+        aria-valuetext={context.state.getThumbValueLabel(index())}
+        aria-valuemin={context.minValue()}
+        aria-valuenow={value()}
+        aria-valuemax={context.maxValue()}
+        aria-orientation={context.state.orientation()}
+        tabIndex={context.state.isDisabled() ? undefined : 0}
+        onKeyDown={composeEventHandlers<HTMLSpanElement>([
+          props.onKeyDown,
+          e => context.onStepKeyDown(e, index()),
+        ])}
+        onPointerDown={composeEventHandlers([props.onPointerDown, onThumbDown])}
+        onPointerMove={composeEventHandlers([props.onPointerMove, onThumbMove])}
+        onPointerUp={composeEventHandlers([props.onPointerUp, onThumbUp])}
+        onFocus={composeEventHandlers([
+          props.onFocus,
+          () => context.state.setFocusedThumb(index()),
+        ])}
+        onBlur={composeEventHandlers([
+          props.onBlur,
+          () => context.state.setFocusedThumb(undefined),
+        ])}
+        {...context.dataset()}
         {...others}
       />
     </ThumbContext.Provider>
