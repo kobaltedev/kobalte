@@ -73,6 +73,7 @@ export function SliderThumb(props: SliderThumbProps) {
   };
 
   const transform = () => {
+    /*
     let value = 50;
     const isVertical = context.state.orientation() === "vertical";
 
@@ -81,7 +82,11 @@ export function SliderThumb(props: SliderThumbProps) {
     } else {
       value *= context.isSlidingFromLeft() ? -1 : 1;
     }
+
     return isVertical ? `translate(-50%, ${value}%)` : `translate(${value}%, -50%)`;
+     */
+
+    return context.state.orientation() === "vertical" ? "translateY(50%)" : "translateX(-50%)";
   };
 
   let startPosition = 0;

@@ -5,7 +5,7 @@ import {
   OverrideComponentProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { createEffect, createSignal, JSX, splitProps } from "solid-js";
+import { createEffect, createSignal, JSX, on, splitProps } from "solid-js";
 
 import {
   createFormControlField,
@@ -51,7 +51,16 @@ export function SliderInput(props: SliderInputProps) {
   const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = e => {
     callHandler(e, local.onChange);
 
-    context.state.setThumbValue(thumb.index(), parseFloat(e.currentTarget.value));
+    const target = e.target as HTMLInputElement;
+
+    context.state.setThumbValue(thumb.index(), parseFloat(target.value));
+
+    // Unlike in React, inputs `value` can be out of sync with our value state.
+    // even if an input is controlled (ex: `<input value="foo" />`,
+    // typing on the input will change its internal `value`.
+    //
+    // To prevent this, we need to force the input `value` to be in sync with the slider value state.
+    target.value = String(context.state.values()[thumb.index()]) ?? "";
   };
 
   createEffect(() => {

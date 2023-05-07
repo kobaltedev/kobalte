@@ -19,6 +19,7 @@ import {
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 
+import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
 import { createNumberFormatter, useLocale } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef, createFormResetListener } from "../primitives";
@@ -26,7 +27,6 @@ import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "./create-slider-state";
 import { SliderContext, SliderContextValue, SliderDataSet } from "./slider-context";
 import { getClosestValueIndex, getNextSortedValues, hasMinStepsBetweenValues } from "./utils";
-import { createFormControl, FormControlContext, FORM_CONTROL_PROP_NAMES } from "../form-control";
 
 export interface GetValueLabelParams {
   values: number[];
@@ -128,11 +128,11 @@ export function SliderRoot(props: SliderRootProps) {
       minValue: 0,
       maxValue: 100,
       step: 1,
+      minStepsBetweenThumbs: 0,
       orientation: "horizontal",
       disabled: false,
       inverted: false,
-      minStepsBetweenThumbs: 0,
-      defaultValue: [props.minValue ?? 0],
+      getValueLabel: params => params.values.join(", "),
     },
     props
   );
@@ -162,23 +162,18 @@ export function SliderRoot(props: SliderRootProps) {
   const { direction } = useLocale();
 
   const state = createSliderState({
-    defaultValue: local.defaultValue!,
-    numberFormatter: defaultFormatter(),
     value: () => local.value,
-    isDisabled: () => formControlContext.isDisabled() ?? false,
+    defaultValue: () => local.defaultValue ?? [local.minValue!],
     maxValue: () => local.maxValue!,
     minValue: () => local.minValue!,
     minStepsBetweenThumbs: () => local.minStepsBetweenThumbs!,
-    onChange: local.onChange,
-    onChangeEnd: local.onChangeEnd,
+    isDisabled: () => formControlContext.isDisabled() ?? false,
     orientation: () => local.orientation!,
     step: () => local.step!,
+    numberFormatter: defaultFormatter(),
+    onChange: local.onChange,
+    onChangeEnd: local.onChangeEnd,
   });
-
-  createFormResetListener(
-    () => ref,
-    () => state.setValues(local.defaultValue!)
-  );
 
   const [thumbs, setThumbs] = createSignal<CollectionItemWithRef[]>([]);
   const { DomCollectionProvider } = createDomCollection({
@@ -186,10 +181,15 @@ export function SliderRoot(props: SliderRootProps) {
     onItemsChange: setThumbs,
   });
 
-  const isDirectionLTR = () => direction() === "ltr";
+  createFormResetListener(
+    () => ref,
+    () => state.resetValues()
+  );
+
+  const isLTR = () => direction() === "ltr";
 
   const isSlidingFromLeft = () => {
-    return (isDirectionLTR() && !local.inverted!) || (!isDirectionLTR() && local.inverted!);
+    return (isLTR() && !local.inverted!) || (!isLTR() && local.inverted!);
   };
   const isSlidingFromBottom = () => !local.inverted!;
 
@@ -217,20 +217,27 @@ export function SliderRoot(props: SliderRootProps) {
 
   const onSlideMove = ({ deltaX, deltaY }: { deltaX: number; deltaY: number }) => {
     const active = state.focusedThumb();
-    if (active === undefined) return;
+
+    if (active === undefined) {
+      return;
+    }
+
     const { width, height } = trackRef()!.getBoundingClientRect();
     const size = isVertical() ? height : width;
 
     if (currentPosition === null) {
       currentPosition = state.getThumbPercent(state.focusedThumb()!) * size;
     }
+
     let delta = isVertical() ? deltaY : deltaX;
     if ((!isVertical() && local.inverted!) || (isVertical() && isSlidingFromBottom())) {
       delta = -delta;
     }
+
     currentPosition += delta;
     const percent = clamp(currentPosition / size, 0, 1);
     const nextValues = getNextSortedValues(state.values(), currentPosition, active);
+
     if (hasMinStepsBetweenValues(nextValues, local.minStepsBetweenThumbs! * state.step())) {
       state.setThumbPercent(state.focusedThumb()!, percent);
       local.onChange?.(state.values());
@@ -239,6 +246,7 @@ export function SliderRoot(props: SliderRootProps) {
 
   const onSlideEnd = () => {
     const activeThumb = state.focusedThumb();
+
     if (activeThumb !== undefined) {
       state.setThumbDragging(activeThumb, false);
       local.onChangeEnd?.(state.values());
@@ -267,7 +275,7 @@ export function SliderRoot(props: SliderRootProps) {
         case "ArrowLeft":
           event.preventDefault();
           event.stopPropagation();
-          if (!isDirectionLTR()) {
+          if (!isLTR()) {
             state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
           } else {
             state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
@@ -277,7 +285,7 @@ export function SliderRoot(props: SliderRootProps) {
         case "ArrowRight":
           event.preventDefault();
           event.stopPropagation();
-          if (!isDirectionLTR()) {
+          if (!isLTR()) {
             state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
           } else {
             state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
@@ -287,7 +295,7 @@ export function SliderRoot(props: SliderRootProps) {
         case "ArrowUp":
           event.preventDefault();
           event.stopPropagation();
-          if (!isDirectionLTR()) {
+          if (!isLTR()) {
             state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
           } else {
             state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
@@ -297,7 +305,7 @@ export function SliderRoot(props: SliderRootProps) {
         case "ArrowDown":
           event.preventDefault();
           event.stopPropagation();
-          if (!isDirectionLTR()) {
+          if (!isLTR()) {
             state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
           } else {
             state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());

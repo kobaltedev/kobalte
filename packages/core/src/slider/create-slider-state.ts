@@ -61,11 +61,13 @@ export interface SliderState {
   readonly isDisabled: Accessor<boolean>;
 
   setValues: (next: number[] | ((prev: number[]) => number[])) => void;
+
+  resetValues: () => void;
 }
 
 interface StateOpts {
-  defaultValue: number[];
   value: Accessor<number[] | undefined>;
+  defaultValue: Accessor<number[] | undefined>;
   orientation?: Accessor<"horizontal" | "vertical">;
   isDisabled?: Accessor<boolean>;
   onChangeEnd?: (value: number[]) => void;
@@ -80,12 +82,12 @@ interface StateOpts {
 export function createSliderState(props: StateOpts): SliderState {
   props = mergeDefaultProps(
     {
-      isDisabled: () => false,
-      maxValue: () => 100,
       minValue: () => 0,
+      maxValue: () => 100,
       step: () => 1,
-      orientation: () => "horizontal",
       minStepsBetweenThumbs: () => 0,
+      orientation: () => "horizontal",
+      isDisabled: () => false,
     },
     props
   );
@@ -96,20 +98,23 @@ export function createSliderState(props: StateOpts): SliderState {
     return Math.max(calcPageSize, props.step!());
   });
 
-  const value = createMemo(() => (props.value() ? convertValue(props.value()!) : undefined));
-  const defaultValue = createMemo(() => convertValue(props.defaultValue) ?? [props.minValue!()]);
-  const onChange = createOnChange(value() ?? [], props.defaultValue, props.onChange);
-  const onChangeEnd = createOnChange(value() ?? [], props.defaultValue, props.onChangeEnd);
+  const defaultValue = createMemo(() => {
+    return props.defaultValue() ?? [props.minValue!()];
+  });
 
   const [values, setValues] = createControllableArraySignal<number>({
-    value,
+    value: () => props.value(),
     defaultValue,
-    onChange,
+    onChange: values => props.onChange?.(values),
   });
 
   const [isDragging, setIsDragging] = createSignal(new Array(values().length).fill(false));
   const [isEditables, setEditables] = createSignal(new Array(values().length).fill(false));
   const [focusedIndex, setFocusedIndex] = createSignal<number | undefined>(undefined);
+
+  const resetValues = () => {
+    setValues(defaultValue());
+  };
 
   const getValuePercent = (value: number) => {
     return (value - props.minValue!()) / (props.maxValue!() - props.minValue!());
@@ -139,10 +144,12 @@ export function createSliderState(props: StateOpts): SliderState {
 
     value = snapValueToStep(value, props.minValue!(), props.maxValue!(), props.step!());
     const nextValues = getNextSortedValues(values(), value, index);
+
     if (!hasMinStepsBetweenValues(nextValues, props.minStepsBetweenThumbs!() * props.step!())) {
       return;
     }
-    setValues(p => [...replaceIndex(p, index, value)]);
+
+    setValues(prev => [...replaceIndex(prev, index, value)]);
   };
 
   const updateDragging = (index: number, dragging: boolean) => {
@@ -152,7 +159,7 @@ export function createSliderState(props: StateOpts): SliderState {
     setIsDragging(p => [...replaceIndex(p, index, dragging)]);
 
     if (wasDragging && !isDragging().some(Boolean)) {
-      onChangeEnd(values());
+      props.onChangeEnd?.(values());
     }
   };
 
@@ -224,6 +231,7 @@ export function createSliderState(props: StateOpts): SliderState {
     orientation: props.orientation!,
     isDisabled: props.isDisabled!,
     setValues,
+    resetValues,
   };
 }
 
@@ -233,26 +241,4 @@ function replaceIndex<T>(array: T[], index: number, value: T) {
   }
 
   return [...array.slice(0, index), value, ...array.slice(index + 1)];
-}
-
-function convertValue(value: number | number[]) {
-  if (value == null) {
-    return undefined;
-  }
-
-  return Array.isArray(value) ? value : [value];
-}
-
-function createOnChange(
-  value: number[],
-  defaultValue: number[],
-  onChange: ((value: number[]) => void) | undefined
-) {
-  return (newValue: number[]) => {
-    if (typeof value === "number" || typeof defaultValue === "number") {
-      onChange?.(newValue);
-    } else {
-      onChange?.(newValue);
-    }
-  };
 }
