@@ -139,7 +139,6 @@ describe("Checkbox", () => {
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.checked).toBeFalsy();
     expect(onChangeSpy).not.toHaveBeenCalled();
 
@@ -164,7 +163,6 @@ describe("Checkbox", () => {
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.checked).toBeTruthy();
 
     fireEvent.click(input);
@@ -183,7 +181,6 @@ describe("Checkbox", () => {
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.checked).toBeTruthy();
 
     fireEvent.click(input);
@@ -202,7 +199,6 @@ describe("Checkbox", () => {
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.checked).toBeFalsy();
 
     fireEvent.click(input);
@@ -221,7 +217,6 @@ describe("Checkbox", () => {
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.indeterminate).toBeTruthy();
     expect(input.checked).toBeFalsy();
 
@@ -241,6 +236,47 @@ describe("Checkbox", () => {
     expect(onChangeSpy.mock.calls[1][0]).toBe(false);
   });
 
+  it("can be checked by clicking on the control", async () => {
+    render(() => (
+      <Checkbox.Root onChange={onChangeSpy}>
+        <Checkbox.Input />
+        <Checkbox.Control data-testid="control" />
+      </Checkbox.Root>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+    const control = screen.getByTestId("control");
+
+    expect(input.checked).toBeFalsy();
+
+    fireEvent.click(control);
+    await Promise.resolve();
+
+    expect(input.checked).toBeTruthy();
+    expect(onChangeSpy.mock.calls[0][0]).toBe(true);
+  });
+
+  it("can be checked by pressing the Space key on the control", async () => {
+    render(() => (
+      <Checkbox.Root onChange={onChangeSpy}>
+        <Checkbox.Input />
+        <Checkbox.Control data-testid="control" />
+      </Checkbox.Root>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+    const control = screen.getByTestId("control");
+
+    expect(input.checked).toBeFalsy();
+
+    fireEvent.keyDown(control, { key: " " });
+    fireEvent.keyUp(control, { key: " " });
+    await Promise.resolve();
+
+    expect(input.checked).toBeTruthy();
+    expect(onChangeSpy.mock.calls[0][0]).toBe(true);
+  });
+
   it("can be disabled", async () => {
     render(() => (
       <Checkbox.Root disabled onChange={onChangeSpy}>
@@ -252,7 +288,6 @@ describe("Checkbox", () => {
     const label = screen.getByTestId("label");
     const input = screen.getByRole("checkbox") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.disabled).toBeTruthy();
     expect(input.checked).toBeFalsy();
 
@@ -273,7 +308,6 @@ describe("Checkbox", () => {
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input).toHaveAttribute("aria-invalid", "true");
   });
 
@@ -286,26 +320,27 @@ describe("Checkbox", () => {
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input).toHaveAttribute("aria-invalid", "true");
     expect(input).toHaveAttribute("aria-errormessage", "test");
   });
 
-  it("supports 'aria-label'", () => {
+  it("supports visible label", async () => {
     render(() => (
       <Checkbox.Root>
-        <Checkbox.Input aria-label="Label" />
-        <Checkbox.Control />
+        <Checkbox.Label>Label</Checkbox.Label>
+        <Checkbox.Input />
       </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
+    const label = screen.getByText("Label");
 
-    expect(input.value).toBe("on");
-    expect(input).toHaveAttribute("aria-label", "Label");
+    expect(input).toHaveAttribute("aria-labelledby", label.id);
+    expect(label).toBeInstanceOf(HTMLLabelElement);
+    expect(label).toHaveAttribute("for", input.id);
   });
 
-  it("supports 'aria-labelledby'", () => {
+  it("supports 'aria-labelledby'", async () => {
     render(() => (
       <Checkbox.Root>
         <Checkbox.Input aria-labelledby="foo" />
@@ -314,24 +349,69 @@ describe("Checkbox", () => {
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input).toHaveAttribute("aria-labelledby", "foo");
   });
 
-  it("should combine 'aria-label' and 'aria-labelledby'", () => {
+  it("should combine 'aria-labelledby' if visible label is also provided", async () => {
     render(() => (
       <Checkbox.Root>
-        <Checkbox.Input aria-label="Label" aria-labelledby="foo" />
+        <Checkbox.Label>Label</Checkbox.Label>
+        <Checkbox.Input aria-labelledby="foo" />
+      </Checkbox.Root>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+    const label = screen.getByText("Label");
+
+    expect(input).toHaveAttribute("aria-labelledby", `foo ${label.id}`);
+  });
+
+  it("supports 'aria-label'", async () => {
+    render(() => (
+      <Checkbox.Root>
+        <Checkbox.Input aria-label="My Label" />
       </Checkbox.Root>
     ));
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
-    expect(input).toHaveAttribute("aria-labelledby", `foo ${input.id}`);
+    expect(input).toHaveAttribute("aria-label", "My Label");
   });
 
-  it("supports 'aria-describedby'", () => {
+  it("should combine 'aria-labelledby' if visible label and 'aria-label' is also provided", async () => {
+    render(() => (
+      <Checkbox.Root>
+        <Checkbox.Label>Label</Checkbox.Label>
+        <Checkbox.Input aria-label="bar" aria-labelledby="foo" />
+      </Checkbox.Root>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+    const label = screen.getByText("Label");
+
+    expect(input).toHaveAttribute("aria-labelledby", `foo ${label.id} ${input.id}`);
+  });
+
+  it("supports visible description", async () => {
+    render(() => (
+      <Checkbox.Root>
+        <Checkbox.Input />
+        <Checkbox.Description>Description</Checkbox.Description>
+      </Checkbox.Root>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+    const description = screen.getByText("Description");
+
+    expect(description.id).toBeDefined();
+    expect(input.id).toBeDefined();
+    expect(input).toHaveAttribute("aria-describedby", description.id);
+
+    // check that generated ids are unique
+    expect(description.id).not.toBe(input.id);
+  });
+
+  it("supports 'aria-describedby'", async () => {
     render(() => (
       <Checkbox.Root>
         <Checkbox.Input aria-describedby="foo" />
@@ -343,7 +423,83 @@ describe("Checkbox", () => {
     expect(input).toHaveAttribute("aria-describedby", "foo");
   });
 
-  it("can be read only", async () => {
+  it("should combine 'aria-describedby' if visible description", async () => {
+    render(() => (
+      <Checkbox.Root>
+        <Checkbox.Input aria-describedby="foo" />
+        <Checkbox.Description>Description</Checkbox.Description>
+      </Checkbox.Root>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+    const description = screen.getByText("Description");
+
+    expect(input).toHaveAttribute("aria-describedby", `${description.id} foo`);
+  });
+
+  it("supports visible error message when invalid", async () => {
+    render(() => (
+      <Checkbox.Root validationState="invalid">
+        <Checkbox.Input />
+        <Checkbox.ErrorMessage>ErrorMessage</Checkbox.ErrorMessage>
+      </Checkbox.Root>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+    const errorMessage = screen.getByText("ErrorMessage");
+
+    expect(errorMessage.id).toBeDefined();
+    expect(input.id).toBeDefined();
+    expect(input).toHaveAttribute("aria-describedby", errorMessage.id);
+
+    // check that generated ids are unique
+    expect(errorMessage.id).not.toBe(input.id);
+  });
+
+  it("should not be described by error message when not invalid", async () => {
+    render(() => (
+      <Checkbox.Root>
+        <Checkbox.Input />
+        <Checkbox.ErrorMessage>ErrorMessage</Checkbox.ErrorMessage>
+      </Checkbox.Root>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(input).not.toHaveAttribute("aria-describedby");
+  });
+
+  it("should combine 'aria-describedby' if visible error message when invalid", () => {
+    render(() => (
+      <Checkbox.Root validationState="invalid">
+        <Checkbox.Input aria-describedby="foo" />
+        <Checkbox.ErrorMessage>ErrorMessage</Checkbox.ErrorMessage>
+      </Checkbox.Root>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+    const errorMessage = screen.getByText("ErrorMessage");
+
+    expect(input).toHaveAttribute("aria-describedby", `${errorMessage.id} foo`);
+  });
+
+  it("should combine 'aria-describedby' if visible description and error message when invalid", () => {
+    render(() => (
+      <Checkbox.Root validationState="invalid">
+        <Checkbox.Input aria-describedby="foo" />
+        <Checkbox.Description>Description</Checkbox.Description>
+        <Checkbox.ErrorMessage>ErrorMessage</Checkbox.ErrorMessage>
+      </Checkbox.Root>
+    ));
+
+    const input = screen.getByRole("checkbox") as HTMLInputElement;
+    const description = screen.getByText("Description");
+    const errorMessage = screen.getByText("ErrorMessage");
+
+    expect(input).toHaveAttribute("aria-describedby", `${description.id} ${errorMessage.id} foo`);
+  });
+
+  it("can be readonly", async () => {
     render(() => (
       <Checkbox.Root checked readOnly onChange={onChangeSpy}>
         <Checkbox.Input />
@@ -352,7 +508,6 @@ describe("Checkbox", () => {
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.checked).toBeTruthy();
     expect(input).toHaveAttribute("aria-readonly", "true");
 
@@ -363,7 +518,7 @@ describe("Checkbox", () => {
     expect(onChangeSpy).not.toHaveBeenCalled();
   });
 
-  it("supports uncontrolled read only", async () => {
+  it("supports uncontrolled readonly", async () => {
     render(() => (
       <Checkbox.Root readOnly onChange={onChangeSpy}>
         <Checkbox.Input />
@@ -372,7 +527,6 @@ describe("Checkbox", () => {
 
     const input = screen.getByRole("checkbox") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.checked).toBeFalsy();
 
     fireEvent.click(input);

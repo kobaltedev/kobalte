@@ -1,5 +1,13 @@
 import { SwitchControl as Control, type SwitchControlProps } from "./switch-control.js";
 import {
+  SwitchDescription as Description,
+  type SwitchDescriptionProps,
+} from "./switch-description";
+import {
+  SwitchErrorMessage as ErrorMessage,
+  type SwitchErrorMessageProps,
+} from "./switch-error-message";
+import {
   SwitchInput as Input,
   type SwitchInputOptions,
   type SwitchInputProps,
@@ -10,6 +18,8 @@ import { SwitchThumb as Thumb, type SwitchThumbProps } from "./switch-thumb.js";
 
 export type {
   SwitchControlProps,
+  SwitchDescriptionProps,
+  SwitchErrorMessageProps,
   SwitchInputOptions,
   SwitchInputProps,
   SwitchLabelProps,
@@ -17,4 +27,4 @@ export type {
   SwitchRootProps,
   SwitchThumbProps,
 };
-export { Control, Input, Label, Root, Thumb };
+export { Control, Description, ErrorMessage, Input, Label, Root, Thumb };

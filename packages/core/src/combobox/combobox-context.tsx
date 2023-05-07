@@ -17,6 +17,7 @@ export interface ComboboxContextValue {
   isMultiple: Accessor<boolean>;
   isVirtualized: Accessor<boolean>;
   isModal: Accessor<boolean>;
+  preventScroll: Accessor<boolean>;
   isInputFocused: Accessor<boolean>;
   allowsEmptyCollection: Accessor<boolean>;
   shouldFocusWrap: Accessor<boolean>;

@@ -150,6 +150,9 @@ export interface SelectBaseOptions<Option, OptGroup = never>
    */
   modal?: boolean;
 
+  /** Whether the scroll should be locked even if the select is not modal. */
+  preventScroll?: boolean;
+
   /**
    * Used to force mounting the select (portal, positioner and content) when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -205,6 +208,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       gutter: 8,
       sameWidth: true,
       modal: false,
+      preventScroll: false,
     },
     props
   );
@@ -235,6 +239,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       "selectionMode",
       "virtualized",
       "modal",
+      "preventScroll",
       "forceMount",
     ],
     [
@@ -453,6 +458,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     isMultiple: () => access(local.selectionMode) === "multiple",
     isVirtualized: () => local.virtualized ?? false,
     isModal: () => local.modal ?? false,
+    preventScroll: () => local.preventScroll ?? false,
     disallowTypeAhead: () => local.disallowTypeAhead ?? false,
     shouldFocusWrap: () => local.shouldFocusWrap ?? false,
     selectedOptions,

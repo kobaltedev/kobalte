@@ -3,6 +3,8 @@ import {
   BasicExample,
   ControlledExample,
   DefaultCheckedExample,
+  DescriptionExample,
+  ErrorMessageExample,
   HTMLFormExample,
 } from "../../../../examples/switch";
 
@@ -22,6 +24,7 @@ import { Switch } from "@kobalte/core";
 - Built with a native HTML `<input>` element, which is visually hidden to allow custom styling.
 - Syncs with form reset events.
 - Labeling support for assistive technology.
+- Support for description and error message help text linked to the input via ARIA.
 - Can be controlled or uncontrolled.
 
 ## Anatomy
@@ -33,10 +36,14 @@ The switch consists of:
 - **Switch.Control:** The element that visually represents a switch.
 - **Switch.Thumb:** The thumb that is used to visually indicate whether the switch is on or off.
 - **Switch.Label:** The label that gives the user information on the switch.
+- **Switch.Description**: The description that gives the user more information on the switch.
+- **Switch.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the switch.
 
 ```tsx
 <Switch.Root>
   <Switch.Label />
+  <Switch.Description />
+  <Switch.ErrorMessage />
   <Switch.Input />
   <Switch.Control>
     <Switch.Thumb />
@@ -167,6 +174,58 @@ export function ControlledExample() {
 }
 ```
 
+### Description
+
+The `Switch.Description` component can be used to associate additional help text with a switch.
+
+<Preview>
+  <DescriptionExample />
+</Preview>
+
+```tsx {2}
+<Switch.Root>
+  <Switch.Label>Airplane mode</Switch.Label>
+  <Switch.Description>Disable all network connections.</Switch.Description>
+  <Switch.Input />
+  <Switch.Control>
+    <Switch.Thumb />
+  </Switch.Control>
+</Switch.Root>
+```
+
+### Error message
+
+The `Switch.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the switch as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+<Preview>
+  <ErrorMessageExample />
+</Preview>
+
+```tsx {9,12}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+  const [checked, setChecked] = createSignal(false);
+
+  return (
+    <Switch.Root
+      checked={checked()}
+      onChange={setChecked}
+      validationState={!checked() ? "invalid" : "valid"}
+    >
+      <Switch.Label>Airplane mode</Switch.Label>
+      <Switch.ErrorMessage>You must enable airplane mode.</Switch.ErrorMessage>
+      <Switch.Input />
+      <Switch.Control>
+        <Switch.Thumb />
+      </Switch.Control>
+    </Switch.Root>
+  );
+}
+```
+
 ### HTML forms
 
 The `name` and `value` props can be used for integration with HTML forms.
@@ -210,26 +269,38 @@ function HTMLFormExample() {
 | disabled        | `boolean` <br/> Whether the switch is disabled.                                                                                                                         |
 | readOnly        | `boolean` <br/> Whether the switch can be checked but not changed by the user.                                                                                          |
 
+| Render Prop | Description                                                     |
+| :---------- | :-------------------------------------------------------------- |
+| checked     | `Accessor<boolean>` <br/> Whether the switch is checked or not. |
+
 | Data attribute | Description                                                           |
 | :------------- | :-------------------------------------------------------------------- |
 | data-valid     | Present when the switch is valid according to the validation rules.   |
 | data-invalid   | Present when the switch is invalid according to the validation rules. |
-| data-checked   | Present when the switch is checked.                                   |
 | data-required  | Present when the switch is required.                                  |
 | data-disabled  | Present when the switch is disabled.                                  |
 | data-readonly  | Present when the switch is read only.                                 |
+| data-checked   | Present when the switch is checked.                                   |
 
-`Switch.Input`, `Switch.Control`, `Switch.Thumb` and `Switch.Label` shares the same data-attributes.
+`Switch.Input`, `Switch.Control`, `Switch.Thumb`, `Switch.Label`, `Switch.Description` and `Switch.ErrorMessage` shares the same data-attributes.
+
+### Switch.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
 ## Rendered elements
 
-| Component        | Default rendered element |
-| :--------------- | :----------------------- |
-| `Switch.Root`    | `label`                  |
-| `Switch.Input`   | `input`                  |
-| `Switch.Label`   | `span`                   |
-| `Switch.Control` | `div`                    |
-| `Switch.Thumb`   | `div`                    |
+| Component             | Default rendered element |
+| :-------------------- | :----------------------- |
+| `Switch.Root`         | `div`                    |
+| `Switch.Input`        | `input`                  |
+| `Switch.Control`      | `div`                    |
+| `Switch.Indicator`    | `div`                    |
+| `Switch.Label`        | `label`                  |
+| `Switch.Description`  | `div`                    |
+| `Switch.ErrorMessage` | `div`                    |
 
 ## Accessibility
 

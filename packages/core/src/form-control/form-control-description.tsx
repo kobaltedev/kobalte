@@ -1,5 +1,5 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+import { createEffect, onCleanup } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
 import { useFormControlContext } from "./form-control-context.js";
@@ -19,9 +19,7 @@ export function FormControlDescription(props: FormControlDescriptionProps) {
     props
   );
 
-  const [local, others] = splitProps(props, ["id"]);
+  createEffect(() => onCleanup(context.registerDescription(props.id!)));
 
-  createEffect(() => onCleanup(context.registerDescription(local.id!)));
-
-  return <Polymorphic as="div" id={local.id} {...context.dataset()} {...others} />;
+  return <Polymorphic as="div" {...context.dataset()} {...props} />;
 }

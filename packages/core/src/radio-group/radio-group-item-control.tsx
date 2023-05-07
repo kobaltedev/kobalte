@@ -1,4 +1,5 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { callHandler, EventKey, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { JSX, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
 import { useRadioGroupItemContext } from "./radio-group-item-context.js";
@@ -18,5 +19,29 @@ export function RadioGroupItemControl(props: RadioGroupItemControlProps) {
     props
   );
 
-  return <Polymorphic as="div" {...context.dataset()} {...props} />;
+  const [local, others] = splitProps(props, ["onClick", "onKeyDown"]);
+
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    callHandler(e, local.onClick);
+
+    context.select();
+  };
+
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    callHandler(e, local.onKeyDown);
+
+    if (e.key === EventKey.Space) {
+      context.select();
+    }
+  };
+
+  return (
+    <Polymorphic
+      as="div"
+      onClick={onClick}
+      onKeyDown={onKeyDown}
+      {...context.dataset()}
+      {...others}
+    />
+  );
 }

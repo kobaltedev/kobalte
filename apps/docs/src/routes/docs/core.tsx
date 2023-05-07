@@ -59,6 +59,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Checkbox",
         href: "/docs/core/components/checkbox",
+        status: "updated",
       },
       {
         title: "Collapsible",
@@ -67,7 +68,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Combobox",
         href: "/docs/core/components/combobox",
-        status: "new",
       },
       {
         title: "Context Menu",
@@ -104,11 +104,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Radio Group",
         href: "/docs/core/components/radio-group",
+        status: "updated",
       },
       {
         title: "Select",
         href: "/docs/core/components/select",
-        status: "updated",
       },
       {
         title: "Separator",
@@ -117,6 +117,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Switch",
         href: "/docs/core/components/switch",
+        status: "updated",
       },
       {
         title: "Tabs",
@@ -137,7 +138,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Tooltip",
         href: "/docs/core/components/tooltip",
-        status: "new",
       },
       {
         title: "I18nProvider",

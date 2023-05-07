@@ -15,6 +15,8 @@ import {
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.js";
+import { Polymorphic } from "../polymorphic/index.js";
+import { createRegisterId } from "../primitives/index.js";
 import { useRadioGroupContext } from "./radio-group-context.js";
 import {
   RadioGroupItemContext,
@@ -33,8 +35,7 @@ export interface RadioGroupItemOptions {
   disabled?: boolean;
 }
 
-export interface RadioGroupItemProps
-  extends OverrideComponentProps<"label", RadioGroupItemOptions> {}
+export interface RadioGroupItemProps extends OverrideComponentProps<"div", RadioGroupItemOptions> {}
 
 /**
  * The root container for a radio button.
@@ -45,9 +46,18 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
 
   const defaultId = `${formControlContext.generateId("item")}-${createUniqueId()}`;
 
-  props = mergeDefaultProps({ id: defaultId }, props);
+  props = mergeDefaultProps(
+    {
+      id: defaultId,
+    },
+    props
+  );
 
   const [local, others] = splitProps(props, ["value", "disabled", "onPointerDown"]);
+
+  const [inputId, setInputId] = createSignal<string>();
+  const [labelId, setLabelId] = createSignal<string>();
+  const [descriptionId, setDescriptionId] = createSignal<string>();
 
   const [isFocused, setIsFocused] = createSignal(false);
 
@@ -69,10 +79,9 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
   };
 
   const dataset: Accessor<RadioGroupItemDataSet> = createMemo(() => ({
-    "data-valid": formControlContext.dataset()["data-valid"],
-    "data-invalid": formControlContext.dataset()["data-invalid"],
-    "data-checked": isSelected() ? "" : undefined,
+    ...formControlContext.dataset(),
     "data-disabled": isDisabled() ? "" : undefined,
+    "data-checked": isSelected() ? "" : undefined,
   }));
 
   const context: RadioGroupItemContextValue = {
@@ -80,13 +89,20 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
     dataset,
     isSelected,
     isDisabled,
+    inputId,
+    labelId,
+    descriptionId,
+    select: () => radioGroupContext.setSelectedValue(local.value),
     generateId: createGenerateId(() => others.id!),
+    registerInput: createRegisterId(setInputId),
+    registerLabel: createRegisterId(setLabelId),
+    registerDescription: createRegisterId(setDescriptionId),
     setIsFocused,
   };
 
   return (
     <RadioGroupItemContext.Provider value={context}>
-      <label onPointerDown={onPointerDown} {...dataset()} {...others} />
+      <Polymorphic as="div" role="group" onPointerDown={onPointerDown} {...dataset()} {...others} />
     </RadioGroupItemContext.Provider>
   );
 }

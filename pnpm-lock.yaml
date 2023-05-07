@@ -134,6 +134,38 @@ importers:
         version: 2.7.0(solid-js@1.7.3)(vite@3.2.5)
 
   apps/docs:
+    specifiers:
+      '@docsearch/css': 3.3.3
+      '@docsearch/js': 3.3.3
+      '@kobalte/core': 0.9.5
+      '@kobalte/tailwindcss': 0.6.5
+      '@mdx-js/mdx': 2.3.0
+      '@mdx-js/rollup': 2.3.0
+      '@solidjs/meta': 0.28.4
+      '@solidjs/router': 0.8.2
+      '@tailwindcss/typography': 0.5.9
+      '@tanstack/solid-virtual': 3.0.0-beta.6
+      acorn: 8.8.2
+      autoprefixer: 10.4.14
+      clsx: 1.2.1
+      github-slugger: 2.0.0
+      postcss: 8.4.21
+      rehype-pretty-code: 0.9.4
+      rehype-raw: 6.1.1
+      rehype-slug: 5.1.0
+      remark-gfm: 3.0.1
+      remark-shiki-twoslash: 3.1.2
+      shiki: 0.14.1
+      solid-js: 1.7.3
+      solid-mdx: 0.0.6
+      solid-start: 0.2.26
+      solid-start-netlify: 0.2.26
+      solid-start-node: 0.2.26
+      tailwindcss: 3.3.0
+      typescript: 4.9.5
+      undici: 5.22.0
+      unist-util-visit: ^4.1.2
+      vite: 3.2.5
     dependencies:
       "@docsearch/css":
         specifier: 3.3.3
@@ -231,6 +263,17 @@ importers:
         version: 3.2.5(@types/node@18.15.11)
 
   apps/playground:
+    specifiers:
+      '@kobalte/core': ^0.9.5
+      '@kobalte/tailwindcss': ^0.6.5
+      '@kobalte/utils': ^0.7.1
+      autoprefixer: 10.4.14
+      postcss: 8.4.21
+      solid-js: 1.7.3
+      tailwindcss: 3.3.0
+      typescript: 4.9.5
+      vite: 3.2.5
+      vite-plugin-solid: 2.7.0
     dependencies:
       "@kobalte/core":
         specifier: ^0.9.4

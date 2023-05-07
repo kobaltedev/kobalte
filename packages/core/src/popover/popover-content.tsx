@@ -169,18 +169,18 @@ export function PopoverContent(props: PopoverContentProps) {
 
   // aria-hide everything except the content (better supported equivalent to setting aria-modal)
   createHideOutside({
-    isDisabled: () => !(context.isModal() && context.isOpen()),
+    isDisabled: () => !(context.isOpen() && context.isModal()),
     targets: () => (ref ? [ref] : []),
   });
 
   createPreventScroll({
     ownerRef: () => ref,
-    isDisabled: () => !(context.isModal() && context.isOpen()),
+    isDisabled: () => !(context.isOpen() && (context.isModal() || context.preventScroll())),
   });
 
   createFocusScope(
     {
-      trapFocus: () => context.isModal() && context.isOpen(),
+      trapFocus: () => context.isOpen() && context.isModal(),
       onMountAutoFocus: local.onOpenAutoFocus,
       onUnmountAutoFocus: onCloseAutoFocus,
     },
@@ -200,7 +200,7 @@ export function PopoverContent(props: PopoverContentProps) {
           }, local.ref)}
           role="dialog"
           tabIndex={-1}
-          disableOutsidePointerEvents={context.isModal() && context.isOpen()}
+          disableOutsidePointerEvents={context.isOpen() && context.isModal()}
           excludedElements={[context.triggerRef]}
           style={{
             "--kb-popover-content-transform-origin": "var(--kb-popper-content-transform-origin)",

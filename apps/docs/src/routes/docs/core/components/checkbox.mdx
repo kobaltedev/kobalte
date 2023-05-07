@@ -3,6 +3,8 @@ import {
   BasicExample,
   ControlledExample,
   DefaultCheckedExample,
+  DescriptionExample,
+  ErrorMessageExample,
   HTMLFormExample,
 } from "../../../../examples/checkbox";
 
@@ -21,6 +23,7 @@ import { Checkbox } from "@kobalte/core";
 - Built with a native HTML `<input>` element, which is visually hidden to allow custom styling.
 - Syncs with form reset events.
 - Labeling support for assistive technology.
+- Support for description and error message help text linked to the input via ARIA.
 - Can be controlled or uncontrolled.
 
 ## Anatomy
@@ -32,6 +35,8 @@ The checkbox consists of:
 - **Checkbox.Control:** The element that visually represents a checkbox.
 - **Checkbox.Indicator:** The visual indicator rendered when the checkbox is in a checked or indeterminate state.
 - **Checkbox.Label:** The label that gives the user information on the checkbox.
+- **Checkbox.Description**: The description that gives the user more information on the checkbox.
+- **Checkbox.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the checkbox.
 
 ```tsx
 <Checkbox.Root>
@@ -40,6 +45,8 @@ The checkbox consists of:
     <Checkbox.Indicator />
   </Checkbox.Control>
   <Checkbox.Label />
+  <Checkbox.Description />
+  <Checkbox.ErrorMessage />
 </Checkbox.Root>
 ```
 
@@ -154,6 +161,62 @@ function ControlledExample() {
 }
 ```
 
+### Description
+
+The `Checkbox.Description` component can be used to associate additional help text with a checkbox.
+
+<Preview>
+  <DescriptionExample />
+</Preview>
+
+```tsx {8}
+<Checkbox.Root>
+  <Checkbox.Input />
+  <Checkbox.Control>
+    <Checkbox.Indicator>
+      <CheckIcon />
+    </Checkbox.Indicator>
+  </Checkbox.Control>
+  <Checkbox.Label>Subscribe</Checkbox.Label>
+  <Checkbox.Description>You will receive our weekly newsletter.</Checkbox.Description>
+</Checkbox.Root>
+```
+
+### Error message
+
+The `Checkbox.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the checkbox as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+<Preview>
+  <ErrorMessageExample />
+</Preview>
+
+```tsx {9,17}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+  const [checked, setChecked] = createSignal(false);
+
+  return (
+    <Checkbox.Root
+      checked={checked()}
+      onChange={setChecked}
+      validationState={!checked() ? "invalid" : "valid"}
+    >
+      <Checkbox.Input />
+      <Checkbox.Control>
+        <Checkbox.Indicator>
+          <CheckIcon />
+        </Checkbox.Indicator>
+      </Checkbox.Control>
+      <Checkbox.Label>Agree</Checkbox.Label>
+      <Checkbox.ErrorMessage>You must agree to our Terms and Conditions.</Checkbox.ErrorMessage>
+    </Checkbox.Root>
+  );
+}
+```
+
 ### HTML forms
 
 The `name` and `value` props can be used for integration with HTML forms.
@@ -209,13 +272,13 @@ function HTMLFormExample() {
 | :----------------- | :---------------------------------------------------------------------- |
 | data-valid         | Present when the checkbox is valid according to the validation rules.   |
 | data-invalid       | Present when the checkbox is invalid according to the validation rules. |
-| data-checked       | Present when the checkbox is checked.                                   |
-| data-indeterminate | Present when the checkbox is in an indeterminate state.                 |
 | data-required      | Present when the checkbox is required.                                  |
 | data-disabled      | Present when the checkbox is disabled.                                  |
 | data-readonly      | Present when the checkbox is read only.                                 |
+| data-checked       | Present when the checkbox is checked.                                   |
+| data-indeterminate | Present when the checkbox is in an indeterminate state.                 |
 
-`Checkbox.Input`, `Checkbox.Control`, `Checkbox.Indicator` and `Checkbox.Label` share the same data-attributes.
+`Checkbox.Input`, `Checkbox.Control`, `Checkbox.Indicator`, `Checkbox.Label`, `Checkbox.Description` and `Checkbox.ErrorMessage` share the same data-attributes.
 
 ### Checkbox.Indicator
 
@@ -223,15 +286,23 @@ function HTMLFormExample() {
 | :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
 | forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
+### Checkbox.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
 ## Rendered elements
 
-| Component            | Default rendered element |
-| :------------------- | :----------------------- |
-| `Checkbox.Root`      | `label`                  |
-| `Checkbox.Input`     | `input`                  |
-| `Checkbox.Control`   | `div`                    |
-| `Checkbox.Indicator` | `div`                    |
-| `Checkbox.Label`     | `span`                   |
+| Component               | Default rendered element |
+| :---------------------- | :----------------------- |
+| `Checkbox.Root`         | `div`                    |
+| `Checkbox.Input`        | `input`                  |
+| `Checkbox.Control`      | `div`                    |
+| `Checkbox.Indicator`    | `div`                    |
+| `Checkbox.Label`        | `label`                  |
+| `Checkbox.Description`  | `div`                    |
+| `Checkbox.ErrorMessage` | `div`                    |
 
 ## Accessibility
 

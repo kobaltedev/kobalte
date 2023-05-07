@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-spectrum/switch/test/Switch.test.js
  */
 
-import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
+import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import { Switch } from "../index.js";
@@ -151,7 +151,6 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.checked).toBeFalsy();
     expect(onChangeSpy).not.toHaveBeenCalled();
 
@@ -176,7 +175,6 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.checked).toBeTruthy();
 
     fireEvent.click(input);
@@ -195,7 +193,6 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.checked).toBeTruthy();
 
     fireEvent.click(input);
@@ -214,13 +211,53 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.checked).toBeFalsy();
 
     fireEvent.click(input);
     await Promise.resolve();
 
     expect(input.checked).toBeFalsy();
+    expect(onChangeSpy.mock.calls[0][0]).toBe(true);
+  });
+
+  it("can be checked by clicking on the control", async () => {
+    render(() => (
+      <Switch.Root onChange={onChangeSpy}>
+        <Switch.Input />
+        <Switch.Control data-testid="control" />
+      </Switch.Root>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+    const control = screen.getByTestId("control");
+
+    expect(input.checked).toBeFalsy();
+
+    fireEvent.click(control);
+    await Promise.resolve();
+
+    expect(input.checked).toBeTruthy();
+    expect(onChangeSpy.mock.calls[0][0]).toBe(true);
+  });
+
+  it("can be checked by pressing the Space key on the control", async () => {
+    render(() => (
+      <Switch.Root onChange={onChangeSpy}>
+        <Switch.Input />
+        <Switch.Control data-testid="control" />
+      </Switch.Root>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+    const control = screen.getByTestId("control");
+
+    expect(input.checked).toBeFalsy();
+
+    fireEvent.keyDown(control, { key: " " });
+    fireEvent.keyUp(control, { key: " " });
+    await Promise.resolve();
+
+    expect(input.checked).toBeTruthy();
     expect(onChangeSpy.mock.calls[0][0]).toBe(true);
   });
 
@@ -235,7 +272,6 @@ describe("Switch", () => {
     const label = screen.getByTestId("label");
     const input = screen.getByRole("switch") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.disabled).toBeTruthy();
     expect(input.checked).toBeFalsy();
 
@@ -257,7 +293,6 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input).toHaveAttribute("aria-invalid", "true");
   });
 
@@ -270,26 +305,27 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input).toHaveAttribute("aria-invalid", "true");
     expect(input).toHaveAttribute("aria-errormessage", "test");
   });
 
-  it("supports 'aria-label'", () => {
+  it("supports visible label", async () => {
     render(() => (
       <Switch.Root>
-        <Switch.Input aria-label="Label" />
-        <Switch.Control />
+        <Switch.Label>Label</Switch.Label>
+        <Switch.Input />
       </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
+    const label = screen.getByText("Label");
 
-    expect(input.value).toBe("on");
-    expect(input).toHaveAttribute("aria-label", "Label");
+    expect(input).toHaveAttribute("aria-labelledby", label.id);
+    expect(label).toBeInstanceOf(HTMLLabelElement);
+    expect(label).toHaveAttribute("for", input.id);
   });
 
-  it("supports 'aria-labelledby'", () => {
+  it("supports 'aria-labelledby'", async () => {
     render(() => (
       <Switch.Root>
         <Switch.Input aria-labelledby="foo" />
@@ -298,24 +334,69 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input).toHaveAttribute("aria-labelledby", "foo");
   });
 
-  it("should combine 'aria-label' and 'aria-labelledby'", () => {
+  it("should combine 'aria-labelledby' if visible label is also provided", async () => {
     render(() => (
       <Switch.Root>
-        <Switch.Input aria-label="Label" aria-labelledby="foo" />
+        <Switch.Label>Label</Switch.Label>
+        <Switch.Input aria-labelledby="foo" />
+      </Switch.Root>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+    const label = screen.getByText("Label");
+
+    expect(input).toHaveAttribute("aria-labelledby", `foo ${label.id}`);
+  });
+
+  it("supports 'aria-label'", async () => {
+    render(() => (
+      <Switch.Root>
+        <Switch.Input aria-label="My Label" />
       </Switch.Root>
     ));
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
-    expect(input).toHaveAttribute("aria-labelledby", `foo ${input.id}`);
+    expect(input).toHaveAttribute("aria-label", "My Label");
   });
 
-  it("supports 'aria-describedby'", () => {
+  it("should combine 'aria-labelledby' if visible label and 'aria-label' is also provided", async () => {
+    render(() => (
+      <Switch.Root>
+        <Switch.Label>Label</Switch.Label>
+        <Switch.Input aria-label="bar" aria-labelledby="foo" />
+      </Switch.Root>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+    const label = screen.getByText("Label");
+
+    expect(input).toHaveAttribute("aria-labelledby", `foo ${label.id} ${input.id}`);
+  });
+
+  it("supports visible description", async () => {
+    render(() => (
+      <Switch.Root>
+        <Switch.Input />
+        <Switch.Description>Description</Switch.Description>
+      </Switch.Root>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+    const description = screen.getByText("Description");
+
+    expect(description.id).toBeDefined();
+    expect(input.id).toBeDefined();
+    expect(input).toHaveAttribute("aria-describedby", description.id);
+
+    // check that generated ids are unique
+    expect(description.id).not.toBe(input.id);
+  });
+
+  it("supports 'aria-describedby'", async () => {
     render(() => (
       <Switch.Root>
         <Switch.Input aria-describedby="foo" />
@@ -324,8 +405,83 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input).toHaveAttribute("aria-describedby", "foo");
+  });
+
+  it("should combine 'aria-describedby' if visible description", async () => {
+    render(() => (
+      <Switch.Root>
+        <Switch.Input aria-describedby="foo" />
+        <Switch.Description>Description</Switch.Description>
+      </Switch.Root>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+    const description = screen.getByText("Description");
+
+    expect(input).toHaveAttribute("aria-describedby", `${description.id} foo`);
+  });
+
+  it("supports visible error message when invalid", async () => {
+    render(() => (
+      <Switch.Root validationState="invalid">
+        <Switch.Input />
+        <Switch.ErrorMessage>ErrorMessage</Switch.ErrorMessage>
+      </Switch.Root>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+    const errorMessage = screen.getByText("ErrorMessage");
+
+    expect(errorMessage.id).toBeDefined();
+    expect(input.id).toBeDefined();
+    expect(input).toHaveAttribute("aria-describedby", errorMessage.id);
+
+    // check that generated ids are unique
+    expect(errorMessage.id).not.toBe(input.id);
+  });
+
+  it("should not be described by error message when not invalid", async () => {
+    render(() => (
+      <Switch.Root>
+        <Switch.Input />
+        <Switch.ErrorMessage>ErrorMessage</Switch.ErrorMessage>
+      </Switch.Root>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+
+    expect(input).not.toHaveAttribute("aria-describedby");
+  });
+
+  it("should combine 'aria-describedby' if visible error message when invalid", () => {
+    render(() => (
+      <Switch.Root validationState="invalid">
+        <Switch.Input aria-describedby="foo" />
+        <Switch.ErrorMessage>ErrorMessage</Switch.ErrorMessage>
+      </Switch.Root>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+    const errorMessage = screen.getByText("ErrorMessage");
+
+    expect(input).toHaveAttribute("aria-describedby", `${errorMessage.id} foo`);
+  });
+
+  it("should combine 'aria-describedby' if visible description and error message when invalid", () => {
+    render(() => (
+      <Switch.Root validationState="invalid">
+        <Switch.Input aria-describedby="foo" />
+        <Switch.Description>Description</Switch.Description>
+        <Switch.ErrorMessage>ErrorMessage</Switch.ErrorMessage>
+      </Switch.Root>
+    ));
+
+    const input = screen.getByRole("switch") as HTMLInputElement;
+    const description = screen.getByText("Description");
+    const errorMessage = screen.getByText("ErrorMessage");
+
+    expect(input).toHaveAttribute("aria-describedby", `${description.id} ${errorMessage.id} foo`);
   });
 
   it("can be read only", async () => {
@@ -337,7 +493,6 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.checked).toBeTruthy();
     expect(input).toHaveAttribute("aria-readonly", "true");
 
@@ -357,7 +512,6 @@ describe("Switch", () => {
 
     const input = screen.getByRole("switch") as HTMLInputElement;
 
-    expect(input.value).toBe("on");
     expect(input.checked).toBeFalsy();
 
     fireEvent.click(input);

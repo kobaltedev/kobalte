@@ -1,9 +1,7 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { FormControlLabel, FormControlLabelProps } from "../form-control/index.js";
 import { useCheckboxContext } from "./checkbox-context.js";
 
-export interface CheckboxLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
+export interface CheckboxLabelProps extends FormControlLabelProps {}
 
 /**
  * The label that gives the user information on the checkbox.
@@ -11,12 +9,5 @@ export interface CheckboxLabelProps extends OverrideComponentProps<"span", AsChi
 export function CheckboxLabel(props: CheckboxLabelProps) {
   const context = useCheckboxContext();
 
-  props = mergeDefaultProps(
-    {
-      id: context.generateId("label"),
-    },
-    props
-  );
-
-  return <Polymorphic as="span" {...context.dataset()} {...props} />;
+  return <FormControlLabel {...context.dataset()} {...props} />;
 }
