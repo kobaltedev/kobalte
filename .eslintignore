@@ -11,3 +11,4 @@ __mocks__/
 commitlint.config.js
 postcss.config.js
 *.d.ts
+pnpm-lock.yaml
