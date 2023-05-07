@@ -15,6 +15,7 @@
 import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, createContext, JSX, onMount, splitProps, useContext } from "solid-js";
 
+import { createFormControlField, FORM_CONTROL_FIELD_PROP_NAMES } from "../form-control";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
@@ -37,22 +38,28 @@ export function SliderThumb(props: SliderThumbProps) {
     props
   );
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    "style",
-    "onKeyDown",
-    "onPointerDown",
-    "onPointerMove",
-    "onPointerUp",
-    "onFocus",
-    "onBlur",
-  ]);
+  const [local, formControlFieldProps, others] = splitProps(
+    props,
+    [
+      "ref",
+      "style",
+      "onKeyDown",
+      "onPointerDown",
+      "onPointerMove",
+      "onPointerUp",
+      "onFocus",
+      "onBlur",
+    ],
+    FORM_CONTROL_FIELD_PROP_NAMES
+  );
+
+  const { fieldProps } = createFormControlField(formControlFieldProps);
 
   createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
       ref: () => ref,
       disabled: context.state.isDisabled(),
-      key: others.id!,
+      key: fieldProps.id()!,
       textValue: "",
       type: "item",
     }),
@@ -146,6 +153,8 @@ export function SliderThumb(props: SliderThumbProps) {
       <Polymorphic
         as="span"
         ref={mergeRefs(el => (ref = el), local.ref)}
+        role="slider"
+        id={fieldProps.id()}
         tabIndex={context.state.isDisabled() ? undefined : 0}
         style={{
           display: value() === undefined ? "none" : undefined,
@@ -160,6 +169,9 @@ export function SliderThumb(props: SliderThumbProps) {
         aria-valuenow={value()}
         aria-valuemax={context.maxValue()}
         aria-orientation={context.state.orientation()}
+        aria-label={fieldProps.ariaLabel()}
+        aria-labelledby={fieldProps.ariaLabelledBy()}
+        aria-describedby={fieldProps.ariaDescribedBy()}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
