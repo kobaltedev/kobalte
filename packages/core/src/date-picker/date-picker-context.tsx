@@ -1,8 +1,8 @@
 import { Calendar, CalendarDate, DateDuration } from "@internationalized/date";
 import { Accessor, createContext, JSX, useContext } from "solid-js";
 
-import { CalendarSelectionMode, DateValue, TimeValue } from "../calendar/types.js";
-import { Direction, LocalizedMessageFormatter } from "../i18n/index.js";
+import { CalendarSelectionMode, DateValue, TimeValue } from "../calendar/types.jsx";
+import { Direction, LocalizedMessageFormatter } from "../i18n/index.jsx";
 import { CreatePresenceResult } from "../primitives/index.js";
 import { RangeValue, ValidationState } from "@kobalte/utils";
 

@@ -20,9 +20,9 @@ import {
   createFormControlField,
   FORM_CONTROL_FIELD_PROP_NAMES,
   useFormControlContext,
-} from "../form-control/index.js";
-import { Polymorphic } from "../polymorphic/index.js";
-import { useComboboxContext } from "./combobox-context.js";
+} from "../form-control/index.jsx";
+import { Polymorphic } from "../polymorphic/index.jsx";
+import { useComboboxContext } from "./combobox-context.jsx";
 
 export interface ComboboxInputOptions {}
 

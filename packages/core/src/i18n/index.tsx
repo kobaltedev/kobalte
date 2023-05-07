@@ -5,5 +5,5 @@ export * from "./create-default-locale.js";
 export * from "./create-filter.js";
 export * from "./create-message-formatter.js";
 export * from "./create-number-formatter.js";
-export * from "./i18n-provider.js";
+export * from "./i18n-provider.jsx";
 export * from "./utils.js";

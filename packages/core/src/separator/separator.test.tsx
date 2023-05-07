@@ -1,7 +1,7 @@
 import { render, screen } from "@solidjs/testing-library";
 
-import { Separator } from "../index.js";
-import { As } from "../polymorphic/index.js";
+import { Separator } from "../index.jsx";
+import { As } from "../polymorphic/index.jsx";
 
 describe("Separator", () => {
   it("should render an 'hr' by default", () => {

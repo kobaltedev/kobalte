@@ -1,5 +1,5 @@
-import { FormControlErrorMessage, FormControlErrorMessageProps } from "../form-control";
-import { useSwitchContext } from "./switch-context";
+import { FormControlErrorMessage, FormControlErrorMessageProps } from "../form-control/index.jsx";
+import { useSwitchContext } from "./switch-context.jsx";
 
 export interface SwitchErrorMessageProps extends FormControlErrorMessageProps {}
 

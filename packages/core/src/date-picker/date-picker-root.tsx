@@ -38,16 +38,16 @@ import {
   CalendarMultipleSelectionOptions,
   CalendarRangeSelectionOptions,
   CalendarSingleSelectionOptions,
-} from "../calendar/calendar-root.js";
-import { DateValue, TimeValue } from "../calendar/types.js";
+} from "../calendar/calendar-root.jsx";
+import { DateValue, TimeValue } from "../calendar/types.jsx";
 import {
   createFormControl,
   FORM_CONTROL_PROP_NAMES,
   FormControlContext,
-} from "../form-control/index.js";
-import { createMessageFormatter, getReadingDirection, useLocale } from "../i18n/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { PopperRoot, PopperRootOptions } from "../popper/index.js";
+} from "../form-control/index.jsx";
+import { createMessageFormatter, getReadingDirection, useLocale } from "../i18n/index.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { PopperRoot, PopperRootOptions } from "../popper/index.jsx";
 import {
   createControllableArraySignal,
   createControllableSignal,
@@ -61,7 +61,7 @@ import {
   DatePickerContext,
   DatePickerContextValue,
   DatePickerDataSet,
-} from "./date-picker-context.js";
+} from "./date-picker-context.jsx";
 import { DateFieldGranularity, DateTimeFormatOptions } from "./types.js";
 import { createDefaultProps, getDateTimeFormatOptions, getPlaceholderTime } from "./utils.js";
 import {

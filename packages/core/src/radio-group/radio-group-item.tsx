@@ -14,15 +14,15 @@ import {
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control/index.js";
-import { Polymorphic } from "../polymorphic/index.js";
+import { useFormControlContext } from "../form-control/index.jsx";
+import { Polymorphic } from "../polymorphic/index.jsx";
 import { createRegisterId } from "../primitives/index.js";
-import { useRadioGroupContext } from "./radio-group-context.js";
+import { useRadioGroupContext } from "./radio-group-context.jsx";
 import {
   RadioGroupItemContext,
   RadioGroupItemContextValue,
   RadioGroupItemDataSet,
-} from "./radio-group-item-context.js";
+} from "./radio-group-item-context.jsx";
 
 export interface RadioGroupItemOptions {
   /**

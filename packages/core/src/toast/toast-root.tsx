@@ -34,8 +34,8 @@ import {
 } from "solid-js";
 
 import { createPresence, createRegisterId } from "../primitives/index.js";
-import { ToastContext, ToastContextValue } from "./toast-context.js";
-import { useToastRegionContext } from "./toast-region-context.js";
+import { ToastContext, ToastContextValue } from "./toast-context.jsx";
+import { useToastRegionContext } from "./toast-region-context.jsx";
 import { toastStore } from "./toast-store.js";
 import { ToastSwipeDirection } from "./types.js";
 

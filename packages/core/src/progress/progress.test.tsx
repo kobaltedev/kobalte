@@ -9,7 +9,7 @@
 
 import { render, screen } from "@solidjs/testing-library";
 
-import { Progress } from "../index.js";
+import { Progress } from "../index.jsx";
 
 describe("Progress", () => {
   it("handles defaults", () => {

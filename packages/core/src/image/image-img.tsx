@@ -10,7 +10,7 @@
 
 import { ComponentProps, createEffect, createSignal, on, onCleanup, Show } from "solid-js";
 
-import { useImageContext } from "./image-context.js";
+import { useImageContext } from "./image-context.jsx";
 import { ImageLoadingStatus } from "./types.js";
 
 export interface ImageImgProps extends ComponentProps<"img"> {}

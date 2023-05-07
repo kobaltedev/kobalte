@@ -1,8 +1,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useListboxItemContext } from "./listbox-item-context.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useListboxItemContext } from "./listbox-item-context.jsx";
 
 export interface ListboxItemIndicatorOptions extends AsChildProp {
   /**

@@ -9,8 +9,8 @@
 import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import * as Button from "../button/index.js";
-import { useDialogContext } from "./dialog-context.js";
+import * as Button from "../button/index.jsx";
+import { useDialogContext } from "./dialog-context.jsx";
 
 export interface DialogTriggerProps
   extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}

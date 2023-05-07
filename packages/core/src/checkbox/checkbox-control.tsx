@@ -1,9 +1,9 @@
 import { callHandler, EventKey, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useCheckboxContext } from "./checkbox-context.js";
+import { useFormControlContext } from "../form-control/index.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useCheckboxContext } from "./checkbox-context.jsx";
 
 export interface CheckboxControlProps extends OverrideComponentProps<"div", AsChildProp> {}
 

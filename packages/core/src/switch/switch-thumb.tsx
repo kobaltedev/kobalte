@@ -1,8 +1,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
-import { useFormControlContext } from "../form-control/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useSwitchContext } from "./switch-context.js";
+import { useFormControlContext } from "../form-control/index.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useSwitchContext } from "./switch-context.jsx";
 
 export interface SwitchThumbProps extends OverrideComponentProps<"div", AsChildProp> {}
 

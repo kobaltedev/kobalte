@@ -9,8 +9,8 @@
 import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, onCleanup, splitProps } from "solid-js";
 
-import * as Link from "../link/index.js";
-import { useHoverCardContext } from "./hover-card-context.js";
+import * as Link from "../link/index.jsx";
+import { useHoverCardContext } from "./hover-card-context.jsx";
 
 export interface HoverCardTriggerProps extends OverrideComponentProps<"a", Link.LinkRootOptions> {}
 

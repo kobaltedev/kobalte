@@ -1,7 +1,7 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 
-import { useCollapsibleContext } from "../collapsible/collapsible-context.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useCollapsibleContext } from "../collapsible/collapsible-context.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 
 export interface AccordionHeaderProps extends OverrideComponentProps<"h3", AsChildProp> {}
 

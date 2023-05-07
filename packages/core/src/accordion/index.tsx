@@ -2,19 +2,19 @@ import {
   AccordionContent as Content,
   type AccordionContentOptions,
   type AccordionContentProps,
-} from "./accordion-content.js";
-import { AccordionHeader as Header, type AccordionHeaderProps } from "./accordion-header.js";
+} from "./accordion-content.jsx";
+import { AccordionHeader as Header, type AccordionHeaderProps } from "./accordion-header.jsx";
 import {
   AccordionItem as Item,
   type AccordionItemOptions,
   type AccordionItemProps,
-} from "./accordion-item.js";
+} from "./accordion-item.jsx";
 import {
   AccordionRoot as Root,
   type AccordionRootOptions,
   type AccordionRootProps,
-} from "./accordion-root.js";
-import { AccordionTrigger as Trigger, type AccordionTriggerProps } from "./accordion-trigger.js";
+} from "./accordion-root.jsx";
+import { AccordionTrigger as Trigger, type AccordionTriggerProps } from "./accordion-trigger.jsx";
 
 export type {
   AccordionContentOptions,

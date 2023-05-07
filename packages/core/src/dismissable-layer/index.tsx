@@ -1,1 +1,1 @@
-export * from "./dismissable-layer.js";
+export * from "./dismissable-layer.jsx";

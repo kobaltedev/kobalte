@@ -10,14 +10,14 @@
 import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
-import * as Button from "../button/index.js";
+import * as Button from "../button/index.jsx";
 import {
   createFormControlField,
   FORM_CONTROL_FIELD_PROP_NAMES,
   useFormControlContext,
-} from "../form-control/index.js";
+} from "../form-control/index.jsx";
 import { createTypeSelect } from "../selection/index.js";
-import { useSelectContext } from "./select-context.js";
+import { useSelectContext } from "./select-context.jsx";
 
 export interface SelectTriggerProps
   extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}

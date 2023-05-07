@@ -9,7 +9,7 @@
 import { Orientation } from "@kobalte/utils";
 import { Accessor } from "solid-js";
 
-import { Direction } from "../i18n/index.js";
+import { Direction } from "../i18n/index.jsx";
 import { Collection, CollectionNode } from "../primitives/index.js";
 import { KeyboardDelegate } from "../selection/index.js";
 

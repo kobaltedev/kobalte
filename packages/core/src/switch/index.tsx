@@ -1,20 +1,24 @@
-import { SwitchControl as Control, type SwitchControlProps } from "./switch-control.js";
+import { SwitchControl as Control, type SwitchControlProps } from "./switch-control.jsx";
 import {
   SwitchDescription as Description,
   type SwitchDescriptionProps,
-} from "./switch-description";
+} from "./switch-description.jsx";
 import {
   SwitchErrorMessage as ErrorMessage,
   type SwitchErrorMessageProps,
-} from "./switch-error-message";
+} from "./switch-error-message.jsx";
 import {
   SwitchInput as Input,
   type SwitchInputOptions,
   type SwitchInputProps,
-} from "./switch-input.js";
-import { SwitchLabel as Label, type SwitchLabelProps } from "./switch-label.js";
-import { SwitchRoot as Root, type SwitchRootOptions, type SwitchRootProps } from "./switch-root.js";
-import { SwitchThumb as Thumb, type SwitchThumbProps } from "./switch-thumb.js";
+} from "./switch-input.jsx";
+import { SwitchLabel as Label, type SwitchLabelProps } from "./switch-label.jsx";
+import {
+  SwitchRoot as Root,
+  type SwitchRootOptions,
+  type SwitchRootProps,
+} from "./switch-root.jsx";
+import { SwitchThumb as Thumb, type SwitchThumbProps } from "./switch-thumb.jsx";
 
 export type {
   SwitchControlProps,

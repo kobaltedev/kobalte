@@ -21,10 +21,10 @@ import {
   createFormControl,
   FORM_CONTROL_PROP_NAMES,
   FormControlContext,
-} from "../form-control/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+} from "../form-control/index.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 import { createControllableSignal, createFormResetListener } from "../primitives/index.js";
-import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context.js";
+import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context.jsx";
 
 export interface RadioGroupRootOptions extends AsChildProp {
   /** The controlled value of the radio button to check. */

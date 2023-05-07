@@ -1,9 +1,9 @@
 import { callHandler, EventKey, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useSwitchContext } from "./switch-context.js";
+import { useFormControlContext } from "../form-control/index.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useSwitchContext } from "./switch-context.jsx";
 
 export interface SwitchControlProps extends OverrideComponentProps<"div", AsChildProp> {}
 

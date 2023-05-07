@@ -21,8 +21,8 @@
 import { callHandler, getDocument, mergeRefs } from "@kobalte/utils";
 import { ComponentProps, JSX, onCleanup, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useTooltipContext } from "./tooltip-context.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useTooltipContext } from "./tooltip-context.jsx";
 
 export interface TooltipTriggerProps extends ComponentProps<"button">, AsChildProp {}
 

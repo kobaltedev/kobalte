@@ -18,7 +18,7 @@ import {
 } from "solid-js";
 
 import { createListState } from "../list/index.js";
-import { PopperRoot, PopperRootOptions } from "../popper/index.js";
+import { PopperRoot, PopperRootOptions } from "../popper/index.jsx";
 import { Placement } from "../popper/utils.js";
 import {
   CollectionItemWithRef,
@@ -37,8 +37,8 @@ import {
   MenuContextValue,
   MenuDataSet,
   useOptionalMenuContext,
-} from "./menu-context.js";
-import { useMenuRootContext } from "./menu-root-context.js";
+} from "./menu-context.jsx";
+import { useMenuRootContext } from "./menu-root-context.jsx";
 import { GraceIntent, isPointerInGraceArea, Side } from "./utils.js";
 
 export interface MenuOptions

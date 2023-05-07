@@ -34,12 +34,12 @@ import {
   createFormControl,
   FORM_CONTROL_PROP_NAMES,
   FormControlContext,
-} from "../form-control/index.js";
-import { createMessageFormatter } from "../i18n/index.js";
+} from "../form-control/index.jsx";
+import { createMessageFormatter } from "../i18n/index.jsx";
 import { createListState, ListKeyboardDelegate } from "../list/index.js";
-import { announce } from "../live-announcer/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { PopperRoot, PopperRootOptions } from "../popper/index.js";
+import { announce } from "../live-announcer/index.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { PopperRoot, PopperRootOptions } from "../popper/index.jsx";
 import {
   CollectionNode,
   createControllableSignal,
@@ -58,7 +58,7 @@ import {
   SelectionMode,
 } from "../selection/index.js";
 import { COMBOBOX_INTL_MESSAGES } from "./combobox.intl.js";
-import { ComboboxContext, ComboboxContextValue, ComboboxDataSet } from "./combobox-context.js";
+import { ComboboxContext, ComboboxContextValue, ComboboxDataSet } from "./combobox-context.jsx";
 import { ComboboxTriggerMode } from "./types.js";
 
 export interface ComboboxBaseItemComponentProps<T> {

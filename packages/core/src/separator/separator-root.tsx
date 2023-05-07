@@ -9,7 +9,7 @@
 import { mergeDefaultProps, mergeRefs, Orientation, OverrideComponentProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 import { createTagName } from "../primitives/index.js";
 
 export interface SeparatorRootOptions extends AsChildProp {

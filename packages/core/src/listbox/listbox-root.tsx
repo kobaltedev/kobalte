@@ -27,7 +27,7 @@ import {
 } from "solid-js";
 
 import { createListState, createSelectableList, ListState } from "../list/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 import { Collection, CollectionNode } from "../primitives/index.js";
 import {
   FocusStrategy,
@@ -35,7 +35,7 @@ import {
   SelectionBehavior,
   SelectionMode,
 } from "../selection/index.js";
-import { ListboxContext, ListboxContextValue } from "./listbox-context.js";
+import { ListboxContext, ListboxContextValue } from "./listbox-context.jsx";
 
 export interface ListboxRootOptions<Option, OptGroup = never> extends AsChildProp {
   /** The controlled value of the listbox. */

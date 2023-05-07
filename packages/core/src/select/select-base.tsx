@@ -31,11 +31,11 @@ import {
   createFormControl,
   FORM_CONTROL_PROP_NAMES,
   FormControlContext,
-} from "../form-control/index.js";
-import { createCollator } from "../i18n/index.js";
+} from "../form-control/index.jsx";
+import { createCollator } from "../i18n/index.jsx";
 import { createListState, ListKeyboardDelegate } from "../list/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { PopperRoot, PopperRootOptions } from "../popper/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { PopperRoot, PopperRootOptions } from "../popper/index.jsx";
 import {
   CollectionNode,
   createDisclosureState,
@@ -50,7 +50,7 @@ import {
   SelectionBehavior,
   SelectionMode,
 } from "../selection/index.js";
-import { SelectContext, SelectContextValue, SelectDataSet } from "./select-context.js";
+import { SelectContext, SelectContextValue, SelectDataSet } from "./select-context.jsx";
 
 export interface SelectBaseItemComponentProps<T> {
   /** The item to render. */

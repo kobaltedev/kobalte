@@ -2,8 +2,8 @@ import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createUniqueId, ParentProps, splitProps } from "solid-js";
 
 import { createDisclosureState } from "../primitives/index.js";
-import { Menu, MenuOptions } from "./menu.js";
-import { MenuRootContext, MenuRootContextValue } from "./menu-root-context.js";
+import { Menu, MenuOptions } from "./menu.jsx";
+import { MenuRootContext, MenuRootContextValue } from "./menu-root-context.jsx";
 
 export interface MenuRootOptions extends MenuOptions {
   /**

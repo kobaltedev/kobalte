@@ -16,7 +16,7 @@ import {
 import { Accessor, createMemo, createSignal, createUniqueId } from "solid-js";
 
 import { createRegisterId } from "../primitives/index.js";
-import { FormControlContextValue, FormControlDataSet } from "./form-control-context.js";
+import { FormControlContextValue, FormControlDataSet } from "./form-control-context.jsx";
 
 export interface CreateFormControlProps {
   /**

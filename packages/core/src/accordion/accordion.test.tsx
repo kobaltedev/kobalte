@@ -11,7 +11,7 @@ import userEvent from "@testing-library/user-event";
 import { ComponentProps, For } from "solid-js";
 import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 
-import { Accordion } from "../index.js";
+import { Accordion } from "../index.jsx";
 
 function AccordionTest(props: ComponentProps<typeof Accordion.Root>) {
   return (

@@ -9,10 +9,10 @@
 import { callHandler, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import * as Button from "../button/index.js";
-import { createMessageFormatter } from "../i18n/index.js";
+import * as Button from "../button/index.jsx";
+import { createMessageFormatter } from "../i18n/index.jsx";
 import { TOAST_INTL_MESSAGES } from "./toast.intl.js";
-import { useToastContext } from "./toast-context.js";
+import { useToastContext } from "./toast-context.jsx";
 
 export interface ToastCloseButtonOptions extends Button.ButtonRootOptions {}
 

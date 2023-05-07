@@ -19,15 +19,15 @@ import {
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 import { CollectionNode, createRegisterId, getItemCount } from "../primitives/index.js";
 import { createSelectableItem } from "../selection/index.js";
-import { useListboxContext } from "./listbox-context.js";
+import { useListboxContext } from "./listbox-context.jsx";
 import {
   ListboxItemContext,
   ListboxItemContextValue,
   ListboxItemDataSet,
-} from "./listbox-item-context.js";
+} from "./listbox-item-context.jsx";
 
 export interface ListboxItemOptions extends AsChildProp {
   /** The collection node to render. */

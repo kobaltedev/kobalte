@@ -2,7 +2,7 @@ import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import { createToggleState } from "../primitives/index.js";
-import { MenuItemBase, MenuItemBaseOptions } from "./menu-item-base.js";
+import { MenuItemBase, MenuItemBaseOptions } from "./menu-item-base.jsx";
 
 export interface MenuCheckboxItemOptions extends Omit<MenuItemBaseOptions, "checked"> {
   /** The controlled checked state of the menu item checkbox. */

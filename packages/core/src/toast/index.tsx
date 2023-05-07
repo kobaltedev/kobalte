@@ -2,33 +2,33 @@ import {
   ToastCloseButton as CloseButton,
   type ToastCloseButtonOptions,
   type ToastCloseButtonProps,
-} from "./toast-close-button.js";
+} from "./toast-close-button.jsx";
 import {
   ToastDescription as Description,
   type ToastDescriptionOptions,
   type ToastDescriptionProps,
-} from "./toast-description.js";
-import { ToastList as List, type ToastListOptions, type ToastListProps } from "./toast-list.js";
+} from "./toast-description.jsx";
+import { ToastList as List, type ToastListOptions, type ToastListProps } from "./toast-list.jsx";
 import {
   ToastProgressFill as ProgressFill,
   type ToastProgressFillOptions,
   type ToastProgressFillProps,
-} from "./toast-progress-fill.js";
+} from "./toast-progress-fill.jsx";
 import {
   ToastProgressTrack as ProgressTrack,
   type ToastProgressTrackProps,
-} from "./toast-progress-track.js";
+} from "./toast-progress-track.jsx";
 import {
   ToastRegion as Region,
   type ToastRegionOptions,
   type ToastRegionProps,
-} from "./toast-region.js";
-import { ToastRoot as Root, type ToastRootOptions, type ToastRootProps } from "./toast-root.js";
+} from "./toast-region.jsx";
+import { ToastRoot as Root, type ToastRootOptions, type ToastRootProps } from "./toast-root.jsx";
 import {
   ToastTitle as Title,
   type ToastTitleOptions,
   type ToastTitleProps,
-} from "./toast-title.js";
+} from "./toast-title.jsx";
 import {
   type ToastComponent,
   type ToastComponentProps,

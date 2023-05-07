@@ -16,18 +16,18 @@ import {
 } from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "solid-js";
 
-import { DismissableLayer } from "../dismissable-layer/index.js";
+import { DismissableLayer } from "../dismissable-layer/index.jsx";
 import { createSelectableList } from "../list/index.js";
-import { AsChildProp } from "../polymorphic/index.js";
-import { PopperPositioner } from "../popper/index.js";
+import { AsChildProp } from "../polymorphic/index.jsx";
+import { PopperPositioner } from "../popper/index.jsx";
 import {
   createFocusScope,
   FocusOutsideEvent,
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives/index.js";
-import { useMenuContext } from "./menu-context.js";
-import { useMenuRootContext } from "./menu-root-context.js";
+import { useMenuContext } from "./menu-context.jsx";
+import { useMenuRootContext } from "./menu-root-context.jsx";
 
 export interface MenuContentBaseOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */

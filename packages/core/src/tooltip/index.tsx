@@ -2,19 +2,19 @@ import {
   PopperArrow as Arrow,
   type PopperArrowOptions as TooltipArrowOptions,
   type PopperArrowProps as TooltipArrowProps,
-} from "../popper/index.js";
+} from "../popper/index.jsx";
 import {
   TooltipContent as Content,
   type TooltipContentOptions,
   type TooltipContentProps,
-} from "./tooltip-content.js";
-import { TooltipPortal as Portal, type TooltipPortalProps } from "./tooltip-portal.js";
+} from "./tooltip-content.jsx";
+import { TooltipPortal as Portal, type TooltipPortalProps } from "./tooltip-portal.jsx";
 import {
   TooltipRoot as Root,
   type TooltipRootOptions,
   type TooltipRootProps,
-} from "./tooltip-root.js";
-import { TooltipTrigger as Trigger, type TooltipTriggerProps } from "./tooltip-trigger.js";
+} from "./tooltip-root.jsx";
+import { TooltipTrigger as Trigger, type TooltipTriggerProps } from "./tooltip-trigger.jsx";
 
 export type {
   TooltipArrowOptions,

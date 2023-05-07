@@ -1,5 +1,5 @@
-import { FormControlLabel, FormControlLabelProps } from "../form-control/index.js";
-import { useCheckboxContext } from "./checkbox-context.js";
+import { FormControlLabel, FormControlLabelProps } from "../form-control/index.jsx";
+import { useCheckboxContext } from "./checkbox-context.jsx";
 
 export interface CheckboxLabelProps extends FormControlLabelProps {}
 

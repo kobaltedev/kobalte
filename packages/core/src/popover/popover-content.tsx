@@ -7,9 +7,9 @@ import {
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
-import { DismissableLayer } from "../dismissable-layer/index.js";
-import { AsChildProp } from "../polymorphic/index.js";
-import { PopperPositioner } from "../popper/index.js";
+import { DismissableLayer } from "../dismissable-layer/index.jsx";
+import { AsChildProp } from "../polymorphic/index.jsx";
+import { PopperPositioner } from "../popper/index.jsx";
 import {
   createFocusScope,
   createHideOutside,
@@ -18,7 +18,7 @@ import {
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives/index.js";
-import { usePopoverContext } from "./popover-context.js";
+import { usePopoverContext } from "./popover-context.jsx";
 
 export interface PopoverContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */

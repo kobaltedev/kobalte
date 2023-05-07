@@ -9,7 +9,7 @@
 
 import { render, screen } from "@solidjs/testing-library";
 
-import { Breadcrumbs } from "../index.js";
+import { Breadcrumbs } from "../index.jsx";
 
 describe("Breadcrumbs", () => {
   it("should have default 'aria-label'", () => {

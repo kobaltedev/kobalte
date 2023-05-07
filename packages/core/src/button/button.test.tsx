@@ -1,8 +1,8 @@
 import { installPointerEvent } from "@kobalte/tests";
 import { render, screen } from "@solidjs/testing-library";
 
-import { As } from "../polymorphic/index.js";
-import { Button } from "../index.js";
+import { As } from "../polymorphic/index.jsx";
+import { Button } from "../index.jsx";
 
 describe("Button", () => {
   installPointerEvent();

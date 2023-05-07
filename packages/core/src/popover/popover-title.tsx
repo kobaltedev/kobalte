@@ -1,8 +1,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { usePopoverContext } from "./popover-context.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { usePopoverContext } from "./popover-context.jsx";
 
 export interface PopoverTitleProps extends OverrideComponentProps<"h2", AsChildProp> {}
 

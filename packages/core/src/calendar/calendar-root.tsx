@@ -42,12 +42,12 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createMessageFormatter, getReadingDirection, useLocale } from "../i18n/index.js";
-import { announce } from "../live-announcer/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { createMessageFormatter, getReadingDirection, useLocale } from "../i18n/index.jsx";
+import { announce } from "../live-announcer/index.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 import { createControllableSignal, createInteractOutside } from "../primitives/index.js";
 import { CALENDAR_INTL_MESSAGES } from "./calendar.intl.js";
-import { CalendarContext, CalendarContextValue, CalendarDataSet } from "./calendar-context.js";
+import { CalendarContext, CalendarContextValue, CalendarDataSet } from "./calendar-context.jsx";
 import { DateAlignment, DateValue } from "./types.js";
 import {
   alignCenter,

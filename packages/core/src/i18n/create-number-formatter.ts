@@ -10,7 +10,7 @@ import { NumberFormatOptions, NumberFormatter } from "@internationalized/number"
 import { access, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createMemo } from "solid-js";
 
-import { useLocale } from "./i18n-provider.js";
+import { useLocale } from "./i18n-provider.jsx";
 
 /**
  * Provides localized number formatting for the current locale. Automatically updates when the locale changes,

@@ -1,7 +1,7 @@
 import { ComponentProps, Show } from "solid-js";
 import { Portal } from "solid-js/web";
 
-import { usePopoverContext } from "./popover-context.js";
+import { usePopoverContext } from "./popover-context.jsx";
 
 export interface PopoverPortalProps extends ComponentProps<typeof Portal> {}
 

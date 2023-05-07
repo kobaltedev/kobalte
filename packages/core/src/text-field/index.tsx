@@ -6,18 +6,18 @@ import {
   type FormControlErrorMessageProps as TextFieldErrorMessageProps,
   FormControlLabel as Label,
   type FormControlLabelProps as TextFieldLabelProps,
-} from "../form-control/index.js";
-import { TextFieldInput as Input, type TextFieldInputProps } from "./text-field-input.js";
+} from "../form-control/index.jsx";
+import { TextFieldInput as Input, type TextFieldInputProps } from "./text-field-input.jsx";
 import {
   TextFieldRoot as Root,
   type TextFieldRootOptions,
   type TextFieldRootProps,
-} from "./text-field-root.js";
+} from "./text-field-root.jsx";
 import {
   TextFieldTextArea as TextArea,
   type TextFieldTextAreaOptions,
   type TextFieldTextAreaProps,
-} from "./text-field-text-area.js";
+} from "./text-field-text-area.jsx";
 
 export type {
   TextFieldDescriptionProps,

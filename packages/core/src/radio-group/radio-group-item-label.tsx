@@ -1,7 +1,7 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { ComponentProps, createEffect, onCleanup } from "solid-js";
 
-import { useRadioGroupItemContext } from "./radio-group-item-context.js";
+import { useRadioGroupItemContext } from "./radio-group-item-context.jsx";
 
 export interface RadioGroupItemLabelProps extends ComponentProps<"label"> {}
 

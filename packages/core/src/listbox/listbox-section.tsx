@@ -1,6 +1,6 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 
 export interface ListboxSectionProps extends OverrideComponentProps<"li", AsChildProp> {}
 

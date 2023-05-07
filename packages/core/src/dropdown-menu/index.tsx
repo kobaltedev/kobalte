@@ -38,26 +38,26 @@ import {
   MenuTrigger as Trigger,
   type MenuTriggerOptions as DropdownMenuTriggerOptions,
   type MenuTriggerProps as DropdownMenuTriggerProps,
-} from "../menu/index.js";
+} from "../menu/index.jsx";
 import {
   PopperArrow as Arrow,
   type PopperArrowOptions as DropdownMenuArrowOptions,
   type PopperArrowProps as DropdownMenuArrowProps,
-} from "../popper/index.js";
+} from "../popper/index.jsx";
 import {
   Root as Separator,
   type SeparatorRootOptions as DropdownMenuSeparatorOptions,
   type SeparatorRootProps as DropdownMenuSeparatorProps,
-} from "../separator/index.js";
+} from "../separator/index.jsx";
 import {
   DropdownMenuContent as Content,
   type DropdownMenuContentProps,
-} from "./dropdown-menu-content.js";
+} from "./dropdown-menu-content.jsx";
 import {
   DropdownMenuRoot as Root,
   type DropdownMenuRootOptions,
   type DropdownMenuRootProps,
-} from "./dropdown-menu-root.js";
+} from "./dropdown-menu-root.jsx";
 
 export type {
   DropdownMenuArrowOptions,

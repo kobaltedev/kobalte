@@ -2,16 +2,16 @@ import {
   BreadcrumbsLink as Link,
   type BreadcrumbsLinkOptions,
   type BreadcrumbsLinkProps,
-} from "./breadcrumbs-link.js";
+} from "./breadcrumbs-link.jsx";
 import {
   BreadcrumbsRoot as Root,
   type BreadcrumbsRootOptions,
   type BreadcrumbsRootProps,
-} from "./breadcrumbs-root.js";
+} from "./breadcrumbs-root.jsx";
 import {
   BreadcrumbsSeparator as Separator,
   type BreadcrumbsSeparatorProps,
-} from "./breadcrumbs-separator.js";
+} from "./breadcrumbs-separator.jsx";
 
 export type {
   BreadcrumbsLinkOptions,

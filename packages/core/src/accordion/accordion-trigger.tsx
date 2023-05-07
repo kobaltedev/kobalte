@@ -15,14 +15,14 @@ import {
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
-import * as Collapsible from "../collapsible/index.js";
-import { useCollapsibleContext } from "../collapsible/collapsible-context.js";
-import { AsChildProp } from "../polymorphic/index.js";
+import * as Collapsible from "../collapsible/index.jsx";
+import { useCollapsibleContext } from "../collapsible/collapsible-context.jsx";
+import { AsChildProp } from "../polymorphic/index.jsx";
 import { CollectionItemWithRef } from "../primitives/index.js";
 import { createDomCollectionItem } from "../primitives/create-dom-collection/index.js";
 import { createSelectableItem } from "../selection/index.js";
-import { useAccordionContext } from "./accordion-context.js";
-import { useAccordionItemContext } from "./accordion-item-context.js";
+import { useAccordionContext } from "./accordion-context.jsx";
+import { useAccordionItemContext } from "./accordion-item-context.jsx";
 
 export interface AccordionTriggerProps extends OverrideComponentProps<"button", AsChildProp> {}
 

@@ -1,7 +1,7 @@
 import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 
-import { ToggleButton } from "../index.js";
+import { ToggleButton } from "../index.jsx";
 
 describe("ToggleButton", () => {
   installPointerEvent();

@@ -1,8 +1,8 @@
 import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useDialogContext } from "./dialog-context.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useDialogContext } from "./dialog-context.jsx";
 
 export interface DialogOverlayOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */

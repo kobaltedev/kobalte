@@ -9,7 +9,7 @@
 import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 
-import { Checkbox } from "../index.js";
+import { Checkbox } from "../index.jsx";
 
 describe("Checkbox", () => {
   installPointerEvent();

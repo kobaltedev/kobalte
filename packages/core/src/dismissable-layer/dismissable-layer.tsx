@@ -15,7 +15,7 @@
 import { contains, getDocument, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, createEffect, on, onCleanup, onMount, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 import {
   createEscapeKeyDown,
   createInteractOutside,
@@ -27,8 +27,8 @@ import {
   DismissableLayerContext,
   DismissableLayerContextValue,
   useOptionalDismissableLayerContext,
-} from "./dismissable-layer-context.js";
-import { layerStack } from "./layer-stack.js";
+} from "./dismissable-layer-context.jsx";
+import { layerStack } from "./layer-stack.jsx";
 
 export interface DismissableLayerOptions extends AsChildProp {
   /**

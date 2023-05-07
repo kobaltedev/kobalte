@@ -9,7 +9,7 @@
 
 import { ComponentProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic/index.js";
+import { Polymorphic } from "../polymorphic/index.jsx";
 
 export type CalendarGridHeaderProps = ComponentProps<"thead">;
 

@@ -1,8 +1,8 @@
 import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { usePopperContext } from "./popper-context.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { usePopperContext } from "./popper-context.jsx";
 
 export interface PopperPositionerOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */

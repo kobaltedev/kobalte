@@ -9,7 +9,7 @@
 import { Time } from "@internationalized/date";
 import { Accessor, createEffect, createMemo } from "solid-js";
 
-import { DateValue, TimeValue } from "../calendar/types.js";
+import { DateValue, TimeValue } from "../calendar/types.jsx";
 import { DateFieldGranularity, DateTimeFormatOptions } from "./types.js";
 
 interface FormatterOptions {

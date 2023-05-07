@@ -15,8 +15,8 @@ import {
 } from "@kobalte/utils";
 import { createEffect, onCleanup, Show, splitProps } from "solid-js";
 
-import { DismissableLayer } from "../dismissable-layer/index.js";
-import { AsChildProp } from "../polymorphic/index.js";
+import { DismissableLayer } from "../dismissable-layer/index.jsx";
+import { AsChildProp } from "../polymorphic/index.jsx";
 import {
   createFocusScope,
   createHideOutside,
@@ -25,7 +25,7 @@ import {
   InteractOutsideEvent,
   PointerDownOutsideEvent,
 } from "../primitives/index.js";
-import { useDialogContext } from "./dialog-context.js";
+import { useDialogContext } from "./dialog-context.jsx";
 
 export interface DialogContentOptions extends AsChildProp {
   /**

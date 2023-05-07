@@ -2,7 +2,7 @@ import { createRoot, onCleanup, onMount } from "solid-js";
 import { render, screen } from "@solidjs/testing-library";
 
 import { createDefaultLocale } from "./create-default-locale.js";
-import { I18nProvider, useLocale } from "./i18n-provider.js";
+import { I18nProvider, useLocale } from "./i18n-provider.jsx";
 
 function Example() {
   const { locale, direction } = useLocale();

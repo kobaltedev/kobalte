@@ -1,9 +1,9 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, createMemo, Index, JSX, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic/index.js";
-import { useCalendarContext } from "./calendar-context.js";
-import { useCalendarGridContext } from "./calendar-grid-context.js";
+import { Polymorphic } from "../polymorphic/index.jsx";
+import { useCalendarContext } from "./calendar-context.jsx";
+import { useCalendarGridContext } from "./calendar-grid-context.jsx";
 import { DateValue } from "./types.js";
 
 export interface CalendarGridBodyRowOptions {

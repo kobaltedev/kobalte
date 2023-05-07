@@ -2,7 +2,7 @@ import { installPointerEvent } from "@kobalte/tests";
 import { render, screen } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
 
-import { TextField } from "../index.js";
+import { TextField } from "../index.jsx";
 
 describe("TextField", () => {
   installPointerEvent();

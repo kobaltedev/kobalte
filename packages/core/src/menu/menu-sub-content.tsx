@@ -14,10 +14,10 @@ import {
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { Direction, useLocale } from "../i18n/index.js";
+import { Direction, useLocale } from "../i18n/index.jsx";
 import { FocusOutsideEvent } from "../primitives/index.js";
-import { MenuContentBase, MenuContentBaseOptions } from "./menu-content-base.js";
-import { useMenuContext } from "./menu-context.js";
+import { MenuContentBase, MenuContentBaseOptions } from "./menu-content-base.jsx";
+import { useMenuContext } from "./menu-context.jsx";
 
 export interface MenuSubContentOptions
   extends Omit<MenuContentBaseOptions, "onOpenAutoFocus" | "onCloseAutoFocus"> {}

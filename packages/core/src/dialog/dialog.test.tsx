@@ -8,7 +8,7 @@
 
 import { render, screen } from "@solidjs/testing-library";
 
-import { Dialog } from "../index.js";
+import { Dialog } from "../index.jsx";
 
 describe("Dialog", () => {
   it("should be labelled by its dialog title", function () {

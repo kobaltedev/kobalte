@@ -9,10 +9,10 @@
 import { composeEventHandlers, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, splitProps } from "solid-js";
 
-import { useLocale } from "../i18n/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useLocale } from "../i18n/index.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 import { createSelectableCollection } from "../selection/index.js";
-import { useTabsContext } from "./tabs-context.js";
+import { useTabsContext } from "./tabs-context.jsx";
 import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate.js";
 
 export interface TabsListProps extends OverrideComponentProps<"div", AsChildProp> {}

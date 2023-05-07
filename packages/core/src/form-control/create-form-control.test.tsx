@@ -10,11 +10,11 @@
 import { render, screen } from "@solidjs/testing-library";
 import { ParentProps } from "solid-js";
 
-import { createFormControl, CreateFormControlProps } from "./create-form-control.js";
-import { FormControlContext } from "./form-control-context.js";
-import { FormControlDescription } from "./form-control-description.js";
-import { FormControlErrorMessage } from "./form-control-error-message.js";
-import { FormControlLabel } from "./form-control-label.js";
+import { createFormControl, CreateFormControlProps } from "./create-form-control.jsx";
+import { FormControlContext } from "./form-control-context.jsx";
+import { FormControlDescription } from "./form-control-description.jsx";
+import { FormControlErrorMessage } from "./form-control-error-message.jsx";
+import { FormControlLabel } from "./form-control-label.jsx";
 
 function FormControl(props: ParentProps<CreateFormControlProps>) {
   const { formControlContext } = createFormControl(props);

@@ -9,7 +9,7 @@
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
 import { ComponentProps, createEffect, createSignal, For, on, Show, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control/index.js";
+import { useFormControlContext } from "../form-control/index.jsx";
 import { Collection, CollectionNode } from "../primitives/index.js";
 import { SelectionManager } from "../selection/index.js";
 import { isSameSelection } from "../selection/utils.js";

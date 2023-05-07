@@ -9,8 +9,8 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { createSignal, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { ImageContext, ImageContextValue } from "./image-context.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { ImageContext, ImageContextValue } from "./image-context.jsx";
 import { ImageLoadingStatus } from "./types.js";
 
 export interface ImageRootOptions extends AsChildProp {

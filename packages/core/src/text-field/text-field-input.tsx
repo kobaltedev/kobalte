@@ -13,9 +13,9 @@ import {
   createFormControlField,
   FORM_CONTROL_FIELD_PROP_NAMES,
   useFormControlContext,
-} from "../form-control/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useTextFieldContext } from "./text-field-context.js";
+} from "../form-control/index.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useTextFieldContext } from "./text-field-context.jsx";
 
 export interface TextFieldInputProps extends OverrideComponentProps<"input", AsChildProp> {}
 

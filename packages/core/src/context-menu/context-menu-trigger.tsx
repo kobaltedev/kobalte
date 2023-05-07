@@ -10,10 +10,10 @@ import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } fro
 import { JSX, onCleanup, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { useMenuContext } from "../menu/menu-context.js";
-import { useMenuRootContext } from "../menu/menu-root-context.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useContextMenuContext } from "./context-menu-context.js";
+import { useMenuContext } from "../menu/menu-context.jsx";
+import { useMenuRootContext } from "../menu/menu-root-context.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useContextMenuContext } from "./context-menu-context.jsx";
 
 export interface ContextMenuTriggerOptions extends AsChildProp {
   /** Whether the context menu trigger is disabled. */

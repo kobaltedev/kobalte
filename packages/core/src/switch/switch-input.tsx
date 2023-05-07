@@ -19,8 +19,8 @@ import {
   createFormControlField,
   FORM_CONTROL_FIELD_PROP_NAMES,
   useFormControlContext,
-} from "../form-control/index.js";
-import { useSwitchContext } from "./switch-context.js";
+} from "../form-control/index.jsx";
+import { useSwitchContext } from "./switch-context.jsx";
 
 export interface SwitchInputOptions {
   /** The HTML styles attribute (object form only). */

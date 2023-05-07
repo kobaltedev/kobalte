@@ -1,1 +1,1 @@
-export * from "./create-focus-scope.js";
+export * from "./create-focus-scope.jsx";

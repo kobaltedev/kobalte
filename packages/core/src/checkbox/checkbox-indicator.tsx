@@ -1,10 +1,10 @@
 import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { useFormControlContext } from "../form-control/index.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 import { createPresence } from "../primitives/index.js";
-import { useCheckboxContext } from "./checkbox-context.js";
+import { useCheckboxContext } from "./checkbox-context.jsx";
 
 export interface CheckboxIndicatorOptions extends AsChildProp {
   /**

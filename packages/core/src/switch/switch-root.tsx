@@ -26,10 +26,14 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import { Polymorphic } from "../polymorphic/index.js";
+import {
+  createFormControl,
+  FORM_CONTROL_PROP_NAMES,
+  FormControlContext,
+} from "../form-control/index.jsx";
+import { Polymorphic } from "../polymorphic/index.jsx";
 import { createFormResetListener, createToggleState } from "../primitives/index.js";
-import { SwitchContext, SwitchContextValue, SwitchDataSet } from "./switch-context.js";
+import { SwitchContext, SwitchContextValue, SwitchDataSet } from "./switch-context.jsx";
 
 interface SwitchRootState {
   /** Whether the switch is checked or not. */

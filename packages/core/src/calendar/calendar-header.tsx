@@ -1,6 +1,6 @@
 import { ComponentProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic/index.js";
+import { Polymorphic } from "../polymorphic/index.jsx";
 
 export type CalendarHeaderProps = ComponentProps<"header">;
 

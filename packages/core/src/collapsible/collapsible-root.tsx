@@ -9,13 +9,13 @@
 import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 import { createDisclosureState, createRegisterId } from "../primitives/index.js";
 import {
   CollapsibleContext,
   CollapsibleContextValue,
   CollapsibleDataSet,
-} from "./collapsible-context.js";
+} from "./collapsible-context.jsx";
 
 export interface CollapsibleRootOptions extends AsChildProp {
   /** The controlled open state of the collapsible. */

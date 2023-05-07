@@ -1,5 +1,5 @@
-import { FormControlLabel, FormControlLabelProps } from "../form-control/index.js";
-import { useSwitchContext } from "./switch-context.js";
+import { FormControlLabel, FormControlLabelProps } from "../form-control/index.jsx";
+import { useSwitchContext } from "./switch-context.jsx";
 
 export interface SwitchLabelProps extends FormControlLabelProps {}
 

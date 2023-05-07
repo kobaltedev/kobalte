@@ -10,12 +10,12 @@ import { isToday } from "@internationalized/date";
 import { OverrideComponentProps } from "@kobalte/utils";
 import { createMemo, splitProps } from "solid-js";
 
-import { Polymorphic } from "../polymorphic/index.js";
-import { useCalendarContext } from "./calendar-context.js";
+import { Polymorphic } from "../polymorphic/index.jsx";
+import { useCalendarContext } from "./calendar-context.jsx";
 import {
   CalendarGridBodyCellContext,
   CalendarGridBodyCellContextValue,
-} from "./calendar-grid-body-cell-context.js";
+} from "./calendar-grid-body-cell-context.jsx";
 import { DateValue } from "./types.js";
 
 export interface CalendarGridBodyCellOptions {

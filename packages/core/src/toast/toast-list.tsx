@@ -23,7 +23,7 @@ import {
 } from "@kobalte/utils";
 import { createEffect, For, JSX, on, onCleanup, splitProps } from "solid-js";
 
-import { useToastRegionContext } from "./toast-region-context.js";
+import { useToastRegionContext } from "./toast-region-context.jsx";
 
 export interface ToastListOptions {}
 

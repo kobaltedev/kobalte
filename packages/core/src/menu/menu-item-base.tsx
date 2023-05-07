@@ -17,13 +17,13 @@ import {
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 import { CollectionItemWithRef, createRegisterId } from "../primitives/index.js";
 import { createDomCollectionItem } from "../primitives/create-dom-collection/index.js";
 import { createSelectableItem } from "../selection/index.js";
-import { useMenuContext } from "./menu-context.js";
-import { MenuItemContext, MenuItemContextValue, MenuItemDataSet } from "./menu-item.context.js";
-import { useMenuRootContext } from "./menu-root-context.js";
+import { useMenuContext } from "./menu-context.jsx";
+import { MenuItemContext, MenuItemContextValue, MenuItemDataSet } from "./menu-item.context.jsx";
+import { useMenuRootContext } from "./menu-root-context.jsx";
 
 export interface MenuItemBaseOptions extends AsChildProp {
   /**

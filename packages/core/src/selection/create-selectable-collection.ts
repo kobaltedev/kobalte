@@ -17,7 +17,7 @@ import {
 } from "@kobalte/utils";
 import { Accessor, createEffect, createMemo, JSX, mergeProps, on, onMount } from "solid-js";
 
-import { useLocale } from "../i18n/index.js";
+import { useLocale } from "../i18n/index.jsx";
 import { createTypeSelect } from "./create-type-select.js";
 import { FocusStrategy, KeyboardDelegate, MultipleSelectionManager } from "./types.js";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils.js";

@@ -9,7 +9,7 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 
-import { RadioGroup } from "../index.js";
+import { RadioGroup } from "../index.jsx";
 
 describe("RadioGroup", () => {
   installPointerEvent();

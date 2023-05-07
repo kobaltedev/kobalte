@@ -21,8 +21,8 @@ import {
 import { mergeDefaultProps } from "@kobalte/utils";
 import { Accessor, createEffect, createSignal, onCleanup, ParentProps } from "solid-js";
 
-import { useLocale } from "../i18n/index.js";
-import { PopperContext, PopperContextValue } from "./popper-context.js";
+import { useLocale } from "../i18n/index.jsx";
+import { PopperContext, PopperContextValue } from "./popper-context.jsx";
 import {
   AnchorRect,
   BasePlacement,

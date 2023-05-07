@@ -10,8 +10,8 @@
 import { callHandler, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, createMemo, JSX, splitProps } from "solid-js";
 
-import * as Button from "../button/index.js";
-import { useCalendarContext } from "./calendar-context.js";
+import * as Button from "../button/index.jsx";
+import { useCalendarContext } from "./calendar-context.jsx";
 import { isNextVisibleRangeInvalid } from "./utils.js";
 
 export interface CalendarNextTriggerOptions extends Button.ButtonRootOptions {}

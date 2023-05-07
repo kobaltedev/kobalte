@@ -9,9 +9,9 @@
 import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
-import * as Button from "../button/index.js";
-import { useMenuContext } from "./menu-context.js";
-import { useMenuRootContext } from "./menu-root-context.js";
+import * as Button from "../button/index.jsx";
+import { useMenuContext } from "./menu-context.jsx";
+import { useMenuRootContext } from "./menu-root-context.jsx";
 
 export interface MenuTriggerOptions extends Button.ButtonRootOptions {}
 

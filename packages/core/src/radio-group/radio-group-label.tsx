@@ -1,7 +1,7 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 
-import { FormControlLabel } from "../form-control/index.js";
-import { AsChildProp } from "../polymorphic/index.js";
+import { FormControlLabel } from "../form-control/index.jsx";
+import { AsChildProp } from "../polymorphic/index.jsx";
 
 export interface RadioGroupLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
 

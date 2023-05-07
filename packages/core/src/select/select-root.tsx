@@ -1,8 +1,8 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { createMemo, splitProps } from "solid-js";
 
-import { AsChildProp } from "../polymorphic/index.js";
-import { SelectBase, SelectBaseOptions } from "./select-base.js";
+import { AsChildProp } from "../polymorphic/index.jsx";
+import { SelectBase, SelectBaseOptions } from "./select-base.jsx";
 
 export interface SelectSingleSelectionOptions<T> {
   /** The controlled value of the select. */

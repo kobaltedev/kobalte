@@ -2,29 +2,29 @@ import {
   PopperArrow as Arrow,
   type PopperArrowOptions as PopoverArrowOptions,
   type PopperArrowProps as PopoverArrowProps,
-} from "../popper/index.js";
-import { PopoverAnchor as Anchor, type PopoverAnchorProps } from "./popover-anchor.js";
+} from "../popper/index.jsx";
+import { PopoverAnchor as Anchor, type PopoverAnchorProps } from "./popover-anchor.jsx";
 import {
   PopoverCloseButton as CloseButton,
   type PopoverCloseButtonProps,
-} from "./popover-close-button.js";
+} from "./popover-close-button.jsx";
 import {
   PopoverContent as Content,
   type PopoverContentOptions,
   type PopoverContentProps,
-} from "./popover-content.js";
+} from "./popover-content.jsx";
 import {
   PopoverDescription as Description,
   type PopoverDescriptionProps,
-} from "./popover-description.js";
-import { PopoverPortal as Portal, type PopoverPortalProps } from "./popover-portal.js";
+} from "./popover-description.jsx";
+import { PopoverPortal as Portal, type PopoverPortalProps } from "./popover-portal.jsx";
 import {
   PopoverRoot as Root,
   type PopoverRootOptions,
   type PopoverRootProps,
-} from "./popover-root.js";
-import { PopoverTitle as Title, type PopoverTitleProps } from "./popover-title.js";
-import { PopoverTrigger as Trigger, type PopoverTriggerProps } from "./popover-trigger.js";
+} from "./popover-root.jsx";
+import { PopoverTitle as Title, type PopoverTitleProps } from "./popover-title.jsx";
+import { PopoverTrigger as Trigger, type PopoverTriggerProps } from "./popover-trigger.jsx";
 
 export type {
   PopoverAnchorProps,

@@ -1,5 +1,5 @@
-import { FormControlDescription, FormControlDescriptionProps } from "../form-control";
-import { useCheckboxContext } from "./checkbox-context";
+import { FormControlDescription, FormControlDescriptionProps } from "../form-control/index.jsx";
+import { useCheckboxContext } from "./checkbox-context.jsx";
 
 export interface CheckboxDescriptionProps extends FormControlDescriptionProps {}
 

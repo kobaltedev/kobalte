@@ -1,5 +1,5 @@
-import { FormControlDescription, FormControlDescriptionProps } from "../form-control";
-import { useSwitchContext } from "./switch-context";
+import { FormControlDescription, FormControlDescriptionProps } from "../form-control/index.jsx";
+import { useSwitchContext } from "./switch-context.jsx";
 
 export interface SwitchDescriptionProps extends FormControlDescriptionProps {}
 

@@ -1,9 +1,9 @@
 import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 import { createPresence } from "../primitives/index.js";
-import { useRadioGroupItemContext } from "./radio-group-item-context.js";
+import { useRadioGroupItemContext } from "./radio-group-item-context.jsx";
 
 export interface RadioGroupItemIndicatorOptions extends AsChildProp {
   /**

@@ -26,10 +26,14 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control/index.js";
-import { Polymorphic } from "../polymorphic/index.js";
+import {
+  createFormControl,
+  FORM_CONTROL_PROP_NAMES,
+  FormControlContext,
+} from "../form-control/index.jsx";
+import { Polymorphic } from "../polymorphic/index.jsx";
 import { createFormResetListener, createToggleState } from "../primitives/index.js";
-import { CheckboxContext, CheckboxContextValue, CheckboxDataSet } from "./checkbox-context.js";
+import { CheckboxContext, CheckboxContextValue, CheckboxDataSet } from "./checkbox-context.jsx";
 
 interface CheckboxRootState {
   /** Whether the checkbox is checked or not. */

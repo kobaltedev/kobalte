@@ -14,9 +14,9 @@ import {
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control/index.js";
-import { useRadioGroupContext } from "./radio-group-context.js";
-import { useRadioGroupItemContext } from "./radio-group-item-context.js";
+import { useFormControlContext } from "../form-control/index.jsx";
+import { useRadioGroupContext } from "./radio-group-context.jsx";
+import { useRadioGroupItemContext } from "./radio-group-item-context.jsx";
 
 export interface RadioGroupItemInputOptions {
   /** The HTML styles attribute (object form only). */

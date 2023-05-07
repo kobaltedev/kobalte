@@ -20,8 +20,8 @@ import {
   createFormControlField,
   FORM_CONTROL_FIELD_PROP_NAMES,
   useFormControlContext,
-} from "../form-control/index.js";
-import { useCheckboxContext } from "./checkbox-context.js";
+} from "../form-control/index.jsx";
+import { useCheckboxContext } from "./checkbox-context.jsx";
 
 export interface CheckboxInputOptions {
   /** The HTML styles attribute (object form only). */

@@ -9,8 +9,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useListboxItemContext } from "./listbox-item-context.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useListboxItemContext } from "./listbox-item-context.jsx";
 
 export interface ListboxItemDescriptionProps extends OverrideComponentProps<"div", AsChildProp> {}
 

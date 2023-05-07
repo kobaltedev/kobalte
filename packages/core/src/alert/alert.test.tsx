@@ -1,6 +1,6 @@
 import { render, screen } from "@solidjs/testing-library";
 
-import { Alert } from "../index.js";
+import { Alert } from "../index.jsx";
 
 describe("Alert", () => {
   it("should have attribute 'role=alert'", () => {

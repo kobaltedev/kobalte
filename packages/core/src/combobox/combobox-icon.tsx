@@ -1,7 +1,7 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useComboboxContext } from "./combobox-context.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useComboboxContext } from "./combobox-context.jsx";
 
 export interface ComboboxIconProps extends OverrideComponentProps<"span", AsChildProp> {}
 

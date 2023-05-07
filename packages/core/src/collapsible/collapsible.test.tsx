@@ -10,7 +10,7 @@ import { installPointerEvent } from "@kobalte/tests";
 import { ComponentProps } from "solid-js";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 
-import { Collapsible } from "../index.js";
+import { Collapsible } from "../index.jsx";
 
 const TRIGGER_TEXT = "Trigger";
 const CONTENT_TEXT = "Content";

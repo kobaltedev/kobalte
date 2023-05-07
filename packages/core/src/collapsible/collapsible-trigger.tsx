@@ -9,9 +9,9 @@
 import { callHandler, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import * as Button from "../button/index.js";
-import { AsChildProp } from "../polymorphic/index.js";
-import { useCollapsibleContext } from "./collapsible-context.js";
+import * as Button from "../button/index.jsx";
+import { AsChildProp } from "../polymorphic/index.jsx";
+import { useCollapsibleContext } from "./collapsible-context.jsx";
 
 export interface CollapsibleTriggerProps extends OverrideComponentProps<"button", AsChildProp> {}
 

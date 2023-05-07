@@ -9,7 +9,7 @@
 import { createPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 
-import { Listbox } from "../index.js";
+import { Listbox } from "../index.jsx";
 
 const DATA_SOURCE = [
   { key: "1", label: "One", textValue: "One", disabled: false },

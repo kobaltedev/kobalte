@@ -1,8 +1,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useMenuItemContext } from "./menu-item.context.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useMenuItemContext } from "./menu-item.context.jsx";
 
 export interface MenuItemIndicatorOptions extends AsChildProp {
   /**

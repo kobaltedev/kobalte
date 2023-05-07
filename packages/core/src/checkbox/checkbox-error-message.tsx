@@ -1,5 +1,5 @@
-import { FormControlErrorMessage, FormControlErrorMessageProps } from "../form-control";
-import { useCheckboxContext } from "./checkbox-context";
+import { FormControlErrorMessage, FormControlErrorMessageProps } from "../form-control/index.jsx";
+import { useCheckboxContext } from "./checkbox-context.jsx";
 
 export interface CheckboxErrorMessageProps extends FormControlErrorMessageProps {}
 

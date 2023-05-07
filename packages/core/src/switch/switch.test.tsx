@@ -9,7 +9,7 @@
 import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 
-import { Switch } from "../index.js";
+import { Switch } from "../index.jsx";
 
 describe("Switch", () => {
   installPointerEvent();

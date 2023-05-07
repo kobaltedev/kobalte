@@ -9,8 +9,8 @@
 import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import * as Button from "../button/index.js";
-import { usePopoverContext } from "./popover-context.js";
+import * as Button from "../button/index.jsx";
+import { usePopoverContext } from "./popover-context.jsx";
 
 export interface PopoverTriggerProps
   extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}

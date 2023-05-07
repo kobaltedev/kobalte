@@ -6,7 +6,7 @@ export * from "./create-focus-scope/index.js";
 export * from "./create-form-reset-listener/index.js";
 export * from "./create-hide-outside/index.js";
 export * from "./create-interact-outside/index.js";
-export * from "./create-presence/index.js";
+export * from "./create-presence/index.jsx";
 export * from "./create-prevent-scroll/index.js";
 export * from "./create-register-id/index.js";
 export * from "./create-tag-name/index.js";

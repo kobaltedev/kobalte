@@ -9,10 +9,10 @@
 import { clamp, createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
 
-import { createNumberFormatter } from "../i18n/index.js";
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
+import { createNumberFormatter } from "../i18n/index.jsx";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
 import { createRegisterId } from "../primitives/index.js";
-import { ProgressContext, ProgressContextValue, ProgressDataSet } from "./progress-context.js";
+import { ProgressContext, ProgressContextValue, ProgressDataSet } from "./progress-context.jsx";
 
 interface GetValueLabelParams {
   value: number;

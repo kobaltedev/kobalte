@@ -1,10 +1,10 @@
 import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
 
-import { DismissableLayer } from "../dismissable-layer/index.js";
-import { AsChildProp } from "../polymorphic/index.js";
-import { PopperPositioner } from "../popper/index.js";
-import { useHoverCardContext } from "./hover-card-context.js";
+import { DismissableLayer } from "../dismissable-layer/index.jsx";
+import { AsChildProp } from "../polymorphic/index.jsx";
+import { PopperPositioner } from "../popper/index.jsx";
+import { useHoverCardContext } from "./hover-card-context.jsx";
 
 export interface HoverCardContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */

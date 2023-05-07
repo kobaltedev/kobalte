@@ -1,8 +1,8 @@
 import { callHandler, EventKey, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useRadioGroupItemContext } from "./radio-group-item-context.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useRadioGroupItemContext } from "./radio-group-item-context.jsx";
 
 export interface RadioGroupItemControlProps extends OverrideComponentProps<"div", AsChildProp> {}
 

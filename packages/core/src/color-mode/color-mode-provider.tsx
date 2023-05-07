@@ -8,7 +8,7 @@
 
 import { createEffect, createSignal, onCleanup } from "solid-js";
 
-import { ColorModeContext } from "./color-mode-context.js";
+import { ColorModeContext } from "./color-mode-context.jsx";
 import { localStorageManager } from "./storage-manager.js";
 import {
   ColorMode,

@@ -1,8 +1,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic/index.js";
-import { useDialogContext } from "./dialog-context.js";
+import { AsChildProp, Polymorphic } from "../polymorphic/index.jsx";
+import { useDialogContext } from "./dialog-context.jsx";
 
 export interface DialogTitleProps extends OverrideComponentProps<"h2", AsChildProp> {}
 

@@ -10,7 +10,7 @@ import { DateFormatter } from "@internationalized/date";
 import { access, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createMemo } from "solid-js";
 
-import { useLocale } from "./i18n-provider.js";
+import { useLocale } from "./i18n-provider.jsx";
 
 export interface DateFormatterOptions extends Intl.DateTimeFormatOptions {
   calendar?: string;

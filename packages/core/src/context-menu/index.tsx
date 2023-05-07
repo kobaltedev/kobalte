@@ -35,31 +35,31 @@ import {
   MenuSubTrigger as SubTrigger,
   type MenuSubTriggerOptions as ContextMenuSubTriggerOptions,
   type MenuSubTriggerProps as ContextMenuSubTriggerProps,
-} from "../menu/index.js";
+} from "../menu/index.jsx";
 import {
   PopperArrow as Arrow,
   type PopperArrowOptions as ContextMenuArrowOptions,
   type PopperArrowProps as ContextMenuArrowProps,
-} from "../popper/index.js";
+} from "../popper/index.jsx";
 import {
   Root as Separator,
   type SeparatorRootOptions as ContextMenuSeparatorOptions,
   type SeparatorRootProps as ContextMenuSeparatorProps,
-} from "../separator/index.js";
+} from "../separator/index.jsx";
 import {
   ContextMenuContent as Content,
   type ContextMenuContentProps,
-} from "./context-menu-content.js";
+} from "./context-menu-content.jsx";
 import {
   ContextMenuRoot as Root,
   type ContextMenuRootOptions,
   type ContextMenuRootProps,
-} from "./context-menu-root.js";
+} from "./context-menu-root.jsx";
 import {
   ContextMenuTrigger as Trigger,
   type ContextMenuTriggerOptions,
   type ContextMenuTriggerProps,
-} from "./context-menu-trigger.js";
+} from "./context-menu-trigger.jsx";
 
 export type {
   ContextMenuArrowOptions,

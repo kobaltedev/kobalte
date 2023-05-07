@@ -25,10 +25,14 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { PopperRoot, PopperRootOptions } from "../popper/index.js";
+import { PopperRoot, PopperRootOptions } from "../popper/index.jsx";
 import { Placement } from "../popper/utils.js";
 import { createDisclosureState, createPresence } from "../primitives/index.js";
-import { HoverCardContext, HoverCardContextValue, HoverCardDataSet } from "./hover-card-context.js";
+import {
+  HoverCardContext,
+  HoverCardContextValue,
+  HoverCardDataSet,
+} from "./hover-card-context.jsx";
 import { getHoverCardSafeArea } from "./utils.js";
 
 export interface HoverCardRootOptions
