@@ -89,5 +89,5 @@
     "vite": "3.2.5",
     "vite-plugin-solid": "2.7.0"
   },
-  "packageManager": "pnpm@7.26.3"
+  "packageManager": "pnpm@8.2.0"
 }

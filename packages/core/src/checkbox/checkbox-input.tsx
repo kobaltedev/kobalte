@@ -89,11 +89,14 @@ export function CheckboxInput(props: CheckboxInputProps) {
   // Clicking on the input will change its internal `indeterminate` state.
   // To prevent this, we need to force the input `indeterminate` state to be in sync with our.
   createEffect(
-    on([() => ref, () => context.checked()], ([ref]) => {
-      if (ref) {
-        ref.indeterminate = context.indeterminate() || false;
+    on(
+      [() => ref, () => context.indeterminate(), () => context.checked()],
+      ([ref, indeterminate]) => {
+        if (ref) {
+          ref.indeterminate = !!indeterminate;
+        }
       }
-    })
+    )
   );
 
   return (
