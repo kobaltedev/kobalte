@@ -51,6 +51,38 @@ describe("Link", () => {
     expect(link).not.toHaveAttribute("tabindex", "0");
   });
 
+  it("should not have attribute 'data-disabled' by default", async () => {
+    render(() => <Link.Root data-testid="link">Link</Link.Root>);
+
+    const link = screen.getByTestId("link");
+
+    expect(link).not.toHaveAttribute("data-disabled");
+  });
+
+  it("should have attribute 'role=link' when disabled", () => {
+    render(() => (
+      <Link.Root data-testid="link" href="https://kobalte.dev" disabled>
+        Link
+      </Link.Root>
+    ));
+
+    const link = screen.getByTestId("link");
+
+    expect(link).toHaveAttribute("role", "link");
+  });
+
+  it("should not have attribute 'href' when disabled", () => {
+    render(() => (
+      <Link.Root data-testid="link" href="https://kobalte.dev" disabled>
+        Link
+      </Link.Root>
+    ));
+
+    const link = screen.getByTestId("link");
+
+    expect(link).not.toHaveAttribute("href");
+  });
+
   it("should not have attribute 'tabindex=0' when it's disabled", () => {
     render(() => (
       <Link.Root data-testid="link" disabled asChild>
@@ -73,14 +105,6 @@ describe("Link", () => {
     const link = screen.getByTestId("link");
 
     expect(link).toHaveAttribute("aria-disabled", "true");
-  });
-
-  it("should not have attribute 'data-disabled' by default", async () => {
-    render(() => <Link.Root data-testid="link">Link</Link.Root>);
-
-    const link = screen.getByTestId("link");
-
-    expect(link).not.toHaveAttribute("data-disabled");
   });
 
   it("should have attribute 'data-disabled' when disabled", () => {

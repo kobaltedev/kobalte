@@ -9,3 +9,11 @@ export function BasicExample() {
     </Link.Root>
   );
 }
+
+export function DisabledExample() {
+  return (
+    <Link.Root class={style["link"]} href="https://kobalte.dev" target="_blank" disabled>
+      Kobalte
+    </Link.Root>
+  );
+}

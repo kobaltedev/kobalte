@@ -7,7 +7,12 @@
  * https://github.com/adobe/react-spectrum/blob/0af91c08c745f4bb35b6ad4932ca17a0d85dd02c/packages/@react-spectrum/textfield/src/TextArea.tsx
  */
 
-import { composeEventHandlers, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import {
+  composeEventHandlers,
+  mergeDefaultProps,
+  mergeRefs,
+  OverrideComponentProps,
+} from "@kobalte/utils";
 import { createEffect, on, splitProps } from "solid-js";
 
 import { AsChildProp } from "../polymorphic";
@@ -17,7 +22,7 @@ import { TextFieldInputBase } from "./text-field-input";
 export interface TextFieldTextAreaOptions extends AsChildProp {
   /** Whether the textarea should adjust its height when the value changes. */
   autoResize?: boolean;
-  
+
   /** Whether the form should be submitted when the user presses the enter key. */
   submitOnEnter?: boolean;
 }
