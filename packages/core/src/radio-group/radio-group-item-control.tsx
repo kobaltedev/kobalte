@@ -1,24 +1,47 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { callHandler, EventKey, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { JSX, splitProps } from "solid-js";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useRadioGroupItemContext } from "./radio-group-item-context";
+
+export interface RadioGroupItemControlProps extends OverrideComponentProps<"div", AsChildProp> {}
 
 /**
  * The element that visually represents a radio button.
  */
-export const RadioGroupItemControl = createPolymorphicComponent<"div">(props => {
+export function RadioGroupItemControl(props: RadioGroupItemControlProps) {
   const context = useRadioGroupItemContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: context.generateId("control"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as"]);
+  const [local, others] = splitProps(props, ["onClick", "onKeyDown"]);
 
-  return <Dynamic component={local.as} {...context.dataset()} {...others} />;
-});
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    callHandler(e, local.onClick);
+
+    context.select();
+  };
+
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    callHandler(e, local.onKeyDown);
+
+    if (e.key === EventKey.Space) {
+      context.select();
+    }
+  };
+
+  return (
+    <Polymorphic
+      as="div"
+      onClick={onClick}
+      onKeyDown={onKeyDown}
+      {...context.dataset()}
+      {...others}
+    />
+  );
+}

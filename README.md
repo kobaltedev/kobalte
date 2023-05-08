@@ -1,8 +1,8 @@
 # kobalte
 
-[![license-badge]](https://github.com/fabien-ml/kobalte#license)
+[![license-badge]](https://github.com/kobaltedev/kobalte#license)
 
-[license-badge]: https://img.shields.io/github/license/fabien-ml/kobalte
+[license-badge]: https://img.shields.io/github/license/kobaltedev/kobalte
 
 A UI toolkit for building accessible web apps and design systems with SolidJS.
 

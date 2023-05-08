@@ -1,10 +1,10 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useListboxItemContext } from "./listbox-item-context";
 
-export interface ListboxItemIndicatorOptions {
+export interface ListboxItemIndicatorOptions extends AsChildProp {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -12,28 +12,28 @@ export interface ListboxItemIndicatorOptions {
   forceMount?: boolean;
 }
 
+export interface ListboxItemIndicatorProps
+  extends OverrideComponentProps<"div", ListboxItemIndicatorOptions> {}
+
 /**
  * The visual indicator rendered when the item is selected.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export const ListboxItemIndicator = createPolymorphicComponent<"div", ListboxItemIndicatorOptions>(
-  props => {
-    const context = useListboxItemContext();
+export function ListboxItemIndicator(props: ListboxItemIndicatorProps) {
+  const context = useListboxItemContext();
 
-    props = mergeDefaultProps(
-      {
-        as: "div",
-        id: context.generateId("indicator"),
-      },
-      props
-    );
+  props = mergeDefaultProps(
+    {
+      id: context.generateId("indicator"),
+    },
+    props
+  );
 
-    const [local, others] = splitProps(props, ["as", "forceMount"]);
+  const [local, others] = splitProps(props, ["forceMount"]);
 
-    return (
-      <Show when={local.forceMount || context.isSelected()}>
-        <Dynamic component={local.as} aria-hidden="true" {...context.dataset()} {...others} />
-      </Show>
-    );
-  }
-);
+  return (
+    <Show when={local.forceMount || context.isSelected()}>
+      <Polymorphic as="div" aria-hidden="true" {...context.dataset()} {...others} />
+    </Show>
+  );
+}

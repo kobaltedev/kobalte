@@ -1,10 +1,10 @@
 import { getWeeksInMonth } from "@internationalized/date";
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { Accessor, Index, JSX, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { OverrideComponentProps } from "@kobalte/utils";
+import { Accessor, createMemo, Index, JSX, splitProps } from "solid-js";
 
+import { Polymorphic } from "../polymorphic";
 import { useCalendarContext } from "./calendar-context";
-import { useCalendarMonthContext } from "./calendar-month-context";
+import { useCalendarGridContext } from "./calendar-grid-context";
 
 export interface CalendarGridBodyOptions {
   /**
@@ -14,31 +14,26 @@ export interface CalendarGridBodyOptions {
   children: (weekIndex: Accessor<number>) => JSX.Element;
 }
 
+export type CalendarGridBodyProps = OverrideComponentProps<"tbody", CalendarGridBodyOptions>;
+
 /**
- * Contains the day cells of a `Calendar.Grid`.
+ * A calendar grid body displays a grid of calendar cells within a month.
  */
-export const CalendarGridBody = createPolymorphicComponent<"tbody", CalendarGridBodyOptions>(
-  props => {
-    const calendarContext = useCalendarContext();
-    const monthContext = useCalendarMonthContext();
+export function CalendarGridBody(props: CalendarGridBodyProps) {
+  const rootContext = useCalendarContext();
+  const context = useCalendarGridContext();
 
-    props = mergeDefaultProps({ as: "tbody" }, props);
+  const [local, others] = splitProps(props, ["children"]);
 
-    const [local, others] = splitProps(props, ["as", "children"]);
+  const weekIndexes = createMemo(() => {
+    const weeksInMonth = getWeeksInMonth(context.startDate(), rootContext.locale());
 
-    const weekIndexes = () => {
-      const weeksInMonth = getWeeksInMonth(
-        monthContext.startDate(),
-        calendarContext.state().locale()
-      );
+    return [...new Array(weeksInMonth).keys()];
+  });
 
-      return [...new Array(weeksInMonth).keys()];
-    };
-
-    return (
-      <Dynamic component={local.as} {...others}>
-        <Index each={weekIndexes()}>{local.children}</Index>
-      </Dynamic>
-    );
-  }
-);
+  return (
+    <Polymorphic as="tbody" {...others}>
+      <Index each={weekIndexes()}>{local.children}</Index>
+    </Polymorphic>
+  );
+}

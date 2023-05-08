@@ -10,22 +10,22 @@ import {
   callHandler,
   composeEventHandlers,
   createGenerateId,
-  createPolymorphicComponent,
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
-import { CollectionItem, createRegisterId } from "../primitives";
+import { AsChildProp, Polymorphic } from "../polymorphic";
+import { CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { MenuItemContext, MenuItemContextValue, MenuItemDataSet } from "./menu-item.context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuItemBaseOptions {
+export interface MenuItemBaseOptions extends AsChildProp {
   /**
    * Optional text used for typeahead purposes.
    * By default, the typeahead behavior will use the .textContent of the Menu.ItemLabel part
@@ -35,17 +35,17 @@ export interface MenuItemBaseOptions {
   textValue?: string;
 
   /** Whether the menu item is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /** Whether the menu item is checked (item radio or item checkbox). */
-  isChecked?: boolean;
+  checked?: boolean;
 
   /**
    * When using menu item checkbox, whether the checked state is in an indeterminate mode.
    * Indeterminism is presentational only.
    * The indeterminate visual representation remains regardless of user interaction.
    */
-  isIndeterminate?: boolean;
+  indeterminate?: boolean;
 
   /** Whether the menu should close when the menu item is activated/selected. */
   closeOnSelect?: boolean;
@@ -54,10 +54,12 @@ export interface MenuItemBaseOptions {
   onSelect?: () => void;
 }
 
+export interface MenuItemBaseProps extends OverrideComponentProps<"div", MenuItemBaseOptions> {}
+
 /**
  * Base component for a menu item.
  */
-export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOptions>(props => {
+export function MenuItemBase(props: MenuItemBaseProps) {
   let ref: HTMLDivElement | undefined;
 
   const rootContext = useMenuRootContext();
@@ -65,20 +67,18 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: rootContext.generateId(`item-${createUniqueId()}`),
     },
     props
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "textValue",
-    "isDisabled",
+    "disabled",
     "closeOnSelect",
-    "isChecked",
-    "isIndeterminate",
+    "checked",
+    "indeterminate",
     "onSelect",
     "onPointerMove",
     "onPointerLeave",
@@ -104,17 +104,17 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
     local.onSelect?.();
 
     if (local.closeOnSelect) {
-      rootContext.close();
+      menuContext.close(true);
     }
   };
 
-  createDomCollectionItem<CollectionItem>({
+  createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
       ref: () => ref,
+      type: "item",
       key: key(),
-      label: "", // not applicable here
       textValue: local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
-      isDisabled: local.isDisabled ?? false,
+      disabled: local.disabled ?? false,
     }),
   });
 
@@ -124,7 +124,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
       selectionManager: selectionManager,
       shouldSelectOnPressUp: true,
       allowsDifferentPressOrigin: true,
-      isDisabled: () => local.isDisabled,
+      disabled: () => local.disabled,
     },
     () => ref
   );
@@ -147,7 +147,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
       return;
     }
 
-    if (local.isDisabled) {
+    if (local.disabled) {
       menuContext.onItemLeave(e);
     } else {
       menuContext.onItemEnter(e);
@@ -173,11 +173,10 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
   const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
     callHandler(e, local.onPointerUp);
 
-    if (local.isDisabled) {
-      return;
+    // Selection occurs on pointer up (main button).
+    if (!local.disabled && e.button === 0) {
+      onSelect();
     }
-
-    onSelect();
   };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
@@ -189,7 +188,7 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
       return;
     }
 
-    if (local.isDisabled) {
+    if (local.disabled) {
       return;
     }
 
@@ -202,26 +201,26 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
   };
 
   const ariaChecked = createMemo(() => {
-    if (local.isIndeterminate) {
+    if (local.indeterminate) {
       return "mixed";
     }
 
-    if (local.isChecked == null) {
+    if (local.checked == null) {
       return undefined;
     }
 
-    return local.isChecked;
+    return local.checked;
   });
 
   const dataset: Accessor<MenuItemDataSet> = createMemo(() => ({
-    "data-indeterminate": local.isIndeterminate ? "" : undefined,
-    "data-checked": local.isChecked && !local.isIndeterminate ? "" : undefined,
-    "data-disabled": local.isDisabled ? "" : undefined,
+    "data-indeterminate": local.indeterminate ? "" : undefined,
+    "data-checked": local.checked && !local.indeterminate ? "" : undefined,
+    "data-disabled": local.disabled ? "" : undefined,
     "data-highlighted": isHighlighted() ? "" : undefined,
   }));
 
   const context: MenuItemContextValue = {
-    isChecked: () => local.isChecked,
+    isChecked: () => local.checked,
     dataset,
     setLabelRef,
     generateId: createGenerateId(() => others.id!),
@@ -231,12 +230,12 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
 
   return (
     <MenuItemContext.Provider value={context}>
-      <Dynamic
-        component={local.as!}
+      <Polymorphic
+        as="div"
         ref={mergeRefs(el => (ref = el), local.ref)}
         tabIndex={selectableItem.tabIndex()}
         aria-checked={ariaChecked()}
-        aria-disabled={local.isDisabled}
+        aria-disabled={local.disabled}
         aria-labelledby={labelId()}
         aria-describedby={descriptionId()}
         data-key={selectableItem.dataKey()}
@@ -253,4 +252,4 @@ export const MenuItemBase = createPolymorphicComponent<"div", MenuItemBaseOption
       />
     </MenuItemContext.Provider>
   );
-});
+}

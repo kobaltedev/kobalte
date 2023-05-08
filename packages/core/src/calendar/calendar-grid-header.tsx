@@ -3,22 +3,19 @@
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *
  * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/bb9f65fc853474065a9de9ed6f5f471c16689237/packages/@react-aria/calendar/src/useCalendarGrid.ts
+ * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/@react-aria/calendar/src/useCalendarGrid.ts
+ * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/react-aria-components/src/Calendar.tsx
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { ComponentProps } from "solid-js";
+
+import { Polymorphic } from "../polymorphic";
+
+export type CalendarGridHeaderProps = ComponentProps<"thead">;
 
 /**
- * The header of a `Calendar.Grid`.
+ * A calendar grid header displays a row of week day names at the top of a month.
  */
-export const CalendarGridHeader = createPolymorphicComponent<"thead">(props => {
-  props = mergeDefaultProps({ as: "thead" }, props);
-
-  const [local, others] = splitProps(props, ["as"]);
-
-  // Column headers are hidden to screen readers to make navigating with a touch screen reader easier.
-  // The day names are already included in the label of each cell, so there's no need to announce them twice.
-  return <Dynamic component={local.as} aria-hidden="true" {...others} />;
-});
+export function CalendarGridHeader(props: CalendarGridHeaderProps) {
+  return <Polymorphic as="thead" aria-hidden="true" {...props} />;
+}

@@ -1,74 +1,96 @@
-import { createPolymorphicComponent, isFunction, mergeDefaultProps } from "@kobalte/utils";
+import { isFunction, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, children, createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { useFormControlContext } from "../form-control";
 import { useSelectContext } from "./select-context";
 
-interface SelectValueState {
-  /** The selected value of the select. */
-  selectedValue: Accessor<string>;
+export interface SelectValueState<T> {
+  /** The first (or only, in case of single select) selected option. */
+  selectedOption: Accessor<T>;
+
+  /** An array of selected options. It will contain only one value in case of single select. */
+  selectedOptions: Accessor<T[]>;
+
+  /** A function to remove an option from the selection. */
+  remove: (option: T) => void;
+
+  /** A function to clear the selection. */
+  clear: () => void;
 }
 
-export interface SelectValueOptions {
-  /** The content that will be rendered when no value or defaultValue is set. */
-  placeholder?: JSX.Element;
-
-  /** The content that will be rendered when a value is set. */
-  children?: ((state: SelectValueState) => JSX.Element) | JSX.Element;
+export interface SelectValueOptions<T> {
+  /**
+   * The children of the select value.
+   * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
+   */
+  children?: JSX.Element | ((state: SelectValueState<T>) => JSX.Element);
 }
+
+export interface SelectValueProps<T>
+  extends OverrideComponentProps<"span", SelectValueOptions<T>> {}
 
 /**
- * The part that reflects the selected value. By default, the selected item's text will be rendered.
- * If you require more control, you can instead control the select and pass your own children.
- * An optional placeholder prop is also available for when the select has no value.
+ * The part that reflects the selected value(s).
  */
-export const SelectValue = createPolymorphicComponent<"span", SelectValueOptions>(props => {
+export function SelectValue<T>(props: SelectValueProps<T>) {
   const formControlContext = useFormControlContext();
   const context = useSelectContext();
 
-  props = mergeDefaultProps({ as: "span", id: context.generateId("value") }, props);
+  props = mergeDefaultProps(
+    {
+      id: context.generateId("value"),
+    },
+    props
+  );
 
-  const [local, others] = splitProps(props, ["as", "id", "children", "placeholder"]);
+  const [local, others] = splitProps(props, ["id", "children"]);
 
   const selectionManager = () => context.listState().selectionManager();
-  const isSelectionEmpty = () => selectionManager().isEmpty();
 
-  const valueLabels = () => {
-    return [...selectionManager().selectedKeys()]
-      .map(key => context.listState().collection().getItem(key)?.label ?? key)
-      .join(", ");
+  const isSelectionEmpty = () => {
+    const selectedKeys = selectionManager().selectedKeys();
+
+    // Some form libraries uses an empty string as default value, often taken from an empty `<option />`.
+    // Ignore since it is not a valid key.
+    if (selectedKeys.size === 1 && selectedKeys.has("")) {
+      return true;
+    }
+
+    return selectionManager().isEmpty();
   };
 
   createEffect(() => onCleanup(context.registerValueId(local.id!)));
-
   return (
-    <Dynamic
-      component={local.as}
+    <span
       id={local.id}
       data-placeholder-shown={isSelectionEmpty() ? "" : undefined}
       {...formControlContext.dataset()}
       {...others}
     >
-      <Show when={!isSelectionEmpty()} fallback={local.placeholder}>
-        <Show when={local.children} fallback={valueLabels()}>
-          <SelectValueChild
-            state={{ selectedValue: () => selectionManager().selectedKeys().values().next().value }}
-            children={local.children}
-          />
-        </Show>
+      <Show when={!isSelectionEmpty()} fallback={context.placeholder()}>
+        <SelectValueChild
+          state={{
+            selectedOption: () => context.selectedOptions()[0],
+            selectedOptions: () => context.selectedOptions(),
+            remove: option => context.removeOptionFromSelection(option),
+            clear: () => selectionManager().clearSelection(),
+          }}
+          children={local.children}
+        />
       </Show>
-    </Dynamic>
+    </span>
   );
-});
-
-interface SelectValueChildProps extends Pick<SelectValueOptions, "children"> {
-  state: SelectValueState;
 }
 
-function SelectValueChild(props: SelectValueChildProps) {
-  return children(() => {
+interface SelectValueChildProps<T> extends Pick<SelectValueOptions<T>, "children"> {
+  state: SelectValueState<T>;
+}
+
+function SelectValueChild<T>(props: SelectValueChildProps<T>) {
+  const resolvedChildren = children(() => {
     const body = props.children;
     return isFunction(body) ? body(props.state) : body;
   });
+
+  return <>{resolvedChildren()}</>;
 }

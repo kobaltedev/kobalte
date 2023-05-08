@@ -8,48 +8,50 @@
 
 import {
   composeEventHandlers,
-  createPolymorphicComponent,
+  focusWithoutScrolling,
+  isWebKit,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, on, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { createEffect, JSX, on, splitProps } from "solid-js";
 
-import { CollectionItem } from "../primitives";
+import { AsChildProp, Polymorphic } from "../polymorphic";
+import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsTriggerOptions {
+export interface TabsTriggerOptions extends AsChildProp {
   /** The unique key that associates the tab with a tab panel. */
   value: string;
 
   /** Whether the tab should be disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
+
+export interface TabsTriggerProps extends OverrideComponentProps<"button", TabsTriggerOptions> {}
 
 /**
  * The button that activates its associated tab panel.
  */
-export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptions>(props => {
+export function TabsTrigger(props: TabsTriggerProps) {
   let ref: HTMLButtonElement | undefined;
 
   const context = useTabsContext();
 
   props = mergeDefaultProps(
     {
-      as: "button",
       type: "button",
     },
     props
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "id",
     "value",
-    "isDisabled",
+    "disabled",
     "onPointerDown",
     "onPointerUp",
     "onClick",
@@ -62,17 +64,17 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
 
   const isHighlighted = () => context.listState().selectionManager().focusedKey() === local.value;
 
-  const isDisabled = () => local.isDisabled || context.isDisabled();
+  const isDisabled = () => local.disabled || context.isDisabled();
 
   const contentId = () => context.contentIdsMap().get(local.value);
 
-  createDomCollectionItem<CollectionItem>({
+  createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
       ref: () => ref,
+      type: "item",
       key: local.value,
-      label: "", // not applicable here
       textValue: "", // not applicable here
-      isDisabled: isDisabled(),
+      disabled: isDisabled(),
     }),
   });
 
@@ -80,10 +82,17 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
     {
       key: () => local.value,
       selectionManager: () => context.listState().selectionManager(),
-      isDisabled,
+      disabled: isDisabled,
     },
     () => ref
   );
+
+  const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
+    // Force focusing the trigger on click on safari.
+    if (isWebKit()) {
+      focusWithoutScrolling(e.currentTarget);
+    }
+  };
 
   createEffect(
     on([() => local.value, id], ([value, id]) => {
@@ -92,8 +101,8 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
   );
 
   return (
-    <Dynamic
-      component={local.as}
+    <Polymorphic
+      as="button"
       ref={mergeRefs(el => (ref = el), local.ref)}
       id={id()}
       role="tab"
@@ -109,11 +118,11 @@ export const TabsTrigger = createPolymorphicComponent<"button", TabsTriggerOptio
       data-disabled={isDisabled() ? "" : undefined}
       onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
       onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}
-      onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
+      onClick={composeEventHandlers([local.onClick, selectableItem.onClick, onClick])}
       onKeyDown={composeEventHandlers([local.onKeyDown, selectableItem.onKeyDown])}
       onMouseDown={composeEventHandlers([local.onMouseDown, selectableItem.onMouseDown])}
       onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
       {...others}
     />
   );
-});
+}

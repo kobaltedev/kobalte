@@ -21,7 +21,7 @@ import { createListState } from "../list";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
 import {
-  CollectionItem,
+  CollectionItemWithRef,
   createDisclosureState,
   createHideOutside,
   createPresence,
@@ -39,22 +39,24 @@ import { GraceIntent, isPointerInGraceArea, Side } from "./utils";
 export interface MenuOptions
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the menu. */
-  isOpen?: boolean;
+  open?: boolean;
 
   /**
    * The default open state when initially rendered.
    * Useful when you do not need to control the open state.
    */
-  defaultIsOpen?: boolean;
+  defaultOpen?: boolean;
 
   /** Event handler called when the open state of the menu changes. */
   onOpenChange?: (isOpen: boolean) => void;
 }
 
+export interface MenuProps extends ParentProps<MenuOptions> {}
+
 /**
  * Container for menu items and nested menu, provide context for its children.
  */
-export function Menu(props: ParentProps<MenuOptions>) {
+export function Menu(props: MenuProps) {
   const rootContext = useMenuRootContext();
   const parentDomCollectionContext = useOptionalDomCollectionContext();
   const parentMenuContext = useOptionalMenuContext();
@@ -66,7 +68,7 @@ export function Menu(props: ParentProps<MenuOptions>) {
     props
   );
 
-  const [local, others] = splitProps(props, ["isOpen", "defaultIsOpen", "onOpenChange"]);
+  const [local, others] = splitProps(props, ["open", "defaultOpen", "onOpenChange"]);
 
   let pointerGraceTimeoutId = 0;
   let pointerGraceIntent: GraceIntent | null = null;
@@ -82,13 +84,13 @@ export function Menu(props: ParentProps<MenuOptions>) {
   const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(others.placement!);
   const [nestedMenus, setNestedMenus] = createSignal<Element[]>([]);
 
-  const [items, setItems] = createSignal<CollectionItem[]>([]);
+  const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 
   const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
 
   const disclosureState = createDisclosureState({
-    isOpen: () => local.isOpen,
-    defaultIsOpen: () => local.defaultIsOpen,
+    open: () => local.open,
+    defaultOpen: () => local.defaultOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
@@ -106,8 +108,12 @@ export function Menu(props: ParentProps<MenuOptions>) {
     disclosureState.open();
   };
 
-  const close = () => {
+  const close = (recursively = false) => {
     disclosureState.close();
+
+    if (recursively && parentMenuContext) {
+      parentMenuContext.close(true);
+    }
   };
 
   const toggle = (focusStrategy: FocusStrategy | boolean) => {
@@ -186,6 +192,7 @@ export function Menu(props: ParentProps<MenuOptions>) {
 
   const dataset: Accessor<MenuDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
+    "data-closed": !disclosureState.isOpen() ? "" : undefined,
   }));
 
   const context: MenuContextValue = {

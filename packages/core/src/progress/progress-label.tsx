@@ -1,26 +1,27 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useProgressContext } from "./progress-context";
+
+export interface ProgressLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
 
 /**
  * An accessible label that gives the user information on the progress.
  */
-export const ProgressLabel = createPolymorphicComponent<"span">(props => {
+export function ProgressLabel(props: ProgressLabelProps) {
   const context = useProgressContext();
 
   props = mergeDefaultProps(
     {
-      as: "span",
       id: context.generateId("label"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "id"]);
+  const [local, others] = splitProps(props, ["id"]);
 
   createEffect(() => onCleanup(context.registerLabelId(local.id!)));
 
-  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
-});
+  return <Polymorphic as="span" id={local.id} {...context.dataset()} {...others} />;
+}

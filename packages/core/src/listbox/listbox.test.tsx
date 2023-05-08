@@ -6,9 +6,16 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-spectrum/listbox/test/Listbox.test.js
  */
 
-import { fireEvent, render, screen } from "solid-testing-library";
+import { createPointerEvent } from "@kobalte/tests";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import * as Listbox from ".";
+
+const DATA_SOURCE = [
+  { key: "1", label: "One", textValue: "One", disabled: false },
+  { key: "2", label: "Two", textValue: "Two", disabled: false },
+  { key: "3", label: "Three", textValue: "Three", disabled: false },
+];
 
 describe("Listbox", () => {
   beforeEach(() => {
@@ -28,11 +35,11 @@ describe("Listbox", () => {
 
   it("renders properly", () => {
     render(() => (
-      <Listbox.Root selectionMode="single">
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox.Root>
+      <Listbox.Root
+        options={DATA_SOURCE}
+        selectionMode="single"
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -52,11 +59,10 @@ describe("Listbox", () => {
 
   it("allows user to change option focus via up/down arrow keys", async () => {
     render(() => (
-      <Listbox.Root>
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox.Root>
+      <Listbox.Root
+        options={DATA_SOURCE}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -80,11 +86,11 @@ describe("Listbox", () => {
 
   it("wraps focus from first to last/last to first option if up/down arrow is pressed if shouldFocusWrap is true", async () => {
     render(() => (
-      <Listbox.Root shouldFocusWrap>
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox.Root>
+      <Listbox.Root
+        options={DATA_SOURCE}
+        shouldFocusWrap
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -106,16 +112,118 @@ describe("Listbox", () => {
     expect(document.activeElement).toBe(options[0]);
   });
 
+  describe("option mapping", () => {
+    const CUSTOM_DATA_SOURCE = [
+      {
+        name: "Section 1",
+        items: [
+          { id: "1", name: "One", valueText: "One", disabled: false },
+          { id: "2", name: "Two", valueText: "Two", disabled: true },
+          { id: "3", name: "Three", valueText: "Three", disabled: false },
+        ],
+      },
+    ];
+
+    it("supports string based option mapping for object options", async () => {
+      render(() => (
+        <Listbox.Root<any, any>
+          options={CUSTOM_DATA_SOURCE}
+          optionValue="id"
+          optionTextValue="valueText"
+          optionDisabled="disabled"
+          optionGroupChildren="items"
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.name}</Listbox.Item>}
+          renderSection={section => <Listbox.Section>{section.rawValue.name}</Listbox.Section>}
+        />
+      ));
+
+      const items = screen.getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[0]).toHaveAttribute("data-key", "1");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[1]).toHaveAttribute("data-key", "2");
+      expect(items[1]).toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("Three");
+      expect(items[2]).toHaveAttribute("data-key", "3");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+    });
+
+    it("supports function based option mapping for object options", async () => {
+      render(() => (
+        <Listbox.Root<any, any>
+          options={CUSTOM_DATA_SOURCE}
+          optionValue={option => option.id}
+          optionTextValue={option => option.valueText}
+          optionDisabled={option => option.disabled}
+          optionGroupChildren={optGroup => optGroup.items}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.name}</Listbox.Item>}
+          renderSection={section => <Listbox.Section>{section.rawValue.name}</Listbox.Section>}
+        />
+      ));
+
+      const items = screen.getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[0]).toHaveAttribute("data-key", "1");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[1]).toHaveAttribute("data-key", "2");
+      expect(items[1]).toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("Three");
+      expect(items[2]).toHaveAttribute("data-key", "3");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+    });
+
+    it("supports function based option mapping for string options", async () => {
+      render(() => (
+        <Listbox.Root
+          options={["One", "Two", "Three"]}
+          optionValue={option => option}
+          optionTextValue={option => option}
+          optionDisabled={option => option === "Two"}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue}</Listbox.Item>}
+        />
+      ));
+
+      const items = screen.getAllByRole("option");
+
+      expect(items.length).toBe(3);
+
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[0]).toHaveAttribute("data-key", "One");
+      expect(items[0]).not.toHaveAttribute("data-disabled");
+
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[1]).toHaveAttribute("data-key", "Two");
+      expect(items[1]).toHaveAttribute("data-disabled");
+
+      expect(items[2]).toHaveTextContent("Three");
+      expect(items[2]).toHaveAttribute("data-key", "Three");
+      expect(items[2]).not.toHaveAttribute("data-disabled");
+    });
+  });
+
   describe("supports single selection", () => {
     it("supports defaultValue (uncontrolled)", async () => {
       const defaultValue = new Set(["2"]);
 
       render(() => (
-        <Listbox.Root selectionMode="single" defaultValue={defaultValue}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox.Root>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          selectionMode="single"
+          defaultValue={defaultValue}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -135,11 +243,13 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox.Root selectionMode="single" value={value} onValueChange={onValueChangeSpy}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox.Root>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          selectionMode="single"
+          value={value}
+          onChange={onValueChangeSpy}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -171,11 +281,12 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox.Root selectionMode="single" onValueChange={onValueChangeSpy}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox.Root>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          selectionMode="single"
+          onChange={onValueChangeSpy}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -196,15 +307,16 @@ describe("Listbox", () => {
       expect(onValueChangeSpy.mock.calls[0][0].has("3")).toBeTruthy();
     });
 
-    it("supports using click to change option selection", async () => {
+    it("supports using pointer up to change option selection", async () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox.Root selectionMode="single" onValueChange={onValueChangeSpy}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox.Root>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          selectionMode="single"
+          onChange={onValueChangeSpy}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -215,8 +327,16 @@ describe("Listbox", () => {
 
       const nextSelectedItem = options[2];
 
-      // Select an option via click
-      fireEvent.click(nextSelectedItem);
+      fireEvent(
+        nextSelectedItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        nextSelectedItem,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       expect(nextSelectedItem).toHaveAttribute("aria-selected", "true");
@@ -228,14 +348,19 @@ describe("Listbox", () => {
     it("supports disabled options", async () => {
       const onValueChangeSpy = jest.fn();
 
+      const dataSource = [
+        { key: "1", label: "One", textValue: "One", disabled: false },
+        { key: "2", label: "Two", textValue: "Two", disabled: true },
+        { key: "3", label: "Three", textValue: "Three", disabled: false },
+      ];
+
       render(() => (
-        <Listbox.Root selectionMode="single" onValueChange={onValueChangeSpy}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2" isDisabled>
-            Two
-          </Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox.Root>
+        <Listbox.Root
+          options={dataSource}
+          selectionMode="single"
+          onChange={onValueChangeSpy}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -246,7 +371,16 @@ describe("Listbox", () => {
       expect(disabledItem).toHaveAttribute("aria-disabled", "true");
 
       // Try select the disabled option
-      fireEvent.click(disabledItem);
+      fireEvent(
+        disabledItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        disabledItem,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       // Verify onValueChange is not called
@@ -270,11 +404,12 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       render(() => (
-        <Listbox.Root selectionMode="multiple" onValueChange={onValueChangeSpy}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox.Root>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          selectionMode="multiple"
+          onChange={onValueChangeSpy}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const listbox = screen.getByRole("listbox");
@@ -282,10 +417,28 @@ describe("Listbox", () => {
 
       expect(listbox).toHaveAttribute("aria-multiselectable", "true");
 
-      fireEvent.click(options[0]);
+      fireEvent(
+        options[0],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
-      fireEvent.click(options[2]);
+      fireEvent(
+        options[0],
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        options[2],
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        options[2],
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       expect(options[0]).toHaveAttribute("aria-selected", "true");
@@ -303,14 +456,12 @@ describe("Listbox", () => {
 
       render(() => (
         <Listbox.Root
+          options={DATA_SOURCE}
           selectionMode="multiple"
           defaultValue={defaultValue}
-          onValueChange={onValueChangeSpy}
-        >
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox.Root>
+          onChange={onValueChangeSpy}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const options = screen.getAllByRole("option");
@@ -323,7 +474,13 @@ describe("Listbox", () => {
       expect(secondItem).toHaveAttribute("aria-selected", "true");
 
       // Select a different option
-      fireEvent.click(thirdItem);
+      fireEvent(
+        thirdItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(thirdItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(thirdItem).toHaveAttribute("aria-selected", "true");
@@ -340,11 +497,13 @@ describe("Listbox", () => {
       const value = new Set(["1", "2"]);
 
       render(() => (
-        <Listbox.Root selectionMode="multiple" value={value} onValueChange={onValueChangeSpy}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox.Root>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          selectionMode="multiple"
+          value={value}
+          onChange={onValueChangeSpy}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const options = screen.getAllByRole("option");
@@ -357,7 +516,13 @@ describe("Listbox", () => {
       expect(secondItem).toHaveAttribute("aria-selected", "true");
 
       // Select a different option
-      fireEvent.click(thirdItem);
+      fireEvent(
+        thirdItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(thirdItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(thirdItem).toHaveAttribute("aria-selected", "false");
@@ -373,14 +538,12 @@ describe("Listbox", () => {
 
       render(() => (
         <Listbox.Root
+          options={DATA_SOURCE}
           selectionMode="multiple"
           defaultValue={defaultValue}
-          onValueChange={onValueChangeSpy}
-        >
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox.Root>
+          onChange={onValueChangeSpy}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const options = screen.getAllByRole("option");
@@ -392,7 +555,13 @@ describe("Listbox", () => {
       expect(secondItem).toHaveAttribute("aria-selected", "true");
 
       // Deselect first option
-      fireEvent.click(firstItem);
+      fireEvent(
+        firstItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(firstItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
       await Promise.resolve();
 
       expect(firstItem).toHaveAttribute("aria-selected", "false");
@@ -406,18 +575,20 @@ describe("Listbox", () => {
 
       const defaultValue = new Set(["1", "2"]);
 
+      const dataSource = [
+        { key: "1", label: "One", textValue: "One", disabled: false },
+        { key: "2", label: "Two", textValue: "Two", disabled: false },
+        { key: "3", label: "Three", textValue: "Three", disabled: true },
+      ];
+
       render(() => (
         <Listbox.Root
+          options={dataSource}
           selectionMode="multiple"
           defaultValue={defaultValue}
-          onValueChange={onValueChangeSpy}
-        >
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">Two</Listbox.Item>
-          <Listbox.Item value="3" isDisabled>
-            Three
-          </Listbox.Item>
-        </Listbox.Root>
+          onChange={onValueChangeSpy}
+          renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+        />
       ));
 
       const options = screen.getAllByRole("option");
@@ -428,7 +599,16 @@ describe("Listbox", () => {
 
       expect(disabledItem).toHaveAttribute("aria-disabled", "true");
 
-      fireEvent.click(disabledItem);
+      fireEvent(
+        disabledItem,
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      );
+      await Promise.resolve();
+
+      fireEvent(
+        disabledItem,
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+      );
       await Promise.resolve();
 
       expect(onValueChangeSpy).not.toHaveBeenCalled();
@@ -445,15 +625,13 @@ describe("Listbox", () => {
 
     render(() => (
       <Listbox.Root
+        options={DATA_SOURCE}
         selectionMode="single"
         defaultValue={defaultValue}
-        onValueChange={onValueChangeSpy}
+        onChange={onValueChangeSpy}
         disallowEmptySelection={false}
-      >
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox.Root>
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const options = screen.getAllByRole("option");
@@ -463,7 +641,13 @@ describe("Listbox", () => {
     expect(secondItem).toHaveAttribute("aria-selected", "true");
 
     // Deselect second option
-    fireEvent.click(secondItem);
+    fireEvent(
+      secondItem,
+      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+    );
+    await Promise.resolve();
+
+    fireEvent(secondItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
     await Promise.resolve();
 
     expect(secondItem).toHaveAttribute("aria-selected", "false");
@@ -474,11 +658,10 @@ describe("Listbox", () => {
 
   it("supports type to select", async () => {
     render(() => (
-      <Listbox.Root>
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox.Root>
+      <Listbox.Root
+        options={DATA_SOURCE}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -504,11 +687,10 @@ describe("Listbox", () => {
 
   it("resets the search text after a timeout", async () => {
     render(() => (
-      <Listbox.Root>
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox.Root>
+      <Listbox.Root
+        options={DATA_SOURCE}
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -531,12 +713,17 @@ describe("Listbox", () => {
   });
 
   it("supports aria-label on options", () => {
+    const dataSource = [{ key: "1", label: "One", textValue: "One", disabled: false }];
+
     render(() => (
-      <Listbox.Root>
-        <Listbox.Item value="option" aria-label="Item">
-          Item
-        </Listbox.Item>
-      </Listbox.Root>
+      <Listbox.Root
+        options={dataSource}
+        renderItem={item => (
+          <Listbox.Item item={item} aria-label="Item">
+            {item.rawValue.label}
+          </Listbox.Item>
+        )}
+      />
     ));
 
     jest.runAllTimers();
@@ -549,13 +736,26 @@ describe("Listbox", () => {
   });
 
   it("supports complex options with aria-labelledby and aria-describedby", async () => {
+    const dataSource = [
+      {
+        key: "1",
+        label: "Label",
+        description: "Description",
+        textValue: "One",
+        disabled: false,
+      },
+    ];
+
     render(() => (
-      <Listbox.Root>
-        <Listbox.Item value="option">
-          <Listbox.ItemLabel>Label</Listbox.ItemLabel>
-          <Listbox.ItemDescription>Description</Listbox.ItemDescription>
-        </Listbox.Item>
-      </Listbox.Root>
+      <Listbox.Root
+        options={dataSource}
+        renderItem={item => (
+          <Listbox.Item item={item}>
+            <Listbox.ItemLabel>{item.rawValue.label}</Listbox.ItemLabel>
+            <Listbox.ItemDescription>{item.rawValue.description}</Listbox.ItemDescription>
+          </Listbox.Item>
+        )}
+      />
     ));
 
     jest.runAllTimers();
@@ -570,11 +770,11 @@ describe("Listbox", () => {
 
   it("supports aria-label", () => {
     render(() => (
-      <Listbox.Root aria-label="Test">
-        <Listbox.Item value="1">One</Listbox.Item>
-        <Listbox.Item value="2">Two</Listbox.Item>
-        <Listbox.Item value="3">Three</Listbox.Item>
-      </Listbox.Root>
+      <Listbox.Root
+        options={DATA_SOURCE}
+        aria-label="Test"
+        renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
+      />
     ));
 
     const listbox = screen.getByRole("listbox");
@@ -585,14 +785,15 @@ describe("Listbox", () => {
   describe("item indicator", () => {
     it("should not display item indicator by default", async () => {
       render(() => (
-        <Listbox.Root>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">
-            <Listbox.ItemLabel>Two</Listbox.ItemLabel>
-            <Listbox.ItemIndicator data-testid="indicator" />
-          </Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox.Root>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          renderItem={item => (
+            <Listbox.Item item={item}>
+              <Listbox.ItemLabel>{item.rawValue.label}</Listbox.ItemLabel>
+              <Listbox.ItemIndicator data-testid="indicator" />
+            </Listbox.Item>
+          )}
+        />
       ));
 
       expect(screen.queryByTestId("indicator")).toBeNull();
@@ -600,14 +801,16 @@ describe("Listbox", () => {
 
     it("should display item indicator when 'selected'", async () => {
       render(() => (
-        <Listbox.Root value={["2"]}>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">
-            <Listbox.ItemLabel>Two</Listbox.ItemLabel>
-            <Listbox.ItemIndicator data-testid="indicator" />
-          </Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox.Root>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          value={["2"]}
+          renderItem={item => (
+            <Listbox.Item item={item}>
+              <Listbox.ItemLabel>{item.rawValue.label}</Listbox.ItemLabel>
+              <Listbox.ItemIndicator data-testid="indicator" />
+            </Listbox.Item>
+          )}
+        />
       ));
 
       expect(screen.getByTestId("indicator")).toBeInTheDocument();
@@ -615,17 +818,20 @@ describe("Listbox", () => {
 
     it("should display item indicator when 'forceMount'", async () => {
       render(() => (
-        <Listbox.Root>
-          <Listbox.Item value="1">One</Listbox.Item>
-          <Listbox.Item value="2">
-            <Listbox.ItemLabel>Two</Listbox.ItemLabel>
-            <Listbox.ItemIndicator data-testid="indicator" forceMount />
-          </Listbox.Item>
-          <Listbox.Item value="3">Three</Listbox.Item>
-        </Listbox.Root>
+        <Listbox.Root
+          options={DATA_SOURCE}
+          renderItem={item => (
+            <Listbox.Item item={item}>
+              <Listbox.ItemLabel>{item.rawValue.label}</Listbox.ItemLabel>
+              <Listbox.ItemIndicator data-testid="indicator" forceMount />
+            </Listbox.Item>
+          )}
+        />
       ));
 
-      expect(screen.getByTestId("indicator")).toBeInTheDocument();
+      screen.getAllByTestId("indicator").forEach(indicator => {
+        expect(indicator).toBeInTheDocument();
+      });
     });
   });
 });

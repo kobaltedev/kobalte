@@ -55,6 +55,9 @@ export interface CreateSelectableListProps {
 
   /** Whether the option is contained in a virtual scroller. */
   isVirtualized?: MaybeAccessor<boolean | undefined>;
+
+  /** When virtualized, the Virtualizer function used to scroll to the item of the key provided. */
+  scrollToKey?: MaybeAccessor<((key: string) => void) | undefined>;
 }
 
 /**
@@ -71,7 +74,6 @@ export function createSelectableList<T extends HTMLElement, U extends HTMLElemen
   const collator = createCollator({ usage: "search", sensitivity: "base" });
 
   // By default, a KeyboardDelegate is provided which uses the DOM to query layout information (e.g. for page up/page down).
-  // When virtualized, the layout object will be passed in as a prop and override this.
   const delegate = createMemo(() => {
     const keyboardDelegate = access(props.keyboardDelegate);
 
@@ -95,6 +97,7 @@ export function createSelectableList<T extends HTMLElement, U extends HTMLElemen
       shouldUseVirtualFocus: () => access(props.shouldUseVirtualFocus),
       allowsTabNavigation: () => access(props.allowsTabNavigation),
       isVirtualized: () => access(props.isVirtualized),
+      scrollToKey: key => access(props.scrollToKey)?.(key),
     },
     ref,
     scrollRef

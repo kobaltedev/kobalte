@@ -1,18 +1,18 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, ParentComponent } from "solid-js";
+import { createSignal, createUniqueId, ParentProps } from "solid-js";
 
 import { createDisclosureState, createPresence, createRegisterId } from "../primitives";
 import { DialogContext, DialogContextValue } from "./dialog-context";
 
 export interface DialogRootOptions {
   /** The controlled open state of the dialog. */
-  isOpen?: boolean;
+  open?: boolean;
 
   /**
    * The default open state when initially rendered.
    * Useful when you do not need to control the open state.
    */
-  defaultIsOpen?: boolean;
+  defaultOpen?: boolean;
 
   /** Event handler called when the open state of the dialog changes. */
   onOpenChange?: (isOpen: boolean) => void;
@@ -32,7 +32,10 @@ export interface DialogRootOptions {
    * - focus will be locked inside the dialog content.
    * - elements outside the dialog content will not be visible for screen readers.
    */
-  isModal?: boolean;
+  modal?: boolean;
+
+  /** Whether the scroll should be locked even if the dialog is not modal. */
+  preventScroll?: boolean;
 
   /**
    * Used to force mounting the dialog (portal, overlay and content) when more control is needed.
@@ -41,16 +44,19 @@ export interface DialogRootOptions {
   forceMount?: boolean;
 }
 
+export interface DialogRootProps extends ParentProps<DialogRootOptions> {}
+
 /**
  * A dialog is a window overlaid on either the primary window or another dialog window.
  */
-export const DialogRoot: ParentComponent<DialogRootOptions> = props => {
+export function DialogRoot(props: DialogRootProps) {
   const defaultId = `dialog-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
       id: defaultId,
-      isModal: true,
+      modal: true,
+      preventScroll: false,
     },
     props
   );
@@ -62,8 +68,8 @@ export const DialogRoot: ParentComponent<DialogRootOptions> = props => {
   const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
 
   const disclosureState = createDisclosureState({
-    isOpen: () => props.isOpen,
-    defaultIsOpen: () => props.defaultIsOpen,
+    open: () => props.open,
+    defaultOpen: () => props.defaultOpen,
     onOpenChange: isOpen => props.onOpenChange?.(isOpen),
   });
 
@@ -74,7 +80,8 @@ export const DialogRoot: ParentComponent<DialogRootOptions> = props => {
 
   const context: DialogContextValue = {
     isOpen: disclosureState.isOpen,
-    isModal: () => props.isModal!,
+    modal: () => props.modal ?? true,
+    preventScroll: () => props.preventScroll ?? false,
     contentId,
     titleId,
     descriptionId,
@@ -91,4 +98,4 @@ export const DialogRoot: ParentComponent<DialogRootOptions> = props => {
   };
 
   return <DialogContext.Provider value={context}>{props.children}</DialogContext.Provider>;
-};
+}

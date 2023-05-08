@@ -1,33 +1,34 @@
-import { callHandler, createPolymorphicComponent } from "@kobalte/utils";
+import { callHandler, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
-import { COMMON_INTL_MESSAGES, createLocalizedStringFormatter } from "../i18n";
+import { COMMON_INTL_MESSAGES, createMessageFormatter } from "../i18n";
 import { usePopoverContext } from "./popover-context";
+
+export interface PopoverCloseButtonProps
+  extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
 
 /**
  * The button that closes the popover.
  */
-export const PopoverCloseButton = createPolymorphicComponent<"button", Button.ButtonRootOptions>(
-  props => {
-    const context = usePopoverContext();
+export function PopoverCloseButton(props: PopoverCloseButtonProps) {
+  const context = usePopoverContext();
 
-    const [local, others] = splitProps(props, ["aria-label", "onClick"]);
+  const [local, others] = splitProps(props, ["aria-label", "onClick"]);
 
-    const stringFormatter = createLocalizedStringFormatter(() => COMMON_INTL_MESSAGES);
+  const messageFormatter = createMessageFormatter(() => COMMON_INTL_MESSAGES);
 
-    const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-      callHandler(e, local.onClick);
-      context.close();
-    };
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    callHandler(e, local.onClick);
+    context.close();
+  };
 
-    return (
-      <Button.Root
-        aria-label={local["aria-label"] || stringFormatter().format("dismiss")}
-        onClick={onClick}
-        {...context.dataset()}
-        {...others}
-      />
-    );
-  }
-);
+  return (
+    <Button.Root
+      aria-label={local["aria-label"] || messageFormatter().format("dismiss")}
+      onClick={onClick}
+      {...context.dataset()}
+      {...others}
+    />
+  );
+}

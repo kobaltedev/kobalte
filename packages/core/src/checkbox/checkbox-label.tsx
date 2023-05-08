@@ -1,24 +1,13 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
-
+import { FormControlLabel, FormControlLabelProps } from "../form-control";
 import { useCheckboxContext } from "./checkbox-context";
+
+export interface CheckboxLabelProps extends FormControlLabelProps {}
 
 /**
  * The label that gives the user information on the checkbox.
  */
-export const CheckboxLabel = createPolymorphicComponent<"span">(props => {
+export function CheckboxLabel(props: CheckboxLabelProps) {
   const context = useCheckboxContext();
 
-  props = mergeDefaultProps(
-    {
-      as: "span",
-      id: context.generateId("label"),
-    },
-    props
-  );
-
-  const [local, others] = splitProps(props, ["as"]);
-
-  return <Dynamic component={local.as} {...context.dataset()} {...others} />;
-});
+  return <FormControlLabel {...context.dataset()} {...props} />;
+}

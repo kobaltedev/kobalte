@@ -1,12 +1,14 @@
 import {
-  createPolymorphicComponent,
+  contains,
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
+import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
   createFocusScope,
@@ -18,7 +20,7 @@ import {
 } from "../primitives";
 import { usePopoverContext } from "./popover-context";
 
-export interface PopoverContentOptions {
+export interface PopoverContentOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 
@@ -59,17 +61,18 @@ export interface PopoverContentOptions {
   onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
+export interface PopoverContentProps extends OverrideComponentProps<"div", PopoverContentOptions> {}
+
 /**
  * Contains the content to be rendered when the popover is open.
  */
-export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOptions>(props => {
+export function PopoverContent(props: PopoverContentProps) {
   let ref: HTMLElement | undefined;
 
   const context = usePopoverContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: context.generateId("content"),
     },
     props
@@ -77,7 +80,6 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
 
   const [local, others] = splitProps(props, [
     "ref",
-    "id",
     "style",
     "onOpenAutoFocus",
     "onCloseAutoFocus",
@@ -88,6 +90,7 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
 
   let isRightClickOutside = false;
   let hasInteractedOutside = false;
+  let hasPointerDownOutside = false;
 
   const onCloseAutoFocus = (e: Event) => {
     local.onCloseAutoFocus?.(e);
@@ -109,6 +112,7 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
       }
 
       hasInteractedOutside = false;
+      hasPointerDownOutside = false;
     }
   };
 
@@ -125,7 +129,7 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
 
     // When focus is trapped, a `focusout` event may still happen.
     // We make sure we don't trigger our `onDismiss` in such case.
-    if (context.isModal()) {
+    if (context.isOpen() && context.isModal()) {
       e.preventDefault();
     }
   };
@@ -133,8 +137,33 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
   const onInteractOutside = (e: InteractOutsideEvent) => {
     local.onInteractOutside?.(e);
 
-    if (!context.isModal() && !e.defaultPrevented) {
+    if (context.isModal()) {
+      return;
+    }
+
+    // Non-modal behavior below
+
+    if (!e.defaultPrevented) {
       hasInteractedOutside = true;
+
+      if (e.detail.originalEvent.type === "pointerdown") {
+        hasPointerDownOutside = true;
+      }
+    }
+
+    // Prevent dismissing when clicking the trigger.
+    // As the trigger is already setup to close, without doing so would
+    // cause it to close and immediately open.
+    if (contains(context.triggerRef(), e.target as HTMLElement)) {
+      e.preventDefault();
+    }
+
+    // On Safari if the trigger is inside a container with tabIndex={0}, when clicked
+    // we will get the pointer down outside event on the trigger, but then a subsequent
+    // focus outside event on the container, we ignore any focus outside event when we've
+    // already had a pointer down outside event.
+    if (e.detail.originalEvent.type === "focusin" && hasPointerDownOutside) {
+      e.preventDefault();
     }
   };
 
@@ -145,7 +174,8 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
   });
 
   createPreventScroll({
-    isDisabled: () => !(context.isOpen() && context.isModal()),
+    ownerRef: () => ref,
+    isDisabled: () => !(context.isOpen() && (context.isModal() || context.preventScroll())),
   });
 
   createFocusScope(
@@ -157,7 +187,7 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
     () => ref
   );
 
-  createEffect(() => onCleanup(context.registerContentId(local.id!)));
+  createEffect(() => onCleanup(context.registerContentId(others.id!)));
 
   return (
     <Show when={context.contentPresence.isPresent()}>
@@ -169,9 +199,7 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
             ref = el;
           }, local.ref)}
           role="dialog"
-          id={local.id}
           tabIndex={-1}
-          isDismissed={!context.isOpen()}
           disableOutsidePointerEvents={context.isOpen() && context.isModal()}
           excludedElements={[context.triggerRef]}
           style={{
@@ -191,4 +219,4 @@ export const PopoverContent = createPolymorphicComponent<"div", PopoverContentOp
       </PopperPositioner>
     </Show>
   );
-});
+}

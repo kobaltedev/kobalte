@@ -1,26 +1,25 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, onCleanup } from "solid-js";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useFormControlContext } from "./form-control-context";
+
+export interface FormControlDescriptionProps extends OverrideComponentProps<"div", AsChildProp> {}
 
 /**
  * The description that gives the user more information on the form control.
  */
-export const FormControlDescription = createPolymorphicComponent<"div">(props => {
+export function FormControlDescription(props: FormControlDescriptionProps) {
   const context = useFormControlContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: context.generateId("description"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "id"]);
+  createEffect(() => onCleanup(context.registerDescription(props.id!)));
 
-  createEffect(() => onCleanup(context.registerDescription(local.id!)));
-
-  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
-});
+  return <Polymorphic as="div" {...context.dataset()} {...props} />;
+}

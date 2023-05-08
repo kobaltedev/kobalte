@@ -7,17 +7,18 @@
  */
 
 import {
+  access,
   callHandler,
   createGenerateId,
+  isFunction,
   mergeDefaultProps,
   mergeRefs,
-  OverrideProps,
+  OverrideComponentProps,
   ValidationState,
 } from "@kobalte/utils";
 import {
   Accessor,
-  Component,
-  ComponentProps,
+  children,
   createMemo,
   createSignal,
   createUniqueId,
@@ -25,27 +26,28 @@ import {
   splitProps,
 } from "solid-js";
 
+import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
+import { Polymorphic } from "../polymorphic";
 import { createFormResetListener, createToggleState } from "../primitives";
 import { SwitchContext, SwitchContextValue, SwitchDataSet } from "./switch-context";
 
+interface SwitchRootState {
+  /** Whether the switch is checked or not. */
+  checked: Accessor<boolean>;
+}
+
 export interface SwitchRootOptions {
   /** The controlled checked state of the switch. */
-  isChecked?: boolean;
+  checked?: boolean;
 
   /**
    * The default checked state when initially rendered.
    * Useful when you do not need to control the checked state.
    */
-  defaultIsChecked?: boolean;
+  defaultChecked?: boolean;
 
   /** Event handler called when the checked state of the switch changes. */
-  onCheckedChange?: (isChecked: boolean) => void;
-
-  /**
-   * The name of the switch, used when submitting an HTML form.
-   * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).
-   */
-  name?: string;
+  onChange?: (isChecked: boolean) => void;
 
   /**
    * The value of the switch, used when submitting an HTML form.
@@ -53,26 +55,38 @@ export interface SwitchRootOptions {
    */
   value?: string;
 
+  /**
+   * The name of the switch, used when submitting an HTML form.
+   * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).
+   */
+  name?: string;
+
   /** Whether the switch should display its "valid" or "invalid" visual styling. */
   validationState?: ValidationState;
 
   /** Whether the user must check the switch before the owning form can be submitted. */
-  isRequired?: boolean;
+  required?: boolean;
 
   /** Whether the switch is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /** Whether the switch is read only. */
-  isReadOnly?: boolean;
+  readOnly?: boolean;
+
+  /**
+   * The children of the switch.
+   * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
+   */
+  children?: JSX.Element | ((state: SwitchRootState) => JSX.Element);
 }
+
+export interface SwitchRootProps extends OverrideComponentProps<"div", SwitchRootOptions> {}
 
 /**
  * A control that allows users to choose one of two values: on or off.
  */
-export const SwitchRoot: Component<
-  OverrideProps<ComponentProps<"label">, SwitchRootOptions>
-> = props => {
-  let ref: HTMLLabelElement | undefined;
+export function SwitchRoot(props: SwitchRootProps) {
+  let ref: HTMLDivElement | undefined;
 
   const defaultId = `switch-${createUniqueId()}`;
 
@@ -84,34 +98,27 @@ export const SwitchRoot: Component<
     props
   );
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    "value",
-    "isChecked",
-    "defaultIsChecked",
-    "onCheckedChange",
-    "name",
-    "value",
-    "validationState",
-    "isRequired",
-    "isDisabled",
-    "isReadOnly",
-    "onPointerDown",
-  ]);
+  const [local, formControlProps, others] = splitProps(
+    props,
+    ["ref", "children", "value", "checked", "defaultChecked", "onChange", "onPointerDown"],
+    FORM_CONTROL_PROP_NAMES
+  );
 
   const [isFocused, setIsFocused] = createSignal(false);
 
+  const { formControlContext } = createFormControl(formControlProps);
+
   const state = createToggleState({
-    isSelected: () => local.isChecked,
-    defaultIsSelected: () => local.defaultIsChecked,
-    onSelectedChange: selected => local.onCheckedChange?.(selected),
-    isDisabled: () => local.isDisabled,
-    isReadOnly: () => local.isReadOnly,
+    isSelected: () => local.checked,
+    defaultIsSelected: () => local.defaultChecked,
+    onSelectedChange: selected => local.onChange?.(selected),
+    isDisabled: () => formControlContext.isDisabled(),
+    isReadOnly: () => formControlContext.isReadOnly(),
   });
 
   createFormResetListener(
     () => ref,
-    () => state.setIsSelected(local.defaultIsChecked ?? false)
+    () => state.setIsSelected(local.defaultChecked ?? false)
   );
 
   const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
@@ -124,36 +131,48 @@ export const SwitchRoot: Component<
   };
 
   const dataset: Accessor<SwitchDataSet> = createMemo(() => ({
-    "data-valid": local.validationState === "valid" ? "" : undefined,
-    "data-invalid": local.validationState === "invalid" ? "" : undefined,
     "data-checked": state.isSelected() ? "" : undefined,
-    "data-required": local.isRequired ? "" : undefined,
-    "data-disabled": local.isDisabled ? "" : undefined,
-    "data-readonly": local.isReadOnly ? "" : undefined,
   }));
 
   const context: SwitchContextValue = {
-    name: () => local.name ?? others.id!,
     value: () => local.value!,
     dataset,
-    validationState: () => local.validationState,
-    isChecked: () => state.isSelected(),
-    isRequired: () => local.isRequired,
-    isDisabled: () => local.isDisabled,
-    isReadOnly: () => local.isReadOnly,
-    generateId: createGenerateId(() => others.id!),
+    checked: () => state.isSelected(),
+    generateId: createGenerateId(() => access(formControlProps.id)!),
+    toggle: () => state.toggle(),
     setIsChecked: isChecked => state.setIsSelected(isChecked),
     setIsFocused,
   };
 
   return (
-    <SwitchContext.Provider value={context}>
-      <label
-        ref={mergeRefs(el => (ref = el), local.ref)}
-        onPointerDown={onPointerDown}
-        {...dataset()}
-        {...others}
-      />
-    </SwitchContext.Provider>
+    <FormControlContext.Provider value={formControlContext}>
+      <SwitchContext.Provider value={context}>
+        <Polymorphic
+          as="div"
+          ref={mergeRefs(el => (ref = el), local.ref)}
+          role="group"
+          id={access(formControlProps.id)}
+          onPointerDown={onPointerDown}
+          {...formControlContext.dataset()}
+          {...dataset()}
+          {...others}
+        >
+          <SwitchRootChild state={context} children={local.children} />
+        </Polymorphic>
+      </SwitchContext.Provider>
+    </FormControlContext.Provider>
   );
-};
+}
+
+interface SwitchRootChildProps extends Pick<SwitchRootOptions, "children"> {
+  state: SwitchRootState;
+}
+
+function SwitchRootChild(props: SwitchRootChildProps) {
+  const resolvedChildren = children(() => {
+    const body = props.children;
+    return isFunction(body) ? body(props.state) : body;
+  });
+
+  return <>{resolvedChildren()}</>;
+}

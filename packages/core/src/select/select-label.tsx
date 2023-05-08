@@ -1,13 +1,16 @@
-import { callHandler, createPolymorphicComponent } from "@kobalte/utils";
+import { callHandler, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import { FormControlLabel } from "../form-control";
+import { AsChildProp } from "../polymorphic";
 import { useSelectContext } from "./select-context";
+
+export interface SelectLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
 
 /**
  * The label that gives the user information on the select.
  */
-export const SelectLabel = createPolymorphicComponent<"span">(props => {
+export function SelectLabel(props: SelectLabelProps) {
   const context = useSelectContext();
 
   const [local, others] = splitProps(props, ["onClick"]);
@@ -20,5 +23,5 @@ export const SelectLabel = createPolymorphicComponent<"span">(props => {
     }
   };
 
-  return <FormControlLabel as="span" onClick={onClick} {...others} />;
-});
+  return <FormControlLabel as="span" onClick={onClick} {...(others as any)} />;
+}

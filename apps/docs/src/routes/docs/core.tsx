@@ -24,6 +24,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/overview/animation",
       },
       {
+        title: "Polymorphism",
+        href: "/docs/core/overview/polymorphism",
+      },
+      {
         title: "Server side rendering",
         href: "/docs/core/overview/ssr",
       },
@@ -41,6 +45,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/alert",
       },
       {
+        title: "Alert Dialog",
+        href: "/docs/core/components/alert-dialog",
+      },
+      {
         title: "Breadcrumbs",
         href: "/docs/core/components/breadcrumbs",
       },
@@ -51,10 +59,15 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Checkbox",
         href: "/docs/core/components/checkbox",
+        status: "updated",
       },
       {
         title: "Collapsible",
         href: "/docs/core/components/collapsible",
+      },
+      {
+        title: "Combobox",
+        href: "/docs/core/components/combobox",
       },
       {
         title: "Context Menu",
@@ -91,6 +104,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Radio Group",
         href: "/docs/core/components/radio-group",
+        status: "updated",
       },
       {
         title: "Select",
@@ -103,6 +117,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Switch",
         href: "/docs/core/components/switch",
+        status: "updated",
       },
       {
         title: "Tabs",
@@ -113,8 +128,16 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/text-field",
       },
       {
+        title: "Toast",
+        href: "/docs/core/components/toast",
+      },
+      {
         title: "Toggle Button",
         href: "/docs/core/components/toggle-button",
+      },
+      {
+        title: "Tooltip",
+        href: "/docs/core/components/tooltip",
       },
       {
         title: "I18nProvider",

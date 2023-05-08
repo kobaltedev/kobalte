@@ -1,11 +1,11 @@
-import { createPolymorphicComponent, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
-import { useRadioGroupItemContext } from "./radio-group-item-context";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createPresence } from "../primitives";
+import { useRadioGroupItemContext } from "./radio-group-item-context";
 
-export interface RadioGroupItemIndicatorOptions {
+export interface RadioGroupItemIndicatorOptions extends AsChildProp {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -13,36 +13,35 @@ export interface RadioGroupItemIndicatorOptions {
   forceMount?: boolean;
 }
 
+export interface RadioGroupItemIndicatorProps
+  extends OverrideComponentProps<"div", RadioGroupItemIndicatorOptions> {}
+
 /**
  * The visual indicator rendered when the radio item is in a checked state.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export const RadioGroupItemIndicator = createPolymorphicComponent<
-  "div",
-  RadioGroupItemIndicatorOptions
->(props => {
+export function RadioGroupItemIndicator(props: RadioGroupItemIndicatorProps) {
   const context = useRadioGroupItemContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: context.generateId("indicator"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "ref", "forceMount"]);
+  const [local, others] = splitProps(props, ["ref", "forceMount"]);
 
   const presence = createPresence(() => local.forceMount || context.isSelected());
 
   return (
     <Show when={presence.isPresent()}>
-      <Dynamic
-        component={local.as}
+      <Polymorphic
+        as="div"
         ref={mergeRefs(presence.setRef, local.ref)}
         {...context.dataset()}
         {...others}
       />
     </Show>
   );
-});
+}

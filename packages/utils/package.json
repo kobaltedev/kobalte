@@ -1,6 +1,6 @@
 {
   "name": "@kobalte/utils",
-  "version": "0.5.0",
+  "version": "0.7.1",
   "private": false,
   "description": "Common utilities and types for Kobalte.",
   "keywords": [
@@ -14,49 +14,50 @@
     "unstyled",
     "aria"
   ],
-  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/utils#readme",
+  "homepage": "https://github.com/kobaltedev/kobalte/tree/main/packages/utils#readme",
   "bugs": {
-    "url": "https://github.com/fabien-ml/kobalte/issues"
+    "url": "https://github.com/kobaltedev/kobalte/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fabien-ml/kobalte.git"
+    "url": "git+https://github.com/kobaltedev/kobalte.git"
   },
   "license": "MIT",
   "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
   "sideEffects": false,
+  "type": "module",
   "exports": {
     ".": {
-      "solid": "./dist/source/index.jsx",
-      "import": "./dist/esm/index.js",
-      "browser": {
-        "import": "./dist/esm/index.js",
-        "require": "./dist/cjs/index.js"
+      "types": "./dist/index.d.ts",
+      "solid": "./dist/index.js",
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
       },
-      "require": "./dist/cjs/index.js",
-      "node": "./dist/cjs/index.js"
+      "require": "./dist/index.cjs"
     }
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/types/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c ../../configs/rollup.config.ts",
+    "build": "tsup",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "test": "jest --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@solid-primitives/event-listener": "^2.2.4",
-    "@solid-primitives/media": "^2.0.4",
-    "@solid-primitives/refs": "^0.3.4",
-    "@solid-primitives/utils": "^4.0.0"
+    "@solid-primitives/event-listener": "^2.2.10",
+    "@solid-primitives/keyed": "^1.2.0",
+    "@solid-primitives/media": "^2.1.6",
+    "@solid-primitives/props": "^3.1.4",
+    "@solid-primitives/refs": "^1.0.2",
+    "@solid-primitives/utils": "^6.1.0"
   },
   "peerDependencies": {
-    "solid-js": "^1.6.10"
+    "solid-js": "^1.7.3"
   },
   "publishConfig": {
     "access": "public"

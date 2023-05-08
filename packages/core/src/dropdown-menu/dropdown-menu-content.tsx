@@ -1,4 +1,4 @@
-import { createPolymorphicComponent, focusWithoutScrolling } from "@kobalte/utils";
+import { focusWithoutScrolling, OverrideComponentProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import { MenuContent, MenuContentOptions } from "../menu";
@@ -6,10 +6,13 @@ import { useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
 import { InteractOutsideEvent } from "../primitives";
 
+export interface DropdownMenuContentProps
+  extends OverrideComponentProps<"div", MenuContentOptions> {}
+
 /**
  * Contains the content to be rendered when the dropdown menu is open.
  */
-export const DropdownMenuContent = createPolymorphicComponent<"div", MenuContentOptions>(props => {
+export function DropdownMenuContent(props: DropdownMenuContentProps) {
   const rootContext = useMenuRootContext();
   const context = useMenuContext();
 
@@ -45,4 +48,4 @@ export const DropdownMenuContent = createPolymorphicComponent<"div", MenuContent
       {...others}
     />
   );
-});
+}

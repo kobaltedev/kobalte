@@ -1,5 +1,5 @@
 import { createRoot, createSignal } from "solid-js";
-import { fireEvent, render, screen } from "solid-testing-library";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import { createControllableSignal } from "./create-controllable-signal";
 

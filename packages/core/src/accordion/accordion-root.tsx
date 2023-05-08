@@ -9,19 +9,19 @@
 import {
   composeEventHandlers,
   createGenerateId,
-  createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createSignal, createUniqueId, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { createListState, createSelectableList } from "../list";
-import { CollectionItem } from "../primitives";
+import { AsChildProp, Polymorphic } from "../polymorphic";
+import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { AccordionContext, AccordionContextValue } from "./accordion-context";
 
-export interface AccordionRootOptions {
+export interface AccordionRootOptions extends AsChildProp {
   /** The controlled value of the accordion item(s) to expand. */
   value?: string[];
 
@@ -32,45 +32,45 @@ export interface AccordionRootOptions {
   defaultValue?: string[];
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string[]) => void;
+  onChange?: (value: string[]) => void;
 
   /** Whether multiple items can be opened at the same time. */
-  isMultiple?: boolean;
+  multiple?: boolean;
 
-  /** When `isMultiple` is `false`, allows closing content when clicking trigger for an open item. */
-  isCollapsible?: boolean;
+  /** When `multiple` is `false`, allows closing content when clicking trigger for an open item. */
+  collapsible?: boolean;
 
   /** Whether focus should wrap around when the end/start is reached. */
   shouldFocusWrap?: boolean;
 }
 
+export interface AccordionRootProps extends OverrideComponentProps<"div", AccordionRootOptions> {}
+
 /**
  * A vertically stacked set of interactive headings that each reveal an associated section of content.
  */
-export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOptions>(props => {
+export function AccordionRoot(props: AccordionRootProps) {
   let ref: HTMLDivElement | undefined;
 
   const defaultId = `accordion-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: defaultId,
-      isMultiple: false,
-      isCollapsible: false,
+      multiple: false,
+      collapsible: false,
       shouldFocusWrap: true,
     },
     props
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "value",
     "defaultValue",
-    "onValueChange",
-    "isMultiple",
-    "isCollapsible",
+    "onChange",
+    "multiple",
+    "collapsible",
     "shouldFocusWrap",
     "onKeyDown",
     "onMouseDown",
@@ -78,16 +78,16 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
     "onFocusOut",
   ]);
 
-  const [items, setItems] = createSignal<CollectionItem[]>([]);
+  const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 
   const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
 
   const listState = createListState({
     selectedKeys: () => local.value,
     defaultSelectedKeys: () => local.defaultValue,
-    onSelectionChange: value => local.onValueChange?.(Array.from(value)),
-    disallowEmptySelection: () => !local.isMultiple && !local.isCollapsible,
-    selectionMode: () => (local.isMultiple ? "multiple" : "single"),
+    onSelectionChange: value => local.onChange?.(Array.from(value)),
+    disallowEmptySelection: () => !local.multiple && !local.collapsible,
+    selectionMode: () => (local.multiple ? "multiple" : "single"),
     dataSource: items,
   });
 
@@ -111,8 +111,8 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
   return (
     <DomCollectionProvider>
       <AccordionContext.Provider value={context}>
-        <Dynamic
-          component={local.as}
+        <Polymorphic
+          as="div"
           ref={mergeRefs(el => (ref = el), local.ref)}
           onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.onKeyDown])}
           onMouseDown={composeEventHandlers([local.onMouseDown, selectableList.onMouseDown])}
@@ -123,4 +123,4 @@ export const AccordionRoot = createPolymorphicComponent<"div", AccordionRootOpti
       </AccordionContext.Provider>
     </DomCollectionProvider>
   );
-});
+}

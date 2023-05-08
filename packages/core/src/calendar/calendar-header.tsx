@@ -1,14 +1,12 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { ComponentProps } from "solid-js";
+
+import { Polymorphic } from "../polymorphic";
+
+export type CalendarHeaderProps = ComponentProps<"header">;
 
 /**
- * Contains the title and navigation buttons of a `Calendar.Month`.
+ * Contains the calendar heading and navigation triggers.
  */
-export const CalendarHeader = createPolymorphicComponent<"div">(props => {
-  props = mergeDefaultProps({ as: "div" }, props);
-
-  const [local, others] = splitProps(props, ["as"]);
-
-  return <Dynamic component={local.as} {...others} />;
-});
+export function CalendarHeader(props: CalendarHeaderProps) {
+  return <Polymorphic as="header" {...props} />;
+}

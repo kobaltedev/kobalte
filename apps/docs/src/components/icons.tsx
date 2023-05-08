@@ -26,6 +26,17 @@ export function DiscordIcon(props: ComponentProps<"svg">) {
   );
 }
 
+export function OpenCollectiveIcon(props: ComponentProps<"svg">) {
+  return (
+    <svg viewBox="0 0 32 32" {...props}>
+      <path
+        fill="currentColor"
+        d="M29.145 6.896a15.9 15.9 0 0 1 0 18.208l-4.129-4.131a10.269 10.269 0 0 0 0-9.947zm-4.041-4.041l-4.131 4.129a10.28 10.28 0 0 0-15.234 9.01c0 3.636 1.916 7 5.047 8.849s7 1.905 10.187.156l4.131 4.145c-4.891 3.391-11.26 3.781-16.531 1.021S-.006 21.941-.006 15.993A16.015 16.015 0 0 1 8.573 1.816a16.006 16.006 0 0 1 16.531 1.021zm4.041 4.041a15.9 15.9 0 0 1 0 18.208l-4.129-4.131a10.269 10.269 0 0 0 0-9.947z"
+      />
+    </svg>
+  );
+}
+
 export function TwitterIcon(props: ComponentProps<"svg">) {
   return (
     <svg viewBox="0 0 15 15" {...props}>
@@ -206,6 +217,23 @@ export function VolumeOffIcon(props: ComponentProps<"svg">) {
         stroke-width="2"
         d="M15 8a5 5 0 0 1 1.912 4.934m-1.377 2.602A5.001 5.001 0 0 1 15 16m2.7-11a9 9 0 0 1 2.362 11.086m-1.676 2.299A9.005 9.005 0 0 1 17.7 19M9.069 5.054L9.5 4.5A.8.8 0 0 1 11 5v2m0 4v8a.8.8 0 0 1-1.5.5L6 15H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h2l1.294-1.664M3 3l18 18"
       />
+    </svg>
+  );
+}
+
+export function LoaderIcon(props: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      {...props}
+    >
+      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
     </svg>
   );
 }

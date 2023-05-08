@@ -6,35 +6,32 @@
  * https://github.com/adobe/react-spectrum/blob/0af91c08c745f4bb35b6ad4932ca17a0d85dd02c/packages/@react-aria/textfield/src/useTextField.ts
  */
 
-import {
-  composeEventHandlers,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-} from "@kobalte/utils";
-import { ComponentProps, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { composeEventHandlers, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { splitProps } from "solid-js";
 
 import {
   createFormControlField,
   FORM_CONTROL_FIELD_PROP_NAMES,
   useFormControlContext,
 } from "../form-control";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useTextFieldContext } from "./text-field-context";
+
+export interface TextFieldInputProps extends OverrideComponentProps<"input", AsChildProp> {}
 
 /**
  * The native html input of the textfield.
  */
-export function TextFieldInput(props: ComponentProps<"input">) {
+export function TextFieldInput(props: TextFieldInputProps) {
   return <TextFieldInputBase type="text" {...props} />;
 }
 
-export const TextFieldInputBase = createPolymorphicComponent<"input">(props => {
+export function TextFieldInputBase(props: TextFieldInputProps) {
   const formControlContext = useFormControlContext();
   const context = useTextFieldContext();
 
   props = mergeDefaultProps(
     {
-      as: "input",
       id: context.generateId("input"),
     },
     props
@@ -42,15 +39,15 @@ export const TextFieldInputBase = createPolymorphicComponent<"input">(props => {
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
-    ["as", "onInput"],
+    ["onInput"],
     FORM_CONTROL_FIELD_PROP_NAMES
   );
 
   const { fieldProps } = createFormControlField(formControlFieldProps);
 
   return (
-    <Dynamic
-      component={local.as}
+    <Polymorphic
+      as="input"
       id={fieldProps.id()}
       name={formControlContext.name()}
       value={context.value()}
@@ -69,4 +66,4 @@ export const TextFieldInputBase = createPolymorphicComponent<"input">(props => {
       {...others}
     />
   );
-});
+}

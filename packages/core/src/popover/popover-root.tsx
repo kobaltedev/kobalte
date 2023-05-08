@@ -12,7 +12,7 @@ import {
   createMemo,
   createSignal,
   createUniqueId,
-  ParentComponent,
+  ParentProps,
   splitProps,
 } from "solid-js";
 
@@ -29,13 +29,13 @@ export interface PopoverRootOptions
   anchorRef?: Accessor<HTMLElement | undefined>;
 
   /** The controlled open state of the popover. */
-  isOpen?: boolean;
+  open?: boolean;
 
   /**
    * The default open state when initially rendered.
    * Useful when you do not need to control the open state.
    */
-  defaultIsOpen?: boolean;
+  defaultOpen?: boolean;
 
   /** Event handler called when the open state of the popover changes. */
   onOpenChange?: (isOpen: boolean) => void;
@@ -55,7 +55,10 @@ export interface PopoverRootOptions
    * - focus will be locked inside the popover content.
    * - elements outside the popover content will not be visible for screen readers.
    */
-  isModal?: boolean;
+  modal?: boolean;
+
+  /** Whether the scroll should be locked even if the popover is not modal. */
+  preventScroll?: boolean;
 
   /**
    * Used to force mounting the popover (portal, positioner and content) when more control is needed.
@@ -64,26 +67,30 @@ export interface PopoverRootOptions
   forceMount?: boolean;
 }
 
+export interface PopoverRootProps extends ParentProps<PopoverRootOptions> {}
+
 /**
  * A popover is a dialog positioned relative to an anchor element.
  */
-export const PopoverRoot: ParentComponent<PopoverRootOptions> = props => {
+export function PopoverRoot(props: PopoverRootProps) {
   const defaultId = `popover-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
       id: defaultId,
-      isModal: false,
+      modal: false,
+      preventScroll: false,
     },
     props
   );
 
   const [local, others] = splitProps(props, [
     "id",
-    "isOpen",
-    "defaultIsOpen",
+    "open",
+    "defaultOpen",
     "onOpenChange",
-    "isModal",
+    "modal",
+    "preventScroll",
     "forceMount",
     "anchorRef",
   ]);
@@ -97,8 +104,8 @@ export const PopoverRoot: ParentComponent<PopoverRootOptions> = props => {
   const [descriptionId, setDescriptionId] = createSignal<string>();
 
   const disclosureState = createDisclosureState({
-    isOpen: () => local.isOpen,
-    defaultIsOpen: () => local.defaultIsOpen,
+    open: () => local.open,
+    defaultOpen: () => local.defaultOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
@@ -110,12 +117,14 @@ export const PopoverRoot: ParentComponent<PopoverRootOptions> = props => {
 
   const dataset: Accessor<PopoverDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
+    "data-closed": !disclosureState.isOpen() ? "" : undefined,
   }));
 
   const context: PopoverContextValue = {
     dataset,
     isOpen: disclosureState.isOpen,
-    isModal: () => local.isModal!,
+    isModal: () => local.modal ?? false,
+    preventScroll: () => local.preventScroll ?? false,
     contentPresence,
     triggerRef,
     contentId,
@@ -137,4 +146,4 @@ export const PopoverRoot: ParentComponent<PopoverRootOptions> = props => {
       <PopperRoot anchorRef={anchorRef} contentRef={contentRef} {...others} />
     </PopoverContext.Provider>
   );
-};
+}

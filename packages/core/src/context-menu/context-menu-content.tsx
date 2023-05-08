@@ -6,14 +6,17 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/context-menu/src/ContextMenu.tsx
  */
 
-import { createPolymorphicComponent } from "@kobalte/utils";
+import { OverrideComponentProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import { MenuContent, MenuContentOptions } from "../menu";
 import { useMenuRootContext } from "../menu/menu-root-context";
 import { InteractOutsideEvent } from "../primitives";
 
-export const ContextMenuContent = createPolymorphicComponent<"div", MenuContentOptions>(props => {
+export interface ContextMenuContentProps
+  extends OverrideComponentProps<"div", MenuContentOptions> {}
+
+export function ContextMenuContent(props: ContextMenuContentProps) {
   const rootContext = useMenuRootContext();
 
   const [local, others] = splitProps(props, ["onCloseAutoFocus", "onInteractOutside"]);
@@ -45,4 +48,4 @@ export const ContextMenuContent = createPolymorphicComponent<"div", MenuContentO
       {...others}
     />
   );
-});
+}

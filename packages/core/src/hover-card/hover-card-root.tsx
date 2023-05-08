@@ -20,7 +20,7 @@ import {
   createSignal,
   createUniqueId,
   onCleanup,
-  ParentComponent,
+  ParentProps,
   splitProps,
 } from "solid-js";
 import { isServer } from "solid-js/web";
@@ -34,23 +34,16 @@ import { getHoverCardSafeArea } from "./utils";
 export interface HoverCardRootOptions
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
   /** The controlled open state of the hovercard. */
-  isOpen?: boolean;
+  open?: boolean;
 
   /**
    * The default open state when initially rendered.
    * Useful when you do not need to control the open state.
    */
-  defaultIsOpen?: boolean;
+  defaultOpen?: boolean;
 
   /** Event handler called when the open state of the hovercard changes. */
   onOpenChange?: (isOpen: boolean) => void;
-
-  /**
-   * A unique identifier for the component.
-   * The id is used to generate id attributes for nested components.
-   * If no id prop is provided, a generated id will be used.
-   */
-  id?: string;
 
   /** The duration from when the mouse enters the trigger until the hovercard opens. */
   openDelay?: number;
@@ -58,7 +51,7 @@ export interface HoverCardRootOptions
   /** The duration from when the mouse leaves the trigger or content until the hovercard closes. */
   closeDelay?: number;
 
-  /** Whether to close the hover card even if the user cursor is inside the safe area between the trigger and hovercard. */
+  /** Whether to close the hovercard even if the user cursor is inside the safe area between the trigger and hovercard. */
   ignoreSafeArea?: boolean;
 
   /**
@@ -66,12 +59,21 @@ export interface HoverCardRootOptions
    * Useful when controlling animation with SolidJS animation libraries.
    */
   forceMount?: boolean;
+
+  /**
+   * A unique identifier for the component.
+   * The id is used to generate id attributes for nested components.
+   * If no id prop is provided, a generated id will be used.
+   */
+  id?: string;
 }
+
+export interface HoverCardRootProps extends ParentProps<HoverCardRootOptions> {}
 
 /**
  * A popover that allows sighted users to preview content available behind a link.
  */
-export const HoverCardRoot: ParentComponent<HoverCardRootOptions> = props => {
+export function HoverCardRoot(props: HoverCardRootProps) {
   const defaultId = `hovercard-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -85,8 +87,8 @@ export const HoverCardRoot: ParentComponent<HoverCardRootOptions> = props => {
 
   const [local, others] = splitProps(props, [
     "id",
-    "isOpen",
-    "defaultIsOpen",
+    "open",
+    "defaultOpen",
     "onOpenChange",
     "openDelay",
     "closeDelay",
@@ -103,8 +105,8 @@ export const HoverCardRoot: ParentComponent<HoverCardRootOptions> = props => {
   const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(others.placement!);
 
   const disclosureState = createDisclosureState({
-    isOpen: () => local.isOpen,
-    defaultIsOpen: () => local.defaultIsOpen,
+    open: () => local.open,
+    defaultOpen: () => local.defaultOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
@@ -217,6 +219,7 @@ export const HoverCardRoot: ParentComponent<HoverCardRootOptions> = props => {
 
   const dataset: Accessor<HoverCardDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
+    "data-closed": !disclosureState.isOpen() ? "" : undefined,
   }));
 
   const context: HoverCardContextValue = {
@@ -243,4 +246,4 @@ export const HoverCardRoot: ParentComponent<HoverCardRootOptions> = props => {
       />
     </HoverCardContext.Provider>
   );
-};
+}

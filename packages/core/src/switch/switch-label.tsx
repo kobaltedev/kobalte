@@ -1,24 +1,13 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
-
+import { FormControlLabel, FormControlLabelProps } from "../form-control";
 import { useSwitchContext } from "./switch-context";
+
+export interface SwitchLabelProps extends FormControlLabelProps {}
 
 /**
  * The label that gives the user information on the switch.
  */
-export const SwitchLabel = createPolymorphicComponent<"span">(props => {
+export function SwitchLabel(props: SwitchLabelProps) {
   const context = useSwitchContext();
 
-  props = mergeDefaultProps(
-    {
-      as: "span",
-      id: context.generateId("label"),
-    },
-    props
-  );
-
-  const [local, others] = splitProps(props, ["as"]);
-
-  return <Dynamic component={local.as} {...context.dataset()} {...others} />;
-});
+  return <FormControlLabel {...context.dataset()} {...props} />;
+}

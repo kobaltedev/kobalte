@@ -21,7 +21,10 @@ export interface MenuRootOptions extends MenuOptions {
    * - focus will be locked inside the menu content.
    * - elements outside the menu content will not be visible for screen readers.
    */
-  isModal?: boolean;
+  modal?: boolean;
+
+  /** Whether the scroll should be locked even if the menu is not modal. */
+  preventScroll?: boolean;
 
   /**
    * Used to force mounting the menu (portal, positioner and content) when more control is needed.
@@ -30,50 +33,50 @@ export interface MenuRootOptions extends MenuOptions {
   forceMount?: boolean;
 }
 
+export interface MenuRootProps extends ParentProps<MenuRootOptions> {}
+
 /**
  * Root component for a menu, provide context for its children.
  * Used to build dropdown menu, context menu and menubar.
  */
-export function MenuRoot(props: ParentProps<MenuRootOptions>) {
+export function MenuRoot(props: MenuRootProps) {
   const defaultId = `menu-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
       id: defaultId,
-      isModal: true,
+      modal: true,
+      preventScroll: false,
     },
     props
   );
 
   const [local, others] = splitProps(props, [
     "id",
-    "isModal",
+    "modal",
+    "preventScroll",
     "forceMount",
-    "isOpen",
-    "defaultIsOpen",
+    "open",
+    "defaultOpen",
     "onOpenChange",
   ]);
 
   const disclosureState = createDisclosureState({
-    isOpen: () => local.isOpen,
-    defaultIsOpen: () => local.defaultIsOpen,
+    open: () => local.open,
+    defaultOpen: () => local.defaultOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
   const context: MenuRootContextValue = {
-    isModal: () => local.isModal ?? true,
+    isModal: () => local.modal ?? true,
+    preventScroll: () => local.preventScroll ?? false,
     forceMount: () => local.forceMount ?? false,
-    close: disclosureState.close,
     generateId: createGenerateId(() => local.id!),
   };
 
   return (
     <MenuRootContext.Provider value={context}>
-      <Menu
-        isOpen={disclosureState.isOpen()}
-        onOpenChange={disclosureState.setIsOpen}
-        {...others}
-      />
+      <Menu open={disclosureState.isOpen()} onOpenChange={disclosureState.setIsOpen} {...others} />
     </MenuRootContext.Provider>
   );
 }

@@ -15,6 +15,8 @@ const LIVEREGION_TIMEOUT_DELAY = 7000;
 
 let liveAnnouncer: LiveAnnouncer | null = null;
 
+export const DATA_LIVE_ANNOUNCER_ATTR = "data-live-announcer";
+
 /**
  * Announces the message using screen reader technology.
  */

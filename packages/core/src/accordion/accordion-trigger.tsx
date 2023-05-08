@@ -7,25 +7,29 @@
  */
 
 import {
+  callHandler,
   composeEventHandlers,
-  createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Collapsible from "../collapsible";
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
-import { CollectionItem } from "../primitives";
+import { AsChildProp } from "../polymorphic";
+import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useAccordionContext } from "./accordion-context";
 import { useAccordionItemContext } from "./accordion-item-context";
 
+export interface AccordionTriggerProps extends OverrideComponentProps<"button", AsChildProp> {}
+
 /**
  * Toggles the collapsed state of its associated item. It should be nested inside an `Accordion.Header`.
  */
-export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
+export function AccordionTrigger(props: AccordionTriggerProps) {
   let ref: HTMLElement | undefined;
 
   const accordionContext = useAccordionContext();
@@ -34,13 +38,7 @@ export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
 
   const defaultId = itemContext.generateId("trigger");
 
-  props = mergeDefaultProps(
-    {
-      as: "button",
-      id: defaultId,
-    },
-    props
-  );
+  props = mergeDefaultProps({ id: defaultId }, props);
 
   const [local, others] = splitProps(props, [
     "ref",
@@ -52,13 +50,13 @@ export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
     "onFocus",
   ]);
 
-  createDomCollectionItem<CollectionItem>({
+  createDomCollectionItem<CollectionItemWithRef>({
     getItem: () => ({
       ref: () => ref,
+      type: "item",
       key: itemContext.value(),
-      isDisabled: collapsibleContext.isDisabled(),
-      label: "", // not applicable
-      textValue: "", // not applicable
+      textValue: "", // not applicable here
+      disabled: collapsibleContext.disabled(),
     }),
   });
 
@@ -66,11 +64,21 @@ export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
     {
       key: () => itemContext.value(),
       selectionManager: () => accordionContext.listState().selectionManager(),
-      isDisabled: () => collapsibleContext.isDisabled(),
+      disabled: () => collapsibleContext.disabled(),
       shouldSelectOnPressUp: true,
     },
     () => ref
   );
+
+  const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+    // Prevent `Enter` and `Space` default behavior which fires a click event when using a <button>.
+    if (["Enter", " "].includes(e.key)) {
+      e.preventDefault();
+    }
+
+    callHandler(e, local.onKeyDown);
+    callHandler(e, selectableItem.onKeyDown);
+  };
 
   createEffect(() => onCleanup(itemContext.registerTriggerId(others.id!)));
 
@@ -81,10 +89,10 @@ export const AccordionTrigger = createPolymorphicComponent<"button">(props => {
       onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
       onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}
       onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
-      onKeyDown={composeEventHandlers([local.onKeyDown, selectableItem.onKeyDown])}
+      onKeyDown={onKeyDown}
       onMouseDown={composeEventHandlers([local.onMouseDown, selectableItem.onMouseDown])}
       onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
       {...others}
     />
   );
-});
+}

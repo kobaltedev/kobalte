@@ -12,7 +12,7 @@
  * https://github.com/adobe/react-spectrum/blob/a13802d8be6f83af1450e56f7a88527b10d9cadf/packages/@react-aria/button/src/useToggleButton.ts
  */
 
-import { callHandler, createPolymorphicComponent, isFunction } from "@kobalte/utils";
+import { callHandler, isFunction, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, children, JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
@@ -20,21 +20,21 @@ import { createToggleState } from "../primitives";
 
 export interface ToggleButtonRootState {
   /** Whether the toggle button is on (pressed) or off (not pressed). */
-  isPressed: Accessor<boolean>;
+  pressed: Accessor<boolean>;
 }
 
 export interface ToggleButtonRootOptions extends Button.ButtonRootOptions {
   /** The controlled pressed state of the toggle button. */
-  isPressed?: boolean;
+  pressed?: boolean;
 
   /**
    * The default pressed state when initially rendered.
    * Useful when you do not need to control the pressed state.
    */
-  defaultIsPressed?: boolean;
+  defaultPressed?: boolean;
 
   /** Event handler called when the pressed state of the toggle button changes. */
-  onPressedChange?: (isPressed: boolean) => void;
+  onChange?: (pressed: boolean) => void;
 
   /**
    * The children of the toggle button.
@@ -43,52 +43,55 @@ export interface ToggleButtonRootOptions extends Button.ButtonRootOptions {
   children?: JSX.Element | ((state: ToggleButtonRootState) => JSX.Element);
 }
 
+export interface ToggleButtonRootProps
+  extends OverrideComponentProps<"button", ToggleButtonRootOptions> {}
+
 /**
  * A two-state button that allow users to toggle a selection on or off.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export const ToggleButtonRoot = createPolymorphicComponent<"button", ToggleButtonRootOptions>(
-  props => {
-    const [local, others] = splitProps(props, [
-      "children",
-      "isPressed",
-      "defaultIsPressed",
-      "onPressedChange",
-      "onClick",
-    ]);
+export function ToggleButtonRoot(props: ToggleButtonRootProps) {
+  const [local, others] = splitProps(props, [
+    "children",
+    "pressed",
+    "defaultPressed",
+    "onChange",
+    "onClick",
+  ]);
 
-    const state = createToggleState({
-      isSelected: () => local.isPressed,
-      defaultIsSelected: () => local.defaultIsPressed,
-      onSelectedChange: selected => local.onPressedChange?.(selected),
-      isDisabled: () => others.isDisabled,
-    });
+  const state = createToggleState({
+    isSelected: () => local.pressed,
+    defaultIsSelected: () => local.defaultPressed,
+    onSelectedChange: selected => local.onChange?.(selected),
+    isDisabled: () => others.disabled,
+  });
 
-    const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-      callHandler(e, local.onClick);
-      state.toggle();
-    };
+  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
+    callHandler(e, local.onClick);
+    state.toggle();
+  };
 
-    return (
-      <Button.Root
-        aria-pressed={state.isSelected()}
-        data-pressed={state.isSelected() ? "" : undefined}
-        onClick={onClick}
-        {...others}
-      >
-        <ToggleButtonRootChild state={{ isPressed: state.isSelected }} children={local.children} />
-      </Button.Root>
-    );
-  }
-);
+  return (
+    <Button.Root
+      aria-pressed={state.isSelected()}
+      data-pressed={state.isSelected() ? "" : undefined}
+      onClick={onClick}
+      {...others}
+    >
+      <ToggleButtonRootChild state={{ pressed: state.isSelected }} children={local.children} />
+    </Button.Root>
+  );
+}
 
 interface ToggleButtonRootChildProps extends Pick<ToggleButtonRootOptions, "children"> {
   state: ToggleButtonRootState;
 }
 
 function ToggleButtonRootChild(props: ToggleButtonRootChildProps) {
-  return children(() => {
+  const resolvedChildren = children(() => {
     const body = props.children;
     return isFunction(body) ? body(props.state) : body;
   });
+
+  return <>{resolvedChildren()}</>;
 }

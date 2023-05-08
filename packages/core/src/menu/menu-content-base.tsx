@@ -10,14 +10,15 @@ import {
   callHandler,
   composeEventHandlers,
   contains,
-  createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
 import { createSelectableList } from "../list";
+import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
   createFocusScope,
@@ -28,7 +29,7 @@ import {
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuContentBaseOptions {
+export interface MenuContentBaseOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 
@@ -69,7 +70,10 @@ export interface MenuContentBaseOptions {
   onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBaseOptions>(props => {
+export interface MenuContentBaseProps
+  extends OverrideComponentProps<"div", MenuContentBaseOptions> {}
+
+export function MenuContentBase(props: MenuContentBaseProps) {
   let ref: HTMLElement | undefined;
 
   const rootContext = useMenuRootContext();
@@ -77,7 +81,6 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: rootContext.generateId(`content-${createUniqueId()}`),
     },
     props
@@ -145,7 +148,7 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
     // `createSelectableList` prevent escape key down,
     // which prevent our `onDismiss` in `DismissableLayer` to run,
     // so we force "close on escape" here.
-    rootContext.close();
+    context.close(true);
   };
 
   const onFocusOutside = (e: FocusOutsideEvent) => {
@@ -202,9 +205,9 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
           role="menu"
           id={local.id}
           tabIndex={selectableList.tabIndex()}
-          isDismissed={!context.isOpen()}
           disableOutsidePointerEvents={isRootModalContent() && context.isOpen()}
           excludedElements={[context.triggerRef]}
+          bypassTopMostLayerCheck
           style={{
             "--kb-menu-content-transform-origin": "var(--kb-popper-content-transform-origin)",
             position: "relative",
@@ -226,4 +229,4 @@ export const MenuContentBase = createPolymorphicComponent<"div", MenuContentBase
       </PopperPositioner>
     </Show>
   );
-});
+}

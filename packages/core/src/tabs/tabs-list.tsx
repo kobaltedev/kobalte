@@ -6,32 +6,26 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
-import {
-  composeEventHandlers,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
+import { composeEventHandlers, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { useLocale } from "../i18n";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createSelectableCollection } from "../selection";
 import { useTabsContext } from "./tabs-context";
 import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate";
 
+export interface TabsListProps extends OverrideComponentProps<"div", AsChildProp> {}
+
 /**
  * Contains the tabs that are aligned along the edge of the active tab panel.
  */
-export const TabsList = createPolymorphicComponent<"div">(props => {
+export function TabsList(props: TabsListProps) {
   let ref: HTMLElement | undefined;
 
   const context = useTabsContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
-
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "onKeyDown",
     "onMouseDown",
@@ -73,8 +67,8 @@ export const TabsList = createPolymorphicComponent<"div">(props => {
   });
 
   return (
-    <Dynamic
-      component={local.as}
+    <Polymorphic
+      as="div"
       ref={mergeRefs(el => (ref = el), local.ref)}
       role="tablist"
       aria-orientation={context.orientation()}
@@ -86,4 +80,4 @@ export const TabsList = createPolymorphicComponent<"div">(props => {
       {...others}
     />
   );
-});
+}

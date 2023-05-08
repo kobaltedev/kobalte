@@ -10,20 +10,29 @@ import {
   access,
   composeEventHandlers,
   createGenerateId,
-  createPolymorphicComponent,
+  Key,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createUniqueId, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import {
+  Accessor,
+  createMemo,
+  createUniqueId,
+  JSX,
+  Match,
+  Show,
+  splitProps,
+  Switch,
+} from "solid-js";
 
 import { createListState, createSelectableList, ListState } from "../list";
-import { CollectionItem, createControllableArraySignal } from "../primitives";
-import { createDomCollection } from "../primitives/create-dom-collection";
+import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Collection, CollectionNode } from "../primitives";
 import { FocusStrategy, KeyboardDelegate, SelectionBehavior, SelectionMode } from "../selection";
 import { ListboxContext, ListboxContextValue } from "./listbox-context";
 
-export interface ListboxRootOptions {
+export interface ListboxRootOptions<Option, OptGroup = never> extends AsChildProp {
   /** The controlled value of the listbox. */
   value?: Iterable<string>;
 
@@ -34,13 +43,22 @@ export interface ListboxRootOptions {
   defaultValue?: Iterable<string>;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: Set<string>) => void;
+  onChange?: (value: Set<string>) => void;
 
-  /** The controlled items of the listbox. */
-  items?: CollectionItem[];
+  /** An array of options to display as the available options. */
+  options?: Array<Option | OptGroup>;
 
-  /** Event handler called when the items change. */
-  onItemsChange?: (items: CollectionItem[]) => void;
+  /** Property name or getter function to use as the value of an option. */
+  optionValue?: keyof Option | ((option: Option) => string);
+
+  /** Property name or getter function to use as the text value of an option for typeahead purpose. */
+  optionTextValue?: keyof Option | ((option: Option) => string);
+
+  /** Property name or getter function to use as the disabled flag of an option. */
+  optionDisabled?: keyof Option | ((option: Option) => boolean);
+
+  /** Property name or getter function that refers to the children options of option group. */
+  optionGroupChildren?: keyof OptGroup | ((optGroup: OptGroup) => Option[]);
 
   /** The controlled state of the listbox. */
   state?: ListState;
@@ -89,33 +107,56 @@ export interface ListboxRootOptions {
 
   /** Whether navigation through tab key is enabled. */
   allowsTabNavigation?: boolean;
+
+  /** Whether the listbox uses virtual scrolling. */
+  virtualized?: boolean;
+
+  /** When NOT virtualized, a map function that receives an _item_ signal representing a listbox item. */
+  renderItem?: (item: CollectionNode<Option>) => JSX.Element;
+
+  /** When NOT virtualized, a map function that receives a _section_ signal representing a listbox section. */
+  renderSection?: (section: CollectionNode<OptGroup>) => JSX.Element;
+
+  /** When virtualized, the Virtualizer function used to scroll to the item of the given key. */
+  scrollToItem?: (key: string) => void;
+
+  /** When virtualized, a map function that receives an _items_ signal representing all listbox items and sections. */
+  children?: (items: Accessor<Collection<CollectionNode<Option | OptGroup>>>) => JSX.Element;
 }
+
+export interface ListboxRootProps<Option, OptGroup = never>
+  extends OverrideComponentProps<"ul", ListboxRootOptions<Option, OptGroup>> {}
 
 /**
  * Listbox presents a list of options and allows a user to select one or more of them.
  */
-export const ListboxRoot = createPolymorphicComponent<"div", ListboxRootOptions>(props => {
+export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Option, OptGroup>) {
   let ref: HTMLElement | undefined;
 
   const defaultId = `listbox-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: defaultId,
       selectionMode: "single",
+      virtualized: false,
     },
     props
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
+    "children",
+    "renderItem",
+    "renderSection",
     "value",
     "defaultValue",
-    "onValueChange",
-    "items",
-    "onItemsChange",
+    "onChange",
+    "options",
+    "optionValue",
+    "optionTextValue",
+    "optionDisabled",
+    "optionGroupChildren",
     "state",
     "keyboardDelegate",
     "autoFocus",
@@ -130,20 +171,14 @@ export const ListboxRoot = createPolymorphicComponent<"div", ListboxRootOptions>
     "selectOnFocus",
     "disallowTypeAhead",
     "allowsTabNavigation",
+    "virtualized",
+    "scrollToItem",
     "scrollRef",
     "onKeyDown",
     "onMouseDown",
     "onFocusIn",
     "onFocusOut",
   ]);
-
-  const [items, setItems] = createControllableArraySignal<CollectionItem>({
-    value: () => local.items,
-    defaultValue: () => [],
-    onChange: value => local.onItemsChange?.(value),
-  });
-
-  const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
 
   const listState = createMemo(() => {
     if (local.state) {
@@ -153,12 +188,16 @@ export const ListboxRoot = createPolymorphicComponent<"div", ListboxRootOptions>
     return createListState({
       selectedKeys: () => local.value,
       defaultSelectedKeys: () => local.defaultValue,
-      onSelectionChange: local.onValueChange,
+      onSelectionChange: local.onChange,
       allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
       disallowEmptySelection: () => access(local.disallowEmptySelection),
       selectionBehavior: () => access(local.selectionBehavior),
       selectionMode: () => access(local.selectionMode),
-      dataSource: items,
+      dataSource: () => local.options ?? [],
+      getKey: () => local.optionValue as any,
+      getTextValue: () => local.optionTextValue as any,
+      getDisabled: () => local.optionDisabled as any,
+      getSectionChildren: () => local.optionGroupChildren as any,
     });
   });
 
@@ -174,7 +213,8 @@ export const ListboxRoot = createPolymorphicComponent<"div", ListboxRootOptions>
       disallowTypeAhead: () => access(local.disallowTypeAhead),
       shouldUseVirtualFocus: () => access(local.shouldUseVirtualFocus),
       allowsTabNavigation: () => access(local.allowsTabNavigation),
-      isVirtualized: false,
+      isVirtualized: () => local.virtualized,
+      scrollToKey: () => local.scrollToItem,
     },
     () => ref,
     () => local.scrollRef?.()
@@ -186,26 +226,36 @@ export const ListboxRoot = createPolymorphicComponent<"div", ListboxRootOptions>
     shouldUseVirtualFocus: () => props.shouldUseVirtualFocus,
     shouldSelectOnPressUp: () => props.shouldSelectOnPressUp,
     shouldFocusOnHover: () => props.shouldFocusOnHover,
+    isVirtualized: () => local.virtualized,
   };
 
   return (
-    <DomCollectionProvider>
-      <ListboxContext.Provider value={context}>
-        <Dynamic
-          component={local.as}
-          ref={mergeRefs(el => (ref = el), local.ref)}
-          role="listbox"
-          tabIndex={selectableList.tabIndex()}
-          aria-multiselectable={
-            listState().selectionManager().selectionMode() === "multiple" ? true : undefined
-          }
-          onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.onKeyDown])}
-          onMouseDown={composeEventHandlers([local.onMouseDown, selectableList.onMouseDown])}
-          onFocusIn={composeEventHandlers([local.onFocusIn, selectableList.onFocusIn])}
-          onFocusOut={composeEventHandlers([local.onFocusOut, selectableList.onFocusOut])}
-          {...others}
-        />
-      </ListboxContext.Provider>
-    </DomCollectionProvider>
+    <ListboxContext.Provider value={context}>
+      <Polymorphic
+        as="ul"
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        role="listbox"
+        tabIndex={selectableList.tabIndex()}
+        aria-multiselectable={
+          listState().selectionManager().selectionMode() === "multiple" ? true : undefined
+        }
+        onKeyDown={composeEventHandlers([local.onKeyDown, selectableList.onKeyDown])}
+        onMouseDown={composeEventHandlers([local.onMouseDown, selectableList.onMouseDown])}
+        onFocusIn={composeEventHandlers([local.onFocusIn, selectableList.onFocusIn])}
+        onFocusOut={composeEventHandlers([local.onFocusOut, selectableList.onFocusOut])}
+        {...others}
+      >
+        <Show when={!local.virtualized} fallback={local.children?.(listState().collection)}>
+          <Key each={[...listState().collection()]} by="key">
+            {item => (
+              <Switch>
+                <Match when={item().type === "section"}>{local.renderSection?.(item())}</Match>
+                <Match when={item().type === "item"}>{local.renderItem?.(item())}</Match>
+              </Switch>
+            )}
+          </Key>
+        </Show>
+      </Polymorphic>
+    </ListboxContext.Provider>
   );
-});
+}

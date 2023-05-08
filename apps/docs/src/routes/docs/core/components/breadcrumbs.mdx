@@ -72,7 +72,7 @@ The breadcrumbs consist of:
               <Breadcrumbs.Separator class="breadcrumbs__separator" />
             </li>
             <li class="breadcrumbs__item">
-              <Breadcrumbs.Link isCurrent class="breadcrumbs__link">
+              <Breadcrumbs.Link current class="breadcrumbs__link">
                 Breadcrumbs
               </Breadcrumbs.Link>
             </li>
@@ -153,7 +153,7 @@ function App() {
           <Breadcrumbs.Separator class="breadcrumbs__separator" />
         </li>
         <li class="breadcrumbs__item">
-          <Breadcrumbs.Link isCurrent class="breadcrumbs__link">
+          <Breadcrumbs.Link current class="breadcrumbs__link">
             Breadcrumbs
           </Breadcrumbs.Link>
         </li>
@@ -181,10 +181,10 @@ function App() {
 
 `Breadcrumbs.Link` consists of [Link](/docs/core/components/link).
 
-| Prop       | Description                                                              |
-| :--------- | :----------------------------------------------------------------------- |
-| isCurrent  | `boolean` <br/> Whether the breadcrumb link represents the current page. |
-| isDisabled | `boolean` <br/> Whether the breadcrumb link is disabled.                 |
+| Prop     | Description                                                              |
+| :------- | :----------------------------------------------------------------------- |
+| current  | `boolean` <br/> Whether the breadcrumb link represents the current page. |
+| disabled | `boolean` <br/> Whether the breadcrumb link is disabled.                 |
 
 | Data attribute | Description                                                   |
 | :------------- | :------------------------------------------------------------ |

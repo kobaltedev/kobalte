@@ -7,7 +7,7 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, ParentComponent, splitProps } from "solid-js";
+import { createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
 
 import { useLocale } from "../i18n";
 import { MenuRoot, MenuRootOptions } from "../menu";
@@ -15,12 +15,14 @@ import { createDisclosureState } from "../primitives";
 import { ContextMenuContext, ContextMenuContextValue } from "./context-menu-context";
 
 export interface ContextMenuRootOptions
-  extends Omit<MenuRootOptions, "isOpen" | "defaultIsOpen" | "getAnchorRect"> {}
+  extends Omit<MenuRootOptions, "open" | "defaultOpen" | "getAnchorRect"> {}
+
+export interface ContextMenuRootProps extends ParentProps<ContextMenuRootOptions> {}
 
 /**
  * Displays a menu located at the pointer, triggered by a right-click or a long-press.
  */
-export const ContextMenuRoot: ParentComponent<ContextMenuRootOptions> = props => {
+export function ContextMenuRoot(props: ContextMenuRootProps) {
   const defaultId = `contextmenu-${createUniqueId()}`;
 
   const { direction } = useLocale();
@@ -40,7 +42,7 @@ export const ContextMenuRoot: ParentComponent<ContextMenuRootOptions> = props =>
   const [anchorRect, setAnchorRect] = createSignal({ x: 0, y: 0 });
 
   const disclosureState = createDisclosureState({
-    defaultIsOpen: false,
+    defaultOpen: false,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
@@ -51,11 +53,11 @@ export const ContextMenuRoot: ParentComponent<ContextMenuRootOptions> = props =>
   return (
     <ContextMenuContext.Provider value={context}>
       <MenuRoot
-        isOpen={disclosureState.isOpen()}
+        open={disclosureState.isOpen()}
         onOpenChange={disclosureState.setIsOpen}
         getAnchorRect={anchorRect}
         {...others}
       />
     </ContextMenuContext.Provider>
   );
-};
+}

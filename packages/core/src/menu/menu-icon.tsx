@@ -1,19 +1,18 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useMenuContext } from "./menu-context";
+
+export interface MenuIconProps extends OverrideComponentProps<"span", AsChildProp> {}
 
 /**
  * A small icon often displayed inside the menu trigger as a visual affordance for the fact it can be open.
  * It renders a `▼` by default, but you can use your own icon by providing a `children`.
  */
-export const MenuIcon = createPolymorphicComponent<"div">(props => {
+export function MenuIcon(props: MenuIconProps) {
   const context = useMenuContext();
 
-  props = mergeDefaultProps({ as: "div", children: "▼" }, props);
+  props = mergeDefaultProps({ children: "▼" }, props);
 
-  const [local, others] = splitProps(props, ["as"]);
-
-  return <Dynamic component={local.as} aria-hidden="true" {...context.dataset()} {...others} />;
-});
+  return <Polymorphic as="span" aria-hidden="true" {...context.dataset()} {...props} />;
+}

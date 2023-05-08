@@ -6,28 +6,28 @@
  * https://github.com/adobe/react-spectrum/blob/703ab7b4559ecd4fc611e7f2c0e758867990fe01/packages/@react-spectrum/tabs/src/Tabs.tsx
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, createSignal, JSX, on, onMount, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { useLocale } from "../i18n";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsIndicatorOptions {
+export interface TabsIndicatorOptions extends AsChildProp {
   /** The HTML styles attribute (object form only). */
   style?: JSX.CSSProperties;
 }
+
+export interface TabsIndicatorProps extends OverrideComponentProps<"div", TabsIndicatorOptions> {}
 
 /**
  * The visual indicator displayed at the bottom of the tab list to indicate the selected tab.
  * It provides the base style needed to display a smooth transition to the new selected tab.
  */
-export const TabsIndicator = createPolymorphicComponent<"div", TabsIndicatorOptions>(props => {
+export function TabsIndicator(props: TabsIndicatorProps) {
   const context = useTabsContext();
 
-  props = mergeDefaultProps({ as: "div" }, props);
-
-  const [local, others] = splitProps(props, ["as", "style"]);
+  const [local, others] = splitProps(props, ["style"]);
 
   const [style, setStyle] = createSignal<JSX.CSSProperties>({
     width: undefined,
@@ -93,12 +93,12 @@ export const TabsIndicator = createPolymorphicComponent<"div", TabsIndicatorOpti
   );
 
   return (
-    <Dynamic
-      component={local.as}
+    <Polymorphic
+      as="div"
       role="presentation"
       style={{ ...style(), ...local.style }}
       data-orientation={context.orientation()}
       {...others}
     />
   );
-});
+}

@@ -25,6 +25,10 @@
   background-color: hsl(200 98% 39%);
 }
 
+.switch__control[data-invalid] {
+  border-color: hsl(0 72% 51%);
+}
+
 .switch__thumb {
   height: 20px;
   width: 20px;
@@ -44,6 +48,20 @@
   user-select: none;
 }
 
+.switch__description {
+  margin-right: 6px;
+  color: hsl(240 5% 26%);
+  font-size: 12px;
+  user-select: none;
+}
+
+.switch__error-message {
+  margin-right: 6px;
+  color: hsl(0 72% 51%);
+  font-size: 12px;
+  user-select: none;
+}
+
 [data-kb-theme="dark"] .switch__control {
   border-color: hsl(240 5% 34%);
   background-color: hsl(240 5% 26%);
@@ -54,6 +72,10 @@
   background-color: hsl(200 98% 39%);
 }
 
+[data-kb-theme="dark"] .switch__control[data-invalid] {
+  border-color: hsl(0 72% 51%);
+}
+
 [data-kb-theme="dark"] .switch__thumb {
   background-color: hsl(240 5% 84%);
 }
@@ -61,3 +83,8 @@
 [data-kb-theme="dark"] .switch__label {
   color: hsl(240 5% 84%);
 }
+
+[data-kb-theme="dark"] .switch__description {
+  color: hsl(240 5% 65%);
+}
+

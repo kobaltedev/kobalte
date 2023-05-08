@@ -78,7 +78,7 @@ export function ControlledExample() {
     <>
       <Tabs.Root
         value={selectedTab()}
-        onValueChange={setSelectedTab}
+        onChange={setSelectedTab}
         aria-label="Main navigation"
         class={style["tabs"]}
       >
@@ -285,7 +285,7 @@ export function VerticalOrientationExample() {
 
 export function DisabledTabsExample() {
   return (
-    <Tabs.Root aria-label="Main navigation" isDisabled class={style["tabs"]}>
+    <Tabs.Root aria-label="Main navigation" disabled class={style["tabs"]}>
       <Tabs.List class={style["tabs__list"]}>
         <Tabs.Trigger class={style["tabs__trigger"]} value="profile">
           Profile
@@ -327,7 +327,7 @@ export function SingleDisabledTabExample() {
         <Tabs.Trigger class={style["tabs__trigger"]} value="dashboard">
           Dashboard
         </Tabs.Trigger>
-        <Tabs.Trigger class={style["tabs__trigger"]} value="settings" isDisabled>
+        <Tabs.Trigger class={style["tabs__trigger"]} value="settings" disabled>
           Settings
         </Tabs.Trigger>
         <Tabs.Trigger class={style["tabs__trigger"]} value="contact">

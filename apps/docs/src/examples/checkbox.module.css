@@ -22,10 +22,28 @@
   color: white;
 }
 
+.checkbox__control[data-invalid] {
+  border-color: hsl(0 72% 51%);
+}
+
 .checkbox__label {
   margin-left: 6px;
   color: hsl(240 6% 10%);
   font-size: 14px;
+  user-select: none;
+}
+
+.checkbox__description {
+  margin-left: 6px;
+  color: hsl(240 5% 26%);
+  font-size: 12px;
+  user-select: none;
+}
+
+.checkbox__error-message {
+  margin-left: 6px;
+  color: hsl(0 72% 51%);
+  font-size: 12px;
   user-select: none;
 }
 
@@ -40,6 +58,15 @@
   color: hsl(0 100% 100% / 0.9);
 }
 
+[data-kb-theme="dark"] .checkbox__control[data-invalid] {
+  border-color: hsl(0 72% 51%);
+}
+
 [data-kb-theme="dark"] .checkbox__label {
   color: hsl(240 5% 84%);
 }
+
+[data-kb-theme="dark"] .checkbox__description {
+  color: hsl(240 5% 65%);
+}
+

@@ -1,6 +1,6 @@
 {
   "name": "@kobalte/core",
-  "version": "0.6.0",
+  "version": "0.9.5",
   "private": false,
   "description": "Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
   "keywords": [
@@ -14,19 +14,21 @@
     "unstyled",
     "aria"
   ],
-  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/core#readme",
+  "homepage": "https://github.com/kobaltedev/kobalte/tree/main/packages/core#readme",
   "bugs": {
-    "url": "https://github.com/fabien-ml/kobalte/issues"
+    "url": "https://github.com/kobaltedev/kobalte/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fabien-ml/kobalte.git"
+    "url": "git+https://github.com/kobaltedev/kobalte.git"
   },
   "license": "MIT",
   "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
   "sideEffects": false,
+  "type": "module",
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "solid": "./dist/source/index.jsx",
       "import": "./dist/esm/index.js",
       "browser": {
@@ -44,24 +46,24 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c ../../configs/rollup.config.ts",
+    "build": "rollup -c",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "vite serve dev --host",
     "test": "jest --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.0.7",
-    "@internationalized/date": "^3.0.2",
-    "@internationalized/number": "^3.1.1",
-    "@internationalized/string": "^3.0.0",
-    "@kobalte/utils": "^0.5.0"
+    "@floating-ui/dom": "^1.2.6",
+    "@internationalized/date": "^3.2.0",
+    "@internationalized/message": "^3.1.0",
+    "@internationalized/number": "^3.2.0",
+    "@kobalte/utils": "^0.7.1"
   },
   "devDependencies": {
-    "@kobalte/tests": "^0.2.0"
+    "@kobalte/tests": "^0.4.0"
   },
   "peerDependencies": {
-    "solid-js": "^1.6.10"
+    "solid-js": "^1.7.3"
   },
   "publishConfig": {
     "access": "public"

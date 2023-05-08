@@ -20,11 +20,14 @@ import {
   getActiveElement,
   getAllTabbableIn,
   getDocument,
+  isFocusable,
   MaybeAccessor,
   removeItemFromArray,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
+
+import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
 
 const AUTOFOCUS_ON_MOUNT_EVENT = "focusScope.autoFocusOnMount";
 const AUTOFOCUS_ON_UNMOUNT_EVENT = "focusScope.autoFocusOnUnmount";
@@ -123,6 +126,28 @@ export function createFocusScope<T extends HTMLElement>(
     return items.length > 0 ? items[items.length - 1] : null;
   };
 
+  const shouldPreventUnmountAutoFocus = () => {
+    const container = ref();
+
+    if (!container) {
+      return false;
+    }
+
+    const activeElement = getActiveElement(container);
+
+    if (!activeElement) {
+      return false;
+    }
+
+    if (contains(container, activeElement)) {
+      return false;
+    }
+
+    // Don't autofocus the previously focused element on unmount
+    // if a focusable element outside the container is already focused.
+    return isFocusable(activeElement);
+  };
+
   // Handle dispatching mount and unmount autofocus events.
   createEffect(() => {
     const container = ref();
@@ -160,6 +185,10 @@ export function createFocusScope<T extends HTMLElement>(
 
       setTimeout(() => {
         const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT_EVENT, EVENT_OPTIONS);
+
+        if (shouldPreventUnmountAutoFocus()) {
+          unmountEvent.preventDefault();
+        }
 
         container.addEventListener(AUTOFOCUS_ON_UNMOUNT_EVENT, onUnmountAutoFocus);
         container.dispatchEvent(unmountEvent);
@@ -214,6 +243,11 @@ export function createFocusScope<T extends HTMLElement>(
     const onFocusIn = (event: FocusEvent) => {
       const target = event.target as HTMLElement | null;
 
+      // If the element is within a top layer element (e.g. toasts), always allow moving focus there.
+      if (target?.closest(`[${DATA_TOP_LAYER_ATTR}]`)) {
+        return;
+      }
+
       if (contains(container, target)) {
         lastFocusedElement = target;
       } else {
@@ -224,6 +258,11 @@ export function createFocusScope<T extends HTMLElement>(
     const onFocusOut = (event: FocusEvent) => {
       const relatedTarget = event.relatedTarget as HTMLElement | null;
       const target = relatedTarget ?? getActiveElement(container);
+
+      // If the element is within a top layer element (e.g. toasts), always allow moving focus there.
+      if (target?.closest(`[${DATA_TOP_LAYER_ATTR}]`)) {
+        return;
+      }
 
       if (!contains(container, target)) {
         focusWithoutScrolling(lastFocusedElement);

@@ -2,19 +2,13 @@ name: Build and Test
 
 on:
   push:
-    branches: [main]
   pull_request:
     branches: [main]
 
 jobs:
   build:
-    runs-on: ${{ matrix.operating-system }}
-
-    strategy:
-      matrix:
-        node-version: [16.x, 18.x]
-        operating-system: [ubuntu-latest]
-
+    name: Build and Test
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -23,10 +17,10 @@ jobs:
 
       - uses: pnpm/action-setup@v2.2.4
 
-      - name: Setup Node.js environment ${{ matrix.node-version }}
+      - name: Setup Node.js 18.x
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18.x
           cache: pnpm
 
       - name: Install dependencies
@@ -34,8 +28,11 @@ jobs:
 
       - name: Build
         run: pnpm build
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
 
       - name: Test
         run: pnpm test
         env:
           CI: true
+          NODE_OPTIONS: "--max_old_space_size=4096"

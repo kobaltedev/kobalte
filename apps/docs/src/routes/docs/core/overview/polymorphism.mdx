@@ -1,0 +1,76 @@
+import { Callout } from "../../../../components";
+
+# Polymorphism
+
+All component parts that render a DOM element have an `asChild` prop.
+
+Paired with the `<As>` component this allows you to attach a component accessibility and functional requirements onto your own element instead.
+
+When using this pattern the following rules apply to the component with the `asChild` prop, and it's child `<As>` component :
+
+- CSS classes are combined.
+- Styles are combined, if same attribute exists the one from `<As>` win.
+- Event handlers are chained, The one from `<As>` get called first.
+
+<Callout type="warning">
+  If you decide to change the default rendered node (e.g. change a `button` to a `div`) then it's up
+  to you to ensure the correct accessibility and functionality of your chosen node type.
+</Callout>
+
+## With HTML elements
+
+You can use any HTML element with the `As` component. For example, `a` tag will render an anchor:
+
+```tsx
+import { As, Popover as KPopover } from "@kobalte/core";
+
+function App() {
+  return (
+    <KPopover.Trigger asChild>
+      <As component="a" href="/">
+        Trigger
+      </As>
+    </KPopover.Trigger>
+  );
+}
+```
+
+## With other components
+
+You can also use polymorphic components with any other component. For example, with `@solidjs/router` Link:
+
+```tsx
+import { As, Popover as KPopover } from "@kobalte/core";
+import { Link } from "@solidjs/router";
+
+function App() {
+  return (
+    <KPopover.Trigger asChild>
+      <As component={Link} href="/">
+        Trigger
+      </As>
+    </KPopover.Trigger>
+  );
+}
+```
+
+## The `as` prop
+
+For simple use cases where you **just need to change the rendered DOM node** in order to produce valid HTML the `as` prop can be used:
+
+```tsx {6}
+import { Tabs as KTabs } from "@kobalte/core";
+
+function App() {
+  return (
+    <KTabs.Root>
+      <KTabs.List>
+        <KTabs.Trigger value="one" as="div">
+          <button>Trigger one</button>
+        </KTabs.Trigger>
+      </KTabs.List>
+      <KTabs.Content value="one">Content one</KTabs.Content>
+    </KTabs.Root>
+  );
+}
+```

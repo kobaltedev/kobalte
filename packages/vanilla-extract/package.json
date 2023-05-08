@@ -1,6 +1,6 @@
 {
   "name": "@kobalte/vanilla-extract",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "private": false,
   "description": "Vanilla Extract utils to style Kobalte components easily",
   "keywords": [
@@ -12,19 +12,20 @@
     "components",
     "vanilla-extract"
   ],
-  "homepage": "https://github.com/fabien-ml/kobalte/tree/main/packages/vanilla-extract#readme",
+  "homepage": "https://github.com/kobaltedev/kobalte/tree/main/packages/vanilla-extract#readme",
   "bugs": {
-    "url": "https://github.com/fabien-ml/kobalte/issues"
+    "url": "https://github.com/kobaltedev/kobalte/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fabien-ml/kobalte.git"
+    "url": "git+https://github.com/kobaltedev/kobalte.git"
   },
   "license": "MIT",
   "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
   "sideEffects": false,
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "default": "./dist/index.mjs",
       "require": "./dist/index.js",
@@ -42,11 +43,10 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
-    "@vanilla-extract/css": "1.9.2",
-    "tsup": "6.5.0"
+    "@vanilla-extract/css": "1.11.0"
   },
   "peerDependencies": {
-    "@vanilla-extract/css": "^1.9.2"
+    "@vanilla-extract/css": "^1.11.0"
   },
   "publishConfig": {
     "access": "public"

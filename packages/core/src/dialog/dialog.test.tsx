@@ -6,14 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-spectrum/dialog/test/Dialog.test.js
  */
 
-import { render, screen } from "solid-testing-library";
+import { render, screen } from "@solidjs/testing-library";
 
 import * as Dialog from ".";
 
 describe("Dialog", () => {
   it("should be labelled by its dialog title", function () {
     render(() => (
-      <Dialog.Root isOpen>
+      <Dialog.Root open>
         <Dialog.Content>
           <Dialog.Title data-testid="title">title</Dialog.Title>
         </Dialog.Content>
@@ -28,7 +28,7 @@ describe("Dialog", () => {
 
   it("should be described by its dialog description", function () {
     render(() => (
-      <Dialog.Root isOpen>
+      <Dialog.Root open>
         <Dialog.Content>
           <Dialog.Description data-testid="description">description</Dialog.Description>
         </Dialog.Content>

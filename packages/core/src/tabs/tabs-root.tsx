@@ -7,17 +7,17 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps, Orientation } from "@kobalte/utils";
+import { mergeDefaultProps, Orientation, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, createSignal, createUniqueId, on, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { createSingleSelectListState } from "../list";
-import { CollectionItem } from "../primitives";
+import { AsChildProp, Polymorphic } from "../polymorphic";
+import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { TabsContext, TabsContextValue } from "./tabs-context";
 import { TabsActivationMode } from "./types";
 
-export interface TabsRootOptions {
+export interface TabsRootOptions extends AsChildProp {
   /** The controlled value of the tab to activate. */
   value?: string;
 
@@ -28,7 +28,7 @@ export interface TabsRootOptions {
   defaultValue?: string;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string) => void;
+  onChange?: (value: string) => void;
 
   /** The orientation of the tabs. */
   orientation?: Orientation;
@@ -37,19 +37,20 @@ export interface TabsRootOptions {
   activationMode?: TabsActivationMode;
 
   /** Whether the tabs are disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
+
+export interface TabsRootProps extends OverrideComponentProps<"div", TabsRootOptions> {}
 
 /**
  * A set of layered sections of content, known as tab panels, that display one panel of content at a time.
  * `Tabs` contains all the parts of a tabs component and provide context for its children.
  */
-export const TabsRoot = createPolymorphicComponent<"div", TabsRootOptions>(props => {
+export function TabsRoot(props: TabsRootProps) {
   const defaultId = `tabs-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: defaultId,
       orientation: "horizontal",
       activationMode: "automatic",
@@ -58,16 +59,15 @@ export const TabsRoot = createPolymorphicComponent<"div", TabsRootOptions>(props
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "value",
     "defaultValue",
-    "onValueChange",
+    "onChange",
     "orientation",
     "activationMode",
-    "isDisabled",
+    "disabled",
   ]);
 
-  const [items, setItems] = createSignal<CollectionItem[]>([]);
+  const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
   const [selectedTab, setSelectedTab] = createSignal<HTMLElement>();
 
   const { DomCollectionProvider } = createDomCollection({ items, onItemsChange: setItems });
@@ -75,7 +75,7 @@ export const TabsRoot = createPolymorphicComponent<"div", TabsRootOptions>(props
   const listState = createSingleSelectListState({
     selectedKey: () => local.value,
     defaultSelectedKey: () => local.defaultValue,
-    onSelectionChange: key => local.onValueChange?.(String(key)),
+    onSelectionChange: key => local.onChange?.(String(key)),
     dataSource: items,
   });
 
@@ -98,13 +98,13 @@ export const TabsRoot = createPolymorphicComponent<"div", TabsRootOptions>(props
           let selectedItem = selectedKey != null ? collection.getItem(selectedKey) : undefined;
 
           // loop over tabs until we find one that isn't disabled and select that
-          while (selectedItem?.isDisabled && selectedItem.key !== collection.getLastKey()) {
+          while (selectedItem?.disabled && selectedItem.key !== collection.getLastKey()) {
             selectedKey = collection.getKeyAfter(selectedItem.key);
             selectedItem = selectedKey != null ? collection.getItem(selectedKey) : undefined;
           }
 
           // if this check is true, then every item is disabled, it makes more sense to default to the first key than the last
-          if (selectedItem?.isDisabled && selectedKey === collection.getLastKey()) {
+          if (selectedItem?.disabled && selectedKey === collection.getLastKey()) {
             selectedKey = collection.getFirstKey();
           }
 
@@ -135,7 +135,7 @@ export const TabsRoot = createPolymorphicComponent<"div", TabsRootOptions>(props
   const contentIdsMap = new Map<string, string>();
 
   const context: TabsContextValue = {
-    isDisabled: () => local.isDisabled ?? false,
+    isDisabled: () => local.disabled ?? false,
     orientation: () => local.orientation!,
     activationMode: () => local.activationMode!,
     triggerIdsMap: () => triggerIdsMap,
@@ -150,8 +150,8 @@ export const TabsRoot = createPolymorphicComponent<"div", TabsRootOptions>(props
   return (
     <DomCollectionProvider>
       <TabsContext.Provider value={context}>
-        <Dynamic component={local.as} data-orientation={context.orientation()} {...others} />
+        <Polymorphic as="div" data-orientation={context.orientation()} {...others} />
       </TabsContext.Provider>
     </DomCollectionProvider>
   );
-});
+}

@@ -197,7 +197,7 @@ export class SelectionManager implements MultipleSelectionManager {
     while (key != null) {
       const item = this.collection().getItem(key);
 
-      if (item) {
+      if (item && item.type === "item") {
         keys.push(key);
       }
 
@@ -214,8 +214,14 @@ export class SelectionManager implements MultipleSelectionManager {
   private getKey(key: string) {
     const item = this.collection().getItem(key);
 
+    /*
     if (!item) {
       return key;
+    }
+    */
+
+    if (!item || item.type !== "item") {
+      return null;
     }
 
     return item.key;
@@ -379,13 +385,13 @@ export class SelectionManager implements MultipleSelectionManager {
 
     const item = this.collection().getItem(key);
 
-    return item != null && !item.isDisabled;
+    return item != null && !item.disabled;
   }
 
   isDisabled(key: string) {
     const item = this.collection().getItem(key);
 
-    return !item || item.isDisabled;
+    return !item || item.disabled;
   }
 
   private getAllSelectableKeys() {
@@ -400,7 +406,9 @@ export class SelectionManager implements MultipleSelectionManager {
             continue;
           }
 
-          keys.push(key);
+          if (item.type === "item") {
+            keys.push(key);
+          }
         }
 
         key = this.collection().getKeyAfter(key);

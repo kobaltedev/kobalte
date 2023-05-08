@@ -4,12 +4,14 @@ import { CreatePresenceResult } from "../primitives";
 
 export interface PopoverDataSet {
   "data-expanded": string | undefined;
+  "data-closed": string | undefined;
 }
 
 export interface PopoverContextValue {
   dataset: Accessor<PopoverDataSet>;
   isOpen: Accessor<boolean>;
   isModal: Accessor<boolean>;
+  preventScroll: Accessor<boolean>;
   contentPresence: CreatePresenceResult;
   triggerRef: Accessor<HTMLElement | undefined>;
   contentId: Accessor<string | undefined>;

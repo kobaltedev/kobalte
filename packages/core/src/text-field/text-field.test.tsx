@@ -1,6 +1,6 @@
-import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
+import { installPointerEvent } from "@kobalte/tests";
+import { render, screen } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
-import { fireEvent, render, screen } from "solid-testing-library";
 
 import * as TextField from ".";
 
@@ -11,7 +11,7 @@ describe("TextField", () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <TextField.Root defaultValue="cat" onValueChange={onChangeSpy}>
+      <TextField.Root defaultValue="cat" onChange={onChangeSpy}>
         <TextField.Label>Favorite Pet</TextField.Label>
         <TextField.Input />
       </TextField.Root>
@@ -31,7 +31,7 @@ describe("TextField", () => {
   it("value can be controlled", async () => {
     const onChangeSpy = jest.fn();
     render(() => (
-      <TextField.Root value="cat" onValueChange={onChangeSpy}>
+      <TextField.Root value="cat" onChange={onChangeSpy}>
         <TextField.Label>Favorite Pet</TextField.Label>
         <TextField.Input />
       </TextField.Root>
@@ -289,7 +289,7 @@ describe("TextField", () => {
 
   it("should have 'data-required' attribute when required", () => {
     render(() => (
-      <TextField.Root data-testid="textfield" isRequired>
+      <TextField.Root data-testid="textfield" required>
         <TextField.Input />
       </TextField.Root>
     ));
@@ -304,7 +304,7 @@ describe("TextField", () => {
 
   it("should have 'data-disabled' attribute when disabled", () => {
     render(() => (
-      <TextField.Root data-testid="textfield" isDisabled>
+      <TextField.Root data-testid="textfield" disabled>
         <TextField.Input />
       </TextField.Root>
     ));
@@ -319,7 +319,7 @@ describe("TextField", () => {
 
   it("should have 'data-readonly' attribute when readonly", () => {
     render(() => (
-      <TextField.Root data-testid="textfield" isReadOnly>
+      <TextField.Root data-testid="textfield" readOnly>
         <TextField.Input />
       </TextField.Root>
     ));
@@ -360,7 +360,7 @@ describe("TextField", () => {
 
   it("sets 'required' and 'aria-required' on input when 'isRequired' is true", () => {
     render(() => (
-      <TextField.Root isRequired>
+      <TextField.Root required>
         <TextField.Input />
       </TextField.Root>
     ));
@@ -373,7 +373,7 @@ describe("TextField", () => {
 
   it("sets 'disabled' and 'aria-disabled' on input when 'isDisabled' is true", () => {
     render(() => (
-      <TextField.Root isDisabled>
+      <TextField.Root disabled>
         <TextField.Input />
       </TextField.Root>
     ));
@@ -386,7 +386,7 @@ describe("TextField", () => {
 
   it("sets 'readonly' and 'aria-readonly' on input when 'isReadOnly' is true", () => {
     render(() => (
-      <TextField.Root isReadOnly>
+      <TextField.Root readOnly>
         <TextField.Input />
       </TextField.Root>
     ));

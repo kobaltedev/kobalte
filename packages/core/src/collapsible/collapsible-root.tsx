@@ -6,10 +6,10 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import { createGenerateId, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createDisclosureState, createRegisterId } from "../primitives";
 import {
   CollapsibleContext,
@@ -17,21 +17,21 @@ import {
   CollapsibleDataSet,
 } from "./collapsible-context";
 
-export interface CollapsibleRootOptions {
+export interface CollapsibleRootOptions extends AsChildProp {
   /** The controlled open state of the collapsible. */
-  isOpen?: boolean;
+  open?: boolean;
 
   /**
    * The default open state when initially rendered.
    * Useful when you do not need to control the open state.
    */
-  defaultIsOpen?: boolean;
+  defaultOpen?: boolean;
 
   /** Event handler called when the open state of the collapsible changes. */
   onOpenChange?: (isOpen: boolean) => void;
 
   /** Whether the collapsible is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /**
    * Used to force mounting the collapsible content when more control is needed.
@@ -40,46 +40,43 @@ export interface CollapsibleRootOptions {
   forceMount?: boolean;
 }
 
+export interface CollapsibleRootProps
+  extends OverrideComponentProps<"div", CollapsibleRootOptions> {}
+
 /**
  * An interactive component which expands/collapses a content.
  */
-export const CollapsibleRoot = createPolymorphicComponent<"div", CollapsibleRootOptions>(props => {
+export function CollapsibleRoot(props: CollapsibleRootProps) {
   const defaultId = `collapsible-${createUniqueId()}`;
 
-  props = mergeDefaultProps(
-    {
-      as: "div",
-      id: defaultId,
-    },
-    props
-  );
+  props = mergeDefaultProps({ id: defaultId }, props);
 
   const [local, others] = splitProps(props, [
-    "as",
-    "isOpen",
-    "defaultIsOpen",
+    "open",
+    "defaultOpen",
     "onOpenChange",
-    "isDisabled",
+    "disabled",
     "forceMount",
   ]);
 
   const [contentId, setContentId] = createSignal<string>();
 
   const disclosureState = createDisclosureState({
-    isOpen: () => local.isOpen,
-    defaultIsOpen: () => local.defaultIsOpen,
+    open: () => local.open,
+    defaultOpen: () => local.defaultOpen,
     onOpenChange: isOpen => local.onOpenChange?.(isOpen),
   });
 
   const dataset: Accessor<CollapsibleDataSet> = createMemo(() => ({
     "data-expanded": disclosureState.isOpen() ? "" : undefined,
-    "data-disabled": local.isDisabled ? "" : undefined,
+    "data-closed": !disclosureState.isOpen() ? "" : undefined,
+    "data-disabled": local.disabled ? "" : undefined,
   }));
 
   const context: CollapsibleContextValue = {
     dataset,
     isOpen: disclosureState.isOpen,
-    isDisabled: () => local.isDisabled ?? false,
+    disabled: () => local.disabled ?? false,
     shouldMount: () => local.forceMount || disclosureState.isOpen(),
     contentId,
     toggle: disclosureState.toggle,
@@ -89,7 +86,7 @@ export const CollapsibleRoot = createPolymorphicComponent<"div", CollapsibleRoot
 
   return (
     <CollapsibleContext.Provider value={context}>
-      <Dynamic component={local.as} {...dataset()} {...others} />
+      <Polymorphic as="div" {...dataset()} {...others} />
     </CollapsibleContext.Provider>
   );
-});
+}

@@ -15,21 +15,22 @@
 import {
   callHandler,
   composeEventHandlers,
-  createPolymorphicComponent,
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, createUniqueId, JSX, on, onCleanup, splitProps } from "solid-js";
-import { Dynamic, isServer } from "solid-js/web";
+import { isServer } from "solid-js/web";
 
 import { Direction, useLocale } from "../i18n";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 import { getPointerGraceArea, Side } from "./utils";
 
-export interface MenuSubTriggerOptions {
+export interface MenuSubTriggerOptions extends AsChildProp {
   /**
    * Optional text used for typeahead purposes.
    * By default, the typeahead behavior will use the .textContent of the Menu.SubTrigger.
@@ -38,7 +39,7 @@ export interface MenuSubTriggerOptions {
   textValue?: string;
 
   /** Whether the sub menu trigger is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
 
 const SELECTION_KEYS = ["Enter", " "];
@@ -47,10 +48,12 @@ const SUB_OPEN_KEYS: Record<Direction, string[]> = {
   rtl: [...SELECTION_KEYS, "ArrowLeft"],
 };
 
+export interface MenuSubTriggerProps extends OverrideComponentProps<"div", MenuSubTriggerOptions> {}
+
 /**
  * An item that opens a submenu.
  */
-export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOptions>(props => {
+export function MenuSubTrigger(props: MenuSubTriggerProps) {
   let ref: HTMLDivElement | undefined;
 
   const rootContext = useMenuRootContext();
@@ -58,18 +61,16 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: rootContext.generateId(`sub-trigger-${createUniqueId()}`),
     },
     props
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "ref",
     "id",
     "textValue",
-    "isDisabled",
+    "disabled",
     "onPointerMove",
     "onPointerLeave",
     "onPointerDown",
@@ -118,7 +119,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
       selectionManager: parentSelectionManager,
       shouldSelectOnPressUp: true,
       allowsDifferentPressOrigin: true,
-      isDisabled: () => local.isDisabled,
+      disabled: () => local.disabled,
     },
     () => ref
   );
@@ -126,7 +127,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     callHandler(e, local.onClick);
 
-    if (!context.isOpen() && !local.isDisabled) {
+    if (!context.isOpen() && !local.disabled) {
       context.open(true);
     }
   };
@@ -146,7 +147,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
       return;
     }
 
-    if (local.isDisabled) {
+    if (local.disabled) {
       parentMenuContext?.onItemLeave(e);
       return;
     }
@@ -226,7 +227,7 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
       return;
     }
 
-    if (local.isDisabled) {
+    if (local.disabled) {
       return;
     }
 
@@ -239,14 +240,14 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
       parentSelectionManager().setFocused(false);
       parentSelectionManager().setFocusedKey(undefined);
 
-      // We focus manually because we prevented it in MenuSubContent's `onOpenAutoFocus`.
-      if (context.isOpen()) {
-        context.focusContent();
-        context.listState().selectionManager().setFocused(true);
-        context.listState().selectionManager().setFocusedKey(collection().getFirstKey());
-      } else {
+      if (!context.isOpen()) {
         context.open("first");
       }
+
+      // We focus manually because we prevented it in MenuSubContent's `onOpenAutoFocus`.
+      context.focusContent();
+      context.listState().selectionManager().setFocused(true);
+      context.listState().selectionManager().setFocusedKey(collection().getFirstKey());
     }
   };
 
@@ -260,10 +261,10 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
     // Register the item trigger on the parent menu that contains it.
     const unregister = context.registerItemToParentDomCollection({
       ref: () => ref,
+      type: "item",
       key: key(),
-      label: "", // not applicable here
       textValue: local.textValue ?? ref?.textContent ?? "",
-      isDisabled: local.isDisabled ?? false,
+      disabled: local.disabled ?? false,
     });
 
     onCleanup(unregister);
@@ -288,8 +289,8 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
   });
 
   return (
-    <Dynamic
-      component={local.as!}
+    <Polymorphic
+      as="div"
       ref={mergeRefs(el => {
         context.setTriggerRef(el);
         ref = el;
@@ -300,10 +301,10 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
       aria-haspopup="true"
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.contentId() : undefined}
-      aria-disabled={local.isDisabled}
+      aria-disabled={local.disabled}
       data-key={selectableItem.dataKey()}
       data-highlighted={isHighlighted() ? "" : undefined}
-      data-disabled={local.isDisabled ? "" : undefined}
+      data-disabled={local.disabled ? "" : undefined}
       onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
       onPointerUp={composeEventHandlers([local.onPointerUp, selectableItem.onPointerUp])}
       onClick={composeEventHandlers([onClick, selectableItem.onClick])}
@@ -316,4 +317,4 @@ export const MenuSubTrigger = createPolymorphicComponent<"div", MenuSubTriggerOp
       {...others}
     />
   );
-});
+}

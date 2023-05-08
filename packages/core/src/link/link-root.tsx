@@ -6,39 +6,34 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/link/src/useLink.ts
  */
 
-import {
-  callHandler,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
+import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createTagName } from "../primitives";
-import { Dynamic } from "solid-js/web";
 
-export interface LinkRootOptions {
+export interface LinkRootOptions extends AsChildProp {
   /** Whether the link is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
+
+export interface LinkRootProps extends OverrideComponentProps<"a", LinkRootOptions> {}
 
 /**
  * Link allows a user to navigate to another page or resource within a web page or application.
  */
-export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props => {
+export function LinkRoot(props: LinkRootProps) {
   let ref: HTMLAnchorElement | undefined;
 
-  props = mergeDefaultProps({ as: "a" }, props);
-
-  const [local, others] = splitProps(props, ["as", "ref", "type", "isDisabled", "onClick"]);
+  const [local, others] = splitProps(props, ["ref", "type", "disabled", "onClick"]);
 
   const tagName = createTagName(
     () => ref,
-    () => local.as || "a"
+    () => "a"
   );
 
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-    if (local.isDisabled) {
+    if (local.disabled) {
       e.preventDefault();
       return;
     }
@@ -47,15 +42,15 @@ export const LinkRoot = createPolymorphicComponent<"a", LinkRootOptions>(props =
   };
 
   return (
-    <Dynamic
-      component={local.as}
+    <Polymorphic
+      as="a"
       ref={mergeRefs(el => (ref = el), local.ref)}
       role={tagName() !== "a" ? "link" : undefined}
-      tabIndex={tagName() !== "a" && !local.isDisabled ? 0 : undefined}
-      aria-disabled={local.isDisabled ? true : undefined}
-      data-disabled={local.isDisabled ? "" : undefined}
+      tabIndex={tagName() !== "a" && !local.disabled ? 0 : undefined}
+      aria-disabled={local.disabled ? true : undefined}
+      data-disabled={local.disabled ? "" : undefined}
       onClick={onClick}
       {...others}
     />
   );
-});
+}

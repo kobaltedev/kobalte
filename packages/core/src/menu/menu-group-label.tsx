@@ -6,30 +6,31 @@
  * https://github.com/adobe/react-spectrum/blob/e6808d1b5e80cef7af7e63974f658043593b2e1e/packages/@react-aria/menu/src/useMenuSection.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useMenuGroupContext } from "./menu-group-context";
+
+export interface MenuGroupLabelProps extends OverrideComponentProps<"span", AsChildProp> {}
 
 /**
  * A component used to render the label of a `Menu.Group`.
  * It won't be focusable using arrow keys.
  */
-export const MenuGroupLabel = createPolymorphicComponent<"span">(props => {
+export function MenuGroupLabel(props: MenuGroupLabelProps) {
   const context = useMenuGroupContext();
 
   props = mergeDefaultProps(
     {
-      as: "span",
       id: context.generateId("label"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "id"]);
+  const [local, others] = splitProps(props, ["id"]);
 
   createEffect(() => onCleanup(context.registerLabelId(local.id!)));
 
-  return <Dynamic component={local.as} id={local.id} aria-hidden="true" {...others} />;
-});
+  return <Polymorphic as="span" id={local.id} aria-hidden="true" {...others} />;
+}

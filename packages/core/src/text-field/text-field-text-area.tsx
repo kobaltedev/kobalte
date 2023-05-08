@@ -7,24 +7,28 @@
  * https://github.com/adobe/react-spectrum/blob/0af91c08c745f4bb35b6ad4932ca17a0d85dd02c/packages/@react-spectrum/textfield/src/TextArea.tsx
  */
 
-import { composeEventHandlers, mergeDefaultProps, mergeRefs, OverrideProps } from "@kobalte/utils";
-import { ComponentProps, createEffect, on, splitProps } from "solid-js";
+import { composeEventHandlers, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, on, splitProps } from "solid-js";
 
+import { AsChildProp } from "../polymorphic";
 import { useTextFieldContext } from "./text-field-context";
 import { TextFieldInputBase } from "./text-field-input";
 
-export interface TextFieldAreaOptions {
+export interface TextFieldTextAreaOptions extends AsChildProp {
   /** Whether the textarea should adjust its height when the value changes. */
   autoResize?: boolean;
+  
+  /** Whether the form should be submitted when the user presses the enter key. */
   submitOnEnter?: boolean;
 }
+
+export interface TextFieldTextAreaProps
+  extends OverrideComponentProps<"textarea", TextFieldTextAreaOptions> {}
 
 /**
  * The native html textarea of the textfield.
  */
-export function TextFieldTextArea(
-  props: OverrideProps<ComponentProps<"textarea">, TextFieldAreaOptions>
-) {
+export function TextFieldTextArea(props: TextFieldTextAreaProps) {
   let ref: HTMLTextAreaElement | undefined;
 
   const context = useTextFieldContext();
@@ -48,7 +52,7 @@ export function TextFieldTextArea(
     })
   );
 
-  const onKeyPressed = (event: KeyboardEvent) => {
+  const onKeyPress = (event: KeyboardEvent) => {
     if (ref && local.submitOnEnter && event.key === "Enter" && !event.shiftKey) {
       if (ref.form) {
         ref.form.requestSubmit();
@@ -61,9 +65,9 @@ export function TextFieldTextArea(
     <TextFieldInputBase
       as="textarea"
       aria-multiline={local.submitOnEnter ? "false" : undefined}
-      onKeyPress={composeEventHandlers([local.onKeyPress, onKeyPressed])}
-      ref={mergeRefs(el => (ref = el), local.ref)}
-      {...others}
+      onKeyPress={composeEventHandlers([local.onKeyPress, onKeyPress])}
+      ref={mergeRefs(el => (ref = el), local.ref) as any}
+      {...(others as any)}
     />
   );
 }

@@ -7,15 +7,16 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-stately/radio/src/useRadioGroupState.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
 
+import { AsChildProp } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import { MenuGroup } from "./menu-group";
 import { MenuRadioGroupContext, MenuRadioGroupContextValue } from "./menu-radio-group-context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuRadioGroupOptions {
+export interface MenuRadioGroupOptions extends AsChildProp {
   /** The controlled value of the item radio to check. */
   value?: string;
 
@@ -26,43 +27,39 @@ export interface MenuRadioGroupOptions {
   defaultValue?: string;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string) => void;
+  onChange?: (value: string) => void;
 
   /** Whether the menu radio group is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
+
+export interface MenuRadioGroupProps extends OverrideComponentProps<"div", MenuRadioGroupOptions> {}
 
 /**
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
-export const MenuRadioGroup = createPolymorphicComponent<"div", MenuRadioGroupOptions>(props => {
+export function MenuRadioGroup(props: MenuRadioGroupProps) {
   const rootContext = useMenuRootContext();
 
   const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: defaultId,
     },
     props
   );
 
-  const [local, others] = splitProps(props, [
-    "value",
-    "defaultValue",
-    "onValueChange",
-    "isDisabled",
-  ]);
+  const [local, others] = splitProps(props, ["value", "defaultValue", "onChange", "disabled"]);
 
   const [selected, setSelected] = createControllableSignal<string>({
     value: () => local.value,
     defaultValue: () => local.defaultValue,
-    onChange: value => local.onValueChange?.(value),
+    onChange: value => local.onChange?.(value),
   });
 
   const context: MenuRadioGroupContextValue = {
-    isDisabled: () => local.isDisabled,
+    isDisabled: () => local.disabled,
     isSelectedValue: (value: string) => value === selected(),
     setSelectedValue: setSelected,
   };
@@ -72,4 +69,4 @@ export const MenuRadioGroup = createPolymorphicComponent<"div", MenuRadioGroupOp
       <MenuGroup {...others} />
     </MenuRadioGroupContext.Provider>
   );
-});
+}

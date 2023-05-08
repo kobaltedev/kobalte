@@ -1,4 +1,5 @@
-import { createPolymorphicComponent } from "@kobalte/utils";
+import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { splitProps } from "solid-js";
 
 import { createPreventScroll } from "../primitives";
 import { MenuContentBase, MenuContentBaseOptions } from "./menu-content-base";
@@ -7,13 +8,20 @@ import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuContentOptions extends MenuContentBaseOptions {}
 
-export const MenuContent = createPolymorphicComponent<"div", MenuContentOptions>(props => {
+export interface MenuContentProps extends OverrideComponentProps<"div", MenuContentOptions> {}
+
+export function MenuContent(props: MenuContentProps) {
+  let ref: HTMLElement | undefined;
+
   const rootContext = useMenuRootContext();
   const context = useMenuContext();
 
+  const [local, others] = splitProps(props, ["ref"]);
+
   createPreventScroll({
-    isDisabled: () => !(context.isOpen() && rootContext.isModal()),
+    ownerRef: () => ref,
+    isDisabled: () => !(context.isOpen() && (rootContext.isModal() || rootContext.preventScroll())),
   });
 
-  return <MenuContentBase {...props} />;
-});
+  return <MenuContentBase ref={mergeRefs(el => (ref = el), local.ref)} {...others} />;
+}

@@ -1,10 +1,10 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useFormControlContext } from "./form-control-context";
 
-export interface FormControlErrorMessageOptions {
+export interface FormControlErrorMessageOptions extends AsChildProp {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -12,24 +12,23 @@ export interface FormControlErrorMessageOptions {
   forceMount?: boolean;
 }
 
+export interface FormControlErrorMessageProps
+  extends OverrideComponentProps<"div", FormControlErrorMessageOptions> {}
+
 /**
  * The error message that gives the user information about how to fix a validation error on the form control.
  */
-export const FormControlErrorMessage = createPolymorphicComponent<
-  "div",
-  FormControlErrorMessageOptions
->(props => {
+export function FormControlErrorMessage(props: FormControlErrorMessageProps) {
   const context = useFormControlContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: context.generateId("error-message"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "id", "forceMount"]);
+  const [local, others] = splitProps(props, ["forceMount"]);
 
   const isInvalid = () => context.validationState() === "invalid";
 
@@ -38,12 +37,12 @@ export const FormControlErrorMessage = createPolymorphicComponent<
       return;
     }
 
-    onCleanup(context.registerErrorMessage(local.id!));
+    onCleanup(context.registerErrorMessage(others.id!));
   });
 
   return (
     <Show when={local.forceMount || isInvalid()}>
-      <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />
+      <Polymorphic as="div" {...context.dataset()} {...others} />
     </Show>
   );
-});
+}

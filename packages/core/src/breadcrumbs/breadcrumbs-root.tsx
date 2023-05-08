@@ -6,15 +6,15 @@
  * https://github.com/adobe/react-spectrum/blob/38a57d3360268fb0cb55c6b42b9a5f6f13bb57d6/packages/@react-aria/breadcrumbs/src/useBreadcrumbs.ts
  */
 
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
-import { createLocalizedStringFormatter } from "../i18n";
+import { createMessageFormatter } from "../i18n";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { BREADCRUMBS_INTL_MESSAGES } from "./breadcrumbs.intl";
 import { BreadcrumbsContext, BreadcrumbsContextValue } from "./breadcrumbs-context";
 
-export interface BreadcrumbsRootOptions {
+export interface BreadcrumbsRootOptions extends AsChildProp {
   /**
    * The visual separator between each breadcrumb item.
    * It will be used as the default children of `Breadcrumbs.Separator`.
@@ -22,21 +22,18 @@ export interface BreadcrumbsRootOptions {
   separator?: string | JSX.Element;
 }
 
+export interface BreadcrumbsRootProps
+  extends OverrideComponentProps<"nav", BreadcrumbsRootOptions> {}
+
 /**
  * Breadcrumbs show hierarchy and navigational context for a user’s location within an application.
  */
-export const BreadcrumbsRoot = createPolymorphicComponent<"nav", BreadcrumbsRootOptions>(props => {
-  props = mergeDefaultProps(
-    {
-      as: "nav",
-      separator: "/",
-    },
-    props
-  );
+export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
+  props = mergeDefaultProps({ separator: "/" }, props);
 
-  const [local, others] = splitProps(props, ["as", "separator"]);
+  const [local, others] = splitProps(props, ["separator"]);
 
-  const formatter = createLocalizedStringFormatter(() => BREADCRUMBS_INTL_MESSAGES);
+  const messageFormatter = createMessageFormatter(() => BREADCRUMBS_INTL_MESSAGES);
 
   const context: BreadcrumbsContextValue = {
     separator: () => local.separator,
@@ -44,7 +41,7 @@ export const BreadcrumbsRoot = createPolymorphicComponent<"nav", BreadcrumbsRoot
 
   return (
     <BreadcrumbsContext.Provider value={context}>
-      <Dynamic component={local.as} aria-label={formatter().format("breadcrumbs")} {...others} />
+      <Polymorphic as="nav" aria-label={messageFormatter().format("breadcrumbs")} {...others} />
     </BreadcrumbsContext.Provider>
   );
-});
+}

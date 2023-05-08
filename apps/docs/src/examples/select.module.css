@@ -7,7 +7,7 @@
   padding: 0 10px 0 16px;
   font-size: 16px;
   line-height: 1;
-  height: 40px;
+  min-height: 40px;
   outline: none;
   background-color: white;
   border: 1px solid hsl(240 6% 90%);
@@ -29,9 +29,21 @@
   color: hsl(0 72% 51%);
 }
 
+.select__trigger_multi {
+  width: 100%;
+  min-width: 200px;
+  max-width: 300px;
+  padding-left: 8px;
+}
+
 .select__value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-grow: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding: 4px 0;
   overflow: hidden;
 }
 
@@ -64,12 +76,22 @@
   border-radius: 6px;
   border: 1px solid hsl(240 6% 90%);
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transform-origin: var(--kb-select-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
+
+.select__content[data-expanded] {
+  animation: contentShow 250ms ease-out;
 }
 
 .select__listbox {
   overflow-y: auto;
   max-height: 360px;
   padding: 8px;
+}
+
+.select__listbox:focus {
+  outline: none;
 }
 
 .select__item {
@@ -79,8 +101,9 @@
   border-radius: 4px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 32px;
-  padding: 0 32px 0 24px;
+  padding: 0 8px;
   position: relative;
   user-select: none;
   outline: none;
@@ -98,27 +121,41 @@
   color: white;
 }
 
-.select__group-label {
-  padding: 0 24px;
+.select__section {
+  padding: 8px 0 0 8px;
   font-size: 14px;
   line-height: 32px;
   color: hsl(240 4% 46%);
 }
 
-.select__separator {
-  height: 1px;
-  border-top: 1px solid hsl(240 6% 90%);
-  margin: 6px;
-}
-
 .select__item-indicator {
-  position: absolute;
-  left: 0;
   height: 20px;
   width: 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 }
 
 [data-kb-theme="dark"] .select__trigger {
@@ -146,16 +183,12 @@
   box-shadow: none;
 }
 
-[data-kb-theme="dark"] .select__group-label {
+[data-kb-theme="dark"] .select__section {
   color: hsl(0 100% 100% / 0.7);
 }
 
 [data-kb-theme="dark"] .select__item {
   color: hsl(0 100% 100% / 0.9);
-}
-
-[data-kb-theme="dark"] .select__separator {
-  border-color: hsl(240 5% 34%);
 }
 
 [data-kb-theme="dark"] .select__description {

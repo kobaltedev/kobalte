@@ -7,14 +7,16 @@
  */
 
 import {
-  createPolymorphicComponent,
+  contains,
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
+  OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, onCleanup, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
+import { AsChildProp } from "../polymorphic";
 import {
   createFocusScope,
   createHideOutside,
@@ -25,7 +27,7 @@ import {
 } from "../primitives";
 import { useDialogContext } from "./dialog-context";
 
-export interface DialogContentOptions {
+export interface DialogContentOptions extends AsChildProp {
   /**
    * Event handler called when focus moves into the component after opening.
    * It can be prevented by calling `event.preventDefault`.
@@ -63,17 +65,18 @@ export interface DialogContentOptions {
   onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
+export interface DialogContentProps extends OverrideComponentProps<"div", DialogContentOptions> {}
+
 /**
  * Contains the content to be rendered when the dialog is open.
  */
-export const DialogContent = createPolymorphicComponent<"div", DialogContentOptions>(props => {
+export function DialogContent(props: DialogContentProps) {
   let ref: HTMLElement | undefined;
 
   const context = useDialogContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: context.generateId("content"),
     },
     props
@@ -81,23 +84,22 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentOpti
 
   const [local, others] = splitProps(props, [
     "ref",
-    "id",
     "onOpenAutoFocus",
     "onCloseAutoFocus",
-    "onEscapeKeyDown",
     "onPointerDownOutside",
     "onFocusOutside",
     "onInteractOutside",
   ]);
 
   let hasInteractedOutside = false;
+  let hasPointerDownOutside = false;
 
   const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
     local.onPointerDownOutside?.(e);
 
     // If the event is a right-click, we shouldn't close because
     // it is effectively as if we right-clicked the `Overlay`.
-    if (context.isModal() && e.detail.isContextMenu) {
+    if (context.modal() && e.detail.isContextMenu) {
       e.preventDefault();
     }
   };
@@ -107,7 +109,7 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentOpti
 
     // When focus is trapped, a `focusout` event may still happen.
     // We make sure we don't trigger our `onDismiss` in such case.
-    if (context.isModal()) {
+    if (context.modal()) {
       e.preventDefault();
     }
   };
@@ -115,15 +117,40 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentOpti
   const onInteractOutside = (e: InteractOutsideEvent) => {
     local.onInteractOutside?.(e);
 
-    if (!context.isModal() && !e.defaultPrevented) {
+    if (context.modal()) {
+      return;
+    }
+
+    // Non-modal behavior below
+
+    if (!e.defaultPrevented) {
       hasInteractedOutside = true;
+
+      if (e.detail.originalEvent.type === "pointerdown") {
+        hasPointerDownOutside = true;
+      }
+    }
+
+    // Prevent dismissing when clicking the trigger.
+    // As the trigger is already setup to close, without doing so would
+    // cause it to close and immediately open.
+    if (contains(context.triggerRef(), e.target as HTMLElement)) {
+      e.preventDefault();
+    }
+
+    // On Safari if the trigger is inside a container with tabIndex={0}, when clicked
+    // we will get the pointer down outside event on the trigger, but then a subsequent
+    // focus outside event on the container, we ignore any focus outside event when we've
+    // already had a pointer down outside event.
+    if (e.detail.originalEvent.type === "focusin" && hasPointerDownOutside) {
+      e.preventDefault();
     }
   };
 
   const onCloseAutoFocus = (e: Event) => {
     local.onCloseAutoFocus?.(e);
 
-    if (context.isModal()) {
+    if (context.modal()) {
       e.preventDefault();
       focusWithoutScrolling(context.triggerRef());
     } else {
@@ -137,29 +164,31 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentOpti
       }
 
       hasInteractedOutside = false;
+      hasPointerDownOutside = false;
     }
   };
 
   // aria-hide everything except the content (better supported equivalent to setting aria-modal)
   createHideOutside({
-    isDisabled: () => !(context.isOpen() && context.isModal()),
+    isDisabled: () => !(context.isOpen() && context.modal()),
     targets: () => (ref ? [ref] : []),
   });
 
   createPreventScroll({
-    isDisabled: () => !(context.isOpen() && context.isModal()),
+    ownerRef: () => ref,
+    isDisabled: () => !(context.isOpen() && (context.modal() || context.preventScroll())),
   });
 
   createFocusScope(
     {
-      trapFocus: () => context.isOpen() && context.isModal(),
+      trapFocus: () => context.isOpen() && context.modal(),
       onMountAutoFocus: local.onOpenAutoFocus,
       onUnmountAutoFocus: onCloseAutoFocus,
     },
     () => ref
   );
 
-  createEffect(() => onCleanup(context.registerContentId(local.id!)));
+  createEffect(() => onCleanup(context.registerContentId(others.id!)));
 
   return (
     <Show when={context.contentPresence.isPresent()}>
@@ -169,15 +198,13 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentOpti
           ref = el;
         }, local.ref)}
         role="dialog"
-        id={local.id}
         tabIndex={-1}
-        isDismissed={!context.isOpen()}
-        disableOutsidePointerEvents={context.isOpen() && context.isModal()}
+        disableOutsidePointerEvents={context.modal() && context.isOpen()}
         excludedElements={[context.triggerRef]}
         aria-labelledby={context.titleId()}
         aria-describedby={context.descriptionId()}
         data-expanded={context.isOpen() ? "" : undefined}
-        onEscapeKeyDown={local.onEscapeKeyDown}
+        data-closed={!context.isOpen() ? "" : undefined}
         onPointerDownOutside={onPointerDownOutside}
         onFocusOutside={onFocusOutside}
         onInteractOutside={onInteractOutside}
@@ -186,4 +213,4 @@ export const DialogContent = createPolymorphicComponent<"div", DialogContentOpti
       />
     </Show>
   );
-});
+}

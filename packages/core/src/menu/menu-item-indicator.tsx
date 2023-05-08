@@ -1,10 +1,10 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useMenuItemContext } from "./menu-item.context";
 
-export interface MenuItemIndicatorOptions {
+export interface MenuItemIndicatorOptions extends AsChildProp {
   /**
    * Used to force mounting when more control is needed.
    * Useful when controlling animation with SolidJS animation libraries.
@@ -12,28 +12,28 @@ export interface MenuItemIndicatorOptions {
   forceMount?: boolean;
 }
 
+export interface MenuItemIndicatorProps
+  extends OverrideComponentProps<"div", MenuItemIndicatorOptions> {}
+
 /**
  * The visual indicator rendered when the parent menu `CheckboxItem` or `RadioItem` is checked.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export const MenuItemIndicator = createPolymorphicComponent<"div", MenuItemIndicatorOptions>(
-  props => {
-    const context = useMenuItemContext();
+export function MenuItemIndicator(props: MenuItemIndicatorProps) {
+  const context = useMenuItemContext();
 
-    props = mergeDefaultProps(
-      {
-        as: "div",
-        id: context.generateId("indicator"),
-      },
-      props
-    );
+  props = mergeDefaultProps(
+    {
+      id: context.generateId("indicator"),
+    },
+    props
+  );
 
-    const [local, others] = splitProps(props, ["as", "forceMount"]);
+  const [local, others] = splitProps(props, ["forceMount"]);
 
-    return (
-      <Show when={local.forceMount || context.isChecked()}>
-        <Dynamic component={local.as} {...context.dataset()} {...others} />
-      </Show>
-    );
-  }
-);
+  return (
+    <Show when={local.forceMount || context.isChecked()}>
+      <Polymorphic as="div" {...context.dataset()} {...others} />
+    </Show>
+  );
+}

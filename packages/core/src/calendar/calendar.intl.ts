@@ -1,11 +1,3 @@
-/*!
- * Portions of this file are based on code from react-spectrum.
- * Apache License Version 2.0, Copyright 2020 Adobe.
- *
- * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/tree/main/packages/%40react-aria/calendar/intl
- */
-
 export const CALENDAR_INTL_MESSAGES = {
   "ar-AE": {
     dateRange: "{startDate} إلى {endDate}",
@@ -92,18 +84,18 @@ export const CALENDAR_INTL_MESSAGES = {
     todayDateSelected: "Σήμερα, επιλέχτηκε {date}",
   },
   "en-US": {
-    dateRange: "{startDate} to {endDate}",
-    dateSelected: "{date} selected",
-    finishRangeSelectionPrompt: "Click to finish selecting date range",
-    maximumDate: "Last available date",
-    minimumDate: "First available date",
-    next: "Next",
     previous: "Previous",
+    next: "Next",
     selectedDateDescription: "Selected Date: {date}",
     selectedRangeDescription: "Selected Range: {dateRange}",
-    startRangeSelectionPrompt: "Click to start selecting date range",
     todayDate: "Today, {date}",
     todayDateSelected: "Today, {date} selected",
+    dateSelected: "{date} selected",
+    startRangeSelectionPrompt: "Click to start selecting date range",
+    finishRangeSelectionPrompt: "Click to finish selecting date range",
+    minimumDate: "First available date",
+    maximumDate: "Last available date",
+    dateRange: "{startDate} to {endDate}",
   },
   "es-ES": {
     dateRange: "{startDate} a {endDate}",

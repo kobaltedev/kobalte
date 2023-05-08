@@ -10,11 +10,16 @@
 import {
   callHandler,
   mergeDefaultProps,
-  OverrideProps,
+  OverrideComponentProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { ComponentProps, JSX, splitProps } from "solid-js";
+import { JSX, splitProps } from "solid-js";
 
+import {
+  createFormControlField,
+  FORM_CONTROL_FIELD_PROP_NAMES,
+  useFormControlContext,
+} from "../form-control";
 import { useSwitchContext } from "./switch-context";
 
 export interface SwitchInputOptions {
@@ -22,35 +27,26 @@ export interface SwitchInputOptions {
   style?: JSX.CSSProperties;
 }
 
+export interface SwitchInputProps extends OverrideComponentProps<"input", SwitchInputOptions> {}
+
 /**
  * The native html input that is visually hidden in the switch.
  */
-export function SwitchInput(props: OverrideProps<ComponentProps<"input">, SwitchInputOptions>) {
+export function SwitchInput(props: SwitchInputProps) {
+  const formControlContext = useFormControlContext();
   const context = useSwitchContext();
 
   props = mergeDefaultProps({ id: context.generateId("input") }, props);
 
-  const [local, others] = splitProps(props, [
-    "style",
-    "aria-labelledby",
-    "onChange",
-    "onFocus",
-    "onBlur",
-  ]);
+  const [local, formControlFieldProps, others] = splitProps(
+    props,
+    ["style", "onChange", "onFocus", "onBlur"],
+    FORM_CONTROL_FIELD_PROP_NAMES
+  );
 
-  const ariaLabelledBy = () => {
-    return (
-      [
-        local["aria-labelledby"],
-        // If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
-        local["aria-labelledby"] != null && others["aria-label"] != null ? others.id : undefined,
-      ]
-        .filter(Boolean)
-        .join(" ") || undefined
-    );
-  };
+  const { fieldProps } = createFormControlField(formControlFieldProps);
 
-  const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = e => {
+  const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = e => {
     callHandler(e, local.onChange);
 
     e.stopPropagation();
@@ -66,15 +62,15 @@ export function SwitchInput(props: OverrideProps<ComponentProps<"input">, Switch
     // clicking on the input will change its internal `checked` state.
     //
     // To prevent this, we need to force the input `checked` state to be in sync with the toggle state.
-    target.checked = context.isChecked();
+    target.checked = context.checked();
   };
 
-  const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+  const onFocus: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onFocus);
     context.setIsFocused(true);
   };
 
-  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+  const onBlur: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onBlur);
     context.setIsFocused(false);
   };
@@ -83,21 +79,25 @@ export function SwitchInput(props: OverrideProps<ComponentProps<"input">, Switch
     <input
       type="checkbox"
       role="switch"
-      name={context.name()}
+      id={fieldProps.id()}
+      name={formControlContext.name()}
       value={context.value()}
-      checked={context.isChecked()}
-      required={context.isRequired()}
-      disabled={context.isDisabled()}
-      readonly={context.isReadOnly()}
+      checked={context.checked()}
+      required={formControlContext.isRequired()}
+      disabled={formControlContext.isDisabled()}
+      readonly={formControlContext.isReadOnly()}
       style={{ ...visuallyHiddenStyles, ...local.style }}
-      aria-labelledby={ariaLabelledBy()}
-      aria-invalid={context.validationState() === "invalid" || undefined}
-      aria-required={context.isRequired() || undefined}
-      aria-disabled={context.isDisabled() || undefined}
-      aria-readonly={context.isReadOnly() || undefined}
+      aria-label={fieldProps.ariaLabel()}
+      aria-labelledby={fieldProps.ariaLabelledBy()}
+      aria-describedby={fieldProps.ariaDescribedBy()}
+      aria-invalid={formControlContext.validationState() === "invalid" || undefined}
+      aria-required={formControlContext.isRequired() || undefined}
+      aria-disabled={formControlContext.isDisabled() || undefined}
+      aria-readonly={formControlContext.isReadOnly() || undefined}
       onChange={onChange}
       onFocus={onFocus}
       onBlur={onBlur}
+      {...formControlContext.dataset()}
       {...context.dataset()}
       {...others}
     />

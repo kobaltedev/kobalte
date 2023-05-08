@@ -1,0 +1,638 @@
+import { Preview, TabsSnippets, Callout, Kbd } from "../../../../components";
+import { BasicExample, MultipleRegionsExample } from "../../../../examples/toast";
+
+# Toast
+
+A succinct message that is displayed temporarily.
+
+## Import
+
+```ts
+import { Toast, toaster } from "@kobalte/core";
+```
+
+## Features
+
+- Automatically closes.
+- Pauses closing on hover, focus and window blur.
+- Supports hotkey to jump to toast region.
+- Supports closing via swipe gesture.
+- Exposes CSS variables for swipe gesture animations.
+- Limit the number of visible toasts.
+- Manage promises within toast.
+- Can remove or update toast programmatically.
+- Multiple toast regions.
+
+## Anatomy
+
+The toast region consists of:
+
+- **Toast.Region:** The fixed area where toasts appear. Users can jump to the viewport by pressing a hotkey.
+- **Toast.List:** The list containing all rendered toasts.
+
+```tsx
+<Toast.Region>
+  <Toast.List />
+</Toast.Region>
+```
+
+The toast consists of:
+
+- **Toast.Root:** The root container for a toast.
+- **Toast.CloseButton:** The button that closes the toast.
+- **Toast.Title:** An accessible title to be announced when the toast is opened.
+- **Toast.Description:** An optional accessible description to be announced when the toast is opened.
+- **Toast.ProgressTrack:** The component that visually represents the lifetime of the toast.
+- **Toast.ProgressFill:** The component that visually represents the remaining lifetime of the toast.
+
+```tsx
+<Toast.Root>
+  <Toast.CloseButton />
+  <Toast.Title />
+  <Toast.Description />
+  <Toast.ProgressTrack>
+    <Toast.ProgressFill />
+  </Toast.ProgressTrack>
+</Toast.Root>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Toast, toaster } from "@kobalte/core";
+    import { CrossIcon } from "some-icon-library";
+    import "./style.css";
+
+    function App() {
+      let id: number;
+
+      const showToast = () => {
+        id = toaster.show(props => (
+          <Toast.Root toastId={props.toastId} class="toast">
+            <div class="toast__content">
+              <div>
+                <Toast.Title class="toast__title">Event has been created</Toast.Title>
+                <Toast.Description class="toast__description">
+                  Monday, January 3rd at 6:00pm
+                </Toast.Description>
+              </div>
+              <Toast.CloseButton class="toast__close-button">
+                <CrossIcon />
+              </Toast.CloseButton>
+            </div>
+            <Toast.ProgressTrack class="toast__progress-track">
+              <Toast.ProgressFill class="toast__progress-fill" />
+            </Toast.ProgressTrack>
+          </Toast.Root>
+        ));
+      };
+
+      const updateToast = () => {
+        toaster.update(id, props => (
+          <Toast.Root toastId={props.toastId} class="toast">
+            <div class="toast__content">
+              <div>
+                <Toast.Title class="toast__title">Event has been updated</Toast.Title>
+                <Toast.Description class="toast__description">
+                  Friday, January 7th at 10:00pm
+                </Toast.Description>
+              </div>
+              <Toast.CloseButton class="toast__close-button">
+                <CrossIcon />
+              </Toast.CloseButton>
+            </div>
+            <Toast.ProgressTrack class="toast__progress-track">
+              <Toast.ProgressFill class="toast__progress-fill" />
+            </Toast.ProgressTrack>
+          </Toast.Root>
+        ));
+      };
+
+      return (
+        <>
+          <button onClick={showToast}>
+            Show toast
+          </button>
+          <button onClick={updateToast}>
+            Update toast
+          </button>
+          <Portal>
+            <Toast.Region>
+              <Toast.List class="toast__list" />
+            </Toast.Region>
+          </Portal>
+        </>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .toast__list {
+      --viewport-padding: 16px;
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      padding: var(--viewport-padding);
+      gap: 8px;
+      width: 400px;
+      max-width: 100vw;
+      margin: 0;
+      list-style: none;
+      z-index: 9999;
+      outline: none;
+    }
+
+    .toast {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border: 1px solid hsl(240 5% 84%);
+      border-radius: 6px;
+      padding: 12px;
+      background-color: white;
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    .toast[data-opened] {
+      animation: slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toast[data-closed] {
+      animation: hide 100ms ease-in;
+    }
+
+    .toast[data-swipe="move"] {
+      transform: translateX(var(--kb-toast-swipe-move-x));
+    }
+
+    .toast[data-swipe="cancel"] {
+      transform: translateX(0);
+      transition: transform 200ms ease-out;
+    }
+
+    .toast[data-swipe="end"] {
+      animation: swipeOut 100ms ease-out;
+    }
+
+    .toast__content {
+      display: flex;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .toast__close-button {
+      flex-shrink: 0;
+      height: 16px;
+      width: 16px;
+      margin-left: auto;
+      color: hsl(240 5% 34%);
+    }
+
+    .toast__title {
+      font-size: 16px;
+      font-weight: 500;
+      color: hsl(240 6% 10%);
+    }
+
+    .toast__description {
+      font-size: 14px;
+      color: hsl(240 5% 26%);
+    }
+
+    .toast__progress-track {
+      height: 8px;
+      width: 100%;
+      background-color: hsl(240 6% 90%);
+      border-radius: 3px;
+    }
+
+    .toast__progress-fill {
+      background-color: hsl(200 98% 39%);
+      border-radius: 3px;
+      height: 100%;
+      width: var(--kb-toast-progress-fill-width);
+      transition: width 250ms linear;
+    }
+
+    @keyframes hide {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(calc(100% + var(--viewport-padding)));
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes swipeOut {
+      from {
+        transform: translateX(var(--kb-toast-swipe-end-x));
+      }
+      to {
+        transform: translateX(calc(100% + var(--viewport-padding)));
+      }
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+### Showing a toast
+
+To create a toast, use the `toaster.show()` method and pass the generated `toastId` to `Toast.Root`.
+
+```tsx
+const id = toaster.show(props => <Toast.Root toastId={props.toastId}>...</Toast.Root>);
+```
+
+### Updating a toast
+
+The `toaster.update()` method can be used to update a toast by providing a toast id and the new component to render.
+
+```tsx
+toaster.update(id, props => <Toast.Root toastId={props.toastId}>...</Toast.Root>);
+```
+
+<Callout>
+  Notice that you always need to pass the `toastId` to `Toast.Root`, because it doesn't know
+  anything about the `toaster` nor the toast it is supposed to represent.
+</Callout>
+
+### Dismissing a toast
+
+The `toaster.dismiss()` method can be used to dismiss a toast by providing a toast id.
+
+```tsx
+toaster.dismiss(id);
+```
+
+### Clearing the toast stack and queue
+
+Use `toaster.clear()` method to dismiss all toasts.
+
+```tsx
+toaster.clear();
+```
+
+### Handling promises
+
+The toaster API exposes a `toaster.promise()` method to allow you update a toast when the promise resolves or rejects.
+
+In addition to the `toastId`, props will contain the following properties:
+
+- **state**: The state of the promise, can be `"pending" | "fulfilled" | "rejected"`.
+- **data**: The data returned by the promise when fulfilled, if any.
+- **error**: The error returned by the promise when rejected, if any.
+
+```tsx {3-5}
+toaster.promise(promise, props => (
+  <Toast.Root toastId={props.toastId}>
+    <Switch>
+      <Match when={props.state === "pending"}>Loading</Match>
+      <Match when={props.state === "fulfilled"}>{props.data}</Match>
+      <Match when={props.state === "rejected"}>{props.error}</Match>
+    </Switch>
+  </Toast.Root>
+));
+```
+
+### Pausing the toasts
+
+The `Toast.Region` component exposes the following props to pause the toasts it contains.
+
+- `pauseOnInteraction`: prop can be used to pause the toasts close timeout when a toast is hovered or focused.
+- `pauseOnPageIdle`: prop can be used to pause the toasts close timeout when the document loses focus or the page is idle (e.g. switching to a new browser tab).
+
+```tsx
+<Toast.Region pauseOnPageIdle pauseOnInteraction>
+  <Toast.List />
+</Toast.Region>
+```
+
+### Limiting the number of visible toasts
+
+Use the `limit` prop of the `Toast.Region` to limit the number of toasts visible at the same time. All toasts added after limit was reached will be added into queue and displayed when a visible toast is closed.
+
+```tsx
+<Toast.Region limit={3}>
+  <Toast.List />
+</Toast.Region>
+```
+
+### Progress bar fill width
+
+We expose a CSS custom property `--kb-toast-progress-fill-width` which corresponds to the remaining toast lifetime (in percentage). If you are building a linear progress bar to show the toast duration, you can use it to set the width of the `Toast.ProgressFill` component in CSS.
+
+```css {6}
+/* style.css*/
+
+.toast__progress-fill {
+  background-color: hsl(200 98% 39%);
+  border-radius: 3px;
+  height: 100%;
+  width: var(--kb-toast-progress-fill-width);
+  transition: width 250ms linear;
+}
+```
+
+### Animating swipe gesture
+
+We expose the CSS custom properties `--kb-toast-swipe-move-[x|y]` and `--kb-toast-swipe-end-[x|y]` which can be used with `data-swipe="[start|move|cancel|end]"` attributes to animate a swipe to close gesture.
+
+```tsx {18}
+// index.tsx
+
+import { Toast, toaster } from "@kobalte/core";
+import "./style.css";
+
+function App() {
+  const showToast = () => {
+    toaster.show(props => (
+      <Toast.Root toastId={props.toastId} class="toast">
+        ...
+      </Toast.Root>
+    ));
+  };
+
+  return (
+    <>
+      <button onClick={showToast}>Show toast</button>
+      <Portal>
+        <Toast.Region swipeDirection="right">
+          <Toast.List />
+        </Toast.Region>
+      </Portal>
+    </>
+  );
+}
+```
+
+```css {2-3,6,11,17}
+/* style.css */
+
+.toast[data-swipe="move"] {
+  transform: translateX(var(--kb-toast-swipe-move-x));
+}
+
+.toast[data-swipe="cancel"] {
+  transform: translateX(0);
+  transition: transform 200ms ease-out;
+}
+
+.toast[data-swipe="end"] {
+  animation: slideRight 100ms ease-out;
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(var(--kb-toast-swipe-end-x));
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+```
+
+### Abstracting the `toaster` API
+
+It's common in toast libraries to have method for displaying different type of toast like success or error. This can be done in Kobalte by abstracting the toaster API like below.
+
+```tsx
+// toast.tsx
+
+import { Toast, toaster } from "@kobalte/core";
+import { JSX } from "solid-js/jsx-runtime";
+import { Switch, Match } from "solid-js/web";
+
+function show(message: string) {
+  return toaster.show(props => (
+    <Toast.Root toastId={props.toastId} class="toast">
+      {message}
+    </Toast.Root>
+  ));
+}
+
+function success(message: string) {
+  return toaster.show(props => (
+    <Toast.Root toastId={props.toastId} class="toast toast--success">
+      {message}
+    </Toast.Root>
+  ));
+}
+
+function error(message: string) {
+  return toaster.show(props => (
+    <Toast.Root toastId={props.toastId} class="toast toast--error">
+      {message}
+    </Toast.Root>
+  ));
+}
+
+function promise<T, U>(
+  promise: Promise<T> | (() => Promise<T>),
+  options: {
+    loading?: JSX.Element;
+    success?: (data: T) => JSX.Element;
+    error?: (error: U) => JSX.Element;
+  }
+) {
+  return toaster.promise(promise, props => (
+    <Toast.Root
+      toastId={props.toastId}
+      classList={{
+        toast: true,
+        "toast-loading": props.state === "pending",
+        "toast-success": props.state === "fulfilled",
+        "toast-error": props.state === "rejected",
+      }}
+    >
+      <Switch>
+        <Match when={props.state === "pending"}>{options.loading}</Match>
+        <Match when={props.state === "fulfilled"}>{options.success?.(props.data)}</Match>
+        <Match when={props.state === "rejected"}>{options.error?.(props.error)}</Match>
+      </Switch>
+    </Toast.Root>
+  ));
+}
+
+function custom(jsx: () => JSX.Element) {
+  return toaster.show(props => <Toast.Root toastId={props.toastId}>{jsx}</Toast.Root>);
+}
+
+function dismiss(id: number) {
+  return toaster.dismiss(id);
+}
+
+export const toast = {
+  show,
+  success,
+  error,
+  promise,
+  custom,
+  dismiss,
+};
+```
+
+Then inside your application, use your own toast API:
+
+```tsx {2,6}
+// App.tsx
+
+import { toast } from "./toast";
+
+function App() {
+  const showToast = () => {
+    toast.success("Event has been created");
+  };
+
+  return (
+    <>
+      <button onClick={showToast}>Show toast</button>
+      <Portal>
+        <Toast.Region>
+          <Toast.List />
+        </Toast.Region>
+      </Portal>
+    </>
+  );
+}
+```
+
+### Multiple regions
+
+The `region` option in `toaster.show()` allows you to display toast in multiple regions at the same time. Not providing a region uses the default one.
+
+```tsx {1}
+toaster.show(props => <Toast.Root toastId={props.toastId}>...</Toast.Root>, {
+  region: "custom-region-id",
+});
+```
+
+Inside your application, use add your custom region:
+
+```tsx {2, 5}
+<Portal>
+  // Default region
+  <Toast.Region>
+    <Toast.List />
+  </Toast.Region>
+  <Toast.Region regionId="custom-region-id">
+    <Toast.List />
+  </Toast.Region>
+</Portal>
+```
+
+<Preview isRounded>
+  <MultipleRegionsExample />
+</Preview>
+
+## API reference
+
+### toaster
+
+| Method  | Description                                                                                                                                                                                                                                                                        |
+| :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| show    | `(toastComponent: ToastComponent, options?: ShowToastOptions) => number` <br/> Adds a new toast to the visible toasts or queue depending on current state, region and limit, and return the id of the created toast.                                                               |
+| update  | `(id: number, toastComponent: ToastComponent) => void` <br/> Update the toast of the given id with a new rendered component.                                                                                                                                                       |
+| promise | `(promise: Promise<T> \| (() => Promise<T>), toastComponent: ToastPromiseComponent<T, U>, options?: ShowToastOptions) => number` <br/> Adds a new promise-based toast to the visible toasts or queue depending on current state and limit, and return the id of the created toast. |
+| dismiss | `(id: number) => void` <br/> Removes toast with given id from visible toasts and queue.                                                                                                                                                                                            |
+| clear   | `() => void` <br/> Removes all toasts from visible toasts and queue.                                                                                                                                                                                                               |
+
+### Toast.Region
+
+| Prop               | Description                                                                                                                                                                                                                                                                                               |
+| :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| aria-label         | `string` <br/> **default:** "Notifications (\{hotkey\})" <br/> A label for the toast region to provide context for screen reader users when navigating page landmarks. Can contain a `{hotkey}` placeholder which will be replaced for you.                                                               |
+| hotkey             | `string[]` <br/> **default:** alt + T <br/> The keys to use as the keyboard shortcut that will move focus to the toast region. Use `event.code` value for each key from [keycode.info](https://www.toptal.com/developers/keycode). For meta keys, use `ctrlKey`, `shiftKey`, `altKey` and/or `metaKey`.   |
+| duration           | `number` <br/> **default:** 5000 <br/> The time in milliseconds that should elapse before automatically closing each toast.                                                                                                                                                                               |
+| limit              | `number` <br/> **default:** 3 <br/> The maximum amount of toasts that can be displayed at the same time.                                                                                                                                                                                                  |
+| swipeDirection     | `"up" \| "down" \| "left" \| "right"` <br/> **default:** "right" <br/> The direction of the pointer swipe that should close the toast.                                                                                                                                                                    |
+| swipeThreshold     | `number` <br/> **default:** 50 <br/> The distance in pixels that the swipe gesture must travel before a close is triggered.                                                                                                                                                                               |
+| pauseOnInteraction | `boolean` <br/> **default:** true <br/> Whether the toasts close timeout should pause when a toast is hovered or focused.                                                                                                                                                                                 |
+| pauseOnPageIdle    | `boolean` <br/> **default:** true <br/> Whether the toasts close timeout should pause when the document loses focus or the page is idle (e.g. switching to a new browser tab).                                                                                                                            |
+| topLayer           | `boolean` <br/> **default:** true <br/> Whether the toast region is marked as a "top layer", so that it: <br/> - is not aria-hidden when opening an overlay. <br/> - allows focus even outside a containing focus scope. <br/> - doesn’t dismiss overlays when clicking on it, even though it is outside. |
+| regionId           | `string` <br/> The custom id of the region used for multiple regions.                                                                                                                                                                                                                                     |
+
+### Toast.Root
+
+| Prop            | Description                                                                                                                                                                                                                                 |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| toastId         | `number` <br/> The id of the toast provided by the `toaster`.                                                                                                                                                                               |
+| priority        | `"high" \| "low"` <br/> **default:** "high" <br/> Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose `high`. Toasts generated from background tasks should use `low`. |
+| duration        | `number` <br/> The time in milliseconds that should elapse before automatically closing the toast. This will override the value supplied to `Toast.Region`.                                                                                 |
+| persistent    | `boolean` <br/> Whether the toast should ignore duration and disappear only by a user action.                                                                                                                                               |
+| onPause         | `() => void` <br/> Event handler called when the dismiss timer is paused. This occurs when the pointer is moved over the region or the region is focused.                                                                                   |
+| onResume        | `() => void` <br/> Event handler called when the dismiss timer is resumed. This occurs when the pointer is moved away from the region or the region is blurred.                                                                             |
+| onSwipeStart    | `(event: SwipeEvent) => void`<br/> Event handler called when starting a swipe interaction.                                                                                                                                                  |
+| onSwipeMove     | `(event: SwipeEvent) => void` <br/> Event handler called during a swipe interaction.                                                                                                                                                        |
+| onSwipeCancel   | `(event: SwipeEvent) => void` <br/> Event handler called when a swipe interaction is cancelled.                                                                                                                                             |
+| onSwipeEnd      | `(event: SwipeEvent) => void` <br/> Event handler called at the end of a swipe interaction.                                                                                                                                                 |
+| onEscapeKeyDown | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                                             |
+
+| Data attribute       | Description                                                              |
+| :------------------- | :----------------------------------------------------------------------- |
+| data-opened          | Present when the toast is open.                                          |
+| data-closed          | Present when the toast disappear.                                        |
+| data-swipe           | The state of the swipe, can be `"start" \| "move" \| "cancel" \| "end"`. |
+| data-swipe-direction | The direction of the pointer swipe that should close the toast.          |
+
+| CSS custom property     | Description                                                      |
+| :---------------------- | :--------------------------------------------------------------- |
+| --kb-toast-swipe-move-x | The offset position of the toast when horizontally swiping.      |
+| --kb-toast-swipe-move-y | The offset position of the toast when vertically swiping.        |
+| --kb-toast-swipe-end-x  | The offset end position of the toast after horizontally swiping. |
+| --kb-toast-swipe-end-y  | The offset end position of the toast after vertically swiping.   |
+
+## Rendered elements
+
+| Component             | Default rendered element |
+| :-------------------- | :----------------------- |
+| `Toast.Root`          | `li`                     |
+| `Toast.CloseButton`   | `button`                 |
+| `Toast.Title`         | `div`                    |
+| `Toast.Description`   | `div`                    |
+| `Toast.ProgressTrack` | `div`                    |
+| `Toast.ProgressFill`  | `div`                    |
+| `Toast.Region`        | `div`                    |
+| `Toast.List`          | `ol`                     |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                               | Description                                               |
+| :-------------------------------- | :-------------------------------------------------------- |
+| <Kbd>Alt</Kbd> + <Kbd>T</Kbd>     | Focuses toasts region.                                    |
+| <Kbd>Tab</Kbd>                    | Moves focus to the next focusable element.                |
+| <Kbd>Shift</Kbd> + <Kbd>Tab</Kbd> | Moves focus to the previous focusable element.            |
+| <Kbd>Space</Kbd>                  | When focus is on a `Toast.CloseButton`, closes the toast. |
+| <Kbd>Enter</Kbd>                  | When focus is on a `Toast.CloseButton`, closes the toast. |
+| <Kbd>Esc</Kbd>                    | When focus is on a toast, closes the toast.               |

@@ -1,26 +1,27 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { usePopoverContext } from "./popover-context";
+
+export interface PopoverDescriptionProps extends OverrideComponentProps<"p", AsChildProp> {}
 
 /**
  * An optional accessible description to be announced when the popover is open.
  */
-export const PopoverDescription = createPolymorphicComponent<"p">(props => {
+export function PopoverDescription(props: PopoverDescriptionProps) {
   const context = usePopoverContext();
 
   props = mergeDefaultProps(
     {
-      as: "p",
       id: context.generateId("description"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "id"]);
+  const [local, others] = splitProps(props, ["id"]);
 
   createEffect(() => onCleanup(context.registerDescriptionId(local.id!)));
 
-  return <Dynamic component={local.as} id={local.id} {...context.dataset()} {...others} />;
-});
+  return <Polymorphic as="p" id={local.id} {...context.dataset()} {...others} />;
+}

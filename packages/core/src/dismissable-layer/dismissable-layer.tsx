@@ -12,16 +12,10 @@
  * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/dismissable/src/dismissable-layer.ts
  */
 
-import {
-  contains,
-  createPolymorphicComponent,
-  getDocument,
-  mergeDefaultProps,
-  mergeRefs,
-} from "@kobalte/utils";
-import { Accessor, createEffect, on, onCleanup, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { contains, getDocument, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { Accessor, createEffect, on, onCleanup, onMount, splitProps } from "solid-js";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import {
   createEscapeKeyDown,
   createInteractOutside,
@@ -36,10 +30,7 @@ import {
 } from "./dismissable-layer-context";
 import { layerStack } from "./layer-stack";
 
-export interface DismissableLayerOptions {
-  /** Whether the layer is dismissed or not. */
-  isDismissed: boolean;
-
+export interface DismissableLayerOptions extends AsChildProp {
   /**
    * When `true`, hover/focus/click interactions will be disabled on elements outside
    * the layer. Users will need to click twice on outside elements to
@@ -77,177 +68,178 @@ export interface DismissableLayerOptions {
 
   /** Handler called when the layer should be dismissed. */
   onDismiss?: () => void;
+
+  /** Whether to ignore the "top most layer" check on interact outside. */
+  bypassTopMostLayerCheck?: boolean;
 }
 
-export const DismissableLayer = createPolymorphicComponent<"div", DismissableLayerOptions>(
-  props => {
-    let ref: HTMLElement | undefined;
+export interface DismissableLayerProps
+  extends OverrideComponentProps<"div", DismissableLayerOptions> {}
 
-    const parentContext = useOptionalDismissableLayerContext();
+export function DismissableLayer(props: DismissableLayerProps) {
+  let ref: HTMLElement | undefined;
 
-    props = mergeDefaultProps({ as: "div" }, props);
+  const parentContext = useOptionalDismissableLayerContext();
 
-    const [local, others] = splitProps(props, [
-      "as",
-      "ref",
-      "isDismissed",
-      "disableOutsidePointerEvents",
-      "excludedElements",
-      "onEscapeKeyDown",
-      "onPointerDownOutside",
-      "onFocusOutside",
-      "onInteractOutside",
-      "onDismiss",
-    ]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "disableOutsidePointerEvents",
+    "excludedElements",
+    "onEscapeKeyDown",
+    "onPointerDownOutside",
+    "onFocusOutside",
+    "onInteractOutside",
+    "onDismiss",
+    "bypassTopMostLayerCheck",
+  ]);
 
-    const nestedLayers = new Set<Element>([]);
+  const nestedLayers = new Set<Element>([]);
 
-    const registerNestedLayer = (element: Element) => {
-      nestedLayers.add(element);
+  const registerNestedLayer = (element: Element) => {
+    nestedLayers.add(element);
 
-      const parentUnregister = parentContext?.registerNestedLayer(element);
+    const parentUnregister = parentContext?.registerNestedLayer(element);
 
-      return () => {
-        nestedLayers.delete(element);
-        parentUnregister?.();
-      };
+    return () => {
+      nestedLayers.delete(element);
+      parentUnregister?.();
     };
+  };
 
-    const shouldExcludeElement = (element: Element) => {
-      if (!ref) {
-        return false;
-      }
+  const shouldExcludeElement = (element: Element) => {
+    if (!ref) {
+      return false;
+    }
 
-      return (
-        local.excludedElements?.some(node => contains(node(), element)) ||
-        [...nestedLayers].some(layer => contains(layer, element))
-      );
-    };
+    return (
+      local.excludedElements?.some(node => contains(node(), element)) ||
+      [...nestedLayers].some(layer => contains(layer, element))
+    );
+  };
 
-    const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
-      if (!ref || layerStack.isBelowPointerBlockingLayer(ref)) {
+  const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
+    if (!ref || layerStack.isBelowPointerBlockingLayer(ref)) {
+      return;
+    }
+
+    if (!local.bypassTopMostLayerCheck && !layerStack.isTopMostLayer(ref)) {
+      return;
+    }
+
+    local.onPointerDownOutside?.(e);
+    local.onInteractOutside?.(e);
+
+    if (!e.defaultPrevented) {
+      local.onDismiss?.();
+    }
+  };
+
+  const onFocusOutside = (e: FocusOutsideEvent) => {
+    local.onFocusOutside?.(e);
+    local.onInteractOutside?.(e);
+
+    if (!e.defaultPrevented) {
+      local.onDismiss?.();
+    }
+  };
+
+  createInteractOutside(
+    {
+      shouldExcludeElement,
+      onPointerDownOutside,
+      onFocusOutside,
+    },
+    () => ref
+  );
+
+  createEscapeKeyDown({
+    ownerDocument: () => getDocument(ref),
+    onEscapeKeyDown: e => {
+      if (!ref || !layerStack.isTopMostLayer(ref)) {
         return;
       }
 
-      local.onPointerDownOutside?.(e);
-      local.onInteractOutside?.(e);
+      local.onEscapeKeyDown?.(e);
 
-      if (!e.defaultPrevented) {
-        local.onDismiss?.();
+      if (!e.defaultPrevented && local.onDismiss) {
+        e.preventDefault();
+        local.onDismiss();
       }
-    };
+    },
+  });
 
-    const onFocusOutside = (e: FocusOutsideEvent) => {
-      local.onFocusOutside?.(e);
-      local.onInteractOutside?.(e);
+  onMount(() => {
+    if (!ref) {
+      return;
+    }
 
-      if (!e.defaultPrevented) {
-        local.onDismiss?.();
-      }
-    };
-
-    createInteractOutside(
-      {
-        isDisabled: () => local.isDismissed,
-        shouldExcludeElement,
-        onPointerDownOutside,
-        onFocusOutside,
-      },
-      () => ref
-    );
-
-    createEscapeKeyDown({
-      isDisabled: () => local.isDismissed,
-      ownerDocument: () => getDocument(ref),
-      onEscapeKeyDown: e => {
-        if (!ref || !layerStack.isTopMostLayer(ref)) {
-          return;
-        }
-
-        local.onEscapeKeyDown?.(e);
-
-        if (!e.defaultPrevented && local.onDismiss) {
-          e.preventDefault();
-          local.onDismiss();
-        }
-      },
+    layerStack.addLayer({
+      node: ref,
+      isPointerBlocking: local.disableOutsidePointerEvents,
+      dismiss: local.onDismiss,
     });
 
-    createEffect(
-      on([() => ref, () => local.isDismissed], ([ref, isDismissed]) => {
-        if (!ref || isDismissed) {
+    const unregisterFromParentLayer = parentContext?.registerNestedLayer(ref);
+
+    layerStack.assignPointerEventToLayers();
+
+    layerStack.disableBodyPointerEvents(ref);
+
+    onCleanup(() => {
+      if (!ref) {
+        return;
+      }
+
+      layerStack.removeLayer(ref);
+
+      unregisterFromParentLayer?.();
+
+      // Re-assign pointer event to remaining layers.
+      layerStack.assignPointerEventToLayers();
+
+      layerStack.restoreBodyPointerEvents(ref);
+    });
+  });
+
+  createEffect(
+    on(
+      [() => ref, () => local.disableOutsidePointerEvents],
+      ([ref, disableOutsidePointerEvents]) => {
+        if (!ref) {
           return;
         }
 
-        layerStack.addLayer({
-          node: ref,
-          isPointerBlocking: local.disableOutsidePointerEvents,
-          dismiss: local.onDismiss,
-        });
+        const layer = layerStack.find(ref);
 
-        const unregisterFromParentLayer = parentContext?.registerNestedLayer(ref);
+        if (layer && layer.isPointerBlocking !== disableOutsidePointerEvents) {
+          // Keep layer in sync with the prop.
+          layer.isPointerBlocking = disableOutsidePointerEvents;
 
-        layerStack.assignPointerEventToLayers();
+          // Update layers pointer-events since this layer "isPointerBlocking" has changed.
+          layerStack.assignPointerEventToLayers();
+        }
 
-        layerStack.disableBodyPointerEvents(ref);
+        if (disableOutsidePointerEvents) {
+          layerStack.disableBodyPointerEvents(ref);
+        }
 
         onCleanup(() => {
-          if (!ref) {
-            return;
-          }
-
-          layerStack.removeLayer(ref);
-
-          unregisterFromParentLayer?.();
-
-          // Re-assign pointer event to remaining layers.
-          layerStack.assignPointerEventToLayers();
-
           layerStack.restoreBodyPointerEvents(ref);
         });
-      })
-    );
+      },
+      {
+        defer: true,
+      }
+    )
+  );
 
-    createEffect(
-      on(
-        [() => ref, () => local.isDismissed, () => local.disableOutsidePointerEvents],
-        ([ref, isDismissed, disableOutsidePointerEvents]) => {
-          if (!ref || isDismissed) {
-            return;
-          }
+  const context: DismissableLayerContextValue = {
+    registerNestedLayer,
+  };
 
-          const layer = layerStack.find(ref);
-
-          if (layer && layer.isPointerBlocking !== disableOutsidePointerEvents) {
-            // Keep layer in sync with the prop.
-            layer.isPointerBlocking = disableOutsidePointerEvents;
-
-            // Update layers pointer-events since this layer "isPointerBlocking" has changed.
-            layerStack.assignPointerEventToLayers();
-          }
-
-          if (disableOutsidePointerEvents) {
-            layerStack.disableBodyPointerEvents(ref);
-          }
-
-          onCleanup(() => {
-            layerStack.restoreBodyPointerEvents(ref);
-          });
-        },
-        {
-          defer: true,
-        }
-      )
-    );
-
-    const context: DismissableLayerContextValue = {
-      registerNestedLayer,
-    };
-
-    return (
-      <DismissableLayerContext.Provider value={context}>
-        <Dynamic component={local.as} ref={mergeRefs(el => (ref = el), local.ref)} {...others} />
-      </DismissableLayerContext.Provider>
-    );
-  }
-);
+  return (
+    <DismissableLayerContext.Provider value={context}>
+      <Polymorphic as="div" ref={mergeRefs(el => (ref = el), local.ref)} {...others} />
+    </DismissableLayerContext.Provider>
+  );
+}

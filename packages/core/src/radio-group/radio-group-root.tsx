@@ -9,20 +9,20 @@
 
 import {
   access,
-  createPolymorphicComponent,
   mergeDefaultProps,
   mergeRefs,
   Orientation,
+  OverrideComponentProps,
   ValidationState,
 } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createControllableSignal, createFormResetListener } from "../primitives";
 import { RadioGroupContext, RadioGroupContextValue } from "./radio-group-context";
 
-export interface RadioGroupRootOptions {
+export interface RadioGroupRootOptions extends AsChildProp {
   /** The controlled value of the radio button to check. */
   value?: string;
 
@@ -33,7 +33,7 @@ export interface RadioGroupRootOptions {
   defaultValue?: string;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string) => void;
+  onChange?: (value: string) => void;
 
   /** The axis the radio group items should align with. */
   orientation?: Orientation;
@@ -55,27 +55,28 @@ export interface RadioGroupRootOptions {
   validationState?: ValidationState;
 
   /** Whether the user must select an item before the owning form can be submitted. */
-  isRequired?: boolean;
+  required?: boolean;
 
   /** Whether the radio group is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /** Whether the radio group is read only. */
-  isReadOnly?: boolean;
+  readOnly?: boolean;
 }
+
+export interface RadioGroupRootProps extends OverrideComponentProps<"div", RadioGroupRootOptions> {}
 
 /**
  * A set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time.
  * This component is based on the [WAI-ARIA Radio Group Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radiobutton/)
  */
-export const RadioGroupRoot = createPolymorphicComponent<"div", RadioGroupRootOptions>(props => {
+export function RadioGroupRoot(props: RadioGroupRootProps) {
   let ref: HTMLDivElement | undefined;
 
   const defaultId = `radiogroup-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: defaultId,
       orientation: "vertical",
     },
@@ -85,11 +86,10 @@ export const RadioGroupRoot = createPolymorphicComponent<"div", RadioGroupRootOp
   const [local, formControlProps, others] = splitProps(
     props,
     [
-      "as",
       "ref",
       "value",
       "defaultValue",
-      "onValueChange",
+      "onChange",
       "orientation",
       "aria-labelledby",
       "aria-describedby",
@@ -100,7 +100,7 @@ export const RadioGroupRoot = createPolymorphicComponent<"div", RadioGroupRootOp
   const [selected, setSelected] = createControllableSignal<string>({
     value: () => local.value,
     defaultValue: () => local.defaultValue,
-    onChange: value => local.onValueChange?.(value),
+    onChange: value => local.onChange?.(value),
   });
 
   const { formControlContext } = createFormControl(formControlProps);
@@ -149,11 +149,11 @@ export const RadioGroupRoot = createPolymorphicComponent<"div", RadioGroupRootOp
   return (
     <FormControlContext.Provider value={formControlContext}>
       <RadioGroupContext.Provider value={context}>
-        <Dynamic
-          component={local.as}
+        <Polymorphic
+          as="div"
           ref={mergeRefs(el => (ref = el), local.ref)}
-          id={access(formControlProps.id)}
           role="radiogroup"
+          id={access(formControlProps.id)}
           aria-invalid={formControlContext.validationState() === "invalid" || undefined}
           aria-required={formControlContext.isRequired() || undefined}
           aria-disabled={formControlContext.isDisabled() || undefined}
@@ -167,4 +167,4 @@ export const RadioGroupRoot = createPolymorphicComponent<"div", RadioGroupRootOp
       </RadioGroupContext.Provider>
     </FormControlContext.Provider>
   );
-});
+}

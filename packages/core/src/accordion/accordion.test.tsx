@@ -6,10 +6,10 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/accordion/src/Accordion.test.tsx
  */
 
-import { checkAccessibility, installPointerEvent } from "@kobalte/tests";
+import { installPointerEvent } from "@kobalte/tests";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps, For } from "solid-js";
-import { fireEvent, render, screen, within } from "solid-testing-library";
+import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 
 import * as Accordion from ".";
 
@@ -32,8 +32,6 @@ function AccordionTest(props: ComponentProps<typeof Accordion.Root>) {
 
 describe("Accordion", () => {
   installPointerEvent();
-
-  checkAccessibility([<AccordionTest />]);
 
   it("renders properly", () => {
     render(() => <AccordionTest defaultValue={["one"]} />);
@@ -69,9 +67,9 @@ describe("Accordion", () => {
   });
 
   it("can be controlled", async () => {
-    const onValueChangeSpy = jest.fn();
+    const onChangeSpy = jest.fn();
 
-    render(() => <AccordionTest value={["one"]} onValueChange={onValueChangeSpy} />);
+    render(() => <AccordionTest value={["one"]} onChange={onChangeSpy} />);
 
     const buttons = screen.getAllByRole("button");
     const [firstItem, secondItem] = buttons;
@@ -82,8 +80,8 @@ describe("Accordion", () => {
     expect(secondItem).toHaveAttribute("aria-expanded", "false");
 
     await userEvent.click(secondItem);
-    expect(onValueChangeSpy).toHaveBeenCalledWith(["two"]);
-    expect(onValueChangeSpy).toHaveBeenCalledTimes(1);
+    expect(onChangeSpy).toHaveBeenCalledWith(["two"]);
+    expect(onChangeSpy).toHaveBeenCalledTimes(1);
 
     // First item is still expanded because Accordion is controlled.
     expect(firstItem).toHaveAttribute("aria-expanded", "true");
@@ -237,56 +235,54 @@ describe("Accordion", () => {
     expect(contentOne).toBeVisible();
   });
 
-  it("should call 'onValueChange' when clicking a trigger", async () => {
-    const onValueChangeSpy = jest.fn();
+  it("should call 'onChange' when clicking a trigger", async () => {
+    const onChangeSpy = jest.fn();
 
-    render(() => <AccordionTest onValueChange={onValueChangeSpy} />);
+    render(() => <AccordionTest onChange={onChangeSpy} />);
 
     const buttons = screen.getAllByRole("button");
     const [firstItem, secondItem] = buttons;
 
     await userEvent.click(firstItem);
-    expect(onValueChangeSpy).toHaveBeenCalledWith(["one"]);
+    expect(onChangeSpy).toHaveBeenCalledWith(["one"]);
 
     await userEvent.click(firstItem);
 
     // Called once because Accordion is not `multiple` or `collapsible`.
-    expect(onValueChangeSpy).toHaveBeenCalledTimes(1);
+    expect(onChangeSpy).toHaveBeenCalledTimes(1);
 
     await userEvent.click(secondItem);
-    expect(onValueChangeSpy).toHaveBeenCalledWith(["two"]);
-    expect(onValueChangeSpy).toHaveBeenCalledTimes(2);
+    expect(onChangeSpy).toHaveBeenCalledWith(["two"]);
+    expect(onChangeSpy).toHaveBeenCalledTimes(2);
   });
 
   describe("collapsible", () => {
     it("should toggle the same accordion item when clicking its trigger if collapsible", async () => {
-      render(() => <AccordionTest isCollapsible defaultValue={["one"]} />);
+      render(() => <AccordionTest collapsible defaultValue={["one"]} />);
 
       const buttons = screen.getAllByRole("button");
       const [firstItem] = buttons;
-      const contentOne = screen.getByText("Content one");
 
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
 
       await userEvent.click(firstItem);
       expect(firstItem).toHaveAttribute("aria-expanded", "false");
-      expect(contentOne).not.toBeVisible();
+      expect(screen.queryByText("Content one")).not.toBeInTheDocument();
 
       await userEvent.click(firstItem);
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
     });
 
     it("should allows users to open and close accordion item with enter / space key when collapsible", async () => {
-      render(() => <AccordionTest isCollapsible defaultValue={["one"]} />);
+      render(() => <AccordionTest collapsible defaultValue={["one"]} />);
 
       const buttons = screen.getAllByRole("button");
       const [firstItem] = buttons;
-      const contentOne = screen.getByText("Content one");
 
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
 
       firstItem.focus();
       expect(document.activeElement).toBe(firstItem);
@@ -296,20 +292,20 @@ describe("Accordion", () => {
       await Promise.resolve();
 
       expect(firstItem).toHaveAttribute("aria-expanded", "false");
-      expect(contentOne).not.toBeVisible();
+      expect(screen.queryByText("Content one")).not.toBeInTheDocument();
 
       fireEvent.keyDown(firstItem, { key: "Enter" });
       fireEvent.keyUp(firstItem, { key: "Enter" });
       await Promise.resolve();
 
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
     });
   });
 
   describe("multiple", () => {
     it("should expand multiple accordion items when clicking triggers", async () => {
-      render(() => <AccordionTest isMultiple />);
+      render(() => <AccordionTest multiple />);
 
       const buttons = screen.getAllByRole("button");
       const [firstItem, secondItem] = buttons;
@@ -330,33 +326,31 @@ describe("Accordion", () => {
     });
 
     it("should toggle the same accordion item when clicking its trigger if multiple", async () => {
-      render(() => <AccordionTest isMultiple defaultValue={["one"]} />);
+      render(() => <AccordionTest multiple defaultValue={["one"]} />);
 
       const buttons = screen.getAllByRole("button");
       const [firstItem] = buttons;
-      const contentOne = screen.getByText("Content one");
 
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
 
       await userEvent.click(firstItem);
       expect(firstItem).toHaveAttribute("aria-expanded", "false");
-      expect(contentOne).not.toBeVisible();
+      expect(screen.queryByText("Content one")).not.toBeInTheDocument();
 
       await userEvent.click(firstItem);
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
     });
 
     it("should allows users to open and close accordion item with enter / space key when multiple", async () => {
-      render(() => <AccordionTest isMultiple defaultValue={["one"]} />);
+      render(() => <AccordionTest multiple defaultValue={["one"]} />);
 
       const buttons = screen.getAllByRole("button");
       const [firstItem] = buttons;
-      const contentOne = screen.getByText("Content one");
 
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
 
       firstItem.focus();
       expect(document.activeElement).toBe(firstItem);
@@ -366,31 +360,31 @@ describe("Accordion", () => {
       await Promise.resolve();
 
       expect(firstItem).toHaveAttribute("aria-expanded", "false");
-      expect(contentOne).not.toBeVisible();
+      expect(screen.queryByText("Content one")).not.toBeInTheDocument();
 
       fireEvent.keyDown(firstItem, { key: "Enter" });
       fireEvent.keyUp(firstItem, { key: "Enter" });
       await Promise.resolve();
 
       expect(firstItem).toHaveAttribute("aria-expanded", "true");
-      expect(contentOne).toBeVisible();
+      expect(screen.getByText("Content one")).toBeVisible();
     });
 
-    it("should call 'onValueChange' when clicking triggers", async () => {
-      const onValueChangeSpy = jest.fn();
+    it("should call 'onChange' when clicking triggers", async () => {
+      const onChangeSpy = jest.fn();
 
-      render(() => <AccordionTest isMultiple onValueChange={onValueChangeSpy} />);
+      render(() => <AccordionTest multiple onChange={onChangeSpy} />);
 
       const buttons = screen.getAllByRole("button");
       const [firstItem, secondItem] = buttons;
 
       await userEvent.click(firstItem);
-      expect(onValueChangeSpy).toHaveBeenCalledWith(["one"]);
+      expect(onChangeSpy).toHaveBeenCalledWith(["one"]);
 
       await userEvent.click(secondItem);
-      expect(onValueChangeSpy).toHaveBeenCalledWith(["one", "two"]);
+      expect(onChangeSpy).toHaveBeenCalledWith(["one", "two"]);
 
-      expect(onValueChangeSpy).toHaveBeenCalledTimes(2);
+      expect(onChangeSpy).toHaveBeenCalledTimes(2);
     });
   });
 });

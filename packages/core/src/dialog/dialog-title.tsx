@@ -1,26 +1,27 @@
-import { createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useDialogContext } from "./dialog-context";
+
+export interface DialogTitleProps extends OverrideComponentProps<"h2", AsChildProp> {}
 
 /**
  * An accessible title to be announced when the dialog is open.
  */
-export const DialogTitle = createPolymorphicComponent<"h2">(props => {
+export function DialogTitle(props: DialogTitleProps) {
   const context = useDialogContext();
 
   props = mergeDefaultProps(
     {
-      as: "h2",
       id: context.generateId("title"),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as", "id"]);
+  const [local, others] = splitProps(props, ["id"]);
 
   createEffect(() => onCleanup(context.registerTitleId(local.id!)));
 
-  return <Dynamic component={local.as} id={local.id} {...others} />;
-});
+  return <Polymorphic as="h2" id={local.id} {...others} />;
+}

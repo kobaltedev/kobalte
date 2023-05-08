@@ -6,40 +6,39 @@
  * https://github.com/adobe/react-spectrum/blob/e6808d1b5e80cef7af7e63974f658043593b2e1e/packages/@react-aria/menu/src/useMenuSection.ts
  */
 
-import { createGenerateId, createPolymorphicComponent, mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { createSignal, createUniqueId } from "solid-js";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { MenuGroupContext, MenuGroupContextValue } from "./menu-group-context";
 import { useMenuRootContext } from "./menu-root-context";
 
+export interface MenuGroupProps extends OverrideComponentProps<"div", AsChildProp> {}
+
 /**
  * A container used to group multiple `Menu.Item`s.
  */
-export const MenuGroup = createPolymorphicComponent<"div">(props => {
+export function MenuGroup(props: MenuGroupProps) {
   const rootContext = useMenuRootContext();
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: rootContext.generateId(`group-${createUniqueId()}`),
     },
     props
   );
 
-  const [local, others] = splitProps(props, ["as"]);
-
   const [labelId, setLabelId] = createSignal<string>();
 
   const context: MenuGroupContextValue = {
-    generateId: createGenerateId(() => others.id!),
+    generateId: createGenerateId(() => props.id!),
     registerLabelId: createRegisterId(setLabelId),
   };
 
   return (
     <MenuGroupContext.Provider value={context}>
-      <Dynamic component={local.as} role="group" aria-labelledby={labelId()} {...others} />
+      <Polymorphic as="div" role="group" aria-labelledby={labelId()} {...props} />
     </MenuGroupContext.Provider>
   );
-});
+}

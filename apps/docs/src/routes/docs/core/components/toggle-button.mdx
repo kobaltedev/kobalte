@@ -58,7 +58,7 @@ The toggle button consists of:
       return (
         <ToggleButton.Root class="toggle-button" aria-label="Mute">
           {state => (
-            <Show when={state.isPressed()} fallback={<VolumeOnIcon />}>
+            <Show when={state.pressed()} fallback={<VolumeOnIcon />}>
               <VolumeOffIcon />
             </Show>
           )}
@@ -103,19 +103,19 @@ The toggle button consists of:
 
 ### Default pressed
 
-An initial, uncontrolled value can be provided using the `defaultIsPressed` prop.
+An initial, uncontrolled value can be provided using the `defaultPressed` prop.
 
 <Preview>
   <DefaultPressedExample />
 </Preview>
 
 ```tsx
-<ToggleButton.Root defaultIsPressed>...</ToggleButton.Root>
+<ToggleButton.Root defaultPressed>...</ToggleButton.Root>
 ```
 
 ### Controlled pressed
 
-The `isPressed` prop can be used to make the pressed state controlled. The `onPressedChange` event is fired when the user toggle the button, and receives the new value.
+The `pressed` prop can be used to make the pressed state controlled. The `onChange` event is fired when the user toggle the button, and receives the new value.
 
 <Preview>
   <ControlledExample />
@@ -129,7 +129,7 @@ function ControlledExample() {
 
   return (
     <>
-      <ToggleButton.Root isPressed={pressed()} onPressedChange={setPressed}>
+      <ToggleButton.Root pressed={pressed()} onChange={setPressed}>
         ...
       </ToggleButton.Root>
       <p>The microphone is {pressed() ? "muted" : "active"}.</p>
@@ -144,16 +144,16 @@ function ControlledExample() {
 
 `ToggleButton.Root` consists of [Button.Root](/docs/core/components/button) and additional props.
 
-| Prop             | Description                                                                                                                                                                            |
-| :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| isPressed        | `boolean` <br/> The controlled pressed state of the toggle button.                                                                                                                     |
-| defaultIsPressed | `boolean` <br/> The default pressed state when initially rendered. Useful when you do not need to control the pressed state.                                                           |
-| onPressedChange  | `(isPressed: boolean) => void` <br/> Event handler called when the pressed state of the toggle button changes.                                                                         |
-| children         | `JSX.Element \| (state: ToggleButtonState) => JSX.Element` <br/> The children of the toggle button. Can be a `JSX.Element` or a _render prop_ for having access to the internal state. |
+| Prop           | Description                                                                                                                                                                            |
+| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| pressed        | `boolean` <br/> The controlled pressed state of the toggle button.                                                                                                                     |
+| defaultPressed | `boolean` <br/> The default pressed state when initially rendered. Useful when you do not need to control the pressed state.                                                           |
+| onChange       | `(pressed: boolean) => void` <br/> Event handler called when the pressed state of the toggle button changes.                                                                           |
+| children       | `JSX.Element \| (state: ToggleButtonState) => JSX.Element` <br/> The children of the toggle button. Can be a `JSX.Element` or a _render prop_ for having access to the internal state. |
 
 | Render Prop | Description                                                                               |
 | :---------- | :---------------------------------------------------------------------------------------- |
-| isPressed   | `Accessor<boolean>` <br/> Whether the toggle button is on (pressed) or off (not pressed). |
+| pressed     | `Accessor<boolean>` <br/> Whether the toggle button is on (pressed) or off (not pressed). |
 
 | Data attribute | Description                                     |
 | :------------- | :---------------------------------------------- |

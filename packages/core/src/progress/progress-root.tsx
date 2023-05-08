@@ -6,16 +6,11 @@
  * https://github.com/adobe/react-spectrum/blob/1ddcde7b4fef9af7f08e11bb78d71fe60bbcc64b/packages/@react-aria/progress/src/useProgressBar.ts
  */
 
-import {
-  clamp,
-  createGenerateId,
-  createPolymorphicComponent,
-  mergeDefaultProps,
-} from "@kobalte/utils";
+import { clamp, createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId, splitProps } from "solid-js";
-import { Dynamic } from "solid-js/web";
 
 import { createNumberFormatter } from "../i18n";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { ProgressContext, ProgressContextValue, ProgressDataSet } from "./progress-context";
 
@@ -25,7 +20,7 @@ interface GetValueLabelParams {
   max: number;
 }
 
-export interface ProgressRootOptions {
+export interface ProgressRootOptions extends AsChildProp {
   /**
    * The progress value.
    * @default 0
@@ -45,7 +40,7 @@ export interface ProgressRootOptions {
   maxValue?: number;
 
   /** Whether the progress is in an indeterminate state. */
-  isIndeterminate?: boolean;
+  indeterminate?: boolean;
 
   /**
    * A function to get the accessible label text representing the current value in a human-readable format.
@@ -54,15 +49,16 @@ export interface ProgressRootOptions {
   getValueLabel?: (params: GetValueLabelParams) => string;
 }
 
+export interface ProgressRootProps extends OverrideComponentProps<"div", ProgressRootOptions> {}
+
 /**
  * Progress show either determinate or indeterminate progress of an operation over time.
  */
-export const ProgressRoot = createPolymorphicComponent<"div", ProgressRootOptions>(props => {
+export function ProgressRoot(props: ProgressRootProps) {
   const defaultId = `progress-${createUniqueId()}`;
 
   props = mergeDefaultProps(
     {
-      as: "div",
       id: defaultId,
       value: 0,
       minValue: 0,
@@ -72,11 +68,10 @@ export const ProgressRoot = createPolymorphicComponent<"div", ProgressRootOption
   );
 
   const [local, others] = splitProps(props, [
-    "as",
     "value",
     "minValue",
     "maxValue",
-    "isIndeterminate",
+    "indeterminate",
     "getValueLabel",
   ]);
 
@@ -93,7 +88,7 @@ export const ProgressRoot = createPolymorphicComponent<"div", ProgressRootOption
   };
 
   const valueLabel = () => {
-    if (local.isIndeterminate) {
+    if (local.indeterminate) {
       return undefined;
     }
 
@@ -109,19 +104,19 @@ export const ProgressRoot = createPolymorphicComponent<"div", ProgressRootOption
   };
 
   const progressFillWidth = () => {
-    return local.isIndeterminate ? undefined : `${Math.round(valuePercent() * 100)}%`;
+    return local.indeterminate ? undefined : `${Math.round(valuePercent() * 100)}%`;
   };
 
   const dataset: Accessor<ProgressDataSet> = createMemo(() => {
     let dataProgress: ProgressDataSet["data-progress"] = undefined;
 
-    if (!local.isIndeterminate) {
+    if (!local.indeterminate) {
       dataProgress = valuePercent() === 1 ? "complete" : "loading";
     }
 
     return {
       "data-progress": dataProgress,
-      "data-indeterminate": local.isIndeterminate ? "" : undefined,
+      "data-indeterminate": local.indeterminate ? "" : undefined,
     };
   });
 
@@ -138,10 +133,10 @@ export const ProgressRoot = createPolymorphicComponent<"div", ProgressRootOption
 
   return (
     <ProgressContext.Provider value={context}>
-      <Dynamic
-        component={local.as}
+      <Polymorphic
+        as="div"
         role="progressbar"
-        aria-valuenow={local.isIndeterminate ? undefined : value()}
+        aria-valuenow={local.indeterminate ? undefined : value()}
         aria-valuemin={local.minValue!}
         aria-valuemax={local.maxValue!}
         aria-valuetext={valueLabel()}
@@ -151,4 +146,4 @@ export const ProgressRoot = createPolymorphicComponent<"div", ProgressRootOption
       />
     </ProgressContext.Provider>
   );
-});
+}
