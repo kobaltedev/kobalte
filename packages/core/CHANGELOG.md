@@ -1,5 +1,13 @@
 # @kobalte/core
 
+## 0.9.6
+
+### Patch Changes
+
+- 2ad7923: fix #213, #214
+- Updated dependencies [2ad7923]
+  - @kobalte/utils@0.7.2
+
 ## 0.9.5
 
 ### Patch Changes
