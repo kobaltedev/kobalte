@@ -143,7 +143,7 @@ importers:
         specifier: 3.3.3
         version: 3.3.3(@algolia/client-search@4.17.0)
       '@kobalte/core':
-        specifier: 0.9.5
+        specifier: 0.9.6
         version: link:../../packages/core
       '@solidjs/meta':
         specifier: 0.28.4
@@ -234,10 +234,10 @@ importers:
   apps/playground:
     dependencies:
       '@kobalte/core':
-        specifier: ^0.9.5
+        specifier: ^0.9.6
         version: link:../../packages/core
       '@kobalte/utils':
-        specifier: ^0.7.1
+        specifier: ^0.7.2
         version: link:../../packages/utils
       solid-js:
         specifier: 1.7.3
@@ -280,7 +280,7 @@ importers:
         specifier: ^3.2.0
         version: 3.2.0
       '@kobalte/utils':
-        specifier: ^0.7.1
+        specifier: ^0.7.2
         version: link:../utils
       solid-js:
         specifier: ^1.7.3

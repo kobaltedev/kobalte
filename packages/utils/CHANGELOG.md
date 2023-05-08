@@ -1,5 +1,11 @@
 # @kobalte/utils
 
+## 0.7.2
+
+### Patch Changes
+
+- 2ad7923: fix #213, #214
+
 ## 0.7.1
 
 ### Patch Changes
