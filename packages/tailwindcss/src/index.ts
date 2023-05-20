@@ -6,7 +6,7 @@
  * https://github.com/tailwindlabs/headlessui/blob/8e1e19f94c28af68c05becc80bf89575e1fa1d36/packages/@headlessui-tailwindcss/src/index.ts
  */
 
-import plugin from "tailwindcss/plugin";
+import { withOptions } from "tailwindcss/plugin.js";
 
 const STATES = [
   "valid",
@@ -33,7 +33,7 @@ export interface KobalteTailwindPluginOptions {
   prefix?: string;
 }
 
-export default plugin.withOptions<KobalteTailwindPluginOptions>(({ prefix = "ui" } = {}) => {
+export default withOptions<KobalteTailwindPluginOptions>(({ prefix = "ui" } = {}) => {
   return ({ addVariant }) => {
     for (const state of STATES) {
       addVariant(`${prefix}-${state}`, [`&[data-${state}]`]);

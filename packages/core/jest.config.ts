@@ -30,6 +30,8 @@ const config: Config.InitialOptions = {
   testPathIgnorePatterns: ["/node_modules/"],
 
   verbose: true,
+
+  skipNodeResolution: true,
 };
 
 export default config;

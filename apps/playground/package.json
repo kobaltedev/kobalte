@@ -23,6 +23,7 @@
   },
   "license": "MIT",
   "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
+  "type": "module",
   "scripts": {
     "build": "vite build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",

@@ -10,7 +10,7 @@
 // NOTICE file in the root directory of this source tree.
 // See https://github.com/facebook/react/blob/3c713d513195a53788b3f8bb4b70279d68b15bcc/packages/react-interactions/events/src/dom/shared/index.js#L74-L87
 
-import { isAndroid } from "./platform";
+import { isAndroid } from "./platform.js";
 
 // Keyboards, Assistive Technologies, and element.click() all produce a "virtual"
 // click event. This is a method of inferring such clicks. Every browser except

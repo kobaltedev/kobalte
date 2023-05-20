@@ -1,6 +1,6 @@
 import { fireEvent } from "@solidjs/testing-library";
 
-import { createPointerEvent } from "./utils";
+import { createPointerEvent } from "./utils.js";
 
 /**
  * Triggers a "touch" event on an element.

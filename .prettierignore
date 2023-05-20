@@ -1,0 +1,4 @@
+dist
+apps/docs/netlify
+.solid
+pnpm-lock.yaml

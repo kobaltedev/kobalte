@@ -12,12 +12,12 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "sourceMap": true,
-    "types": ["solid-js", "vite/client", "node", "jest", "@testing-library/jest-dom"]
+    "types": ["vite/client", "node", "jest", "@testing-library/jest-dom"]
   },
   "exclude": ["node_modules"]
 }
