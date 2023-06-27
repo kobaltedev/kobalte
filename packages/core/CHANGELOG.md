@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.9.7
+
+### Patch Changes
+
+- 9096706: fix: #226
+
 ## 0.9.6
 
 ### Patch Changes
