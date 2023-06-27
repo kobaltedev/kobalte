@@ -86,7 +86,7 @@
     "tsup": "6.7.0",
     "turbo": "1.8.8",
     "typescript": "4.9.5",
-    "vite": "3.2.5",
+    "vite": "3.2.7",
     "vite-plugin-solid": "2.7.0"
   },
   "packageManager": "pnpm@8.2.0"

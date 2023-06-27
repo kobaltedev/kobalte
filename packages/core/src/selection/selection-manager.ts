@@ -214,11 +214,9 @@ export class SelectionManager implements MultipleSelectionManager {
   private getKey(key: string) {
     const item = this.collection().getItem(key);
 
-    /*
     if (!item) {
       return key;
     }
-    */
 
     if (!item || item.type !== "item") {
       return null;
