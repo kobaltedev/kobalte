@@ -23,6 +23,7 @@ export const CORE_VERSIONS = [
   "0.9.4",
   "0.9.5",
   "0.9.6",
+  "0.9.7",
 ].reverse();
 
 export const LATEST_CORE_CHANGELOG_URL = `/docs/changelog/${CORE_VERSIONS[0].replaceAll(".", "-")}`;
