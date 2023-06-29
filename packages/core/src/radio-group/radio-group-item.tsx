@@ -59,6 +59,7 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
   const [labelId, setLabelId] = createSignal<string>();
   const [descriptionId, setDescriptionId] = createSignal<string>();
 
+  const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
   const [isFocused, setIsFocused] = createSignal(false);
 
   const isSelected = createMemo(() => {
@@ -92,12 +93,14 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
     inputId,
     labelId,
     descriptionId,
+    inputRef,
     select: () => radioGroupContext.setSelectedValue(local.value),
     generateId: createGenerateId(() => others.id!),
     registerInput: createRegisterId(setInputId),
     registerLabel: createRegisterId(setLabelId),
     registerDescription: createRegisterId(setDescriptionId),
     setIsFocused,
+    setInputRef,
   };
 
   return (

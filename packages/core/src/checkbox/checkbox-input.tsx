@@ -101,7 +101,10 @@ export function CheckboxInput(props: CheckboxInputProps) {
 
   return (
     <input
-      ref={mergeRefs(el => (ref = el), local.ref)}
+      ref={mergeRefs(el => {
+        context.setInputRef(el);
+        ref = el;
+      }, local.ref)}
       type="checkbox"
       id={fieldProps.id()}
       name={formControlContext.name()}
