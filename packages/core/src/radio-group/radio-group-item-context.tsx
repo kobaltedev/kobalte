@@ -17,12 +17,14 @@ export interface RadioGroupItemContextValue {
   inputId: Accessor<string | undefined>;
   labelId: Accessor<string | undefined>;
   descriptionId: Accessor<string | undefined>;
+  inputRef: Accessor<HTMLInputElement | undefined>;
   select: () => void;
   generateId: (part: string) => string;
   registerInput: (id: string) => () => void;
   registerLabel: (id: string) => () => void;
   registerDescription: (id: string) => () => void;
   setIsFocused: (isFocused: boolean) => void;
+  setInputRef: (el: HTMLInputElement) => void;
 }
 
 export const RadioGroupItemContext = createContext<RadioGroupItemContextValue>();

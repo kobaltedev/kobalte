@@ -25,6 +25,7 @@ export function RadioGroupItemControl(props: RadioGroupItemControlProps) {
     callHandler(e, local.onClick);
 
     context.select();
+    context.inputRef()?.focus();
   };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
@@ -32,6 +33,7 @@ export function RadioGroupItemControl(props: RadioGroupItemControlProps) {
 
     if (e.key === EventKey.Space) {
       context.select();
+      context.inputRef()?.focus();
     }
   };
 

@@ -59,7 +59,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Checkbox",
         href: "/docs/core/components/checkbox",
-        status: "updated",
       },
       {
         title: "Collapsible",
@@ -104,7 +103,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Radio Group",
         href: "/docs/core/components/radio-group",
-        status: "updated",
       },
       {
         title: "Select",
@@ -117,7 +115,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Switch",
         href: "/docs/core/components/switch",
-        status: "updated",
       },
       {
         title: "Tabs",
