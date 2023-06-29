@@ -10,10 +10,12 @@ export interface CheckboxContextValue {
   dataset: Accessor<CheckboxDataSet>;
   checked: Accessor<boolean>;
   indeterminate: Accessor<boolean>;
+  inputRef: Accessor<HTMLInputElement | undefined>;
   generateId: (part: string) => string;
   toggle: () => void;
   setIsChecked: (isChecked: boolean) => void;
   setIsFocused: (isFocused: boolean) => void;
+  setInputRef: (el: HTMLInputElement) => void;
 }
 
 export const CheckboxContext = createContext<CheckboxContextValue>();

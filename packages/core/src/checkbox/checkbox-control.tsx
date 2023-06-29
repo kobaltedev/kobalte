@@ -27,6 +27,7 @@ export function CheckboxControl(props: CheckboxControlProps) {
     callHandler(e, local.onClick);
 
     context.toggle();
+    context.inputRef()?.focus();
   };
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
@@ -34,6 +35,7 @@ export function CheckboxControl(props: CheckboxControlProps) {
 
     if (e.key === EventKey.Space) {
       context.toggle();
+      context.inputRef()?.focus();
     }
   };
 

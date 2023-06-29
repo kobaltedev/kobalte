@@ -8,10 +8,12 @@ export interface SwitchContextValue {
   value: Accessor<string>;
   dataset: Accessor<SwitchDataSet>;
   checked: Accessor<boolean>;
+  inputRef: Accessor<HTMLInputElement | undefined>;
   generateId: (part: string) => string;
   toggle: () => void;
   setIsChecked: (isChecked: boolean) => void;
   setIsFocused: (isFocused: boolean) => void;
+  setInputRef: (el: HTMLInputElement) => void;
 }
 
 export const SwitchContext = createContext<SwitchContextValue>();

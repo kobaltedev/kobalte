@@ -9,6 +9,7 @@
 import {
   callHandler,
   mergeDefaultProps,
+  mergeRefs,
   OverrideComponentProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
@@ -42,6 +43,7 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
   );
 
   const [local, others] = splitProps(props, [
+    "ref",
     "style",
     "aria-labelledby",
     "aria-describedby",
@@ -104,6 +106,7 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
 
   return (
     <input
+      ref={mergeRefs(radioContext.setInputRef, local.ref)}
       type="radio"
       name={formControlContext.name()}
       value={radioContext.value()}

@@ -10,6 +10,7 @@
 import {
   callHandler,
   mergeDefaultProps,
+  mergeRefs,
   OverrideComponentProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
@@ -40,7 +41,7 @@ export function SwitchInput(props: SwitchInputProps) {
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
-    ["style", "onChange", "onFocus", "onBlur"],
+    ["ref", "style", "onChange", "onFocus", "onBlur"],
     FORM_CONTROL_FIELD_PROP_NAMES
   );
 
@@ -77,6 +78,7 @@ export function SwitchInput(props: SwitchInputProps) {
 
   return (
     <input
+      ref={mergeRefs(context.setInputRef, local.ref)}
       type="checkbox"
       role="switch"
       id={fieldProps.id()}

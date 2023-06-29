@@ -104,6 +104,7 @@ export function SwitchRoot(props: SwitchRootProps) {
     FORM_CONTROL_PROP_NAMES
   );
 
+  const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
   const [isFocused, setIsFocused] = createSignal(false);
 
   const { formControlContext } = createFormControl(formControlProps);
@@ -138,10 +139,12 @@ export function SwitchRoot(props: SwitchRootProps) {
     value: () => local.value!,
     dataset,
     checked: () => state.isSelected(),
+    inputRef,
     generateId: createGenerateId(() => access(formControlProps.id)!),
     toggle: () => state.toggle(),
     setIsChecked: isChecked => state.setIsSelected(isChecked),
     setIsFocused,
+    setInputRef,
   };
 
   return (
