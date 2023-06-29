@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.9.8
+
+### Patch Changes
+
+- d6b6a64: fix #230
+
 ## 0.9.7
 
 ### Patch Changes
