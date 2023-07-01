@@ -1,5 +1,10 @@
-import type { DateValue } from "@internationalized/date";
-import { CalendarDate, createCalendar, getLocalTimeZone } from "@internationalized/date";
+import {
+  parseDate,
+  today,
+  createCalendar,
+  getLocalTimeZone,
+  type DateValue,
+} from "@internationalized/date";
 import { RangeValue } from "@kobalte/utils";
 import { createSignal, For, Show } from "solid-js";
 
@@ -10,30 +15,21 @@ export default function App() {
   //const [value, setValue] = createSignal<DateValue[]>([]);
   //const [value, setValue] = createSignal<RangeValue<DateValue>>();
 
-  const formatter = createDateFormatter({ dateStyle: "short" });
-
-  const formatDate = (date: DateValue | undefined) => {
-    return date ? formatter().format(date.toDate(getLocalTimeZone())) : "--";
-  };
-
-  const getDisplayedDate = () => {
-    return formatDate(value());
-    //return value().map(formatDate).join(", ");
-    //return `${formatDate(value()?.start)} to ${formatDate(value()?.end)}`;
-  };
-
   return (
-    <I18nProvider locale="en-US">
+    <I18nProvider locale="fr-FR">
       <>
-        <p>Selected dates: {getDisplayedDate()}</p>
         <DatePicker.Root
           createCalendar={createCalendar}
           selectionMode="single"
+          minValue={today(getLocalTimeZone())}
+          defaultValue={parseDate("2022-02-03")}
+          hourCycle={24}
+          shouldForceLeadingZeros
           value={value()}
           onChange={setValue}
         >
           <DatePicker.Control class="control">
-            <DatePicker.Input>
+            <DatePicker.Input class="input">
               {segment => <DatePicker.Segment segment={segment} />}
             </DatePicker.Input>
             <DatePicker.Trigger>🗓</DatePicker.Trigger>

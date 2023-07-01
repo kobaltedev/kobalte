@@ -110,6 +110,15 @@ body {
   outline-offset: 2px;
 }
 
+.input {
+  display: flex;
+  gap: 4px;
+}
+
+.input [data-placeholder] {
+  color: #b3adad;
+}
+
 .content {
   background-color: white;
   padding: 8px;

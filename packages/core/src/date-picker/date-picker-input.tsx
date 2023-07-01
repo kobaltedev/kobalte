@@ -145,9 +145,9 @@ export function DatePickerInput(props: DatePickerInputProps) {
       .formatToParts(new Date())
       .filter(segment => EDITABLE_SEGMENTS[segment.type as keyof typeof EDITABLE_SEGMENTS])
       .reduce((acc, segment) => {
-        acc[segment.type] = true;
-        return segment;
-      }, {} as any);
+        acc[segment.type as keyof typeof EDITABLE_SEGMENTS] = true;
+        return acc;
+      }, {} as Partial<typeof EDITABLE_SEGMENTS>);
   });
 
   const [validSegments, setValidSegments] = createSignal<Partial<typeof EDITABLE_SEGMENTS>>(

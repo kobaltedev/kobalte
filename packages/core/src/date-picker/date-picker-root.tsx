@@ -29,6 +29,7 @@ import {
   createSignal,
   createUniqueId,
   JSX,
+  mergeProps,
   on,
   splitProps,
 } from "solid-js";
@@ -240,6 +241,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
       "maxGranularity",
       "hideTimeZone",
       "shouldForceLeadingZeros",
+      "validationState",
       "open",
       "defaultOpen",
       "onOpenChange",
@@ -319,19 +321,9 @@ export function DatePickerRoot(props: DatePickerRootProps) {
 
   const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
 
-  const { formControlContext } = createFormControl(formControlProps);
-
-  createFormResetListener(contentRef, () => {
-    setValue(local.defaultValue);
-  });
-
-  const hasTime = createMemo(() => {
-    return granularity() === "hour" || granularity() === "minute" || granularity() === "second";
-  });
-
   const validationState = createMemo(() => {
-    if (formControlProps.validationState) {
-      return formControlProps.validationState;
+    if (local.validationState) {
+      return local.validationState;
     }
 
     const values = getArrayValueOfSelection(local.selectionMode, value());
@@ -345,6 +337,23 @@ export function DatePickerRoot(props: DatePickerRootProps) {
     });
 
     return isSomeDateInvalid ? "invalid" : undefined;
+  });
+
+  const { formControlContext } = createFormControl(
+    mergeProps(formControlProps, {
+      // override the `validationState` provided by prop to include additional logic.
+      get validationState() {
+        return validationState();
+      },
+    })
+  );
+
+  createFormResetListener(contentRef, () => {
+    setValue(local.defaultValue);
+  });
+
+  const hasTime = createMemo(() => {
+    return granularity() === "hour" || granularity() === "minute" || granularity() === "second";
   });
 
   const formattedValue = createMemo(() => {
@@ -388,7 +397,9 @@ export function DatePickerRoot(props: DatePickerRootProps) {
     let description = "";
 
     if (local.selectionMode === "single" || local.selectionMode === "multiple") {
-      description = messageFormatter().format("selectedDateDescription", { date: formattedValue });
+      description = messageFormatter().format("selectedDateDescription", {
+        date: formattedValue(),
+      });
     } else if (local.selectionMode === "range") {
       // TODO: RangeDatePicker
     }

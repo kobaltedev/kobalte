@@ -7,7 +7,7 @@
  */
 
 import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { children, Show, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { Polymorphic } from "../polymorphic";
@@ -29,15 +29,38 @@ export function DatePickerSegment(props: DatePickerSegmentProps) {
   const datePickerContext = useDatePickerContext();
   const inputContext = useDatePickerInputContext();
 
-  const [local, others] = splitProps(props, ["ref", "segment"]);
+  const [local, others] = splitProps(props, ["ref", "segment", "children"]);
+
+  const resolvedChildren = children(() => local.children);
 
   return (
     <Polymorphic
       as="div"
       ref={mergeRefs(el => (ref = el), local.ref)}
+      data-placeholder={local.segment.isPlaceholder ? "" : undefined}
       {...datePickerContext.dataset()}
       {...formControlContext.dataset()}
       {...others}
-    />
+    >
+      <Show when={resolvedChildren()} fallback={local.segment.text}>
+        {resolvedChildren()}
+      </Show>
+    </Polymorphic>
   );
+}
+
+function commonPrefixLength(strings: string[]): number {
+  // Sort the strings, and compare the characters in the first and last to find the common prefix.
+  strings.sort();
+
+  const first = strings[0];
+  const last = strings[strings.length - 1];
+
+  for (let i = 0; i < first.length; i++) {
+    if (first[i] !== last[i]) {
+      return i;
+    }
+  }
+
+  return 0;
 }
