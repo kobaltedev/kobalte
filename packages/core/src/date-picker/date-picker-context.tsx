@@ -1,10 +1,11 @@
-import { Calendar, CalendarDate, DateDuration } from "@internationalized/date";
-import { Accessor, createContext, JSX, useContext } from "solid-js";
+import { Calendar, DateDuration, DateFormatter } from "@internationalized/date";
+import { FocusManager, RangeValue, ValidationState } from "@kobalte/utils";
+import { Accessor, createContext, useContext } from "solid-js";
 
 import { CalendarSelectionMode, DateValue, TimeValue } from "../calendar/types";
 import { Direction, LocalizedMessageFormatter } from "../i18n";
 import { CreatePresenceResult } from "../primitives";
-import { RangeValue, ValidationState } from "@kobalte/utils";
+import { DateFieldGranularity, DateFieldHourCycle, DateFieldMaxGranularity } from "./types";
 
 export interface DatePickerDataSet {
   "data-expanded": string | undefined;
@@ -18,6 +19,12 @@ export interface DatePickerContextValue {
   isModal: Accessor<boolean>;
   contentPresence: CreatePresenceResult;
   messageFormatter: Accessor<LocalizedMessageFormatter>;
+  granularity: Accessor<DateFieldGranularity>;
+  maxGranularity: Accessor<DateFieldMaxGranularity | undefined>;
+  hourCycle: Accessor<DateFieldHourCycle | undefined>;
+  hideTimeZone: Accessor<boolean>;
+  defaultTimeZone: Accessor<string | undefined>;
+  shouldForceLeadingZeros: Accessor<boolean>;
   visibleDuration: Accessor<DateDuration>;
   allowsNonContiguousRanges: Accessor<boolean>;
   selectionMode: Accessor<CalendarSelectionMode>;
@@ -28,6 +35,7 @@ export interface DatePickerContextValue {
   direction: Accessor<Direction>;
   ariaDescribedBy: Accessor<string | undefined>;
   validationState: Accessor<ValidationState | undefined>;
+  value: Accessor<DateValue | DateValue[] | RangeValue<DateValue> | undefined>;
   dateValue: Accessor<DateValue | DateValue[] | RangeValue<DateValue> | undefined>;
   timeValue: Accessor<TimeValue | RangeValue<TimeValue> | undefined>;
   triggerId: Accessor<string | undefined>;
@@ -40,8 +48,8 @@ export interface DatePickerContextValue {
   setContentRef: (el: HTMLDivElement) => void;
   createCalendar: (name: string) => Calendar;
   isDateUnavailable: (date: DateValue) => boolean;
-  setDateValue: (newValue: DateValue | DateValue[] | RangeValue<DateValue>) => void;
-  setTimeValue: (newValue: TimeValue | RangeValue<TimeValue>) => void;
+  setDateValue: (newValue: DateValue | DateValue[] | RangeValue<DateValue> | undefined) => void;
+  setTimeValue: (newValue: TimeValue | RangeValue<TimeValue> | undefined) => void;
   open: () => void;
   close: () => void;
   toggle: () => void;

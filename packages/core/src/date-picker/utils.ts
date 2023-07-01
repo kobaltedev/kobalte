@@ -6,22 +6,35 @@
  * https://github.com/adobe/react-spectrum/blob/950d45db36e63851f411ed0dc6a5aad0af57da68/packages/@react-stately/datepicker/src/utils.ts
  */
 
-import { Time } from "@internationalized/date";
+import {
+  Calendar,
+  now,
+  Time,
+  toCalendar,
+  toCalendarDate,
+  toCalendarDateTime,
+} from "@internationalized/date";
 import { Accessor, createEffect, createMemo } from "solid-js";
 
 import { DateValue, TimeValue } from "../calendar/types";
-import { DateFieldGranularity, DateTimeFormatOptions } from "./types";
+import {
+  DateFieldGranularity,
+  DateFieldHourCycle,
+  DateFieldMaxGranularity,
+  DateFieldOptions,
+} from "./types";
 
-interface FormatterOptions {
+export interface FormatterOptions {
   timeZone?: string;
   hideTimeZone?: boolean;
   granularity?: DateFieldGranularity;
-  maxGranularity?: "year" | "month" | DateFieldGranularity;
-  hourCycle?: 12 | 24;
+  maxGranularity?: DateFieldMaxGranularity;
+  hourCycle?: DateFieldHourCycle;
   showEra?: boolean;
+  shouldForceLeadingZeros?: boolean;
 }
 
-const DEFAULT_FORMAT_OPTIONS: DateTimeFormatOptions = {
+const DEFAULT_FIELD_OPTIONS: DateFieldOptions = {
   year: "numeric",
   month: "numeric",
   day: "numeric",
@@ -30,15 +43,27 @@ const DEFAULT_FORMAT_OPTIONS: DateTimeFormatOptions = {
   second: "2-digit",
 };
 
-export function getDateTimeFormatOptions(
-  formatOptions: DateTimeFormatOptions,
-  formatterOptions: FormatterOptions
-): Intl.DateTimeFormatOptions {
-  const dateTimeFormatOptions = { ...DEFAULT_FORMAT_OPTIONS, ...formatOptions };
-  const granularity = formatterOptions.granularity || "minute";
-  const keys = Object.keys(dateTimeFormatOptions);
+const TWO_DIGIT_FIELD_OPTIONS: DateFieldOptions = {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+};
 
-  let startIdx = keys.indexOf(formatterOptions.maxGranularity ?? "year");
+export function getDateFieldFormatOptions(
+  fieldOptions: DateFieldOptions,
+  options: FormatterOptions
+): Intl.DateTimeFormatOptions {
+  const defaultFieldOptions = options.shouldForceLeadingZeros
+    ? TWO_DIGIT_FIELD_OPTIONS
+    : DEFAULT_FIELD_OPTIONS;
+  const finalFieldOptions = { ...defaultFieldOptions, ...fieldOptions };
+  const granularity = options.granularity || "minute";
+  const keys = Object.keys(finalFieldOptions);
+
+  let startIdx = keys.indexOf(options.maxGranularity ?? "year");
   if (startIdx < 0) {
     startIdx = 0;
   }
@@ -54,22 +79,22 @@ export function getDateTimeFormatOptions(
 
   const opts: Intl.DateTimeFormatOptions = keys.slice(startIdx, endIdx + 1).reduce((opts, key) => {
     // @ts-ignore
-    opts[key] = dateTimeFormatOptions[key];
+    opts[key] = finalFieldOptions[key];
     return opts;
   }, {});
 
-  if (formatterOptions.hourCycle != null) {
-    opts.hour12 = formatterOptions.hourCycle === 12;
+  if (options.hourCycle != null) {
+    opts.hour12 = options.hourCycle === 12;
   }
 
-  opts.timeZone = formatterOptions.timeZone || "UTC";
+  opts.timeZone = options.timeZone || "UTC";
 
   const hasTime = granularity === "hour" || granularity === "minute" || granularity === "second";
-  if (hasTime && formatterOptions.timeZone && !formatterOptions.hideTimeZone) {
+  if (hasTime && options.timeZone && !options.hideTimeZone) {
     opts.timeZoneName = "short";
   }
 
-  if (formatterOptions.showEra && startIdx === 0) {
+  if (options.showEra && startIdx === 0) {
     opts.era = "short";
   }
 
@@ -82,6 +107,52 @@ export function getPlaceholderTime(placeholderValue?: DateValue): TimeValue {
   }
 
   return new Time();
+}
+
+export function convertValue(
+  value: DateValue | null | undefined,
+  calendar: Calendar
+): DateValue | null | undefined {
+  if (value === null) {
+    return null;
+  }
+
+  if (!value) {
+    return undefined;
+  }
+
+  return toCalendar(value, calendar);
+}
+
+export function createPlaceholderDate(
+  placeholderValue: DateValue | null | undefined,
+  granularity: string,
+  calendar: Calendar,
+  timeZone: string
+) {
+  if (placeholderValue) {
+    return convertValue(placeholderValue, calendar);
+  }
+
+  const date = toCalendar(
+    now(timeZone).set({
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+    }),
+    calendar
+  );
+
+  if (granularity === "year" || granularity === "month" || granularity === "day") {
+    return toCalendarDate(date);
+  }
+
+  if (!timeZone) {
+    return toCalendarDateTime(date);
+  }
+
+  return date;
 }
 
 export function createDefaultProps(props: {

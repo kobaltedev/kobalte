@@ -8,7 +8,6 @@
 
 import {
   Calendar,
-  CalendarDate,
   DateDuration,
   DateFormatter,
   toCalendarDate,
@@ -40,12 +39,18 @@ import {
   CalendarSingleSelectionOptions,
 } from "../calendar/calendar-root";
 import { DateValue, TimeValue } from "../calendar/types";
+import {
+  asArrayValue,
+  asSingleValue,
+  getArrayValueOfSelection,
+  getFirstValueOfSelection,
+  isDateInvalid,
+} from "../calendar/utils";
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
 import { createMessageFormatter, getReadingDirection, useLocale } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
-  createControllableArraySignal,
   createControllableSignal,
   createDisclosureState,
   createFormResetListener,
@@ -58,16 +63,8 @@ import {
   DatePickerContextValue,
   DatePickerDataSet,
 } from "./date-picker-context";
-import { DateFieldGranularity, DateTimeFormatOptions } from "./types";
-import { createDefaultProps, getDateTimeFormatOptions, getPlaceholderTime } from "./utils";
-import {
-  asArrayValue,
-  asRangeValue,
-  asSingleValue,
-  getArrayValueOfSelection,
-  getFirstValueOfSelection,
-  isDateInvalid,
-} from "../calendar/utils";
+import { DateFieldGranularity, DateFieldHourCycle, DateFieldMaxGranularity } from "./types";
+import { createDefaultProps, getDateFieldFormatOptions, getPlaceholderTime } from "./utils";
 
 export type DatePickerRootOptions = (
   | CalendarSingleSelectionOptions
@@ -136,16 +133,25 @@ export type DatePickerRootOptions = (
      * Whether to display the time in 12 or 24-hour format.
      * By default, this is determined by the user's locale.
      */
-    hourCycle?: 12 | 24;
+    hourCycle?: DateFieldHourCycle;
 
     /**
-     * Determines the smallest unit that is displayed in the date picker.
+     * Determines the smallest unit that is displayed in the date field.
      * By default, this is `"day"` for dates, and `"minute"` for times.
      */
     granularity?: DateFieldGranularity;
 
+    /** Determines the largest unit that is displayed in the date field. */
+    maxGranularity?: DateFieldMaxGranularity;
+
     /** Whether to hide the time zone abbreviation. */
     hideTimeZone?: boolean;
+
+    /**
+     * Whether to always show leading zeros in the hour field.
+     * By default, this is determined by the user's locale.
+     */
+    shouldForceLeadingZeros?: boolean;
 
     /**
      * Whether the date picker should be the only visible content for screen readers.
@@ -205,9 +211,12 @@ export function DatePickerRoot(props: DatePickerRootProps) {
       id: defaultId,
       visibleDuration: { months: 1 },
       selectionMode: "single",
+      maxGranularity: "year",
+      hideTimeZone: false,
+      shouldForceLeadingZeros: false,
+      modal: false,
       gutter: 8,
       sameWidth: false,
-      modal: false,
       placement: "bottom-start",
     },
     props
@@ -228,7 +237,9 @@ export function DatePickerRoot(props: DatePickerRootProps) {
       "placeholderValue",
       "hourCycle",
       "granularity",
+      "maxGranularity",
       "hideTimeZone",
+      "shouldForceLeadingZeros",
       "open",
       "defaultOpen",
       "onOpenChange",
@@ -343,7 +354,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
       return "";
     }
 
-    const formatOptions = getDateTimeFormatOptions(
+    const formatOptions = getDateFieldFormatOptions(
       { month: "long" },
       {
         granularity: granularity(),
@@ -354,10 +365,10 @@ export function DatePickerRoot(props: DatePickerRootProps) {
       }
     );
 
-    const formatter = new DateFormatter(locale(), formatOptions);
+    const dateFormatter = createMemo(() => new DateFormatter(locale(), formatOptions));
 
     const formatDate = (date: DateValue | undefined) => {
-      return date ? formatter.format(date.toDate(defaultTimeZone() ?? "UTC")) : "";
+      return date ? dateFormatter().format(date.toDate(defaultTimeZone() ?? "UTC")) : "";
     };
 
     let formattedValue: string | undefined;
@@ -394,7 +405,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
   };
 
   // Intercept `setValue` to make sure the Time section is not changed by date selection in Calendar.
-  const selectDate = (newValue: DateValue | DateValue[] | RangeValue<DateValue>) => {
+  const selectDate = (newValue: DateValue | DateValue[] | RangeValue<DateValue> | undefined) => {
     if (local.selectionMode === "single") {
       if (hasTime()) {
         const resolvedSelectedTime = selectedTime() as TimeValue | undefined;
@@ -421,11 +432,11 @@ export function DatePickerRoot(props: DatePickerRootProps) {
     }
   };
 
-  const selectTime = (newValue: TimeValue | RangeValue<TimeValue>) => {
+  const selectTime = (newValue: TimeValue | RangeValue<TimeValue> | undefined) => {
     if (local.selectionMode === "single") {
       const resolvedSelectedDate = selectedDate() as DateValue | undefined;
 
-      if (resolvedSelectedDate) {
+      if (resolvedSelectedDate && newValue) {
         commitSingleValue(resolvedSelectedDate, newValue as TimeValue);
       } else {
         setSelectedTime(newValue);
@@ -498,6 +509,12 @@ export function DatePickerRoot(props: DatePickerRootProps) {
     isModal: () => local.modal ?? false,
     contentPresence,
     messageFormatter,
+    granularity,
+    maxGranularity: () => local.maxGranularity,
+    hourCycle: () => local.hourCycle,
+    hideTimeZone: () => local.hideTimeZone ?? false,
+    defaultTimeZone,
+    shouldForceLeadingZeros: () => local.shouldForceLeadingZeros ?? false,
     visibleDuration: () => local.visibleDuration!,
     selectionMode: () => local.selectionMode!,
     allowsNonContiguousRanges: () => local.allowsNonContiguousRanges ?? false,
@@ -508,6 +525,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
     direction,
     ariaDescribedBy,
     validationState,
+    value,
     dateValue: selectedDate,
     timeValue: selectedTime,
     triggerId,

@@ -180,13 +180,14 @@ export function alignStartDate(
  * -----------------------------------------------------------------------------*/
 
 export function isDateInvalid(
-  date: DateValue,
+  date?: DateValue | null,
   minValue?: DateValue | null,
   maxValue?: DateValue | null
 ) {
   return (
-    (minValue != null && date.compare(minValue) < 0) ||
-    (maxValue != null && date.compare(maxValue) > 0)
+    date != null &&
+    ((minValue != null && date.compare(minValue) < 0) ||
+      (maxValue != null && date.compare(maxValue) > 0))
   );
 }
 

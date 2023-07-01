@@ -9,7 +9,6 @@
 
 import {
   Calendar,
-  CalendarDate,
   DateDuration,
   DateFormatter,
   getDayOfWeek,
