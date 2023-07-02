@@ -36,7 +36,7 @@ export interface DatePickerContextValue {
   direction: Accessor<Direction>;
   ariaDescribedBy: Accessor<string | undefined>;
   validationState: Accessor<ValidationState | undefined>;
-  value: Accessor<DateValue | DateValue[] | RangeValue<DateValue> | undefined>;
+  value: Accessor<DateValue | DateValue[] | RangeValue<DateValue> | null | undefined>;
   dateValue: Accessor<DateValue | DateValue[] | RangeValue<DateValue> | undefined>;
   timeValue: Accessor<TimeValue | RangeValue<TimeValue> | undefined>;
   triggerId: Accessor<string | undefined>;

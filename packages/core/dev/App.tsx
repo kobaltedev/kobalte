@@ -4,6 +4,8 @@ import {
   createCalendar,
   getLocalTimeZone,
   type DateValue,
+  now,
+  parseZonedDateTime,
 } from "@internationalized/date";
 import { RangeValue } from "@kobalte/utils";
 import { createSignal, For, Show } from "solid-js";
@@ -11,13 +13,14 @@ import { createSignal, For, Show } from "solid-js";
 import { Calendar, createDateFormatter, DatePicker, I18nProvider } from "../src";
 
 export default function App() {
-  const [value, setValue] = createSignal<DateValue>();
+  const [value, setValue] = createSignal<DateValue | null>();
   //const [value, setValue] = createSignal<DateValue[]>([]);
   //const [value, setValue] = createSignal<RangeValue<DateValue>>();
 
   return (
-    <I18nProvider locale="fr-FR">
+    <I18nProvider locale="en-US">
       <>
+        <button onClick={() => setValue(null)}>Clear value: {value()?.toString()}</button>
         <DatePicker.Root
           createCalendar={createCalendar}
           selectionMode="single"

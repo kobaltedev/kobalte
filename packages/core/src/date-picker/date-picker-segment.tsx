@@ -332,9 +332,8 @@ export function DatePickerSegment(props: DatePickerSegmentProps) {
         }
 
         if (
-          local.segment.maxValue != null &&
-          (Number(numberValue + "0") > local.segment.maxValue ||
-            newValue.length >= String(local.segment.maxValue).length)
+          (local.segment.maxValue != null && Number(numberValue + "0") > local.segment.maxValue) ||
+          newValue.length >= String(local.segment.maxValue).length
         ) {
           enteredKeys = "";
           if (shouldSetValue) {

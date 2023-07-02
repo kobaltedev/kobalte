@@ -293,7 +293,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
   });
 
   const [value, setValue] = createControllableSignal<
-    DateValue | DateValue[] | RangeValue<DateValue> | undefined
+    DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
   >({
     value: () => local.value,
     defaultValue: () => local.defaultValue,
@@ -378,7 +378,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
 
     const dateFormatter = createMemo(() => new DateFormatter(locale(), formatOptions));
 
-    const formatDate = (date: DateValue | undefined) => {
+    const formatDate = (date: DateValue | null | undefined) => {
       return date ? dateFormatter().format(date.toDate(defaultTimeZone() ?? "UTC")) : "";
     };
 

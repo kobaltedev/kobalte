@@ -440,8 +440,8 @@ export function DatePickerInput(props: DatePickerInputProps) {
   // If the value is set to null and all segments are valid, reset the placeholder.
   createEffect(() => {
     if (
-      datePickerContext.value() == null &&
-      Object.keys(validSegments()).length === Object.keys(allSegments()).length
+      datePickerContext.value() == null
+      // && Object.keys(validSegments()).length === Object.keys(allSegments()).length
     ) {
       setValidSegments({});
       setPlaceholderDate(
