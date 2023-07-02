@@ -31,6 +31,7 @@ export interface DatePickerContextValue {
   minValue: Accessor<DateValue | undefined>;
   maxValue: Accessor<DateValue | undefined>;
   placeholderValue: Accessor<DateValue | undefined>;
+  focusManager: Accessor<FocusManager>;
   locale: Accessor<string>;
   direction: Accessor<Direction>;
   ariaDescribedBy: Accessor<string | undefined>;

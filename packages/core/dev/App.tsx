@@ -21,8 +21,6 @@ export default function App() {
         <DatePicker.Root
           createCalendar={createCalendar}
           selectionMode="single"
-          minValue={today(getLocalTimeZone())}
-          defaultValue={parseDate("2022-02-03")}
           hourCycle={24}
           shouldForceLeadingZeros
           value={value()}
@@ -30,7 +28,7 @@ export default function App() {
         >
           <DatePicker.Control class="control">
             <DatePicker.Input class="input">
-              {segment => <DatePicker.Segment segment={segment} />}
+              {segment => <DatePicker.Segment segment={segment()} />}
             </DatePicker.Input>
             <DatePicker.Trigger>🗓</DatePicker.Trigger>
           </DatePicker.Control>

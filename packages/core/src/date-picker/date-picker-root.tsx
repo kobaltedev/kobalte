@@ -286,6 +286,8 @@ export function DatePickerRoot(props: DatePickerRootProps) {
     return getReadingDirection(locale());
   });
 
+  const focusManager = createFocusManager(controlRef);
+
   const closeOnSelect = createMemo(() => {
     return local.closeOnSelect ?? local.selectionMode !== "multiple";
   });
@@ -532,6 +534,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
     placeholderValue: () => local.placeholderValue,
     minValue: () => local.minValue,
     maxValue: () => local.maxValue,
+    focusManager: () => focusManager,
     locale,
     direction,
     ariaDescribedBy,

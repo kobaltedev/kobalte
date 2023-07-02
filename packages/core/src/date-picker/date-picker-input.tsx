@@ -21,6 +21,7 @@ import {
   createMemo,
   createSignal,
   For,
+  Index,
   JSX,
   on,
   splitProps,
@@ -29,7 +30,7 @@ import {
 import { DateValue } from "../calendar/types";
 import { asSingleValue } from "../calendar/utils";
 import { useFormControlContext } from "../form-control";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useDatePickerContext } from "./date-picker-context";
 import { DatePickerInputContext, DatePickerInputContextValue } from "./date-picker-input-context";
 import { getPlaceholder } from "./placeholders";
@@ -66,8 +67,8 @@ const TYPE_MAPPING = {
   dayperiod: "dayPeriod",
 };
 
-export interface DatePickerInputOptions {
-  children?: (segment: DateSegment) => JSX.Element;
+export interface DatePickerInputOptions extends AsChildProp {
+  children?: (segment: Accessor<DateSegment>) => JSX.Element;
 }
 
 export interface DatePickerInputProps
@@ -86,7 +87,13 @@ export function DatePickerInput(props: DatePickerInputProps) {
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "children", "onFocusOut", "aria-describedby"]);
+  const [local, others] = splitProps(props, [
+    "ref",
+    "children",
+    "onFocusOut",
+    "aria-labelledby",
+    "aria-describedby",
+  ]);
 
   const timeZone = createMemo(() => datePickerContext.defaultTimeZone() || "UTC");
 
@@ -137,6 +144,20 @@ export function DatePickerInput(props: DatePickerInputProps) {
 
   const dateFormatter = createMemo(() => new DateFormatter(datePickerContext.locale(), opts()));
   const resolvedOptions = createMemo(() => dateFormatter().resolvedOptions());
+
+  const ariaLabelledBy = createMemo(() => {
+    return formControlContext.getAriaLabelledBy(
+      others.id,
+      others["aria-label"],
+      local["aria-labelledby"]
+    );
+  });
+
+  const ariaDescribedBy = createMemo(() => {
+    return [local["aria-describedby"], datePickerContext.ariaDescribedBy()]
+      .filter(Boolean)
+      .join(" ");
+  });
 
   // Determine how many editable segments there are for validation purposes.
   // The result is cached for performance.
@@ -452,6 +473,13 @@ export function DatePickerInput(props: DatePickerInputProps) {
   });
 
   const context: DatePickerInputContextValue = {
+    calendar,
+    dateValue,
+    dateFormatterResolvedOptions: resolvedOptions,
+    ariaLabel: () => others["aria-label"],
+    ariaLabelledBy,
+    ariaDescribedBy,
+    segments,
     increment,
     decrement,
     incrementPage,
@@ -468,12 +496,13 @@ export function DatePickerInput(props: DatePickerInputProps) {
         role="presentation"
         ref={mergeRefs(el => (ref = el), local.ref)}
         onFocusOut={onFocusOut}
-        aria-describedby={formControlContext.getAriaDescribedBy(local["aria-describedby"])}
+        aria-labelledby={ariaLabelledBy()}
+        aria-describedby={ariaDescribedBy()}
         {...datePickerContext.dataset()}
         {...formControlContext.dataset()}
         {...others}
       >
-        <For each={segments()}>{segment => local.children?.(segment)}</For>
+        <Index each={segments()}>{segment => local.children?.(segment)}</Index>
       </Polymorphic>
     </DatePickerInputContext.Provider>
   );
