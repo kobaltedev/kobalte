@@ -8,9 +8,77 @@ import {
   parseZonedDateTime,
 } from "@internationalized/date";
 import { RangeValue } from "@kobalte/utils";
-import { createSignal, For, Show } from "solid-js";
+import { batch, createSignal, For, Show } from "solid-js";
 
-import { Calendar, createDateFormatter, DatePicker, I18nProvider } from "../src";
+import {
+  Calendar,
+  createDateFormatter,
+  DatePicker,
+  I18nProvider,
+  createFilter,
+  Combobox,
+} from "../src";
+
+//
+const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
+function Foo() {
+  const [value, setValue] = createSignal<string | null>("Blueberry");
+
+  const filter = createFilter({ sensitivity: "base" });
+
+  const [options, setOptions] = createSignal(ALL_OPTIONS);
+
+  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
+    // Show all options on ArrowDown/ArrowUp and button click.
+    if (isOpen && triggerMode === "manual") {
+      setOptions(ALL_OPTIONS);
+    }
+  };
+
+  const onInputChange = (value: string) => {
+    // Remove selection when input is cleared.
+    if (value === "") {
+      setValue(null);
+    }
+
+    setOptions(ALL_OPTIONS.filter(option => filter.contains(option, value)));
+  };
+
+  return (
+    <>
+      <button onClick={() => setValue(null)}>Clear</button>
+      <button onClick={() => setValue("Apple")}>Select Apple</button>
+      {value()}
+      <Combobox.Root
+        options={options()}
+        onInputChange={onInputChange}
+        onOpenChange={onOpenChange}
+        value={value()}
+        onChange={setValue}
+        placeholder="Search a fruit…"
+        itemComponent={props => (
+          <Combobox.Item item={props.item} class="combobox__item">
+            <Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+            <Combobox.ItemIndicator class="combobox__item-indicator">X</Combobox.ItemIndicator>
+          </Combobox.Item>
+        )}
+      >
+        <Combobox.Control class="combobox__control" aria-label="Fruit">
+          <Combobox.Input class="combobox__input" />
+          <Combobox.Trigger class="combobox__trigger">
+            <Combobox.Icon class="combobox__icon">V</Combobox.Icon>
+          </Combobox.Trigger>
+        </Combobox.Control>
+        <Combobox.Portal>
+          <Combobox.Content class="combobox__content">
+            <Combobox.Listbox class="combobox__listbox" />
+          </Combobox.Content>
+        </Combobox.Portal>
+      </Combobox.Root>
+    </>
+  );
+}
+//
 
 export default function App() {
   const [value, setValue] = createSignal<DateValue | null>();
@@ -20,6 +88,12 @@ export default function App() {
   return (
     <I18nProvider locale="en-US">
       <>
+        <Foo />
+        <br />
+        <br />
+        <hr />
+        <br />
+        <br />
         <button onClick={() => setValue(null)}>Clear value: {value()?.toString()}</button>
         <DatePicker.Root
           createCalendar={createCalendar}

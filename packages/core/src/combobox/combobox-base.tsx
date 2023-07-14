@@ -428,10 +428,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
         if (disclosureState.isOpen() && keys.size > 0) {
           close();
         }
-
-        resetInputValue();
-      } else {
-        setInputValue("");
       }
 
       const inputEl = inputRef();
@@ -581,7 +577,14 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       () => listState.selectionManager().selectedKeys(),
       selectedKeys => {
         syncSelectedOptionsMapWithSelectedKeys(selectedKeys);
-        resetInputValue();
+
+        const selectedOption = selectedOptions().at(0);
+        const inputEl = inputRef();
+
+        if (inputEl) {
+          // Can't use `resetInputValue` because of a weird bug that clear the selection.
+          inputEl.value = selectedOption ? getOptionLabel(selectedOption) : "";
+        }
       }
     )
   );
