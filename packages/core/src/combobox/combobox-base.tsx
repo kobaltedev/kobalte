@@ -26,6 +26,7 @@ import {
   createSignal,
   createUniqueId,
   JSX,
+  on,
   onMount,
   splitProps,
 } from "solid-js";
@@ -399,23 +400,27 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     return [...selectedOptionsMap.values()];
   });
 
+  const syncSelectedOptionsMapWithSelectedKeys = (selectedKeys: Set<string>) => {
+    // Remove keys that are not selected anymore.
+    selectedOptionsMap.forEach((_, key) => {
+      if (!selectedKeys.has(key)) {
+        selectedOptionsMap.delete(key);
+      }
+    });
+
+    getOptionsFromValues(selectedKeys).forEach(option => {
+      // Use a clone of the option object in case it get removed from the filtered options.
+      selectedOptionsMap.set(getOptionValue(option), structuredClone(option));
+    });
+  };
+
   const listState = createListState({
     selectedKeys: () => local.value && local.value.map(getOptionValue),
     defaultSelectedKeys: () => local.defaultValue && local.defaultValue.map(getOptionValue),
     onSelectionChange: keys => {
-      // Remove keys that are not selected anymore.
-      selectedOptionsMap.forEach((_, key) => {
-        if (!keys.has(key)) {
-          selectedOptionsMap.delete(key);
-        }
-      });
+      syncSelectedOptionsMapWithSelectedKeys(keys);
 
-      getOptionsFromValues(keys).forEach(option => {
-        // Use a clone of the option object in case it get removed from the filtered options.
-        selectedOptionsMap.set(getOptionValue(option), structuredClone(option));
-      });
-
-      local.onChange?.([...selectedOptionsMap.values()]);
+      local.onChange?.(selectedOptions());
 
       if (local.selectionMode === "single") {
         // Only close if an option is selected.
@@ -447,13 +452,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     getTextValue: () => local.optionTextValue as any,
     getDisabled: () => local.optionDisabled as any,
     getSectionChildren: () => local.optionGroupChildren as any,
-  });
-
-  // Init the selected options state.
-  onMount(() => {
-    getOptionsFromValues(listState.selectionManager().selectedKeys()).forEach(option => {
-      selectedOptionsMap.set(getOptionValue(option), structuredClone(option));
-    });
   });
 
   const removeOptionFromSelection = (option: Option) => {
@@ -577,12 +575,16 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     return local.sectionComponent?.({ section });
   };
 
-  onMount(() => {
-    if (local.selectionMode === "single") {
-      // Set input to match current selected key if any.
-      resetInputValue();
-    }
-  });
+  // Keep selected options (Objects) and combobox input in sync with listState selected keys.
+  createEffect(
+    on(
+      () => listState.selectionManager().selectedKeys(),
+      selectedKeys => {
+        syncSelectedOptionsMapWithSelectedKeys(selectedKeys);
+        resetInputValue();
+      }
+    )
+  );
 
   // VoiceOver has issues with announcing aria-activedescendant properly on change.
   // We use a live region announcer to announce focus changes manually.
