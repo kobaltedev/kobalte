@@ -12,14 +12,14 @@ import {PaginationContext, PaginationContextValue} from "./pagination-context";
 import {PaginationItemProps} from "./pagination-item";
 
 export interface PaginationRootOptions {
-  /** The controlled page number of the pagination. */
+  /** The controlled page number of the pagination. (1-indexed) */
   page?: number;
 
   /**
-   * The default page number when initially rendered.
+   * The default page number when initially rendered. (1-indexed)
    * Useful when you do not need to control the page number.
    */
-  defaultPage?: boolean;
+  defaultPage?: number;
 
   /** Event handler called when the page number of the switch changes. */
   onPageChange?: (page: number) => void;
@@ -37,7 +37,7 @@ export interface PaginationRootOptions {
   showLast?: boolean;
   
   /** The component to render as an item in the `Pagination.List`. */
-  itemComponent: (page: number) => JSX.Element;
+  itemComponent: Component<{page: number}>;
 
   /** The component to render as an ellipsis item in the `Pagination.List`. */
   ellipsisComponent: () => JSX.Element;
@@ -79,7 +79,7 @@ export function PaginationRoot(props: PaginationRootProps) {
     ]);
 
   const state = createControllableSignal({
-    defaultValue: () => local.defaultPage,
+    defaultValue: () => local.defaultPage ?? 1,
     onChange: local.onPageChange,
     value: () => local.page,
   });
@@ -90,11 +90,10 @@ export function PaginationRoot(props: PaginationRootProps) {
     showFirst: () => local.showFirst ?? true,
     showLast: () => local.showLast ?? true,
     isDisabled: () => local.isDisabled ?? false,
-    renderItem: local.itemComponent,
+    renderItem: page => local.itemComponent({page}),
     renderEllipsis: local.ellipsisComponent,
     page: state[0],
     setPage: state[1],
-    generateItemId: value => `${others.id!}-item-${value}`,
   };
 
   return (

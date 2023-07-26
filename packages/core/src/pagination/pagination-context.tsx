@@ -8,10 +8,9 @@ export interface PaginationContextValue {
   showLast: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
   renderItem: (page: number) => JSX.Element;
-  renderEllipsis: (page: number) => JSX.Element;
+  renderEllipsis: () => JSX.Element;
   page: Accessor<number>;
   setPage: Setter<number>;
-  generateItemId: (value: string | number) => string;
 }
 
 export const PaginationContext = createContext<PaginationContextValue>();
