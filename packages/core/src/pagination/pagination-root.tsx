@@ -1,0 +1,112 @@
+import {
+  callHandler,
+  createGenerateId,
+  mergeDefaultProps,
+  mergeRefs,
+  OverrideComponentProps,
+} from "@kobalte/utils";
+import {Accessor, Component, createMemo, createSignal, createUniqueId, JSX, splitProps} from "solid-js";
+
+import {createControllableSignal, createFormResetListener, createToggleState} from "../primitives";
+import {PaginationContext, PaginationContextValue} from "./pagination-context";
+import {PaginationItemProps} from "./pagination-item";
+
+export interface PaginationRootOptions {
+  /** The controlled page number of the pagination. */
+  page?: number;
+
+  /**
+   * The default page number when initially rendered.
+   * Useful when you do not need to control the page number.
+   */
+  defaultPage?: boolean;
+
+  /** Event handler called when the page number of the switch changes. */
+  onPageChange?: (page: number) => void;
+  
+  /** The number of pages for the pagination */
+  count: number;
+  
+  /** The number of siblings to show around the current page item */
+  siblingCount?: number;
+  
+  /** Whether to always show the first page item */
+  showFirst?: boolean;
+
+  /** Whether to always show the last page item */
+  showLast?: boolean;
+  
+  /** The component to render as an item in the `Pagination.List`. */
+  itemComponent: (page: number) => JSX.Element;
+
+  /** The component to render as an ellipsis item in the `Pagination.List`. */
+  ellipsisComponent: () => JSX.Element;
+
+  /** Whether the pagination is disabled. */
+  isDisabled?: boolean;
+}
+
+export interface PaginationRootProps extends OverrideComponentProps<"nav", PaginationRootOptions> {}
+
+/**
+ * A list of page number that allows users to change the current page.
+ */
+export function PaginationRoot(props: PaginationRootProps) {
+  let ref: HTMLDivElement | undefined;
+
+  const defaultId = `pagination-${createUniqueId()}`;
+
+  props = mergeDefaultProps(
+    {
+      id: defaultId,
+    },
+    props
+    );
+
+  const [local, others] = splitProps(props, [
+    "ref",
+    "page",
+    "defaultPage",
+    "onPageChange",
+    "count",
+    "siblingCount",
+    "showFirst",
+    "showLast",
+    "itemComponent",
+    "ellipsisComponent",
+    "isDisabled",
+    "children",
+    ]);
+
+  const state = createControllableSignal({
+    defaultValue: () => local.defaultPage,
+    onChange: local.onPageChange,
+    value: () => local.page,
+  });
+
+  const context: PaginationContextValue = {
+    count: () => local.count,
+    siblingCount: () => local.siblingCount ?? 1,
+    showFirst: () => local.showFirst ?? true,
+    showLast: () => local.showLast ?? true,
+    isDisabled: () => local.isDisabled ?? false,
+    renderItem: local.itemComponent,
+    renderEllipsis: local.ellipsisComponent,
+    page: state[0],
+    setPage: state[1],
+    generateItemId: value => `${others.id!}-item-${value}`,
+  };
+
+  return (
+    <PaginationContext.Provider value={context}>
+      <nav
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        {...others}
+      >
+        <ul>
+          {local.children}
+        </ul>
+      </nav>
+    </PaginationContext.Provider>
+    );
+}
