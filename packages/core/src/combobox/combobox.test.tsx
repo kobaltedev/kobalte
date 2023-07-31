@@ -27,6 +27,9 @@ const DATA_SOURCE: DataSourceItem[] = [
 describe("Combobox", () => {
   installPointerEvent();
 
+  // structuredClone polyfill, kind of ^^'
+  global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
+
   const onValueChange = jest.fn();
 
   beforeEach(() => {
@@ -170,7 +173,9 @@ describe("Combobox", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe(CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2]);
+      expect(onValueChange.mock.calls[0][0]).toStrictEqual(
+        CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2]
+      );
 
       expect(listbox).not.toBeVisible();
 
@@ -252,7 +257,9 @@ describe("Combobox", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe(CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2]);
+      expect(onValueChange.mock.calls[0][0]).toStrictEqual(
+        CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2]
+      );
 
       expect(listbox).not.toBeVisible();
 
@@ -345,7 +352,9 @@ describe("Combobox", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe(CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2]);
+      expect(onValueChange.mock.calls[0][0]).toStrictEqual(
+        CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2]
+      );
 
       expect(listbox).not.toBeVisible();
 
@@ -427,7 +436,9 @@ describe("Combobox", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe(CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2]);
+      expect(onValueChange.mock.calls[0][0]).toStrictEqual(
+        CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2]
+      );
 
       expect(listbox).not.toBeVisible();
 
@@ -1723,7 +1734,7 @@ describe("Combobox", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[2]);
+      expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[2]);
 
       expect(listbox).not.toBeVisible();
 
@@ -1799,7 +1810,7 @@ describe("Combobox", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[1]);
+      expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[1]);
 
       expect(listbox).not.toBeVisible();
       expect(input).toHaveValue("Two");
@@ -1881,7 +1892,7 @@ describe("Combobox", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[2]);
+      expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[2]);
       expect(listbox).not.toBeVisible();
 
       // run restore focus rAF
@@ -2128,7 +2139,7 @@ describe("Combobox", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[0]);
+      expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[0]);
 
       expect(listbox).not.toBeVisible();
 
@@ -2201,7 +2212,7 @@ describe("Combobox", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[0]);
+      expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[0]);
 
       expect(listbox).not.toBeVisible();
 
@@ -2286,7 +2297,7 @@ describe("Combobox", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe(dataSource[2]);
+      expect(onValueChange.mock.calls[0][0]).toStrictEqual(dataSource[2]);
 
       expect(listbox).not.toBeVisible();
 
@@ -2345,7 +2356,7 @@ describe("Combobox", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[1]);
+      expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[1]);
 
       expect(listbox).not.toBeVisible();
 
@@ -2441,8 +2452,16 @@ describe("Combobox", () => {
       expect(items[2]).toHaveAttribute("aria-selected", "true");
 
       expect(onValueChange).toBeCalledTimes(2);
-      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[0])).toBeTruthy();
-      expect(onValueChange.mock.calls[1][0].includes(DATA_SOURCE[2])).toBeTruthy();
+      expect(
+        onValueChange.mock.calls[0][0]
+          .map((option: DataSourceItem) => option.key)
+          .includes(DATA_SOURCE[0].key)
+      ).toBeTruthy();
+      expect(
+        onValueChange.mock.calls[1][0]
+          .map((option: DataSourceItem) => option.key)
+          .includes(DATA_SOURCE[2].key)
+      ).toBeTruthy();
 
       // Does not close on multi-select
       expect(listbox).toBeVisible();
@@ -2514,9 +2533,21 @@ describe("Combobox", () => {
       expect(items[2]).toHaveAttribute("aria-selected", "true");
 
       expect(onValueChange).toBeCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[0])).toBeTruthy();
-      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[1])).toBeTruthy();
-      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[2])).toBeTruthy();
+      expect(
+        onValueChange.mock.calls[0][0]
+          .map((option: DataSourceItem) => option.key)
+          .includes(DATA_SOURCE[0].key)
+      ).toBeTruthy();
+      expect(
+        onValueChange.mock.calls[0][0]
+          .map((option: DataSourceItem) => option.key)
+          .includes(DATA_SOURCE[1].key)
+      ).toBeTruthy();
+      expect(
+        onValueChange.mock.calls[0][0]
+          .map((option: DataSourceItem) => option.key)
+          .includes(DATA_SOURCE[2].key)
+      ).toBeTruthy();
     });
 
     it("supports multiple value (controlled)", async () => {
@@ -2583,7 +2614,11 @@ describe("Combobox", () => {
       expect(items[2]).toHaveAttribute("aria-selected", "false");
 
       expect(onValueChange).toBeCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[2])).toBeTruthy();
+      expect(
+        onValueChange.mock.calls[0][0]
+          .map((option: DataSourceItem) => option.key)
+          .includes(DATA_SOURCE[2].key)
+      ).toBeTruthy();
     });
 
     it("supports deselection", async () => {
@@ -2650,8 +2685,16 @@ describe("Combobox", () => {
       expect(items[0]).toHaveAttribute("aria-selected", "false");
 
       expect(onValueChange).toBeCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[0])).toBeFalsy();
-      expect(onValueChange.mock.calls[0][0].includes(DATA_SOURCE[1])).toBeTruthy();
+      expect(
+        onValueChange.mock.calls[0][0]
+          .map((option: DataSourceItem) => option.key)
+          .includes(DATA_SOURCE[0].key)
+      ).toBeFalsy();
+      expect(
+        onValueChange.mock.calls[0][0]
+          .map((option: DataSourceItem) => option.key)
+          .includes(DATA_SOURCE[1].key)
+      ).toBeTruthy();
     });
   });
 
@@ -2712,7 +2755,7 @@ describe("Combobox", () => {
       await Promise.resolve();
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
-      expect(onValueChange.mock.calls[0][0]).toBe(dataSource[1]);
+      expect(onValueChange.mock.calls[0][0]).toStrictEqual(dataSource[1]);
       expect(input).toHaveValue("France");
     });
 

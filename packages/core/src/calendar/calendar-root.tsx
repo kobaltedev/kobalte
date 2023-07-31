@@ -9,7 +9,6 @@
 
 import {
   Calendar,
-  CalendarDate,
   DateDuration,
   DateFormatter,
   getDayOfWeek,
@@ -83,13 +82,13 @@ export interface CalendarSingleSelectionOptions {
   selectionMode: "single";
 
   /** The controlled selected date of the calendar. */
-  value?: DateValue;
+  value?: DateValue | null;
 
   /**
    * The date of the calendar that should be selected when initially rendered.
    * Useful when you do not need to control the state of the calendar.
    */
-  defaultValue?: DateValue;
+  defaultValue?: DateValue | null;
 
   /** Event handler called when the selected date change. */
   onChange?: (value: DateValue) => void;
@@ -100,13 +99,13 @@ export interface CalendarMultipleSelectionOptions {
   selectionMode: "multiple";
 
   /** The controlled selected dates of the calendar. */
-  value?: DateValue[];
+  value?: DateValue[] | null;
 
   /**
    * The dates of the calendar that should be selected when initially rendered.
    * Useful when you do not need to control the state of the calendar.
    */
-  defaultValue?: DateValue[];
+  defaultValue?: DateValue[] | null;
 
   /** Event handler called when the selected dates change. */
   onChange?: (value: DateValue[]) => void;
@@ -117,13 +116,13 @@ export interface CalendarRangeSelectionOptions {
   selectionMode: "range";
 
   /** The controlled selected date range of the calendar. */
-  value?: RangeValue<DateValue>;
+  value?: RangeValue<DateValue> | null;
 
   /**
    * The date range of the calendar that should be selected when initially rendered.
    * Useful when you do not need to control the state of the calendar.
    */
-  defaultValue?: RangeValue<DateValue>;
+  defaultValue?: RangeValue<DateValue> | null;
 
   /** Event handler called when the selected date range change. */
   onChange?: (value: RangeValue<DateValue>) => void;
@@ -254,7 +253,7 @@ export function CalendarRoot(props: CalendarRootProps) {
   });
 
   const [value, setControlledValue] = createControllableSignal<
-    DateValue | DateValue[] | RangeValue<DateValue> | undefined
+    DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
   >({
     value: () => local.value,
     defaultValue: () => local.defaultValue,
@@ -772,7 +771,7 @@ export function CalendarRoot(props: CalendarRootProps) {
 
   // Announce when the selected value changes
   createEffect(() => {
-    let description: string | undefined;
+    let description: string | null | undefined;
 
     if (local.selectionMode === "single") {
       const date = asSingleValue(value());
@@ -926,7 +925,7 @@ export function CalendarRoot(props: CalendarRootProps) {
   );
 }
 
-function convertValue(newValue: DateValue, oldValue?: DateValue): DateValue {
+function convertValue(newValue: DateValue, oldValue?: DateValue | null): DateValue {
   // The display calendar should not have any effect on the emitted value.
   // Emit dates in the same calendar as the original value, if any, otherwise gregorian.
   newValue = toCalendar(newValue, oldValue?.calendar || new GregorianCalendar());

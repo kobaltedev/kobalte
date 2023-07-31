@@ -180,13 +180,14 @@ export function alignStartDate(
  * -----------------------------------------------------------------------------*/
 
 export function isDateInvalid(
-  date: DateValue,
+  date?: DateValue | null,
   minValue?: DateValue | null,
   maxValue?: DateValue | null
 ) {
   return (
-    (minValue != null && date.compare(minValue) < 0) ||
-    (maxValue != null && date.compare(maxValue) > 0)
+    date != null &&
+    ((minValue != null && date.compare(minValue) < 0) ||
+      (maxValue != null && date.compare(maxValue) > 0))
   );
 }
 
@@ -329,9 +330,9 @@ export function getEraFormat(date: DateValue): "short" | undefined {
 /** Return the first value of the selection depending on the selection mode. */
 export function getFirstValueOfSelection(
   selectionMode: CalendarSelectionMode,
-  value: DateValue | DateValue[] | RangeValue<DateValue> | undefined
+  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
 ) {
-  let firstValue: DateValue | undefined;
+  let firstValue: DateValue | null | undefined;
 
   if (selectionMode === "single") {
     firstValue = asSingleValue(value);
@@ -348,9 +349,9 @@ export function getFirstValueOfSelection(
 /** Return an array of values for the selection depending on the selection mode. */
 export function getArrayValueOfSelection(
   selectionMode: CalendarSelectionMode,
-  value: DateValue | DateValue[] | RangeValue<DateValue> | undefined
+  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
 ) {
-  let values: Array<DateValue | undefined> = [];
+  let values: Array<DateValue | null | undefined> = [];
 
   if (selectionMode === "single") {
     values = [asSingleValue(value)];
@@ -745,18 +746,24 @@ export function getPreviousSection(
  * -----------------------------------------------------------------------------*/
 
 /** Narrow the type of `value` to `DateValue`. */
-export function asSingleValue(value: DateValue | DateValue[] | RangeValue<DateValue> | undefined) {
-  return value as DateValue | undefined;
+export function asSingleValue(
+  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
+) {
+  return value as DateValue | null | undefined;
 }
 
 /** Narrow the type of `value` to `DateValue[]`. */
-export function asArrayValue(value: DateValue | DateValue[] | RangeValue<DateValue> | undefined) {
-  return value as DateValue[] | undefined;
+export function asArrayValue(
+  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
+) {
+  return value as DateValue[] | null | undefined;
 }
 
 /** Narrow the type of `value` to `RangeValue<DateValue>`. */
-export function asRangeValue(value: DateValue | DateValue[] | RangeValue<DateValue> | undefined) {
-  return value as RangeValue<DateValue> | undefined;
+export function asRangeValue(
+  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
+) {
+  return value as RangeValue<DateValue> | null | undefined;
 }
 
 /* -----------------------------------------------------------------------------

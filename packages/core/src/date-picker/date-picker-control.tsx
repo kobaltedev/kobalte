@@ -18,10 +18,10 @@ import {
 import { JSX, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { Polymorphic } from "../polymorphic";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useDatePickerContext } from "./date-picker-context";
 
-export interface DatePickerControlOptions {}
+export interface DatePickerControlOptions extends AsChildProp {}
 
 export interface DatePickerControlProps
   extends OverrideComponentProps<"div", DatePickerControlOptions> {}
@@ -49,8 +49,6 @@ export function DatePickerControl(props: DatePickerControlProps) {
     "onKeyDown",
     "aria-labelledby",
   ]);
-
-  const focusManager = createFocusManager(() => ref);
 
   const ariaLabelledBy = () => {
     return formControlContext.getAriaLabelledBy(
@@ -140,18 +138,18 @@ export function DatePickerControl(props: DatePickerControlProps) {
         e.preventDefault();
         e.stopPropagation();
         if (context.direction() === "rtl") {
-          focusManager.focusNext();
+          context.focusManager().focusNext();
         } else {
-          focusManager.focusPrevious();
+          context.focusManager().focusPrevious();
         }
         break;
       case "ArrowRight":
         e.preventDefault();
         e.stopPropagation();
         if (context.direction() === "rtl") {
-          focusManager.focusPrevious();
+          context.focusManager().focusPrevious();
         } else {
-          focusManager.focusNext();
+          context.focusManager().focusNext();
         }
         break;
     }
