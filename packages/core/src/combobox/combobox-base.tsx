@@ -20,6 +20,7 @@ import {
 } from "@kobalte/utils";
 import {
   Accessor,
+  batch,
   Component,
   createEffect,
   createMemo,
@@ -577,14 +578,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       () => listState.selectionManager().selectedKeys(),
       selectedKeys => {
         syncSelectedOptionsMapWithSelectedKeys(selectedKeys);
-
-        const selectedOption = selectedOptions().at(0);
-        const inputEl = inputRef();
-
-        if (inputEl) {
-          // Can't use `resetInputValue` because of a weird bug that clear the selection.
-          inputEl.value = selectedOption ? getOptionLabel(selectedOption) : "";
-        }
+        resetInputValue();
       }
     )
   );
