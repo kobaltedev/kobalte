@@ -20,7 +20,6 @@ import {
 } from "@kobalte/utils";
 import {
   Accessor,
-  batch,
   Component,
   createEffect,
   createMemo,
@@ -28,7 +27,6 @@ import {
   createUniqueId,
   JSX,
   on,
-  onMount,
   splitProps,
 } from "solid-js";
 
@@ -230,7 +228,8 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     {
       id: defaultId,
       selectionMode: "single",
-      disallowEmptySelection: true,
+      allowsEmptyCollection: false,
+      disallowEmptySelection: false,
       allowDuplicateSelectionEvents: true,
       removeOnBackspace: true,
       gutter: 8,
@@ -238,7 +237,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       modal: false,
       preventScroll: false,
       triggerMode: "input",
-      allowsEmptyCollection: false,
     },
     props
   );
@@ -416,8 +414,20 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   };
 
   const listState = createListState({
-    selectedKeys: () => local.value && local.value.map(getOptionValue),
-    defaultSelectedKeys: () => local.defaultValue && local.defaultValue.map(getOptionValue),
+    selectedKeys: () => {
+      if (local.value != null) {
+        return local.value.map(getOptionValue);
+      }
+
+      return local.value;
+    },
+    defaultSelectedKeys: () => {
+      if (local.defaultValue != null) {
+        return local.defaultValue.map(getOptionValue);
+      }
+
+      return local.defaultValue;
+    },
     onSelectionChange: keys => {
       syncSelectedOptionsMapWithSelectedKeys(keys);
 

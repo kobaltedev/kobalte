@@ -32,32 +32,11 @@ export function SelectListbox<Option = any, OptGroup = never>(
 
   createEffect(() => onCleanup(context.registerListboxId(local.id!)));
 
-  /*
-  onMount(() => {
-    if (!context.isOpen() || context.autoFocus() === false) {
-      return;
-    }
-
-    let focusedKey = context.listState().selectionManager().firstSelectedKey();
-
-    if (focusedKey == null) {
-      if (context.autoFocus() === "first") {
-        focusedKey = context.listState().collection().getFirstKey();
-      } else if (context.autoFocus() === "last") {
-        focusedKey = context.listState().collection().getLastKey();
-      }
-    }
-
-    context.listState().selectionManager().setFocused(true);
-    context.listState().selectionManager().setFocusedKey(focusedKey);
-  });
-  */
-
   const onKeyDown: JSX.EventHandlerUnion<HTMLUListElement, KeyboardEvent> = e => {
     callHandler(e, local.onKeyDown);
 
     // Prevent from clearing the selection by `createSelectableCollection` on escape.
-    if (e.key === "Escape" && context.isMultiple()) {
+    if (e.key === "Escape") {
       e.preventDefault();
     }
   };

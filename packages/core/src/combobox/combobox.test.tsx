@@ -2308,7 +2308,7 @@ describe("Combobox", () => {
       expect(input).toHaveValue("Three");
     });
 
-    it("does not deselect when pressing an already selected item", async () => {
+    it("does not deselect when pressing an already selected item when 'disallowEmptySelection' is true", async () => {
       render(() => (
         <Combobox.Root
           options={DATA_SOURCE}
@@ -2319,6 +2319,7 @@ describe("Combobox", () => {
           optionLabel="label"
           defaultValue={DATA_SOURCE[1]}
           onChange={onValueChange}
+          disallowEmptySelection
           itemComponent={props => (
             <Combobox.Item item={props.item}>{props.item.rawValue.label}</Combobox.Item>
           )}
