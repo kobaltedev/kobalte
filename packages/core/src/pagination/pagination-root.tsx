@@ -1,15 +1,8 @@
-import {
-  callHandler,
-  createGenerateId,
-  mergeDefaultProps,
-  mergeRefs,
-  OverrideComponentProps,
-} from "@kobalte/utils";
-import {Accessor, Component, createMemo, createSignal, createUniqueId, JSX, splitProps} from "solid-js";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { Component, createUniqueId, JSX, splitProps } from "solid-js";
 
-import {createControllableSignal, createFormResetListener, createToggleState} from "../primitives";
-import {PaginationContext, PaginationContextValue} from "./pagination-context";
-import {PaginationItemProps} from "./pagination-item";
+import { createControllableSignal } from "../primitives";
+import { PaginationContext, PaginationContextValue } from "./pagination-context";
 
 export interface PaginationRootOptions {
   /** The controlled page number of the pagination. (1-indexed) */
@@ -21,23 +14,23 @@ export interface PaginationRootOptions {
    */
   defaultPage?: number;
 
-  /** Event handler called when the page number of the switch changes. */
+  /** Event handler called when the page number changes. */
   onPageChange?: (page: number) => void;
-  
-  /** The number of pages for the pagination */
+
+  /** The number of pages for the pagination. */
   count: number;
-  
-  /** The number of siblings to show around the current page item */
+
+  /** The number of siblings to show around the current page item. */
   siblingCount?: number;
-  
-  /** Whether to always show the first page item */
+
+  /** Whether to always show the first page item. */
   showFirst?: boolean;
 
-  /** Whether to always show the last page item */
+  /** Whether to always show the last page item. */
   showLast?: boolean;
-  
+
   /** The component to render as an item in the `Pagination.List`. */
-  itemComponent: Component<{page: number}>;
+  itemComponent: Component<{ page: number }>;
 
   /** The component to render as an ellipsis item in the `Pagination.List`. */
   ellipsisComponent: () => JSX.Element;
@@ -52,8 +45,6 @@ export interface PaginationRootProps extends OverrideComponentProps<"nav", Pagin
  * A list of page number that allows users to change the current page.
  */
 export function PaginationRoot(props: PaginationRootProps) {
-  let ref: HTMLDivElement | undefined;
-
   const defaultId = `pagination-${createUniqueId()}`;
 
   props = mergeDefaultProps(
@@ -61,10 +52,9 @@ export function PaginationRoot(props: PaginationRootProps) {
       id: defaultId,
     },
     props
-    );
+  );
 
   const [local, others] = splitProps(props, [
-    "ref",
     "page",
     "defaultPage",
     "onPageChange",
@@ -76,7 +66,7 @@ export function PaginationRoot(props: PaginationRootProps) {
     "ellipsisComponent",
     "isDisabled",
     "children",
-    ]);
+  ]);
 
   const state = createControllableSignal({
     defaultValue: () => local.defaultPage ?? 1,
@@ -90,7 +80,7 @@ export function PaginationRoot(props: PaginationRootProps) {
     showFirst: () => local.showFirst ?? true,
     showLast: () => local.showLast ?? true,
     isDisabled: () => local.isDisabled ?? false,
-    renderItem: page => local.itemComponent({page}),
+    renderItem: page => local.itemComponent({ page }),
     renderEllipsis: local.ellipsisComponent,
     page: state[0],
     setPage: state[1],
@@ -98,14 +88,9 @@ export function PaginationRoot(props: PaginationRootProps) {
 
   return (
     <PaginationContext.Provider value={context}>
-      <nav
-        ref={mergeRefs(el => (ref = el), local.ref)}
-        {...others}
-      >
-        <ul>
-          {local.children}
-        </ul>
+      <nav {...others}>
+        <ul>{local.children}</ul>
       </nav>
     </PaginationContext.Provider>
-    );
+  );
 }

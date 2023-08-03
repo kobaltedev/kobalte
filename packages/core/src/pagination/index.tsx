@@ -1,29 +1,41 @@
-import {PaginationRoot as Root, type PaginationRootProps, type PaginationRootOptions} from "./pagination-root";
-import {
-  PaginationPrevious as Previous,
-  type PaginationPreviousProps,
-  type PaginationPreviousOptions
-} from "./pagination-previous";
-import {PaginationNext as Next, type PaginationNextProps, type PaginationNextOptions} from "./pagination-next";
-import {PaginationItem as Item, type PaginationItemProps, type PaginationItemOptions} from "./pagination-item";
-import {PaginationList as List, type PaginationListProps} from "./pagination-list";
 import {
   PaginationEllipsis as Ellipsis,
+  type PaginationEllipsisOptions,
   type PaginationEllipsisProps,
-  type PaginationEllipsisOptions
 } from "./pagination-ellipsis";
+import {
+  PaginationItem as Item,
+  type PaginationItemOptions,
+  type PaginationItemProps,
+} from "./pagination-item";
+import { PaginationList as List, type PaginationListProps } from "./pagination-list";
+import {
+  PaginationNext as Next,
+  type PaginationNextOptions,
+  type PaginationNextProps,
+} from "./pagination-next";
+import {
+  PaginationPrevious as Previous,
+  type PaginationPreviousOptions,
+  type PaginationPreviousProps,
+} from "./pagination-previous";
+import {
+  PaginationRoot as Root,
+  type PaginationRootOptions,
+  type PaginationRootProps,
+} from "./pagination-root";
 
 export type {
-  PaginationRootProps,
-  PaginationRootOptions,
-  PaginationPreviousProps,
-  PaginationPreviousOptions,
-  PaginationNextProps,
-  PaginationNextOptions,
-  PaginationItemProps,
-  PaginationItemOptions,
-  PaginationListProps,
+  PaginationEllipsisOptions,
   PaginationEllipsisProps,
-  PaginationEllipsisOptions
+  PaginationItemOptions,
+  PaginationItemProps,
+  PaginationListProps,
+  PaginationNextOptions,
+  PaginationNextProps,
+  PaginationPreviousOptions,
+  PaginationPreviousProps,
+  PaginationRootOptions,
+  PaginationRootProps,
 };
-export {Root, Previous, Next, Item, List, Ellipsis};
+export { Ellipsis, Item, List, Next, Previous, Root };

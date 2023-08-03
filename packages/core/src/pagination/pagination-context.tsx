@@ -1,6 +1,5 @@
 import { Accessor, createContext, JSX, Setter, useContext } from "solid-js";
 
-
 export interface PaginationContextValue {
   count: Accessor<number>;
   siblingCount: Accessor<number>;
@@ -19,7 +18,9 @@ export function usePaginationContext() {
   const context = useContext(PaginationContext);
 
   if (context === undefined) {
-    throw new Error("[kobalte]: `usePaginationContext` must be used within a `Pagination` component");
+    throw new Error(
+      "[kobalte]: `usePaginationContext` must be used within a `Pagination` component"
+    );
   }
 
   return context;

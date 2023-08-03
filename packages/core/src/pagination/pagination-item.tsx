@@ -1,15 +1,16 @@
-import {composeEventHandlers, mergeDefaultProps, OverrideComponentProps} from "@kobalte/utils";
-import {AsChildProp, Polymorphic} from "../polymorphic";
-import {usePaginationContext} from "./pagination-context";
-import {splitProps} from "solid-js";
+import { composeEventHandlers, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { splitProps } from "solid-js";
+
+import { AsChildProp, Polymorphic } from "../polymorphic";
+import { usePaginationContext } from "./pagination-context";
 
 export interface PaginationItemOptions extends AsChildProp {
   /** The page number of this item. (1-indexed) */
   page: number;
 }
 
-export interface PaginationItemProps extends OverrideComponentProps<"button", PaginationItemOptions> {}
-
+export interface PaginationItemProps
+  extends OverrideComponentProps<"button", PaginationItemOptions> {}
 
 export function PaginationItem(props: PaginationItemProps) {
   const context = usePaginationContext();
@@ -19,13 +20,9 @@ export function PaginationItem(props: PaginationItemProps) {
       type: "button",
     },
     props
-    );
+  );
 
-  const [local, others] = splitProps(props, [
-    "page",
-    "onClick",
-    ]);
-
+  const [local, others] = splitProps(props, ["page", "onClick"]);
 
   const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
     context.setPage(local.page);
@@ -40,5 +37,5 @@ export function PaginationItem(props: PaginationItemProps) {
         {...others}
       />
     </li>
-    );
+  );
 }
