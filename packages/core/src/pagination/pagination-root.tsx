@@ -1,5 +1,5 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-import {Accessor, Component, createUniqueId, JSX, Setter, splitProps} from "solid-js";
+import { Accessor, Component, createUniqueId, JSX, Setter, splitProps } from "solid-js";
 
 import { createControllableSignal } from "../primitives";
 import { PaginationContext, PaginationContextValue } from "./pagination-context";

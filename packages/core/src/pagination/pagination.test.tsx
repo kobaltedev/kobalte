@@ -9,15 +9,13 @@ describe("Pagination", () => {
         count={7}
         itemComponent={props => (
           <Pagination.Item page={props.page}>Page {props.page}</Pagination.Item>
-          )}
-        ellipsisComponent={() => (
-          <Pagination.Ellipsis>Ellipsis</Pagination.Ellipsis>
-          )}
-        >
-        <Pagination.List/>
+        )}
+        ellipsisComponent={() => <Pagination.Ellipsis>Ellipsis</Pagination.Ellipsis>}
+      >
+        <Pagination.List />
         <Pagination.Next>Next</Pagination.Next>
       </Pagination.Root>
-      ));
+    ));
 
     const next = screen.getByText("Next");
 
@@ -83,12 +81,12 @@ describe("Pagination", () => {
         count={10}
         itemComponent={props => (
           <Pagination.Item page={props.page}>Page {props.page}</Pagination.Item>
-          )}
+        )}
         ellipsisComponent={() => <></>}
-        >
-        <Pagination.List/>
+      >
+        <Pagination.List />
       </Pagination.Root>
-      ));
+    ));
 
     const page1 = screen.getByText("Page 1");
     const page2 = screen.getByText("Page 2");
@@ -107,12 +105,12 @@ describe("Pagination", () => {
         siblingCount={2}
         itemComponent={props => (
           <Pagination.Item page={props.page}>Page {props.page}</Pagination.Item>
-          )}
+        )}
         ellipsisComponent={() => <></>}
-        >
-        <Pagination.List/>
+      >
+        <Pagination.List />
       </Pagination.Root>
-      ));
+    ));
 
     const page1 = screen.getByText("Page 1");
     const page2 = screen.getByText("Page 2");
@@ -140,12 +138,12 @@ describe("Pagination", () => {
         showLast={false}
         itemComponent={props => (
           <Pagination.Item page={props.page}>Page {props.page}</Pagination.Item>
-          )}
+        )}
         ellipsisComponent={() => <></>}
-        >
-        <Pagination.List/>
+      >
+        <Pagination.List />
       </Pagination.Root>
-      ));
+    ));
 
     const page1 = screen.queryByText("Page 1");
     const page3 = screen.getByText("Page 3");
@@ -170,7 +168,7 @@ describe("Pagination", () => {
         count={10}
         itemComponent={() => <></>}
         ellipsisComponent={() => <></>}
-        >
+      >
         <Pagination.Next>Next</Pagination.Next>
       </Pagination.Root>
     ));
@@ -195,10 +193,10 @@ describe("Pagination", () => {
         count={10}
         itemComponent={() => <></>}
         ellipsisComponent={() => <></>}
-        >
+      >
         <Pagination.Next>Next</Pagination.Next>
       </Pagination.Root>
-      ));
+    ));
 
     expect(onPageChange).not.toBeCalled();
 

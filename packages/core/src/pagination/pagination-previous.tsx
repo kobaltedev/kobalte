@@ -1,5 +1,5 @@
 import { composeEventHandlers, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-import {JSX, splitProps} from "solid-js";
+import { JSX, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { usePaginationContext } from "./pagination-context";
