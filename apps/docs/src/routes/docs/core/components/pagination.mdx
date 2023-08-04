@@ -160,7 +160,7 @@ An initial, uncontrolled page can be provided using the `defaultPage` prop, whic
   <DefaultPageExample />
 </Preview>
 
-```tsx {3}
+```tsx {2}
 <Pagination.Root
   count={10}
   defaultPage={4}
@@ -181,7 +181,7 @@ The `page` prop, which accepts a page number, can be used to make the value cont
   <ControlledExample />
 </Preview>
 
-```tsx {3,8-9}
+```tsx {3,7-8}
 import { createSignal } from "solid-js";
 
 export function ControlledExample() {
@@ -211,7 +211,7 @@ The appearance can be customized by omitting the Next and Previous Button.
   <ButtonsExample />
 </Preview>
 
-```tsx {10}
+```tsx {5}
 <Pagination.Root
   count={10}
   itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
@@ -229,7 +229,7 @@ The appearance can be customized by hiding the First and Last item.
   <FirstLastExample />
 </Preview>
 
-```tsx {3-4}
+```tsx {2-3}
 <Pagination.Root
   count={10}
   showFirst={false}
@@ -269,8 +269,8 @@ The appearance can be customized by changing the items around the current page i
 ### Pagination.Root
 
 | Prop              | Description                                                                                    |
-| :---------------- | :--------------------------------------------------------------------------------------------- | --- |
-| page              | `number` <br/> The controlled page number of the pagination. (1-indexed)                       |     |
+| :---------------- | :--------------------------------------------------------------------------------------------- |
+| page              | `number` <br/> The controlled page number of the pagination. (1-indexed)                       |
 | defaultPage       | `string` <br/> The default page number when initially rendered. (1-indexed)                    |
 | onPageChange      | `(page: number) => void` <br/> Event handler called when the page number changes.              |
 | count             | `number` <br/> The number of pages for the pagination.                                         |

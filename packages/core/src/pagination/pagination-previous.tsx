@@ -1,5 +1,5 @@
 import { composeEventHandlers, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import {JSX, splitProps} from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { usePaginationContext } from "./pagination-context";
@@ -19,9 +19,9 @@ export function PaginationPrevious(props: PaginationPreviousProps) {
     props
   );
 
-  const [local, others] = splitProps(props, ["page", "onClick"]);
+  const [local, others] = splitProps(props, ["onClick"]);
 
-  const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
+  const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = () => {
     context.setPage(context.page() - 1);
   };
 

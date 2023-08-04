@@ -1,5 +1,5 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-import { Component, createUniqueId, JSX, splitProps } from "solid-js";
+import {Accessor, Component, createUniqueId, JSX, Setter, splitProps} from "solid-js";
 
 import { createControllableSignal } from "../primitives";
 import { PaginationContext, PaginationContextValue } from "./pagination-context";
@@ -82,8 +82,8 @@ export function PaginationRoot(props: PaginationRootProps) {
     isDisabled: () => local.isDisabled ?? false,
     renderItem: page => local.itemComponent({ page }),
     renderEllipsis: local.ellipsisComponent,
-    page: state[0],
-    setPage: state[1],
+    page: state[0] as Accessor<number>,
+    setPage: state[1] as Setter<number>,
   };
 
   return (
