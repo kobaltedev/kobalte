@@ -20,21 +20,21 @@ import { createToggleState } from "../primitives";
 
 export interface ToggleButtonRootState {
   /** Whether the toggle button is on (pressed) or off (not pressed). */
-  isPressed: Accessor<boolean>;
+  pressed: Accessor<boolean>;
 }
 
 export interface ToggleButtonRootOptions extends Button.ButtonRootOptions {
   /** The controlled pressed state of the toggle button. */
-  isPressed?: boolean;
+  pressed?: boolean;
 
   /**
    * The default pressed state when initially rendered.
    * Useful when you do not need to control the pressed state.
    */
-  defaultIsPressed?: boolean;
+  defaultPressed?: boolean;
 
   /** Event handler called when the pressed state of the toggle button changes. */
-  onPressedChange?: (isPressed: boolean) => void;
+  onChange?: (pressed: boolean) => void;
 
   /**
    * The children of the toggle button.
@@ -53,17 +53,17 @@ export interface ToggleButtonRootProps
 export function ToggleButtonRoot(props: ToggleButtonRootProps) {
   const [local, others] = splitProps(props, [
     "children",
-    "isPressed",
-    "defaultIsPressed",
-    "onPressedChange",
+    "pressed",
+    "defaultPressed",
+    "onChange",
     "onClick",
   ]);
 
   const state = createToggleState({
-    isSelected: () => local.isPressed,
-    defaultIsSelected: () => local.defaultIsPressed,
-    onSelectedChange: selected => local.onPressedChange?.(selected),
-    isDisabled: () => others.isDisabled,
+    isSelected: () => local.pressed,
+    defaultIsSelected: () => local.defaultPressed,
+    onSelectedChange: selected => local.onChange?.(selected),
+    isDisabled: () => others.disabled,
   });
 
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
@@ -78,7 +78,7 @@ export function ToggleButtonRoot(props: ToggleButtonRootProps) {
       onClick={onClick}
       {...others}
     >
-      <ToggleButtonRootChild state={{ isPressed: state.isSelected }} children={local.children} />
+      <ToggleButtonRootChild state={{ pressed: state.isSelected }} children={local.children} />
     </Button.Root>
   );
 }
@@ -88,8 +88,10 @@ interface ToggleButtonRootChildProps extends Pick<ToggleButtonRootOptions, "chil
 }
 
 function ToggleButtonRootChild(props: ToggleButtonRootChildProps) {
-  return children(() => {
+  const resolvedChildren = children(() => {
     const body = props.children;
     return isFunction(body) ? body(props.state) : body;
   });
+
+  return <>{resolvedChildren()}</>;
 }

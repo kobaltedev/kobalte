@@ -21,7 +21,7 @@ import { isButton } from "./is-button";
 
 export interface ButtonRootOptions extends AsChildProp {
   /** Whether the button is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
 
 export interface ButtonRootProps extends OverrideComponentProps<"button", ButtonRootOptions> {}
@@ -36,7 +36,7 @@ export function ButtonRoot(props: ButtonRootProps) {
 
   props = mergeDefaultProps({ type: "button" }, props);
 
-  const [local, others] = splitProps(props, ["ref", "type", "isDisabled"]);
+  const [local, others] = splitProps(props, ["ref", "type", "disabled"]);
 
   const tagName = createTagName(
     () => ref,
@@ -63,14 +63,14 @@ export function ButtonRoot(props: ButtonRootProps) {
 
   return (
     <Polymorphic
-      fallback="button"
+      as="button"
       ref={mergeRefs(el => (ref = el), local.ref)}
       type={isNativeButton() || isNativeInput() ? local.type : undefined}
       role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
-      tabIndex={!isNativeButton() && !isNativeLink() && !local.isDisabled ? 0 : undefined}
-      disabled={isNativeButton() || isNativeInput() ? local.isDisabled : undefined}
-      aria-disabled={!isNativeButton() && !isNativeInput() && local.isDisabled ? true : undefined}
-      data-disabled={local.isDisabled ? "" : undefined}
+      tabIndex={!isNativeButton() && !isNativeLink() && !local.disabled ? 0 : undefined}
+      disabled={isNativeButton() || isNativeInput() ? local.disabled : undefined}
+      aria-disabled={!isNativeButton() && !isNativeInput() && local.disabled ? true : undefined}
+      data-disabled={local.disabled ? "" : undefined}
       {...others}
     />
   );

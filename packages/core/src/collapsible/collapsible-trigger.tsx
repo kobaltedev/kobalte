@@ -32,7 +32,7 @@ export function CollapsibleTrigger(props: CollapsibleTriggerProps) {
     <Button.Root
       aria-expanded={context.isOpen()}
       aria-controls={context.isOpen() ? context.contentId() : undefined}
-      isDisabled={context.isDisabled()}
+      disabled={context.disabled()}
       onClick={onClick}
       {...context.dataset()}
       {...others}

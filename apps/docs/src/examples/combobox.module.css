@@ -1,0 +1,209 @@
+.combobox__control {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 200px;
+  border-radius: 6px;
+  font-size: 16px;
+  line-height: 1;
+  outline: none;
+  background-color: white;
+  border: 1px solid hsl(240 6% 90%);
+  color: hsl(240 4% 16%);
+  transition: border-color 250ms, color 250ms;
+}
+
+.combobox__control[data-invalid] {
+  border-color: hsl(0 72% 51%);
+  color: hsl(0 72% 51%);
+}
+
+.combobox__control_multi {
+  width: 100%;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.combobox__input {
+  appearance: none;
+  display: inline-flex;
+  min-width: 0;
+  min-height: 40px;
+  padding-left: 16px;
+  font-size: 16px;
+  background: transparent;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  outline: none;
+}
+
+.combobox__input::placeholder {
+  color: hsl(240 4% 46%);
+}
+
+.combobox__trigger {
+  appearance: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  outline: none;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding: 0 10px;
+  background-color: hsl(240 5% 96%);
+  border-left: 1px solid hsl(240 6% 90%);
+  color: hsl(240 4% 16%);
+  font-size: 16px;
+  line-height: 0;
+  transition: 250ms background-color;
+}
+
+.combobox__icon {
+  height: 20px;
+  width: 20px;
+  flex: 0 0 20px;
+}
+
+.combobox__description {
+  margin-top: 8px;
+  color: hsl(240 5% 26%);
+  font-size: 12px;
+  user-select: none;
+}
+
+.combobox__error-message {
+  margin-top: 8px;
+  color: hsl(0 72% 51%);
+  font-size: 12px;
+  user-select: none;
+}
+
+.combobox__content {
+  background-color: white;
+  border-radius: 6px;
+  border: 1px solid hsl(240 6% 90%);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transform-origin: var(--kb-combobox-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
+
+.combobox__content[data-expanded] {
+  animation: contentShow 250ms ease-out;
+}
+
+.combobox__listbox {
+  overflow-y: auto;
+  max-height: 360px;
+  padding: 8px;
+}
+
+.combobox__listbox:focus {
+  outline: none;
+}
+
+.combobox__item {
+  font-size: 16px;
+  line-height: 1;
+  color: hsl(240 4% 16%);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 32px;
+  padding: 0 8px;
+  position: relative;
+  user-select: none;
+  outline: none;
+}
+
+.combobox__item[data-disabled] {
+  color: hsl(240 5% 65%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.combobox__item[data-highlighted] {
+  outline: none;
+  background-color: hsl(200 98% 39%);
+  color: white;
+}
+
+.combobox__section {
+  padding: 8px 0 0 8px;
+  font-size: 14px;
+  line-height: 32px;
+  color: hsl(240 4% 46%);
+}
+
+.combobox__item-indicator {
+  height: 20px;
+  width: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+[data-kb-theme="dark"] .combobox__control {
+  background-color: hsl(240 4% 16%);
+  border: 1px solid hsl(240 5% 34%);
+  color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .combobox__control:hover {
+  border-color: hsl(240 4% 46%);
+}
+
+[data-kb-theme="dark"] .combobox__control[data-invalid] {
+  border-color: hsl(0 72% 51%);
+  color: hsl(0 72% 51%);
+}
+
+[data-kb-theme="dark"] .combobox__input::placeholder {
+  color: hsl(0 100% 100% / 0.5);
+}
+
+[data-kb-theme="dark"] .combobox__trigger {
+  background: hsl(240 5% 26%);
+  border-left: 1px solid hsl(240 5% 34%);
+  color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .combobox__content {
+  border: 1px solid hsl(240 5% 26%);
+  background-color: hsl(240 4% 16%);
+  box-shadow: none;
+}
+
+[data-kb-theme="dark"] .combobox__section {
+  color: hsl(0 100% 100% / 0.7);
+}
+
+[data-kb-theme="dark"] .combobox__item {
+  color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .combobox__description {
+  color: hsl(0 100% 100% / 0.7);
+}

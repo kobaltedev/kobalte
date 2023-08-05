@@ -68,6 +68,9 @@ export interface DismissableLayerOptions extends AsChildProp {
 
   /** Handler called when the layer should be dismissed. */
   onDismiss?: () => void;
+
+  /** Whether to ignore the "top most layer" check on interact outside. */
+  bypassTopMostLayerCheck?: boolean;
 }
 
 export interface DismissableLayerProps
@@ -87,6 +90,7 @@ export function DismissableLayer(props: DismissableLayerProps) {
     "onFocusOutside",
     "onInteractOutside",
     "onDismiss",
+    "bypassTopMostLayerCheck",
   ]);
 
   const nestedLayers = new Set<Element>([]);
@@ -115,6 +119,10 @@ export function DismissableLayer(props: DismissableLayerProps) {
 
   const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
     if (!ref || layerStack.isBelowPointerBlockingLayer(ref)) {
+      return;
+    }
+
+    if (!local.bypassTopMostLayerCheck && !layerStack.isTopMostLayer(ref)) {
       return;
     }
 
@@ -231,7 +239,7 @@ export function DismissableLayer(props: DismissableLayerProps) {
 
   return (
     <DismissableLayerContext.Provider value={context}>
-      <Polymorphic fallback="div" ref={mergeRefs(el => (ref = el), local.ref)} {...others} />
+      <Polymorphic as="div" ref={mergeRefs(el => (ref = el), local.ref)} {...others} />
     </DismissableLayerContext.Provider>
   );
 }

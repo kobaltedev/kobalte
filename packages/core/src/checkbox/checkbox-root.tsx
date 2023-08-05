@@ -7,6 +7,7 @@
  */
 
 import {
+  access,
   callHandler,
   createGenerateId,
   isFunction,
@@ -25,42 +26,38 @@ import {
   splitProps,
 } from "solid-js";
 
+import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
+import { Polymorphic } from "../polymorphic";
 import { createFormResetListener, createToggleState } from "../primitives";
 import { CheckboxContext, CheckboxContextValue, CheckboxDataSet } from "./checkbox-context";
 
 interface CheckboxRootState {
   /** Whether the checkbox is checked or not. */
-  isChecked: Accessor<boolean>;
+  checked: Accessor<boolean>;
 
   /** Whether the checkbox is in an indeterminate state. */
-  isIndeterminate: Accessor<boolean>;
+  indeterminate: Accessor<boolean>;
 }
 
 export interface CheckboxRootOptions {
   /** The controlled checked state of the checkbox. */
-  isChecked?: boolean;
+  checked?: boolean;
 
   /**
    * The default checked state when initially rendered.
    * Useful when you do not need to control the checked state.
    */
-  defaultIsChecked?: boolean;
+  defaultChecked?: boolean;
 
   /** Event handler called when the checked state of the checkbox changes. */
-  onCheckedChange?: (isChecked: boolean) => void;
+  onChange?: (checked: boolean) => void;
 
   /**
    * Whether the checkbox is in an indeterminate state.
    * Indeterminism is presentational only.
    * The indeterminate visual representation remains regardless of user interaction.
    */
-  isIndeterminate?: boolean;
-
-  /**
-   * The name of the checkbox, used when submitting an HTML form.
-   * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).
-   */
-  name?: string;
+  indeterminate?: boolean;
 
   /**
    * The value of the checkbox, used when submitting an HTML form.
@@ -68,17 +65,23 @@ export interface CheckboxRootOptions {
    */
   value?: string;
 
+  /**
+   * The name of the checkbox, used when submitting an HTML form.
+   * See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).
+   */
+  name?: string;
+
   /** Whether the checkbox should display its "valid" or "invalid" visual styling. */
   validationState?: ValidationState;
 
   /** Whether the user must check the checkbox before the owning form can be submitted. */
-  isRequired?: boolean;
+  required?: boolean;
 
   /** Whether the checkbox is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 
   /** Whether the checkbox is read only. */
-  isReadOnly?: boolean;
+  readOnly?: boolean;
 
   /**
    * The children of the checkbox.
@@ -87,13 +90,13 @@ export interface CheckboxRootOptions {
   children?: JSX.Element | ((state: CheckboxRootState) => JSX.Element);
 }
 
-export interface CheckboxRootProps extends OverrideComponentProps<"label", CheckboxRootOptions> {}
+export interface CheckboxRootProps extends OverrideComponentProps<"div", CheckboxRootOptions> {}
 
 /**
  * A control that allows the user to toggle between checked and not checked.
  */
 export function CheckboxRoot(props: CheckboxRootProps) {
-  let ref: HTMLLabelElement | undefined;
+  let ref: HTMLDivElement | undefined;
 
   const defaultId = `checkbox-${createUniqueId()}`;
 
@@ -105,36 +108,37 @@ export function CheckboxRoot(props: CheckboxRootProps) {
     props
   );
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    "children",
-    "value",
-    "isChecked",
-    "defaultIsChecked",
-    "onCheckedChange",
-    "name",
-    "value",
-    "validationState",
-    "isRequired",
-    "isDisabled",
-    "isReadOnly",
-    "isIndeterminate",
-    "onPointerDown",
-  ]);
+  const [local, formControlProps, others] = splitProps(
+    props,
+    [
+      "ref",
+      "children",
+      "value",
+      "checked",
+      "defaultChecked",
+      "indeterminate",
+      "onChange",
+      "onPointerDown",
+    ],
+    FORM_CONTROL_PROP_NAMES
+  );
 
+  const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
   const [isFocused, setIsFocused] = createSignal(false);
 
+  const { formControlContext } = createFormControl(formControlProps);
+
   const state = createToggleState({
-    isSelected: () => local.isChecked,
-    defaultIsSelected: () => local.defaultIsChecked,
-    onSelectedChange: selected => local.onCheckedChange?.(selected),
-    isDisabled: () => local.isDisabled,
-    isReadOnly: () => local.isReadOnly,
+    isSelected: () => local.checked,
+    defaultIsSelected: () => local.defaultChecked,
+    onSelectedChange: selected => local.onChange?.(selected),
+    isDisabled: () => formControlContext.isDisabled(),
+    isReadOnly: () => formControlContext.isReadOnly(),
   });
 
   createFormResetListener(
     () => ref,
-    () => state.setIsSelected(local.defaultIsChecked ?? false)
+    () => state.setIsSelected(local.defaultChecked ?? false)
   );
 
   const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
@@ -147,41 +151,40 @@ export function CheckboxRoot(props: CheckboxRootProps) {
   };
 
   const dataset: Accessor<CheckboxDataSet> = createMemo(() => ({
-    "data-valid": local.validationState === "valid" ? "" : undefined,
-    "data-invalid": local.validationState === "invalid" ? "" : undefined,
     "data-checked": state.isSelected() ? "" : undefined,
-    "data-indeterminate": local.isIndeterminate ? "" : undefined,
-    "data-required": local.isRequired ? "" : undefined,
-    "data-disabled": local.isDisabled ? "" : undefined,
-    "data-readonly": local.isReadOnly ? "" : undefined,
+    "data-indeterminate": local.indeterminate ? "" : undefined,
   }));
 
   const context: CheckboxContextValue = {
-    name: () => local.name ?? others.id!,
     value: () => local.value!,
     dataset,
-    validationState: () => local.validationState,
-    isChecked: () => state.isSelected(),
-    isRequired: () => local.isRequired ?? false,
-    isDisabled: () => local.isDisabled ?? false,
-    isReadOnly: () => local.isReadOnly ?? false,
-    isIndeterminate: () => local.isIndeterminate ?? false,
-    generateId: createGenerateId(() => others.id!),
+    checked: () => state.isSelected(),
+    indeterminate: () => local.indeterminate ?? false,
+    inputRef,
+    generateId: createGenerateId(() => access(formControlProps.id)!),
+    toggle: () => state.toggle(),
     setIsChecked: isChecked => state.setIsSelected(isChecked),
     setIsFocused,
+    setInputRef,
   };
 
   return (
-    <CheckboxContext.Provider value={context}>
-      <label
-        ref={mergeRefs(el => (ref = el), local.ref)}
-        onPointerDown={onPointerDown}
-        {...dataset()}
-        {...others}
-      >
-        <CheckboxRootChild state={context} children={local.children} />
-      </label>
-    </CheckboxContext.Provider>
+    <FormControlContext.Provider value={formControlContext}>
+      <CheckboxContext.Provider value={context}>
+        <Polymorphic
+          as="div"
+          ref={mergeRefs(el => (ref = el), local.ref)}
+          role="group"
+          id={access(formControlProps.id)}
+          onPointerDown={onPointerDown}
+          {...formControlContext.dataset()}
+          {...dataset()}
+          {...others}
+        >
+          <CheckboxRootChild state={context} children={local.children} />
+        </Polymorphic>
+      </CheckboxContext.Provider>
+    </FormControlContext.Provider>
   );
 }
 
@@ -190,8 +193,10 @@ interface CheckboxRootChildProps extends Pick<CheckboxRootOptions, "children"> {
 }
 
 function CheckboxRootChild(props: CheckboxRootChildProps) {
-  return children(() => {
+  const resolvedChildren = children(() => {
     const body = props.children;
     return isFunction(body) ? body(props.state) : body;
   });
+
+  return <>{resolvedChildren()}</>;
 }

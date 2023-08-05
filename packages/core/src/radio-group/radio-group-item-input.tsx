@@ -9,10 +9,11 @@
 import {
   callHandler,
   mergeDefaultProps,
+  mergeRefs,
   OverrideComponentProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { useRadioGroupContext } from "./radio-group-context";
@@ -42,6 +43,7 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
   );
 
   const [local, others] = splitProps(props, [
+    "ref",
     "style",
     "aria-labelledby",
     "aria-describedby",
@@ -54,6 +56,7 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
     return (
       [
         local["aria-labelledby"],
+        radioContext.labelId(),
         // If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
         local["aria-labelledby"] != null && others["aria-label"] != null ? others.id : undefined,
       ]
@@ -64,12 +67,13 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
 
   const ariaDescribedBy = () => {
     return (
-      [local["aria-describedby"], radioGroupContext.ariaDescribedBy()].filter(Boolean).join(" ") ||
-      undefined
+      [local["aria-describedby"], radioContext.descriptionId(), radioGroupContext.ariaDescribedBy()]
+        .filter(Boolean)
+        .join(" ") || undefined
     );
   };
 
-  const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = e => {
+  const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = e => {
     callHandler(e, local.onChange);
 
     e.stopPropagation();
@@ -88,18 +92,21 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
     target.checked = radioContext.isSelected();
   };
 
-  const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+  const onFocus: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onFocus);
     radioContext.setIsFocused(true);
   };
 
-  const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+  const onBlur: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
     callHandler(e, local.onBlur);
     radioContext.setIsFocused(false);
   };
 
+  createEffect(() => onCleanup(radioContext.registerInput(others.id!)));
+
   return (
     <input
+      ref={mergeRefs(radioContext.setInputRef, local.ref)}
       type="radio"
       name={formControlContext.name()}
       value={radioContext.value()}

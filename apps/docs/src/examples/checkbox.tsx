@@ -1,4 +1,5 @@
 import { Checkbox } from "@kobalte/core";
+import { clsx } from "clsx";
 import { createSignal } from "solid-js";
 
 import { CheckIcon } from "../components";
@@ -20,7 +21,7 @@ export function BasicExample() {
 
 export function DefaultCheckedExample() {
   return (
-    <Checkbox.Root class={style["checkbox"]} defaultIsChecked>
+    <Checkbox.Root class={style["checkbox"]} defaultChecked>
       <Checkbox.Input class={style["checkbox__input"]} />
       <Checkbox.Control class={style["checkbox__control"]}>
         <Checkbox.Indicator>
@@ -37,7 +38,7 @@ export function ControlledExample() {
 
   return (
     <>
-      <Checkbox.Root class={style["checkbox"]} isChecked={checked()} onCheckedChange={setChecked}>
+      <Checkbox.Root class={style["checkbox"]} checked={checked()} onChange={setChecked}>
         <Checkbox.Input class={style["checkbox__input"]} />
         <Checkbox.Control class={style["checkbox__control"]}>
           <Checkbox.Indicator>
@@ -48,6 +49,51 @@ export function ControlledExample() {
       </Checkbox.Root>
       <p class="not-prose text-sm mt-2">You are {checked() ? "subscribed" : "unsubscribed"}.</p>
     </>
+  );
+}
+
+export function DescriptionExample() {
+  return (
+    <Checkbox.Root class={clsx(style["checkbox"], "!items-start")}>
+      <Checkbox.Input class={style["checkbox__input"]} />
+      <Checkbox.Control class={style["checkbox__control"]}>
+        <Checkbox.Indicator>
+          <CheckIcon />
+        </Checkbox.Indicator>
+      </Checkbox.Control>
+      <div class="flex flex-col items-start -mt-0.5">
+        <Checkbox.Label class={style["checkbox__label"]}>Subscribe</Checkbox.Label>
+        <Checkbox.Description class={style["checkbox__description"]}>
+          You will receive our weekly newsletter.
+        </Checkbox.Description>
+      </div>
+    </Checkbox.Root>
+  );
+}
+
+export function ErrorMessageExample() {
+  const [checked, setChecked] = createSignal(false);
+
+  return (
+    <Checkbox.Root
+      class={clsx(style["checkbox"], "!items-start")}
+      checked={checked()}
+      onChange={setChecked}
+      validationState={!checked() ? "invalid" : "valid"}
+    >
+      <Checkbox.Input class={style["checkbox__input"]} />
+      <Checkbox.Control class={style["checkbox__control"]}>
+        <Checkbox.Indicator>
+          <CheckIcon />
+        </Checkbox.Indicator>
+      </Checkbox.Control>
+      <div class="flex flex-col items-start -mt-0.5">
+        <Checkbox.Label class={style["checkbox__label"]}>Subscribe</Checkbox.Label>
+        <Checkbox.ErrorMessage class={style["checkbox__error-message"]}>
+          You must agree to our Terms and Conditions.
+        </Checkbox.ErrorMessage>
+      </div>
+    </Checkbox.Root>
   );
 }
 

@@ -1,97 +1,91 @@
 import { OverrideComponentProps } from "@kobalte/utils";
-import { Component, splitProps } from "solid-js";
+import { createMemo, splitProps } from "solid-js";
 
 import { AsChildProp } from "../polymorphic";
-import { CollectionNode, createControllableSetSignal } from "../primitives";
-import {
-  SelectBase,
-  SelectBaseItemComponentProps,
-  SelectBaseOptions,
-  SelectBaseSectionComponentProps,
-  SelectBaseValueComponentProps,
-} from "./select-base";
+import { SelectBase, SelectBaseOptions } from "./select-base";
 
-export interface SelectValueComponentProps<T> {
-  /** The selected item. */
-  item: CollectionNode<T>;
-
-  /** A function to clear the selection. */
-  clear: () => void;
-}
-
-export interface SelectItemComponentProps<T> extends SelectBaseItemComponentProps<T> {}
-export interface SelectSectionComponentProps<T> extends SelectBaseSectionComponentProps<T> {}
-
-export interface SelectRootOptions<Option, OptGroup = never>
-  extends Omit<
-    SelectBaseOptions<Option, OptGroup>,
-    | "valueComponent"
-    | "itemComponent"
-    | "sectionComponent"
-    | "value"
-    | "defaultValue"
-    | "onValueChange"
-    | "selectionMode"
-  > {
+export interface SelectSingleSelectionOptions<T> {
   /** The controlled value of the select. */
-  value?: string;
+  value?: T;
 
   /**
    * The value of the select when initially rendered.
    * Useful when you do not need to control the value.
    */
-  defaultValue?: string;
+  defaultValue?: T;
 
   /** Event handler called when the value changes. */
-  onValueChange?: (value: string) => void;
+  onChange?: (value: T) => void;
 
-  /** The component to render inside `Select.Value`. */
-  valueComponent?: Component<SelectValueComponentProps<Option>>;
-
-  /** When NOT virtualized, the component to render as an item in the `Select.Listbox`. */
-  itemComponent?: Component<SelectItemComponentProps<Option>>;
-
-  /** When NOT virtualized, the component to render as a section in the `Select.Listbox`. */
-  sectionComponent?: Component<SelectSectionComponentProps<OptGroup>>;
+  /** Whether the select allow multiple selection. */
+  multiple?: false;
 }
 
-export interface SelectRootProps<Option, OptGroup = never>
-  extends OverrideComponentProps<"div", SelectRootOptions<Option, OptGroup>>,
-    AsChildProp {}
+export interface SelectMultipleSelectionOptions<T> {
+  /** The controlled value of the select. */
+  value?: T[];
+
+  /**
+   * The value of the select when initially rendered.
+   * Useful when you do not need to control the value.
+   */
+  defaultValue?: T[];
+
+  /** Event handler called when the value changes. */
+  onChange?: (value: T[]) => void;
+
+  /** Whether the select allow multiple selection. */
+  multiple: true;
+}
+
+export type SelectRootOptions<Option, OptGroup = never> = (
+  | SelectSingleSelectionOptions<Option>
+  | SelectMultipleSelectionOptions<Option>
+) &
+  AsChildProp &
+  Omit<
+    SelectBaseOptions<Option, OptGroup>,
+    "value" | "defaultValue" | "onChange" | "selectionMode"
+  >;
+
+export type SelectRootProps<Option, OptGroup = never> = OverrideComponentProps<
+  "div",
+  SelectRootOptions<Option, OptGroup>
+>;
 
 /**
  * Displays a list of options for the user to pick from — triggered by a button.
  */
 export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Option, OptGroup>) {
-  const [local, others] = splitProps(props, [
-    "valueComponent",
-    "value",
-    "defaultValue",
-    "onValueChange",
-  ]);
+  const [local, others] = splitProps(props, ["value", "defaultValue", "onChange", "multiple"]);
 
-  const [value, setValue] = createControllableSetSignal({
-    value: () => (local.value != null ? new Set([local.value]) : undefined),
-    defaultValue: () => (local.defaultValue != null ? new Set([local.defaultValue]) : undefined),
-    onChange: value => local.onValueChange?.(value.values().next().value),
+  const value = createMemo(() => {
+    if (local.value == null) {
+      return undefined;
+    }
+
+    return local.multiple ? (local.value as Option[]) : [local.value as Option];
   });
 
-  const valueComponent = (props: SelectBaseValueComponentProps<Option>) => {
-    return local.valueComponent?.({
-      get item() {
-        return props.items[0];
-      },
-      clear: () => props.clear(),
-    });
+  const defaultValue = createMemo(() => {
+    if (local.defaultValue == null) {
+      return undefined;
+    }
+
+    return local.multiple ? (local.defaultValue as Option[]) : [local.defaultValue as Option];
+  });
+
+  const onChange = (value: Option[]) => {
+    local.onChange?.(local.multiple ? value : (value[0] as any));
   };
 
   return (
     <SelectBase
       value={value()}
-      onValueChange={setValue}
-      selectionMode="single"
-      disallowEmptySelection
-      valueComponent={valueComponent}
+      defaultValue={defaultValue()}
+      onChange={onChange}
+      selectionMode={local.multiple ? "multiple" : "single"}
+      disallowEmptySelection={!local.multiple}
       {...others}
     />
   );

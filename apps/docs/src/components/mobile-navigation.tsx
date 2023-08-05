@@ -28,7 +28,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
       <button type="button" onClick={open} class="relative" aria-label="Open navigation">
         <HamburgerMenuIcon class="h-6 w-6 text-zinc-500" />
       </button>
-      <Dialog.Root isOpen={isOpen()} onOpenChange={setIsOpen} aria-label="Navigation">
+      <Dialog.Root open={isOpen()} onOpenChange={setIsOpen} aria-label="Navigation">
         <Dialog.Portal>
           <Dialog.Overlay class="fixed inset-0 z-50 flex items-start overflow-y-auto bg-zinc-900/50 pr-10 backdrop-blur lg:hidden" />
 
@@ -65,7 +65,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
                     : "text-zinc-600 dark:text-zinc-400"
                 )}
               >
-                Core
+                Components
               </Link>
               <Link
                 href={LATEST_CORE_CHANGELOG_URL}

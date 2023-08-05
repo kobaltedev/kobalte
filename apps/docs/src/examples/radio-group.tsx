@@ -50,7 +50,7 @@ export function ControlledExample() {
 
   return (
     <>
-      <RadioGroup.Root class={style["radio-group"]} value={value()} onValueChange={setValue}>
+      <RadioGroup.Root class={style["radio-group"]} value={value()} onChange={setValue}>
         <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>
         <div class={style["radio-group__items"]}>
           <For each={["Apple", "Orange", "Watermelon"]}>
@@ -102,7 +102,7 @@ export function ErrorMessageExample() {
     <RadioGroup.Root
       class={style["radio-group"]}
       value={value()}
-      onValueChange={setValue}
+      onChange={setValue}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
     >
       <RadioGroup.Label class={style["radio-group__label"]}>Favorite fruit</RadioGroup.Label>

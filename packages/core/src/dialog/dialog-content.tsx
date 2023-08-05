@@ -7,6 +7,7 @@
  */
 
 import {
+  contains,
   focusWithoutScrolling,
   mergeDefaultProps,
   mergeRefs,
@@ -83,23 +84,22 @@ export function DialogContent(props: DialogContentProps) {
 
   const [local, others] = splitProps(props, [
     "ref",
-    "id",
     "onOpenAutoFocus",
     "onCloseAutoFocus",
-    "onEscapeKeyDown",
     "onPointerDownOutside",
     "onFocusOutside",
     "onInteractOutside",
   ]);
 
   let hasInteractedOutside = false;
+  let hasPointerDownOutside = false;
 
   const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
     local.onPointerDownOutside?.(e);
 
     // If the event is a right-click, we shouldn't close because
     // it is effectively as if we right-clicked the `Overlay`.
-    if (context.isModal() && e.detail.isContextMenu) {
+    if (context.modal() && e.detail.isContextMenu) {
       e.preventDefault();
     }
   };
@@ -109,7 +109,7 @@ export function DialogContent(props: DialogContentProps) {
 
     // When focus is trapped, a `focusout` event may still happen.
     // We make sure we don't trigger our `onDismiss` in such case.
-    if (context.isModal()) {
+    if (context.modal()) {
       e.preventDefault();
     }
   };
@@ -117,15 +117,40 @@ export function DialogContent(props: DialogContentProps) {
   const onInteractOutside = (e: InteractOutsideEvent) => {
     local.onInteractOutside?.(e);
 
-    if (!context.isModal() && !e.defaultPrevented) {
+    if (context.modal()) {
+      return;
+    }
+
+    // Non-modal behavior below
+
+    if (!e.defaultPrevented) {
       hasInteractedOutside = true;
+
+      if (e.detail.originalEvent.type === "pointerdown") {
+        hasPointerDownOutside = true;
+      }
+    }
+
+    // Prevent dismissing when clicking the trigger.
+    // As the trigger is already setup to close, without doing so would
+    // cause it to close and immediately open.
+    if (contains(context.triggerRef(), e.target as HTMLElement)) {
+      e.preventDefault();
+    }
+
+    // On Safari if the trigger is inside a container with tabIndex={0}, when clicked
+    // we will get the pointer down outside event on the trigger, but then a subsequent
+    // focus outside event on the container, we ignore any focus outside event when we've
+    // already had a pointer down outside event.
+    if (e.detail.originalEvent.type === "focusin" && hasPointerDownOutside) {
+      e.preventDefault();
     }
   };
 
   const onCloseAutoFocus = (e: Event) => {
     local.onCloseAutoFocus?.(e);
 
-    if (context.isModal()) {
+    if (context.modal()) {
       e.preventDefault();
       focusWithoutScrolling(context.triggerRef());
     } else {
@@ -139,30 +164,31 @@ export function DialogContent(props: DialogContentProps) {
       }
 
       hasInteractedOutside = false;
+      hasPointerDownOutside = false;
     }
   };
 
   // aria-hide everything except the content (better supported equivalent to setting aria-modal)
   createHideOutside({
-    isDisabled: () => !(context.isOpen() && context.isModal()),
+    isDisabled: () => !(context.isOpen() && context.modal()),
     targets: () => (ref ? [ref] : []),
   });
 
   createPreventScroll({
     ownerRef: () => ref,
-    isDisabled: () => !(context.isOpen() && context.isModal()),
+    isDisabled: () => !(context.isOpen() && (context.modal() || context.preventScroll())),
   });
 
   createFocusScope(
     {
-      trapFocus: () => context.isOpen() && context.isModal(),
+      trapFocus: () => context.isOpen() && context.modal(),
       onMountAutoFocus: local.onOpenAutoFocus,
       onUnmountAutoFocus: onCloseAutoFocus,
     },
     () => ref
   );
 
-  createEffect(() => onCleanup(context.registerContentId(local.id!)));
+  createEffect(() => onCleanup(context.registerContentId(others.id!)));
 
   return (
     <Show when={context.contentPresence.isPresent()}>
@@ -172,15 +198,13 @@ export function DialogContent(props: DialogContentProps) {
           ref = el;
         }, local.ref)}
         role="dialog"
-        id={local.id}
         tabIndex={-1}
-        disableOutsidePointerEvents={context.isModal() && context.isOpen()}
+        disableOutsidePointerEvents={context.modal() && context.isOpen()}
         excludedElements={[context.triggerRef]}
         aria-labelledby={context.titleId()}
         aria-describedby={context.descriptionId()}
         data-expanded={context.isOpen() ? "" : undefined}
         data-closed={!context.isOpen() ? "" : undefined}
-        onEscapeKeyDown={local.onEscapeKeyDown}
         onPointerDownOutside={onPointerDownOutside}
         onFocusOutside={onFocusOutside}
         onInteractOutside={onInteractOutside}

@@ -1,5 +1,5 @@
 import { Preview, Kbd, TabsSnippets } from "../../../../components";
-import { BasicExample, ClientHandledExample } from "../../../../examples/link";
+import { BasicExample, DisabledExample } from "../../../../examples/link";
 
 # Link
 
@@ -64,19 +64,44 @@ The link consists of:
     .link:hover {
       text-decoration: underline;
     }
+
+    .link[data-disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .link[data-disabled]:hover {
+      text-decoration: none;
+    }
     ```
 
   </TabsSnippets.Content>
   {/* <!-- prettier-ignore-end -->*/}
 </TabsSnippets>
 
+## Usage
+
+### Disabled state
+
+Use the `disabled` prop to disable a link while keeping it accessible for screen readers.
+
+<Preview>
+  <DisabledExample />
+</Preview>
+
+```tsx
+<Link.Root href="https://kobalte.dev" disabled>
+  Kobalte
+</Link.Root>
+```
+
 ## API Reference
 
 ### Link.Root
 
-| Prop       | Description                                                                                                                                         |
-| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
-| isDisabled | `boolean` <br/> Whether the link is disabled. Native navigation will be disabled, and the link will be exposed as disabled to assistive technology. |
+| Prop     | Description                                                                                                                                         |
+| :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| disabled | `boolean` <br/> Whether the link is disabled. Native navigation will be disabled, and the link will be exposed as disabled to assistive technology. |
 
 | Data attribute | Description                        |
 | :------------- | :--------------------------------- |

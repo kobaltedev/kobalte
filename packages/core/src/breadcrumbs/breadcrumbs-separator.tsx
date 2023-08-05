@@ -12,7 +12,5 @@ export interface BreadcrumbsSeparatorProps extends OverrideComponentProps<"span"
 export function BreadcrumbsSeparator(props: BreadcrumbsSeparatorProps) {
   const context = useBreadcrumbsContext();
 
-  return (
-    <Polymorphic fallback="span" children={context.separator()} aria-hidden="true" {...props} />
-  );
+  return <Polymorphic as="span" children={context.separator()} aria-hidden="true" {...props} />;
 }

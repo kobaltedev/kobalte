@@ -35,10 +35,10 @@ export interface CreateSelectableItemProps {
   allowsDifferentPressOrigin?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the option is contained in a virtual scroller. */
-  isVirtualized?: MaybeAccessor<boolean | undefined>;
+  virtualized?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the item is disabled. */
-  isDisabled?: MaybeAccessor<boolean | undefined>;
+  disabled?: MaybeAccessor<boolean | undefined>;
 
   /** Function to focus the item. */
   focus?: () => void;
@@ -88,7 +88,7 @@ export function createSelectableItem<T extends HTMLElement>(
   // Clicking the checkbox enters selection mode, after which clicking anywhere on any row toggles selection for that row.
   // With highlight selection, onAction is secondary, and occurs on double click. Single click selects the row.
   // With touch, onAction occurs on single tap, and long press enters selection mode.
-  const isDisabled = () => access(props.isDisabled) || manager().isDisabled(key());
+  const isDisabled = () => access(props.disabled) || manager().isDisabled(key());
 
   const allowsSelection = () => !isDisabled() && manager().canSelectItem(key());
 
@@ -101,8 +101,8 @@ export function createSelectableItem<T extends HTMLElement>(
 
     pointerDownType = e.pointerType;
 
-    // Selection occurs on mouse down.
-    if (e.pointerType === "mouse" && !access(props.shouldSelectOnPressUp)) {
+    // Selection occurs on mouse down (main button).
+    if (e.pointerType === "mouse" && e.button === 0 && !access(props.shouldSelectOnPressUp)) {
       onSelect(e);
     }
   };
@@ -115,10 +115,11 @@ export function createSelectableItem<T extends HTMLElement>(
       return;
     }
 
-    // If allowsDifferentPressOrigin, make selection happen on mouse up.
+    // If allowsDifferentPressOrigin, make selection happen on mouse up (main button).
     // Otherwise, have selection happen on click.
     if (
       e.pointerType === "mouse" &&
+      e.button === 0 &&
       access(props.shouldSelectOnPressUp) &&
       access(props.allowsDifferentPressOrigin)
     ) {
@@ -186,7 +187,7 @@ export function createSelectableItem<T extends HTMLElement>(
 
   // data-attribute used in selection manager and keyboard delegate
   const dataKey = createMemo(() => {
-    return access(props.isVirtualized) ? undefined : key();
+    return access(props.virtualized) ? undefined : key();
   });
 
   // Focus the associated DOM node when this item becomes the focusedKey.

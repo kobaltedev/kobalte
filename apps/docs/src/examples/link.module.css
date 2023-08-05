@@ -7,6 +7,15 @@
   text-decoration: underline;
 }
 
+.link[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.link[data-disabled]:hover {
+  text-decoration: none;
+}
+
 [data-kb-theme="dark"] .link {
   color: hsl(198 93% 60%);
 }

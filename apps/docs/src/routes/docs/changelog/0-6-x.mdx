@@ -1,0 +1,126 @@
+# v0.6.x
+
+## v0.6.2 (February 25, 2023)
+
+**Bug fixes**
+
+- [#119](https://github.com/kobaltedev/kobalte/issues/119)
+
+## v0.6.1 (February 10, 2023)
+
+**New features**
+
+- Added `data-closed` attribute to the following components:
+- `Accordion.Item`
+- `Accordion.Header`
+- `Accordion.Trigger`
+- `Accordion.Content`
+- `Collapsible.Root`
+- `Collapsible.Trigger`
+- `Collapsible.Content`
+- `ContextMenu.Trigger`
+- `ContextMenu.Icon`
+- `ContextMenu.Content`
+- `ContextMenu.SubTrigger`
+- `ContextMenu.SubContent`
+- `Dialog.Trigger`
+- `Dialog.Content`
+- `Dialog.Overlay`
+- `DropdownMenu.Trigger`
+- `DropdownMenu.Icon`
+- `DropdownMenu.Content`
+- `DropdownMenu.SubTrigger`
+- `DropdownMenu.SubContent`
+- `HoverCard.Trigger`
+- `HoverCard.Content`
+- `Popover.Trigger`
+- `Popover.Anchor`
+- `Popover.Content`
+- `Popover.Arrow`
+- `Popover.Title`
+- `Popover.Description`
+- `Popover.CloseButton`
+- Added `ui-closed` to `@kobalte/tailwindcss`.
+- Added `[data-closed]` to `@kobalte/vanilla-extract`.
+
+## v0.6.0 (February 01, 2023)
+
+**Breaking changes**
+
+- Normalized press interactions has been removed, use native `onClick` handler instead of `onPress`.
+- Normalized hover interactions has been removed.
+- `focus-visible` handling has been removed.
+- Focus ring handling has been removed.
+- The `data-hover` attribute has been removed, use native `:hover` CSS selector.
+- The `data-focus` attribute has been removed, use native `:focus` CSS selector.
+- The `data-focus-visible` attribute has been removed, use native `:focus-visible` CSS selector.
+- The `data-active` attribute has been removed, use native `:active` CSS selector.
+- The `data-focus` attribute has been renamed to `data-highlighted` in the following components:
+  - `ContextMenu.Item`
+  - `ContextMenu.RadioItem`
+  - `ContextMenu.CheckboxItem`
+  - `ContextMenu.SubTrigger`
+  - `DropdownMenu.Item`
+  - `DropdownMenu.RadioItem`
+  - `DropdownMenu.CheckboxItem`
+  - `DropdownMenu.SubTrigger`
+  - `Select.Item`
+  - `Tabs.Trigger`
+- `ui-hover` has been removed from `@kobalte/tailwindcss`.
+- `ui-focus` has been removed from `@kobalte/tailwindcss`.
+- `ui-focus-visible` has been removed from `@kobalte/tailwindcss`.
+- `ui-active` has been removed from `@kobalte/tailwindcss`.
+
+**New features**
+
+- Added `ui-highlighted` to `@kobalte/tailwindcss`.
+- Added `ui-horizontal` to `@kobalte/tailwindcss`.
+- Added `ui-vertical` to `@kobalte/tailwindcss`.
+- Added `ui-group-*` and `ui-peer-*` to `@kobalte/tailwindcss`.
+- Added `isDisabled` prop to `Collapsible.Root`.
+- Added `data-disabled` attribute to the following components:
+  - `Collapsible`
+  - `Collapsible.Trigger`
+  - `Collapsible.Content`
+  - `Accordion.Item`
+  - `Accordion.Header`
+  - `Accordion.Trigger`
+  - `Accordion.Content`
+- Added CSS animation support for mount and unmount phases of the following components:
+  - `Dialog.Content`
+  - `Dialog.Overlay`
+  - `Popover.Content`
+  - `HoverCard.Content`
+  - `DropdownMenu.Content`
+  - `DropdownMenu.SubContent`
+  - `ContextMenu.Content`
+  - `ContextMenu.SubContent`
+  - `RadioGroup.ItemIndicator`
+  - `Checkbox.Indicator`
+  - `Tabs.Content`
+- Added `data-expanded` attribute to the following components:
+  - `Dialog.Content`
+  - `Dialog.Overlay`
+  - `Popover.Anchor`
+  - `Popover.Content`
+  - `Popover.Arrow`
+  - `Popover.Title`
+  - `Popover.Description`
+  - `Popover.CloseButton`
+  - `HoverCard.Content`
+  - `DropdownMenu.Icon`
+  - `DropdownMenu.Content`
+  - `DropdownMenu.SubTrigger`
+  - `DropdownMenu.SubContent`
+  - `ContextMenu.Icon`
+  - `ContextMenu.Content`
+  - `ContextMenu.SubTrigger`
+  - `ContextMenu.SubContent`
+- Added `data-selected` attribute to the `Tabs.Content` component.
+
+**Bug fixes**
+
+- [#69](https://github.com/kobaltedev/kobalte/issues/69)
+- [#72](https://github.com/kobaltedev/kobalte/issues/72)
+- [#77](https://github.com/kobaltedev/kobalte/issues/77)
+- [#90](https://github.com/kobaltedev/kobalte/issues/90)

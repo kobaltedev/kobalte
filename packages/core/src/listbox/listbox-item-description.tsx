@@ -32,5 +32,5 @@ export function ListboxItemDescription(props: ListboxItemDescriptionProps) {
 
   createEffect(() => onCleanup(context.registerDescriptionId(local.id!)));
 
-  return <Polymorphic fallback="div" id={local.id} {...context.dataset()} {...others} />;
+  return <Polymorphic as="div" id={local.id} {...context.dataset()} {...others} />;
 }

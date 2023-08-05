@@ -1,5 +1,13 @@
 import { CheckboxControl as Control, type CheckboxControlProps } from "./checkbox-control";
 import {
+  CheckboxDescription as Description,
+  type CheckboxDescriptionProps,
+} from "./checkbox-description";
+import {
+  CheckboxErrorMessage as ErrorMessage,
+  type CheckboxErrorMessageProps,
+} from "./checkbox-error-message";
+import {
   CheckboxIndicator as Indicator,
   type CheckboxIndicatorOptions,
   type CheckboxIndicatorProps,
@@ -18,6 +26,8 @@ import {
 
 export type {
   CheckboxControlProps,
+  CheckboxDescriptionProps,
+  CheckboxErrorMessageProps,
   CheckboxIndicatorOptions,
   CheckboxIndicatorProps,
   CheckboxInputOptions,
@@ -26,4 +36,4 @@ export type {
   CheckboxRootOptions,
   CheckboxRootProps,
 };
-export { Control, Indicator, Input, Label, Root };
+export { Control, Description, ErrorMessage, Indicator, Input, Label, Root };

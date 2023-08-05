@@ -6,7 +6,7 @@ describe("createDisclosureState", () => {
   it("can be default 'open' (uncontrolled)", () => {
     createRoot(dispose => {
       const state = createDisclosureState({
-        defaultIsOpen: true,
+        defaultOpen: true,
       });
 
       expect(state.isOpen()).toBeTruthy();
@@ -20,7 +20,7 @@ describe("createDisclosureState", () => {
       const onChangeSpy = jest.fn();
 
       const state = createDisclosureState({
-        isOpen: true,
+        open: true,
         onOpenChange: onChangeSpy,
       });
 
@@ -38,7 +38,7 @@ describe("createDisclosureState", () => {
 
   it("should set 'isOpen' state with the value from 'setIsOpen'", () => {
     createRoot(dispose => {
-      const state = createDisclosureState({ defaultIsOpen: false });
+      const state = createDisclosureState({ defaultOpen: false });
 
       expect(state.isOpen()).toBeFalsy();
 
@@ -56,7 +56,7 @@ describe("createDisclosureState", () => {
 
   it("should set 'isOpen' state to true when calling 'open'", () => {
     createRoot(dispose => {
-      const state = createDisclosureState({ defaultIsOpen: false });
+      const state = createDisclosureState({ defaultOpen: false });
 
       expect(state.isOpen()).toBeFalsy();
 
@@ -70,7 +70,7 @@ describe("createDisclosureState", () => {
 
   it("should set 'isOpen' state to false when calling 'close'", () => {
     createRoot(dispose => {
-      const state = createDisclosureState({ defaultIsOpen: true });
+      const state = createDisclosureState({ defaultOpen: true });
 
       expect(state.isOpen()).toBeTruthy();
 
@@ -84,7 +84,7 @@ describe("createDisclosureState", () => {
 
   it("should toggle 'isOpen' state when calling 'toggle'", () => {
     createRoot(dispose => {
-      const state = createDisclosureState({ defaultIsOpen: false });
+      const state = createDisclosureState({ defaultOpen: false });
 
       expect(state.isOpen()).toBeFalsy();
 

@@ -7,7 +7,7 @@
  */
 
 import { createSignal, onMount } from "solid-js";
-import { fireEvent, render, screen, waitFor } from "solid-testing-library";
+import { fireEvent, render, screen, waitFor } from "@solidjs/testing-library";
 
 import { ariaHideOutside } from "./create-hide-outside";
 

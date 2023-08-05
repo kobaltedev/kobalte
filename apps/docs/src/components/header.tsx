@@ -59,7 +59,7 @@ export function Header(props: HeaderProps) {
                 : "text-zinc-700 hover:text-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             )}
           >
-            Core
+            Components
           </Link>
           <Link
             href={LATEST_CORE_CHANGELOG_URL}

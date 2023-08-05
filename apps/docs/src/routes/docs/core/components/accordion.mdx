@@ -231,7 +231,7 @@ A default expanded item can be provided using the `defaultValue` prop, which sho
 
 ### Controlled value
 
-Expanded item can be controlled using the `value` prop, paired with the `onValueChange` event. The `value` prop from the accordion item will be passed into the callback when the item is expanded, allowing you to update state accordingly.
+Expanded item can be controlled using the `value` prop, paired with the `onChange` event. The `value` prop from the accordion item will be passed into the callback when the item is expanded, allowing you to update state accordingly.
 
 <Preview>
   <ControlledExample />
@@ -245,7 +245,7 @@ function ControlledExample() {
 
   return (
     <>
-      <Accordion.Root value={expandedItem()} onValueChange={setExpandedItem}>
+      <Accordion.Root value={expandedItem()} onChange={setExpandedItem}>
         <Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
         <Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
         <Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
@@ -258,14 +258,14 @@ function ControlledExample() {
 
 ### Collapsible item
 
-By default, accordion items are not collapsible, meaning you can't toggle them from open to close and vice-versa. Use the `isCollapsible` prop to enable this behavior.
+By default, accordion items are not collapsible, meaning you can't toggle them from open to close and vice-versa. Use the `collapsible` prop to enable this behavior.
 
 <Preview>
   <CollapsibleExample />
 </Preview>
 
 ```tsx {0}
-<Accordion.Root isCollapsible>
+<Accordion.Root collapsible>
   <Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
   <Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
   <Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
@@ -274,14 +274,14 @@ By default, accordion items are not collapsible, meaning you can't toggle them f
 
 ### Allow expanding multiple items
 
-Use the `isMultiple` to allow expanding multiple accordion items at the same time. This also make all accordion items collapsible.
+Use the `multiple` to allow expanding multiple accordion items at the same time. This also make all accordion items collapsible.
 
 <Preview>
   <AllowMultipleExample />
 </Preview>
 
 ```tsx {0}
-<Accordion.Root isMultiple>
+<Accordion.Root multiple>
   <Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
   <Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
   <Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
@@ -331,9 +331,9 @@ We expose the CSS custom properties `--kb-accordion-content-width` and `--kb-acc
 | :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
 | value           | `string[]` <br/> The controlled value of the accordion item(s) to expand.                                                                |
 | defaultValue    | `string[]` <br/> The value of the accordion item(s) to expand when initially rendered. Useful when you do not need to control the state. |
-| onValueChange   | `(value: string[]) => void` <br/> Event handler called when the value changes.                                                           |
-| isMultiple      | `boolean` <br/> Whether multiple items can be opened at the same time.                                                                   |
-| isCollapsible   | `boolean` <br/> When `isMultiple` is `false`, allows closing content when clicking trigger for an open item.                             |
+| onChange        | `(value: string[]) => void` <br/> Event handler called when the value changes.                                                           |
+| multiple        | `boolean` <br/> Whether multiple items can be opened at the same time.                                                                   |
+| collapsible     | `boolean` <br/> When `multiple` is `false`, allows closing content when clicking trigger for an open item.                               |
 | shouldFocusWrap | `boolean` <br/> Whether focus should wrap around when the end/start is reached.                                                          |
 
 ### Accordion.Item
@@ -343,7 +343,7 @@ We expose the CSS custom properties `--kb-accordion-content-width` and `--kb-acc
 | Prop       | Description                                                                                                                                              |
 | :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | value      | `string` <br/> A unique value for the item.                                                                                                              |
-| isDisabled | `boolean` <br/> Whether the item is disabled.                                                                                                            |
+| disabled   | `boolean` <br/> Whether the item is disabled.                                                                                                            |
 | forceMount | `boolean` <br/> Used to force mounting the item content when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
 | Data attribute | Description                                   |

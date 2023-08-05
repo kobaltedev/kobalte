@@ -22,7 +22,7 @@ export function PopperPositioner(props: PopperPositionerProps) {
 
   return (
     <Polymorphic
-      fallback="div"
+      as="div"
       ref={mergeRefs(context.setPositionerRef, local.ref)}
       data-popper-positioner=""
       style={{

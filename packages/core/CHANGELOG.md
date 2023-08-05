@@ -1,5 +1,112 @@
 # @kobalte/core
 
+## 0.9.8
+
+### Patch Changes
+
+- d6b6a64: fix #230
+
+## 0.9.7
+
+### Patch Changes
+
+- 9096706: fix: #226
+
+## 0.9.6
+
+### Patch Changes
+
+- 2ad7923: fix #213, #214
+- Updated dependencies [2ad7923]
+  - @kobalte/utils@0.7.2
+
+## 0.9.5
+
+### Patch Changes
+
+- db7cc8d: fix:
+
+  - #205
+  - #206
+  - #207
+  - remove Kobalte UI colors
+
+## 0.9.4
+
+### Patch Changes
+
+- ae0ca30: fix: #195
+
+## 0.9.3
+
+### Patch Changes
+
+- 218c6bd: ## Bug fixes
+
+  - [#187](https://github.com/kobaltedev/kobalte/pull/187)
+  - [#188](https://github.com/kobaltedev/kobalte/pull/188)
+  - [#191](https://github.com/kobaltedev/kobalte/pull/191)
+
+## 0.9.2
+
+### Patch Changes
+
+- 1b87fc6: fix exports in `@kobalte/utils`
+- Updated dependencies [1b87fc6]
+  - @kobalte/utils@0.7.1
+
+## 0.9.1
+
+### Patch Changes
+
+- 24aeebb: v0.9.1
+
+## 0.9.0
+
+### Minor Changes
+
+- 9b52a46: ## Breaking changes
+
+  - Update minimum required `solid-js` version to `1.7.0`.
+  - For all components having the following props:
+    - `isDisabled` prop is now `disabled`.
+    - `isRequired` prop is now `required`.
+    - `isReadOnly` prop is now `readOnly`.
+    - `isOpen` prop is now `open`.
+    - `isPressed` prop is now `pressed`.
+    - `isChecked` prop is now `checked`.
+    - `isIndeterminate` prop is now `indeterminate`.
+    - `isModal` prop is now `modal`.
+    - `isPersistent` prop is now `persistent`.
+    - `defaultIsOpen` prop is now `defaultOpen`.
+    - `defaultIsChecked` prop is now `defaultChecked`.
+    - `defaultIsPressed` prop is now `defaultPressed`.
+    - `onValueChange` prop is now `onChange`.
+    - `onCheckedChange` prop is now `onChange`.
+    - `onPressedChange` prop is now `onChange`.
+  - `MultiSelect` has been removed, use `<Select.Root multiple>` instead.
+  - `Select`:
+    - `value`, `defaultValue` and `onChange` prop uses same type as `Select` options instead of `string`.
+    - `valueComponent` prop has been removed, use `Select.Value` render prop instead.
+
+  ## New features
+
+  - Added `Combobox` component.
+  - Added `Tooltip` component.
+  - Added support for multiple `Toast.Region`.
+
+  ## Bug fixes
+
+  - [#164](https://github.com/kobaltedev/kobalte/pull/164)
+  - [#166](https://github.com/kobaltedev/kobalte/pull/166)
+  - [#167](https://github.com/kobaltedev/kobalte/pull/167)
+  - [#174](https://github.com/kobaltedev/kobalte/pull/174)
+
+### Patch Changes
+
+- Updated dependencies [9b52a46]
+  - @kobalte/utils@0.7.0
+
 ## 0.8.2
 
 ### Patch Changes

@@ -1,5 +1,5 @@
-import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Listbox from "../listbox";
 import { useSelectContext } from "./select-context";
@@ -11,7 +11,7 @@ export interface SelectListboxOptions<Option, OptGroup = never>
   > {}
 
 export interface SelectListboxProps<Option, OptGroup = never>
-  extends OverrideComponentProps<"ul", SelectListboxOptions<Option, OptGroup>> {}
+  extends Omit<OverrideComponentProps<"ul", SelectListboxOptions<Option, OptGroup>>, "onChange"> {}
 
 /**
  * Contains all the items of a `Select`.
@@ -28,7 +28,7 @@ export function SelectListbox<Option = any, OptGroup = never>(
     props
   );
 
-  const [local, others] = splitProps(props, ["ref", "id"]);
+  const [local, others] = splitProps(props, ["ref", "id", "onKeyDown"]);
 
   createEffect(() => onCleanup(context.registerListboxId(local.id!)));
 
@@ -53,18 +53,30 @@ export function SelectListbox<Option = any, OptGroup = never>(
   });
   */
 
+  const onKeyDown: JSX.EventHandlerUnion<HTMLUListElement, KeyboardEvent> = e => {
+    callHandler(e, local.onKeyDown);
+
+    // Prevent from clearing the selection by `createSelectableCollection` on escape.
+    if (e.key === "Escape" && context.isMultiple()) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <Listbox.Root
       ref={mergeRefs(context.setListboxRef, local.ref)}
       id={local.id}
       state={context.listState()}
-      isVirtualized={context.isVirtualized()}
+      virtualized={context.isVirtualized()}
       autoFocus={context.autoFocus()}
       shouldSelectOnPressUp
       shouldFocusOnHover
+      shouldFocusWrap={context.shouldFocusWrap()}
+      disallowTypeAhead={context.disallowTypeAhead()}
       aria-labelledby={context.listboxAriaLabelledBy()}
       renderItem={context.renderItem}
       renderSection={context.renderSection}
+      onKeyDown={onKeyDown}
       {...others}
     />
   );

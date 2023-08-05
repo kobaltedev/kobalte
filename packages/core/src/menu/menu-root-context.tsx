@@ -2,6 +2,7 @@ import { Accessor, createContext, useContext } from "solid-js";
 
 export interface MenuRootContextValue {
   isModal: Accessor<boolean>;
+  preventScroll: Accessor<boolean>;
   forceMount: Accessor<boolean>;
   generateId: (part: string) => string;
 }

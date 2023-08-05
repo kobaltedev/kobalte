@@ -1,14 +1,14 @@
 import { isFunction } from "@kobalte/utils";
 
 import { toastStore } from "./toast-store";
-import { ToastComponent, ToastPromiseComponent } from "./types";
+import { ShowToastOptions, ToastComponent, ToastPromiseComponent } from "./types";
 
 let toastsCounter = 0;
 
 /** Adds a new toast to the visible toasts or queue depending on current state and limit, and return the id of the created toast. */
-function show(toastComponent: ToastComponent) {
+function show(toastComponent: ToastComponent, options?: ShowToastOptions) {
   const id = toastsCounter++;
-  toastStore.add({ id, toastComponent, dismiss: false, update: false });
+  toastStore.add({ id, toastComponent, dismiss: false, update: false, region: options?.region });
   return id;
 }
 
@@ -20,7 +20,8 @@ function update(id: number, toastComponent: ToastComponent) {
 /** Adds a new promise-based toast to the visible toasts or queue depending on current state and limit, and return the id of the created toast. */
 function promise<T, U = any>(
   promise: Promise<T> | (() => Promise<T>),
-  toastComponent: ToastPromiseComponent<T, U>
+  toastComponent: ToastPromiseComponent<T, U>,
+  options?: ShowToastOptions
 ) {
   const id = show(props => {
     return toastComponent({
@@ -29,7 +30,7 @@ function promise<T, U = any>(
       },
       state: "pending",
     });
-  });
+  }, options);
 
   (isFunction(promise) ? promise() : promise)
     .then(data =>

@@ -7,15 +7,14 @@
  */
 
 import { createPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen, within } from "solid-testing-library";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import * as Listbox from ".";
-import * as Select from "../select";
 
 const DATA_SOURCE = [
-  { key: "1", label: "One", textValue: "One", isDisabled: false },
-  { key: "2", label: "Two", textValue: "Two", isDisabled: false },
-  { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+  { key: "1", label: "One", textValue: "One", disabled: false },
+  { key: "2", label: "Two", textValue: "Two", disabled: false },
+  { key: "3", label: "Three", textValue: "Three", disabled: false },
 ];
 
 describe("Listbox", () => {
@@ -248,7 +247,7 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="single"
           value={value}
-          onValueChange={onValueChangeSpy}
+          onChange={onValueChangeSpy}
           renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
@@ -285,7 +284,7 @@ describe("Listbox", () => {
         <Listbox.Root
           options={DATA_SOURCE}
           selectionMode="single"
-          onValueChange={onValueChangeSpy}
+          onChange={onValueChangeSpy}
           renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
@@ -315,7 +314,7 @@ describe("Listbox", () => {
         <Listbox.Root
           options={DATA_SOURCE}
           selectionMode="single"
-          onValueChange={onValueChangeSpy}
+          onChange={onValueChangeSpy}
           renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
@@ -350,16 +349,16 @@ describe("Listbox", () => {
       const onValueChangeSpy = jest.fn();
 
       const dataSource = [
-        { key: "1", label: "One", textValue: "One", isDisabled: false },
-        { key: "2", label: "Two", textValue: "Two", isDisabled: true },
-        { key: "3", label: "Three", textValue: "Three", isDisabled: false },
+        { key: "1", label: "One", textValue: "One", disabled: false },
+        { key: "2", label: "Two", textValue: "Two", disabled: true },
+        { key: "3", label: "Three", textValue: "Three", disabled: false },
       ];
 
       render(() => (
         <Listbox.Root
           options={dataSource}
           selectionMode="single"
-          onValueChange={onValueChangeSpy}
+          onChange={onValueChangeSpy}
           renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
@@ -408,7 +407,7 @@ describe("Listbox", () => {
         <Listbox.Root
           options={DATA_SOURCE}
           selectionMode="multiple"
-          onValueChange={onValueChangeSpy}
+          onChange={onValueChangeSpy}
           renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
@@ -460,7 +459,7 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="multiple"
           defaultValue={defaultValue}
-          onValueChange={onValueChangeSpy}
+          onChange={onValueChangeSpy}
           renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
@@ -502,7 +501,7 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="multiple"
           value={value}
-          onValueChange={onValueChangeSpy}
+          onChange={onValueChangeSpy}
           renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
@@ -542,7 +541,7 @@ describe("Listbox", () => {
           options={DATA_SOURCE}
           selectionMode="multiple"
           defaultValue={defaultValue}
-          onValueChange={onValueChangeSpy}
+          onChange={onValueChangeSpy}
           renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
@@ -577,9 +576,9 @@ describe("Listbox", () => {
       const defaultValue = new Set(["1", "2"]);
 
       const dataSource = [
-        { key: "1", label: "One", textValue: "One", isDisabled: false },
-        { key: "2", label: "Two", textValue: "Two", isDisabled: false },
-        { key: "3", label: "Three", textValue: "Three", isDisabled: true },
+        { key: "1", label: "One", textValue: "One", disabled: false },
+        { key: "2", label: "Two", textValue: "Two", disabled: false },
+        { key: "3", label: "Three", textValue: "Three", disabled: true },
       ];
 
       render(() => (
@@ -587,7 +586,7 @@ describe("Listbox", () => {
           options={dataSource}
           selectionMode="multiple"
           defaultValue={defaultValue}
-          onValueChange={onValueChangeSpy}
+          onChange={onValueChangeSpy}
           renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
         />
       ));
@@ -629,7 +628,7 @@ describe("Listbox", () => {
         options={DATA_SOURCE}
         selectionMode="single"
         defaultValue={defaultValue}
-        onValueChange={onValueChangeSpy}
+        onChange={onValueChangeSpy}
         disallowEmptySelection={false}
         renderItem={item => <Listbox.Item item={item}>{item.rawValue.label}</Listbox.Item>}
       />
@@ -714,7 +713,7 @@ describe("Listbox", () => {
   });
 
   it("supports aria-label on options", () => {
-    const dataSource = [{ key: "1", label: "One", textValue: "One", isDisabled: false }];
+    const dataSource = [{ key: "1", label: "One", textValue: "One", disabled: false }];
 
     render(() => (
       <Listbox.Root
@@ -743,7 +742,7 @@ describe("Listbox", () => {
         label: "Label",
         description: "Description",
         textValue: "One",
-        isDisabled: false,
+        disabled: false,
       },
     ];
 

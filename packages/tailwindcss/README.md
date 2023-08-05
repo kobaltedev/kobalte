@@ -48,20 +48,21 @@ export const MyPopover = () => (
 
 You can use the following modifiers:
 
-| Modifier           | Inverse modifier       |
-| :----------------- | :--------------------- |
-| `ui-valid`         | `ui-not-valid`         |
-| `ui-invalid`       | `ui-not-invalid`       |
-| `ui-required`      | `ui-not-required`      |
-| `ui-disabled`      | `ui-not-disabled`      |
-| `ui-readonly`      | `ui-not-readonly`      |
-| `ui-checked`       | `ui-not-checked`       |
-| `ui-indeterminate` | `ui-not-indeterminate` |
-| `ui-selected`      | `ui-not-selected`      |
-| `ui-pressed`       | `ui-not-pressed`       |
-| `ui-expanded`      | `ui-not-expanded`      |
-| `ui-highlighted`   | `ui-not-highlighted`   |
-| `ui-current`       | `ui-not-current`       |
+| Modifier               | Inverse modifier           |
+| :--------------------- | :------------------------- |
+| `ui-valid`             | `ui-not-valid`             |
+| `ui-invalid`           | `ui-not-invalid`           |
+| `ui-required`          | `ui-not-required`          |
+| `ui-disabled`          | `ui-not-disabled`          |
+| `ui-readonly`          | `ui-not-readonly`          |
+| `ui-checked`           | `ui-not-checked`           |
+| `ui-indeterminate`     | `ui-not-indeterminate`     |
+| `ui-selected`          | `ui-not-selected`          |
+| `ui-pressed`           | `ui-not-pressed`           |
+| `ui-expanded`          | `ui-not-expanded`          |
+| `ui-highlighted`       | `ui-not-highlighted`       |
+| `ui-current`           | `ui-not-current`           |
+| `ui-placeholder-shown` | `ui-not-placeholder-shown` |
 
 It's also possible to use _inverse modifiers_ in the form of `ui-not-*`, _group and peer modifiers_ in the form of `ui-group-*` and `ui-peer-*`.
 

@@ -30,7 +30,7 @@ export function ControlledExample() {
   const [open, setOpen] = createSignal(false);
 
   return (
-    <Popover.Root isOpen={open()} onOpenChange={setOpen}>
+    <Popover.Root open={open()} onOpenChange={setOpen}>
       <Popover.Trigger class={style["popover__trigger"]}>
         {open() ? "Close" : "Open"}
       </Popover.Trigger>

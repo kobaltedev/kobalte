@@ -214,11 +214,9 @@ export class SelectionManager implements MultipleSelectionManager {
   private getKey(key: string) {
     const item = this.collection().getItem(key);
 
-    /*
     if (!item) {
       return key;
     }
-    */
 
     if (!item || item.type !== "item") {
       return null;
@@ -385,13 +383,13 @@ export class SelectionManager implements MultipleSelectionManager {
 
     const item = this.collection().getItem(key);
 
-    return item != null && !item.isDisabled;
+    return item != null && !item.disabled;
   }
 
   isDisabled(key: string) {
     const item = this.collection().getItem(key);
 
-    return !item || item.isDisabled;
+    return !item || item.disabled;
   }
 
   private getAllSelectableKeys() {

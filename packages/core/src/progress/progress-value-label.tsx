@@ -11,7 +11,5 @@ export interface ProgressValueLabelProps extends OverrideComponentProps<"div", A
 export function ProgressValueLabel(props: ProgressValueLabelProps) {
   const context = useProgressContext();
 
-  return (
-    <Polymorphic fallback="div" children={context.valueLabel()} {...context.dataset()} {...props} />
-  );
+  return <Polymorphic as="div" children={context.valueLabel()} {...context.dataset()} {...props} />;
 }

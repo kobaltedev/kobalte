@@ -1,6 +1,6 @@
 import { installPointerEvent } from "@kobalte/tests";
+import { render, screen } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
-import { render, screen } from "solid-testing-library";
 
 import * as TextField from ".";
 
@@ -11,7 +11,7 @@ describe("TextField", () => {
     const onChangeSpy = jest.fn();
 
     render(() => (
-      <TextField.Root defaultValue="cat" onValueChange={onChangeSpy}>
+      <TextField.Root defaultValue="cat" onChange={onChangeSpy}>
         <TextField.Label>Favorite Pet</TextField.Label>
         <TextField.Input />
       </TextField.Root>
@@ -31,7 +31,7 @@ describe("TextField", () => {
   it("value can be controlled", async () => {
     const onChangeSpy = jest.fn();
     render(() => (
-      <TextField.Root value="cat" onValueChange={onChangeSpy}>
+      <TextField.Root value="cat" onChange={onChangeSpy}>
         <TextField.Label>Favorite Pet</TextField.Label>
         <TextField.Input />
       </TextField.Root>
@@ -289,7 +289,7 @@ describe("TextField", () => {
 
   it("should have 'data-required' attribute when required", () => {
     render(() => (
-      <TextField.Root data-testid="textfield" isRequired>
+      <TextField.Root data-testid="textfield" required>
         <TextField.Input />
       </TextField.Root>
     ));
@@ -304,7 +304,7 @@ describe("TextField", () => {
 
   it("should have 'data-disabled' attribute when disabled", () => {
     render(() => (
-      <TextField.Root data-testid="textfield" isDisabled>
+      <TextField.Root data-testid="textfield" disabled>
         <TextField.Input />
       </TextField.Root>
     ));
@@ -319,7 +319,7 @@ describe("TextField", () => {
 
   it("should have 'data-readonly' attribute when readonly", () => {
     render(() => (
-      <TextField.Root data-testid="textfield" isReadOnly>
+      <TextField.Root data-testid="textfield" readOnly>
         <TextField.Input />
       </TextField.Root>
     ));
@@ -360,7 +360,7 @@ describe("TextField", () => {
 
   it("sets 'required' and 'aria-required' on input when 'isRequired' is true", () => {
     render(() => (
-      <TextField.Root isRequired>
+      <TextField.Root required>
         <TextField.Input />
       </TextField.Root>
     ));
@@ -373,7 +373,7 @@ describe("TextField", () => {
 
   it("sets 'disabled' and 'aria-disabled' on input when 'isDisabled' is true", () => {
     render(() => (
-      <TextField.Root isDisabled>
+      <TextField.Root disabled>
         <TextField.Input />
       </TextField.Root>
     ));
@@ -386,7 +386,7 @@ describe("TextField", () => {
 
   it("sets 'readonly' and 'aria-readonly' on input when 'isReadOnly' is true", () => {
     render(() => (
-      <TextField.Root isReadOnly>
+      <TextField.Root readOnly>
         <TextField.Input />
       </TextField.Root>
     ));
@@ -395,5 +395,74 @@ describe("TextField", () => {
 
     expect(input).toHaveAttribute("readonly");
     expect(input).toHaveAttribute("aria-readonly", "true");
+  });
+
+  it("should have 'aria-multiline' set to false on textarea when 'submitOnEnter' is true", () => {
+    render(() => (
+      <TextField.Root>
+        <TextField.TextArea submitOnEnter />
+      </TextField.Root>
+    ));
+
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+    expect(input).toHaveAttribute("aria-multiline", "false");
+  });
+
+  it("should not have 'aria-multiline' on textarea when 'submitOnEnter' is false", () => {
+    render(() => (
+      <TextField.Root>
+        <TextField.TextArea />
+      </TextField.Root>
+    ));
+
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+    expect(input).not.toHaveAttribute("aria-multiline");
+  });
+
+  it("form is submitted when 'submitOnEnter' is true and user presses the enter key", async () => {
+    const onSubmit = jest.fn();
+    render(() => (
+      <form onSubmit={onSubmit}>
+        <TextField.Root>
+          <TextField.TextArea submitOnEnter />
+        </TextField.Root>
+      </form>
+    ));
+
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+    await userEvent.type(input, "abc{enter}");
+    expect(onSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  it("form is not submitted when 'submitOnEnter' is true and the user presses shift + enter at the same time", async () => {
+    const onSubmit = jest.fn();
+
+    render(() => (
+      <form onSubmit={onSubmit}>
+        <TextField.Root>
+          <TextField.TextArea submitOnEnter />
+        </TextField.Root>
+      </form>
+    ));
+
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+    await userEvent.type(input, "{Shift>}enter{/Shift}");
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
+
+  it("form is not submitted when 'submitOnEnter' is not set and user presses the enter key", async () => {
+    const onSubmit = jest.fn();
+
+    render(() => (
+      <form onSubmit={onSubmit}>
+        <TextField.Root>
+          <TextField.TextArea />
+        </TextField.Root>
+      </form>
+    ));
+
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+    await userEvent.type(input, "{enter}");
+    expect(onSubmit).not.toHaveBeenCalled();
   });
 });

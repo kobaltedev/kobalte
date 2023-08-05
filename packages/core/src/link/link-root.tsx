@@ -6,15 +6,15 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/link/src/useLink.ts
  */
 
-import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createTagName } from "../primitives";
 
 export interface LinkRootOptions extends AsChildProp {
   /** Whether the link is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
 
 export interface LinkRootProps extends OverrideComponentProps<"a", LinkRootOptions> {}
@@ -25,31 +25,22 @@ export interface LinkRootProps extends OverrideComponentProps<"a", LinkRootOptio
 export function LinkRoot(props: LinkRootProps) {
   let ref: HTMLAnchorElement | undefined;
 
-  const [local, others] = splitProps(props, ["ref", "type", "isDisabled", "onClick"]);
+  const [local, others] = splitProps(props, ["ref", "type", "href", "disabled"]);
 
   const tagName = createTagName(
     () => ref,
     () => "a"
   );
 
-  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-    if (local.isDisabled) {
-      e.preventDefault();
-      return;
-    }
-
-    callHandler(e, local.onClick);
-  };
-
   return (
     <Polymorphic
-      fallback="a"
+      as="a"
       ref={mergeRefs(el => (ref = el), local.ref)}
-      role={tagName() !== "a" ? "link" : undefined}
-      tabIndex={tagName() !== "a" && !local.isDisabled ? 0 : undefined}
-      aria-disabled={local.isDisabled ? true : undefined}
-      data-disabled={local.isDisabled ? "" : undefined}
-      onClick={onClick}
+      role={tagName() !== "a" || local.disabled ? "link" : undefined}
+      tabIndex={tagName() !== "a" && !local.disabled ? 0 : undefined}
+      href={!local.disabled ? local.href : undefined}
+      aria-disabled={local.disabled ? true : undefined}
+      data-disabled={local.disabled ? "" : undefined}
       {...others}
     />
   );

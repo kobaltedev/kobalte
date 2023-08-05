@@ -36,22 +36,22 @@ export interface CreateFormControlProps {
   validationState?: MaybeAccessor<ValidationState | undefined>;
 
   /** Whether the user must fill the form control before the owning form can be submitted. */
-  isRequired?: MaybeAccessor<boolean | undefined>;
+  required?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the form control is disabled. */
-  isDisabled?: MaybeAccessor<boolean | undefined>;
+  disabled?: MaybeAccessor<boolean | undefined>;
 
   /** Whether the form control is read only. */
-  isReadOnly?: MaybeAccessor<boolean | undefined>;
+  readOnly?: MaybeAccessor<boolean | undefined>;
 }
 
 export const FORM_CONTROL_PROP_NAMES = [
   "id",
   "name",
   "validationState",
-  "isRequired",
-  "isDisabled",
-  "isReadOnly",
+  "required",
+  "disabled",
+  "readOnly",
 ] as const;
 
 export function createFormControl(props: CreateFormControlProps) {
@@ -100,18 +100,18 @@ export function createFormControl(props: CreateFormControlProps) {
   const dataset: Accessor<FormControlDataSet> = createMemo(() => ({
     "data-valid": access(props.validationState) === "valid" ? "" : undefined,
     "data-invalid": access(props.validationState) === "invalid" ? "" : undefined,
-    "data-required": access(props.isRequired) ? "" : undefined,
-    "data-disabled": access(props.isDisabled) ? "" : undefined,
-    "data-readonly": access(props.isReadOnly) ? "" : undefined,
+    "data-required": access(props.required) ? "" : undefined,
+    "data-disabled": access(props.disabled) ? "" : undefined,
+    "data-readonly": access(props.readOnly) ? "" : undefined,
   }));
 
   const formControlContext: FormControlContextValue = {
     name: () => access(props.name) ?? access(props.id)!,
     dataset,
     validationState: () => access(props.validationState),
-    isRequired: () => access(props.isRequired),
-    isDisabled: () => access(props.isDisabled),
-    isReadOnly: () => access(props.isReadOnly),
+    isRequired: () => access(props.required),
+    isDisabled: () => access(props.disabled),
+    isReadOnly: () => access(props.readOnly),
     labelId,
     fieldId,
     descriptionId,

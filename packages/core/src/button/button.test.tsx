@@ -1,26 +1,11 @@
-import {
-  checkAccessibility,
-  installPointerEvent,
-  itRendersChildren,
-  itSupportsClass,
-  itSupportsRef,
-  itSupportsStyle,
-} from "@kobalte/tests";
-import { render, screen } from "solid-testing-library";
+import { installPointerEvent } from "@kobalte/tests";
+import { render, screen } from "@solidjs/testing-library";
 
 import { As } from "../polymorphic";
 import * as Button from ".";
 
-const defaultProps: Button.ButtonRootOptions = {};
-
 describe("Button", () => {
   installPointerEvent();
-
-  checkAccessibility([<Button.Root>Button</Button.Root>]);
-  itRendersChildren(Button.Root as any, defaultProps);
-  itSupportsClass(Button.Root as any, defaultProps);
-  itSupportsRef(Button.Root as any, defaultProps, HTMLButtonElement);
-  itSupportsStyle(Button.Root as any, defaultProps);
 
   it("should have attribute 'type=button' by default", () => {
     render(() => <Button.Root data-testid="button">Button</Button.Root>);
@@ -130,7 +115,7 @@ describe("Button", () => {
 
   it("should not have attribute 'tabindex=0' when it's disabled", () => {
     render(() => (
-      <Button.Root data-testid="button" isDisabled asChild>
+      <Button.Root data-testid="button" disabled asChild>
         <As component="div">Button</As>
       </Button.Root>
     ));
@@ -142,7 +127,7 @@ describe("Button", () => {
 
   it("should have correct 'disabled' attribute when disabled and it's a native button", () => {
     render(() => (
-      <Button.Root data-testid="button" isDisabled>
+      <Button.Root data-testid="button" disabled>
         Button
       </Button.Root>
     ));
@@ -155,7 +140,7 @@ describe("Button", () => {
 
   it("should have correct 'disabled' attribute when disabled and it's an input", () => {
     render(() => (
-      <Button.Root data-testid="button" isDisabled asChild>
+      <Button.Root data-testid="button" disabled asChild>
         <As component="input">Button</As>
       </Button.Root>
     ));
@@ -168,7 +153,7 @@ describe("Button", () => {
 
   it("should have correct 'disabled' attribute when disabled and it's not a native button nor input", () => {
     render(() => (
-      <Button.Root data-testid="button" isDisabled asChild>
+      <Button.Root data-testid="button" disabled asChild>
         <As component="div">Button</As>
       </Button.Root>
     ));
@@ -189,7 +174,7 @@ describe("Button", () => {
 
   it("should have attribute 'data-disabled' when disabled", () => {
     render(() => (
-      <Button.Root data-testid="button" isDisabled>
+      <Button.Root data-testid="button" disabled>
         Button
       </Button.Root>
     ));

@@ -8,7 +8,7 @@ export function BasicExample() {
   return (
     <ToggleButton.Root class={style["toggle-button"]} aria-label="Mute">
       {state => (
-        <Show when={state.isPressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
+        <Show when={state.pressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
           <VolumeOffIcon class="h-6 w-6" />
         </Show>
       )}
@@ -18,9 +18,9 @@ export function BasicExample() {
 
 export function DefaultPressedExample() {
   return (
-    <ToggleButton.Root class={style["toggle-button"]} aria-label="Mute" defaultIsPressed>
+    <ToggleButton.Root class={style["toggle-button"]} aria-label="Mute" defaultPressed>
       {state => (
-        <Show when={state.isPressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
+        <Show when={state.pressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
           <VolumeOffIcon class="h-6 w-6" />
         </Show>
       )}
@@ -36,11 +36,11 @@ export function ControlledExample() {
       <ToggleButton.Root
         class={style["toggle-button"]}
         aria-label="Mute"
-        isPressed={pressed()}
-        onPressedChange={setPressed}
+        pressed={pressed()}
+        onChange={setPressed}
       >
         {state => (
-          <Show when={state.isPressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
+          <Show when={state.pressed()} fallback={<VolumeOnIcon class="h-6 w-6" />}>
             <VolumeOffIcon class="h-6 w-6" />
           </Show>
         )}

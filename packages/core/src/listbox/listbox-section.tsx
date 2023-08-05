@@ -9,5 +9,5 @@ export interface ListboxSectionProps extends OverrideComponentProps<"li", AsChil
  * It won't be focusable using arrow keys.
  */
 export function ListboxSection(props: ListboxSectionProps) {
-  return <Polymorphic fallback="li" role="presentation" {...props} />;
+  return <Polymorphic as="li" role="presentation" {...props} />;
 }

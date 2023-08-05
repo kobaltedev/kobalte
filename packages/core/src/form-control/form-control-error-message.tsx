@@ -28,7 +28,7 @@ export function FormControlErrorMessage(props: FormControlErrorMessageProps) {
     props
   );
 
-  const [local, others] = splitProps(props, ["id", "forceMount"]);
+  const [local, others] = splitProps(props, ["forceMount"]);
 
   const isInvalid = () => context.validationState() === "invalid";
 
@@ -37,12 +37,12 @@ export function FormControlErrorMessage(props: FormControlErrorMessageProps) {
       return;
     }
 
-    onCleanup(context.registerErrorMessage(local.id!));
+    onCleanup(context.registerErrorMessage(others.id!));
   });
 
   return (
     <Show when={local.forceMount || isInvalid()}>
-      <Polymorphic fallback="div" id={local.id} {...context.dataset()} {...others} />
+      <Polymorphic as="div" {...context.dataset()} {...others} />
     </Show>
   );
 }

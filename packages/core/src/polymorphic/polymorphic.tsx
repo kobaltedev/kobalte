@@ -29,30 +29,30 @@ import { Dynamic, DynamicProps } from "solid-js/web";
 
 export interface AsChildProp {
   /** Whether the component should render as its direct `As` child component. */
-  asChild?: true;
+  asChild?: boolean;
+
+  /** The component to render when `children` doesn't contain any `<As>` component as direct child. */
+  as?: ValidComponent;
 }
 
 export type PolymorphicProps<T extends ValidComponent, P = ComponentProps<T>> = {
   [K in keyof P]: P[K];
-} & AsChildProp & {
-    /** The component to render when `children` doesn't contain any `Slottable` or `As` component as direct child. */
-    fallback: T;
-  };
+} & AsChildProp;
 
 /**
- * A utility component that render either `As` or its `fallback` component.
+ * A utility component that render either a direct `<As>` child or its `as` prop.
  */
 export function Polymorphic<T extends ValidComponent>(props: PolymorphicProps<T>) {
   const [local, others] = splitProps(props as PolymorphicProps<ValidComponent>, [
     "asChild",
-    "fallback",
+    "as",
     "children",
   ]);
 
-  // Prevent the extra computation below when polymorphism is not needed.
+  // Prevent the extra computation below when "as child" polymorphism is not needed.
   if (!local.asChild) {
     return (
-      <Dynamic component={local.fallback} {...others}>
+      <Dynamic component={local.as} {...others}>
         {local.children}
       </Dynamic>
     );

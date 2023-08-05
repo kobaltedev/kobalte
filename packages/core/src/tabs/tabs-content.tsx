@@ -83,7 +83,7 @@ export function TabsContent(props: TabsContentProps) {
   return (
     <Show when={presence.isPresent()}>
       <Polymorphic
-        fallback="div"
+        as="div"
         ref={mergeRefs(el => {
           presence.setRef(el);
           ref = el;
