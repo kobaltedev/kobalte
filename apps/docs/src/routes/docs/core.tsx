@@ -93,6 +93,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/link",
       },
       {
+        title: "Pagination",
+        href: "/docs/core/components/pagination",
+        status: "new",
+      },
+      {
         title: "Popover",
         href: "/docs/core/components/popover",
       },

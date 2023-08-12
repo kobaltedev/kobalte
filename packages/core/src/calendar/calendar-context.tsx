@@ -9,7 +9,7 @@ export interface CalendarDataSet {}
 
 export interface CalendarContextValue {
   dataset: Accessor<CalendarDataSet>;
-  value: Accessor<DateValue | DateValue[] | RangeValue<DateValue> | undefined>;
+  value: Accessor<DateValue | DateValue[] | RangeValue<DateValue> | null | undefined>;
   startDate: Accessor<DateValue>;
   endDate: Accessor<DateValue>;
   anchorDate: Accessor<DateValue | undefined>;

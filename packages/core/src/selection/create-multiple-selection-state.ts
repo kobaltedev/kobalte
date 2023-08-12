@@ -41,21 +41,21 @@ export function createMultipleSelectionState(
   const selectedKeysProp = createMemo(() => {
     const selection = access(props.selectedKeys);
 
-    if (!selection) {
-      return;
+    if (selection != null) {
+      return convertSelection(selection);
     }
 
-    return convertSelection(selection);
+    return selection;
   });
 
   const defaultSelectedKeys = createMemo(() => {
     const defaultSelection = access(props.defaultSelectedKeys);
 
-    if (!defaultSelection) {
-      return new Selection();
+    if (defaultSelection != null) {
+      return convertSelection(defaultSelection);
     }
 
-    return convertSelection(defaultSelection);
+    return new Selection();
   });
 
   const [selectedKeys, _setSelectedKeys] = createControllableSelectionSignal({

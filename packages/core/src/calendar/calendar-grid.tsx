@@ -23,7 +23,10 @@ export interface CalendarGridOptions {
    */
   offset?: DateDuration;
 
-  /** The format in which to display the week days inside the `Calendar.GridHeader`. */
+  /**
+   * The format of weekday names to display in the `Calendar.GridHeader`
+   * e.g. single letter, abbreviation, or full day name.
+   */
   weekDayFormat?: "narrow" | "short" | "long";
 }
 

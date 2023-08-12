@@ -1,0 +1,307 @@
+import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
+import {
+  BasicExample,
+  DefaultPageExample,
+  ControlledExample,
+  ButtonsExample,
+  FirstLastExample,
+  SiblingsExample,
+} from "../../../../examples/pagination";
+
+# Pagination
+
+Allows the user to select a specific page from a range of pages.
+
+## Import
+
+```ts
+import { Pagination } from "@kobalte/core";
+```
+
+## Features
+
+- Labeling support for accessibility.
+- Tab focus management.
+- Can be controlled or uncontrolled.
+- Customizable appearance.
+
+## Anatomy
+
+The pagination consists of:
+
+- **Pagination.Root:** The root container for the pagination component.
+- **Pagination.Item:** An item of the pagination.
+- **Pagination.Ellipsis:** Ellipsis item of the pagination.
+- **Pagination.Previous:** Previous button of the pagination.
+- **Pagination.Next:** Next button of the pagination.
+- **Pagination.List:** Contains the list of items and allows a user to select one of them.
+
+```tsx
+<Pagination.Root>
+  <Pagination.Previous/>
+  <Pagination.List/>
+  <Pagination.Next/>
+</Select.Root>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Pagination } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      return (
+      <Pagination.Root
+        class="pagination__root"
+        count={10}
+        itemComponent={props => (
+          <Pagination.Item class="pagination__item" page={props.page}>{props.page}</Pagination.Item>
+          )}
+        ellipsisComponent={() => (
+          <Pagination.Ellipsis class="pagination__ellipsis">...</Pagination.Ellipsis>
+          )}
+        >
+          <Pagination.Previous class="pagination__item">Previous</Pagination.Previous>
+          <Pagination.List/>
+          <Pagination.Next class="pagination__item">Next</Pagination.Next>
+        </Pagination.Root>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .pagination__root > ul {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem;
+    }
+
+    .pagination__item {
+      appearance: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      width: auto;
+      outline: none;
+      border-radius: 6px;
+      padding: 0 16px;
+      background-color: white;
+      color: hsl(240 4% 16%);
+      font-size: 16px;
+      line-height: 0;
+      transition: 250ms background-color, 250ms color, 250ms border-color;
+      cursor: pointer;
+      font-variant-numeric: tabular-nums;
+      border: 1px solid hsl(240 6% 90%);
+    }
+
+    .pagination__ellipsis {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      width: auto;
+      outline: none;
+      border-radius: 6px;
+      padding: 0 16px;
+      background-color: white;
+      color: hsl(240 4% 16%);
+      font-size: 16px;
+      line-height: 0;
+      cursor: default;
+      border: 1px solid hsl(240 6% 90%);
+    }
+
+    .pagination__item[aria-current="page"] {
+      background-color: hsl(200 98% 39%);
+    }
+
+    .pagination__item:hover {
+      background-color: hsl(200 98% 39%);
+    }
+
+    .pagination__item:focus-visible {
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+    }
+
+    .pagination__item:active {
+      background-color: hsl(201 90% 27%);
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Default value
+
+An initial, uncontrolled page can be provided using the `defaultPage` prop, which accepts a number smaller or equal to the `count` and starts at 1.
+
+<Preview>
+  <DefaultPageExample />
+</Preview>
+
+```tsx {2}
+<Pagination.Root
+  count={10}
+  defaultPage={4}
+  itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
+  ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
+>
+  <Pagination.Previous>Previous</Pagination.Previous>
+  <Pagination.List />
+  <Pagination.Next>Next</Pagination.Next>
+</Pagination.Root>
+```
+
+### Controlled value
+
+The `page` prop, which accepts a page number, can be used to make the value controlled. The `onPageChange` event is fired when the user selects an item, and receives the new page number.
+
+<Preview>
+  <ControlledExample />
+</Preview>
+
+```tsx {3,7-8}
+import { createSignal } from "solid-js";
+
+export function ControlledExample() {
+  const [page, setPage] = createSignal(4);
+
+  return (
+    <Pagination.Root
+      page={page()}
+      onPageChange={setPage}
+      count={10}
+      itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
+      ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
+    >
+      <Pagination.Previous>Previous</Pagination.Previous>
+      <Pagination.List />
+      <Pagination.Next>Next</Pagination.Next>
+    </Pagination.Root>
+  );
+}
+```
+
+### Next / Previous buttons example
+
+The appearance can be customized by omitting the Next and Previous Button.
+
+<Preview>
+  <ButtonsExample />
+</Preview>
+
+```tsx {5}
+<Pagination.Root
+  count={10}
+  itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
+  ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
+>
+  <Pagination.List />
+</Pagination.Root>
+```
+
+### First / Last item example
+
+The appearance can be customized by hiding the First and Last item.
+
+<Preview>
+  <FirstLastExample />
+</Preview>
+
+```tsx {2-3}
+<Pagination.Root
+  count={10}
+  showFirst={false}
+  showLast={false}
+  itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
+  ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
+>
+  <Pagination.Previous>Previous</Pagination.Previous>
+  <Pagination.List />
+  <Pagination.Next>Next</Pagination.Next>
+</Pagination.Root>
+```
+
+### Siblings example
+
+The appearance can be customized by changing the items around the current page item.
+
+<Preview>
+  <SiblingsExample />
+</Preview>
+
+```tsx {2}
+<Pagination.Root
+  count={10}
+  siblingCount={2}
+  itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
+  ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
+>
+  <Pagination.Previous>Previous</Pagination.Previous>
+  <Pagination.List />
+  <Pagination.Next>Next</Pagination.Next>
+</Pagination.Root>
+```
+
+## API Reference
+
+### Pagination.Root
+
+| Prop              | Description                                                                                    |
+| :---------------- | :--------------------------------------------------------------------------------------------- |
+| page              | `number` <br/> The controlled page number of the pagination. (1-indexed)                       |
+| defaultPage       | `string` <br/> The default page number when initially rendered. (1-indexed)                    |
+| onPageChange      | `(page: number) => void` <br/> Event handler called when the page number changes.              |
+| count             | `number` <br/> The number of pages for the pagination.                                         |
+| siblingCount      | `number` <br/> The number of siblings to show around the current page item.                    |
+| showFirst         | `boolean` <br/> Whether to always show the first page item.                                    |
+| showLast          | `boolean` <br/> Whether to always show the last page item.                                     |
+| itemComponent     | `Component<{page: number}>` <br/> The component to render as an item in the `Pagination.List`. |
+| ellipsisComponent | `Component` <br/> The component to render as an ellipsis item in the `Pagination.List`.        |
+| disabled          | `boolean` <br/> Whether the pagination is disabled.                                            |
+
+| Data attribute | Description                              |
+| :------------- | :--------------------------------------- |
+| data-disabled  | Present when the pagination is disabled. |
+
+### Pagination.Item
+
+| Prop | Description                               |
+| :--- | :---------------------------------------- |
+| page | `number` <br/> The page number to render. |
+
+| Data attribute | Description                                |
+| :------------- | :----------------------------------------- |
+| data-current   | Present when the item is the current page. |
+
+## Rendered elements
+
+| Component             | Default rendered element |
+| :-------------------- | :----------------------- |
+| `Pagination.Root`     | `div`                    |
+| `Pagination.Item`     | `button`                 |
+| `Pagination.Ellipsis` | `div`                    |
+| `Pagination.Previous` | `button`                 |
+| `Pagination.Next`     | `button`                 |
+| `Pagination.List`     | none                     |

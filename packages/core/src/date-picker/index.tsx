@@ -60,12 +60,22 @@ import {
   type DatePickerControlOptions,
   type DatePickerControlProps,
 } from "./date-picker-control";
+import {
+  DatePickerInput as Input,
+  type DatePickerInputOptions,
+  type DatePickerInputProps,
+} from "./date-picker-input";
 import { DatePickerPortal as Portal, type DatePickerPortalProps } from "./date-picker-portal";
 import {
   DatePickerRoot as Root,
   type DatePickerRootOptions,
   type DatePickerRootProps,
 } from "./date-picker-root";
+import {
+  DatePickerSegment as Segment,
+  type DatePickerSegmentOptions,
+  type DatePickerSegmentProps,
+} from "./date-picker-segment";
 import { DatePickerTrigger as Trigger, type DatePickerTriggerProps } from "./date-picker-trigger";
 
 export type {
@@ -100,9 +110,13 @@ export type {
   DatePickerDescriptionProps,
   DatePickerErrorMessageOptions,
   DatePickerErrorMessageProps,
+  DatePickerInputOptions,
+  DatePickerInputProps,
   DatePickerPortalProps,
   DatePickerRootOptions,
   DatePickerRootProps,
+  DatePickerSegmentOptions,
+  DatePickerSegmentProps,
   DatePickerTriggerProps,
 };
 
@@ -126,8 +140,10 @@ export {
   Control,
   Description,
   ErrorMessage,
+  Input,
   Portal,
   Root,
+  Segment,
   Trigger,
 };
 

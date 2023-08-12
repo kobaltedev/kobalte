@@ -60,19 +60,19 @@ export function ComboboxRoot<Option, OptGroup = never>(props: ComboboxRootProps<
   const [local, others] = splitProps(props, ["value", "defaultValue", "onChange", "multiple"]);
 
   const value = createMemo(() => {
-    if (local.value == null) {
-      return undefined;
+    if (local.value != null) {
+      return local.multiple ? local.value : [local.value];
     }
 
-    return local.multiple ? (local.value as Option[]) : [local.value as Option];
+    return local.value;
   });
 
   const defaultValue = createMemo(() => {
-    if (local.defaultValue == null) {
-      return undefined;
+    if (local.defaultValue != null) {
+      return local.multiple ? local.defaultValue : [local.defaultValue];
     }
 
-    return local.multiple ? (local.defaultValue as Option[]) : [local.defaultValue as Option];
+    return local.defaultValue;
   });
 
   const onChange = (value: Option[]) => {
@@ -80,12 +80,11 @@ export function ComboboxRoot<Option, OptGroup = never>(props: ComboboxRootProps<
   };
 
   return (
-    <ComboboxBase
-      value={value()}
-      defaultValue={defaultValue()}
+    <ComboboxBase<Option, OptGroup>
+      value={value() as any}
+      defaultValue={defaultValue() as any}
       onChange={onChange}
       selectionMode={local.multiple ? "multiple" : "single"}
-      disallowEmptySelection={!local.multiple}
       {...others}
     />
   );
