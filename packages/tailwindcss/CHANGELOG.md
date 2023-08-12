@@ -1,5 +1,11 @@
 # @kobalte/tailwindcss
 
+## 0.7.0
+
+### Minor Changes
+
+- d0e2414: Add Pagination component + bug fixes
+
 ## 0.6.5
 
 ### Patch Changes

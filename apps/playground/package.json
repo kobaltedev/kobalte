@@ -31,12 +31,12 @@
     "start": "vite"
   },
   "dependencies": {
-    "@kobalte/core": "^0.9.8",
-    "@kobalte/utils": "^0.7.2",
+    "@kobalte/core": "^0.10.0",
+    "@kobalte/utils": "^0.8.0",
     "solid-js": "1.7.3"
   },
   "devDependencies": {
-    "@kobalte/tailwindcss": "^0.6.5",
+    "@kobalte/tailwindcss": "^0.7.0",
     "autoprefixer": "10.4.14",
     "postcss": "8.4.21",
     "tailwindcss": "3.3.0",

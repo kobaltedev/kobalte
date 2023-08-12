@@ -1,5 +1,16 @@
 # @kobalte/core
 
+## 0.10.0
+
+### Minor Changes
+
+- d0e2414: Add Pagination component + bug fixes
+
+### Patch Changes
+
+- Updated dependencies [d0e2414]
+  - @kobalte/utils@0.8.0
+
 ## 0.9.8
 
 ### Patch Changes
