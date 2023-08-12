@@ -30,10 +30,11 @@ export function PaginationPrevious(props: PaginationPreviousProps) {
   return (
     <li>
       <Polymorphic
-        fallback="button"
+        as="button"
         tabIndex={isDisabled() || context.page() === 1 ? "-1" : undefined}
         disabled={isDisabled()}
         aria-disabled={isDisabled() || undefined}
+        data-disabled={isDisabled() ? "" : undefined}
         onClick={composeEventHandlers([local.onClick, onClick])}
         {...others}
       />

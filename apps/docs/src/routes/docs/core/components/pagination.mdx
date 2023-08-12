@@ -27,7 +27,7 @@ import { Pagination } from "@kobalte/core";
 
 ## Anatomy
 
-The select consists of:
+The pagination consists of:
 
 - **Pagination.Root:** The root container for the pagination component.
 - **Pagination.Item:** An item of the pagination.
@@ -279,11 +279,11 @@ The appearance can be customized by changing the items around the current page i
 | showLast          | `boolean` <br/> Whether to always show the last page item.                                     |
 | itemComponent     | `Component<{page: number}>` <br/> The component to render as an item in the `Pagination.List`. |
 | ellipsisComponent | `Component` <br/> The component to render as an ellipsis item in the `Pagination.List`.        |
-| isDisabled        | `boolean` <br/> Whether the pagination is disabled.                                            |
+| disabled          | `boolean` <br/> Whether the pagination is disabled.                                            |
 
-| Data attribute | Description                          |
-| :------------- | :----------------------------------- |
-| data-disabled  | Present when the select is disabled. |
+| Data attribute | Description                              |
+| :------------- | :--------------------------------------- |
+| data-disabled  | Present when the pagination is disabled. |
 
 ### Pagination.Item
 
@@ -291,9 +291,9 @@ The appearance can be customized by changing the items around the current page i
 | :--- | :---------------------------------------- |
 | page | `number` <br/> The page number to render. |
 
-| Data attribute      | Description                                |
-| :------------------ | :----------------------------------------- |
-| aria-current="page" | Present when the item is the current page. |
+| Data attribute | Description                                |
+| :------------- | :----------------------------------------- |
+| data-current   | Present when the item is the current page. |
 
 ## Rendered elements
 

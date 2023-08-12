@@ -1,4 +1,4 @@
-import { composeEventHandlers, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { composeEventHandlers, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -15,14 +15,11 @@ export interface PaginationItemProps
 export function PaginationItem(props: PaginationItemProps) {
   const context = usePaginationContext();
 
-  props = mergeDefaultProps(
-    {
-      type: "button",
-    },
-    props
-  );
-
   const [local, others] = splitProps(props, ["page", "onClick"]);
+
+  const isCurrent = () => {
+    return context.page() === local.page;
+  };
 
   const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = () => {
     context.setPage(local.page);
@@ -31,8 +28,9 @@ export function PaginationItem(props: PaginationItemProps) {
   return (
     <li>
       <Polymorphic
-        fallback="button"
-        aria-current={context.page() === local.page ? "page" : undefined}
+        as="button"
+        aria-current={isCurrent() ? "page" : undefined}
+        data-current={isCurrent() ? "" : undefined}
         onClick={composeEventHandlers([local.onClick, onClick])}
         {...others}
       />

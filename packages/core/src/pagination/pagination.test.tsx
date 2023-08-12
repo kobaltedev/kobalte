@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from "solid-testing-library";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 
 import * as Pagination from ".";
 

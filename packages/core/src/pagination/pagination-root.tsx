@@ -3,8 +3,9 @@ import { Accessor, Component, createUniqueId, JSX, Setter, splitProps } from "so
 
 import { createControllableSignal } from "../primitives";
 import { PaginationContext, PaginationContextValue } from "./pagination-context";
+import { AsChildProp, Polymorphic } from "../polymorphic";
 
-export interface PaginationRootOptions {
+export interface PaginationRootOptions extends AsChildProp {
   /** The controlled page number of the pagination. (1-indexed) */
   page?: number;
 
@@ -36,7 +37,7 @@ export interface PaginationRootOptions {
   ellipsisComponent: () => JSX.Element;
 
   /** Whether the pagination is disabled. */
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
 
 export interface PaginationRootProps extends OverrideComponentProps<"nav", PaginationRootOptions> {}
@@ -64,7 +65,7 @@ export function PaginationRoot(props: PaginationRootProps) {
     "showLast",
     "itemComponent",
     "ellipsisComponent",
-    "isDisabled",
+    "disabled",
     "children",
   ]);
 
@@ -79,7 +80,7 @@ export function PaginationRoot(props: PaginationRootProps) {
     siblingCount: () => local.siblingCount ?? 1,
     showFirst: () => local.showFirst ?? true,
     showLast: () => local.showLast ?? true,
-    isDisabled: () => local.isDisabled ?? false,
+    isDisabled: () => local.disabled ?? false,
     renderItem: page => local.itemComponent({ page }),
     renderEllipsis: local.ellipsisComponent,
     page: state[0] as Accessor<number>,
@@ -88,9 +89,9 @@ export function PaginationRoot(props: PaginationRootProps) {
 
   return (
     <PaginationContext.Provider value={context}>
-      <nav {...others}>
+      <Polymorphic as="nav" data-disabled={local.disabled ? "" : undefined} {...others}>
         <ul>{local.children}</ul>
-      </nav>
+      </Polymorphic>
     </PaginationContext.Provider>
   );
 }

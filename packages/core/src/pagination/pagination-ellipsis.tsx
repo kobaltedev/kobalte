@@ -10,7 +10,7 @@ export interface PaginationEllipsisProps
 export function PaginationEllipsis(props: PaginationEllipsisProps) {
   return (
     <li>
-      <Polymorphic fallback="div" {...props} />
+      <Polymorphic as="div" {...props} />
     </li>
   );
 }
