@@ -8,6 +8,7 @@
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen, within } from "@solidjs/testing-library";
+import { createSignal } from "solid-js";
 
 import * as Select from ".";
 
@@ -2216,6 +2217,92 @@ describe("Select", () => {
       expect(trigger).toHaveTextContent("Two");
     });
 
+    it("supports controlled clear selection", async () => {
+      render(() => {
+        const [value, setValue] = createSignal(DATA_SOURCE[1]);
+
+        return (
+          <>
+            <button data-testid="clear-button" onClick={() => setValue(null as any)}>
+              Clear selection
+            </button>
+            <Select.Root
+              options={DATA_SOURCE}
+              optionValue="key"
+              optionTextValue="textValue"
+              optionDisabled="disabled"
+              placeholder="Placeholder"
+              value={value()}
+              onChange={onValueChange}
+              itemComponent={props => (
+                <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>
+              )}
+            >
+              <Select.Label>Label</Select.Label>
+              <Select.Trigger data-testid="trigger">
+                <Select.Value<DataSourceItem>>{state => state.selectedOption().label}</Select.Value>
+              </Select.Trigger>
+              <Select.Portal>
+                <Select.Content>
+                  <Select.Listbox />
+                </Select.Content>
+              </Select.Portal>
+            </Select.Root>
+          </>
+        );
+      });
+
+      const clearButton = screen.getByTestId("clear-button");
+
+      const trigger = screen.getByTestId("trigger");
+      expect(trigger).toHaveTextContent("Two");
+
+      fireEvent(trigger, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+      await Promise.resolve();
+
+      const listbox = screen.getByRole("listbox");
+      const items = within(listbox).getAllByRole("option");
+
+      expect(items.length).toBe(3);
+      expect(items[0]).toHaveTextContent("One");
+      expect(items[1]).toHaveTextContent("Two");
+      expect(items[2]).toHaveTextContent("Three");
+
+      expect(document.activeElement).toBe(items[1]);
+
+      expect(items[1]).toHaveAttribute("aria-selected", "true");
+
+      fireEvent.keyDown(listbox, { key: "ArrowUp" });
+      await Promise.resolve();
+
+      fireEvent.keyUp(listbox, { key: "ArrowUp" });
+      await Promise.resolve();
+
+      expect(document.activeElement).toBe(items[0]);
+
+      fireEvent.keyDown(document.activeElement!, { key: "Enter" });
+      await Promise.resolve();
+
+      fireEvent.keyUp(document.activeElement!, { key: "Enter" });
+      await Promise.resolve();
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[0]);
+
+      expect(listbox).not.toBeVisible();
+
+      // run restore focus rAF
+      jest.runAllTimers();
+
+      expect(document.activeElement).toBe(trigger);
+      expect(trigger).toHaveTextContent("Two");
+
+      fireEvent.click(clearButton);
+      await Promise.resolve();
+
+      expect(trigger).toHaveTextContent("Placeholder");
+    });
+
     it("supports default selection", async () => {
       render(() => (
         <Select.Root
@@ -2475,7 +2562,7 @@ describe("Select", () => {
       expect(onValueChange.mock.calls[1][0]).toBe(dataSource[3]);
     });
 
-    it("does not deselect when pressing an already selected item", async () => {
+    it("does not deselect when pressing an already selected item when 'disallowEmptySelection' is true", async () => {
       render(() => (
         <Select.Root
           options={DATA_SOURCE}
@@ -2484,6 +2571,7 @@ describe("Select", () => {
           optionDisabled="disabled"
           placeholder="Placeholder"
           defaultValue={DATA_SOURCE[1]}
+          disallowEmptySelection
           onChange={onValueChange}
           itemComponent={props => (
             <Select.Item item={props.item}>{props.item.rawValue.label}</Select.Item>

@@ -199,7 +199,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     {
       id: defaultId,
       selectionMode: "single",
-      disallowEmptySelection: true,
+      disallowEmptySelection: false,
       allowDuplicateSelectionEvents: true,
       gutter: 8,
       sameWidth: true,
@@ -317,8 +317,20 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
   });
 
   const listState = createListState({
-    selectedKeys: () => local.value && local.value.map(getOptionValue),
-    defaultSelectedKeys: () => local.defaultValue && local.defaultValue.map(getOptionValue),
+    selectedKeys: () => {
+      if (local.value != null) {
+        return local.value.map(getOptionValue);
+      }
+
+      return local.value;
+    },
+    defaultSelectedKeys: () => {
+      if (local.defaultValue != null) {
+        return local.defaultValue.map(getOptionValue);
+      }
+
+      return local.defaultValue;
+    },
     onSelectionChange: keys => {
       local.onChange?.(getOptionsFromValues(keys));
 

@@ -22,23 +22,39 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
   const nodes: Array<CollectionNode> = [];
 
   const getKey = (data: any): string => {
+    if (data == null) {
+      return "";
+    }
+
     const _getKey = params.getKey ?? "key";
     const dataKey = isString(_getKey) ? data[_getKey] : _getKey(data);
     return dataKey != null ? String(dataKey) : "";
   };
 
   const getTextValue = (data: any): string => {
+    if (data == null) {
+      return "";
+    }
+
     const _getTextValue = params.getTextValue ?? "textValue";
     const dataTextValue = isString(_getTextValue) ? data[_getTextValue] : _getTextValue(data);
     return dataTextValue != null ? String(dataTextValue) : "";
   };
 
   const getDisabled = (data: any): boolean => {
+    if (data == null) {
+      return false;
+    }
+
     const _getDisabled = params.getDisabled ?? "disabled";
     return (isString(_getDisabled) ? data[_getDisabled] : _getDisabled(data)) ?? false;
   };
 
   const getSectionChildren = (data: any): any[] | undefined => {
+    if (data == null) {
+      return undefined;
+    }
+
     if (isString(params.getSectionChildren)) {
       return data[params.getSectionChildren];
     }
