@@ -25,7 +25,7 @@ export function FormControlErrorMessage(props: FormControlErrorMessageProps) {
     {
       id: context.generateId("error-message"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["forceMount"]);

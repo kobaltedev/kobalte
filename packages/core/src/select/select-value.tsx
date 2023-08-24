@@ -40,7 +40,7 @@ export function SelectValue<T>(props: SelectValueProps<T>) {
     {
       id: context.generateId("value"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["id", "children"]);

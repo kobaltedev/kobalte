@@ -61,7 +61,7 @@ export function AccordionRoot(props: AccordionRootProps) {
       collapsible: false,
       shouldFocusWrap: true,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -100,7 +100,7 @@ export function AccordionRoot(props: AccordionRootProps) {
       disallowTypeAhead: true,
       allowsTabNavigation: true,
     },
-    () => ref
+    () => ref,
   );
 
   const context: AccordionContextValue = {

@@ -81,7 +81,7 @@ export function ListboxItem(props: ListboxItemProps) {
       shouldUseVirtualFocus: listBoxContext.shouldUseVirtualFocus,
       disabled: () => local.item.disabled,
     },
-    () => ref
+    () => ref,
   );
 
   const ariaSelected = () => {

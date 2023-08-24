@@ -79,7 +79,7 @@ export function DialogContent(props: DialogContentProps) {
     {
       id: context.generateId("content"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -185,7 +185,7 @@ export function DialogContent(props: DialogContentProps) {
       onMountAutoFocus: local.onOpenAutoFocus,
       onUnmountAutoFocus: onCloseAutoFocus,
     },
-    () => ref
+    () => ref,
   );
 
   createEffect(() => onCleanup(context.registerContentId(others.id!)));

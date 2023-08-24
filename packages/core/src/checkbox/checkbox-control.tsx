@@ -18,7 +18,7 @@ export function CheckboxControl(props: CheckboxControlProps) {
     {
       id: context.generateId("control"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["onClick", "onKeyDown"]);

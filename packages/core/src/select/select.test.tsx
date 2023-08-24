@@ -154,7 +154,7 @@ describe("Select", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -231,7 +231,7 @@ describe("Select", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -319,7 +319,7 @@ describe("Select", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -396,7 +396,7 @@ describe("Select", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -468,7 +468,7 @@ describe("Select", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -543,7 +543,7 @@ describe("Select", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -615,7 +615,7 @@ describe("Select", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -690,7 +690,7 @@ describe("Select", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -811,7 +811,7 @@ describe("Select", () => {
           pointerType: "touch",
           clientX: 0,
           clientY: 0,
-        })
+        }),
       );
       await Promise.resolve();
 
@@ -1330,13 +1330,13 @@ describe("Select", () => {
 
       fireEvent(
         document.body,
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
       fireEvent(
         document.body,
-        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -1822,7 +1822,7 @@ describe("Select", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -2031,7 +2031,7 @@ describe("Select", () => {
           pointerType: "mouse",
           clientX: 0,
           clientY: 0,
-        })
+        }),
       );
       await Promise.resolve();
 
@@ -2602,7 +2602,7 @@ describe("Select", () => {
 
       fireEvent(
         items[1],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -2746,7 +2746,7 @@ describe("Select", () => {
 
       fireEvent(
         items[0],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -2755,7 +2755,7 @@ describe("Select", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -2824,7 +2824,7 @@ describe("Select", () => {
       // SelectBase a different option
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -2888,7 +2888,7 @@ describe("Select", () => {
       // SelectBase a different option
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -2958,7 +2958,7 @@ describe("Select", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -2967,7 +2967,7 @@ describe("Select", () => {
 
       fireEvent(
         items[0],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -3036,7 +3036,7 @@ describe("Select", () => {
       // Deselect first option
       fireEvent(
         items[0],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -3265,7 +3265,7 @@ describe("Select", () => {
 
       options.forEach(
         (option, index) =>
-          index > 0 && expect(option).toHaveTextContent(dataSource[index - 1].label)
+          index > 0 && expect(option).toHaveTextContent(dataSource[index - 1].label),
       );
 
       fireEvent.change(hiddenSelectBase, { target: { value: "FR" } });

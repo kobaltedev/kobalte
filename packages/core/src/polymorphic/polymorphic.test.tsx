@@ -228,7 +228,7 @@ describe("Polymorphic", () => {
       ));
 
       expect(screen.getByRole("button")).toHaveStyle(
-        "background-color:blue;padding:14px;font-size:18px"
+        "background-color:blue;padding:14px;font-size:18px",
       );
     });
   });

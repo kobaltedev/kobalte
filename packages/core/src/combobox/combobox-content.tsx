@@ -117,7 +117,7 @@ export function ComboboxContent(props: ComboboxContentProps) {
         }
       },
     },
-    () => ref
+    () => ref,
   );
 
   return (

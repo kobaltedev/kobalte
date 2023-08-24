@@ -19,7 +19,10 @@
   color: hsl(240 4% 16%);
   font-size: 16px;
   line-height: 0;
-  transition: 250ms background-color, 250ms color, 250ms border-color;
+  transition:
+    250ms background-color,
+    250ms color,
+    250ms border-color;
   cursor: pointer;
   font-variant-numeric: tabular-nums;
   border: 1px solid hsl(240 6% 90%);

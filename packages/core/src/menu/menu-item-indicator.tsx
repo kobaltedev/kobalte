@@ -26,7 +26,7 @@ export function MenuItemIndicator(props: MenuItemIndicatorProps) {
     {
       id: context.generateId("indicator"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["forceMount"]);

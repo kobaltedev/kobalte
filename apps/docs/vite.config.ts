@@ -27,7 +27,7 @@ function jsToTreeNode(jsString: any, acornOpts: any) {
           acornOpts ?? {
             sourceType: "module",
             ecmaVersion: 2020,
-          }
+          },
         ),
         type: "Program",
         sourceType: "module",
@@ -98,7 +98,7 @@ async function mdx(config: any) {
 
       tree.children.unshift(
         // @ts-ignore
-        jsToTreeNode(`export function getHeadings() { return ${JSON.stringify(headings)} }`)
+        jsToTreeNode(`export function getHeadings() { return ${JSON.stringify(headings)} }`),
       );
     };
   }
@@ -176,7 +176,7 @@ async function mdx(config: any) {
               export function getHeadings() { return ${JSON.stringify(
                 headingsCache.get(id),
                 null,
-                2
+                2,
               )}
               }
               `;

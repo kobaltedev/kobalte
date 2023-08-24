@@ -105,7 +105,7 @@ export function SelectContent(props: SelectContentProps) {
         }
       },
     },
-    () => ref
+    () => ref,
   );
 
   return (

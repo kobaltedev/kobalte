@@ -26,7 +26,7 @@ export function MenuGroup(props: MenuGroupProps) {
     {
       id: rootContext.generateId(`group-${createUniqueId()}`),
     },
-    props
+    props,
   );
 
   const [labelId, setLabelId] = createSignal<string>();

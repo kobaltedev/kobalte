@@ -130,7 +130,7 @@ export function PopperRoot(props: PopperRootProps) {
       arrowPadding: 4,
       overflowPadding: 8,
     },
-    props
+    props,
   );
 
   const [positionerRef, setPositionerRef] = createSignal<HTMLElement>();
@@ -158,7 +158,7 @@ export function PopperRoot(props: PopperRootProps) {
 
     floatingEl.style.setProperty(
       "--kb-popper-content-overflow-padding",
-      `${props.overflowPadding}px`
+      `${props.overflowPadding}px`,
     );
 
     // Virtual element doesn't work without this ¯\_(ツ)_/¯
@@ -192,7 +192,7 @@ export function PopperRoot(props: PopperRootProps) {
         flip({
           padding: props.overflowPadding,
           fallbackPlacements: fallbackPlacements,
-        })
+        }),
       );
     }
 
@@ -203,7 +203,7 @@ export function PopperRoot(props: PopperRootProps) {
           mainAxis: props.slide,
           crossAxis: props.overlap,
           padding: props.overflowPadding,
-        })
+        }),
       );
     }
 
@@ -220,11 +220,11 @@ export function PopperRoot(props: PopperRootProps) {
           floatingEl.style.setProperty("--kb-popper-anchor-width", `${referenceWidth}px`);
           floatingEl.style.setProperty(
             "--kb-popper-content-available-width",
-            `${availableWidth}px`
+            `${availableWidth}px`,
           );
           floatingEl.style.setProperty(
             "--kb-popper-content-available-height",
-            `${availableHeight}px`
+            `${availableHeight}px`,
           );
 
           if (props.sameWidth) {
@@ -236,7 +236,7 @@ export function PopperRoot(props: PopperRootProps) {
             floatingEl.style.maxHeight = `${availableHeight}px`;
           }
         },
-      })
+      }),
     );
 
     // https://floating-ui.com/docs/hide
@@ -270,7 +270,7 @@ export function PopperRoot(props: PopperRootProps) {
 
     floatingEl.style.setProperty(
       "--kb-popper-content-transform-origin",
-      getTransformOrigin(pos.placement, direction())
+      getTransformOrigin(pos.placement, direction()),
     );
 
     const x = Math.round(pos.x);

@@ -95,7 +95,7 @@ export function ToastRegion(props: ToastRegionProps) {
       pauseOnPageIdle: true,
       topLayer: true,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -116,7 +116,7 @@ export function ToastRegion(props: ToastRegionProps) {
     toastStore
       .toasts()
       .filter(toast => toast.region === local.regionId)
-      .slice(0, local.limit!)
+      .slice(0, local.limit!),
   );
 
   const [isPaused, setIsPaused] = createSignal(false);

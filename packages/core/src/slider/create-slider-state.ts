@@ -89,7 +89,7 @@ export function createSliderState(props: StateOpts): SliderState {
       orientation: () => "horizontal",
       isDisabled: () => false,
     },
-    props
+    props,
   );
 
   const pageSize = createMemo(() => {
@@ -189,7 +189,7 @@ export function createSliderState(props: StateOpts): SliderState {
     if (hasMinStepsBetweenValues(nextValues, props.minStepsBetweenThumbs!() * props.step!())) {
       updateValue(
         index,
-        snapValueToStep(nextValue, props.minValue!(), props.maxValue!(), props.step!())
+        snapValueToStep(nextValue, props.minValue!(), props.maxValue!(), props.step!()),
       );
     }
   };
@@ -201,7 +201,7 @@ export function createSliderState(props: StateOpts): SliderState {
     if (hasMinStepsBetweenValues(nextValues, props.minStepsBetweenThumbs!() * props.step!())) {
       updateValue(
         index,
-        snapValueToStep(nextValue, props.minValue!(), props.maxValue!(), props.step!())
+        snapValueToStep(nextValue, props.minValue!(), props.maxValue!(), props.step!()),
       );
     }
   };

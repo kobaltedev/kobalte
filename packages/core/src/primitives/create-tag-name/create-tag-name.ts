@@ -20,7 +20,7 @@ import { Accessor, Component, createEffect, createSignal } from "solid-js";
  */
 export function createTagName(
   ref: Accessor<HTMLElement | undefined>,
-  fallback?: Accessor<string | Component | undefined>
+  fallback?: Accessor<string | Component | undefined>,
 ) {
   const [tagName, setTagName] = createSignal(stringOrUndefined(fallback?.()));
 

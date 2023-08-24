@@ -17,7 +17,7 @@ export function useDomCollectionContext<T extends DomCollectionItem = DomCollect
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useDomCollectionContext` must be used within a `DomCollectionProvider` component"
+      "[kobalte]: `useDomCollectionContext` must be used within a `DomCollectionProvider` component",
     );
   }
 

@@ -457,7 +457,7 @@ export function OptionGroupExample() {
       ALL_GROUP_OBJECT_OPTIONS.map(optionOrGroup => {
         // If it's a group, find matching options.
         const matchingOptions = optionOrGroup["options"]?.filter(option =>
-          filter.contains(option.label, value)
+          filter.contains(option.label, value),
         );
 
         // Return the group with only the matching options.
@@ -474,7 +474,7 @@ export function OptionGroupExample() {
         }
 
         return null;
-      }).filter(Boolean) as Array<Food | Category>
+      }).filter(Boolean) as Array<Food | Category>,
     );
   };
 

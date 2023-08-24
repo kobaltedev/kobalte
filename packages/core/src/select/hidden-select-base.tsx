@@ -92,8 +92,8 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
       },
       {
         defer: true,
-      }
-    )
+      },
+    ),
   );
 
   // If virtualized, only render the selected options in the hidden <select> so the value can be submitted to a server.
@@ -126,7 +126,7 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
           if (!isInternalChangeEvent()) {
             // enable form autofill
             local.selectionManager.setSelectedKeys(
-              new Set([(e.target as HTMLSelectElement).value])
+              new Set([(e.target as HTMLSelectElement).value]),
             );
           }
 

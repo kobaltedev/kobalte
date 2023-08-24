@@ -72,7 +72,7 @@ interface CreateSelectableCollectionProps {
 export function createSelectableCollection<T extends HTMLElement, U extends HTMLElement = T>(
   props: CreateSelectableCollectionProps,
   ref: Accessor<T | undefined>,
-  scrollRef?: Accessor<U | undefined>
+  scrollRef?: Accessor<U | undefined>,
 ) {
   const defaultProps: Partial<CreateSelectableCollectionProps> = {
     selectOnFocus: () => access(props.selectionManager).selectionBehavior() === "replace",
@@ -100,7 +100,7 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
         top: scrollEl.scrollTop,
         left: scrollEl.scrollLeft,
       };
-    }
+    },
   );
 
   const { typeSelectHandlers } = createTypeSelect({
@@ -470,8 +470,8 @@ export function createSelectableCollection<T extends HTMLElement, U extends HTML
             }
           }
         }
-      }
-    )
+      },
+    ),
   );
 
   // If nothing is focused within the collection, make the collection itself tabbable.

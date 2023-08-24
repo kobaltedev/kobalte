@@ -16,7 +16,7 @@ export function RadioGroupItemControl(props: RadioGroupItemControlProps) {
     {
       id: context.generateId("control"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["onClick", "onKeyDown"]);

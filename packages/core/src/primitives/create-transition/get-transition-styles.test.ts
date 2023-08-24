@@ -25,7 +25,7 @@ describe("getTransitionStyles", () => {
           phase: "afterEnter",
           duration: 625,
           easing: "ease",
-        })
+        }),
       ).toStrictEqual({
         ...customTransition.in,
         ...customTransition.common,
@@ -40,7 +40,7 @@ describe("getTransitionStyles", () => {
           phase: "afterExit",
           duration: 625,
           easing: "ease",
-        })
+        }),
       ).toStrictEqual({
         ...customTransition.out,
         ...customTransition.common,

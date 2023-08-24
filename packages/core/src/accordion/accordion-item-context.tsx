@@ -16,7 +16,7 @@ export function useAccordionItemContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useAccordionItemContext` must be used within a `Accordion.Item` component"
+      "[kobalte]: `useAccordionItemContext` must be used within a `Accordion.Item` component",
     );
   }
 

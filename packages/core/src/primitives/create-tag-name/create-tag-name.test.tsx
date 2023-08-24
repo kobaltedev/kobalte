@@ -20,7 +20,7 @@ describe("createTagName", () => {
 
       const tagName = createTagName(
         () => ref,
-        () => "button"
+        () => "button",
       );
 
       createEffect(() => {
@@ -43,7 +43,7 @@ describe("createTagName", () => {
 
       const tagName = createTagName(
         () => ref,
-        () => "button"
+        () => "button",
       );
 
       createEffect(() => {

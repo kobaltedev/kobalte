@@ -38,13 +38,13 @@ export function ComboboxInput(props: ComboboxInputProps) {
     {
       id: context.generateId("input"),
     },
-    props
+    props,
   );
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
     ["ref", "disabled", "onInput", "onPointerDown", "onClick", "onKeyDown", "onFocus", "onBlur"],
-    FORM_CONTROL_FIELD_PROP_NAMES
+    FORM_CONTROL_FIELD_PROP_NAMES,
   );
 
   const collection = () => context.listState().collection();

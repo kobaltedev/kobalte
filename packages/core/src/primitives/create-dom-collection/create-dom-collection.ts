@@ -25,7 +25,7 @@ export interface CreateDomCollectionProps<T extends DomCollectionItem = DomColle
 }
 
 export function createDomCollection<T extends DomCollectionItem = DomCollectionItem>(
-  props: CreateDomCollectionProps<T> = {}
+  props: CreateDomCollectionProps<T> = {},
 ) {
   const [items, setItems] = createControllableArraySignal({
     value: () => access(props.items),

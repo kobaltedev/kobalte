@@ -88,8 +88,8 @@ export function TabsIndicator(props: TabsIndicatorProps) {
       () => {
         computeStyle();
       },
-      { defer: true }
-    )
+      { defer: true },
+    ),
   );
 
   return (

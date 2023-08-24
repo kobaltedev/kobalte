@@ -24,7 +24,7 @@ export type DataAttributeStyles = {
 };
 
 function makeDataAttribute<KobalteState extends string>(
-  state: KobalteState
+  state: KobalteState,
 ): DataAttribute<KobalteState> {
   return `[data-${state}]` as const;
 }
@@ -57,7 +57,7 @@ type ComponentStateStyleOptions = {
 
 export function componentStateStyles(
   styles: DataAttributeStyles,
-  options?: ComponentStateStyleOptions
+  options?: ComponentStateStyleOptions,
 ): StyleRule {
   const styleRule = { selectors: {} } as { selectors: StyleRule["selectors"] };
 

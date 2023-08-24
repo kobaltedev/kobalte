@@ -13,7 +13,7 @@ import { Collection, CollectionBase, CollectionNode } from "./types";
 import { buildNodes } from "./utils";
 
 type CollectionFactory<C extends Collection<CollectionNode>> = (
-  node: Iterable<CollectionNode>
+  node: Iterable<CollectionNode>,
 ) => C;
 
 export interface CreateCollectionProps<C extends Collection<CollectionNode>>
@@ -23,7 +23,7 @@ export interface CreateCollectionProps<C extends Collection<CollectionNode>>
 
 export function createCollection<C extends Collection<CollectionNode>>(
   props: CreateCollectionProps<C>,
-  deps: Array<Accessor<any>> = []
+  deps: Array<Accessor<any>> = [],
 ) {
   const initialNodes = buildNodes({
     dataSource: access(props.dataSource),
@@ -59,8 +59,8 @@ export function createCollection<C extends Collection<CollectionNode>>(
       },
       {
         defer: true,
-      }
-    )
+      },
+    ),
   );
 
   return collection;

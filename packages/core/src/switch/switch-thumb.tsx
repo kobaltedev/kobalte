@@ -17,7 +17,7 @@ export function SwitchThumb(props: SwitchThumbProps) {
     {
       id: context.generateId("thumb"),
     },
-    props
+    props,
   );
 
   return (

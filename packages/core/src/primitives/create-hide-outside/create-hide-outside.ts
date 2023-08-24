@@ -65,7 +65,7 @@ export function ariaHideOutside(targets: Element[], root = document.body) {
   const walk = (root: Element) => {
     // Keep live announcer and top layer elements (e.g. toasts) visible.
     for (const element of root.querySelectorAll(
-      `[${DATA_LIVE_ANNOUNCER_ATTR}], [${DATA_TOP_LAYER_ATTR}]`
+      `[${DATA_LIVE_ANNOUNCER_ATTR}], [${DATA_TOP_LAYER_ATTR}]`,
     )) {
       visibleNodes.add(element);
     }

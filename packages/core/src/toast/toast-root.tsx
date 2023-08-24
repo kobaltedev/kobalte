@@ -115,7 +115,7 @@ export function ToastRoot(props: ToastRootProps) {
       id: defaultId,
       priority: "high",
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -327,8 +327,8 @@ export function ToastRoot(props: ToastRootProps) {
       },
       {
         defer: true,
-      }
-    )
+      },
+    ),
   );
 
   // start timer when toast opens or duration changes.
@@ -339,21 +339,21 @@ export function ToastRoot(props: ToastRootProps) {
       if (isOpen && !rootContext.isPaused()) {
         startTimer(duration);
       }
-    })
+    }),
   );
 
   createEffect(
     on(
       () => toastStore.get(local.toastId)?.dismiss,
-      dismiss => dismiss && close()
-    )
+      dismiss => dismiss && close(),
+    ),
   );
 
   createEffect(
     on(
       () => presence.isPresent(),
-      isPresent => !isPresent && deleteToast()
-    )
+      isPresent => !isPresent && deleteToast(),
+    ),
   );
 
   const context: ToastContextValue = {
@@ -400,7 +400,7 @@ export function ToastRoot(props: ToastRootProps) {
 function isDeltaInDirection(
   delta: { x: number; y: number },
   direction: ToastSwipeDirection,
-  threshold = 0
+  threshold = 0,
 ) {
   const deltaX = Math.abs(delta.x);
   const deltaY = Math.abs(delta.y);
@@ -416,7 +416,7 @@ function isDeltaInDirection(
 function handleAndDispatchCustomEvent<C extends CustomEvent, E extends Event>(
   name: string,
   handler: ((event: C) => void) | undefined,
-  detail: { originalEvent: E } & (C extends CustomEvent<infer D> ? D : never)
+  detail: { originalEvent: E } & (C extends CustomEvent<infer D> ? D : never),
 ) {
   const currentTarget = detail.originalEvent.currentTarget as HTMLElement;
   const event = new CustomEvent(name, { bubbles: true, cancelable: true, detail });

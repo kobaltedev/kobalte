@@ -39,7 +39,7 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
     {
       id: radioContext.generateId("input"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [

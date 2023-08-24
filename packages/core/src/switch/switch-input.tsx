@@ -42,7 +42,7 @@ export function SwitchInput(props: SwitchInputProps) {
   const [local, formControlFieldProps, others] = splitProps(
     props,
     ["ref", "style", "onChange", "onFocus", "onBlur"],
-    FORM_CONTROL_FIELD_PROP_NAMES
+    FORM_CONTROL_FIELD_PROP_NAMES,
   );
 
   const { fieldProps } = createFormControlField(formControlFieldProps);

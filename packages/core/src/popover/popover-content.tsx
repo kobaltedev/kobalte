@@ -75,7 +75,7 @@ export function PopoverContent(props: PopoverContentProps) {
     {
       id: context.generateId("content"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -184,7 +184,7 @@ export function PopoverContent(props: PopoverContentProps) {
       onMountAutoFocus: local.onOpenAutoFocus,
       onUnmountAutoFocus: onCloseAutoFocus,
     },
-    () => ref
+    () => ref,
   );
 
   createEffect(() => onCleanup(context.registerContentId(others.id!)));

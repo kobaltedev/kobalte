@@ -109,7 +109,7 @@ export function TooltipRoot(props: TooltipRootProps) {
       openDelay: 700,
       closeDelay: 300,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [

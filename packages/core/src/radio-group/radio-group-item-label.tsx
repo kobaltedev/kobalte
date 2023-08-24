@@ -15,7 +15,7 @@ export function RadioGroupItemLabel(props: RadioGroupItemLabelProps) {
     {
       id: context.generateId("label"),
     },
-    props
+    props,
   );
 
   createEffect(() => onCleanup(context.registerLabel(props.id!)));

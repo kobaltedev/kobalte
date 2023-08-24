@@ -47,7 +47,7 @@ const button = style([
         backgroundColor: "red",
       },
     },
-    { parentSelector: "[data-theme=dark]" }
+    { parentSelector: "[data-theme=dark]" },
   ),
 ]);
 ```

@@ -44,7 +44,7 @@ export function TabsTrigger(props: TabsTriggerProps) {
     {
       type: "button",
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -84,7 +84,7 @@ export function TabsTrigger(props: TabsTriggerProps) {
       selectionManager: () => context.listState().selectionManager(),
       disabled: isDisabled,
     },
-    () => ref
+    () => ref,
   );
 
   const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
@@ -97,7 +97,7 @@ export function TabsTrigger(props: TabsTriggerProps) {
   createEffect(
     on([() => local.value, id], ([value, id]) => {
       context.triggerIdsMap().set(value, id);
-    })
+    }),
   );
 
   return (

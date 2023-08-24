@@ -14,7 +14,7 @@ export interface DialogContextValue {
   contentPresence: CreatePresenceResult;
   close: () => void;
   toggle: () => void;
-  setTriggerRef: Setter<HTMLElement>;
+  setTriggerRef: Setter<HTMLElement | undefined>;
   generateId: (part: string) => string;
   registerContentId: (id: string) => () => void;
   registerTitleId: (id: string) => () => void;

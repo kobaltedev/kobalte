@@ -206,7 +206,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       modal: false,
       preventScroll: false,
     },
-    props
+    props,
   );
 
   const [local, popperProps, formControlProps, others] = splitProps(
@@ -253,7 +253,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       "arrowPadding",
       "overflowPadding",
     ],
-    FORM_CONTROL_PROP_NAMES
+    FORM_CONTROL_PROP_NAMES,
   );
 
   const [triggerId, setTriggerId] = createSignal<string>();
@@ -290,12 +290,12 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 
     if (isFunction(optionGroupChildren)) {
       return local.options.flatMap(
-        item => optionGroupChildren(item as OptGroup) ?? (item as Option)
+        item => optionGroupChildren(item as OptGroup) ?? (item as Option),
       );
     }
 
     return local.options.flatMap(
-      item => ((item as OptGroup)[optionGroupChildren] as Option[]) ?? (item as Option)
+      item => ((item as OptGroup)[optionGroupChildren] as Option[]) ?? (item as Option),
     );
   });
 
@@ -450,8 +450,8 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       },
       {
         defer: true,
-      }
-    )
+      },
+    ),
   );
 
   const dataset: Accessor<SelectDataSet> = createMemo(() => ({

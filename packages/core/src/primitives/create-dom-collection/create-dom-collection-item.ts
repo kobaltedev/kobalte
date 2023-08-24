@@ -13,7 +13,7 @@ export interface CreateDomCollectionItemProps<T extends DomCollectionItem = DomC
 }
 
 export function createDomCollectionItem<T extends DomCollectionItem = DomCollectionItem>(
-  props: CreateDomCollectionItemProps<T>
+  props: CreateDomCollectionItemProps<T>,
 ) {
   const context = useDomCollectionContext<T>();
 

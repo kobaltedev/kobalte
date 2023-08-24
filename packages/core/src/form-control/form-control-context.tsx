@@ -23,7 +23,7 @@ export interface FormControlContextValue {
   getAriaLabelledBy: (
     fieldId: string | undefined,
     fieldAriaLabel: string | undefined,
-    fieldAriaLabelledBy: string | undefined
+    fieldAriaLabelledBy: string | undefined,
   ) => string | undefined;
   getAriaDescribedBy: (fieldAriaDescribedBy: string | undefined) => string | undefined;
   generateId: (part: string) => string;
@@ -40,7 +40,7 @@ export function useFormControlContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useFormControlContext` must be used within a `FormControlContext.Provider` component"
+      "[kobalte]: `useFormControlContext` must be used within a `FormControlContext.Provider` component",
     );
   }
 

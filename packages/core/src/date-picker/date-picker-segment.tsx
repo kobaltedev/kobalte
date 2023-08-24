@@ -66,7 +66,7 @@ export function DatePickerSegment(props: DatePickerSegmentProps) {
   ]);
 
   const [textValue, setTextValue] = createSignal(
-    local.segment.isPlaceholder ? "" : local.segment.text
+    local.segment.isPlaceholder ? "" : local.segment.text,
   );
 
   const resolvedChildren = children(() => local.children);
@@ -462,7 +462,7 @@ export function DatePickerSegment(props: DatePickerSegmentProps) {
       if (local.segment.type === "month" && !local.segment.isPlaceholder) {
         const monthTextValue = monthDateFormatter().format(resolvedDateValue);
         setTextValue(prev =>
-          monthTextValue !== prev ? `${prev} – ${monthTextValue}` : monthTextValue
+          monthTextValue !== prev ? `${prev} – ${monthTextValue}` : monthTextValue,
         );
       } else if (local.segment.type === "hour" && !local.segment.isPlaceholder) {
         setTextValue(hourDateFormatter().format(resolvedDateValue));
@@ -486,7 +486,7 @@ export function DatePickerSegment(props: DatePickerSegmentProps) {
           }
         }
       });
-    })
+    }),
   );
 
   return (

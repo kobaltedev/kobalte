@@ -30,13 +30,13 @@ export function SelectTrigger(props: SelectTriggerProps) {
     {
       id: context.generateId("trigger"),
     },
-    props
+    props,
   );
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
     ["ref", "disabled", "onPointerDown", "onClick", "onKeyDown", "onFocus", "onBlur"],
-    FORM_CONTROL_FIELD_PROP_NAMES
+    FORM_CONTROL_FIELD_PROP_NAMES,
   );
 
   const selectionManager = () => context.listState().selectionManager();
@@ -176,7 +176,7 @@ export function SelectTrigger(props: SelectTriggerProps) {
         fieldProps.ariaLabel() && !fieldProps.ariaLabelledBy() ? fieldProps.id() : null,
       ]
         .filter(Boolean)
-        .join(" ") || undefined
+        .join(" ") || undefined,
     );
   });
 

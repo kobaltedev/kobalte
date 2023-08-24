@@ -16,7 +16,7 @@ export function PopoverTitle(props: PopoverTitleProps) {
     {
       id: context.generateId("title"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["id"]);

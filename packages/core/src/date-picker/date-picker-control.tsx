@@ -39,7 +39,7 @@ export function DatePickerControl(props: DatePickerControlProps) {
     {
       id: context.generateId("control"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -54,7 +54,7 @@ export function DatePickerControl(props: DatePickerControlProps) {
     return formControlContext.getAriaLabelledBy(
       others.id,
       others["aria-label"],
-      local["aria-labelledby"]
+      local["aria-labelledby"],
     );
   };
 

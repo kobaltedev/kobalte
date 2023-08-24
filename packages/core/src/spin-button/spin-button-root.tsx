@@ -169,7 +169,7 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
         clearAnnouncer("assertive");
         announce(textValue, "assertive");
       }
-    })
+    }),
   );
 
   return (

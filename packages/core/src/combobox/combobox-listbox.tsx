@@ -21,7 +21,7 @@ export interface ComboboxListboxProps<Option, OptGroup = never>
  * Contains all the items of a `Combobox`.
  */
 export function ComboboxListbox<Option = any, OptGroup = never>(
-  props: ComboboxListboxProps<Option, OptGroup>
+  props: ComboboxListboxProps<Option, OptGroup>,
 ) {
   const formControlContext = useFormControlContext();
   const context = useComboboxContext();
@@ -30,7 +30,7 @@ export function ComboboxListbox<Option = any, OptGroup = never>(
     {
       id: context.generateId("listbox"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["ref"]);

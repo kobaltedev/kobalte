@@ -149,7 +149,7 @@ export function DismissableLayer(props: DismissableLayerProps) {
       onPointerDownOutside,
       onFocusOutside,
     },
-    () => ref
+    () => ref,
   );
 
   createEscapeKeyDown({
@@ -229,8 +229,8 @@ export function DismissableLayer(props: DismissableLayerProps) {
       },
       {
         defer: true,
-      }
-    )
+      },
+    ),
   );
 
   const context: DismissableLayerContextValue = {

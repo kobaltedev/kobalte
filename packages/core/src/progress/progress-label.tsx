@@ -16,7 +16,7 @@ export function ProgressLabel(props: ProgressLabelProps) {
     {
       id: context.generateId("label"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["id"]);

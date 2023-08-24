@@ -99,7 +99,7 @@ export function ToastList(props: ToastListProps) {
       doc.addEventListener("keydown", onKeyDown);
 
       onCleanup(() => doc.removeEventListener("keydown", onKeyDown));
-    })
+    }),
   );
 
   createEffect(() => {

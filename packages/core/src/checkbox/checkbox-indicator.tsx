@@ -29,13 +29,13 @@ export function CheckboxIndicator(props: CheckboxIndicatorProps) {
     {
       id: context.generateId("indicator"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["ref", "forceMount"]);
 
   const presence = createPresence(
-    () => local.forceMount || context.indeterminate() || context.checked()
+    () => local.forceMount || context.indeterminate() || context.checked(),
   );
 
   return (

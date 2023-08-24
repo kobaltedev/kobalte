@@ -238,7 +238,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       preventScroll: false,
       triggerMode: "input",
     },
-    props
+    props,
   );
 
   const [local, popperProps, formControlProps, others] = splitProps(
@@ -289,7 +289,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       "arrowPadding",
       "overflowPadding",
     ],
-    FORM_CONTROL_PROP_NAMES
+    FORM_CONTROL_PROP_NAMES,
   );
 
   const [listboxId, setListboxId] = createSignal<string>();
@@ -356,12 +356,12 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 
     if (isFunction(optionGroupChildren)) {
       return local.options.flatMap(
-        item => optionGroupChildren(item as OptGroup) ?? (item as Option)
+        item => optionGroupChildren(item as OptGroup) ?? (item as Option),
       );
     }
 
     return local.options.flatMap(
-      item => ((item as OptGroup)[optionGroupChildren] as Option[]) ?? (item as Option)
+      item => ((item as OptGroup)[optionGroupChildren] as Option[]) ?? (item as Option),
     );
   });
 
@@ -543,7 +543,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       // Prevent item scroll behavior from being applied here, handled in the Listbox component.
       isVirtualized: true,
     },
-    inputRef
+    inputRef,
   );
 
   const setIsInputFocused = (isFocused: boolean) => {
@@ -589,8 +589,8 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       selectedKeys => {
         syncSelectedOptionsMapWithSelectedKeys(selectedKeys);
         resetInputValue();
-      }
-    )
+      },
+    ),
   );
 
   // VoiceOver has issues with announcing aria-activedescendant properly on change.

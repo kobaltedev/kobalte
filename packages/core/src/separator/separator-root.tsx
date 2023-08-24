@@ -29,14 +29,14 @@ export function SeparatorRoot(props: SeparatorRootProps) {
     {
       orientation: "horizontal",
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["ref", "orientation"]);
 
   const tagName = createTagName(
     () => ref,
-    () => "hr"
+    () => "hr",
   );
 
   return (

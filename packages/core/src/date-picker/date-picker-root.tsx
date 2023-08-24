@@ -220,7 +220,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
       sameWidth: false,
       placement: "bottom-start",
     },
-    props
+    props,
   );
 
   const [local, popperProps, formControlProps, others] = splitProps(
@@ -266,7 +266,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
       "arrowPadding",
       "overflowPadding",
     ],
-    FORM_CONTROL_PROP_NAMES
+    FORM_CONTROL_PROP_NAMES,
   );
 
   const [triggerId, setTriggerId] = createSignal<string>();
@@ -347,7 +347,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
       get validationState() {
         return validationState();
       },
-    })
+    }),
   );
 
   createFormResetListener(contentRef, () => {
@@ -373,7 +373,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
         hideTimeZone: local.hideTimeZone,
         hourCycle: local.hourCycle,
         showEra: firstValue.calendar.identifier === "gregory" && firstValue.era === "BC",
-      }
+      },
     );
 
     const dateFormatter = createMemo(() => new DateFormatter(locale(), formatOptions));
@@ -426,7 +426,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
         if (resolvedSelectedTime || closeOnSelect()) {
           commitSingleValue(
             newValue as DateValue,
-            resolvedSelectedTime || getPlaceholderTime(local.placeholderValue)
+            resolvedSelectedTime || getPlaceholderTime(local.placeholderValue),
           );
         } else {
           setSelectedDate(newValue as DateValue);
@@ -470,7 +470,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
       if (!value() && resolvedSelectedDate && hasTime()) {
         commitSingleValue(
           resolvedSelectedDate,
-          resolvedSelectedTime || getPlaceholderTime(local.placeholderValue)
+          resolvedSelectedTime || getPlaceholderTime(local.placeholderValue),
         );
       }
     } else if (local.selectionMode === "range") {
@@ -512,7 +512,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
       } else if (local.selectionMode === "range") {
         // TODO: RangeDatePicker
       }
-    })
+    }),
   );
 
   const context: DatePickerContextValue = {

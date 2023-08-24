@@ -69,7 +69,7 @@ const FOCUS_OUTSIDE_EVENT = "interactOutside.focusOutside";
 
 export function createInteractOutside<T extends HTMLElement>(
   props: CreateInteractOutsideProps,
-  ref: Accessor<T | undefined>
+  ref: Accessor<T | undefined>,
 ) {
   let pointerDownTimeoutId: number | undefined;
   let clickHandler = noop;

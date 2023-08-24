@@ -19,7 +19,7 @@ export function usePaginationContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `usePaginationContext` must be used within a `Pagination` component"
+      "[kobalte]: `usePaginationContext` must be used within a `Pagination` component",
     );
   }
 

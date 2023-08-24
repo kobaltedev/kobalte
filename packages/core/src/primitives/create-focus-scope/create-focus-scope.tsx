@@ -79,7 +79,7 @@ const focusScopeStack = {
 
 export function createFocusScope<T extends HTMLElement>(
   props: CreateFocusScopeProps,
-  ref: Accessor<T | undefined>
+  ref: Accessor<T | undefined>,
 ) {
   const [isPaused, setIsPaused] = createSignal(false);
 

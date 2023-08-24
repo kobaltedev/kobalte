@@ -95,13 +95,13 @@ export function SwitchRoot(props: SwitchRootProps) {
       value: "on",
       id: defaultId,
     },
-    props
+    props,
   );
 
   const [local, formControlProps, others] = splitProps(
     props,
     ["ref", "children", "value", "checked", "defaultChecked", "onChange", "onPointerDown"],
-    FORM_CONTROL_PROP_NAMES
+    FORM_CONTROL_PROP_NAMES,
   );
 
   const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
@@ -119,7 +119,7 @@ export function SwitchRoot(props: SwitchRootProps) {
 
   createFormResetListener(
     () => ref,
-    () => state.setIsSelected(local.defaultChecked ?? false)
+    () => state.setIsSelected(local.defaultChecked ?? false),
   );
 
   const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {

@@ -27,7 +27,7 @@ export function RadioGroupItemIndicator(props: RadioGroupItemIndicatorProps) {
     {
       id: context.generateId("indicator"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["ref", "forceMount"]);
