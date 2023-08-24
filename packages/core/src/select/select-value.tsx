@@ -60,6 +60,7 @@ export function SelectValue<T>(props: SelectValueProps<T>) {
   };
 
   createEffect(() => onCleanup(context.registerValueId(local.id!)));
+
   return (
     <span
       id={local.id}
