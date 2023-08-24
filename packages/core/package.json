@@ -53,17 +53,17 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.2.6",
-    "@internationalized/date": "^3.2.0",
-    "@internationalized/message": "^3.1.0",
-    "@internationalized/number": "^3.2.0",
+    "@floating-ui/dom": "^1.5.1",
+    "@internationalized/date": "^3.4.0",
+    "@internationalized/message": "^3.1.1",
+    "@internationalized/number": "^3.2.1",
     "@kobalte/utils": "^0.8.0"
   },
   "devDependencies": {
     "@kobalte/tests": "^0.4.0"
   },
   "peerDependencies": {
-    "solid-js": "^1.7.3"
+    "solid-js": "^1.7.11"
   },
   "publishConfig": {
     "access": "public"

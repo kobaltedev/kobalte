@@ -50,7 +50,7 @@ export function createListState(props: CreateListStateProps): ListState {
       getSectionChildren: () => access(props.getSectionChildren),
       factory,
     },
-    [() => props.filter]
+    [() => props.filter],
   );
 
   const selectionManager = new SelectionManager(collection, selectionState);

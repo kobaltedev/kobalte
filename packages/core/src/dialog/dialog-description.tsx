@@ -16,7 +16,7 @@ export function DialogDescription(props: DialogDescriptionProps) {
     {
       id: context.generateId("description"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["id"]);

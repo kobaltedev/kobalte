@@ -65,7 +65,7 @@ export function Menu(props: MenuProps) {
     {
       placement: "bottom-start",
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["open", "defaultOpen", "onOpenChange"]);
@@ -95,7 +95,7 @@ export function Menu(props: MenuProps) {
   });
 
   const contentPresence = createPresence(
-    () => rootContext.forceMount() || disclosureState.isOpen()
+    () => rootContext.forceMount() || disclosureState.isOpen(),
   );
 
   const listState = createListState({

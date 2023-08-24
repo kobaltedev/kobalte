@@ -18,7 +18,7 @@ import { useLocale } from "./i18n-provider";
  * @param options - Formatting options.
  */
 export function createNumberFormatter(
-  options: MaybeAccessor<NumberFormatOptions>
+  options: MaybeAccessor<NumberFormatOptions>,
 ): Accessor<Intl.NumberFormat> {
   const { locale } = useLocale();
 

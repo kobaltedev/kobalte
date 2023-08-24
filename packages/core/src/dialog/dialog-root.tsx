@@ -58,7 +58,7 @@ export function DialogRoot(props: DialogRootProps) {
       modal: true,
       preventScroll: false,
     },
-    props
+    props,
   );
 
   const [contentId, setContentId] = createSignal<string>();

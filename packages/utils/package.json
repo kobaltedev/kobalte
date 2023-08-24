@@ -49,16 +49,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@solid-primitives/event-listener": "^2.2.10",
+    "@solid-primitives/event-listener": "^2.2.14",
     "@solid-primitives/keyed": "^1.2.0",
-    "@solid-primitives/map": "^0.4.6",
-    "@solid-primitives/media": "^2.1.6",
-    "@solid-primitives/props": "^3.1.4",
-    "@solid-primitives/refs": "^1.0.2",
-    "@solid-primitives/utils": "^6.1.0"
+    "@solid-primitives/map": "^0.4.7",
+    "@solid-primitives/media": "^2.2.4",
+    "@solid-primitives/props": "^3.1.8",
+    "@solid-primitives/refs": "^1.0.5",
+    "@solid-primitives/utils": "^6.2.1"
   },
   "peerDependencies": {
-    "solid-js": "^1.7.3"
+    "solid-js": "^1.7.11"
   },
   "publishConfig": {
     "access": "public"

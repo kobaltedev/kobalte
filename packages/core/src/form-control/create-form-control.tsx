@@ -67,7 +67,7 @@ export function createFormControl(props: CreateFormControlProps) {
   const getAriaLabelledBy = (
     fieldId: string | undefined,
     fieldAriaLabel: string | undefined,
-    fieldAriaLabelledBy: string | undefined
+    fieldAriaLabelledBy: string | undefined,
   ) => {
     const hasAriaLabelledBy = fieldAriaLabelledBy != null || labelId() != null;
 

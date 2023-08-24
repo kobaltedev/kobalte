@@ -16,7 +16,7 @@ export const TabsSnippets: ParentComponent<ComponentProps<typeof Tabs.Root>> &
     <Tabs.Root
       class={clsx(
         "kb-tabs-snippets not-prose my-6 overflow-y-auto rounded-lg border border-solid border-zinc-200 bg-[#fafafa] dark:bg-[#27272a] dark:border-[#3f3f46]",
-        local.class
+        local.class,
       )}
       {...others}
     />
@@ -44,7 +44,7 @@ TabsSnippets.Trigger = (props: ComponentProps<typeof Tabs.Trigger>) => {
     <Tabs.Trigger
       class={clsx(
         "outline-none text-sm px-3 py-2 text-zinc-700 ui-selected:font-medium focus-visible:bg-zinc-200 dark:text-white/80 dark:focus-visible:bg-zinc-700",
-        local.class
+        local.class,
       )}
       {...others}
     />

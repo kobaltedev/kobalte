@@ -24,7 +24,7 @@ export function CalendarHeading(props: CalendarHeadingProps) {
       rootContext.startDate(),
       rootContext.endDate(),
       rootContext.timeZone(),
-      false
+      false,
     );
   });
 

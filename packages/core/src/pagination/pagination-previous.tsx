@@ -16,7 +16,7 @@ export function PaginationPrevious(props: PaginationPreviousProps) {
     {
       type: "button",
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["onClick"]);

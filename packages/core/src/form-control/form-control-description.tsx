@@ -16,7 +16,7 @@ export function FormControlDescription(props: FormControlDescriptionProps) {
     {
       id: context.generateId("description"),
     },
-    props
+    props,
   );
 
   createEffect(() => onCleanup(context.registerDescription(props.id!)));

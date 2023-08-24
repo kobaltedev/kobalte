@@ -14,7 +14,7 @@ export function useCalendarGridContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useCalendarGridContext` must be used within a `Calendar.Grid` component"
+      "[kobalte]: `useCalendarGridContext` must be used within a `Calendar.Grid` component",
     );
   }
 

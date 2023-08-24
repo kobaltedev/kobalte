@@ -696,7 +696,7 @@ describe("RadioGroup", () => {
 
     expect(radioGroup).toHaveAttribute(
       "aria-describedby",
-      `${description.id} ${errorMessage.id} foo`
+      `${description.id} ${errorMessage.id} foo`,
     );
   });
 

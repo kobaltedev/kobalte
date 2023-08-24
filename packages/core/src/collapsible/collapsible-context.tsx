@@ -24,7 +24,7 @@ export function useCollapsibleContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useCollapsibleContext` must be used within a `Collapsible.Root` component"
+      "[kobalte]: `useCollapsibleContext` must be used within a `Collapsible.Root` component",
     );
   }
 

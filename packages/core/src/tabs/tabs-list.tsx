@@ -38,7 +38,7 @@ export function TabsList(props: TabsListProps) {
   const delegate = new TabsKeyboardDelegate(
     () => context.listState().collection(),
     direction,
-    context.orientation
+    context.orientation,
   );
 
   const selectableCollection = createSelectableCollection(
@@ -49,7 +49,7 @@ export function TabsList(props: TabsListProps) {
       shouldFocusWrap: false, // handled by the keyboard delegate
       disallowEmptySelection: true,
     },
-    () => ref
+    () => ref,
   );
 
   createEffect(() => {
@@ -58,7 +58,7 @@ export function TabsList(props: TabsListProps) {
     }
 
     const selectedTab = ref.querySelector(
-      `[data-key="${context.listState().selectedKey()}"]`
+      `[data-key="${context.listState().selectedKey()}"]`,
     ) as HTMLElement | null;
 
     if (selectedTab != null) {

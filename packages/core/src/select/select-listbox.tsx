@@ -17,7 +17,7 @@ export interface SelectListboxProps<Option, OptGroup = never>
  * Contains all the items of a `Select`.
  */
 export function SelectListbox<Option = any, OptGroup = never>(
-  props: SelectListboxProps<Option, OptGroup>
+  props: SelectListboxProps<Option, OptGroup>,
 ) {
   const context = useSelectContext();
 
@@ -25,7 +25,7 @@ export function SelectListbox<Option = any, OptGroup = never>(
     {
       id: context.generateId("listbox"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["ref", "id", "onKeyDown"]);

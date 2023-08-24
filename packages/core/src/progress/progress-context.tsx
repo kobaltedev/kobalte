@@ -23,7 +23,7 @@ export function useProgressContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useProgressContext` must be used within a `Progress.Root` component"
+      "[kobalte]: `useProgressContext` must be used within a `Progress.Root` component",
     );
   }
 

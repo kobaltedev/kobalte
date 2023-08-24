@@ -88,7 +88,7 @@ const placeholders = new MessageDictionary(
     "zh-CN": { year: "年", month: "月", day: "日" },
     "zh-TW": { year: "年", month: "月", day: "日" },
   },
-  "en"
+  "en",
 );
 
 export function getPlaceholder(field: string, value: string, locale: string) {

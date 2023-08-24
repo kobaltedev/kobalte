@@ -305,7 +305,7 @@ describe("Tabs", function () {
 
     fireEvent(
       secondItem,
-      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
     );
     await Promise.resolve();
 
@@ -486,7 +486,7 @@ describe("Tabs", function () {
 
     fireEvent(
       secondItem,
-      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
     );
     await Promise.resolve();
 

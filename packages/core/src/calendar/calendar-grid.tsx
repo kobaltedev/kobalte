@@ -43,7 +43,7 @@ export function CalendarGrid(props: CalendarGridProps) {
     {
       weekDayFormat: "short",
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -85,7 +85,7 @@ export function CalendarGrid(props: CalendarGridProps) {
       startDate(),
       endDate(),
       rootContext.timeZone(),
-      true
+      true,
     );
   });
 

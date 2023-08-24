@@ -96,8 +96,8 @@ export function CollapsibleContent(props: CollapsibleContentProps) {
           ref.style.transitionDuration = originalStyles.transitionDuration;
           ref.style.animationName = originalStyles.animationName;
         }
-      }
-    )
+      },
+    ),
   );
 
   createEffect(() => onCleanup(context.registerContentId(local.id!)));

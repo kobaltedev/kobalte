@@ -82,7 +82,7 @@ export function HoverCardRoot(props: HoverCardRootProps) {
       openDelay: 700,
       closeDelay: 300,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [

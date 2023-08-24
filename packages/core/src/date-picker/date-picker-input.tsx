@@ -84,7 +84,7 @@ export function DatePickerInput(props: DatePickerInputProps) {
     {
       id: datePickerContext.generateId("input"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -122,8 +122,8 @@ export function DatePickerInput(props: DatePickerInputProps) {
       datePickerContext.placeholderValue(),
       datePickerContext.granularity(),
       calendar(),
-      timeZone()
-    )
+      timeZone(),
+    ),
   );
 
   const val = createMemo(() => calendarValue() || placeholderDate());
@@ -149,7 +149,7 @@ export function DatePickerInput(props: DatePickerInputProps) {
     return formControlContext.getAriaLabelledBy(
       others.id,
       others["aria-label"],
-      local["aria-labelledby"]
+      local["aria-labelledby"],
     );
   });
 
@@ -165,14 +165,17 @@ export function DatePickerInput(props: DatePickerInputProps) {
     return dateFormatter()
       .formatToParts(new Date())
       .filter(segment => EDITABLE_SEGMENTS[segment.type as keyof typeof EDITABLE_SEGMENTS])
-      .reduce((acc, segment) => {
-        acc[segment.type as keyof typeof EDITABLE_SEGMENTS] = true;
-        return acc;
-      }, {} as Partial<typeof EDITABLE_SEGMENTS>);
+      .reduce(
+        (acc, segment) => {
+          acc[segment.type as keyof typeof EDITABLE_SEGMENTS] = true;
+          return acc;
+        },
+        {} as Partial<typeof EDITABLE_SEGMENTS>,
+      );
   });
 
   const [validSegments, setValidSegments] = createSignal<Partial<typeof EDITABLE_SEGMENTS>>(
-    datePickerContext.value() ? { ...allSegments() } : {}
+    datePickerContext.value() ? { ...allSegments() } : {},
   );
 
   // If all segments are valid, use the date from state, otherwise use the placeholder date.
@@ -195,7 +198,7 @@ export function DatePickerInput(props: DatePickerInputProps) {
         // The display calendar should not have any effect on the emitted value.
         // Emit dates in the same calendar as the original value, if any, otherwise gregorian.
         datePickerContext.setDateValue(
-          toCalendar(newValue, v?.calendar || new GregorianCalendar())
+          toCalendar(newValue, v?.calendar || new GregorianCalendar()),
         );
       } else {
         setPlaceholderDate(newValue);
@@ -339,7 +342,7 @@ export function DatePickerInput(props: DatePickerInputProps) {
       datePickerContext.placeholderValue(),
       datePickerContext.granularity(),
       calendar(),
-      timeZone()
+      timeZone(),
     );
 
     const resolvedDisplayValue = displayValue();
@@ -423,8 +426,8 @@ export function DatePickerInput(props: DatePickerInputProps) {
             ? convertValue(placeholder, calendar)
             : createPlaceholderDate(placeholderValue, granularity, calendar, timeZone);
         });
-      }
-    )
+      },
+    ),
   );
 
   // If there is a value prop, and some segments were previously placeholders, mark them all as valid.
@@ -449,8 +452,8 @@ export function DatePickerInput(props: DatePickerInputProps) {
           datePickerContext.placeholderValue(),
           datePickerContext.granularity(),
           calendar(),
-          timeZone()
-        )
+          timeZone(),
+        ),
       );
     }
   });
@@ -511,7 +514,7 @@ export function DatePickerInput(props: DatePickerInputProps) {
 function getSegmentLimits(
   date: DateValue,
   type: string,
-  options: Intl.ResolvedDateTimeFormatOptions
+  options: Intl.ResolvedDateTimeFormatOptions,
 ) {
   switch (type) {
     case "era": {
@@ -587,7 +590,7 @@ function addSegment(
   value: DateValue,
   part: string,
   amount: number,
-  options: Intl.ResolvedDateTimeFormatOptions
+  options: Intl.ResolvedDateTimeFormatOptions,
 ) {
   switch (part) {
     case "era":
@@ -619,7 +622,7 @@ function setSegmentBase(
   value: DateValue,
   part: string,
   segmentValue: number,
-  options: Intl.ResolvedDateTimeFormatOptions
+  options: Intl.ResolvedDateTimeFormatOptions,
 ) {
   switch (part) {
     case "day":

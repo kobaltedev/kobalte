@@ -32,7 +32,7 @@ export function ColorModeScript(props: ColorModeScriptProps) {
       storageType: "localStorage",
       storageKey: COLOR_MODE_STORAGE_KEY,
     } as ColorModeScriptProps,
-    props
+    props,
   );
 
   const scriptSrc = createMemo(() => {

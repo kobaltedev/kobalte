@@ -44,7 +44,7 @@ export function TooltipContent(props: TooltipContentProps) {
     {
       id: context.generateId("content"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["ref", "style"]);

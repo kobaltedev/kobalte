@@ -51,7 +51,7 @@ export interface CreateSelectableItemProps {
  */
 export function createSelectableItem<T extends HTMLElement>(
   props: CreateSelectableItemProps,
-  ref: Accessor<T | undefined>
+  ref: Accessor<T | undefined>,
 ) {
   const manager = () => access(props.selectionManager);
   const key = () => access(props.key);
@@ -208,8 +208,8 @@ export function createSelectableItem<T extends HTMLElement>(
             focusWithoutScrolling(refEl);
           }
         }
-      }
-    )
+      },
+    ),
   );
 
   return {

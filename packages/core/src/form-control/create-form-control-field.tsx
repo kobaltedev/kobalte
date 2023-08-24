@@ -42,7 +42,7 @@ export function createFormControlField(props: CreateFormControlFieldProps) {
         context.getAriaLabelledBy(
           access(props.id),
           access(props["aria-label"]),
-          access(props["aria-labelledby"])
+          access(props["aria-labelledby"]),
         ),
       ariaDescribedBy: () => context.getAriaDescribedBy(access(props["aria-describedby"])),
     },

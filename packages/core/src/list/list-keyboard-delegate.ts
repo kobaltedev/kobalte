@@ -19,7 +19,7 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
   constructor(
     collection: Accessor<Collection<CollectionNode>>,
     ref?: Accessor<HTMLElement | undefined>,
-    collator?: Accessor<Intl.Collator | undefined>
+    collator?: Accessor<Intl.Collator | undefined>,
   ) {
     this.collection = collection;
     this.ref = ref;
@@ -118,7 +118,7 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
 
     const pageY = Math.min(
       menu.scrollHeight,
-      item.offsetTop - item.offsetHeight + menu.offsetHeight
+      item.offsetTop - item.offsetHeight + menu.offsetHeight,
     );
 
     let keyBelow: string | undefined = key;

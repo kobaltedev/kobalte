@@ -134,7 +134,7 @@ export function SliderRoot(props: SliderRootProps) {
       inverted: false,
       getValueLabel: params => params.values.join(", "),
     },
-    props
+    props,
   );
 
   const [local, formControlProps, others] = splitProps(
@@ -153,7 +153,7 @@ export function SliderRoot(props: SliderRootProps) {
       "getValueLabel",
       "orientation",
     ],
-    FORM_CONTROL_PROP_NAMES
+    FORM_CONTROL_PROP_NAMES,
   );
 
   const { formControlContext } = createFormControl(formControlProps);
@@ -183,7 +183,7 @@ export function SliderRoot(props: SliderRootProps) {
 
   createFormResetListener(
     () => ref,
-    () => state.resetValues()
+    () => state.resetValues(),
   );
 
   const isLTR = () => direction() === "ltr";
@@ -264,7 +264,7 @@ export function SliderRoot(props: SliderRootProps) {
       state.focusedThumb() !== undefined &&
       state.setThumbValue(
         state.values().length - 1,
-        state.getThumbMaxValue(state.values().length - 1)
+        state.getThumbMaxValue(state.values().length - 1),
       );
   };
 

@@ -54,7 +54,7 @@ const TWO_DIGIT_FIELD_OPTIONS: DateFieldOptions = {
 
 export function getDateFieldFormatOptions(
   fieldOptions: DateFieldOptions,
-  options: FormatterOptions
+  options: FormatterOptions,
 ): Intl.DateTimeFormatOptions {
   const defaultFieldOptions = options.shouldForceLeadingZeros
     ? TWO_DIGIT_FIELD_OPTIONS
@@ -111,7 +111,7 @@ export function getPlaceholderTime(placeholderValue?: DateValue): TimeValue {
 
 export function convertValue(
   value: DateValue | null | undefined,
-  calendar: Calendar
+  calendar: Calendar,
 ): DateValue | null | undefined {
   if (value === null) {
     return null;
@@ -128,7 +128,7 @@ export function createPlaceholderDate(
   placeholderValue: DateValue | null | undefined,
   granularity: string,
   calendar: Calendar,
-  timeZone: string
+  timeZone: string,
 ) {
   if (placeholderValue) {
     return convertValue(placeholderValue, calendar);
@@ -141,7 +141,7 @@ export function createPlaceholderDate(
       second: 0,
       millisecond: 0,
     }),
-    calendar
+    calendar,
   );
 
   if (granularity === "year" || granularity === "month" || granularity === "day") {
@@ -196,7 +196,7 @@ export function createDefaultProps(props: {
     // granularity must actually exist in the value if one is provided.
     if (resolvedValue && !(resolvedGranularity in resolvedValue)) {
       throw new Error(
-        "Invalid granularity " + resolvedGranularity + " for value " + resolvedValue.toString()
+        "Invalid granularity " + resolvedGranularity + " for value " + resolvedValue.toString(),
       );
     }
   });

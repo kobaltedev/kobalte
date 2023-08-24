@@ -67,7 +67,7 @@ export function AccordionTrigger(props: AccordionTriggerProps) {
       disabled: () => collapsibleContext.disabled(),
       shouldSelectOnPressUp: true,
     },
-    () => ref
+    () => ref,
   );
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {

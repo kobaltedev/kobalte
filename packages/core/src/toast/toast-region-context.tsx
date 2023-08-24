@@ -23,7 +23,7 @@ export function useToastRegionContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useToastRegionContext` must be used within a `Toast.Region` component"
+      "[kobalte]: `useToastRegionContext` must be used within a `Toast.Region` component",
     );
   }
 

@@ -34,7 +34,7 @@ export function ContextMenuRoot(props: ContextMenuRootProps) {
       gutter: 2,
       shift: 2,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["onOpenChange"]);

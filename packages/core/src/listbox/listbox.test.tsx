@@ -329,13 +329,13 @@ describe("Listbox", () => {
 
       fireEvent(
         nextSelectedItem,
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
       fireEvent(
         nextSelectedItem,
-        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -373,13 +373,13 @@ describe("Listbox", () => {
       // Try select the disabled option
       fireEvent(
         disabledItem,
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
       fireEvent(
         disabledItem,
-        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -419,25 +419,25 @@ describe("Listbox", () => {
 
       fireEvent(
         options[0],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
       fireEvent(
         options[0],
-        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
       fireEvent(
         options[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
       fireEvent(
         options[2],
-        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -476,7 +476,7 @@ describe("Listbox", () => {
       // Select a different option
       fireEvent(
         thirdItem,
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -518,7 +518,7 @@ describe("Listbox", () => {
       // Select a different option
       fireEvent(
         thirdItem,
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -557,7 +557,7 @@ describe("Listbox", () => {
       // Deselect first option
       fireEvent(
         firstItem,
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -601,13 +601,13 @@ describe("Listbox", () => {
 
       fireEvent(
         disabledItem,
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
       fireEvent(
         disabledItem,
-        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -643,7 +643,7 @@ describe("Listbox", () => {
     // Deselect second option
     fireEvent(
       secondItem,
-      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
     );
     await Promise.resolve();
 

@@ -55,7 +55,7 @@ export function TabsRoot(props: TabsRootProps) {
       orientation: "horizontal",
       activationMode: "automatic",
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -124,8 +124,8 @@ export function TabsRoot(props: TabsRootProps) {
         }
 
         lastSelectedKey = selectedKey;
-      }
-    )
+      },
+    ),
   );
 
   // associated value/trigger ids

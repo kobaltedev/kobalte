@@ -37,7 +37,7 @@ export const FOCUSABLE_ELEMENT_SELECTOR =
   focusableElements.join(":not([hidden]),") + ",[tabindex]:not([disabled]):not([hidden])";
 
 export const TABBABLE_ELEMENT_SELECTOR = tabbableElements.join(
-  ':not([hidden]):not([tabindex="-1"]),'
+  ':not([hidden]):not([tabindex="-1"]),',
 );
 
 /**

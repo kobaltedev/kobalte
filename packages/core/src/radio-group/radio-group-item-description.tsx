@@ -17,7 +17,7 @@ export function RadioGroupItemDescription(props: RadioGroupItemDescriptionProps)
     {
       id: context.generateId("description"),
     },
-    props
+    props,
   );
 
   createEffect(() => onCleanup(context.registerDescription(props.id!)));

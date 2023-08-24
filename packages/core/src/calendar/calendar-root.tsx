@@ -207,7 +207,7 @@ export function CalendarRoot(props: CalendarRootProps) {
       visibleDuration: { months: 1 },
       selectionMode: "single",
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -272,7 +272,7 @@ export function CalendarRoot(props: CalendarRootProps) {
           local.visibleDuration!,
           locale(),
           local.minValue,
-          local.maxValue
+          local.maxValue,
         );
 
         const end = start.add(local.visibleDuration!).subtract({ days: 1 });
@@ -310,7 +310,7 @@ export function CalendarRoot(props: CalendarRootProps) {
 
   const calendarDateValue = createMemo(() => {
     return getArrayValueOfSelection(local.selectionMode, value()).map(date =>
-      toCalendar(toCalendarDate(date), calendar())
+      toCalendar(toCalendarDate(date), calendar()),
     );
   });
 
@@ -329,7 +329,7 @@ export function CalendarRoot(props: CalendarRootProps) {
       return constrainValue(
         toCalendar(toCalendarDate(local.focusedValue), calendar()),
         min(),
-        max()
+        max(),
       );
     }
 
@@ -342,7 +342,7 @@ export function CalendarRoot(props: CalendarRootProps) {
         ? toCalendar(toCalendarDate(local.defaultFocusedValue), calendar())
         : calendarDateValue()[0] || toCalendar(today(timeZone()), calendar()),
       min(),
-      max()
+      max(),
     );
   });
 
@@ -353,7 +353,7 @@ export function CalendarRoot(props: CalendarRootProps) {
   });
 
   const [startDate, setStartDate] = createSignal(
-    alignDate(focusedDate()!, selectionAlignment(), local.visibleDuration!, locale(), min(), max())
+    alignDate(focusedDate()!, selectionAlignment(), local.visibleDuration!, locale(), min(), max()),
   );
 
   const endDate = createMemo(() => {
@@ -476,7 +476,7 @@ export function CalendarRoot(props: CalendarRootProps) {
     let newValue = getPreviousAvailableDate(
       constrainValue(date, min(), max()),
       startDate(),
-      local.isDateUnavailable
+      local.isDateUnavailable,
     );
 
     if (!newValue) {
@@ -571,7 +571,7 @@ export function CalendarRoot(props: CalendarRootProps) {
       local.visibleDuration!,
       locale(),
       min(),
-      max()
+      max(),
     );
 
     if (row) {
@@ -587,7 +587,7 @@ export function CalendarRoot(props: CalendarRootProps) {
       local.visibleDuration!,
       locale(),
       min(),
-      max()
+      max(),
     );
 
     if (row) {
@@ -603,7 +603,7 @@ export function CalendarRoot(props: CalendarRootProps) {
       local.visibleDuration!,
       locale(),
       min(),
-      max()
+      max(),
     );
 
     setFocusedDate(constrainValue(page.focusedDate, min(), max()));
@@ -617,7 +617,7 @@ export function CalendarRoot(props: CalendarRootProps) {
       local.visibleDuration!,
       locale(),
       min(),
-      max()
+      max(),
     );
 
     setFocusedDate(constrainValue(page.focusedDate, min(), max()));
@@ -631,7 +631,7 @@ export function CalendarRoot(props: CalendarRootProps) {
       local.visibleDuration!,
       locale(),
       min(),
-      max()
+      max(),
     );
 
     if (section) {
@@ -647,7 +647,7 @@ export function CalendarRoot(props: CalendarRootProps) {
       local.visibleDuration!,
       locale(),
       min(),
-      max()
+      max(),
     );
 
     if (section) {
@@ -664,7 +664,7 @@ export function CalendarRoot(props: CalendarRootProps) {
       local.visibleDuration!,
       locale(),
       min(),
-      max()
+      max(),
     );
 
     if (section) {
@@ -681,7 +681,7 @@ export function CalendarRoot(props: CalendarRootProps) {
       local.visibleDuration!,
       locale(),
       min(),
-      max()
+      max(),
     );
 
     if (section) {
@@ -730,7 +730,7 @@ export function CalendarRoot(props: CalendarRootProps) {
         }
       },
     },
-    () => ref
+    () => ref,
   );
 
   // Reset focused date and visible range when calendar changes.
@@ -747,7 +747,7 @@ export function CalendarRoot(props: CalendarRootProps) {
 
         lastCalendarIdentifier = calendar.identifier;
       }
-    })
+    }),
   );
 
   createEffect(() => {
@@ -787,7 +787,7 @@ export function CalendarRoot(props: CalendarRootProps) {
         messageFormatter(),
         dateRange,
         anchorDate(),
-        timeZone()
+        timeZone(),
       );
     }
 
@@ -802,7 +802,7 @@ export function CalendarRoot(props: CalendarRootProps) {
       if (local.selectionMode === "range") {
         updateAvailableRange(anchorDate());
       }
-    })
+    }),
   );
 
   let isVirtualClick = false;

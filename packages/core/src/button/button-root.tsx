@@ -40,7 +40,7 @@ export function ButtonRoot(props: ButtonRootProps) {
 
   const tagName = createTagName(
     () => ref,
-    () => "button"
+    () => "button",
   );
 
   const isNativeButton = createMemo(() => {

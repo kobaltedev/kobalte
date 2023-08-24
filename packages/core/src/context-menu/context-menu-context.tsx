@@ -15,7 +15,7 @@ export function useContextMenuContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useContextMenuContext` must be used within a `ContextMenu` component"
+      "[kobalte]: `useContextMenuContext` must be used within a `ContextMenu` component",
     );
   }
 

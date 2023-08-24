@@ -83,7 +83,7 @@ export function MenuContentBase(props: MenuContentBaseProps) {
     {
       id: rootContext.generateId(`content-${createUniqueId()}`),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -118,7 +118,7 @@ export function MenuContentBase(props: MenuContentBaseProps) {
       shouldFocusWrap: true,
       disallowTypeAhead: () => !context.listState().selectionManager().isFocused(),
     },
-    () => ref
+    () => ref,
   );
 
   createFocusScope(
@@ -127,7 +127,7 @@ export function MenuContentBase(props: MenuContentBaseProps) {
       onMountAutoFocus: local.onOpenAutoFocus,
       onUnmountAutoFocus: local.onCloseAutoFocus,
     },
-    () => ref
+    () => ref,
   );
 
   const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {

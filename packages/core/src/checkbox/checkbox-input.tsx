@@ -43,13 +43,13 @@ export function CheckboxInput(props: CheckboxInputProps) {
     {
       id: context.generateId("input"),
     },
-    props
+    props,
   );
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
     ["ref", "style", "onChange", "onFocus", "onBlur"],
-    FORM_CONTROL_FIELD_PROP_NAMES
+    FORM_CONTROL_FIELD_PROP_NAMES,
   );
 
   const { fieldProps } = createFormControlField(formControlFieldProps);
@@ -95,8 +95,8 @@ export function CheckboxInput(props: CheckboxInputProps) {
         if (ref) {
           ref.indeterminate = !!indeterminate;
         }
-      }
-    )
+      },
+    ),
   );
 
   return (

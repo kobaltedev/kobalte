@@ -35,7 +35,7 @@ function createDOMRect(anchorRect?: AnchorRect) {
 
 export function getAnchorElement(
   anchor: HTMLElement | undefined,
-  getAnchorRect: (anchor?: HTMLElement) => AnchorRect | undefined
+  getAnchorRect: (anchor?: HTMLElement) => AnchorRect | undefined,
 ) {
   // https://floating-ui.com/docs/virtual-elements
   const contextElement = anchor;
@@ -72,7 +72,7 @@ const REVERSE_BASE_PLACEMENT = {
 export function getTransformOrigin(placement: Placement, readingDirection: Direction) {
   const [basePlacement, alignment] = placement.split("-") as [
     BasePlacement,
-    "start" | "end" | undefined
+    "start" | "end" | undefined,
   ];
 
   const reversePlacement = REVERSE_BASE_PLACEMENT[basePlacement];

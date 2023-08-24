@@ -8,13 +8,13 @@ import { createPointerEvent } from "./utils";
 export async function triggerTouch(element: Document | Element | Window | Node, opts?: any) {
   fireEvent(
     element,
-    createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch", ...opts })
+    createPointerEvent("pointerdown", { pointerId: 1, pointerType: "touch", ...opts }),
   );
   await Promise.resolve();
 
   fireEvent(
     element,
-    createPointerEvent("pointerup", { pointerId: 1, pointerType: "touch", ...opts })
+    createPointerEvent("pointerup", { pointerId: 1, pointerType: "touch", ...opts }),
   );
   await Promise.resolve();
 }

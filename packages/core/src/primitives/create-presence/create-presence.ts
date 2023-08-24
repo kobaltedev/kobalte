@@ -39,7 +39,7 @@ export function createPresence(present: Accessor<boolean>): CreatePresenceResult
     on(state, state => {
       const currentAnimationName = getAnimationName(styles);
       prevAnimationName = state === "mounted" ? currentAnimationName : "none";
-    })
+    }),
   );
 
   createEffect(
@@ -74,7 +74,7 @@ export function createPresence(present: Accessor<boolean>): CreatePresenceResult
       }
 
       prevPresent = present;
-    })
+    }),
   );
 
   createEffect(
@@ -115,7 +115,7 @@ export function createPresence(present: Accessor<boolean>): CreatePresenceResult
         // We avoid doing so during cleanup as the node may change but still exist.
         send("ANIMATION_END");
       }
-    })
+    }),
   );
 
   return {
@@ -147,7 +147,7 @@ type MachineEvent<T> = keyof UnionToIntersection<T[keyof T]>;
 
 function createStateMachine<M>(
   initialState: MachineState<M>,
-  machine: M & Machine<MachineState<M>>
+  machine: M & Machine<MachineState<M>>,
 ): [Accessor<MachineState<M>>, (event: MachineEvent<M>) => void] {
   const reduce = (state: MachineState<M>, event: MachineEvent<M>): MachineState<M> => {
     const nextState = (machine[state] as any)[event];

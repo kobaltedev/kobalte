@@ -36,7 +36,7 @@ export interface SingleSelectListState extends ListState {
  * Handles building a collection of items from props, and manages selection state.
  */
 export function createSingleSelectListState(
-  props: CreateSingleSelectListStateProps
+  props: CreateSingleSelectListStateProps,
 ): SingleSelectListState {
   const [selectedKey, setSelectedKey] = createControllableSignal<string>({
     value: () => access(props.selectedKey),

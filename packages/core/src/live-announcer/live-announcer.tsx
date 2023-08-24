@@ -23,7 +23,7 @@ export const DATA_LIVE_ANNOUNCER_ATTR = "data-live-announcer";
 export function announce(
   message: string,
   assertiveness: Assertiveness = "assertive",
-  timeout = LIVEREGION_TIMEOUT_DELAY
+  timeout = LIVEREGION_TIMEOUT_DELAY,
 ) {
   if (!liveAnnouncer) {
     liveAnnouncer = new LiveAnnouncer();

@@ -51,8 +51,8 @@ export function ImageImg(props: ImageImgProps) {
         onCleanup(() => {
           isMounted = false;
         });
-      }
-    )
+      },
+    ),
   );
 
   createEffect(() => {

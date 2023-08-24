@@ -35,7 +35,7 @@ export function SliderThumb(props: SliderThumbProps) {
     {
       id: context.generateId("thumb"),
     },
-    props
+    props,
   );
 
   const [local, formControlFieldProps, others] = splitProps(
@@ -50,7 +50,7 @@ export function SliderThumb(props: SliderThumbProps) {
       "onFocus",
       "onBlur",
     ],
-    FORM_CONTROL_FIELD_PROP_NAMES
+    FORM_CONTROL_FIELD_PROP_NAMES,
   );
 
   const { fieldProps } = createFormControlField(formControlFieldProps);

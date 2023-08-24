@@ -22,7 +22,7 @@ export interface DateFormatterOptions extends Intl.DateTimeFormatOptions {
  * @param options - Formatting options.
  */
 export function createDateFormatter(
-  options: MaybeAccessor<DateFormatterOptions>
+  options: MaybeAccessor<DateFormatterOptions>,
 ): Accessor<DateFormatter> {
   const { locale } = useLocale();
 
