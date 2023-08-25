@@ -56,8 +56,6 @@ import { COMBOBOX_INTL_MESSAGES } from "./combobox.intl";
 import { ComboboxContext, ComboboxContextValue, ComboboxDataSet } from "./combobox-context";
 import { ComboboxTriggerMode } from "./types";
 
-type FilterFn = (textValue: string, inputValue: string) => boolean;
-
 export interface ComboboxBaseItemComponentProps<T> {
   /** The item to render. */
   item: CollectionNode<T>;
@@ -135,7 +133,11 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
   keyboardDelegate?: KeyboardDelegate;
 
   /** The filter function used to determine if an option should be included in the combo box list. */
-  defaultFilter?: "startsWith" | "endsWith" | "contains" | FilterFn;
+  defaultFilter?:
+    | "startsWith"
+    | "endsWith"
+    | "contains"
+    | ((option: Exclude<Option, null>, inputValue: string) => boolean);
 
   /** Whether focus should wrap around when the end/start is reached. */
   shouldFocusWrap?: boolean;
@@ -389,12 +391,13 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   });
 
   const filterFn = (option: Option) => {
-    const textVal = getOptionLabel(option);
     const inputVal = inputValue() ?? "";
 
     if (isFunction(local.defaultFilter)) {
-      return local.defaultFilter?.(textVal, inputVal);
+      return local.defaultFilter?.(option as any, inputVal);
     }
+
+    const textVal = getOptionLabel(option);
 
     switch (local.defaultFilter) {
       case "startsWith":

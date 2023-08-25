@@ -1,0 +1,16 @@
+# v0.11.x
+
+## v0.11.0 (August 25, 2023)
+
+**Breaking changes**
+
+- The `disallowEmptySelection` prop is `false` by default on `Combobox.Root` and `Select.Root`
+- The `optionGroupChildren` prop no longer accept a function as value on `Combobox.Root` and `Select.Root`
+- `Combobox.Root` requires _all available_ options in the `options` prop, not a filtered list of options
+- `Combobox.Root` exposes a new `defaultFilter` prop to filter the options based on the input value
+
+**Bug fixes**
+
+- [#249](https://github.com/kobaltedev/kobalte/pull/249)
+- [#250](https://github.com/kobaltedev/kobalte/pull/250)
+- [#252](https://github.com/kobaltedev/kobalte/pull/252)
