@@ -1,5 +1,11 @@
 # @kobalte/utils
 
+## 0.9.0
+
+### Minor Changes
+
+- fb427bf: fix #249, #250, #252
+
 ## 0.8.0
 
 ### Minor Changes

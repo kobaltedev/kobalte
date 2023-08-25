@@ -1,5 +1,16 @@
 # @kobalte/core
 
+## 0.11.0
+
+### Minor Changes
+
+- fb427bf: fix #249, #250, #252
+
+### Patch Changes
+
+- Updated dependencies [fb427bf]
+  - @kobalte/utils@0.9.0
+
 ## 0.10.0
 
 ### Minor Changes
