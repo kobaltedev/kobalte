@@ -331,8 +331,8 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 
       return local.defaultValue;
     },
-    onSelectionChange: keys => {
-      local.onChange?.(getOptionsFromValues(keys));
+    onSelectionChange: selectedKeys => {
+      local.onChange?.(getOptionsFromValues(selectedKeys));
 
       if (local.selectionMode === "single") {
         close();

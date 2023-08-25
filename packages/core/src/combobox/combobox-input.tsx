@@ -111,13 +111,13 @@ export function ComboboxInput(props: ComboboxInputProps) {
       case "Tab":
         if (context.isOpen()) {
           context.close();
-          context.resetInputValue();
+          context.resetInputValue(context.listState().selectionManager().selectedKeys());
         }
         break;
       case "Escape":
         if (context.isOpen()) {
           context.close();
-          context.resetInputValue();
+          context.resetInputValue(context.listState().selectionManager().selectedKeys());
         } else {
           // trigger a remove selection.
           context.setInputValue("");
@@ -134,7 +134,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
         } else {
           if (e.altKey) {
             context.close();
-            context.resetInputValue();
+            context.resetInputValue(context.listState().selectionManager().selectedKeys());
           }
         }
         break;
