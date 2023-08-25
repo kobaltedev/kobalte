@@ -1,5 +1,11 @@
 # @kobalte/vanilla-extract
 
+## 0.5.0
+
+### Minor Changes
+
+- fb427bf: fix #249, #250, #252
+
 ## 0.4.0
 
 ### Minor Changes
