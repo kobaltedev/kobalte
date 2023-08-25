@@ -297,6 +297,10 @@ export function TooltipRoot(props: TooltipRootProps) {
   };
 
   createEffect(() => {
+    if (isServer) {
+      return;
+    }
+
     if (!disclosureState.isOpen()) {
       return;
     }

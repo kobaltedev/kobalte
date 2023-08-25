@@ -1,5 +1,6 @@
 import { access, EventKey, getDocument, MaybeAccessor } from "@kobalte/utils";
 import { Accessor, createEffect, onCleanup } from "solid-js";
+import { isServer } from "solid-js/web";
 
 export interface CreateEscapeKeyDownProps {
   /** Whether the escape key down events should be listened or not. */
@@ -23,6 +24,10 @@ export function createEscapeKeyDown(props: CreateEscapeKeyDownProps) {
   };
 
   createEffect(() => {
+    if (isServer) {
+      return;
+    }
+
     if (access(props.isDisabled)) {
       return;
     }

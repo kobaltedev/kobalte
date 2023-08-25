@@ -211,7 +211,7 @@ export default defineConfig({
       rehypePlugins: [rehypePrettyCode],
       remarkPlugins: [remarkGfm],
     }),
-    solid({ adapter, extensions: [".mdx", ".md"] }),
+    solid({ adapter, ssr: true, extensions: [".mdx", ".md"] }),
   ],
   ssr: {
     noExternal: ["@kobalte/core", "@tanstack/solid-virtual"],

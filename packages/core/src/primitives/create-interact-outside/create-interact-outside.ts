@@ -22,6 +22,7 @@ import {
   noop,
 } from "@kobalte/utils";
 import { Accessor, createEffect, onCleanup } from "solid-js";
+import { isServer } from "solid-js/web";
 
 import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
 
@@ -176,6 +177,10 @@ export function createInteractOutside<T extends HTMLElement>(
   };
 
   createEffect(() => {
+    if (isServer) {
+      return;
+    }
+
     if (access(props.isDisabled)) {
       return;
     }

@@ -20,6 +20,7 @@
 
 import { callHandler, getDocument, mergeRefs } from "@kobalte/utils";
 import { ComponentProps, JSX, onCleanup, splitProps } from "solid-js";
+import { isServer } from "solid-js/web";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useTooltipContext } from "./tooltip-context";
@@ -146,6 +147,10 @@ export function TooltipTrigger(props: TooltipTriggerProps) {
   };
 
   onCleanup(() => {
+    if (isServer) {
+      return;
+    }
+
     getDocument(ref).removeEventListener("pointerup", handlePointerUp);
   });
 
