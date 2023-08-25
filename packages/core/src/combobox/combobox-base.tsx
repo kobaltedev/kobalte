@@ -535,11 +535,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   };
 
   const close = () => {
-    // If combobox is going to close, so we can freeze the displayed options
-    // when the user clicks outside the popover to close the combobox.
-    // Prevents the popover contents from updating as the combobox closes.
-    setLastDisplayedOptions(displayedOptions());
-
     disclosureState.close();
 
     listState.selectionManager().setFocused(false);
@@ -627,6 +622,24 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   const renderSection = (section: CollectionNode) => {
     return local.sectionComponent?.({ section });
   };
+
+  // If combobox is going to close, freeze the displayed options
+  // Prevents the popover contents from updating as the combobox closes.
+  createEffect(
+    on([filteredOptions, showAllOptions], (input, prevInput) => {
+      if (disclosureState.isOpen() && prevInput != null) {
+        const prevFilteredOptions = prevInput[0];
+        const prevShowAllOptions = prevInput[1];
+
+        setLastDisplayedOptions(prevShowAllOptions ? local.options : prevFilteredOptions);
+      } else {
+        const filteredOptions = input[0];
+        const showAllOptions = input[1];
+
+        setLastDisplayedOptions(showAllOptions ? local.options : filteredOptions);
+      }
+    }),
+  );
 
   // Display filtered collection again when input value changes.
   createEffect(
