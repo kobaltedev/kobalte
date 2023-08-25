@@ -25,7 +25,7 @@ export function ListboxItemDescription(props: ListboxItemDescriptionProps) {
     {
       id: context.generateId("description"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["id"]);

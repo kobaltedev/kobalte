@@ -35,7 +35,7 @@ function getCachedDictionary(strings: LocalizedStrings): MessageDictionary {
  * @param strings - A mapping of languages to strings by key.
  */
 export function createMessageFormatter(
-  strings: MaybeAccessor<LocalizedStrings>
+  strings: MaybeAccessor<LocalizedStrings>,
 ): Accessor<LocalizedMessageFormatter> {
   const { locale } = useLocale();
 

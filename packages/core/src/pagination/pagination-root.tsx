@@ -52,7 +52,7 @@ export function PaginationRoot(props: PaginationRootProps) {
     {
       id: defaultId,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [

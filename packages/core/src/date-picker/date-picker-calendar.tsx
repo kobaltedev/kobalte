@@ -20,7 +20,7 @@ export function DatePickerCalendar(props: DatePickerCalendarProps) {
     {
       id: context.generateId("calendar"),
     },
-    props
+    props,
   );
 
   return (

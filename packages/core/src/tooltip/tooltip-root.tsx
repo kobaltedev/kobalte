@@ -109,7 +109,7 @@ export function TooltipRoot(props: TooltipRootProps) {
       openDelay: 700,
       closeDelay: 300,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -297,6 +297,10 @@ export function TooltipRoot(props: TooltipRootProps) {
   };
 
   createEffect(() => {
+    if (isServer) {
+      return;
+    }
+
     if (!disclosureState.isOpen()) {
       return;
     }

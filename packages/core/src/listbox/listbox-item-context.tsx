@@ -21,7 +21,7 @@ export function useListboxItemContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useListboxItemContext` must be used within a `Listbox.Item` component"
+      "[kobalte]: `useListboxItemContext` must be used within a `Listbox.Item` component",
     );
   }
 

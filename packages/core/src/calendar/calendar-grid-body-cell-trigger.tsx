@@ -134,7 +134,7 @@ export function CalendarGridBodyCellTrigger(props: CalendarGridBodyCellTriggerPr
           getSelectedDateDescription(
             rootContext.messageFormatter(),
             context.date(),
-            rootContext.timeZone()
+            rootContext.timeZone(),
           ) + ", ";
       }
     }

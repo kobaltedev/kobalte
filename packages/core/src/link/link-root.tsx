@@ -29,7 +29,7 @@ export function LinkRoot(props: LinkRootProps) {
 
   const tagName = createTagName(
     () => ref,
-    () => "a"
+    () => "a",
   );
 
   return (

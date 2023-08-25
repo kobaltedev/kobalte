@@ -23,7 +23,7 @@ export const mdxComponents = {
       <span class={clsx(local.class, "not-prose")}>
         <code
           class={clsx(
-            "kb-code rounded text-sky-800 bg-sky-100 px-[0.4em] py-[0.2em] text-[0.9em] font-mono break-words dark:text-sky-300 dark:bg-sky-900/60"
+            "kb-code rounded text-sky-800 bg-sky-100 px-[0.4em] py-[0.2em] text-[0.9em] font-mono break-words dark:text-sky-300 dark:bg-sky-900/60",
           )}
           {...others}
         />
@@ -57,7 +57,7 @@ export const mdxComponents = {
             "kb-copy-btn transition outline-none absolute top-3 right-2 z-10 text-base h-6 w-6 rounded appearance-none flex items-center justify-center",
             isCopied()
               ? "text-emerald-700 hover:bg-emerald-200/50 dark:text-emerald-400 dark:hover:bg-emerald-900/60"
-              : "text-zinc-700 hover:bg-zinc-200/70 dark:text-zinc-400 dark:hover:bg-zinc-900/60"
+              : "text-zinc-700 hover:bg-zinc-200/70 dark:text-zinc-400 dark:hover:bg-zinc-900/60",
           )}
         >
           <Show when={isCopied()} fallback={<CopyIcon class="h-4 w-4" />}>

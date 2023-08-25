@@ -14,6 +14,7 @@
 
 import { access, chain, getDocument, getWindow, isIOS, MaybeAccessor } from "@kobalte/utils";
 import { createEffect, onCleanup } from "solid-js";
+import { isServer } from "solid-js/web";
 
 const SCROLL_LOCK_IDENTIFIER = "data-kb-scroll-lock";
 
@@ -69,6 +70,10 @@ export interface PreventScrollProps {
  */
 export function createPreventScroll(props: PreventScrollProps) {
   createEffect(() => {
+    if (isServer) {
+      return;
+    }
+
     if (!access(props.ownerRef) || access(props.isDisabled)) {
       return;
     }

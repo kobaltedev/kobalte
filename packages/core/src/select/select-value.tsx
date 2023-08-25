@@ -40,7 +40,7 @@ export function SelectValue<T>(props: SelectValueProps<T>) {
     {
       id: context.generateId("value"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["id", "children"]);
@@ -60,6 +60,7 @@ export function SelectValue<T>(props: SelectValueProps<T>) {
   };
 
   createEffect(() => onCleanup(context.registerValueId(local.id!)));
+
   return (
     <span
       id={local.id}

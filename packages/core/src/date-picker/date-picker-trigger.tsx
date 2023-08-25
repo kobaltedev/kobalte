@@ -16,7 +16,7 @@ export function DatePickerTrigger(props: DatePickerTriggerProps) {
     {
       id: context.generateId("trigger"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [

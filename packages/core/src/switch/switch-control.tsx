@@ -18,7 +18,7 @@ export function SwitchControl(props: SwitchControlProps) {
     {
       id: context.generateId("control"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["onClick", "onKeyDown"]);

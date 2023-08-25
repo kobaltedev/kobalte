@@ -76,7 +76,12 @@ export function SelectRoot<Option, OptGroup = never>(props: SelectRootProps<Opti
   });
 
   const onChange = (value: Option[]) => {
-    local.onChange?.(local.multiple ? value : (value[0] as any));
+    if (local.multiple) {
+      local.onChange?.(value as any);
+    } else {
+      // use `null` as "no value" because `undefined` mean the component is "uncontrolled".
+      local.onChange?.((value[0] ?? null) as any);
+    }
   };
 
   return (

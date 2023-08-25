@@ -29,7 +29,7 @@ describe("Toast", () => {
           <button data-testid="manual-dismiss" onClick={() => toaster.dismiss(props.toastId)} />
         </Toast.Root>
       ),
-      options
+      options,
     );
   };
 
@@ -473,7 +473,7 @@ describe("Toast", () => {
                 {},
                 {
                   region: "custom-id",
-                }
+                },
               );
               showToast();
               showToast();
@@ -482,7 +482,7 @@ describe("Toast", () => {
                 {},
                 {
                   region: "custom-id",
-                }
+                },
               );
             }}
           >

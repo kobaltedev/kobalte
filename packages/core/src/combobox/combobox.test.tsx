@@ -165,7 +165,7 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -174,7 +174,7 @@ describe("Combobox", () => {
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
       expect(onValueChange.mock.calls[0][0]).toStrictEqual(
-        CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2]
+        CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2],
       );
 
       expect(listbox).not.toBeVisible();
@@ -194,7 +194,7 @@ describe("Combobox", () => {
           optionTextValue={option => option.valueText}
           optionLabel={option => option.name}
           optionDisabled={option => option.disabled}
-          optionGroupChildren={optGroup => optGroup.items}
+          optionGroupChildren="items"
           placeholder="Placeholder"
           onChange={onValueChange}
           itemComponent={props => (
@@ -249,7 +249,7 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -258,7 +258,7 @@ describe("Combobox", () => {
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
       expect(onValueChange.mock.calls[0][0]).toStrictEqual(
-        CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2]
+        CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2],
       );
 
       expect(listbox).not.toBeVisible();
@@ -344,7 +344,7 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -353,7 +353,7 @@ describe("Combobox", () => {
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
       expect(onValueChange.mock.calls[0][0]).toStrictEqual(
-        CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2]
+        CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2],
       );
 
       expect(listbox).not.toBeVisible();
@@ -373,7 +373,7 @@ describe("Combobox", () => {
           optionTextValue={option => option.valueText}
           optionLabel={option => option.name}
           optionDisabled={option => option.disabled}
-          optionGroupChildren={optGroup => optGroup.items}
+          optionGroupChildren="items"
           placeholder="Placeholder"
           onChange={onValueChange}
           itemComponent={props => (
@@ -428,7 +428,7 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -437,7 +437,7 @@ describe("Combobox", () => {
 
       expect(onValueChange).toHaveBeenCalledTimes(1);
       expect(onValueChange.mock.calls[0][0]).toStrictEqual(
-        CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2]
+        CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2],
       );
 
       expect(listbox).not.toBeVisible();
@@ -504,7 +504,7 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -582,7 +582,7 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -656,7 +656,7 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -734,7 +734,7 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -864,7 +864,7 @@ describe("Combobox", () => {
           pointerType: "touch",
           clientX: 0,
           clientY: 0,
-        })
+        }),
       );
       await Promise.resolve();
 
@@ -1292,13 +1292,13 @@ describe("Combobox", () => {
 
       fireEvent(
         document.body,
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
       fireEvent(
         document.body,
-        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -1726,7 +1726,7 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -1871,7 +1871,7 @@ describe("Combobox", () => {
           pointerType: "mouse",
           clientX: 0,
           clientY: 0,
-        })
+        }),
       );
       await Promise.resolve();
 
@@ -2433,7 +2433,7 @@ describe("Combobox", () => {
 
       fireEvent(
         items[0],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -2442,7 +2442,7 @@ describe("Combobox", () => {
 
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -2456,12 +2456,12 @@ describe("Combobox", () => {
       expect(
         onValueChange.mock.calls[0][0]
           .map((option: DataSourceItem) => option.key)
-          .includes(DATA_SOURCE[0].key)
+          .includes(DATA_SOURCE[0].key),
       ).toBeTruthy();
       expect(
         onValueChange.mock.calls[1][0]
           .map((option: DataSourceItem) => option.key)
-          .includes(DATA_SOURCE[2].key)
+          .includes(DATA_SOURCE[2].key),
       ).toBeTruthy();
 
       // Does not close on multi-select
@@ -2524,7 +2524,7 @@ describe("Combobox", () => {
       // SelectBase a different option
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -2537,17 +2537,17 @@ describe("Combobox", () => {
       expect(
         onValueChange.mock.calls[0][0]
           .map((option: DataSourceItem) => option.key)
-          .includes(DATA_SOURCE[0].key)
+          .includes(DATA_SOURCE[0].key),
       ).toBeTruthy();
       expect(
         onValueChange.mock.calls[0][0]
           .map((option: DataSourceItem) => option.key)
-          .includes(DATA_SOURCE[1].key)
+          .includes(DATA_SOURCE[1].key),
       ).toBeTruthy();
       expect(
         onValueChange.mock.calls[0][0]
           .map((option: DataSourceItem) => option.key)
-          .includes(DATA_SOURCE[2].key)
+          .includes(DATA_SOURCE[2].key),
       ).toBeTruthy();
     });
 
@@ -2605,7 +2605,7 @@ describe("Combobox", () => {
       // SelectBase a different option
       fireEvent(
         items[2],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -2618,7 +2618,7 @@ describe("Combobox", () => {
       expect(
         onValueChange.mock.calls[0][0]
           .map((option: DataSourceItem) => option.key)
-          .includes(DATA_SOURCE[2].key)
+          .includes(DATA_SOURCE[2].key),
       ).toBeTruthy();
     });
 
@@ -2676,7 +2676,7 @@ describe("Combobox", () => {
       // Deselect first option
       fireEvent(
         items[0],
-        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" })
+        createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
       );
       await Promise.resolve();
 
@@ -2689,12 +2689,12 @@ describe("Combobox", () => {
       expect(
         onValueChange.mock.calls[0][0]
           .map((option: DataSourceItem) => option.key)
-          .includes(DATA_SOURCE[0].key)
+          .includes(DATA_SOURCE[0].key),
       ).toBeFalsy();
       expect(
         onValueChange.mock.calls[0][0]
           .map((option: DataSourceItem) => option.key)
-          .includes(DATA_SOURCE[1].key)
+          .includes(DATA_SOURCE[1].key),
       ).toBeTruthy();
     });
   });
@@ -2749,7 +2749,7 @@ describe("Combobox", () => {
 
       options.forEach(
         (option, index) =>
-          index > 0 && expect(option).toHaveTextContent(dataSource[index - 1].label)
+          index > 0 && expect(option).toHaveTextContent(dataSource[index - 1].label),
       );
 
       fireEvent.change(hiddenSelectBase, { target: { value: "FR" } });

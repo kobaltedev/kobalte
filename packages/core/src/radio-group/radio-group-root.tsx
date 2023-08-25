@@ -80,7 +80,7 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
       id: defaultId,
       orientation: "vertical",
     },
-    props
+    props,
   );
 
   const [local, formControlProps, others] = splitProps(
@@ -94,7 +94,7 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
       "aria-labelledby",
       "aria-describedby",
     ],
-    FORM_CONTROL_PROP_NAMES
+    FORM_CONTROL_PROP_NAMES,
   );
 
   const [selected, setSelected] = createControllableSignal<string>({
@@ -107,14 +107,14 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
 
   createFormResetListener(
     () => ref,
-    () => setSelected(local.defaultValue ?? "")
+    () => setSelected(local.defaultValue ?? ""),
   );
 
   const ariaLabelledBy = () => {
     return formControlContext.getAriaLabelledBy(
       access(formControlProps.id),
       others["aria-label"],
-      local["aria-labelledby"]
+      local["aria-labelledby"],
     );
   };
 

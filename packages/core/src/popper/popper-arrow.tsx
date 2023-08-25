@@ -48,7 +48,7 @@ export function PopperArrow(props: PopperArrowProps) {
     {
       size: DEFAULT_SIZE,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["ref", "style", "children", "size"]);

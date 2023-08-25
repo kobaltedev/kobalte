@@ -64,7 +64,7 @@ export function ProgressRoot(props: ProgressRootProps) {
       minValue: 0,
       maxValue: 100,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [

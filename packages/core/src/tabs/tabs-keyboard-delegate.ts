@@ -21,7 +21,7 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
   constructor(
     collection: Accessor<Collection<CollectionNode>>,
     direction: Accessor<Direction>,
-    orientation: Accessor<Orientation>
+    orientation: Accessor<Orientation>,
   ) {
     this.collection = collection;
     this.direction = direction;

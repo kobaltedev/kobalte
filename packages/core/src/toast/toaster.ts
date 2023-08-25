@@ -21,7 +21,7 @@ function update(id: number, toastComponent: ToastComponent) {
 function promise<T, U = any>(
   promise: Promise<T> | (() => Promise<T>),
   toastComponent: ToastPromiseComponent<T, U>,
-  options?: ShowToastOptions
+  options?: ShowToastOptions,
 ) {
   const id = show(props => {
     return toastComponent({
@@ -42,7 +42,7 @@ function promise<T, U = any>(
           state: "fulfilled",
           data,
         });
-      })
+      }),
     )
     .catch(error =>
       update(id, props => {
@@ -53,7 +53,7 @@ function promise<T, U = any>(
           state: "rejected",
           error,
         });
-      })
+      }),
     );
 
   return id;

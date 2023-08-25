@@ -41,7 +41,7 @@ export function SliderTrack(props: SliderTrackProps) {
     setRect(rect);
 
     return value(
-      pointerPosition - (context.state.orientation() === "vertical" ? rect.top : rect.left)
+      pointerPosition - (context.state.orientation() === "vertical" ? rect.top : rect.left),
     );
   }
 
@@ -55,7 +55,7 @@ export function SliderTrack(props: SliderTrackProps) {
 
     e.preventDefault();
     const value = getValueFromPointer(
-      context.state.orientation() === "horizontal" ? e.clientX : e.clientY
+      context.state.orientation() === "horizontal" ? e.clientX : e.clientY,
     );
     startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
     context.onSlideStart?.(value);

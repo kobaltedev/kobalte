@@ -69,7 +69,7 @@ export interface CreateSelectableListProps {
 export function createSelectableList<T extends HTMLElement, U extends HTMLElement = T>(
   props: CreateSelectableListProps,
   ref: Accessor<T | undefined>,
-  scrollRef?: Accessor<U | undefined>
+  scrollRef?: Accessor<U | undefined>,
 ) {
   const collator = createCollator({ usage: "search", sensitivity: "base" });
 
@@ -100,6 +100,6 @@ export function createSelectableList<T extends HTMLElement, U extends HTMLElemen
       scrollToKey: key => access(props.scrollToKey)?.(key),
     },
     ref,
-    scrollRef
+    scrollRef,
   );
 }

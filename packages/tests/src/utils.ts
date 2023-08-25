@@ -70,7 +70,7 @@ export function createPointerEvent(type: any, opts: any) {
       width: 1,
       height: 1,
     },
-    opts
+    opts,
   );
   return evt;
 }

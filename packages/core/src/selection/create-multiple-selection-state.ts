@@ -25,14 +25,14 @@ export interface CreateMultipleSelectionStateProps extends MultipleSelection {
  * Manages state for multiple selection and focus in a collection.
  */
 export function createMultipleSelectionState(
-  props: CreateMultipleSelectionStateProps
+  props: CreateMultipleSelectionStateProps,
 ): MultipleSelectionState {
   props = mergeDefaultProps(
     {
       selectionMode: "none",
       selectionBehavior: "toggle",
     },
-    props
+    props,
   );
 
   const [isFocused, setFocused] = createSignal(false);
@@ -65,7 +65,7 @@ export function createMultipleSelectionState(
   });
 
   const [selectionBehavior, setSelectionBehavior] = createSignal<SelectionBehavior>(
-    access(props.selectionBehavior)!
+    access(props.selectionBehavior)!,
   );
 
   const selectionMode = () => access(props.selectionMode)!;

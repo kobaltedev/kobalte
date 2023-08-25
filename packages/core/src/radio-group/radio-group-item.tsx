@@ -50,7 +50,7 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
     {
       id: defaultId,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["value", "disabled", "onPointerDown"]);

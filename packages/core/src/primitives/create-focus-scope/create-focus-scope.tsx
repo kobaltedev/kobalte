@@ -26,6 +26,7 @@ import {
   visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
+import { isServer } from "solid-js/web";
 
 import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
 
@@ -79,7 +80,7 @@ const focusScopeStack = {
 
 export function createFocusScope<T extends HTMLElement>(
   props: CreateFocusScopeProps,
-  ref: Accessor<T | undefined>
+  ref: Accessor<T | undefined>,
 ) {
   const [isPaused, setIsPaused] = createSignal(false);
 
@@ -150,6 +151,10 @@ export function createFocusScope<T extends HTMLElement>(
 
   // Handle dispatching mount and unmount autofocus events.
   createEffect(() => {
+    if (isServer) {
+      return;
+    }
+
     const container = ref();
 
     if (!container) {
@@ -208,6 +213,10 @@ export function createFocusScope<T extends HTMLElement>(
   /*
   // Handle containing focus if a child unmount.
   createEffect(() => {
+    if (isServer) {
+      return;
+    }
+
     const container = ref();
 
     if (!container || !access(props.trapFocus)) {
@@ -234,6 +243,10 @@ export function createFocusScope<T extends HTMLElement>(
 
   // Handle containing focus if focus is moved outside.
   createEffect(() => {
+    if (isServer) {
+      return;
+    }
+
     const container = ref();
 
     if (!container || !access(props.trapFocus) || isPaused()) {
@@ -280,6 +293,10 @@ export function createFocusScope<T extends HTMLElement>(
 
   // Handle looping focus (when tabbing whilst at the edges)
   createEffect(() => {
+    if (isServer) {
+      return;
+    }
+
     const container = ref();
 
     if (!container || !access(props.trapFocus) || isPaused()) {

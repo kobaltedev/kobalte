@@ -71,13 +71,13 @@ export function TabsContent(props: TabsContentProps) {
       onCleanup(() => {
         observer.disconnect();
       });
-    })
+    }),
   );
 
   createEffect(
     on([() => local.value, id], ([value, id]) => {
       context.contentIdsMap().set(value, id);
-    })
+    }),
   );
 
   return (

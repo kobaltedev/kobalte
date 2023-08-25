@@ -66,13 +66,13 @@ describe("createDefaultLocale", () => {
       onMount(() => {
         expect(window.addEventListener).toHaveBeenCalledWith(
           "languagechange",
-          expect.any(Function)
+          expect.any(Function),
         );
 
         onCleanup(() => {
           expect(window.removeEventListener).toHaveBeenCalledWith(
             "languagechange",
-            expect.any(Function)
+            expect.any(Function),
           );
         });
       });

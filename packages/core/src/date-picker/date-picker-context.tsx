@@ -66,7 +66,7 @@ export function useDatePickerContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useDatePickerContext` must be used within a `DatePicker` component"
+      "[kobalte]: `useDatePickerContext` must be used within a `DatePicker` component",
     );
   }
 

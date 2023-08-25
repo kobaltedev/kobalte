@@ -72,7 +72,7 @@ export function DatePickerContent(props: DatePickerContentProps) {
     {
       id: context.generateId("content"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -93,7 +93,7 @@ export function DatePickerContent(props: DatePickerContentProps) {
     return formControlContext.getAriaLabelledBy(
       context.triggerId(),
       others["aria-label"],
-      local["aria-labelledby"]
+      local["aria-labelledby"],
     );
   };
 
@@ -205,7 +205,7 @@ export function DatePickerContent(props: DatePickerContentProps) {
       },
       onUnmountAutoFocus: onCloseAutoFocus,
     },
-    () => ref
+    () => ref,
   );
 
   createEffect(() => onCleanup(context.registerContentId(others.id!)));

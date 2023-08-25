@@ -41,7 +41,7 @@ export function constrainStart(
   duration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ): DateValue {
   if (min && date.compare(min) >= 0) {
     aligned = maxDate(aligned, alignStart(toCalendarDate(min), duration, locale));
@@ -75,7 +75,7 @@ export function alignStart(
   duration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ): DateValue {
   // align to the start of the largest unit
   let aligned = date;
@@ -95,7 +95,7 @@ export function alignCenter(
   duration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ): DateValue {
   const halfDuration: DateDuration = {};
 
@@ -119,7 +119,7 @@ export function alignEnd(
   duration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ): DateValue {
   const d: DateDuration = { ...duration };
 
@@ -144,7 +144,7 @@ export function alignDate(
   duration: DateDuration,
   locale: string,
   min?: DateValue | undefined,
-  max?: DateValue | undefined
+  max?: DateValue | undefined,
 ) {
   switch (alignment) {
     case "start":
@@ -164,7 +164,7 @@ export function alignStartDate(
   duration: DateDuration,
   locale: string,
   min?: DateValue | undefined,
-  max?: DateValue | undefined
+  max?: DateValue | undefined,
 ) {
   if (date.compare(startDate) < 0) {
     return alignEnd(date, duration, locale, min, max);
@@ -182,7 +182,7 @@ export function alignStartDate(
 export function isDateInvalid(
   date?: DateValue | null,
   minValue?: DateValue | null,
-  maxValue?: DateValue | null
+  maxValue?: DateValue | null,
 ) {
   return (
     date != null &&
@@ -194,7 +194,7 @@ export function isDateInvalid(
 export function isPreviousVisibleRangeInvalid(
   startDate: DateValue,
   min?: DateValue | null,
-  max?: DateValue | null
+  max?: DateValue | null,
 ) {
   const prevDate = startDate.subtract({ days: 1 });
 
@@ -204,7 +204,7 @@ export function isPreviousVisibleRangeInvalid(
 export function isNextVisibleRangeInvalid(
   endDate: DateValue,
   min?: DateValue | null,
-  max?: DateValue | null
+  max?: DateValue | null,
 ) {
   // Adding may return the same date if we reached the end of time
   // according to the calendar system (e.g. 9999-12-31).
@@ -233,7 +233,7 @@ export function getAdjustedDateFn(
   visibleDuration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ) {
   return function getDate(options: { startDate: DateValue; focusedDate: DateValue }) {
     const { startDate, focusedDate } = options;
@@ -288,7 +288,7 @@ export function getNextUnavailableDate(
   start: DateValue,
   end: DateValue,
   isDateUnavailableFn: (date: DateValue) => boolean,
-  dir: number
+  dir: number,
 ): DateValue | undefined {
   let nextDate = anchorDate.add({ days: dir });
   while (
@@ -308,7 +308,7 @@ export function getNextUnavailableDate(
 export function getPreviousAvailableDate(
   date: DateValue,
   min: DateValue,
-  isDateUnavailable?: (date: DateValue) => boolean
+  isDateUnavailable?: (date: DateValue) => boolean,
 ) {
   if (!isDateUnavailable) {
     return date;
@@ -330,7 +330,7 @@ export function getEraFormat(date: DateValue): "short" | undefined {
 /** Return the first value of the selection depending on the selection mode. */
 export function getFirstValueOfSelection(
   selectionMode: CalendarSelectionMode,
-  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
+  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined,
 ) {
   let firstValue: DateValue | null | undefined;
 
@@ -349,7 +349,7 @@ export function getFirstValueOfSelection(
 /** Return an array of values for the selection depending on the selection mode. */
 export function getArrayValueOfSelection(
   selectionMode: CalendarSelectionMode,
-  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
+  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined,
 ) {
   let values: Array<DateValue | null | undefined> = [];
 
@@ -374,7 +374,7 @@ function formatRange(
   messageFormatter: LocalizedMessageFormatter,
   start: DateValue,
   end: DateValue,
-  timeZone: string
+  timeZone: string,
 ) {
   const parts = dateFormatter.formatRangeToParts(start.toDate(timeZone), end.toDate(timeZone));
 
@@ -414,7 +414,7 @@ function formatRange(
 export function getSelectedDateDescription(
   messageFormatter: LocalizedMessageFormatter,
   value: DateValue,
-  timeZone: string
+  timeZone: string,
 ) {
   const dateFormatter = createDateFormatter(() => ({
     weekday: "long",
@@ -434,7 +434,7 @@ export function getSelectedDateRangeDescription(
   messageFormatter: LocalizedMessageFormatter,
   highlightedRange: { start?: DateValue; end?: DateValue },
   anchorDate: DateValue | undefined,
-  timeZone: string
+  timeZone: string,
 ) {
   const start = highlightedRange.start;
   const end = highlightedRange.end;
@@ -469,7 +469,7 @@ export function getVisibleRangeDescription(
   startDate: DateValue,
   endDate: DateValue,
   timeZone: string,
-  isAria: boolean
+  isAria: boolean,
 ) {
   const era = getEraFormat(startDate) || getEraFormat(endDate);
 
@@ -521,7 +521,7 @@ export function getNextPage(
   visibleDuration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ) {
   const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
   const start = startDate.add(visibleDuration);
@@ -531,7 +531,7 @@ export function getNextPage(
     startDate: alignStart(
       constrainStart(focusedDate, start, visibleDuration, locale, min, max),
       visibleDuration,
-      locale
+      locale,
     ),
   });
 }
@@ -542,7 +542,7 @@ export function getPreviousPage(
   visibleDuration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ) {
   const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
   const start = startDate.subtract(visibleDuration);
@@ -552,7 +552,7 @@ export function getPreviousPage(
     startDate: alignStart(
       constrainStart(focusedDate, start, visibleDuration, locale, min, max),
       visibleDuration,
-      locale
+      locale,
     ),
   });
 }
@@ -563,7 +563,7 @@ export function getNextRow(
   visibleDuration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ) {
   const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
 
@@ -585,7 +585,7 @@ export function getPreviousRow(
   visibleDuration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ) {
   const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
 
@@ -607,7 +607,7 @@ export function getSectionStart(
   visibleDuration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ) {
   const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
 
@@ -639,7 +639,7 @@ export function getSectionEnd(
   visibleDuration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ) {
   const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
   const endDate = getEndDate(startDate, visibleDuration);
@@ -674,7 +674,7 @@ export function getNextSection(
   visibleDuration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ) {
   const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
 
@@ -711,7 +711,7 @@ export function getPreviousSection(
   visibleDuration: DateDuration,
   locale: string,
   min?: DateValue,
-  max?: DateValue
+  max?: DateValue,
 ) {
   const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
 
@@ -747,21 +747,21 @@ export function getPreviousSection(
 
 /** Narrow the type of `value` to `DateValue`. */
 export function asSingleValue(
-  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
+  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined,
 ) {
   return value as DateValue | null | undefined;
 }
 
 /** Narrow the type of `value` to `DateValue[]`. */
 export function asArrayValue(
-  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
+  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined,
 ) {
   return value as DateValue[] | null | undefined;
 }
 
 /** Narrow the type of `value` to `RangeValue<DateValue>`. */
 export function asRangeValue(
-  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
+  value: DateValue | DateValue[] | RangeValue<DateValue> | null | undefined,
 ) {
   return value as RangeValue<DateValue> | null | undefined;
 }
@@ -776,7 +776,7 @@ export function sortDates(values: DateValue[]) {
 
 export function makeCalendarDateRange(
   start?: DateValue,
-  end?: DateValue
+  end?: DateValue,
 ): RangeValue<CalendarDate> | undefined {
   if (!start || !end) {
     return undefined;

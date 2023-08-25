@@ -35,13 +35,13 @@ export function SliderInput(props: SliderInputProps) {
     {
       id: context.generateId("input"),
     },
-    props
+    props,
   );
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
     ["ref", "style", "onChange"],
-    FORM_CONTROL_FIELD_PROP_NAMES
+    FORM_CONTROL_FIELD_PROP_NAMES,
   );
 
   const { fieldProps } = createFormControlField(formControlFieldProps);

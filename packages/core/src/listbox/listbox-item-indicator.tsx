@@ -26,7 +26,7 @@ export function ListboxItemIndicator(props: ListboxItemIndicatorProps) {
     {
       id: context.generateId("indicator"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["forceMount"]);

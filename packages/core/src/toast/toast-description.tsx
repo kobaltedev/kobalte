@@ -18,7 +18,7 @@ export function ToastDescription(props: ToastDescriptionProps) {
     {
       id: context.generateId("description"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["id"]);

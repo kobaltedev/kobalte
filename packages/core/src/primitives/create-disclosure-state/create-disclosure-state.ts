@@ -36,7 +36,7 @@ export interface CreateDisclosureStateResult {
  * Used to control the "open state" of components like Modal, Drawer, etc.
  */
 export function createDisclosureState(
-  props: CreateDisclosureStateProps = {}
+  props: CreateDisclosureStateProps = {},
 ): CreateDisclosureStateResult {
   const [isOpen, setIsOpen] = createControllableBooleanSignal({
     value: () => access(props.open),

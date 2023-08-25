@@ -19,14 +19,14 @@ export function FormControlLabel(props: FormControlLabelProps) {
     {
       id: context.generateId("label"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["ref"]);
 
   const tagName = createTagName(
     () => ref,
-    () => "label"
+    () => "label",
   );
 
   createEffect(() => onCleanup(context.registerLabel(others.id!)));

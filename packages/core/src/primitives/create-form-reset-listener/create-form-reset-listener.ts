@@ -13,7 +13,7 @@ import { Accessor, createEffect, on, onCleanup } from "solid-js";
  */
 export function createFormResetListener(
   element: Accessor<HTMLElement | null | undefined>,
-  handler: () => void
+  handler: () => void,
 ) {
   createEffect(
     on(element, element => {
@@ -32,7 +32,7 @@ export function createFormResetListener(
       onCleanup(() => {
         form.removeEventListener("reset", handler);
       });
-    })
+    }),
   );
 }
 
@@ -41,7 +41,7 @@ function getClosestForm(element: HTMLElement) {
 }
 
 function isFormElement(
-  element: HTMLElement
+  element: HTMLElement,
 ): element is HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement {
   return element.matches("textarea, input, select, button");
 }

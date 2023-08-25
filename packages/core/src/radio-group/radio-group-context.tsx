@@ -13,7 +13,7 @@ export function useRadioGroupContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useRadioGroupContext` must be used within a `RadioGroup` component"
+      "[kobalte]: `useRadioGroupContext` must be used within a `RadioGroup` component",
     );
   }
 

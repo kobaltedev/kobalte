@@ -21,7 +21,9 @@
   background-color: white;
   border: 1px solid hsl(240 6% 90%);
   color: hsl(240 4% 16%);
-  transition: border-color 250ms, color 250ms;
+  transition:
+    border-color 250ms,
+    color 250ms;
 }
 
 .text-field__input:hover {

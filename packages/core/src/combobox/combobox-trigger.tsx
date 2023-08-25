@@ -25,7 +25,7 @@ export function ComboboxTrigger(props: ComboboxTriggerProps) {
     {
       id: context.generateId("trigger"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -76,7 +76,7 @@ export function ComboboxTrigger(props: ComboboxTriggerProps) {
     return formControlContext.getAriaLabelledBy(
       others.id,
       context.triggerAriaLabel(),
-      local["aria-labelledby"]
+      local["aria-labelledby"],
     );
   };
 

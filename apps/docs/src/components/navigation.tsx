@@ -32,7 +32,7 @@ export function Navigation(props: NavigationProps) {
                           "flex items-center justify-between w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
                           link.href === location.pathname
                             ? "text-sky-700 dark:text-sky-600"
-                            : "text-zinc-600 dark:text-zinc-400"
+                            : "text-zinc-600 dark:text-zinc-400",
                         )}
                       >
                         <span>{link.title}</span>

@@ -86,7 +86,7 @@ function sortBasedOnDOMPosition<T extends DomCollectionItem>(items: T[]) {
 
 function setItemsBasedOnDOMPosition<T extends DomCollectionItem>(
   items: T[],
-  setItems: (items: T[]) => any
+  setItems: (items: T[]) => any,
 ) {
   const sortedItems = sortBasedOnDOMPosition(items);
 
@@ -113,7 +113,7 @@ function getCommonParent(items: DomCollectionItem[]) {
 
 function createTimeoutObserver<T extends DomCollectionItem = DomCollectionItem>(
   items: Accessor<T[]>,
-  setItems: (items: T[]) => any
+  setItems: (items: T[]) => any,
 ) {
   createEffect(() => {
     const timeout = setTimeout(() => {
@@ -126,7 +126,7 @@ function createTimeoutObserver<T extends DomCollectionItem = DomCollectionItem>(
 
 export function createSortBasedOnDOMPosition<T extends DomCollectionItem = DomCollectionItem>(
   items: Accessor<T[]>,
-  setItems: (items: T[]) => any
+  setItems: (items: T[]) => any,
 ) {
   // JSDOM doesn't support IntersectionObserver. See https://github.com/jsdom/jsdom/issues/2032
   if (typeof IntersectionObserver !== "function") {

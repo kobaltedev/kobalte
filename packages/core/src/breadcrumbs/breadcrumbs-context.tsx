@@ -11,7 +11,7 @@ export function useBreadcrumbsContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useBreadcrumbsContext` must be used within a `Breadcrumbs.Root` component"
+      "[kobalte]: `useBreadcrumbsContext` must be used within a `Breadcrumbs.Root` component",
     );
   }
 

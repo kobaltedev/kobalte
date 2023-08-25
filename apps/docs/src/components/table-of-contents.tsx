@@ -82,7 +82,7 @@ export function TableOfContents() {
     },
     {
       key: () => path.pathname,
-    }
+    },
   );
 
   const currentSection = useCurrentSection(toc);
@@ -109,7 +109,7 @@ export function TableOfContents() {
                         section.slug === currentSection()
                           ? "text-sky-700 dark:text-sky-600"
                           : "text-zinc-600 dark:text-zinc-400",
-                        section.depth === 3 && "pl-6"
+                        section.depth === 3 && "pl-6",
                       )}
                     >
                       {section.text}

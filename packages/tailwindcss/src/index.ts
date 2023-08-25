@@ -48,11 +48,11 @@ export default plugin.withOptions<KobalteTailwindPluginOptions>(({ prefix = "ui"
       addVariant(`${prefix}-not-${orientation}`, [`&:not([data-orientation='${orientation}'])`]);
       addVariant(
         `${prefix}-group-${orientation}`,
-        `:merge(.group)[data-orientation='${orientation}'] &`
+        `:merge(.group)[data-orientation='${orientation}'] &`,
       );
       addVariant(
         `${prefix}-peer-${orientation}`,
-        `:merge(.peer)[data-orientation='${orientation}'] ~ &`
+        `:merge(.peer)[data-orientation='${orientation}'] ~ &`,
       );
     }
 
@@ -72,11 +72,11 @@ export default plugin.withOptions<KobalteTailwindPluginOptions>(({ prefix = "ui"
       ]);
       addVariant(
         `${prefix}-group-swipe-direction-${direction}`,
-        `:merge(.group)[data-swipe-direction='${direction}'] &`
+        `:merge(.group)[data-swipe-direction='${direction}'] &`,
       );
       addVariant(
         `${prefix}-peer-swipe-direction-${direction}`,
-        `:merge(.peer)[data-swipe-direction='${direction}'] ~ &`
+        `:merge(.peer)[data-swipe-direction='${direction}'] ~ &`,
       );
     }
   };

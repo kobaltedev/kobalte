@@ -67,7 +67,7 @@ export function TextFieldRoot(props: TextFieldRootProps) {
   const [local, formControlProps, others] = splitProps(
     props,
     ["ref", "value", "defaultValue", "onChange"],
-    FORM_CONTROL_PROP_NAMES
+    FORM_CONTROL_PROP_NAMES,
   );
 
   const [value, setValue] = createControllableSignal({
@@ -80,7 +80,7 @@ export function TextFieldRoot(props: TextFieldRootProps) {
 
   createFormResetListener(
     () => ref,
-    () => setValue(local.defaultValue ?? "")
+    () => setValue(local.defaultValue ?? ""),
   );
 
   const onInput: JSX.EventHandlerUnion<HTMLInputElement | HTMLTextAreaElement, InputEvent> = e => {

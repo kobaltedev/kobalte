@@ -12,7 +12,7 @@ export function useMenuGroupContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useMenuGroupContext` must be used within a `Menu.Group` component"
+      "[kobalte]: `useMenuGroupContext` must be used within a `Menu.Group` component",
     );
   }
 

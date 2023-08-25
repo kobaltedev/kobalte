@@ -48,7 +48,7 @@ export function MenuRoot(props: MenuRootProps) {
       modal: true,
       preventScroll: false,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [

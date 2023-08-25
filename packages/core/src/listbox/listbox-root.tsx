@@ -141,7 +141,7 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
       selectionMode: "single",
       virtualized: false,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
@@ -217,7 +217,7 @@ export function ListboxRoot<Option, OptGroup = never>(props: ListboxRootProps<Op
       scrollToKey: () => local.scrollToItem,
     },
     () => ref,
-    () => local.scrollRef?.()
+    () => local.scrollRef?.(),
   );
 
   const context: ListboxContextValue = {

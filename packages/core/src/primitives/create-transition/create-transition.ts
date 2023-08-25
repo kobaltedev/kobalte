@@ -77,7 +77,7 @@ const DEFAULT_EASING: JSX.CSSProperties["transition-timing-function"] = "ease";
  */
 export function createTransition(
   shouldMount: MaybeAccessor<boolean>,
-  options: MaybeAccessor<TransitionOptions>
+  options: MaybeAccessor<TransitionOptions>,
 ): TransitionResult {
   options = mergeProps(
     {
@@ -94,7 +94,7 @@ export function createTransition(
         return access(options).easing || DEFAULT_EASING;
       },
     } as TransitionOptions,
-    options
+    options,
   );
 
   const reduceMotion = createMediaQuery("(prefers-reduced-motion: reduce)");
@@ -102,7 +102,7 @@ export function createTransition(
   const [duration, setDuration] = createSignal(reduceMotion() ? 0 : access(options).duration!);
 
   const [phase, setPhase] = createSignal<TransitionPhase>(
-    access(shouldMount) ? "afterEnter" : "afterExit"
+    access(shouldMount) ? "afterEnter" : "afterExit",
   );
 
   const [easing, setEasing] = createSignal(access(options).easing!);
@@ -118,7 +118,7 @@ export function createTransition(
     window.clearTimeout(timeoutId);
 
     const newDuration = setDuration(
-      reduceMotion() ? 0 : shouldMount ? access(options).duration! : access(options).exitDuration!
+      reduceMotion() ? 0 : shouldMount ? access(options).duration! : access(options).exitDuration!,
     );
 
     setEasing(shouldMount ? access(options).easing! : access(options).exitEasing!);
@@ -154,7 +154,7 @@ export function createTransition(
       duration: duration(),
       phase: phase(),
       easing: easing(),
-    })
+    }),
   );
 
   const keepMounted = createMemo(() => phase() !== "afterExit");
@@ -163,8 +163,8 @@ export function createTransition(
     on(
       () => access(shouldMount),
       shouldMount => handleStateChange(shouldMount),
-      { defer: true }
-    )
+      { defer: true },
+    ),
   );
 
   onCleanup(() => {

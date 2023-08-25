@@ -20,7 +20,7 @@ export function useCalendarGriBodyCellContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useCalendarGriBodyCellContext` must be used within a `Calendar.GridBodyCell` component"
+      "[kobalte]: `useCalendarGriBodyCellContext` must be used within a `Calendar.GridBodyCell` component",
     );
   }
 

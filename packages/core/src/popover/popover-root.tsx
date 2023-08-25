@@ -81,7 +81,7 @@ export function PopoverRoot(props: PopoverRootProps) {
       modal: false,
       preventScroll: false,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [

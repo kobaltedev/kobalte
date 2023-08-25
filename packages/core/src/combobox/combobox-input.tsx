@@ -38,13 +38,13 @@ export function ComboboxInput(props: ComboboxInputProps) {
     {
       id: context.generateId("input"),
     },
-    props
+    props,
   );
 
   const [local, formControlFieldProps, others] = splitProps(
     props,
     ["ref", "disabled", "onInput", "onPointerDown", "onClick", "onKeyDown", "onFocus", "onBlur"],
-    FORM_CONTROL_FIELD_PROP_NAMES
+    FORM_CONTROL_FIELD_PROP_NAMES,
   );
 
   const collection = () => context.listState().collection();
@@ -111,13 +111,13 @@ export function ComboboxInput(props: ComboboxInputProps) {
       case "Tab":
         if (context.isOpen()) {
           context.close();
-          context.resetInputValue();
+          context.resetInputValue(context.listState().selectionManager().selectedKeys());
         }
         break;
       case "Escape":
         if (context.isOpen()) {
           context.close();
-          context.resetInputValue();
+          context.resetInputValue(context.listState().selectionManager().selectedKeys());
         } else {
           // trigger a remove selection.
           context.setInputValue("");
@@ -134,7 +134,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
         } else {
           if (e.altKey) {
             context.close();
-            context.resetInputValue();
+            context.resetInputValue(context.listState().selectionManager().selectedKeys());
           }
         }
         break;

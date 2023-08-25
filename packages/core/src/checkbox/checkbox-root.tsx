@@ -105,7 +105,7 @@ export function CheckboxRoot(props: CheckboxRootProps) {
       value: "on",
       id: defaultId,
     },
-    props
+    props,
   );
 
   const [local, formControlProps, others] = splitProps(
@@ -120,7 +120,7 @@ export function CheckboxRoot(props: CheckboxRootProps) {
       "onChange",
       "onPointerDown",
     ],
-    FORM_CONTROL_PROP_NAMES
+    FORM_CONTROL_PROP_NAMES,
   );
 
   const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
@@ -138,7 +138,7 @@ export function CheckboxRoot(props: CheckboxRootProps) {
 
   createFormResetListener(
     () => ref,
-    () => state.setIsSelected(local.defaultChecked ?? false)
+    () => state.setIsSelected(local.defaultChecked ?? false),
   );
 
   const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {

@@ -62,7 +62,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
                   "block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
                   !isChangelogPath()
                     ? "text-sky-700 dark:text-sky-600"
-                    : "text-zinc-600 dark:text-zinc-400"
+                    : "text-zinc-600 dark:text-zinc-400",
                 )}
               >
                 Components
@@ -73,7 +73,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
                   "block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
                   isChangelogPath()
                     ? "text-sky-700 dark:text-sky-600"
-                    : "text-zinc-600 dark:text-zinc-400"
+                    : "text-zinc-600 dark:text-zinc-400",
                 )}
               >
                 Changelog

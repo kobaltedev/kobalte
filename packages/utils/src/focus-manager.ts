@@ -48,7 +48,7 @@ export interface FocusManagerOptions {
  */
 export function createFocusManager(
   ref: Accessor<HTMLElement | undefined>,
-  defaultOptions: Accessor<FocusManagerOptions> = () => ({})
+  defaultOptions: Accessor<FocusManagerOptions> = () => ({}),
 ): FocusManager {
   const focusNext = (opts: FocusManagerOptions = {}) => {
     const root = ref();
@@ -206,7 +206,7 @@ function isElementInScope(element: Element | null, scope: HTMLElement[]) {
 export function getFocusableTreeWalker(
   root: HTMLElement,
   opts?: FocusManagerOptions,
-  scope?: HTMLElement[]
+  scope?: HTMLElement[],
 ) {
   const selector = opts?.tabbable ? TABBABLE_ELEMENT_SELECTOR : FOCUSABLE_ELEMENT_SELECTOR;
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {

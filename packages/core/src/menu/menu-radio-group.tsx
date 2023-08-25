@@ -47,7 +47,7 @@ export function MenuRadioGroup(props: MenuRadioGroupProps) {
     {
       id: defaultId,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["value", "defaultValue", "onChange", "disabled"]);

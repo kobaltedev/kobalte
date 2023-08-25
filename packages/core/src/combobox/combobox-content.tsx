@@ -63,8 +63,8 @@ export function ComboboxContent(props: ComboboxContentProps) {
   ]);
 
   const close = () => {
+    context.resetInputValue(context.listState().selectionManager().selectedKeys());
     context.close();
-    context.resetInputValue();
   };
 
   const onFocusOutside = (e: FocusOutsideEvent) => {
@@ -117,7 +117,7 @@ export function ComboboxContent(props: ComboboxContentProps) {
         }
       },
     },
-    () => ref
+    () => ref,
   );
 
   return (

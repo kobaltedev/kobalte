@@ -42,7 +42,7 @@ export function TextFieldTextArea(props: TextFieldTextAreaProps) {
     {
       id: context.generateId("textarea"),
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, ["ref", "autoResize", "submitOnEnter", "onKeyPress"]);
@@ -54,7 +54,7 @@ export function TextFieldTextArea(props: TextFieldTextAreaProps) {
       }
 
       adjustHeight(ref);
-    })
+    }),
   );
 
   const onKeyPress = (event: KeyboardEvent) => {
