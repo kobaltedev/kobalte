@@ -22,6 +22,7 @@ import {
   OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, For, JSX, on, onCleanup, splitProps } from "solid-js";
+import { isServer } from "solid-js/web";
 
 import { useToastRegionContext } from "./toast-region-context";
 
@@ -82,6 +83,10 @@ export function ToastList(props: ToastListProps) {
 
   createEffect(
     on([() => ref, () => context.hotkey()], ([ref, hotkey]) => {
+      if (isServer) {
+        return;
+      }
+
       if (!ref) {
         return;
       }

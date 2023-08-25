@@ -76,16 +76,12 @@ export function ComboboxRoot<Option, OptGroup = never>(props: ComboboxRootProps<
   });
 
   const onChange = (value: Option[]) => {
-    local.onChange?.(local.multiple ? value : (value[0] as any));
-
-    /*
-        if (local.multiple) {
+    if (local.multiple) {
       local.onChange?.(value as any);
     } else {
       // use `null` as "no value" because `undefined` mean the component is "uncontrolled".
       local.onChange?.((value[0] ?? null) as any);
     }
-     */
   };
 
   return (

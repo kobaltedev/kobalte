@@ -194,7 +194,7 @@ describe("Combobox", () => {
           optionTextValue={option => option.valueText}
           optionLabel={option => option.name}
           optionDisabled={option => option.disabled}
-          optionGroupChildren={optGroup => optGroup.items}
+          optionGroupChildren="items"
           placeholder="Placeholder"
           onChange={onValueChange}
           itemComponent={props => (
@@ -373,7 +373,7 @@ describe("Combobox", () => {
           optionTextValue={option => option.valueText}
           optionLabel={option => option.name}
           optionDisabled={option => option.disabled}
-          optionGroupChildren={optGroup => optGroup.items}
+          optionGroupChildren="items"
           placeholder="Placeholder"
           onChange={onValueChange}
           itemComponent={props => (

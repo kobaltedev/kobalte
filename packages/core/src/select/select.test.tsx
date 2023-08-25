@@ -180,7 +180,7 @@ describe("Select", () => {
           optionValue={option => option.id}
           optionTextValue={option => option.valueText}
           optionDisabled={option => option.disabled}
-          optionGroupChildren={optGroup => optGroup.items}
+          optionGroupChildren="items"
           placeholder="Placeholder"
           onChange={onValueChange}
           itemComponent={props => (
@@ -345,7 +345,7 @@ describe("Select", () => {
           optionValue={option => option.id}
           optionTextValue={option => option.valueText}
           optionDisabled={option => option.disabled}
-          optionGroupChildren={optGroup => optGroup.items}
+          optionGroupChildren="items"
           placeholder="Placeholder"
           onChange={onValueChange}
           itemComponent={props => (

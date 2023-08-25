@@ -76,6 +76,7 @@ import {
   makeCalendarDateRange,
   sortDates,
 } from "./utils";
+import { isServer } from "solid-js/web";
 
 export interface CalendarSingleSelectionOptions {
   /** The selection mode of the calendar. */
@@ -808,6 +809,10 @@ export function CalendarRoot(props: CalendarRootProps) {
   let isVirtualClick = false;
 
   createEffect(() => {
+    if (isServer) {
+      return;
+    }
+
     if (local.selectionMode !== "range" || !ref) {
       return;
     }

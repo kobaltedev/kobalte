@@ -95,16 +95,16 @@ export interface SelectBaseOptions<Option, OptGroup = never>
    * Property name or getter function to use as the value of an option.
    * This is the value that will be submitted when the select is part of a `<form>`.
    */
-  optionValue?: keyof Option | ((option: Option) => string | number);
+  optionValue?: keyof Exclude<Option, null> | ((option: Exclude<Option, null>) => string | number);
 
   /** Property name or getter function to use as the text value of an option for typeahead purpose. */
-  optionTextValue?: keyof Option | ((option: Option) => string);
+  optionTextValue?: keyof Exclude<Option, null> | ((option: Exclude<Option, null>) => string);
 
   /** Property name or getter function to use as the disabled flag of an option. */
-  optionDisabled?: keyof Option | ((option: Option) => boolean);
+  optionDisabled?: keyof Exclude<Option, null> | ((option: Exclude<Option, null>) => boolean);
 
-  /** Property name or getter function that refers to the children options of an option group. */
-  optionGroupChildren?: keyof OptGroup | ((optGroup: OptGroup) => Option[]);
+  /** Property name that refers to the children options of an option group. */
+  optionGroupChildren?: keyof Exclude<OptGroup, null>;
 
   /** An optional keyboard delegate implementation for type to select, to override the default. */
   keyboardDelegate?: KeyboardDelegate;
@@ -276,7 +276,9 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     }
 
     // Get the value from the option object as a string.
-    return String(isFunction(optionValue) ? optionValue(option) : option[optionValue]);
+    return String(
+      isFunction(optionValue) ? optionValue(option as any) : (option as any)[optionValue],
+    );
   };
 
   // Only options without option groups.
@@ -288,14 +290,8 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       return local.options as Option[];
     }
 
-    if (isFunction(optionGroupChildren)) {
-      return local.options.flatMap(
-        item => optionGroupChildren(item as OptGroup) ?? (item as Option),
-      );
-    }
-
     return local.options.flatMap(
-      item => ((item as OptGroup)[optionGroupChildren] as Option[]) ?? (item as Option),
+      item => ((item as any)[optionGroupChildren] as Option[]) ?? (item as Option),
     );
   });
 
@@ -331,8 +327,8 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 
       return local.defaultValue;
     },
-    onSelectionChange: keys => {
-      local.onChange?.(getOptionsFromValues(keys));
+    onSelectionChange: selectedKeys => {
+      local.onChange?.(getOptionsFromValues(selectedKeys));
 
       if (local.selectionMode === "single") {
         close();
