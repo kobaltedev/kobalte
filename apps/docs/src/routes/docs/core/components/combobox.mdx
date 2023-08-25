@@ -94,7 +94,7 @@ The combobox consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Combobox, createFilter } from "@kobalte/core";
+    import { Combobox } from "@kobalte/core";
     import { CaretSortIcon, CheckIcon } from "some-icon-library";
     import { createSignal } from "solid-js";
     import "./style.css";
@@ -102,26 +102,9 @@ The combobox consists of:
     const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
     function App() {
-      const filter = createFilter({ sensitivity: "base" });
-
-      const [options, setOptions] = createSignal(ALL_OPTIONS);
-
-      const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-        // Show all options on ArrowDown/ArrowUp and button click.
-        if (isOpen && triggerMode === "manual") {
-          setOptions(ALL_OPTIONS);
-        }
-      };
-
-      const onInputChange = (value: string) => {
-        setOptions(ALL_OPTIONS.filter(option => filter.contains(option, value)));
-      };
-
       return (
         <Combobox.Root
-          options={options()}
-          onInputChange={onInputChange}
-          onOpenChange={onOpenChange}
+          options={ALL_OPTIONS}
           placeholder="Search a fruit…"
           itemComponent={props => (
             <Combobox.Item item={props.item} class="combobox__item">
@@ -329,35 +312,24 @@ The combobox consists of:
 
 ### Filtering options
 
-Combobox doesn't apply any filter internally, it's the developer responsibility to provide a filtered list of options, whether by using a fuzzy search library client-side or by making server-side requests to an API.
+The `defaultFilter` prop can be used to customize the way `Combobox` filter the list of options.
 
-For convenience Kobalte exposes the `createFilter` primitive which provides functions for filtering or searching based on substring matches with locale sensitive matching support. It automatically uses the current locale set by the application, either via the default browser language or via the `I18nProvider`.
+For convenience, we provide 3 built-in filtering mechanism based on substring matches with locale sensitive matching support. It automatically uses the current locale set by the application, either via the default browser language or via the `I18nProvider`.
 
-The available filtering methods are:
+- **startsWith**: Show options that starts with the input value.
+- **endsWith**: Show options that ends with the input value.
+- **contains**: Show options that contains the input value.
 
-- **startWith**: Returns whether a string starts with a given substring.
-- **endWith**: Returns whether a string ends with a given substring.
-- **contains**: Returns whether a string contains a given substring.
+A custom filter function can also be passed to the `defaultFilter` prop, it receives _an option and the input value_ as parameters, and should return a `boolean`.
 
-```tsx {6,13,15}
-import { Combobox, createFilter } from "@kobalte/core";
-import { createSignal } from "solid-js";
+```tsx {6}
+import { Combobox } from "@kobalte/core";
 
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
-function DefaultValueExample() {
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal(ALL_OPTIONS);
-
-  const onInputChange = (value: string) => {
-    // or filter.startWith
-    // or filter.endWith
-    setOptions(ALL_OPTIONS.filter(option => filter.contains(option, value)));
-  };
-
+function FilteringExample() {
   return (
-    <Combobox.Root options={options()} onInputChange={onInputChange}>
+    <Combobox.Root options={ALL_OPTIONS} defaultFilter="startsWith">
       //...rest of the component.
     </Combobox.Root>
   );
@@ -372,35 +344,17 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
   <DefaultValueExample />
 </Preview>
 
-```tsx {24}
-import { Combobox, createFilter } from "@kobalte/core";
+```tsx {8}
+import { Combobox } from "@kobalte/core";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
-import { createSignal } from "solid-js";
 
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 function DefaultValueExample() {
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal(ALL_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(ALL_OPTIONS.filter(option => filter.contains(option, value)));
-  };
-
   return (
     <Combobox.Root
       defaultValue="Blueberry"
-      options={options()}
-      onInputChange={onInputChange}
-      onOpenChange={onOpenChange}
+      options={ALL_OPTIONS}
       placeholder="Search a fruit…"
       itemComponent={props => (
         <Combobox.Item item={props.item}>
@@ -437,8 +391,8 @@ The `value` prop, which accepts a value corresponding with the `options` prop, c
   <ControlledExample />
 </Preview>
 
-```tsx {7,22-24,33-34}
-import { Combobox, createFilter } from "@kobalte/core";
+```tsx {7,20-21}
+import { Combobox } from "@kobalte/core";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 import { createSignal } from "solid-js";
 
@@ -447,34 +401,20 @@ const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 function ControlledExample() {
   const [value, setValue] = createSignal("Blueberry");
 
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<string[]>(ALL_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_OPTIONS);
-    }
-  };
-
   const onInputChange = (value: string) => {
     // Remove selection when input is cleared.
     if (value === "") {
       setValue("");
     }
-
-    setOptions(ALL_OPTIONS.filter(option => filter.contains(option, value)));
   };
 
   return (
     <>
       <Combobox.Root
-        options={options()}
+        options={ALL_OPTIONS}
         value={value()}
         onChange={setValue}
         onInputChange={onInputChange}
-        onOpenChange={onOpenChange}
         placeholder="Search a fruit…"
         itemComponent={props => (
           <Combobox.Item item={props.item}>
@@ -513,34 +453,16 @@ The `Combobox.Description` component can be used to associate additional help te
   <DescriptionExample />
 </Preview>
 
-```tsx {45}
-import { Combobox, createFilter } from "@kobalte/core";
+```tsx {27}
+import { Combobox } from "@kobalte/core";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
-import { createSignal } from "solid-js";
 
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
-function DefaultValueExample() {
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal(ALL_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(ALL_OPTIONS.filter(option => filter.contains(option, value)));
-  };
-
+function DescriptionExample() {
   return (
     <Combobox.Root
-      options={options()}
-      onInputChange={onInputChange}
-      onOpenChange={onOpenChange}
+      options={ALL_OPTIONS}
       placeholder="Search a fruit…"
       itemComponent={props => (
         <Combobox.Item item={props.item}>
@@ -580,8 +502,8 @@ By default, it will render only when the `validationState` prop is set to `inval
   <ErrorMessageExample />
 </Preview>
 
-```tsx {36,55}
-import { Combobox, createFilter } from "@kobalte/core";
+```tsx {22,41}
+import { Combobox } from "@kobalte/core";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 import { createSignal } from "solid-js";
 
@@ -590,33 +512,19 @@ const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 function ErrorMessageExample() {
   const [value, setValue] = createSignal("Grapes");
 
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal(ALL_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_OPTIONS);
-    }
-  };
-
   const onInputChange = (value: string) => {
     // Remove selection when input is cleared.
     if (value === "") {
       setValue("");
     }
-
-    setOptions(ALL_OPTIONS.filter(option => filter.contains(option, value)));
   };
 
   return (
     <Combobox.Root
-      options={options()}
+      options={ALL_OPTIONS}
       value={value()}
       onChange={setValue}
       onInputChange={onInputChange}
-      onOpenChange={onOpenChange}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
       placeholder="Search a fruit…"
       itemComponent={props => (
@@ -655,29 +563,13 @@ The combobox `name` prop, paired with the `Combobox.HiddenSelect` component, can
   <HTMLFormExample />
 </Preview>
 
-```tsx {29,43}
-import { Combobox, createFilter } from "@kobalte/core";
+```tsx {13,25}
+import { Combobox } from "@kobalte/core";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
-import { createSignal } from "solid-js";
 
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 function HTMLFormExample() {
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal(ALL_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(ALL_OPTIONS.filter(option => filter.contains(option, value)));
-  };
-
   const onSubmit = (e: SubmitEvent) => {
     // handle form submission.
   };
@@ -686,9 +578,7 @@ function HTMLFormExample() {
     <form onSubmit={onSubmit}>
       <Combobox.Root
         name="fruit"
-        options={options()}
-        onInputChange={onInputChange}
-        onOpenChange={onOpenChange}
+        options={ALL_OPTIONS}
         placeholder="Search a fruit…"
         itemComponent={props => (
           <Combobox.Item item={props.item}>
@@ -725,10 +615,10 @@ function HTMLFormExample() {
 
 ### Using object as options
 
-Objects can be used as options instead of plain strings. In this case you have to tell the combobox how it should work with the provided options. For this you **have to use** the following props :
+Objects can be used as options instead of plain strings. In this case you have to tell the combobox how it should work with the provided options. For this you **have to use** the following props:
 
 - `optionValue`: The property name to use as the value of an option (submitted with `<form>`).
-- `optionTextValue`: The property name to use as the text value of an option for keyboard navigation.
+- `optionTextValue`: The property name to use as the text value of an option for **filtering** and keyboard navigation.
 - `optionLabel`: The property name to use as the label of an option, displayed in the combobox input.
 - `optionDisabled`: The property name to use as the disabled flag of an option.
 
@@ -736,10 +626,9 @@ Objects can be used as options instead of plain strings. In this case you have t
   <ObjectExample />
 </Preview>
 
-```tsx {39-42}
-import { Combobox, createFilter } from "@kobalte/core";
+```tsx {21-24}
+import { Combobox } from "@kobalte/core";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
-import { createSignal } from "solid-js";
 
 interface Fruit {
   value: string;
@@ -756,26 +645,9 @@ const ALL_OPTIONS: Fruit[] = [
 ];
 
 function ObjectExample() {
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<Fruit[]>(ALL_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(ALL_OPTIONS.filter(option => filter.contains(option.label, value)));
-  };
-
   return (
     <Combobox.Root
-      options={options()}
-      onInputChange={onInputChange}
-      onOpenChange={onOpenChange}
+      options={ALL_OPTIONS}
       optionValue="value"
       optionTextValue="label"
       optionLabel="label"
@@ -810,7 +682,7 @@ function ObjectExample() {
 
 ### Using option groups
 
-When using option groups you have to tell the combobox how to distinguish an option from a group. For this you **have to use** the following props :
+When using option groups you have to tell the combobox how to distinguish an option from a group. For this you **have to use** the following props:
 
 - `optionGroupChildren`: The property name that refers to the children options of an option group.
 
@@ -820,10 +692,9 @@ Additionally, the `sectionComponent` prop is used to display the option group la
   <OptionGroupExample />
 </Preview>
 
-```tsx {84}
-import { Combobox, createFilter } from "@kobalte/core";
+```tsx {44}
+import { Combobox } from "@kobalte/core";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
-import { createSignal } from "solid-js";
 
 interface Food {
   value: string;
@@ -859,48 +730,9 @@ const ALL_OPTIONS: Category[] = [
 ];
 
 export function OptionGroupExample() {
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<Array<Food | Category>>(ALL_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(
-      ALL_OPTIONS.map(optionOrGroup => {
-        // If it's a group, find matching options.
-        const matchingOptions = optionOrGroup["options"]?.filter(option =>
-          filter.contains(option.label, value),
-        );
-
-        // Return the group with only the matching options.
-        if (matchingOptions && matchingOptions.length > 0) {
-          return {
-            ...optionOrGroup,
-            options: [...matchingOptions],
-          };
-        }
-
-        // It's not a group, return if it's a matching option.
-        if (filter.contains(optionOrGroup.label, value)) {
-          return optionOrGroup;
-        }
-
-        return null;
-      }).filter(Boolean) as Array<Food | Category>,
-    );
-  };
-
   return (
     <Combobox.Root<Food, Category>
-      options={options()}
-      onInputChange={onInputChange}
-      onOpenChange={onOpenChange}
+      options={ALL_OPTIONS}
       optionValue="value"
       optionTextValue="label"
       optionLabel="label"
@@ -951,8 +783,8 @@ In this case `Combobox.Input` can't display the values, instead the `Combobox.Co
   <MultipleSelectionExample />
 </Preview>
 
-```tsx {7,27,29-30,47,51,59}
-import { Combobox, createFilter } from "@kobalte/core";
+```tsx {7,12,14-15,30,34,42}
+import { Combobox } from "@kobalte/core";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 import { createSignal } from "solid-js";
 
@@ -961,30 +793,13 @@ const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 function MultipleSelectionExample() {
   const [values, setValues] = createSignal(["Blueberry", "Grapes"]);
 
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<string[]>(ALL_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(ALL_OPTIONS.filter(option => filter.contains(option, value)));
-  };
-
   return (
     <>
       <Combobox.Root<string>
         multiple
-        options={options()}
+        options={ALL_OPTIONS}
         value={values()}
         onChange={setValues}
-        onInputChange={onInputChange}
-        onOpenChange={onOpenChange}
         placeholder="Search some fruits…"
         itemComponent={props => (
           <Combobox.Item item={props.item}>
@@ -1078,12 +893,13 @@ We expose a CSS custom property `--kb-combobox-content-transform-origin` which c
 
 | Prop                          | Description                                                                                                                                                                                                                                                                                                                                                                               |
 | :---------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| defaultFilter                 | `"startsWith" \| "endsWith" \| "contains" \| ((option: Option, inputValue: string) => boolean)` <br/> The filter function used to determine if an option should be included in the combo box list.                                                                                                                                                                                        |
 | options                       | `Array<T \| U>` <br/> An array of options to display as the available options.                                                                                                                                                                                                                                                                                                            |
 | optionValue                   | `keyof T \| ((option: T) => string \| number)` <br/> Property name or getter function to use as the value of an option. This is the value that will be submitted when the combobox is part of a `<form>`.                                                                                                                                                                                 |
 | optionTextValue               | `keyof T \| ((option: T) => string)` <br/> Property name or getter function to use as the text value of an option for typeahead purpose.                                                                                                                                                                                                                                                  |
 | optionLabel                   | `keyof T \| ((option: T) => string)` <br/> Property name or getter function to use as the label of an option. This is the string representation of the option to display in the `Combobox.Input`.                                                                                                                                                                                         |
 | optionDisabled                | `keyof T \| ((option: T) => boolean)` <br/> Property name or getter function to use as the disabled flag of an option.                                                                                                                                                                                                                                                                    |
-| optionGroupChildren           | `keyof U \| ((optGroup: U) => T[])` <br/> Property name or getter function that refers to the children options of an option group.                                                                                                                                                                                                                                                        |
+| optionGroupChildren           | `keyof U` <br/> Property name that refers to the children options of an option group.                                                                                                                                                                                                                                                                                                     |
 | itemComponent                 | `Component<ComboboxItemComponentProps<T>>` <br/> When NOT virtualized, the component to render as an item in the `Combobox.Listbox`.                                                                                                                                                                                                                                                      |
 | sectionComponent              | `Component<ComboboxSectionComponentProps<U>>` <br/> When NOT virtualized, the component to render as a section in the `Combobox.Listbox`.                                                                                                                                                                                                                                                 |
 | multiple                      | `boolean` <br/> Whether the combobox allows multi-selection.                                                                                                                                                                                                                                                                                                                              |

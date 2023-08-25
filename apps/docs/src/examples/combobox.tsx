@@ -1,4 +1,4 @@
-import { Combobox, createFilter } from "@kobalte/core";
+import { Combobox } from "@kobalte/core";
 import { createSignal, For } from "solid-js";
 
 import { CaretSortIcon, CheckIcon, CrossIcon } from "../components";
@@ -7,26 +7,9 @@ import style from "./combobox.module.css";
 const ALL_STRING_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 export function BasicExample() {
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<string[]>(ALL_STRING_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_STRING_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(ALL_STRING_OPTIONS.filter(option => filter.contains(option, value)));
-  };
-
   return (
     <Combobox.Root
-      options={options()}
-      onInputChange={onInputChange}
-      onOpenChange={onOpenChange}
+      options={ALL_STRING_OPTIONS}
       placeholder="Search a fruit…"
       itemComponent={props => (
         <Combobox.Item item={props.item} class={style["combobox__item"]}>
@@ -55,27 +38,10 @@ export function BasicExample() {
 }
 
 export function DefaultValueExample() {
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<string[]>(ALL_STRING_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_STRING_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(ALL_STRING_OPTIONS.filter(option => filter.contains(option, value)));
-  };
-
   return (
     <Combobox.Root
       defaultValue="Blueberry"
-      options={options()}
-      onInputChange={onInputChange}
-      onOpenChange={onOpenChange}
+      options={ALL_STRING_OPTIONS}
       placeholder="Search a fruit…"
       itemComponent={props => (
         <Combobox.Item item={props.item} class={style["combobox__item"]}>
@@ -106,34 +72,20 @@ export function DefaultValueExample() {
 export function ControlledExample() {
   const [value, setValue] = createSignal("Blueberry");
 
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<string[]>(ALL_STRING_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_STRING_OPTIONS);
-    }
-  };
-
   const onInputChange = (value: string) => {
     // Remove selection when input is cleared.
     if (value === "") {
       setValue("");
     }
-
-    setOptions(ALL_STRING_OPTIONS.filter(option => filter.contains(option, value)));
   };
 
   return (
     <>
       <Combobox.Root
-        options={options()}
+        options={ALL_STRING_OPTIONS}
         value={value()}
         onChange={setValue}
         onInputChange={onInputChange}
-        onOpenChange={onOpenChange}
         placeholder="Search a fruit…"
         itemComponent={props => (
           <Combobox.Item item={props.item} class={style["combobox__item"]}>
@@ -164,26 +116,9 @@ export function ControlledExample() {
 }
 
 export function DescriptionExample() {
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<string[]>(ALL_STRING_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_STRING_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(ALL_STRING_OPTIONS.filter(option => filter.contains(option, value)));
-  };
-
   return (
     <Combobox.Root
-      options={options()}
-      onInputChange={onInputChange}
-      onOpenChange={onOpenChange}
+      options={ALL_STRING_OPTIONS}
       placeholder="Search a fruit…"
       itemComponent={props => (
         <Combobox.Item item={props.item} class={style["combobox__item"]}>
@@ -217,33 +152,19 @@ export function DescriptionExample() {
 export function ErrorMessageExample() {
   const [value, setValue] = createSignal("Grapes");
 
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<string[]>(ALL_STRING_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_STRING_OPTIONS);
-    }
-  };
-
   const onInputChange = (value: string) => {
     // Remove selection when input is cleared.
     if (value === "") {
       setValue("");
     }
-
-    setOptions(ALL_STRING_OPTIONS.filter(option => filter.contains(option, value)));
   };
 
   return (
     <Combobox.Root
-      options={options()}
+      options={ALL_STRING_OPTIONS}
       value={value()}
       onChange={setValue}
       onInputChange={onInputChange}
-      onOpenChange={onOpenChange}
       validationState={value() !== "Apple" ? "invalid" : "valid"}
       placeholder="Search a fruit…"
       itemComponent={props => (
@@ -276,21 +197,6 @@ export function ErrorMessageExample() {
 }
 
 export function HTMLFormExample() {
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<string[]>(ALL_STRING_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_STRING_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(ALL_STRING_OPTIONS.filter(option => filter.contains(option, value)));
-  };
-
   let formRef: HTMLFormElement | undefined;
 
   const onSubmit = (e: SubmitEvent) => {
@@ -306,9 +212,7 @@ export function HTMLFormExample() {
     <form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
       <Combobox.Root
         name="fruit"
-        options={options()}
-        onInputChange={onInputChange}
-        onOpenChange={onOpenChange}
+        options={ALL_STRING_OPTIONS}
         placeholder="Search a fruit…"
         itemComponent={props => (
           <Combobox.Item item={props.item} class={style["combobox__item"]}>
@@ -362,26 +266,9 @@ const ALL_OBJECT_OPTIONS: Food[] = [
 ];
 
 export function ObjectExample() {
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<Food[]>(ALL_OBJECT_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_OBJECT_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(ALL_OBJECT_OPTIONS.filter(option => filter.contains(option.label, value)));
-  };
-
   return (
     <Combobox.Root
-      options={options()}
-      onInputChange={onInputChange}
-      onOpenChange={onOpenChange}
+      options={ALL_OBJECT_OPTIONS}
       optionValue="value"
       optionTextValue="label"
       optionLabel="label"
@@ -441,48 +328,9 @@ const ALL_GROUP_OBJECT_OPTIONS: Category[] = [
 ];
 
 export function OptionGroupExample() {
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<Array<Food | Category>>(ALL_GROUP_OBJECT_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_GROUP_OBJECT_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(
-      ALL_GROUP_OBJECT_OPTIONS.map(optionOrGroup => {
-        // If it's a group, find matching options.
-        const matchingOptions = optionOrGroup["options"]?.filter(option =>
-          filter.contains(option.label, value),
-        );
-
-        // Return the group with only the matching options.
-        if (matchingOptions && matchingOptions.length > 0) {
-          return {
-            ...optionOrGroup,
-            options: [...matchingOptions],
-          };
-        }
-
-        // It's not a group, return if it's a matching option.
-        if (filter.contains(optionOrGroup.label, value)) {
-          return optionOrGroup;
-        }
-
-        return null;
-      }).filter(Boolean) as Array<Food | Category>,
-    );
-  };
-
   return (
     <Combobox.Root<Food, Category>
-      options={options()}
-      onInputChange={onInputChange}
-      onOpenChange={onOpenChange}
+      options={ALL_GROUP_OBJECT_OPTIONS}
       optionValue="value"
       optionTextValue="label"
       optionLabel="label"
@@ -523,30 +371,13 @@ export function OptionGroupExample() {
 export function MultipleSelectionExample() {
   const [values, setValues] = createSignal(["Blueberry", "Grapes"]);
 
-  const filter = createFilter({ sensitivity: "base" });
-
-  const [options, setOptions] = createSignal<string[]>(ALL_STRING_OPTIONS);
-
-  const onOpenChange = (isOpen: boolean, triggerMode?: Combobox.ComboboxTriggerMode) => {
-    // Show all options on ArrowDown/ArrowUp and button click.
-    if (isOpen && triggerMode === "manual") {
-      setOptions(ALL_STRING_OPTIONS);
-    }
-  };
-
-  const onInputChange = (value: string) => {
-    setOptions(ALL_STRING_OPTIONS.filter(option => filter.contains(option, value)));
-  };
-
   return (
     <>
       <Combobox.Root<string>
         multiple
-        options={options()}
+        options={ALL_STRING_OPTIONS}
         value={values()}
         onChange={setValues}
-        onInputChange={onInputChange}
-        onOpenChange={onOpenChange}
         placeholder="Search some fruits…"
         itemComponent={props => (
           <Combobox.Item item={props.item} class={style["combobox__item"]}>
