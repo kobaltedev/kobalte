@@ -13,12 +13,12 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [solid()],
   ssr: {
-    noExternal: ["@kobalte/core"],
+    noExternal: ["@kobalte/core", "@internationalized/message"],
   },
 });
 ```
 
 <Callout type="warning">
-  Kobalte has been tested with `solid-js@1.6.11` and `solid-start@0.2.22`, compatibility with other
+  Kobalte has been tested with `solid-js@1.7.11` and `solid-start@0.3.4`, compatibility with other
   versions is not guaranteed.
 </Callout>
