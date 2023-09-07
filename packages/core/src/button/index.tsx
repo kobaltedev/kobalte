@@ -2,3 +2,4 @@ import { ButtonRoot as Root, type ButtonRootOptions, type ButtonRootProps } from
 
 export type { ButtonRootOptions, ButtonRootProps };
 export { Root };
+export default Root;
