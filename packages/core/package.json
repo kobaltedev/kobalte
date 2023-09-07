@@ -37,11 +37,23 @@
       },
       "require": "./dist/cjs/index.js",
       "node": "./dist/cjs/index.js"
+    },
+    "./*": {
+      "types": "./dist/types/*/index.d.ts",
+      "solid": "./dist/source/*/index.jsx"
     }
   },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/types/*/index.d.ts",
+        "./dist/types/index.d.ts"
+      ]
+    }
+  },
   "files": [
     "dist"
   ],
