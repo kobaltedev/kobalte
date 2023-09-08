@@ -4,3 +4,4 @@ import { ImageRoot as Root, type ImageRootOptions, type ImageRootProps } from ".
 
 export type { ImageFallbackProps, ImageImgProps, ImageRootOptions, ImageRootProps };
 export { Fallback, Img, Root };
+export default { Fallback, Img, Root };

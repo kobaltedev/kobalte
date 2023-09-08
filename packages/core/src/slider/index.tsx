@@ -35,3 +35,4 @@ export type {
   SliderValueLabelProps,
 };
 export { Description, ErrorMessage, Fill, Input, Label, Root, Thumb, Track, ValueLabel };
+export default { Description, ErrorMessage, Fill, Input, Label, Root, Thumb, Track, ValueLabel };

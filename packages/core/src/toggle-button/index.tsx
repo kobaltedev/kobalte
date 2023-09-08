@@ -7,3 +7,4 @@ import {
 
 export type { ToggleButtonRootOptions, ToggleButtonRootProps, ToggleButtonRootState };
 export { Root };
+export default { Root };

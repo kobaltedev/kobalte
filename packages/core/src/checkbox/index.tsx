@@ -37,3 +37,4 @@ export type {
   CheckboxRootProps,
 };
 export { Control, Description, ErrorMessage, Indicator, Input, Label, Root };
+export default { Control, Description, ErrorMessage, Indicator, Input, Label, Root };

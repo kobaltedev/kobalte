@@ -105,3 +105,22 @@ export {
   Trigger,
   Value,
 };
+export default {
+  Arrow,
+  Content,
+  Description,
+  ErrorMessage,
+  HiddenSelect,
+  Icon,
+  Item,
+  ItemDescription,
+  ItemIndicator,
+  ItemLabel,
+  Label,
+  Listbox,
+  Portal,
+  Root,
+  Section,
+  Trigger,
+  Value,
+};

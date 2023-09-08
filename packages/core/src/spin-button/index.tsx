@@ -7,3 +7,4 @@ import {
 export type { SpinButtonRootOptions, SpinButtonRootProps };
 
 export { Root };
+export default { Root };

@@ -31,3 +31,4 @@ export type {
   TextFieldTextAreaProps,
 };
 export { Description, ErrorMessage, Input, Label, Root, TextArea };
+export default { Description, ErrorMessage, Input, Label, Root, TextArea };

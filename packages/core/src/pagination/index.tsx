@@ -39,3 +39,4 @@ export type {
   PaginationRootProps,
 };
 export { Ellipsis, Item, List, Next, Previous, Root };
+export default { Ellipsis, Item, List, Next, Previous, Root };

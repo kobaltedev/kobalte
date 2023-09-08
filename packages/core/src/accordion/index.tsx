@@ -27,3 +27,4 @@ export type {
   AccordionTriggerProps,
 };
 export { Content, Header, Item, Root, Trigger };
+export default { Content, Header, Item, Root, Trigger };

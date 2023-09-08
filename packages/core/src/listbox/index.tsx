@@ -33,3 +33,4 @@ export type {
 };
 
 export { Item, ItemDescription, ItemIndicator, ItemLabel, Root, Section };
+export default { Item, ItemDescription, ItemIndicator, ItemLabel, Root, Section };

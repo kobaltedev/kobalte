@@ -36,3 +36,4 @@ export type {
 };
 
 export { CloseButton, Content, Description, Overlay, Portal, Root, Title, Trigger };
+export default { CloseButton, Content, Description, Overlay, Portal, Root, Title, Trigger };

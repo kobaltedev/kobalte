@@ -42,3 +42,4 @@ export type {
 };
 
 export { Anchor, Arrow, CloseButton, Content, Description, Portal, Root, Title, Trigger };
+export default { Anchor, Arrow, CloseButton, Content, Description, Portal, Root, Title, Trigger };

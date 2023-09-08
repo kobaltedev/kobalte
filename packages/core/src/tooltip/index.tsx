@@ -28,3 +28,4 @@ export type {
 };
 
 export { Arrow, Content, Portal, Root, Trigger };
+export default { Arrow, Content, Portal, Root, Trigger };

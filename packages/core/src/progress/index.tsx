@@ -25,3 +25,4 @@ export type {
   ProgressValueLabelProps,
 };
 export { Fill, Label, Root, Track, ValueLabel };
+export default { Fill, Label, Root, Track, ValueLabel };

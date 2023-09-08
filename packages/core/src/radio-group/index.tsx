@@ -69,3 +69,15 @@ export {
   Label,
   Root,
 };
+export default {
+  Description,
+  ErrorMessage,
+  Item,
+  ItemControl,
+  ItemDescription,
+  ItemIndicator,
+  ItemInput,
+  ItemLabel,
+  Label,
+  Root,
+};

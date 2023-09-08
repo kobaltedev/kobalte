@@ -2,3 +2,4 @@ import { LinkRoot as Root, type LinkRootOptions, type LinkRootProps } from "./li
 
 export type { LinkRootOptions, LinkRootProps };
 export { Root };
+export default { Root };
