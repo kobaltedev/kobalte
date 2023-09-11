@@ -12,7 +12,7 @@ describe("Pagination", () => {
         )}
         ellipsisComponent={() => <Pagination.Ellipsis>Ellipsis</Pagination.Ellipsis>}
       >
-        <Pagination.List />
+        <Pagination.Items />
         <Pagination.Next>Next</Pagination.Next>
       </Pagination.Root>
     ));
@@ -84,7 +84,7 @@ describe("Pagination", () => {
         )}
         ellipsisComponent={() => <></>}
       >
-        <Pagination.List />
+        <Pagination.Items />
       </Pagination.Root>
     ));
 
@@ -108,7 +108,7 @@ describe("Pagination", () => {
         )}
         ellipsisComponent={() => <></>}
       >
-        <Pagination.List />
+        <Pagination.Items />
       </Pagination.Root>
     ));
 
@@ -141,7 +141,7 @@ describe("Pagination", () => {
         )}
         ellipsisComponent={() => <></>}
       >
-        <Pagination.List />
+        <Pagination.Items />
       </Pagination.Root>
     ));
 
@@ -169,7 +169,7 @@ describe("Pagination", () => {
           )}
         ellipsisComponent={() => <></>}
         >
-        <Pagination.List />
+        <Pagination.Items />
       </Pagination.Root>
       ));
 
@@ -199,7 +199,7 @@ describe("Pagination", () => {
           )}
         ellipsisComponent={() => <></>}
         >
-        <Pagination.List />
+        <Pagination.Items />
       </Pagination.Root>
       ));
 
