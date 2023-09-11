@@ -18,7 +18,7 @@ export function BasicExample() {
       )}
     >
       <Pagination.Previous class={style["pagination__item"]}>Previous</Pagination.Previous>
-      <Pagination.List />
+      <Pagination.Items />
       <Pagination.Next class={style["pagination__item"]}>Next</Pagination.Next>
     </Pagination.Root>
   );
@@ -40,7 +40,7 @@ export function DefaultPageExample() {
       )}
     >
       <Pagination.Previous class={style["pagination__item"]}>Previous</Pagination.Previous>
-      <Pagination.List />
+      <Pagination.Items />
       <Pagination.Next class={style["pagination__item"]}>Next</Pagination.Next>
     </Pagination.Root>
   );
@@ -65,7 +65,7 @@ export function ControlledExample() {
       )}
     >
       <Pagination.Previous class={style["pagination__item"]}>Previous</Pagination.Previous>
-      <Pagination.List />
+      <Pagination.Items />
       <Pagination.Next class={style["pagination__item"]}>Next</Pagination.Next>
     </Pagination.Root>
   );
@@ -85,7 +85,7 @@ export function ButtonsExample() {
         <Pagination.Ellipsis class={style["pagination__ellipsis"]}>...</Pagination.Ellipsis>
       )}
     >
-      <Pagination.List />
+      <Pagination.Items />
     </Pagination.Root>
   );
 }
@@ -107,7 +107,7 @@ export function FirstLastExample() {
       )}
     >
       <Pagination.Previous class={style["pagination__item"]}>Previous</Pagination.Previous>
-      <Pagination.List />
+      <Pagination.Items />
       <Pagination.Next class={style["pagination__item"]}>Next</Pagination.Next>
     </Pagination.Root>
   );
@@ -129,8 +129,30 @@ export function SiblingsExample() {
       )}
     >
       <Pagination.Previous class={style["pagination__item"]}>Previous</Pagination.Previous>
-      <Pagination.List />
+      <Pagination.Items />
       <Pagination.Next class={style["pagination__item"]}>Next</Pagination.Next>
     </Pagination.Root>
   );
+}
+
+export function FixedItemsExample() {
+  return (
+    <Pagination.Root
+      class={style["pagination__root"]}
+      count={10}
+      fixedItems
+      itemComponent={props => (
+        <Pagination.Item class={style["pagination__item"]} page={props.page}>
+          {props.page}
+        </Pagination.Item>
+        )}
+      ellipsisComponent={() => (
+        <Pagination.Ellipsis class={style["pagination__ellipsis"]}>...</Pagination.Ellipsis>
+        )}
+      >
+      <Pagination.Previous class={style["pagination__item"]}>Previous</Pagination.Previous>
+      <Pagination.Items />
+      <Pagination.Next class={style["pagination__item"]}>Next</Pagination.Next>
+    </Pagination.Root>
+    );
 }

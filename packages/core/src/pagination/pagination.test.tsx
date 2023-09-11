@@ -158,6 +158,64 @@ describe("Pagination", () => {
     expect(page10).not.toBeInTheDocument();
   });
 
+  it("renders correct number of siblings with fixedItems=true", () => {
+    render(() => (
+      <Pagination.Root
+        count={10}
+        fixedItems
+        page={3}
+        itemComponent={props => (
+          <Pagination.Item page={props.page}>Page {props.page}</Pagination.Item>
+          )}
+        ellipsisComponent={() => <></>}
+        >
+        <Pagination.List />
+      </Pagination.Root>
+      ));
+
+    const page1 = screen.getByText("Page 1");
+    const page2 = screen.getByText("Page 2");
+    const page3 = screen.getByText("Page 3");
+    const page4 = screen.getByText("Page 4");
+    const page5 = screen.getByText("Page 5");
+    const page10 = screen.getByText("Page 10");
+
+    expect(page1).toBeVisible();
+    expect(page2).toBeVisible();
+    expect(page3).toBeVisible();
+    expect(page4).toBeVisible();
+    expect(page5).toBeVisible();
+    expect(page10).toBeVisible();
+  });
+
+  it("renders correct number of siblings with fixedItems=no-ellipsis", () => {
+    render(() => (
+      <Pagination.Root
+        count={10}
+        fixedItems="no-ellipsis"
+        page={3}
+        itemComponent={props => (
+          <Pagination.Item page={props.page}>Page {props.page}</Pagination.Item>
+          )}
+        ellipsisComponent={() => <></>}
+        >
+        <Pagination.List />
+      </Pagination.Root>
+      ));
+
+    const page1 = screen.getByText("Page 1");
+    const page2 = screen.getByText("Page 2");
+    const page3 = screen.getByText("Page 3");
+    const page4 = screen.getByText("Page 4");
+    const page10 = screen.getByText("Page 10");
+
+    expect(page1).toBeVisible();
+    expect(page2).toBeVisible();
+    expect(page3).toBeVisible();
+    expect(page4).toBeVisible();
+    expect(page10).toBeVisible();
+  });
+
   it("supports default page", () => {
     const onPageChange = jest.fn();
 
