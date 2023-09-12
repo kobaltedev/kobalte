@@ -22,8 +22,9 @@ export function PaginationItems(props: PaginationItemsProps) {
       setShowLast(context.showLast() && context.count() - context.page() > context.siblingCount());
 
       setShowFirstEllipsis(context.page() - (context.showFirst() ? 2 : 1) > context.siblingCount());
-      setShowLastEllipsis(context.count() - context.page() - (context.showLast() ? 1 : 0) > context.siblingCount());
-
+      setShowLastEllipsis(
+        context.count() - context.page() - (context.showLast() ? 1 : 0) > context.siblingCount(),
+      );
 
       setPreviousSiblingCount(Math.min(context.page() - 1, context.siblingCount()));
       setNextSiblingCount(Math.min(context.count() - context.page(), context.siblingCount()));
@@ -32,17 +33,21 @@ export function PaginationItems(props: PaginationItemsProps) {
         // Untrack to avoid recursion
         untrack(() => {
           // Add back the difference between the opposite side and the sibling count
-          setPreviousSiblingCount((prev) => prev + Math.max(context.siblingCount() - nextSiblingCount(), 0));
-          setNextSiblingCount((prev) => prev + Math.max(context.siblingCount() - previousSiblingCount(), 0));
+          setPreviousSiblingCount(
+            prev => prev + Math.max(context.siblingCount() - nextSiblingCount(), 0),
+          );
+          setNextSiblingCount(
+            prev => prev + Math.max(context.siblingCount() - previousSiblingCount(), 0),
+          );
         });
 
-        if (!showFirst()) setNextSiblingCount((prev) => prev + 1);
-        if (!showLast()) setPreviousSiblingCount((prev) => prev + 1);
+        if (!showFirst()) setNextSiblingCount(prev => prev + 1);
+        if (!showLast()) setPreviousSiblingCount(prev => prev + 1);
 
         // Check specifically if true and not "no-ellipsis"
         if (context.fixedItems() === true) {
-          if (!showFirstEllipsis()) setNextSiblingCount((prev) => prev + 1);
-          if (!showLastEllipsis()) setPreviousSiblingCount((prev) => prev + 1);
+          if (!showFirstEllipsis()) setNextSiblingCount(prev => prev + 1);
+          if (!showLastEllipsis()) setPreviousSiblingCount(prev => prev + 1);
         }
       }
     });
@@ -50,37 +55,23 @@ export function PaginationItems(props: PaginationItemsProps) {
 
   return (
     <>
-    <Show when={showFirst()}>
-        {context.renderItem(1)}
-      </Show>
+      <Show when={showFirst()}>{context.renderItem(1)}</Show>
 
-    <Show when={showFirstEllipsis()}>
-        {context.renderEllipsis()}
-      </Show>
+      <Show when={showFirstEllipsis()}>{context.renderEllipsis()}</Show>
 
-    <For each={[...Array(previousSiblingCount()).keys()].reverse()}>
+      <For each={[...Array(previousSiblingCount()).keys()].reverse()}>
         {offset => <>{context.renderItem(context.page() - (offset + 1))}</>}
       </For>
 
       {context.renderItem(context.page())}
 
-      <For
-        each={[...Array(nextSiblingCount()).keys()]}
-      >
+      <For each={[...Array(nextSiblingCount()).keys()]}>
         {offset => <>{context.renderItem(context.page() + (offset + 1))}</>}
       </For>
 
-      <Show
-        when={
-          showLastEllipsis()
-        }
-      >
-        {context.renderEllipsis()}
-      </Show>
+      <Show when={showLastEllipsis()}>{context.renderEllipsis()}</Show>
 
-    <Show when={showLast()}>
-        {context.renderItem(context.count())}
-      </Show>
+      <Show when={showLast()}>{context.renderItem(context.count())}</Show>
     </>
   );
 }

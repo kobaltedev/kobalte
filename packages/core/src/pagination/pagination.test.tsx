@@ -166,12 +166,12 @@ describe("Pagination", () => {
         page={3}
         itemComponent={props => (
           <Pagination.Item page={props.page}>Page {props.page}</Pagination.Item>
-          )}
+        )}
         ellipsisComponent={() => <></>}
-        >
+      >
         <Pagination.Items />
       </Pagination.Root>
-      ));
+    ));
 
     const page1 = screen.getByText("Page 1");
     const page2 = screen.getByText("Page 2");
@@ -196,12 +196,12 @@ describe("Pagination", () => {
         page={3}
         itemComponent={props => (
           <Pagination.Item page={props.page}>Page {props.page}</Pagination.Item>
-          )}
+        )}
         ellipsisComponent={() => <></>}
-        >
+      >
         <Pagination.Items />
       </Pagination.Root>
-      ));
+    ));
 
     const page1 = screen.getByText("Page 1");
     const page2 = screen.getByText("Page 2");

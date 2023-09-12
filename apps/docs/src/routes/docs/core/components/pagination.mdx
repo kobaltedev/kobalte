@@ -218,7 +218,7 @@ The appearance can be customized by omitting the Next and Previous Button.
   itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
   ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
 >
-<Pagination.Items />
+  <Pagination.Items />
 </Pagination.Root>
 ```
 
@@ -275,14 +275,14 @@ The total number of items can be fixed to avoid content shift. If ellipsis are d
 
 ```tsx {2}
 <Pagination.Root
-count={10}
-fixedItems
-itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
-ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
+  count={10}
+  fixedItems
+  itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
+  ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
 >
-<Pagination.Previous>Previous</Pagination.Previous>
-<Pagination.Items />
-<Pagination.Next>Next</Pagination.Next>
+  <Pagination.Previous>Previous</Pagination.Previous>
+  <Pagination.Items />
+  <Pagination.Next>Next</Pagination.Next>
 </Pagination.Root>
 ```
 
@@ -290,19 +290,19 @@ ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
 
 ### Pagination.Root
 
-| Prop              | Description                                                                                    |
-| :---------------- | :--------------------------------------------------------------------------------------------- |
-| page              | `number` <br/> The controlled page number of the pagination. (1-indexed)                       |
-| defaultPage       | `string` <br/> The default page number when initially rendered. (1-indexed)                    |
-| onPageChange      | `(page: number) => void` <br/> Event handler called when the page number changes.              |
-| count             | `number` <br/> The number of pages for the pagination.                                         |
-| siblingCount      | `number` <br/> The number of siblings to show around the current page item.                    |
-| showFirst         | `boolean` <br/> Whether to always show the first page item.                                    |
-| showLast          | `boolean` <br/> Whether to always show the last page item.                                     |
-| fixedItems        | `boolean | "no-ellipsis"` <br/> Whether to always show a fixed amount of items (with or without counting ellipsis)           |
+| Prop              | Description                                                                                     |
+| :---------------- | :---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| page              | `number` <br/> The controlled page number of the pagination. (1-indexed)                        |
+| defaultPage       | `string` <br/> The default page number when initially rendered. (1-indexed)                     |
+| onPageChange      | `(page: number) => void` <br/> Event handler called when the page number changes.               |
+| count             | `number` <br/> The number of pages for the pagination.                                          |
+| siblingCount      | `number` <br/> The number of siblings to show around the current page item.                     |
+| showFirst         | `boolean` <br/> Whether to always show the first page item.                                     |
+| showLast          | `boolean` <br/> Whether to always show the last page item.                                      |
+| fixedItems        | `boolean                                                                                        | "no-ellipsis"` <br/> Whether to always show a fixed amount of items (with or without counting ellipsis) |
 | itemComponent     | `Component<{page: number}>` <br/> The component to render as an item in the `Pagination.Items`. |
 | ellipsisComponent | `Component` <br/> The component to render as an ellipsis item in the `Pagination.Items`.        |
-| disabled          | `boolean` <br/> Whether the pagination is disabled.                                            |
+| disabled          | `boolean` <br/> Whether the pagination is disabled.                                             |
 
 | Data attribute | Description                              |
 | :------------- | :--------------------------------------- |

@@ -145,14 +145,14 @@ export function FixedItemsExample() {
         <Pagination.Item class={style["pagination__item"]} page={props.page}>
           {props.page}
         </Pagination.Item>
-        )}
+      )}
       ellipsisComponent={() => (
         <Pagination.Ellipsis class={style["pagination__ellipsis"]}>...</Pagination.Ellipsis>
-        )}
-      >
+      )}
+    >
       <Pagination.Previous class={style["pagination__item"]}>Previous</Pagination.Previous>
       <Pagination.Items />
       <Pagination.Next class={style["pagination__item"]}>Next</Pagination.Next>
     </Pagination.Root>
-    );
+  );
 }
