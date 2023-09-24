@@ -1,3 +1,10 @@
+/*!
+ * Portions of this file are based on code from Mantine.
+ * MIT Licensed, Copyright (c) 2021 Vitaly Rtishchev.
+ *
+ * Credits to the Mantine team:
+ * https://github.com/mantinedev/mantine/blob/master/src/mantine-core/src/components/Skeleton/Skeleton.tsx
+ */
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createUniqueId, JSX, splitProps } from "solid-js";
 import { Polymorphic } from "../polymorphic";
@@ -36,7 +43,7 @@ export function Skeleton(props: SkeletonProps) {
       animate: true,
       id: defaultId,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(props, [
