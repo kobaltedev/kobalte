@@ -1,5 +1,20 @@
 # @kobalte/core
 
+## 0.11.1
+
+### Patch Changes
+
+- 321e54c: changeset v0.11.1
+
+  **New features**
+
+  - Added `Skeleton` component.
+
+  **Bug fixes**
+
+  - [#264](https://github.com/kobaltedev/kobalte/pull/264)
+  - [#272](https://github.com/kobaltedev/kobalte/pull/272)
+
 ## 0.11.0
 
 ### Minor Changes
