@@ -418,16 +418,23 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       return (local.options as Option[]).filter(filterFn);
     }
 
-    return local.options.filter(optGroup => {
+    const filteredGroups: OptGroup[] = [];
+    for (const optGroup of local.options as OptGroup[]) {
+      // Filter options of the group
       const filteredChildrenOptions = ((optGroup as any)[optionGroupChildren] as Option[]).filter(
         filterFn,
       );
+      // Don't add any groups that are empty
+      if (filteredChildrenOptions.length === 0) continue;
 
-      return {
+      // Add the group with the filtered options
+      filteredGroups.push({
         ...optGroup,
         [optionGroupChildren]: filteredChildrenOptions,
-      };
-    });
+      });
+    }
+
+    return filteredGroups;
   });
 
   const displayedOptions = createMemo(() => {
@@ -508,13 +515,15 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
 
   const open = (focusStrategy: FocusStrategy | boolean, triggerMode?: ComboboxTriggerMode) => {
+    // Show all option if menu is manually opened.
+    const showAllOptions = setShowAllOptions(triggerMode === "manual");
+
+    const hasOptions = showAllOptions ? local.options.length > 0 : filteredOptions().length > 0;
+
     // Don't open if there is no option.
-    if (!local.allowsEmptyCollection && local.options.length <= 0) {
+    if (!hasOptions && !local.allowsEmptyCollection) {
       return;
     }
-
-    // Show all option if menu is manually opened.
-    setShowAllOptions(triggerMode === "manual");
 
     openTriggerMode = triggerMode;
     setFocusStrategy(focusStrategy);
@@ -644,7 +653,9 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   // Display filtered collection again when input value changes.
   createEffect(
     on(inputValue, () => {
-      setShowAllOptions(false);
+      if (showAllOptions()) {
+        setShowAllOptions(false);
+      }
     }),
   );
 
