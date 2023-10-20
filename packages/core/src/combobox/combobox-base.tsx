@@ -418,7 +418,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       return (local.options as Option[]).filter(filterFn);
     }
 
-    let filteredGroups: OptGroup[] = [];
+    const filteredGroups: OptGroup[] = [];
     for (const optGroup of local.options as OptGroup[]) {
       // Filter options of the group
       const filteredChildrenOptions = ((optGroup as any)[optionGroupChildren] as Option[]).filter(

@@ -1,14 +1,12 @@
-import { Skeleton, Image, ToggleButton } from "@kobalte/core";
+import { Image, Skeleton, ToggleButton } from "@kobalte/core";
 import { createSignal } from "solid-js";
+
 import style from "./skeleton.module.css";
 
 export function BasicExample() {
   return (
-    <Skeleton.Root class={style["skeleton"]}>
-      <p>
-        Fabien MARIE-LOUISE Developer and UI Design enthusiast. Building UI related stuffs for
-        @solid_js
-      </p>
+    <Skeleton.Root class={style["skeleton"]} radius={10}>
+      <p>A UI toolkit for building accessible web apps and design systems with SolidJS.</p>
     </Skeleton.Root>
   );
 }
@@ -31,10 +29,7 @@ export function MultipleSkeletonsExample() {
         </Skeleton.Root>
       </div>
       <Skeleton.Root class={style["skeleton"]} radius={10}>
-        <p>
-          Fabien MARIE-LOUISE Developer and UI Design enthusiast. Building UI related stuffs for
-          @solid_js
-        </p>
+        <p>A UI toolkit for building accessible web apps and design systems with SolidJS.</p>
       </Skeleton.Root>
     </div>
   );
@@ -45,13 +40,10 @@ export function ToggleExample() {
   return (
     <div class={style["toggle-root"]}>
       <ToggleButton.Root class={style["toggle-button"]} pressed={visible()} onChange={setVisible}>
-        Skeleton {visible() ? "Visible" : "Not Visible"}
+        Show {visible() ? "content" : "skeleton"}
       </ToggleButton.Root>
       <Skeleton.Root class={style["skeleton"]} visible={visible()}>
-        <p>
-          Fabien MARIE-LOUISE Developer and UI Design enthusiast. Building UI related stuffs for
-          @solid_js
-        </p>
+        <p>A UI toolkit for building accessible web apps and design systems with SolidJS.</p>
       </Skeleton.Root>
     </div>
   );

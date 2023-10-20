@@ -2,7 +2,7 @@ import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
   BasicExample,
   MultipleSkeletonsExample,
-  ToggleExample
+  ToggleExample,
 } from "../../../../examples/skeleton";
 
 # Skeleton
@@ -52,8 +52,7 @@ The skeleton consists of:
       return (
       <Skeleton.Root class="skeleton" radius={10}>
         <p>
-          Fabien MARIE-LOUISE Developer and UI Design enthusiast. Building UI related stuffs for
-          @solid_js
+          A UI toolkit for building accessible web apps and design systems with SolidJS.
         </p>
       </Skeleton.Root>
       );
@@ -112,6 +111,7 @@ The skeleton consists of:
 ## Usage
 
 ### Multiple skeletons
+
 <Preview>
   <MultipleSkeletonsExample />
 </Preview>
@@ -146,8 +146,7 @@ The skeleton consists of:
           </div>
           <Skeleton.Root class="skeleton" radius={10}>
             <p>
-              Fabien MARIE-LOUISE Developer and UI Design enthusiast. Building UI related stuffs for
-              @solid_js
+              A UI toolkit for building accessible web apps and design systems with SolidJS.
             </p>
           </Skeleton.Root>
         </div>
@@ -217,6 +216,7 @@ The skeleton consists of:
 </TabsSnippets>
 
 ### Toggle example
+
 <Preview>
   <ToggleExample />
 </Preview>
@@ -241,8 +241,7 @@ The skeleton consists of:
           </ToggleButton.Root>
           <Skeleton.Root class="skeleton" visible={visible()}>
             <p>
-              Fabien MARIE-LOUISE Developer and UI Design enthusiast. Building UI related stuffs for
-              @solid_js
+              A UI toolkit for building accessible web apps and design systems with SolidJS.
             </p>
           </Skeleton.Root>
         </div>
@@ -334,24 +333,23 @@ The skeleton consists of:
 
 ### Skeleton.Root
 
-| Prop            | Description                                                                                                                                                                   |
-| :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| visible         | `boolean` <br/> The visible state of the Skeleton. Sets the `data-visible` data attribute.                                                                                                                 |
-| animate  | `boolean` <br/> Whether the skeleton should animate. Sets the `data-animate` data attribute.                                                  |
-| width        | `number` <br/> The width of the skeleton in px. Defaults to 100%.                                                                       |
-| height   | `number` <br/> The height of the skeleton in px. Defaults to auto.                                                                                                            |
-| radius   | `number` <br/> Roundness of the skeleton in px. Sets border-radius.                                                                                                            |
-| circle   | `boolean` <br/> Whether the skeleton should be a circle. Sets border-radius and width to the height.                                                                                                            |
-| children        | `JSX.Element` <br/> The children of the Skeleton. |
+| Prop     | Description                                                                                          |
+| :------- | :--------------------------------------------------------------------------------------------------- |
+| visible  | `boolean` <br/> The visible state of the Skeleton. Sets the `data-visible` data attribute.           |
+| animate  | `boolean` <br/> Whether the skeleton should animate. Sets the `data-animate` data attribute.         |
+| width    | `number` <br/> The width of the skeleton in px. Defaults to 100%.                                    |
+| height   | `number` <br/> The height of the skeleton in px. Defaults to auto.                                   |
+| radius   | `number` <br/> Roundness of the skeleton in px. Sets border-radius.                                  |
+| circle   | `boolean` <br/> Whether the skeleton should be a circle. Sets border-radius and width to the height. |
+| children | `JSX.Element` <br/> The children of the Skeleton.                                                    |
 
-| Data attribute     | Description                                                             |
-| :----------------- | :---------------------------------------------------------------------- |
-| data-visible         | Present when the Skeleton is visible.   |
-| data-animate       | Present when the Skeleton can animate. |
-
+| Data attribute | Description                            |
+| :------------- | :------------------------------------- |
+| data-visible   | Present when the Skeleton is visible.  |
+| data-animate   | Present when the Skeleton can animate. |
 
 ## Rendered elements
 
-| Component               | Default rendered element |
-| :---------------------- | :----------------------- |
-| `Skeleton.Root`         | `div`                    |
+| Component       | Default rendered element |
+| :-------------- | :----------------------- |
+| `Skeleton.Root` | `div`                    |
