@@ -205,14 +205,11 @@ export function SliderRoot(props: SliderRootProps) {
   const [trackRef, setTrackRef] = createSignal<HTMLElement>();
 
   let currentPosition: number | null = null;
-  const onSlideStart = (value: number) => {
-    const closestIndex = getClosestValueIndex(state.values(), value);
-    if (closestIndex >= 0) {
-      state.setFocusedThumb(closestIndex);
-      state.setThumbDragging(closestIndex, true);
-      state.setThumbValue(closestIndex, value);
-      currentPosition = null;
-    }
+  const onSlideStart = (index: number, value: number) => {
+    state.setFocusedThumb(index);
+    state.setThumbDragging(index, true);
+    state.setThumbValue(index, value);
+    currentPosition = null;
   };
 
   const onSlideMove = ({ deltaX, deltaY }: { deltaX: number; deltaY: number }) => {
