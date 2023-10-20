@@ -118,6 +118,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/separator",
       },
       {
+        title: "Skeleton",
+        href: "/docs/core/components/skeleton",
+        status: "new",
+      },
+      {
         title: "Switch",
         href: "/docs/core/components/switch",
       },
