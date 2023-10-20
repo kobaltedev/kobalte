@@ -418,16 +418,23 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       return (local.options as Option[]).filter(filterFn);
     }
 
-    return local.options.filter(optGroup => {
+    let filteredGroups: OptGroup[] = [];
+    for (const optGroup of local.options as OptGroup[]) {
+      // Filter options of the group
       const filteredChildrenOptions = ((optGroup as any)[optionGroupChildren] as Option[]).filter(
         filterFn,
       );
+      // Don't add any groups that are empty
+      if (filteredChildrenOptions.length === 0) continue;
 
-      return {
+      // Add the group with the filtered options
+      filteredGroups.push({
         ...optGroup,
         [optionGroupChildren]: filteredChildrenOptions,
-      };
-    });
+      });
+    }
+
+    return filteredGroups;
   });
 
   const displayedOptions = createMemo(() => {
