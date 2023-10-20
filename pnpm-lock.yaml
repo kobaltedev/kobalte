@@ -236,12 +236,6 @@ importers:
       '@floating-ui/dom':
         specifier: ^1.5.1
         version: 1.5.1
-      '@internationalized/date':
-        specifier: ^3.4.0
-        version: 3.4.0
-      '@internationalized/message':
-        specifier: ^3.1.1
-        version: 3.1.1
       '@internationalized/number':
         specifier: ^3.2.1
         version: 3.2.1
@@ -252,6 +246,25 @@ importers:
         specifier: ^1.7.11
         version: 1.7.11
     devDependencies:
+      '@kobalte/tests':
+        specifier: ^0.5.0
+        version: link:../tests
+
+  packages/dates:
+    dependencies:
+      '@internationalized/date':
+        specifier: ^3.4.0
+        version: 3.4.0
+      '@kobalte/utils':
+        specifier: ^0.9.0
+        version: link:../utils
+      solid-js:
+        specifier: ^1.7.11
+        version: 1.7.11
+    devDependencies:
+      '@kobalte/core':
+        specifier: ^0.11.0
+        version: link:../core
       '@kobalte/tests':
         specifier: ^0.5.0
         version: link:../tests
@@ -2444,40 +2457,6 @@ packages:
     resolution: {integrity: sha512-m0G6wlnhm/AX0H12IOWtK8gASEMffnX08RtKkCgTdHb9JpHKGloI7icFfLg9ZmQeavcvR0PKmzxClyuFPSjKWw==}
     dev: false
 
-  /@formatjs/ecma402-abstract@1.17.1:
-    resolution: {integrity: sha512-N2sjSUrmsEoynG8Q61pkrKlJ9PxcUGxJke1x3301aGyprGgl58wHWhgGUnzTfS4OHNNNQDxzjcXVp1t5fGW6yQ==}
-    dependencies:
-      '@formatjs/intl-localematcher': 0.4.1
-      tslib: 2.6.2
-    dev: false
-
-  /@formatjs/fast-memoize@2.2.0:
-    resolution: {integrity: sha512-hnk/nY8FyrL5YxwP9e4r9dqeM6cAbo8PeU9UjyXojZMNvVad2Z06FAVHyR3Ecw6fza+0GH7vdJgiKIVXTMbSBA==}
-    dependencies:
-      tslib: 2.6.2
-    dev: false
-
-  /@formatjs/icu-messageformat-parser@2.6.1:
-    resolution: {integrity: sha512-dTDNupwdovxT1xDXC96zzPUua/XrxTQTOulJZSvaJP0pt3rr/cGR/tq4d7BnxY9oqPZpc4fjWBmrRlhcUyBSiw==}
-    dependencies:
-      '@formatjs/ecma402-abstract': 1.17.1
-      '@formatjs/icu-skeleton-parser': 1.6.1
-      tslib: 2.6.2
-    dev: false
-
-  /@formatjs/icu-skeleton-parser@1.6.1:
-    resolution: {integrity: sha512-/LQ6ovxYd8FQjVLmbV+WmuFy86o+JTc0cIQuWixuLuUMfRRif8eUQw3vPK5hx7C/g1UVmKAaOcYRTEsvyEGz9g==}
-    dependencies:
-      '@formatjs/ecma402-abstract': 1.17.1
-      tslib: 2.6.2
-    dev: false
-
-  /@formatjs/intl-localematcher@0.4.1:
-    resolution: {integrity: sha512-Fs4MhhHlLC0RrspX2u2KP7zlwL9eHrBZsOBxaPOeqrCZYLaOUK4cYXQ1ErpAB0HnGV/GUXNa5smzV/7jCuRzxg==}
-    dependencies:
-      tslib: 2.6.2
-    dev: false
-
   /@hapi/hoek@9.3.0:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
 
@@ -2510,13 +2489,6 @@ packages:
     resolution: {integrity: sha512-QUDSGCsvrEVITVf+kv9VSAraAmCgjQmU5CiXtesUBBhBe374NmnEIIaOFBZ72t29dfGMBP0zF+v6toVnbcc6jg==}
     dependencies:
       '@swc/helpers': 0.5.2
-    dev: false
-
-  /@internationalized/message@3.1.1:
-    resolution: {integrity: sha512-ZgHxf5HAPIaR0th+w0RUD62yF6vxitjlprSxmLJ1tam7FOekqRSDELMg4Cr/DdszG5YLsp5BG3FgHgqquQZbqw==}
-    dependencies:
-      '@swc/helpers': 0.5.2
-      intl-messageformat: 10.5.1
     dev: false
 
   /@internationalized/number@3.2.1:
@@ -6506,15 +6478,6 @@ packages:
       get-intrinsic: 1.2.1
       has: 1.0.3
       side-channel: 1.0.4
-
-  /intl-messageformat@10.5.1:
-    resolution: {integrity: sha512-irEmjxHq0f1MHviQr3Q4ToF9EgYbnXDq2/R9MRTTveGKHgy6VZ29hQxswu4trqWaX7T6njKxSoKVG92OSz0U5Q==}
-    dependencies:
-      '@formatjs/ecma402-abstract': 1.17.1
-      '@formatjs/fast-memoize': 2.2.0
-      '@formatjs/icu-messageformat-parser': 2.6.1
-      tslib: 2.6.2
-    dev: false
 
   /is-alphabetical@2.0.1:
     resolution: {integrity: sha512-FWyyY60MeTNyeSRpkM2Iry0G9hpr7/9kD40mD/cGQEuilcZYS4okz8SN2Q6rLCJ8gbCt6fN+rC+6tMGS99LaxQ==}

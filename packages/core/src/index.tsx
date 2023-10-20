@@ -8,6 +8,7 @@ export * from "./polymorphic";
 export * from "./primitives";
 export * from "./selection";
 export * from "./toast/toaster";
+export { NumberParser } from "@internationalized/number";
 
 // components
 export * as Accordion from "./accordion";
@@ -15,12 +16,10 @@ export * as Alert from "./alert";
 export * as AlertDialog from "./alert-dialog";
 export * as Breadcrumbs from "./breadcrumbs";
 export * as Button from "./button";
-export * as Calendar from "./calendar";
 export * as Checkbox from "./checkbox";
 export * as Collapsible from "./collapsible";
 export * as Combobox from "./combobox";
 export * as ContextMenu from "./context-menu";
-export * as DatePicker from "./date-picker";
 export * as Dialog from "./dialog";
 export * as DropdownMenu from "./dropdown-menu";
 export * as HoverCard from "./hover-card";
