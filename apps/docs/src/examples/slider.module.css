@@ -1,0 +1,73 @@
+.SliderRoot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  touch-action: none;
+  width: 200px;
+}
+
+.SliderRoot[data-orientation="vertical"] {
+  height: 200px;
+}
+
+.SliderTrack {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: relative;
+  border-radius: 9999px;
+  height: 8px;
+  width: 100%;
+}
+
+.SliderTrack[data-orientation="vertical"] {
+  width: 8px;
+  height: 100%;
+}
+.SliderRange {
+  position: absolute;
+  background-color: white;
+  border-radius: 9999px;
+  height: 100%;
+}
+
+.SliderRange[data-orientation="vertical"] {
+  width: 100%;
+  height: unset;
+}
+.SliderThumb {
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-color: #0090ff;
+  border-radius: 9999px;
+  top: -4px;
+}
+.SliderThumb[data-orientation="vertical"] {
+  left: -4px;
+  top: unset;
+}
+.SliderThumb:hover {
+  box-shadow: 0 0 0 5px #2a91fe98;
+}
+.SliderThumb:focus {
+  outline: none;
+  box-shadow: 0 0 0 5px #2a91fe98;
+}
+.SliderLabel {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.SecondThumb {
+  background-color: #30a46c;
+}
+
+.SecondThumb:hover {
+  box-shadow: 0 0 0 5px #50fdac5e;
+}
+
+.SecondThumb:focus {
+  box-shadow: 0 0 0 5px #50fdac5e;
+}

@@ -123,6 +123,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         status: "new",
       },
       {
+        title: "Slider",
+        href: "/docs/core/components/slider",
+        status: "new",
+      },
+      {
         title: "Switch",
         href: "/docs/core/components/switch",
       },
