@@ -67,7 +67,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Combobox",
         href: "/docs/core/components/combobox",
-        status: "updated",
       },
       {
         title: "Context Menu",
@@ -120,6 +119,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Skeleton",
         href: "/docs/core/components/skeleton",
+        status: "new",
+      },
+      {
+        title: "Slider",
+        href: "/docs/core/components/slider",
         status: "new",
       },
       {
