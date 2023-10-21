@@ -1,0 +1,399 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import {
+  BasicExample,
+  MultipleSkeletonsExample,
+  ToggleExample,
+} from "../../../../examples/skeleton";
+
+# Slider
+
+An input where the user selects a value from within a given range.
+
+## Import
+
+```ts
+import { Slider } from "@kobalte/core";
+```
+
+## Features
+
+- Follow the [WAI ARIA Slider](https://www.w3.org/WAI/ARIA/apg/patterns/slider-multithumb/) design pattern.
+- Can be controlled or uncontrolled.
+- Support for multiple thumbs.
+- Support a minimum value between thumbs.
+- Support click or touch on track to change value.
+- Support right or left direction.
+
+## Anatomy
+
+The slider consists of:
+
+- **Slider.Root:** The root container for the slider.
+- **Slider.Track:** The component that visually represents the slider track.
+- **Slider.Fill:** The component that visually represents the slider value.
+- **Slider.Thumb:** The thumb that is used to visually indicate a value in the slider.
+- **Slider.Input:** The native html input that is visually hidden in the slider thumb.
+- **Slider.ValueLabel:** The accessible label text representing the current value in a human-readable format.
+
+```tsx
+<Skeleton.Root />
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Skeleton } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      return (
+      <Skeleton.Root class="skeleton" radius={10}>
+        <p>
+          A UI toolkit for building accessible web apps and design systems with SolidJS.
+        </p>
+      </Skeleton.Root>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    @keyframes skeleton-fade {
+      0%,
+      100% {
+        opacity: 0.4;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .skeleton {
+      height: auto;
+      width: 100%;
+      position: relative;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+    .skeleton[data-animate="true"]::after {
+      animation: skeleton-fade 1500ms linear infinite;
+    }
+
+    .skeleton[data-visible="true"] {
+      overflow: hidden;
+    }
+    .skeleton[data-visible="true"]::before {
+      position: absolute;
+      content: "";
+      inset: 0;
+      z-index: 10;
+      background-color: white;
+    }
+
+    .skeleton[data-visible="true"]::after {
+      position: absolute;
+      content: "";
+      inset: 0;
+      z-index: 11;
+      background-color: gray;
+    }
+    ```
+
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+### Multiple skeletons
+
+<Preview>
+  <MultipleSkeletonsExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Skeleton, Image } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      return (
+        <div class="multiple-root">
+          <div class="multiple-profile">
+            <Skeleton.Root class="skeleton" height={50} circle>
+              <Image.Root class="multiple-avatar">
+                <Image.Img
+                  class="image__img"
+                  src="https://pbs.twimg.com/profile_images/1509139491671445507/pzWYjlYN_400x400.jpg"
+                  alt="Nicole Steeves"
+                />
+              </Image.Root>
+            </Skeleton.Root>
+            <Skeleton.Root class="skeleton" height={20} radius={10}>
+              Kobalte
+            </Skeleton.Root>
+          </div>
+          <Skeleton.Root class="skeleton" radius={10}>
+            <p>
+              A UI toolkit for building accessible web apps and design systems with SolidJS.
+            </p>
+          </Skeleton.Root>
+        </div>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    @keyframes skeleton-fade {
+      0%,
+      100% {
+        opacity: 0.4;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .skeleton {
+      height: auto;
+      width: 100%;
+      position: relative;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+    .skeleton[data-animate="true"]::after {
+      animation: skeleton-fade 1500ms linear infinite;
+    }
+
+    .skeleton[data-visible="true"] {
+      overflow: hidden;
+    }
+    .skeleton[data-visible="true"]::before {
+      position: absolute;
+      content: "";
+      inset: 0;
+      z-index: 10;
+      background-color: white;
+    }
+
+    .skeleton[data-visible="true"]::after {
+      position: absolute;
+      content: "";
+      inset: 0;
+      z-index: 11;
+      background-color: gray;
+    }
+
+    .multiple-root {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .multiple-profile {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    ```
+
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+### Toggle example
+
+<Preview>
+  <ToggleExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Skeleton, ToggleButton } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      const [visible, setVisible] = createSignal(true);
+      return (
+        <div class="toggle-root">
+          <ToggleButton.Root class="toggle-button" pressed={visible()} onChange={setVisible}>
+            Skeleton {visible() ? "Visible" : "Not Visible"}
+          </ToggleButton.Root>
+          <Skeleton.Root class="skeleton" visible={visible()}>
+            <p>
+              A UI toolkit for building accessible web apps and design systems with SolidJS.
+            </p>
+          </Skeleton.Root>
+        </div>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    @keyframes skeleton-fade {
+      0%,
+      100% {
+        opacity: 0.4;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .skeleton {
+      height: auto;
+      width: 100%;
+      position: relative;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+    .skeleton[data-animate="true"]::after {
+      animation: skeleton-fade 1500ms linear infinite;
+    }
+
+    .skeleton[data-visible="true"] {
+      overflow: hidden;
+    }
+    .skeleton[data-visible="true"]::before {
+      position: absolute;
+      content: "";
+      inset: 0;
+      z-index: 10;
+      background-color: white;
+    }
+
+    .skeleton[data-visible="true"]::after {
+      position: absolute;
+      content: "";
+      inset: 0;
+      z-index: 11;
+      background-color: gray;
+    }
+
+    .toggle-root {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toggle-button {
+      appearance: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      width: 50%;
+      outline: none;
+      border-radius: 6px;
+      background-color: hsl(200 98% 39%);
+      color: white;
+      font-size: 16px;
+      line-height: 0;
+    }
+
+    .toggle-button:focus-visible {
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+    }
+
+    .toggle-button[data-pressed] {
+      background-color: hsl(0 72% 51%);
+    }
+    ```
+
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## API Reference
+
+### Slider.Root
+
+| Prop     | Description                                                                                          |
+| :------- | :--------------------------------------------------------------------------------------------------- |
+| value  | `number[]` <br/> The controlled values of the slider. Must be used in conjunction with `onChange`.          |
+| defaultValue  | `number[]` <br/> The value of the slider when initially rendered. Use when you do not need to control the state of the slider.          |
+| onChange    | `(value: number[]) => void` <br/> Event handler called when the value changes.                                    |
+| onChangeEnd   | `(value: number[]) => void` <br/> Event handler called when the value changes at the end of an interaction.                                   |
+| inverted   | `boolean` <br/> Whether the slider is visually inverted. Defaults to false.                                  |
+| minValue   | `number` <br/> The minimum slider value. Defaults to 0|
+| maxValue   | `number` <br/> The maximum slider value. Defaults to 100|
+| step   | `number` <br/> The stepping interval. Defaults to 1|
+| minStepsBetweenThumbs   | `number` <br/> The minimum permitted steps between thumbs. Defaults to 0|
+| getValueLabel   | `(params: GetValueLabelParams) => string` <br/> A function to get the accessible label text representing the current value in a human-readable format. If not provided, the value label will be read as a percentage of the max value.|
+| orientation   | `'horizontal' \| 'vertical'` <br/> The orientation of the slider.|
+| name   | `string` <br/> The name of the slider, used when submitting an HTML form.|
+| validationState   | `'valid' \| 'invalid'` <br/> Whether the slider should display its "valid" or "invalid" visual styling.|
+| required        | `boolean` <br/> Whether the user must check a radio group item before the owning form can be submitted.                                                             |
+| disabled        | `boolean` <br/> Whether the radio group is disabled.                                                                                                                |
+| readOnly        | `boolean` <br/> Whether the radio group items can be selected but not changed by the user.                                                                          |
+
+| Data attribute | Description                            |
+| :------------- | :------------------------------------- |
+| data-orientation='horizontal' | Present when the slider has horizontal orientation. |
+| data-orientation='vertical'   | Present when the slider has vertical orientation.   |
+| data-valid     | Present when the slider is valid according to the validation rules.                |
+| data-invalid   | Present when the slider is invalid according to the validation rules.              |
+| data-required  | Present when the user must slider an item before the owning form can be submitted. |
+| data-disabled  | Present when the slider is disabled.                                               |
+| data-readonly  | Present when the slider is read only.                                              |
+
+`Slider.ValueLabel`, `Slider.Fill`, `Slider.Input`, `Slider.Thumb` and `Slider.Track` share the same data-attributes.
+
+## Rendered elements
+
+| Component       | Default rendered element |
+| :-------------- | :----------------------- |
+| `Slider.Root` | `div`                    |
+| `Slider.Track` | `div`                    |
+| `Slider.Fill` | `div`                    |
+| `Slider.Thumb` | `span`                    |
+| `Slider.Input` | `input`                    |
+| `Slider.ValueLabel` | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                                                                                                   |
+| :-------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
+| <Kbd>PageUp</Kbd>        | Increases the value of the focused thumb by a larger `step`. |
+| <Kbd>PageDown</Kbd>        | Decreases the value of the focused thumb by a larger `step`. |
+| <Kbd>ArrowDown</Kbd>  | Decreases the value of the focused thumb by the `step` amount.                                 |
+| <Kbd>ArrowUp</Kbd>  | Increases the value of the focused thumb by the `step` amount.                                 |
+| <Kbd>ArrowRight</Kbd> | Increments/decrements by the `step` value depending on `orientation`.                         |
+| <Kbd>ArrowLeft</Kbd> | Increments/decrements by the `step` value depending on `orientation`.                         |
+| <Kbd>Home</Kbd>       | Sets the value of the first thumb to the minimum value.
+| <Kbd>End</Kbd>        | Sets the value of the last thumb to the maximum value.
