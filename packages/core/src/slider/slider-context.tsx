@@ -16,7 +16,7 @@ export interface SliderContextValue {
   state: SliderState;
   thumbs: Accessor<CollectionItemWithRef[]>;
   setThumbs: Setter<CollectionItemWithRef[]>;
-  onSlideStart: ((value: number) => void) | undefined;
+  onSlideStart: ((index: number, value: number) => void) | undefined;
   onSlideMove: ((deltas: { deltaX: number; deltaY: number }) => void) | undefined;
   onSlideEnd: (() => void) | undefined;
   onStepKeyDown: (event: KeyboardEvent, index: number) => void;

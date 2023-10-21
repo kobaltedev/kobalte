@@ -13,7 +13,15 @@
  */
 
 import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { Accessor, createContext, JSX, onMount, splitProps, useContext } from "solid-js";
+import {
+  Accessor,
+  createContext,
+  createUniqueId,
+  JSX,
+  onMount,
+  splitProps,
+  useContext,
+} from "solid-js";
 
 import { createFormControlField, FORM_CONTROL_FIELD_PROP_NAMES } from "../form-control";
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -33,7 +41,7 @@ export function SliderThumb(props: SliderThumbProps) {
 
   props = mergeDefaultProps(
     {
-      id: context.generateId("thumb"),
+      id: context.generateId(`thumb-${createUniqueId()}`),
     },
     props,
   );
@@ -101,18 +109,20 @@ export function SliderThumb(props: SliderThumbProps) {
 
     const target = e.currentTarget as HTMLElement;
 
-    target.setPointerCapture(e.pointerId);
     e.preventDefault();
+    e.stopPropagation();
+    target.setPointerCapture(e.pointerId);
     target.focus();
 
     startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
 
-    if (value()) {
-      context.onSlideStart?.(value()!);
+    if (value() !== undefined) {
+      context.onSlideStart?.(index(), value()!);
     }
   };
 
   const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    e.stopPropagation();
     callHandler(e, local.onPointerMove);
 
     const target = e.currentTarget as HTMLElement;
@@ -129,6 +139,7 @@ export function SliderThumb(props: SliderThumbProps) {
   };
 
   const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+    e.stopPropagation();
     callHandler(e, local.onPointerUp);
 
     const target = e.currentTarget as HTMLElement;
