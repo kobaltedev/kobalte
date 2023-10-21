@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 0.11.2
+
+### Patch Changes
+
+- 677f256: added `Slider` component
+
 ## 0.11.1
 
 ### Patch Changes

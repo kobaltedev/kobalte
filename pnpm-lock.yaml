@@ -143,7 +143,7 @@ importers:
         specifier: 3.5.2
         version: 3.5.2(@algolia/client-search@4.20.0)(search-insights@2.9.0)
       '@kobalte/core':
-        specifier: 0.11.1
+        specifier: 0.11.2
         version: link:../../packages/core
       '@solidjs/meta':
         specifier: 0.28.6
