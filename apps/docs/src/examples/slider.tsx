@@ -31,7 +31,7 @@ export function MultipleThumbsExample() {
         <Slider.Thumb class={style["SliderThumb"]}>
           <Slider.Input />
         </Slider.Thumb>
-        <Slider.Thumb class={`${style["SliderThumb"]} ${style["SecondThumb"]}`}>
+        <Slider.Thumb class={`${style["SliderThumb"]} ${style["SliderThumb"]}`}>
           <Slider.Input />
         </Slider.Thumb>
       </Slider.Track>
@@ -41,7 +41,7 @@ export function MultipleThumbsExample() {
 
 export function StepExample() {
   return (
-    <>
+    <div class="flex flex-col space-y-4">
       <Slider.Root class={style["SliderRoot"]} step={8}>
         <div class={style["SliderLabel"]}>
           <Slider.Label>Step size 8</Slider.Label>
@@ -78,7 +78,7 @@ export function StepExample() {
           </Slider.Thumb>
         </Slider.Track>
       </Slider.Root>
-    </>
+    </div>
   );
 }
 
@@ -94,7 +94,7 @@ export function MinStepsBetweenExample() {
         <Slider.Thumb class={style["SliderThumb"]}>
           <Slider.Input />
         </Slider.Thumb>
-        <Slider.Thumb class={`${style["SliderThumb"]} ${style["SecondThumb"]}`}>
+        <Slider.Thumb class={`${style["SliderThumb"]} ${style["SliderThumb"]}`}>
           <Slider.Input />
         </Slider.Thumb>
       </Slider.Track>
@@ -137,7 +137,7 @@ export function CustomValueLabelExample() {
         <Slider.Thumb class={style["SliderThumb"]}>
           <Slider.Input />
         </Slider.Thumb>
-        <Slider.Thumb class={`${style["SliderThumb"]} ${style["SecondThumb"]}`}>
+        <Slider.Thumb class={`${style["SliderThumb"]} ${style["SliderThumb"]}`}>
           <Slider.Input />
         </Slider.Thumb>
       </Slider.Track>

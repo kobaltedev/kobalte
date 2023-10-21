@@ -67,7 +67,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Combobox",
         href: "/docs/core/components/combobox",
-        status: "updated",
       },
       {
         title: "Context Menu",

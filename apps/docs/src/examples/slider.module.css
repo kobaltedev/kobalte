@@ -13,7 +13,7 @@
 }
 
 .SliderTrack {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: hsl(240 6% 90%);
   position: relative;
   border-radius: 9999px;
   height: 8px;
@@ -24,9 +24,10 @@
   width: 8px;
   height: 100%;
 }
+
 .SliderRange {
   position: absolute;
-  background-color: white;
+  background-color: hsl(200 98% 39%);
   border-radius: 9999px;
   height: 100%;
 }
@@ -35,39 +36,36 @@
   width: 100%;
   height: unset;
 }
+
 .SliderThumb {
   display: block;
   width: 16px;
   height: 16px;
-  background-color: #0090ff;
+  background-color: hsl(200 98% 39%);
   border-radius: 9999px;
   top: -4px;
 }
+
 .SliderThumb[data-orientation="vertical"] {
   left: -4px;
   top: unset;
 }
+
 .SliderThumb:hover {
   box-shadow: 0 0 0 5px #2a91fe98;
 }
+
 .SliderThumb:focus {
   outline: none;
   box-shadow: 0 0 0 5px #2a91fe98;
 }
+
 .SliderLabel {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-.SecondThumb {
-  background-color: #30a46c;
-}
-
-.SecondThumb:hover {
-  box-shadow: 0 0 0 5px #50fdac5e;
-}
-
-.SecondThumb:focus {
-  box-shadow: 0 0 0 5px #50fdac5e;
+[data-kb-theme="dark"] .SliderTrack {
+  background-color: hsl(240 5% 26%);
 }
