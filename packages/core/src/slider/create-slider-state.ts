@@ -123,15 +123,13 @@ export function createSliderState(props: StateOpts): SliderState {
   const getThumbMinValue = (index: number) => {
     return index === 0
       ? props.minValue!()
-      : values()[index - 1] +
-          props.minStepsBetweenThumbs!() * props.step!() * (values().length - 1);
+      : values()[index - 1] + props.minStepsBetweenThumbs!() * props.step!();
   };
 
   const getThumbMaxValue = (index: number) => {
     return index === values().length - 1
       ? props.maxValue!()
-      : values()[index + 1] -
-          props.minStepsBetweenThumbs!() * props.step!() * (values().length - 1);
+      : values()[index + 1] - props.minStepsBetweenThumbs!() * props.step!();
   };
 
   const isThumbEditable = (index: number) => {
