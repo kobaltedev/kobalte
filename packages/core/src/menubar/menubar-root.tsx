@@ -11,9 +11,17 @@ import {
   OverrideComponentProps,
   contains,
   createGenerateId,
-  mergeRefs
+  mergeRefs,
 } from "@kobalte/utils";
-import { Accessor, createEffect, createMemo, createSignal, createUniqueId, onCleanup, splitProps } from "solid-js";
+import {
+  Accessor,
+  createEffect,
+  createMemo,
+  createSignal,
+  createUniqueId,
+  onCleanup,
+  splitProps,
+} from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createControllableSignal, createInteractOutside } from "../primitives";
@@ -36,8 +44,7 @@ export interface MenubarRootOptions extends AsChildProp {
   focusOnAlt?: boolean;
 }
 
-export interface MenubarRootProps extends OverrideComponentProps<"div", MenubarRootOptions> {
-}
+export interface MenubarRootProps extends OverrideComponentProps<"div", MenubarRootOptions> {}
 
 /**
  * A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.
@@ -54,13 +61,13 @@ export function MenubarRoot(props: MenubarRootProps) {
     "defaultValue",
     "onValueChange",
     "loop",
-    "focusOnAlt"
+    "focusOnAlt",
   ]);
 
   const [value, setValue] = createControllableSignal<string | undefined>({
     value: () => local.value,
     defaultValue: () => local.defaultValue,
-    onChange: value => local.onValueChange?.(value)
+    onChange: value => local.onValueChange?.(value),
   });
 
   const [menuRefs, setMenuRefs] = createSignal<Map<string, Array<Element>>>(
@@ -69,7 +76,7 @@ export function MenubarRoot(props: MenubarRootProps) {
 
   const dataset: Accessor<MenubarDataSet> = createMemo(() => ({
     "data-expanded": value() !== undefined ? "" : undefined,
-    "data-closed": value() === undefined ? "" : undefined
+    "data-closed": value() === undefined ? "" : undefined,
   }));
 
   const [autoFocusMenu, setAutoFocusMenu] = createSignal(false);
@@ -132,7 +139,7 @@ export function MenubarRoot(props: MenubarRootProps) {
     },
     autoFocusMenu,
     setAutoFocusMenu,
-    generateId: createGenerateId(() => others.id!)
+    generateId: createGenerateId(() => others.id!),
   };
   createInteractOutside(
     {
@@ -141,7 +148,7 @@ export function MenubarRoot(props: MenubarRootProps) {
       },
       shouldExcludeElement: element => {
         return [ref, ...menuRefs().values()].flat().some(ref => contains(ref, element));
-      }
+      },
     },
     () => ref
   );
