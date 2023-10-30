@@ -63,7 +63,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
     {
       id: rootContext.generateId(`sub-trigger-${createUniqueId()}`),
     },
-    props,
+    props
   );
 
   const [local, others] = splitProps(props, [
@@ -121,7 +121,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
       allowsDifferentPressOrigin: true,
       disabled: () => local.disabled,
     },
-    () => ref,
+    () => ref
   );
 
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
@@ -278,8 +278,8 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
           window.clearTimeout(pointerGraceTimer);
           context.parentMenuContext()?.setPointerGraceIntent(null);
         });
-      },
-    ),
+      }
+    )
   );
 
   createEffect(() => onCleanup(context.registerTriggerId(local.id!)));

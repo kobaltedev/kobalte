@@ -25,7 +25,7 @@ export function MenuGroupLabel(props: MenuGroupLabelProps) {
     {
       id: context.generateId("label"),
     },
-    props,
+    props
   );
 
   const [local, others] = splitProps(props, ["id"]);
