@@ -4,7 +4,6 @@ import { ListState } from "../list";
 import { Placement } from "../popper/utils";
 import { CollectionItemWithRef, CreatePresenceResult } from "../primitives";
 import { FocusStrategy } from "../selection";
-import { GraceIntent, Side } from "./utils";
 
 export interface MenubarDataSet {
   "data-expanded": string | undefined;
@@ -40,10 +39,10 @@ export interface MenubarContextValue {
   registerContentId: (id: string) => () => void;
 }
 
-export const MenuContext = createContext<MenubarContextValue>();
+export const MenubarContext = createContext<MenubarContextValue>();
 
 export function useOptionalMenubarContext() {
-  return useContext(MenuContext);
+  return useContext(MenubarContext);
 }
 
 export function useMenubarContext() {

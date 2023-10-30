@@ -36,7 +36,7 @@ export function MenubarTrigger(props: MenubarTriggerOptions) {
       id: rootContext.generateId("trigger"),
     },
     props
-    );
+  );
 
   const [local, others] = splitProps(props, [
     "ref",
@@ -47,7 +47,7 @@ export function MenubarTrigger(props: MenubarTriggerOptions) {
     "onPointerMove",
     "onPointerUp",
     "onKeyDown",
-    ]);
+  ]);
 
   const clearLongPressTimeout = () => {
     if (isServer) {
@@ -125,7 +125,7 @@ export function MenubarTrigger(props: MenubarTriggerOptions) {
       as="div"
       ref={mergeRefs(menuContext.setTriggerRef, local.ref)}
       style={{
-      // prevent iOS context menu from appearing
+        // prevent iOS context menu from appearing
         "-webkit-touch-callout": "none",
         ...local.style,
       }}
@@ -138,5 +138,5 @@ export function MenubarTrigger(props: MenubarTriggerOptions) {
       {...menuContext.dataset()}
       {...others}
     />
-    );
+  );
 }

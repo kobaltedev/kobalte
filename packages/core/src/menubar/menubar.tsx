@@ -10,22 +10,23 @@ import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { createUniqueId } from "solid-js";
 
 import { AsChildProp } from "../polymorphic";
+import { MenubarContext } from "./menubar-context";
 
-type Direction = 'ltr' | 'rtl';
+type Direction = "ltr" | "rtl";
 
 export interface MenubarRootOptions extends AsChildProp {
   /** The value of the menu that should be open when initially rendered. Use when you do not need to control the value state. */
   defaultValue?: string;
-  
+
   /** The controlled value of the menu to open. Should be used in conjunction with onValueChange. */
   value?: string;
 
   /** Event handler called when the value changes. */
   onValueChange?: string;
-  
+
   /** When true, keyboard navigation will loop from last item to first, and vice versa. */
   loop?: boolean;
-  
+
   /** The reading direction. If omitted, uses LTR (left-to-right) reading mode. */
   dir?: Direction;
 }
@@ -40,17 +41,18 @@ export function MenubarRoot(props: MenubarRootProps) {
 
   props = mergeDefaultProps({ id: defaultId }, props);
 
-  return 
-    <MenubarRootContext.Provider value={context}>
+  return (
+    <MenubarContext.Provider value={context}>
       <Polymorphic
         as="div"
         style={{
-        // prevent iOS context menu from appearing
+          // prevent iOS context menu from appearing
           "-webkit-touch-callout": "none",
           ...local.style,
         }}
         data-disabled={local.disabled ? "" : undefined}
         {...others}
       />
-    </MenubarRootContext.Provider>;
+    </MenubarContext.Provider>
+  );
 }
