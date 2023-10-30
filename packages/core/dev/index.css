@@ -1,7 +1,0 @@
-*:focus {
-  outline: solid 4px red;
-}
-
-[data-highlighted] {
-  background: #87e1ff;
-}
