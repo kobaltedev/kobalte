@@ -22,6 +22,7 @@ import {
   onCleanup,
   splitProps,
 } from "solid-js";
+import { isServer } from "solid-js/web";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createControllableSignal, createInteractOutside } from "../primitives";
@@ -167,6 +168,7 @@ export function MenubarRoot(props: MenubarRootProps) {
   };
 
   createEffect(() => {
+    if (isServer) return;
     if (local.focusOnAlt) window.addEventListener("keydown", keydownHandler);
     else window.removeEventListener("keydown", keydownHandler);
   });
@@ -176,6 +178,7 @@ export function MenubarRoot(props: MenubarRootProps) {
   });
 
   onCleanup(() => {
+    if (isServer) return;
     window.removeEventListener("keydown", keydownHandler);
   });
 

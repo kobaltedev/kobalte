@@ -96,9 +96,6 @@ export function MenuTrigger(props: MenuTriggerProps) {
     callHandler(e, local.onClick);
 
     if (!local.disabled) {
-      // When opened by click, automatically focus Menubar menus
-      optionalMenubarContext?.setAutoFocusMenu(true);
-
       if (e.currentTarget.dataset.pointerType === "touch") context.toggle(true);
     }
   };
