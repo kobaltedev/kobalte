@@ -36,7 +36,7 @@ export function MenubarMenu(props: MenubarMenuProps) {
 
   const uniqueid = createUniqueId();
 
-  const defaultId = menubarContext.generateId(`menu-${uniqueid}`);
+  const defaultId = menubarContext.generateId(`menubar-menu-${uniqueid}`);
 
   props = mergeDefaultProps({ id: defaultId }, props);
 

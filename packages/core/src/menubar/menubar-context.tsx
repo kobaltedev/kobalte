@@ -11,6 +11,10 @@ export interface MenubarContextValue {
   setValue: (next: string | ((prev: string | undefined) => string | undefined) | undefined) => void;
   menus: Accessor<Set<String>>;
   menuRefs: Accessor<Array<Element>>;
+  lastValue: Accessor<string | undefined>;
+  setLastValue: (
+    next: string | ((prev: string | undefined) => string | undefined) | undefined
+  ) => void;
   registerMenu: (value: string, refs: Array<Element>) => void;
   unregisterMenu: (value: string) => void;
   nextMenu: () => void;

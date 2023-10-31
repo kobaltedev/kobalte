@@ -7,7 +7,7 @@
  */
 
 import { callHandler, mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { createDeferred, createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import { createDeferred, createEffect, createSignal, JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { useMenuContext } from "./menu-context";
@@ -43,6 +43,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
     "onClick",
     "onKeyDown",
     "onMouseOver",
+    "onFocus",
   ]);
 
   let key: string | undefined;
@@ -71,6 +72,8 @@ export function MenuTrigger(props: MenuTriggerProps) {
     onCleanup(() => {
       optionalMenubarContext.unregisterMenu(key!);
     });
+
+    if (optionalMenubarContext.lastValue() === undefined) optionalMenubarContext.setLastValue(key);
   }
 
   const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
@@ -80,6 +83,9 @@ export function MenuTrigger(props: MenuTriggerProps) {
 
     // For consistency with native, open the select on mouse down (main button), but touch up.
     if (!local.disabled && e.pointerType !== "touch" && e.button === 0) {
+      // When opened by click, automatically focus Menubar menus
+      optionalMenubarContext?.setAutoFocusMenu(true);
+
       // Don't auto focus element for Menubar
       if (optionalMenubarContext !== undefined) context.toggle(false);
       else context.toggle(true);
@@ -90,7 +96,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
     callHandler(e, local.onClick);
 
     if (!local.disabled) {
-      // When opened by cursor, automatically focus Menubar menus
+      // When opened by click, automatically focus Menubar menus
       optionalMenubarContext?.setAutoFocusMenu(true);
 
       if (e.currentTarget.dataset.pointerType === "touch") context.toggle(true);
@@ -146,7 +152,15 @@ export function MenuTrigger(props: MenuTriggerProps) {
     }
   };
 
+  const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = e => {
+    callHandler(e, local.onFocus);
+
+    if (optionalMenubarContext !== undefined) optionalMenubarContext.setValue(key);
+  };
+
   createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
+
+  const [tabIndex, setTabIndex] = createSignal<undefined | 0 | -1>(undefined);
 
   return (
     <Button.Root
@@ -159,10 +173,19 @@ export function MenuTrigger(props: MenuTriggerProps) {
       data-highlighted={
         key !== undefined && optionalMenubarContext?.value() === key ? true : undefined
       }
+      tabIndex={
+        optionalMenubarContext !== undefined
+          ? optionalMenubarContext.value() === key || optionalMenubarContext.lastValue() === key
+            ? 0
+            : -1
+          : undefined
+      }
       onPointerDown={onPointerDown}
       onMouseOver={onMouseOver}
       onClick={onClick}
       onKeyDown={onKeyDown}
+      onFocus={onFocus}
+      role={optionalMenubarContext !== undefined ? "menuitem" : undefined}
       {...context.dataset()}
       {...others}
     />

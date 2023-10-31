@@ -70,6 +70,8 @@ export function MenubarRoot(props: MenubarRootProps) {
     onChange: value => local.onValueChange?.(value),
   });
 
+  const [lastValue, setLastValue] = createSignal<string | undefined>();
+
   const [menuRefs, setMenuRefs] = createSignal<Map<string, Array<Element>>>(
     new Map<string, Array<HTMLElement>>()
   );
@@ -85,6 +87,8 @@ export function MenubarRoot(props: MenubarRootProps) {
     dataset,
     value,
     setValue,
+    lastValue,
+    setLastValue,
     menus: () => new Set([...menuRefs().keys()]),
     menuRefs: () => [...menuRefs().values()].flat(),
     registerMenu: (value, refs) => {
@@ -167,13 +171,23 @@ export function MenubarRoot(props: MenubarRootProps) {
     else window.removeEventListener("keydown", keydownHandler);
   });
 
+  createEffect(() => {
+    if (value() !== undefined) setLastValue(value());
+  });
+
   onCleanup(() => {
     window.removeEventListener("keydown", keydownHandler);
   });
 
   return (
     <MenubarContext.Provider value={context}>
-      <Polymorphic as="div" ref={mergeRefs(el => (ref = el), local.ref)} {...others} />
+      <Polymorphic
+        as="div"
+        ref={mergeRefs(el => (ref = el), local.ref)}
+        {...others}
+        role="menubar"
+        data-orientation="horizontal"
+      />
     </MenubarContext.Provider>
   );
 }
