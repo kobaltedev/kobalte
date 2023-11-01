@@ -276,7 +276,9 @@ export function SliderRoot(props: SliderRootProps) {
   const onStepKeyDown = (event: KeyboardEvent, index: number) => {
     if (!formControlContext.isDisabled()) {
       switch (event.key) {
+        case "Left":
         case "ArrowLeft":
+        case "Down":
         case "ArrowDown":
           stopEventDefaultAndPropagation(event);
           if (!isLTR()) {
@@ -285,7 +287,9 @@ export function SliderRoot(props: SliderRootProps) {
             state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
           }
           break;
+        case "Right":
         case "ArrowRight":
+        case "Up":
         case "ArrowUp":
           stopEventDefaultAndPropagation(event);
           if (!isLTR()) {
