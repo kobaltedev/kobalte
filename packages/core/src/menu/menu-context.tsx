@@ -40,6 +40,7 @@ export interface MenuContextValue {
   registerItemToParentDomCollection: ((item: CollectionItemWithRef) => () => void) | undefined;
   registerTriggerId: (id: string) => () => void;
   registerContentId: (id: string) => () => void;
+  nestedMenus: Accessor<Element[]>;
 }
 
 export const MenuContext = createContext<MenuContextValue>();

@@ -13,7 +13,7 @@ export function useMenuRadioGroupContext() {
 
   if (context === undefined) {
     throw new Error(
-      "[kobalte]: `useMenuRadioGroupContext` must be used within a `Menu.RadioGroup` component",
+      "[kobalte]: `useMenuRadioGroupContext` must be used within a `Menu.RadioGroup` component"
     );
   }
 

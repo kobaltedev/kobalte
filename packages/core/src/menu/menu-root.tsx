@@ -31,6 +31,14 @@ export interface MenuRootOptions extends MenuOptions {
    * Useful when controlling animation with SolidJS animation libraries.
    */
   forceMount?: boolean;
+
+  /**
+   * A unique value that associates the item with an active value
+   * when the navigation menu is controlled.
+   * This prop is managed automatically when uncontrolled.
+   * Only used inside a Menubar.
+   */
+  value?: string;
 }
 
 export interface MenuRootProps extends ParentProps<MenuRootOptions> {}
@@ -48,7 +56,7 @@ export function MenuRoot(props: MenuRootProps) {
       modal: true,
       preventScroll: false,
     },
-    props,
+    props
   );
 
   const [local, others] = splitProps(props, [
@@ -59,6 +67,7 @@ export function MenuRoot(props: MenuRootProps) {
     "open",
     "defaultOpen",
     "onOpenChange",
+    "value",
   ]);
 
   const disclosureState = createDisclosureState({
@@ -72,6 +81,7 @@ export function MenuRoot(props: MenuRootProps) {
     preventScroll: () => local.preventScroll ?? false,
     forceMount: () => local.forceMount ?? false,
     generateId: createGenerateId(() => local.id!),
+    value: () => local.value,
   };
 
   return (

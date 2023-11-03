@@ -25,7 +25,7 @@ export function MenuItemLabel(props: MenuItemLabelProps) {
     {
       id: context.generateId("label"),
     },
-    props,
+    props
   );
 
   const [local, others] = splitProps(props, ["ref", "id"]);

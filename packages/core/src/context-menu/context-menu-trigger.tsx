@@ -35,7 +35,7 @@ export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
     {
       id: rootContext.generateId("trigger"),
     },
-    props,
+    props
   );
 
   const [local, others] = splitProps(props, [

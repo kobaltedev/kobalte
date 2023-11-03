@@ -69,7 +69,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
     {
       id: rootContext.generateId(`item-${createUniqueId()}`),
     },
-    props,
+    props
   );
 
   const [local, others] = splitProps(props, [
@@ -126,7 +126,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
       allowsDifferentPressOrigin: true,
       disabled: () => local.disabled,
     },
-    () => ref,
+    () => ref
   );
 
   /**

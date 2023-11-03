@@ -29,7 +29,7 @@ export function MenuCheckboxItem(props: MenuCheckboxItemProps) {
     {
       closeOnSelect: false,
     },
-    props,
+    props
   );
 
   const [local, others] = splitProps(props, ["checked", "defaultChecked", "onChange", "onSelect"]);
