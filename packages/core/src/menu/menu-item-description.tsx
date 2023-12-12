@@ -25,7 +25,7 @@ export function MenuItemDescription(props: MenuItemDescriptionProps) {
     {
       id: context.generateId("description"),
     },
-    props,
+    props
   );
 
   const [local, others] = splitProps(props, ["id"]);

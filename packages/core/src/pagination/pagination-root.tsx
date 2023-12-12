@@ -30,6 +30,12 @@ export interface PaginationRootOptions extends AsChildProp {
   /** Whether to always show the last page item. */
   showLast?: boolean;
 
+  /**
+   * Whether to always show the same number of items (to avoid content shift).
+   * Special value: "no-ellipsis" does not count the ellipsis as an item (used when ellipsis are disabled).
+   */
+  fixedItems?: boolean | "no-ellipsis";
+
   /** The component to render as an item in the `Pagination.List`. */
   itemComponent: Component<{ page: number }>;
 
@@ -63,6 +69,7 @@ export function PaginationRoot(props: PaginationRootProps) {
     "siblingCount",
     "showFirst",
     "showLast",
+    "fixedItems",
     "itemComponent",
     "ellipsisComponent",
     "disabled",
@@ -80,6 +87,7 @@ export function PaginationRoot(props: PaginationRootProps) {
     siblingCount: () => local.siblingCount ?? 1,
     showFirst: () => local.showFirst ?? true,
     showLast: () => local.showLast ?? true,
+    fixedItems: () => local.fixedItems ?? false,
     isDisabled: () => local.disabled ?? false,
     renderItem: page => local.itemComponent({ page }),
     renderEllipsis: local.ellipsisComponent,

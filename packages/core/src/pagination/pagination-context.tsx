@@ -5,6 +5,7 @@ export interface PaginationContextValue {
   siblingCount: Accessor<number>;
   showFirst: Accessor<boolean>;
   showLast: Accessor<boolean>;
+  fixedItems: Accessor<boolean | "no-ellipsis">;
   isDisabled: Accessor<boolean>;
   renderItem: (page: number) => JSX.Element;
   renderEllipsis: () => JSX.Element;

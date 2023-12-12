@@ -67,7 +67,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Combobox",
         href: "/docs/core/components/combobox",
-        status: "updated",
       },
       {
         title: "Context Menu",
@@ -94,6 +93,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
         href: "/docs/core/components/link",
       },
       {
+        title: "Menubar",
+        href: "/docs/core/components/menubar",
+        status: "new",
+      },
+      {
         title: "Pagination",
         href: "/docs/core/components/pagination",
       },
@@ -116,6 +120,16 @@ const CORE_NAV_SECTIONS: NavSection[] = [
       {
         title: "Separator",
         href: "/docs/core/components/separator",
+      },
+      {
+        title: "Skeleton",
+        href: "/docs/core/components/skeleton",
+        status: "new",
+      },
+      {
+        title: "Slider",
+        href: "/docs/core/components/slider",
+        status: "new",
       },
       {
         title: "Switch",

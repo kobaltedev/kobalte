@@ -74,11 +74,13 @@ export function ComboboxInput(props: ComboboxInputProps) {
     // To prevent this, we need to force the input `value` to be in sync with the input value state.
     target.value = context.inputValue() ?? "";
 
-    if (!context.isOpen()) {
-      context.open(false, "input");
-    } else {
+    if (context.isOpen()) {
       if (collection().getSize() <= 0 && !context.allowsEmptyCollection()) {
         context.close();
+      }
+    } else {
+      if (collection().getSize() > 0) {
+        context.open(false, "input");
       }
     }
   };

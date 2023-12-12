@@ -3,7 +3,7 @@ import { createSignal, JSX, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useSliderContext } from "./slider-context";
-import { linearScale } from "./utils";
+import { getClosestValueIndex, linearScale } from "./utils";
 
 export interface SliderTrackProps extends OverrideComponentProps<"div", AsChildProp> {}
 
@@ -58,7 +58,8 @@ export function SliderTrack(props: SliderTrackProps) {
       context.state.orientation() === "horizontal" ? e.clientX : e.clientY,
     );
     startPosition = context.state.orientation() === "horizontal" ? e.clientX : e.clientY;
-    context.onSlideStart?.(value);
+    const closestIndex = getClosestValueIndex(context.state.values(), value);
+    context.onSlideStart?.(closestIndex, value);
   };
 
   const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {

@@ -33,7 +33,7 @@
   "dependencies": {
     "@docsearch/css": "3.5.2",
     "@docsearch/js": "3.5.2",
-    "@kobalte/core": "0.11.0",
+    "@kobalte/core": "0.11.2",
     "@solidjs/meta": "0.28.6",
     "@solidjs/router": "0.8.3",
     "@tanstack/solid-virtual": "3.0.0-beta.6",
@@ -43,7 +43,7 @@
     "undici": "5.23.0"
   },
   "devDependencies": {
-    "@kobalte/tailwindcss": "0.8.0",
+    "@kobalte/tailwindcss": "0.9.0",
     "@mdx-js/mdx": "2.3.0",
     "@mdx-js/rollup": "2.3.0",
     "@tailwindcss/typography": "0.5.9",

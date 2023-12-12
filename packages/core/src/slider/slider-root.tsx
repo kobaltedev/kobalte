@@ -26,7 +26,11 @@ import { CollectionItemWithRef, createFormResetListener } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "./create-slider-state";
 import { SliderContext, SliderContextValue, SliderDataSet } from "./slider-context";
-import { getClosestValueIndex, getNextSortedValues, hasMinStepsBetweenValues } from "./utils";
+import {
+  getNextSortedValues,
+  hasMinStepsBetweenValues,
+  stopEventDefaultAndPropagation,
+} from "./utils";
 
 export interface GetValueLabelParams {
   values: number[];
@@ -205,14 +209,11 @@ export function SliderRoot(props: SliderRootProps) {
   const [trackRef, setTrackRef] = createSignal<HTMLElement>();
 
   let currentPosition: number | null = null;
-  const onSlideStart = (value: number) => {
-    const closestIndex = getClosestValueIndex(state.values(), value);
-    if (closestIndex >= 0) {
-      state.setFocusedThumb(closestIndex);
-      state.setThumbDragging(closestIndex, true);
-      state.setThumbValue(closestIndex, value);
-      currentPosition = null;
-    }
+  const onSlideStart = (index: number, value: number) => {
+    state.setFocusedThumb(index);
+    state.setThumbDragging(index, true);
+    state.setThumbValue(index, value);
+    currentPosition = null;
   };
 
   const onSlideMove = ({ deltaX, deltaY }: { deltaX: number; deltaY: number }) => {
@@ -250,22 +251,26 @@ export function SliderRoot(props: SliderRootProps) {
     if (activeThumb !== undefined) {
       state.setThumbDragging(activeThumb, false);
       local.onChangeEnd?.(state.values());
+      (thumbs()[activeThumb].ref() as HTMLElement).focus();
     }
   };
 
-  const onHomeKeyDown = () => {
-    !formControlContext.isDisabled() &&
-      state.focusedThumb() !== undefined &&
-      state.setThumbValue(0, state.getThumbMinValue(0));
+  const onHomeKeyDown = (event: KeyboardEvent) => {
+    const focusedThumb = state.focusedThumb();
+
+    if (!formControlContext.isDisabled() && focusedThumb !== undefined) {
+      stopEventDefaultAndPropagation(event);
+      state.setThumbValue(focusedThumb, state.getThumbMinValue(focusedThumb));
+    }
   };
 
-  const onEndKeyDown = () => {
-    !formControlContext.isDisabled() &&
-      state.focusedThumb() !== undefined &&
-      state.setThumbValue(
-        state.values().length - 1,
-        state.getThumbMaxValue(state.values().length - 1),
-      );
+  const onEndKeyDown = (event: KeyboardEvent) => {
+    const focusedThumb = state.focusedThumb();
+
+    if (!formControlContext.isDisabled() && focusedThumb !== undefined) {
+      stopEventDefaultAndPropagation(event);
+      state.setThumbValue(focusedThumb, state.getThumbMaxValue(focusedThumb));
+    }
   };
 
   const onStepKeyDown = (event: KeyboardEvent, index: number) => {
@@ -273,8 +278,9 @@ export function SliderRoot(props: SliderRootProps) {
       switch (event.key) {
         case "Left":
         case "ArrowLeft":
-          event.preventDefault();
-          event.stopPropagation();
+        case "Down":
+        case "ArrowDown":
+          stopEventDefaultAndPropagation(event);
           if (!isLTR()) {
             state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
           } else {
@@ -283,44 +289,27 @@ export function SliderRoot(props: SliderRootProps) {
           break;
         case "Right":
         case "ArrowRight":
-          event.preventDefault();
-          event.stopPropagation();
-          if (!isLTR()) {
-            state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
-          } else {
-            state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
-          }
-          break;
         case "Up":
         case "ArrowUp":
-          event.preventDefault();
-          event.stopPropagation();
+          stopEventDefaultAndPropagation(event);
           if (!isLTR()) {
             state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
           } else {
             state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
-          }
-          break;
-        case "Down":
-        case "ArrowDown":
-          event.preventDefault();
-          event.stopPropagation();
-          if (!isLTR()) {
-            state.incrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
-          } else {
-            state.decrementThumb(index, event.shiftKey ? state.pageSize() : state.step());
           }
           break;
         case "Home":
-          onHomeKeyDown();
+          onHomeKeyDown(event);
           break;
         case "End":
-          onEndKeyDown();
+          onEndKeyDown(event);
           break;
         case "PageUp":
+          stopEventDefaultAndPropagation(event);
           state.incrementThumb(index, state.pageSize());
           break;
         case "PageDown":
+          stopEventDefaultAndPropagation(event);
           state.decrementThumb(index, state.pageSize());
           break;
       }

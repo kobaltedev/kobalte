@@ -8,7 +8,7 @@ import {
   type PaginationItemOptions,
   type PaginationItemProps,
 } from "./pagination-item";
-import { PaginationList as List, type PaginationListProps } from "./pagination-list";
+import { PaginationItems as Items, type PaginationItemsProps } from "./pagination-items";
 import {
   PaginationNext as Next,
   type PaginationNextOptions,
@@ -30,7 +30,7 @@ export type {
   PaginationEllipsisProps,
   PaginationItemOptions,
   PaginationItemProps,
-  PaginationListProps,
+  PaginationItemsProps,
   PaginationNextOptions,
   PaginationNextProps,
   PaginationPreviousOptions,
@@ -38,5 +38,6 @@ export type {
   PaginationRootOptions,
   PaginationRootProps,
 };
+
 export { Ellipsis, Item, List, Next, Previous, Root };
 export default { Ellipsis, Item, List, Next, Previous, Root };
