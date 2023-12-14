@@ -1,6 +1,14 @@
 export const COMBOBOX_INTL_TRANSLATIONS = {
-  focusAnnouncement: () => "{optionText}{isSelected, select, true {, selected} other {}}",
-  countAnnouncement: () => "{optionCount, plural, one {# option} other {# options}} available.",
+  focusAnnouncement: (optionText: string, isSelected: boolean) =>
+    `${optionText}${isSelected ? ", selected" : ""}`,
+  countAnnouncement: (optionCount: number) => {
+    switch (optionCount) {
+      case 1:
+        return "one option available";
+      default:
+        `${optionCount} options available`;
+    }
+  },
   selectedAnnouncement: (optionText: string) => `${optionText}, selected`,
   triggerLabel: "Show suggestions",
   listboxLabel: "Suggestions",

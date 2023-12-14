@@ -26,7 +26,6 @@ import {
   AsChildProp,
   createControllableSignal,
   createInteractOutside,
-  createMessageFormatter,
   getReadingDirection,
   Polymorphic,
   useLocale,
@@ -52,7 +51,7 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
+import { CALENDAR_INTL_TRANSLATIONS, CalendarIntlTranslations } from "./calendar.intl";
 import { CalendarContext, CalendarContextValue, CalendarDataSet } from "./calendar-context";
 import { DateAlignment, DateValue } from "./types";
 import {
@@ -199,6 +198,9 @@ export type CalendarRootOptions = (
 
     /** Whether the calendar value is read only. */
     readOnly?: boolean;
+
+    /** The localized strings of the component. */
+    translations?: CalendarIntlTranslations;
   };
 
 export type CalendarRootProps = OverrideComponentProps<"div", CalendarRootOptions>;
@@ -213,12 +215,14 @@ export function CalendarRoot(props: CalendarRootProps) {
     {
       visibleDuration: { months: 1 },
       selectionMode: "single",
+      translations: CALENDAR_INTL_TRANSLATIONS,
     },
     props,
   );
 
   const [local, others] = splitProps(props, [
     "ref",
+    "translations",
     "locale",
     "createCalendar",
     "visibleDuration",
@@ -240,8 +244,6 @@ export function CalendarRoot(props: CalendarRootProps) {
     "readOnly",
     "aria-label",
   ]);
-
-  const messageFormatter = createMessageFormatter(() => CALENDAR_INTL_MESSAGES);
 
   const locale = createMemo(() => {
     return local.locale ?? useLocale().locale();
@@ -372,7 +374,13 @@ export function CalendarRoot(props: CalendarRootProps) {
   const [isDragging, setIsDragging] = createSignal(false);
 
   const visibleRangeDescription = createMemo(() => {
-    return getVisibleRangeDescription(messageFormatter(), startDate(), endDate(), timeZone(), true);
+    return getVisibleRangeDescription(
+      local.translations!,
+      startDate(),
+      endDate(),
+      timeZone(),
+      true,
+    );
   });
 
   const ariaLabel = () => {
@@ -782,16 +790,16 @@ export function CalendarRoot(props: CalendarRootProps) {
 
     if (local.selectionMode === "single") {
       const date = asSingleValue(value());
-      description = date && getSelectedDateDescription(messageFormatter(), date, timeZone());
+      description = date && getSelectedDateDescription(local.translations!, date, timeZone());
     } else if (local.selectionMode === "multiple") {
       const dates = asArrayValue(value());
       description = dates
-        ?.map(date => getSelectedDateDescription(messageFormatter(), date, timeZone()))
+        ?.map(date => getSelectedDateDescription(local.translations!, date, timeZone()))
         .join(", ");
     } else if (local.selectionMode === "range") {
       const dateRange = asRangeValue(value()) ?? {};
       description = getSelectedDateRangeDescription(
-        messageFormatter(),
+        local.translations!,
         dateRange,
         anchorDate(),
         timeZone(),
@@ -878,6 +886,7 @@ export function CalendarRoot(props: CalendarRootProps) {
   const dataset: Accessor<CalendarDataSet> = createMemo(() => ({}));
 
   const context: CalendarContextValue = {
+    translations: () => local.translations ?? CALENDAR_INTL_TRANSLATIONS,
     dataset,
     value,
     isDisabled: () => local.disabled ?? false,
@@ -901,7 +910,6 @@ export function CalendarRoot(props: CalendarRootProps) {
     min,
     max,
     timeZone,
-    messageFormatter,
     setStartDate,
     setAnchorDate,
     setIsFocused,

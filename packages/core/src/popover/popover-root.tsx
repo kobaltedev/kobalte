@@ -19,6 +19,7 @@ import {
 import { PopperRoot, PopperRootOptions } from "../popper";
 import { createDisclosureState, createPresence, createRegisterId } from "../primitives";
 import { PopoverContext, PopoverContextValue, PopoverDataSet } from "./popover-context";
+import { POPOVER_INTL_TRANSLATIONS, PopoverIntlTranslations } from "./popover.intl";
 
 export interface PopoverRootOptions
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
@@ -65,6 +66,9 @@ export interface PopoverRootOptions
    * Useful when controlling animation with SolidJS animation libraries.
    */
   forceMount?: boolean;
+
+  /** The localized strings of the component. */
+  translations?: PopoverIntlTranslations;
 }
 
 export interface PopoverRootProps extends ParentProps<PopoverRootOptions> {}
@@ -80,11 +84,13 @@ export function PopoverRoot(props: PopoverRootProps) {
       id: defaultId,
       modal: false,
       preventScroll: false,
+      translations: POPOVER_INTL_TRANSLATIONS,
     },
     props,
   );
 
   const [local, others] = splitProps(props, [
+    "translations",
     "id",
     "open",
     "defaultOpen",
@@ -121,6 +127,7 @@ export function PopoverRoot(props: PopoverRootProps) {
   }));
 
   const context: PopoverContextValue = {
+    translations: () => local.translations ?? POPOVER_INTL_TRANSLATIONS,
     dataset,
     isOpen: disclosureState.isOpen,
     isModal: () => local.modal ?? false,

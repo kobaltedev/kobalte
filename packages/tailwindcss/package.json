@@ -1,6 +1,6 @@
 {
   "name": "@kobalte/tailwindcss",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "private": false,
   "description": "A TailwindCSS plugin for styling Kobalte components with data-* attributes by using modifiers like ui-expanded:*",
   "keywords": [
@@ -44,10 +44,10 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
-    "tailwindcss": "3.3.3"
+    "tailwindcss": "3.3.6"
   },
   "peerDependencies": {
-    "tailwindcss": "^3.3.3"
+    "tailwindcss": "^3.3.6"
   },
   "publishConfig": {
     "access": "public"

@@ -26,10 +26,10 @@ import {
   startOfYear,
   toCalendarDate,
 } from "@internationalized/date";
-import { LocalizedMessageFormatter } from "@kobalte/core";
 import { RangeValue } from "@kobalte/utils";
 
 import { createDateFormatter } from "../primitives";
+import { CalendarIntlTranslations } from "./calendar.intl";
 import { CalendarSelectionMode, DateAlignment, DateValue } from "./types";
 
 /* -----------------------------------------------------------------------------
@@ -372,7 +372,7 @@ export function getArrayValueOfSelection(
 
 function formatRange(
   dateFormatter: DateFormatter,
-  messageFormatter: LocalizedMessageFormatter,
+  translations: CalendarIntlTranslations,
   start: DateValue,
   end: DateValue,
   timeZone: string,
@@ -405,7 +405,7 @@ function formatRange(
     }
   }
 
-  return messageFormatter.format("dateRange", { startDate: startValue, endDate: endValue });
+  return translations.dateRange(startValue, endValue);
 }
 
 /* -----------------------------------------------------------------------------
@@ -413,7 +413,7 @@ function formatRange(
  * -----------------------------------------------------------------------------*/
 
 export function getSelectedDateDescription(
-  messageFormatter: LocalizedMessageFormatter,
+  translations: CalendarIntlTranslations,
   value: DateValue,
   timeZone: string,
 ) {
@@ -426,13 +426,11 @@ export function getSelectedDateDescription(
     timeZone: timeZone,
   }));
 
-  return messageFormatter.format("selectedDateDescription", {
-    date: dateFormatter().format(value.toDate(timeZone)),
-  });
+  return translations.selectedDateDescription(dateFormatter().format(value.toDate(timeZone)));
 }
 
 export function getSelectedDateRangeDescription(
-  messageFormatter: LocalizedMessageFormatter,
+  translations: CalendarIntlTranslations,
   highlightedRange: { start?: DateValue; end?: DateValue },
   anchorDate: DateValue | undefined,
   timeZone: string,
@@ -454,10 +452,10 @@ export function getSelectedDateRangeDescription(
     // otherwise include both dates.
     if (isSameDay(start, end)) {
       const date = dateFormatter().format(start.toDate(timeZone));
-      return messageFormatter.format("selectedDateDescription", { date });
+      return translations.selectedDateDescription(date);
     } else {
-      const dateRange = formatRange(dateFormatter(), messageFormatter, start, end, timeZone);
-      return messageFormatter.format("selectedRangeDescription", { dateRange });
+      const dateRange = formatRange(dateFormatter(), translations, start, end, timeZone);
+      return translations.selectedRangeDescription(dateRange);
     }
   }
 
@@ -466,7 +464,7 @@ export function getSelectedDateRangeDescription(
 }
 
 export function getVisibleRangeDescription(
-  messageFormatter: LocalizedMessageFormatter,
+  translations: CalendarIntlTranslations,
   startDate: DateValue,
   endDate: DateValue,
   timeZone: string,
@@ -498,7 +496,7 @@ export function getVisibleRangeDescription(
       return monthFormatter().format(startDate.toDate(timeZone));
     } else if (isSameDay(endDate, endOfMonth(endDate))) {
       if (isAria) {
-        return formatRange(monthFormatter(), messageFormatter, startDate, endDate, timeZone);
+        return formatRange(monthFormatter(), translations, startDate, endDate, timeZone);
       }
 
       return monthFormatter().formatRange(startDate.toDate(timeZone), endDate.toDate(timeZone));
@@ -506,7 +504,7 @@ export function getVisibleRangeDescription(
   }
 
   if (isAria) {
-    return formatRange(dateFormatter(), messageFormatter, startDate, endDate, timeZone);
+    return formatRange(dateFormatter(), translations, startDate, endDate, timeZone);
   }
 
   return dateFormatter().formatRange(startDate.toDate(timeZone), endDate.toDate(timeZone));

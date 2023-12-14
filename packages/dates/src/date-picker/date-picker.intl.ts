@@ -1,4 +1,4 @@
-export const DATE_PICKER_INTL_MESSAGES = {
+export const DATE_PICKER_INTL_TRANSLATIONS = {
   era: "era",
   year: "year",
   month: "month",
@@ -18,4 +18,4 @@ export const DATE_PICKER_INTL_MESSAGES = {
   selectedTimeDescription: (time: string) => `Selected Time: ${time}`,
 };
 
-export type DatePickerIntlMessages = typeof DATE_PICKER_INTL_MESSAGES;
+export type DatePickerIntlTranslations = typeof DATE_PICKER_INTL_TRANSLATIONS;

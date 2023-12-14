@@ -1,10 +1,11 @@
 import { Calendar, DateDuration, DateFormatter } from "@internationalized/date";
-import { CreatePresenceResult, Direction, LocalizedMessageFormatter } from "@kobalte/core";
+import { CreatePresenceResult, Direction } from "@kobalte/core";
 import { FocusManager, RangeValue, ValidationState } from "@kobalte/utils";
 import { Accessor, createContext, useContext } from "solid-js";
 
 import { CalendarSelectionMode, DateValue, TimeValue } from "../calendar/types";
 import { DateFieldGranularity, DateFieldHourCycle, DateFieldMaxGranularity } from "./types";
+import { DatePickerIntlTranslations } from "./date-picker.intl";
 
 export interface DatePickerDataSet {
   "data-expanded": string | undefined;
@@ -12,12 +13,12 @@ export interface DatePickerDataSet {
 }
 
 export interface DatePickerContextValue {
+  translations: Accessor<DatePickerIntlTranslations>;
   dataset: Accessor<DatePickerDataSet>;
   isOpen: Accessor<boolean>;
   isDisabled: Accessor<boolean>;
   isModal: Accessor<boolean>;
   contentPresence: CreatePresenceResult;
-  messageFormatter: Accessor<LocalizedMessageFormatter>;
   granularity: Accessor<DateFieldGranularity>;
   maxGranularity: Accessor<DateFieldMaxGranularity | undefined>;
   hourCycle: Accessor<DateFieldHourCycle | undefined>;

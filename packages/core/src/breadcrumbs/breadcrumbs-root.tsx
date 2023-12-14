@@ -47,7 +47,7 @@ export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
 
   return (
     <BreadcrumbsContext.Provider value={context}>
-      <Polymorphic as="nav" aria-label={local.translations} {...others} />
+      <Polymorphic as="nav" aria-label={local.translations?.breadcrumbs} {...others} />
     </BreadcrumbsContext.Provider>
   );
 }

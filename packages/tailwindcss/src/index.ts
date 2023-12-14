@@ -24,6 +24,8 @@ const STATES = [
   "highlighted",
   "current",
   "placeholder-shown",
+  "visible",
+  "animate",
 ];
 const ORIENTATIONS = ["horizontal", "vertical"];
 const SWIPE_STATES = ["start", "move", "cancel", "end"];

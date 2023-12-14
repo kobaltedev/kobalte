@@ -1,4 +1,3 @@
-export * from "./common.intl";
 export * from "./create-collator";
 export * from "./create-default-locale";
 export * from "./create-filter";

@@ -16,11 +16,11 @@ import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@ko
 import { createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
-import { createMessageFormatter } from "../i18n";
-import { TOAST_HOTKEY_PLACEHOLDER, TOAST_INTL_MESSAGES } from "./toast.intl";
+import { TOAST_HOTKEY_PLACEHOLDER } from "./toast.intl";
 import { ToastRegionContext, ToastRegionContextValue } from "./toast-region-context";
 import { toastStore } from "./toast-store";
 import { ToastSwipeDirection } from "./types";
+import { useToastContext } from "./toast-context";
 
 export interface ToastRegionOptions {
   /**
@@ -112,6 +112,8 @@ export function ToastRegion(props: ToastRegionProps) {
     "regionId",
   ]);
 
+  const rootContext = useToastContext();
+
   const toasts = createMemo(() =>
     toastStore
       .toasts()
@@ -121,8 +123,6 @@ export function ToastRegion(props: ToastRegionProps) {
 
   const [isPaused, setIsPaused] = createSignal(false);
 
-  const messageFormatter = createMessageFormatter(() => TOAST_INTL_MESSAGES);
-
   const hasToasts = () => toasts().length > 0;
 
   const hotkeyLabel = () => {
@@ -131,10 +131,7 @@ export function ToastRegion(props: ToastRegionProps) {
 
   const ariaLabel = () => {
     const label =
-      local["aria-label"] ||
-      messageFormatter().format("notifications", {
-        hotkey: hotkeyLabel(),
-      });
+      local["aria-label"] || rootContext.translations().notifications(TOAST_HOTKEY_PLACEHOLDER);
 
     return label.replace(TOAST_HOTKEY_PLACEHOLDER, hotkeyLabel());
   };

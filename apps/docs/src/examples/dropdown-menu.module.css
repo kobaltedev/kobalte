@@ -47,9 +47,7 @@
   background-color: white;
   border-radius: 6px;
   border: 1px solid hsl(240 6% 90%);
-  box-shadow:
-    0 4px 6px -1px rgb(0 0 0 / 0.1),
-    0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   outline: none;
   transform-origin: var(--kb-menu-content-transform-origin);
   animation: contentHide 250ms ease-in forwards;
