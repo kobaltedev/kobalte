@@ -309,15 +309,23 @@ export function SliderRoot(props: SliderRootProps) {
           }
           break;
         case "Home":
+          event.preventDefault();
+          event.stopPropagation();
           onHomeKeyDown();
           break;
         case "End":
+          event.preventDefault();
+          event.stopPropagation();
           onEndKeyDown();
           break;
         case "PageUp":
+          event.preventDefault();
+          event.stopPropagation();
           state.incrementThumb(index, state.pageSize());
           break;
         case "PageDown":
+          event.preventDefault();
+          event.stopPropagation();
           state.decrementThumb(index, state.pageSize());
           break;
       }
