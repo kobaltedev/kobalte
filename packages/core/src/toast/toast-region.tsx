@@ -16,13 +16,20 @@ import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@ko
 import { createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
-import { TOAST_HOTKEY_PLACEHOLDER } from "./toast.intl";
+import {
+  TOAST_REGION_INTL_TRANSLATIONS,
+  ToastRegionIntlTranslations,
+  TOAST_HOTKEY_PLACEHOLDER,
+} from "./toast.intl";
 import { ToastRegionContext, ToastRegionContextValue } from "./toast-region-context";
 import { toastStore } from "./toast-store";
 import { ToastSwipeDirection } from "./types";
 import { useToastContext } from "./toast-context";
 
 export interface ToastRegionOptions {
+  /** The localized strings of the component. */
+  translations?: ToastRegionIntlTranslations;
+
   /**
    * A label for the toast region to provide context for screen reader users when navigating page landmarks.
    * Can contain a `{hotkey}` placeholder which will be replaced for you.
@@ -94,11 +101,13 @@ export function ToastRegion(props: ToastRegionProps) {
       pauseOnInteraction: true,
       pauseOnPageIdle: true,
       topLayer: true,
+      translations: TOAST_REGION_INTL_TRANSLATIONS,
     },
     props,
   );
 
   const [local, others] = splitProps(props, [
+    "translations",
     "style",
     "hotkey",
     "duration",
@@ -111,8 +120,6 @@ export function ToastRegion(props: ToastRegionProps) {
     "aria-label",
     "regionId",
   ]);
-
-  const rootContext = useToastContext();
 
   const toasts = createMemo(() =>
     toastStore
@@ -131,7 +138,7 @@ export function ToastRegion(props: ToastRegionProps) {
 
   const ariaLabel = () => {
     const label =
-      local["aria-label"] || rootContext.translations().notifications(TOAST_HOTKEY_PLACEHOLDER);
+      local["aria-label"] || local.translations!.notifications(TOAST_HOTKEY_PLACEHOLDER);
 
     return label.replace(TOAST_HOTKEY_PLACEHOLDER, hotkeyLabel());
   };
