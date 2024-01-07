@@ -1,4 +1,4 @@
-import { Link, useLocation } from "@solidjs/router";
+import { useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
 import { ComponentProps, For, Match, splitProps, Switch } from "solid-js";
 
@@ -26,7 +26,7 @@ export function Navigation(props: NavigationProps) {
                 <For each={section.links}>
                   {link => (
                     <li class="relative group">
-                      <Link
+                      <a
                         href={link.href}
                         class={clsx(
                           "flex items-center justify-between w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
@@ -48,7 +48,7 @@ export function Navigation(props: NavigationProps) {
                             </span>
                           </Match>
                         </Switch>
-                      </Link>
+                      </a>
                     </li>
                   )}
                 </For>

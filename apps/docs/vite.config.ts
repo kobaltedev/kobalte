@@ -6,14 +6,9 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-import remarkShikiTwoslash from "remark-shiki-twoslash";
-import solid from "solid-start/vite";
-// @ts-ignore
-import netlify from "solid-start-netlify";
-// @ts-ignore
-import node from "solid-start-node";
 import { visit } from "unist-util-visit";
-import { defineConfig } from "vite";
+import { defineConfig } from "@solidjs/start/config";
+import mdxRollup from "@mdx-js/rollup";
 
 function jsToTreeNode(jsString: any, acornOpts: any) {
   return {
@@ -36,7 +31,7 @@ function jsToTreeNode(jsString: any, acornOpts: any) {
   };
 }
 
-async function mdx(config: any) {
+function mdx(config: any) {
   const cache = new Map();
   const headingsCache = new Map();
 
@@ -97,14 +92,14 @@ async function mdx(config: any) {
       headingsCache.set(file.path, headings);
 
       tree.children.unshift(
-        // @ts-ignore
+        // @ts-ignoret
         jsToTreeNode(`export function getHeadings() { return ${JSON.stringify(headings)} }`),
       );
     };
   }
 
   const plugin = {
-    ...(await import("@mdx-js/rollup")).default({
+    ...mdxRollup({
       jsx: true,
       jsxImportSource: "solid-js",
       providerImportSource: "solid-mdx",
@@ -118,7 +113,7 @@ async function mdx(config: any) {
         ...config.remarkPlugins,
         [
           // @ts-ignore
-          remarkShikiTwoslash.default,
+//          remarkShikiTwoslash.default,
           {
             disableImplicitReactImport: true,
             includeJSDocInHover: true,
@@ -149,6 +144,7 @@ async function mdx(config: any) {
     {
       ...plugin,
       async transform(code: any, id: any) {
+        console.log("VITE id " + id);
         if (id.endsWith(".mdx") || id.endsWith(".md")) {
           if (cache.has(code)) {
             return cache.get(code);
@@ -202,16 +198,21 @@ async function mdx(config: any) {
 
 ///
 
-const adapter = process.env.GITHUB_ACTIONS ? node() : netlify();
-
 export default defineConfig({
+  // @ts-ignore: type should be optional, bugged in @solidjs/start@0.4.4
+  start: {
+    server: {
+      preset: process.env.GITHUB_ACTIONS ? "node" : "netlify",
+    },
+    extensions: ["mdx", "md"],
+  },
   plugins: [
     // @ts-ignore
-    await mdx({
-      rehypePlugins: [rehypePrettyCode],
-      remarkPlugins: [remarkGfm],
+    mdxRollup({
+      jsx: true,
+      jsxImportSource: "solid-js/h",
+      providerImportSource: "solid-mdx",
     }),
-    solid({ adapter, ssr: true, extensions: [".mdx", ".md"] }),
   ],
   ssr: {
     noExternal: ["@kobalte/core", "@tanstack/solid-virtual"],

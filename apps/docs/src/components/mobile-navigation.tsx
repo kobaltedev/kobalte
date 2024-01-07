@@ -1,5 +1,5 @@
 import { createDisclosureState, Dialog, Separator } from "@kobalte/core";
-import { Link, useIsRouting, useMatch } from "@solidjs/router";
+import { useIsRouting, useMatch } from "@solidjs/router";
 import { clsx } from "clsx";
 import { ComponentProps, createComputed, splitProps } from "solid-js";
 
@@ -35,13 +35,13 @@ export function MobileNavigation(props: MobileNavigationProps) {
           <Dialog.Content class="fixed inset-0 z-50 min-h-full overflow-y-auto w-full max-w-xs bg-white px-4 pt-5 pb-12 dark:bg-zinc-900 sm:px-6">
             <div class="flex items-center">
               <div class="relative flex flex-grow basis-0 items-center space-x-2">
-                <Link
+                <a
                   class="text-zinc-800 dark:text-white/90 font-medium font-display text-xl leading-none"
                   href="/"
                 >
                   Kobalte
                   <span class="text-3xl leading-[0] text-sky-600">.</span>
-                </Link>
+                </a>
                 <span class="rounded bg-zinc-100 px-1.5 py-1 text-sm leading-none dark:bg-zinc-800 dark:text-zinc-300">
                   {LATEST_CORE_VERSION_NAME}
                 </span>
@@ -56,7 +56,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
               </button>
             </div>
             <div class="flex flex-col items-start lg:hidden pt-4 pb-2 text-sm">
-              <Link
+              <a
                 href="/docs/core/overview/introduction"
                 class={clsx(
                   "block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
@@ -66,8 +66,8 @@ export function MobileNavigation(props: MobileNavigationProps) {
                 )}
               >
                 Components
-              </Link>
-              <Link
+              </a>
+              <a
                 href={LATEST_CORE_CHANGELOG_URL}
                 class={clsx(
                   "block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
@@ -77,7 +77,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
                 )}
               >
                 Changelog
-              </Link>
+              </a>
             </div>
             <Separator.Root class="lg:hidden" />
             <Navigation sections={local.sections} class="mt-5 px-1" />
