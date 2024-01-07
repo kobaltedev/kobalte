@@ -6,6 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/99ca82e87ba2d7fdd54f5b49326fd242320b4b51/packages/%40react-aria/spinbutton/src/useSpinButton.ts
  */
 
+import { mergeDefaultProps } from "@kobalte/utils";
 import { callHandler, mergeRefs, OverrideComponentProps, ValidationState } from "@kobalte/utils";
 import { createEffect, createMemo, JSX, on, splitProps } from "solid-js";
 

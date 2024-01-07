@@ -20,7 +20,7 @@ export function CalendarHeading(props: CalendarHeadingProps) {
 
   const title = createMemo(() => {
     return getVisibleRangeDescription(
-      rootContext.messageFormatter(),
+      rootContext.translations(),
       rootContext.startDate(),
       rootContext.endDate(),
       rootContext.timeZone(),

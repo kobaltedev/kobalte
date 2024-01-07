@@ -48,7 +48,7 @@ import {
   isDateInvalid,
 } from "../calendar/utils";
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import { createMessageFormatter, getReadingDirection, useLocale } from "../i18n";
+import { getReadingDirection, useLocale } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
@@ -58,7 +58,7 @@ import {
   createPresence,
   createRegisterId,
 } from "../primitives";
-import { DATE_PICKER_INTL_MESSAGES } from "./date-picker.intl";
+import { DatePickerIntlTranslations, DATE_PICKER_INTL_MESSAGES } from "./date-picker.intl";
 import {
   DatePickerContext,
   DatePickerContextValue,
@@ -74,6 +74,9 @@ export type DatePickerRootOptions = (
 ) &
   Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> &
   AsChildProp & {
+    /** The localized strings of the component. */
+    translations?: DatePickerIntlTranslations;
+
     /**
      * A function that creates a [Calendar](https://react-spectrum.adobe.com/internationalized/date/Calendar.html)
      * object for a given calendar identifier. Such a function may be imported from the
@@ -219,6 +222,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
       gutter: 8,
       sameWidth: false,
       placement: "bottom-start",
+      translations: DATE_PICKER_INTL_MESSAGES,
     },
     props,
   );
@@ -226,6 +230,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
   const [local, popperProps, formControlProps, others] = splitProps(
     props,
     [
+      "translations",
       "locale",
       "createCalendar",
       "visibleDuration",
@@ -275,8 +280,6 @@ export function DatePickerRoot(props: DatePickerRootProps) {
   const [controlRef, setControlRef] = createSignal<HTMLDivElement>();
   const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
   const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
-
-  const messageFormatter = createMessageFormatter(() => DATE_PICKER_INTL_MESSAGES);
 
   const locale = createMemo(() => {
     return local.locale ?? useLocale().locale();
@@ -399,9 +402,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
     let description = "";
 
     if (local.selectionMode === "single" || local.selectionMode === "multiple") {
-      description = messageFormatter().format("selectedDateDescription", {
-        date: formattedValue(),
-      });
+      description = local.translations!.selectedDateDescription(formattedValue());
     } else if (local.selectionMode === "range") {
       // TODO: RangeDatePicker
     }
@@ -521,7 +522,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
     isDisabled: () => formControlContext.isDisabled() ?? false,
     isModal: () => local.modal ?? false,
     contentPresence,
-    messageFormatter,
+    translations: () => local.translations!,
     granularity,
     maxGranularity: () => local.maxGranularity,
     hourCycle: () => local.hourCycle,

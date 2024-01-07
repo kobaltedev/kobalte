@@ -59,7 +59,7 @@ export function CalendarPrevTrigger(props: CalendarPrevTriggerProps) {
   return (
     <Button.Root
       disabled={prevTriggerDisabled()}
-      aria-label={context.messageFormatter().format("previous")}
+      aria-label={context.translations().previous}
       onClick={onClick}
       onFocus={onFocus}
       onBlur={onBlur}

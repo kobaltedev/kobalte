@@ -96,7 +96,7 @@ export function ToastRegion(props: ToastRegionProps) {
       topLayer: true,
     },
     props,
-    );
+  );
 
   const [local, others] = splitProps(props, [
     "style",
@@ -110,7 +110,7 @@ export function ToastRegion(props: ToastRegionProps) {
     "topLayer",
     "aria-label",
     "regionId",
-    ]);
+  ]);
 
   const rootContext = useToastContext();
 
@@ -119,7 +119,7 @@ export function ToastRegion(props: ToastRegionProps) {
       .toasts()
       .filter(toast => toast.region === local.regionId)
       .slice(0, local.limit!),
-      );
+  );
 
   const [isPaused, setIsPaused] = createSignal(false);
 
@@ -164,12 +164,12 @@ export function ToastRegion(props: ToastRegionProps) {
         // so it doesn't prevent interactions with page elements that it overlays.
         // In case it is a top layer, we explicitly enable pointer-events prevented by a `DismissableLayer`.
         style={{
-        "pointer-events": hasToasts() ? (local.topLayer ? "auto" : undefined) : "none",
+          "pointer-events": hasToasts() ? (local.topLayer ? "auto" : undefined) : "none",
           ...local.style,
         }}
         {...topLayerAttr}
         {...others}
       />
     </ToastRegionContext.Provider>
-    );
+  );
 }

@@ -724,7 +724,8 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       lastSelectedItem &&
       lastSelectedKey !== lastAnnouncedSelectedKey
     ) {
-      const announcement = local.translations?.countAnnouncement(optionCount) ?? "";
+      const announcement =
+        local.translations?.selectedAnnouncement(lastSelectedItem?.textValue || "") ?? "";
 
       announce(announcement);
     }

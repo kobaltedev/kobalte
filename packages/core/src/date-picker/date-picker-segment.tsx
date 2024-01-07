@@ -38,7 +38,6 @@ import { AsChildProp, Polymorphic } from "../polymorphic";
 import * as SpinButton from "../spin-button";
 import { useDatePickerContext } from "./date-picker-context";
 import { useDatePickerInputContext } from "./date-picker-input-context";
-import { createDisplayNames } from "./display-names";
 import { DateSegment } from "./types";
 
 export interface DatePickerSegmentOptions extends AsChildProp {
@@ -74,8 +73,6 @@ export function DatePickerSegment(props: DatePickerSegmentProps) {
   let enteredKeys = "";
   let composition: string | null = "";
 
-  const displayNames = createDisplayNames();
-
   // spin buttons cannot be focused with VoiceOver on iOS.
   const touchPropOverrides = createMemo(() => {
     return (
@@ -96,7 +93,9 @@ export function DatePickerSegment(props: DatePickerSegmentProps) {
   // Prepend the label passed from the field to each segment name.
   // This is needed because VoiceOver on iOS does not announce groups.
   const name = createMemo(() => {
-    return local.segment.type === "literal" ? "" : displayNames().of(local.segment.type);
+    return local.segment.type === "literal"
+      ? ""
+      : datePickerContext.translations()[local.segment.type];
   });
 
   const ariaLabel = createMemo(() => {

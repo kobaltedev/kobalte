@@ -2,8 +2,9 @@ import { CalendarDate, DateDuration } from "@internationalized/date";
 import { RangeValue, ValidationState } from "@kobalte/utils";
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { Direction, LocalizedMessageFormatter } from "../i18n";
+import { Direction } from "../i18n";
 import { CalendarSelectionMode, DateValue } from "./types";
+import { CalendarIntlTranslations } from "./calendar.intl";
 
 export interface CalendarDataSet {}
 
@@ -23,7 +24,7 @@ export interface CalendarContextValue {
   max: Accessor<DateValue | undefined>;
   timeZone: Accessor<string>;
   validationState: Accessor<ValidationState | null>;
-  messageFormatter: Accessor<LocalizedMessageFormatter>;
+  translations: Accessor<CalendarIntlTranslations>;
   isDisabled: Accessor<boolean>;
   isReadOnly: Accessor<boolean>;
   isDragging: Accessor<boolean>;

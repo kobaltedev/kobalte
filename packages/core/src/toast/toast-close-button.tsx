@@ -35,5 +35,5 @@ export function ToastCloseButton(props: ToastCloseButtonProps) {
       onClick={onClick}
       {...others}
     />
-    );
+  );
 }

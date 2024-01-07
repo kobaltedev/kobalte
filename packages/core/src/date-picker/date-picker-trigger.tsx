@@ -55,7 +55,7 @@ export function DatePickerTrigger(props: DatePickerTriggerProps) {
   };
 
   const ariaLabel = createMemo(() => {
-    return context.messageFormatter().format("calendar");
+    return context.translations().calendar;
   });
 
   const ariaLabelledBy = () => {

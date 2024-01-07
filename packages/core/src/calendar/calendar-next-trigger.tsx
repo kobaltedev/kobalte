@@ -59,7 +59,7 @@ export function CalendarNextTrigger(props: CalendarNextTriggerProps) {
   return (
     <Button.Root
       disabled={nextTriggerDisabled()}
-      aria-label={context.messageFormatter().format("next")}
+      aria-label={context.translations().next}
       onClick={onClick}
       onFocus={onFocus}
       onBlur={onBlur}
