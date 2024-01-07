@@ -9,12 +9,14 @@
 import { callHandler, mergeRefs, OverrideComponentProps, ValidationState } from "@kobalte/utils";
 import { createEffect, createMemo, JSX, on, splitProps } from "solid-js";
 
-import { createMessageFormatter } from "../i18n";
 import { announce, clearAnnouncer } from "../live-announcer";
 import { AsChildProp, Polymorphic } from "../polymorphic";
-import { SPIN_BUTTON_INTL_MESSAGES } from "./spin-button.intl";
+import { SPIN_BUTTON_INTL_TRANSLATIONS, SpinButtonIntlTranslations } from "./spin-button.intl";
 
 export interface SpinButtonRootOptions extends AsChildProp {
+  /** The localized strings of the component. */
+  translations?: SpinButtonIntlTranslations;
+
   /** The controlled value of the spin button. */
   value?: number;
 
@@ -63,7 +65,15 @@ export interface SpinButtonRootProps extends OverrideComponentProps<"div", SpinB
 export function SpinButtonRoot(props: SpinButtonRootProps) {
   let ref: HTMLDivElement | undefined;
 
+  props = mergeDefaultProps(
+    {
+      translations: SPIN_BUTTON_INTL_TRANSLATIONS,
+    },
+    props,
+  );
+
   const [local, others] = splitProps(props, [
+    "translations",
     "ref",
     "value",
     "textValue",
@@ -86,15 +96,13 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 
   let isFocused = false;
 
-  const messageFormatter = createMessageFormatter(SPIN_BUTTON_INTL_MESSAGES);
-
   // Replace Unicode hyphen-minus (U+002D) with minus sign (U+2212).
   // This ensures that macOS VoiceOver announces it as "minus" even with other characters between the minus sign
   // and the number (e.g. currency symbol). Otherwise, it announces nothing because it assumes the character is a hyphen.
   // In addition, replace the empty string with the word "Empty" so that iOS VoiceOver does not read "50%" for an empty field.
   const textValue = createMemo(() => {
     if (local.textValue === "") {
-      return messageFormatter().format("empty");
+      return local.translations?.empty;
     }
 
     return (local.textValue || `${local.value}`).replace("-", "\u2212");
@@ -167,7 +175,7 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
     on(textValue, textValue => {
       if (isFocused) {
         clearAnnouncer("assertive");
-        announce(textValue, "assertive");
+        announce(textValue ?? "", "assertive");
       }
     }),
   );
