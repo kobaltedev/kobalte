@@ -81,7 +81,7 @@ export function DialogRoot(props: DialogRootProps) {
   const context: DialogContextValue = {
     isOpen: disclosureState.isOpen,
     modal: () => props.modal ?? true,
-    preventScroll: () => props.preventScroll ?? false,
+    preventScroll: () => props.preventScroll ?? context.modal(),
     contentId,
     titleId,
     descriptionId,
