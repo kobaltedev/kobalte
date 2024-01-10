@@ -1,6 +1,7 @@
 import { cache, createAsync, useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
-import { Accessor, createEffect, createSignal, For, onCleanup, Suspense } from "solid-js";
+import { Accessor, createEffect, createSignal, For, onCleanup, Suspense, onMount } from "solid-js";
+import { isServer } from "solid-js/web";
 
 import { mods } from "../app";
 
@@ -72,9 +73,8 @@ function useCurrentSection(tableOfContents: Accessor<TocItem[] | undefined>) {
 }
 
 const getTOC = cache(async (pathname: string) => {
-  "use server";
-
-  return [];
+  console.log("TOC " + pathname);
+  console.log("TOC " + JSON.stringify(mods));
 
   const mod = mods[`./routes${pathname}.mdx`] ?? mods[`./routes${pathname}.md`];
   return !mod ? [] : mod.getHeadings().filter(h => h.depth > 1 && h.depth <= 3);
@@ -83,7 +83,17 @@ const getTOC = cache(async (pathname: string) => {
 export function TableOfContents() {
   const path = useLocation();
 
-  const toc = createAsync(() => getTOC(path.pathname));
+  const [toc, setTOC] = createSignal<Array<{depth: number, text: string, slug: string}>>([]);
+
+  console.log("LOADING TOC");
+
+  onMount(() => {
+    if (!isServer) {
+      const asyncTOC = createAsync(() => getTOC(path.pathname));
+
+      setTOC(asyncTOC() ?? []);
+    }
+  });
 
   //  const toc = createServerData$(
   //    async pathname => {
@@ -104,7 +114,7 @@ export function TableOfContents() {
           <h2
             id="on-this-page-title"
             class="font-display text-sm font-medium text-zinc-900 dark:text-white/90"
-          >
+            >
             On this page
           </h2>
           <ol class="mt-3 text-sm">
@@ -117,16 +127,16 @@ export function TableOfContents() {
                       class={clsx(
                         "block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
                         section.slug === currentSection()
-                          ? "text-sky-700 dark:text-sky-600"
-                          : "text-zinc-600 dark:text-zinc-400",
+                        ? "text-sky-700 dark:text-sky-600"
+                        : "text-zinc-600 dark:text-zinc-400",
                         section.depth === 3 && "pl-6",
-                      )}
-                    >
+                        )}
+                      >
                       {section.text}
                     </a>
                   </h3>
                 </li>
-              )}
+                )}
             </For>
           </ol>
         </Suspense>

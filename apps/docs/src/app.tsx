@@ -4,7 +4,7 @@ import "./root.css";
 
 import { ColorModeProvider, ColorModeScript, cookieStorageManagerSSR, Toast } from "@kobalte/core";
 import { MetaProvider, Title } from "@solidjs/meta";
-import { Navigate, Route, Router } from "@solidjs/router";
+import { Router } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start";
 import { Suspense } from "solid-js";
 import { isServer, Portal } from "solid-js/web";
