@@ -13,7 +13,7 @@ import {
   OverrideComponentProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import { createEffect, createSignal, JSX, on, onCleanup, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { useRadioGroupContext } from "./radio-group-context";
@@ -73,23 +73,28 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
     );
   };
 
+  const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
+
   const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = e => {
     callHandler(e, local.onChange);
 
     e.stopPropagation();
 
-    radioGroupContext.setSelectedValue(radioContext.value());
+    if (!isInternalChangeEvent()) {
+      radioGroupContext.setSelectedValue(radioContext.value());
 
-    const target = e.target as HTMLInputElement;
+      const target = e.target as HTMLInputElement;
 
-    // Unlike in React, inputs `checked` state can be out of sync with our state.
-    // for example a readonly `<input type="radio" />` is always "checkable".
-    //
-    // Also, even if an input is controlled (ex: `<input type="radio" checked={isChecked} />`,
-    // clicking on the input will change its internal `checked` state.
-    //
-    // To prevent this, we need to force the input `checked` state to be in sync with our state.
-    target.checked = radioContext.isSelected();
+      // Unlike in React, inputs `checked` state can be out of sync with our state.
+      // for example a readonly `<input type="radio" />` is always "checkable".
+      //
+      // Also, even if an input is controlled (ex: `<input type="radio" checked={isChecked} />`,
+      // clicking on the input will change its internal `checked` state.
+      //
+      // To prevent this, we need to force the input `checked` state to be in sync with our state.
+      target.checked = radioContext.isSelected();
+    }
+    setIsInternalChangeEvent(false);
   };
 
   const onFocus: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
@@ -102,6 +107,22 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
     radioContext.setIsFocused(false);
   };
 
+  createEffect(
+    on(
+      [() => radioContext.isSelected(), () => radioContext.value()],
+      c => {
+        if (!c[0] && c[1] === radioContext.value()) return;
+        setIsInternalChangeEvent(true);
+
+        const ref = radioContext.inputRef();
+        ref?.dispatchEvent(new Event("input", { bubbles: true, cancelable: true }));
+        ref?.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
+      },
+      {
+        defer: true,
+      },
+    ),
+  );
   createEffect(() => onCleanup(radioContext.registerInput(others.id!)));
 
   return (

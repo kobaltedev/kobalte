@@ -14,7 +14,7 @@ import {
   OverrideComponentProps,
   visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { createEffect, JSX, on, splitProps } from "solid-js";
+import { createEffect, createSignal, JSX, on, splitProps } from "solid-js";
 
 import {
   createFormControlField,
@@ -54,23 +54,28 @@ export function CheckboxInput(props: CheckboxInputProps) {
 
   const { fieldProps } = createFormControlField(formControlFieldProps);
 
+  const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
+
   const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = e => {
     callHandler(e, local.onChange);
 
     e.stopPropagation();
 
-    const target = e.target as HTMLInputElement;
+    if (!isInternalChangeEvent()) {
+      const target = e.target as HTMLInputElement;
 
-    context.setIsChecked(target.checked);
+      context.setIsChecked(target.checked);
 
-    // Unlike in React, inputs `checked` state can be out of sync with our toggle state.
-    // for example a readonly `<input type="checkbox" />` is always "checkable".
-    //
-    // Also, even if an input is controlled (ex: `<input type="checkbox" checked={isChecked} />`,
-    // clicking on the input will change its internal `checked` state.
-    //
-    // To prevent this, we need to force the input `checked` state to be in sync with the toggle state.
-    target.checked = context.checked();
+      // Unlike in React, inputs `checked` state can be out of sync with our toggle state.
+      // for example a readonly `<input type="checkbox" />` is always "checkable".
+      //
+      // Also, even if an input is controlled (ex: `<input type="checkbox" checked={isChecked} />`,
+      // clicking on the input will change its internal `checked` state.
+      //
+      // To prevent this, we need to force the input `checked` state to be in sync with the toggle state.
+      target.checked = context.checked();
+    }
+    setIsInternalChangeEvent(false);
   };
 
   const onFocus: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
@@ -82,6 +87,21 @@ export function CheckboxInput(props: CheckboxInputProps) {
     callHandler(e, local.onBlur);
     context.setIsFocused(false);
   };
+
+  createEffect(
+    on(
+      [() => context.checked(), () => context.value()],
+      () => {
+        setIsInternalChangeEvent(true);
+
+        ref?.dispatchEvent(new Event("input", { bubbles: true, cancelable: true }));
+        ref?.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
+      },
+      {
+        defer: true,
+      },
+    ),
+  );
 
   // indeterminate is a property, but it can only be set via javascript
   // https://css-tricks.com/indeterminate-checkboxes/
