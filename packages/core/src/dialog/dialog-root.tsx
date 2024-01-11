@@ -60,7 +60,6 @@ export function DialogRoot(props: DialogRootProps) {
     {
       id: defaultId,
       modal: true,
-      preventScroll: false,
       translations: DIALOG_INTL_TRANSLATIONS,
     },
     props,
@@ -87,7 +86,7 @@ export function DialogRoot(props: DialogRootProps) {
     translations: () => props.translations ?? DIALOG_INTL_TRANSLATIONS,
     isOpen: disclosureState.isOpen,
     modal: () => props.modal ?? true,
-    preventScroll: () => props.preventScroll ?? false,
+    preventScroll: () => props.preventScroll ?? context.modal(),
     contentId,
     titleId,
     descriptionId,

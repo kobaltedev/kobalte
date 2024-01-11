@@ -46,7 +46,6 @@ export function MenuRoot(props: MenuRootProps) {
     {
       id: defaultId,
       modal: true,
-      preventScroll: false,
     },
     props,
   );
@@ -69,7 +68,7 @@ export function MenuRoot(props: MenuRootProps) {
 
   const context: MenuRootContextValue = {
     isModal: () => local.modal ?? true,
-    preventScroll: () => local.preventScroll ?? false,
+    preventScroll: () => local.preventScroll ?? context.isModal(),
     forceMount: () => local.forceMount ?? false,
     generateId: createGenerateId(() => local.id!),
   };
