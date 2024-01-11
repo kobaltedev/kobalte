@@ -81,7 +81,7 @@ export function CalendarGrid(props: CalendarGridProps) {
 
   const visibleRangeDescription = createMemo(() => {
     return getVisibleRangeDescription(
-      rootContext.messageFormatter(),
+      rootContext.translations(),
       startDate(),
       endDate(),
       rootContext.timeZone(),

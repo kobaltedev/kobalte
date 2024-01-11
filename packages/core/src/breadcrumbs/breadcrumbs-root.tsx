@@ -9,9 +9,8 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
-import { createMessageFormatter } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
-import { BREADCRUMBS_INTL_MESSAGES } from "./breadcrumbs.intl";
+import { BREADCRUMBS_INTL_TRANSLATIONS, BreadcrumbsIntlTranslations } from "./breadcrumbs.intl";
 import { BreadcrumbsContext, BreadcrumbsContextValue } from "./breadcrumbs-context";
 
 export interface BreadcrumbsRootOptions extends AsChildProp {
@@ -20,6 +19,9 @@ export interface BreadcrumbsRootOptions extends AsChildProp {
    * It will be used as the default children of `Breadcrumbs.Separator`.
    */
   separator?: string | JSX.Element;
+
+  /** The localized strings of the component. */
+  translations?: BreadcrumbsIntlTranslations;
 }
 
 export interface BreadcrumbsRootProps
@@ -29,11 +31,15 @@ export interface BreadcrumbsRootProps
  * Breadcrumbs show hierarchy and navigational context for a user’s location within an application.
  */
 export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
-  props = mergeDefaultProps({ separator: "/" }, props);
+  props = mergeDefaultProps(
+    {
+      separator: "/",
+      translations: BREADCRUMBS_INTL_TRANSLATIONS,
+    },
+    props,
+  );
 
-  const [local, others] = splitProps(props, ["separator"]);
-
-  const messageFormatter = createMessageFormatter(() => BREADCRUMBS_INTL_MESSAGES);
+  const [local, others] = splitProps(props, ["separator", "translations"]);
 
   const context: BreadcrumbsContextValue = {
     separator: () => local.separator,
@@ -41,7 +47,7 @@ export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
 
   return (
     <BreadcrumbsContext.Provider value={context}>
-      <Polymorphic as="nav" aria-label={messageFormatter().format("breadcrumbs")} {...others} />
+      <Polymorphic as="nav" aria-label={local.translations?.breadcrumbs} {...others} />
     </BreadcrumbsContext.Provider>
   );
 }

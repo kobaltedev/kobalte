@@ -41,11 +41,11 @@ import {
   splitProps,
 } from "solid-js";
 
-import { createMessageFormatter, getReadingDirection, useLocale } from "../i18n";
+import { getReadingDirection, useLocale } from "../i18n";
 import { announce } from "../live-announcer";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createControllableSignal, createInteractOutside } from "../primitives";
-import { CALENDAR_INTL_MESSAGES } from "./calendar.intl";
+import { CalendarIntlTranslations, CALENDAR_INTL_MESSAGES } from "./calendar.intl";
 import { CalendarContext, CalendarContextValue, CalendarDataSet } from "./calendar-context";
 import { DateAlignment, DateValue } from "./types";
 import {
@@ -135,6 +135,9 @@ export type CalendarRootOptions = (
   | CalendarRangeSelectionOptions
 ) &
   AsChildProp & {
+    /** The localized strings of the component. */
+    translations?: CalendarIntlTranslations;
+
     /**
      * A function that creates a [Calendar](https://react-spectrum.adobe.com/internationalized/date/Calendar.html)
      * object for a given calendar identifier. Such a function may be imported from the
@@ -207,11 +210,13 @@ export function CalendarRoot(props: CalendarRootProps) {
     {
       visibleDuration: { months: 1 },
       selectionMode: "single",
+      translations: CALENDAR_INTL_MESSAGES,
     },
     props,
   );
 
   const [local, others] = splitProps(props, [
+    "translations",
     "ref",
     "locale",
     "createCalendar",
@@ -234,8 +239,6 @@ export function CalendarRoot(props: CalendarRootProps) {
     "readOnly",
     "aria-label",
   ]);
-
-  const messageFormatter = createMessageFormatter(() => CALENDAR_INTL_MESSAGES);
 
   const locale = createMemo(() => {
     return local.locale ?? useLocale().locale();
@@ -366,7 +369,13 @@ export function CalendarRoot(props: CalendarRootProps) {
   const [isDragging, setIsDragging] = createSignal(false);
 
   const visibleRangeDescription = createMemo(() => {
-    return getVisibleRangeDescription(messageFormatter(), startDate(), endDate(), timeZone(), true);
+    return getVisibleRangeDescription(
+      local.translations!,
+      startDate(),
+      endDate(),
+      timeZone(),
+      true,
+    );
   });
 
   const ariaLabel = () => {
@@ -776,16 +785,16 @@ export function CalendarRoot(props: CalendarRootProps) {
 
     if (local.selectionMode === "single") {
       const date = asSingleValue(value());
-      description = date && getSelectedDateDescription(messageFormatter(), date, timeZone());
+      description = date && getSelectedDateDescription(local.translations!, date, timeZone());
     } else if (local.selectionMode === "multiple") {
       const dates = asArrayValue(value());
       description = dates
-        ?.map(date => getSelectedDateDescription(messageFormatter(), date, timeZone()))
+        ?.map(date => getSelectedDateDescription(local.translations!, date, timeZone()))
         .join(", ");
     } else if (local.selectionMode === "range") {
       const dateRange = asRangeValue(value()) ?? {};
       description = getSelectedDateRangeDescription(
-        messageFormatter(),
+        local.translations!,
         dateRange,
         anchorDate(),
         timeZone(),
@@ -895,7 +904,7 @@ export function CalendarRoot(props: CalendarRootProps) {
     min,
     max,
     timeZone,
-    messageFormatter,
+    translations: () => local.translations!,
     setStartDate,
     setAnchorDate,
     setIsFocused,

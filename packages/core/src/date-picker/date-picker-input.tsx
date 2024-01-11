@@ -33,7 +33,7 @@ import { useFormControlContext } from "../form-control";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useDatePickerContext } from "./date-picker-context";
 import { DatePickerInputContext, DatePickerInputContextValue } from "./date-picker-input-context";
-import { getPlaceholder } from "./placeholders";
+import { DatePickerIntlTranslations } from "./date-picker.intl";
 import { DateFieldOptions, DateSegment, SegmentType } from "./types";
 import {
   convertValue,
@@ -235,7 +235,7 @@ export function DatePickerInput(props: DatePickerInputProps) {
         const isPlaceholder = isOriginallyEditable && !(validSegments() as any)[segment.type];
 
         const placeholder = isOriginallyEditable
-          ? getPlaceholder(segment.type, segment.value, datePickerContext.locale())
+          ? getPlaceholder(datePickerContext.translations(), segment.type, segment.value)
           : null;
 
         return {
@@ -661,4 +661,22 @@ function setSegmentBase(
         return value.set({ [part]: segmentValue });
     }
   }
+}
+
+export function getPlaceholder(
+  translations: DatePickerIntlTranslations,
+  field: string,
+  value: string,
+) {
+  // Use the actual placeholder value for the era and day period fields.
+  if (field === "era" || field === "dayPeriod") {
+    return value;
+  }
+
+  if (field === "year" || field === "month" || field === "day") {
+    return translations.placeholder[field];
+  }
+
+  // For time fields (e.g. hour, minute, etc.), use two dashes as the placeholder.
+  return "––";
 }

@@ -3,8 +3,12 @@ import { createSignal, createUniqueId, ParentProps } from "solid-js";
 
 import { createDisclosureState, createPresence, createRegisterId } from "../primitives";
 import { DialogContext, DialogContextValue } from "./dialog-context";
+import { DIALOG_INTL_TRANSLATIONS, DialogIntlTranslations } from "./dialog.intl";
 
 export interface DialogRootOptions {
+  /** The localized strings of the component. */
+  translations?: DialogIntlTranslations;
+
   /** The controlled open state of the dialog. */
   open?: boolean;
 
@@ -56,6 +60,7 @@ export function DialogRoot(props: DialogRootProps) {
     {
       id: defaultId,
       modal: true,
+      translations: DIALOG_INTL_TRANSLATIONS,
     },
     props,
   );
@@ -78,6 +83,7 @@ export function DialogRoot(props: DialogRootProps) {
   const contentPresence = createPresence(shouldMount);
 
   const context: DialogContextValue = {
+    translations: () => props.translations ?? DIALOG_INTL_TRANSLATIONS,
     isOpen: disclosureState.isOpen,
     modal: () => props.modal ?? true,
     preventScroll: () => props.preventScroll ?? context.modal(),

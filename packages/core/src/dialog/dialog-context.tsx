@@ -1,8 +1,10 @@
 import { Accessor, createContext, Setter, useContext } from "solid-js";
 
 import { CreatePresenceResult } from "../primitives";
+import { DialogIntlTranslations } from "./dialog.intl";
 
 export interface DialogContextValue {
+  translations: Accessor<DialogIntlTranslations>;
   isOpen: Accessor<boolean>;
   modal: Accessor<boolean>;
   preventScroll: Accessor<boolean>;

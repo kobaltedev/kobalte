@@ -132,7 +132,7 @@ export function CalendarGridBodyCellTrigger(props: CalendarGridBodyCellTriggerPr
       if (start && end && (isSameDay(context.date(), start) || isSameDay(context.date(), end))) {
         label =
           getSelectedDateDescription(
-            rootContext.messageFormatter(),
+            rootContext.translations(),
             context.date(),
             rootContext.timeZone(),
           ) + ", ";
@@ -142,25 +142,19 @@ export function CalendarGridBodyCellTrigger(props: CalendarGridBodyCellTriggerPr
     label += labelDateFormatter().format(nativeDate());
     if (context.isDateToday()) {
       // If date is today, set appropriate string depending on selected state:
-      label = rootContext
-        .messageFormatter()
-        .format(context.isSelected() ? "todayDateSelected" : "todayDate", {
-          date: label,
-        });
+      label = rootContext.translations().todayDate(label, context.isSelected());
     } else if (context.isSelected()) {
       // If date is selected but not today:
-      label = rootContext.messageFormatter().format("dateSelected", {
-        date: label,
-      });
+      label = rootContext.translations().dateSelected(label);
     }
 
     const min = rootContext.min();
     const max = rootContext.max();
 
     if (min && isSameDay(context.date(), min)) {
-      label += ", " + rootContext.messageFormatter().format("minimumDate");
+      label += ", " + rootContext.translations().minimumDate;
     } else if (max && isSameDay(context.date(), max)) {
-      label += ", " + rootContext.messageFormatter().format("maximumDate");
+      label += ", " + rootContext.translations().maximumDate;
     }
 
     return label;

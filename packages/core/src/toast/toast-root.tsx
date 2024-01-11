@@ -34,6 +34,7 @@ import {
 } from "solid-js";
 
 import { createPresence, createRegisterId } from "../primitives";
+import { TOAST_INTL_TRANSLATIONS, ToastIntlTranslations } from "./toast.intl";
 import { ToastContext, ToastContextValue } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
 import { toastStore } from "./toast-store";
@@ -50,6 +51,9 @@ export type SwipeEvent = { currentTarget: EventTarget & HTMLLIElement } & Omit<
 >;
 
 export interface ToastRootOptions {
+  /** The localized strings of the component. */
+  translations?: ToastIntlTranslations;
+
   /** The id of the toast provided by the `toaster`. */
   toastId: number;
 
@@ -114,12 +118,14 @@ export function ToastRoot(props: ToastRootProps) {
     {
       id: defaultId,
       priority: "high",
+      translations: TOAST_INTL_TRANSLATIONS,
     },
     props,
   );
 
   const [local, others] = splitProps(props, [
     "ref",
+    "translations",
     "toastId",
     "style",
     "priority",
@@ -357,6 +363,7 @@ export function ToastRoot(props: ToastRootProps) {
   );
 
   const context: ToastContextValue = {
+    translations: () => local.translations!,
     close,
     duration,
     isPersistent: () => local.persistent ?? false,

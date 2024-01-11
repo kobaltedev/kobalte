@@ -1,6 +1,9 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
+import { ToastIntlTranslations } from "./toast.intl";
+
 export interface ToastContextValue {
+  translations: Accessor<ToastIntlTranslations>;
   close: () => void;
   duration: Accessor<number>;
   isPersistent: Accessor<boolean>;

@@ -1,6 +1,7 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
 import { CreatePresenceResult } from "../primitives";
+import { PopoverIntlTranslations } from "./popover.intl";
 
 export interface PopoverDataSet {
   "data-expanded": string | undefined;
@@ -8,6 +9,7 @@ export interface PopoverDataSet {
 }
 
 export interface PopoverContextValue {
+  translations: Accessor<PopoverIntlTranslations>;
   dataset: Accessor<PopoverDataSet>;
   isOpen: Accessor<boolean>;
   isModal: Accessor<boolean>;

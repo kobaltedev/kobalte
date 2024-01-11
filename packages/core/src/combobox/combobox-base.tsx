@@ -30,7 +30,7 @@ import {
 } from "solid-js";
 
 import { createFormControl, FORM_CONTROL_PROP_NAMES, FormControlContext } from "../form-control";
-import { createFilter, createMessageFormatter } from "../i18n";
+import { createFilter } from "../i18n";
 import { createListState, ListKeyboardDelegate } from "../list";
 import { announce } from "../live-announcer";
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -52,7 +52,7 @@ import {
   SelectionBehavior,
   SelectionMode,
 } from "../selection";
-import { COMBOBOX_INTL_MESSAGES } from "./combobox.intl";
+import { COMBOBOX_INTL_TRANSLATIONS, ComboboxIntlTranslations } from "./combobox.intl";
 import { ComboboxContext, ComboboxContextValue, ComboboxDataSet } from "./combobox-context";
 import { ComboboxTriggerMode } from "./types";
 
@@ -69,6 +69,9 @@ export interface ComboboxBaseSectionComponentProps<T> {
 export interface ComboboxBaseOptions<Option, OptGroup = never>
   extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange">,
     AsChildProp {
+  /** The localized strings of the component. */
+  translations?: ComboboxIntlTranslations;
+
   /** The controlled open state of the combobox. */
   open?: boolean;
 
@@ -245,6 +248,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       modal: false,
       defaultFilter: "contains",
       triggerMode: "input",
+      translations: COMBOBOX_INTL_TRANSLATIONS,
     },
     props,
   );
@@ -252,6 +256,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   const [local, popperProps, formControlProps, others] = splitProps(
     props,
     [
+      "translations",
       "itemComponent",
       "sectionComponent",
       "open",
@@ -316,8 +321,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
   const [showAllOptions, setShowAllOptions] = createSignal(false);
 
   const [lastDisplayedOptions, setLastDisplayedOptions] = createSignal(local.options);
-
-  const messageFormatter = createMessageFormatter(() => COMBOBOX_INTL_MESSAGES);
 
   const disclosureState = createDisclosureState({
     open: () => local.open,
@@ -672,10 +675,8 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     if (isAppleDevice() && focusedItem != null && focusedKey !== lastAnnouncedFocusedKey) {
       const isSelected = listState.selectionManager().isSelected(focusedKey);
 
-      const announcement = messageFormatter().format("focusAnnouncement", {
-        optionText: focusedItem?.textValue || "",
-        isSelected,
-      });
+      const announcement =
+        local.translations?.focusAnnouncement(focusedItem?.textValue || "", isSelected) ?? "";
 
       announce(announcement);
     }
@@ -700,7 +701,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       isOpen !== lastOpen && (listState.selectionManager().focusedKey() == null || isAppleDevice());
 
     if (isOpen && (didOpenWithoutFocusedItem || optionCount !== lastOptionCount)) {
-      const announcement = messageFormatter().format("countAnnouncement", { optionCount });
+      const announcement = local.translations?.countAnnouncement(optionCount) ?? "";
       announce(announcement);
     }
 
@@ -722,9 +723,8 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       lastSelectedItem &&
       lastSelectedKey !== lastAnnouncedSelectedKey
     ) {
-      const announcement = messageFormatter().format("selectedAnnouncement", {
-        optionText: lastSelectedItem?.textValue || "",
-      });
+      const announcement =
+        local.translations?.selectedAnnouncement(lastSelectedItem?.textValue || "") ?? "";
 
       announce(announcement);
     }
@@ -764,8 +764,8 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
     listState: () => listState,
     keyboardDelegate: delegate,
     listboxId,
-    triggerAriaLabel: () => messageFormatter().format("triggerLabel"),
-    listboxAriaLabel: () => messageFormatter().format("listboxLabel"),
+    triggerAriaLabel: () => local.translations?.triggerLabel,
+    listboxAriaLabel: () => local.translations?.listboxLabel,
     setIsInputFocused,
     resetInputValue,
     setInputValue,

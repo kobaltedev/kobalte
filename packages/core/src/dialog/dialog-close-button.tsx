@@ -2,7 +2,6 @@ import { callHandler, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
-import { COMMON_INTL_MESSAGES, createMessageFormatter } from "../i18n";
 import { useDialogContext } from "./dialog-context";
 
 export interface DialogCloseButtonProps
@@ -16,8 +15,6 @@ export function DialogCloseButton(props: DialogCloseButtonProps) {
 
   const [local, others] = splitProps(props, ["aria-label", "onClick"]);
 
-  const messageFormatter = createMessageFormatter(() => COMMON_INTL_MESSAGES);
-
   const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
     callHandler(e, local.onClick);
     context.close();
@@ -25,7 +22,7 @@ export function DialogCloseButton(props: DialogCloseButtonProps) {
 
   return (
     <Button.Root
-      aria-label={local["aria-label"] || messageFormatter().format("dismiss")}
+      aria-label={local["aria-label"] || context.translations().dismiss}
       onClick={onClick}
       {...others}
     />
