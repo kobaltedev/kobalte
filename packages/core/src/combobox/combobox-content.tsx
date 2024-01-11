@@ -98,7 +98,7 @@ export function ComboboxContent(props: ComboboxContentProps) {
 
   createPreventScroll({
     ownerRef: () => ref,
-    isDisabled: () => !(context.isOpen() && (context.isModal() || context.preventScroll())),
+    isDisabled: () => !(context.isOpen() && context.preventScroll()),
   });
 
   createFocusScope(
