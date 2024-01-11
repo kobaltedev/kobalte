@@ -73,6 +73,7 @@ function useCurrentSection(tableOfContents: Accessor<TocItem[] | undefined>) {
 }
 
 const getTOC = cache(async (pathname: string) => {
+  "use server";
   console.log("TOC " + pathname);
   console.log("TOC " + JSON.stringify(mods));
 
@@ -83,17 +84,17 @@ const getTOC = cache(async (pathname: string) => {
 export function TableOfContents() {
   const path = useLocation();
 
-  const [toc, setTOC] = createSignal<Array<{depth: number, text: string, slug: string}>>([]);
+  const toc = createAsync(() => getTOC(path.pathname))// createSignal<Array<{depth: number, text: string, slug: string}>>([]);
 
   console.log("LOADING TOC");
 
-  onMount(() => {
-    if (!isServer) {
-      const asyncTOC = createAsync(() => getTOC(path.pathname));
-
-      setTOC(asyncTOC() ?? []);
-    }
-  });
+//  onMount(() => {
+//    if (!isServer) {
+//      const asyncTOC = createAsync(() => getTOC(path.pathname));
+//
+//      setTOC(asyncTOC() ?? []);
+//    }
+//  });
 
   //  const toc = createServerData$(
   //    async pathname => {

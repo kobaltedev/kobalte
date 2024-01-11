@@ -208,67 +208,68 @@ interface MDXConfig {
 const cache = new Map();
 const headingsCache = new Map();
 
-function rehypeCollectHeadings() {
-  const slugger = new Slugger();
-  return function (tree: any, file: any) {
-    const headings: any[] = [];
-    visit(tree, node => {
-      if (node.type !== "element") {
-        return;
-      }
-
-      const { tagName } = node;
-
-      if (tagName[0] !== "h") {
-        return;
-      }
-
-      const [_, level] = tagName.match(/h([0-6])/) ?? [];
-
-      if (!level) {
-        return;
-      }
-
-      const depth = Number.parseInt(level);
-
-      let text = "";
-
-      visit(node, (child, __, parent) => {
-        if (child.type === "element" || parent == null) {
+function rehypeCollectHeadings(filename: string) {
+  return () => {
+    const slugger = new Slugger();
+    return function (tree: any, file: any) {
+      const headings: any[] = [];
+      visit(tree, node => {
+        if (node.type !== "element") {
           return;
         }
 
-        if (child.type === "raw" && child.value.match(/^\n?<.*>\n?$/)) {
+        const { tagName } = node;
+
+        if (tagName[0] !== "h") {
           return;
         }
 
-        if (new Set(["text", "raw", "mdxTextExpression"]).has(child.type)) {
-          text += child.value;
+        const [_, level] = tagName.match(/h([0-6])/) ?? [];
+
+        if (!level) {
+          return;
         }
+
+        const depth = Number.parseInt(level);
+
+        let text = "";
+
+        visit(node, (child, __, parent) => {
+          if (child.type === "element" || parent == null) {
+            return;
+          }
+
+          if (child.type === "raw" && child.value.match(/^\n?<.*>\n?$/)) {
+            return;
+          }
+
+          if (new Set(["text", "raw", "mdxTextExpression"]).has(child.type)) {
+            text += child.value;
+          }
+        });
+
+        node.properties = node.properties || {};
+
+        if (typeof node.properties.id !== "string") {
+          let slug = slugger.slug(text);
+
+          if (slug.endsWith("-")) {
+            slug = slug.slice(0, -1);
+          }
+
+          node.properties.id = slug;
+        }
+
+        headings.push({ depth, slug: node.properties.id, text });
       });
 
-      node.properties = node.properties || {};
+      headingsCache.set(filename, headings);
 
-      if (typeof node.properties.id !== "string") {
-        let slug = slugger.slug(text);
-
-        if (slug.endsWith("-")) {
-          slug = slug.slice(0, -1);
-        }
-
-        node.properties.id = slug;
-      }
-
-      headings.push({ depth, slug: node.properties.id, text });
-    });
-
-    console.log("VITE SET HEADINGS", file.path, headings);
-    headingsCache.set(file.path, headings);
-
-    tree.children.unshift(
-      // @ts-ignoret
-      jsToTreeNode(`export function getHeadings() { return ${JSON.stringify(headings)} }`),
-    );
+      tree.children.unshift(
+        // @ts-ignoret
+        jsToTreeNode(`export function getHeadings() { return ${JSON.stringify(headings)} }`),
+      );
+    };
   };
 }
 
@@ -293,7 +294,7 @@ export default defineConfig({
     //      rehypePlugins: [rehypePrettyCode],
     //      remarkPlugins: [remarkGfm],
     //    }),
-    vinxiMdx.withImports({})({
+    vinxiMdx.withImports({})(filename => ({
       jsx: true,
       jsxImportSource: "solid-js",
       providerImportSource: "solid-mdx",
@@ -301,7 +302,7 @@ export default defineConfig({
         [rehypeRaw, { passThrough: nodeTypes }],
         rehypePrettyCode,
         rehypeSlug,
-        rehypeCollectHeadings,
+        rehypeCollectHeadings(filename),
       ],
       remarkPlugins: [
         remarkGfm,
@@ -331,25 +332,16 @@ export default defineConfig({
           },
         ],
       ],
-    }),
+    })),
     { enforce: "pre" },
-    {
-      name: "mdx-meta-load",
-      async transform(code: any, id: any) {
-        if (id.endsWith(".mdx") || id.endsWith(".md")) {
-          console.log("VITE mdx-meta-load " + id);
-        }
-      },
-    },
     {
       name: "mdx-meta",
       async transform(code: any, id: any) {
         if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
-          console.log("VITE " + id);
 
           id = id.replace(/\?meta$/, "");
 
-          console.log("VITE CACHE", headingsCache);
+          console.log("VITE LOOKUP " + id);
 
           // eslint-disable-next-line no-inner-declarations
           function getCode() {
