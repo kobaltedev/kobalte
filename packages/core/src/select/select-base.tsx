@@ -204,7 +204,6 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
       gutter: 8,
       sameWidth: true,
       modal: false,
-      preventScroll: false,
     },
     props,
   );

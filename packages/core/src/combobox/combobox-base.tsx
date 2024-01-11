@@ -243,7 +243,6 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
       gutter: 8,
       sameWidth: true,
       modal: false,
-      preventScroll: false,
       defaultFilter: "contains",
       triggerMode: "input",
     },

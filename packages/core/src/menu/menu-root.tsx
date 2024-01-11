@@ -46,7 +46,6 @@ export function MenuRoot(props: MenuRootProps) {
     {
       id: defaultId,
       modal: true,
-      preventScroll: false,
     },
     props,
   );

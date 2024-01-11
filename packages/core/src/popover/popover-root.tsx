@@ -79,7 +79,6 @@ export function PopoverRoot(props: PopoverRootProps) {
     {
       id: defaultId,
       modal: false,
-      preventScroll: false,
     },
     props,
   );

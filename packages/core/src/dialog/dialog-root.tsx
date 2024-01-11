@@ -56,7 +56,6 @@ export function DialogRoot(props: DialogRootProps) {
     {
       id: defaultId,
       modal: true,
-      preventScroll: false,
     },
     props,
   );
