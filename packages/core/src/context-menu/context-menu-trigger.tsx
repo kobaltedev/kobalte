@@ -75,6 +75,7 @@ export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
     clearLongPressTimeout();
 
     e.preventDefault();
+    e.stopPropagation();
 
     context.setAnchorRect({ x: e.clientX, y: e.clientY });
 
