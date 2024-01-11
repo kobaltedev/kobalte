@@ -124,7 +124,7 @@ export function PopoverRoot(props: PopoverRootProps) {
     dataset,
     isOpen: disclosureState.isOpen,
     isModal: () => local.modal ?? false,
-    preventScroll: () => local.preventScroll ?? false,
+    preventScroll: () => local.preventScroll ?? context.isModal(),
     contentPresence,
     triggerRef,
     contentId,

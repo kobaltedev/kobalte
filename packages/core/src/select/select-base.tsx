@@ -462,7 +462,7 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
     isMultiple: () => access(local.selectionMode) === "multiple",
     isVirtualized: () => local.virtualized ?? false,
     isModal: () => local.modal ?? false,
-    preventScroll: () => local.preventScroll ?? false,
+    preventScroll: () => local.preventScroll ?? context.isModal(),
     disallowTypeAhead: () => local.disallowTypeAhead ?? false,
     shouldFocusWrap: () => local.shouldFocusWrap ?? false,
     selectedOptions,

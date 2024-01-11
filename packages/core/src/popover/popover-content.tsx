@@ -175,7 +175,7 @@ export function PopoverContent(props: PopoverContentProps) {
 
   createPreventScroll({
     ownerRef: () => ref,
-    isDisabled: () => !(context.isOpen() && (context.isModal() || context.preventScroll())),
+    isDisabled: () => !(context.isOpen() && context.preventScroll()),
   });
 
   createFocusScope(
