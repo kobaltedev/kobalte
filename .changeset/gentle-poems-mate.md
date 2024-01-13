@@ -1,5 +1,5 @@
 ---
-"@kobalte/core": major
+"@kobalte/core": minor
 ---
 
 ## v0.12.0 (January 14, 2024)
