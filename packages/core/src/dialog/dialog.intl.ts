@@ -1,4 +1,5 @@
 export const DIALOG_INTL_TRANSLATIONS = {
+  // `aria-label` of Dialog.CloseButton.
   dismiss: "Dismiss",
 };
 
