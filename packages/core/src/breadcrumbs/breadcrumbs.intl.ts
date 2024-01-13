@@ -1,4 +1,5 @@
 export const BREADCRUMBS_INTL_TRANSLATIONS = {
+  // `aria-label` of the navigation.
   breadcrumbs: "Breadcrumbs",
 };
 

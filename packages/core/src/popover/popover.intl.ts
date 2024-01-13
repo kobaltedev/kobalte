@@ -1,4 +1,5 @@
 export const POPOVER_INTL_TRANSLATIONS = {
+  // `aria-label` of Popover.CloseButton.
   dismiss: "Dismiss",
 };
 
