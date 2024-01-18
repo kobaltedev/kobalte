@@ -1,5 +1,15 @@
 # @kobalte/core
 
+## 0.12.1
+
+### Patch Changes
+
+- 86827c8: ## v0.12.1 (January 18, 2024)
+
+  **Bug fixes**
+
+  - Rerelease [`Menubar`](https://kobalte.dev/docs/core/components/menubar), removed by mistake in `0.12.0`.
+
 ## 0.12.0
 
 ### Minor Changes
