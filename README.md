@@ -24,7 +24,7 @@ For full documentation, visit [kobalte.dev](https://kobalte.dev/).
 
 ## Roadmap
 
-View roadmap, give feedback and vote for new features at https://kobalte.canny.io/.
+View roadmap, give feedback and vote for new features at https://github.com/orgs/kobaltedev/projects/4.
 
 ## Acknowledgment
 

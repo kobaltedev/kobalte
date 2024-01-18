@@ -199,6 +199,7 @@ export function Menu(props: MenuProps) {
     dataset,
     isOpen: disclosureState.isOpen,
     contentPresence,
+    nestedMenus,
     currentPlacement,
     pointerGraceTimeoutId: () => pointerGraceTimeoutId,
     autoFocus: focusStrategy,

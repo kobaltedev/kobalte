@@ -5,6 +5,9 @@ export interface MenuRootContextValue {
   preventScroll: Accessor<boolean>;
   forceMount: Accessor<boolean>;
   generateId: (part: string) => string;
+
+  /** Used for Menubar */
+  value: Accessor<string | undefined>;
 }
 
 export const MenuRootContext = createContext<MenuRootContextValue>();
