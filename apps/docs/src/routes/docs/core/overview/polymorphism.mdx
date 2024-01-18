@@ -6,7 +6,7 @@ All component parts that render a DOM element have an `as` and a `asChild` prop.
 
 For simple use cases the `as` prop can be used, either with native HTML elements or custom Solid components:
 
-```tsx {9, 14}
+```tsx {8, 13}
 import { Tabs as KTabs } from "@kobalte/core";
 import { MyCustomButton } from "./components";
 
@@ -41,7 +41,7 @@ When using this pattern the following rules apply to the component with the `asC
 - Props are combined, if same attribute exists the one from `<As>` win.
 - Event handlers are chained, the one from `<As>` get called first.
 
-```tsx {16}
+```tsx {15}
 import { As, Tabs as KTabs } from "@kobalte/core";
 import { MyCustomButton } from "./components";
 
