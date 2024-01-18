@@ -18,6 +18,7 @@ import { createEffect, createUniqueId, JSX, onCleanup, Show, splitProps } from "
 
 import { DismissableLayer } from "../dismissable-layer";
 import { createSelectableList } from "../list";
+import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
@@ -78,6 +79,7 @@ export function MenuContentBase(props: MenuContentBaseProps) {
 
   const rootContext = useMenuRootContext();
   const context = useMenuContext();
+  const optionalMenubarContext = useOptionalMenubarContext();
 
   props = mergeDefaultProps(
     {
@@ -106,7 +108,11 @@ export function MenuContentBase(props: MenuContentBaseProps) {
 
   // Only the root menu can apply "modal" behavior (block pointer-events and trap focus).
   const isRootModalContent = () => {
-    return context.parentMenuContext() == null && rootContext.isModal();
+    return (
+      context.parentMenuContext() == null &&
+      optionalMenubarContext === undefined &&
+      rootContext.isModal()
+    );
   };
 
   const selectableList = createSelectableList(
@@ -124,7 +130,9 @@ export function MenuContentBase(props: MenuContentBaseProps) {
   createFocusScope(
     {
       trapFocus: () => isRootModalContent() && context.isOpen(),
-      onMountAutoFocus: local.onOpenAutoFocus,
+      onMountAutoFocus: event => {
+        if (optionalMenubarContext === undefined) local.onOpenAutoFocus?.(event);
+      },
       onUnmountAutoFocus: local.onCloseAutoFocus,
     },
     () => ref,
@@ -140,10 +148,35 @@ export function MenuContentBase(props: MenuContentBaseProps) {
     if (e.key === "Tab" && context.isOpen()) {
       e.preventDefault();
     }
+
+    if (optionalMenubarContext !== undefined) {
+      if (e.currentTarget.getAttribute("aria-haspopup") !== "true")
+        switch (e.key) {
+          case "ArrowRight":
+            e.stopPropagation();
+            e.preventDefault();
+            context.close(true);
+            optionalMenubarContext.setAutoFocusMenu(true);
+            optionalMenubarContext.nextMenu();
+
+            break;
+          case "ArrowLeft":
+            if (e.currentTarget.hasAttribute("data-closed")) break;
+
+            e.stopPropagation();
+            e.preventDefault();
+            context.close(true);
+            optionalMenubarContext.setAutoFocusMenu(true);
+            optionalMenubarContext.previousMenu();
+            break;
+        }
+    }
   };
 
   const onEscapeKeyDown = (e: KeyboardEvent) => {
     local.onEscapeKeyDown?.(e);
+
+    optionalMenubarContext?.setAutoFocusMenu(false);
 
     // `createSelectableList` prevent escape key down,
     // which prevent our `onDismiss` in `DismissableLayer` to run,
