@@ -10,13 +10,18 @@ import { createEffect, createSignal, onCleanup } from "solid-js";
 
 import { ColorModeContext } from "./color-mode-context";
 import { localStorageManager } from "./storage-manager";
-import { ColorMode, ColorModeContextType, ColorModeProviderProps, ConfigColorMode } from "./types";
 import {
-  addColorModeListener,
-  FALLBACK_COLOR_MODE_VALUE,
-  getInitialColorMode,
-  getSystemColorMode,
-  setColorModeDataset,
+	ColorMode,
+	ColorModeContextType,
+	ColorModeProviderProps,
+	ConfigColorMode,
+} from "./types";
+import {
+	addColorModeListener,
+	FALLBACK_COLOR_MODE_VALUE,
+	getInitialColorMode,
+	getSystemColorMode,
+	setColorModeDataset,
 } from "./utils";
 
 /**
@@ -24,52 +29,59 @@ import {
  * Returns the color mode and function to toggle the color mode
  */
 export function ColorModeProvider(props: ColorModeProviderProps) {
-  const fallbackColorMode = () => props.initialColorMode ?? FALLBACK_COLOR_MODE_VALUE;
-  const colorModeManager = () => props.storageManager ?? localStorageManager;
-  let colorModeListenerCleanupFn: (() => unknown) | undefined;
+	const fallbackColorMode = () =>
+		props.initialColorMode ?? FALLBACK_COLOR_MODE_VALUE;
+	const colorModeManager = () => props.storageManager ?? localStorageManager;
+	let colorModeListenerCleanupFn: (() => unknown) | undefined;
 
-  const [colorMode, rawSetColorMode] = createSignal(getInitialColorMode(colorModeManager()));
+	const [colorMode, rawSetColorMode] = createSignal(
+		getInitialColorMode(colorModeManager()),
+	);
 
-  const applyColorMode = (value: ColorMode) => {
-    rawSetColorMode(value);
+	const applyColorMode = (value: ColorMode) => {
+		rawSetColorMode(value);
 
-    setColorModeDataset(value, props.disableTransitionOnChange);
-  };
+		setColorModeDataset(value, props.disableTransitionOnChange);
+	};
 
-  const setColorMode = (value: ConfigColorMode) => {
-    if (colorModeListenerCleanupFn) {
-      colorModeListenerCleanupFn();
-      colorModeListenerCleanupFn = undefined;
-    }
+	const setColorMode = (value: ConfigColorMode) => {
+		if (colorModeListenerCleanupFn) {
+			colorModeListenerCleanupFn();
+			colorModeListenerCleanupFn = undefined;
+		}
 
-    const isSystem = value === "system";
+		const isSystem = value === "system";
 
-    if (isSystem) {
-      colorModeListenerCleanupFn = addColorModeListener(applyColorMode);
-    }
+		if (isSystem) {
+			colorModeListenerCleanupFn = addColorModeListener(applyColorMode);
+		}
 
-    applyColorMode(isSystem ? getSystemColorMode() : value);
-    colorModeManager().set(value);
-  };
+		applyColorMode(isSystem ? getSystemColorMode() : value);
+		colorModeManager().set(value);
+	};
 
-  const toggleColorMode = () => {
-    setColorMode(colorMode() === "dark" ? "light" : "dark");
-  };
+	const toggleColorMode = () => {
+		setColorMode(colorMode() === "dark" ? "light" : "dark");
+	};
 
-  createEffect(() => {
-    setColorMode(colorModeManager().get() ?? fallbackColorMode());
-  });
+	createEffect(() => {
+		setColorMode(colorModeManager().get() ?? fallbackColorMode());
+	});
 
-  onCleanup(() => {
-    // ensure listener is always cleaned when component is destroyed.
-    colorModeListenerCleanupFn?.();
-  });
+	onCleanup(() => {
+		// ensure listener is always cleaned when component is destroyed.
+		colorModeListenerCleanupFn?.();
+	});
 
-  const context: ColorModeContextType = {
-    colorMode,
-    setColorMode,
-    toggleColorMode,
-  };
+	const context: ColorModeContextType = {
+		colorMode,
+		setColorMode,
+		toggleColorMode,
+	};
 
-  return <ColorModeContext.Provider value={context}>{props.children}</ColorModeContext.Provider>;
+	return (
+		<ColorModeContext.Provider value={context}>
+			{props.children}
+		</ColorModeContext.Provider>
+	);
 }

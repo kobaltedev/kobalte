@@ -7,57 +7,66 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, ParentProps, splitProps } from "solid-js";
+import {
+	createSignal,
+	createUniqueId,
+	ParentProps,
+	splitProps,
+} from "solid-js";
 
 import { useLocale } from "../i18n";
 import { MenuRoot, MenuRootOptions } from "../menu";
 import { createDisclosureState } from "../primitives";
-import { ContextMenuContext, ContextMenuContextValue } from "./context-menu-context";
+import {
+	ContextMenuContext,
+	ContextMenuContextValue,
+} from "./context-menu-context";
 
 export interface ContextMenuRootOptions
-  extends Omit<MenuRootOptions, "open" | "defaultOpen" | "getAnchorRect"> {}
+	extends Omit<MenuRootOptions, "open" | "defaultOpen" | "getAnchorRect"> {}
 
-export interface ContextMenuRootProps extends ParentProps<ContextMenuRootOptions> {}
+export interface ContextMenuRootProps
+	extends ParentProps<ContextMenuRootOptions> {}
 
 /**
  * Displays a menu located at the pointer, triggered by a right-click or a long-press.
  */
 export function ContextMenuRoot(props: ContextMenuRootProps) {
-  const defaultId = `contextmenu-${createUniqueId()}`;
+	const defaultId = `contextmenu-${createUniqueId()}`;
 
-  const { direction } = useLocale();
+	const { direction } = useLocale();
 
-  props = mergeDefaultProps(
-    {
-      id: defaultId,
-      placement: direction() === "rtl" ? "left-start" : "right-start",
-      gutter: 2,
-      shift: 2,
-    },
-    props,
-  );
+	props = mergeDefaultProps(
+		{
+			id: defaultId,
+			placement: direction() === "rtl" ? "left-start" : "right-start",
+			gutter: 2,
+			shift: 2,
+		},
+		props,
+	);
 
-  const [local, others] = splitProps(props, ["onOpenChange"]);
+	const [local, others] = splitProps(props, ["onOpenChange"]);
 
-  const [anchorRect, setAnchorRect] = createSignal({ x: 0, y: 0 });
+	const [anchorRect, setAnchorRect] = createSignal({ x: 0, y: 0 });
 
-  const disclosureState = createDisclosureState({
-    defaultOpen: false,
-    onOpenChange: isOpen => local.onOpenChange?.(isOpen),
-  });
+	const disclosureState = createDisclosureState({
+		defaultOpen: false,
+		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+	});
 
-  const context: ContextMenuContextValue = {
-    setAnchorRect,
-  };
+	const context: ContextMenuContextValue = {
+		setAnchorRect,
+	};
 
-  return (
-    <ContextMenuContext.Provider value={context}>
-      <MenuRoot
-        open={disclosureState.isOpen()}
-        onOpenChange={disclosureState.setIsOpen}
-        getAnchorRect={anchorRect}
-        {...others}
-      />
-    </ContextMenuContext.Provider>
-  );
+	return (
+		<ContextMenuContext.Provider value={context}>
+			<MenuRoot
+				open={disclosureState.isOpen()}
+				onOpenChange={disclosureState.setIsOpen}
+				getAnchorRect={anchorRect}
+				{...others}
+			/>
+		</ContextMenuContext.Provider>
+	);
 }

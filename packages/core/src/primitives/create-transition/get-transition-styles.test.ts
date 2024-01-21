@@ -11,44 +11,44 @@ import { createRoot } from "solid-js";
 import { getTransitionStyles } from "./get-transition-styles";
 
 describe("getTransitionStyles", () => {
-  it("supports custom transitions", () =>
-    createRoot(dispose => {
-      const customTransition = {
-        in: { opacity: 1, "background-color": "red" },
-        out: { opacity: 0, "background-color": "blue" },
-        common: { color: "green" },
-      };
+	it("supports custom transitions", () =>
+		createRoot((dispose) => {
+			const customTransition = {
+				in: { opacity: 1, "background-color": "red" },
+				out: { opacity: 0, "background-color": "blue" },
+				common: { color: "green" },
+			};
 
-      expect(
-        getTransitionStyles({
-          transition: customTransition,
-          phase: "afterEnter",
-          duration: 625,
-          easing: "ease",
-        }),
-      ).toStrictEqual({
-        ...customTransition.in,
-        ...customTransition.common,
-        "transition-property": "opacity, background-color",
-        "transition-duration": "625ms",
-        "transition-timing-function": "ease",
-      });
+			expect(
+				getTransitionStyles({
+					transition: customTransition,
+					phase: "afterEnter",
+					duration: 625,
+					easing: "ease",
+				}),
+			).toStrictEqual({
+				...customTransition.in,
+				...customTransition.common,
+				"transition-property": "opacity, background-color",
+				"transition-duration": "625ms",
+				"transition-timing-function": "ease",
+			});
 
-      expect(
-        getTransitionStyles({
-          transition: customTransition,
-          phase: "afterExit",
-          duration: 625,
-          easing: "ease",
-        }),
-      ).toStrictEqual({
-        ...customTransition.out,
-        ...customTransition.common,
-        "transition-property": "opacity, background-color",
-        "transition-duration": "625ms",
-        "transition-timing-function": "ease",
-      });
+			expect(
+				getTransitionStyles({
+					transition: customTransition,
+					phase: "afterExit",
+					duration: 625,
+					easing: "ease",
+				}),
+			).toStrictEqual({
+				...customTransition.out,
+				...customTransition.common,
+				"transition-property": "opacity, background-color",
+				"transition-duration": "625ms",
+				"transition-timing-function": "ease",
+			});
 
-      dispose();
-    }));
+			dispose();
+		}));
 });

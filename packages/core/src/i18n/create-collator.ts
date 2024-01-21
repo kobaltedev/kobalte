@@ -17,33 +17,35 @@ const cache = new Map<string, Intl.Collator>();
  * and handles caching of the collator for performance.
  * @param options - Collator options.
  */
-export function createCollator(options?: Intl.CollatorOptions): Accessor<Intl.Collator> {
-  const { locale } = useLocale();
+export function createCollator(
+	options?: Intl.CollatorOptions,
+): Accessor<Intl.Collator> {
+	const { locale } = useLocale();
 
-  const cacheKey = createMemo(() => {
-    return (
-      locale() +
-      (options
-        ? Object.entries(options)
-            .sort((a, b) => (a[0] < b[0] ? -1 : 1))
-            .join()
-        : "")
-    );
-  });
+	const cacheKey = createMemo(() => {
+		return (
+			locale() +
+			(options
+				? Object.entries(options)
+						.sort((a, b) => (a[0] < b[0] ? -1 : 1))
+						.join()
+				: "")
+		);
+	});
 
-  return createMemo(() => {
-    const key = cacheKey();
-    let collator: Intl.Collator | undefined;
+	return createMemo(() => {
+		const key = cacheKey();
+		let collator: Intl.Collator | undefined;
 
-    if (cache.has(key)) {
-      collator = cache.get(key);
-    }
+		if (cache.has(key)) {
+			collator = cache.get(key);
+		}
 
-    if (!collator) {
-      collator = new Intl.Collator(locale(), options);
-      cache.set(key, collator);
-    }
+		if (!collator) {
+			collator = new Intl.Collator(locale(), options);
+			cache.set(key, collator);
+		}
 
-    return collator;
-  });
+		return collator;
+	});
 }

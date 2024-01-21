@@ -12,7 +12,11 @@
  * https://github.com/ariakit/ariakit/blob/8a13899ff807bbf39f3d89d2d5964042ba4d5287/packages/ariakit/src/button/button.ts
  */
 
-import { mergeDefaultProps, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import {
+	mergeDefaultProps,
+	mergeRefs,
+	OverrideComponentProps,
+} from "@kobalte/utils";
 import { createMemo, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -20,11 +24,12 @@ import { createTagName } from "../primitives";
 import { isButton } from "./is-button";
 
 export interface ButtonRootOptions extends AsChildProp {
-  /** Whether the button is disabled. */
-  disabled?: boolean;
+	/** Whether the button is disabled. */
+	disabled?: boolean;
 }
 
-export interface ButtonRootProps extends OverrideComponentProps<"button", ButtonRootOptions> {}
+export interface ButtonRootProps
+	extends OverrideComponentProps<"button", ButtonRootOptions> {}
 
 /**
  * Button enables users to trigger an action or event, such as submitting a form,
@@ -32,46 +37,54 @@ export interface ButtonRootProps extends OverrideComponentProps<"button", Button
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
 export function ButtonRoot(props: ButtonRootProps) {
-  let ref: HTMLButtonElement | undefined;
+	let ref: HTMLButtonElement | undefined;
 
-  props = mergeDefaultProps({ type: "button" }, props);
+	props = mergeDefaultProps({ type: "button" }, props);
 
-  const [local, others] = splitProps(props, ["ref", "type", "disabled"]);
+	const [local, others] = splitProps(props, ["ref", "type", "disabled"]);
 
-  const tagName = createTagName(
-    () => ref,
-    () => "button",
-  );
+	const tagName = createTagName(
+		() => ref,
+		() => "button",
+	);
 
-  const isNativeButton = createMemo(() => {
-    const elementTagName = tagName();
+	const isNativeButton = createMemo(() => {
+		const elementTagName = tagName();
 
-    if (elementTagName == null) {
-      return false;
-    }
+		if (elementTagName == null) {
+			return false;
+		}
 
-    return isButton({ tagName: elementTagName, type: local.type });
-  });
+		return isButton({ tagName: elementTagName, type: local.type });
+	});
 
-  const isNativeInput = createMemo(() => {
-    return tagName() === "input";
-  });
+	const isNativeInput = createMemo(() => {
+		return tagName() === "input";
+	});
 
-  const isNativeLink = createMemo(() => {
-    return tagName() === "a" && ref?.getAttribute("href") != null;
-  });
+	const isNativeLink = createMemo(() => {
+		return tagName() === "a" && ref?.getAttribute("href") != null;
+	});
 
-  return (
-    <Polymorphic
-      as="button"
-      ref={mergeRefs(el => (ref = el), local.ref)}
-      type={isNativeButton() || isNativeInput() ? local.type : undefined}
-      role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
-      tabIndex={!isNativeButton() && !isNativeLink() && !local.disabled ? 0 : undefined}
-      disabled={isNativeButton() || isNativeInput() ? local.disabled : undefined}
-      aria-disabled={!isNativeButton() && !isNativeInput() && local.disabled ? true : undefined}
-      data-disabled={local.disabled ? "" : undefined}
-      {...others}
-    />
-  );
+	return (
+		<Polymorphic
+			as="button"
+			ref={mergeRefs((el) => (ref = el), local.ref)}
+			type={isNativeButton() || isNativeInput() ? local.type : undefined}
+			role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
+			tabIndex={
+				!isNativeButton() && !isNativeLink() && !local.disabled ? 0 : undefined
+			}
+			disabled={
+				isNativeButton() || isNativeInput() ? local.disabled : undefined
+			}
+			aria-disabled={
+				!isNativeButton() && !isNativeInput() && local.disabled
+					? true
+					: undefined
+			}
+			data-disabled={local.disabled ? "" : undefined}
+			{...others}
+		/>
+	);
 }

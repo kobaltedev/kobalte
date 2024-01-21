@@ -10,44 +10,54 @@ import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
-import { BREADCRUMBS_INTL_TRANSLATIONS, BreadcrumbsIntlTranslations } from "./breadcrumbs.intl";
-import { BreadcrumbsContext, BreadcrumbsContextValue } from "./breadcrumbs-context";
+import {
+	BREADCRUMBS_INTL_TRANSLATIONS,
+	BreadcrumbsIntlTranslations,
+} from "./breadcrumbs.intl";
+import {
+	BreadcrumbsContext,
+	BreadcrumbsContextValue,
+} from "./breadcrumbs-context";
 
 export interface BreadcrumbsRootOptions extends AsChildProp {
-  /**
-   * The visual separator between each breadcrumb item.
-   * It will be used as the default children of `Breadcrumbs.Separator`.
-   */
-  separator?: string | JSX.Element;
+	/**
+	 * The visual separator between each breadcrumb item.
+	 * It will be used as the default children of `Breadcrumbs.Separator`.
+	 */
+	separator?: string | JSX.Element;
 
-  /** The localized strings of the component. */
-  translations?: BreadcrumbsIntlTranslations;
+	/** The localized strings of the component. */
+	translations?: BreadcrumbsIntlTranslations;
 }
 
 export interface BreadcrumbsRootProps
-  extends OverrideComponentProps<"nav", BreadcrumbsRootOptions> {}
+	extends OverrideComponentProps<"nav", BreadcrumbsRootOptions> {}
 
 /**
  * Breadcrumbs show hierarchy and navigational context for a user’s location within an application.
  */
 export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
-  props = mergeDefaultProps(
-    {
-      separator: "/",
-      translations: BREADCRUMBS_INTL_TRANSLATIONS,
-    },
-    props,
-  );
+	props = mergeDefaultProps(
+		{
+			separator: "/",
+			translations: BREADCRUMBS_INTL_TRANSLATIONS,
+		},
+		props,
+	);
 
-  const [local, others] = splitProps(props, ["separator", "translations"]);
+	const [local, others] = splitProps(props, ["separator", "translations"]);
 
-  const context: BreadcrumbsContextValue = {
-    separator: () => local.separator,
-  };
+	const context: BreadcrumbsContextValue = {
+		separator: () => local.separator,
+	};
 
-  return (
-    <BreadcrumbsContext.Provider value={context}>
-      <Polymorphic as="nav" aria-label={local.translations?.breadcrumbs} {...others} />
-    </BreadcrumbsContext.Provider>
-  );
+	return (
+		<BreadcrumbsContext.Provider value={context}>
+			<Polymorphic
+				as="nav"
+				aria-label={local.translations?.breadcrumbs}
+				{...others}
+			/>
+		</BreadcrumbsContext.Provider>
+	);
 }

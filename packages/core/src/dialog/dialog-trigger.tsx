@@ -13,31 +13,31 @@ import * as Button from "../button";
 import { useDialogContext } from "./dialog-context";
 
 export interface DialogTriggerProps
-  extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
+	extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
 
 /**
  * The button that opens the dialog.
  */
 export function DialogTrigger(props: DialogTriggerProps) {
-  const context = useDialogContext();
+	const context = useDialogContext();
 
-  const [local, others] = splitProps(props, ["ref", "onClick"]);
+	const [local, others] = splitProps(props, ["ref", "onClick"]);
 
-  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-    callHandler(e, local.onClick);
-    context.toggle();
-  };
+	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
+		callHandler(e, local.onClick);
+		context.toggle();
+	};
 
-  return (
-    <Button.Root
-      ref={mergeRefs(context.setTriggerRef, local.ref)}
-      aria-haspopup="dialog"
-      aria-expanded={context.isOpen()}
-      aria-controls={context.isOpen() ? context.contentId() : undefined}
-      data-expanded={context.isOpen() ? "" : undefined}
-      data-closed={!context.isOpen() ? "" : undefined}
-      onClick={onClick}
-      {...others}
-    />
-  );
+	return (
+		<Button.Root
+			ref={mergeRefs(context.setTriggerRef, local.ref)}
+			aria-haspopup="dialog"
+			aria-expanded={context.isOpen()}
+			aria-controls={context.isOpen() ? context.contentId() : undefined}
+			data-expanded={context.isOpen() ? "" : undefined}
+			data-closed={!context.isOpen() ? "" : undefined}
+			onClick={onClick}
+			{...others}
+		/>
+	);
 }

@@ -12,86 +12,89 @@ import { JSX, onCleanup, splitProps } from "solid-js";
 import * as Link from "../link";
 import { useHoverCardContext } from "./hover-card-context";
 
-export interface HoverCardTriggerProps extends OverrideComponentProps<"a", Link.LinkRootOptions> {}
+export interface HoverCardTriggerProps
+	extends OverrideComponentProps<"a", Link.LinkRootOptions> {}
 
 /**
  * The link that opens the hovercard when hovered.
  */
 export function HoverCardTrigger(props: HoverCardTriggerProps) {
-  const context = useHoverCardContext();
+	const context = useHoverCardContext();
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    "onPointerEnter",
-    "onPointerLeave",
-    "onFocus",
-    "onBlur",
-    "onTouchStart",
-  ]);
+	const [local, others] = splitProps(props, [
+		"ref",
+		"onPointerEnter",
+		"onPointerLeave",
+		"onFocus",
+		"onBlur",
+		"onTouchStart",
+	]);
 
-  const onPointerEnter: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> = e => {
-    callHandler(e, local.onPointerEnter);
+	const onPointerEnter: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> =
+		(e) => {
+			callHandler(e, local.onPointerEnter);
 
-    if (e.pointerType === "touch" || others.disabled || e.defaultPrevented) {
-      return;
-    }
+			if (e.pointerType === "touch" || others.disabled || e.defaultPrevented) {
+				return;
+			}
 
-    context.cancelClosing();
+			context.cancelClosing();
 
-    if (!context.isOpen()) {
-      context.openWithDelay();
-    }
-  };
+			if (!context.isOpen()) {
+				context.openWithDelay();
+			}
+		};
 
-  const onPointerLeave: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> = e => {
-    callHandler(e, local.onPointerLeave);
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLAnchorElement, PointerEvent> =
+		(e) => {
+			callHandler(e, local.onPointerLeave);
 
-    if (e.pointerType === "touch") {
-      return;
-    }
+			if (e.pointerType === "touch") {
+				return;
+			}
 
-    context.cancelOpening();
-  };
+			context.cancelOpening();
+		};
 
-  const onFocus: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = e => {
-    callHandler(e, local.onFocus);
+	const onFocus: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = (e) => {
+		callHandler(e, local.onFocus);
 
-    if (others.disabled || e.defaultPrevented) {
-      return;
-    }
+		if (others.disabled || e.defaultPrevented) {
+			return;
+		}
 
-    context.cancelClosing();
+		context.cancelClosing();
 
-    if (!context.isOpen()) {
-      context.openWithDelay();
-    }
-  };
+		if (!context.isOpen()) {
+			context.openWithDelay();
+		}
+	};
 
-  const onBlur: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = e => {
-    callHandler(e, local.onBlur);
+	const onBlur: JSX.EventHandlerUnion<HTMLAnchorElement, FocusEvent> = (e) => {
+		callHandler(e, local.onBlur);
 
-    context.cancelOpening();
+		context.cancelOpening();
 
-    const relatedTarget = e.relatedTarget as Node | null;
+		const relatedTarget = e.relatedTarget as Node | null;
 
-    if (context.isTargetOnHoverCard(relatedTarget)) {
-      return;
-    }
+		if (context.isTargetOnHoverCard(relatedTarget)) {
+			return;
+		}
 
-    context.closeWithDelay();
-  };
+		context.closeWithDelay();
+	};
 
-  onCleanup(context.cancelOpening);
+	onCleanup(context.cancelOpening);
 
-  return (
-    <Link.Root
-      ref={mergeRefs(context.setTriggerRef, local.ref)}
-      onPointerEnter={onPointerEnter}
-      onPointerLeave={onPointerLeave}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      {...context.dataset()}
-      {...others}
-    />
-  );
+	return (
+		<Link.Root
+			ref={mergeRefs(context.setTriggerRef, local.ref)}
+			onPointerEnter={onPointerEnter}
+			onPointerLeave={onPointerLeave}
+			onFocus={onFocus}
+			onBlur={onBlur}
+			{...context.dataset()}
+			{...others}
+		/>
+	);
 }

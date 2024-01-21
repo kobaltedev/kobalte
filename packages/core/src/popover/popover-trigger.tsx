@@ -13,38 +13,42 @@ import * as Button from "../button";
 import { usePopoverContext } from "./popover-context";
 
 export interface PopoverTriggerProps
-  extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
+	extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
 
 /**
  * The button that opens the popover.
  */
 export function PopoverTrigger(props: PopoverTriggerProps) {
-  const context = usePopoverContext();
+	const context = usePopoverContext();
 
-  const [local, others] = splitProps(props, ["ref", "onClick", "onPointerDown"]);
+	const [local, others] = splitProps(props, [
+		"ref",
+		"onClick",
+		"onPointerDown",
+	]);
 
-  const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
-    callHandler(e, local.onPointerDown);
+	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+		callHandler(e, local.onPointerDown);
 
-    // Prevent popover from opening then closing immediately when inside an overlay in safari.
-    e.preventDefault();
-  };
+		// Prevent popover from opening then closing immediately when inside an overlay in safari.
+		e.preventDefault();
+	};
 
-  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-    callHandler(e, local.onClick);
-    context.toggle();
-  };
+	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
+		callHandler(e, local.onClick);
+		context.toggle();
+	};
 
-  return (
-    <Button.Root
-      ref={mergeRefs(context.setTriggerRef, local.ref)}
-      aria-haspopup="dialog"
-      aria-expanded={context.isOpen()}
-      aria-controls={context.isOpen() ? context.contentId() : undefined}
-      onPointerDown={onPointerDown}
-      onClick={onClick}
-      {...context.dataset()}
-      {...others}
-    />
-  );
+	return (
+		<Button.Root
+			ref={mergeRefs(context.setTriggerRef, local.ref)}
+			aria-haspopup="dialog"
+			aria-expanded={context.isOpen()}
+			aria-controls={context.isOpen() ? context.contentId() : undefined}
+			onPointerDown={onPointerDown}
+			onClick={onClick}
+			{...context.dataset()}
+			{...others}
+		/>
+	);
 }

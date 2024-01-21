@@ -12,25 +12,28 @@ import { createEffect, onCleanup, splitProps } from "solid-js";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useMenuItemContext } from "./menu-item.context";
 
-export interface MenuItemDescriptionProps extends OverrideComponentProps<"div", AsChildProp> {}
+export interface MenuItemDescriptionProps
+	extends OverrideComponentProps<"div", AsChildProp> {}
 
 /**
  * An optional accessible description to be announced for the menu item.
  * Useful for menu items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
 export function MenuItemDescription(props: MenuItemDescriptionProps) {
-  const context = useMenuItemContext();
+	const context = useMenuItemContext();
 
-  props = mergeDefaultProps(
-    {
-      id: context.generateId("description"),
-    },
-    props,
-  );
+	props = mergeDefaultProps(
+		{
+			id: context.generateId("description"),
+		},
+		props,
+	);
 
-  const [local, others] = splitProps(props, ["id"]);
+	const [local, others] = splitProps(props, ["id"]);
 
-  createEffect(() => onCleanup(context.registerDescription(local.id!)));
+	createEffect(() => onCleanup(context.registerDescription(local.id!)));
 
-  return <Polymorphic as="div" id={local.id} {...context.dataset()} {...others} />;
+	return (
+		<Polymorphic as="div" id={local.id} {...context.dataset()} {...others} />
+	);
 }

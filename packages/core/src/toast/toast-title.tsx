@@ -12,18 +12,18 @@ export type ToastTitleProps = OverrideComponentProps<"div", ToastTitleOptions>;
  * An accessible title to be announced when the toast is open.
  */
 export function ToastTitle(props: ToastTitleProps) {
-  const context = useToastContext();
+	const context = useToastContext();
 
-  props = mergeDefaultProps(
-    {
-      id: context.generateId("title"),
-    },
-    props,
-  );
+	props = mergeDefaultProps(
+		{
+			id: context.generateId("title"),
+		},
+		props,
+	);
 
-  const [local, others] = splitProps(props, ["id"]);
+	const [local, others] = splitProps(props, ["id"]);
 
-  createEffect(() => onCleanup(context.registerTitleId(local.id!)));
+	createEffect(() => onCleanup(context.registerTitleId(local.id!)));
 
-  return <Polymorphic as="div" id={local.id} {...others} />;
+	return <Polymorphic as="div" id={local.id} {...others} />;
 }

@@ -17,5 +17,5 @@ export type CalendarGridHeaderProps = ComponentProps<"thead">;
  * A calendar grid header displays a row of week day names at the top of a month.
  */
 export function CalendarGridHeader(props: CalendarGridHeaderProps) {
-  return <Polymorphic as="thead" aria-hidden="true" {...props} />;
+	return <Polymorphic as="thead" aria-hidden="true" {...props} />;
 }

@@ -14,231 +14,278 @@ import { createControllableArraySignal } from "../primitives";
 import { getNextSortedValues, hasMinStepsBetweenValues } from "./utils";
 
 export interface SliderState {
-  readonly values: Accessor<number[]>;
+	readonly values: Accessor<number[]>;
 
-  getThumbValue(index: number): number;
+	getThumbValue(index: number): number;
 
-  setThumbValue(index: number, value: number): void;
+	setThumbValue(index: number, value: number): void;
 
-  getThumbPercent(index: number): number;
+	getThumbPercent(index: number): number;
 
-  setThumbPercent(index: number, percent: number): void;
+	setThumbPercent(index: number, percent: number): void;
 
-  isThumbDragging(index: number): boolean;
+	isThumbDragging(index: number): boolean;
 
-  setThumbDragging(index: number, dragging: boolean): void;
+	setThumbDragging(index: number, dragging: boolean): void;
 
-  readonly focusedThumb: Accessor<number | undefined>;
+	readonly focusedThumb: Accessor<number | undefined>;
 
-  setFocusedThumb(index: number | undefined): void;
+	setFocusedThumb(index: number | undefined): void;
 
-  getValuePercent(value: number): number;
+	getValuePercent(value: number): number;
 
-  getThumbValueLabel(index: number): string;
+	getThumbValueLabel(index: number): string;
 
-  getFormattedValue(value: number): string;
+	getFormattedValue(value: number): string;
 
-  getThumbMinValue(index: number): number;
+	getThumbMinValue(index: number): number;
 
-  getThumbMaxValue(index: number): number;
+	getThumbMaxValue(index: number): number;
 
-  getPercentValue(percent: number): number;
+	getPercentValue(percent: number): number;
 
-  isThumbEditable(index: number): boolean;
+	isThumbEditable(index: number): boolean;
 
-  setThumbEditable(index: number, editable: boolean): void;
+	setThumbEditable(index: number, editable: boolean): void;
 
-  incrementThumb(index: number, stepSize?: number): void;
+	incrementThumb(index: number, stepSize?: number): void;
 
-  decrementThumb(index: number, stepSize?: number): void;
+	decrementThumb(index: number, stepSize?: number): void;
 
-  readonly step: Accessor<number>;
+	readonly step: Accessor<number>;
 
-  readonly pageSize: Accessor<number>;
+	readonly pageSize: Accessor<number>;
 
-  readonly orientation: Accessor<"horizontal" | "vertical">;
+	readonly orientation: Accessor<"horizontal" | "vertical">;
 
-  readonly isDisabled: Accessor<boolean>;
+	readonly isDisabled: Accessor<boolean>;
 
-  setValues: (next: number[] | ((prev: number[]) => number[])) => void;
+	setValues: (next: number[] | ((prev: number[]) => number[])) => void;
 
-  resetValues: () => void;
+	resetValues: () => void;
 }
 
 interface StateOpts {
-  value: Accessor<number[] | undefined>;
-  defaultValue: Accessor<number[] | undefined>;
-  orientation?: Accessor<"horizontal" | "vertical">;
-  isDisabled?: Accessor<boolean>;
-  onChangeEnd?: (value: number[]) => void;
-  onChange?: (value: number[]) => void;
-  minValue?: Accessor<number>;
-  maxValue?: Accessor<number>;
-  step?: Accessor<number>;
-  numberFormatter: Intl.NumberFormat;
-  minStepsBetweenThumbs?: Accessor<number>;
+	value: Accessor<number[] | undefined>;
+	defaultValue: Accessor<number[] | undefined>;
+	orientation?: Accessor<"horizontal" | "vertical">;
+	isDisabled?: Accessor<boolean>;
+	onChangeEnd?: (value: number[]) => void;
+	onChange?: (value: number[]) => void;
+	minValue?: Accessor<number>;
+	maxValue?: Accessor<number>;
+	step?: Accessor<number>;
+	numberFormatter: Intl.NumberFormat;
+	minStepsBetweenThumbs?: Accessor<number>;
 }
 
 export function createSliderState(props: StateOpts): SliderState {
-  props = mergeDefaultProps(
-    {
-      minValue: () => 0,
-      maxValue: () => 100,
-      step: () => 1,
-      minStepsBetweenThumbs: () => 0,
-      orientation: () => "horizontal",
-      isDisabled: () => false,
-    },
-    props,
-  );
+	props = mergeDefaultProps(
+		{
+			minValue: () => 0,
+			maxValue: () => 100,
+			step: () => 1,
+			minStepsBetweenThumbs: () => 0,
+			orientation: () => "horizontal",
+			isDisabled: () => false,
+		},
+		props,
+	);
 
-  const pageSize = createMemo(() => {
-    let calcPageSize = (props.maxValue!() - props.minValue!()) / 10;
-    calcPageSize = snapValueToStep(calcPageSize, 0, calcPageSize + props.step!(), props.step!());
-    return Math.max(calcPageSize, props.step!());
-  });
+	const pageSize = createMemo(() => {
+		let calcPageSize = (props.maxValue!() - props.minValue!()) / 10;
+		calcPageSize = snapValueToStep(
+			calcPageSize,
+			0,
+			calcPageSize + props.step!(),
+			props.step!(),
+		);
+		return Math.max(calcPageSize, props.step!());
+	});
 
-  const defaultValue = createMemo(() => {
-    return props.defaultValue() ?? [props.minValue!()];
-  });
+	const defaultValue = createMemo(() => {
+		return props.defaultValue() ?? [props.minValue!()];
+	});
 
-  const [values, setValues] = createControllableArraySignal<number>({
-    value: () => props.value(),
-    defaultValue,
-    onChange: values => props.onChange?.(values),
-  });
+	const [values, setValues] = createControllableArraySignal<number>({
+		value: () => props.value(),
+		defaultValue,
+		onChange: (values) => props.onChange?.(values),
+	});
 
-  const [isDragging, setIsDragging] = createSignal(new Array(values().length).fill(false));
-  const [isEditables, setEditables] = createSignal(new Array(values().length).fill(false));
-  const [focusedIndex, setFocusedIndex] = createSignal<number | undefined>(undefined);
+	const [isDragging, setIsDragging] = createSignal(
+		new Array(values().length).fill(false),
+	);
+	const [isEditables, setEditables] = createSignal(
+		new Array(values().length).fill(false),
+	);
+	const [focusedIndex, setFocusedIndex] = createSignal<number | undefined>(
+		undefined,
+	);
 
-  const resetValues = () => {
-    setValues(defaultValue());
-  };
+	const resetValues = () => {
+		setValues(defaultValue());
+	};
 
-  const getValuePercent = (value: number) => {
-    return (value - props.minValue!()) / (props.maxValue!() - props.minValue!());
-  };
+	const getValuePercent = (value: number) => {
+		return (
+			(value - props.minValue!()) / (props.maxValue!() - props.minValue!())
+		);
+	};
 
-  const getThumbMinValue = (index: number) => {
-    return index === 0 ? props.minValue!() : values()[index - 1];
-  };
+	const getThumbMinValue = (index: number) => {
+		return index === 0 ? props.minValue!() : values()[index - 1];
+	};
 
-  const getThumbMaxValue = (index: number) => {
-    return index === values().length - 1 ? props.maxValue!() : values()[index + 1];
-  };
+	const getThumbMaxValue = (index: number) => {
+		return index === values().length - 1
+			? props.maxValue!()
+			: values()[index + 1];
+	};
 
-  const isThumbEditable = (index: number) => {
-    return isEditables()[index];
-  };
+	const isThumbEditable = (index: number) => {
+		return isEditables()[index];
+	};
 
-  const setThumbEditable = (index: number) => {
-    setEditables(p => {
-      p[index] = true;
-      return p;
-    });
-  };
+	const setThumbEditable = (index: number) => {
+		setEditables((p) => {
+			p[index] = true;
+			return p;
+		});
+	};
 
-  const updateValue = (index: number, value: number) => {
-    if (props.isDisabled!() || !isThumbEditable(index)) return;
+	const updateValue = (index: number, value: number) => {
+		if (props.isDisabled!() || !isThumbEditable(index)) return;
 
-    value = snapValueToStep(value, getThumbMinValue(index), getThumbMaxValue(index), props.step!());
-    const nextValues = getNextSortedValues(values(), value, index);
+		value = snapValueToStep(
+			value,
+			getThumbMinValue(index),
+			getThumbMaxValue(index),
+			props.step!(),
+		);
+		const nextValues = getNextSortedValues(values(), value, index);
 
-    if (!hasMinStepsBetweenValues(nextValues, props.minStepsBetweenThumbs!() * props.step!())) {
-      return;
-    }
+		if (
+			!hasMinStepsBetweenValues(
+				nextValues,
+				props.minStepsBetweenThumbs!() * props.step!(),
+			)
+		) {
+			return;
+		}
 
-    setValues(prev => [...replaceIndex(prev, index, value)]);
-  };
+		setValues((prev) => [...replaceIndex(prev, index, value)]);
+	};
 
-  const updateDragging = (index: number, dragging: boolean) => {
-    if (props.isDisabled!() || !isThumbEditable(index)) return;
+	const updateDragging = (index: number, dragging: boolean) => {
+		if (props.isDisabled!() || !isThumbEditable(index)) return;
 
-    const wasDragging = isDragging()[index];
-    setIsDragging(p => [...replaceIndex(p, index, dragging)]);
+		const wasDragging = isDragging()[index];
+		setIsDragging((p) => [...replaceIndex(p, index, dragging)]);
 
-    if (wasDragging && !isDragging().some(Boolean)) {
-      props.onChangeEnd?.(values());
-    }
-  };
+		if (wasDragging && !isDragging().some(Boolean)) {
+			props.onChangeEnd?.(values());
+		}
+	};
 
-  const getFormattedValue = (value: number) => {
-    return props.numberFormatter.format(value);
-  };
+	const getFormattedValue = (value: number) => {
+		return props.numberFormatter.format(value);
+	};
 
-  const setThumbPercent = (index: number, percent: number) => {
-    updateValue(index, getPercentValue(percent));
-  };
+	const setThumbPercent = (index: number, percent: number) => {
+		updateValue(index, getPercentValue(percent));
+	};
 
-  const getRoundedValue = (value: number) => {
-    return (
-      Math.round((value - props.minValue!()) / props.step!()) * props.step!() + props.minValue!()
-    );
-  };
+	const getRoundedValue = (value: number) => {
+		return (
+			Math.round((value - props.minValue!()) / props.step!()) * props.step!() +
+			props.minValue!()
+		);
+	};
 
-  const getPercentValue = (percent: number) => {
-    const val = percent * (props.maxValue!() - props.minValue!()) + props.minValue!();
-    return clamp(getRoundedValue(val), props.minValue!(), props.maxValue!());
-  };
+	const getPercentValue = (percent: number) => {
+		const val =
+			percent * (props.maxValue!() - props.minValue!()) + props.minValue!();
+		return clamp(getRoundedValue(val), props.minValue!(), props.maxValue!());
+	};
 
-  const incrementThumb = (index: number, stepSize = 1) => {
-    const s = Math.max(stepSize, props.step!());
-    const nextValue = values()[index] + s;
-    const nextValues = getNextSortedValues(values(), nextValue, index);
-    if (hasMinStepsBetweenValues(nextValues, props.minStepsBetweenThumbs!() * props.step!())) {
-      updateValue(
-        index,
-        snapValueToStep(nextValue, props.minValue!(), props.maxValue!(), props.step!()),
-      );
-    }
-  };
+	const incrementThumb = (index: number, stepSize = 1) => {
+		const s = Math.max(stepSize, props.step!());
+		const nextValue = values()[index] + s;
+		const nextValues = getNextSortedValues(values(), nextValue, index);
+		if (
+			hasMinStepsBetweenValues(
+				nextValues,
+				props.minStepsBetweenThumbs!() * props.step!(),
+			)
+		) {
+			updateValue(
+				index,
+				snapValueToStep(
+					nextValue,
+					props.minValue!(),
+					props.maxValue!(),
+					props.step!(),
+				),
+			);
+		}
+	};
 
-  const decrementThumb = (index: number, stepSize = 1) => {
-    const s = Math.max(stepSize, props.step!());
-    const nextValue = values()[index] - s;
-    const nextValues = getNextSortedValues(values(), nextValue, index);
-    if (hasMinStepsBetweenValues(nextValues, props.minStepsBetweenThumbs!() * props.step!())) {
-      updateValue(
-        index,
-        snapValueToStep(nextValue, props.minValue!(), props.maxValue!(), props.step!()),
-      );
-    }
-  };
+	const decrementThumb = (index: number, stepSize = 1) => {
+		const s = Math.max(stepSize, props.step!());
+		const nextValue = values()[index] - s;
+		const nextValues = getNextSortedValues(values(), nextValue, index);
+		if (
+			hasMinStepsBetweenValues(
+				nextValues,
+				props.minStepsBetweenThumbs!() * props.step!(),
+			)
+		) {
+			updateValue(
+				index,
+				snapValueToStep(
+					nextValue,
+					props.minValue!(),
+					props.maxValue!(),
+					props.step!(),
+				),
+			);
+		}
+	};
 
-  return {
-    values,
-    getThumbValue: index => values()[index],
-    setThumbValue: updateValue,
-    setThumbPercent,
-    isThumbDragging: index => isDragging()[index],
-    setThumbDragging: updateDragging,
-    focusedThumb: focusedIndex,
-    setFocusedThumb: setFocusedIndex,
-    getThumbPercent: index => getValuePercent(values()[index]),
-    getValuePercent,
-    getThumbValueLabel: index => getFormattedValue(values()[index]),
-    getFormattedValue,
-    getThumbMinValue,
-    getThumbMaxValue,
-    getPercentValue,
-    isThumbEditable,
-    setThumbEditable,
-    incrementThumb,
-    decrementThumb,
-    step: props.step!,
-    pageSize,
-    orientation: props.orientation!,
-    isDisabled: props.isDisabled!,
-    setValues,
-    resetValues,
-  };
+	return {
+		values,
+		getThumbValue: (index) => values()[index],
+		setThumbValue: updateValue,
+		setThumbPercent,
+		isThumbDragging: (index) => isDragging()[index],
+		setThumbDragging: updateDragging,
+		focusedThumb: focusedIndex,
+		setFocusedThumb: setFocusedIndex,
+		getThumbPercent: (index) => getValuePercent(values()[index]),
+		getValuePercent,
+		getThumbValueLabel: (index) => getFormattedValue(values()[index]),
+		getFormattedValue,
+		getThumbMinValue,
+		getThumbMaxValue,
+		getPercentValue,
+		isThumbEditable,
+		setThumbEditable,
+		incrementThumb,
+		decrementThumb,
+		step: props.step!,
+		pageSize,
+		orientation: props.orientation!,
+		isDisabled: props.isDisabled!,
+		setValues,
+		resetValues,
+	};
 }
 
 function replaceIndex<T>(array: T[], index: number, value: T) {
-  if (array[index] === value) {
-    return array;
-  }
+	if (array[index] === value) {
+		return array;
+	}
 
-  return [...array.slice(0, index), value, ...array.slice(index + 1)];
+	return [...array.slice(0, index), value, ...array.slice(index + 1)];
 }
