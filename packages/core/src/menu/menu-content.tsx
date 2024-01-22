@@ -8,20 +8,26 @@ import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuContentOptions extends MenuContentBaseOptions {}
 
-export interface MenuContentProps extends OverrideComponentProps<"div", MenuContentOptions> {}
+export interface MenuContentProps
+	extends OverrideComponentProps<"div", MenuContentOptions> {}
 
 export function MenuContent(props: MenuContentProps) {
-  let ref: HTMLElement | undefined;
+	let ref: HTMLElement | undefined;
 
-  const rootContext = useMenuRootContext();
-  const context = useMenuContext();
+	const rootContext = useMenuRootContext();
+	const context = useMenuContext();
 
-  const [local, others] = splitProps(props, ["ref"]);
+	const [local, others] = splitProps(props, ["ref"]);
 
-  createPreventScroll({
-    ownerRef: () => ref,
-    isDisabled: () => !(context.isOpen() && rootContext.preventScroll()),
-  });
+	createPreventScroll({
+		ownerRef: () => ref,
+		isDisabled: () => !(context.isOpen() && rootContext.preventScroll()),
+	});
 
-  return <MenuContentBase ref={mergeRefs(el => (ref = el), local.ref)} {...others} />;
+	return (
+		<MenuContentBase
+			ref={mergeRefs((el) => (ref = el), local.ref)}
+			{...others}
+		/>
+	);
 }

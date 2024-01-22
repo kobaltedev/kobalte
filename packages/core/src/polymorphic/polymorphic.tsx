@@ -12,14 +12,14 @@
 
 import { combineProps as baseCombineProps, isArray } from "@kobalte/utils";
 import {
-  Accessor,
-  children,
-  ComponentProps,
-  For,
-  JSX,
-  Show,
-  splitProps,
-  ValidComponent,
+	Accessor,
+	children,
+	ComponentProps,
+	For,
+	JSX,
+	Show,
+	splitProps,
+	ValidComponent,
 } from "solid-js";
 import { Dynamic, DynamicProps } from "solid-js/web";
 
@@ -28,70 +28,74 @@ import { Dynamic, DynamicProps } from "solid-js/web";
  * -----------------------------------------------------------------------------------------------*/
 
 export interface AsChildProp {
-  /** Whether the component should render as its direct `As` child component. */
-  asChild?: boolean;
+	/** Whether the component should render as its direct `As` child component. */
+	asChild?: boolean;
 
-  /** The component to render when `children` doesn't contain any `<As>` component as direct child. */
-  as?: ValidComponent;
+	/** The component to render when `children` doesn't contain any `<As>` component as direct child. */
+	as?: ValidComponent;
 }
 
-export type PolymorphicProps<T extends ValidComponent, P = ComponentProps<T>> = {
-  [K in keyof P]: P[K];
+export type PolymorphicProps<
+	T extends ValidComponent,
+	P = ComponentProps<T>,
+> = {
+	[K in keyof P]: P[K];
 } & AsChildProp;
 
 /**
  * A utility component that render either a direct `<As>` child or its `as` prop.
  */
-export function Polymorphic<T extends ValidComponent>(props: PolymorphicProps<T>) {
-  const [local, others] = splitProps(props as PolymorphicProps<ValidComponent>, [
-    "asChild",
-    "as",
-    "children",
-  ]);
+export function Polymorphic<T extends ValidComponent>(
+	props: PolymorphicProps<T>,
+) {
+	const [local, others] = splitProps(
+		props as PolymorphicProps<ValidComponent>,
+		["asChild", "as", "children"],
+	);
 
-  // Prevent the extra computation below when "as child" polymorphism is not needed.
-  if (!local.asChild) {
-    return (
-      <Dynamic component={local.as} {...others}>
-        {local.children}
-      </Dynamic>
-    );
-  }
+	// Prevent the extra computation below when "as child" polymorphism is not needed.
+	if (!local.asChild) {
+		return (
+			<Dynamic component={local.as} {...others}>
+				{local.children}
+			</Dynamic>
+		);
+	}
 
-  const resolvedChildren = children(() => local.children) as Accessor<any>;
+	const resolvedChildren = children(() => local.children) as Accessor<any>;
 
-  // Single child is `As`.
-  if (isAs(resolvedChildren())) {
-    const combinedProps = combineProps(others, resolvedChildren()?.props ?? {});
-    return <Dynamic {...combinedProps} />;
-  }
+	// Single child is `As`.
+	if (isAs(resolvedChildren())) {
+		const combinedProps = combineProps(others, resolvedChildren()?.props ?? {});
+		return <Dynamic {...combinedProps} />;
+	}
 
-  // Multiple children, find an `As` if any.
-  if (isArray(resolvedChildren())) {
-    const newElement = resolvedChildren().find(isAs);
+	// Multiple children, find an `As` if any.
+	if (isArray(resolvedChildren())) {
+		const newElement = resolvedChildren().find(isAs);
 
-    if (newElement) {
-      // because the new element will be the one rendered, we are only interested
-      // in grabbing its children (`newElement.props.children`)
-      const newChildren = () => (
-        <For each={resolvedChildren()}>
-          {(child: any) => (
-            <Show when={child === newElement} fallback={child}>
-              {newElement.props.children}
-            </Show>
-          )}
-        </For>
-      );
+		if (newElement) {
+			// because the new element will be the one rendered, we are only interested
+			// in grabbing its children (`newElement.props.children`)
+			const newChildren = () => (
+				<For each={resolvedChildren()}>
+					{(child: any) => (
+						<Show when={child === newElement} fallback={child}>
+							{newElement.props.children}
+						</Show>
+					)}
+				</For>
+			);
 
-      const combinedProps = combineProps(others, newElement?.props ?? {});
+			const combinedProps = combineProps(others, newElement?.props ?? {});
 
-      return <Dynamic {...combinedProps}>{newChildren}</Dynamic>;
-    }
-  }
+			return <Dynamic {...combinedProps}>{newChildren}</Dynamic>;
+		}
+	}
 
-  throw new Error(
-    "[kobalte]: Component is expected to render `asChild` but no children `As` component was found.",
-  );
+	throw new Error(
+		"[kobalte]: Component is expected to render `asChild` but no children `As` component was found.",
+	);
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -104,10 +108,10 @@ const AS_COMPONENT_SYMBOL = Symbol("$$KobalteAsComponent");
  * A utility component used to delegate rendering of its `Polymorphic` parent component.
  */
 export function As<T extends ValidComponent>(props: DynamicProps<T>) {
-  return {
-    [AS_COMPONENT_SYMBOL]: true,
-    props,
-  } as unknown as JSX.Element;
+	return {
+		[AS_COMPONENT_SYMBOL]: true,
+		props,
+	} as unknown as JSX.Element;
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -115,9 +119,11 @@ export function As<T extends ValidComponent>(props: DynamicProps<T>) {
  * -----------------------------------------------------------------------------------------------*/
 
 function isAs(component: any): boolean {
-  return component?.[AS_COMPONENT_SYMBOL] === true;
+	return component?.[AS_COMPONENT_SYMBOL] === true;
 }
 
 function combineProps(baseProps: any, overrideProps: any) {
-  return baseCombineProps([baseProps, overrideProps], { reverseEventHandlers: true }) as any;
+	return baseCombineProps([baseProps, overrideProps], {
+		reverseEventHandlers: true,
+	}) as any;
 }

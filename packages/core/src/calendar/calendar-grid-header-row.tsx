@@ -14,26 +14,29 @@ import { Polymorphic } from "../polymorphic";
 import { useCalendarGridContext } from "./calendar-grid-context";
 
 export interface CalendarGridHeaderRowOptions {
-  /**
-   * Render prop used to render each cell of the header row,
-   * it receives a week day accessor as parameter.
-   */
-  children: (weekDay: Accessor<string>) => JSX.Element;
+	/**
+	 * Render prop used to render each cell of the header row,
+	 * it receives a week day accessor as parameter.
+	 */
+	children: (weekDay: Accessor<string>) => JSX.Element;
 }
 
-export type CalendarGridHeaderRowProps = OverrideComponentProps<"tr", CalendarGridHeaderRowOptions>;
+export type CalendarGridHeaderRowProps = OverrideComponentProps<
+	"tr",
+	CalendarGridHeaderRowOptions
+>;
 
 /**
  * A calendar grid header row displays week day names inside a `Calendar.GridHeader`.
  */
 export function CalendarGridHeaderRow(props: CalendarGridHeaderRowProps) {
-  const [local, others] = splitProps(props, ["children"]);
+	const [local, others] = splitProps(props, ["children"]);
 
-  const context = useCalendarGridContext();
+	const context = useCalendarGridContext();
 
-  return (
-    <Polymorphic as="tr" {...others}>
-      <Index each={context.weekDays()}>{local.children}</Index>
-    </Polymorphic>
-  );
+	return (
+		<Polymorphic as="tr" {...others}>
+			<Index each={context.weekDays()}>{local.children}</Index>
+		</Polymorphic>
+	);
 }

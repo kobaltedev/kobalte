@@ -8,145 +8,154 @@
  */
 
 import {
-  callHandler,
-  mergeDefaultProps,
-  mergeRefs,
-  OverrideComponentProps,
-  visuallyHiddenStyles,
+	callHandler,
+	mergeDefaultProps,
+	mergeRefs,
+	OverrideComponentProps,
+	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { createEffect, createSignal, JSX, on, splitProps } from "solid-js";
 
 import {
-  createFormControlField,
-  FORM_CONTROL_FIELD_PROP_NAMES,
-  useFormControlContext,
+	createFormControlField,
+	FORM_CONTROL_FIELD_PROP_NAMES,
+	useFormControlContext,
 } from "../form-control";
 import { useCheckboxContext } from "./checkbox-context";
 
 export interface CheckboxInputOptions {
-  /** The HTML styles attribute (object form only). */
-  style?: JSX.CSSProperties;
+	/** The HTML styles attribute (object form only). */
+	style?: JSX.CSSProperties;
 }
 
-export interface CheckboxInputProps extends OverrideComponentProps<"input", CheckboxInputOptions> {}
+export interface CheckboxInputProps
+	extends OverrideComponentProps<"input", CheckboxInputOptions> {}
 
 /**
  * The native html input that is visually hidden in the checkbox.
  */
 export function CheckboxInput(props: CheckboxInputProps) {
-  let ref: HTMLInputElement | undefined;
+	let ref: HTMLInputElement | undefined;
 
-  const formControlContext = useFormControlContext();
-  const context = useCheckboxContext();
+	const formControlContext = useFormControlContext();
+	const context = useCheckboxContext();
 
-  props = mergeDefaultProps(
-    {
-      id: context.generateId("input"),
-    },
-    props,
-  );
+	props = mergeDefaultProps(
+		{
+			id: context.generateId("input"),
+		},
+		props,
+	);
 
-  const [local, formControlFieldProps, others] = splitProps(
-    props,
-    ["ref", "style", "onChange", "onFocus", "onBlur"],
-    FORM_CONTROL_FIELD_PROP_NAMES,
-  );
+	const [local, formControlFieldProps, others] = splitProps(
+		props,
+		["ref", "style", "onChange", "onFocus", "onBlur"],
+		FORM_CONTROL_FIELD_PROP_NAMES,
+	);
 
-  const { fieldProps } = createFormControlField(formControlFieldProps);
+	const { fieldProps } = createFormControlField(formControlFieldProps);
 
-  const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
+	const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
 
-  const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = e => {
-    callHandler(e, local.onChange);
+	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
+		e,
+	) => {
+		callHandler(e, local.onChange);
 
-    e.stopPropagation();
+		e.stopPropagation();
 
-    if (!isInternalChangeEvent()) {
-      const target = e.target as HTMLInputElement;
+		if (!isInternalChangeEvent()) {
+			const target = e.target as HTMLInputElement;
 
-      context.setIsChecked(target.checked);
+			context.setIsChecked(target.checked);
 
-      // Unlike in React, inputs `checked` state can be out of sync with our toggle state.
-      // for example a readonly `<input type="checkbox" />` is always "checkable".
-      //
-      // Also, even if an input is controlled (ex: `<input type="checkbox" checked={isChecked} />`,
-      // clicking on the input will change its internal `checked` state.
-      //
-      // To prevent this, we need to force the input `checked` state to be in sync with the toggle state.
-      target.checked = context.checked();
-    }
-    setIsInternalChangeEvent(false);
-  };
+			// Unlike in React, inputs `checked` state can be out of sync with our toggle state.
+			// for example a readonly `<input type="checkbox" />` is always "checkable".
+			//
+			// Also, even if an input is controlled (ex: `<input type="checkbox" checked={isChecked} />`,
+			// clicking on the input will change its internal `checked` state.
+			//
+			// To prevent this, we need to force the input `checked` state to be in sync with the toggle state.
+			target.checked = context.checked();
+		}
+		setIsInternalChangeEvent(false);
+	};
 
-  const onFocus: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
-    callHandler(e, local.onFocus);
-    context.setIsFocused(true);
-  };
+	const onFocus: JSX.FocusEventHandlerUnion<any, FocusEvent> = (e) => {
+		callHandler(e, local.onFocus);
+		context.setIsFocused(true);
+	};
 
-  const onBlur: JSX.FocusEventHandlerUnion<any, FocusEvent> = e => {
-    callHandler(e, local.onBlur);
-    context.setIsFocused(false);
-  };
+	const onBlur: JSX.FocusEventHandlerUnion<any, FocusEvent> = (e) => {
+		callHandler(e, local.onBlur);
+		context.setIsFocused(false);
+	};
 
-  createEffect(
-    on(
-      [() => context.checked(), () => context.value()],
-      () => {
-        setIsInternalChangeEvent(true);
+	createEffect(
+		on(
+			[() => context.checked(), () => context.value()],
+			() => {
+				setIsInternalChangeEvent(true);
 
-        ref?.dispatchEvent(new Event("input", { bubbles: true, cancelable: true }));
-        ref?.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
-      },
-      {
-        defer: true,
-      },
-    ),
-  );
+				ref?.dispatchEvent(
+					new Event("input", { bubbles: true, cancelable: true }),
+				);
+				ref?.dispatchEvent(
+					new Event("change", { bubbles: true, cancelable: true }),
+				);
+			},
+			{
+				defer: true,
+			},
+		),
+	);
 
-  // indeterminate is a property, but it can only be set via javascript
-  // https://css-tricks.com/indeterminate-checkboxes/
-  // Unlike in React, inputs `indeterminate` state can be out of sync with our.
-  // Clicking on the input will change its internal `indeterminate` state.
-  // To prevent this, we need to force the input `indeterminate` state to be in sync with our.
-  createEffect(
-    on(
-      [() => ref, () => context.indeterminate(), () => context.checked()],
-      ([ref, indeterminate]) => {
-        if (ref) {
-          ref.indeterminate = !!indeterminate;
-        }
-      },
-    ),
-  );
+	// indeterminate is a property, but it can only be set via javascript
+	// https://css-tricks.com/indeterminate-checkboxes/
+	// Unlike in React, inputs `indeterminate` state can be out of sync with our.
+	// Clicking on the input will change its internal `indeterminate` state.
+	// To prevent this, we need to force the input `indeterminate` state to be in sync with our.
+	createEffect(
+		on(
+			[() => ref, () => context.indeterminate(), () => context.checked()],
+			([ref, indeterminate]) => {
+				if (ref) {
+					ref.indeterminate = !!indeterminate;
+				}
+			},
+		),
+	);
 
-  return (
-    <input
-      ref={mergeRefs(el => {
-        context.setInputRef(el);
-        ref = el;
-      }, local.ref)}
-      type="checkbox"
-      id={fieldProps.id()}
-      name={formControlContext.name()}
-      value={context.value()}
-      checked={context.checked()}
-      required={formControlContext.isRequired()}
-      disabled={formControlContext.isDisabled()}
-      readonly={formControlContext.isReadOnly()}
-      style={{ ...visuallyHiddenStyles, ...local.style }}
-      aria-label={fieldProps.ariaLabel()}
-      aria-labelledby={fieldProps.ariaLabelledBy()}
-      aria-describedby={fieldProps.ariaDescribedBy()}
-      aria-invalid={formControlContext.validationState() === "invalid" || undefined}
-      aria-required={formControlContext.isRequired() || undefined}
-      aria-disabled={formControlContext.isDisabled() || undefined}
-      aria-readonly={formControlContext.isReadOnly() || undefined}
-      onChange={onChange}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      {...formControlContext.dataset()}
-      {...context.dataset()}
-      {...others}
-    />
-  );
+	return (
+		<input
+			ref={mergeRefs((el) => {
+				context.setInputRef(el);
+				ref = el;
+			}, local.ref)}
+			type="checkbox"
+			id={fieldProps.id()}
+			name={formControlContext.name()}
+			value={context.value()}
+			checked={context.checked()}
+			required={formControlContext.isRequired()}
+			disabled={formControlContext.isDisabled()}
+			readonly={formControlContext.isReadOnly()}
+			style={{ ...visuallyHiddenStyles, ...local.style }}
+			aria-label={fieldProps.ariaLabel()}
+			aria-labelledby={fieldProps.ariaLabelledBy()}
+			aria-describedby={fieldProps.ariaDescribedBy()}
+			aria-invalid={
+				formControlContext.validationState() === "invalid" || undefined
+			}
+			aria-required={formControlContext.isRequired() || undefined}
+			aria-disabled={formControlContext.isDisabled() || undefined}
+			aria-readonly={formControlContext.isReadOnly() || undefined}
+			onChange={onChange}
+			onFocus={onFocus}
+			onBlur={onBlur}
+			{...formControlContext.dataset()}
+			{...context.dataset()}
+			{...others}
+		/>
+	);
 }

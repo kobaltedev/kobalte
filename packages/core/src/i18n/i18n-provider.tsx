@@ -12,19 +12,19 @@ import { createDefaultLocale } from "./create-default-locale";
 import { Direction, getReadingDirection } from "./utils";
 
 interface I18nProviderProps {
-  /** Contents that should have the locale applied. */
-  children?: JSX.Element;
+	/** Contents that should have the locale applied. */
+	children?: JSX.Element;
 
-  /** The locale to apply to the children. */
-  locale?: string;
+	/** The locale to apply to the children. */
+	locale?: string;
 }
 
 interface I18nContextValue {
-  /** The [BCP47](https://www.ietf.org/rfc/bcp/bcp47.txt) language code for the locale. */
-  locale: Accessor<string>;
+	/** The [BCP47](https://www.ietf.org/rfc/bcp/bcp47.txt) language code for the locale. */
+	locale: Accessor<string>;
 
-  /** The writing direction for the locale. */
-  direction: Accessor<Direction>;
+	/** The writing direction for the locale. */
+	direction: Accessor<Direction>;
 }
 
 const I18nContext = createContext<I18nContextValue>();
@@ -33,23 +33,30 @@ const I18nContext = createContext<I18nContextValue>();
  * Provides the locale for the application to all child components.
  */
 export function I18nProvider(props: I18nProviderProps) {
-  const defaultLocale = createDefaultLocale();
+	const defaultLocale = createDefaultLocale();
 
-  const context: I18nContextValue = {
-    locale: () => props.locale ?? defaultLocale.locale(),
-    direction: () => (props.locale ? getReadingDirection(props.locale) : defaultLocale.direction()),
-  };
+	const context: I18nContextValue = {
+		locale: () => props.locale ?? defaultLocale.locale(),
+		direction: () =>
+			props.locale
+				? getReadingDirection(props.locale)
+				: defaultLocale.direction(),
+	};
 
-  return <I18nContext.Provider value={context}>{props.children}</I18nContext.Provider>;
+	return (
+		<I18nContext.Provider value={context}>
+			{props.children}
+		</I18nContext.Provider>
+	);
 }
 
 /**
  * Returns an accessor for the current locale and layout direction.
  */
 export function useLocale() {
-  const defaultLocale = createDefaultLocale();
+	const defaultLocale = createDefaultLocale();
 
-  const context = useContext(I18nContext);
+	const context = useContext(I18nContext);
 
-  return context || defaultLocale;
+	return context || defaultLocale;
 }

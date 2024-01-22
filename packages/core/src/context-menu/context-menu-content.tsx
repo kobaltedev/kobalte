@@ -14,38 +14,41 @@ import { useMenuRootContext } from "../menu/menu-root-context";
 import { InteractOutsideEvent } from "../primitives";
 
 export interface ContextMenuContentProps
-  extends OverrideComponentProps<"div", MenuContentOptions> {}
+	extends OverrideComponentProps<"div", MenuContentOptions> {}
 
 export function ContextMenuContent(props: ContextMenuContentProps) {
-  const rootContext = useMenuRootContext();
+	const rootContext = useMenuRootContext();
 
-  const [local, others] = splitProps(props, ["onCloseAutoFocus", "onInteractOutside"]);
+	const [local, others] = splitProps(props, [
+		"onCloseAutoFocus",
+		"onInteractOutside",
+	]);
 
-  let hasInteractedOutside = false;
+	let hasInteractedOutside = false;
 
-  const onCloseAutoFocus = (e: Event) => {
-    local.onCloseAutoFocus?.(e);
+	const onCloseAutoFocus = (e: Event) => {
+		local.onCloseAutoFocus?.(e);
 
-    if (!e.defaultPrevented && hasInteractedOutside) {
-      e.preventDefault();
-    }
+		if (!e.defaultPrevented && hasInteractedOutside) {
+			e.preventDefault();
+		}
 
-    hasInteractedOutside = false;
-  };
+		hasInteractedOutside = false;
+	};
 
-  const onInteractOutside = (e: InteractOutsideEvent) => {
-    local.onInteractOutside?.(e);
+	const onInteractOutside = (e: InteractOutsideEvent) => {
+		local.onInteractOutside?.(e);
 
-    if (!e.defaultPrevented && !rootContext.isModal()) {
-      hasInteractedOutside = true;
-    }
-  };
+		if (!e.defaultPrevented && !rootContext.isModal()) {
+			hasInteractedOutside = true;
+		}
+	};
 
-  return (
-    <MenuContent
-      onCloseAutoFocus={onCloseAutoFocus}
-      onInteractOutside={onInteractOutside}
-      {...others}
-    />
-  );
+	return (
+		<MenuContent
+			onCloseAutoFocus={onCloseAutoFocus}
+			onInteractOutside={onInteractOutside}
+			{...others}
+		/>
+	);
 }

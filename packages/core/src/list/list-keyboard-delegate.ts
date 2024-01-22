@@ -12,147 +12,150 @@ import { Collection, CollectionNode } from "../primitives";
 import { KeyboardDelegate } from "../selection";
 
 export class ListKeyboardDelegate implements KeyboardDelegate {
-  private collection: Accessor<Collection<CollectionNode>>;
-  private ref?: Accessor<HTMLElement | undefined>;
-  private collator?: Accessor<Intl.Collator | undefined>;
+	private collection: Accessor<Collection<CollectionNode>>;
+	private ref?: Accessor<HTMLElement | undefined>;
+	private collator?: Accessor<Intl.Collator | undefined>;
 
-  constructor(
-    collection: Accessor<Collection<CollectionNode>>,
-    ref?: Accessor<HTMLElement | undefined>,
-    collator?: Accessor<Intl.Collator | undefined>,
-  ) {
-    this.collection = collection;
-    this.ref = ref;
-    this.collator = collator;
-  }
+	constructor(
+		collection: Accessor<Collection<CollectionNode>>,
+		ref?: Accessor<HTMLElement | undefined>,
+		collator?: Accessor<Intl.Collator | undefined>,
+	) {
+		this.collection = collection;
+		this.ref = ref;
+		this.collator = collator;
+	}
 
-  getKeyBelow(key: string) {
-    let keyAfter = this.collection().getKeyAfter(key);
+	getKeyBelow(key: string) {
+		let keyAfter = this.collection().getKeyAfter(key);
 
-    while (keyAfter != null) {
-      const item = this.collection().getItem(keyAfter);
+		while (keyAfter != null) {
+			const item = this.collection().getItem(keyAfter);
 
-      if (item && item.type === "item" && !item.disabled) {
-        return keyAfter;
-      }
+			if (item && item.type === "item" && !item.disabled) {
+				return keyAfter;
+			}
 
-      keyAfter = this.collection().getKeyAfter(keyAfter);
-    }
-  }
+			keyAfter = this.collection().getKeyAfter(keyAfter);
+		}
+	}
 
-  getKeyAbove(key: string) {
-    let keyBefore = this.collection().getKeyBefore(key);
+	getKeyAbove(key: string) {
+		let keyBefore = this.collection().getKeyBefore(key);
 
-    while (keyBefore != null) {
-      const item = this.collection().getItem(keyBefore);
+		while (keyBefore != null) {
+			const item = this.collection().getItem(keyBefore);
 
-      if (item && item.type === "item" && !item.disabled) {
-        return keyBefore;
-      }
+			if (item && item.type === "item" && !item.disabled) {
+				return keyBefore;
+			}
 
-      keyBefore = this.collection().getKeyBefore(keyBefore);
-    }
-  }
+			keyBefore = this.collection().getKeyBefore(keyBefore);
+		}
+	}
 
-  getFirstKey() {
-    let key = this.collection().getFirstKey();
+	getFirstKey() {
+		let key = this.collection().getFirstKey();
 
-    while (key != null) {
-      const item = this.collection().getItem(key);
+		while (key != null) {
+			const item = this.collection().getItem(key);
 
-      if (item && item.type === "item" && !item.disabled) {
-        return key;
-      }
+			if (item && item.type === "item" && !item.disabled) {
+				return key;
+			}
 
-      key = this.collection().getKeyAfter(key);
-    }
-  }
+			key = this.collection().getKeyAfter(key);
+		}
+	}
 
-  getLastKey() {
-    let key = this.collection().getLastKey();
+	getLastKey() {
+		let key = this.collection().getLastKey();
 
-    while (key != null) {
-      const item = this.collection().getItem(key);
+		while (key != null) {
+			const item = this.collection().getItem(key);
 
-      if (item && item.type === "item" && !item.disabled) {
-        return key;
-      }
+			if (item && item.type === "item" && !item.disabled) {
+				return key;
+			}
 
-      key = this.collection().getKeyBefore(key);
-    }
-  }
+			key = this.collection().getKeyBefore(key);
+		}
+	}
 
-  private getItem(key: string): HTMLElement | null {
-    return this.ref?.()?.querySelector(`[data-key="${key}"]`) ?? null;
-  }
+	private getItem(key: string): HTMLElement | null {
+		return this.ref?.()?.querySelector(`[data-key="${key}"]`) ?? null;
+	}
 
-  // TODO: not working correctly
-  getKeyPageAbove(key: string) {
-    const menu = this.ref?.();
-    let item = this.getItem(key);
+	// TODO: not working correctly
+	getKeyPageAbove(key: string) {
+		const menu = this.ref?.();
+		let item = this.getItem(key);
 
-    if (!menu || !item) {
-      return;
-    }
+		if (!menu || !item) {
+			return;
+		}
 
-    const pageY = Math.max(0, item.offsetTop + item.offsetHeight - menu.offsetHeight);
+		const pageY = Math.max(
+			0,
+			item.offsetTop + item.offsetHeight - menu.offsetHeight,
+		);
 
-    let keyAbove: string | undefined = key;
+		let keyAbove: string | undefined = key;
 
-    while (keyAbove && item && item.offsetTop > pageY) {
-      keyAbove = this.getKeyAbove(keyAbove);
-      item = keyAbove != null ? this.getItem(keyAbove) : null;
-    }
+		while (keyAbove && item && item.offsetTop > pageY) {
+			keyAbove = this.getKeyAbove(keyAbove);
+			item = keyAbove != null ? this.getItem(keyAbove) : null;
+		}
 
-    return keyAbove;
-  }
+		return keyAbove;
+	}
 
-  // TODO: not working correctly
-  getKeyPageBelow(key: string) {
-    const menu = this.ref?.();
-    let item = this.getItem(key);
+	// TODO: not working correctly
+	getKeyPageBelow(key: string) {
+		const menu = this.ref?.();
+		let item = this.getItem(key);
 
-    if (!menu || !item) {
-      return;
-    }
+		if (!menu || !item) {
+			return;
+		}
 
-    const pageY = Math.min(
-      menu.scrollHeight,
-      item.offsetTop - item.offsetHeight + menu.offsetHeight,
-    );
+		const pageY = Math.min(
+			menu.scrollHeight,
+			item.offsetTop - item.offsetHeight + menu.offsetHeight,
+		);
 
-    let keyBelow: string | undefined = key;
+		let keyBelow: string | undefined = key;
 
-    while (keyBelow && item && item.offsetTop < pageY) {
-      keyBelow = this.getKeyBelow(keyBelow);
-      item = keyBelow != null ? this.getItem(keyBelow) : null;
-    }
+		while (keyBelow && item && item.offsetTop < pageY) {
+			keyBelow = this.getKeyBelow(keyBelow);
+			item = keyBelow != null ? this.getItem(keyBelow) : null;
+		}
 
-    return keyBelow;
-  }
+		return keyBelow;
+	}
 
-  getKeyForSearch(search: string, fromKey?: string) {
-    const collator = this.collator?.();
+	getKeyForSearch(search: string, fromKey?: string) {
+		const collator = this.collator?.();
 
-    if (!collator) {
-      return;
-    }
+		if (!collator) {
+			return;
+		}
 
-    // Prevent from getting the same key twice
-    let key = fromKey != null ? this.getKeyBelow(fromKey) : this.getFirstKey();
+		// Prevent from getting the same key twice
+		let key = fromKey != null ? this.getKeyBelow(fromKey) : this.getFirstKey();
 
-    while (key != null) {
-      const item = this.collection().getItem(key);
+		while (key != null) {
+			const item = this.collection().getItem(key);
 
-      if (item) {
-        const substring = item.textValue.slice(0, search.length);
+			if (item) {
+				const substring = item.textValue.slice(0, search.length);
 
-        if (item.textValue && collator.compare(substring, search) === 0) {
-          return key;
-        }
-      }
+				if (item.textValue && collator.compare(substring, search) === 0) {
+					return key;
+				}
+			}
 
-      key = this.getKeyBelow(key);
-    }
-  }
+			key = this.getKeyBelow(key);
+		}
+	}
 }

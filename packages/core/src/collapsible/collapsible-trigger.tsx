@@ -13,29 +13,30 @@ import * as Button from "../button";
 import { AsChildProp } from "../polymorphic";
 import { useCollapsibleContext } from "./collapsible-context";
 
-export interface CollapsibleTriggerProps extends OverrideComponentProps<"button", AsChildProp> {}
+export interface CollapsibleTriggerProps
+	extends OverrideComponentProps<"button", AsChildProp> {}
 
 /**
  * The button that expands/collapses the collapsible content.
  */
 export function CollapsibleTrigger(props: CollapsibleTriggerProps) {
-  const context = useCollapsibleContext();
+	const context = useCollapsibleContext();
 
-  const [local, others] = splitProps(props, ["onClick"]);
+	const [local, others] = splitProps(props, ["onClick"]);
 
-  const onClick: JSX.EventHandlerUnion<any, MouseEvent> = e => {
-    callHandler(e, local.onClick);
-    context.toggle();
-  };
+	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
+		callHandler(e, local.onClick);
+		context.toggle();
+	};
 
-  return (
-    <Button.Root
-      aria-expanded={context.isOpen()}
-      aria-controls={context.isOpen() ? context.contentId() : undefined}
-      disabled={context.disabled()}
-      onClick={onClick}
-      {...context.dataset()}
-      {...others}
-    />
-  );
+	return (
+		<Button.Root
+			aria-expanded={context.isOpen()}
+			aria-controls={context.isOpen() ? context.contentId() : undefined}
+			disabled={context.disabled()}
+			onClick={onClick}
+			{...context.dataset()}
+			{...others}
+		/>
+	);
 }

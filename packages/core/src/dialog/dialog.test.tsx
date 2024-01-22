@@ -11,33 +11,35 @@ import { render, screen } from "@solidjs/testing-library";
 import * as Dialog from ".";
 
 describe("Dialog", () => {
-  it("should be labelled by its dialog title", function () {
-    render(() => (
-      <Dialog.Root open>
-        <Dialog.Content>
-          <Dialog.Title data-testid="title">title</Dialog.Title>
-        </Dialog.Content>
-      </Dialog.Root>
-    ));
+	it("should be labelled by its dialog title", function () {
+		render(() => (
+			<Dialog.Root open>
+				<Dialog.Content>
+					<Dialog.Title data-testid="title">title</Dialog.Title>
+				</Dialog.Content>
+			</Dialog.Root>
+		));
 
-    const panel = screen.getByRole("dialog");
-    const title = screen.getByTestId("title");
+		const panel = screen.getByRole("dialog");
+		const title = screen.getByTestId("title");
 
-    expect(panel).toHaveAttribute("aria-labelledby", title.id);
-  });
+		expect(panel).toHaveAttribute("aria-labelledby", title.id);
+	});
 
-  it("should be described by its dialog description", function () {
-    render(() => (
-      <Dialog.Root open>
-        <Dialog.Content>
-          <Dialog.Description data-testid="description">description</Dialog.Description>
-        </Dialog.Content>
-      </Dialog.Root>
-    ));
+	it("should be described by its dialog description", function () {
+		render(() => (
+			<Dialog.Root open>
+				<Dialog.Content>
+					<Dialog.Description data-testid="description">
+						description
+					</Dialog.Description>
+				</Dialog.Content>
+			</Dialog.Root>
+		));
 
-    const panel = screen.getByRole("dialog");
-    const description = screen.getByTestId("description");
+		const panel = screen.getByRole("dialog");
+		const description = screen.getByTestId("description");
 
-    expect(panel).toHaveAttribute("aria-describedby", description.id);
-  });
+		expect(panel).toHaveAttribute("aria-describedby", description.id);
+	});
 });

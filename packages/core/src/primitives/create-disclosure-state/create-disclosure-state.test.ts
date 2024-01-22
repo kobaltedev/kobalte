@@ -3,100 +3,100 @@ import { createRoot } from "solid-js";
 import { createDisclosureState } from "./create-disclosure-state";
 
 describe("createDisclosureState", () => {
-  it("can be default 'open' (uncontrolled)", () => {
-    createRoot(dispose => {
-      const state = createDisclosureState({
-        defaultOpen: true,
-      });
+	it("can be default 'open' (uncontrolled)", () => {
+		createRoot((dispose) => {
+			const state = createDisclosureState({
+				defaultOpen: true,
+			});
 
-      expect(state.isOpen()).toBeTruthy();
+			expect(state.isOpen()).toBeTruthy();
 
-      dispose();
-    });
-  });
+			dispose();
+		});
+	});
 
-  it("can be controlled", () => {
-    createRoot(dispose => {
-      const onChangeSpy = jest.fn();
+	it("can be controlled", () => {
+		createRoot((dispose) => {
+			const onChangeSpy = jest.fn();
 
-      const state = createDisclosureState({
-        open: true,
-        onOpenChange: onChangeSpy,
-      });
+			const state = createDisclosureState({
+				open: true,
+				onOpenChange: onChangeSpy,
+			});
 
-      expect(state.isOpen()).toBeTruthy();
+			expect(state.isOpen()).toBeTruthy();
 
-      state.toggle();
+			state.toggle();
 
-      expect(state.isOpen()).toBeTruthy();
-      expect(onChangeSpy).toHaveBeenCalledTimes(1);
-      expect(onChangeSpy).toHaveBeenCalledWith(false);
+			expect(state.isOpen()).toBeTruthy();
+			expect(onChangeSpy).toHaveBeenCalledTimes(1);
+			expect(onChangeSpy).toHaveBeenCalledWith(false);
 
-      dispose();
-    });
-  });
+			dispose();
+		});
+	});
 
-  it("should set 'isOpen' state with the value from 'setIsOpen'", () => {
-    createRoot(dispose => {
-      const state = createDisclosureState({ defaultOpen: false });
+	it("should set 'isOpen' state with the value from 'setIsOpen'", () => {
+		createRoot((dispose) => {
+			const state = createDisclosureState({ defaultOpen: false });
 
-      expect(state.isOpen()).toBeFalsy();
+			expect(state.isOpen()).toBeFalsy();
 
-      state.setIsOpen(true);
+			state.setIsOpen(true);
 
-      expect(state.isOpen()).toBeTruthy();
+			expect(state.isOpen()).toBeTruthy();
 
-      state.setIsOpen(false);
+			state.setIsOpen(false);
 
-      expect(state.isOpen()).toBeFalsy();
+			expect(state.isOpen()).toBeFalsy();
 
-      dispose();
-    });
-  });
+			dispose();
+		});
+	});
 
-  it("should set 'isOpen' state to true when calling 'open'", () => {
-    createRoot(dispose => {
-      const state = createDisclosureState({ defaultOpen: false });
+	it("should set 'isOpen' state to true when calling 'open'", () => {
+		createRoot((dispose) => {
+			const state = createDisclosureState({ defaultOpen: false });
 
-      expect(state.isOpen()).toBeFalsy();
+			expect(state.isOpen()).toBeFalsy();
 
-      state.open();
+			state.open();
 
-      expect(state.isOpen()).toBeTruthy();
+			expect(state.isOpen()).toBeTruthy();
 
-      dispose();
-    });
-  });
+			dispose();
+		});
+	});
 
-  it("should set 'isOpen' state to false when calling 'close'", () => {
-    createRoot(dispose => {
-      const state = createDisclosureState({ defaultOpen: true });
+	it("should set 'isOpen' state to false when calling 'close'", () => {
+		createRoot((dispose) => {
+			const state = createDisclosureState({ defaultOpen: true });
 
-      expect(state.isOpen()).toBeTruthy();
+			expect(state.isOpen()).toBeTruthy();
 
-      state.close();
+			state.close();
 
-      expect(state.isOpen()).toBeFalsy();
+			expect(state.isOpen()).toBeFalsy();
 
-      dispose();
-    });
-  });
+			dispose();
+		});
+	});
 
-  it("should toggle 'isOpen' state when calling 'toggle'", () => {
-    createRoot(dispose => {
-      const state = createDisclosureState({ defaultOpen: false });
+	it("should toggle 'isOpen' state when calling 'toggle'", () => {
+		createRoot((dispose) => {
+			const state = createDisclosureState({ defaultOpen: false });
 
-      expect(state.isOpen()).toBeFalsy();
+			expect(state.isOpen()).toBeFalsy();
 
-      state.toggle();
+			state.toggle();
 
-      expect(state.isOpen()).toBeTruthy();
+			expect(state.isOpen()).toBeTruthy();
 
-      state.toggle();
+			state.toggle();
 
-      expect(state.isOpen()).toBeFalsy();
+			expect(state.isOpen()).toBeFalsy();
 
-      dispose();
-    });
-  });
+			dispose();
+		});
+	});
 });

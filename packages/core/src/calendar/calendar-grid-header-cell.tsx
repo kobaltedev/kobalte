@@ -17,5 +17,5 @@ export type CalendarGridHeaderCellProps = ComponentProps<"th">;
  * A calendar grid header cell displays a week day name at the top of a column within a calendar.
  */
 export function CalendarGridHeaderCell(props: CalendarGridHeaderCellProps) {
-  return <Polymorphic as="th" {...props} />;
+	return <Polymorphic as="th" {...props} />;
 }
