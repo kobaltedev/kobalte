@@ -14,17 +14,17 @@ import { useSelectContext } from "./select-context";
 export type SelectHiddenSelectProps = ComponentProps<"select">;
 
 export function SelectHiddenSelect(props: SelectHiddenSelectProps) {
-  const context = useSelectContext();
+	const context = useSelectContext();
 
-  return (
-    <HiddenSelectBase
-      collection={context.listState().collection()}
-      selectionManager={context.listState().selectionManager()}
-      isOpen={context.isOpen()}
-      isMultiple={context.isMultiple()}
-      isVirtualized={context.isVirtualized()}
-      focusTrigger={() => context.triggerRef()?.focus()}
-      {...props}
-    />
-  );
+	return (
+		<HiddenSelectBase
+			collection={context.listState().collection()}
+			selectionManager={context.listState().selectionManager()}
+			isOpen={context.isOpen()}
+			isMultiple={context.isMultiple()}
+			isVirtualized={context.isVirtualized()}
+			focusTrigger={() => context.triggerRef()?.focus()}
+			{...props}
+		/>
+	);
 }

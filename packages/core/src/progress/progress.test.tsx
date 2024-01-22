@@ -12,215 +12,233 @@ import { render, screen } from "@solidjs/testing-library";
 import * as Progress from ".";
 
 describe("Progress", () => {
-  it("handles defaults", () => {
-    render(() => (
-      <Progress.Root>
-        <Progress.Label>Progress Bar</Progress.Label>
-        <Progress.ValueLabel data-testid="value-label" />
-        <Progress.Track>
-          <Progress.Fill />
-        </Progress.Track>
-      </Progress.Root>
-    ));
+	it("handles defaults", () => {
+		render(() => (
+			<Progress.Root>
+				<Progress.Label>Progress Bar</Progress.Label>
+				<Progress.ValueLabel data-testid="value-label" />
+				<Progress.Track>
+					<Progress.Fill />
+				</Progress.Track>
+			</Progress.Root>
+		));
 
-    const progressBar = screen.getByRole("progressbar");
-    expect(progressBar).toHaveAttribute("aria-valuemin", "0");
-    expect(progressBar).toHaveAttribute("aria-valuemax", "100");
-    expect(progressBar).toHaveAttribute("aria-valuenow", "0");
-    expect(progressBar).toHaveAttribute("aria-valuetext", "0%");
+		const progressBar = screen.getByRole("progressbar");
+		expect(progressBar).toHaveAttribute("aria-valuemin", "0");
+		expect(progressBar).toHaveAttribute("aria-valuemax", "100");
+		expect(progressBar).toHaveAttribute("aria-valuenow", "0");
+		expect(progressBar).toHaveAttribute("aria-valuetext", "0%");
 
-    const valueLabel = screen.getByTestId("value-label");
-    expect(valueLabel).toHaveTextContent("0%");
+		const valueLabel = screen.getByTestId("value-label");
+		expect(valueLabel).toHaveTextContent("0%");
 
-    const labelId = progressBar.getAttribute("aria-labelledby");
-    expect(labelId).toBeDefined();
+		const labelId = progressBar.getAttribute("aria-labelledby");
+		expect(labelId).toBeDefined();
 
-    const label = document.getElementById(labelId!);
-    expect(label).toHaveTextContent("Progress Bar");
-  });
+		const label = document.getElementById(labelId!);
+		expect(label).toHaveTextContent("Progress Bar");
+	});
 
-  it("supports custom value label", () => {
-    render(() => (
-      <Progress.Root
-        value={3}
-        minValue={0}
-        maxValue={10}
-        getValueLabel={({ value, max }) => `${value} of ${max} completed`}
-      >
-        <Progress.Label>Progress Bar</Progress.Label>
-        <Progress.ValueLabel data-testid="value-label" />
-        <Progress.Track>
-          <Progress.Fill />
-        </Progress.Track>
-      </Progress.Root>
-    ));
+	it("supports custom value label", () => {
+		render(() => (
+			<Progress.Root
+				value={3}
+				minValue={0}
+				maxValue={10}
+				getValueLabel={({ value, max }) => `${value} of ${max} completed`}
+			>
+				<Progress.Label>Progress Bar</Progress.Label>
+				<Progress.ValueLabel data-testid="value-label" />
+				<Progress.Track>
+					<Progress.Fill />
+				</Progress.Track>
+			</Progress.Root>
+		));
 
-    const progressBar = screen.getByRole("progressbar");
-    expect(progressBar).toHaveAttribute("aria-valuetext", "3 of 10 completed");
+		const progressBar = screen.getByRole("progressbar");
+		expect(progressBar).toHaveAttribute("aria-valuetext", "3 of 10 completed");
 
-    const valueLabel = screen.getByTestId("value-label");
-    expect(valueLabel).toHaveTextContent("3 of 10 completed");
-  });
+		const valueLabel = screen.getByTestId("value-label");
+		expect(valueLabel).toHaveTextContent("3 of 10 completed");
+	});
 
-  it("should update all fields by value", () => {
-    render(() => (
-      <Progress.Root value={30}>
-        <Progress.Label>Progress Bar</Progress.Label>
-        <Progress.ValueLabel />
-        <Progress.Track>
-          <Progress.Fill />
-        </Progress.Track>
-      </Progress.Root>
-    ));
+	it("should update all fields by value", () => {
+		render(() => (
+			<Progress.Root value={30}>
+				<Progress.Label>Progress Bar</Progress.Label>
+				<Progress.ValueLabel />
+				<Progress.Track>
+					<Progress.Fill />
+				</Progress.Track>
+			</Progress.Root>
+		));
 
-    const progressBar = screen.getByRole("progressbar");
+		const progressBar = screen.getByRole("progressbar");
 
-    expect(progressBar).toHaveAttribute("aria-valuemin", "0");
-    expect(progressBar).toHaveAttribute("aria-valuemax", "100");
-    expect(progressBar).toHaveAttribute("aria-valuenow", "30");
-    expect(progressBar).toHaveAttribute("aria-valuetext", "30%");
-  });
+		expect(progressBar).toHaveAttribute("aria-valuemin", "0");
+		expect(progressBar).toHaveAttribute("aria-valuemax", "100");
+		expect(progressBar).toHaveAttribute("aria-valuenow", "30");
+		expect(progressBar).toHaveAttribute("aria-valuetext", "30%");
+	});
 
-  it("should clamps values to 'minValue'", () => {
-    render(() => (
-      <Progress.Root value={-1} minValue={0}>
-        <Progress.Label>Progress Bar</Progress.Label>
-        <Progress.ValueLabel />
-        <Progress.Track>
-          <Progress.Fill />
-        </Progress.Track>
-      </Progress.Root>
-    ));
+	it("should clamps values to 'minValue'", () => {
+		render(() => (
+			<Progress.Root value={-1} minValue={0}>
+				<Progress.Label>Progress Bar</Progress.Label>
+				<Progress.ValueLabel />
+				<Progress.Track>
+					<Progress.Fill />
+				</Progress.Track>
+			</Progress.Root>
+		));
 
-    const progressBar = screen.getByRole("progressbar");
-    expect(progressBar).toHaveAttribute("aria-valuenow", "0");
-    expect(progressBar).toHaveAttribute("aria-valuetext", "0%");
-  });
+		const progressBar = screen.getByRole("progressbar");
+		expect(progressBar).toHaveAttribute("aria-valuenow", "0");
+		expect(progressBar).toHaveAttribute("aria-valuetext", "0%");
+	});
 
-  it("should clamps values to 'maxValue'", () => {
-    render(() => (
-      <Progress.Root value={200} maxValue={100}>
-        <Progress.Label>Progress Bar</Progress.Label>
-        <Progress.ValueLabel />
-        <Progress.Track>
-          <Progress.Fill />
-        </Progress.Track>
-      </Progress.Root>
-    ));
+	it("should clamps values to 'maxValue'", () => {
+		render(() => (
+			<Progress.Root value={200} maxValue={100}>
+				<Progress.Label>Progress Bar</Progress.Label>
+				<Progress.ValueLabel />
+				<Progress.Track>
+					<Progress.Fill />
+				</Progress.Track>
+			</Progress.Root>
+		));
 
-    const progressBar = screen.getByRole("progressbar");
-    expect(progressBar).toHaveAttribute("aria-valuenow", "100");
-    expect(progressBar).toHaveAttribute("aria-valuetext", "100%");
-  });
+		const progressBar = screen.getByRole("progressbar");
+		expect(progressBar).toHaveAttribute("aria-valuenow", "100");
+		expect(progressBar).toHaveAttribute("aria-valuetext", "100%");
+	});
 
-  it("supports negative values", () => {
-    render(() => (
-      <Progress.Root value={0} minValue={-5} maxValue={5}>
-        <Progress.Label>Progress Bar</Progress.Label>
-        <Progress.ValueLabel />
-        <Progress.Track>
-          <Progress.Fill />
-        </Progress.Track>
-      </Progress.Root>
-    ));
+	it("supports negative values", () => {
+		render(() => (
+			<Progress.Root value={0} minValue={-5} maxValue={5}>
+				<Progress.Label>Progress Bar</Progress.Label>
+				<Progress.ValueLabel />
+				<Progress.Track>
+					<Progress.Fill />
+				</Progress.Track>
+			</Progress.Root>
+		));
 
-    const progressBar = screen.getByRole("progressbar");
-    expect(progressBar).toHaveAttribute("aria-valuenow", "0");
-    expect(progressBar).toHaveAttribute("aria-valuetext", "50%");
-  });
+		const progressBar = screen.getByRole("progressbar");
+		expect(progressBar).toHaveAttribute("aria-valuenow", "0");
+		expect(progressBar).toHaveAttribute("aria-valuetext", "50%");
+	});
 
-  it("supports indeterminate state", () => {
-    render(() => (
-      <Progress.Root indeterminate>
-        <Progress.Label>Progress Bar</Progress.Label>
-        <Progress.ValueLabel data-testid="value-label" />
-        <Progress.Track>
-          <Progress.Fill />
-        </Progress.Track>
-      </Progress.Root>
-    ));
+	it("supports indeterminate state", () => {
+		render(() => (
+			<Progress.Root indeterminate>
+				<Progress.Label>Progress Bar</Progress.Label>
+				<Progress.ValueLabel data-testid="value-label" />
+				<Progress.Track>
+					<Progress.Fill />
+				</Progress.Track>
+			</Progress.Root>
+		));
 
-    const progressBar = screen.getByRole("progressbar");
-    expect(progressBar).toHaveAttribute("aria-valuemin", "0");
-    expect(progressBar).toHaveAttribute("aria-valuemax", "100");
-    expect(progressBar).not.toHaveAttribute("aria-valuenow");
-    expect(progressBar).not.toHaveAttribute("aria-valuetext");
+		const progressBar = screen.getByRole("progressbar");
+		expect(progressBar).toHaveAttribute("aria-valuemin", "0");
+		expect(progressBar).toHaveAttribute("aria-valuemax", "100");
+		expect(progressBar).not.toHaveAttribute("aria-valuenow");
+		expect(progressBar).not.toHaveAttribute("aria-valuetext");
 
-    const valueLabel = screen.getByTestId("value-label");
-    expect(valueLabel).toBeEmptyDOMElement();
-  });
+		const valueLabel = screen.getByTestId("value-label");
+		expect(valueLabel).toBeEmptyDOMElement();
+	});
 
-  describe("data-attributes", () => {
-    it("should have 'data-progress=loading' attribute when the progress is not complete", () => {
-      render(() => (
-        <Progress.Root value={30} minValue={0} maxValue={100} data-testid="progress-root">
-          <Progress.Label data-testid="progress-label">Progress Bar</Progress.Label>
-          <Progress.ValueLabel data-testid="progress-value-label" />
-          <Progress.Track data-testid="progress-track">
-            <Progress.Fill data-testid="progress-fill" />
-          </Progress.Track>
-        </Progress.Root>
-      ));
+	describe("data-attributes", () => {
+		it("should have 'data-progress=loading' attribute when the progress is not complete", () => {
+			render(() => (
+				<Progress.Root
+					value={30}
+					minValue={0}
+					maxValue={100}
+					data-testid="progress-root"
+				>
+					<Progress.Label data-testid="progress-label">
+						Progress Bar
+					</Progress.Label>
+					<Progress.ValueLabel data-testid="progress-value-label" />
+					<Progress.Track data-testid="progress-track">
+						<Progress.Fill data-testid="progress-fill" />
+					</Progress.Track>
+				</Progress.Root>
+			));
 
-      const elements = screen.getAllByTestId(/^progress/);
+			const elements = screen.getAllByTestId(/^progress/);
 
-      for (const el of elements) {
-        expect(el).toHaveAttribute("data-progress", "loading");
-      }
-    });
+			for (const el of elements) {
+				expect(el).toHaveAttribute("data-progress", "loading");
+			}
+		});
 
-    it("should have 'data-progress=complete' attribute when the progress is complete", () => {
-      render(() => (
-        <Progress.Root value={100} minValue={0} maxValue={100} data-testid="progress-root">
-          <Progress.Label data-testid="progress-label">Progress Bar</Progress.Label>
-          <Progress.ValueLabel data-testid="progress-value-label" />
-          <Progress.Track data-testid="progress-track">
-            <Progress.Fill data-testid="progress-fill" />
-          </Progress.Track>
-        </Progress.Root>
-      ));
+		it("should have 'data-progress=complete' attribute when the progress is complete", () => {
+			render(() => (
+				<Progress.Root
+					value={100}
+					minValue={0}
+					maxValue={100}
+					data-testid="progress-root"
+				>
+					<Progress.Label data-testid="progress-label">
+						Progress Bar
+					</Progress.Label>
+					<Progress.ValueLabel data-testid="progress-value-label" />
+					<Progress.Track data-testid="progress-track">
+						<Progress.Fill data-testid="progress-fill" />
+					</Progress.Track>
+				</Progress.Root>
+			));
 
-      const elements = screen.getAllByTestId(/^progress/);
+			const elements = screen.getAllByTestId(/^progress/);
 
-      for (const el of elements) {
-        expect(el).toHaveAttribute("data-progress", "complete");
-      }
-    });
+			for (const el of elements) {
+				expect(el).toHaveAttribute("data-progress", "complete");
+			}
+		});
 
-    it("should not have 'data-indeterminate' attribute by default", () => {
-      render(() => (
-        <Progress.Root data-testid="progress-root">
-          <Progress.Label data-testid="progress-label">Progress Bar</Progress.Label>
-          <Progress.ValueLabel data-testid="progress-value-label" />
-          <Progress.Track data-testid="progress-track">
-            <Progress.Fill data-testid="progress-fill" />
-          </Progress.Track>
-        </Progress.Root>
-      ));
+		it("should not have 'data-indeterminate' attribute by default", () => {
+			render(() => (
+				<Progress.Root data-testid="progress-root">
+					<Progress.Label data-testid="progress-label">
+						Progress Bar
+					</Progress.Label>
+					<Progress.ValueLabel data-testid="progress-value-label" />
+					<Progress.Track data-testid="progress-track">
+						<Progress.Fill data-testid="progress-fill" />
+					</Progress.Track>
+				</Progress.Root>
+			));
 
-      const elements = screen.getAllByTestId(/^progress/);
+			const elements = screen.getAllByTestId(/^progress/);
 
-      for (const el of elements) {
-        expect(el).not.toHaveAttribute("data-indeterminate");
-      }
-    });
+			for (const el of elements) {
+				expect(el).not.toHaveAttribute("data-indeterminate");
+			}
+		});
 
-    it("should have 'data-indeterminate' attribute when indeterminate", () => {
-      render(() => (
-        <Progress.Root indeterminate data-testid="progress-root">
-          <Progress.Label data-testid="progress-label">Progress Bar</Progress.Label>
-          <Progress.ValueLabel data-testid="progress-value-label" />
-          <Progress.Track data-testid="progress-track">
-            <Progress.Fill data-testid="progress-fill" />
-          </Progress.Track>
-        </Progress.Root>
-      ));
+		it("should have 'data-indeterminate' attribute when indeterminate", () => {
+			render(() => (
+				<Progress.Root indeterminate data-testid="progress-root">
+					<Progress.Label data-testid="progress-label">
+						Progress Bar
+					</Progress.Label>
+					<Progress.ValueLabel data-testid="progress-value-label" />
+					<Progress.Track data-testid="progress-track">
+						<Progress.Fill data-testid="progress-fill" />
+					</Progress.Track>
+				</Progress.Root>
+			));
 
-      const elements = screen.getAllByTestId(/^progress/);
+			const elements = screen.getAllByTestId(/^progress/);
 
-      for (const el of elements) {
-        expect(el).toHaveAttribute("data-indeterminate");
-      }
-    });
-  });
+			for (const el of elements) {
+				expect(el).toHaveAttribute("data-indeterminate");
+			}
+		});
+	});
 });

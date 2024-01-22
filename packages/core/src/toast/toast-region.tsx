@@ -12,171 +12,190 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import { createGenerateId, mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-import { createMemo, createSignal, createUniqueId, JSX, splitProps } from "solid-js";
+import {
+	createGenerateId,
+	mergeDefaultProps,
+	OverrideComponentProps,
+} from "@kobalte/utils";
+import {
+	createMemo,
+	createSignal,
+	createUniqueId,
+	JSX,
+	splitProps,
+} from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
 import {
-  TOAST_REGION_INTL_TRANSLATIONS,
-  ToastRegionIntlTranslations,
-  TOAST_HOTKEY_PLACEHOLDER,
+	TOAST_REGION_INTL_TRANSLATIONS,
+	ToastRegionIntlTranslations,
+	TOAST_HOTKEY_PLACEHOLDER,
 } from "./toast.intl";
-import { ToastRegionContext, ToastRegionContextValue } from "./toast-region-context";
+import {
+	ToastRegionContext,
+	ToastRegionContextValue,
+} from "./toast-region-context";
 import { toastStore } from "./toast-store";
 import { ToastSwipeDirection } from "./types";
 import { useToastContext } from "./toast-context";
 
 export interface ToastRegionOptions {
-  /** The localized strings of the component. */
-  translations?: ToastRegionIntlTranslations;
+	/** The localized strings of the component. */
+	translations?: ToastRegionIntlTranslations;
 
-  /**
-   * A label for the toast region to provide context for screen reader users when navigating page landmarks.
-   * Can contain a `{hotkey}` placeholder which will be replaced for you.
-   * @default "Notifications ({hotkey})"
-   */
-  "aria-label"?: string;
+	/**
+	 * A label for the toast region to provide context for screen reader users when navigating page landmarks.
+	 * Can contain a `{hotkey}` placeholder which will be replaced for you.
+	 * @default "Notifications ({hotkey})"
+	 */
+	"aria-label"?: string;
 
-  /**
-   * The keys to use as the keyboard shortcut that will move focus to the toast region.
-   * Use `event.code` value for each key from [keycode.info](https://www.toptal.com/developers/keycode).
-   * For meta keys, use `ctrlKey`, `shiftKey`, `altKey` and/or `metaKey`.
-   * @default alt + T
-   */
-  hotkey?: string[];
+	/**
+	 * The keys to use as the keyboard shortcut that will move focus to the toast region.
+	 * Use `event.code` value for each key from [keycode.info](https://www.toptal.com/developers/keycode).
+	 * For meta keys, use `ctrlKey`, `shiftKey`, `altKey` and/or `metaKey`.
+	 * @default alt + T
+	 */
+	hotkey?: string[];
 
-  /** The time in milliseconds that should elapse before automatically closing each toast. */
-  duration?: number;
+	/** The time in milliseconds that should elapse before automatically closing each toast. */
+	duration?: number;
 
-  /** The maximum amount of toasts that can be displayed at the same time. */
-  limit?: number;
+	/** The maximum amount of toasts that can be displayed at the same time. */
+	limit?: number;
 
-  /** The direction of the pointer swipe that should close the toast. */
-  swipeDirection?: ToastSwipeDirection;
+	/** The direction of the pointer swipe that should close the toast. */
+	swipeDirection?: ToastSwipeDirection;
 
-  /** The distance in pixels that the swipe gesture must travel before a close is triggered. */
-  swipeThreshold?: number;
+	/** The distance in pixels that the swipe gesture must travel before a close is triggered. */
+	swipeThreshold?: number;
 
-  /** Whether the toasts close timeout should pause when a toast is hovered or focused. */
-  pauseOnInteraction?: boolean;
+	/** Whether the toasts close timeout should pause when a toast is hovered or focused. */
+	pauseOnInteraction?: boolean;
 
-  /**
-   * Whether the toasts close timeout should pause when the document loses focus or the page is idle
-   * (e.g. switching to a new browser tab).
-   */
-  pauseOnPageIdle?: boolean;
+	/**
+	 * Whether the toasts close timeout should pause when the document loses focus or the page is idle
+	 * (e.g. switching to a new browser tab).
+	 */
+	pauseOnPageIdle?: boolean;
 
-  /**
-   * Whether the toast region is marked as a "top layer", so that it:
-   *  - is not aria-hidden when opening an overlay.
-   *  - allows focus even outside a containing focus scope.
-   *  - doesn’t dismiss overlays when clicking on it, even though it is outside.
-   */
-  topLayer?: boolean;
+	/**
+	 * Whether the toast region is marked as a "top layer", so that it:
+	 *  - is not aria-hidden when opening an overlay.
+	 *  - allows focus even outside a containing focus scope.
+	 *  - doesn’t dismiss overlays when clicking on it, even though it is outside.
+	 */
+	topLayer?: boolean;
 
-  /** The id of the toast region, used for multiple toast regions. */
-  regionId?: string;
+	/** The id of the toast region, used for multiple toast regions. */
+	regionId?: string;
 
-  /** The HTML styles attribute (object form only). */
-  style?: JSX.CSSProperties;
+	/** The HTML styles attribute (object form only). */
+	style?: JSX.CSSProperties;
 }
 
-export interface ToastRegionProps extends OverrideComponentProps<"div", ToastRegionOptions> {}
+export interface ToastRegionProps
+	extends OverrideComponentProps<"div", ToastRegionOptions> {}
 
 /**
  * The fixed area where toasts appear. Users can jump to by pressing a hotkey.
  * It is up to you to ensure the discoverability of the hotkey for keyboard users.
  */
 export function ToastRegion(props: ToastRegionProps) {
-  const defaultId = `toast-region-${createUniqueId()}`;
+	const defaultId = `toast-region-${createUniqueId()}`;
 
-  props = mergeDefaultProps(
-    {
-      id: defaultId,
-      hotkey: ["altKey", "KeyT"],
-      duration: 5000,
-      limit: 3,
-      swipeDirection: "right",
-      swipeThreshold: 50,
-      pauseOnInteraction: true,
-      pauseOnPageIdle: true,
-      topLayer: true,
-      translations: TOAST_REGION_INTL_TRANSLATIONS,
-    },
-    props,
-  );
+	props = mergeDefaultProps(
+		{
+			id: defaultId,
+			hotkey: ["altKey", "KeyT"],
+			duration: 5000,
+			limit: 3,
+			swipeDirection: "right",
+			swipeThreshold: 50,
+			pauseOnInteraction: true,
+			pauseOnPageIdle: true,
+			topLayer: true,
+			translations: TOAST_REGION_INTL_TRANSLATIONS,
+		},
+		props,
+	);
 
-  const [local, others] = splitProps(props, [
-    "translations",
-    "style",
-    "hotkey",
-    "duration",
-    "limit",
-    "swipeDirection",
-    "swipeThreshold",
-    "pauseOnInteraction",
-    "pauseOnPageIdle",
-    "topLayer",
-    "aria-label",
-    "regionId",
-  ]);
+	const [local, others] = splitProps(props, [
+		"translations",
+		"style",
+		"hotkey",
+		"duration",
+		"limit",
+		"swipeDirection",
+		"swipeThreshold",
+		"pauseOnInteraction",
+		"pauseOnPageIdle",
+		"topLayer",
+		"aria-label",
+		"regionId",
+	]);
 
-  const toasts = createMemo(() =>
-    toastStore
-      .toasts()
-      .filter(toast => toast.region === local.regionId)
-      .slice(0, local.limit!),
-  );
+	const toasts = createMemo(() =>
+		toastStore
+			.toasts()
+			.filter((toast) => toast.region === local.regionId)
+			.slice(0, local.limit!),
+	);
 
-  const [isPaused, setIsPaused] = createSignal(false);
+	const [isPaused, setIsPaused] = createSignal(false);
 
-  const hasToasts = () => toasts().length > 0;
+	const hasToasts = () => toasts().length > 0;
 
-  const hotkeyLabel = () => {
-    return local.hotkey!.join("+").replace(/Key/g, "").replace(/Digit/g, "");
-  };
+	const hotkeyLabel = () => {
+		return local.hotkey!.join("+").replace(/Key/g, "").replace(/Digit/g, "");
+	};
 
-  const ariaLabel = () => {
-    const label =
-      local["aria-label"] || local.translations!.notifications(TOAST_HOTKEY_PLACEHOLDER);
+	const ariaLabel = () => {
+		const label =
+			local["aria-label"] ||
+			local.translations!.notifications(TOAST_HOTKEY_PLACEHOLDER);
 
-    return label.replace(TOAST_HOTKEY_PLACEHOLDER, hotkeyLabel());
-  };
+		return label.replace(TOAST_HOTKEY_PLACEHOLDER, hotkeyLabel());
+	};
 
-  const topLayerAttr = () => ({
-    [DATA_TOP_LAYER_ATTR]: local.topLayer ? "" : undefined,
-  });
+	const topLayerAttr = () => ({
+		[DATA_TOP_LAYER_ATTR]: local.topLayer ? "" : undefined,
+	});
 
-  const context: ToastRegionContextValue = {
-    isPaused,
-    toasts,
-    hotkey: () => local.hotkey!,
-    duration: () => local.duration!,
-    swipeDirection: () => local.swipeDirection!,
-    swipeThreshold: () => local.swipeThreshold!,
-    pauseOnInteraction: () => local.pauseOnInteraction!,
-    pauseOnPageIdle: () => local.pauseOnPageIdle!,
-    pauseAllTimer: () => setIsPaused(true),
-    resumeAllTimer: () => setIsPaused(false),
-    generateId: createGenerateId(() => others.id!),
-  };
+	const context: ToastRegionContextValue = {
+		isPaused,
+		toasts,
+		hotkey: () => local.hotkey!,
+		duration: () => local.duration!,
+		swipeDirection: () => local.swipeDirection!,
+		swipeThreshold: () => local.swipeThreshold!,
+		pauseOnInteraction: () => local.pauseOnInteraction!,
+		pauseOnPageIdle: () => local.pauseOnPageIdle!,
+		pauseAllTimer: () => setIsPaused(true),
+		resumeAllTimer: () => setIsPaused(false),
+		generateId: createGenerateId(() => others.id!),
+	};
 
-  return (
-    <ToastRegionContext.Provider value={context}>
-      <div
-        role="region"
-        tabIndex={-1}
-        aria-label={ariaLabel()}
-        // In case it has size when empty (e.g. padding), we remove pointer events,
-        // so it doesn't prevent interactions with page elements that it overlays.
-        // In case it is a top layer, we explicitly enable pointer-events prevented by a `DismissableLayer`.
-        style={{
-          "pointer-events": hasToasts() ? (local.topLayer ? "auto" : undefined) : "none",
-          ...local.style,
-        }}
-        {...topLayerAttr}
-        {...others}
-      />
-    </ToastRegionContext.Provider>
-  );
+	return (
+		<ToastRegionContext.Provider value={context}>
+			<div
+				role="region"
+				tabIndex={-1}
+				aria-label={ariaLabel()}
+				// In case it has size when empty (e.g. padding), we remove pointer events,
+				// so it doesn't prevent interactions with page elements that it overlays.
+				// In case it is a top layer, we explicitly enable pointer-events prevented by a `DismissableLayer`.
+				style={{
+					"pointer-events": hasToasts()
+						? local.topLayer
+							? "auto"
+							: undefined
+						: "none",
+					...local.style,
+				}}
+				{...topLayerAttr}
+				{...others}
+			/>
+		</ToastRegionContext.Provider>
+	);
 }

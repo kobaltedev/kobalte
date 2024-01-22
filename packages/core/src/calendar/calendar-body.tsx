@@ -8,5 +8,5 @@ export type CalendarBodyProps = ComponentProps<"div">;
  * Contains the calendar grids.
  */
 export function CalendarBody(props: CalendarBodyProps) {
-  return <Polymorphic as="div" {...props} />;
+	return <Polymorphic as="div" {...props} />;
 }

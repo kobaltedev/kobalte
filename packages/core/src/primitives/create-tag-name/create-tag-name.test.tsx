@@ -12,49 +12,49 @@ import { render } from "@solidjs/testing-library";
 import { createTagName } from "./create-tag-name";
 
 describe("createTagName", () => {
-  it("should use 'tagName' from ref", () => {
-    let tagNameVal: string | undefined;
+	it("should use 'tagName' from ref", () => {
+		let tagNameVal: string | undefined;
 
-    const TestComponent = () => {
-      let ref: HTMLDivElement | undefined;
+		const TestComponent = () => {
+			let ref: HTMLDivElement | undefined;
 
-      const tagName = createTagName(
-        () => ref,
-        () => "button",
-      );
+			const tagName = createTagName(
+				() => ref,
+				() => "button",
+			);
 
-      createEffect(() => {
-        tagNameVal = tagName();
-      });
+			createEffect(() => {
+				tagNameVal = tagName();
+			});
 
-      return <div ref={ref} />;
-    };
+			return <div ref={ref} />;
+		};
 
-    render(() => <TestComponent />);
+		render(() => <TestComponent />);
 
-    expect(tagNameVal).toBe("div");
-  });
+		expect(tagNameVal).toBe("div");
+	});
 
-  it("should use type as 'tagName' when ref is undefined", () => {
-    let tagNameVal: string | undefined;
+	it("should use type as 'tagName' when ref is undefined", () => {
+		let tagNameVal: string | undefined;
 
-    const TestComponent = () => {
-      let ref: HTMLDivElement | undefined;
+		const TestComponent = () => {
+			let ref: HTMLDivElement | undefined;
 
-      const tagName = createTagName(
-        () => ref,
-        () => "button",
-      );
+			const tagName = createTagName(
+				() => ref,
+				() => "button",
+			);
 
-      createEffect(() => {
-        tagNameVal = tagName();
-      });
+			createEffect(() => {
+				tagNameVal = tagName();
+			});
 
-      return <div />;
-    };
+			return <div />;
+		};
 
-    render(() => <TestComponent />);
+		render(() => <TestComponent />);
 
-    expect(tagNameVal).toBe("button");
-  });
+		expect(tagNameVal).toBe("button");
+	});
 });

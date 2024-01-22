@@ -11,39 +11,44 @@ import { JSX } from "solid-js";
 import { TransitionStyles } from "./types";
 
 const TRANSITION_PHASES_MAP = {
-  beforeEnter: "out",
-  enter: "in",
-  afterEnter: "in",
-  beforeExit: "in", //"out",
-  exit: "out",
-  afterExit: "out",
+	beforeEnter: "out",
+	enter: "in",
+	afterEnter: "in",
+	beforeExit: "in", //"out",
+	exit: "out",
+	afterExit: "out",
 } as const;
 
 export type TransitionPhase = keyof typeof TRANSITION_PHASES_MAP;
 
 interface GetTransitionStylesParams {
-  transition: TransitionStyles;
-  phase: TransitionPhase;
-  duration: number;
-  easing: JSX.CSSProperties["transition-timing-function"];
+	transition: TransitionStyles;
+	phase: TransitionPhase;
+	duration: number;
+	easing: JSX.CSSProperties["transition-timing-function"];
 }
 
-export function getTransitionStyles(params: GetTransitionStylesParams): JSX.CSSProperties {
-  const shared: JSX.CSSProperties = {
-    "transition-duration": `${params.duration}ms`,
-    "transition-timing-function": params.easing,
-  };
+export function getTransitionStyles(
+	params: GetTransitionStylesParams,
+): JSX.CSSProperties {
+	const shared: JSX.CSSProperties = {
+		"transition-duration": `${params.duration}ms`,
+		"transition-timing-function": params.easing,
+	};
 
-  return {
-    "transition-property": getTransitionProperty(params.transition),
-    ...shared,
-    ...params.transition.common,
-    ...params.transition[TRANSITION_PHASES_MAP[params.phase]],
-  };
+	return {
+		"transition-property": getTransitionProperty(params.transition),
+		...shared,
+		...params.transition.common,
+		...params.transition[TRANSITION_PHASES_MAP[params.phase]],
+	};
 }
 
 function getTransitionProperty(transitionStyles: TransitionStyles): string {
-  return [
-    ...new Set([...Object.keys(transitionStyles.in), ...Object.keys(transitionStyles.out)]),
-  ].join(", ");
+	return [
+		...new Set([
+			...Object.keys(transitionStyles.in),
+			...Object.keys(transitionStyles.out),
+		]),
+	].join(", ");
 }

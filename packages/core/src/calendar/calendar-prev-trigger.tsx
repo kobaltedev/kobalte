@@ -16,54 +16,70 @@ import { isPreviousVisibleRangeInvalid } from "./utils";
 
 export interface CalendarPrevTriggerOptions extends Button.ButtonRootOptions {}
 
-export type CalendarPrevTriggerProps = OverrideComponentProps<"button", CalendarPrevTriggerOptions>;
+export type CalendarPrevTriggerProps = OverrideComponentProps<
+	"button",
+	CalendarPrevTriggerOptions
+>;
 
 export function CalendarPrevTrigger(props: CalendarPrevTriggerProps) {
-  const context = useCalendarContext();
+	const context = useCalendarContext();
 
-  const [local, others] = splitProps(props, ["disabled", "onClick", "onFocus", "onBlur"]);
+	const [local, others] = splitProps(props, [
+		"disabled",
+		"onClick",
+		"onFocus",
+		"onBlur",
+	]);
 
-  let prevTriggerFocused = false;
+	let prevTriggerFocused = false;
 
-  const prevTriggerDisabled = createMemo(() => {
-    return (
-      local.disabled ||
-      context.isDisabled() ||
-      isPreviousVisibleRangeInvalid(context.startDate(), context.min(), context.max())
-    );
-  });
+	const prevTriggerDisabled = createMemo(() => {
+		return (
+			local.disabled ||
+			context.isDisabled() ||
+			isPreviousVisibleRangeInvalid(
+				context.startDate(),
+				context.min(),
+				context.max(),
+			)
+		);
+	});
 
-  const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = e => {
-    callHandler(e, local.onClick);
-    context.focusPreviousPage();
-  };
+	const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = (e) => {
+		callHandler(e, local.onClick);
+		context.focusPreviousPage();
+	};
 
-  const onFocus: JSX.FocusEventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    callHandler(e, local.onFocus);
-    prevTriggerFocused = true;
-  };
+	const onFocus: JSX.FocusEventHandlerUnion<HTMLButtonElement, FocusEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onFocus);
+		prevTriggerFocused = true;
+	};
 
-  const onBlur: JSX.FocusEventHandlerUnion<HTMLButtonElement, FocusEvent> = e => {
-    callHandler(e, local.onBlur);
-    prevTriggerFocused = false;
-  };
+	const onBlur: JSX.FocusEventHandlerUnion<HTMLButtonElement, FocusEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onBlur);
+		prevTriggerFocused = false;
+	};
 
-  // If the prev trigger become disabled while they are focused, move focus to the calendar body.
-  createEffect(() => {
-    if (prevTriggerDisabled() && prevTriggerFocused) {
-      prevTriggerFocused = false;
-      context.setIsFocused(true);
-    }
-  });
+	// If the prev trigger become disabled while they are focused, move focus to the calendar body.
+	createEffect(() => {
+		if (prevTriggerDisabled() && prevTriggerFocused) {
+			prevTriggerFocused = false;
+			context.setIsFocused(true);
+		}
+	});
 
-  return (
-    <Button.Root
-      disabled={prevTriggerDisabled()}
-      aria-label={context.translations().previous}
-      onClick={onClick}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      {...others}
-    />
-  );
+	return (
+		<Button.Root
+			disabled={prevTriggerDisabled()}
+			aria-label={context.translations().previous}
+			onClick={onClick}
+			onFocus={onFocus}
+			onBlur={onBlur}
+			{...others}
+		/>
+	);
 }

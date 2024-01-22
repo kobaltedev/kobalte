@@ -18,80 +18,86 @@ const transitionsByElement = new Map<EventTarget, Set<string>>();
 const transitionCallbacks = new Set<() => void>();
 
 function setupGlobalEvents() {
-  if (typeof window === "undefined") {
-    return;
-  }
+	if (typeof window === "undefined") {
+		return;
+	}
 
-  const onTransitionStart = (e: TransitionEvent) => {
-    if (!e.target) {
-      return;
-    }
+	const onTransitionStart = (e: TransitionEvent) => {
+		if (!e.target) {
+			return;
+		}
 
-    // Add the transitioning property to the list for this element.
-    let transitions = transitionsByElement.get(e.target);
-    if (!transitions) {
-      transitions = new Set();
-      transitionsByElement.set(e.target, transitions);
+		// Add the transitioning property to the list for this element.
+		let transitions = transitionsByElement.get(e.target);
+		if (!transitions) {
+			transitions = new Set();
+			transitionsByElement.set(e.target, transitions);
 
-      // The transitioncancel event must be registered on the element itself, rather than as a global
-      // event. This enables us to handle when the node is deleted from the document while it is transitioning.
-      // In that case, the cancel event would have nowhere to bubble to, so we need to handle it directly.
-      e.target.addEventListener("transitioncancel", onTransitionEnd as EventListener);
-    }
+			// The transitioncancel event must be registered on the element itself, rather than as a global
+			// event. This enables us to handle when the node is deleted from the document while it is transitioning.
+			// In that case, the cancel event would have nowhere to bubble to, so we need to handle it directly.
+			e.target.addEventListener(
+				"transitioncancel",
+				onTransitionEnd as EventListener,
+			);
+		}
 
-    transitions.add(e.propertyName);
-  };
+		transitions.add(e.propertyName);
+	};
 
-  const onTransitionEnd = (e: TransitionEvent) => {
-    if (!e.target) {
-      return;
-    }
+	const onTransitionEnd = (e: TransitionEvent) => {
+		if (!e.target) {
+			return;
+		}
 
-    // Remove property from list of transitioning properties.
-    const properties = transitionsByElement.get(e.target);
-    if (!properties) {
-      return;
-    }
+		// Remove property from list of transitioning properties.
+		const properties = transitionsByElement.get(e.target);
+		if (!properties) {
+			return;
+		}
 
-    properties.delete(e.propertyName);
+		properties.delete(e.propertyName);
 
-    // If empty, remove transitioncancel event, and remove the element from the list of transitioning elements.
-    if (properties.size === 0) {
-      e.target.removeEventListener("transitioncancel", onTransitionEnd as EventListener);
-      transitionsByElement.delete(e.target);
-    }
+		// If empty, remove transitioncancel event, and remove the element from the list of transitioning elements.
+		if (properties.size === 0) {
+			e.target.removeEventListener(
+				"transitioncancel",
+				onTransitionEnd as EventListener,
+			);
+			transitionsByElement.delete(e.target);
+		}
 
-    // If no transitioning elements, call all the queued callbacks.
-    if (transitionsByElement.size === 0) {
-      for (const cb of transitionCallbacks) {
-        cb();
-      }
+		// If no transitioning elements, call all the queued callbacks.
+		if (transitionsByElement.size === 0) {
+			for (const cb of transitionCallbacks) {
+				cb();
+			}
 
-      transitionCallbacks.clear();
-    }
-  };
+			transitionCallbacks.clear();
+		}
+	};
 
-  document.body.addEventListener("transitionrun", onTransitionStart);
-  document.body.addEventListener("transitionend", onTransitionEnd);
+	document.body.addEventListener("transitionrun", onTransitionStart);
+	document.body.addEventListener("transitionend", onTransitionEnd);
 }
 
 if (typeof document !== "undefined") {
-  if (document.readyState !== "loading") {
-    setupGlobalEvents();
-  } else {
-    document.addEventListener("DOMContentLoaded", setupGlobalEvents);
-  }
+	if (document.readyState !== "loading") {
+		setupGlobalEvents();
+	} else {
+		document.addEventListener("DOMContentLoaded", setupGlobalEvents);
+	}
 }
 
 export function runAfterTransition(fn: () => void) {
-  // Wait one frame to see if an animation starts, e.g. a transition on mount.
-  requestAnimationFrame(() => {
-    // If no transitions are running, call the function immediately.
-    // Otherwise, add it to a list of callbacks to run at the end of the animation.
-    if (transitionsByElement.size === 0) {
-      fn();
-    } else {
-      transitionCallbacks.add(fn);
-    }
-  });
+	// Wait one frame to see if an animation starts, e.g. a transition on mount.
+	requestAnimationFrame(() => {
+		// If no transitions are running, call the function immediately.
+		// Otherwise, add it to a list of callbacks to run at the end of the animation.
+		if (transitionsByElement.size === 0) {
+			fn();
+		} else {
+			transitionCallbacks.add(fn);
+		}
+	});
 }

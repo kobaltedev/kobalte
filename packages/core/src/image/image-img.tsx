@@ -8,7 +8,14 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/avatar/src/Avatar.tsx
  */
 
-import { ComponentProps, createEffect, createSignal, on, onCleanup, Show } from "solid-js";
+import {
+	ComponentProps,
+	createEffect,
+	createSignal,
+	on,
+	onCleanup,
+	Show,
+} from "solid-js";
 
 import { useImageContext } from "./image-context";
 import { ImageLoadingStatus } from "./types";
@@ -19,53 +26,54 @@ export interface ImageImgProps extends ComponentProps<"img"> {}
  * The image to render. By default, it will only render when it has loaded.
  */
 export function ImageImg(props: ImageImgProps) {
-  const context = useImageContext();
+	const context = useImageContext();
 
-  const [loadingStatus, setLoadingStatus] = createSignal<ImageLoadingStatus>("idle");
+	const [loadingStatus, setLoadingStatus] =
+		createSignal<ImageLoadingStatus>("idle");
 
-  createEffect(
-    on(
-      () => props.src,
-      src => {
-        if (!src) {
-          setLoadingStatus("error");
-          return;
-        }
+	createEffect(
+		on(
+			() => props.src,
+			(src) => {
+				if (!src) {
+					setLoadingStatus("error");
+					return;
+				}
 
-        let isMounted = true;
-        const image = new window.Image();
+				let isMounted = true;
+				const image = new window.Image();
 
-        const updateStatus = (status: ImageLoadingStatus) => () => {
-          if (!isMounted) {
-            return;
-          }
+				const updateStatus = (status: ImageLoadingStatus) => () => {
+					if (!isMounted) {
+						return;
+					}
 
-          setLoadingStatus(status);
-        };
+					setLoadingStatus(status);
+				};
 
-        setLoadingStatus("loading");
-        image.onload = updateStatus("loaded");
-        image.onerror = updateStatus("error");
-        image.src = src;
+				setLoadingStatus("loading");
+				image.onload = updateStatus("loaded");
+				image.onerror = updateStatus("error");
+				image.src = src;
 
-        onCleanup(() => {
-          isMounted = false;
-        });
-      },
-    ),
-  );
+				onCleanup(() => {
+					isMounted = false;
+				});
+			},
+		),
+	);
 
-  createEffect(() => {
-    const imageLoadingStatus = loadingStatus();
+	createEffect(() => {
+		const imageLoadingStatus = loadingStatus();
 
-    if (imageLoadingStatus !== "idle") {
-      context.onImageLoadingStatusChange(imageLoadingStatus);
-    }
-  });
+		if (imageLoadingStatus !== "idle") {
+			context.onImageLoadingStatusChange(imageLoadingStatus);
+		}
+	});
 
-  return (
-    <Show when={loadingStatus() === "loaded"}>
-      <img {...props} />
-    </Show>
-  );
+	return (
+		<Show when={loadingStatus() === "loaded"}>
+			<img {...props} />
+		</Show>
+	);
 }

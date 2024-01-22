@@ -12,154 +12,158 @@ import { Accessor, createEffect, onCleanup } from "solid-js";
 import { DomCollectionItem } from "./types";
 
 function isElementPreceding(a: Element, b: Element) {
-  return Boolean(b.compareDocumentPosition(a) & Node.DOCUMENT_POSITION_PRECEDING);
+	return Boolean(
+		b.compareDocumentPosition(a) & Node.DOCUMENT_POSITION_PRECEDING,
+	);
 }
 
-export function findDOMIndex(items: DomCollectionItem[], item: DomCollectionItem) {
-  const itemEl = item.ref();
+export function findDOMIndex(
+	items: DomCollectionItem[],
+	item: DomCollectionItem,
+) {
+	const itemEl = item.ref();
 
-  if (!itemEl) {
-    return -1;
-  }
+	if (!itemEl) {
+		return -1;
+	}
 
-  let length = items.length;
+	let length = items.length;
 
-  if (!length) {
-    return -1;
-  }
+	if (!length) {
+		return -1;
+	}
 
-  // Most of the time, the new item will be added at the end of the list, so we
-  // do a findIndex in reverse order, instead of wasting time searching the
-  // index from the beginning.
-  while (length--) {
-    const currentItemEl = items[length]?.ref();
+	// Most of the time, the new item will be added at the end of the list, so we
+	// do a findIndex in reverse order, instead of wasting time searching the
+	// index from the beginning.
+	while (length--) {
+		const currentItemEl = items[length]?.ref();
 
-    if (!currentItemEl) {
-      continue;
-    }
+		if (!currentItemEl) {
+			continue;
+		}
 
-    if (isElementPreceding(currentItemEl, itemEl)) {
-      return length + 1;
-    }
-  }
-  return 0;
+		if (isElementPreceding(currentItemEl, itemEl)) {
+			return length + 1;
+		}
+	}
+	return 0;
 }
 
 function sortBasedOnDOMPosition<T extends DomCollectionItem>(items: T[]) {
-  const pairs = items.map((item, index) => [index, item] as const);
-  let isOrderDifferent = false;
+	const pairs = items.map((item, index) => [index, item] as const);
+	let isOrderDifferent = false;
 
-  pairs.sort(([indexA, a], [indexB, b]) => {
-    const elementA = a.ref();
-    const elementB = b.ref();
+	pairs.sort(([indexA, a], [indexB, b]) => {
+		const elementA = a.ref();
+		const elementB = b.ref();
 
-    if (elementA === elementB) {
-      return 0;
-    }
+		if (elementA === elementB) {
+			return 0;
+		}
 
-    if (!elementA || !elementB) {
-      return 0;
-    }
+		if (!elementA || !elementB) {
+			return 0;
+		}
 
-    // a before b
-    if (isElementPreceding(elementA, elementB)) {
-      if (indexA > indexB) {
-        isOrderDifferent = true;
-      }
-      return -1;
-    }
+		// a before b
+		if (isElementPreceding(elementA, elementB)) {
+			if (indexA > indexB) {
+				isOrderDifferent = true;
+			}
+			return -1;
+		}
 
-    // a after b
-    if (indexA < indexB) {
-      isOrderDifferent = true;
-    }
+		// a after b
+		if (indexA < indexB) {
+			isOrderDifferent = true;
+		}
 
-    return 1;
-  });
+		return 1;
+	});
 
-  if (isOrderDifferent) {
-    return pairs.map(([_, item]) => item);
-  }
+	if (isOrderDifferent) {
+		return pairs.map(([_, item]) => item);
+	}
 
-  return items;
+	return items;
 }
 
 function setItemsBasedOnDOMPosition<T extends DomCollectionItem>(
-  items: T[],
-  setItems: (items: T[]) => any,
+	items: T[],
+	setItems: (items: T[]) => any,
 ) {
-  const sortedItems = sortBasedOnDOMPosition(items);
+	const sortedItems = sortBasedOnDOMPosition(items);
 
-  if (items !== sortedItems) {
-    setItems(sortedItems);
-  }
+	if (items !== sortedItems) {
+		setItems(sortedItems);
+	}
 }
 
 function getCommonParent(items: DomCollectionItem[]) {
-  const firstItem = items[0];
-  const lastItemEl = items[items.length - 1]?.ref();
-  let parentEl = firstItem?.ref()?.parentElement;
+	const firstItem = items[0];
+	const lastItemEl = items[items.length - 1]?.ref();
+	let parentEl = firstItem?.ref()?.parentElement;
 
-  while (parentEl) {
-    if (lastItemEl && parentEl.contains(lastItemEl)) {
-      return parentEl;
-    }
+	while (parentEl) {
+		if (lastItemEl && parentEl.contains(lastItemEl)) {
+			return parentEl;
+		}
 
-    parentEl = parentEl.parentElement;
-  }
+		parentEl = parentEl.parentElement;
+	}
 
-  return getDocument(parentEl).body;
+	return getDocument(parentEl).body;
 }
 
 function createTimeoutObserver<T extends DomCollectionItem = DomCollectionItem>(
-  items: Accessor<T[]>,
-  setItems: (items: T[]) => any,
+	items: Accessor<T[]>,
+	setItems: (items: T[]) => any,
 ) {
-  createEffect(() => {
-    const timeout = setTimeout(() => {
-      setItemsBasedOnDOMPosition(items(), setItems);
-    });
+	createEffect(() => {
+		const timeout = setTimeout(() => {
+			setItemsBasedOnDOMPosition(items(), setItems);
+		});
 
-    onCleanup(() => clearTimeout(timeout));
-  });
+		onCleanup(() => clearTimeout(timeout));
+	});
 }
 
-export function createSortBasedOnDOMPosition<T extends DomCollectionItem = DomCollectionItem>(
-  items: Accessor<T[]>,
-  setItems: (items: T[]) => any,
-) {
-  // JSDOM doesn't support IntersectionObserver. See https://github.com/jsdom/jsdom/issues/2032
-  if (typeof IntersectionObserver !== "function") {
-    createTimeoutObserver(items, setItems);
-    return;
-  }
+export function createSortBasedOnDOMPosition<
+	T extends DomCollectionItem = DomCollectionItem,
+>(items: Accessor<T[]>, setItems: (items: T[]) => any) {
+	// JSDOM doesn't support IntersectionObserver. See https://github.com/jsdom/jsdom/issues/2032
+	if (typeof IntersectionObserver !== "function") {
+		createTimeoutObserver(items, setItems);
+		return;
+	}
 
-  let previousItems: T[] = [];
+	let previousItems: T[] = [];
 
-  createEffect(() => {
-    const callback = () => {
-      const hasPreviousItems = !!previousItems.length;
-      previousItems = items();
+	createEffect(() => {
+		const callback = () => {
+			const hasPreviousItems = !!previousItems.length;
+			previousItems = items();
 
-      // We don't want to sort items if items have been just registered.
-      if (!hasPreviousItems) {
-        return;
-      }
+			// We don't want to sort items if items have been just registered.
+			if (!hasPreviousItems) {
+				return;
+			}
 
-      setItemsBasedOnDOMPosition(items(), setItems);
-    };
+			setItemsBasedOnDOMPosition(items(), setItems);
+		};
 
-    const root = getCommonParent(items());
-    const observer = new IntersectionObserver(callback, { root });
+		const root = getCommonParent(items());
+		const observer = new IntersectionObserver(callback, { root });
 
-    items().forEach(item => {
-      const itemEl = item.ref();
+		items().forEach((item) => {
+			const itemEl = item.ref();
 
-      if (itemEl) {
-        observer.observe(itemEl);
-      }
-    });
+			if (itemEl) {
+				observer.observe(itemEl);
+			}
+		});
 
-    onCleanup(() => observer.disconnect());
-  });
+		onCleanup(() => observer.disconnect());
+	});
 }

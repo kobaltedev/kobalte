@@ -19,18 +19,18 @@ import { Accessor, Component, createEffect, createSignal } from "solid-js";
  * }
  */
 export function createTagName(
-  ref: Accessor<HTMLElement | undefined>,
-  fallback?: Accessor<string | Component | undefined>,
+	ref: Accessor<HTMLElement | undefined>,
+	fallback?: Accessor<string | Component | undefined>,
 ) {
-  const [tagName, setTagName] = createSignal(stringOrUndefined(fallback?.()));
+	const [tagName, setTagName] = createSignal(stringOrUndefined(fallback?.()));
 
-  createEffect(() => {
-    setTagName(ref()?.tagName.toLowerCase() || stringOrUndefined(fallback?.()));
-  });
+	createEffect(() => {
+		setTagName(ref()?.tagName.toLowerCase() || stringOrUndefined(fallback?.()));
+	});
 
-  return tagName;
+	return tagName;
 }
 
 function stringOrUndefined(value: any) {
-  return isString(value) ? value : undefined;
+	return isString(value) ? value : undefined;
 }

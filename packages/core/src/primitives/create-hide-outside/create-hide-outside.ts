@@ -13,14 +13,14 @@ import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
 import { DATA_LIVE_ANNOUNCER_ATTR } from "../../live-announcer";
 
 export interface CreateHideOutsideProps {
-  /** The elements that should remain visible. */
-  targets: MaybeAccessor<Array<Element>>;
+	/** The elements that should remain visible. */
+	targets: MaybeAccessor<Array<Element>>;
 
-  /** Nothing will be hidden above this element. */
-  root?: MaybeAccessor<HTMLElement | undefined>;
+	/** Nothing will be hidden above this element. */
+	root?: MaybeAccessor<HTMLElement | undefined>;
 
-  /** Whether the hide outside behavior is disabled or not. */
-  isDisabled?: MaybeAccessor<boolean | undefined>;
+	/** Whether the hide outside behavior is disabled or not. */
+	isDisabled?: MaybeAccessor<boolean | undefined>;
 }
 
 /**
@@ -30,18 +30,18 @@ export interface CreateHideOutsideProps {
  * outside the targets are automatically hidden.
  */
 export function createHideOutside(props: CreateHideOutsideProps) {
-  createEffect(() => {
-    if (access(props.isDisabled)) {
-      return;
-    }
+	createEffect(() => {
+		if (access(props.isDisabled)) {
+			return;
+		}
 
-    onCleanup(ariaHideOutside(access(props.targets), access(props.root)));
-  });
+		onCleanup(ariaHideOutside(access(props.targets), access(props.root)));
+	});
 }
 
 interface ObserverWrapper {
-  observe(): void;
-  disconnect(): void;
+	observe(): void;
+	disconnect(): void;
 }
 
 // Keeps a ref count of all hidden elements.
@@ -59,152 +59,159 @@ const observerStack: Array<ObserverWrapper> = [];
  * @returns - A function to restore all hidden elements.
  */
 export function ariaHideOutside(targets: Element[], root = document.body) {
-  const visibleNodes = new Set<Element>(targets);
-  const hiddenNodes = new Set<Element>();
+	const visibleNodes = new Set<Element>(targets);
+	const hiddenNodes = new Set<Element>();
 
-  const walk = (root: Element) => {
-    // Keep live announcer and top layer elements (e.g. toasts) visible.
-    for (const element of root.querySelectorAll(
-      `[${DATA_LIVE_ANNOUNCER_ATTR}], [${DATA_TOP_LAYER_ATTR}]`,
-    )) {
-      visibleNodes.add(element);
-    }
+	const walk = (root: Element) => {
+		// Keep live announcer and top layer elements (e.g. toasts) visible.
+		for (const element of root.querySelectorAll(
+			`[${DATA_LIVE_ANNOUNCER_ATTR}], [${DATA_TOP_LAYER_ATTR}]`,
+		)) {
+			visibleNodes.add(element);
+		}
 
-    const acceptNode = (node: Element) => {
-      // Skip this node and its children if it is one of the target nodes, or a live announcer.
-      // Also skip children of already hidden nodes, as aria-hidden is recursive. An exception is
-      // made for elements with role="row" since VoiceOver on iOS has issues hiding elements with role="row".
-      // For that case we want to hide the cells inside as well (https://bugs.webkit.org/show_bug.cgi?id=222623).
-      if (
-        visibleNodes.has(node) ||
-        (node.parentElement &&
-          hiddenNodes.has(node.parentElement) &&
-          node.parentElement.getAttribute("role") !== "row")
-      ) {
-        return NodeFilter.FILTER_REJECT;
-      }
+		const acceptNode = (node: Element) => {
+			// Skip this node and its children if it is one of the target nodes, or a live announcer.
+			// Also skip children of already hidden nodes, as aria-hidden is recursive. An exception is
+			// made for elements with role="row" since VoiceOver on iOS has issues hiding elements with role="row".
+			// For that case we want to hide the cells inside as well (https://bugs.webkit.org/show_bug.cgi?id=222623).
+			if (
+				visibleNodes.has(node) ||
+				(node.parentElement &&
+					hiddenNodes.has(node.parentElement) &&
+					node.parentElement.getAttribute("role") !== "row")
+			) {
+				return NodeFilter.FILTER_REJECT;
+			}
 
-      // Skip this node but continue to children if one of the targets is inside the node.
-      for (const target of visibleNodes) {
-        if (node.contains(target)) {
-          return NodeFilter.FILTER_SKIP;
-        }
-      }
+			// Skip this node but continue to children if one of the targets is inside the node.
+			for (const target of visibleNodes) {
+				if (node.contains(target)) {
+					return NodeFilter.FILTER_SKIP;
+				}
+			}
 
-      return NodeFilter.FILTER_ACCEPT;
-    };
+			return NodeFilter.FILTER_ACCEPT;
+		};
 
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, { acceptNode });
+		const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
+			acceptNode,
+		});
 
-    // TreeWalker does not include the root.
-    const acceptRoot = acceptNode(root);
-    if (acceptRoot === NodeFilter.FILTER_ACCEPT) {
-      hide(root);
-    }
+		// TreeWalker does not include the root.
+		const acceptRoot = acceptNode(root);
+		if (acceptRoot === NodeFilter.FILTER_ACCEPT) {
+			hide(root);
+		}
 
-    if (acceptRoot !== NodeFilter.FILTER_REJECT) {
-      let node = walker.nextNode() as Element;
-      while (node != null) {
-        hide(node);
-        node = walker.nextNode() as Element;
-      }
-    }
-  };
+		if (acceptRoot !== NodeFilter.FILTER_REJECT) {
+			let node = walker.nextNode() as Element;
+			while (node != null) {
+				hide(node);
+				node = walker.nextNode() as Element;
+			}
+		}
+	};
 
-  const hide = (node: Element) => {
-    const refCount = refCountMap.get(node) ?? 0;
+	const hide = (node: Element) => {
+		const refCount = refCountMap.get(node) ?? 0;
 
-    // If already aria-hidden, and the ref count is zero, then this element
-    // was already hidden and there's nothing for us to do.
-    if (node.getAttribute("aria-hidden") === "true" && refCount === 0) {
-      return;
-    }
+		// If already aria-hidden, and the ref count is zero, then this element
+		// was already hidden and there's nothing for us to do.
+		if (node.getAttribute("aria-hidden") === "true" && refCount === 0) {
+			return;
+		}
 
-    if (refCount === 0) {
-      node.setAttribute("aria-hidden", "true");
-    }
+		if (refCount === 0) {
+			node.setAttribute("aria-hidden", "true");
+		}
 
-    hiddenNodes.add(node);
-    refCountMap.set(node, refCount + 1);
-  };
+		hiddenNodes.add(node);
+		refCountMap.set(node, refCount + 1);
+	};
 
-  // If there is already a MutationObserver listening from a previous call,
-  // disconnect it so the new on takes over.
-  if (observerStack.length) {
-    observerStack[observerStack.length - 1].disconnect();
-  }
+	// If there is already a MutationObserver listening from a previous call,
+	// disconnect it so the new on takes over.
+	if (observerStack.length) {
+		observerStack[observerStack.length - 1].disconnect();
+	}
 
-  walk(root);
+	walk(root);
 
-  const observer = new MutationObserver(changes => {
-    for (const change of changes) {
-      if (change.type !== "childList" || change.addedNodes.length === 0) {
-        continue;
-      }
+	const observer = new MutationObserver((changes) => {
+		for (const change of changes) {
+			if (change.type !== "childList" || change.addedNodes.length === 0) {
+				continue;
+			}
 
-      // If the parent element of the added nodes is not within one of the targets,
-      // and not already inside a hidden node, hide all of the new children.
-      if (![...visibleNodes, ...hiddenNodes].some(node => node.contains(change.target))) {
-        for (const node of change.removedNodes) {
-          if (node instanceof Element) {
-            visibleNodes.delete(node);
-            hiddenNodes.delete(node);
-          }
-        }
+			// If the parent element of the added nodes is not within one of the targets,
+			// and not already inside a hidden node, hide all of the new children.
+			if (
+				![...visibleNodes, ...hiddenNodes].some((node) =>
+					node.contains(change.target),
+				)
+			) {
+				for (const node of change.removedNodes) {
+					if (node instanceof Element) {
+						visibleNodes.delete(node);
+						hiddenNodes.delete(node);
+					}
+				}
 
-        for (const node of change.addedNodes) {
-          if (
-            (node instanceof HTMLElement || node instanceof SVGElement) &&
-            (node.dataset.liveAnnouncer === "true" || node.dataset.reactAriaTopLayer === "true")
-          ) {
-            visibleNodes.add(node);
-          } else if (node instanceof Element) {
-            walk(node);
-          }
-        }
-      }
-    }
-  });
+				for (const node of change.addedNodes) {
+					if (
+						(node instanceof HTMLElement || node instanceof SVGElement) &&
+						(node.dataset.liveAnnouncer === "true" ||
+							node.dataset.reactAriaTopLayer === "true")
+					) {
+						visibleNodes.add(node);
+					} else if (node instanceof Element) {
+						walk(node);
+					}
+				}
+			}
+		}
+	});
 
-  observer.observe(root, { childList: true, subtree: true });
+	observer.observe(root, { childList: true, subtree: true });
 
-  const observerWrapper = {
-    observe() {
-      observer.observe(root, { childList: true, subtree: true });
-    },
-    disconnect() {
-      observer.disconnect();
-    },
-  };
+	const observerWrapper = {
+		observe() {
+			observer.observe(root, { childList: true, subtree: true });
+		},
+		disconnect() {
+			observer.disconnect();
+		},
+	};
 
-  observerStack.push(observerWrapper);
+	observerStack.push(observerWrapper);
 
-  return () => {
-    observer.disconnect();
+	return () => {
+		observer.disconnect();
 
-    for (const node of hiddenNodes) {
-      const count = refCountMap.get(node);
+		for (const node of hiddenNodes) {
+			const count = refCountMap.get(node);
 
-      if (count == null) {
-        return;
-      }
+			if (count == null) {
+				return;
+			}
 
-      if (count === 1) {
-        node.removeAttribute("aria-hidden");
-        refCountMap.delete(node);
-      } else {
-        refCountMap.set(node, count - 1);
-      }
-    }
+			if (count === 1) {
+				node.removeAttribute("aria-hidden");
+				refCountMap.delete(node);
+			} else {
+				refCountMap.set(node, count - 1);
+			}
+		}
 
-    // Remove this observer from the stack, and start the previous one.
-    if (observerWrapper === observerStack[observerStack.length - 1]) {
-      observerStack.pop();
-      if (observerStack.length) {
-        observerStack[observerStack.length - 1].observe();
-      }
-    } else {
-      observerStack.splice(observerStack.indexOf(observerWrapper), 1);
-    }
-  };
+		// Remove this observer from the stack, and start the previous one.
+		if (observerWrapper === observerStack[observerStack.length - 1]) {
+			observerStack.pop();
+			if (observerStack.length) {
+				observerStack[observerStack.length - 1].observe();
+			}
+		} else {
+			observerStack.splice(observerStack.indexOf(observerWrapper), 1);
+		}
+	};
 }
