@@ -455,9 +455,8 @@ function isDeltaInDirection(
 
 	if (direction === "left" || direction === "right") {
 		return isDeltaX && deltaX > threshold;
-	} else {
-		return !isDeltaX && deltaY > threshold;
 	}
+	return !isDeltaX && deltaY > threshold;
 }
 
 function handleAndDispatchCustomEvent<C extends CustomEvent, E extends Event>(

@@ -1,4 +1,4 @@
-import { As, Select } from "@kobalte/core";
+import { As, Select } from "@koutalte/core";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { For, createSignal } from "solid-js";
 
@@ -13,7 +13,7 @@ export function BasicExample() {
 			options={STRING_OPTIONS}
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
-				<Select.Item item={props.item} class={style["select__item"]}>
+				<Select.Item item={props.item} class={style.select__item}>
 					<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
 					<Select.ItemIndicator class={style["select__item-indicator"]}>
 						<CheckIcon />
@@ -21,17 +21,17 @@ export function BasicExample() {
 				</Select.Item>
 			)}
 		>
-			<Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-				<Select.Value<string> class={style["select__value"]}>
+			<Select.Trigger class={style.select__trigger} aria-label="Fruit">
+				<Select.Value<string> class={style.select__value}>
 					{(state) => state.selectedOption()}
 				</Select.Value>
-				<Select.Icon class={style["select__icon"]}>
+				<Select.Icon class={style.select__icon}>
 					<CaretSortIcon />
 				</Select.Icon>
 			</Select.Trigger>
 			<Select.Portal>
-				<Select.Content class={style["select__content"]}>
-					<Select.Listbox class={style["select__listbox"]} />
+				<Select.Content class={style.select__content}>
+					<Select.Listbox class={style.select__listbox} />
 				</Select.Content>
 			</Select.Portal>
 		</Select.Root>
@@ -45,7 +45,7 @@ export function DefaultValueExample() {
 			options={STRING_OPTIONS}
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
-				<Select.Item item={props.item} class={style["select__item"]}>
+				<Select.Item item={props.item} class={style.select__item}>
 					<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
 					<Select.ItemIndicator class={style["select__item-indicator"]}>
 						<CheckIcon />
@@ -53,17 +53,17 @@ export function DefaultValueExample() {
 				</Select.Item>
 			)}
 		>
-			<Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-				<Select.Value<string> class={style["select__value"]}>
+			<Select.Trigger class={style.select__trigger} aria-label="Fruit">
+				<Select.Value<string> class={style.select__value}>
 					{(state) => state.selectedOption()}
 				</Select.Value>
-				<Select.Icon class={style["select__icon"]}>
+				<Select.Icon class={style.select__icon}>
 					<CaretSortIcon />
 				</Select.Icon>
 			</Select.Trigger>
 			<Select.Portal>
-				<Select.Content class={style["select__content"]}>
-					<Select.Listbox class={style["select__listbox"]} />
+				<Select.Content class={style.select__content}>
+					<Select.Listbox class={style.select__listbox} />
 				</Select.Content>
 			</Select.Portal>
 		</Select.Root>
@@ -81,7 +81,7 @@ export function ControlledExample() {
 				options={STRING_OPTIONS}
 				placeholder="Select a fruit…"
 				itemComponent={(props) => (
-					<Select.Item item={props.item} class={style["select__item"]}>
+					<Select.Item item={props.item} class={style.select__item}>
 						<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
 						<Select.ItemIndicator class={style["select__item-indicator"]}>
 							<CheckIcon />
@@ -89,17 +89,17 @@ export function ControlledExample() {
 					</Select.Item>
 				)}
 			>
-				<Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-					<Select.Value<string> class={style["select__value"]}>
+				<Select.Trigger class={style.select__trigger} aria-label="Fruit">
+					<Select.Value<string> class={style.select__value}>
 						{(state) => state.selectedOption()}
 					</Select.Value>
-					<Select.Icon class={style["select__icon"]}>
+					<Select.Icon class={style.select__icon}>
 						<CaretSortIcon />
 					</Select.Icon>
 				</Select.Trigger>
 				<Select.Portal>
-					<Select.Content class={style["select__content"]}>
-						<Select.Listbox class={style["select__listbox"]} />
+					<Select.Content class={style.select__content}>
+						<Select.Listbox class={style.select__listbox} />
 					</Select.Content>
 				</Select.Portal>
 			</Select.Root>
@@ -114,7 +114,7 @@ export function DescriptionExample() {
 			options={STRING_OPTIONS}
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
-				<Select.Item item={props.item} class={style["select__item"]}>
+				<Select.Item item={props.item} class={style.select__item}>
 					<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
 					<Select.ItemIndicator class={style["select__item-indicator"]}>
 						<CheckIcon />
@@ -122,20 +122,20 @@ export function DescriptionExample() {
 				</Select.Item>
 			)}
 		>
-			<Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-				<Select.Value<string> class={style["select__value"]}>
+			<Select.Trigger class={style.select__trigger} aria-label="Fruit">
+				<Select.Value<string> class={style.select__value}>
 					{(state) => state.selectedOption()}
 				</Select.Value>
-				<Select.Icon class={style["select__icon"]}>
+				<Select.Icon class={style.select__icon}>
 					<CaretSortIcon />
 				</Select.Icon>
 			</Select.Trigger>
-			<Select.Description class={style["select__description"]}>
+			<Select.Description class={style.select__description}>
 				Choose the fruit you like the most.
 			</Select.Description>
 			<Select.Portal>
-				<Select.Content class={style["select__content"]}>
-					<Select.Listbox class={style["select__listbox"]} />
+				<Select.Content class={style.select__content}>
+					<Select.Listbox class={style.select__listbox} />
 				</Select.Content>
 			</Select.Portal>
 		</Select.Root>
@@ -153,7 +153,7 @@ export function ErrorMessageExample() {
 			options={STRING_OPTIONS}
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
-				<Select.Item item={props.item} class={style["select__item"]}>
+				<Select.Item item={props.item} class={style.select__item}>
 					<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
 					<Select.ItemIndicator class={style["select__item-indicator"]}>
 						<CheckIcon />
@@ -161,11 +161,11 @@ export function ErrorMessageExample() {
 				</Select.Item>
 			)}
 		>
-			<Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-				<Select.Value<string> class={style["select__value"]}>
+			<Select.Trigger class={style.select__trigger} aria-label="Fruit">
+				<Select.Value<string> class={style.select__value}>
 					{(state) => state.selectedOption()}
 				</Select.Value>
-				<Select.Icon class={style["select__icon"]}>
+				<Select.Icon class={style.select__icon}>
 					<CaretSortIcon />
 				</Select.Icon>
 			</Select.Trigger>
@@ -173,8 +173,8 @@ export function ErrorMessageExample() {
 				Hmm, I prefer apples.
 			</Select.ErrorMessage>
 			<Select.Portal>
-				<Select.Content class={style["select__content"]}>
-					<Select.Listbox class={style["select__listbox"]} />
+				<Select.Content class={style.select__content}>
+					<Select.Listbox class={style.select__listbox} />
 				</Select.Content>
 			</Select.Portal>
 		</Select.Root>
@@ -204,7 +204,7 @@ export function HTMLFormExample() {
 				options={STRING_OPTIONS}
 				placeholder="Select a fruit…"
 				itemComponent={(props) => (
-					<Select.Item item={props.item} class={style["select__item"]}>
+					<Select.Item item={props.item} class={style.select__item}>
 						<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
 						<Select.ItemIndicator class={style["select__item-indicator"]}>
 							<CheckIcon />
@@ -213,17 +213,17 @@ export function HTMLFormExample() {
 				)}
 			>
 				<Select.HiddenSelect />
-				<Select.Trigger class={style["select__trigger"]} aria-label="Fruit">
-					<Select.Value<string> class={style["select__value"]}>
+				<Select.Trigger class={style.select__trigger} aria-label="Fruit">
+					<Select.Value<string> class={style.select__value}>
 						{(state) => state.selectedOption()}
 					</Select.Value>
-					<Select.Icon class={style["select__icon"]}>
+					<Select.Icon class={style.select__icon}>
 						<CaretSortIcon />
 					</Select.Icon>
 				</Select.Trigger>
 				<Select.Portal>
-					<Select.Content class={style["select__content"]}>
-						<Select.Listbox class={style["select__listbox"]} />
+					<Select.Content class={style.select__content}>
+						<Select.Listbox class={style.select__listbox} />
 					</Select.Content>
 				</Select.Portal>
 			</Select.Root>
@@ -231,7 +231,9 @@ export function HTMLFormExample() {
 				<button type="reset" class="kb-button">
 					Reset
 				</button>
-				<button class="kb-button-primary">Submit</button>
+				<button type="button" class="kb-button-primary">
+					Submit
+				</button>
 			</div>
 		</form>
 	);
@@ -260,7 +262,7 @@ export function ObjectExample() {
 			optionDisabled="disabled"
 			placeholder="Select a food…"
 			itemComponent={(props) => (
-				<Select.Item item={props.item} class={style["select__item"]}>
+				<Select.Item item={props.item} class={style.select__item}>
 					<Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
 					<Select.ItemIndicator class={style["select__item-indicator"]}>
 						<CheckIcon />
@@ -268,17 +270,17 @@ export function ObjectExample() {
 				</Select.Item>
 			)}
 		>
-			<Select.Trigger class={style["select__trigger"]} aria-label="Food">
-				<Select.Value<Food> class={style["select__value"]}>
+			<Select.Trigger class={style.select__trigger} aria-label="Food">
+				<Select.Value<Food> class={style.select__value}>
 					{(state) => state.selectedOption().label}
 				</Select.Value>
-				<Select.Icon class={style["select__icon"]}>
+				<Select.Icon class={style.select__icon}>
 					<CaretSortIcon />
 				</Select.Icon>
 			</Select.Trigger>
 			<Select.Portal>
-				<Select.Content class={style["select__content"]}>
-					<Select.Listbox class={style["select__listbox"]} />
+				<Select.Content class={style.select__content}>
+					<Select.Listbox class={style.select__listbox} />
 				</Select.Content>
 			</Select.Portal>
 		</Select.Root>
@@ -322,7 +324,7 @@ export function OptionGroupExample() {
 			optionGroupChildren="options"
 			placeholder="Select a food…"
 			itemComponent={(props) => (
-				<Select.Item item={props.item} class={style["select__item"]}>
+				<Select.Item item={props.item} class={style.select__item}>
 					<Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
 					<Select.ItemIndicator class={style["select__item-indicator"]}>
 						<CheckIcon />
@@ -330,22 +332,22 @@ export function OptionGroupExample() {
 				</Select.Item>
 			)}
 			sectionComponent={(props) => (
-				<Select.Section class={style["select__section"]}>
+				<Select.Section class={style.select__section}>
 					{props.section.rawValue.label}
 				</Select.Section>
 			)}
 		>
-			<Select.Trigger class={style["select__trigger"]} aria-label="Food">
-				<Select.Value<Food> class={style["select__value"]}>
+			<Select.Trigger class={style.select__trigger} aria-label="Food">
+				<Select.Value<Food> class={style.select__value}>
 					{(state) => state.selectedOption().label}
 				</Select.Value>
-				<Select.Icon class={style["select__icon"]}>
+				<Select.Icon class={style.select__icon}>
 					<CaretSortIcon />
 				</Select.Icon>
 			</Select.Trigger>
 			<Select.Portal>
-				<Select.Content class={style["select__content"]}>
-					<Select.Listbox class={style["select__listbox"]} />
+				<Select.Content class={style.select__content}>
+					<Select.Listbox class={style.select__listbox} />
 				</Select.Content>
 			</Select.Portal>
 		</Select.Root>
@@ -364,7 +366,7 @@ export function MultipleSelectionExample() {
 				options={STRING_OPTIONS}
 				placeholder="Select some fruits…"
 				itemComponent={(props) => (
-					<Select.Item item={props.item} class={style["select__item"]}>
+					<Select.Item item={props.item} class={style.select__item}>
 						<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
 						<Select.ItemIndicator class={style["select__item-indicator"]}>
 							<CheckIcon />
@@ -373,12 +375,12 @@ export function MultipleSelectionExample() {
 				)}
 			>
 				<Select.Trigger
-					class={`${style["select__trigger"]} ${style["select__trigger_multi"]}`}
+					class={`${style.select__trigger} ${style.select__trigger_multi}`}
 					aria-label="Fruits"
 					asChild
 				>
 					<As component="div">
-						<Select.Value<string> class={style["select__value"]}>
+						<Select.Value<string> class={style.select__value}>
 							{(state) => (
 								<>
 									<div class="flex items-center gap-2 flex-wrap">
@@ -390,6 +392,7 @@ export function MultipleSelectionExample() {
 												>
 													{option}
 													<button
+														type="button"
 														onClick={() => state.remove(option)}
 														class="rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600 p-1"
 													>
@@ -400,6 +403,7 @@ export function MultipleSelectionExample() {
 										</For>
 									</div>
 									<button
+										type="button"
 										onPointerDown={(e) => e.stopPropagation()}
 										onClick={state.clear}
 										class="ml-auto mr-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-600 p-1"
@@ -409,14 +413,14 @@ export function MultipleSelectionExample() {
 								</>
 							)}
 						</Select.Value>
-						<Select.Icon class={style["select__icon"]}>
+						<Select.Icon class={style.select__icon}>
 							<CaretSortIcon />
 						</Select.Icon>
 					</As>
 				</Select.Trigger>
 				<Select.Portal>
-					<Select.Content class={style["select__content"]}>
-						<Select.Listbox class={style["select__listbox"]} />
+					<Select.Content class={style.select__content}>
+						<Select.Listbox class={style.select__listbox} />
 					</Select.Content>
 				</Select.Portal>
 			</Select.Root>
@@ -446,7 +450,7 @@ function SelectContent(props: { options: Item[] }) {
 	});
 
 	return (
-		<Select.Content class={style["select__content"]}>
+		<Select.Content class={style.select__content}>
 			<Select.Listbox
 				ref={listboxRef}
 				scrollToItem={(key) =>
@@ -454,7 +458,7 @@ function SelectContent(props: { options: Item[] }) {
 						props.options.findIndex((option) => option.value === key),
 					)
 				}
-				class={style["select__listbox"]}
+				class={style.select__listbox}
 				style={{ height: "200px", width: "100%", overflow: "auto" }}
 			>
 				{(items) => (
@@ -473,7 +477,7 @@ function SelectContent(props: { options: Item[] }) {
 									return (
 										<Select.Item
 											item={item}
-											class={style["select__item"]}
+											class={style.select__item}
 											style={{
 												position: "absolute",
 												top: 0,
@@ -517,11 +521,11 @@ export function VirtualizedExample() {
 			optionDisabled="disabled"
 			placeholder="Select an item…"
 		>
-			<Select.Trigger class={style["select__trigger"]} aria-label="Food">
-				<Select.Value<Item> class={style["select__value"]}>
+			<Select.Trigger class={style.select__trigger} aria-label="Food">
+				<Select.Value<Item> class={style.select__value}>
 					{(state) => state.selectedOption().label}
 				</Select.Value>
-				<Select.Icon class={style["select__icon"]}>
+				<Select.Icon class={style.select__icon}>
 					<CaretSortIcon />
 				</Select.Icon>
 			</Select.Trigger>

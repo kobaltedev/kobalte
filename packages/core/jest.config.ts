@@ -8,7 +8,7 @@ const config: Config.InitialOptions = {
 
 	globals: {
 		"ts-jest": {
-			tsconfig: `<rootDir>/tsconfig.json`,
+			tsconfig: "<rootDir>/tsconfig.json",
 			babelConfig: {
 				presets: ["@babel/preset-env", "babel-preset-solid"],
 			},

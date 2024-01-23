@@ -16,7 +16,7 @@ describe("ariaHideOutside", () => {
 		render(() => (
 			<>
 				<input type="checkbox" />
-				<button>Button</button>
+				<button type="button">Button</button>
 				<input type="checkbox" />
 			</>
 		));
@@ -47,7 +47,7 @@ describe("ariaHideOutside", () => {
 		render(() => (
 			<>
 				<input type="checkbox" />
-				<button>Button</button>
+				<button type="button">Button</button>
 				<input type="checkbox" />
 			</>
 		));
@@ -80,7 +80,7 @@ describe("ariaHideOutside", () => {
 				<div>
 					<input type="checkbox" />
 				</div>
-				<button>Button</button>
+				<button type="button">Button</button>
 				<input type="checkbox" />
 			</>
 		));
@@ -110,8 +110,8 @@ describe("ariaHideOutside", () => {
 	it("should not overwrite an existing aria-hidden prop", () => {
 		render(() => (
 			<>
-				<input type="checkbox" aria-hidden="true" />
-				<button>Button</button>
+				<input type="checkbox" />
+				<button type="button">Button</button>
 				<input type="checkbox" />
 			</>
 		));
@@ -155,13 +155,19 @@ describe("ariaHideOutside", () => {
 				<>
 					{show() && <input type="checkbox" />}
 					<button
+						type="button"
 						data-testid="toggle"
 						ref={toggleRef}
 						onClick={() => setShow(true)}
 					>
 						Toggle
 					</button>
-					<button data-testid="revert" ref={revertRef} onClick={() => revert()}>
+					<button
+						type="button"
+						data-testid="revert"
+						ref={revertRef}
+						onClick={() => revert()}
+					>
 						Revert
 					</button>
 					{show() && <input type="checkbox" />}
@@ -199,7 +205,9 @@ describe("ariaHideOutside", () => {
 			return (
 				<>
 					<div data-testid="test">{show() && <input type="checkbox" />}</div>
-					<button onClick={() => setShow(true)}>Button</button>
+					<button type="button" onClick={() => setShow(true)}>
+						Button
+					</button>
 					{show() && <input type="checkbox" />}
 				</>
 			);
@@ -243,7 +251,9 @@ describe("ariaHideOutside", () => {
 				<>
 					<input type="checkbox" />
 					<div data-testid="test">
-						<button onClick={() => setShow(true)}>Button</button>
+						<button type="button" onClick={() => setShow(true)}>
+							Button
+						</button>
 						{show() && <input type="radio" />}
 					</div>
 					<input type="checkbox" />
@@ -286,7 +296,7 @@ describe("ariaHideOutside", () => {
 			<>
 				<input type="checkbox" />
 				<input type="radio" />
-				<button>Button</button>
+				<button type="button">Button</button>
 				<input type="radio" />
 				<input type="checkbox" />
 			</>
@@ -325,7 +335,7 @@ describe("ariaHideOutside", () => {
 			<>
 				<input type="checkbox" />
 				<input type="radio" />
-				<button>Button</button>
+				<button type="button">Button</button>
 				<input type="radio" />
 				<input type="checkbox" />
 			</>

@@ -73,6 +73,7 @@ export function ImageImg(props: ImageImgProps) {
 
 	return (
 		<Show when={loadingStatus() === "loaded"}>
+			{/* biome-ignore lint/a11y/useAltText: from props */}
 			<img {...props} />
 		</Show>
 	);

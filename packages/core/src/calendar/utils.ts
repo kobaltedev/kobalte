@@ -44,18 +44,23 @@ export function constrainStart(
 	min?: DateValue,
 	max?: DateValue,
 ): DateValue {
+	let computedDate = aligned;
+
 	if (min && date.compare(min) >= 0) {
-		aligned = maxDate(
-			aligned,
+		computedDate = maxDate(
+			computedDate,
 			alignStart(toCalendarDate(min), duration, locale),
 		);
 	}
 
 	if (max && date.compare(max) <= 0) {
-		aligned = minDate(aligned, alignEnd(toCalendarDate(max), duration, locale));
+		computedDate = minDate(
+			computedDate,
+			alignEnd(toCalendarDate(max), duration, locale),
+		);
 	}
 
-	return aligned;
+	return computedDate;
 }
 
 export function constrainValue(
@@ -63,15 +68,17 @@ export function constrainValue(
 	min?: DateValue,
 	max?: DateValue,
 ): DateValue {
+	let computedDate = date;
+
 	if (min) {
-		date = maxDate(date, toCalendarDate(min));
+		computedDate = maxDate(computedDate, toCalendarDate(min));
 	}
 
 	if (max) {
-		date = minDate(date, toCalendarDate(max));
+		computedDate = minDate(computedDate, toCalendarDate(max));
 	}
 
-	return date;
+	return computedDate;
 }
 
 /* -----------------------------------------------------------------------------
@@ -159,7 +166,6 @@ export function alignDate(
 			return alignStart(date, duration, locale, min, max);
 		case "end":
 			return alignEnd(date, duration, locale, min, max);
-		case "center":
 		default:
 			return alignCenter(date, duration, locale, min, max);
 	}
@@ -326,6 +332,7 @@ export function getPreviousAvailableDate(
 	}
 
 	while (date.compare(min) >= 0 && isDateUnavailable(date)) {
+		// biome-ignore lint/style/noParameterAssign: used in loop
 		date = date.subtract({ days: 1 });
 	}
 
@@ -470,16 +477,15 @@ export function getSelectedDateRangeDescription(
 		if (isSameDay(start, end)) {
 			const date = dateFormatter().format(start.toDate(timeZone));
 			return translations.selectedDateDescription(date);
-		} else {
-			const dateRange = formatRange(
-				dateFormatter(),
-				translations,
-				start,
-				end,
-				timeZone,
-			);
-			return translations.selectedRangeDescription(dateRange);
 		}
+		const dateRange = formatRange(
+			dateFormatter(),
+			translations,
+			start,
+			end,
+			timeZone,
+		);
+		return translations.selectedRangeDescription(dateRange);
 	}
 
 	// No message if currently selecting a range, or there is nothing highlighted.
@@ -517,7 +523,8 @@ export function getVisibleRangeDescription(
 	if (isSameDay(startDate, startOfMonth(startDate))) {
 		if (isSameDay(endDate, endOfMonth(startDate))) {
 			return monthFormatter().format(startDate.toDate(timeZone));
-		} else if (isSameDay(endDate, endOfMonth(endDate))) {
+		}
+		if (isSameDay(endDate, endOfMonth(endDate))) {
 			if (isAria) {
 				return formatRange(
 					monthFormatter(),
@@ -859,6 +866,7 @@ export function makeCalendarDateRange(
 	}
 
 	if (end.compare(start) < 0) {
+		// biome-ignore lint/style/noParameterAssign: flip parameters
 		[start, end] = [end, start];
 	}
 

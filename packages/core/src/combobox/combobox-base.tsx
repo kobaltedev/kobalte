@@ -476,12 +476,10 @@ export function ComboboxBase<Option, OptGroup = never>(
 		if (disclosureState.isOpen()) {
 			if (showAllOptions()) {
 				return local.options;
-			} else {
-				return filteredOptions();
 			}
-		} else {
-			return lastDisplayedOptions();
+			return filteredOptions();
 		}
+		return lastDisplayedOptions();
 	});
 
 	// Track what action is attempting to open the combobox.

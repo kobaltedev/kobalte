@@ -22,7 +22,6 @@ export function isString(value: unknown): value is string {
 }
 
 // Function assertions
-// biome-ignore lint/complexity/noBannedTypes: accept any function
 export function isFunction<T extends Function = Function>(
 	value: unknown,
 ): value is T {

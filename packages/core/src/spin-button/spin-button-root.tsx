@@ -128,6 +128,7 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 		}
 
 		switch (e.key) {
+			// biome-ignore lint/suspicious/noFallthroughSwitchClause: fallthrough
 			case "PageUp":
 				if (local.onIncrementPage) {
 					e.preventDefault();
@@ -142,13 +143,14 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 					local.onIncrement();
 				}
 				break;
+			// biome-ignore lint/suspicious/noFallthroughSwitchClause: fallthrough
 			case "PageDown":
 				if (local.onDecrementPage) {
 					e.preventDefault();
 					local.onDecrementPage();
 					break;
 				}
-			// fallthrough
+			// fallthrough!
 			case "ArrowDown":
 			case "Down":
 				if (local.onDecrement) {
@@ -198,7 +200,7 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 			as="div"
 			role="spinbutton"
 			aria-valuenow={
-				local.value != null && !isNaN(local.value) ? local.value : null
+				local.value != null && !Number.isNaN(local.value) ? local.value : null
 			}
 			aria-valuetext={textValue()}
 			aria-valuemin={local.minValue}

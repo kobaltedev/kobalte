@@ -913,9 +913,9 @@ describe("Listbox", () => {
 				/>
 			));
 
-			screen.getAllByTestId("indicator").forEach((indicator) => {
+			for (const indicator of screen.getAllByTestId("indicator")) {
 				expect(indicator).toBeInTheDocument();
-			});
+			}
 		});
 	});
 });

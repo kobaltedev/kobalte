@@ -79,6 +79,6 @@ export function Skeleton(props: SkeletonProps) {
 				...local.style,
 			}}
 			{...others}
-		></Polymorphic>
+		/>
 	);
 }

@@ -192,7 +192,9 @@ export function CheckboxRoot(props: CheckboxRootProps) {
 					{...dataset()}
 					{...others}
 				>
-					<CheckboxRootChild state={context} children={local.children} />
+					<CheckboxRootChild state={context}>
+						{local.children}
+					</CheckboxRootChild>
 				</Polymorphic>
 			</CheckboxContext.Provider>
 		</FormControlContext.Provider>

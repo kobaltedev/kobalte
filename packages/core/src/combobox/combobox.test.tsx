@@ -1767,7 +1767,7 @@ describe("Combobox", () => {
 			const trigger = screen.getByRole("button");
 			const input = screen.getByRole("combobox");
 
-			expect(input).toHaveAttribute("aria-labelledby", `foo`);
+			expect(input).toHaveAttribute("aria-labelledby", "foo");
 
 			fireEvent(
 				trigger,
@@ -3385,7 +3385,7 @@ describe("Combobox", () => {
 
 	describe("form", () => {
 		it("Should submit empty option by default", async () => {
-			let value;
+			let value: {};
 
 			const onSubmit = jest.fn((e) => {
 				e.preventDefault();
@@ -3435,7 +3435,7 @@ describe("Combobox", () => {
 		});
 
 		it("Should submit default option", async () => {
-			let value;
+			let value: {};
 
 			const onSubmit = jest.fn((e) => {
 				e.preventDefault();

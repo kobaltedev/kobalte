@@ -36,9 +36,9 @@ const tabbableElements = [
 	'[tabindex]:not([tabindex="-1"]):not([disabled])',
 ];
 
-export const FOCUSABLE_ELEMENT_SELECTOR =
-	focusableElements.join(":not([hidden]),") +
-	",[tabindex]:not([disabled]):not([hidden])";
+export const FOCUSABLE_ELEMENT_SELECTOR = `${focusableElements.join(
+	":not([hidden]),",
+)},[tabindex]:not([disabled]):not([hidden])`;
 
 export const TABBABLE_ELEMENT_SELECTOR = tabbableElements.join(
 	':not([hidden]):not([tabindex="-1"]),',
@@ -187,7 +187,6 @@ export function hasFocusWithin(element: Node | Element) {
 			return true;
 		}
 		return !!element.querySelector(`#${CSS.escape(activeDescendant)}`);
-	} else {
-		return true;
 	}
+	return true;
 }

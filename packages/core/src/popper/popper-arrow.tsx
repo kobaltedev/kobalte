@@ -108,6 +108,7 @@ export function PopperArrow(props: PopperArrowProps) {
 			}
 			{...others}
 		>
+			{/* biome-ignore lint/a11y/noSvgWithoutTitle: aria hidden */}
 			<svg display="block" viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}>
 				<g transform={rotate()}>
 					<path fill="none" d={ARROW_PATH} />

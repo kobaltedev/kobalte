@@ -7,32 +7,28 @@ import style from "./checkbox.module.css";
 
 export function BasicExample() {
 	return (
-		<Checkbox.Root class={style["checkbox"]}>
-			<Checkbox.Input class={style["checkbox__input"]} />
-			<Checkbox.Control class={style["checkbox__control"]}>
+		<Checkbox.Root class={style.checkbox}>
+			<Checkbox.Input class={style.checkbox__input} />
+			<Checkbox.Control class={style.checkbox__control}>
 				<Checkbox.Indicator>
 					<CheckIcon />
 				</Checkbox.Indicator>
 			</Checkbox.Control>
-			<Checkbox.Label class={style["checkbox__label"]}>
-				Subscribe
-			</Checkbox.Label>
+			<Checkbox.Label class={style.checkbox__label}>Subscribe</Checkbox.Label>
 		</Checkbox.Root>
 	);
 }
 
 export function DefaultCheckedExample() {
 	return (
-		<Checkbox.Root class={style["checkbox"]} defaultChecked>
-			<Checkbox.Input class={style["checkbox__input"]} />
-			<Checkbox.Control class={style["checkbox__control"]}>
+		<Checkbox.Root class={style.checkbox} defaultChecked>
+			<Checkbox.Input class={style.checkbox__input} />
+			<Checkbox.Control class={style.checkbox__control}>
 				<Checkbox.Indicator>
 					<CheckIcon />
 				</Checkbox.Indicator>
 			</Checkbox.Control>
-			<Checkbox.Label class={style["checkbox__label"]}>
-				Subscribe
-			</Checkbox.Label>
+			<Checkbox.Label class={style.checkbox__label}>Subscribe</Checkbox.Label>
 		</Checkbox.Root>
 	);
 }
@@ -43,19 +39,17 @@ export function ControlledExample() {
 	return (
 		<>
 			<Checkbox.Root
-				class={style["checkbox"]}
+				class={style.checkbox}
 				checked={checked()}
 				onChange={setChecked}
 			>
-				<Checkbox.Input class={style["checkbox__input"]} />
-				<Checkbox.Control class={style["checkbox__control"]}>
+				<Checkbox.Input class={style.checkbox__input} />
+				<Checkbox.Control class={style.checkbox__control}>
 					<Checkbox.Indicator>
 						<CheckIcon />
 					</Checkbox.Indicator>
 				</Checkbox.Control>
-				<Checkbox.Label class={style["checkbox__label"]}>
-					Subscribe
-				</Checkbox.Label>
+				<Checkbox.Label class={style.checkbox__label}>Subscribe</Checkbox.Label>
 			</Checkbox.Root>
 			<p class="not-prose text-sm mt-2">
 				You are {checked() ? "subscribed" : "unsubscribed"}.
@@ -66,18 +60,16 @@ export function ControlledExample() {
 
 export function DescriptionExample() {
 	return (
-		<Checkbox.Root class={clsx(style["checkbox"], "!items-start")}>
-			<Checkbox.Input class={style["checkbox__input"]} />
-			<Checkbox.Control class={style["checkbox__control"]}>
+		<Checkbox.Root class={clsx(style.checkbox, "!items-start")}>
+			<Checkbox.Input class={style.checkbox__input} />
+			<Checkbox.Control class={style.checkbox__control}>
 				<Checkbox.Indicator>
 					<CheckIcon />
 				</Checkbox.Indicator>
 			</Checkbox.Control>
 			<div class="flex flex-col items-start -mt-0.5">
-				<Checkbox.Label class={style["checkbox__label"]}>
-					Subscribe
-				</Checkbox.Label>
-				<Checkbox.Description class={style["checkbox__description"]}>
+				<Checkbox.Label class={style.checkbox__label}>Subscribe</Checkbox.Label>
+				<Checkbox.Description class={style.checkbox__description}>
 					You will receive our weekly newsletter.
 				</Checkbox.Description>
 			</div>
@@ -90,21 +82,19 @@ export function ErrorMessageExample() {
 
 	return (
 		<Checkbox.Root
-			class={clsx(style["checkbox"], "!items-start")}
+			class={clsx(style.checkbox, "!items-start")}
 			checked={checked()}
 			onChange={setChecked}
 			validationState={!checked() ? "invalid" : "valid"}
 		>
-			<Checkbox.Input class={style["checkbox__input"]} />
-			<Checkbox.Control class={style["checkbox__control"]}>
+			<Checkbox.Input class={style.checkbox__input} />
+			<Checkbox.Control class={style.checkbox__control}>
 				<Checkbox.Indicator>
 					<CheckIcon />
 				</Checkbox.Indicator>
 			</Checkbox.Control>
 			<div class="flex flex-col items-start -mt-0.5">
-				<Checkbox.Label class={style["checkbox__label"]}>
-					Subscribe
-				</Checkbox.Label>
+				<Checkbox.Label class={style.checkbox__label}>Subscribe</Checkbox.Label>
 				<Checkbox.ErrorMessage class={style["checkbox__error-message"]}>
 					You must agree to our Terms and Conditions.
 				</Checkbox.ErrorMessage>
@@ -131,26 +121,22 @@ export function HTMLFormExample() {
 			onSubmit={onSubmit}
 			class="flex flex-col items-center space-y-6"
 		>
-			<Checkbox.Root
-				class={style["checkbox"]}
-				name="newsletter"
-				value="subscribe"
-			>
-				<Checkbox.Input class={style["checkbox__input"]} />
-				<Checkbox.Control class={style["checkbox__control"]}>
+			<Checkbox.Root class={style.checkbox} name="newsletter" value="subscribe">
+				<Checkbox.Input class={style.checkbox__input} />
+				<Checkbox.Control class={style.checkbox__control}>
 					<Checkbox.Indicator>
 						<CheckIcon />
 					</Checkbox.Indicator>
 				</Checkbox.Control>
-				<Checkbox.Label class={style["checkbox__label"]}>
-					Subscribe
-				</Checkbox.Label>
+				<Checkbox.Label class={style.checkbox__label}>Subscribe</Checkbox.Label>
 			</Checkbox.Root>
 			<div class="flex space-x-2">
 				<button type="reset" class="kb-button">
 					Reset
 				</button>
-				<button class="kb-button-primary">Submit</button>
+				<button type="submit" class="kb-button-primary">
+					Submit
+				</button>
 			</div>
 		</form>
 	);

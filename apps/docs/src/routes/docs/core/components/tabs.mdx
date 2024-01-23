@@ -292,8 +292,8 @@ function DynamicContentExample() {
 
   return (
     <>
-      <button onClick={addTab}>Add tab</button>
-      <button onClick={removeTab}>Remove tab</button>
+		<button onClick={addTab}>Add tab</button>
+		<button onClick={removeTab}>Remove tab</button>
       <Tabs.Root>
         <Tabs.List>
           <For each={tabs()}>{tab => <Tabs.Trigger value={tab.id}>{tab.title}</Tabs.Trigger>}</For>

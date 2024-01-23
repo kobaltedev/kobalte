@@ -95,6 +95,7 @@ export function SwitchInput(props: SwitchInputProps) {
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
 			style={{ ...visuallyHiddenStyles, ...local.style }}
+			aria-checked={context.checked()}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}

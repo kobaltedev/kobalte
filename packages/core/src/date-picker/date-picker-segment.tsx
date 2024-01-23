@@ -341,7 +341,7 @@ export function DatePickerSegment(props: DatePickerSegmentProps) {
 					segmentValue = numberParser().parse(key);
 				}
 
-				if (isNaN(numberValue)) {
+				if (Number.isNaN(numberValue)) {
 					return;
 				}
 
@@ -353,7 +353,7 @@ export function DatePickerSegment(props: DatePickerSegmentProps) {
 
 				if (
 					(local.segment.maxValue != null &&
-						Number(numberValue + "0") > local.segment.maxValue) ||
+						Number(`${numberValue}0`) > local.segment.maxValue) ||
 					newValue.length >= String(local.segment.maxValue).length
 				) {
 					enteredKeys = "";
@@ -392,7 +392,7 @@ export function DatePickerSegment(props: DatePickerSegmentProps) {
 					composition = ref.textContent;
 
 					// Safari gets stuck in a composition state unless we also assign to the value here.
-					// eslint-disable-next-line no-self-assign
+					// biome-ignore lint/correctness/noSelfAssign: comment above
 					ref.textContent = ref.textContent;
 				}
 				break;

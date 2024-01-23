@@ -160,7 +160,7 @@ describe("createControllableSignal", () => {
 				return (
 					<>
 						<TestComponent value={state} onChange={onChangeSpy} />
-						<button onClick={() => setState("updated")} />
+						<button type="button" onClick={() => setState("updated")} />
 					</>
 				);
 			};

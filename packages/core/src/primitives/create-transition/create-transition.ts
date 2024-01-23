@@ -79,7 +79,7 @@ export function createTransition(
 	shouldMount: MaybeAccessor<boolean>,
 	options: MaybeAccessor<TransitionOptions>,
 ): TransitionResult {
-	options = mergeProps(
+	const mergedOptions = mergeProps(
 		{
 			duration: DEFAULT_DURATION,
 			delay: DEFAULT_DELAY,
@@ -100,24 +100,24 @@ export function createTransition(
 	const reduceMotion = createMediaQuery("(prefers-reduced-motion: reduce)");
 
 	const [duration, setDuration] = createSignal(
-		reduceMotion() ? 0 : access(options).duration!,
+		reduceMotion() ? 0 : access(mergedOptions).duration!,
 	);
 
 	const [phase, setPhase] = createSignal<TransitionPhase>(
 		access(shouldMount) ? "afterEnter" : "afterExit",
 	);
 
-	const [easing, setEasing] = createSignal(access(options).easing!);
+	const [easing, setEasing] = createSignal(access(mergedOptions).easing!);
 
 	let timeoutId = -1;
 
 	const handleStateChange = (shouldMount: boolean) => {
 		const preHandler = shouldMount
-			? access(options).onBeforeEnter
-			: access(options).onBeforeExit;
+			? access(mergedOptions).onBeforeEnter
+			: access(mergedOptions).onBeforeExit;
 		const postHandler = shouldMount
-			? access(options).onAfterEnter
-			: access(options).onAfterExit;
+			? access(mergedOptions).onAfterEnter
+			: access(mergedOptions).onAfterExit;
 
 		setPhase(shouldMount ? "beforeEnter" : "beforeExit");
 
@@ -127,12 +127,14 @@ export function createTransition(
 			reduceMotion()
 				? 0
 				: shouldMount
-				  ? access(options).duration!
-				  : access(options).exitDuration!,
+				  ? access(mergedOptions).duration!
+				  : access(mergedOptions).exitDuration!,
 		);
 
 		setEasing(
-			shouldMount ? access(options).easing! : access(options).exitEasing!,
+			shouldMount
+				? access(mergedOptions).easing!
+				: access(mergedOptions).exitEasing!,
 		);
 
 		if (newDuration === 0) {
@@ -145,8 +147,8 @@ export function createTransition(
 		const delay = reduceMotion()
 			? 0
 			: shouldMount
-			  ? access(options).delay!
-			  : access(options).exitDelay!;
+			  ? access(mergedOptions).delay!
+			  : access(mergedOptions).exitDelay!;
 
 		const preStateTimeoutId = window.setTimeout(() => {
 			preHandler?.();
@@ -162,7 +164,7 @@ export function createTransition(
 
 	const style = createMemo(() =>
 		getTransitionStyles({
-			transition: access(options).transition!,
+			transition: access(mergedOptions).transition!,
 			duration: duration(),
 			phase: phase(),
 			easing: easing(),

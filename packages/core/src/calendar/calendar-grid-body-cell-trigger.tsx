@@ -140,12 +140,11 @@ export function CalendarGridBodyCellTrigger(
 				end &&
 				(isSameDay(context.date(), start) || isSameDay(context.date(), end))
 			) {
-				label =
-					getSelectedDateDescription(
-						rootContext.translations(),
-						context.date(),
-						rootContext.timeZone(),
-					) + ", ";
+				label = `${getSelectedDateDescription(
+					rootContext.translations(),
+					context.date(),
+					rootContext.timeZone(),
+				)}, `;
 			}
 		}
 
@@ -162,9 +161,9 @@ export function CalendarGridBodyCellTrigger(
 		const max = rootContext.max();
 
 		if (min && isSameDay(context.date(), min)) {
-			label += ", " + rootContext.translations().minimumDate;
+			label += `, ${rootContext.translations().minimumDate}`;
 		} else if (max && isSameDay(context.date(), max)) {
-			label += ", " + rootContext.translations().maximumDate;
+			label += `, ${rootContext.translations().maximumDate}`;
 		}
 
 		return label;
@@ -241,7 +240,8 @@ export function CalendarGridBodyCellTrigger(
 					rootContext.setIsDragging(true);
 					isRangeBoundaryPressed = true;
 					return;
-				} else if (isSameDay(context.date(), highlightedRange.end)) {
+				}
+				if (isSameDay(context.date(), highlightedRange.end)) {
 					rootContext.setAnchorDate(highlightedRange.start);
 					rootContext.focusCell(context.date());
 					rootContext.setIsDragging(true);

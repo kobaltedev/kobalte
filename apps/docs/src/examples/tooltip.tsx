@@ -6,11 +6,9 @@ import style from "./tooltip.module.css";
 export function BasicExample() {
 	return (
 		<Tooltip.Root>
-			<Tooltip.Trigger class={style["tooltip__trigger"]}>
-				Trigger
-			</Tooltip.Trigger>
+			<Tooltip.Trigger class={style.tooltip__trigger}>Trigger</Tooltip.Trigger>
 			<Tooltip.Portal>
-				<Tooltip.Content class={style["tooltip__content"]}>
+				<Tooltip.Content class={style.tooltip__content}>
 					<Tooltip.Arrow />
 					<p>Tooltip content</p>
 				</Tooltip.Content>
@@ -28,11 +26,11 @@ export function ControlledExample() {
 				Tooltip is {open() ? "showing" : "not showing"}.
 			</p>
 			<Tooltip.Root open={open()} onOpenChange={setOpen}>
-				<Tooltip.Trigger class={style["tooltip__trigger"]}>
+				<Tooltip.Trigger class={style.tooltip__trigger}>
 					Trigger
 				</Tooltip.Trigger>
 				<Tooltip.Portal>
-					<Tooltip.Content class={style["tooltip__content"]}>
+					<Tooltip.Content class={style.tooltip__content}>
 						<Tooltip.Arrow />
 						<p>Tooltip content</p>
 					</Tooltip.Content>

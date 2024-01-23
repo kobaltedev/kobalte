@@ -88,7 +88,7 @@ export default function Root() {
 								</Routes>
 								<Portal>
 									<Toast.Region>
-										<Toast.List class={toastStyles["toast__list"]} />
+										<Toast.List class={toastStyles.toast__list} />
 									</Toast.Region>
 									<Toast.Region regionId="custom-region-id">
 										<Toast.List

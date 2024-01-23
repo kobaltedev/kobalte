@@ -123,7 +123,8 @@ export function DatePickerInput(props: DatePickerInputProps) {
 				asSingleValue(datePickerContext.dateValue()),
 				calendar(),
 			);
-		} else if (datePickerContext.selectionMode() === "multiple") {
+		}
+		if (datePickerContext.selectionMode() === "multiple") {
 			// TODO: MultipleDatePicker
 		} else if (datePickerContext.selectionMode() === "range") {
 			// TODO: RangeDatePicker
@@ -541,7 +542,7 @@ export function DatePickerInput(props: DatePickerInputProps) {
 		} else if (!allSegments().era && validSegments().era) {
 			setValidSegments((prev) => {
 				const newValue = { ...prev };
-				delete newValue.era;
+				newValue.era = undefined;
 				return newValue;
 			});
 		}
@@ -717,19 +718,22 @@ function setSegmentBase(
 				}
 				return value.set({ hour: wasPM ? hours - 12 : hours + 12 });
 			}
+
 			case "hour":
 				// In 12 hour time, ensure that AM/PM does not change
 				if (options.hour12) {
 					const hours = value.hour;
 					const wasPM = hours >= 12;
 					if (!wasPM && segmentValue === 12) {
+						// biome-ignore lint/style/noParameterAssign: used in fallthrough
 						segmentValue = 0;
 					}
 					if (wasPM && segmentValue < 12) {
+						// biome-ignore lint/style/noParameterAssign: used in fallthrough
 						segmentValue += 12;
 					}
 				}
-			// fallthrough
+				return value.set({ [part]: segmentValue });
 			case "minute":
 			case "second":
 				return value.set({ [part]: segmentValue });

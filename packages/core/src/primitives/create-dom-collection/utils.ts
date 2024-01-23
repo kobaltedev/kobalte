@@ -156,13 +156,13 @@ export function createSortBasedOnDOMPosition<
 		const root = getCommonParent(items());
 		const observer = new IntersectionObserver(callback, { root });
 
-		items().forEach((item) => {
+		for (const item of items()) {
 			const itemEl = item.ref();
 
 			if (itemEl) {
 				observer.observe(itemEl);
 			}
-		});
+		}
 
 		onCleanup(() => observer.disconnect());
 	});

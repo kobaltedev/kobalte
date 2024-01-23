@@ -150,10 +150,11 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
 			// Sync all radio input checked state in the group with the selected value.
 			// This is necessary because checked state might be out of sync
 			// (ex: when using controlled radio-group).
-			ref?.querySelectorAll("[type='radio']").forEach((el) => {
-				const radio = el as HTMLInputElement;
-				radio.checked = isSelectedValue(radio.value);
-			});
+			if (ref)
+				for (const el of ref.querySelectorAll("[type='radio']")) {
+					const radio = el as HTMLInputElement;
+					radio.checked = isSelectedValue(radio.value);
+				}
 		},
 	};
 

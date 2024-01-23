@@ -53,7 +53,7 @@ export function installPointerEvent() {
 	afterAll(() => {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
-		delete global.PointerEvent;
+		global.PointerEvent = undefined;
 	});
 }
 

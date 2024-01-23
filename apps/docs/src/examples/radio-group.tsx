@@ -12,12 +12,12 @@ export function BasicExample() {
 			<div class={style["radio-group__items"]}>
 				<For each={["Apple", "Orange", "Watermelon"]}>
 					{(fruit) => (
-						<RadioGroup.Item value={fruit} class={style["radio"]}>
-							<RadioGroup.ItemInput class={style["radio__input"]} />
-							<RadioGroup.ItemControl class={style["radio__control"]}>
-								<RadioGroup.ItemIndicator class={style["radio__indicator"]} />
+						<RadioGroup.Item value={fruit} class={style.radio}>
+							<RadioGroup.ItemInput class={style.radio__input} />
+							<RadioGroup.ItemControl class={style.radio__control}>
+								<RadioGroup.ItemIndicator class={style.radio__indicator} />
 							</RadioGroup.ItemControl>
-							<RadioGroup.ItemLabel class={style["radio__label"]}>
+							<RadioGroup.ItemLabel class={style.radio__label}>
 								{fruit}
 							</RadioGroup.ItemLabel>
 						</RadioGroup.Item>
@@ -37,12 +37,12 @@ export function DefaultValueExample() {
 			<div class={style["radio-group__items"]}>
 				<For each={["Apple", "Orange", "Watermelon"]}>
 					{(fruit) => (
-						<RadioGroup.Item value={fruit} class={style["radio"]}>
-							<RadioGroup.ItemInput class={style["radio__input"]} />
-							<RadioGroup.ItemControl class={style["radio__control"]}>
-								<RadioGroup.ItemIndicator class={style["radio__indicator"]} />
+						<RadioGroup.Item value={fruit} class={style.radio}>
+							<RadioGroup.ItemInput class={style.radio__input} />
+							<RadioGroup.ItemControl class={style.radio__control}>
+								<RadioGroup.ItemIndicator class={style.radio__indicator} />
 							</RadioGroup.ItemControl>
-							<RadioGroup.ItemLabel class={style["radio__label"]}>
+							<RadioGroup.ItemLabel class={style.radio__label}>
 								{fruit}
 							</RadioGroup.ItemLabel>
 						</RadioGroup.Item>
@@ -69,12 +69,12 @@ export function ControlledExample() {
 				<div class={style["radio-group__items"]}>
 					<For each={["Apple", "Orange", "Watermelon"]}>
 						{(fruit) => (
-							<RadioGroup.Item value={fruit} class={style["radio"]}>
-								<RadioGroup.ItemInput class={style["radio__input"]} />
-								<RadioGroup.ItemControl class={style["radio__control"]}>
-									<RadioGroup.ItemIndicator class={style["radio__indicator"]} />
+							<RadioGroup.Item value={fruit} class={style.radio}>
+								<RadioGroup.ItemInput class={style.radio__input} />
+								<RadioGroup.ItemControl class={style.radio__control}>
+									<RadioGroup.ItemIndicator class={style.radio__indicator} />
 								</RadioGroup.ItemControl>
-								<RadioGroup.ItemLabel class={style["radio__label"]}>
+								<RadioGroup.ItemLabel class={style.radio__label}>
 									{fruit}
 								</RadioGroup.ItemLabel>
 							</RadioGroup.Item>
@@ -96,12 +96,12 @@ export function DescriptionExample() {
 			<div class={style["radio-group__items"]}>
 				<For each={["Apple", "Orange", "Watermelon"]}>
 					{(fruit) => (
-						<RadioGroup.Item value={fruit} class={style["radio"]}>
-							<RadioGroup.ItemInput class={style["radio__input"]} />
-							<RadioGroup.ItemControl class={style["radio__control"]}>
-								<RadioGroup.ItemIndicator class={style["radio__indicator"]} />
+						<RadioGroup.Item value={fruit} class={style.radio}>
+							<RadioGroup.ItemInput class={style.radio__input} />
+							<RadioGroup.ItemControl class={style.radio__control}>
+								<RadioGroup.ItemIndicator class={style.radio__indicator} />
 							</RadioGroup.ItemControl>
-							<RadioGroup.ItemLabel class={style["radio__label"]}>
+							<RadioGroup.ItemLabel class={style.radio__label}>
 								{fruit}
 							</RadioGroup.ItemLabel>
 						</RadioGroup.Item>
@@ -131,12 +131,12 @@ export function ErrorMessageExample() {
 			<div class={style["radio-group__items"]}>
 				<For each={["Apple", "Orange", "Watermelon"]}>
 					{(fruit) => (
-						<RadioGroup.Item value={fruit} class={style["radio"]}>
-							<RadioGroup.ItemInput class={style["radio__input"]} />
-							<RadioGroup.ItemControl class={style["radio__control"]}>
-								<RadioGroup.ItemIndicator class={style["radio__indicator"]} />
+						<RadioGroup.Item value={fruit} class={style.radio}>
+							<RadioGroup.ItemInput class={style.radio__input} />
+							<RadioGroup.ItemControl class={style.radio__control}>
+								<RadioGroup.ItemIndicator class={style.radio__indicator} />
 							</RadioGroup.ItemControl>
-							<RadioGroup.ItemLabel class={style["radio__label"]}>
+							<RadioGroup.ItemLabel class={style.radio__label}>
 								{fruit}
 							</RadioGroup.ItemLabel>
 						</RadioGroup.Item>
@@ -175,12 +175,12 @@ export function HTMLFormExample() {
 				<div class={style["radio-group__items"]}>
 					<For each={["Apple", "Orange", "Watermelon"]}>
 						{(fruit) => (
-							<RadioGroup.Item value={fruit} class={style["radio"]}>
-								<RadioGroup.ItemInput class={style["radio__input"]} />
-								<RadioGroup.ItemControl class={style["radio__control"]}>
-									<RadioGroup.ItemIndicator class={style["radio__indicator"]} />
+							<RadioGroup.Item value={fruit} class={style.radio}>
+								<RadioGroup.ItemInput class={style.radio__input} />
+								<RadioGroup.ItemControl class={style.radio__control}>
+									<RadioGroup.ItemIndicator class={style.radio__indicator} />
 								</RadioGroup.ItemControl>
-								<RadioGroup.ItemLabel class={style["radio__label"]}>
+								<RadioGroup.ItemLabel class={style.radio__label}>
 									{fruit}
 								</RadioGroup.ItemLabel>
 							</RadioGroup.Item>
@@ -192,7 +192,9 @@ export function HTMLFormExample() {
 				<button type="reset" class="kb-button">
 					Reset
 				</button>
-				<button class="kb-button-primary">Submit</button>
+				<button type="submit" class="kb-button-primary">
+					Submit
+				</button>
 			</div>
 		</form>
 	);

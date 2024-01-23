@@ -570,9 +570,8 @@ export function CalendarRoot(props: CalendarRootProps) {
 					const nextValues = [...prevValue];
 					nextValues.splice(index, 1);
 					return sortDates(nextValues);
-				} else {
-					return sortDates([...prevValue, newValue]);
 				}
+				return sortDates([...prevValue, newValue]);
 			});
 		} else if (local.selectionMode === "range") {
 			if (!anchorDate()) {
@@ -1015,6 +1014,7 @@ function convertValue(
 ): DateValue {
 	// The display calendar should not have any effect on the emitted value.
 	// Emit dates in the same calendar as the original value, if any, otherwise gregorian.
+	// biome-ignore lint/style/noParameterAssign: convert parameter
 	newValue = toCalendar(
 		newValue,
 		oldValue?.calendar || new GregorianCalendar(),

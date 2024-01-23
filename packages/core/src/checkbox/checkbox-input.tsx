@@ -40,7 +40,7 @@ export function CheckboxInput(props: CheckboxInputProps) {
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
 
-	cont mergedProps = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("input"),
 		},

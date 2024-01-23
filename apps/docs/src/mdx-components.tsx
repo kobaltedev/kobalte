@@ -11,7 +11,7 @@ export const mdxComponents = {
 
 		return (
 			<h1 {...others}>
-				<MetaTitle>{local.children + " – Kobalte"}</MetaTitle>
+				<MetaTitle>{`${local.children} – Kobalte`}</MetaTitle>
 				{local.children}
 			</h1>
 		);

@@ -68,7 +68,7 @@ export function createSelectableItem<T extends HTMLElement>(
 			} else {
 				manager().replaceSelection(key());
 			}
-		} else if (e && e.shiftKey) {
+		} else if (e?.shiftKey) {
 			manager().extendSelection(key());
 		} else if (
 			manager().selectionBehavior() === "toggle" ||

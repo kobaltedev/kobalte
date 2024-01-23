@@ -177,7 +177,7 @@ export function SwitchRoot(props: SwitchRootProps) {
 					{...dataset()}
 					{...others}
 				>
-					<SwitchRootChild state={context} children={local.children} />
+					<SwitchRootChild state={context}>{local.children}</SwitchRootChild>
 				</Polymorphic>
 			</SwitchContext.Provider>
 		</FormControlContext.Provider>

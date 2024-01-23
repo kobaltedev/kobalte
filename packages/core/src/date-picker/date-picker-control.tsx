@@ -89,7 +89,7 @@ export function DatePickerControl(props: DatePickerControlProps) {
 		while (target?.hasAttribute("data-placeholder")) {
 			const prev = walker.previousNode() as HTMLElement;
 
-			if (prev && prev.hasAttribute("data-placeholder")) {
+			if (prev?.hasAttribute("data-placeholder")) {
 				target = prev;
 			} else {
 				break;

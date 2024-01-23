@@ -58,7 +58,7 @@ export function createTypeSelect(props: CreateTypeSelectProps) {
 			e.stopPropagation();
 		}
 
-		let newSearch = setSearch((prev) => (prev += character));
+		let newSearch = setSearch((prev) => prev + character);
 
 		// Use the delegate to find a key to focus.
 		// Prioritize items after the currently focused item, falling back to searching the whole list.

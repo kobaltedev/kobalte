@@ -83,7 +83,8 @@ describe("Menubar", () => {
 	it("renders correctly", async () => {
 		// Can't be tested as jsdom doesn't support onPointer events.
 		// Test code should be valid for the future.
-		if (!!true) return;
+		// biome-ignore lint/correctness/noConstantCondition: disabled code
+		if (true) return;
 
 		render(commonUI);
 
@@ -141,7 +142,8 @@ describe("Menubar", () => {
 	it("handles keyboard navigation correctly", async () => {
 		// Can't be tested as jsdom doesn't support onPointer events.
 		// Test code should be valid for the future.
-		if (!!true) return;
+		// biome-ignore lint/correctness/noConstantCondition: disabled code
+		if (true) return;
 
 		render(commonUI);
 
@@ -273,7 +275,8 @@ describe("Menubar", () => {
 	it("handles hover correctly", async () => {
 		// Can't be tested as jsdom doesn't support onPointer events.
 		// Test code should be valid for the future.
-		if (!!true) return;
+		// biome-ignore lint/correctness/noConstantCondition: disabled code
+		if (true) return;
 
 		render(commonUI);
 

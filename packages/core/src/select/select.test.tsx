@@ -2631,6 +2631,7 @@ describe("Select", () => {
 				return (
 					<>
 						<button
+							type="button"
 							data-testid="clear-button"
 							onClick={() => setValue(null as any)}
 						>
@@ -4064,7 +4065,7 @@ describe("Select", () => {
 
 	describe("form", () => {
 		it("Should submit empty option by default", async () => {
-			let value;
+			let value: {};
 
 			const onSubmit = jest.fn((e) => {
 				e.preventDefault();
@@ -4114,7 +4115,7 @@ describe("Select", () => {
 		});
 
 		it("Should submit default option", async () => {
-			let value;
+			let value: {};
 
 			const onSubmit = jest.fn((e) => {
 				e.preventDefault();

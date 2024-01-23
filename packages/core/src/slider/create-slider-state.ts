@@ -158,13 +158,13 @@ export function createSliderState(props: StateOpts): SliderState {
 	const updateValue = (index: number, value: number) => {
 		if (mergedProps.isDisabled!() || !isThumbEditable(index)) return;
 
-		value = snapValueToStep(
+		const snappedValue = snapValueToStep(
 			value,
 			getThumbMinValue(index),
 			getThumbMaxValue(index),
 			mergedProps.step!(),
 		);
-		const nextValues = getNextSortedValues(values(), value, index);
+		const nextValues = getNextSortedValues(values(), snappedValue, index);
 
 		if (
 			!hasMinStepsBetweenValues(
@@ -175,7 +175,7 @@ export function createSliderState(props: StateOpts): SliderState {
 			return;
 		}
 
-		setValues((prev) => [...replaceIndex(prev, index, value)]);
+		setValues((prev) => [...replaceIndex(prev, index, snappedValue)]);
 	};
 
 	const updateDragging = (index: number, dragging: boolean) => {

@@ -36,16 +36,13 @@ function jsToTreeNode(jsString: string, acornOpts?: AcornOptions) {
 	};
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: wip
 async function mdx(config: any) {
 	const cache = new Map();
 	const headingsCache = new Map();
 
 	function rehypeCollectHeadings() {
 		const slugger = new Slugger();
-		// biome-ignore lint/suspicious/noExplicitAny: wip
 		return (tree: any, file: any) => {
-			// biome-ignore lint/suspicious/noExplicitAny: wip
 			const headings: any[] = [];
 			visit(tree, (node) => {
 				if (node.type !== "element") {
@@ -155,7 +152,6 @@ async function mdx(config: any) {
 	return [
 		{
 			...plugin,
-			// biome-ignore lint/suspicious/noExplicitAny: wip
 			async transform(code: any, id: any) {
 				if (id.endsWith(".mdx") || id.endsWith(".md")) {
 					if (cache.has(code)) {
@@ -174,16 +170,15 @@ async function mdx(config: any) {
 		{
 			...plugin,
 			name: "mdx-meta",
-			// biome-ignore lint/suspicious/noExplicitAny: wip
 			async transform(code: any, id: any) {
 				if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
-					id = id.replace(/\?meta$/, "");
+					const replacedId = id.replace(/\?meta$/, "");
 
 					// eslint-disable-next-line no-inner-declarations
 					function getCode() {
 						return `
               export function getHeadings() { return ${JSON.stringify(
-								headingsCache.get(id),
+								headingsCache.get(replacedId),
 								null,
 								2,
 							)}
@@ -196,7 +191,7 @@ async function mdx(config: any) {
 					}
 
 					// @ts-ignore
-					const result = await plugin.transform?.call(this, code, id);
+					const result = await plugin.transform?.call(this, code, replacedId);
 
 					cache.set(code, result);
 

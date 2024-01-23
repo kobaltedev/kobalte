@@ -38,9 +38,14 @@ export function createFilter(options?: Intl.CollatorOptions): Filter {
 
 		// Normalize both strings so we can slice safely
 		// TODO: take into account the ignorePunctuation option as well...
-		str = str.normalize("NFC");
-		substr = substr.normalize("NFC");
-		return collator().compare(str.slice(0, substr.length), substr) === 0;
+		const normalizedStr = str.normalize("NFC");
+		const normalizedSubstr = substr.normalize("NFC");
+		return (
+			collator().compare(
+				normalizedStr.slice(0, normalizedSubstr.length),
+				normalizedSubstr,
+			) === 0
+		);
 	};
 
 	const endsWith = (str: string, substr: string) => {
@@ -48,9 +53,14 @@ export function createFilter(options?: Intl.CollatorOptions): Filter {
 			return true;
 		}
 
-		str = str.normalize("NFC");
-		substr = substr.normalize("NFC");
-		return collator().compare(str.slice(-substr.length), substr) === 0;
+		const normalizedStr = str.normalize("NFC");
+		const normalizedSubstr = substr.normalize("NFC");
+		return (
+			collator().compare(
+				normalizedStr.slice(-normalizedSubstr.length),
+				normalizedSubstr,
+			) === 0
+		);
 	};
 
 	const contains = (str: string, substr: string) => {
@@ -58,16 +68,16 @@ export function createFilter(options?: Intl.CollatorOptions): Filter {
 			return true;
 		}
 
-		str = str.normalize("NFC");
-		substr = substr.normalize("NFC");
+		const normalizedStr = str.normalize("NFC");
+		const normalizedSubstr = substr.normalize("NFC");
 
 		let scan = 0;
 		const sliceLen = substr.length;
 
-		for (; scan + sliceLen <= str.length; scan++) {
-			const slice = str.slice(scan, scan + sliceLen);
+		for (; scan + sliceLen <= normalizedStr.length; scan++) {
+			const slice = normalizedStr.slice(scan, scan + sliceLen);
 
-			if (collator().compare(substr, slice) === 0) {
+			if (collator().compare(normalizedSubstr, slice) === 0) {
 				return true;
 			}
 		}
