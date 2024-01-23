@@ -110,7 +110,8 @@ describe("ariaHideOutside", () => {
 	it("should not overwrite an existing aria-hidden prop", () => {
 		render(() => (
 			<>
-				<input type="checkbox" />
+				{/* biome-ignore lint/a11y/noAriaHiddenOnFocusable: test */}
+				<input type="checkbox" aria-hidden="true" />
 				<button type="button">Button</button>
 				<input type="checkbox" />
 			</>
