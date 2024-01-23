@@ -13,8 +13,8 @@ import { Menubar } from "@kobalte/core";
 ```
 
 <Callout type="warning">
-  Menubar was removed by mistake from version `0.12.0`, please make sure to update to `0.12.1` or
-  later.
+	Menubar was removed by mistake from version `0.12.0`, please make sure to update to `0.12.1` or
+	later.
 </Callout>
 
 ## Features
@@ -65,53 +65,53 @@ The checkable menu item consists of:
 
 ```tsx
 <Menubar.Root>
-  <Menubar.Menu>
-    <Menubar.Trigger>
-      <Menubar.Icon />
-    </Menubar.Trigger>
+	<Menubar.Menu>
+		<Menubar.Trigger>
+			<Menubar.Icon />
+		</Menubar.Trigger>
 
-    <Menubar.Portal>
-      <Menubar.Content>
-        <Menubar.Arrow />
+		<Menubar.Portal>
+			<Menubar.Content>
+				<Menubar.Arrow />
 
-        <Menubar.Item>
-          <Menubar.ItemLabel />
-          <Menubar.ItemDescription />
-        </Menubar.Item>
+				<Menubar.Item>
+					<Menubar.ItemLabel />
+					<Menubar.ItemDescription />
+				</Menubar.Item>
 
-        <Menubar.Group>
-          <Menubar.GroupLabel />
-          <Menubar.Item />
-        </Menubar.Group>
+				<Menubar.Group>
+					<Menubar.GroupLabel />
+					<Menubar.Item />
+				</Menubar.Group>
 
-        <Menubar.CheckboxItem>
-          <Menubar.ItemIndicator />
-        </Menubar.CheckboxItem>
+				<Menubar.CheckboxItem>
+					<Menubar.ItemIndicator />
+				</Menubar.CheckboxItem>
 
-        <Menubar.RadioGroup>
-          <Menubar.RadioItem>
-            <Menubar.ItemIndicator />
-          </Menubar.RadioItem>
-        </Menubar.RadioGroup>
+				<Menubar.RadioGroup>
+					<Menubar.RadioItem>
+						<Menubar.ItemIndicator />
+					</Menubar.RadioItem>
+				</Menubar.RadioGroup>
 
-        <Menubar.Sub>
-          <Menubar.SubTrigger />
-          <Menubar.Portal>
-            <Menubar.SubContent />
-          </Menubar.Portal>
-        </Menubar.Sub>
+				<Menubar.Sub>
+					<Menubar.SubTrigger />
+					<Menubar.Portal>
+						<Menubar.SubContent />
+					</Menubar.Portal>
+				</Menubar.Sub>
 
-        <Menubar.Separator />
-      </Menubar.Content>
-    </Menubar.Portal>
-  </Menubar.Menu>
+				<Menubar.Separator />
+			</Menubar.Content>
+		</Menubar.Portal>
+	</Menubar.Menu>
 </Menubar.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -506,35 +506,35 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 /* style.css */
 .context-menu__content,
 .context-menu__sub-content {
-  transform-origin: var(--kb-menu-content-transform-origin);
-  animation: contentHide 250ms ease-in forwards;
+	transform-origin: var(--kb-menu-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
 }
 
 .context-menu__content[data-expanded],
 .context-menu__sub-content[data-expanded] {
-  animation: contentShow 250ms ease-out;
+	animation: contentShow 250ms ease-out;
 }
 
 @keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
 
 @keyframes contentHide {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.96);
-  }
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: scale(0.96);
+	}
 }
 ```
 

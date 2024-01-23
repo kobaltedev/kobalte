@@ -11,14 +11,14 @@ import solid from "solid-start/vite";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  plugins: [solid()],
-  ssr: {
-    noExternal: ["@kobalte/core"],
-  },
+	plugins: [solid()],
+	ssr: {
+		noExternal: ["@kobalte/core"],
+	},
 });
 ```
 
 <Callout type="warning">
-  Kobalte has been tested with `solid-js@1.7.11` and `solid-start@0.3.4`, compatibility with other
-  versions is not guaranteed.
+	Kobalte has been tested with `solid-js@1.7.11` and `solid-start@0.3.4`, compatibility with other
+	versions is not guaranteed.
 </Callout>

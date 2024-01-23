@@ -1,11 +1,11 @@
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
-  BasicExample,
-  ControlledExample,
-  DefaultCheckedExample,
-  DescriptionExample,
-  ErrorMessageExample,
-  HTMLFormExample,
+	BasicExample,
+	ControlledExample,
+	DefaultCheckedExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	HTMLFormExample,
 } from "../../../../examples/switch";
 
 # Switch
@@ -41,20 +41,20 @@ The switch consists of:
 
 ```tsx
 <Switch.Root>
-  <Switch.Label />
-  <Switch.Description />
-  <Switch.ErrorMessage />
-  <Switch.Input />
-  <Switch.Control>
-    <Switch.Thumb />
-  </Switch.Control>
+	<Switch.Label />
+	<Switch.Description />
+	<Switch.ErrorMessage />
+	<Switch.Input />
+	<Switch.Control>
+		<Switch.Thumb />
+	</Switch.Control>
 </Switch.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -142,7 +142,7 @@ The switch consists of:
 An initial, uncontrolled value can be provided using the `defaultChecked` prop.
 
 <Preview>
-  <DefaultCheckedExample />
+	<DefaultCheckedExample />
 </Preview>
 
 ```tsx
@@ -154,23 +154,23 @@ An initial, uncontrolled value can be provided using the `defaultChecked` prop.
 The `checked` prop can be used to make the checked state controlled. The `onChange` event is fired when the user toggle the switch, and receives the new value.
 
 <Preview>
-  <ControlledExample />
+	<ControlledExample />
 </Preview>
 
 ```tsx {3,7}
 import { createSignal } from "solid-js";
 
 export function ControlledExample() {
-  const [checked, setChecked] = createSignal(false);
+	const [checked, setChecked] = createSignal(false);
 
-  return (
-    <>
-      <Switch.Root checked={checked()} onChange={setChecked}>
-        ...
-      </Switch.Root>
-      <p>Airplane mode is {checked() ? "active" : "inactive"}.</p>
-    </>
-  );
+	return (
+		<>
+			<Switch.Root checked={checked()} onChange={setChecked}>
+				...
+			</Switch.Root>
+			<p>Airplane mode is {checked() ? "active" : "inactive"}.</p>
+		</>
+	);
 }
 ```
 
@@ -179,17 +179,17 @@ export function ControlledExample() {
 The `Switch.Description` component can be used to associate additional help text with a switch.
 
 <Preview>
-  <DescriptionExample />
+	<DescriptionExample />
 </Preview>
 
 ```tsx {2}
 <Switch.Root>
-  <Switch.Label>Airplane mode</Switch.Label>
-  <Switch.Description>Disable all network connections.</Switch.Description>
-  <Switch.Input />
-  <Switch.Control>
-    <Switch.Thumb />
-  </Switch.Control>
+	<Switch.Label>Airplane mode</Switch.Label>
+	<Switch.Description>Disable all network connections.</Switch.Description>
+	<Switch.Input />
+	<Switch.Control>
+		<Switch.Thumb />
+	</Switch.Control>
 </Switch.Root>
 ```
 
@@ -200,29 +200,29 @@ The `Switch.ErrorMessage` component can be used to help the user fix a validatio
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
 <Preview>
-  <ErrorMessageExample />
+	<ErrorMessageExample />
 </Preview>
 
 ```tsx {9,12}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
-  const [checked, setChecked] = createSignal(false);
+	const [checked, setChecked] = createSignal(false);
 
-  return (
-    <Switch.Root
-      checked={checked()}
-      onChange={setChecked}
-      validationState={!checked() ? "invalid" : "valid"}
-    >
-      <Switch.Label>Airplane mode</Switch.Label>
-      <Switch.ErrorMessage>You must enable airplane mode.</Switch.ErrorMessage>
-      <Switch.Input />
-      <Switch.Control>
-        <Switch.Thumb />
-      </Switch.Control>
-    </Switch.Root>
-  );
+	return (
+		<Switch.Root
+			checked={checked()}
+			onChange={setChecked}
+			validationState={!checked() ? "invalid" : "valid"}
+		>
+			<Switch.Label>Airplane mode</Switch.Label>
+			<Switch.ErrorMessage>You must enable airplane mode.</Switch.ErrorMessage>
+			<Switch.Input />
+			<Switch.Control>
+				<Switch.Thumb />
+			</Switch.Control>
+		</Switch.Root>
+	);
 }
 ```
 
@@ -231,25 +231,25 @@ function ErrorMessageExample() {
 The `name` and `value` props can be used for integration with HTML forms.
 
 <Preview>
-  <HTMLFormExample />
+	<HTMLFormExample />
 </Preview>
 
 ```tsx {6}
 function HTMLFormExample() {
-  const onSubmit = (e: SubmitEvent) => {
-    // handle form submission.
-  };
-  return (
-    <form onSubmit={onSubmit}>
-      <Switch.Root name="airplane-mode" value="on">
-        ...
-      </Switch.Root>
-      <div>
-        <button type="reset">Reset</button>
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+	return (
+		<form onSubmit={onSubmit}>
+			<Switch.Root name="airplane-mode" value="on">
+				...
+			</Switch.Root>
+			<div>
+				<button type="reset">Reset</button>
 				<button type="submit">Submit</button>
-      </div>
-    </form>
-  );
+			</div>
+		</form>
+	);
 }
 ```
 

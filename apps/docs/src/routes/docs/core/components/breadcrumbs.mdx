@@ -29,19 +29,19 @@ The breadcrumbs consist of:
 
 ```tsx
 <Breadcrumbs.Root>
-  <ol>
-    <li>
-      <Breadcrumbs.Link />
-      <Breadcrumbs.Separator />
-    </li>
-  </ol>
+	<ol>
+		<li>
+			<Breadcrumbs.Link />
+			<Breadcrumbs.Separator />
+		</li>
+	</ol>
 </Breadcrumbs.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -130,43 +130,43 @@ The breadcrumbs consist of:
 Use the `separator` prop to provide a default content for all `Breadcrumbs.Separator`. You can pass it a `string` or a SolidJS component.
 
 <Preview>
-  <CustomSeparatorExample />
+	<CustomSeparatorExample />
 </Preview>
 
 ```tsx {0,4}
 import { ChevronRightIcon } from "some-icon-library";
 
 function App() {
-  return (
-    <Breadcrumbs.Root separator={<ChevronRightIcon />}>
-      <ol class="breadcrumbs__list">
-        <li class="breadcrumbs__item">
-          <Breadcrumbs.Link href="/" class="breadcrumbs__link">
-            Home
-          </Breadcrumbs.Link>
-          <Breadcrumbs.Separator class="breadcrumbs__separator" />
-        </li>
-        <li class="breadcrumbs__item">
-          <Breadcrumbs.Link href="/components" class="breadcrumbs__link">
-            Components
-          </Breadcrumbs.Link>
-          <Breadcrumbs.Separator class="breadcrumbs__separator" />
-        </li>
-        <li class="breadcrumbs__item">
-          <Breadcrumbs.Link current class="breadcrumbs__link">
-            Breadcrumbs
-          </Breadcrumbs.Link>
-        </li>
-      </ol>
-    </Breadcrumbs.Root>
-  );
+	return (
+		<Breadcrumbs.Root separator={<ChevronRightIcon />}>
+			<ol class="breadcrumbs__list">
+				<li class="breadcrumbs__item">
+					<Breadcrumbs.Link href="/" class="breadcrumbs__link">
+						Home
+					</Breadcrumbs.Link>
+					<Breadcrumbs.Separator class="breadcrumbs__separator" />
+				</li>
+				<li class="breadcrumbs__item">
+					<Breadcrumbs.Link href="/components" class="breadcrumbs__link">
+						Components
+					</Breadcrumbs.Link>
+					<Breadcrumbs.Separator class="breadcrumbs__separator" />
+				</li>
+				<li class="breadcrumbs__item">
+					<Breadcrumbs.Link current class="breadcrumbs__link">
+						Breadcrumbs
+					</Breadcrumbs.Link>
+				</li>
+			</ol>
+		</Breadcrumbs.Root>
+	);
 }
 ```
 
 <Callout>
-  <span>
-    You can also override each `Breadcrumbs.Separator` content by providing your own `children`.
-  </span>
+	<span>
+		You can also override each `Breadcrumbs.Separator` content by providing your own `children`.
+	</span>
 </Callout>
 
 ## API Reference

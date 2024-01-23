@@ -1,27 +1,27 @@
 .toggle-button {
-  appearance: none;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  width: 40px;
-  outline: none;
-  border-radius: 6px;
-  background-color: hsl(200 98% 39%);
-  color: white;
-  font-size: 16px;
-  line-height: 0;
+	appearance: none;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: 40px;
+	outline: none;
+	border-radius: 6px;
+	background-color: hsl(200 98% 39%);
+	color: white;
+	font-size: 16px;
+	line-height: 0;
 }
 
 .toggle-button:focus-visible {
-  outline: 2px solid hsl(200 98% 39%);
-  outline-offset: 2px;
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
 }
 
 .toggle-button[data-pressed] {
-  background-color: hsl(0 72% 51%);
+	background-color: hsl(0 72% 51%);
 }
 
 [data-kb-theme="dark"] .toggle-button {
-  color: hsla(0 100% 100% / 0.9);
+	color: hsla(0 100% 100% / 0.9);
 }

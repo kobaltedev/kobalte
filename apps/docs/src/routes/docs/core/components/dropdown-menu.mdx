@@ -59,51 +59,51 @@ The checkable menu item consists of:
 
 ```tsx
 <DropdownMenu.Root>
-  <DropdownMenu.Trigger>
-    <DropdownMenu.Icon />
-  </DropdownMenu.Trigger>
+	<DropdownMenu.Trigger>
+		<DropdownMenu.Icon />
+	</DropdownMenu.Trigger>
 
-  <DropdownMenu.Portal>
-    <DropdownMenu.Content>
-      <DropdownMenu.Arrow />
+	<DropdownMenu.Portal>
+		<DropdownMenu.Content>
+			<DropdownMenu.Arrow />
 
-      <DropdownMenu.Item>
-        <DropdownMenu.ItemLabel />
-        <DropdownMenu.ItemDescription />
-      </DropdownMenu.Item>
+			<DropdownMenu.Item>
+				<DropdownMenu.ItemLabel />
+				<DropdownMenu.ItemDescription />
+			</DropdownMenu.Item>
 
-      <DropdownMenu.Group>
-        <DropdownMenu.GroupLabel />
-        <DropdownMenu.Item />
-      </DropdownMenu.Group>
+			<DropdownMenu.Group>
+				<DropdownMenu.GroupLabel />
+				<DropdownMenu.Item />
+			</DropdownMenu.Group>
 
-      <DropdownMenu.CheckboxItem>
-        <DropdownMenu.ItemIndicator />
-      </DropdownMenu.CheckboxItem>
+			<DropdownMenu.CheckboxItem>
+				<DropdownMenu.ItemIndicator />
+			</DropdownMenu.CheckboxItem>
 
-      <DropdownMenu.RadioGroup>
-        <DropdownMenu.RadioItem>
-          <DropdownMenu.ItemIndicator />
-        </DropdownMenu.RadioItem>
-      </DropdownMenu.RadioGroup>
+			<DropdownMenu.RadioGroup>
+				<DropdownMenu.RadioItem>
+					<DropdownMenu.ItemIndicator />
+				</DropdownMenu.RadioItem>
+			</DropdownMenu.RadioGroup>
 
-      <DropdownMenu.Sub>
-        <DropdownMenu.SubTrigger />
-        <DropdownMenu.Portal>
-          <DropdownMenu.SubContent />
-        </DropdownMenu.Portal>
-      </DropdownMenu.Sub>
+			<DropdownMenu.Sub>
+				<DropdownMenu.SubTrigger />
+				<DropdownMenu.Portal>
+					<DropdownMenu.SubContent />
+				</DropdownMenu.Portal>
+			</DropdownMenu.Sub>
 
-      <DropdownMenu.Separator />
-    </DropdownMenu.Content>
-  </DropdownMenu.Portal>
+			<DropdownMenu.Separator />
+		</DropdownMenu.Content>
+	</DropdownMenu.Portal>
 </DropdownMenu.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -406,23 +406,23 @@ An initial, uncontrolled open value can be provided using the `defaultOpen` prop
 The `open` prop can be used to make the open state controlled. The `onOpenChange` event is fired when the user presses the trigger, an item or interact outside, and receives the new value.
 
 <Preview>
-  <ControlledExample />
+	<ControlledExample />
 </Preview>
 
 ```tsx {3,6}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
-  const [open, setOpen] = createSignal(false);
+	const [open, setOpen] = createSignal(false);
 
-  return (
-    <DropdownMenu.Root open={open()} onOpenChange={setOpen}>
-      <DropdownMenu.Trigger>{open() ? "Close" : "Open"}</DropdownMenu.Trigger>
-      <DropdownMenu.Portal>
-        <DropdownMenu.Content>...</DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu.Root>
-  );
+	return (
+		<DropdownMenu.Root open={open()} onOpenChange={setOpen}>
+			<DropdownMenu.Trigger>{open() ? "Close" : "Open"}</DropdownMenu.Trigger>
+			<DropdownMenu.Portal>
+				<DropdownMenu.Content>...</DropdownMenu.Content>
+			</DropdownMenu.Portal>
+		</DropdownMenu.Root>
+	);
 }
 ```
 
@@ -434,35 +434,35 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 /* style.css */
 .dropdown-menu__content,
 .dropdown-menu__sub-content {
-  transform-origin: var(--kb-menu-content-transform-origin);
-  animation: contentHide 250ms ease-in forwards;
+	transform-origin: var(--kb-menu-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
 }
 
 .dropdown-menu__content[data-expanded],
 .dropdown-menu__sub-content[data-expanded] {
-  animation: contentShow 250ms ease-out;
+	animation: contentShow 250ms ease-out;
 }
 
 @keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
 
 @keyframes contentHide {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.96);
-  }
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: scale(0.96);
+	}
 }
 ```
 

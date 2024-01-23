@@ -1,14 +1,14 @@
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
 import {
-  BasicExample,
-  DefaultValueExample,
-  ControlledExample,
-  DescriptionExample,
-  ErrorMessageExample,
-  HTMLFormExample,
-  ObjectExample,
-  OptionGroupExample,
-  MultipleSelectionExample,
+	BasicExample,
+	DefaultValueExample,
+	ControlledExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	HTMLFormExample,
+	ObjectExample,
+	OptionGroupExample,
+	MultipleSelectionExample,
 } from "../../../../examples/combobox";
 
 # Combobox
@@ -61,29 +61,29 @@ The combobox consists of:
 
 ```tsx
 <Combobox.Root>
-  <Combobox.Label />
-  <Combobox.Control>
-    <Combobox.Input />
-    <Combobox.Trigger>
-      <Combobox.Icon />
-    </Combobox.Trigger>
-  </Combobox.Control>
-  <Combobox.Description />
-  <Combobox.ErrorMessage />
+	<Combobox.Label />
+	<Combobox.Control>
+		<Combobox.Input />
+		<Combobox.Trigger>
+			<Combobox.Icon />
+		</Combobox.Trigger>
+	</Combobox.Control>
+	<Combobox.Description />
+	<Combobox.ErrorMessage />
 
-  <Combobox.Portal>
-    <Combobox.Content>
-      <Combobox.Arrow />
-      <Combobox.Listbox />
-    </Combobox.Content>
-  </Combobox.Portal>
+	<Combobox.Portal>
+		<Combobox.Content>
+			<Combobox.Arrow />
+			<Combobox.Listbox />
+		</Combobox.Content>
+	</Combobox.Portal>
 </Combobox.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -328,11 +328,11 @@ import { Combobox } from "@kobalte/core";
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 function FilteringExample() {
-  return (
-    <Combobox.Root options={ALL_OPTIONS} defaultFilter="startsWith">
-      //...rest of the component.
-    </Combobox.Root>
-  );
+	return (
+		<Combobox.Root options={ALL_OPTIONS} defaultFilter="startsWith">
+			//...rest of the component.
+		</Combobox.Root>
+	);
 }
 ```
 
@@ -341,7 +341,7 @@ function FilteringExample() {
 An initial, uncontrolled value can be provided using the `defaultValue` prop, which accepts a value corresponding with the `options`.
 
 <Preview>
-  <DefaultValueExample />
+	<DefaultValueExample />
 </Preview>
 
 ```tsx {8}
@@ -351,35 +351,35 @@ import { CaretSortIcon, CheckIcon } from "some-icon-library";
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 function DefaultValueExample() {
-  return (
-    <Combobox.Root
-      defaultValue="Blueberry"
-      options={ALL_OPTIONS}
-      placeholder="Search a fruit…"
-      itemComponent={props => (
-        <Combobox.Item item={props.item}>
-          <Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
-          <Combobox.ItemIndicator>
-            <CheckIcon />
-          </Combobox.ItemIndicator>
-        </Combobox.Item>
-      )}
-    >
-      <Combobox.Control aria-label="Fruit">
-        <Combobox.Input />
-        <Combobox.Trigger>
-          <Combobox.Icon>
-            <CaretSortIcon />
-          </Combobox.Icon>
-        </Combobox.Trigger>
-      </Combobox.Control>
-      <Combobox.Portal>
-        <Combobox.Content>
-          <Combobox.Listbox />
-        </Combobox.Content>
-      </Combobox.Portal>
-    </Combobox.Root>
-  );
+	return (
+		<Combobox.Root
+			defaultValue="Blueberry"
+			options={ALL_OPTIONS}
+			placeholder="Search a fruit…"
+			itemComponent={props => (
+				<Combobox.Item item={props.item}>
+					<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+					<Combobox.ItemIndicator>
+						<CheckIcon />
+					</Combobox.ItemIndicator>
+				</Combobox.Item>
+			)}
+		>
+			<Combobox.Control aria-label="Fruit">
+				<Combobox.Input />
+				<Combobox.Trigger>
+					<Combobox.Icon>
+						<CaretSortIcon />
+					</Combobox.Icon>
+				</Combobox.Trigger>
+			</Combobox.Control>
+			<Combobox.Portal>
+				<Combobox.Content>
+					<Combobox.Listbox />
+				</Combobox.Content>
+			</Combobox.Portal>
+		</Combobox.Root>
+	);
 }
 ```
 
@@ -388,7 +388,7 @@ function DefaultValueExample() {
 The `value` prop, which accepts a value corresponding with the `options` prop, can be used to make the value controlled. The `onChange` event is fired when the user selects an option, and receives the selected option.
 
 <Preview>
-  <ControlledExample />
+	<ControlledExample />
 </Preview>
 
 ```tsx {7,20-21}
@@ -399,49 +399,49 @@ import { createSignal } from "solid-js";
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 function ControlledExample() {
-  const [value, setValue] = createSignal("Blueberry");
+	const [value, setValue] = createSignal("Blueberry");
 
-  const onInputChange = (value: string) => {
-    // Remove selection when input is cleared.
-    if (value === "") {
-      setValue("");
-    }
-  };
+	const onInputChange = (value: string) => {
+		// Remove selection when input is cleared.
+		if (value === "") {
+			setValue("");
+		}
+	};
 
-  return (
-    <>
-      <Combobox.Root
-        options={ALL_OPTIONS}
-        value={value()}
-        onChange={setValue}
-        onInputChange={onInputChange}
-        placeholder="Search a fruit…"
-        itemComponent={props => (
-          <Combobox.Item item={props.item}>
-            <Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
-            <Combobox.ItemIndicator>
-              <CheckIcon />
-            </Combobox.ItemIndicator>
-          </Combobox.Item>
-        )}
-      >
-        <Combobox.Control aria-label="Fruit">
-          <Combobox.Input />
-          <Combobox.Trigger>
-            <Combobox.Icon>
-              <CaretSortIcon />
-            </Combobox.Icon>
-          </Combobox.Trigger>
-        </Combobox.Control>
-        <Combobox.Portal>
-          <Combobox.Content>
-            <Combobox.Listbox />
-          </Combobox.Content>
-        </Combobox.Portal>
-      </Combobox.Root>
-      <p>Your favorite fruit is: {value()}.</p>
-    </>
-  );
+	return (
+		<>
+			<Combobox.Root
+				options={ALL_OPTIONS}
+				value={value()}
+				onChange={setValue}
+				onInputChange={onInputChange}
+				placeholder="Search a fruit…"
+				itemComponent={props => (
+					<Combobox.Item item={props.item}>
+						<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+						<Combobox.ItemIndicator>
+							<CheckIcon />
+						</Combobox.ItemIndicator>
+					</Combobox.Item>
+				)}
+			>
+				<Combobox.Control aria-label="Fruit">
+					<Combobox.Input />
+					<Combobox.Trigger>
+						<Combobox.Icon>
+							<CaretSortIcon />
+						</Combobox.Icon>
+					</Combobox.Trigger>
+				</Combobox.Control>
+				<Combobox.Portal>
+					<Combobox.Content>
+						<Combobox.Listbox />
+					</Combobox.Content>
+				</Combobox.Portal>
+			</Combobox.Root>
+			<p>Your favorite fruit is: {value()}.</p>
+		</>
+	);
 }
 ```
 
@@ -450,7 +450,7 @@ function ControlledExample() {
 The `Combobox.Description` component can be used to associate additional help text with a combobox.
 
 <Preview>
-  <DescriptionExample />
+	<DescriptionExample />
 </Preview>
 
 ```tsx {27}
@@ -460,35 +460,35 @@ import { CaretSortIcon, CheckIcon } from "some-icon-library";
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 function DescriptionExample() {
-  return (
-    <Combobox.Root
-      options={ALL_OPTIONS}
-      placeholder="Search a fruit…"
-      itemComponent={props => (
-        <Combobox.Item item={props.item}>
-          <Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
-          <Combobox.ItemIndicator>
-            <CheckIcon />
-          </Combobox.ItemIndicator>
-        </Combobox.Item>
-      )}
-    >
-      <Combobox.Control aria-label="Fruit">
-        <Combobox.Input />
-        <Combobox.Trigger>
-          <Combobox.Icon>
-            <CaretSortIcon />
-          </Combobox.Icon>
-        </Combobox.Trigger>
-      </Combobox.Control>
-      <Combobox.Description>Choose the fruit you like the most.</Combobox.Description>
-      <Combobox.Portal>
-        <Combobox.Content>
-          <Combobox.Listbox />
-        </Combobox.Content>
-      </Combobox.Portal>
-    </Combobox.Root>
-  );
+	return (
+		<Combobox.Root
+			options={ALL_OPTIONS}
+			placeholder="Search a fruit…"
+			itemComponent={props => (
+				<Combobox.Item item={props.item}>
+					<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+					<Combobox.ItemIndicator>
+						<CheckIcon />
+					</Combobox.ItemIndicator>
+				</Combobox.Item>
+			)}
+		>
+			<Combobox.Control aria-label="Fruit">
+				<Combobox.Input />
+				<Combobox.Trigger>
+					<Combobox.Icon>
+						<CaretSortIcon />
+					</Combobox.Icon>
+				</Combobox.Trigger>
+			</Combobox.Control>
+			<Combobox.Description>Choose the fruit you like the most.</Combobox.Description>
+			<Combobox.Portal>
+				<Combobox.Content>
+					<Combobox.Listbox />
+				</Combobox.Content>
+			</Combobox.Portal>
+		</Combobox.Root>
+	);
 }
 ```
 
@@ -499,7 +499,7 @@ The `Combobox.ErrorMessage` component can be used to help the user fix a validat
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
 <Preview>
-  <ErrorMessageExample />
+	<ErrorMessageExample />
 </Preview>
 
 ```tsx {22,41}
@@ -510,48 +510,48 @@ import { createSignal } from "solid-js";
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 function ErrorMessageExample() {
-  const [value, setValue] = createSignal("Grapes");
+	const [value, setValue] = createSignal("Grapes");
 
-  const onInputChange = (value: string) => {
-    // Remove selection when input is cleared.
-    if (value === "") {
-      setValue("");
-    }
-  };
+	const onInputChange = (value: string) => {
+		// Remove selection when input is cleared.
+		if (value === "") {
+			setValue("");
+		}
+	};
 
-  return (
-    <Combobox.Root
-      options={ALL_OPTIONS}
-      value={value()}
-      onChange={setValue}
-      onInputChange={onInputChange}
-      validationState={value() !== "Apple" ? "invalid" : "valid"}
-      placeholder="Search a fruit…"
-      itemComponent={props => (
-        <Combobox.Item item={props.item}>
-          <Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
-          <Combobox.ItemIndicator>
-            <CheckIcon />
-          </Combobox.ItemIndicator>
-        </Combobox.Item>
-      )}
-    >
-      <Combobox.Control aria-label="Fruit">
-        <Combobox.Input />
-        <Combobox.Trigger>
-          <Combobox.Icon>
-            <CaretSortIcon />
-          </Combobox.Icon>
-        </Combobox.Trigger>
-      </Combobox.Control>
-      <Combobox.ErrorMessage>Hmm, I prefer apples.</Combobox.ErrorMessage>
-      <Combobox.Portal>
-        <Combobox.Content>
-          <Combobox.Listbox />
-        </Combobox.Content>
-      </Combobox.Portal>
-    </Combobox.Root>
-  );
+	return (
+		<Combobox.Root
+			options={ALL_OPTIONS}
+			value={value()}
+			onChange={setValue}
+			onInputChange={onInputChange}
+			validationState={value() !== "Apple" ? "invalid" : "valid"}
+			placeholder="Search a fruit…"
+			itemComponent={props => (
+				<Combobox.Item item={props.item}>
+					<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+					<Combobox.ItemIndicator>
+						<CheckIcon />
+					</Combobox.ItemIndicator>
+				</Combobox.Item>
+			)}
+		>
+			<Combobox.Control aria-label="Fruit">
+				<Combobox.Input />
+				<Combobox.Trigger>
+					<Combobox.Icon>
+						<CaretSortIcon />
+					</Combobox.Icon>
+				</Combobox.Trigger>
+			</Combobox.Control>
+			<Combobox.ErrorMessage>Hmm, I prefer apples.</Combobox.ErrorMessage>
+			<Combobox.Portal>
+				<Combobox.Content>
+					<Combobox.Listbox />
+				</Combobox.Content>
+			</Combobox.Portal>
+		</Combobox.Root>
+	);
 }
 ```
 
@@ -560,7 +560,7 @@ function ErrorMessageExample() {
 The combobox `name` prop, paired with the `Combobox.HiddenSelect` component, can be used for integration with HTML forms.
 
 <Preview>
-  <HTMLFormExample />
+	<HTMLFormExample />
 </Preview>
 
 ```tsx {13,25}
@@ -570,46 +570,46 @@ import { CaretSortIcon, CheckIcon } from "some-icon-library";
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 function HTMLFormExample() {
-  const onSubmit = (e: SubmitEvent) => {
-    // handle form submission.
-  };
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
 
-  return (
-    <form onSubmit={onSubmit}>
-      <Combobox.Root
-        name="fruit"
-        options={ALL_OPTIONS}
-        placeholder="Search a fruit…"
-        itemComponent={props => (
-          <Combobox.Item item={props.item}>
-            <Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
-            <Combobox.ItemIndicator>
-              <CheckIcon />
-            </Combobox.ItemIndicator>
-          </Combobox.Item>
-        )}
-      >
-        <Combobox.HiddenSelect />
-        <Combobox.Control aria-label="Fruit">
-          <Combobox.Input />
-          <Combobox.Trigger>
-            <Combobox.Icon>
-              <CaretSortIcon />
-            </Combobox.Icon>
-          </Combobox.Trigger>
-        </Combobox.Control>
-        <Combobox.Portal>
-          <Combobox.Content>
-            <Combobox.Listbox />
-          </Combobox.Content>
-        </Combobox.Portal>
-      </Combobox.Root>
-      <div>
-        <button type="reset">Reset</button>
-        <button>Submit</button>
-      </div>
-    </form>
-  );
+	return (
+		<form onSubmit={onSubmit}>
+			<Combobox.Root
+				name="fruit"
+				options={ALL_OPTIONS}
+				placeholder="Search a fruit…"
+				itemComponent={props => (
+					<Combobox.Item item={props.item}>
+						<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+						<Combobox.ItemIndicator>
+							<CheckIcon />
+						</Combobox.ItemIndicator>
+					</Combobox.Item>
+				)}
+			>
+				<Combobox.HiddenSelect />
+				<Combobox.Control aria-label="Fruit">
+					<Combobox.Input />
+					<Combobox.Trigger>
+						<Combobox.Icon>
+							<CaretSortIcon />
+						</Combobox.Icon>
+					</Combobox.Trigger>
+				</Combobox.Control>
+				<Combobox.Portal>
+					<Combobox.Content>
+						<Combobox.Listbox />
+					</Combobox.Content>
+				</Combobox.Portal>
+			</Combobox.Root>
+			<div>
+				<button type="reset">Reset</button>
+				<button>Submit</button>
+			</div>
+		</form>
+	);
 }
 ```
 
@@ -623,7 +623,7 @@ Objects can be used as options instead of plain strings. In this case you have t
 - `optionDisabled`: The property name to use as the disabled flag of an option.
 
 <Preview>
-  <ObjectExample />
+	<ObjectExample />
 </Preview>
 
 ```tsx {21-24}
@@ -631,52 +631,52 @@ import { Combobox } from "@kobalte/core";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 
 interface Fruit {
-  value: string;
-  label: string;
-  disabled: boolean;
+	value: string;
+	label: string;
+	disabled: boolean;
 }
 
 const ALL_OPTIONS: Fruit[] = [
-  { value: "apple", label: "Apple", disabled: false },
-  { value: "banana", label: "Banana", disabled: false },
-  { value: "blueberry", label: "Blueberry", disabled: false },
-  { value: "grapes", label: "Grapes", disabled: true },
-  { value: "pineapple", label: "Pineapple", disabled: false },
+	{ value: "apple", label: "Apple", disabled: false },
+	{ value: "banana", label: "Banana", disabled: false },
+	{ value: "blueberry", label: "Blueberry", disabled: false },
+	{ value: "grapes", label: "Grapes", disabled: true },
+	{ value: "pineapple", label: "Pineapple", disabled: false },
 ];
 
 function ObjectExample() {
-  return (
-    <Combobox.Root
-      options={ALL_OPTIONS}
-      optionValue="value"
-      optionTextValue="label"
-      optionLabel="label"
-      optionDisabled="disabled"
-      placeholder="Search a fruit…"
-      itemComponent={props => (
-        <Combobox.Item item={props.item}>
-          <Combobox.ItemLabel>{props.item.rawValue.label}</Combobox.ItemLabel>
-          <Combobox.ItemIndicator>
-            <CheckIcon />
-          </Combobox.ItemIndicator>
-        </Combobox.Item>
-      )}
-    >
-      <Combobox.Control aria-label="Fruit">
-        <Combobox.Input />
-        <Combobox.Trigger>
-          <Combobox.Icon>
-            <CaretSortIcon />
-          </Combobox.Icon>
-        </Combobox.Trigger>
-      </Combobox.Control>
-      <Combobox.Portal>
-        <Combobox.Content>
-          <Combobox.Listbox />
-        </Combobox.Content>
-      </Combobox.Portal>
-    </Combobox.Root>
-  );
+	return (
+		<Combobox.Root
+			options={ALL_OPTIONS}
+			optionValue="value"
+			optionTextValue="label"
+			optionLabel="label"
+			optionDisabled="disabled"
+			placeholder="Search a fruit…"
+			itemComponent={props => (
+				<Combobox.Item item={props.item}>
+					<Combobox.ItemLabel>{props.item.rawValue.label}</Combobox.ItemLabel>
+					<Combobox.ItemIndicator>
+						<CheckIcon />
+					</Combobox.ItemIndicator>
+				</Combobox.Item>
+			)}
+		>
+			<Combobox.Control aria-label="Fruit">
+				<Combobox.Input />
+				<Combobox.Trigger>
+					<Combobox.Icon>
+						<CaretSortIcon />
+					</Combobox.Icon>
+				</Combobox.Trigger>
+			</Combobox.Control>
+			<Combobox.Portal>
+				<Combobox.Content>
+					<Combobox.Listbox />
+				</Combobox.Content>
+			</Combobox.Portal>
+		</Combobox.Root>
+	);
 }
 ```
 
@@ -689,7 +689,7 @@ When using option groups you have to tell the combobox how to distinguish an opt
 Additionally, the `sectionComponent` prop is used to display the option group label in the combobox.
 
 <Preview>
-  <OptionGroupExample />
+	<OptionGroupExample />
 </Preview>
 
 ```tsx {44}
@@ -697,80 +697,80 @@ import { Combobox } from "@kobalte/core";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 
 interface Food {
-  value: string;
-  label: string;
-  disabled: boolean;
+	value: string;
+	label: string;
+	disabled: boolean;
 }
 
 interface Category {
-  label: string;
-  options: Food[];
+	label: string;
+	options: Food[];
 }
 
 const ALL_OPTIONS: Category[] = [
-  {
-    label: "Fruits",
-    options: [
-      { value: "apple", label: "Apple", disabled: false },
-      { value: "banana", label: "Banana", disabled: false },
-      { value: "blueberry", label: "Blueberry", disabled: false },
-      { value: "grapes", label: "Grapes", disabled: true },
-      { value: "pineapple", label: "Pineapple", disabled: false },
-    ],
-  },
-  {
-    label: "Meat",
-    options: [
-      { value: "beef", label: "Beef", disabled: false },
-      { value: "chicken", label: "Chicken", disabled: false },
-      { value: "lamb", label: "Lamb", disabled: false },
-      { value: "pork", label: "Pork", disabled: false },
-    ],
-  },
+	{
+		label: "Fruits",
+		options: [
+			{ value: "apple", label: "Apple", disabled: false },
+			{ value: "banana", label: "Banana", disabled: false },
+			{ value: "blueberry", label: "Blueberry", disabled: false },
+			{ value: "grapes", label: "Grapes", disabled: true },
+			{ value: "pineapple", label: "Pineapple", disabled: false },
+		],
+	},
+	{
+		label: "Meat",
+		options: [
+			{ value: "beef", label: "Beef", disabled: false },
+			{ value: "chicken", label: "Chicken", disabled: false },
+			{ value: "lamb", label: "Lamb", disabled: false },
+			{ value: "pork", label: "Pork", disabled: false },
+		],
+	},
 ];
 
 export function OptionGroupExample() {
-  return (
-    <Combobox.Root<Food, Category>
-      options={ALL_OPTIONS}
-      optionValue="value"
-      optionTextValue="label"
-      optionLabel="label"
-      optionDisabled="disabled"
-      optionGroupChildren="options"
-      placeholder="Search a food…"
-      itemComponent={props => (
-        <Combobox.Item item={props.item}>
-          <Combobox.ItemLabel>{props.item.rawValue.label}</Combobox.ItemLabel>
-          <Combobox.ItemIndicator>
-            <CheckIcon />
-          </Combobox.ItemIndicator>
-        </Combobox.Item>
-      )}
-      sectionComponent={props => (
-        <Combobox.Section>{props.section.rawValue.label}</Combobox.Section>
-      )}
-    >
-      <Combobox.Control aria-label="Food">
-        <Combobox.Input />
-        <Combobox.Trigger>
-          <Combobox.Icon>
-            <CaretSortIcon />
-          </Combobox.Icon>
-        </Combobox.Trigger>
-      </Combobox.Control>
-      <Combobox.Portal>
-        <Combobox.Content>
-          <Combobox.Listbox />
-        </Combobox.Content>
-      </Combobox.Portal>
-    </Combobox.Root>
-  );
+	return (
+		<Combobox.Root<Food, Category>
+			options={ALL_OPTIONS}
+			optionValue="value"
+			optionTextValue="label"
+			optionLabel="label"
+			optionDisabled="disabled"
+			optionGroupChildren="options"
+			placeholder="Search a food…"
+			itemComponent={props => (
+				<Combobox.Item item={props.item}>
+					<Combobox.ItemLabel>{props.item.rawValue.label}</Combobox.ItemLabel>
+					<Combobox.ItemIndicator>
+						<CheckIcon />
+					</Combobox.ItemIndicator>
+				</Combobox.Item>
+			)}
+			sectionComponent={props => (
+				<Combobox.Section>{props.section.rawValue.label}</Combobox.Section>
+			)}
+		>
+			<Combobox.Control aria-label="Food">
+				<Combobox.Input />
+				<Combobox.Trigger>
+					<Combobox.Icon>
+						<CaretSortIcon />
+					</Combobox.Icon>
+				</Combobox.Trigger>
+			</Combobox.Control>
+			<Combobox.Portal>
+				<Combobox.Content>
+					<Combobox.Listbox />
+				</Combobox.Content>
+			</Combobox.Portal>
+		</Combobox.Root>
+	);
 }
 ```
 
 <Callout type="note">
-  Notice the usage of generics on `Combobox.Root` for proper TypeScript support.
+	Notice the usage of generics on `Combobox.Root` for proper TypeScript support.
 </Callout>
 
 ### Multiple selection
@@ -780,7 +780,7 @@ The `multiple` prop can be used to create a combobox that allow multi-selection.
 In this case `Combobox.Input` can't display the values, instead the `Combobox.Control` children _render prop_ expose an array of selected options, and two method for removing an option from the selection and clear the selection.
 
 <Preview>
-  <MultipleSelectionExample />
+	<MultipleSelectionExample />
 </Preview>
 
 ```tsx {7,12,14-15,30,34,42}
@@ -791,61 +791,61 @@ import { createSignal } from "solid-js";
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 function MultipleSelectionExample() {
-  const [values, setValues] = createSignal(["Blueberry", "Grapes"]);
+	const [values, setValues] = createSignal(["Blueberry", "Grapes"]);
 
-  return (
-    <>
-      <Combobox.Root<string>
-        multiple
-        options={ALL_OPTIONS}
-        value={values()}
-        onChange={setValues}
-        placeholder="Search some fruits…"
-        itemComponent={props => (
-          <Combobox.Item item={props.item}>
-            <Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
-            <Combobox.ItemIndicator>
-              <CheckIcon />
-            </Combobox.ItemIndicator>
-          </Combobox.Item>
-        )}
-      >
-        <Combobox.Control<string> aria-label="Fruits">
-          {state => (
-            <>
-              <div>
-                <For each={state.selectedOptions()}>
-                  {option => (
-                    <span onPointerDown={e => e.stopPropagation()}>
-                      {option}
-                      <button onClick={() => state.remove(option)}>
-                        <CrossIcon />
-                      </button>
-                    </span>
-                  )}
-                </For>
-                <Combobox.Input />
-              </div>
-              <button onPointerDown={e => e.stopPropagation()} onClick={state.clear}>
-                <CrossIcon />
-              </button>
-              <Combobox.Trigger>
-                <Combobox.Icon>
-                  <CaretSortIcon />
-                </Combobox.Icon>
-              </Combobox.Trigger>
-            </>
-          )}
-        </Combobox.Control>
-        <Combobox.Portal>
-          <Combobox.Content>
-            <Combobox.Listbox />
-          </Combobox.Content>
-        </Combobox.Portal>
-      </Combobox.Root>
-      <p>Your favorite fruits are: {values().join(", ")}.</p>
-    </>
-  );
+	return (
+		<>
+			<Combobox.Root<string>
+				multiple
+				options={ALL_OPTIONS}
+				value={values()}
+				onChange={setValues}
+				placeholder="Search some fruits…"
+				itemComponent={props => (
+					<Combobox.Item item={props.item}>
+						<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+						<Combobox.ItemIndicator>
+							<CheckIcon />
+						</Combobox.ItemIndicator>
+					</Combobox.Item>
+				)}
+			>
+				<Combobox.Control<string> aria-label="Fruits">
+					{state => (
+						<>
+							<div>
+								<For each={state.selectedOptions()}>
+									{option => (
+										<span onPointerDown={e => e.stopPropagation()}>
+											{option}
+											<button onClick={() => state.remove(option)}>
+												<CrossIcon />
+											</button>
+										</span>
+									)}
+								</For>
+								<Combobox.Input />
+							</div>
+							<button onPointerDown={e => e.stopPropagation()} onClick={state.clear}>
+								<CrossIcon />
+							</button>
+							<Combobox.Trigger>
+								<Combobox.Icon>
+									<CaretSortIcon />
+								</Combobox.Icon>
+							</Combobox.Trigger>
+						</>
+					)}
+				</Combobox.Control>
+				<Combobox.Portal>
+					<Combobox.Content>
+						<Combobox.Listbox />
+					</Combobox.Content>
+				</Combobox.Portal>
+			</Combobox.Root>
+			<p>Your favorite fruits are: {values().join(", ")}.</p>
+		</>
+	);
 }
 ```
 
@@ -856,34 +856,34 @@ We expose a CSS custom property `--kb-combobox-content-transform-origin` which c
 ```css {2}
 /* style.css */
 .combobox__content {
-  transform-origin: var(--kb-combobox-content-transform-origin);
-  animation: contentHide 250ms ease-in forwards;
+	transform-origin: var(--kb-combobox-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
 }
 
 .combobox__content[data-expanded] {
-  animation: contentShow 250ms ease-out;
+	animation: contentShow 250ms ease-out;
 }
 
 @keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+	from {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes contentHide {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
 }
 ```
 

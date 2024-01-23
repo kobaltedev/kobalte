@@ -1,4 +1,4 @@
-import { As, Select } from "@koutalte/core";
+import { As, Select } from "@kobalte/core";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { For, createSignal } from "solid-js";
 

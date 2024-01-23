@@ -1,15 +1,15 @@
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
 import {
-  ControlledExample,
-  DefaultValueExample,
-  HTMLFormExample,
-  BasicExample,
-  DescriptionExample,
-  ErrorMessageExample,
-  MultipleSelectionExample,
-  ObjectExample,
-  OptionGroupExample,
-  VirtualizedExample,
+	ControlledExample,
+	DefaultValueExample,
+	HTMLFormExample,
+	BasicExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	MultipleSelectionExample,
+	ObjectExample,
+	OptionGroupExample,
+	VirtualizedExample,
 } from "../../../../examples/select";
 
 # Select
@@ -60,27 +60,27 @@ The select consists of:
 
 ```tsx
 <Select.Root>
-  <Select.Label />
-  <Select.Trigger>
-    <Select.Value />
-    <Select.Icon />
-  </Select.Trigger>
-  <Select.Description />
-  <Select.ErrorMessage />
+	<Select.Label />
+	<Select.Trigger>
+		<Select.Value />
+		<Select.Icon />
+	</Select.Trigger>
+	<Select.Description />
+	<Select.ErrorMessage />
 
-  <Select.Portal>
-    <Select.Content>
-      <Select.Arrow />
-      <Select.Listbox />
-    </Select.Content>
-  </Select.Portal>
+	<Select.Portal>
+		<Select.Content>
+			<Select.Arrow />
+			<Select.Listbox />
+		</Select.Content>
+	</Select.Portal>
 </Select.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -286,34 +286,34 @@ The select consists of:
 An initial, uncontrolled value can be provided using the `defaultValue` prop, which accepts a value corresponding with the `options`.
 
 <Preview>
-  <DefaultValueExample />
+	<DefaultValueExample />
 </Preview>
 
 ```tsx {1}
 <Select.Root
-  defaultValue="Blueberry"
-  options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
-  placeholder="Select a fruit…"
-  itemComponent={props => (
-    <Select.Item item={props.item}>
-      <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
-      <Select.ItemIndicator>
-        <CheckIcon />
-      </Select.ItemIndicator>
-    </Select.Item>
-  )}
+	defaultValue="Blueberry"
+	options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+	placeholder="Select a fruit…"
+	itemComponent={props => (
+		<Select.Item item={props.item}>
+			<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
+			<Select.ItemIndicator>
+				<CheckIcon />
+			</Select.ItemIndicator>
+		</Select.Item>
+	)}
 >
-  <Select.Trigger aria-label="Fruit">
-    <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
-    <Select.Icon>
-      <CaretSortIcon />
-    </Select.Icon>
-  </Select.Trigger>
-  <Select.Portal>
-    <Select.Content>
-      <Select.Listbox />
-    </Select.Content>
-  </Select.Portal>
+	<Select.Trigger aria-label="Fruit">
+		<Select.Value<string>>{state => state.selectedOption()}</Select.Value>
+		<Select.Icon>
+			<CaretSortIcon />
+		</Select.Icon>
+	</Select.Trigger>
+	<Select.Portal>
+		<Select.Content>
+			<Select.Listbox />
+		</Select.Content>
+	</Select.Portal>
 </Select.Root>
 ```
 
@@ -322,46 +322,46 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 The `value` prop, which accepts a value corresponding with the `options` prop, can be used to make the value controlled. The `onChange` event is fired when the user selects an option, and receives the selected option.
 
 <Preview>
-  <ControlledExample />
+	<ControlledExample />
 </Preview>
 
 ```tsx {3,8-9}
 import { createSignal } from "solid-js";
 
 export function ControlledExample() {
-  const [value, setValue] = createSignal("Blueberry");
+	const [value, setValue] = createSignal("Blueberry");
 
-  return (
-    <>
-      <Select.Root
-        value={value()}
-        onChange={setValue}
-        options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
-        placeholder="Select a fruit…"
-        itemComponent={props => (
-          <Select.Item item={props.item}>
-            <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
-            <Select.ItemIndicator>
-              <CheckIcon />
-            </Select.ItemIndicator>
-          </Select.Item>
-        )}
-      >
-        <Select.Trigger aria-label="Fruit">
-          <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
-          <Select.Icon>
-            <CaretSortIcon />
-          </Select.Icon>
-        </Select.Trigger>
-        <Select.Portal>
-          <Select.Content>
-            <Select.Listbox />
-          </Select.Content>
-        </Select.Portal>
-      </Select.Root>
-      <p>Your favorite fruit is: {value()}.</p>
-    </>
-  );
+	return (
+		<>
+			<Select.Root
+				value={value()}
+				onChange={setValue}
+				options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+				placeholder="Select a fruit…"
+				itemComponent={props => (
+					<Select.Item item={props.item}>
+						<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
+						<Select.ItemIndicator>
+							<CheckIcon />
+						</Select.ItemIndicator>
+					</Select.Item>
+				)}
+			>
+				<Select.Trigger aria-label="Fruit">
+					<Select.Value<string>>{state => state.selectedOption()}</Select.Value>
+					<Select.Icon>
+						<CaretSortIcon />
+					</Select.Icon>
+				</Select.Trigger>
+				<Select.Portal>
+					<Select.Content>
+						<Select.Listbox />
+					</Select.Content>
+				</Select.Portal>
+			</Select.Root>
+			<p>Your favorite fruit is: {value()}.</p>
+		</>
+	);
 }
 ```
 
@@ -370,34 +370,34 @@ export function ControlledExample() {
 The `Select.Description` component can be used to associate additional help text with a select.
 
 <Preview>
-  <DescriptionExample />
+	<DescriptionExample />
 </Preview>
 
 ```tsx {18}
 <Select.Root
-  options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
-  placeholder="Select a fruit…"
-  itemComponent={props => (
-    <Select.Item item={props.item}>
-      <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
-      <Select.ItemIndicator>
-        <CheckIcon />
-      </Select.ItemIndicator>
-    </Select.Item>
-  )}
+	options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+	placeholder="Select a fruit…"
+	itemComponent={props => (
+		<Select.Item item={props.item}>
+			<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
+			<Select.ItemIndicator>
+				<CheckIcon />
+			</Select.ItemIndicator>
+		</Select.Item>
+	)}
 >
-  <Select.Trigger aria-label="Fruit">
-    <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
-    <Select.Icon>
-      <CaretSortIcon />
-    </Select.Icon>
-  </Select.Trigger>
-  <Select.Description>Choose the fruit you like the most.</Select.Description>
-  <Select.Portal>
-    <Select.Content>
-      <Select.Listbox />
-    </Select.Content>
-  </Select.Portal>
+	<Select.Trigger aria-label="Fruit">
+		<Select.Value<string>>{state => state.selectedOption()}</Select.Value>
+		<Select.Icon>
+			<CaretSortIcon />
+		</Select.Icon>
+	</Select.Trigger>
+	<Select.Description>Choose the fruit you like the most.</Select.Description>
+	<Select.Portal>
+		<Select.Content>
+			<Select.Listbox />
+		</Select.Content>
+	</Select.Portal>
 </Select.Root>
 ```
 
@@ -408,45 +408,45 @@ The `Select.ErrorMessage` component can be used to help the user fix a validatio
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
 <Preview>
-  <ErrorMessageExample />
+	<ErrorMessageExample />
 </Preview>
 
 ```tsx {9,27}
 import { createSignal } from "solid-js";
 
 export function ErrorMessageExample() {
-  const [value, setValue] = createSignal("Grapes");
+	const [value, setValue] = createSignal("Grapes");
 
-  return (
-    <Select.Root
-      value={value()}
-      onChange={setValue}
-      validationState={value() !== "Apple" ? "invalid" : "valid"}
-      options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
-      placeholder="Select a fruit…"
-      itemComponent={props => (
-        <Select.Item item={props.item}>
-          <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
-          <Select.ItemIndicator>
-            <CheckIcon />
-          </Select.ItemIndicator>
-        </Select.Item>
-      )}
-    >
-      <Select.Trigger aria-label="Fruit">
-        <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
-        <Select.Icon>
-          <CaretSortIcon />
-        </Select.Icon>
-      </Select.Trigger>
-      <Select.ErrorMessage>Hmm, I prefer apples.</Select.ErrorMessage>
-      <Select.Portal>
-        <Select.Content>
-          <Select.Listbox />
-        </Select.Content>
-      </Select.Portal>
-    </Select.Root>
-  );
+	return (
+		<Select.Root
+			value={value()}
+			onChange={setValue}
+			validationState={value() !== "Apple" ? "invalid" : "valid"}
+			options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+			placeholder="Select a fruit…"
+			itemComponent={props => (
+				<Select.Item item={props.item}>
+					<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
+					<Select.ItemIndicator>
+						<CheckIcon />
+					</Select.ItemIndicator>
+				</Select.Item>
+			)}
+		>
+			<Select.Trigger aria-label="Fruit">
+				<Select.Value<string>>{state => state.selectedOption()}</Select.Value>
+				<Select.Icon>
+					<CaretSortIcon />
+				</Select.Icon>
+			</Select.Trigger>
+			<Select.ErrorMessage>Hmm, I prefer apples.</Select.ErrorMessage>
+			<Select.Portal>
+				<Select.Content>
+					<Select.Listbox />
+				</Select.Content>
+			</Select.Portal>
+		</Select.Root>
+	);
 }
 ```
 
@@ -455,49 +455,49 @@ export function ErrorMessageExample() {
 The select `name` prop, paired with the `Select.HiddenSelect` component, can be used for integration with HTML forms.
 
 <Preview>
-  <HTMLFormExample />
+	<HTMLFormExample />
 </Preview>
 
 ```tsx {8,20}
 function HTMLFormExample() {
-  const onSubmit = (e: SubmitEvent) => {
-    // handle form submission.
-  };
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
 
-  return (
-    <form onSubmit={onSubmit}>
-      <Select.Root
-        name="fruit"
-        options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
-        placeholder="Select a fruit…"
-        itemComponent={props => (
-          <Select.Item item={props.item}>
-            <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
-            <Select.ItemIndicator>
-              <CheckIcon />
-            </Select.ItemIndicator>
-          </Select.Item>
-        )}
-      >
-        <Select.HiddenSelect />
-        <Select.Trigger aria-label="Fruit">
-          <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
-          <Select.Icon>
-            <CaretSortIcon />
-          </Select.Icon>
-        </Select.Trigger>
-        <Select.Portal>
-          <Select.Content>
-            <Select.Listbox />
-          </Select.Content>
-        </Select.Portal>
-      </Select.Root>
-      <div>
-        <button type="reset">Reset</button>
-        <button>Submit</button>
-      </div>
-    </form>
-  );
+	return (
+		<form onSubmit={onSubmit}>
+			<Select.Root
+				name="fruit"
+				options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+				placeholder="Select a fruit…"
+				itemComponent={props => (
+					<Select.Item item={props.item}>
+						<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
+						<Select.ItemIndicator>
+							<CheckIcon />
+						</Select.ItemIndicator>
+					</Select.Item>
+				)}
+			>
+				<Select.HiddenSelect />
+				<Select.Trigger aria-label="Fruit">
+					<Select.Value<string>>{state => state.selectedOption()}</Select.Value>
+					<Select.Icon>
+						<CaretSortIcon />
+					</Select.Icon>
+				</Select.Trigger>
+				<Select.Portal>
+					<Select.Content>
+						<Select.Listbox />
+					</Select.Content>
+				</Select.Portal>
+			</Select.Root>
+			<div>
+				<button type="reset">Reset</button>
+				<button>Submit</button>
+			</div>
+		</form>
+	);
 }
 ```
 
@@ -510,54 +510,54 @@ Objects can be used as options instead of plain strings. In this case you have t
 - `optionDisabled`: The property name to use as the disabled flag of an option.
 
 <Preview>
-  <ObjectExample />
+	<ObjectExample />
 </Preview>
 
 ```tsx {18-20}
 interface Fruit {
-  value: string;
-  label: string;
-  disabled: boolean;
+	value: string;
+	label: string;
+	disabled: boolean;
 }
 
 const options: Fruit[] = [
-  { value: "apple", label: "Apple", disabled: false },
-  { value: "banana", label: "Banana", disabled: false },
-  { value: "blueberry", label: "Blueberry", disabled: false },
-  { value: "grapes", label: "Grapes", disabled: true },
-  { value: "pineapple", label: "Pineapple", disabled: false },
+	{ value: "apple", label: "Apple", disabled: false },
+	{ value: "banana", label: "Banana", disabled: false },
+	{ value: "blueberry", label: "Blueberry", disabled: false },
+	{ value: "grapes", label: "Grapes", disabled: true },
+	{ value: "pineapple", label: "Pineapple", disabled: false },
 ];
 
 function ObjectExample() {
-  return (
-    <Select.Root
-      options={options}
-      optionValue="value"
-      optionTextValue="label"
-      optionDisabled="disabled"
-      placeholder="Select a fruit…"
-      itemComponent={props => (
-        <Select.Item item={props.item}>
-          <Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
-          <Select.ItemIndicator>
-            <CheckIcon />
-          </Select.ItemIndicator>
-        </Select.Item>
-      )}
-    >
-      <Select.Trigger aria-label="Fruit">
-        <Select.Value<Fruit>>{state => state.selectedOption().label}</Select.Value>
-        <Select.Icon>
-          <CaretSortIcon />
-        </Select.Icon>
-      </Select.Trigger>
-      <Select.Portal>
-        <Select.Content>
-          <Select.Listbox />
-        </Select.Content>
-      </Select.Portal>
-    </Select.Root>
-  );
+	return (
+		<Select.Root
+			options={options}
+			optionValue="value"
+			optionTextValue="label"
+			optionDisabled="disabled"
+			placeholder="Select a fruit…"
+			itemComponent={props => (
+				<Select.Item item={props.item}>
+					<Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
+					<Select.ItemIndicator>
+						<CheckIcon />
+					</Select.ItemIndicator>
+				</Select.Item>
+			)}
+		>
+			<Select.Trigger aria-label="Fruit">
+				<Select.Value<Fruit>>{state => state.selectedOption().label}</Select.Value>
+				<Select.Icon>
+					<CaretSortIcon />
+				</Select.Icon>
+			</Select.Trigger>
+			<Select.Portal>
+				<Select.Content>
+					<Select.Listbox />
+				</Select.Content>
+			</Select.Portal>
+		</Select.Root>
+	);
 }
 ```
 
@@ -570,80 +570,80 @@ When using option groups you have to tell the select how to distinguish an optio
 Additionally, the `sectionComponent` prop is used to display the option group label in the select.
 
 <Preview>
-  <OptionGroupExample />
+	<OptionGroupExample />
 </Preview>
 
 ```tsx {35,40,50}
 interface Food {
-  value: string;
-  label: string;
-  disabled: boolean;
+	value: string;
+	label: string;
+	disabled: boolean;
 }
 
 interface Category {
-  label: string;
-  options: Food[];
+	label: string;
+	options: Food[];
 }
 
 const options: Category[] = [
-  {
-    label: "Fruits",
-    options: [
-      { value: "apple", label: "Apple", disabled: false },
-      { value: "banana", label: "Banana", disabled: false },
-      { value: "blueberry", label: "Blueberry", disabled: false },
-      { value: "grapes", label: "Grapes", disabled: true },
-      { value: "pineapple", label: "Pineapple", disabled: false },
-    ],
-  },
-  {
-    label: "Meat",
-    options: [
-      { value: "beef", label: "Beef", disabled: false },
-      { value: "chicken", label: "Chicken", disabled: false },
-      { value: "lamb", label: "Lamb", disabled: false },
-      { value: "pork", label: "Pork", disabled: false },
-    ],
-  },
+	{
+		label: "Fruits",
+		options: [
+			{ value: "apple", label: "Apple", disabled: false },
+			{ value: "banana", label: "Banana", disabled: false },
+			{ value: "blueberry", label: "Blueberry", disabled: false },
+			{ value: "grapes", label: "Grapes", disabled: true },
+			{ value: "pineapple", label: "Pineapple", disabled: false },
+		],
+	},
+	{
+		label: "Meat",
+		options: [
+			{ value: "beef", label: "Beef", disabled: false },
+			{ value: "chicken", label: "Chicken", disabled: false },
+			{ value: "lamb", label: "Lamb", disabled: false },
+			{ value: "pork", label: "Pork", disabled: false },
+		],
+	},
 ];
 
 function OptionGroupExample() {
-  return (
-    <Select.Root<Food, Category>
-      options={options}
-      optionValue="value"
-      optionTextValue="label"
-      optionDisabled="disabled"
-      optionGroupChildren="options"
-      placeholder="Select a food…"
-      itemComponent={props => (
-        <Select.Item item={props.item}>
-          <Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
-          <Select.ItemIndicator>
-            <CheckIcon />
-          </Select.ItemIndicator>
-        </Select.Item>
-      )}
-      sectionComponent={props => <Select.Section>{props.section.rawValue.label}</Select.Section>}
-    >
-      <Select.Trigger aria-label="Food">
-        <Select.Value<Food>>{state => state.selectedOption().label}</Select.Value>
-        <Select.Icon>
-          <CaretSortIcon />
-        </Select.Icon>
-      </Select.Trigger>
-      <Select.Portal>
-        <Select.Content>
-          <Select.Listbox />
-        </Select.Content>
-      </Select.Portal>
-    </Select.Root>
-  );
+	return (
+		<Select.Root<Food, Category>
+			options={options}
+			optionValue="value"
+			optionTextValue="label"
+			optionDisabled="disabled"
+			optionGroupChildren="options"
+			placeholder="Select a food…"
+			itemComponent={props => (
+				<Select.Item item={props.item}>
+					<Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
+					<Select.ItemIndicator>
+						<CheckIcon />
+					</Select.ItemIndicator>
+				</Select.Item>
+			)}
+			sectionComponent={props => <Select.Section>{props.section.rawValue.label}</Select.Section>}
+		>
+			<Select.Trigger aria-label="Food">
+				<Select.Value<Food>>{state => state.selectedOption().label}</Select.Value>
+				<Select.Icon>
+					<CaretSortIcon />
+				</Select.Icon>
+			</Select.Trigger>
+			<Select.Portal>
+				<Select.Content>
+					<Select.Listbox />
+				</Select.Content>
+			</Select.Portal>
+		</Select.Root>
+	);
 }
 ```
 
 <Callout type="note">
-  Notice the usage of generics on `Select.Root` for proper TypeScript support.
+	Notice the usage of generics on `Select.Root` for proper TypeScript support.
 </Callout>
 
 ### Multiple selection
@@ -655,69 +655,69 @@ The `Select.Value` children _render prop_ expose an array of selected options, a
 Additionally, the example below uses the `asChild` pattern to render a `div` for the `Select.Trigger` since HTML button can't contain interactive elements according to the [W3C](https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element).
 
 <Preview>
-  <MultipleSelectionExample />
+	<MultipleSelectionExample />
 </Preview>
 
 ```tsx {3,8-10,22-23,28,32,39}
 import { createSignal } from "solid-js";
 
 function MultipleSelectionExample() {
-  const [values, setValues] = createSignal(["Blueberry", "Grapes"]);
+	const [values, setValues] = createSignal(["Blueberry", "Grapes"]);
 
-  return (
-    <>
-      <Select.Root<string>
-        multiple
-        value={values()}
-        onChange={setValues}
-        options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
-        placeholder="Select some fruits…"
-        itemComponent={props => (
-          <Select.Item item={props.item}>
-            <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
-            <Select.ItemIndicator>
-              <CheckIcon />
-            </Select.ItemIndicator>
-          </Select.Item>
-        )}
-      >
-        <Select.Trigger aria-label="Fruits" asChild>
-          <As component="div">
-            <Select.Value<string>>
-              {state => (
-                <>
-                  <div>
-                    <For each={state.selectedOptions()}>
-                      {option => (
-                        <span onPointerDown={e => e.stopPropagation()}>
-                          {option}
-                          <button onClick={() => state.remove(option)}>
-                            <CrossIcon />
-                          </button>
-                        </span>
-                      )}
-                    </For>
-                  </div>
-                  <button onPointerDown={e => e.stopPropagation()} onClick={state.clear}>
-                    <CrossIcon />
-                  </button>
-                </>
-              )}
-            </Select.Value>
-            <Select.Icon>
-              <CaretSortIcon />
-            </Select.Icon>
-          </As>
-        </Select.Trigger>
-        <Select.Portal>
-          <Select.Content>
-            <Select.Listbox />
-          </Select.Content>
-        </Select.Portal>
-      </Select.Root>
-      <p>Your favorite fruits are: {values().join(", ")}.</p>
-    </>
-  );
+	return (
+		<>
+			<Select.Root<string>
+				multiple
+				value={values()}
+				onChange={setValues}
+				options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
+				placeholder="Select some fruits…"
+				itemComponent={props => (
+					<Select.Item item={props.item}>
+						<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
+						<Select.ItemIndicator>
+							<CheckIcon />
+						</Select.ItemIndicator>
+					</Select.Item>
+				)}
+			>
+				<Select.Trigger aria-label="Fruits" asChild>
+					<As component="div">
+						<Select.Value<string>>
+							{state => (
+								<>
+									<div>
+										<For each={state.selectedOptions()}>
+											{option => (
+												<span onPointerDown={e => e.stopPropagation()}>
+													{option}
+													<button onClick={() => state.remove(option)}>
+														<CrossIcon />
+													</button>
+												</span>
+											)}
+										</For>
+									</div>
+									<button onPointerDown={e => e.stopPropagation()} onClick={state.clear}>
+										<CrossIcon />
+									</button>
+								</>
+							)}
+						</Select.Value>
+						<Select.Icon>
+							<CaretSortIcon />
+						</Select.Icon>
+					</As>
+				</Select.Trigger>
+				<Select.Portal>
+					<Select.Content>
+						<Select.Listbox />
+					</Select.Content>
+				</Select.Portal>
+			</Select.Root>
+			<p>Your favorite fruits are: {values().join(", ")}.</p>
+		</>
+	);
 }
 ```
 
@@ -728,7 +728,7 @@ When dealing with large collection of items, it's recommended to use a virtual s
 While Kobalte doesn't provide any built-in virtual scrolling API, it can easily be integrated with a 3rd party library. The example below demonstrate how to virtualize an array of 100,000 options using the [`@tanstack/solid-virtual`](https://tanstack.com/virtual/v3) package.
 
 <Preview>
-  <VirtualizedExample />
+	<VirtualizedExample />
 </Preview>
 
 ```tsx {18-25,31-33,46,80,101}
@@ -736,100 +736,100 @@ import { Select } from "@kobalte/core";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 
 interface Item {
-  value: string;
-  label: string;
-  disabled: boolean;
+	value: string;
+	label: string;
+	disabled: boolean;
 }
 
 const options: Item[] = Array.from({ length: 100_000 }, (_, i) => ({
-  value: `${i}`,
-  label: `Item #${i + 1}`,
-  disabled: false,
+	value: `${i}`,
+	label: `Item #${i + 1}`,
+	disabled: false,
 }));
 
 function SelectContent(props: { options: Item[] }) {
-  let listboxRef: HTMLUListElement | undefined;
+	let listboxRef: HTMLUListElement | undefined;
 
-  const virtualizer = createVirtualizer({
-    count: props.options.length,
-    getScrollElement: () => listboxRef,
-    getItemKey: (index: number) => props.options[index].value,
-    estimateSize: () => 32,
-    enableSmoothScroll: false,
-    overscan: 5,
-  });
+	const virtualizer = createVirtualizer({
+		count: props.options.length,
+		getScrollElement: () => listboxRef,
+		getItemKey: (index: number) => props.options[index].value,
+		estimateSize: () => 32,
+		enableSmoothScroll: false,
+		overscan: 5,
+	});
 
-  return (
-    <Select.Content>
-      <Select.Listbox
-        ref={listboxRef}
-        scrollToItem={key =>
-          virtualizer.scrollToIndex(props.options.findIndex(option => option.value === key))
-        }
-        style={{ height: "200px", width: "100%", overflow: "auto" }}
-      >
-        {items => (
-          <div
-            style={{
-              height: `${virtualizer.getTotalSize()}px`,
-              width: "100%",
-              position: "relative",
-            }}
-          >
-            <For each={virtualizer.getVirtualItems()}>
-              {virtualRow => {
-                const item = items().getItem(virtualRow.key);
+	return (
+		<Select.Content>
+			<Select.Listbox
+				ref={listboxRef}
+				scrollToItem={key =>
+					virtualizer.scrollToIndex(props.options.findIndex(option => option.value === key))
+				}
+				style={{ height: "200px", width: "100%", overflow: "auto" }}
+			>
+				{items => (
+					<div
+						style={{
+							height: `${virtualizer.getTotalSize()}px`,
+							width: "100%",
+							position: "relative",
+						}}
+					>
+						<For each={virtualizer.getVirtualItems()}>
+							{virtualRow => {
+								const item = items().getItem(virtualRow.key);
 
-                if (item) {
-                  return (
-                    <Select.Item
-                      item={item}
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: `${virtualRow.size}px`,
-                        transform: `translateY(${virtualRow.start}px)`,
-                      }}
-                    >
-                      <Select.ItemLabel>{item.rawValue.label}</Select.ItemLabel>
-                      <Select.ItemIndicator>
-                        <CheckIcon />
-                      </Select.ItemIndicator>
-                    </Select.Item>
-                  );
-                }
-              }}
-            </For>
-          </div>
-        )}
-      </Select.Listbox>
-    </Select.Content>
-  );
+								if (item) {
+									return (
+										<Select.Item
+											item={item}
+											style={{
+												position: "absolute",
+												top: 0,
+												left: 0,
+												width: "100%",
+												height: `${virtualRow.size}px`,
+												transform: `translateY(${virtualRow.start}px)`,
+											}}
+										>
+											<Select.ItemLabel>{item.rawValue.label}</Select.ItemLabel>
+											<Select.ItemIndicator>
+												<CheckIcon />
+											</Select.ItemIndicator>
+										</Select.Item>
+									);
+								}
+							}}
+						</For>
+					</div>
+				)}
+			</Select.Listbox>
+		</Select.Content>
+	);
 }
 
 function VirtualizedExample() {
-  return (
-    <Select.Root
-      virtualized
-      options={options}
-      optionValue="value"
-      optionTextValue="label"
-      optionDisabled="disabled"
-      placeholder="Select an item…"
-    >
-      <Select.Trigger aria-label="Food">
-        <Select.Value<Item>>{state => state.selectedOption().label}</Select.Value>
-        <Select.Icon>
-          <CaretSortIcon />
-        </Select.Icon>
-      </Select.Trigger>
-      <Select.Portal>
-        <SelectContent options={options} />
-      </Select.Portal>
-    </Select.Root>
-  );
+	return (
+		<Select.Root
+			virtualized
+			options={options}
+			optionValue="value"
+			optionTextValue="label"
+			optionDisabled="disabled"
+			placeholder="Select an item…"
+		>
+			<Select.Trigger aria-label="Food">
+				<Select.Value<Item>>{state => state.selectedOption().label}</Select.Value>
+				<Select.Icon>
+					<CaretSortIcon />
+				</Select.Icon>
+			</Select.Trigger>
+			<Select.Portal>
+				<SelectContent options={options} />
+			</Select.Portal>
+		</Select.Root>
+	);
 }
 ```
 
@@ -840,34 +840,34 @@ We expose a CSS custom property `--kb-select-content-transform-origin` which can
 ```css {2}
 /* style.css */
 .select__content {
-  transform-origin: var(--kb-select-content-transform-origin);
-  animation: contentHide 250ms ease-in forwards;
+	transform-origin: var(--kb-select-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
 }
 
 .select__content[data-expanded] {
-  animation: contentShow 250ms ease-out;
+	animation: contentShow 250ms ease-out;
 }
 
 @keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+	from {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes contentHide {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
 }
 ```
 

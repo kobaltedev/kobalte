@@ -1,134 +1,134 @@
 .popover__trigger {
-  appearance: none;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  width: auto;
-  outline: none;
-  border-radius: 6px;
-  padding: 0 16px;
-  background-color: hsl(200 98% 39%);
-  color: white;
-  font-size: 16px;
-  line-height: 0;
-  transition: 250ms background-color;
+	appearance: none;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: auto;
+	outline: none;
+	border-radius: 6px;
+	padding: 0 16px;
+	background-color: hsl(200 98% 39%);
+	color: white;
+	font-size: 16px;
+	line-height: 0;
+	transition: 250ms background-color;
 }
 
 .popover__trigger:hover {
-  background-color: hsl(201 96% 32%);
+	background-color: hsl(201 96% 32%);
 }
 
 .popover__trigger:focus-visible {
-  outline: 2px solid hsl(200 98% 39%);
-  outline-offset: 2px;
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
 }
 
 .popover__trigger:active {
-  background-color: hsl(201 90% 27%);
+	background-color: hsl(201 90% 27%);
 }
 
 .popover__anchor {
-  background-color: hsl(240 5% 96%);
-  border-radius: 6px;
-  padding: 12px 16px;
+	background-color: hsl(240 5% 96%);
+	border-radius: 6px;
+	padding: 12px 16px;
 }
 
 .popover__content {
-  z-index: 50;
-  max-width: min(calc(100vw - 16px), 380px);
-  border: 1px solid hsl(240 5% 84%);
-  border-radius: 6px;
-  padding: 12px;
-  background-color: white;
-  box-shadow:
-    0 10px 15px -3px rgb(0 0 0 / 0.1),
-    0 4px 6px -4px rgb(0 0 0 / 0.1);
-  transform-origin: var(--kb-popover-content-transform-origin);
-  animation: contentHide 250ms ease-in forwards;
+	z-index: 50;
+	max-width: min(calc(100vw - 16px), 380px);
+	border: 1px solid hsl(240 5% 84%);
+	border-radius: 6px;
+	padding: 12px;
+	background-color: white;
+	box-shadow:
+		0 10px 15px -3px rgb(0 0 0 / 0.1),
+		0 4px 6px -4px rgb(0 0 0 / 0.1);
+	transform-origin: var(--kb-popover-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
 }
 
 .popover__content[data-expanded] {
-  animation: contentShow 250ms ease-out;
+	animation: contentShow 250ms ease-out;
 }
 
 .popover__header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 6px;
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	margin-bottom: 6px;
 }
 
 .popover__close-button {
-  height: 16px;
-  width: 16px;
-  color: hsl(240 5% 34%);
+	height: 16px;
+	width: 16px;
+	color: hsl(240 5% 34%);
 }
 
 .popover__title {
-  font-size: 16px;
-  font-weight: 500;
-  color: hsl(240 6% 10%);
+	font-size: 16px;
+	font-weight: 500;
+	color: hsl(240 6% 10%);
 }
 
 .popover__description {
-  font-size: 14px;
-  color: hsl(240 5% 26%);
+	font-size: 14px;
+	color: hsl(240 5% 26%);
 }
 
 @keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
 
 @keyframes contentHide {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.96);
-  }
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: scale(0.96);
+	}
 }
 
 [data-kb-theme="dark"] .popover__trigger {
-  background-color: hsl(201 96% 32%);
-  color: hsla(0 100% 100% / 0.9);
+	background-color: hsl(201 96% 32%);
+	color: hsla(0 100% 100% / 0.9);
 }
 
 [data-kb-theme="dark"] .popover__trigger:hover {
-  background-color: hsl(200 98% 39%);
+	background-color: hsl(200 98% 39%);
 }
 
 [data-kb-theme="dark"] .popover__trigger:active {
-  background-color: hsl(199 89% 48%);
+	background-color: hsl(199 89% 48%);
 }
 
 [data-kb-theme="dark"] .popover__anchor {
-  background-color: hsl(240 4% 16%);
+	background-color: hsl(240 4% 16%);
 }
 
 [data-kb-theme="dark"] .popover__content {
-  border: 1px solid hsl(240 5% 26%);
-  background-color: hsl(240 4% 16%);
-  box-shadow: none;
+	border: 1px solid hsl(240 5% 26%);
+	background-color: hsl(240 4% 16%);
+	box-shadow: none;
 }
 
 [data-kb-theme="dark"] .popover__close-button {
-  color: hsl(0 100% 100% / 0.8);
+	color: hsl(0 100% 100% / 0.8);
 }
 
 [data-kb-theme="dark"] .popover__title {
-  color: hsl(0 100% 100% / 0.9);
+	color: hsl(0 100% 100% / 0.9);
 }
 
 [data-kb-theme="dark"] .popover__description {
-  color: hsl(0 100% 100% / 0.7);
+	color: hsl(0 100% 100% / 0.7);
 }

@@ -1,11 +1,11 @@
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
-  BasicExample,
-  ControlledExample,
-  DefaultCheckedExample,
-  DescriptionExample,
-  ErrorMessageExample,
-  HTMLFormExample,
+	BasicExample,
+	ControlledExample,
+	DefaultCheckedExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	HTMLFormExample,
 } from "../../../../examples/checkbox";
 
 # Checkbox
@@ -40,20 +40,20 @@ The checkbox consists of:
 
 ```tsx
 <Checkbox.Root>
-  <Checkbox.Input />
-  <Checkbox.Control>
-    <Checkbox.Indicator />
-  </Checkbox.Control>
-  <Checkbox.Label />
-  <Checkbox.Description />
-  <Checkbox.ErrorMessage />
+	<Checkbox.Input />
+	<Checkbox.Control>
+		<Checkbox.Indicator />
+	</Checkbox.Control>
+	<Checkbox.Label />
+	<Checkbox.Description />
+	<Checkbox.ErrorMessage />
 </Checkbox.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -129,7 +129,7 @@ The checkbox consists of:
 An initial, uncontrolled value can be provided using the `defaultChecked` prop.
 
 <Preview>
-  <DefaultCheckedExample />
+	<DefaultCheckedExample />
 </Preview>
 
 ```tsx
@@ -141,23 +141,23 @@ An initial, uncontrolled value can be provided using the `defaultChecked` prop.
 The `checked` prop can be used to make the checked state controlled. The `onChange` event is fired when the user presses the checkbox, and receives the new value.
 
 <Preview>
-  <ControlledExample />
+	<ControlledExample />
 </Preview>
 
 ```tsx {3,7}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
-  const [checked, setChecked] = createSignal(false);
+	const [checked, setChecked] = createSignal(false);
 
-  return (
-    <>
-      <Checkbox.Root checked={checked()} onChange={setChecked}>
-        ...
-      </Checkbox.Root>
-      <p>You are {checked() ? "subscribed" : "unsubscribed"}.</p>
-    </>
-  );
+	return (
+		<>
+			<Checkbox.Root checked={checked()} onChange={setChecked}>
+				...
+			</Checkbox.Root>
+			<p>You are {checked() ? "subscribed" : "unsubscribed"}.</p>
+		</>
+	);
 }
 ```
 
@@ -166,19 +166,19 @@ function ControlledExample() {
 The `Checkbox.Description` component can be used to associate additional help text with a checkbox.
 
 <Preview>
-  <DescriptionExample />
+	<DescriptionExample />
 </Preview>
 
 ```tsx {8}
 <Checkbox.Root>
-  <Checkbox.Input />
-  <Checkbox.Control>
-    <Checkbox.Indicator>
-      <CheckIcon />
-    </Checkbox.Indicator>
-  </Checkbox.Control>
-  <Checkbox.Label>Subscribe</Checkbox.Label>
-  <Checkbox.Description>You will receive our weekly newsletter.</Checkbox.Description>
+	<Checkbox.Input />
+	<Checkbox.Control>
+		<Checkbox.Indicator>
+			<CheckIcon />
+		</Checkbox.Indicator>
+	</Checkbox.Control>
+	<Checkbox.Label>Subscribe</Checkbox.Label>
+	<Checkbox.Description>You will receive our weekly newsletter.</Checkbox.Description>
 </Checkbox.Root>
 ```
 
@@ -189,31 +189,31 @@ The `Checkbox.ErrorMessage` component can be used to help the user fix a validat
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
 <Preview>
-  <ErrorMessageExample />
+	<ErrorMessageExample />
 </Preview>
 
 ```tsx {9,17}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
-  const [checked, setChecked] = createSignal(false);
+	const [checked, setChecked] = createSignal(false);
 
-  return (
-    <Checkbox.Root
-      checked={checked()}
-      onChange={setChecked}
-      validationState={!checked() ? "invalid" : "valid"}
-    >
-      <Checkbox.Input />
-      <Checkbox.Control>
-        <Checkbox.Indicator>
-          <CheckIcon />
-        </Checkbox.Indicator>
-      </Checkbox.Control>
-      <Checkbox.Label>Agree</Checkbox.Label>
-      <Checkbox.ErrorMessage>You must agree to our Terms and Conditions.</Checkbox.ErrorMessage>
-    </Checkbox.Root>
-  );
+	return (
+		<Checkbox.Root
+			checked={checked()}
+			onChange={setChecked}
+			validationState={!checked() ? "invalid" : "valid"}
+		>
+			<Checkbox.Input />
+			<Checkbox.Control>
+				<Checkbox.Indicator>
+					<CheckIcon />
+				</Checkbox.Indicator>
+			</Checkbox.Control>
+			<Checkbox.Label>Agree</Checkbox.Label>
+			<Checkbox.ErrorMessage>You must agree to our Terms and Conditions.</Checkbox.ErrorMessage>
+		</Checkbox.Root>
+	);
 }
 ```
 
@@ -222,26 +222,26 @@ function ErrorMessageExample() {
 The `name` and `value` props can be used for integration with HTML forms.
 
 <Preview>
-  <HTMLFormExample />
+	<HTMLFormExample />
 </Preview>
 
 ```tsx {7}
 function HTMLFormExample() {
-  const onSubmit = (e: SubmitEvent) => {
-    // handle form submission.
-  };
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
 
-  return (
-    <form onSubmit={onSubmit}>
-      <Checkbox.Root name="newsletter" value="subscribe">
-        ...
-      </Checkbox.Root>
-      <div>
-        <button type="reset">Reset</button>
+	return (
+		<form onSubmit={onSubmit}>
+			<Checkbox.Root name="newsletter" value="subscribe">
+				...
+			</Checkbox.Root>
+			<div>
+				<button type="reset">Reset</button>
 				<button type="submit">Submit</button>
-      </div>
-    </form>
-  );
+			</div>
+		</form>
+	);
 }
 ```
 

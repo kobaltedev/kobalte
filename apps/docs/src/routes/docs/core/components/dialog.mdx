@@ -35,22 +35,22 @@ The dialog consists of:
 
 ```tsx
 <Dialog.Root>
-  <Dialog.Trigger />
-  <Dialog.Portal>
-    <Dialog.Overlay />
-    <Dialog.Content>
-      <Dialog.CloseButton />
-      <Dialog.Title />
-      <Dialog.Description />
-    </Dialog.Content>
-  </Dialog.Portal>
+	<Dialog.Trigger />
+	<Dialog.Portal>
+		<Dialog.Overlay />
+		<Dialog.Content>
+			<Dialog.CloseButton />
+			<Dialog.Title />
+			<Dialog.Description />
+		</Dialog.Content>
+	</Dialog.Portal>
 </Dialog.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -248,13 +248,13 @@ The `open` prop can be used to make the open state controlled. The `onOpenChange
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
-  const [open, setOpen] = createSignal(false);
+	const [open, setOpen] = createSignal(false);
 
-  return (
-    <Dialog.Root open={open()} onOpenChange={setOpen}>
-      ...
-    </Dialog.Root>
-  );
+	return (
+		<Dialog.Root open={open()} onOpenChange={setOpen}>
+			...
+		</Dialog.Root>
+	);
 }
 ```
 
