@@ -278,6 +278,7 @@ export function SliderRoot(props: SliderRootProps) {
 
 		if (activeThumb !== undefined) {
 			state.setThumbDragging(activeThumb, false);
+			(thumbs()[activeThumb].ref() as HTMLElement).focus();
 		}
 	};
 
