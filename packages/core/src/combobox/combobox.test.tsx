@@ -3431,6 +3431,7 @@ describe("Combobox", () => {
 			await Promise.resolve();
 
 			expect(onSubmit).toHaveBeenCalledTimes(1);
+			// @ts-ignore
 			expect(value).toBe("");
 		});
 
@@ -3479,6 +3480,7 @@ describe("Combobox", () => {
 			await Promise.resolve();
 
 			expect(onSubmit).toHaveBeenCalledTimes(1);
+			// @ts-ignore
 			expect(value).toEqual("1");
 		});
 	});
