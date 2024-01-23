@@ -60,7 +60,6 @@
     "rollup": "3.28.1",
     "rollup-preset-solid": "2.0.1",
     "solid-js": "1.7.11",
-    "sort-package-json": "2.5.1",
     "ts-jest": "28.0.8",
     "tsup": "7.2.0",
     "turbo": "1.10.13",
