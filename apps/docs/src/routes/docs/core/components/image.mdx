@@ -27,15 +27,15 @@ The image consists of:
 
 ```tsx
 <Image.Root>
-  <Image.Img />
-  <Image.Fallback />
+	<Image.Img />
+	<Image.Fallback />
 </Image.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -119,12 +119,12 @@ If you notice a flash during loading, use the `fallbackDelay` prop to delay its 
 
 ```tsx {0}
 <Image.Root fallbackDelay={600} class="image">
-  <Image.Img
-    class="image__img"
-    src="https://randomuser.me/api/portraits/women/44.jpg"
-    alt="Nicole Steeves"
-  />
-  <Image.Fallback class="image__fallback">NS</Image.Fallback>
+	<Image.Img
+		class="image__img"
+		src="https://randomuser.me/api/portraits/women/44.jpg"
+		alt="Nicole Steeves"
+	/>
+	<Image.Fallback class="image__fallback">NS</Image.Fallback>
 </Image.Root>
 ```
 

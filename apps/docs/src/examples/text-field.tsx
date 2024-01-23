@@ -130,7 +130,9 @@ export function HTMLFormExample() {
 				<button type="reset" class="kb-button">
 					Reset
 				</button>
-				<button class="kb-button-primary">Submit</button>
+				<button type="submit" class="kb-button-primary">
+					Submit
+				</button>
 			</div>
 		</form>
 	);

@@ -7,9 +7,9 @@
  */
 
 import {
+	OverrideComponentProps,
 	createGenerateId,
 	mergeDefaultProps,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { createSignal, createUniqueId } from "solid-js";
 
@@ -27,7 +27,7 @@ export interface MenuGroupProps
 export function MenuGroup(props: MenuGroupProps) {
 	const rootContext = useMenuRootContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: rootContext.generateId(`group-${createUniqueId()}`),
 		},
@@ -37,7 +37,7 @@ export function MenuGroup(props: MenuGroupProps) {
 	const [labelId, setLabelId] = createSignal<string>();
 
 	const context: MenuGroupContextValue = {
-		generateId: createGenerateId(() => props.id!),
+		generateId: createGenerateId(() => mergedProps.id!),
 		registerLabelId: createRegisterId(setLabelId),
 	};
 
@@ -47,7 +47,7 @@ export function MenuGroup(props: MenuGroupProps) {
 				as="div"
 				role="group"
 				aria-labelledby={labelId()}
-				{...props}
+				{...mergedProps}
 			/>
 		</MenuGroupContext.Provider>
 	);

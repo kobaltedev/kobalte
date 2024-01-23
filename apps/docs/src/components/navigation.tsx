@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
-import { ComponentProps, For, Match, splitProps, Switch } from "solid-js";
+import { ComponentProps, For, Match, Switch, splitProps } from "solid-js";
 
 import { NavSection } from "../model/navigation";
 

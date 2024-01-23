@@ -8,17 +8,17 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import {
-	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
+	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
 import { useSwitchContext } from "./switch-context";
@@ -38,10 +38,13 @@ export function SwitchInput(props: SwitchInputProps) {
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();
 
-	props = mergeDefaultProps({ id: context.generateId("input") }, props);
+	const mergedProps = mergeDefaultProps(
+		{ id: context.generateId("input") },
+		props,
+	);
 
 	const [local, formControlFieldProps, others] = splitProps(
-		props,
+		mergedProps,
 		["ref", "style", "onChange", "onFocus", "onBlur"],
 		FORM_CONTROL_FIELD_PROP_NAMES,
 	);
@@ -92,6 +95,7 @@ export function SwitchInput(props: SwitchInputProps) {
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
 			style={{ ...visuallyHiddenStyles, ...local.style }}
+			aria-checked={context.checked()}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}

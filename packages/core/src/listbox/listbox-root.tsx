@@ -7,26 +7,26 @@
  */
 
 import {
+	Key,
+	OverrideComponentProps,
 	access,
 	composeEventHandlers,
 	createGenerateId,
-	Key,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
 	Accessor,
-	createMemo,
-	createUniqueId,
 	JSX,
 	Match,
 	Show,
-	splitProps,
 	Switch,
+	createMemo,
+	createUniqueId,
+	splitProps,
 } from "solid-js";
 
-import { createListState, createSelectableList, ListState } from "../list";
+import { ListState, createListState, createSelectableList } from "../list";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { Collection, CollectionNode } from "../primitives";
 import {
@@ -145,7 +145,7 @@ export function ListboxRoot<Option, OptGroup = never>(
 
 	const defaultId = `listbox-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			selectionMode: "single",
@@ -154,7 +154,7 @@ export function ListboxRoot<Option, OptGroup = never>(
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"children",
 		"renderItem",
@@ -234,9 +234,9 @@ export function ListboxRoot<Option, OptGroup = never>(
 	const context: ListboxContextValue = {
 		listState,
 		generateId: createGenerateId(() => others.id!),
-		shouldUseVirtualFocus: () => props.shouldUseVirtualFocus,
-		shouldSelectOnPressUp: () => props.shouldSelectOnPressUp,
-		shouldFocusOnHover: () => props.shouldFocusOnHover,
+		shouldUseVirtualFocus: () => mergedProps.shouldUseVirtualFocus,
+		shouldSelectOnPressUp: () => mergedProps.shouldSelectOnPressUp,
+		shouldFocusOnHover: () => mergedProps.shouldFocusOnHover,
 		isVirtualized: () => local.virtualized,
 	};
 

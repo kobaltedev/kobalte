@@ -1,4 +1,4 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -15,14 +15,14 @@ export function RadioGroupItemDescription(
 ) {
 	const context = useRadioGroupItemContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("description"),
 		},
 		props,
 	);
 
-	createEffect(() => onCleanup(context.registerDescription(props.id!)));
+	createEffect(() => onCleanup(context.registerDescription(mergedProps.id!)));
 
-	return <Polymorphic as="div" {...context.dataset()} {...props} />;
+	return <Polymorphic as="div" {...context.dataset()} {...mergedProps} />;
 }

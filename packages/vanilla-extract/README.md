@@ -26,29 +26,29 @@ import { style } from "@vanilla-extract/css";
 import { componentStateStyles } from "@kobalte/vanilla-extract";
 
 const button = style([
-  {
-    background: "blue",
-    padding: "2px 6px",
-  },
-  componentStateStyles({
-    disabled: {
-      opacity: 0.4,
-    },
-    invalid: {
-      backgroundColor: "red",
-      not: {
-        backgroundColor: "yellow",
-      },
-    },
-  }),
-  componentStateStyles(
-    {
-      invalid: {
-        backgroundColor: "red",
-      },
-    },
-    { parentSelector: "[data-theme=dark]" },
-  ),
+	{
+		background: "blue",
+		padding: "2px 6px",
+	},
+	componentStateStyles({
+		disabled: {
+			opacity: 0.4,
+		},
+		invalid: {
+			backgroundColor: "red",
+			not: {
+				backgroundColor: "yellow",
+			},
+		},
+	}),
+	componentStateStyles(
+		{
+			invalid: {
+				backgroundColor: "red",
+			},
+		},
+		{ parentSelector: "[data-theme=dark]" },
+	),
 ]);
 ```
 

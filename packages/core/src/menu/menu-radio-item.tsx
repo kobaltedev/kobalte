@@ -1,4 +1,4 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import { MenuItemBase, MenuItemBaseOptions } from "./menu-item-base";
@@ -19,9 +19,9 @@ export interface MenuRadioItemProps
 export function MenuRadioItem(props: MenuRadioItemProps) {
 	const context = useMenuRadioGroupContext();
 
-	props = mergeDefaultProps({ closeOnSelect: false }, props);
+	const mergedProps = mergeDefaultProps({ closeOnSelect: false }, props);
 
-	const [local, others] = splitProps(props, ["value", "onSelect"]);
+	const [local, others] = splitProps(mergedProps, ["value", "onSelect"]);
 
 	const onSelect = () => {
 		local.onSelect?.();

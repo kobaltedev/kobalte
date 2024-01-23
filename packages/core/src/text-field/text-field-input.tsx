@@ -7,15 +7,15 @@
  */
 
 import {
+	OverrideComponentProps,
 	composeEventHandlers,
 	mergeDefaultProps,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import {
-	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
+	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -35,7 +35,7 @@ export function TextFieldInputBase(props: TextFieldInputProps) {
 	const formControlContext = useFormControlContext();
 	const context = useTextFieldContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("input"),
 		},
@@ -43,7 +43,7 @@ export function TextFieldInputBase(props: TextFieldInputProps) {
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
-		props,
+		mergedProps,
 		["onInput"],
 		FORM_CONTROL_FIELD_PROP_NAMES,
 	);

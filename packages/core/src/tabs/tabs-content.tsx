@@ -7,16 +7,16 @@
  */
 
 import {
+	OverrideComponentProps,
 	getFocusableTreeWalker,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
+	Show,
 	createEffect,
 	createSignal,
 	on,
 	onCleanup,
-	Show,
 	splitProps,
 } from "solid-js";
 

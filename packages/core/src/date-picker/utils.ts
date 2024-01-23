@@ -8,8 +8,8 @@
 
 import {
 	Calendar,
-	now,
 	Time,
+	now,
 	toCalendar,
 	toCalendarDate,
 	toCalendarDateTime,
@@ -208,10 +208,7 @@ export function createDefaultProps(props: {
 		// granularity must actually exist in the value if one is provided.
 		if (resolvedValue && !(resolvedGranularity in resolvedValue)) {
 			throw new Error(
-				"Invalid granularity " +
-					resolvedGranularity +
-					" for value " +
-					resolvedValue.toString(),
+				`Invalid granularity ${resolvedGranularity} for value ${resolvedValue.toString()}`,
 			);
 		}
 	});

@@ -33,19 +33,19 @@ The tooltip consists of:
 
 ```tsx
 <Tooltip.Root>
-  <Tooltip.Trigger />
-  <Tooltip.Portal>
-    <Tooltip.Content>
-      <Tooltip.Arrow />
-    </Tooltip.Content>
-  </Tooltip.Portal>
+	<Tooltip.Trigger />
+	<Tooltip.Portal>
+		<Tooltip.Content>
+			<Tooltip.Arrow />
+		</Tooltip.Content>
+	</Tooltip.Portal>
 </Tooltip.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -167,29 +167,29 @@ An initial, uncontrolled open value can be provided using the `defaultOpen` prop
 The `open` prop can be used to make the open state controlled. The `onOpenChange` event is fired when the user presses the trigger, close button or interact outside, and receives the new value.
 
 <Preview>
-  <ControlledExample />
+	<ControlledExample />
 </Preview>
 
 ```tsx {3,8}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
-  const [open, setOpen] = createSignal(false);
+	const [open, setOpen] = createSignal(false);
 
-  return (
-    <>
-      <p>Tooltip is {open() ? "showing" : "not showing"}.</p>
-      <Tooltip.Root open={open()} onOpenChange={setOpen}>
-        <Tooltip.Trigger>Trigger</Tooltip.Trigger>
-        <Tooltip.Portal>
-          <Tooltip.Content>
-            <Tooltip.Arrow />
-            <p>Tooltip content</p>
-          </Tooltip.Content>
-        </Tooltip.Portal>
-      </Tooltip.Root>
-    </>
-  );
+	return (
+		<>
+			<p>Tooltip is {open() ? "showing" : "not showing"}.</p>
+			<Tooltip.Root open={open()} onOpenChange={setOpen}>
+				<Tooltip.Trigger>Trigger</Tooltip.Trigger>
+				<Tooltip.Portal>
+					<Tooltip.Content>
+						<Tooltip.Arrow />
+						<p>Tooltip content</p>
+					</Tooltip.Content>
+				</Tooltip.Portal>
+			</Tooltip.Root>
+		</>
+	);
 }
 ```
 
@@ -200,34 +200,34 @@ We expose a CSS custom property `--kb-tooltip-content-transform-origin` which ca
 ```css {2}
 /* style.css */
 .tooltip__content {
-  transform-origin: var(--kb-tooltip-content-transform-origin);
-  animation: contentHide 250ms ease-in forwards;
+	transform-origin: var(--kb-tooltip-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
 }
 
 .tooltip__content[data-expanded] {
-  animation: contentShow 250ms ease-out;
+	animation: contentShow 250ms ease-out;
 }
 
 @keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
 
 @keyframes contentHide {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.96);
-  }
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: scale(0.96);
+	}
 }
 ```
 

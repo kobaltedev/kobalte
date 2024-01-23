@@ -6,8 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableItem.ts
  */
 
-import { access, focusWithoutScrolling, MaybeAccessor } from "@kobalte/utils";
-import { Accessor, createEffect, createMemo, JSX, on } from "solid-js";
+import { MaybeAccessor, access, focusWithoutScrolling } from "@kobalte/utils";
+import { Accessor, JSX, createEffect, createMemo, on } from "solid-js";
 
 import { MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
@@ -68,7 +68,7 @@ export function createSelectableItem<T extends HTMLElement>(
 			} else {
 				manager().replaceSelection(key());
 			}
-		} else if (e && e.shiftKey) {
+		} else if (e?.shiftKey) {
 			manager().extendSelection(key());
 		} else if (
 			manager().selectionBehavior() === "toggle" ||

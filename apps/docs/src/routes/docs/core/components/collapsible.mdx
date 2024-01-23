@@ -26,15 +26,15 @@ The collapsible consists of:
 
 ```tsx
 <Collapsible.Root>
-  <Collapsible.Trigger />
-  <Collapsible.Content />
+	<Collapsible.Trigger />
+	<Collapsible.Content />
 </Collapsible.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -152,30 +152,30 @@ We expose the CSS custom properties `--kb-collapsible-content-width` and `--kb-c
 ```css {15,21}
 /* style.css */
 .collapsible__content {
-  overflow: hidden;
-  animation: slideUp 300ms ease-out;
+	overflow: hidden;
+	animation: slideUp 300ms ease-out;
 }
 
 .collapsible__content[data-expanded] {
-  animation: slideDown 300ms ease-out;
+	animation: slideDown 300ms ease-out;
 }
 
 @keyframes slideDown {
-  from {
-    height: 0;
-  }
-  to {
-    height: var(--kb-collapsible-content-height);
-  }
+	from {
+		height: 0;
+	}
+	to {
+		height: var(--kb-collapsible-content-height);
+	}
 }
 
 @keyframes slideUp {
-  from {
-    height: var(--kb-collapsible-content-height);
-  }
-  to {
-    height: 0;
-  }
+	from {
+		height: var(--kb-collapsible-content-height);
+	}
+	to {
+		height: 0;
+	}
 }
 ```
 

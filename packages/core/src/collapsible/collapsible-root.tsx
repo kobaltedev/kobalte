@@ -7,9 +7,9 @@
  */
 
 import {
+	OverrideComponentProps,
 	createGenerateId,
 	mergeDefaultProps,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
 	Accessor,
@@ -59,9 +59,9 @@ export interface CollapsibleRootProps
 export function CollapsibleRoot(props: CollapsibleRootProps) {
 	const defaultId = `collapsible-${createUniqueId()}`;
 
-	props = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"open",
 		"defaultOpen",
 		"onOpenChange",

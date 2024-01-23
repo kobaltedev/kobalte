@@ -6,7 +6,7 @@ export function BasicExample() {
 	return (
 		<div class="flex flex-col space-y-2">
 			<span>Content above</span>
-			<Separator.Root class={style["separator"]} />
+			<Separator.Root class={style.separator} />
 			<span>Content below</span>
 		</div>
 	);

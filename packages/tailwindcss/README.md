@@ -19,17 +19,17 @@ Add the plugin to your `tailwind.config.js`:
 ```js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [],
-  theme: {
-    extend: {},
-  },
-  plugins: [
-    // default prefix is "ui"
-    require("@kobalte/tailwindcss"),
+	content: [],
+	theme: {
+		extend: {},
+	},
+	plugins: [
+		// default prefix is "ui"
+		require("@kobalte/tailwindcss"),
 
-    // or with a custom prefix:
-    require("@kobalte/tailwindcss")({ prefix: "kb" }),
-  ],
+		// or with a custom prefix:
+		require("@kobalte/tailwindcss")({ prefix: "kb" }),
+	],
 };
 ```
 
@@ -39,10 +39,10 @@ Style your component:
 import { Popover } from "@kobalte/core";
 
 export const MyPopover = () => (
-  <Popover>
-    <Popover.Trigger class="ui-disabled:bg-slate-100">Open</Popover.Trigger>
-    <Popover.Content class="ui-expanded:shadow-md">...</Popover.Content>
-  </Popover>
+	<Popover>
+		<Popover.Trigger class="ui-disabled:bg-slate-100">Open</Popover.Trigger>
+		<Popover.Content class="ui-expanded:shadow-md">...</Popover.Content>
+	</Popover>
 );
 ```
 

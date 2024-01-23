@@ -1,5 +1,5 @@
-import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { createSignal, JSX, splitProps } from "solid-js";
+import { OverrideComponentProps, callHandler, mergeRefs } from "@kobalte/utils";
+import { JSX, createSignal, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useSliderContext } from "./slider-context";

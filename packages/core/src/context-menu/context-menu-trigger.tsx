@@ -7,10 +7,10 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { JSX, onCleanup, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
@@ -36,14 +36,14 @@ export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
 	const menuContext = useMenuContext();
 	const context = useContextMenuContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: rootContext.generateId("trigger"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"style",
 		"disabled",

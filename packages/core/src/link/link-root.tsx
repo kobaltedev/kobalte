@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/link/src/useLink.ts
  */
 
-import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeRefs } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";

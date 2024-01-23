@@ -7,19 +7,19 @@
  */
 
 import {
+	MaybeAccessor,
 	access,
 	callHandler,
 	createEventListener,
 	focusWithoutScrolling,
 	getFocusableTreeWalker,
-	MaybeAccessor,
 	scrollIntoView,
 } from "@kobalte/utils";
 import {
 	Accessor,
+	JSX,
 	createEffect,
 	createMemo,
-	JSX,
 	mergeProps,
 	on,
 	onMount,
@@ -94,7 +94,7 @@ export function createSelectableCollection<
 			access(props.selectionManager).selectionBehavior() === "replace",
 	};
 
-	props = mergeProps(defaultProps, props);
+	const mergedProps = mergeProps(defaultProps, props);
 
 	const finalScrollRef = () => scrollRef?.() ?? ref();
 
@@ -103,7 +103,7 @@ export function createSelectableCollection<
 	// Store the scroll position, so we can restore it later.
 	let scrollPos = { top: 0, left: 0 };
 	createEventListener(
-		() => (!access(props.isVirtualized) ? finalScrollRef() : undefined),
+		() => (!access(mergedProps.isVirtualized) ? finalScrollRef() : undefined),
 		"scroll",
 		() => {
 			const scrollEl = finalScrollRef();
@@ -120,9 +120,9 @@ export function createSelectableCollection<
 	);
 
 	const { typeSelectHandlers } = createTypeSelect({
-		isDisabled: () => access(props.disallowTypeAhead),
-		keyboardDelegate: () => access(props.keyboardDelegate),
-		selectionManager: () => access(props.selectionManager),
+		isDisabled: () => access(mergedProps.disallowTypeAhead),
+		keyboardDelegate: () => access(mergedProps.keyboardDelegate),
+		selectionManager: () => access(mergedProps.selectionManager),
 	});
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
@@ -141,8 +141,8 @@ export function createSelectableCollection<
 			return;
 		}
 
-		const manager = access(props.selectionManager);
-		const selectOnFocus = access(props.selectOnFocus);
+		const manager = access(mergedProps.selectionManager);
+		const selectOnFocus = access(mergedProps.selectOnFocus);
 
 		const navigateToKey = (key: string | undefined) => {
 			if (key != null) {
@@ -156,8 +156,8 @@ export function createSelectableCollection<
 			}
 		};
 
-		const delegate = access(props.keyboardDelegate);
-		const shouldFocusWrap = access(props.shouldFocusWrap);
+		const delegate = access(mergedProps.keyboardDelegate);
+		const shouldFocusWrap = access(mergedProps.shouldFocusWrap);
 
 		const focusedKey = manager.focusedKey();
 
@@ -305,7 +305,7 @@ export function createSelectableCollection<
 				if (
 					isCtrlKeyPressed(e) &&
 					manager.selectionMode() === "multiple" &&
-					access(props.disallowSelectAll) !== true
+					access(mergedProps.disallowSelectAll) !== true
 				) {
 					e.preventDefault();
 					manager.selectAll();
@@ -314,13 +314,13 @@ export function createSelectableCollection<
 			case "Escape":
 				if (!e.defaultPrevented) {
 					e.preventDefault();
-					if (!access(props.disallowEmptySelection)) {
+					if (!access(mergedProps.disallowEmptySelection)) {
 						manager.clearSelection();
 					}
 				}
 				break;
 			case "Tab": {
-				if (!access(props.allowsTabNavigation)) {
+				if (!access(mergedProps.allowsTabNavigation)) {
 					// There may be elements that are "tabbable" inside a collection (e.g. in a grid cell).
 					// However, collections should be treated as a single tab stop, with arrow key navigation internally.
 					// We don't control the rendering of these, so we can't override the tabIndex to prevent tabbing.
@@ -351,9 +351,9 @@ export function createSelectableCollection<
 	};
 
 	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		const manager = access(props.selectionManager);
-		const delegate = access(props.keyboardDelegate);
-		const selectOnFocus = access(props.selectOnFocus);
+		const manager = access(mergedProps.selectionManager);
+		const delegate = access(mergedProps.keyboardDelegate);
+		const selectOnFocus = access(mergedProps.selectOnFocus);
 
 		if (manager.isFocused()) {
 			// If a focus event bubbled through a portal, reset focus state.
@@ -401,7 +401,7 @@ export function createSelectableCollection<
 					manager.firstSelectedKey() ?? delegate.getFirstKey?.(),
 				);
 			}
-		} else if (!access(props.isVirtualized)) {
+		} else if (!access(mergedProps.isVirtualized)) {
 			const scrollEl = finalScrollRef();
 
 			if (scrollEl) {
@@ -424,7 +424,7 @@ export function createSelectableCollection<
 	};
 
 	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		const manager = access(props.selectionManager);
+		const manager = access(mergedProps.selectionManager);
 
 		// Don't set blurred and then focused again if moving focus within the collection.
 		if (!e.currentTarget.contains(e.relatedTarget as HTMLElement)) {
@@ -441,14 +441,14 @@ export function createSelectableCollection<
 	};
 
 	const tryAutoFocus = () => {
-		const autoFocus = access(props.autoFocus);
+		const autoFocus = access(mergedProps.autoFocus);
 
 		if (!autoFocus) {
 			return;
 		}
 
-		const manager = access(props.selectionManager);
-		const delegate = access(props.keyboardDelegate);
+		const manager = access(mergedProps.selectionManager);
+		const delegate = access(mergedProps.keyboardDelegate);
 
 		let focusedKey: string | undefined;
 
@@ -472,13 +472,17 @@ export function createSelectableCollection<
 		const refEl = ref();
 
 		// If no default focus key is selected, focus the collection itself.
-		if (refEl && focusedKey == null && !access(props.shouldUseVirtualFocus)) {
+		if (
+			refEl &&
+			focusedKey == null &&
+			!access(mergedProps.shouldUseVirtualFocus)
+		) {
 			focusWithoutScrolling(refEl);
 		}
 	};
 
 	onMount(() => {
-		if (props.deferAutoFocus) {
+		if (mergedProps.deferAutoFocus) {
 			setTimeout(tryAutoFocus, 0); // TODO: does this work EVERY time ?
 		} else {
 			tryAutoFocus();
@@ -491,14 +495,14 @@ export function createSelectableCollection<
 		on(
 			[
 				finalScrollRef,
-				() => access(props.isVirtualized),
-				() => access(props.selectionManager).focusedKey(),
+				() => access(mergedProps.isVirtualized),
+				() => access(mergedProps.selectionManager).focusedKey(),
 			],
 			(newValue) => {
 				const [scrollEl, isVirtualized, focusedKey] = newValue;
 
 				if (isVirtualized) {
-					focusedKey && props.scrollToKey?.(focusedKey);
+					focusedKey && mergedProps.scrollToKey?.(focusedKey);
 				} else {
 					if (focusedKey && scrollEl) {
 						const element = scrollEl.querySelector(
@@ -519,11 +523,11 @@ export function createSelectableCollection<
 	// If using virtual focus, don't set a tabIndex at all so that VoiceOver on iOS 14 doesn't try
 	// to move real DOM focus to the element anyway.
 	const tabIndex = createMemo(() => {
-		if (access(props.shouldUseVirtualFocus)) {
+		if (access(mergedProps.shouldUseVirtualFocus)) {
 			return undefined;
 		}
 
-		return access(props.selectionManager).focusedKey() == null ? 0 : -1;
+		return access(mergedProps.selectionManager).focusedKey() == null ? 0 : -1;
 	});
 
 	return {

@@ -1,9 +1,9 @@
 import {
 	For,
 	Show,
+	batch,
 	createEffect,
 	createSignal,
-	batch,
 	untrack,
 } from "solid-js";
 

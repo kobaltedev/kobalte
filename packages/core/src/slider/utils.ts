@@ -1,5 +1,5 @@
 export function getNextSortedValues(
-	prevValues: number[] = [],
+	prevValues: number[],
 	nextValue: number,
 	atIndex: number,
 ) {
@@ -63,7 +63,7 @@ export function getDecimalCount(value: number) {
 }
 
 export function roundValue(value: number, decimalCount: number) {
-	const rounder = Math.pow(10, decimalCount);
+	const rounder = 10 ** decimalCount;
 	return Math.round(value * rounder) / rounder;
 }
 

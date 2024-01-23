@@ -1,7 +1,7 @@
 import {
+	OverrideComponentProps,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
@@ -20,14 +20,14 @@ export function FormControlLabel(props: FormControlLabelProps) {
 
 	const context = useFormControlContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("label"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["ref"]);
+	const [local, others] = splitProps(mergedProps, ["ref"]);
 
 	const tagName = createTagName(
 		() => ref,

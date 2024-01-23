@@ -1,11 +1,11 @@
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
-  ControlledExample,
-  DefaultValueExample,
-  HTMLFormExample,
-  BasicExample,
-  DescriptionExample,
-  ErrorMessageExample,
+	ControlledExample,
+	DefaultValueExample,
+	HTMLFormExample,
+	BasicExample,
+	DescriptionExample,
+	ErrorMessageExample,
 } from "../../../../examples/radio-group";
 
 # Radio Group
@@ -46,24 +46,24 @@ The radio item consists of:
 
 ```tsx
 <RadioGroup.Root>
-  <RadioGroup.Label />
-  <RadioGroup.Item>
-    <RadioGroup.ItemInput />
-    <RadioGroup.ItemControl>
-      <RadioGroup.ItemIndicator />
-    </RadioGroup.ItemControl>
-    <RadioGroup.ItemLabel />
-    <RadioGroup.ItemDescription />
-  </RadioGroup.Item>
-  <RadioGroup.Description />
-  <RadioGroup.ErrorMessage />
+	<RadioGroup.Label />
+	<RadioGroup.Item>
+		<RadioGroup.ItemInput />
+		<RadioGroup.ItemControl>
+			<RadioGroup.ItemIndicator />
+		</RadioGroup.ItemControl>
+		<RadioGroup.ItemLabel />
+		<RadioGroup.ItemDescription />
+	</RadioGroup.Item>
+	<RadioGroup.Description />
+	<RadioGroup.ErrorMessage />
 </RadioGroup.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -189,17 +189,17 @@ The radio item consists of:
 An initial, uncontrolled value can be provided using the `defaultValue` prop, which accepts a value corresponding with the `value` prop of each radio.
 
 <Preview>
-  <DefaultValueExample />
+	<DefaultValueExample />
 </Preview>
 
 ```tsx {0,4}
 <RadioGroup.Root defaultValue="Orange">
-  <RadioGroup.Label>Favorite fruit</RadioGroup.Label>
-  <div>
-    <For each={["Apple", "Orange", "Watermelon"]}>
-      {fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
-    </For>
-  </div>
+	<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
+	<div>
+		<For each={["Apple", "Orange", "Watermelon"]}>
+			{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
+		</For>
+	</div>
 </RadioGroup.Root>
 ```
 
@@ -208,28 +208,28 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 The `value` prop, which accepts a value corresponding with the `value` prop of each radio, can be used to make the value controlled. The `onChange` event is fired when the user selects a radio, and receives the new value.
 
 <Preview>
-  <ControlledExample />
+	<ControlledExample />
 </Preview>
 
 ```tsx {3,7,11}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
-  const [value, setValue] = createSignal("Orange");
+	const [value, setValue] = createSignal("Orange");
 
-  return (
-    <>
-      <RadioGroup.Root value={value()} onChange={setValue}>
-        <RadioGroup.Label>Favorite fruit</RadioGroup.Label>
-        <div>
-          <For each={["Apple", "Orange", "Watermelon"]}>
-            {fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
-          </For>
-        </div>
-      </RadioGroup.Root>
-      <p>Your favorite fruit is: {value()}.</p>
-    </>
-  );
+	return (
+		<>
+			<RadioGroup.Root value={value()} onChange={setValue}>
+				<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
+				<div>
+					<For each={["Apple", "Orange", "Watermelon"]}>
+						{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
+					</For>
+				</div>
+			</RadioGroup.Root>
+			<p>Your favorite fruit is: {value()}.</p>
+		</>
+	);
 }
 ```
 
@@ -238,18 +238,18 @@ function ControlledExample() {
 The `RadioGroup.Description` component can be used to associate additional help text with a radio group.
 
 <Preview>
-  <DescriptionExample />
+	<DescriptionExample />
 </Preview>
 
 ```tsx {7}
 <RadioGroup.Root>
-  <RadioGroup.Label>Favorite fruit</RadioGroup.Label>
-  <div>
-    <For each={["Apple", "Orange", "Watermelon"]}>
-      {fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
-    </For>
-  </div>
-  <RadioGroup.Description>Choose the fruit you like the most.</RadioGroup.Description>
+	<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
+	<div>
+		<For each={["Apple", "Orange", "Watermelon"]}>
+			{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
+		</For>
+	</div>
+	<RadioGroup.Description>Choose the fruit you like the most.</RadioGroup.Description>
 </RadioGroup.Root>
 ```
 
@@ -260,30 +260,30 @@ The `RadioGroup.ErrorMessage` component can be used to help the user fix a valid
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
 <Preview>
-  <ErrorMessageExample />
+	<ErrorMessageExample />
 </Preview>
 
 ```tsx {9,17}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
-  const [value, setValue] = createSignal("Orange");
+	const [value, setValue] = createSignal("Orange");
 
-  return (
-    <RadioGroup.Root
-      value={value()}
-      onChange={setValue}
-      validationState={value() !== "Apple" ? "invalid" : "valid"}
-    >
-      <RadioGroup.Label>Favorite fruit</RadioGroup.Label>
-      <div>
-        <For each={["Apple", "Orange", "Watermelon"]}>
-          {fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
-        </For>
-      </div>
-      <RadioGroup.ErrorMessage>Hmm, I prefer apples.</RadioGroup.ErrorMessage>
-    </RadioGroup.Root>
-  );
+	return (
+		<RadioGroup.Root
+			value={value()}
+			onChange={setValue}
+			validationState={value() !== "Apple" ? "invalid" : "valid"}
+		>
+			<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
+			<div>
+				<For each={["Apple", "Orange", "Watermelon"]}>
+					{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
+				</For>
+			</div>
+			<RadioGroup.ErrorMessage>Hmm, I prefer apples.</RadioGroup.ErrorMessage>
+		</RadioGroup.Root>
+	);
 }
 ```
 
@@ -292,31 +292,31 @@ function ErrorMessageExample() {
 The radio group `name` prop, paired with the radio `value` prop, can be used for integration with HTML forms.
 
 <Preview>
-  <HTMLFormExample />
+	<HTMLFormExample />
 </Preview>
 
 ```tsx {7,11}
 function HTMLFormExample() {
-  const onSubmit = (e: SubmitEvent) => {
-    // handle form submission.
-  };
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
 
-  return (
-    <form onSubmit={onSubmit}>
-      <RadioGroup.Root name="favorite-fruit">
-        <RadioGroup.Label>Favorite fruit</RadioGroup.Label>
-        <div>
-          <For each={["Apple", "Orange", "Watermelon"]}>
-            {fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
-          </For>
-        </div>
-      </RadioGroup.Root>
-      <div>
-        <button type="reset">Reset</button>
-        <button>Submit</button>
-      </div>
-    </form>
-  );
+	return (
+		<form onSubmit={onSubmit}>
+			<RadioGroup.Root name="favorite-fruit">
+				<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
+				<div>
+					<For each={["Apple", "Orange", "Watermelon"]}>
+						{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
+					</For>
+				</div>
+			</RadioGroup.Root>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
 }
 ```
 

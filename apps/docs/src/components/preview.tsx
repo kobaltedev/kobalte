@@ -7,9 +7,9 @@ interface PreviewProps extends ComponentProps<"div"> {
 }
 
 export function Preview(props: PreviewProps) {
-	props = mergeProps({ isCentered: true }, props);
+	const mergedProps = mergeProps({ isCentered: true }, props);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"class",
 		"isCentered",
 		"isRounded",

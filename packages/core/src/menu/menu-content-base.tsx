@@ -7,19 +7,19 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	composeEventHandlers,
 	contains,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
+	JSX,
+	Show,
 	createEffect,
 	createUniqueId,
-	JSX,
 	onCleanup,
-	Show,
 	splitProps,
 } from "solid-js";
 
@@ -29,10 +29,10 @@ import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
-	createFocusScope,
 	FocusOutsideEvent,
 	InteractOutsideEvent,
 	PointerDownOutsideEvent,
+	createFocusScope,
 } from "../primitives";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
@@ -88,14 +88,14 @@ export function MenuContentBase(props: MenuContentBaseProps) {
 	const context = useMenuContext();
 	const optionalMenubarContext = useOptionalMenubarContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: rootContext.generateId(`content-${createUniqueId()}`),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"id",
 		"style",

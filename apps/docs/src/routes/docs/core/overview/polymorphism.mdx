@@ -11,22 +11,22 @@ import { Tabs as KTabs } from "@kobalte/core";
 import { MyCustomButton } from "./components";
 
 function App() {
-  return (
-    <KTabs.Root>
-      <KTabs.List>
-        {/* Render an anchor tag instead of the default button */}
-        <KTabs.Trigger value="one" as="a">
-          A Trigger
-        </KTabs.Trigger>
+	return (
+		<KTabs.Root>
+			<KTabs.List>
+				{/* Render an anchor tag instead of the default button */}
+				<KTabs.Trigger value="one" as="a">
+					A Trigger
+				</KTabs.Trigger>
 
-        {/* Render MyCustomButton instead of the default button */}
-        <KTabs.Trigger value="one" as={MyCustomButton}>
-          Custom Button Trigger
-        </KTabs.Trigger>
-      </KTabs.List>
-      <KTabs.Content value="one">Content one</KTabs.Content>
-    </KTabs.Root>
-  );
+				{/* Render MyCustomButton instead of the default button */}
+				<KTabs.Trigger value="one" as={MyCustomButton}>
+					Custom Button Trigger
+				</KTabs.Trigger>
+			</KTabs.List>
+			<KTabs.Content value="one">Content one</KTabs.Content>
+		</KTabs.Root>
+	);
 }
 ```
 
@@ -46,24 +46,24 @@ import { As, Tabs as KTabs } from "@kobalte/core";
 import { MyCustomButton } from "./components";
 
 function App() {
-  return (
-    <KTabs.Root>
-      <KTabs.List>
-        {/* The `value` prop is used by Kobalte and not passed to MyCustomButton */}
-        <KTabs.Trigger value="one" as={MyCustomButton}>
-          A Trigger
-        </KTabs.Trigger>
+	return (
+		<KTabs.Root>
+			<KTabs.List>
+				{/* The `value` prop is used by Kobalte and not passed to MyCustomButton */}
+				<KTabs.Trigger value="one" as={MyCustomButton}>
+					A Trigger
+				</KTabs.Trigger>
 
-        {/* The `value` prop is used by Kobalte and not passed to MyCustomButton */}
-        <KTabs.Trigger value="one" asChild>
-          {/* The `value` prop is directly passed to MyCustomButton */}
-          <As component={MyCustomButton} value="custom">
-            Custom Button Trigger
-          </As>
-        </KTabs.Trigger>
-      </KTabs.List>
-      <KTabs.Content value="one">Content one</KTabs.Content>
-    </KTabs.Root>
-  );
+				{/* The `value` prop is used by Kobalte and not passed to MyCustomButton */}
+				<KTabs.Trigger value="one" asChild>
+					{/* The `value` prop is directly passed to MyCustomButton */}
+					<As component={MyCustomButton} value="custom">
+						Custom Button Trigger
+					</As>
+				</KTabs.Trigger>
+			</KTabs.List>
+			<KTabs.Content value="one">Content one</KTabs.Content>
+		</KTabs.Root>
+	);
 }
 ```

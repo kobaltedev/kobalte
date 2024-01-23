@@ -1,5 +1,5 @@
 import { nodeTypes } from "@mdx-js/mdx";
-import { parse } from "acorn";
+import { Options as AcornOptions, parse } from "acorn";
 // @ts-ignore
 import Slugger from "github-slugger";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -7,15 +7,15 @@ import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkShikiTwoslash from "remark-shiki-twoslash";
-import solid from "solid-start/vite";
 // @ts-ignore
 import netlify from "solid-start-netlify";
 // @ts-ignore
 import node from "solid-start-node";
+import solid from "solid-start/vite";
 import { visit } from "unist-util-visit";
 import { defineConfig } from "vite";
 
-function jsToTreeNode(jsString: any, acornOpts: any) {
+function jsToTreeNode(jsString: string, acornOpts?: AcornOptions) {
 	return {
 		type: "mdxjsEsm",
 		value: "",
@@ -42,7 +42,7 @@ async function mdx(config: any) {
 
 	function rehypeCollectHeadings() {
 		const slugger = new Slugger();
-		return function (tree: any, file: any) {
+		return (tree: any, file: any) => {
 			const headings: any[] = [];
 			visit(tree, (node) => {
 				if (node.type !== "element") {
@@ -172,13 +172,12 @@ async function mdx(config: any) {
 			name: "mdx-meta",
 			async transform(code: any, id: any) {
 				if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
-					id = id.replace(/\?meta$/, "");
+					const replacedId = id.replace(/\?meta$/, "");
 
-					// eslint-disable-next-line no-inner-declarations
 					function getCode() {
 						return `
               export function getHeadings() { return ${JSON.stringify(
-								headingsCache.get(id),
+								headingsCache.get(replacedId),
 								null,
 								2,
 							)}
@@ -191,7 +190,7 @@ async function mdx(config: any) {
 					}
 
 					// @ts-ignore
-					const result = await plugin.transform?.call(this, code, id);
+					const result = await plugin.transform?.call(this, code, replacedId);
 
 					cache.set(code, result);
 

@@ -7,14 +7,14 @@
  */
 
 import {
+	OverrideComponentProps,
 	composeEventHandlers,
 	focusWithoutScrolling,
 	isWebKit,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, JSX, on, splitProps } from "solid-js";
+import { JSX, createEffect, on, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
@@ -41,14 +41,14 @@ export function TabsTrigger(props: TabsTriggerProps) {
 
 	const context = useTabsContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			type: "button",
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"id",
 		"value",

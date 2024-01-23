@@ -19,14 +19,14 @@ export function createDomCollectionItem<
 >(props: CreateDomCollectionItemProps<T>) {
 	const context = useDomCollectionContext<T>();
 
-	props = mergeDefaultProps({ shouldRegisterItem: true }, props);
+	const mergedProps = mergeDefaultProps({ shouldRegisterItem: true }, props);
 
 	createEffect(() => {
-		if (!props.shouldRegisterItem) {
+		if (!mergedProps.shouldRegisterItem) {
 			return;
 		}
 
-		const unregister = context.registerItem(props.getItem());
+		const unregister = context.registerItem(mergedProps.getItem());
 
 		onCleanup(unregister);
 	});

@@ -27,7 +27,6 @@ describe("Image", () => {
 					setTimeout(() => {
 						this.onload();
 					}, DELAY);
-					return this;
 				}
 			};
 		});

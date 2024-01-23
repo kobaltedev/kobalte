@@ -11,8 +11,8 @@ import { render, screen } from "@solidjs/testing-library";
 import { ParentProps } from "solid-js";
 
 import {
-	createFormControl,
 	CreateFormControlProps,
+	createFormControl,
 } from "./create-form-control";
 import { FormControlContext } from "./form-control-context";
 import { FormControlDescription } from "./form-control-description";
@@ -62,9 +62,9 @@ describe("createFormControl", () => {
 			const description = screen.getByText("Description");
 			const error = screen.getByText("ErrorMessage");
 
-			expect(label.id).toBe(`foo-label`);
-			expect(description.id).toBe(`foo-description`);
-			expect(error.id).toBe(`foo-error-message`);
+			expect(label.id).toBe("foo-label");
+			expect(description.id).toBe("foo-description");
+			expect(error.id).toBe("foo-error-message");
 		});
 
 		it("supports custom ids", () => {
@@ -84,9 +84,9 @@ describe("createFormControl", () => {
 			const description = screen.getByText("Description");
 			const error = screen.getByText("ErrorMessage");
 
-			expect(label.id).toBe(`custom-label-id`);
-			expect(description.id).toBe(`custom-description-id`);
-			expect(error.id).toBe(`custom-error-message-id`);
+			expect(label.id).toBe("custom-label-id");
+			expect(description.id).toBe("custom-description-id");
+			expect(error.id).toBe("custom-error-message-id");
 		});
 	});
 

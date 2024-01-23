@@ -7,9 +7,9 @@
  */
 
 import {
+	OverrideComponentProps,
 	composeEventHandlers,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, splitProps } from "solid-js";
 

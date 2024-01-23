@@ -1,8 +1,8 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 
-import { I18nProvider } from "../i18n";
 import * as Toast from ".";
+import { I18nProvider } from "../i18n";
 import { toaster } from "./toaster";
 import { ShowToastOptions } from "./types";
 
@@ -32,6 +32,7 @@ describe("Toast", () => {
 					</Toast.Description>
 					<Toast.CloseButton data-testid="close-button" />
 					<button
+						type="button"
 						data-testid="manual-dismiss"
 						onClick={() => toaster.dismiss(props.toastId)}
 					/>
@@ -44,7 +45,7 @@ describe("Toast", () => {
 	it("renders correctly", async () => {
 		render(() => (
 			<>
-				<button data-testid="trigger" onClick={() => showToast()}>
+				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
 				</button>
 				<Toast.Region>
@@ -64,6 +65,7 @@ describe("Toast", () => {
 		render(() => (
 			<>
 				<button
+					type="button"
 					data-testid="trigger"
 					onClick={() => showToast({ priority: "high" })}
 				>
@@ -86,6 +88,7 @@ describe("Toast", () => {
 		render(() => (
 			<>
 				<button
+					type="button"
 					data-testid="trigger"
 					onClick={() => showToast({ priority: "low" })}
 				>
@@ -107,7 +110,7 @@ describe("Toast", () => {
 	it("should have 'aria-atomic' set to 'true'", async () => {
 		render(() => (
 			<>
-				<button data-testid="trigger" onClick={() => showToast()}>
+				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
 				</button>
 				<Toast.Region>
@@ -126,7 +129,7 @@ describe("Toast", () => {
 	it("should be labelled by its toast title", async () => {
 		render(() => (
 			<>
-				<button data-testid="trigger" onClick={() => showToast()}>
+				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
 				</button>
 				<Toast.Region>
@@ -147,7 +150,7 @@ describe("Toast", () => {
 	it("should be described by its toast description", async () => {
 		render(() => (
 			<>
-				<button data-testid="trigger" onClick={() => showToast()}>
+				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
 				</button>
 				<Toast.Region>
@@ -170,7 +173,7 @@ describe("Toast", () => {
 
 		render(() => (
 			<>
-				<button data-testid="trigger" onClick={() => showToast()}>
+				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
 				</button>
 				<Toast.Region duration={duration}>
@@ -196,6 +199,7 @@ describe("Toast", () => {
 		render(() => (
 			<>
 				<button
+					type="button"
 					data-testid="trigger"
 					onClick={() => showToast({ duration: durationOverride })}
 				>
@@ -224,6 +228,7 @@ describe("Toast", () => {
 		render(() => (
 			<>
 				<button
+					type="button"
 					data-testid="trigger"
 					onClick={() => showToast({ persistent: true })}
 				>
@@ -249,7 +254,7 @@ describe("Toast", () => {
 	it("should close when clicking the toast close button", async () => {
 		render(() => (
 			<>
-				<button data-testid="trigger" onClick={() => showToast()}>
+				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
 				</button>
 				<Toast.Region>
@@ -272,7 +277,7 @@ describe("Toast", () => {
 	it("should close when using toaster dismiss method", async () => {
 		render(() => (
 			<>
-				<button data-testid="trigger" onClick={() => showToast()}>
+				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
 				</button>
 				<Toast.Region>
@@ -298,6 +303,7 @@ describe("Toast", () => {
 		render(() => (
 			<>
 				<button
+					type="button"
 					data-testid="trigger"
 					onClick={() => {
 						toastId = toaster.show((props) => (
@@ -308,6 +314,7 @@ describe("Toast", () => {
 					Show
 				</button>
 				<button
+					type="button"
 					data-testid="update-trigger"
 					onClick={() => {
 						toaster.update(toastId, (props) => (
@@ -343,6 +350,7 @@ describe("Toast", () => {
 		render(() => (
 			<>
 				<button
+					type="button"
 					data-testid="trigger"
 					onClick={() =>
 						toaster.promise(promise, (props) => (
@@ -382,6 +390,7 @@ describe("Toast", () => {
 		render(() => (
 			<>
 				<button
+					type="button"
 					data-testid="trigger"
 					onClick={() =>
 						toaster.promise<string, Error>(promise, (props) => (
@@ -473,10 +482,11 @@ describe("Toast", () => {
 			render(() => (
 				<>
 					<button
+						type="button"
 						data-testid="trigger"
-						onClick={() =>
-							Array.from(Array(aboveLimit).keys()).forEach(() => showToast())
-						}
+						onClick={() => {
+							for (let i = 0; i < aboveLimit; i++) showToast();
+						}}
 					>
 						Show more than limit
 					</button>
@@ -497,6 +507,7 @@ describe("Toast", () => {
 			render(() => (
 				<>
 					<button
+						type="button"
 						data-testid="trigger"
 						onClick={() => {
 							showToast(
@@ -547,7 +558,11 @@ describe("Toast", () => {
 
 			render(() => (
 				<>
-					<button data-testid="trigger" onClick={() => showToast()}>
+					<button
+						type="button"
+						data-testid="trigger"
+						onClick={() => showToast()}
+					>
 						Show
 					</button>
 					<Toast.Region duration={duration} pauseOnInteraction>
@@ -596,7 +611,11 @@ describe("Toast", () => {
 
 			render(() => (
 				<>
-					<button data-testid="trigger" onClick={() => showToast()}>
+					<button
+						type="button"
+						data-testid="trigger"
+						onClick={() => showToast()}
+					>
 						Show
 					</button>
 					<Toast.Region duration={duration} pauseOnInteraction>

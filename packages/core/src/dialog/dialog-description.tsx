@@ -1,4 +1,4 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -13,14 +13,14 @@ export interface DialogDescriptionProps
 export function DialogDescription(props: DialogDescriptionProps) {
 	const context = useDialogContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("description"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["id"]);
+	const [local, others] = splitProps(mergedProps, ["id"]);
 
 	createEffect(() => onCleanup(context.registerDescriptionId(local.id!)));
 

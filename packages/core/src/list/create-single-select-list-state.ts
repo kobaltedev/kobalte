@@ -16,9 +16,9 @@ import {
 } from "../primitives";
 import { SingleSelection } from "../selection";
 import {
-	createListState,
 	CreateListStateProps,
 	ListState,
+	createListState,
 } from "./create-list-state";
 
 export interface CreateSingleSelectListStateProps

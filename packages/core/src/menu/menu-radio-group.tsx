@@ -7,7 +7,7 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-stately/radio/src/useRadioGroupState.ts
  */
 
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
 
 import { AsChildProp } from "../polymorphic";
@@ -47,14 +47,14 @@ export function MenuRadioGroup(props: MenuRadioGroupProps) {
 
 	const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"value",
 		"defaultValue",
 		"onChange",

@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/e6808d1b5e80cef7af7e63974f658043593b2e1e/packages/@react-aria/menu/src/useMenuSection.ts
  */
 
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -22,14 +22,14 @@ export interface MenuGroupLabelProps
 export function MenuGroupLabel(props: MenuGroupLabelProps) {
 	const context = useMenuGroupContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("label"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["id"]);
+	const [local, others] = splitProps(mergedProps, ["id"]);
 
 	createEffect(() => onCleanup(context.registerLabelId(local.id!)));
 

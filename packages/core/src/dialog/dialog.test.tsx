@@ -11,7 +11,7 @@ import { render, screen } from "@solidjs/testing-library";
 import * as Dialog from ".";
 
 describe("Dialog", () => {
-	it("should be labelled by its dialog title", function () {
+	it("should be labelled by its dialog title", () => {
 		render(() => (
 			<Dialog.Root open>
 				<Dialog.Content>
@@ -26,7 +26,7 @@ describe("Dialog", () => {
 		expect(panel).toHaveAttribute("aria-labelledby", title.id);
 	});
 
-	it("should be described by its dialog description", function () {
+	it("should be described by its dialog description", () => {
 		render(() => (
 			<Dialog.Root open>
 				<Dialog.Content>

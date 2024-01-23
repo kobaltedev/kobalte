@@ -8,34 +8,34 @@
  */
 
 import {
+	OverrideComponentProps,
+	ValidationState,
 	access,
 	createGenerateId,
 	focusWithoutScrolling,
 	isAppleDevice,
 	isFunction,
 	mergeDefaultProps,
-	OverrideComponentProps,
-	ValidationState,
 } from "@kobalte/utils";
 import {
 	Accessor,
 	Component,
+	JSX,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	JSX,
 	on,
 	splitProps,
 } from "solid-js";
 
 import {
-	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	createFormControl,
 } from "../form-control";
 import { createFilter } from "../i18n";
-import { createListState, ListKeyboardDelegate } from "../list";
+import { ListKeyboardDelegate, createListState } from "../list";
 import { announce } from "../live-announcer";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { PopperRoot, PopperRootOptions } from "../popper";
@@ -49,22 +49,22 @@ import {
 	getItemCount,
 } from "../primitives";
 import {
-	createSelectableCollection,
 	FocusStrategy,
 	KeyboardDelegate,
 	Selection,
 	SelectionBehavior,
 	SelectionMode,
+	createSelectableCollection,
 } from "../selection";
-import {
-	COMBOBOX_INTL_TRANSLATIONS,
-	ComboboxIntlTranslations,
-} from "./combobox.intl";
 import {
 	ComboboxContext,
 	ComboboxContextValue,
 	ComboboxDataSet,
 } from "./combobox-context";
+import {
+	COMBOBOX_INTL_TRANSLATIONS,
+	ComboboxIntlTranslations,
+} from "./combobox.intl";
 import { ComboboxTriggerMode } from "./types";
 
 export interface ComboboxBaseItemComponentProps<T> {
@@ -259,7 +259,7 @@ export function ComboboxBase<Option, OptGroup = never>(
 
 	const filter = createFilter({ sensitivity: "base" });
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			selectionMode: "single",
@@ -278,7 +278,7 @@ export function ComboboxBase<Option, OptGroup = never>(
 	);
 
 	const [local, popperProps, formControlProps, others] = splitProps(
-		props,
+		mergedProps,
 		[
 			"translations",
 			"itemComponent",
@@ -476,12 +476,10 @@ export function ComboboxBase<Option, OptGroup = never>(
 		if (disclosureState.isOpen()) {
 			if (showAllOptions()) {
 				return local.options;
-			} else {
-				return filteredOptions();
 			}
-		} else {
-			return lastDisplayedOptions();
+			return filteredOptions();
 		}
+		return lastDisplayedOptions();
 	});
 
 	// Track what action is attempting to open the combobox.

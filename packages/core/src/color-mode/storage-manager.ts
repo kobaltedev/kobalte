@@ -8,7 +8,11 @@
 
 import { isServer } from "solid-js/web";
 
-import { ColorModeStorageManager, MaybeConfigColorMode } from "./types";
+import {
+	ColorModeStorageManager,
+	ConfigColorMode,
+	MaybeConfigColorMode,
+} from "./types";
 
 export const COLOR_MODE_STORAGE_KEY = "kb-color-mode";
 
@@ -23,10 +27,10 @@ export function createLocalStorageManager(
 				return fallback;
 			}
 
-			let value: any;
+			let value: ConfigColorMode | null | undefined;
 			try {
-				value = localStorage.getItem(key);
-			} catch (e) {
+				value = localStorage.getItem(key) as ConfigColorMode;
+			} catch (_) {
 				// noop
 			}
 

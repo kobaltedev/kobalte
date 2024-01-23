@@ -1,5 +1,5 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { createUniqueId, ParentProps, splitProps } from "solid-js";
+import { ParentProps, createUniqueId, splitProps } from "solid-js";
 
 import { createDisclosureState } from "../primitives";
 import { Menu, MenuOptions } from "./menu";
@@ -50,7 +50,7 @@ export interface MenuRootProps extends ParentProps<MenuRootOptions> {}
 export function MenuRoot(props: MenuRootProps) {
 	const defaultId = `menu-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			modal: true,
@@ -58,7 +58,7 @@ export function MenuRoot(props: MenuRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"id",
 		"modal",
 		"preventScroll",

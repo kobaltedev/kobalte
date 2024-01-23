@@ -12,7 +12,7 @@ function testUserAgent(re: RegExp) {
 	}
 	return (
 		// @ts-ignore
-		window.navigator["userAgentData"]?.brands.some(
+		window.navigator.userAgentData?.brands.some(
 			(brand: { brand: string; version: string }) => re.test(brand.brand),
 		) || re.test(window.navigator.userAgent)
 	);
@@ -22,8 +22,7 @@ function testPlatform(re: RegExp) {
 	return typeof window !== "undefined" && window.navigator != null
 		? re.test(
 				// @ts-ignore
-				window.navigator["userAgentData"]?.platform ||
-					window.navigator.platform,
+				window.navigator.userAgentData?.platform || window.navigator.platform,
 		  )
 		: false;
 }

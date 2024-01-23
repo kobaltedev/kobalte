@@ -2,9 +2,9 @@ import { Show } from "solid-js";
 
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
-  BasicExample,
-  ControlledExample,
-  DefaultPressedExample,
+	BasicExample,
+	ControlledExample,
+	DefaultPressedExample,
 } from "../../../../examples/toggle-button";
 
 # Toggle Button
@@ -38,7 +38,7 @@ The toggle button consists of:
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -106,7 +106,7 @@ The toggle button consists of:
 An initial, uncontrolled value can be provided using the `defaultPressed` prop.
 
 <Preview>
-  <DefaultPressedExample />
+	<DefaultPressedExample />
 </Preview>
 
 ```tsx
@@ -118,23 +118,23 @@ An initial, uncontrolled value can be provided using the `defaultPressed` prop.
 The `pressed` prop can be used to make the pressed state controlled. The `onChange` event is fired when the user toggle the button, and receives the new value.
 
 <Preview>
-  <ControlledExample />
+	<ControlledExample />
 </Preview>
 
 ```tsx {3,7}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
-  const [pressed, setPressed] = createSignal(false);
+	const [pressed, setPressed] = createSignal(false);
 
-  return (
-    <>
-      <ToggleButton.Root pressed={pressed()} onChange={setPressed}>
-        ...
-      </ToggleButton.Root>
-      <p>The microphone is {pressed() ? "muted" : "active"}.</p>
-    </>
-  );
+	return (
+		<>
+			<ToggleButton.Root pressed={pressed()} onChange={setPressed}>
+				...
+			</ToggleButton.Root>
+			<p>The microphone is {pressed() ? "muted" : "active"}.</p>
+		</>
+	);
 }
 ```
 

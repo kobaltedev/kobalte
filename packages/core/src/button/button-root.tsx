@@ -13,9 +13,9 @@
  */
 
 import {
+	OverrideComponentProps,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { createMemo, splitProps } from "solid-js";
 
@@ -39,9 +39,9 @@ export interface ButtonRootProps
 export function ButtonRoot(props: ButtonRootProps) {
 	let ref: HTMLButtonElement | undefined;
 
-	props = mergeDefaultProps({ type: "button" }, props);
+	const mergedProps = mergeDefaultProps({ type: "button" }, props);
 
-	const [local, others] = splitProps(props, ["ref", "type", "disabled"]);
+	const [local, others] = splitProps(mergedProps, ["ref", "type", "disabled"]);
 
 	const tagName = createTagName(
 		() => ref,

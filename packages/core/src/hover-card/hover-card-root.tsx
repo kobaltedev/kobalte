@@ -15,12 +15,12 @@ import {
 } from "@kobalte/utils";
 import {
 	Accessor,
+	ParentProps,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	onCleanup,
-	ParentProps,
 	splitProps,
 } from "solid-js";
 import { isServer } from "solid-js/web";
@@ -83,7 +83,7 @@ export interface HoverCardRootProps extends ParentProps<HoverCardRootOptions> {}
 export function HoverCardRoot(props: HoverCardRootProps) {
 	const defaultId = `hovercard-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			openDelay: 700,
@@ -92,7 +92,7 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"id",
 		"open",
 		"defaultOpen",

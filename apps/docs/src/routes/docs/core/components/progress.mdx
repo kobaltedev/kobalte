@@ -1,8 +1,8 @@
 import { Preview, TabsSnippets } from "../../../../components";
 import {
-  BasicExample,
-  CustomValueLabelExample,
-  CustomValueScaleExample,
+	BasicExample,
+	CustomValueLabelExample,
+	CustomValueScaleExample,
 } from "../../../../examples/progress";
 
 # Progress
@@ -34,18 +34,18 @@ The progress consists of:
 
 ```tsx
 <Progress.Root>
-  <Progress.Label />
-  <Progress.ValueLabel />
-  <Progress.Track>
-    <Progress.Fill />
-  </Progress.Track>
+	<Progress.Label />
+	<Progress.ValueLabel />
+	<Progress.Track>
+		<Progress.Fill />
+	</Progress.Track>
 </Progress.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -123,18 +123,18 @@ The progress consists of:
 By default, the `value` prop represents the current percentage of progress, as the minimum and maximum values default to 0 and 100, respectively. Alternatively, a different scale can be used by setting the `minValue` and `maxValue` props.
 
 <Preview>
-  <CustomValueScaleExample />
+	<CustomValueScaleExample />
 </Preview>
 
 ```tsx {0}
 <Progress.Root value={100} minValue={50} maxValue={150} class="progress">
-  <div class="progress__label-container">
-    <Progress.Label class="progress__label">Loading...</Progress.Label>
-    <Progress.ValueLabel class="progress__value-label" />
-  </div>
-  <Progress.Track class="progress__track">
-    <Progress.Fill class="progress__fill" />
-  </Progress.Track>
+	<div class="progress__label-container">
+		<Progress.Label class="progress__label">Loading...</Progress.Label>
+		<Progress.ValueLabel class="progress__value-label" />
+	</div>
+	<Progress.Track class="progress__track">
+		<Progress.Fill class="progress__fill" />
+	</Progress.Track>
 </Progress.Root>
 ```
 
@@ -143,24 +143,24 @@ By default, the `value` prop represents the current percentage of progress, as t
 The `getValueLabel` prop allows the formatted value used in `Progress.ValueLabel` and ARIA to be replaced with a custom string. It receives the current value, min and max values as parameters.
 
 <Preview>
-  <CustomValueLabelExample />
+	<CustomValueLabelExample />
 </Preview>
 
 ```tsx {4}
 <Progress.Root
-  value={3}
-  minValue={0}
-  maxValue={10}
-  getValueLabel={({ value, max }) => `${value} of ${max} tasks completed`}
-  class="progress"
+	value={3}
+	minValue={0}
+	maxValue={10}
+	getValueLabel={({ value, max }) => `${value} of ${max} tasks completed`}
+	class="progress"
 >
-  <div class="progress__label-container">
-    <Progress.Label class="progress__label">Processing...</Progress.Label>
-    <Progress.ValueLabel class="progress__value-label" />
-  </div>
-  <Progress.Track class="progress__track">
-    <Progress.Fill class="progress__fill" />
-  </Progress.Track>
+	<div class="progress__label-container">
+		<Progress.Label class="progress__label">Processing...</Progress.Label>
+		<Progress.ValueLabel class="progress__value-label" />
+	</div>
+	<Progress.Track class="progress__track">
+		<Progress.Fill class="progress__fill" />
+	</Progress.Track>
 </Progress.Root>
 ```
 

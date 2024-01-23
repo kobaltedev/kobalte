@@ -35,25 +35,23 @@ export class TabsKeyboardDelegate implements KeyboardDelegate {
 	getKeyLeftOf(key: string) {
 		if (this.flipDirection()) {
 			return this.getNextKey(key);
-		} else {
-			if (this.orientation() === "horizontal") {
-				return this.getPreviousKey(key);
-			}
-
-			return undefined;
 		}
+		if (this.orientation() === "horizontal") {
+			return this.getPreviousKey(key);
+		}
+
+		return undefined;
 	}
 
 	getKeyRightOf(key: string) {
 		if (this.flipDirection()) {
 			return this.getPreviousKey(key);
-		} else {
-			if (this.orientation() === "horizontal") {
-				return this.getNextKey(key);
-			}
-
-			return undefined;
 		}
+		if (this.orientation() === "horizontal") {
+			return this.getNextKey(key);
+		}
+
+		return undefined;
 	}
 
 	getKeyAbove(key: string) {

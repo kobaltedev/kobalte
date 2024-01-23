@@ -6,7 +6,7 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard-anchor.ts
  */
 
-import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, callHandler, mergeRefs } from "@kobalte/utils";
 import { JSX, onCleanup, splitProps } from "solid-js";
 
 import * as Link from "../link";

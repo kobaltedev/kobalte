@@ -1,4 +1,4 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 
 import { CalendarRoot } from "../calendar/calendar-root";
 import { useFormControlContext } from "../form-control";
@@ -16,7 +16,7 @@ export function DatePickerCalendar(props: DatePickerCalendarProps) {
 	const formControlContext = useFormControlContext();
 	const context = useDatePickerContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("calendar"),
 		},
@@ -42,7 +42,7 @@ export function DatePickerCalendar(props: DatePickerCalendarProps) {
 			disabled={formControlContext.isDisabled()}
 			readOnly={formControlContext.isReadOnly()}
 			validationState={context.validationState()}
-			{...props}
+			{...mergedProps}
 		/>
 	);
 }

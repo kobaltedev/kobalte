@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/src/useOverlayTrigger.ts
  */
 
-import { callHandler, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, callHandler, mergeRefs } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";

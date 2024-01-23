@@ -7,9 +7,9 @@
  */
 
 import { installPointerEvent } from "@kobalte/tests";
+import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps, For } from "solid-js";
-import { fireEvent, render, screen, within } from "@solidjs/testing-library";
 
 import * as Accordion from ".";
 

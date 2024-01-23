@@ -6,8 +6,8 @@
  * https://github.com/radix-ui/primitives/blob/b14ac1fff0cdaf45d1ea3e65c28c320ac0f743f2/packages/react/slot/src/Slot.test.tsx
  */
 
-import { ComponentProps, JSX, splitProps } from "solid-js";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
+import { ComponentProps, JSX, splitProps } from "solid-js";
 
 import { As, AsChildProp, Polymorphic } from "./polymorphic";
 

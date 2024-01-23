@@ -12,7 +12,7 @@ import userEvent from "@testing-library/user-event";
 
 import * as Tabs from ".";
 
-describe("Tabs", function () {
+describe("Tabs", () => {
 	// Make userEvent work with jest fakeTimers
 	// See https://github.com/testing-library/user-event/issues/833#issuecomment-1013797822
 	const user = userEvent.setup({ delay: null });

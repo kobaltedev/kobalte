@@ -7,29 +7,29 @@
  */
 
 import {
+	OverrideComponentProps,
+	ValidationState,
 	access,
 	callHandler,
 	createGenerateId,
 	isFunction,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
-	ValidationState,
 } from "@kobalte/utils";
 import {
 	Accessor,
+	JSX,
 	children,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	JSX,
 	splitProps,
 } from "solid-js";
 
 import {
-	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	createFormControl,
 } from "../form-control";
 import { Polymorphic } from "../polymorphic";
 import { createFormResetListener, createToggleState } from "../primitives";
@@ -99,7 +99,7 @@ export function SwitchRoot(props: SwitchRootProps) {
 
 	const defaultId = `switch-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			value: "on",
 			id: defaultId,
@@ -108,7 +108,7 @@ export function SwitchRoot(props: SwitchRootProps) {
 	);
 
 	const [local, formControlProps, others] = splitProps(
-		props,
+		mergedProps,
 		[
 			"ref",
 			"children",
@@ -177,7 +177,7 @@ export function SwitchRoot(props: SwitchRootProps) {
 					{...dataset()}
 					{...others}
 				>
-					<SwitchRootChild state={context} children={local.children} />
+					<SwitchRootChild state={context}>{local.children}</SwitchRootChild>
 				</Polymorphic>
 			</SwitchContext.Provider>
 		</FormControlContext.Provider>

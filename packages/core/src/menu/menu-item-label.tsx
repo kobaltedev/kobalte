@@ -7,9 +7,9 @@
  */
 
 import {
+	OverrideComponentProps,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
@@ -26,14 +26,14 @@ export interface MenuItemLabelProps
 export function MenuItemLabel(props: MenuItemLabelProps) {
 	const context = useMenuItemContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("label"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["ref", "id"]);
+	const [local, others] = splitProps(mergedProps, ["ref", "id"]);
 
 	createEffect(() => onCleanup(context.registerLabel(local.id!)));
 

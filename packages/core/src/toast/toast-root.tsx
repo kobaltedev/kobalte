@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-
 /*!
  * Portions of this file are based on code from radix-ui-primitives.
  * MIT Licensed, Copyright (c) 2022 WorkOS.
@@ -15,29 +13,29 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
+	JSX,
+	Show,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	JSX,
 	on,
 	onMount,
-	Show,
 	splitProps,
 } from "solid-js";
 
 import { createPresence, createRegisterId } from "../primitives";
-import { TOAST_INTL_TRANSLATIONS, ToastIntlTranslations } from "./toast.intl";
 import { ToastContext, ToastContextValue } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
 import { toastStore } from "./toast-store";
+import { TOAST_INTL_TRANSLATIONS, ToastIntlTranslations } from "./toast.intl";
 import { ToastSwipeDirection } from "./types";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
@@ -114,7 +112,7 @@ export function ToastRoot(props: ToastRootProps) {
 
 	const rootContext = useToastRegionContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			priority: "high",
@@ -123,7 +121,7 @@ export function ToastRoot(props: ToastRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"translations",
 		"toastId",
@@ -455,9 +453,8 @@ function isDeltaInDirection(
 
 	if (direction === "left" || direction === "right") {
 		return isDeltaX && deltaX > threshold;
-	} else {
-		return !isDeltaX && deltaY > threshold;
 	}
+	return !isDeltaX && deltaY > threshold;
 }
 
 function handleAndDispatchCustomEvent<C extends CustomEvent, E extends Event>(

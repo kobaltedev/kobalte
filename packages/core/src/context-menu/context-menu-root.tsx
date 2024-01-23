@@ -8,9 +8,9 @@
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
+	ParentProps,
 	createSignal,
 	createUniqueId,
-	ParentProps,
 	splitProps,
 } from "solid-js";
 
@@ -36,7 +36,7 @@ export function ContextMenuRoot(props: ContextMenuRootProps) {
 
 	const { direction } = useLocale();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			placement: direction() === "rtl" ? "left-start" : "right-start",
@@ -46,7 +46,7 @@ export function ContextMenuRoot(props: ContextMenuRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["onOpenChange"]);
+	const [local, others] = splitProps(mergedProps, ["onOpenChange"]);
 
 	const [anchorRect, setAnchorRect] = createSignal({ x: 0, y: 0 });
 

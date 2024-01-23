@@ -1,22 +1,22 @@
 import {
+	OverrideComponentProps,
 	contains,
 	focusWithoutScrolling,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
+import { JSX, Show, createEffect, onCleanup, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
 import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
-	createFocusScope,
-	createHideOutside,
-	createPreventScroll,
 	FocusOutsideEvent,
 	InteractOutsideEvent,
 	PointerDownOutsideEvent,
+	createFocusScope,
+	createHideOutside,
+	createPreventScroll,
 } from "../primitives";
 import { usePopoverContext } from "./popover-context";
 
@@ -72,14 +72,14 @@ export function PopoverContent(props: PopoverContentProps) {
 
 	const context = usePopoverContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("content"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"style",
 		"onOpenAutoFocus",

@@ -1,10 +1,10 @@
 import {
-	MenuContent as Content,
-	type MenuContentOptions as MenubarContentOptions,
-	type MenuContentProps as MenubarContentProps,
 	MenuCheckboxItem as CheckboxItem,
 	type MenuCheckboxItemOptions as MenubarCheckboxItemOptions,
 	type MenuCheckboxItemProps as MenubarCheckboxItemProps,
+	MenuContent as Content,
+	type MenuContentOptions as MenubarContentOptions,
+	type MenuContentProps as MenubarContentProps,
 	MenuGroup as Group,
 	MenuGroupLabel as GroupLabel,
 	type MenuGroupLabelProps as MenubarGroupLabelProps,
@@ -53,15 +53,15 @@ import {
 	type SeparatorRootProps as MenubarSeparatorProps,
 } from "../separator";
 import {
+	MenubarMenu as Menu,
+	type MenubarMenuOptions,
+	type MenubarMenuProps,
+} from "./menubar-menu";
+import {
 	MenubarRoot as Root,
 	type MenubarRootOptions,
 	type MenubarRootProps,
 } from "./menubar-root";
-import {
-	MenubarMenu as Menu,
-	type MenubarMenuProps,
-	type MenubarMenuOptions,
-} from "./menubar-menu";
 
 export type {
 	MenubarRootOptions,

@@ -6,11 +6,11 @@ import style from "./switch.module.css";
 
 export function BasicExample() {
 	return (
-		<Switch.Root class={style["switch"]}>
-			<Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
-			<Switch.Input class={style["switch__input"]} />
-			<Switch.Control class={style["switch__control"]}>
-				<Switch.Thumb class={style["switch__thumb"]} />
+		<Switch.Root class={style.switch}>
+			<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
+			<Switch.Input class={style.switch__input} />
+			<Switch.Control class={style.switch__control}>
+				<Switch.Thumb class={style.switch__thumb} />
 			</Switch.Control>
 		</Switch.Root>
 	);
@@ -18,11 +18,11 @@ export function BasicExample() {
 
 export function DefaultCheckedExample() {
 	return (
-		<Switch.Root class={style["switch"]} defaultChecked>
-			<Switch.Label class={style["switch__label"]}>Airplane mode</Switch.Label>
-			<Switch.Input class={style["switch__input"]} />
-			<Switch.Control class={style["switch__control"]}>
-				<Switch.Thumb class={style["switch__thumb"]} />
+		<Switch.Root class={style.switch} defaultChecked>
+			<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
+			<Switch.Input class={style.switch__input} />
+			<Switch.Control class={style.switch__control}>
+				<Switch.Thumb class={style.switch__thumb} />
 			</Switch.Control>
 		</Switch.Root>
 	);
@@ -34,16 +34,14 @@ export function ControlledExample() {
 	return (
 		<>
 			<Switch.Root
-				class={style["switch"]}
+				class={style.switch}
 				checked={checked()}
 				onChange={setChecked}
 			>
-				<Switch.Label class={style["switch__label"]}>
-					Airplane mode
-				</Switch.Label>
-				<Switch.Input class={style["switch__input"]} />
-				<Switch.Control class={style["switch__control"]}>
-					<Switch.Thumb class={style["switch__thumb"]} />
+				<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
+				<Switch.Input class={style.switch__input} />
+				<Switch.Control class={style.switch__control}>
+					<Switch.Thumb class={style.switch__thumb} />
 				</Switch.Control>
 			</Switch.Root>
 			<p class="not-prose text-sm mt-2">
@@ -55,18 +53,16 @@ export function ControlledExample() {
 
 export function DescriptionExample() {
 	return (
-		<Switch.Root class={style["switch"]}>
+		<Switch.Root class={style.switch}>
 			<div class="flex flex-col items-start  mr-2">
-				<Switch.Label class={style["switch__label"]}>
-					Airplane mode
-				</Switch.Label>
-				<Switch.Description class={style["switch__description"]}>
+				<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
+				<Switch.Description class={style.switch__description}>
 					Disable all network connections.
 				</Switch.Description>
 			</div>
-			<Switch.Input class={style["switch__input"]} />
-			<Switch.Control class={style["switch__control"]}>
-				<Switch.Thumb class={style["switch__thumb"]} />
+			<Switch.Input class={style.switch__input} />
+			<Switch.Control class={style.switch__control}>
+				<Switch.Thumb class={style.switch__thumb} />
 			</Switch.Control>
 		</Switch.Root>
 	);
@@ -77,22 +73,20 @@ export function ErrorMessageExample() {
 
 	return (
 		<Switch.Root
-			class={style["switch"]}
+			class={style.switch}
 			checked={checked()}
 			onChange={setChecked}
 			validationState={!checked() ? "invalid" : "valid"}
 		>
 			<div class="flex flex-col items-start mr-2">
-				<Switch.Label class={style["switch__label"]}>
-					Airplane mode
-				</Switch.Label>
+				<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
 				<Switch.ErrorMessage class={style["switch__error-message"]}>
 					You must enable airplane mode.
 				</Switch.ErrorMessage>
 			</div>
-			<Switch.Input class={style["switch__input"]} />
-			<Switch.Control class={style["switch__control"]}>
-				<Switch.Thumb class={style["switch__thumb"]} />
+			<Switch.Input class={style.switch__input} />
+			<Switch.Control class={style.switch__control}>
+				<Switch.Thumb class={style.switch__thumb} />
 			</Switch.Control>
 		</Switch.Root>
 	);
@@ -116,20 +110,20 @@ export function HTMLFormExample() {
 			onSubmit={onSubmit}
 			class="flex flex-col items-center space-y-6"
 		>
-			<Switch.Root class={style["switch"]} name="airplane-mode" value="on">
-				<Switch.Label class={style["switch__label"]}>
-					Airplane mode
-				</Switch.Label>
-				<Switch.Input class={style["switch__input"]} />
-				<Switch.Control class={style["switch__control"]}>
-					<Switch.Thumb class={style["switch__thumb"]} />
+			<Switch.Root class={style.switch} name="airplane-mode" value="on">
+				<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
+				<Switch.Input class={style.switch__input} />
+				<Switch.Control class={style.switch__control}>
+					<Switch.Thumb class={style.switch__thumb} />
 				</Switch.Control>
 			</Switch.Root>
 			<div class="flex space-x-2">
 				<button type="reset" class="kb-button">
 					Reset
 				</button>
-				<button class="kb-button-primary">Submit</button>
+				<button type="submit" class="kb-button-primary">
+					Submit
+				</button>
 			</div>
 		</form>
 	);

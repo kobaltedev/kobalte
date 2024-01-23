@@ -27,7 +27,6 @@ describe("Listbox", () => {
 	});
 
 	afterEach(() => {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		window.requestAnimationFrame.mockRestore();
 		jest.clearAllTimers();
@@ -913,9 +912,9 @@ describe("Listbox", () => {
 				/>
 			));
 
-			screen.getAllByTestId("indicator").forEach((indicator) => {
+			for (const indicator of screen.getAllByTestId("indicator")) {
 				expect(indicator).toBeInTheDocument();
-			});
+			}
 		});
 	});
 });

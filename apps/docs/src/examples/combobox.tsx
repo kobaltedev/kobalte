@@ -1,5 +1,5 @@
 import { Combobox } from "@kobalte/core";
-import { createSignal, For } from "solid-js";
+import { For, createSignal } from "solid-js";
 
 import { CaretSortIcon, CheckIcon, CrossIcon } from "../components";
 import style from "./combobox.module.css";
@@ -18,7 +18,7 @@ export function BasicExample() {
 			options={ALL_STRING_OPTIONS}
 			placeholder="Search a fruit…"
 			itemComponent={(props) => (
-				<Combobox.Item item={props.item} class={style["combobox__item"]}>
+				<Combobox.Item item={props.item} class={style.combobox__item}>
 					<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
 					<Combobox.ItemIndicator class={style["combobox__item-indicator"]}>
 						<CheckIcon />
@@ -26,17 +26,17 @@ export function BasicExample() {
 				</Combobox.Item>
 			)}
 		>
-			<Combobox.Control class={style["combobox__control"]} aria-label="Fruit">
-				<Combobox.Input class={style["combobox__input"]} />
-				<Combobox.Trigger class={style["combobox__trigger"]}>
-					<Combobox.Icon class={style["combobox__icon"]}>
+			<Combobox.Control class={style.combobox__control} aria-label="Fruit">
+				<Combobox.Input class={style.combobox__input} />
+				<Combobox.Trigger class={style.combobox__trigger}>
+					<Combobox.Icon class={style.combobox__icon}>
 						<CaretSortIcon />
 					</Combobox.Icon>
 				</Combobox.Trigger>
 			</Combobox.Control>
 			<Combobox.Portal>
-				<Combobox.Content class={style["combobox__content"]}>
-					<Combobox.Listbox class={style["combobox__listbox"]} />
+				<Combobox.Content class={style.combobox__content}>
+					<Combobox.Listbox class={style.combobox__listbox} />
 				</Combobox.Content>
 			</Combobox.Portal>
 		</Combobox.Root>
@@ -50,7 +50,7 @@ export function DefaultValueExample() {
 			options={ALL_STRING_OPTIONS}
 			placeholder="Search a fruit…"
 			itemComponent={(props) => (
-				<Combobox.Item item={props.item} class={style["combobox__item"]}>
+				<Combobox.Item item={props.item} class={style.combobox__item}>
 					<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
 					<Combobox.ItemIndicator class={style["combobox__item-indicator"]}>
 						<CheckIcon />
@@ -58,17 +58,17 @@ export function DefaultValueExample() {
 				</Combobox.Item>
 			)}
 		>
-			<Combobox.Control class={style["combobox__control"]} aria-label="Fruit">
-				<Combobox.Input class={style["combobox__input"]} />
-				<Combobox.Trigger class={style["combobox__trigger"]}>
-					<Combobox.Icon class={style["combobox__icon"]}>
+			<Combobox.Control class={style.combobox__control} aria-label="Fruit">
+				<Combobox.Input class={style.combobox__input} />
+				<Combobox.Trigger class={style.combobox__trigger}>
+					<Combobox.Icon class={style.combobox__icon}>
 						<CaretSortIcon />
 					</Combobox.Icon>
 				</Combobox.Trigger>
 			</Combobox.Control>
 			<Combobox.Portal>
-				<Combobox.Content class={style["combobox__content"]}>
-					<Combobox.Listbox class={style["combobox__listbox"]} />
+				<Combobox.Content class={style.combobox__content}>
+					<Combobox.Listbox class={style.combobox__listbox} />
 				</Combobox.Content>
 			</Combobox.Portal>
 		</Combobox.Root>
@@ -94,7 +94,7 @@ export function ControlledExample() {
 				onInputChange={onInputChange}
 				placeholder="Search a fruit…"
 				itemComponent={(props) => (
-					<Combobox.Item item={props.item} class={style["combobox__item"]}>
+					<Combobox.Item item={props.item} class={style.combobox__item}>
 						<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
 						<Combobox.ItemIndicator class={style["combobox__item-indicator"]}>
 							<CheckIcon />
@@ -102,17 +102,17 @@ export function ControlledExample() {
 					</Combobox.Item>
 				)}
 			>
-				<Combobox.Control class={style["combobox__control"]} aria-label="Fruit">
-					<Combobox.Input class={style["combobox__input"]} />
-					<Combobox.Trigger class={style["combobox__trigger"]}>
-						<Combobox.Icon class={style["combobox__icon"]}>
+				<Combobox.Control class={style.combobox__control} aria-label="Fruit">
+					<Combobox.Input class={style.combobox__input} />
+					<Combobox.Trigger class={style.combobox__trigger}>
+						<Combobox.Icon class={style.combobox__icon}>
 							<CaretSortIcon />
 						</Combobox.Icon>
 					</Combobox.Trigger>
 				</Combobox.Control>
 				<Combobox.Portal>
-					<Combobox.Content class={style["combobox__content"]}>
-						<Combobox.Listbox class={style["combobox__listbox"]} />
+					<Combobox.Content class={style.combobox__content}>
+						<Combobox.Listbox class={style.combobox__listbox} />
 					</Combobox.Content>
 				</Combobox.Portal>
 			</Combobox.Root>
@@ -127,7 +127,7 @@ export function DescriptionExample() {
 			options={ALL_STRING_OPTIONS}
 			placeholder="Search a fruit…"
 			itemComponent={(props) => (
-				<Combobox.Item item={props.item} class={style["combobox__item"]}>
+				<Combobox.Item item={props.item} class={style.combobox__item}>
 					<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
 					<Combobox.ItemIndicator class={style["combobox__item-indicator"]}>
 						<CheckIcon />
@@ -135,20 +135,20 @@ export function DescriptionExample() {
 				</Combobox.Item>
 			)}
 		>
-			<Combobox.Control class={style["combobox__control"]} aria-label="Fruit">
-				<Combobox.Input class={style["combobox__input"]} />
-				<Combobox.Trigger class={style["combobox__trigger"]}>
-					<Combobox.Icon class={style["combobox__icon"]}>
+			<Combobox.Control class={style.combobox__control} aria-label="Fruit">
+				<Combobox.Input class={style.combobox__input} />
+				<Combobox.Trigger class={style.combobox__trigger}>
+					<Combobox.Icon class={style.combobox__icon}>
 						<CaretSortIcon />
 					</Combobox.Icon>
 				</Combobox.Trigger>
 			</Combobox.Control>
-			<Combobox.Description class={style["combobox__description"]}>
+			<Combobox.Description class={style.combobox__description}>
 				Choose the fruit you like the most.
 			</Combobox.Description>
 			<Combobox.Portal>
-				<Combobox.Content class={style["combobox__content"]}>
-					<Combobox.Listbox class={style["combobox__listbox"]} />
+				<Combobox.Content class={style.combobox__content}>
+					<Combobox.Listbox class={style.combobox__listbox} />
 				</Combobox.Content>
 			</Combobox.Portal>
 		</Combobox.Root>
@@ -174,7 +174,7 @@ export function ErrorMessageExample() {
 			validationState={value() !== "Apple" ? "invalid" : "valid"}
 			placeholder="Search a fruit…"
 			itemComponent={(props) => (
-				<Combobox.Item item={props.item} class={style["combobox__item"]}>
+				<Combobox.Item item={props.item} class={style.combobox__item}>
 					<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
 					<Combobox.ItemIndicator class={style["combobox__item-indicator"]}>
 						<CheckIcon />
@@ -182,10 +182,10 @@ export function ErrorMessageExample() {
 				</Combobox.Item>
 			)}
 		>
-			<Combobox.Control class={style["combobox__control"]} aria-label="Fruit">
-				<Combobox.Input class={style["combobox__input"]} />
-				<Combobox.Trigger class={style["combobox__trigger"]}>
-					<Combobox.Icon class={style["combobox__icon"]}>
+			<Combobox.Control class={style.combobox__control} aria-label="Fruit">
+				<Combobox.Input class={style.combobox__input} />
+				<Combobox.Trigger class={style.combobox__trigger}>
+					<Combobox.Icon class={style.combobox__icon}>
 						<CaretSortIcon />
 					</Combobox.Icon>
 				</Combobox.Trigger>
@@ -194,8 +194,8 @@ export function ErrorMessageExample() {
 				Hmm, I prefer apples.
 			</Combobox.ErrorMessage>
 			<Combobox.Portal>
-				<Combobox.Content class={style["combobox__content"]}>
-					<Combobox.Listbox class={style["combobox__listbox"]} />
+				<Combobox.Content class={style.combobox__content}>
+					<Combobox.Listbox class={style.combobox__listbox} />
 				</Combobox.Content>
 			</Combobox.Portal>
 		</Combobox.Root>
@@ -225,7 +225,7 @@ export function HTMLFormExample() {
 				options={ALL_STRING_OPTIONS}
 				placeholder="Search a fruit…"
 				itemComponent={(props) => (
-					<Combobox.Item item={props.item} class={style["combobox__item"]}>
+					<Combobox.Item item={props.item} class={style.combobox__item}>
 						<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
 						<Combobox.ItemIndicator class={style["combobox__item-indicator"]}>
 							<CheckIcon />
@@ -234,10 +234,10 @@ export function HTMLFormExample() {
 				)}
 			>
 				<Combobox.HiddenSelect />
-				<Combobox.Control class={style["combobox__control"]} aria-label="Fruit">
-					<Combobox.Input class={style["combobox__input"]} />
-					<Combobox.Trigger class={style["combobox__trigger"]}>
-						<Combobox.Icon class={style["combobox__icon"]}>
+				<Combobox.Control class={style.combobox__control} aria-label="Fruit">
+					<Combobox.Input class={style.combobox__input} />
+					<Combobox.Trigger class={style.combobox__trigger}>
+						<Combobox.Icon class={style.combobox__icon}>
 							<CaretSortIcon />
 						</Combobox.Icon>
 					</Combobox.Trigger>
@@ -246,8 +246,8 @@ export function HTMLFormExample() {
 					Hmm, I prefer apples.
 				</Combobox.ErrorMessage>
 				<Combobox.Portal>
-					<Combobox.Content class={style["combobox__content"]}>
-						<Combobox.Listbox class={style["combobox__listbox"]} />
+					<Combobox.Content class={style.combobox__content}>
+						<Combobox.Listbox class={style.combobox__listbox} />
 					</Combobox.Content>
 				</Combobox.Portal>
 			</Combobox.Root>
@@ -255,7 +255,9 @@ export function HTMLFormExample() {
 				<button type="reset" class="kb-button">
 					Reset
 				</button>
-				<button class="kb-button-primary">Submit</button>
+				<button type="button" class="kb-button-primary">
+					Submit
+				</button>
 			</div>
 		</form>
 	);
@@ -285,7 +287,7 @@ export function ObjectExample() {
 			optionDisabled="disabled"
 			placeholder="Search a fruit…"
 			itemComponent={(props) => (
-				<Combobox.Item item={props.item} class={style["combobox__item"]}>
+				<Combobox.Item item={props.item} class={style.combobox__item}>
 					<Combobox.ItemLabel>{props.item.rawValue.label}</Combobox.ItemLabel>
 					<Combobox.ItemIndicator class={style["combobox__item-indicator"]}>
 						<CheckIcon />
@@ -293,17 +295,17 @@ export function ObjectExample() {
 				</Combobox.Item>
 			)}
 		>
-			<Combobox.Control class={style["combobox__control"]} aria-label="Fruit">
-				<Combobox.Input class={style["combobox__input"]} />
-				<Combobox.Trigger class={style["combobox__trigger"]}>
-					<Combobox.Icon class={style["combobox__icon"]}>
+			<Combobox.Control class={style.combobox__control} aria-label="Fruit">
+				<Combobox.Input class={style.combobox__input} />
+				<Combobox.Trigger class={style.combobox__trigger}>
+					<Combobox.Icon class={style.combobox__icon}>
 						<CaretSortIcon />
 					</Combobox.Icon>
 				</Combobox.Trigger>
 			</Combobox.Control>
 			<Combobox.Portal>
-				<Combobox.Content class={style["combobox__content"]}>
-					<Combobox.Listbox class={style["combobox__listbox"]} />
+				<Combobox.Content class={style.combobox__content}>
+					<Combobox.Listbox class={style.combobox__listbox} />
 				</Combobox.Content>
 			</Combobox.Portal>
 		</Combobox.Root>
@@ -348,7 +350,7 @@ export function OptionGroupExample() {
 			optionGroupChildren="options"
 			placeholder="Search a food…"
 			itemComponent={(props) => (
-				<Combobox.Item item={props.item} class={style["combobox__item"]}>
+				<Combobox.Item item={props.item} class={style.combobox__item}>
 					<Combobox.ItemLabel>{props.item.rawValue.label}</Combobox.ItemLabel>
 					<Combobox.ItemIndicator class={style["combobox__item-indicator"]}>
 						<CheckIcon />
@@ -356,22 +358,22 @@ export function OptionGroupExample() {
 				</Combobox.Item>
 			)}
 			sectionComponent={(props) => (
-				<Combobox.Section class={style["combobox__section"]}>
+				<Combobox.Section class={style.combobox__section}>
 					{props.section.rawValue.label}
 				</Combobox.Section>
 			)}
 		>
-			<Combobox.Control class={style["combobox__control"]} aria-label="Food">
-				<Combobox.Input class={style["combobox__input"]} />
-				<Combobox.Trigger class={style["combobox__trigger"]}>
-					<Combobox.Icon class={style["combobox__icon"]}>
+			<Combobox.Control class={style.combobox__control} aria-label="Food">
+				<Combobox.Input class={style.combobox__input} />
+				<Combobox.Trigger class={style.combobox__trigger}>
+					<Combobox.Icon class={style.combobox__icon}>
 						<CaretSortIcon />
 					</Combobox.Icon>
 				</Combobox.Trigger>
 			</Combobox.Control>
 			<Combobox.Portal>
-				<Combobox.Content class={style["combobox__content"]}>
-					<Combobox.Listbox class={style["combobox__listbox"]} />
+				<Combobox.Content class={style.combobox__content}>
+					<Combobox.Listbox class={style.combobox__listbox} />
 				</Combobox.Content>
 			</Combobox.Portal>
 		</Combobox.Root>
@@ -390,7 +392,7 @@ export function MultipleSelectionExample() {
 				onChange={setValues}
 				placeholder="Search some fruits…"
 				itemComponent={(props) => (
-					<Combobox.Item item={props.item} class={style["combobox__item"]}>
+					<Combobox.Item item={props.item} class={style.combobox__item}>
 						<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
 						<Combobox.ItemIndicator class={style["combobox__item-indicator"]}>
 							<CheckIcon />
@@ -399,7 +401,7 @@ export function MultipleSelectionExample() {
 				)}
 			>
 				<Combobox.Control<string>
-					class={`${style["combobox__control"]} ${style["combobox__control_multi"]}`}
+					class={`${style.combobox__control} ${style.combobox__control_multi}`}
 					aria-label="Fruits"
 				>
 					{(state) => (
@@ -417,6 +419,7 @@ export function MultipleSelectionExample() {
 										>
 											{option}
 											<button
+												type="button"
 												onClick={() => state.remove(option)}
 												class="rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600 p-1"
 											>
@@ -426,20 +429,21 @@ export function MultipleSelectionExample() {
 									)}
 								</For>
 								<Combobox.Input
-									class={`${style["combobox__input"]} ${
+									class={`${style.combobox__input} ${
 										state.selectedOptions().length > 0 && "!pl-0"
 									}`}
 								/>
 							</div>
 							<button
+								type="button"
 								onPointerDown={(e) => e.stopPropagation()}
 								onClick={state.clear}
 								class="ml-auto self-center mr-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-600 p-2"
 							>
 								<CrossIcon class="h-3.5 w-3.5" />
 							</button>
-							<Combobox.Trigger class={style["combobox__trigger"]}>
-								<Combobox.Icon class={style["combobox__icon"]}>
+							<Combobox.Trigger class={style.combobox__trigger}>
+								<Combobox.Icon class={style.combobox__icon}>
 									<CaretSortIcon />
 								</Combobox.Icon>
 							</Combobox.Trigger>
@@ -447,8 +451,8 @@ export function MultipleSelectionExample() {
 					)}
 				</Combobox.Control>
 				<Combobox.Portal>
-					<Combobox.Content class={style["combobox__content"]}>
-						<Combobox.Listbox class={style["combobox__listbox"]} />
+					<Combobox.Content class={style.combobox__content}>
+						<Combobox.Listbox class={style.combobox__listbox} />
 					</Combobox.Content>
 				</Combobox.Portal>
 			</Combobox.Root>

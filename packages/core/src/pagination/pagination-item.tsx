@@ -1,4 +1,4 @@
-import { composeEventHandlers, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, composeEventHandlers } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";

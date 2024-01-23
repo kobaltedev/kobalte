@@ -23,12 +23,12 @@ import {
 } from "@kobalte/utils";
 import {
 	Accessor,
+	ParentProps,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	onCleanup,
-	ParentProps,
 	splitProps,
 } from "solid-js";
 import { isServer } from "solid-js/web";
@@ -114,7 +114,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 	// This is not the DOM id.
 	const tooltipId = `${++tooltipsCounter}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			openDelay: 700,
@@ -123,7 +123,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"id",
 		"open",
 		"defaultOpen",
@@ -386,7 +386,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 		openTooltip,
 		hideTooltip,
 		cancelOpening,
-		generateId: createGenerateId(() => props.id!),
+		generateId: createGenerateId(() => mergedProps.id!),
 		registerContentId: createRegisterId(setContentId),
 		isTargetOnTooltip,
 		setTriggerRef,

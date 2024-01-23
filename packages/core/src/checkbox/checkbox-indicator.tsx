@@ -1,7 +1,7 @@
 import {
+	OverrideComponentProps,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 
@@ -29,14 +29,14 @@ export function CheckboxIndicator(props: CheckboxIndicatorProps) {
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("indicator"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["ref", "forceMount"]);
+	const [local, others] = splitProps(mergedProps, ["ref", "forceMount"]);
 
 	const presence = createPresence(
 		() => local.forceMount || context.indeterminate() || context.checked(),

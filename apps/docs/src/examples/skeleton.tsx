@@ -5,7 +5,7 @@ import style from "./skeleton.module.css";
 
 export function BasicExample() {
 	return (
-		<Skeleton.Root class={style["skeleton"]} radius={10}>
+		<Skeleton.Root class={style.skeleton} radius={10}>
 			<p>
 				A UI toolkit for building accessible web apps and design systems with
 				SolidJS.
@@ -18,7 +18,7 @@ export function MultipleSkeletonsExample() {
 	return (
 		<div class={style["multiple-root"]}>
 			<div class={style["multiple-profile"]}>
-				<Skeleton.Root class={style["skeleton"]} height={50} circle>
+				<Skeleton.Root class={style.skeleton} height={50} circle>
 					<Image.Root class={style["multiple-avatar"]}>
 						<Image.Img
 							class="image__img"
@@ -27,11 +27,11 @@ export function MultipleSkeletonsExample() {
 						/>
 					</Image.Root>
 				</Skeleton.Root>
-				<Skeleton.Root class={style["skeleton"]} height={20} radius={10}>
+				<Skeleton.Root class={style.skeleton} height={20} radius={10}>
 					Kobalte
 				</Skeleton.Root>
 			</div>
-			<Skeleton.Root class={style["skeleton"]} radius={10}>
+			<Skeleton.Root class={style.skeleton} radius={10}>
 				<p>
 					A UI toolkit for building accessible web apps and design systems with
 					SolidJS.
@@ -52,7 +52,7 @@ export function ToggleExample() {
 			>
 				Show {visible() ? "content" : "skeleton"}
 			</ToggleButton.Root>
-			<Skeleton.Root class={style["skeleton"]} visible={visible()}>
+			<Skeleton.Root class={style.skeleton} visible={visible()}>
 				<p>
 					A UI toolkit for building accessible web apps and design systems with
 					SolidJS.

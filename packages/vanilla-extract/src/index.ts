@@ -38,17 +38,19 @@ function makeSelectorByOptions(
 	selector: string,
 	options: SelectorOptions,
 ): string {
+	let computedSelector = selector;
+
 	if (options.not) {
-		selector = `:not(${selector})`;
+		computedSelector = `:not(${computedSelector})`;
 	}
 
-	selector = `&${selector}`;
+	computedSelector = `&${computedSelector}`;
 
 	if (options.parentSelector) {
-		selector = `${options.parentSelector} ${selector}`;
+		computedSelector = `${options.parentSelector} ${computedSelector}`;
 	}
 
-	return selector;
+	return computedSelector;
 }
 
 type ComponentStateStyleOptions = {

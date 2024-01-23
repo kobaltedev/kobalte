@@ -1,5 +1,5 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, ParentProps } from "solid-js";
+import { ParentProps, createSignal, createUniqueId } from "solid-js";
 
 import {
 	createDisclosureState,
@@ -63,7 +63,7 @@ export interface DialogRootProps extends ParentProps<DialogRootOptions> {}
 export function DialogRoot(props: DialogRootProps) {
 	const defaultId = `dialog-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			modal: true,
@@ -79,21 +79,21 @@ export function DialogRoot(props: DialogRootProps) {
 	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
 
 	const disclosureState = createDisclosureState({
-		open: () => props.open,
-		defaultOpen: () => props.defaultOpen,
-		onOpenChange: (isOpen) => props.onOpenChange?.(isOpen),
+		open: () => mergedProps.open,
+		defaultOpen: () => mergedProps.defaultOpen,
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
-	const shouldMount = () => props.forceMount || disclosureState.isOpen();
+	const shouldMount = () => mergedProps.forceMount || disclosureState.isOpen();
 
 	const overlayPresence = createPresence(shouldMount);
 	const contentPresence = createPresence(shouldMount);
 
 	const context: DialogContextValue = {
-		translations: () => props.translations ?? DIALOG_INTL_TRANSLATIONS,
+		translations: () => mergedProps.translations ?? DIALOG_INTL_TRANSLATIONS,
 		isOpen: disclosureState.isOpen,
-		modal: () => props.modal ?? true,
-		preventScroll: () => props.preventScroll ?? context.modal(),
+		modal: () => mergedProps.modal ?? true,
+		preventScroll: () => mergedProps.preventScroll ?? context.modal(),
 		contentId,
 		titleId,
 		descriptionId,
@@ -103,7 +103,7 @@ export function DialogRoot(props: DialogRootProps) {
 		close: disclosureState.close,
 		toggle: disclosureState.toggle,
 		setTriggerRef,
-		generateId: createGenerateId(() => props.id!),
+		generateId: createGenerateId(() => mergedProps.id!),
 		registerContentId: createRegisterId(setContentId),
 		registerTitleId: createRegisterId(setTitleId),
 		registerDescriptionId: createRegisterId(setDescriptionId),
@@ -111,7 +111,7 @@ export function DialogRoot(props: DialogRootProps) {
 
 	return (
 		<DialogContext.Provider value={context}>
-			{props.children}
+			{mergedProps.children}
 		</DialogContext.Provider>
 	);
 }

@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/i18n/src/context.tsx
  */
 
-import { Accessor, createContext, JSX, useContext } from "solid-js";
+import { Accessor, JSX, createContext, useContext } from "solid-js";
 
 import { createDefaultLocale } from "./create-default-locale";
 import { Direction, getReadingDirection } from "./utils";

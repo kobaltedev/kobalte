@@ -17,7 +17,7 @@ function get(id: number) {
 function update(id: number, toast: ToastConfig) {
 	const index = state.toasts.findIndex((toast) => toast.id === id);
 
-	if (index != -1) {
+	if (index !== -1) {
 		setState("toasts", (prev) => [
 			...prev.slice(0, index),
 			toast,

@@ -1,4 +1,4 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useMenuContext } from "./menu-context";
@@ -13,14 +13,14 @@ export interface MenuIconProps
 export function MenuIcon(props: MenuIconProps) {
 	const context = useMenuContext();
 
-	props = mergeDefaultProps({ children: "▼" }, props);
+	const mergedProps = mergeDefaultProps({ children: "▼" }, props);
 
 	return (
 		<Polymorphic
 			as="span"
 			aria-hidden="true"
 			{...context.dataset()}
-			{...props}
+			{...mergedProps}
 		/>
 	);
 }

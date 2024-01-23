@@ -9,10 +9,10 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
 	Accessor,
+	ParentProps,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	ParentProps,
 	splitProps,
 } from "solid-js";
 
@@ -93,7 +93,7 @@ export interface PopoverRootProps extends ParentProps<PopoverRootOptions> {}
 export function PopoverRoot(props: PopoverRootProps) {
 	const defaultId = `popover-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			modal: false,
@@ -102,7 +102,7 @@ export function PopoverRoot(props: PopoverRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"translations",
 		"id",
 		"open",

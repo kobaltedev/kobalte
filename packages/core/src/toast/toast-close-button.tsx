@@ -6,7 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/72018163e1fdb79b51d322d471c8fc7d14df2b59/packages/react/toast/src/Toast.tsx
  */
 
-import { callHandler, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, callHandler } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";

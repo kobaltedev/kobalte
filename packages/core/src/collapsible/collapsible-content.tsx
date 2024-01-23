@@ -7,18 +7,18 @@
  */
 
 import {
+	OverrideComponentProps,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
+	JSX,
+	Show,
 	createEffect,
 	createSignal,
-	JSX,
 	on,
 	onCleanup,
 	onMount,
-	Show,
 	splitProps,
 } from "solid-js";
 
@@ -42,9 +42,12 @@ export function CollapsibleContent(props: CollapsibleContentProps) {
 
 	const context = useCollapsibleContext();
 
-	props = mergeDefaultProps({ id: context.generateId("content") }, props);
+	const mergedProps = mergeDefaultProps(
+		{ id: context.generateId("content") },
+		props,
+	);
 
-	const [local, others] = splitProps(props, ["ref", "id", "style"]);
+	const [local, others] = splitProps(mergedProps, ["ref", "id", "style"]);
 
 	const presence = createPresence(() => context.shouldMount());
 

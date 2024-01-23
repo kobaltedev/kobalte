@@ -8,16 +8,16 @@
  */
 
 import {
+	OverrideComponentProps,
 	getWindow,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
 	Accessor,
+	JSX,
 	createEffect,
 	createSignal,
-	JSX,
 	splitProps,
 } from "solid-js";
 
@@ -56,14 +56,14 @@ export interface PopperArrowProps
 export function PopperArrow(props: PopperArrowProps) {
 	const context = usePopperContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			size: DEFAULT_SIZE,
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"style",
 		"children",
@@ -108,6 +108,7 @@ export function PopperArrow(props: PopperArrowProps) {
 			}
 			{...others}
 		>
+			{/* biome-ignore lint/a11y/noSvgWithoutTitle: aria hidden */}
 			<svg display="block" viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}>
 				<g transform={rotate()}>
 					<path fill="none" d={ARROW_PATH} />

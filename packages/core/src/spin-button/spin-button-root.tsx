@@ -8,12 +8,12 @@
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
-	callHandler,
-	mergeRefs,
 	OverrideComponentProps,
 	ValidationState,
+	callHandler,
+	mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, createMemo, JSX, on, splitProps } from "solid-js";
+import { JSX, createEffect, createMemo, on, splitProps } from "solid-js";
 
 import { announce, clearAnnouncer } from "../live-announcer";
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -75,14 +75,14 @@ export interface SpinButtonRootProps
 export function SpinButtonRoot(props: SpinButtonRootProps) {
 	let ref: HTMLDivElement | undefined;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			translations: SPIN_BUTTON_INTL_TRANSLATIONS,
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"translations",
 		"ref",
 		"value",
@@ -128,6 +128,7 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 		}
 
 		switch (e.key) {
+			// biome-ignore lint/suspicious/noFallthroughSwitchClause: fallthrough
 			case "PageUp":
 				if (local.onIncrementPage) {
 					e.preventDefault();
@@ -142,13 +143,14 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 					local.onIncrement();
 				}
 				break;
+			// biome-ignore lint/suspicious/noFallthroughSwitchClause: fallthrough
 			case "PageDown":
 				if (local.onDecrementPage) {
 					e.preventDefault();
 					local.onDecrementPage();
 					break;
 				}
-			// fallthrough
+			// fallthrough!
 			case "ArrowDown":
 			case "Down":
 				if (local.onDecrement) {
@@ -198,7 +200,7 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 			as="div"
 			role="spinbutton"
 			aria-valuenow={
-				local.value != null && !isNaN(local.value) ? local.value : null
+				local.value != null && !Number.isNaN(local.value) ? local.value : null
 			}
 			aria-valuetext={textValue()}
 			aria-valuemin={local.minValue}

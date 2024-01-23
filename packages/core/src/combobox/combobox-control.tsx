@@ -1,5 +1,5 @@
-import { isFunction, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
-import { Accessor, children, JSX, splitProps } from "solid-js";
+import { OverrideComponentProps, isFunction, mergeRefs } from "@kobalte/utils";
+import { Accessor, JSX, children, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { Polymorphic } from "../polymorphic";

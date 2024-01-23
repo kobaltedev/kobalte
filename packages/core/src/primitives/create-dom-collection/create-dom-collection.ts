@@ -8,8 +8,8 @@
  * https://github.com/ariakit/ariakit/blob/da142672eddefa99365773ced72171facc06fdcb/packages/ariakit/src/collection/collection-item.ts
  */
 
-import { access, addItemToArray, MaybeAccessor } from "@kobalte/utils";
-import { createComponent, FlowComponent } from "solid-js";
+import { MaybeAccessor, access, addItemToArray } from "@kobalte/utils";
+import { FlowComponent, createComponent } from "solid-js";
 
 import { createControllableArraySignal } from "../index";
 import {

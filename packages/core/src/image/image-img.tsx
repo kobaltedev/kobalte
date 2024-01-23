@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
-
 /*!
  * Portions of this file are based on code from radix-ui-primitives.
  * MIT Licensed, Copyright (c) 2022 WorkOS.
@@ -10,11 +8,11 @@
 
 import {
 	ComponentProps,
+	Show,
 	createEffect,
 	createSignal,
 	on,
 	onCleanup,
-	Show,
 } from "solid-js";
 
 import { useImageContext } from "./image-context";
@@ -73,6 +71,7 @@ export function ImageImg(props: ImageImgProps) {
 
 	return (
 		<Show when={loadingStatus() === "loaded"}>
+			{/* biome-ignore lint/a11y/useAltText: from props */}
 			<img {...props} />
 		</Show>
 	);

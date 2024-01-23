@@ -6,8 +6,8 @@ import style from "./accordion.module.css";
 
 export function BasicExample() {
 	return (
-		<Accordion.Root class={style["accordion"]} defaultValue={["item-1"]}>
-			<Accordion.Item class={style["accordion__item"]} value="item-1">
+		<Accordion.Root class={style.accordion} defaultValue={["item-1"]}>
+			<Accordion.Item class={style.accordion__item} value="item-1">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
 						<span>Is it accessible?</span>
@@ -24,7 +24,7 @@ export function BasicExample() {
 				</Accordion.Content>
 			</Accordion.Item>
 
-			<Accordion.Item class={style["accordion__item"]} value="item-2">
+			<Accordion.Item class={style.accordion__item} value="item-2">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
 						<span>Is it unstyled?</span>
@@ -42,7 +42,7 @@ export function BasicExample() {
 				</Accordion.Content>
 			</Accordion.Item>
 
-			<Accordion.Item class={style["accordion__item"]} value="item-3">
+			<Accordion.Item class={style.accordion__item} value="item-3">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
 						<span>Can it be animated?</span>
@@ -64,8 +64,8 @@ export function BasicExample() {
 
 export function DefaultValueExample() {
 	return (
-		<Accordion.Root class={style["accordion"]} defaultValue={["item-2"]}>
-			<Accordion.Item class={style["accordion__item"]} value="item-1">
+		<Accordion.Root class={style.accordion} defaultValue={["item-2"]}>
+			<Accordion.Item class={style.accordion__item} value="item-1">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
 						<span>Is it accessible?</span>
@@ -82,7 +82,7 @@ export function DefaultValueExample() {
 				</Accordion.Content>
 			</Accordion.Item>
 
-			<Accordion.Item class={style["accordion__item"]} value="item-2">
+			<Accordion.Item class={style.accordion__item} value="item-2">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
 						<span>Is it unstyled?</span>
@@ -100,7 +100,7 @@ export function DefaultValueExample() {
 				</Accordion.Content>
 			</Accordion.Item>
 
-			<Accordion.Item class={style["accordion__item"]} value="item-3">
+			<Accordion.Item class={style.accordion__item} value="item-3">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
 						<span>Can it be animated?</span>
@@ -126,11 +126,11 @@ export function ControlledExample() {
 	return (
 		<>
 			<Accordion.Root
-				class={style["accordion"]}
+				class={style.accordion}
 				value={expandedItem()}
 				onChange={setExpandedItem}
 			>
-				<Accordion.Item class={style["accordion__item"]} value="item-1">
+				<Accordion.Item class={style.accordion__item} value="item-1">
 					<Accordion.Header class={style["accordion__item-header"]}>
 						<Accordion.Trigger class={style["accordion__item-trigger"]}>
 							<span>Is it accessible?</span>
@@ -147,7 +147,7 @@ export function ControlledExample() {
 					</Accordion.Content>
 				</Accordion.Item>
 
-				<Accordion.Item class={style["accordion__item"]} value="item-2">
+				<Accordion.Item class={style.accordion__item} value="item-2">
 					<Accordion.Header class={style["accordion__item-header"]}>
 						<Accordion.Trigger class={style["accordion__item-trigger"]}>
 							<span>Is it unstyled?</span>
@@ -165,7 +165,7 @@ export function ControlledExample() {
 					</Accordion.Content>
 				</Accordion.Item>
 
-				<Accordion.Item class={style["accordion__item"]} value="item-3">
+				<Accordion.Item class={style.accordion__item} value="item-3">
 					<Accordion.Header class={style["accordion__item-header"]}>
 						<Accordion.Trigger class={style["accordion__item-trigger"]}>
 							<span>Can it be animated?</span>
@@ -191,8 +191,8 @@ export function ControlledExample() {
 
 export function CollapsibleExample() {
 	return (
-		<Accordion.Root class={style["accordion"]} collapsible>
-			<Accordion.Item class={style["accordion__item"]} value="item-1">
+		<Accordion.Root class={style.accordion} collapsible>
+			<Accordion.Item class={style.accordion__item} value="item-1">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
 						<span>Is it accessible?</span>
@@ -209,7 +209,7 @@ export function CollapsibleExample() {
 				</Accordion.Content>
 			</Accordion.Item>
 
-			<Accordion.Item class={style["accordion__item"]} value="item-2">
+			<Accordion.Item class={style.accordion__item} value="item-2">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
 						<span>Is it unstyled?</span>
@@ -227,7 +227,7 @@ export function CollapsibleExample() {
 				</Accordion.Content>
 			</Accordion.Item>
 
-			<Accordion.Item class={style["accordion__item"]} value="item-3">
+			<Accordion.Item class={style.accordion__item} value="item-3">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
 						<span>Can it be animated?</span>
@@ -249,8 +249,8 @@ export function CollapsibleExample() {
 
 export function AllowMultipleExample() {
 	return (
-		<Accordion.Root class={style["accordion"]} multiple>
-			<Accordion.Item class={style["accordion__item"]} value="item-1">
+		<Accordion.Root class={style.accordion} multiple>
+			<Accordion.Item class={style.accordion__item} value="item-1">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
 						<span>Is it accessible?</span>
@@ -267,7 +267,7 @@ export function AllowMultipleExample() {
 				</Accordion.Content>
 			</Accordion.Item>
 
-			<Accordion.Item class={style["accordion__item"]} value="item-2">
+			<Accordion.Item class={style.accordion__item} value="item-2">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
 						<span>Is it unstyled?</span>
@@ -285,7 +285,7 @@ export function AllowMultipleExample() {
 				</Accordion.Content>
 			</Accordion.Item>
 
-			<Accordion.Item class={style["accordion__item"]} value="item-3">
+			<Accordion.Item class={style.accordion__item} value="item-3">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
 						<span>Can it be animated?</span>

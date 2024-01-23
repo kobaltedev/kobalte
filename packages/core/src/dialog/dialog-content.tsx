@@ -7,23 +7,23 @@
  */
 
 import {
+	OverrideComponentProps,
 	contains,
 	focusWithoutScrolling,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, onCleanup, Show, splitProps } from "solid-js";
+import { Show, createEffect, onCleanup, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
 import { AsChildProp } from "../polymorphic";
 import {
-	createFocusScope,
-	createHideOutside,
-	createPreventScroll,
 	FocusOutsideEvent,
 	InteractOutsideEvent,
 	PointerDownOutsideEvent,
+	createFocusScope,
+	createHideOutside,
+	createPreventScroll,
 } from "../primitives";
 import { useDialogContext } from "./dialog-context";
 
@@ -76,14 +76,14 @@ export function DialogContent(props: DialogContentProps) {
 
 	const context = useDialogContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("content"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"onOpenAutoFocus",
 		"onCloseAutoFocus",

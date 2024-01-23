@@ -71,11 +71,11 @@ function removeLayer(node: HTMLElement) {
 }
 
 function assignPointerEventToLayers() {
-	layers.forEach(({ node }) => {
+	for (const { node } of layers) {
 		node.style.pointerEvents = isBelowPointerBlockingLayer(node)
 			? "none"
 			: "auto";
-	});
+	}
 }
 
 /**

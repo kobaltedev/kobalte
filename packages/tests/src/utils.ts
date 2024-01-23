@@ -14,7 +14,6 @@
 
 export function installPointerEvent() {
 	beforeAll(() => {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		global.PointerEvent = class FakePointerEvent extends MouseEvent {
 			_init: {
@@ -51,9 +50,8 @@ export function installPointerEvent() {
 	});
 
 	afterAll(() => {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
-		delete global.PointerEvent;
+		global.PointerEvent = undefined;
 	});
 }
 

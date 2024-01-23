@@ -7,9 +7,9 @@
  */
 
 import {
+	OverrideComponentProps,
 	createGenerateId,
 	mergeDefaultProps,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { createSignal, createUniqueId, splitProps } from "solid-js";
 
@@ -49,9 +49,9 @@ export function AccordionItem(props: AccordionItemProps) {
 		"item",
 	)}-${createUniqueId()}`;
 
-	props = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
 
-	const [local, others] = splitProps(props, ["value", "disabled"]);
+	const [local, others] = splitProps(mergedProps, ["value", "disabled"]);
 
 	const [triggerId, setTriggerId] = createSignal<string>();
 	const [contentId, setContentId] = createSignal<string>();

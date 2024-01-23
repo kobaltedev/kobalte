@@ -1,5 +1,5 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-import { createEffect, onCleanup, Show, splitProps } from "solid-js";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
+import { Show, createEffect, onCleanup, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useFormControlContext } from "./form-control-context";
@@ -21,14 +21,14 @@ export interface FormControlErrorMessageProps
 export function FormControlErrorMessage(props: FormControlErrorMessageProps) {
 	const context = useFormControlContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("error-message"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["forceMount"]);
+	const [local, others] = splitProps(mergedProps, ["forceMount"]);
 
 	const isInvalid = () => context.validationState() === "invalid";
 

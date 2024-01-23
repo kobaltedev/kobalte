@@ -59,13 +59,15 @@ function relativeOffset(
 		if (child.offsetParent === ancestor) {
 			// Stop once we have found the ancestor we are interested in.
 			break;
-		} else if (child.offsetParent.contains(ancestor)) {
+		}
+		if (child.offsetParent.contains(ancestor)) {
 			// If the ancestor is not `position:relative`, then we stop at
 			// _its_ offset parent, and we subtract off _its_ offset, so that
 			// we end up with the proper offset from child to ancestor.
 			sum -= ancestor[prop];
 			break;
 		}
+		// biome-ignore lint/style/noParameterAssign: used in loop
 		child = child.offsetParent as HTMLElement;
 	}
 	return sum;
@@ -118,6 +120,7 @@ export function scrollIntoViewport(
 					scrollParent as HTMLElement,
 					targetElement as HTMLElement,
 				);
+				// biome-ignore lint/style/noParameterAssign: used in loop
 				targetElement = scrollParent;
 				scrollParent = getScrollParent(targetElement);
 			}

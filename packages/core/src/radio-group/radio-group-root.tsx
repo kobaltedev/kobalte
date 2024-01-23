@@ -8,19 +8,19 @@
  */
 
 import {
-	access,
-	mergeDefaultProps,
-	mergeRefs,
 	Orientation,
 	OverrideComponentProps,
 	ValidationState,
+	access,
+	mergeDefaultProps,
+	mergeRefs,
 } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
 
 import {
-	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	createFormControl,
 } from "../form-control";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import {
@@ -86,7 +86,7 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
 
 	const defaultId = `radiogroup-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			orientation: "vertical",
@@ -95,7 +95,7 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
 	);
 
 	const [local, formControlProps, others] = splitProps(
-		props,
+		mergedProps,
 		[
 			"ref",
 			"value",
@@ -150,10 +150,11 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
 			// Sync all radio input checked state in the group with the selected value.
 			// This is necessary because checked state might be out of sync
 			// (ex: when using controlled radio-group).
-			ref?.querySelectorAll("[type='radio']").forEach((el) => {
-				const radio = el as HTMLInputElement;
-				radio.checked = isSelectedValue(radio.value);
-			});
+			if (ref)
+				for (const el of ref.querySelectorAll("[type='radio']")) {
+					const radio = el as HTMLInputElement;
+					radio.checked = isSelectedValue(radio.value);
+				}
 		},
 	};
 

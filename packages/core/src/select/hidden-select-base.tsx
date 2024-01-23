@@ -9,11 +9,11 @@
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
 import {
 	ComponentProps,
+	For,
+	Show,
 	createEffect,
 	createSignal,
-	For,
 	on,
-	Show,
 	splitProps,
 } from "solid-js";
 

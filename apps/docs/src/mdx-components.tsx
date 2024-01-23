@@ -1,7 +1,7 @@
 import { Button } from "@kobalte/core";
 import { Title as MetaTitle } from "@solidjs/meta";
 import { clsx } from "clsx";
-import { ComponentProps, createSignal, Show, splitProps } from "solid-js";
+import { ComponentProps, Show, createSignal, splitProps } from "solid-js";
 
 import { CheckIcon, CopyIcon } from "./components";
 
@@ -11,7 +11,7 @@ export const mdxComponents = {
 
 		return (
 			<h1 {...others}>
-				<MetaTitle>{local.children + " – Kobalte"}</MetaTitle>
+				<MetaTitle>{`${local.children} – Kobalte`}</MetaTitle>
 				{local.children}
 			</h1>
 		);
@@ -78,7 +78,6 @@ export const mdxComponents = {
 		);
 	},
 	a: (props: ComponentProps<"a">) => {
-		// eslint-disable-next-line jsx-a11y/anchor-has-content
 		return <a target="_blank" rel="noopener noreferrer" {...props} />;
 	},
 };

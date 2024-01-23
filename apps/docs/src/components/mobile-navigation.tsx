@@ -1,13 +1,13 @@
-import { createDisclosureState, Dialog, Separator } from "@kobalte/core";
+import { Dialog, Separator, createDisclosureState } from "@kobalte/core";
 import { Link, useIsRouting, useMatch } from "@solidjs/router";
 import { clsx } from "clsx";
 import { ComponentProps, createComputed, splitProps } from "solid-js";
 
-import { NavSection } from "../model/navigation";
 import {
 	LATEST_CORE_CHANGELOG_URL,
 	LATEST_CORE_VERSION_NAME,
 } from "../VERSIONS";
+import { NavSection } from "../model/navigation";
 import { CrossIcon, HamburgerMenuIcon } from "./icons";
 import { Navigation } from "./navigation";
 

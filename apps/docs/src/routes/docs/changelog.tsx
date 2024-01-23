@@ -1,8 +1,8 @@
 import { Outlet } from "@solidjs/router";
 
+import { CORE_VERSIONS } from "../../VERSIONS";
 import { Layout } from "../../components";
 import { NavSection } from "../../model/navigation";
-import { CORE_VERSIONS } from "../../VERSIONS";
 
 const CHANGELOG_NAV_SECTIONS: NavSection[] = [
 	{

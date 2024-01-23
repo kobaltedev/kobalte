@@ -10,18 +10,18 @@ export function BasicExample() {
 	const [branch, setBranch] = createSignal("main");
 
 	return (
-		<Menubar.Root class={style["menubar__root"]}>
+		<Menubar.Root class={style.menubar__root}>
 			<Menubar.Menu>
-				<Menubar.Trigger class={style["menubar__trigger"]}>Git</Menubar.Trigger>
+				<Menubar.Trigger class={style.menubar__trigger}>Git</Menubar.Trigger>
 				<Menubar.Portal>
-					<Menubar.Content class={style["menubar__content"]}>
-						<Menubar.Item class={style["menubar__item"]}>
+					<Menubar.Content class={style.menubar__content}>
+						<Menubar.Item class={style.menubar__item}>
 							Commit <div class={style["menubar__item-right-slot"]}>⌘+K</div>
 						</Menubar.Item>
-						<Menubar.Item class={style["menubar__item"]}>
+						<Menubar.Item class={style.menubar__item}>
 							Push <div class={style["menubar__item-right-slot"]}>⇧+⌘+K</div>
 						</Menubar.Item>
-						<Menubar.Item class={style["menubar__item"]} disabled>
+						<Menubar.Item class={style.menubar__item} disabled>
 							Update Project{" "}
 							<div class={style["menubar__item-right-slot"]}>⌘+T</div>
 						</Menubar.Item>
@@ -34,24 +34,24 @@ export function BasicExample() {
 							</Menubar.SubTrigger>
 							<Menubar.Portal>
 								<Menubar.SubContent class={style["menubar__sub-content"]}>
-									<Menubar.Item class={style["menubar__item"]}>
+									<Menubar.Item class={style.menubar__item}>
 										Create Pull Request…
 									</Menubar.Item>
-									<Menubar.Item class={style["menubar__item"]}>
+									<Menubar.Item class={style.menubar__item}>
 										View Pull Requests
 									</Menubar.Item>
-									<Menubar.Item class={style["menubar__item"]}>
+									<Menubar.Item class={style.menubar__item}>
 										Sync Fork
 									</Menubar.Item>
-									<Menubar.Separator class={style["menubar__separator"]} />
-									<Menubar.Item class={style["menubar__item"]}>
+									<Menubar.Separator class={style.menubar__separator} />
+									<Menubar.Item class={style.menubar__item}>
 										Open on GitHub
 									</Menubar.Item>
 								</Menubar.SubContent>
 							</Menubar.Portal>
 						</Menubar.Sub>
 
-						<Menubar.Separator class={style["menubar__separator"]} />
+						<Menubar.Separator class={style.menubar__separator} />
 
 						<Menubar.CheckboxItem
 							class={style["menubar__checkbox-item"]}
@@ -74,7 +74,7 @@ export function BasicExample() {
 							Show History
 						</Menubar.CheckboxItem>
 
-						<Menubar.Separator class={style["menubar__separator"]} />
+						<Menubar.Separator class={style.menubar__separator} />
 
 						<Menubar.Group>
 							<Menubar.GroupLabel class={style["menubar__group-label"]}>
@@ -110,23 +110,21 @@ export function BasicExample() {
 			</Menubar.Menu>
 
 			<Menubar.Menu>
-				<Menubar.Trigger class={style["menubar__trigger"]}>
-					File
-				</Menubar.Trigger>
+				<Menubar.Trigger class={style.menubar__trigger}>File</Menubar.Trigger>
 				<Menubar.Portal>
-					<Menubar.Content class={style["menubar__content"]}>
-						<Menubar.Item class={style["menubar__item"]}>
+					<Menubar.Content class={style.menubar__content}>
+						<Menubar.Item class={style.menubar__item}>
 							New Tab <div class={style["menubar__item-right-slot"]}>⌘+T</div>
 						</Menubar.Item>
-						<Menubar.Item class={style["menubar__item"]}>
+						<Menubar.Item class={style.menubar__item}>
 							New Window{" "}
 							<div class={style["menubar__item-right-slot"]}>⌘+N</div>
 						</Menubar.Item>
-						<Menubar.Item class={style["menubar__item"]} disabled>
+						<Menubar.Item class={style.menubar__item} disabled>
 							New Incognito Window
 						</Menubar.Item>
 
-						<Menubar.Separator class={style["menubar__separator"]} />
+						<Menubar.Separator class={style.menubar__separator} />
 
 						<Menubar.Sub overlap gutter={4} shift={-8}>
 							<Menubar.SubTrigger class={style["menubar__sub-trigger"]}>
@@ -137,22 +135,20 @@ export function BasicExample() {
 							</Menubar.SubTrigger>
 							<Menubar.Portal>
 								<Menubar.SubContent class={style["menubar__sub-content"]}>
-									<Menubar.Item class={style["menubar__item"]}>
+									<Menubar.Item class={style.menubar__item}>
 										Email Link
 									</Menubar.Item>
-									<Menubar.Item class={style["menubar__item"]}>
+									<Menubar.Item class={style.menubar__item}>
 										Messages
 									</Menubar.Item>
-									<Menubar.Item class={style["menubar__item"]}>
-										Notes
-									</Menubar.Item>
+									<Menubar.Item class={style.menubar__item}>Notes</Menubar.Item>
 								</Menubar.SubContent>
 							</Menubar.Portal>
 						</Menubar.Sub>
 
-						<Menubar.Separator class={style["menubar__separator"]} />
+						<Menubar.Separator class={style.menubar__separator} />
 
-						<Menubar.Item class={style["menubar__item"]}>
+						<Menubar.Item class={style.menubar__item}>
 							Print... <div class={style["menubar__item-right-slot"]}>⌘+P</div>
 						</Menubar.Item>
 					</Menubar.Content>
@@ -160,19 +156,17 @@ export function BasicExample() {
 			</Menubar.Menu>
 
 			<Menubar.Menu>
-				<Menubar.Trigger class={style["menubar__trigger"]}>
-					Edit
-				</Menubar.Trigger>
+				<Menubar.Trigger class={style.menubar__trigger}>Edit</Menubar.Trigger>
 				<Menubar.Portal>
-					<Menubar.Content class={style["menubar__content"]}>
-						<Menubar.Item class={style["menubar__item"]}>
+					<Menubar.Content class={style.menubar__content}>
+						<Menubar.Item class={style.menubar__item}>
 							Undo <div class={style["menubar__item-right-slot"]}>⌘+Z</div>
 						</Menubar.Item>
-						<Menubar.Item class={style["menubar__item"]}>
+						<Menubar.Item class={style.menubar__item}>
 							Redo <div class={style["menubar__item-right-slot"]}>⇧+⌘+Z</div>
 						</Menubar.Item>
 
-						<Menubar.Separator class={style["menubar__separator"]} />
+						<Menubar.Separator class={style.menubar__separator} />
 
 						<Menubar.Sub overlap gutter={4} shift={-8}>
 							<Menubar.SubTrigger class={style["menubar__sub-trigger"]}>
@@ -183,28 +177,28 @@ export function BasicExample() {
 							</Menubar.SubTrigger>
 							<Menubar.Portal>
 								<Menubar.SubContent class={style["menubar__sub-content"]}>
-									<Menubar.Item class={style["menubar__item"]}>
+									<Menubar.Item class={style.menubar__item}>
 										Search The Web
 									</Menubar.Item>
-									<Menubar.Separator class={style["menubar__separator"]} />
-									<Menubar.Item class={style["menubar__item"]}>
+									<Menubar.Separator class={style.menubar__separator} />
+									<Menubar.Item class={style.menubar__item}>
 										Find...
 									</Menubar.Item>
-									<Menubar.Item class={style["menubar__item"]}>
+									<Menubar.Item class={style.menubar__item}>
 										Find Next
 									</Menubar.Item>
-									<Menubar.Item class={style["menubar__item"]}>
+									<Menubar.Item class={style.menubar__item}>
 										Find Previous
 									</Menubar.Item>
 								</Menubar.SubContent>
 							</Menubar.Portal>
 						</Menubar.Sub>
 
-						<Menubar.Separator class={style["menubar__separator"]} />
+						<Menubar.Separator class={style.menubar__separator} />
 
-						<Menubar.Item class={style["menubar__item"]}>Cut</Menubar.Item>
-						<Menubar.Item class={style["menubar__item"]}>Copy</Menubar.Item>
-						<Menubar.Item class={style["menubar__item"]}>Paste</Menubar.Item>
+						<Menubar.Item class={style.menubar__item}>Cut</Menubar.Item>
+						<Menubar.Item class={style.menubar__item}>Copy</Menubar.Item>
+						<Menubar.Item class={style.menubar__item}>Paste</Menubar.Item>
 					</Menubar.Content>
 				</Menubar.Portal>
 			</Menubar.Menu>

@@ -8,9 +8,9 @@
 
 import { OverrideComponentProps } from "@kobalte/utils";
 import {
+	JSX,
 	createEffect,
 	createSignal,
-	JSX,
 	on,
 	onMount,
 	splitProps,

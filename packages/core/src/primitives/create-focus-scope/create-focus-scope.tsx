@@ -14,6 +14,7 @@
  */
 
 import {
+	MaybeAccessor,
 	access,
 	contains,
 	focusWithoutScrolling,
@@ -21,7 +22,6 @@ import {
 	getAllTabbableIn,
 	getDocument,
 	isFocusable,
-	MaybeAccessor,
 	removeItemFromArray,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";

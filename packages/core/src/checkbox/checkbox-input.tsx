@@ -8,17 +8,17 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { createEffect, createSignal, JSX, on, splitProps } from "solid-js";
+import { JSX, createEffect, createSignal, on, splitProps } from "solid-js";
 
 import {
-	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
+	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
 import { useCheckboxContext } from "./checkbox-context";
@@ -40,7 +40,7 @@ export function CheckboxInput(props: CheckboxInputProps) {
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("input"),
 		},
@@ -48,7 +48,7 @@ export function CheckboxInput(props: CheckboxInputProps) {
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
-		props,
+		mergedProps,
 		["ref", "style", "onChange", "onFocus", "onBlur"],
 		FORM_CONTROL_FIELD_PROP_NAMES,
 	);
@@ -81,13 +81,13 @@ export function CheckboxInput(props: CheckboxInputProps) {
 		setIsInternalChangeEvent(false);
 	};
 
-	const onFocus: JSX.FocusEventHandlerUnion<any, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+	const onFocus: JSX.FocusEventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+		callHandler(e, local.onFocus as typeof onFocus);
 		context.setIsFocused(true);
 	};
 
-	const onBlur: JSX.FocusEventHandlerUnion<any, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+	const onBlur: JSX.FocusEventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+		callHandler(e, local.onBlur as typeof onBlur);
 		context.setIsFocused(false);
 	};
 
@@ -120,7 +120,7 @@ export function CheckboxInput(props: CheckboxInputProps) {
 			[() => ref, () => context.indeterminate(), () => context.checked()],
 			([ref, indeterminate]) => {
 				if (ref) {
-					ref.indeterminate = !!indeterminate;
+					ref.indeterminate = indeterminate;
 				}
 			},
 		),

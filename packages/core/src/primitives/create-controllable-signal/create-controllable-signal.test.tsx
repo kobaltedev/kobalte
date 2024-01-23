@@ -1,5 +1,5 @@
-import { createRoot, createSignal } from "solid-js";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
+import { createRoot, createSignal } from "solid-js";
 
 import { createControllableSignal } from "./create-controllable-signal";
 
@@ -155,12 +155,11 @@ describe("createControllableSignal", () => {
 			};
 
 			const TestComponentWrapper = (props: any) => {
-				// eslint-disable-next-line solid/reactivity
 				const [state, setState] = createSignal(props.value);
 				return (
 					<>
 						<TestComponent value={state} onChange={onChangeSpy} />
-						<button onClick={() => setState("updated")} />
+						<button type="button" onClick={() => setState("updated")} />
 					</>
 				);
 			};

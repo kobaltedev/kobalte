@@ -7,20 +7,20 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	composeEventHandlers,
 	createGenerateId,
 	focusWithoutScrolling,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
 	Accessor,
+	JSX,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	JSX,
 	splitProps,
 } from "solid-js";
 
@@ -77,14 +77,14 @@ export function MenuItemBase(props: MenuItemBaseProps) {
 	const rootContext = useMenuRootContext();
 	const menuContext = useMenuContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: rootContext.generateId(`item-${createUniqueId()}`),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"textValue",
 		"disabled",

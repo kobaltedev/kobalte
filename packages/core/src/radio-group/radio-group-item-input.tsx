@@ -7,16 +7,16 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import {
+	JSX,
 	createEffect,
 	createSignal,
-	JSX,
 	on,
 	onCleanup,
 	splitProps,
@@ -42,14 +42,14 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
 	const radioGroupContext = useRadioGroupContext();
 	const radioContext = useRadioGroupItemContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: radioContext.generateId("input"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"style",
 		"aria-labelledby",

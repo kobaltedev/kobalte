@@ -1,4 +1,4 @@
-import { focusWithoutScrolling, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, focusWithoutScrolling } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import { MenuContent, MenuContentOptions } from "../menu";

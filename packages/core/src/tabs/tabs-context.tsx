@@ -1,5 +1,5 @@
 import { Orientation } from "@kobalte/utils";
-import { Accessor, createContext, Setter, useContext } from "solid-js";
+import { Accessor, Setter, createContext, useContext } from "solid-js";
 
 import { SingleSelectListState } from "../list";
 import { TabsActivationMode } from "./types";

@@ -8,10 +8,10 @@
  */
 
 import {
+	OverrideComponentProps,
 	composeEventHandlers,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { createEffect, on, splitProps } from "solid-js";
 
@@ -38,14 +38,14 @@ export function TextFieldTextArea(props: TextFieldTextAreaProps) {
 
 	const context = useTextFieldContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("textarea"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"autoResize",
 		"submitOnEnter",

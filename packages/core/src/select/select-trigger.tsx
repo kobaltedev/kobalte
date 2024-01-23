@@ -8,17 +8,17 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import { JSX, createEffect, onCleanup, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import {
-	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
+	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
 import { createTypeSelect } from "../selection";
@@ -31,7 +31,7 @@ export function SelectTrigger(props: SelectTriggerProps) {
 	const formControlContext = useFormControlContext();
 	const context = useSelectContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("trigger"),
 		},
@@ -39,7 +39,7 @@ export function SelectTrigger(props: SelectTriggerProps) {
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
-		props,
+		mergedProps,
 		[
 			"ref",
 			"disabled",
