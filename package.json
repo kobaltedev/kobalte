@@ -23,7 +23,9 @@
     "commit": "git-cz",
     "dev:core": "pnpm -F @kobalte/core dev",
     "dev:docs": "pnpm -F @kobalte/docs dev",
-    "format": "biome format . --write && prettier . --write && git update-index --again",
+		"format": "biome format . --write && prettier . --write",
+		"lint": "pnpm check --apply",
+		"check": "biome check .",
     "prepare": "husky install",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck"

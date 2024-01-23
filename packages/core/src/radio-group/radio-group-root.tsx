@@ -8,19 +8,19 @@
  */
 
 import {
-	access,
-	mergeDefaultProps,
-	mergeRefs,
 	Orientation,
 	OverrideComponentProps,
 	ValidationState,
+	access,
+	mergeDefaultProps,
+	mergeRefs,
 } from "@kobalte/utils";
 import { createUniqueId, splitProps } from "solid-js";
 
 import {
-	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	createFormControl,
 } from "../form-control";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import {
@@ -86,7 +86,7 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
 
 	const defaultId = `radiogroup-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			orientation: "vertical",
@@ -95,7 +95,7 @@ export function RadioGroupRoot(props: RadioGroupRootProps) {
 	);
 
 	const [local, formControlProps, others] = splitProps(
-		props,
+		mergedProps,
 		[
 			"ref",
 			"value",

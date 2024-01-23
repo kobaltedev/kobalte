@@ -13,12 +13,12 @@
  */
 
 import {
+	MaybeAccessor,
 	access,
 	composeEventHandlers,
 	contains,
 	getDocument,
 	isCtrlKey,
-	MaybeAccessor,
 	noop,
 } from "@kobalte/utils";
 import { Accessor, createEffect, onCleanup } from "solid-js";

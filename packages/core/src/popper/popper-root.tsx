@@ -7,12 +7,12 @@
  */
 
 import {
+	Middleware,
 	arrow,
 	autoUpdate,
 	computePosition,
 	flip,
 	hide,
-	Middleware,
 	offset,
 	platform,
 	shift,
@@ -21,10 +21,10 @@ import {
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	Accessor,
+	ParentProps,
 	createEffect,
 	createSignal,
 	onCleanup,
-	ParentProps,
 } from "solid-js";
 
 import { useLocale } from "../i18n";
@@ -32,10 +32,10 @@ import { PopperContext, PopperContextValue } from "./popper-context";
 import {
 	AnchorRect,
 	BasePlacement,
+	Placement,
 	getAnchorElement,
 	getTransformOrigin,
 	isValidPlacement,
-	Placement,
 } from "./utils";
 
 export interface PopperRootOptions {
@@ -120,7 +120,7 @@ export interface PopperRootProps extends ParentProps<PopperRootOptions> {}
  * Display a floating content relative to an anchor element with an optional arrow.
  */
 export function PopperRoot(props: PopperRootProps) {
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			getAnchorRect: (anchor) => anchor?.getBoundingClientRect(),
 			placement: "bottom",
@@ -143,12 +143,12 @@ export function PopperRoot(props: PopperRootProps) {
 	const [arrowRef, setArrowRef] = createSignal<HTMLElement>();
 
 	const [currentPlacement, setCurrentPlacement] = createSignal(
-		props.placement!,
+		mergedProps.placement!,
 	);
 
 	// Floating UI - reference element.
 	const anchorRef = () =>
-		getAnchorElement(props.anchorRef(), props.getAnchorRect!);
+		getAnchorElement(mergedProps.anchorRef(), mergedProps.getAnchorRect!);
 
 	const { direction } = useLocale();
 
@@ -163,13 +163,13 @@ export function PopperRoot(props: PopperRootProps) {
 
 		const arrowOffset = (arrowEl?.clientHeight || 0) / 2;
 		const finalGutter =
-			typeof props.gutter === "number"
-				? props.gutter + arrowOffset
-				: props.gutter ?? arrowOffset;
+			typeof mergedProps.gutter === "number"
+				? mergedProps.gutter + arrowOffset
+				: mergedProps.gutter ?? arrowOffset;
 
 		floatingEl.style.setProperty(
 			"--kb-popper-content-overflow-padding",
-			`${props.overflowPadding}px`,
+			`${mergedProps.overflowPadding}px`,
 		);
 
 		// Virtual element doesn't work without this ¯\_(ツ)_/¯
@@ -185,15 +185,17 @@ export function PopperRoot(props: PopperRootProps) {
 
 				return {
 					mainAxis: finalGutter,
-					crossAxis: !hasAlignment ? props.shift : undefined,
-					alignmentAxis: props.shift,
+					crossAxis: !hasAlignment ? mergedProps.shift : undefined,
+					alignmentAxis: mergedProps.shift,
 				};
 			}),
 		];
 
-		if (props.flip !== false) {
+		if (mergedProps.flip !== false) {
 			const fallbackPlacements =
-				typeof props.flip === "string" ? props.flip.split(" ") : undefined;
+				typeof mergedProps.flip === "string"
+					? mergedProps.flip.split(" ")
+					: undefined;
 
 			if (
 				fallbackPlacements !== undefined &&
@@ -205,19 +207,19 @@ export function PopperRoot(props: PopperRootProps) {
 			// https://floating-ui.com/docs/flip
 			middleware.push(
 				flip({
-					padding: props.overflowPadding,
+					padding: mergedProps.overflowPadding,
 					fallbackPlacements: fallbackPlacements,
 				}),
 			);
 		}
 
-		if (props.slide || props.overlap) {
+		if (mergedProps.slide || mergedProps.overlap) {
 			// https://floating-ui.com/docs/shift
 			middleware.push(
 				shift({
-					mainAxis: props.slide,
-					crossAxis: props.overlap,
-					padding: props.overflowPadding,
+					mainAxis: mergedProps.slide,
+					crossAxis: mergedProps.overlap,
+					padding: mergedProps.overflowPadding,
 				}),
 			);
 		}
@@ -225,7 +227,7 @@ export function PopperRoot(props: PopperRootProps) {
 		// https://floating-ui.com/docs/size
 		middleware.push(
 			size({
-				padding: props.overflowPadding,
+				padding: mergedProps.overflowPadding,
 				apply({ availableWidth, availableHeight, rects }) {
 					const referenceWidth = Math.round(rects.reference.width);
 
@@ -245,11 +247,11 @@ export function PopperRoot(props: PopperRootProps) {
 						`${availableHeight}px`,
 					);
 
-					if (props.sameWidth) {
+					if (mergedProps.sameWidth) {
 						floatingEl.style.width = `${referenceWidth}px`;
 					}
 
-					if (props.fitViewport) {
+					if (mergedProps.fitViewport) {
 						floatingEl.style.maxWidth = `${availableWidth}px`;
 						floatingEl.style.maxHeight = `${availableHeight}px`;
 					}
@@ -258,18 +260,20 @@ export function PopperRoot(props: PopperRootProps) {
 		);
 
 		// https://floating-ui.com/docs/hide
-		if (props.hideWhenDetached) {
-			middleware.push(hide({ padding: props.detachedPadding }));
+		if (mergedProps.hideWhenDetached) {
+			middleware.push(hide({ padding: mergedProps.detachedPadding }));
 		}
 
 		// https://floating-ui.com/docs/arrow
 		if (arrowEl) {
-			middleware.push(arrow({ element: arrowEl, padding: props.arrowPadding }));
+			middleware.push(
+				arrow({ element: arrowEl, padding: mergedProps.arrowPadding }),
+			);
 		}
 
 		// https://floating-ui.com/docs/computePosition
 		const pos = await computePosition(referenceEl, floatingEl, {
-			placement: props.placement,
+			placement: mergedProps.placement,
 			strategy: "absolute",
 			middleware,
 			platform: {
@@ -280,7 +284,7 @@ export function PopperRoot(props: PopperRootProps) {
 
 		// Sync the new updated placement of floating-ui with our current placement and notify parent.
 		setCurrentPlacement(pos.placement);
-		props.onCurrentPlacementChange?.(pos.placement);
+		mergedProps.onCurrentPlacementChange?.(pos.placement);
 
 		if (!floatingEl) {
 			return;
@@ -296,7 +300,7 @@ export function PopperRoot(props: PopperRootProps) {
 
 		let visibility: string | undefined;
 
-		if (props.hideWhenDetached) {
+		if (mergedProps.hideWhenDetached) {
 			visibility = pos.middlewareData.hide?.referenceHidden
 				? "hidden"
 				: "visible";
@@ -350,7 +354,7 @@ export function PopperRoot(props: PopperRootProps) {
 	// so users only need to set the z-index once.
 	createEffect(() => {
 		const positioner = positionerRef();
-		const content = props.contentRef();
+		const content = mergedProps.contentRef();
 
 		if (!positioner || !content) {
 			return;
@@ -363,14 +367,14 @@ export function PopperRoot(props: PopperRootProps) {
 
 	const context: PopperContextValue = {
 		currentPlacement,
-		contentRef: () => props.contentRef(),
+		contentRef: () => mergedProps.contentRef(),
 		setPositionerRef,
 		setArrowRef,
 	};
 
 	return (
 		<PopperContext.Provider value={context}>
-			{props.children}
+			{mergedProps.children}
 		</PopperContext.Provider>
 	);
 }

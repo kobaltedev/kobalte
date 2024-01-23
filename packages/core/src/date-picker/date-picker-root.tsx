@@ -14,21 +14,21 @@ import {
 	toCalendarDateTime,
 } from "@internationalized/date";
 import {
+	OverrideComponentProps,
+	RangeValue,
+	ValidationState,
 	access,
 	createFocusManager,
 	createGenerateId,
 	mergeDefaultProps,
-	OverrideComponentProps,
-	RangeValue,
-	ValidationState,
 } from "@kobalte/utils";
 import {
 	Accessor,
+	JSX,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	JSX,
 	mergeProps,
 	on,
 	splitProps,
@@ -48,9 +48,9 @@ import {
 	isDateInvalid,
 } from "../calendar/utils";
 import {
-	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	createFormControl,
 } from "../form-control";
 import { getReadingDirection, useLocale } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -63,14 +63,14 @@ import {
 	createRegisterId,
 } from "../primitives";
 import {
-	DatePickerIntlTranslations,
-	DATE_PICKER_INTL_MESSAGES,
-} from "./date-picker.intl";
-import {
 	DatePickerContext,
 	DatePickerContextValue,
 	DatePickerDataSet,
 } from "./date-picker-context";
+import {
+	DATE_PICKER_INTL_MESSAGES,
+	DatePickerIntlTranslations,
+} from "./date-picker.intl";
 import {
 	DateFieldGranularity,
 	DateFieldHourCycle,
@@ -231,7 +231,7 @@ export type DatePickerRootProps = OverrideComponentProps<
 export function DatePickerRoot(props: DatePickerRootProps) {
 	const defaultId = `date-picker-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			visibleDuration: { months: 1 },
@@ -249,7 +249,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
 	);
 
 	const [local, popperProps, formControlProps, others] = splitProps(
-		props,
+		mergedProps,
 		[
 			"translations",
 			"locale",

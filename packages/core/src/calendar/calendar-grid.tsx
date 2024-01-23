@@ -13,11 +13,11 @@ import {
 	today,
 } from "@internationalized/date";
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
-	OverrideComponentProps,
 } from "@kobalte/utils";
-import { createMemo, JSX, splitProps } from "solid-js";
+import { JSX, createMemo, splitProps } from "solid-js";
 
 import { createDateFormatter } from "../i18n";
 import { Polymorphic } from "../polymorphic";
@@ -54,14 +54,14 @@ export type CalendarGridProps = OverrideComponentProps<
 export function CalendarGrid(props: CalendarGridProps) {
 	const rootContext = useCalendarContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			weekDayFormat: "short",
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"offset",
 		"weekDayFormat",
 		"onKeyDown",

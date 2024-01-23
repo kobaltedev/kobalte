@@ -7,24 +7,24 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
+	JSX,
 	createDeferred,
 	createEffect,
 	createSignal,
-	JSX,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
 import * as Button from "../button";
+import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { useOptionalMenubarContext } from "../menubar/menubar-context";
 
 export interface MenuTriggerOptions extends Button.ButtonRootOptions {}
 
@@ -41,14 +41,14 @@ export function MenuTrigger(props: MenuTriggerProps) {
 	const context = useMenuContext();
 	const optionalMenubarContext = useOptionalMenubarContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: rootContext.generateId("trigger"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"id",
 		"disabled",

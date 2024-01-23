@@ -7,19 +7,19 @@
  */
 
 import {
+	MaybeAccessor,
 	access,
 	callHandler,
 	createEventListener,
 	focusWithoutScrolling,
 	getFocusableTreeWalker,
-	MaybeAccessor,
 	scrollIntoView,
 } from "@kobalte/utils";
 import {
 	Accessor,
+	JSX,
 	createEffect,
 	createMemo,
-	JSX,
 	mergeProps,
 	on,
 	onMount,

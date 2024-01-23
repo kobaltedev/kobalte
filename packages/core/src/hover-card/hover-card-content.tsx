@@ -1,4 +1,4 @@
-import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeRefs } from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";

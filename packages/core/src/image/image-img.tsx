@@ -10,11 +10,11 @@
 
 import {
 	ComponentProps,
+	Show,
 	createEffect,
 	createSignal,
 	on,
 	onCleanup,
-	Show,
 } from "solid-js";
 
 import { useImageContext } from "./image-context";

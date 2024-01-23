@@ -13,15 +13,15 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	contains,
 	focusWithoutScrolling,
 	getDocument,
 	getWindow,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, For, JSX, on, onCleanup, splitProps } from "solid-js";
+import { For, JSX, createEffect, on, onCleanup, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
 import { useToastRegionContext } from "./toast-region-context";

@@ -1,4 +1,4 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 
 import { useFormControlContext } from "../form-control";
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -14,7 +14,7 @@ export function SwitchThumb(props: SwitchThumbProps) {
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("thumb"),
 		},
@@ -26,7 +26,7 @@ export function SwitchThumb(props: SwitchThumbProps) {
 			as="div"
 			{...formControlContext.dataset()}
 			{...context.dataset()}
-			{...props}
+			{...mergedProps}
 		/>
 	);
 }

@@ -9,13 +9,13 @@
  */
 
 import {
+	OverrideComponentProps,
+	ValidationState,
 	access,
 	clamp,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
-	ValidationState,
 } from "@kobalte/utils";
 import {
 	Accessor,
@@ -26,9 +26,9 @@ import {
 } from "solid-js";
 
 import {
-	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	createFormControl,
 } from "../form-control";
 import { createNumberFormatter, useLocale } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -141,7 +141,7 @@ export function SliderRoot(props: SliderRootProps) {
 
 	const defaultId = `slider-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			minValue: 0,
@@ -157,7 +157,7 @@ export function SliderRoot(props: SliderRootProps) {
 	);
 
 	const [local, formControlProps, others] = splitProps(
-		props,
+		mergedProps,
 		[
 			"ref",
 			"value",

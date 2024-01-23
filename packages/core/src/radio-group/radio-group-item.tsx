@@ -7,17 +7,17 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	createGenerateId,
 	mergeDefaultProps,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
 	Accessor,
+	JSX,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	JSX,
 	splitProps,
 } from "solid-js";
 
@@ -56,14 +56,14 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
 		"item",
 	)}-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"value",
 		"disabled",
 		"onPointerDown",

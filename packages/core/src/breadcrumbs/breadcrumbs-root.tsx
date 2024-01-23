@@ -6,18 +6,18 @@
  * https://github.com/adobe/react-spectrum/blob/38a57d3360268fb0cb55c6b42b9a5f6f13bb57d6/packages/@react-aria/breadcrumbs/src/useBreadcrumbs.ts
  */
 
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import {
-	BREADCRUMBS_INTL_TRANSLATIONS,
-	BreadcrumbsIntlTranslations,
-} from "./breadcrumbs.intl";
-import {
 	BreadcrumbsContext,
 	BreadcrumbsContextValue,
 } from "./breadcrumbs-context";
+import {
+	BREADCRUMBS_INTL_TRANSLATIONS,
+	BreadcrumbsIntlTranslations,
+} from "./breadcrumbs.intl";
 
 export interface BreadcrumbsRootOptions extends AsChildProp {
 	/**
@@ -37,7 +37,7 @@ export interface BreadcrumbsRootProps
  * Breadcrumbs show hierarchy and navigational context for a user’s location within an application.
  */
 export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			separator: "/",
 			translations: BREADCRUMBS_INTL_TRANSLATIONS,
@@ -45,7 +45,10 @@ export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["separator", "translations"]);
+	const [local, others] = splitProps(mergedProps, [
+		"separator",
+		"translations",
+	]);
 
 	const context: BreadcrumbsContextValue = {
 		separator: () => local.separator,

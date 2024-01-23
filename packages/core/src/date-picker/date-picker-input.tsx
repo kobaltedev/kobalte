@@ -9,25 +9,25 @@
 
 import {
 	DateFormatter,
+	GregorianCalendar,
 	getMinimumDayInMonth,
 	getMinimumMonthInYear,
-	GregorianCalendar,
 	toCalendar,
 } from "@internationalized/date";
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
 	Accessor,
-	createEffect,
-	createMemo,
-	createSignal,
 	For,
 	Index,
 	JSX,
+	createEffect,
+	createMemo,
+	createSignal,
 	on,
 	splitProps,
 } from "solid-js";
@@ -44,9 +44,9 @@ import {
 import { DatePickerIntlTranslations } from "./date-picker.intl";
 import { DateFieldOptions, DateSegment, SegmentType } from "./types";
 import {
+	FormatterOptions,
 	convertValue,
 	createPlaceholderDate,
-	FormatterOptions,
 	getDateFieldFormatOptions,
 } from "./utils";
 
@@ -88,14 +88,14 @@ export function DatePickerInput(props: DatePickerInputProps) {
 	const formControlContext = useFormControlContext();
 	const datePickerContext = useDatePickerContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: datePickerContext.generateId("input"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"children",
 		"onFocusOut",

@@ -1,4 +1,4 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -22,14 +22,14 @@ export interface MenuItemIndicatorProps
 export function MenuItemIndicator(props: MenuItemIndicatorProps) {
 	const context = useMenuItemContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("indicator"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["forceMount"]);
+	const [local, others] = splitProps(mergedProps, ["forceMount"]);
 
 	return (
 		<Show when={local.forceMount || context.isChecked()}>

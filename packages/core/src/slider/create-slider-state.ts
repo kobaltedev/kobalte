@@ -80,7 +80,7 @@ interface StateOpts {
 }
 
 export function createSliderState(props: StateOpts): SliderState {
-	props = mergeDefaultProps(
+	const mergedProps: StateOpts = mergeDefaultProps(
 		{
 			minValue: () => 0,
 			maxValue: () => 100,
@@ -93,24 +93,24 @@ export function createSliderState(props: StateOpts): SliderState {
 	);
 
 	const pageSize = createMemo(() => {
-		let calcPageSize = (props.maxValue!() - props.minValue!()) / 10;
+		let calcPageSize = (mergedProps.maxValue!() - mergedProps.minValue!()) / 10;
 		calcPageSize = snapValueToStep(
 			calcPageSize,
 			0,
-			calcPageSize + props.step!(),
-			props.step!(),
+			calcPageSize + mergedProps.step!(),
+			mergedProps.step!(),
 		);
-		return Math.max(calcPageSize, props.step!());
+		return Math.max(calcPageSize, mergedProps.step!());
 	});
 
 	const defaultValue = createMemo(() => {
-		return props.defaultValue() ?? [props.minValue!()];
+		return mergedProps.defaultValue() ?? [mergedProps.minValue!()];
 	});
 
 	const [values, setValues] = createControllableArraySignal<number>({
-		value: () => props.value(),
+		value: () => mergedProps.value(),
 		defaultValue,
-		onChange: (values) => props.onChange?.(values),
+		onChange: (values) => mergedProps.onChange?.(values),
 	});
 
 	const [isDragging, setIsDragging] = createSignal(
@@ -129,17 +129,18 @@ export function createSliderState(props: StateOpts): SliderState {
 
 	const getValuePercent = (value: number) => {
 		return (
-			(value - props.minValue!()) / (props.maxValue!() - props.minValue!())
+			(value - mergedProps.minValue!()) /
+			(mergedProps.maxValue!() - mergedProps.minValue!())
 		);
 	};
 
 	const getThumbMinValue = (index: number) => {
-		return index === 0 ? props.minValue!() : values()[index - 1];
+		return index === 0 ? mergedProps.minValue!() : values()[index - 1];
 	};
 
 	const getThumbMaxValue = (index: number) => {
 		return index === values().length - 1
-			? props.maxValue!()
+			? mergedProps.maxValue!()
 			: values()[index + 1];
 	};
 
@@ -155,20 +156,20 @@ export function createSliderState(props: StateOpts): SliderState {
 	};
 
 	const updateValue = (index: number, value: number) => {
-		if (props.isDisabled!() || !isThumbEditable(index)) return;
+		if (mergedProps.isDisabled!() || !isThumbEditable(index)) return;
 
 		value = snapValueToStep(
 			value,
 			getThumbMinValue(index),
 			getThumbMaxValue(index),
-			props.step!(),
+			mergedProps.step!(),
 		);
 		const nextValues = getNextSortedValues(values(), value, index);
 
 		if (
 			!hasMinStepsBetweenValues(
 				nextValues,
-				props.minStepsBetweenThumbs!() * props.step!(),
+				mergedProps.minStepsBetweenThumbs!() * mergedProps.step!(),
 			)
 		) {
 			return;
@@ -178,18 +179,18 @@ export function createSliderState(props: StateOpts): SliderState {
 	};
 
 	const updateDragging = (index: number, dragging: boolean) => {
-		if (props.isDisabled!() || !isThumbEditable(index)) return;
+		if (mergedProps.isDisabled!() || !isThumbEditable(index)) return;
 
 		const wasDragging = isDragging()[index];
 		setIsDragging((p) => [...replaceIndex(p, index, dragging)]);
 
 		if (wasDragging && !isDragging().some(Boolean)) {
-			props.onChangeEnd?.(values());
+			mergedProps.onChangeEnd?.(values());
 		}
 	};
 
 	const getFormattedValue = (value: number) => {
-		return props.numberFormatter.format(value);
+		return mergedProps.numberFormatter.format(value);
 	};
 
 	const setThumbPercent = (index: number, percent: number) => {
@@ -198,56 +199,62 @@ export function createSliderState(props: StateOpts): SliderState {
 
 	const getRoundedValue = (value: number) => {
 		return (
-			Math.round((value - props.minValue!()) / props.step!()) * props.step!() +
-			props.minValue!()
+			Math.round((value - mergedProps.minValue!()) / mergedProps.step!()) *
+				mergedProps.step!() +
+			mergedProps.minValue!()
 		);
 	};
 
 	const getPercentValue = (percent: number) => {
 		const val =
-			percent * (props.maxValue!() - props.minValue!()) + props.minValue!();
-		return clamp(getRoundedValue(val), props.minValue!(), props.maxValue!());
+			percent * (mergedProps.maxValue!() - mergedProps.minValue!()) +
+			mergedProps.minValue!();
+		return clamp(
+			getRoundedValue(val),
+			mergedProps.minValue!(),
+			mergedProps.maxValue!(),
+		);
 	};
 
 	const incrementThumb = (index: number, stepSize = 1) => {
-		const s = Math.max(stepSize, props.step!());
+		const s = Math.max(stepSize, mergedProps.step!());
 		const nextValue = values()[index] + s;
 		const nextValues = getNextSortedValues(values(), nextValue, index);
 		if (
 			hasMinStepsBetweenValues(
 				nextValues,
-				props.minStepsBetweenThumbs!() * props.step!(),
+				mergedProps.minStepsBetweenThumbs!() * mergedProps.step!(),
 			)
 		) {
 			updateValue(
 				index,
 				snapValueToStep(
 					nextValue,
-					props.minValue!(),
-					props.maxValue!(),
-					props.step!(),
+					mergedProps.minValue!(),
+					mergedProps.maxValue!(),
+					mergedProps.step!(),
 				),
 			);
 		}
 	};
 
 	const decrementThumb = (index: number, stepSize = 1) => {
-		const s = Math.max(stepSize, props.step!());
+		const s = Math.max(stepSize, mergedProps.step!());
 		const nextValue = values()[index] - s;
 		const nextValues = getNextSortedValues(values(), nextValue, index);
 		if (
 			hasMinStepsBetweenValues(
 				nextValues,
-				props.minStepsBetweenThumbs!() * props.step!(),
+				mergedProps.minStepsBetweenThumbs!() * mergedProps.step!(),
 			)
 		) {
 			updateValue(
 				index,
 				snapValueToStep(
 					nextValue,
-					props.minValue!(),
-					props.maxValue!(),
-					props.step!(),
+					mergedProps.minValue!(),
+					mergedProps.maxValue!(),
+					mergedProps.step!(),
 				),
 			);
 		}
@@ -273,10 +280,10 @@ export function createSliderState(props: StateOpts): SliderState {
 		setThumbEditable,
 		incrementThumb,
 		decrementThumb,
-		step: props.step!,
+		step: mergedProps.step!,
 		pageSize,
-		orientation: props.orientation!,
-		isDisabled: props.isDisabled!,
+		orientation: mergedProps.orientation!,
+		isDisabled: mergedProps.isDisabled!,
 		setValues,
 		resetValues,
 	};

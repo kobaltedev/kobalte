@@ -2,11 +2,11 @@ import { Link, useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
 import {
 	Accessor,
+	For,
+	Suspense,
 	createEffect,
 	createSignal,
-	For,
 	onCleanup,
-	Suspense,
 } from "solid-js";
 import { createServerData$ } from "solid-start/server";
 

@@ -13,11 +13,11 @@ import {
 } from "@kobalte/utils";
 import {
 	Accessor,
+	ParentProps,
 	createEffect,
 	createMemo,
 	createSignal,
 	onCleanup,
-	ParentProps,
 	splitProps,
 } from "solid-js";
 
@@ -43,7 +43,7 @@ import {
 	useOptionalMenuContext,
 } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { GraceIntent, isPointerInGraceArea, Side } from "./utils";
+import { GraceIntent, Side, isPointerInGraceArea } from "./utils";
 
 export interface MenuOptions
 	extends Omit<
@@ -73,14 +73,14 @@ export function Menu(props: MenuProps) {
 	const parentDomCollectionContext = useOptionalDomCollectionContext();
 	const parentMenuContext = useOptionalMenuContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			placement: "bottom-start",
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"open",
 		"defaultOpen",
 		"onOpenChange",

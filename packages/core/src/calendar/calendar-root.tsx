@@ -11,8 +11,8 @@ import {
 	Calendar,
 	DateDuration,
 	DateFormatter,
-	getDayOfWeek,
 	GregorianCalendar,
+	getDayOfWeek,
 	isSameDay,
 	maxDate,
 	minDate,
@@ -22,14 +22,14 @@ import {
 	today,
 } from "@internationalized/date";
 import {
+	OverrideComponentProps,
+	RangeValue,
+	ValidationState,
 	contains,
 	getDocument,
 	getWindow,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
-	RangeValue,
-	ValidationState,
 } from "@kobalte/utils";
 import {
 	Accessor,
@@ -41,19 +41,20 @@ import {
 	splitProps,
 } from "solid-js";
 
+import { isServer } from "solid-js/web";
 import { getReadingDirection, useLocale } from "../i18n";
 import { announce } from "../live-announcer";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createControllableSignal, createInteractOutside } from "../primitives";
 import {
-	CalendarIntlTranslations,
-	CALENDAR_INTL_MESSAGES,
-} from "./calendar.intl";
-import {
 	CalendarContext,
 	CalendarContextValue,
 	CalendarDataSet,
 } from "./calendar-context";
+import {
+	CALENDAR_INTL_MESSAGES,
+	CalendarIntlTranslations,
+} from "./calendar.intl";
 import { DateAlignment, DateValue } from "./types";
 import {
 	alignCenter,
@@ -83,7 +84,6 @@ import {
 	makeCalendarDateRange,
 	sortDates,
 } from "./utils";
-import { isServer } from "solid-js/web";
 
 export interface CalendarSingleSelectionOptions {
 	/** The selection mode of the calendar. */
@@ -216,7 +216,7 @@ export type CalendarRootProps = OverrideComponentProps<
 export function CalendarRoot(props: CalendarRootProps) {
 	let ref: HTMLDivElement | undefined;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			visibleDuration: { months: 1 },
 			selectionMode: "single",
@@ -225,7 +225,7 @@ export function CalendarRoot(props: CalendarRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"translations",
 		"ref",
 		"locale",
@@ -271,7 +271,8 @@ export function CalendarRoot(props: CalendarRootProps) {
 	>({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue,
-		onChange: (value) => local.onChange?.(value as any),
+		// @ts-ignore: TS cant understand polymorphic component
+		onChange: (value) => local.onChange?.(value),
 	});
 
 	const [availableRange, setAvailableRange] =

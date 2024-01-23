@@ -8,9 +8,9 @@
  */
 
 import {
-	mergeDefaultProps,
 	Orientation,
 	OverrideComponentProps,
+	mergeDefaultProps,
 } from "@kobalte/utils";
 import {
 	createEffect,
@@ -60,7 +60,7 @@ export interface TabsRootProps
 export function TabsRoot(props: TabsRootProps) {
 	const defaultId = `tabs-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			orientation: "horizontal",
@@ -69,7 +69,7 @@ export function TabsRoot(props: TabsRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"value",
 		"defaultValue",
 		"onChange",

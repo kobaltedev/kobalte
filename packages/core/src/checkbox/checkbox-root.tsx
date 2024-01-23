@@ -7,29 +7,29 @@
  */
 
 import {
+	OverrideComponentProps,
+	ValidationState,
 	access,
 	callHandler,
 	createGenerateId,
 	isFunction,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
-	ValidationState,
 } from "@kobalte/utils";
 import {
 	Accessor,
+	JSX,
 	children,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	JSX,
 	splitProps,
 } from "solid-js";
 
 import {
-	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	createFormControl,
 } from "../form-control";
 import { Polymorphic } from "../polymorphic";
 import { createFormResetListener, createToggleState } from "../primitives";
@@ -109,7 +109,7 @@ export function CheckboxRoot(props: CheckboxRootProps) {
 
 	const defaultId = `checkbox-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			value: "on",
 			id: defaultId,
@@ -118,7 +118,7 @@ export function CheckboxRoot(props: CheckboxRootProps) {
 	);
 
 	const [local, formControlProps, others] = splitProps(
-		props,
+		mergedProps,
 		[
 			"ref",
 			"children",
@@ -150,8 +150,10 @@ export function CheckboxRoot(props: CheckboxRootProps) {
 		() => state.setIsSelected(local.defaultChecked ?? false),
 	);
 
-	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerDown);
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onPointerDown as typeof onPointerDown);
 
 		// For consistency with native, prevent the input blurs on pointer down.
 		if (isFocused()) {

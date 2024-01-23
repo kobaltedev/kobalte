@@ -13,17 +13,17 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	composeEventHandlers,
 	focusWithoutScrolling,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
+	JSX,
 	createEffect,
 	createUniqueId,
-	JSX,
 	on,
 	onCleanup,
 	splitProps,
@@ -35,7 +35,7 @@ import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { getPointerGraceArea, Side } from "./utils";
+import { Side, getPointerGraceArea } from "./utils";
 
 export interface MenuSubTriggerOptions extends AsChildProp {
 	/**
@@ -67,14 +67,14 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: rootContext.generateId(`sub-trigger-${createUniqueId()}`),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"id",
 		"textValue",

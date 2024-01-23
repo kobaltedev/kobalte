@@ -15,29 +15,29 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
+	JSX,
+	Show,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	JSX,
 	on,
 	onMount,
-	Show,
 	splitProps,
 } from "solid-js";
 
 import { createPresence, createRegisterId } from "../primitives";
-import { TOAST_INTL_TRANSLATIONS, ToastIntlTranslations } from "./toast.intl";
 import { ToastContext, ToastContextValue } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
 import { toastStore } from "./toast-store";
+import { TOAST_INTL_TRANSLATIONS, ToastIntlTranslations } from "./toast.intl";
 import { ToastSwipeDirection } from "./types";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
@@ -114,7 +114,7 @@ export function ToastRoot(props: ToastRootProps) {
 
 	const rootContext = useToastRegionContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			priority: "high",
@@ -123,7 +123,7 @@ export function ToastRoot(props: ToastRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"translations",
 		"toastId",

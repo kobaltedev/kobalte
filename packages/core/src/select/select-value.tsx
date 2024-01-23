@@ -1,15 +1,15 @@
 import {
+	OverrideComponentProps,
 	isFunction,
 	mergeDefaultProps,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
 	Accessor,
+	JSX,
+	Show,
 	children,
 	createEffect,
-	JSX,
 	onCleanup,
-	Show,
 	splitProps,
 } from "solid-js";
 
@@ -48,14 +48,14 @@ export function SelectValue<T>(props: SelectValueProps<T>) {
 	const formControlContext = useFormControlContext();
 	const context = useSelectContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("value"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["id", "children"]);
+	const [local, others] = splitProps(mergedProps, ["id", "children"]);
 
 	const selectionManager = () => context.listState().selectionManager();
 

@@ -6,8 +6,8 @@
  * https://github.com/ariakit/ariakit/blob/8a13899ff807bbf39f3d89d2d5964042ba4d5287/packages/ariakit-react-utils/src/__tests__/hooks-test.tsx
  */
 
-import { createEffect } from "solid-js";
 import { render } from "@solidjs/testing-library";
+import { createEffect } from "solid-js";
 
 import { createTagName } from "./create-tag-name";
 

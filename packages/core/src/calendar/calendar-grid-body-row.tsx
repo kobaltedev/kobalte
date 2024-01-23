@@ -1,5 +1,5 @@
 import { OverrideComponentProps } from "@kobalte/utils";
-import { Accessor, createMemo, Index, JSX, splitProps } from "solid-js";
+import { Accessor, Index, JSX, createMemo, splitProps } from "solid-js";
 
 import { Polymorphic } from "../polymorphic";
 import { useCalendarContext } from "./calendar-context";

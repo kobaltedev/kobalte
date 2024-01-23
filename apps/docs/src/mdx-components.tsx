@@ -1,7 +1,7 @@
 import { Button } from "@kobalte/core";
 import { Title as MetaTitle } from "@solidjs/meta";
 import { clsx } from "clsx";
-import { ComponentProps, createSignal, Show, splitProps } from "solid-js";
+import { ComponentProps, Show, createSignal, splitProps } from "solid-js";
 
 import { CheckIcon, CopyIcon } from "./components";
 

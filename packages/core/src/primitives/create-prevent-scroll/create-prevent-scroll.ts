@@ -13,12 +13,12 @@
  */
 
 import {
+	MaybeAccessor,
 	access,
 	chain,
 	getDocument,
 	getWindow,
 	isIOS,
-	MaybeAccessor,
 } from "@kobalte/utils";
 import { createEffect, onCleanup } from "solid-js";
 import { isServer } from "solid-js/web";

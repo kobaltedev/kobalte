@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/bfce84fee12a027d9cbc38b43e1747e3e4b4b169/packages/@react-stately/selection/src/useMultipleSelectionState.ts
  */
 
-import { access, MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
+import { MaybeAccessor, access, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, createMemo, createSignal } from "solid-js";
 
 import { createControllableSelectionSignal } from "./create-controllable-selection-signal";
@@ -32,7 +32,7 @@ export interface CreateMultipleSelectionStateProps extends MultipleSelection {
 export function createMultipleSelectionState(
 	props: CreateMultipleSelectionStateProps,
 ): MultipleSelectionState {
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			selectionMode: "none",
 			selectionBehavior: "toggle",
@@ -44,7 +44,7 @@ export function createMultipleSelectionState(
 	const [focusedKey, setFocusedKey] = createSignal<string>();
 
 	const selectedKeysProp = createMemo(() => {
-		const selection = access(props.selectedKeys);
+		const selection = access(mergedProps.selectedKeys);
 
 		if (selection != null) {
 			return convertSelection(selection);
@@ -54,7 +54,7 @@ export function createMultipleSelectionState(
 	});
 
 	const defaultSelectedKeys = createMemo(() => {
-		const defaultSelection = access(props.defaultSelectedKeys);
+		const defaultSelection = access(mergedProps.defaultSelectedKeys);
 
 		if (defaultSelection != null) {
 			return convertSelection(defaultSelection);
@@ -66,19 +66,19 @@ export function createMultipleSelectionState(
 	const [selectedKeys, _setSelectedKeys] = createControllableSelectionSignal({
 		value: selectedKeysProp,
 		defaultValue: defaultSelectedKeys,
-		onChange: (value) => props.onSelectionChange?.(value),
+		onChange: (value) => mergedProps.onSelectionChange?.(value),
 	});
 
 	const [selectionBehavior, setSelectionBehavior] =
-		createSignal<SelectionBehavior>(access(props.selectionBehavior)!);
+		createSignal<SelectionBehavior>(access(mergedProps.selectionBehavior)!);
 
-	const selectionMode = () => access(props.selectionMode)!;
+	const selectionMode = () => access(mergedProps.selectionMode)!;
 	const disallowEmptySelection = () =>
-		access(props.disallowEmptySelection) ?? false;
+		access(mergedProps.disallowEmptySelection) ?? false;
 
 	const setSelectedKeys = (keys: Set<string>) => {
 		if (
-			access(props.allowDuplicateSelectionEvents) ||
+			access(mergedProps.allowDuplicateSelectionEvents) ||
 			!isSameSelection(keys, selectedKeys())
 		) {
 			_setSelectedKeys(keys);
@@ -91,7 +91,7 @@ export function createMultipleSelectionState(
 		const selection = selectedKeys();
 
 		if (
-			access(props.selectionBehavior) === "replace" &&
+			access(mergedProps.selectionBehavior) === "replace" &&
 			selectionBehavior() === "toggle" &&
 			typeof selection === "object" &&
 			selection.size === 0
@@ -102,7 +102,7 @@ export function createMultipleSelectionState(
 
 	// If the selectionBehavior prop changes, update the state as well.
 	createEffect(() => {
-		setSelectionBehavior(access(props.selectionBehavior) ?? "toggle");
+		setSelectionBehavior(access(mergedProps.selectionBehavior) ?? "toggle");
 	});
 
 	return {

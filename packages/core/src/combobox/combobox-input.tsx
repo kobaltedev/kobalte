@@ -8,17 +8,17 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	contains,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import {
-	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
+	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
 import { Polymorphic } from "../polymorphic";
@@ -35,7 +35,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("input"),
 		},
@@ -43,7 +43,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
-		props,
+		mergedProps,
 		[
 			"ref",
 			"disabled",

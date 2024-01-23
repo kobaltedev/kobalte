@@ -1,19 +1,19 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import {
 	Accessor,
 	Component,
-	createUniqueId,
 	JSX,
 	Setter,
+	createUniqueId,
 	splitProps,
 } from "solid-js";
 
+import { AsChildProp, Polymorphic } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import {
 	PaginationContext,
 	PaginationContextValue,
 } from "./pagination-context";
-import { AsChildProp, Polymorphic } from "../polymorphic";
 
 export interface PaginationRootOptions extends AsChildProp {
 	/** The controlled page number of the pagination. (1-indexed) */
@@ -65,14 +65,14 @@ export interface PaginationRootProps
 export function PaginationRoot(props: PaginationRootProps) {
 	const defaultId = `pagination-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"page",
 		"defaultPage",
 		"onPageChange",

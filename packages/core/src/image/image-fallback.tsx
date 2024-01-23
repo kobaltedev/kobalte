@@ -7,7 +7,7 @@
  */
 
 import { OverrideComponentProps } from "@kobalte/utils";
-import { createEffect, createSignal, onCleanup, Show } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useImageContext } from "./image-context";

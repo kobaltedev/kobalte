@@ -1,4 +1,4 @@
-import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeRefs } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";

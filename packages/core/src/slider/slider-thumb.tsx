@@ -13,24 +13,24 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
 	Accessor,
+	JSX,
 	createContext,
 	createUniqueId,
-	JSX,
 	onMount,
 	splitProps,
 	useContext,
 } from "solid-js";
 
 import {
-	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
+	createFormControlField,
 } from "../form-control";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
@@ -48,7 +48,7 @@ export function SliderThumb(props: SliderThumbProps) {
 
 	const context = useSliderContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId(`thumb-${createUniqueId()}`),
 		},
@@ -56,7 +56,7 @@ export function SliderThumb(props: SliderThumbProps) {
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
-		props,
+		mergedProps,
 		[
 			"ref",
 			"style",

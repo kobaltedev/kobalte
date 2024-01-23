@@ -1,17 +1,17 @@
 import {
+	OverrideComponentProps,
+	ValidationState,
 	access,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
-	ValidationState,
 } from "@kobalte/utils";
-import { createUniqueId, JSX, splitProps } from "solid-js";
+import { JSX, createUniqueId, splitProps } from "solid-js";
 
 import {
-	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	createFormControl,
 } from "../form-control";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import {
@@ -70,10 +70,10 @@ export function TextFieldRoot(props: TextFieldRootProps) {
 
 	const defaultId = `textfield-${createUniqueId()}`;
 
-	props = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
 
 	const [local, formControlProps, others] = splitProps(
-		props,
+		mergedProps,
 		["ref", "value", "defaultValue", "onChange"],
 		FORM_CONTROL_PROP_NAMES,
 	);

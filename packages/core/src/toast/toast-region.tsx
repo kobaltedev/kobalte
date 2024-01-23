@@ -13,31 +13,31 @@
  */
 
 import {
+	OverrideComponentProps,
 	createGenerateId,
 	mergeDefaultProps,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
+	JSX,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	JSX,
 	splitProps,
 } from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
-import {
-	TOAST_REGION_INTL_TRANSLATIONS,
-	ToastRegionIntlTranslations,
-	TOAST_HOTKEY_PLACEHOLDER,
-} from "./toast.intl";
+import { useToastContext } from "./toast-context";
 import {
 	ToastRegionContext,
 	ToastRegionContextValue,
 } from "./toast-region-context";
 import { toastStore } from "./toast-store";
+import {
+	TOAST_HOTKEY_PLACEHOLDER,
+	TOAST_REGION_INTL_TRANSLATIONS,
+	ToastRegionIntlTranslations,
+} from "./toast.intl";
 import { ToastSwipeDirection } from "./types";
-import { useToastContext } from "./toast-context";
 
 export interface ToastRegionOptions {
 	/** The localized strings of the component. */
@@ -104,7 +104,7 @@ export interface ToastRegionProps
 export function ToastRegion(props: ToastRegionProps) {
 	const defaultId = `toast-region-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			hotkey: ["altKey", "KeyT"],
@@ -120,7 +120,7 @@ export function ToastRegion(props: ToastRegionProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"translations",
 		"style",
 		"hotkey",

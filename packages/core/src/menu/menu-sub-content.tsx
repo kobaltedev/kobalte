@@ -7,10 +7,10 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	contains,
 	focusWithoutScrolling,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 

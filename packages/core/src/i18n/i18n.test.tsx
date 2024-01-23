@@ -1,5 +1,5 @@
-import { createRoot, onCleanup, onMount } from "solid-js";
 import { render, screen } from "@solidjs/testing-library";
+import { createRoot, onCleanup, onMount } from "solid-js";
 
 import { createDefaultLocale } from "./create-default-locale";
 import { I18nProvider, useLocale } from "./i18n-provider";

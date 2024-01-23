@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/accordion/src/useAccordion.ts
  */
 
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
 import * as Collapsible from "../collapsible";
@@ -26,9 +26,9 @@ export function AccordionContent(props: AccordionContentProps) {
 
 	const defaultId = itemContext.generateId("content");
 
-	props = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
 
-	const [local, others] = splitProps(props, ["style"]);
+	const [local, others] = splitProps(mergedProps, ["style"]);
 
 	createEffect(() => onCleanup(itemContext.registerContentId(others.id!)));
 

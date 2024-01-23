@@ -1,15 +1,15 @@
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { createEffect, createSignal, JSX, on, splitProps } from "solid-js";
+import { JSX, createEffect, createSignal, on, splitProps } from "solid-js";
 
 import {
-	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
+	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
 import { AsChildProp } from "../polymorphic";
@@ -32,7 +32,7 @@ export function SliderInput(props: SliderInputProps) {
 	const context = useSliderContext();
 	const thumb = useThumbContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("input"),
 		},
@@ -40,7 +40,7 @@ export function SliderInput(props: SliderInputProps) {
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
-		props,
+		mergedProps,
 		["ref", "style", "onChange"],
 		FORM_CONTROL_FIELD_PROP_NAMES,
 	);

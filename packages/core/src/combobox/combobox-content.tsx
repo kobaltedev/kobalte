@@ -1,7 +1,7 @@
 import {
+	OverrideComponentProps,
 	focusWithoutScrolling,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
 
@@ -9,12 +9,12 @@ import { DismissableLayer } from "../dismissable-layer";
 import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
-	createFocusScope,
-	createHideOutside,
-	createPreventScroll,
 	FocusOutsideEvent,
 	InteractOutsideEvent,
 	PointerDownOutsideEvent,
+	createFocusScope,
+	createHideOutside,
+	createPreventScroll,
 } from "../primitives";
 import { useComboboxContext } from "./combobox-context";
 

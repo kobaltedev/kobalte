@@ -1,10 +1,10 @@
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, createMemo, JSX, onCleanup, splitProps } from "solid-js";
+import { JSX, createEffect, createMemo, onCleanup, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
@@ -17,14 +17,14 @@ export function DatePickerTrigger(props: DatePickerTriggerProps) {
 	const formControlContext = useFormControlContext();
 	const context = useDatePickerContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("trigger"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"disabled",
 		"onPointerDown",

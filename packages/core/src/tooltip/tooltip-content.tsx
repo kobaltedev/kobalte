@@ -7,11 +7,11 @@
  */
 
 import {
+	OverrideComponentProps,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, Show, splitProps } from "solid-js";
+import { JSX, Show, createEffect, onCleanup, splitProps } from "solid-js";
 
 import { DismissableLayer } from "../dismissable-layer";
 import { AsChildProp } from "../polymorphic";
@@ -45,14 +45,14 @@ export interface TooltipContentProps
 export function TooltipContent(props: TooltipContentProps) {
 	const context = useTooltipContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("content"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["ref", "style"]);
+	const [local, others] = splitProps(mergedProps, ["ref", "style"]);
 
 	createEffect(() => onCleanup(context.registerContentId(others.id!)));
 

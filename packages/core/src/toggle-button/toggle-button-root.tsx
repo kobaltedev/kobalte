@@ -13,11 +13,11 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	isFunction,
-	OverrideComponentProps,
 } from "@kobalte/utils";
-import { Accessor, children, JSX, splitProps } from "solid-js";
+import { Accessor, JSX, children, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { createToggleState } from "../primitives";

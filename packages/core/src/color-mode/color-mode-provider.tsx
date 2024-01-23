@@ -17,8 +17,8 @@ import {
 	ConfigColorMode,
 } from "./types";
 import {
-	addColorModeListener,
 	FALLBACK_COLOR_MODE_VALUE,
+	addColorModeListener,
 	getInitialColorMode,
 	getSystemColorMode,
 	setColorModeDataset,

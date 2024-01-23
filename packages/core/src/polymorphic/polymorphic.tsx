@@ -13,13 +13,13 @@
 import { combineProps as baseCombineProps, isArray } from "@kobalte/utils";
 import {
 	Accessor,
-	children,
 	ComponentProps,
 	For,
 	JSX,
 	Show,
-	splitProps,
 	ValidComponent,
+	children,
+	splitProps,
 } from "solid-js";
 import { Dynamic, DynamicProps } from "solid-js/web";
 

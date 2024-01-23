@@ -7,13 +7,13 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	createFocusManager,
 	getFocusableTreeWalker,
 	getWindow,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
@@ -35,14 +35,14 @@ export function DatePickerControl(props: DatePickerControlProps) {
 	const formControlContext = useFormControlContext();
 	const context = useDatePickerContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("control"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"onPointerDown",
 		"onClick",

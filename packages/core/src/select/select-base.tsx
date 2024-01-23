@@ -7,33 +7,33 @@
  */
 
 import {
+	OverrideComponentProps,
+	ValidationState,
 	access,
 	createGenerateId,
 	focusWithoutScrolling,
 	isFunction,
 	mergeDefaultProps,
-	OverrideComponentProps,
-	ValidationState,
 } from "@kobalte/utils";
 import {
 	Accessor,
 	Component,
+	JSX,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	JSX,
 	on,
 	splitProps,
 } from "solid-js";
 
 import {
-	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	createFormControl,
 } from "../form-control";
 import { createCollator } from "../i18n";
-import { createListState, ListKeyboardDelegate } from "../list";
+import { ListKeyboardDelegate, createListState } from "../list";
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
@@ -214,7 +214,7 @@ export function SelectBase<Option, OptGroup = never>(
 ) {
 	const defaultId = `select-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			selectionMode: "single",
@@ -228,7 +228,7 @@ export function SelectBase<Option, OptGroup = never>(
 	);
 
 	const [local, popperProps, formControlProps, others] = splitProps(
-		props,
+		mergedProps,
 		[
 			"itemComponent",
 			"sectionComponent",

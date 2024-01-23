@@ -8,12 +8,12 @@
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
-	callHandler,
-	mergeRefs,
 	OverrideComponentProps,
 	ValidationState,
+	callHandler,
+	mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, createMemo, JSX, on, splitProps } from "solid-js";
+import { JSX, createEffect, createMemo, on, splitProps } from "solid-js";
 
 import { announce, clearAnnouncer } from "../live-announcer";
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -75,14 +75,14 @@ export interface SpinButtonRootProps
 export function SpinButtonRoot(props: SpinButtonRootProps) {
 	let ref: HTMLDivElement | undefined;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			translations: SPIN_BUTTON_INTL_TRANSLATIONS,
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"translations",
 		"ref",
 		"value",

@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/listbox/src/useOption.ts
  */
 
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -22,14 +22,14 @@ export interface ListboxItemDescriptionProps
 export function ListboxItemDescription(props: ListboxItemDescriptionProps) {
 	const context = useListboxItemContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("description"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["id"]);
+	const [local, others] = splitProps(mergedProps, ["id"]);
 
 	createEffect(() => onCleanup(context.registerDescriptionId(local.id!)));
 

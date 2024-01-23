@@ -6,13 +6,13 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/test/ariaHideOutside.test.js
  */
 
-import { createSignal, onMount } from "solid-js";
 import { fireEvent, render, screen, waitFor } from "@solidjs/testing-library";
+import { createSignal, onMount } from "solid-js";
 
 import { ariaHideOutside } from "./create-hide-outside";
 
-describe("ariaHideOutside", function () {
-	it("should hide everything except the provided element [button]", function () {
+describe("ariaHideOutside", () => {
+	it("should hide everything except the provided element [button]", () => {
 		render(() => (
 			<>
 				<input type="checkbox" />
@@ -43,7 +43,7 @@ describe("ariaHideOutside", function () {
 		expect(() => screen.getByRole("button")).not.toThrow();
 	});
 
-	it("should hide everything except multiple elements", function () {
+	it("should hide everything except multiple elements", () => {
 		render(() => (
 			<>
 				<input type="checkbox" />
@@ -74,7 +74,7 @@ describe("ariaHideOutside", function () {
 		expect(() => screen.getByRole("button")).not.toThrow();
 	});
 
-	it("should not traverse into an already hidden container", function () {
+	it("should not traverse into an already hidden container", () => {
 		render(() => (
 			<>
 				<div>
@@ -107,7 +107,7 @@ describe("ariaHideOutside", function () {
 		expect(() => screen.getByRole("button")).not.toThrow();
 	});
 
-	it("should not overwrite an existing aria-hidden prop", function () {
+	it("should not overwrite an existing aria-hidden prop", () => {
 		render(() => (
 			<>
 				<input type="checkbox" aria-hidden="true" />
@@ -139,7 +139,7 @@ describe("ariaHideOutside", function () {
 		expect(() => screen.getByRole("button")).not.toThrow();
 	});
 
-	it("should handle when a new element is added outside while active", async function () {
+	it("should handle when a new element is added outside while active", async () => {
 		const Test = () => {
 			let toggleRef: any;
 			let revertRef: any;
@@ -192,7 +192,7 @@ describe("ariaHideOutside", function () {
 		expect(screen.getAllByRole("checkbox")).toHaveLength(2);
 	});
 
-	it("should handle when a new element is added to an already hidden container", async function () {
+	it("should handle when a new element is added to an already hidden container", async () => {
 		const Test = () => {
 			const [show, setShow] = createSignal(false);
 
@@ -235,7 +235,7 @@ describe("ariaHideOutside", function () {
 		expect(screen.getAllByRole("checkbox")).toHaveLength(2);
 	});
 
-	it("should handle when a new element is added inside a target element", async function () {
+	it("should handle when a new element is added inside a target element", async () => {
 		const Test = () => {
 			const [show, setShow] = createSignal(false);
 
@@ -281,7 +281,7 @@ describe("ariaHideOutside", function () {
 		expect(() => screen.getByTestId("test")).not.toThrow();
 	});
 
-	it("work when called multiple times", function () {
+	it("work when called multiple times", () => {
 		render(() => (
 			<>
 				<input type="checkbox" />
@@ -320,7 +320,7 @@ describe("ariaHideOutside", function () {
 		expect(() => screen.getByRole("button")).not.toThrow();
 	});
 
-	it("work when called multiple times and restored out of order", function () {
+	it("work when called multiple times and restored out of order", () => {
 		render(() => (
 			<>
 				<input type="checkbox" />
@@ -359,7 +359,7 @@ describe("ariaHideOutside", function () {
 		expect(() => screen.getByRole("button")).not.toThrow();
 	});
 
-	it("should hide everything except the provided element [row]", function () {
+	it("should hide everything except the provided element [row]", () => {
 		render(() => (
 			<div role="grid">
 				<div role="row">

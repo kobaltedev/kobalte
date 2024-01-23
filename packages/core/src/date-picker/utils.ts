@@ -8,8 +8,8 @@
 
 import {
 	Calendar,
-	now,
 	Time,
+	now,
 	toCalendar,
 	toCalendarDate,
 	toCalendarDateTime,

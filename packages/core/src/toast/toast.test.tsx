@@ -1,8 +1,8 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 
-import { I18nProvider } from "../i18n";
 import * as Toast from ".";
+import { I18nProvider } from "../i18n";
 import { toaster } from "./toaster";
 import { ShowToastOptions } from "./types";
 

@@ -13,10 +13,10 @@
  */
 
 import {
+	OverrideComponentProps,
 	contains,
 	getDocument,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
 	Accessor,
@@ -29,11 +29,11 @@ import {
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import {
-	createEscapeKeyDown,
-	createInteractOutside,
 	FocusOutsideEvent,
 	InteractOutsideEvent,
 	PointerDownOutsideEvent,
+	createEscapeKeyDown,
+	createInteractOutside,
 } from "../primitives";
 import {
 	DismissableLayerContext,

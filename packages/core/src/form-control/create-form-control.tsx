@@ -7,11 +7,11 @@
  */
 
 import {
+	MaybeAccessor,
+	ValidationState,
 	access,
 	createGenerateId,
-	MaybeAccessor,
 	mergeDefaultProps,
-	ValidationState,
 } from "@kobalte/utils";
 import { Accessor, createMemo, createSignal, createUniqueId } from "solid-js";
 
@@ -60,7 +60,7 @@ export const FORM_CONTROL_PROP_NAMES = [
 export function createFormControl(props: CreateFormControlProps) {
 	const defaultId = `form-control-${createUniqueId()}`;
 
-	props = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
 
 	const [labelId, setLabelId] = createSignal<string>();
 	const [fieldId, setFieldId] = createSignal<string>();
@@ -101,28 +101,29 @@ export function createFormControl(props: CreateFormControlProps) {
 	};
 
 	const dataset: Accessor<FormControlDataSet> = createMemo(() => ({
-		"data-valid": access(props.validationState) === "valid" ? "" : undefined,
+		"data-valid":
+			access(mergedProps.validationState) === "valid" ? "" : undefined,
 		"data-invalid":
-			access(props.validationState) === "invalid" ? "" : undefined,
-		"data-required": access(props.required) ? "" : undefined,
-		"data-disabled": access(props.disabled) ? "" : undefined,
-		"data-readonly": access(props.readOnly) ? "" : undefined,
+			access(mergedProps.validationState) === "invalid" ? "" : undefined,
+		"data-required": access(mergedProps.required) ? "" : undefined,
+		"data-disabled": access(mergedProps.disabled) ? "" : undefined,
+		"data-readonly": access(mergedProps.readOnly) ? "" : undefined,
 	}));
 
 	const formControlContext: FormControlContextValue = {
-		name: () => access(props.name) ?? access(props.id)!,
+		name: () => access(mergedProps.name) ?? access(mergedProps.id)!,
 		dataset,
-		validationState: () => access(props.validationState),
-		isRequired: () => access(props.required),
-		isDisabled: () => access(props.disabled),
-		isReadOnly: () => access(props.readOnly),
+		validationState: () => access(mergedProps.validationState),
+		isRequired: () => access(mergedProps.required),
+		isDisabled: () => access(mergedProps.disabled),
+		isReadOnly: () => access(mergedProps.readOnly),
 		labelId,
 		fieldId,
 		descriptionId,
 		errorMessageId,
 		getAriaLabelledBy,
 		getAriaDescribedBy,
-		generateId: createGenerateId(() => access(props.id)!),
+		generateId: createGenerateId(() => access(mergedProps.id)!),
 		registerLabel: createRegisterId(setLabelId),
 		registerField: createRegisterId(setFieldId),
 		registerDescription: createRegisterId(setDescriptionId),

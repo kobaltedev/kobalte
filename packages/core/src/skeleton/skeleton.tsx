@@ -5,8 +5,8 @@
  * Credits to the Mantine team:
  * https://github.com/mantinedev/mantine/blob/master/src/mantine-core/src/components/Skeleton/Skeleton.tsx
  */
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
-import { createUniqueId, JSX, splitProps } from "solid-js";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
+import { JSX, createUniqueId, splitProps } from "solid-js";
 import { Polymorphic } from "../polymorphic";
 
 interface SkeletonOptions {
@@ -38,7 +38,7 @@ export interface SkeletonProps
 export function Skeleton(props: SkeletonProps) {
 	const defaultId = `skeleton-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			visible: true,
 			animate: true,
@@ -47,7 +47,7 @@ export function Skeleton(props: SkeletonProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"style",
 		"ref",
 		"radius",

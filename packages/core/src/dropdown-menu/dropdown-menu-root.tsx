@@ -1,5 +1,5 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { createUniqueId, ParentProps } from "solid-js";
+import { ParentProps, createUniqueId } from "solid-js";
 
 import { MenuRoot, MenuRootOptions } from "../menu";
 
@@ -14,7 +14,7 @@ export interface DropdownMenuRootProps
 export function DropdownMenuRoot(props: DropdownMenuRootProps) {
 	const defaultId = `dropdownmenu-${createUniqueId()}`;
 
-	props = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
 
-	return <MenuRoot {...props} />;
+	return <MenuRoot {...mergedProps} />;
 }

@@ -1,4 +1,4 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 
 import { AsChildProp, Polymorphic } from "../polymorphic";
 import { useComboboxContext } from "./combobox-context";
@@ -13,14 +13,14 @@ export interface ComboboxIconProps
 export function ComboboxIcon(props: ComboboxIconProps) {
 	const context = useComboboxContext();
 
-	props = mergeDefaultProps({ children: "▼" }, props);
+	const mergedProps = mergeDefaultProps({ children: "▼" }, props);
 
 	return (
 		<Polymorphic
 			as="span"
 			aria-hidden="true"
 			{...context.dataset()}
-			{...props}
+			{...mergedProps}
 		/>
 	);
 }

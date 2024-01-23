@@ -6,20 +6,20 @@
  * https://github.com/mantinedev/mantine/blob/8546c580fdcaa9653edc6f4813103349a96cfb09/src/mantine-core/src/Transition/use-transition.ts
  */
 
-import { access, createMediaQuery, MaybeAccessor } from "@kobalte/utils";
+import { MaybeAccessor, access, createMediaQuery } from "@kobalte/utils";
 import {
 	Accessor,
+	JSX,
 	createEffect,
 	createMemo,
 	createSignal,
-	JSX,
 	mergeProps,
 	on,
 	onCleanup,
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { getTransitionStyles, TransitionPhase } from "./get-transition-styles";
+import { TransitionPhase, getTransitionStyles } from "./get-transition-styles";
 import { TransitionStyles } from "./types";
 
 export interface TransitionOptions {

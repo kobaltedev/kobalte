@@ -1,4 +1,4 @@
-import { Accessor, createContext, Setter, useContext } from "solid-js";
+import { Accessor, Setter, createContext, useContext } from "solid-js";
 
 export interface MenubarDataSet {
 	"data-expanded": string | undefined;
@@ -14,7 +14,7 @@ export interface MenubarContextValue {
 			| ((prev: string | undefined) => string | undefined)
 			| undefined,
 	) => void;
-	menus: Accessor<Set<String>>;
+	menus: Accessor<Set<string>>;
 	menuRefs: Accessor<Array<Element>>;
 	lastValue: Accessor<string | undefined>;
 	setLastValue: (

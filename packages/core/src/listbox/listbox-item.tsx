@@ -7,6 +7,7 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	composeEventHandlers,
 	createGenerateId,
@@ -15,14 +16,13 @@ import {
 	isWebKit,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
 	Accessor,
+	JSX,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	JSX,
 	splitProps,
 } from "solid-js";
 
@@ -54,9 +54,9 @@ export function ListboxItem(props: ListboxItemProps) {
 
 	const defaultId = `${listBoxContext.generateId("item")}-${createUniqueId()}`;
 
-	props = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"item",
 		"aria-label",

@@ -7,13 +7,13 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	composeEventHandlers,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import { JSX, createEffect, onCleanup, splitProps } from "solid-js";
 
 import * as Collapsible from "../collapsible";
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
@@ -39,9 +39,9 @@ export function AccordionTrigger(props: AccordionTriggerProps) {
 
 	const defaultId = itemContext.generateId("trigger");
 
-	props = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"onPointerDown",
 		"onPointerUp",
@@ -71,13 +71,13 @@ export function AccordionTrigger(props: AccordionTriggerProps) {
 		() => ref,
 	);
 
-	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<Element, KeyboardEvent> = (e) => {
 		// Prevent `Enter` and `Space` default behavior which fires a click event when using a <button>.
 		if (["Enter", " "].includes(e.key)) {
 			e.preventDefault();
 		}
 
-		callHandler(e, local.onKeyDown);
+		callHandler(e, local.onKeyDown as typeof onKeyDown);
 		callHandler(e, selectableItem.onKeyDown);
 	};
 

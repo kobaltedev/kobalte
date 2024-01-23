@@ -11,7 +11,7 @@ import { render, screen } from "@solidjs/testing-library";
 import * as AlertDialog from ".";
 
 describe("AlertDialog", () => {
-	it("should be labelled by its alert dialog title", function () {
+	it("should be labelled by its alert dialog title", () => {
 		render(() => (
 			<AlertDialog.Root open>
 				<AlertDialog.Content>
@@ -26,7 +26,7 @@ describe("AlertDialog", () => {
 		expect(panel).toHaveAttribute("aria-labelledby", title.id);
 	});
 
-	it("should be described by its alert dialog description", function () {
+	it("should be described by its alert dialog description", () => {
 		render(() => (
 			<AlertDialog.Root open>
 				<AlertDialog.Content>

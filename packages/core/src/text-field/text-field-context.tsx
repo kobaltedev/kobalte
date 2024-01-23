@@ -1,4 +1,4 @@
-import { Accessor, createContext, JSX, useContext } from "solid-js";
+import { Accessor, JSX, createContext, useContext } from "solid-js";
 
 export interface TextFieldContextValue {
 	value: Accessor<string | undefined>;

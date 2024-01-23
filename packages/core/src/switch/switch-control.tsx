@@ -1,8 +1,8 @@
 import {
-	callHandler,
 	EventKey,
-	mergeDefaultProps,
 	OverrideComponentProps,
+	callHandler,
+	mergeDefaultProps,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
@@ -20,14 +20,14 @@ export function SwitchControl(props: SwitchControlProps) {
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("control"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["onClick", "onKeyDown"]);
+	const [local, others] = splitProps(mergedProps, ["onClick", "onKeyDown"]);
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);

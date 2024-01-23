@@ -1,4 +1,4 @@
-import { access, MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
+import { MaybeAccessor, access, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup } from "solid-js";
 
 import { useFormControlContext } from "./form-control-context";
@@ -30,22 +30,25 @@ export const FORM_CONTROL_FIELD_PROP_NAMES = [
 export function createFormControlField(props: CreateFormControlFieldProps) {
 	const context = useFormControlContext();
 
-	props = mergeDefaultProps({ id: context.generateId("field") }, props);
+	const mergedProps = mergeDefaultProps(
+		{ id: context.generateId("field") },
+		props,
+	);
 
-	createEffect(() => onCleanup(context.registerField(access(props.id)!)));
+	createEffect(() => onCleanup(context.registerField(access(mergedProps.id)!)));
 
 	return {
 		fieldProps: {
-			id: () => access(props.id),
-			ariaLabel: () => access(props["aria-label"]),
+			id: () => access(mergedProps.id),
+			ariaLabel: () => access(mergedProps["aria-label"]),
 			ariaLabelledBy: () =>
 				context.getAriaLabelledBy(
-					access(props.id),
-					access(props["aria-label"]),
-					access(props["aria-labelledby"]),
+					access(mergedProps.id),
+					access(mergedProps["aria-label"]),
+					access(mergedProps["aria-labelledby"]),
 				),
 			ariaDescribedBy: () =>
-				context.getAriaDescribedBy(access(props["aria-describedby"])),
+				context.getAriaDescribedBy(access(mergedProps["aria-describedby"])),
 		},
 	};
 }

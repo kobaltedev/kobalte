@@ -5,11 +5,11 @@ import "./root.css";
 import {
 	ColorModeProvider,
 	ColorModeScript,
-	cookieStorageManagerSSR,
 	Toast,
+	cookieStorageManagerSSR,
 } from "@kobalte/core";
 import { Suspense, useContext } from "solid-js";
-import { isServer, Portal } from "solid-js/web";
+import { Portal, isServer } from "solid-js/web";
 import { MDXProvider } from "solid-mdx";
 import {
 	Body,
@@ -30,7 +30,7 @@ import { mdxComponents } from "./mdx-components";
 
 export const mods = /*#__PURE__*/ import.meta.glob<
 	true,
-	any,
+	string,
 	{
 		getHeadings: () => {
 			depth: number;

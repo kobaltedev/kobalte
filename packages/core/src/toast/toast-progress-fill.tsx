@@ -1,8 +1,8 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import {
+	JSX,
 	createEffect,
 	createSignal,
-	JSX,
 	onCleanup,
 	splitProps,
 } from "solid-js";

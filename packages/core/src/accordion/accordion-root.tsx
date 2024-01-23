@@ -7,11 +7,11 @@
  */
 
 import {
+	OverrideComponentProps,
 	composeEventHandlers,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { createSignal, createUniqueId, splitProps } from "solid-js";
 
@@ -55,7 +55,7 @@ export function AccordionRoot(props: AccordionRootProps) {
 
 	const defaultId = `accordion-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			multiple: false,
@@ -65,7 +65,7 @@ export function AccordionRoot(props: AccordionRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"value",
 		"defaultValue",

@@ -7,10 +7,10 @@
  */
 
 import {
-	mergeDefaultProps,
-	mergeRefs,
 	Orientation,
 	OverrideComponentProps,
+	mergeDefaultProps,
+	mergeRefs,
 } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
@@ -31,14 +31,14 @@ export interface SeparatorRootProps
 export function SeparatorRoot(props: SeparatorRootProps) {
 	let ref: HTMLElement | undefined;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			orientation: "horizontal",
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["ref", "orientation"]);
+	const [local, others] = splitProps(mergedProps, ["ref", "orientation"]);
 
 	const tagName = createTagName(
 		() => ref,

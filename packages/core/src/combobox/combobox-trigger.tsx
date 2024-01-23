@@ -8,10 +8,10 @@
  */
 
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
@@ -26,14 +26,14 @@ export function ComboboxTrigger(props: ComboboxTriggerProps) {
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("trigger"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"disabled",
 		"onPointerDown",

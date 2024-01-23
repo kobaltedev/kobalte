@@ -1,10 +1,10 @@
 import {
+	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
-import { createEffect, JSX, onCleanup, splitProps } from "solid-js";
+import { JSX, createEffect, onCleanup, splitProps } from "solid-js";
 
 import * as Listbox from "../listbox";
 import { useSelectContext } from "./select-context";
@@ -29,14 +29,14 @@ export function SelectListbox<Option = any, OptGroup = never>(
 ) {
 	const context = useSelectContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("listbox"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["ref", "id", "onKeyDown"]);
+	const [local, others] = splitProps(mergedProps, ["ref", "id", "onKeyDown"]);
 
 	createEffect(() => onCleanup(context.registerListboxId(local.id!)));
 

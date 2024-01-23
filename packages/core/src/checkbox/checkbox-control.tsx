@@ -1,8 +1,8 @@
 import {
-	callHandler,
 	EventKey,
-	mergeDefaultProps,
 	OverrideComponentProps,
+	callHandler,
+	mergeDefaultProps,
 } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
@@ -20,24 +20,24 @@ export function CheckboxControl(props: CheckboxControlProps) {
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("control"),
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, ["onClick", "onKeyDown"]);
+	const [local, others] = splitProps(mergedProps, ["onClick", "onKeyDown"]);
 
-	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+		callHandler(e, local.onClick as typeof onClick);
 
 		context.toggle();
 		context.inputRef()?.focus();
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
+		callHandler(e, local.onKeyDown as typeof onKeyDown);
 
 		if (e.key === EventKey.Space) {
 			context.toggle();

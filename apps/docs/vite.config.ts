@@ -1,5 +1,5 @@
 import { nodeTypes } from "@mdx-js/mdx";
-import { parse } from "acorn";
+import { Options as AcornOptions, parse } from "acorn";
 // @ts-ignore
 import Slugger from "github-slugger";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -7,15 +7,15 @@ import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkShikiTwoslash from "remark-shiki-twoslash";
-import solid from "solid-start/vite";
 // @ts-ignore
 import netlify from "solid-start-netlify";
 // @ts-ignore
 import node from "solid-start-node";
+import solid from "solid-start/vite";
 import { visit } from "unist-util-visit";
 import { defineConfig } from "vite";
 
-function jsToTreeNode(jsString: any, acornOpts: any) {
+function jsToTreeNode(jsString: string, acornOpts?: AcornOptions) {
 	return {
 		type: "mdxjsEsm",
 		value: "",
@@ -36,13 +36,16 @@ function jsToTreeNode(jsString: any, acornOpts: any) {
 	};
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: wip
 async function mdx(config: any) {
 	const cache = new Map();
 	const headingsCache = new Map();
 
 	function rehypeCollectHeadings() {
 		const slugger = new Slugger();
-		return function (tree: any, file: any) {
+		// biome-ignore lint/suspicious/noExplicitAny: wip
+		return (tree: any, file: any) => {
+			// biome-ignore lint/suspicious/noExplicitAny: wip
 			const headings: any[] = [];
 			visit(tree, (node) => {
 				if (node.type !== "element") {
@@ -152,6 +155,7 @@ async function mdx(config: any) {
 	return [
 		{
 			...plugin,
+			// biome-ignore lint/suspicious/noExplicitAny: wip
 			async transform(code: any, id: any) {
 				if (id.endsWith(".mdx") || id.endsWith(".md")) {
 					if (cache.has(code)) {
@@ -170,6 +174,7 @@ async function mdx(config: any) {
 		{
 			...plugin,
 			name: "mdx-meta",
+			// biome-ignore lint/suspicious/noExplicitAny: wip
 			async transform(code: any, id: any) {
 				if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
 					id = id.replace(/\?meta$/, "");

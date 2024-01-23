@@ -9,6 +9,7 @@
 import { CalendarDate, toCalendar } from "@internationalized/date";
 import { NumberParser } from "@internationalized/number";
 import {
+	OverrideComponentProps,
 	callHandler,
 	getActiveElement,
 	getScrollParent,
@@ -16,19 +17,18 @@ import {
 	isIOS,
 	isMac,
 	mergeRefs,
-	OverrideComponentProps,
 	scrollIntoViewport,
 } from "@kobalte/utils";
 import {
-	children,
 	ComponentProps,
+	JSX,
+	Show,
+	children,
 	createEffect,
 	createMemo,
 	createSignal,
-	JSX,
 	on,
 	onCleanup,
-	Show,
 	splitProps,
 } from "solid-js";
 

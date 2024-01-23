@@ -7,10 +7,10 @@
  */
 
 import {
-	mergeDefaultProps,
 	OverrideComponentProps,
 	contains,
 	createGenerateId,
+	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
 import {
@@ -59,9 +59,9 @@ export function MenubarRoot(props: MenubarRootProps) {
 	let ref: HTMLDivElement | undefined;
 	const defaultId = `menubar-${createUniqueId()}`;
 
-	props = mergeDefaultProps({ id: defaultId, loop: true }, props);
+	const mergedProps = mergeDefaultProps({ id: defaultId, loop: true }, props);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"ref",
 		"value",
 		"defaultValue",

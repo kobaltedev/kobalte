@@ -1,4 +1,4 @@
-import { callHandler, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, callHandler } from "@kobalte/utils";
 import { JSX, splitProps } from "solid-js";
 
 import { FormControlLabel } from "../form-control";

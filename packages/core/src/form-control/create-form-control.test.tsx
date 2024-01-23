@@ -11,8 +11,8 @@ import { render, screen } from "@solidjs/testing-library";
 import { ParentProps } from "solid-js";
 
 import {
-	createFormControl,
 	CreateFormControlProps,
+	createFormControl,
 } from "./create-form-control";
 import { FormControlContext } from "./form-control-context";
 import { FormControlDescription } from "./form-control-description";

@@ -1,4 +1,4 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
 import { createToggleState } from "../primitives";
@@ -26,14 +26,14 @@ export interface MenuCheckboxItemProps
  * An item that can be controlled and rendered like a checkbox.
  */
 export function MenuCheckboxItem(props: MenuCheckboxItemProps) {
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			closeOnSelect: false,
 		},
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"checked",
 		"defaultChecked",
 		"onChange",

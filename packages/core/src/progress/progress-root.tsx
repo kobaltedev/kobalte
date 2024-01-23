@@ -7,10 +7,10 @@
  */
 
 import {
+	OverrideComponentProps,
 	clamp,
 	createGenerateId,
 	mergeDefaultProps,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import {
 	Accessor,
@@ -73,7 +73,7 @@ export interface ProgressRootProps
 export function ProgressRoot(props: ProgressRootProps) {
 	const defaultId = `progress-${createUniqueId()}`;
 
-	props = mergeDefaultProps(
+	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			value: 0,
@@ -83,7 +83,7 @@ export function ProgressRoot(props: ProgressRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(mergedProps, [
 		"value",
 		"minValue",
 		"maxValue",
