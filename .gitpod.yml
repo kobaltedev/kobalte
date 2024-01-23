@@ -1,4 +1,4 @@
 tasks:
   - init: pnpm install && pnpm run build
 vscode:
-  extensions: ["esbenp.prettier-vscode"]
+  extensions: ["esbenp.prettier-vscode", "biomejs.biome"]
