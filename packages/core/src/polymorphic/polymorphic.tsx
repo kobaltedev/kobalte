@@ -1,6 +1,4 @@
 /* @refresh reload */
-/* eslint-disable solid/reactivity */
-/* eslint-disable solid/components-return-once */
 
 /*!
  * Portions of this file are based on code from radix-ui-primitives.

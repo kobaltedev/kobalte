@@ -75,7 +75,6 @@ export function SliderInput(props: SliderInputProps) {
 	});
 
 	return (
-		// eslint-disable-next-line jsx-a11y/role-supports-aria-props
 		<input
 			ref={mergeRefs((el) => (ref = el), local.ref)}
 			type="range"

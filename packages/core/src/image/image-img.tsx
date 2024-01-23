@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
-
 /*!
  * Portions of this file are based on code from radix-ui-primitives.
  * MIT Licensed, Copyright (c) 2022 WorkOS.

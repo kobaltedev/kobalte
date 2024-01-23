@@ -20,7 +20,6 @@ export function createControllableSignal<T>(
 	props: CreateControllableSignalProps<T>,
 ) {
 	// Internal uncontrolled value
-	// eslint-disable-next-line solid/reactivity
 	const [_value, _setValue] = createSignal(props.defaultValue?.());
 
 	const isControlled = createMemo(() => props.value?.() !== undefined);

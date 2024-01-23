@@ -49,7 +49,6 @@ export function ColorModeScript(props: ColorModeScriptProps) {
 		return `!${fn}`.trim();
 	});
 
-	// eslint-disable-next-line solid/no-innerhtml
 	return (
 		<script
 			id="kb-color-mode-script"

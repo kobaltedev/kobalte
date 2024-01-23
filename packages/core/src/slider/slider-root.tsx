@@ -1,5 +1,3 @@
-/* eslint-disable solid/reactivity */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*!
  * Portions of this file are based on code from radix-ui-primitives.
  * MIT Licensed, Copyright (c) 2022 WorkOS.

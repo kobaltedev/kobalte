@@ -174,7 +174,6 @@ async function mdx(config: any) {
 				if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
 					const replacedId = id.replace(/\?meta$/, "");
 
-					// eslint-disable-next-line no-inner-declarations
 					function getCode() {
 						return `
               export function getHeadings() { return ${JSON.stringify(

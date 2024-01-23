@@ -352,7 +352,6 @@ export function CalendarGridBodyCellTrigger(
 	});
 
 	return (
-		// eslint-disable-next-line jsx-a11y/role-supports-aria-props
 		<Polymorphic
 			as="div"
 			ref={mergeRefs((el) => (ref = el), local.ref)}

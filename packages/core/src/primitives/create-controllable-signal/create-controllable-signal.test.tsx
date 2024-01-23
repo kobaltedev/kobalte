@@ -155,7 +155,6 @@ describe("createControllableSignal", () => {
 			};
 
 			const TestComponentWrapper = (props: any) => {
-				// eslint-disable-next-line solid/reactivity
 				const [state, setState] = createSignal(props.value);
 				return (
 					<>
