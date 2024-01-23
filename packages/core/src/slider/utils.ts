@@ -20,7 +20,11 @@ export function getClosestValueIndex(values: number[], nextValue: number) {
 	if (values.length === 1) return 0;
 	const distances = values.map((value) => Math.abs(value - nextValue));
 	const closestDistance = Math.min(...distances);
-	return distances.indexOf(closestDistance);
+	const closestIndex = distances.indexOf(closestDistance);
+
+	return nextValue < values[closestIndex]
+		? closestIndex
+		: distances.lastIndexOf(closestDistance);
 }
 
 /**
