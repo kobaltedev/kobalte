@@ -20,7 +20,11 @@ export function getClosestValueIndex(values: number[], nextValue: number) {
 	if (values.length === 1) return 0;
 	const distances = values.map((value) => Math.abs(value - nextValue));
 	const closestDistance = Math.min(...distances);
-	return distances.indexOf(closestDistance);
+	const closestIndex = distances.indexOf(closestDistance);
+
+	return nextValue < values[closestIndex]
+		? closestIndex
+		: distances.lastIndexOf(closestDistance);
 }
 
 /**
@@ -77,4 +81,9 @@ export function linearScale(
 		const ratio = (output[1] - output[0]) / (input[1] - input[0]);
 		return output[0] + ratio * (value - input[0]);
 	};
+}
+
+export function stopEventDefaultAndPropagation(event: Event) {
+	event.preventDefault();
+	event.stopPropagation();
 }

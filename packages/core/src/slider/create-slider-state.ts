@@ -134,13 +134,15 @@ export function createSliderState(props: StateOpts): SliderState {
 	};
 
 	const getThumbMinValue = (index: number) => {
-		return index === 0 ? mergedProps.minValue!() : values()[index - 1];
+		return index === 0
+			? props.minValue!()
+			: values()[index - 1] + props.minStepsBetweenThumbs!() * props.step!();
 	};
 
 	const getThumbMaxValue = (index: number) => {
 		return index === values().length - 1
-			? mergedProps.maxValue!()
-			: values()[index + 1];
+			? props.maxValue!()
+			: values()[index + 1] - props.minStepsBetweenThumbs!() * props.step!();
 	};
 
 	const isThumbEditable = (index: number) => {
@@ -215,9 +217,8 @@ export function createSliderState(props: StateOpts): SliderState {
 		);
 	};
 
-	const incrementThumb = (index: number, stepSize = 1) => {
-		const s = Math.max(stepSize, mergedProps.step!());
-		const nextValue = values()[index] + s;
+	const snapThumbValue = (index: number, value: number) => {
+		const nextValue = values()[index] + value;
 		const nextValues = getNextSortedValues(values(), nextValue, index);
 		if (
 			hasMinStepsBetweenValues(
@@ -237,26 +238,12 @@ export function createSliderState(props: StateOpts): SliderState {
 		}
 	};
 
+	const incrementThumb = (index: number, stepSize = 1) => {
+		snapThumbValue(index, Math.max(stepSize, props.step!()));
+	};
+
 	const decrementThumb = (index: number, stepSize = 1) => {
-		const s = Math.max(stepSize, mergedProps.step!());
-		const nextValue = values()[index] - s;
-		const nextValues = getNextSortedValues(values(), nextValue, index);
-		if (
-			hasMinStepsBetweenValues(
-				nextValues,
-				mergedProps.minStepsBetweenThumbs!() * mergedProps.step!(),
-			)
-		) {
-			updateValue(
-				index,
-				snapValueToStep(
-					nextValue,
-					mergedProps.minValue!(),
-					mergedProps.maxValue!(),
-					mergedProps.step!(),
-				),
-			);
-		}
+		snapThumbValue(index, -Math.max(stepSize, props.step!()));
 	};
 
 	return {

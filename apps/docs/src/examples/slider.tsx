@@ -31,7 +31,7 @@ export function MultipleThumbsExample() {
 				<Slider.Thumb class={style.SliderThumb}>
 					<Slider.Input />
 				</Slider.Thumb>
-				<Slider.Thumb class={`${style.SliderThumb} ${style.SliderThumb}`}>
+				<Slider.Thumb class={style.SliderThumb}>
 					<Slider.Input />
 				</Slider.Thumb>
 			</Slider.Track>
@@ -98,7 +98,7 @@ export function MinStepsBetweenExample() {
 				<Slider.Thumb class={style.SliderThumb}>
 					<Slider.Input />
 				</Slider.Thumb>
-				<Slider.Thumb class={`${style.SliderThumb} ${style.SliderThumb}`}>
+				<Slider.Thumb class={style.SliderThumb}>
 					<Slider.Input />
 				</Slider.Thumb>
 			</Slider.Track>
@@ -141,7 +141,7 @@ export function CustomValueLabelExample() {
 				<Slider.Thumb class={style.SliderThumb}>
 					<Slider.Input />
 				</Slider.Thumb>
-				<Slider.Thumb class={`${style.SliderThumb} ${style.SliderThumb}`}>
+				<Slider.Thumb class={style.SliderThumb}>
 					<Slider.Input />
 				</Slider.Thumb>
 			</Slider.Track>
