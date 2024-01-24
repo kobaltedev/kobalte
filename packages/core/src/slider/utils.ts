@@ -82,3 +82,8 @@ export function linearScale(
 		return output[0] + ratio * (value - input[0]);
 	};
 }
+
+export function stopEventDefaultAndPropagation(event: Event) {
+	event.preventDefault();
+	event.stopPropagation();
+}
