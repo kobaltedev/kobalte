@@ -39,9 +39,9 @@ import {
 	SliderDataSet,
 } from "./slider-context";
 import {
-	stopEventDefaultAndPropagation,
 	getNextSortedValues,
 	hasMinStepsBetweenValues,
+	stopEventDefaultAndPropagation,
 } from "./utils";
 
 export interface GetValueLabelParams {
