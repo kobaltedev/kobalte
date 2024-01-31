@@ -4,7 +4,7 @@ import "./root.css";
 
 import { ColorModeProvider, ColorModeScript, cookieStorageManagerSSR, Toast } from "@kobalte/core";
 import { MetaProvider, Title } from "@solidjs/meta";
-import { Router } from "@solidjs/router";
+import { cache, createAsync, Router } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start";
 import { Suspense } from "solid-js";
 import { isServer, Portal } from "solid-js/web";
@@ -12,6 +12,9 @@ import { MDXProvider } from "solid-mdx";
 
 import toastStyles from "./examples/toast.module.css";
 import { mdxComponents } from "./mdx-components";
+import {
+  getCookie,
+} from "vinxi/server";
 
 export const mods = /*#__PURE__*/ import.meta.glob<
   true,
@@ -30,19 +33,17 @@ export const mods = /*#__PURE__*/ import.meta.glob<
   },
 });
 
-// Works on server but breaks client.
-//
-//async function getServerCookies() {
-//  if (!isServer) throw "getServerCookies should only be called on the server";
-//
-//  const getRequestHeaders = (await import("@solidjs/start/server")).getRequestHeaders;
-//
-//  return getRequestHeaders(getRequestEvent()).cookie ?? "";
-//}
+function getServerCookies() {
+  "use server";
+
+  const colorMode = getCookie("kb-color-mode");
+
+  return colorMode ? `kb-color-mode=${colorMode}` : "";
+}
 
 export default function App() {
   const storageManager = cookieStorageManagerSSR(
-    isServer ? /*await getServerCookies()*/ "" : document.cookie,
+    isServer ? getServerCookies() : document.cookie,
   );
 
   return (

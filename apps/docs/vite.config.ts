@@ -11,7 +11,6 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkShikiTwoslash from "remark-shiki-twoslash";
 import { visit } from "unist-util-visit";
-import { Plugin } from "vite";
 
 const { default: vinxiMdx } = pkg;
 
@@ -36,265 +35,88 @@ function jsToTreeNode(jsString: any, acornOpts: any) {
   };
 }
 
-interface MDXConfig {
-  rehypePlugins: any[];
-  remarkPlugins: any[];
-}
-
-//function mdx(config: MDXConfig): Plugin[] {
-//  const cache = new Map();
-//  const headingsCache = new Map();
-//
-//  function rehypeCollectHeadings() {
-//    const slugger = new Slugger();
-//    return function (tree: any, file: any) {
-//      const headings: any[] = [];
-//      visit(tree, node => {
-//        if (node.type !== "element") {
-//          return;
-//        }
-//
-//        const { tagName } = node;
-//
-//        if (tagName[0] !== "h") {
-//          return;
-//        }
-//
-//        const [_, level] = tagName.match(/h([0-6])/) ?? [];
-//
-//        if (!level) {
-//          return;
-//        }
-//
-//        const depth = Number.parseInt(level);
-//
-//        let text = "";
-//
-//        visit(node, (child, __, parent) => {
-//          if (child.type === "element" || parent == null) {
-//            return;
-//          }
-//
-//          if (child.type === "raw" && child.value.match(/^\n?<.*>\n?$/)) {
-//            return;
-//          }
-//
-//          if (new Set(["text", "raw", "mdxTextExpression"]).has(child.type)) {
-//            text += child.value;
-//          }
-//        });
-//
-//        node.properties = node.properties || {};
-//
-//        if (typeof node.properties.id !== "string") {
-//          let slug = slugger.slug(text);
-//
-//          if (slug.endsWith("-")) {
-//            slug = slug.slice(0, -1);
-//          }
-//
-//          node.properties.id = slug;
-//        }
-//
-//        headings.push({ depth, slug: node.properties.id, text });
-//      });
-//
-//      headingsCache.set(file.path, headings);
-//
-//      tree.children.unshift(
-//        // @ts-ignoret
-//        jsToTreeNode(`export function getHeadings() { return ${JSON.stringify(headings)} }`),
-//      );
-//    };
-//  }
-//
-//  const plugin = {
-//    ...vinxiMdx.withImports({})({
-//      jsx: true,
-//      jsxImportSource: "solid-js",
-//      providerImportSource: "solid-mdx",
-//      rehypePlugins: [
-//        ...config.rehypePlugins,
-//        rehypeSlug,
-//        rehypeCollectHeadings,
-//        [rehypeRaw, { passThrough: nodeTypes }],
-//      ],
-//      remarkPlugins: [
-//        ...config.remarkPlugins,
-//        [
-//          // @ts-ignore
-//          remarkShikiTwoslash.default,
-//          {
-//            disableImplicitReactImport: true,
-//            includeJSDocInHover: true,
-//            themes: ["github-light", "github-dark"],
-//            defaultOptions: {
-//              lib: ["dom", "es2015"],
-//            },
-//            defaultCompilerOptions: {
-//              allowSyntheticDefaultImports: true,
-//              esModuleInterop: true,
-//              target: "ESNext",
-//              module: "ESNext",
-//              lib: ["dom", "es2015"],
-//              jsxImportSource: "solid-js",
-//              jsx: "preserve",
-//              types: ["vite/client"],
-//              paths: {
-//                "~/*": ["./src/*"],
-//              },
-//            },
-//          },
-//        ],
-//      ],
-//    }),
-//    enforce: "pre",
-//  };
-//  return [
-//    {
-//      ...plugin,
-//      async transform(code: any, id: any) {
-//        if (id.endsWith(".mdx") || id.endsWith(".md")) {
-//          if (cache.has(code)) {
-//            return cache.get(code);
-//          }
-//
-//          // @ts-ignore
-//          const result = await plugin.transform?.call(this, code, id);
-//          cache.set(code, result);
-//
-//          return result;
-//        }
-//      },
-//    },
-//
-//    {
-//      ...plugin,
-//      name: "mdx-meta",
-//      async transform(code: any, id: any) {
-//        if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
-//          id = id.replace(/\?meta$/, "");
-//
-//          // eslint-disable-next-line no-inner-declarations
-//          function getCode() {
-//            return `
-//              export function getHeadings() { return ${JSON.stringify(
-//                headingsCache.get(id),
-//                null,
-//                2,
-//              )}
-//              }
-//              `;
-//          }
-//
-//          if (cache.has(code)) {
-//            return { code: getCode() };
-//          }
-//
-//          // @ts-ignore
-//          const result = await plugin.transform?.call(this, code, id);
-//
-//          cache.set(code, result);
-//
-//          return {
-//            code: getCode(),
-//          };
-//        }
-//      },
-//    },
-//  ];
-//}
-
-const cache = new Map();
 const headingsCache = new Map();
 
-function rehypeCollectHeadings(filename: string) {
-  return () => {
-    const slugger = new Slugger();
-    return function (tree: any, file: any) {
-      const headings: any[] = [];
-      visit(tree, node => {
-        if (node.type !== "element") {
+function rehypeCollectHeadings() {
+  const slugger = new Slugger();
+  return function (tree: any, file: any) {
+    const headings: any[] = [];
+    visit(tree, node => {
+      if (node.type !== "element") {
+        return;
+      }
+
+      const { tagName } = node;
+
+      if (tagName[0] !== "h") {
+        return;
+      }
+
+      const [_, level] = tagName.match(/h([0-6])/) ?? [];
+
+      if (!level) {
+        return;
+      }
+
+      const depth = Number.parseInt(level);
+
+      let text = "";
+
+      visit(node, (child, __, parent) => {
+        if (child.type === "element" || parent == null) {
           return;
         }
 
-        const { tagName } = node;
-
-        if (tagName[0] !== "h") {
+        if (child.type === "raw" && child.value.match(/^\n?<.*>\n?$/)) {
           return;
         }
 
-        const [_, level] = tagName.match(/h([0-6])/) ?? [];
-
-        if (!level) {
-          return;
+        if (new Set(["text", "raw", "mdxTextExpression"]).has(child.type)) {
+          text += child.value;
         }
-
-        const depth = Number.parseInt(level);
-
-        let text = "";
-
-        visit(node, (child, __, parent) => {
-          if (child.type === "element" || parent == null) {
-            return;
-          }
-
-          if (child.type === "raw" && child.value.match(/^\n?<.*>\n?$/)) {
-            return;
-          }
-
-          if (new Set(["text", "raw", "mdxTextExpression"]).has(child.type)) {
-            text += child.value;
-          }
-        });
-
-        node.properties = node.properties || {};
-
-        if (typeof node.properties.id !== "string") {
-          let slug = slugger.slug(text);
-
-          if (slug.endsWith("-")) {
-            slug = slug.slice(0, -1);
-          }
-
-          node.properties.id = slug;
-        }
-
-        headings.push({ depth, slug: node.properties.id, text });
       });
 
-      headingsCache.set(filename, headings);
+      node.properties = node.properties || {};
 
-      tree.children.unshift(
-        // @ts-ignoret
-        jsToTreeNode(`export function getHeadings() { return ${JSON.stringify(headings)} }`),
-      );
-    };
+      if (typeof node.properties.id !== "string") {
+        let slug = slugger.slug(text);
+
+        if (slug.endsWith("-")) {
+          slug = slug.slice(0, -1);
+        }
+
+        node.properties.id = slug;
+      }
+
+      headings.push({ depth, slug: node.properties.id, text });
+    });
+
+    headingsCache.set(file.path, headings);
+
+    tree.children.unshift(
+      // @ts-ignore
+      jsToTreeNode(`export function getHeadings() { return ${JSON.stringify(headings)} }`),
+    );
   };
 }
 
-///
-
 export default defineConfig({
-  // @ts-ignore: type should be optional, bugged in @solidjs/start@0.4.4
   start: {
     server: {
       preset: process.env.GITHUB_ACTIONS ? "node" : "netlify",
+      experimental: {
+        asyncContext: true,
+      }
     },
+
     extensions: ["mdx", "md"],
-    // @ts-ignore: type should be optional, bugged in @solidjs/start@0.4.4
+    // @ts-ignore: type should be optional, bugged in @solidjs/start@0.4.11
     solid: {
       extensions: ["mdx", "md"],
     },
   },
-
   plugins: [
-    // @ts-ignore
-    //    mdx({
-    //      rehypePlugins: [rehypePrettyCode],
-    //      remarkPlugins: [remarkGfm],
-    //    }),
-    vinxiMdx.withImports({})(filename => ({
+    vinxiMdx.withImports({})({
       jsx: true,
       jsxImportSource: "solid-js",
       providerImportSource: "solid-mdx",
@@ -302,7 +124,7 @@ export default defineConfig({
         [rehypeRaw, { passThrough: nodeTypes }],
         rehypePrettyCode,
         rehypeSlug,
-        rehypeCollectHeadings(filename),
+        rehypeCollectHeadings,
       ],
       remarkPlugins: [
         remarkGfm,
@@ -332,8 +154,7 @@ export default defineConfig({
           },
         ],
       ],
-    })),
-    { enforce: "pre" },
+    }),
     {
       name: "mdx-meta",
       async transform(code: any, id: any) {
@@ -341,9 +162,6 @@ export default defineConfig({
 
           id = id.replace(/\?meta$/, "");
 
-          console.log("VITE LOOKUP " + id);
-
-          // eslint-disable-next-line no-inner-declarations
           function getCode() {
             return `
               export function getHeadings() { return ${JSON.stringify(
@@ -355,15 +173,6 @@ export default defineConfig({
               `;
           }
 
-//          if (cache.has(code)) {
-//            return { code: getCode() };
-//          }
-//
-//          // @ts-ignore
-//          const result = await plugin.transform?.call(this, code, id);
-//
-//          cache.set(code, result);
-
           return {
             code: getCode(),
           };
@@ -372,6 +181,6 @@ export default defineConfig({
     },
   ],
   ssr: {
-    noExternal: ["@kobalte/core", "@tanstack/solid-virtual"],
+    noExternal: ["@tanstack/solid-virtual"],
   },
 });

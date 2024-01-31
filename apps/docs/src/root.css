@@ -228,7 +228,7 @@
 }
 
 @media (min-width: 768px) {
-  .DocSearch-Button {
+  .DocSearch-Button.DocSearch-Button {
     justify-content: flex-start;
     border: 1px solid transparent;
     border-radius: 8px;

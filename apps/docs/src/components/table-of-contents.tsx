@@ -1,8 +1,6 @@
 import { cache, createAsync, useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
-import { Accessor, createEffect, createSignal, For, onCleanup, Suspense, onMount } from "solid-js";
-import { isServer } from "solid-js/web";
-
+import { Accessor, createEffect, createSignal, For, onCleanup, Suspense } from "solid-js";
 import { mods } from "../app";
 
 interface TocItem {
@@ -74,8 +72,6 @@ function useCurrentSection(tableOfContents: Accessor<TocItem[] | undefined>) {
 
 const getTOC = cache(async (pathname: string) => {
   "use server";
-  console.log("TOC " + pathname);
-  console.log("TOC " + JSON.stringify(mods));
 
   const mod = mods[`./routes${pathname}.mdx`] ?? mods[`./routes${pathname}.md`];
   return !mod ? [] : mod.getHeadings().filter(h => h.depth > 1 && h.depth <= 3);
@@ -84,27 +80,7 @@ const getTOC = cache(async (pathname: string) => {
 export function TableOfContents() {
   const path = useLocation();
 
-  const toc = createAsync(() => getTOC(path.pathname))// createSignal<Array<{depth: number, text: string, slug: string}>>([]);
-
-  console.log("LOADING TOC");
-
-//  onMount(() => {
-//    if (!isServer) {
-//      const asyncTOC = createAsync(() => getTOC(path.pathname));
-//
-//      setTOC(asyncTOC() ?? []);
-//    }
-//  });
-
-  //  const toc = createServerData$(
-  //    async pathname => {
-  //      const mod = mods[`./routes${pathname}.mdx`] ?? mods[`./routes${pathname}.md`];
-  //      return !mod ? [] : mod.getHeadings().filter(h => h.depth > 1 && h.depth <= 3);
-  //    },
-  //    {
-  //      key: () => path.pathname,
-  //    },
-  //  );
+  const toc = createAsync(() => getTOC(path.pathname))
 
   const currentSection = useCurrentSection(toc);
 
