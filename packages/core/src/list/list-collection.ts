@@ -9,82 +9,82 @@
 import { Collection, CollectionNode } from "../primitives";
 
 export class ListCollection implements Collection<CollectionNode> {
-  private keyMap: Map<string, CollectionNode> = new Map();
-  private iterable: Iterable<CollectionNode>;
-  private firstKey?: string;
-  private lastKey?: string;
+	private keyMap: Map<string, CollectionNode> = new Map();
+	private iterable: Iterable<CollectionNode>;
+	private firstKey?: string;
+	private lastKey?: string;
 
-  constructor(nodes: Iterable<CollectionNode>) {
-    this.iterable = nodes;
+	constructor(nodes: Iterable<CollectionNode>) {
+		this.iterable = nodes;
 
-    for (const node of nodes) {
-      this.keyMap.set(node.key, node);
-    }
+		for (const node of nodes) {
+			this.keyMap.set(node.key, node);
+		}
 
-    if (this.keyMap.size === 0) {
-      return;
-    }
+		if (this.keyMap.size === 0) {
+			return;
+		}
 
-    let last!: CollectionNode;
-    let index = 0;
+		let last!: CollectionNode;
+		let index = 0;
 
-    for (const [key, node] of this.keyMap) {
-      if (last) {
-        last.nextKey = key;
-        node.prevKey = last.key;
-      } else {
-        this.firstKey = key;
-        node.prevKey = undefined;
-      }
+		for (const [key, node] of this.keyMap) {
+			if (last) {
+				last.nextKey = key;
+				node.prevKey = last.key;
+			} else {
+				this.firstKey = key;
+				node.prevKey = undefined;
+			}
 
-      if (node.type === "item") {
-        node.index = index++;
-      }
+			if (node.type === "item") {
+				node.index = index++;
+			}
 
-      last = node;
+			last = node;
 
-      // Set nextKey as undefined since this might be the last node
-      // If it isn't the last node, last.nextKey will properly set at start of new loop
-      last.nextKey = undefined;
-    }
+			// Set nextKey as undefined since this might be the last node
+			// If it isn't the last node, last.nextKey will properly set at start of new loop
+			last.nextKey = undefined;
+		}
 
-    this.lastKey = last.key;
-  }
+		this.lastKey = last.key;
+	}
 
-  *[Symbol.iterator]() {
-    yield* this.iterable;
-  }
+	*[Symbol.iterator]() {
+		yield* this.iterable;
+	}
 
-  getSize() {
-    return this.keyMap.size;
-  }
+	getSize() {
+		return this.keyMap.size;
+	}
 
-  getKeys() {
-    return this.keyMap.keys();
-  }
+	getKeys() {
+		return this.keyMap.keys();
+	}
 
-  getKeyBefore(key: string) {
-    return this.keyMap.get(key)?.prevKey;
-  }
+	getKeyBefore(key: string) {
+		return this.keyMap.get(key)?.prevKey;
+	}
 
-  getKeyAfter(key: string) {
-    return this.keyMap.get(key)?.nextKey;
-  }
+	getKeyAfter(key: string) {
+		return this.keyMap.get(key)?.nextKey;
+	}
 
-  getFirstKey() {
-    return this.firstKey;
-  }
+	getFirstKey() {
+		return this.firstKey;
+	}
 
-  getLastKey() {
-    return this.lastKey;
-  }
+	getLastKey() {
+		return this.lastKey;
+	}
 
-  getItem(key: string) {
-    return this.keyMap.get(key);
-  }
+	getItem(key: string) {
+		return this.keyMap.get(key);
+	}
 
-  at(idx: number) {
-    const keys = [...this.getKeys()];
-    return this.getItem(keys[idx]);
-  }
+	at(idx: number) {
+		const keys = [...this.getKeys()];
+		return this.getItem(keys[idx]);
+	}
 }

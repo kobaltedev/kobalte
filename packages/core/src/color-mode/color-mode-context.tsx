@@ -17,13 +17,15 @@ export const ColorModeContext = createContext<ColorModeContextType>();
  * Returns the color mode and function to toggle it.
  */
 export function useColorMode() {
-  const context = useContext(ColorModeContext);
+	const context = useContext(ColorModeContext);
 
-  if (context === undefined) {
-    throw new Error("[kobalte]: `useColorMode` must be used within a `ColorModeProvider`");
-  }
+	if (context === undefined) {
+		throw new Error(
+			"[kobalte]: `useColorMode` must be used within a `ColorModeProvider`",
+		);
+	}
 
-  return context;
+	return context;
 }
 
 /**
@@ -39,8 +41,11 @@ export function useColorMode() {
  * const Icon = useColorModeValue(MoonIcon, SunIcon)
  * ```
  */
-export function useColorModeValue<TLight = unknown, TDark = unknown>(light: TLight, dark: TDark) {
-  const { colorMode } = useColorMode();
+export function useColorModeValue<TLight = unknown, TDark = unknown>(
+	light: TLight,
+	dark: TDark,
+) {
+	const { colorMode } = useColorMode();
 
-  return createMemo(() => (colorMode() === "dark" ? dark : light));
+	return createMemo(() => (colorMode() === "dark" ? dark : light));
 }

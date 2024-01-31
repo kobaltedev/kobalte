@@ -1,12 +1,12 @@
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
 import {
-  BasicExample,
-  DefaultPageExample,
-  ControlledExample,
-  ButtonsExample,
-  FirstLastExample,
-  SiblingsExample,
-  FixedItemsExample,
+	BasicExample,
+	DefaultPageExample,
+	ControlledExample,
+	ButtonsExample,
+	FirstLastExample,
+	SiblingsExample,
+	FixedItemsExample,
 } from "../../../../examples/pagination";
 
 # Pagination
@@ -48,7 +48,7 @@ The pagination consists of:
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -158,19 +158,19 @@ The pagination consists of:
 An initial, uncontrolled page can be provided using the `defaultPage` prop, which accepts a number smaller or equal to the `count` and starts at 1.
 
 <Preview>
-  <DefaultPageExample />
+	<DefaultPageExample />
 </Preview>
 
 ```tsx {2}
 <Pagination.Root
-  count={10}
-  defaultPage={4}
-  itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
-  ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
+	count={10}
+	defaultPage={4}
+	itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
+	ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
 >
-  <Pagination.Previous>Previous</Pagination.Previous>
-  <Pagination.Items />
-  <Pagination.Next>Next</Pagination.Next>
+	<Pagination.Previous>Previous</Pagination.Previous>
+	<Pagination.Items />
+	<Pagination.Next>Next</Pagination.Next>
 </Pagination.Root>
 ```
 
@@ -179,28 +179,28 @@ An initial, uncontrolled page can be provided using the `defaultPage` prop, whic
 The `page` prop, which accepts a page number, can be used to make the value controlled. The `onPageChange` event is fired when the user selects an item, and receives the new page number.
 
 <Preview>
-  <ControlledExample />
+	<ControlledExample />
 </Preview>
 
 ```tsx {3,7-8}
 import { createSignal } from "solid-js";
 
 export function ControlledExample() {
-  const [page, setPage] = createSignal(4);
+	const [page, setPage] = createSignal(4);
 
-  return (
-    <Pagination.Root
-      page={page()}
-      onPageChange={setPage}
-      count={10}
-      itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
-      ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
-    >
-      <Pagination.Previous>Previous</Pagination.Previous>
-      <Pagination.Items />
-      <Pagination.Next>Next</Pagination.Next>
-    </Pagination.Root>
-  );
+	return (
+		<Pagination.Root
+			page={page()}
+			onPageChange={setPage}
+			count={10}
+			itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
+			ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
+		>
+			<Pagination.Previous>Previous</Pagination.Previous>
+			<Pagination.Items />
+			<Pagination.Next>Next</Pagination.Next>
+		</Pagination.Root>
+	);
 }
 ```
 
@@ -209,16 +209,16 @@ export function ControlledExample() {
 The appearance can be customized by omitting the Next and Previous Button.
 
 <Preview>
-  <ButtonsExample />
+	<ButtonsExample />
 </Preview>
 
 ```tsx {5}
 <Pagination.Root
-  count={10}
-  itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
-  ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
+	count={10}
+	itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
+	ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
 >
-  <Pagination.Items />
+	<Pagination.Items />
 </Pagination.Root>
 ```
 
@@ -227,20 +227,20 @@ The appearance can be customized by omitting the Next and Previous Button.
 The First and Last item can be hidden instead of displaying at all times.
 
 <Preview>
-  <FirstLastExample />
+	<FirstLastExample />
 </Preview>
 
 ```tsx {2-3}
 <Pagination.Root
-  count={10}
-  showFirst={false}
-  showLast={false}
-  itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
-  ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
+	count={10}
+	showFirst={false}
+	showLast={false}
+	itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
+	ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
 >
-  <Pagination.Previous>Previous</Pagination.Previous>
-  <Pagination.Items />
-  <Pagination.Next>Next</Pagination.Next>
+	<Pagination.Previous>Previous</Pagination.Previous>
+	<Pagination.Items />
+	<Pagination.Next>Next</Pagination.Next>
 </Pagination.Root>
 ```
 
@@ -249,19 +249,19 @@ The First and Last item can be hidden instead of displaying at all times.
 The number of items around the current page item can be customized.
 
 <Preview>
-  <SiblingsExample />
+	<SiblingsExample />
 </Preview>
 
 ```tsx {2}
 <Pagination.Root
-  count={10}
-  siblingCount={2}
-  itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
-  ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
+	count={10}
+	siblingCount={2}
+	itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
+	ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
 >
-  <Pagination.Previous>Previous</Pagination.Previous>
-  <Pagination.Items />
-  <Pagination.Next>Next</Pagination.Next>
+	<Pagination.Previous>Previous</Pagination.Previous>
+	<Pagination.Items />
+	<Pagination.Next>Next</Pagination.Next>
 </Pagination.Root>
 ```
 
@@ -270,19 +270,19 @@ The number of items around the current page item can be customized.
 The total number of items can be fixed to avoid content shift. If ellipsis are disabled (by returning an empty component) use `fixedItems="no-ellipsis"` instead.
 
 <Preview>
-  <FixedItemsExample />
+	<FixedItemsExample />
 </Preview>
 
 ```tsx {2}
 <Pagination.Root
-  count={10}
-  fixedItems
-  itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
-  ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
+	count={10}
+	fixedItems
+	itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
+	ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
 >
-  <Pagination.Previous>Previous</Pagination.Previous>
-  <Pagination.Items />
-  <Pagination.Next>Next</Pagination.Next>
+	<Pagination.Previous>Previous</Pagination.Previous>
+	<Pagination.Items />
+	<Pagination.Next>Next</Pagination.Next>
 </Pagination.Root>
 ```
 

@@ -1,1 +1,5 @@
-export { Skeleton as Root } from "./skeleton";
+import { Skeleton as Root, type SkeletonProps } from "./skeleton";
+
+export { Root };
+
+export type { SkeletonProps };

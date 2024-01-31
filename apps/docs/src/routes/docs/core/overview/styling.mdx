@@ -117,17 +117,17 @@ Add the plugin to your `tailwind.config.js` :
 ```js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [],
-  theme: {
-    extend: {},
-  },
-  plugins: [
-    // default prefix is "ui"
-    require("@kobalte/tailwindcss"),
+	content: [],
+	theme: {
+		extend: {},
+	},
+	plugins: [
+		// default prefix is "ui"
+		require("@kobalte/tailwindcss"),
 
-    // or with a custom prefix:
-    require("@kobalte/tailwindcss")({ prefix: "kb" }),
-  ],
+		// or with a custom prefix:
+		require("@kobalte/tailwindcss")({ prefix: "kb" }),
+	],
 };
 ```
 
@@ -137,12 +137,12 @@ Style your component:
 import { Popover as KPopover } from "@kobalte/core";
 
 export const Popover = () => (
-  <KPopover.Root>
-    <KPopover.Trigger class="inline-flex px-4 py-2 rounded ui-disabled:bg-slate-100">
-      Open
-    </KPopover.Trigger>
-    <KPopover.Content class="flex p-4 rounded bg-white">...</KPopover.Content>
-  </KPopover.Root>
+	<KPopover.Root>
+		<KPopover.Trigger class="inline-flex px-4 py-2 rounded ui-disabled:bg-slate-100">
+			Open
+		</KPopover.Trigger>
+		<KPopover.Content class="flex p-4 rounded bg-white">...</KPopover.Content>
+	</KPopover.Root>
 );
 ```
 
@@ -210,29 +210,29 @@ import { componentStateStyles } from "@kobalte/vanilla-extract";
 import { style } from "@vanilla-extract/css";
 
 const button = style([
-  {
-    background: "blue",
-    padding: "2px 6px",
-  },
-  componentStateStyles({
-    disabled: {
-      opacity: 0.4,
-    },
-    invalid: {
-      backgroundColor: "red",
-      not: {
-        backgroundColor: "yellow",
-      },
-    },
-  }),
-  componentStateStyles(
-    {
-      invalid: {
-        backgroundColor: "red",
-      },
-    },
-    { parentSelector: "[data-theme=dark]" },
-  ),
+	{
+		background: "blue",
+		padding: "2px 6px",
+	},
+	componentStateStyles({
+		disabled: {
+			opacity: 0.4,
+		},
+		invalid: {
+			backgroundColor: "red",
+			not: {
+				backgroundColor: "yellow",
+			},
+		},
+	}),
+	componentStateStyles(
+		{
+			invalid: {
+				backgroundColor: "red",
+			},
+		},
+		{ parentSelector: "[data-theme=dark]" },
+	),
 ]);
 ```
 
@@ -258,6 +258,6 @@ import { Popover as KPopover } from "@kobalte/core";
 import { ComponentProps } from "solid-js";
 
 export const PopoverTrigger = (props: ComponentProps<typeof KPopover.Trigger>) => {
-  return <KPopover.Trigger {...props} />;
+	return <KPopover.Trigger {...props} />;
 };
 ```

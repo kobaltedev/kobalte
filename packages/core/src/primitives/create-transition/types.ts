@@ -9,12 +9,12 @@
 import { JSX } from "solid-js";
 
 export interface TransitionStyles {
-  /** Styles for mounted state. */
-  in: JSX.CSSProperties;
+	/** Styles for mounted state. */
+	in: JSX.CSSProperties;
 
-  /** Styles for unmounted state. */
-  out: JSX.CSSProperties;
+	/** Styles for unmounted state. */
+	out: JSX.CSSProperties;
 
-  /** Styles for both mounted and unmounted states. */
-  common?: JSX.CSSProperties;
+	/** Styles for both mounted and unmounted states. */
+	common?: JSX.CSSProperties;
 }

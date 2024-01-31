@@ -13,7 +13,7 @@ import { ContextMenu } from "@kobalte/core";
 
 ## Features
 
-- Follow the [WAI ARIA Menu](https://www.w3.org/WAI/ARIA/apg/patterns/menu/) design pattern.
+- Follows the [WAI ARIA Menu](https://www.w3.org/WAI/ARIA/apg/patterns/menu/) design pattern.
 - Triggers with a long-press on touch devices.
 - Supports modal and non-modal modes.
 - Supports submenus.
@@ -59,51 +59,51 @@ The checkable menu item consists of:
 
 ```tsx
 <ContextMenu.Root>
-  <ContextMenu.Trigger>
-    <ContextMenu.Icon />
-  </ContextMenu.Trigger>
+	<ContextMenu.Trigger>
+		<ContextMenu.Icon />
+	</ContextMenu.Trigger>
 
-  <ContextMenu.Portal>
-    <ContextMenu.Content>
-      <ContextMenu.Arrow />
+	<ContextMenu.Portal>
+		<ContextMenu.Content>
+			<ContextMenu.Arrow />
 
-      <ContextMenu.Item>
-        <ContextMenu.ItemLabel />
-        <ContextMenu.ItemDescription />
-      </ContextMenu.Item>
+			<ContextMenu.Item>
+				<ContextMenu.ItemLabel />
+				<ContextMenu.ItemDescription />
+			</ContextMenu.Item>
 
-      <ContextMenu.Group>
-        <ContextMenu.GroupLabel />
-        <ContextMenu.Item />
-      </ContextMenu.Group>
+			<ContextMenu.Group>
+				<ContextMenu.GroupLabel />
+				<ContextMenu.Item />
+			</ContextMenu.Group>
 
-      <ContextMenu.CheckboxItem>
-        <ContextMenu.ItemIndicator />
-      </ContextMenu.CheckboxItem>
+			<ContextMenu.CheckboxItem>
+				<ContextMenu.ItemIndicator />
+			</ContextMenu.CheckboxItem>
 
-      <ContextMenu.RadioGroup>
-        <ContextMenu.RadioItem>
-          <ContextMenu.ItemIndicator />
-        </ContextMenu.RadioItem>
-      </ContextMenu.RadioGroup>
+			<ContextMenu.RadioGroup>
+				<ContextMenu.RadioItem>
+					<ContextMenu.ItemIndicator />
+				</ContextMenu.RadioItem>
+			</ContextMenu.RadioGroup>
 
-      <ContextMenu.Sub>
-        <ContextMenu.SubTrigger />
-        <ContextMenu.Portal>
-          <ContextMenu.SubContent />
-        </ContextMenu.Portal>
-      </ContextMenu.Sub>
+			<ContextMenu.Sub>
+				<ContextMenu.SubTrigger />
+				<ContextMenu.Portal>
+					<ContextMenu.SubContent />
+				</ContextMenu.Portal>
+			</ContextMenu.Sub>
 
-      <ContextMenu.Separator />
-    </ContextMenu.Content>
-  </ContextMenu.Portal>
+			<ContextMenu.Separator />
+		</ContextMenu.Content>
+	</ContextMenu.Portal>
 </ContextMenu.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -366,35 +366,35 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 /* style.css */
 .context-menu__content,
 .context-menu__sub-content {
-  transform-origin: var(--kb-menu-content-transform-origin);
-  animation: contentHide 250ms ease-in forwards;
+	transform-origin: var(--kb-menu-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
 }
 
 .context-menu__content[data-expanded],
 .context-menu__sub-content[data-expanded] {
-  animation: contentShow 250ms ease-out;
+	animation: contentShow 250ms ease-out;
 }
 
 @keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
 
 @keyframes contentHide {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.96);
-  }
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: scale(0.96);
+	}
 }
 ```
 

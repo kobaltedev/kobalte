@@ -1,88 +1,88 @@
 .hovercard__trigger {
-  outline: none;
-  color: hsl(201 96% 32%);
-  font-size: 16px;
+	outline: none;
+	color: hsl(201 96% 32%);
+	font-size: 16px;
 }
 
 .hovercard__trigger:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 
 .hovercard__trigger:focus-visible {
-  outline: 2px solid hsl(200 98% 39%);
-  outline-offset: 2px;
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
 }
 
 .hovercard__content {
-  z-index: 50;
-  max-width: min(calc(100vw - 16px), 380px);
-  border: 1px solid hsl(240 5% 84%);
-  border-radius: 6px;
-  padding: 16px;
-  background-color: white;
-  box-shadow:
-    0 10px 15px -3px rgb(0 0 0 / 0.1),
-    0 4px 6px -4px rgb(0 0 0 / 0.1);
-  transform-origin: var(--kb-hovercard-content-transform-origin);
-  animation: contentHide 250ms ease-in forwards;
+	z-index: 50;
+	max-width: min(calc(100vw - 16px), 380px);
+	border: 1px solid hsl(240 5% 84%);
+	border-radius: 6px;
+	padding: 16px;
+	background-color: white;
+	box-shadow:
+		0 10px 15px -3px rgb(0 0 0 / 0.1),
+		0 4px 6px -4px rgb(0 0 0 / 0.1);
+	transform-origin: var(--kb-hovercard-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
 }
 
 .hovercard__content[data-expanded] {
-  animation: contentShow 250ms ease-out;
+	animation: contentShow 250ms ease-out;
 }
 
 .hovercard__title {
-  color: hsl(240 6% 10%);
-  font-size: 16px;
-  font-weight: 600;
+	color: hsl(240 6% 10%);
+	font-size: 16px;
+	font-weight: 600;
 }
 
 .hovercard__description {
-  font-size: 14px;
-  color: hsl(240 5% 26%);
+	font-size: 14px;
+	color: hsl(240 5% 26%);
 }
 
 .hovercard__avatar {
-  height: 56px;
-  width: 56px;
+	height: 56px;
+	width: 56px;
 }
 
 @keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
 
 @keyframes contentHide {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.96);
-  }
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: scale(0.96);
+	}
 }
 
 [data-kb-theme="dark"] .hovercard__trigger {
-  color: hsl(198 93% 60%);
+	color: hsl(198 93% 60%);
 }
 
 [data-kb-theme="dark"] .hovercard__content {
-  border: 1px solid hsl(240 5% 26%);
-  background-color: hsl(240 4% 16%);
-  box-shadow: none;
+	border: 1px solid hsl(240 5% 26%);
+	background-color: hsl(240 4% 16%);
+	box-shadow: none;
 }
 
 [data-kb-theme="dark"] .hovercard__title {
-  color: hsl(0 100% 100% / 0.9);
+	color: hsl(0 100% 100% / 0.9);
 }
 
 [data-kb-theme="dark"] .hovercard__description {
-  color: hsl(0 100% 100% / 0.7);
+	color: hsl(0 100% 100% / 0.7);
 }

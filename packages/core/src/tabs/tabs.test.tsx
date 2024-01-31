@@ -12,528 +12,583 @@ import userEvent from "@testing-library/user-event";
 
 import * as Tabs from ".";
 
-describe("Tabs", function () {
-  // Make userEvent work with jest fakeTimers
-  // See https://github.com/testing-library/user-event/issues/833#issuecomment-1013797822
-  const user = userEvent.setup({ delay: null });
-
-  const onValueChangeSpy = jest.fn();
-
-  beforeEach(() => {
-    jest.useFakeTimers();
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-    jest.clearAllTimers();
-  });
-
-  afterAll(() => {
-    jest.restoreAllMocks();
-  });
-
-  it("renders properly", async () => {
-    render(() => (
-      <Tabs.Root>
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two">Two</Tabs.Trigger>
-          <Tabs.Trigger value="three">Three</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    const tablist = screen.getByRole("tablist");
-    expect(tablist).toBeTruthy();
-    expect(tablist).toHaveAttribute("aria-orientation", "horizontal");
-
-    const tabs = within(tablist).getAllByRole("tab");
-    expect(tabs.length).toBe(3);
-
-    for (const tab of tabs) {
-      expect(tab).toHaveAttribute("tabindex");
-      expect(tab).toHaveAttribute("aria-selected");
-      const isSelected = tab.getAttribute("aria-selected") === "true";
-
-      if (isSelected) {
-        expect(tab).toHaveAttribute("aria-controls");
-
-        const tabpanel = document.getElementById(tab.getAttribute("aria-controls")!);
-        expect(tabpanel).toBeTruthy();
-        expect(tabpanel).toHaveAttribute("aria-labelledby", tab.id);
-        expect(tabpanel).toHaveAttribute("role", "tabpanel");
-        expect(tabpanel).toHaveTextContent("Body 1");
-      }
-    }
-  });
-
-  it("allows user to change tab item select via left/right arrow keys with horizontal tabs", async () => {
-    render(() => (
-      <Tabs.Root>
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two">Two</Tabs.Trigger>
-          <Tabs.Trigger value="three">Three</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    const tablist = screen.getByRole("tablist");
-    const tabs = within(tablist).getAllByRole("tab");
-    const selectedItem = tabs[0];
-
-    expect(tablist).toHaveAttribute("aria-orientation", "horizontal");
-
-    expect(selectedItem).toHaveAttribute("aria-selected", "true");
-    selectedItem.focus();
-
-    fireEvent.keyDown(selectedItem, { key: "ArrowRight", code: 39, charCode: 39 });
-    await Promise.resolve();
-
-    const nextSelectedItem = tabs[1];
-    expect(nextSelectedItem).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.keyDown(nextSelectedItem, { key: "ArrowLeft", code: 37, charCode: 37 });
-    await Promise.resolve();
-
-    expect(selectedItem).toHaveAttribute("aria-selected", "true");
-
-    /** Doesn't change selection because its horizontal tabs. */
-    fireEvent.keyDown(selectedItem, { key: "ArrowUp", code: 38, charCode: 38 });
-    await Promise.resolve();
-
-    expect(selectedItem).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.keyDown(selectedItem, { key: "ArrowDown", code: 40, charCode: 40 });
-    await Promise.resolve();
-
-    expect(selectedItem).toHaveAttribute("aria-selected", "true");
-  });
-
-  it("allows user to change tab item select via up/down arrow keys with vertical tabs", async () => {
-    render(() => (
-      <Tabs.Root orientation="vertical">
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two">Two</Tabs.Trigger>
-          <Tabs.Trigger value="three">Three</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    const tablist = screen.getByRole("tablist");
-    const tabs = within(tablist).getAllByRole("tab");
-    const selectedItem = tabs[0];
-
-    selectedItem.focus();
-
-    expect(tablist).toHaveAttribute("aria-orientation", "vertical");
-
-    /** Doesn't change selection because its vertical tabs. */
-    expect(selectedItem).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.keyDown(selectedItem, { key: "ArrowRight", code: 39, charCode: 39 });
-    await Promise.resolve();
-
-    expect(selectedItem).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.keyDown(selectedItem, { key: "ArrowLeft", code: 37, charCode: 37 });
-    await Promise.resolve();
-
-    expect(selectedItem).toHaveAttribute("aria-selected", "true");
-
-    const nextSelectedItem = tabs[1];
-
-    fireEvent.keyDown(selectedItem, { key: "ArrowDown", code: 40, charCode: 40 });
-    await Promise.resolve();
-
-    expect(nextSelectedItem).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.keyDown(nextSelectedItem, { key: "ArrowUp", code: 38, charCode: 38 });
-    await Promise.resolve();
-
-    expect(selectedItem).toHaveAttribute("aria-selected", "true");
-  });
-
-  it("wraps focus from first to last/last to first item", async () => {
-    render(() => (
-      <Tabs.Root>
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two">Two</Tabs.Trigger>
-          <Tabs.Trigger value="three">Three</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    const tablist = screen.getByRole("tablist");
-    const tabs = within(tablist).getAllByRole("tab");
-    const firstItem = tabs[0];
-
-    firstItem.focus();
-
-    expect(tablist).toHaveAttribute("aria-orientation", "horizontal");
-
-    expect(firstItem).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.keyDown(firstItem, { key: "ArrowLeft", code: 37, charCode: 37 });
-    await Promise.resolve();
-
-    const lastItem = tabs[tabs.length - 1];
-
-    expect(lastItem).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.keyDown(lastItem, { key: "ArrowRight", code: 39, charCode: 39 });
-    await Promise.resolve();
-
-    expect(firstItem).toHaveAttribute("aria-selected", "true");
-  });
-
-  it("select last item via end key / select first item via home key", async () => {
-    render(() => (
-      <Tabs.Root>
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two">Two</Tabs.Trigger>
-          <Tabs.Trigger value="three">Three</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    const tablist = screen.getByRole("tablist");
-    const tabs = within(tablist).getAllByRole("tab");
-    const firstItem = tabs[0];
-
-    firstItem.focus();
-
-    expect(tablist).toHaveAttribute("aria-orientation", "horizontal");
-
-    expect(firstItem).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.keyDown(firstItem, { key: "End", code: 35, charCode: 35 });
-    await Promise.resolve();
-
-    const lastItem = tabs[tabs.length - 1];
-
-    expect(lastItem).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.keyDown(lastItem, { key: "Home", code: 36, charCode: 36 });
-    await Promise.resolve();
-
-    expect(firstItem).toHaveAttribute("aria-selected", "true");
-  });
-
-  it("does not select via left / right keys if 'activationMode' is manual, select on enter / spacebar", async () => {
-    render(() => (
-      <Tabs.Root activationMode="manual" defaultValue="one" onChange={onValueChangeSpy}>
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two">Two</Tabs.Trigger>
-          <Tabs.Trigger value="three">Three</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    const tablist = screen.getByRole("tablist");
-    const tabs = within(tablist).getAllByRole("tab");
-    const [firstItem, secondItem, thirdItem] = tabs;
-
-    firstItem.focus();
-
-    expect(firstItem).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.keyDown(firstItem, { key: "ArrowRight", code: 39, charCode: 39 });
-    await Promise.resolve();
-
-    expect(secondItem).toHaveAttribute("aria-selected", "false");
-    expect(document.activeElement).toBe(secondItem);
-
-    fireEvent.keyDown(secondItem, { key: "ArrowRight", code: 39, charCode: 39 });
-    await Promise.resolve();
-
-    expect(thirdItem).toHaveAttribute("aria-selected", "false");
-    expect(document.activeElement).toBe(thirdItem);
-
-    fireEvent.keyDown(thirdItem, { key: "Enter", code: 13, charCode: 13 });
-    await Promise.resolve();
-
-    expect(firstItem).toHaveAttribute("aria-selected", "false");
-    expect(secondItem).toHaveAttribute("aria-selected", "false");
-    expect(thirdItem).toHaveAttribute("aria-selected", "true");
-    expect(onValueChangeSpy).toBeCalledTimes(1);
-  });
-
-  it("supports using click to change tab", async () => {
-    const onValueChangeSpy = jest.fn();
-
-    render(() => (
-      <Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two">Two</Tabs.Trigger>
-          <Tabs.Trigger value="three">Three</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    const tablist = screen.getByRole("tablist");
-    const tabs = within(tablist).getAllByRole("tab");
-    const [firstItem, secondItem] = tabs;
-
-    expect(firstItem).toHaveAttribute("aria-selected", "true");
-
-    fireEvent(
-      secondItem,
-      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
-    );
-    await Promise.resolve();
-
-    fireEvent(secondItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
-    await Promise.resolve();
-
-    expect(secondItem).toHaveAttribute("aria-selected", "true");
-    expect(secondItem).toHaveAttribute("aria-controls");
-
-    const tabpanel = document.getElementById(secondItem.getAttribute("aria-controls")!);
-
-    expect(tabpanel).toBeTruthy();
-    expect(tabpanel).toHaveAttribute("aria-labelledby", secondItem.id);
-    expect(tabpanel).toHaveAttribute("role", "tabpanel");
-    expect(tabpanel).toHaveTextContent("Body 2");
-    expect(onValueChangeSpy).toBeCalledTimes(1);
-  });
-
-  it("should focus the selected tab when tabbing in for the first time", async () => {
-    render(() => (
-      <Tabs.Root defaultValue="two">
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two">Two</Tabs.Trigger>
-          <Tabs.Trigger value="three">Three</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    await user.tab();
-
-    const tablist = screen.getByRole("tablist");
-    const tabs = within(tablist).getAllByRole("tab");
-
-    expect(document.activeElement).toBe(tabs[1]);
-  });
-
-  it("should not focus any tabs when isDisabled tabbing in for the first time", async () => {
-    render(() => (
-      <Tabs.Root defaultValue="two" disabled>
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two">Two</Tabs.Trigger>
-          <Tabs.Trigger value="three">Three</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    await user.tab();
-
-    const tabpanel = screen.getByRole("tabpanel");
-
-    expect(document.activeElement).toBe(tabpanel);
-  });
-
-  it("disabled tabs cannot be keyboard navigated to", async () => {
-    const onValueChangeSpy = jest.fn();
-
-    render(() => (
-      <Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two" disabled>
-            Two
-          </Tabs.Trigger>
-          <Tabs.Trigger value="three">Three</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    await user.tab();
-
-    const tablist = screen.getByRole("tablist");
-    const tabs = within(tablist).getAllByRole("tab");
-
-    expect(document.activeElement).toBe(tabs[0]);
-
-    fireEvent.keyDown(tabs[1], { key: "ArrowRight" });
-    await Promise.resolve();
-
-    fireEvent.keyUp(tabs[1], { key: "ArrowRight" });
-    await Promise.resolve();
-
-    expect(onValueChangeSpy).toBeCalledWith("three");
-  });
-
-  it("disabled tabs cannot be pressed", async () => {
-    const onValueChangeSpy = jest.fn();
-
-    render(() => (
-      <Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two" disabled>
-            Two
-          </Tabs.Trigger>
-          <Tabs.Trigger value="three">Three</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    await user.tab();
-
-    const tablist = screen.getByRole("tablist");
-    const tabs = within(tablist).getAllByRole("tab");
-
-    expect(document.activeElement).toBe(tabs[0]);
-
-    await user.click(tabs[1]);
-
-    expect(onValueChangeSpy).not.toBeCalled();
-  });
-
-  it("selects first tab if all tabs are disabled", async () => {
-    render(() => (
-      <Tabs.Root onChange={onValueChangeSpy}>
-        <Tabs.List>
-          <Tabs.Trigger value="one" disabled>
-            One
-          </Tabs.Trigger>
-          <Tabs.Trigger value="two" disabled>
-            Two
-          </Tabs.Trigger>
-          <Tabs.Trigger value="three" disabled>
-            Three
-          </Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    await user.tab();
-
-    const tablist = screen.getByRole("tablist");
-    const tabs = within(tablist).getAllByRole("tab");
-    const tabpanel = screen.getByRole("tabpanel");
-
-    expect(tabs[0]).toHaveAttribute("aria-selected", "true");
-    expect(onValueChangeSpy).toBeCalledWith("one");
-    expect(document.activeElement).toBe(tabpanel);
-  });
-
-  it("tabpanel should have tabIndex=0 only when there are no focusable elements", async () => {
-    render(() => (
-      <Tabs.Root>
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two">Two</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">
-          <input />
-        </Tabs.Content>
-        <Tabs.Content value="two">
-          <input disabled />
-        </Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    const tabs = screen.getAllByRole("tab");
-    const [firstItem, secondItem] = tabs;
-
-    let tabpanel = screen.getByRole("tabpanel");
-    expect(tabpanel).not.toHaveAttribute("tabindex");
-
-    fireEvent(
-      secondItem,
-      createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
-    );
-    await Promise.resolve();
-
-    fireEvent(secondItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
-    await Promise.resolve();
-
-    jest.runAllTimers();
-
-    tabpanel = screen.getByRole("tabpanel");
-    expect(tabpanel).toHaveAttribute("tabindex", "0");
-
-    fireEvent(firstItem, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
-    await Promise.resolve();
-
-    fireEvent(firstItem, createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }));
-    await Promise.resolve();
-
-    jest.runAllTimers();
-
-    tabpanel = screen.getByRole("tabpanel");
-    expect(tabpanel).not.toHaveAttribute("tabindex");
-  });
-
-  it("fires onValueChange when clicking on the current tab", async () => {
-    render(() => (
-      <Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
-        <Tabs.List>
-          <Tabs.Trigger value="one">One</Tabs.Trigger>
-          <Tabs.Trigger value="two">Two</Tabs.Trigger>
-          <Tabs.Trigger value="three">Three</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="one">Body 1</Tabs.Content>
-        <Tabs.Content value="two">Body 2</Tabs.Content>
-        <Tabs.Content value="three">Body 3</Tabs.Content>
-      </Tabs.Root>
-    ));
-
-    const tablist = screen.getByRole("tablist");
-    const tabs = within(tablist).getAllByRole("tab");
-    const firstItem = tabs[0];
-
-    expect(firstItem).toHaveAttribute("aria-selected", "true");
-
-    fireEvent(firstItem, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
-    await Promise.resolve();
-
-    expect(onValueChangeSpy).toBeCalledTimes(1);
-    expect(onValueChangeSpy).toHaveBeenCalledWith("one");
-  });
+describe("Tabs", () => {
+	// Make userEvent work with jest fakeTimers
+	// See https://github.com/testing-library/user-event/issues/833#issuecomment-1013797822
+	const user = userEvent.setup({ delay: null });
+
+	const onValueChangeSpy = jest.fn();
+
+	beforeEach(() => {
+		jest.useFakeTimers();
+	});
+
+	afterEach(() => {
+		jest.clearAllMocks();
+		jest.clearAllTimers();
+	});
+
+	afterAll(() => {
+		jest.restoreAllMocks();
+	});
+
+	it("renders properly", async () => {
+		render(() => (
+			<Tabs.Root>
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two">Two</Tabs.Trigger>
+					<Tabs.Trigger value="three">Three</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		const tablist = screen.getByRole("tablist");
+		expect(tablist).toBeTruthy();
+		expect(tablist).toHaveAttribute("aria-orientation", "horizontal");
+
+		const tabs = within(tablist).getAllByRole("tab");
+		expect(tabs.length).toBe(3);
+
+		for (const tab of tabs) {
+			expect(tab).toHaveAttribute("tabindex");
+			expect(tab).toHaveAttribute("aria-selected");
+			const isSelected = tab.getAttribute("aria-selected") === "true";
+
+			if (isSelected) {
+				expect(tab).toHaveAttribute("aria-controls");
+
+				const tabpanel = document.getElementById(
+					tab.getAttribute("aria-controls")!,
+				);
+				expect(tabpanel).toBeTruthy();
+				expect(tabpanel).toHaveAttribute("aria-labelledby", tab.id);
+				expect(tabpanel).toHaveAttribute("role", "tabpanel");
+				expect(tabpanel).toHaveTextContent("Body 1");
+			}
+		}
+	});
+
+	it("allows user to change tab item select via left/right arrow keys with horizontal tabs", async () => {
+		render(() => (
+			<Tabs.Root>
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two">Two</Tabs.Trigger>
+					<Tabs.Trigger value="three">Three</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		const tablist = screen.getByRole("tablist");
+		const tabs = within(tablist).getAllByRole("tab");
+		const selectedItem = tabs[0];
+
+		expect(tablist).toHaveAttribute("aria-orientation", "horizontal");
+
+		expect(selectedItem).toHaveAttribute("aria-selected", "true");
+		selectedItem.focus();
+
+		fireEvent.keyDown(selectedItem, {
+			key: "ArrowRight",
+			code: 39,
+			charCode: 39,
+		});
+		await Promise.resolve();
+
+		const nextSelectedItem = tabs[1];
+		expect(nextSelectedItem).toHaveAttribute("aria-selected", "true");
+
+		fireEvent.keyDown(nextSelectedItem, {
+			key: "ArrowLeft",
+			code: 37,
+			charCode: 37,
+		});
+		await Promise.resolve();
+
+		expect(selectedItem).toHaveAttribute("aria-selected", "true");
+
+		/** Doesn't change selection because its horizontal tabs. */
+		fireEvent.keyDown(selectedItem, { key: "ArrowUp", code: 38, charCode: 38 });
+		await Promise.resolve();
+
+		expect(selectedItem).toHaveAttribute("aria-selected", "true");
+
+		fireEvent.keyDown(selectedItem, {
+			key: "ArrowDown",
+			code: 40,
+			charCode: 40,
+		});
+		await Promise.resolve();
+
+		expect(selectedItem).toHaveAttribute("aria-selected", "true");
+	});
+
+	it("allows user to change tab item select via up/down arrow keys with vertical tabs", async () => {
+		render(() => (
+			<Tabs.Root orientation="vertical">
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two">Two</Tabs.Trigger>
+					<Tabs.Trigger value="three">Three</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		const tablist = screen.getByRole("tablist");
+		const tabs = within(tablist).getAllByRole("tab");
+		const selectedItem = tabs[0];
+
+		selectedItem.focus();
+
+		expect(tablist).toHaveAttribute("aria-orientation", "vertical");
+
+		/** Doesn't change selection because its vertical tabs. */
+		expect(selectedItem).toHaveAttribute("aria-selected", "true");
+
+		fireEvent.keyDown(selectedItem, {
+			key: "ArrowRight",
+			code: 39,
+			charCode: 39,
+		});
+		await Promise.resolve();
+
+		expect(selectedItem).toHaveAttribute("aria-selected", "true");
+
+		fireEvent.keyDown(selectedItem, {
+			key: "ArrowLeft",
+			code: 37,
+			charCode: 37,
+		});
+		await Promise.resolve();
+
+		expect(selectedItem).toHaveAttribute("aria-selected", "true");
+
+		const nextSelectedItem = tabs[1];
+
+		fireEvent.keyDown(selectedItem, {
+			key: "ArrowDown",
+			code: 40,
+			charCode: 40,
+		});
+		await Promise.resolve();
+
+		expect(nextSelectedItem).toHaveAttribute("aria-selected", "true");
+
+		fireEvent.keyDown(nextSelectedItem, {
+			key: "ArrowUp",
+			code: 38,
+			charCode: 38,
+		});
+		await Promise.resolve();
+
+		expect(selectedItem).toHaveAttribute("aria-selected", "true");
+	});
+
+	it("wraps focus from first to last/last to first item", async () => {
+		render(() => (
+			<Tabs.Root>
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two">Two</Tabs.Trigger>
+					<Tabs.Trigger value="three">Three</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		const tablist = screen.getByRole("tablist");
+		const tabs = within(tablist).getAllByRole("tab");
+		const firstItem = tabs[0];
+
+		firstItem.focus();
+
+		expect(tablist).toHaveAttribute("aria-orientation", "horizontal");
+
+		expect(firstItem).toHaveAttribute("aria-selected", "true");
+
+		fireEvent.keyDown(firstItem, { key: "ArrowLeft", code: 37, charCode: 37 });
+		await Promise.resolve();
+
+		const lastItem = tabs[tabs.length - 1];
+
+		expect(lastItem).toHaveAttribute("aria-selected", "true");
+
+		fireEvent.keyDown(lastItem, { key: "ArrowRight", code: 39, charCode: 39 });
+		await Promise.resolve();
+
+		expect(firstItem).toHaveAttribute("aria-selected", "true");
+	});
+
+	it("select last item via end key / select first item via home key", async () => {
+		render(() => (
+			<Tabs.Root>
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two">Two</Tabs.Trigger>
+					<Tabs.Trigger value="three">Three</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		const tablist = screen.getByRole("tablist");
+		const tabs = within(tablist).getAllByRole("tab");
+		const firstItem = tabs[0];
+
+		firstItem.focus();
+
+		expect(tablist).toHaveAttribute("aria-orientation", "horizontal");
+
+		expect(firstItem).toHaveAttribute("aria-selected", "true");
+
+		fireEvent.keyDown(firstItem, { key: "End", code: 35, charCode: 35 });
+		await Promise.resolve();
+
+		const lastItem = tabs[tabs.length - 1];
+
+		expect(lastItem).toHaveAttribute("aria-selected", "true");
+
+		fireEvent.keyDown(lastItem, { key: "Home", code: 36, charCode: 36 });
+		await Promise.resolve();
+
+		expect(firstItem).toHaveAttribute("aria-selected", "true");
+	});
+
+	it("does not select via left / right keys if 'activationMode' is manual, select on enter / spacebar", async () => {
+		render(() => (
+			<Tabs.Root
+				activationMode="manual"
+				defaultValue="one"
+				onChange={onValueChangeSpy}
+			>
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two">Two</Tabs.Trigger>
+					<Tabs.Trigger value="three">Three</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		const tablist = screen.getByRole("tablist");
+		const tabs = within(tablist).getAllByRole("tab");
+		const [firstItem, secondItem, thirdItem] = tabs;
+
+		firstItem.focus();
+
+		expect(firstItem).toHaveAttribute("aria-selected", "true");
+
+		fireEvent.keyDown(firstItem, { key: "ArrowRight", code: 39, charCode: 39 });
+		await Promise.resolve();
+
+		expect(secondItem).toHaveAttribute("aria-selected", "false");
+		expect(document.activeElement).toBe(secondItem);
+
+		fireEvent.keyDown(secondItem, {
+			key: "ArrowRight",
+			code: 39,
+			charCode: 39,
+		});
+		await Promise.resolve();
+
+		expect(thirdItem).toHaveAttribute("aria-selected", "false");
+		expect(document.activeElement).toBe(thirdItem);
+
+		fireEvent.keyDown(thirdItem, { key: "Enter", code: 13, charCode: 13 });
+		await Promise.resolve();
+
+		expect(firstItem).toHaveAttribute("aria-selected", "false");
+		expect(secondItem).toHaveAttribute("aria-selected", "false");
+		expect(thirdItem).toHaveAttribute("aria-selected", "true");
+		expect(onValueChangeSpy).toBeCalledTimes(1);
+	});
+
+	it("supports using click to change tab", async () => {
+		const onValueChangeSpy = jest.fn();
+
+		render(() => (
+			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two">Two</Tabs.Trigger>
+					<Tabs.Trigger value="three">Three</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		const tablist = screen.getByRole("tablist");
+		const tabs = within(tablist).getAllByRole("tab");
+		const [firstItem, secondItem] = tabs;
+
+		expect(firstItem).toHaveAttribute("aria-selected", "true");
+
+		fireEvent(
+			secondItem,
+			createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
+		);
+		await Promise.resolve();
+
+		fireEvent(
+			secondItem,
+			createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
+		);
+		await Promise.resolve();
+
+		expect(secondItem).toHaveAttribute("aria-selected", "true");
+		expect(secondItem).toHaveAttribute("aria-controls");
+
+		const tabpanel = document.getElementById(
+			secondItem.getAttribute("aria-controls")!,
+		);
+
+		expect(tabpanel).toBeTruthy();
+		expect(tabpanel).toHaveAttribute("aria-labelledby", secondItem.id);
+		expect(tabpanel).toHaveAttribute("role", "tabpanel");
+		expect(tabpanel).toHaveTextContent("Body 2");
+		expect(onValueChangeSpy).toBeCalledTimes(1);
+	});
+
+	it("should focus the selected tab when tabbing in for the first time", async () => {
+		render(() => (
+			<Tabs.Root defaultValue="two">
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two">Two</Tabs.Trigger>
+					<Tabs.Trigger value="three">Three</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		await user.tab();
+
+		const tablist = screen.getByRole("tablist");
+		const tabs = within(tablist).getAllByRole("tab");
+
+		expect(document.activeElement).toBe(tabs[1]);
+	});
+
+	it("should not focus any tabs when isDisabled tabbing in for the first time", async () => {
+		render(() => (
+			<Tabs.Root defaultValue="two" disabled>
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two">Two</Tabs.Trigger>
+					<Tabs.Trigger value="three">Three</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		await user.tab();
+
+		const tabpanel = screen.getByRole("tabpanel");
+
+		expect(document.activeElement).toBe(tabpanel);
+	});
+
+	it("disabled tabs cannot be keyboard navigated to", async () => {
+		const onValueChangeSpy = jest.fn();
+
+		render(() => (
+			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two" disabled>
+						Two
+					</Tabs.Trigger>
+					<Tabs.Trigger value="three">Three</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		await user.tab();
+
+		const tablist = screen.getByRole("tablist");
+		const tabs = within(tablist).getAllByRole("tab");
+
+		expect(document.activeElement).toBe(tabs[0]);
+
+		fireEvent.keyDown(tabs[1], { key: "ArrowRight" });
+		await Promise.resolve();
+
+		fireEvent.keyUp(tabs[1], { key: "ArrowRight" });
+		await Promise.resolve();
+
+		expect(onValueChangeSpy).toBeCalledWith("three");
+	});
+
+	it("disabled tabs cannot be pressed", async () => {
+		const onValueChangeSpy = jest.fn();
+
+		render(() => (
+			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two" disabled>
+						Two
+					</Tabs.Trigger>
+					<Tabs.Trigger value="three">Three</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		await user.tab();
+
+		const tablist = screen.getByRole("tablist");
+		const tabs = within(tablist).getAllByRole("tab");
+
+		expect(document.activeElement).toBe(tabs[0]);
+
+		await user.click(tabs[1]);
+
+		expect(onValueChangeSpy).not.toBeCalled();
+	});
+
+	it("selects first tab if all tabs are disabled", async () => {
+		render(() => (
+			<Tabs.Root onChange={onValueChangeSpy}>
+				<Tabs.List>
+					<Tabs.Trigger value="one" disabled>
+						One
+					</Tabs.Trigger>
+					<Tabs.Trigger value="two" disabled>
+						Two
+					</Tabs.Trigger>
+					<Tabs.Trigger value="three" disabled>
+						Three
+					</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		await user.tab();
+
+		const tablist = screen.getByRole("tablist");
+		const tabs = within(tablist).getAllByRole("tab");
+		const tabpanel = screen.getByRole("tabpanel");
+
+		expect(tabs[0]).toHaveAttribute("aria-selected", "true");
+		expect(onValueChangeSpy).toBeCalledWith("one");
+		expect(document.activeElement).toBe(tabpanel);
+	});
+
+	it("tabpanel should have tabIndex=0 only when there are no focusable elements", async () => {
+		render(() => (
+			<Tabs.Root>
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two">Two</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">
+					<input />
+				</Tabs.Content>
+				<Tabs.Content value="two">
+					<input disabled />
+				</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		const tabs = screen.getAllByRole("tab");
+		const [firstItem, secondItem] = tabs;
+
+		let tabpanel = screen.getByRole("tabpanel");
+		expect(tabpanel).not.toHaveAttribute("tabindex");
+
+		fireEvent(
+			secondItem,
+			createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
+		);
+		await Promise.resolve();
+
+		fireEvent(
+			secondItem,
+			createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
+		);
+		await Promise.resolve();
+
+		jest.runAllTimers();
+
+		tabpanel = screen.getByRole("tabpanel");
+		expect(tabpanel).toHaveAttribute("tabindex", "0");
+
+		fireEvent(
+			firstItem,
+			createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
+		);
+		await Promise.resolve();
+
+		fireEvent(
+			firstItem,
+			createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
+		);
+		await Promise.resolve();
+
+		jest.runAllTimers();
+
+		tabpanel = screen.getByRole("tabpanel");
+		expect(tabpanel).not.toHaveAttribute("tabindex");
+	});
+
+	it("fires onValueChange when clicking on the current tab", async () => {
+		render(() => (
+			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two">Two</Tabs.Trigger>
+					<Tabs.Trigger value="three">Three</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+				<Tabs.Content value="three">Body 3</Tabs.Content>
+			</Tabs.Root>
+		));
+
+		const tablist = screen.getByRole("tablist");
+		const tabs = within(tablist).getAllByRole("tab");
+		const firstItem = tabs[0];
+
+		expect(firstItem).toHaveAttribute("aria-selected", "true");
+
+		fireEvent(
+			firstItem,
+			createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
+		);
+		await Promise.resolve();
+
+		expect(onValueChangeSpy).toBeCalledTimes(1);
+		expect(onValueChangeSpy).toHaveBeenCalledWith("one");
+	});
 });

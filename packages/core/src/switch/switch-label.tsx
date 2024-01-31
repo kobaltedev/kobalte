@@ -7,7 +7,7 @@ export interface SwitchLabelProps extends FormControlLabelProps {}
  * The label that gives the user information on the switch.
  */
 export function SwitchLabel(props: SwitchLabelProps) {
-  const context = useSwitchContext();
+	const context = useSwitchContext();
 
-  return <FormControlLabel {...context.dataset()} {...props} />;
+	return <FormControlLabel {...context.dataset()} {...props} />;
 }

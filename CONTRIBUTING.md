@@ -119,3 +119,12 @@ Kobalte follows the [conventional commits](https://www.conventionalcommits.org/e
 We use [jest](https://jestjs.io/) for unit tests and [@solidjs/testing-library](https://github.com/solidjs/@solidjs/testing-library) for rendering and writing assertions. Please make sure you include tests with your pull requests. Our CI will run the tests on PRs, you can see on each PR whether you have passed all our checks.
 
 - To run tests locally - `pnpm test`.
+
+### Pull Request
+
+Before opening a pull request be sure to test and run the following checks:
+
+- Format - `pnpm format`
+- Check lint - `pnpm check`
+
+To apply automatic lints run `pnpm lint`

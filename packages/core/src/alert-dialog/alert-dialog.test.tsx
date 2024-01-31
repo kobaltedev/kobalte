@@ -11,33 +11,35 @@ import { render, screen } from "@solidjs/testing-library";
 import * as AlertDialog from ".";
 
 describe("AlertDialog", () => {
-  it("should be labelled by its alert dialog title", function () {
-    render(() => (
-      <AlertDialog.Root open>
-        <AlertDialog.Content>
-          <AlertDialog.Title data-testid="title">title</AlertDialog.Title>
-        </AlertDialog.Content>
-      </AlertDialog.Root>
-    ));
+	it("should be labelled by its alert dialog title", () => {
+		render(() => (
+			<AlertDialog.Root open>
+				<AlertDialog.Content>
+					<AlertDialog.Title data-testid="title">title</AlertDialog.Title>
+				</AlertDialog.Content>
+			</AlertDialog.Root>
+		));
 
-    const panel = screen.getByRole("alertdialog");
-    const title = screen.getByTestId("title");
+		const panel = screen.getByRole("alertdialog");
+		const title = screen.getByTestId("title");
 
-    expect(panel).toHaveAttribute("aria-labelledby", title.id);
-  });
+		expect(panel).toHaveAttribute("aria-labelledby", title.id);
+	});
 
-  it("should be described by its alert dialog description", function () {
-    render(() => (
-      <AlertDialog.Root open>
-        <AlertDialog.Content>
-          <AlertDialog.Description data-testid="description">description</AlertDialog.Description>
-        </AlertDialog.Content>
-      </AlertDialog.Root>
-    ));
+	it("should be described by its alert dialog description", () => {
+		render(() => (
+			<AlertDialog.Root open>
+				<AlertDialog.Content>
+					<AlertDialog.Description data-testid="description">
+						description
+					</AlertDialog.Description>
+				</AlertDialog.Content>
+			</AlertDialog.Root>
+		));
 
-    const panel = screen.getByRole("alertdialog");
-    const description = screen.getByTestId("description");
+		const panel = screen.getByRole("alertdialog");
+		const description = screen.getByTestId("description");
 
-    expect(panel).toHaveAttribute("aria-describedby", description.id);
-  });
+		expect(panel).toHaveAttribute("aria-describedby", description.id);
+	});
 });

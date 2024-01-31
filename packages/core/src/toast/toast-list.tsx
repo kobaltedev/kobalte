@@ -13,15 +13,15 @@
  */
 
 import {
-  callHandler,
-  contains,
-  focusWithoutScrolling,
-  getDocument,
-  getWindow,
-  mergeRefs,
-  OverrideComponentProps,
+	OverrideComponentProps,
+	callHandler,
+	contains,
+	focusWithoutScrolling,
+	getDocument,
+	getWindow,
+	mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, For, JSX, on, onCleanup, splitProps } from "solid-js";
+import { For, JSX, createEffect, on, onCleanup, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
 import { useToastRegionContext } from "./toast-region-context";
@@ -35,113 +35,122 @@ export type ToastListProps = OverrideComponentProps<"ol", ToastListOptions>;
  * Must be inside a `Toast.Region`.
  */
 export function ToastList(props: ToastListProps) {
-  let ref: HTMLOListElement | undefined;
+	let ref: HTMLOListElement | undefined;
 
-  const context = useToastRegionContext();
+	const context = useToastRegionContext();
 
-  const [local, others] = splitProps(props, [
-    "ref",
-    "onFocusIn",
-    "onFocusOut",
-    "onPointerMove",
-    "onPointerLeave",
-  ]);
+	const [local, others] = splitProps(props, [
+		"ref",
+		"onFocusIn",
+		"onFocusOut",
+		"onPointerMove",
+		"onPointerLeave",
+	]);
 
-  const onFocusIn: JSX.EventHandlerUnion<HTMLOListElement, FocusEvent> = e => {
-    callHandler(e, local.onFocusIn);
+	const onFocusIn: JSX.EventHandlerUnion<HTMLOListElement, FocusEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onFocusIn);
 
-    if (context.pauseOnInteraction() && !context.isPaused()) {
-      context.pauseAllTimer();
-    }
-  };
+		if (context.pauseOnInteraction() && !context.isPaused()) {
+			context.pauseAllTimer();
+		}
+	};
 
-  const onFocusOut: JSX.EventHandlerUnion<HTMLOListElement, FocusEvent> = e => {
-    callHandler(e, local.onFocusOut);
+	const onFocusOut: JSX.EventHandlerUnion<HTMLOListElement, FocusEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onFocusOut);
 
-    // The newly focused element isn't inside the toast list.
-    if (!contains(ref, e.relatedTarget as HTMLElement)) {
-      context.resumeAllTimer();
-    }
-  };
+		// The newly focused element isn't inside the toast list.
+		if (!contains(ref, e.relatedTarget as HTMLElement)) {
+			context.resumeAllTimer();
+		}
+	};
 
-  const onPointerMove: JSX.EventHandlerUnion<HTMLOListElement, PointerEvent> = e => {
-    callHandler(e, local.onPointerMove);
+	const onPointerMove: JSX.EventHandlerUnion<HTMLOListElement, PointerEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onPointerMove);
 
-    if (context.pauseOnInteraction() && !context.isPaused()) {
-      context.pauseAllTimer();
-    }
-  };
+		if (context.pauseOnInteraction() && !context.isPaused()) {
+			context.pauseAllTimer();
+		}
+	};
 
-  const onPointerLeave: JSX.EventHandlerUnion<HTMLOListElement, PointerEvent> = e => {
-    callHandler(e, local.onPointerLeave);
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLOListElement, PointerEvent> =
+		(e) => {
+			callHandler(e, local.onPointerLeave);
 
-    // The current active element isn't inside the toast list.
-    if (!contains(ref, getDocument(ref).activeElement)) {
-      context.resumeAllTimer();
-    }
-  };
+			// The current active element isn't inside the toast list.
+			if (!contains(ref, getDocument(ref).activeElement)) {
+				context.resumeAllTimer();
+			}
+		};
 
-  createEffect(
-    on([() => ref, () => context.hotkey()], ([ref, hotkey]) => {
-      if (isServer) {
-        return;
-      }
+	createEffect(
+		on([() => ref, () => context.hotkey()], ([ref, hotkey]) => {
+			if (isServer) {
+				return;
+			}
 
-      if (!ref) {
-        return;
-      }
+			if (!ref) {
+				return;
+			}
 
-      const doc = getDocument(ref);
+			const doc = getDocument(ref);
 
-      const onKeyDown = (event: KeyboardEvent) => {
-        const isHotkeyPressed = hotkey.every(key => (event as any)[key] || event.code === key);
+			const onKeyDown = (event: KeyboardEvent) => {
+				const isHotkeyPressed = hotkey.every(
+					(key) => (event as any)[key] || event.code === key,
+				);
 
-        if (isHotkeyPressed) {
-          focusWithoutScrolling(ref);
-        }
-      };
+				if (isHotkeyPressed) {
+					focusWithoutScrolling(ref);
+				}
+			};
 
-      doc.addEventListener("keydown", onKeyDown);
+			doc.addEventListener("keydown", onKeyDown);
 
-      onCleanup(() => doc.removeEventListener("keydown", onKeyDown));
-    }),
-  );
+			onCleanup(() => doc.removeEventListener("keydown", onKeyDown));
+		}),
+	);
 
-  createEffect(() => {
-    if (!context.pauseOnPageIdle()) {
-      return;
-    }
+	createEffect(() => {
+		if (!context.pauseOnPageIdle()) {
+			return;
+		}
 
-    const win = getWindow(ref);
+		const win = getWindow(ref);
 
-    win.addEventListener("blur", context.pauseAllTimer);
-    win.addEventListener("focus", context.resumeAllTimer);
+		win.addEventListener("blur", context.pauseAllTimer);
+		win.addEventListener("focus", context.resumeAllTimer);
 
-    onCleanup(() => {
-      win.removeEventListener("blur", context.pauseAllTimer);
-      win.removeEventListener("focus", context.resumeAllTimer);
-    });
-  });
+		onCleanup(() => {
+			win.removeEventListener("blur", context.pauseAllTimer);
+			win.removeEventListener("focus", context.resumeAllTimer);
+		});
+	});
 
-  return (
-    <ol
-      ref={mergeRefs(el => (ref = el), local.ref)}
-      tabIndex={-1}
-      onFocusIn={onFocusIn}
-      onFocusOut={onFocusOut}
-      onPointerMove={onPointerMove}
-      onPointerLeave={onPointerLeave}
-      {...others}
-    >
-      <For each={context.toasts()}>
-        {toast =>
-          toast.toastComponent({
-            get toastId() {
-              return toast.id;
-            },
-          })
-        }
-      </For>
-    </ol>
-  );
+	return (
+		<ol
+			ref={mergeRefs((el) => (ref = el), local.ref)}
+			tabIndex={-1}
+			onFocusIn={onFocusIn}
+			onFocusOut={onFocusOut}
+			onPointerMove={onPointerMove}
+			onPointerLeave={onPointerLeave}
+			{...others}
+		>
+			<For each={context.toasts()}>
+				{(toast) =>
+					toast.toastComponent({
+						get toastId() {
+							return toast.id;
+						},
+					})
+				}
+			</For>
+		</ol>
+	);
 }

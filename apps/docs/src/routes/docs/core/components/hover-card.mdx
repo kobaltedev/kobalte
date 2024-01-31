@@ -31,19 +31,19 @@ The hovercard consists of:
 
 ```tsx
 <HoverCard.Root>
-  <HoverCard.Trigger />
-  <HoverCard.Portal>
-    <HoverCard.Content>
-      <HoverCard.Arrow />
-    </HoverCard.Content>
-  </HoverCard.Portal>
+	<HoverCard.Trigger />
+	<HoverCard.Portal>
+		<HoverCard.Content>
+			<HoverCard.Arrow />
+		</HoverCard.Content>
+	</HoverCard.Portal>
 </HoverCard.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -181,13 +181,13 @@ The `open` prop can be used to make the open state controlled. The `onOpenChange
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
-  const [open, setOpen] = createSignal(false);
+	const [open, setOpen] = createSignal(false);
 
-  return (
-    <HoverCard.Root open={open()} onOpenChange={setOpen}>
-      ...
-    </HoverCard.Root>
-  );
+	return (
+		<HoverCard.Root open={open()} onOpenChange={setOpen}>
+			...
+		</HoverCard.Root>
+	);
 }
 ```
 
@@ -198,34 +198,34 @@ We expose a CSS custom property `--kb-hovercard-content-transform-origin` which 
 ```css {2}
 /* style.css */
 .hovercard__content {
-  transform-origin: var(--kb-hovercard-content-transform-origin);
-  animation: contentHide 250ms ease-in forwards;
+	transform-origin: var(--kb-hovercard-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
 }
 
 .hovercard__content[data-expanded] {
-  animation: contentShow 250ms ease-out;
+	animation: contentShow 250ms ease-out;
 }
 
 @keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
 
 @keyframes contentHide {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.96);
-  }
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: scale(0.96);
+	}
 }
 ```
 

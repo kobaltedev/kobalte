@@ -7,197 +7,212 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import { callHandler, mergeRefs, OverrideComponentProps, ValidationState } from "@kobalte/utils";
-import { createEffect, createMemo, JSX, on, splitProps } from "solid-js";
+import {
+	OverrideComponentProps,
+	ValidationState,
+	callHandler,
+	mergeRefs,
+} from "@kobalte/utils";
+import { JSX, createEffect, createMemo, on, splitProps } from "solid-js";
 
 import { announce, clearAnnouncer } from "../live-announcer";
 import { AsChildProp, Polymorphic } from "../polymorphic";
-import { SPIN_BUTTON_INTL_TRANSLATIONS, SpinButtonIntlTranslations } from "./spin-button.intl";
+import {
+	SPIN_BUTTON_INTL_TRANSLATIONS,
+	SpinButtonIntlTranslations,
+} from "./spin-button.intl";
 
 export interface SpinButtonRootOptions extends AsChildProp {
-  /** The localized strings of the component. */
-  translations?: SpinButtonIntlTranslations;
+	/** The localized strings of the component. */
+	translations?: SpinButtonIntlTranslations;
 
-  /** The controlled value of the spin button. */
-  value?: number;
+	/** The controlled value of the spin button. */
+	value?: number;
 
-  /** The string representation of the value. */
-  textValue?: string;
+	/** The string representation of the value. */
+	textValue?: string;
 
-  /** The smallest value allowed for the spin button. */
-  minValue?: number;
+	/** The smallest value allowed for the spin button. */
+	minValue?: number;
 
-  /** The largest value allowed for the spin button. */
-  maxValue?: number;
+	/** The largest value allowed for the spin button. */
+	maxValue?: number;
 
-  /** Whether the spin button should display its "valid" or "invalid" visual styling. */
-  validationState?: ValidationState;
+	/** Whether the spin button should display its "valid" or "invalid" visual styling. */
+	validationState?: ValidationState;
 
-  /** Whether the user must fill the spin button before the owning form can be submitted. */
-  required?: boolean;
+	/** Whether the user must fill the spin button before the owning form can be submitted. */
+	required?: boolean;
 
-  /** Whether the spin button is disabled. */
-  disabled?: boolean;
+	/** Whether the spin button is disabled. */
+	disabled?: boolean;
 
-  /** Whether the spin button is read only. */
-  readOnly?: boolean;
+	/** Whether the spin button is read only. */
+	readOnly?: boolean;
 
-  /** Event handler called to increment the value of the spin button by one step. */
-  onIncrement?: () => void;
+	/** Event handler called to increment the value of the spin button by one step. */
+	onIncrement?: () => void;
 
-  /** Event handler called to increment the value of the spin button by one page. */
-  onIncrementPage?: () => void;
+	/** Event handler called to increment the value of the spin button by one page. */
+	onIncrementPage?: () => void;
 
-  /** Event handler called to decrement the value of the spin button by one step. */
-  onDecrement?: () => void;
+	/** Event handler called to decrement the value of the spin button by one step. */
+	onDecrement?: () => void;
 
-  /** Event handler called to decrement the value of the spin button by one page. */
-  onDecrementPage?: () => void;
+	/** Event handler called to decrement the value of the spin button by one page. */
+	onDecrementPage?: () => void;
 
-  /** Event handler called to decrement the value of the spin button to the `minValue`. */
-  onDecrementToMin?: () => void;
+	/** Event handler called to decrement the value of the spin button to the `minValue`. */
+	onDecrementToMin?: () => void;
 
-  /** Event handler called to increment the value of the spin button to the `maxValue`. */
-  onIncrementToMax?: () => void;
+	/** Event handler called to increment the value of the spin button to the `maxValue`. */
+	onIncrementToMax?: () => void;
 }
 
-export interface SpinButtonRootProps extends OverrideComponentProps<"div", SpinButtonRootOptions> {}
+export interface SpinButtonRootProps
+	extends OverrideComponentProps<"div", SpinButtonRootOptions> {}
 
 export function SpinButtonRoot(props: SpinButtonRootProps) {
-  let ref: HTMLDivElement | undefined;
+	let ref: HTMLDivElement | undefined;
 
-  props = mergeDefaultProps(
-    {
-      translations: SPIN_BUTTON_INTL_TRANSLATIONS,
-    },
-    props,
-  );
+	const mergedProps = mergeDefaultProps(
+		{
+			translations: SPIN_BUTTON_INTL_TRANSLATIONS,
+		},
+		props,
+	);
 
-  const [local, others] = splitProps(props, [
-    "translations",
-    "ref",
-    "value",
-    "textValue",
-    "minValue",
-    "maxValue",
-    "validationState",
-    "required",
-    "disabled",
-    "readOnly",
-    "onIncrement",
-    "onIncrementPage",
-    "onDecrement",
-    "onDecrementPage",
-    "onDecrementToMin",
-    "onIncrementToMax",
-    "onKeyDown",
-    "onFocus",
-    "onBlur",
-  ]);
+	const [local, others] = splitProps(mergedProps, [
+		"translations",
+		"ref",
+		"value",
+		"textValue",
+		"minValue",
+		"maxValue",
+		"validationState",
+		"required",
+		"disabled",
+		"readOnly",
+		"onIncrement",
+		"onIncrementPage",
+		"onDecrement",
+		"onDecrementPage",
+		"onDecrementToMin",
+		"onIncrementToMax",
+		"onKeyDown",
+		"onFocus",
+		"onBlur",
+	]);
 
-  let isFocused = false;
+	let isFocused = false;
 
-  // Replace Unicode hyphen-minus (U+002D) with minus sign (U+2212).
-  // This ensures that macOS VoiceOver announces it as "minus" even with other characters between the minus sign
-  // and the number (e.g. currency symbol). Otherwise, it announces nothing because it assumes the character is a hyphen.
-  // In addition, replace the empty string with the word "Empty" so that iOS VoiceOver does not read "50%" for an empty field.
-  const textValue = createMemo(() => {
-    if (local.textValue === "") {
-      return local.translations?.empty;
-    }
+	// Replace Unicode hyphen-minus (U+002D) with minus sign (U+2212).
+	// This ensures that macOS VoiceOver announces it as "minus" even with other characters between the minus sign
+	// and the number (e.g. currency symbol). Otherwise, it announces nothing because it assumes the character is a hyphen.
+	// In addition, replace the empty string with the word "Empty" so that iOS VoiceOver does not read "50%" for an empty field.
+	const textValue = createMemo(() => {
+		if (local.textValue === "") {
+			return local.translations?.empty;
+		}
 
-    return (local.textValue || `${local.value}`).replace("-", "\u2212");
-  });
+		return (local.textValue || `${local.value}`).replace("-", "\u2212");
+	});
 
-  const onKeyDown: JSX.EventHandlerUnion<HTMLDivElement, KeyboardEvent> = e => {
-    callHandler(e, local.onKeyDown);
+	const onKeyDown: JSX.EventHandlerUnion<HTMLDivElement, KeyboardEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onKeyDown);
 
-    if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || local.readOnly) {
-      return;
-    }
+		if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || local.readOnly) {
+			return;
+		}
 
-    switch (e.key) {
-      case "PageUp":
-        if (local.onIncrementPage) {
-          e.preventDefault();
-          local.onIncrementPage();
-          break;
-        }
-      // fallthrough!
-      case "ArrowUp":
-      case "Up":
-        if (local.onIncrement) {
-          e.preventDefault();
-          local.onIncrement();
-        }
-        break;
-      case "PageDown":
-        if (local.onDecrementPage) {
-          e.preventDefault();
-          local.onDecrementPage();
-          break;
-        }
-      // fallthrough
-      case "ArrowDown":
-      case "Down":
-        if (local.onDecrement) {
-          e.preventDefault();
-          local.onDecrement();
-        }
-        break;
-      case "Home":
-        if (local.onDecrementToMin) {
-          e.preventDefault();
-          local.onDecrementToMin();
-        }
-        break;
-      case "End":
-        if (local.onIncrementToMax) {
-          e.preventDefault();
-          local.onIncrementToMax();
-        }
-        break;
-    }
-  };
+		switch (e.key) {
+			// biome-ignore lint/suspicious/noFallthroughSwitchClause: fallthrough
+			case "PageUp":
+				if (local.onIncrementPage) {
+					e.preventDefault();
+					local.onIncrementPage();
+					break;
+				}
+			// fallthrough!
+			case "ArrowUp":
+			case "Up":
+				if (local.onIncrement) {
+					e.preventDefault();
+					local.onIncrement();
+				}
+				break;
+			// biome-ignore lint/suspicious/noFallthroughSwitchClause: fallthrough
+			case "PageDown":
+				if (local.onDecrementPage) {
+					e.preventDefault();
+					local.onDecrementPage();
+					break;
+				}
+			// fallthrough!
+			case "ArrowDown":
+			case "Down":
+				if (local.onDecrement) {
+					e.preventDefault();
+					local.onDecrement();
+				}
+				break;
+			case "Home":
+				if (local.onDecrementToMin) {
+					e.preventDefault();
+					local.onDecrementToMin();
+				}
+				break;
+			case "End":
+				if (local.onIncrementToMax) {
+					e.preventDefault();
+					local.onIncrementToMax();
+				}
+				break;
+		}
+	};
 
-  const onFocus: JSX.EventHandlerUnion<HTMLDivElement, FocusEvent> = e => {
-    callHandler(e, local.onFocus);
+	const onFocus: JSX.EventHandlerUnion<HTMLDivElement, FocusEvent> = (e) => {
+		callHandler(e, local.onFocus);
 
-    isFocused = true;
-  };
+		isFocused = true;
+	};
 
-  const onBlur: JSX.EventHandlerUnion<HTMLDivElement, FocusEvent> = e => {
-    callHandler(e, local.onBlur);
+	const onBlur: JSX.EventHandlerUnion<HTMLDivElement, FocusEvent> = (e) => {
+		callHandler(e, local.onBlur);
 
-    isFocused = false;
-  };
+		isFocused = false;
+	};
 
-  createEffect(
-    on(textValue, textValue => {
-      if (isFocused) {
-        clearAnnouncer("assertive");
-        announce(textValue ?? "", "assertive");
-      }
-    }),
-  );
+	createEffect(
+		on(textValue, (textValue) => {
+			if (isFocused) {
+				clearAnnouncer("assertive");
+				announce(textValue ?? "", "assertive");
+			}
+		}),
+	);
 
-  return (
-    <Polymorphic
-      ref={mergeRefs(el => (ref = el), local.ref)}
-      as="div"
-      role="spinbutton"
-      aria-valuenow={local.value != null && !isNaN(local.value) ? local.value : null}
-      aria-valuetext={textValue()}
-      aria-valuemin={local.minValue}
-      aria-valuemax={local.maxValue}
-      aria-required={local.required || undefined}
-      aria-disabled={local.disabled || undefined}
-      aria-readonly={local.readOnly || undefined}
-      aria-invalid={local.validationState === "invalid" || undefined}
-      onKeyDown={onKeyDown}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      {...others}
-    />
-  );
+	return (
+		<Polymorphic
+			ref={mergeRefs((el) => (ref = el), local.ref)}
+			as="div"
+			role="spinbutton"
+			aria-valuenow={
+				local.value != null && !Number.isNaN(local.value) ? local.value : null
+			}
+			aria-valuetext={textValue()}
+			aria-valuemin={local.minValue}
+			aria-valuemax={local.maxValue}
+			aria-required={local.required || undefined}
+			aria-disabled={local.disabled || undefined}
+			aria-readonly={local.readOnly || undefined}
+			aria-invalid={local.validationState === "invalid" || undefined}
+			onKeyDown={onKeyDown}
+			onFocus={onFocus}
+			onBlur={onBlur}
+			{...others}
+		/>
+	);
 }

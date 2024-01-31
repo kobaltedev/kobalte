@@ -16,21 +16,21 @@ import { getVisibleRangeDescription } from "./utils";
 export type CalendarHeadingProps = ComponentProps<"h2">;
 
 export function CalendarHeading(props: CalendarHeadingProps) {
-  const rootContext = useCalendarContext();
+	const rootContext = useCalendarContext();
 
-  const title = createMemo(() => {
-    return getVisibleRangeDescription(
-      rootContext.translations(),
-      rootContext.startDate(),
-      rootContext.endDate(),
-      rootContext.timeZone(),
-      false,
-    );
-  });
+	const title = createMemo(() => {
+		return getVisibleRangeDescription(
+			rootContext.translations(),
+			rootContext.startDate(),
+			rootContext.endDate(),
+			rootContext.timeZone(),
+			false,
+		);
+	});
 
-  return (
-    <Polymorphic as="h2" {...props}>
-      {title()}
-    </Polymorphic>
-  );
+	return (
+		<Polymorphic as="h2" {...props}>
+			{title()}
+		</Polymorphic>
+	);
 }

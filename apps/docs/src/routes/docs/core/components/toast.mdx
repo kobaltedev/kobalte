@@ -32,7 +32,7 @@ The toast region consists of:
 
 ```tsx
 <Toast.Region>
-  <Toast.List />
+	<Toast.List />
 </Toast.Region>
 ```
 
@@ -47,19 +47,19 @@ The toast consists of:
 
 ```tsx
 <Toast.Root>
-  <Toast.CloseButton />
-  <Toast.Title />
-  <Toast.Description />
-  <Toast.ProgressTrack>
-    <Toast.ProgressFill />
-  </Toast.ProgressTrack>
+	<Toast.CloseButton />
+	<Toast.Title />
+	<Toast.Description />
+	<Toast.ProgressTrack>
+		<Toast.ProgressFill />
+	</Toast.ProgressTrack>
 </Toast.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -282,8 +282,8 @@ toaster.update(id, props => <Toast.Root toastId={props.toastId}>...</Toast.Root>
 ```
 
 <Callout>
-  Notice that you always need to pass the `toastId` to `Toast.Root`, because it doesn't know
-  anything about the `toaster` nor the toast it is supposed to represent.
+	Notice that you always need to pass the `toastId` to `Toast.Root`, because it doesn't know
+	anything about the `toaster` nor the toast it is supposed to represent.
 </Callout>
 
 ### Dismissing a toast
@@ -314,13 +314,13 @@ In addition to the `toastId`, props will contain the following properties:
 
 ```tsx {3-5}
 toaster.promise(promise, props => (
-  <Toast.Root toastId={props.toastId}>
-    <Switch>
-      <Match when={props.state === "pending"}>Loading</Match>
-      <Match when={props.state === "fulfilled"}>{props.data}</Match>
-      <Match when={props.state === "rejected"}>{props.error}</Match>
-    </Switch>
-  </Toast.Root>
+	<Toast.Root toastId={props.toastId}>
+		<Switch>
+			<Match when={props.state === "pending"}>Loading</Match>
+			<Match when={props.state === "fulfilled"}>{props.data}</Match>
+			<Match when={props.state === "rejected"}>{props.error}</Match>
+		</Switch>
+	</Toast.Root>
 ));
 ```
 
@@ -333,7 +333,7 @@ The `Toast.Region` component exposes the following props to pause the toasts it 
 
 ```tsx
 <Toast.Region pauseOnPageIdle pauseOnInteraction>
-  <Toast.List />
+	<Toast.List />
 </Toast.Region>
 ```
 
@@ -343,7 +343,7 @@ Use the `limit` prop of the `Toast.Region` to limit the number of toasts visible
 
 ```tsx
 <Toast.Region limit={3}>
-  <Toast.List />
+	<Toast.List />
 </Toast.Region>
 ```
 
@@ -355,11 +355,11 @@ We expose a CSS custom property `--kb-toast-progress-fill-width` which correspon
 /* style.css*/
 
 .toast__progress-fill {
-  background-color: hsl(200 98% 39%);
-  border-radius: 3px;
-  height: 100%;
-  width: var(--kb-toast-progress-fill-width);
-  transition: width 250ms linear;
+	background-color: hsl(200 98% 39%);
+	border-radius: 3px;
+	height: 100%;
+	width: var(--kb-toast-progress-fill-width);
+	transition: width 250ms linear;
 }
 ```
 
@@ -374,24 +374,24 @@ import { Toast, toaster } from "@kobalte/core";
 import "./style.css";
 
 function App() {
-  const showToast = () => {
-    toaster.show(props => (
-      <Toast.Root toastId={props.toastId} class="toast">
-        ...
-      </Toast.Root>
-    ));
-  };
+	const showToast = () => {
+		toaster.show(props => (
+			<Toast.Root toastId={props.toastId} class="toast">
+				...
+			</Toast.Root>
+		));
+	};
 
-  return (
-    <>
-      <button onClick={showToast}>Show toast</button>
-      <Portal>
-        <Toast.Region swipeDirection="right">
-          <Toast.List />
-        </Toast.Region>
-      </Portal>
-    </>
-  );
+	return (
+		<>
+			<button onClick={showToast}>Show toast</button>
+			<Portal>
+				<Toast.Region swipeDirection="right">
+					<Toast.List />
+				</Toast.Region>
+			</Portal>
+		</>
+	);
 }
 ```
 
@@ -399,25 +399,25 @@ function App() {
 /* style.css */
 
 .toast[data-swipe="move"] {
-  transform: translateX(var(--kb-toast-swipe-move-x));
+	transform: translateX(var(--kb-toast-swipe-move-x));
 }
 
 .toast[data-swipe="cancel"] {
-  transform: translateX(0);
-  transition: transform 200ms ease-out;
+	transform: translateX(0);
+	transition: transform 200ms ease-out;
 }
 
 .toast[data-swipe="end"] {
-  animation: slideRight 100ms ease-out;
+	animation: slideRight 100ms ease-out;
 }
 
 @keyframes slideRight {
-  from {
-    transform: translateX(var(--kb-toast-swipe-end-x));
-  }
-  to {
-    transform: translateX(100%);
-  }
+	from {
+		transform: translateX(var(--kb-toast-swipe-end-x));
+	}
+	to {
+		transform: translateX(100%);
+	}
 }
 ```
 
@@ -433,71 +433,71 @@ import { JSX } from "solid-js/jsx-runtime";
 import { Switch, Match } from "solid-js/web";
 
 function show(message: string) {
-  return toaster.show(props => (
-    <Toast.Root toastId={props.toastId} class="toast">
-      {message}
-    </Toast.Root>
-  ));
+	return toaster.show(props => (
+		<Toast.Root toastId={props.toastId} class="toast">
+			{message}
+		</Toast.Root>
+	));
 }
 
 function success(message: string) {
-  return toaster.show(props => (
-    <Toast.Root toastId={props.toastId} class="toast toast--success">
-      {message}
-    </Toast.Root>
-  ));
+	return toaster.show(props => (
+		<Toast.Root toastId={props.toastId} class="toast toast--success">
+			{message}
+		</Toast.Root>
+	));
 }
 
 function error(message: string) {
-  return toaster.show(props => (
-    <Toast.Root toastId={props.toastId} class="toast toast--error">
-      {message}
-    </Toast.Root>
-  ));
+	return toaster.show(props => (
+		<Toast.Root toastId={props.toastId} class="toast toast--error">
+			{message}
+		</Toast.Root>
+	));
 }
 
 function promise<T, U>(
-  promise: Promise<T> | (() => Promise<T>),
-  options: {
-    loading?: JSX.Element;
-    success?: (data: T) => JSX.Element;
-    error?: (error: U) => JSX.Element;
-  },
+	promise: Promise<T> | (() => Promise<T>),
+	options: {
+		loading?: JSX.Element;
+		success?: (data: T) => JSX.Element;
+		error?: (error: U) => JSX.Element;
+	},
 ) {
-  return toaster.promise(promise, props => (
-    <Toast.Root
-      toastId={props.toastId}
-      classList={{
-        toast: true,
-        "toast-loading": props.state === "pending",
-        "toast-success": props.state === "fulfilled",
-        "toast-error": props.state === "rejected",
-      }}
-    >
-      <Switch>
-        <Match when={props.state === "pending"}>{options.loading}</Match>
-        <Match when={props.state === "fulfilled"}>{options.success?.(props.data)}</Match>
-        <Match when={props.state === "rejected"}>{options.error?.(props.error)}</Match>
-      </Switch>
-    </Toast.Root>
-  ));
+	return toaster.promise(promise, props => (
+		<Toast.Root
+			toastId={props.toastId}
+			classList={{
+				toast: true,
+				"toast-loading": props.state === "pending",
+				"toast-success": props.state === "fulfilled",
+				"toast-error": props.state === "rejected",
+			}}
+		>
+			<Switch>
+				<Match when={props.state === "pending"}>{options.loading}</Match>
+				<Match when={props.state === "fulfilled"}>{options.success?.(props.data)}</Match>
+				<Match when={props.state === "rejected"}>{options.error?.(props.error)}</Match>
+			</Switch>
+		</Toast.Root>
+	));
 }
 
 function custom(jsx: () => JSX.Element) {
-  return toaster.show(props => <Toast.Root toastId={props.toastId}>{jsx}</Toast.Root>);
+	return toaster.show(props => <Toast.Root toastId={props.toastId}>{jsx}</Toast.Root>);
 }
 
 function dismiss(id: number) {
-  return toaster.dismiss(id);
+	return toaster.dismiss(id);
 }
 
 export const toast = {
-  show,
-  success,
-  error,
-  promise,
-  custom,
-  dismiss,
+	show,
+	success,
+	error,
+	promise,
+	custom,
+	dismiss,
 };
 ```
 
@@ -509,20 +509,20 @@ Then inside your application, use your own toast API:
 import { toast } from "./toast";
 
 function App() {
-  const showToast = () => {
-    toast.success("Event has been created");
-  };
+	const showToast = () => {
+		toast.success("Event has been created");
+	};
 
-  return (
-    <>
-      <button onClick={showToast}>Show toast</button>
-      <Portal>
-        <Toast.Region>
-          <Toast.List />
-        </Toast.Region>
-      </Portal>
-    </>
-  );
+	return (
+		<>
+			<button onClick={showToast}>Show toast</button>
+			<Portal>
+				<Toast.Region>
+					<Toast.List />
+				</Toast.Region>
+			</Portal>
+		</>
+	);
 }
 ```
 
@@ -532,7 +532,7 @@ The `region` option in `toaster.show()` allows you to display toast in multiple 
 
 ```tsx {1}
 toaster.show(props => <Toast.Root toastId={props.toastId}>...</Toast.Root>, {
-  region: "custom-region-id",
+	region: "custom-region-id",
 });
 ```
 
@@ -540,18 +540,18 @@ Inside your application, use add your custom region:
 
 ```tsx {2, 5}
 <Portal>
-  {/* Default region */}
-  <Toast.Region>
-    <Toast.List />
-  </Toast.Region>
-  <Toast.Region regionId="custom-region-id">
-    <Toast.List />
-  </Toast.Region>
+	{/* Default region */}
+	<Toast.Region>
+		<Toast.List />
+	</Toast.Region>
+	<Toast.Region regionId="custom-region-id">
+		<Toast.List />
+	</Toast.Region>
 </Portal>
 ```
 
 <Preview isRounded>
-  <MultipleRegionsExample />
+	<MultipleRegionsExample />
 </Preview>
 
 ## API reference
@@ -580,6 +580,7 @@ Inside your application, use add your custom region:
 | pauseOnPageIdle    | `boolean` <br/> **default:** true <br/> Whether the toasts close timeout should pause when the document loses focus or the page is idle (e.g. switching to a new browser tab).                                                                                                                            |
 | topLayer           | `boolean` <br/> **default:** true <br/> Whether the toast region is marked as a "top layer", so that it: <br/> - is not aria-hidden when opening an overlay. <br/> - allows focus even outside a containing focus scope. <br/> - doesn’t dismiss overlays when clicking on it, even though it is outside. |
 | regionId           | `string` <br/> The custom id of the region used for multiple regions.                                                                                                                                                                                                                                     |
+| translations       | [`ToastRegionIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/toast/toast.intl.ts) <br/> Localization strings.                                                                                                                                                        |
 
 ### Toast.Root
 
@@ -596,6 +597,7 @@ Inside your application, use add your custom region:
 | onSwipeCancel   | `(event: SwipeEvent) => void` <br/> Event handler called when a swipe interaction is cancelled.                                                                                                                                             |
 | onSwipeEnd      | `(event: SwipeEvent) => void` <br/> Event handler called at the end of a swipe interaction.                                                                                                                                                 |
 | onEscapeKeyDown | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                                             |
+| translations    | [`ToastIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/toast/toast.intl.ts) <br/> Localization strings.                                                                                                |
 
 | Data attribute       | Description                                                              |
 | :------------------- | :----------------------------------------------------------------------- |

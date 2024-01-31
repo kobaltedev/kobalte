@@ -27,6 +27,7 @@ export * as HoverCard from "./hover-card";
 export * as Image from "./image";
 export * as Link from "./link";
 export * as Listbox from "./listbox";
+export * as Menubar from "./menubar";
 export * as Pagination from "./pagination";
 export * as Popover from "./popover";
 export * as Progress from "./progress";

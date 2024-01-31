@@ -1,0 +1,33 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"files": {
+		"ignore": ["./tsconfig.json", "*/netlify/*"]
+	},
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true,
+		"defaultBranch": "main"
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"a11y": {
+				"noAutofocus": "off",
+				"noNoninteractiveTabindex": "off",
+				"noNoninteractiveElementToInteractiveRole": "off"
+			},
+			"suspicious": {
+				"noEmptyInterface": "off",
+				"noExplicitAny": "off",
+				"noAssignInExpressions": "off"
+			},
+			"style": {
+				"noNonNullAssertion": "off"
+			},
+			"complexity": {
+				"noBannedTypes": "off"
+			}
+		}
+	}
+}

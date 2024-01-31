@@ -1,13 +1,13 @@
 import { Preview, TabsSnippets } from "../../../../components";
 import {
-  ControlledExample,
-  DefaultValueExample,
-  HTMLFormExample,
-  BasicExample,
-  DescriptionExample,
-  ErrorMessageExample,
-  TextAreaExample,
-  TextAreaAutoResizeExample,
+	ControlledExample,
+	DefaultValueExample,
+	HTMLFormExample,
+	BasicExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	TextAreaExample,
+	TextAreaAutoResizeExample,
 } from "../../../../examples/text-field";
 
 # Text Field
@@ -42,17 +42,17 @@ The text field consists of:
 
 ```tsx
 <TextField.Root>
-  <TextField.Label />
-  <TextField.Input /> {/* or <TextField.TextArea /> */}
-  <TextField.Description />
-  <TextField.ErrorMessage />
+	<TextField.Label />
+	<TextField.Input /> {/* or <TextField.TextArea /> */}
+	<TextField.Description />
+	<TextField.ErrorMessage />
 </TextField.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -147,13 +147,13 @@ The text field consists of:
 An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
 <Preview>
-  <DefaultValueExample />
+	<DefaultValueExample />
 </Preview>
 
 ```tsx {0}
 <TextField.Root defaultValue="Apple">
-  <TextField.Label>Favorite fruit</TextField.Label>
-  <TextField.Input />
+	<TextField.Label>Favorite fruit</TextField.Label>
+	<TextField.Input />
 </TextField.Root>
 ```
 
@@ -162,24 +162,24 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 The `value` prop can be used to make the value controlled. The `onChange` event is fired when the user type into the input and receive the new value.
 
 <Preview>
-  <ControlledExample />
+	<ControlledExample />
 </Preview>
 
 ```tsx {3,7}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
-  const [value, setValue] = createSignal("Apple");
+	const [value, setValue] = createSignal("Apple");
 
-  return (
-    <>
-      <TextField.Root value={value()} onChange={setValue}>
-        <TextField.Label>Favorite fruit</TextField.Label>
-        <TextField.Input />
-      </TextField.Root>
-      <p>Your favorite fruit is: {value()}.</p>
-    </>
-  );
+	return (
+		<>
+			<TextField.Root value={value()} onChange={setValue}>
+				<TextField.Label>Favorite fruit</TextField.Label>
+				<TextField.Input />
+			</TextField.Root>
+			<p>Your favorite fruit is: {value()}.</p>
+		</>
+	);
 }
 ```
 
@@ -188,26 +188,26 @@ function ControlledExample() {
 Use the `TextField.TextArea` component instead of `TextField.Input` to create a multiline text field.
 
 <Preview>
-  <TextAreaExample />
+	<TextAreaExample />
 </Preview>
 
 ```tsx {2}
 <TextField.Root>
-  <TextField.Label>Favorite fruit</TextField.Label>
-  <TextField.TextArea />
+	<TextField.Label>Favorite fruit</TextField.Label>
+	<TextField.TextArea />
 </TextField.Root>
 ```
 
 In addition, the `autoResize` prop can be used to make the textarea height adjust to it's content. Try typing in the text field below to see it in action.
 
 <Preview>
-  <TextAreaAutoResizeExample />
+	<TextAreaAutoResizeExample />
 </Preview>
 
 ```tsx {2}
 <TextField.Root>
-  <TextField.Label>Favorite fruit</TextField.Label>
-  <TextField.TextArea autoResize />
+	<TextField.Label>Favorite fruit</TextField.Label>
+	<TextField.TextArea autoResize />
 </TextField.Root>
 ```
 
@@ -216,14 +216,14 @@ In addition, the `autoResize` prop can be used to make the textarea height adjus
 The `TextField.Description` component can be used to associate additional help text with a text field.
 
 <Preview>
-  <DescriptionExample />
+	<DescriptionExample />
 </Preview>
 
 ```tsx {3}
 <TextField.Root>
-  <TextField.Label>Favorite fruit</TextField.Label>
-  <TextField.Input />
-  <TextField.Description>Choose the fruit you like the most.</TextField.Description>
+	<TextField.Label>Favorite fruit</TextField.Label>
+	<TextField.Input />
+	<TextField.Description>Choose the fruit you like the most.</TextField.Description>
 </TextField.Root>
 ```
 
@@ -234,26 +234,26 @@ The `TextField.ErrorMessage` component can be used to help the user fix a valida
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
 <Preview>
-  <ErrorMessageExample />
+	<ErrorMessageExample />
 </Preview>
 
 ```tsx {9,12}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
-  const [value, setValue] = createSignal("Orange");
+	const [value, setValue] = createSignal("Orange");
 
-  return (
-    <TextField.Root
-      value={value()}
-      onChange={setValue}
-      validationState={value() !== "Apple" ? "invalid" : "valid"}
-    >
-      <TextField.Label>Favorite fruit</TextField.Label>
-      <TextField.Input />
-      <TextField.ErrorMessage>Hmm, I prefer apples.</TextField.ErrorMessage>
-    </TextField.Root>
-  );
+	return (
+		<TextField.Root
+			value={value()}
+			onChange={setValue}
+			validationState={value() !== "Apple" ? "invalid" : "valid"}
+		>
+			<TextField.Label>Favorite fruit</TextField.Label>
+			<TextField.Input />
+			<TextField.ErrorMessage>Hmm, I prefer apples.</TextField.ErrorMessage>
+		</TextField.Root>
+	);
 }
 ```
 
@@ -262,27 +262,27 @@ function ErrorMessageExample() {
 The text field `name` prop can be used for integration with HTML forms.
 
 <Preview>
-  <HTMLFormExample />
+	<HTMLFormExample />
 </Preview>
 
 ```tsx {7}
 function HTMLFormExample() {
-  const onSubmit = (e: SubmitEvent) => {
-    // handle form submission.
-  };
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
 
-  return (
-    <form onSubmit={onSubmit}>
-      <TextField.Root name="favorite-fruit">
-        <TextField.Label>Favorite fruit</TextField.Label>
-        <TextField.Input />
-      </TextField.Root>
-      <div>
-        <button type="reset">Reset</button>
-        <button>Submit</button>
-      </div>
-    </form>
-  );
+	return (
+		<form onSubmit={onSubmit}>
+			<TextField.Root name="favorite-fruit">
+				<TextField.Label>Favorite fruit</TextField.Label>
+				<TextField.Input />
+			</TextField.Root>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
 }
 ```
 

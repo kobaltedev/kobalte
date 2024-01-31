@@ -14,17 +14,17 @@ import { useComboboxContext } from "./combobox-context";
 export type ComboboxHiddenSelectProps = ComponentProps<"select">;
 
 export function ComboboxHiddenSelect(props: ComboboxHiddenSelectProps) {
-  const context = useComboboxContext();
+	const context = useComboboxContext();
 
-  return (
-    <HiddenSelectBase
-      collection={context.listState().collection()}
-      selectionManager={context.listState().selectionManager()}
-      isOpen={context.isOpen()}
-      isMultiple={context.isMultiple()}
-      isVirtualized={context.isVirtualized()}
-      focusTrigger={() => context.inputRef()?.focus()}
-      {...props}
-    />
-  );
+	return (
+		<HiddenSelectBase
+			collection={context.listState().collection()}
+			selectionManager={context.listState().selectionManager()}
+			isOpen={context.isOpen()}
+			isMultiple={context.isMultiple()}
+			isVirtualized={context.isVirtualized()}
+			focusTrigger={() => context.inputRef()?.focus()}
+			{...props}
+		/>
+	);
 }

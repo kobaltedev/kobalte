@@ -1,0 +1,7 @@
+*.js
+*.ts
+*.jsx
+*.tsx
+*.json
+*.cjs
+pnpm-lock.json

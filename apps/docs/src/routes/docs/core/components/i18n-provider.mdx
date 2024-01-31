@@ -18,7 +18,7 @@ This should be done by wrapping your entire application in the provider, which w
 import { I18nProvider } from "@kobalte/core";
 
 <I18nProvider locale="fr-FR">
-  <YourApp />
+	<YourApp />
 </I18nProvider>;
 ```
 
@@ -30,13 +30,13 @@ import { I18nProvider } from "@kobalte/core";
 import { useLocale } from "@kobalte/core";
 
 function YourApp() {
-  const { locale, direction } = useLocale();
+	const { locale, direction } = useLocale();
 
-  return (
-    <div lang={locale()} dir={direction()}>
-      {/* your app here */}
-    </div>
-  );
+	return (
+		<div lang={locale()} dir={direction()}>
+			{/* your app here */}
+		</div>
+	);
 }
 ```
 

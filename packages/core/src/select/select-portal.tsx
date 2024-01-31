@@ -9,11 +9,11 @@ export interface SelectPortalProps extends ComponentProps<typeof Portal> {}
  * Portals its children into the `body` when the select is open.
  */
 export function SelectPortal(props: SelectPortalProps) {
-  const context = useSelectContext();
+	const context = useSelectContext();
 
-  return (
-    <Show when={context.contentPresence.isPresent()}>
-      <Portal {...props} />
-    </Show>
-  );
+	return (
+		<Show when={context.contentPresence.isPresent()}>
+			<Portal {...props} />
+		</Show>
+	);
 }

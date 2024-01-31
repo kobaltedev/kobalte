@@ -1,89 +1,89 @@
 .switch {
-  display: inline-flex;
-  align-items: center;
+	display: inline-flex;
+	align-items: center;
 }
 
 .switch__control {
-  display: inline-flex;
-  align-items: center;
-  height: 24px;
-  width: 44px;
-  border: 1px solid hsl(240 5% 84%);
-  border-radius: 12px;
-  padding: 0 2px;
-  background-color: hsl(240 6% 90%);
-  transition: 250ms background-color;
+	display: inline-flex;
+	align-items: center;
+	height: 24px;
+	width: 44px;
+	border: 1px solid hsl(240 5% 84%);
+	border-radius: 12px;
+	padding: 0 2px;
+	background-color: hsl(240 6% 90%);
+	transition: 250ms background-color;
 }
 
 .switch__input:focus-visible + .switch__control {
-  outline: 2px solid hsl(200 98% 39%);
-  outline-offset: 2px;
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
 }
 
 .switch__control[data-checked] {
-  border-color: hsl(200 98% 39%);
-  background-color: hsl(200 98% 39%);
+	border-color: hsl(200 98% 39%);
+	background-color: hsl(200 98% 39%);
 }
 
 .switch__control[data-invalid] {
-  border-color: hsl(0 72% 51%);
+	border-color: hsl(0 72% 51%);
 }
 
 .switch__thumb {
-  height: 20px;
-  width: 20px;
-  border-radius: 10px;
-  background-color: white;
-  transition: 250ms transform;
+	height: 20px;
+	width: 20px;
+	border-radius: 10px;
+	background-color: white;
+	transition: 250ms transform;
 }
 
 .switch__thumb[data-checked] {
-  transform: translateX(calc(100% - 1px));
+	transform: translateX(calc(100% - 1px));
 }
 
 .switch__label {
-  margin-right: 6px;
-  color: hsl(240 6% 10%);
-  font-size: 14px;
-  user-select: none;
+	margin-right: 6px;
+	color: hsl(240 6% 10%);
+	font-size: 14px;
+	user-select: none;
 }
 
 .switch__description {
-  margin-right: 6px;
-  color: hsl(240 5% 26%);
-  font-size: 12px;
-  user-select: none;
+	margin-right: 6px;
+	color: hsl(240 5% 26%);
+	font-size: 12px;
+	user-select: none;
 }
 
 .switch__error-message {
-  margin-right: 6px;
-  color: hsl(0 72% 51%);
-  font-size: 12px;
-  user-select: none;
+	margin-right: 6px;
+	color: hsl(0 72% 51%);
+	font-size: 12px;
+	user-select: none;
 }
 
 [data-kb-theme="dark"] .switch__control {
-  border-color: hsl(240 5% 34%);
-  background-color: hsl(240 5% 26%);
+	border-color: hsl(240 5% 34%);
+	background-color: hsl(240 5% 26%);
 }
 
 [data-kb-theme="dark"] .switch__control[data-checked] {
-  border-color: hsl(200 98% 39%);
-  background-color: hsl(200 98% 39%);
+	border-color: hsl(200 98% 39%);
+	background-color: hsl(200 98% 39%);
 }
 
 [data-kb-theme="dark"] .switch__control[data-invalid] {
-  border-color: hsl(0 72% 51%);
+	border-color: hsl(0 72% 51%);
 }
 
 [data-kb-theme="dark"] .switch__thumb {
-  background-color: hsl(240 5% 84%);
+	background-color: hsl(240 5% 84%);
 }
 
 [data-kb-theme="dark"] .switch__label {
-  color: hsl(240 5% 84%);
+	color: hsl(240 5% 84%);
 }
 
 [data-kb-theme="dark"] .switch__description {
-  color: hsl(240 5% 65%);
+	color: hsl(240 5% 65%);
 }

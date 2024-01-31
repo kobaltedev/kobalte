@@ -1,5 +1,6 @@
 export const DIALOG_INTL_TRANSLATIONS = {
-  dismiss: "Dismiss",
+	// `aria-label` of Dialog.CloseButton.
+	dismiss: "Dismiss",
 };
 
 export type DialogIntlTranslations = typeof DIALOG_INTL_TRANSLATIONS;

@@ -1,10 +1,10 @@
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
 import {
-  BasicExample,
-  DefaultValueExample,
-  ControlledExample,
-  CollapsibleExample,
-  AllowMultipleExample,
+	BasicExample,
+	DefaultValueExample,
+	ControlledExample,
+	CollapsibleExample,
+	AllowMultipleExample,
 } from "../../../../examples/accordion";
 
 # Accordion
@@ -36,19 +36,19 @@ The accordion consists of:
 
 ```tsx
 <Accordion.Root>
-  <Accordion.Item>
-    <Accordion.Header>
-      <Accordion.Trigger />
-    </Accordion.Header>
-    <Accordion.Content />
-  </Accordion.Item>
+	<Accordion.Item>
+		<Accordion.Header>
+			<Accordion.Trigger />
+		</Accordion.Header>
+		<Accordion.Content />
+	</Accordion.Item>
 </Accordion.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -214,19 +214,19 @@ The accordion consists of:
 A default expanded item can be provided using the `defaultValue` prop, which should correspond to the `value` prop provided to each accordion item.
 
 <Preview>
-  <DefaultValueExample />
+	<DefaultValueExample />
 </Preview>
 
 ```tsx {0,2}
 <Accordion.Root defaultValue={["item-2"]}>
-  <Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
-  <Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
-  <Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
+	<Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
+	<Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
+	<Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
 </Accordion.Root>
 ```
 
 <Callout>
-  <span>The `value` and `defaultValue` props always take a `string[]`.</span>
+	<span>The `value` and `defaultValue` props always take a `string[]`.</span>
 </Callout>
 
 ### Controlled value
@@ -234,25 +234,25 @@ A default expanded item can be provided using the `defaultValue` prop, which sho
 Expanded item can be controlled using the `value` prop, paired with the `onChange` event. The `value` prop from the accordion item will be passed into the callback when the item is expanded, allowing you to update state accordingly.
 
 <Preview>
-  <ControlledExample />
+	<ControlledExample />
 </Preview>
 
 ```tsx {3,7}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
-  const [expandedItem, setExpandedItem] = createSignal(["item-2"]);
+	const [expandedItem, setExpandedItem] = createSignal(["item-2"]);
 
-  return (
-    <>
-      <Accordion.Root value={expandedItem()} onChange={setExpandedItem}>
-        <Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
-        <Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
-        <Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
-      </Accordion.Root>
-      <p>Expanded item: {expandedItem().join(",")}</p>
-    </>
-  );
+	return (
+		<>
+			<Accordion.Root value={expandedItem()} onChange={setExpandedItem}>
+				<Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
+				<Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
+				<Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
+			</Accordion.Root>
+			<p>Expanded item: {expandedItem().join(",")}</p>
+		</>
+	);
 }
 ```
 
@@ -261,14 +261,14 @@ function ControlledExample() {
 By default, accordion items are not collapsible, meaning you can't toggle them from open to close and vice-versa. Use the `collapsible` prop to enable this behavior.
 
 <Preview>
-  <CollapsibleExample />
+	<CollapsibleExample />
 </Preview>
 
 ```tsx {0}
 <Accordion.Root collapsible>
-  <Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
-  <Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
-  <Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
+	<Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
+	<Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
+	<Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
 </Accordion.Root>
 ```
 
@@ -277,14 +277,14 @@ By default, accordion items are not collapsible, meaning you can't toggle them f
 Use the `multiple` to allow expanding multiple accordion items at the same time. This also make all accordion items collapsible.
 
 <Preview>
-  <AllowMultipleExample />
+	<AllowMultipleExample />
 </Preview>
 
 ```tsx {0}
 <Accordion.Root multiple>
-  <Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
-  <Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
-  <Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
+	<Accordion.Item value="item-1">{/* ... */}</Accordion.Item>
+	<Accordion.Item value="item-2">{/* ... */}</Accordion.Item>
+	<Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
 </Accordion.Root>
 ```
 
@@ -295,31 +295,31 @@ We expose the CSS custom properties `--kb-accordion-content-width` and `--kb-acc
 ```css {16,22}
 /* style.css */
 .accordion__item-content {
-  overflow: hidden;
-  font-size: 16px;
-  animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
+	overflow: hidden;
+	font-size: 16px;
+	animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
 }
 
 .accordion__item-content[data-expanded] {
-  animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
+	animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
 }
 
 @keyframes slideDown {
-  from {
-    height: 0;
-  }
-  to {
-    height: var(--kb-accordion-content-height);
-  }
+	from {
+		height: 0;
+	}
+	to {
+		height: var(--kb-accordion-content-height);
+	}
 }
 
 @keyframes slideUp {
-  from {
-    height: var(--kb-accordion-content-height);
-  }
-  to {
-    height: 0;
-  }
+	from {
+		height: var(--kb-accordion-content-height);
+	}
+	to {
+		height: 0;
+	}
 }
 ```
 

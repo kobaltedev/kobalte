@@ -1,0 +1,763 @@
+import { Preview, Kbd, TabsSnippets } from "../../../../components";
+import { BasicExample } from "../../../../examples/menubar";
+import { Callout } from "../../../../components/callout";
+
+# Menubar
+
+A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.
+
+## Import
+
+```ts
+import { Menubar } from "@kobalte/core";
+```
+
+<Callout type="warning">
+	Menubar was removed by mistake from version `0.12.0`, please make sure to update to `0.12.1` or
+	later.
+</Callout>
+
+## Features
+
+- Follows the [WAI ARIA Menubar](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/) design pattern.
+- Supports modal and non-modal modes.
+- Supports submenus.
+- Supports items, labels, groups of items.
+- Supports checkable items (single or multiple) with optional indeterminate state.
+- Support disabled items.
+- Complex item labeling support for accessibility.
+- Keyboard opening and navigation support.
+- Automatic scrolling support during keyboard navigation.
+- Typeahead to allow focusing items by typing text.
+- Optionally render a pointing arrow.
+- Focus is fully managed.
+
+## Anatomy
+
+The context menu consists of:
+
+- **Menubar.Root:** The root container for a menubar.
+- **Menubar.Menu:** The container of each menu.
+- **Menubar.Trigger:** The button that toggles the menu.
+- **Menubar.Icon:** A small icon that can be displayed inside the menu trigger as a visual affordance for the fact it can be open.
+- **Menubar.Portal:** Portals its children into the `body` when the menu is open.
+- **Menubar.Content:** Contains the content to be rendered when the menu is open.
+- **Menubar.Arrow:** An optional arrow element to render alongside the menu content.
+- **Menubar.Separator:** Used to visually separate items in the menu.
+- **Menubar.Group:** Used to group multiple items. Use in conjunction with `Menubar.GroupLabel` to ensure good accessibility via automatic labelling.
+- **Menubar.GroupLabel:** Used to render the label of a group. It won't be focusable using arrow keys.
+- **Menubar.Sub:** Contains all the parts of a submenu.
+- **Menubar.SubTrigger:** An item that opens a submenu. Must be rendered inside `Menubar.Sub`.
+- **Menubar.SubContent:** The component that pops out when a submenu is open. Must be rendered inside `Menubar.Sub`.
+
+The menu item consists of:
+
+- **Menubar.Item:** An item of the select.
+- **Menubar.ItemLabel:** An accessible label to be announced for the item.
+- **Menubar.ItemDescription:** An optional accessible description to be announced for the item.
+- **Menubar.ItemIndicator:** The visual indicator rendered when the item is checked.
+
+The checkable menu item consists of:
+
+- **Menubar.RadioGroup:** Used to group multiple `Menubar.RadioItem`s and manage the selection.
+- **Menubar.RadioItem:** An item that can be controlled and rendered like a radio.
+- **Menubar.CheckboxItem:** An item that can be controlled and rendered like a checkbox.
+
+```tsx
+<Menubar.Root>
+	<Menubar.Menu>
+		<Menubar.Trigger>
+			<Menubar.Icon />
+		</Menubar.Trigger>
+
+		<Menubar.Portal>
+			<Menubar.Content>
+				<Menubar.Arrow />
+
+				<Menubar.Item>
+					<Menubar.ItemLabel />
+					<Menubar.ItemDescription />
+				</Menubar.Item>
+
+				<Menubar.Group>
+					<Menubar.GroupLabel />
+					<Menubar.Item />
+				</Menubar.Group>
+
+				<Menubar.CheckboxItem>
+					<Menubar.ItemIndicator />
+				</Menubar.CheckboxItem>
+
+				<Menubar.RadioGroup>
+					<Menubar.RadioItem>
+						<Menubar.ItemIndicator />
+					</Menubar.RadioItem>
+				</Menubar.RadioGroup>
+
+				<Menubar.Sub>
+					<Menubar.SubTrigger />
+					<Menubar.Portal>
+						<Menubar.SubContent />
+					</Menubar.Portal>
+				</Menubar.Sub>
+
+				<Menubar.Separator />
+			</Menubar.Content>
+		</Menubar.Portal>
+	</Menubar.Menu>
+</Menubar.Root>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Menubar } from "@kobalte/core";
+    import { createSignal } from "solid-js";
+    import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "some-icon-library";
+    import "./style.css";
+
+    function App() {
+      const [showGitLog, setShowGitLog] = createSignal(true);
+      const [showHistory, setShowHistory] = createSignal(false);
+      const [branch, setBranch] = createSignal("main");
+
+      return (
+          <Menubar.Root class="menubar__root">
+            <Menubar.Menu>
+              <Menubar.Trigger class="menubar__trigger">
+                Git
+              </Menubar.Trigger>
+              <Menubar.Portal>
+                <Menubar.Content class="menubar__content">
+                  <Menubar.Item class="menubar__item">
+                    Commit <div class="menubar__item-right-slot">⌘+K</div>
+                  </Menubar.Item>
+                  <Menubar.Item class="menubar__item">
+                    Push <div class="menubar__item-right-slot">⇧+⌘+K</div>
+                  </Menubar.Item>
+                  <Menubar.Item class="menubar__item" disabled>
+                    Update Project <div class="menubar__item-right-slot">⌘+T</div>
+                  </Menubar.Item>
+                  <Menubar.Sub overlap gutter={4} shift={-8}>
+                    <Menubar.SubTrigger class="menubar__sub-trigger">
+                      GitHub
+                      <div class="menubar__item-right-slot">
+                        <ChevronRightIcon width={20} height={20} />
+                      </div>
+                    </Menubar.SubTrigger>
+                    <Menubar.Portal>
+                      <Menubar.SubContent class="menubar__sub-content">
+                        <Menubar.Item class="menubar__item">
+                          Create Pull Request…
+                        </Menubar.Item>
+                        <Menubar.Item class="menubar__item">
+                          View Pull Requests
+                        </Menubar.Item>
+                        <Menubar.Item class="menubar__item">Sync Fork</Menubar.Item>
+                        <Menubar.Separator class="menubar__separator" />
+                        <Menubar.Item class="menubar__item">
+                          Open on GitHub
+                        </Menubar.Item>
+                      </Menubar.SubContent>
+                    </Menubar.Portal>
+                  </Menubar.Sub>
+
+                  <Menubar.Separator class="menubar__separator" />
+
+                  <Menubar.CheckboxItem
+                  class="menubar__checkbox-item"
+                  checked={showGitLog()}
+                  onChange={setShowGitLog}
+                  >
+                  <Menubar.ItemIndicator class="menubar__item-indicator">
+                    <CheckIcon />
+                  </Menubar.ItemIndicator>
+                  Show Git Log
+                </Menubar.CheckboxItem>
+                <Menubar.CheckboxItem
+                class="menubar__checkbox-item"
+                checked={showHistory()}
+                onChange={setShowHistory}
+                >
+                <Menubar.ItemIndicator class="menubar__item-indicator">
+                  <CheckIcon />
+                </Menubar.ItemIndicator>
+                Show History
+              </Menubar.CheckboxItem>
+
+              <Menubar.Separator class="menubar__separator" />
+
+              <Menubar.Group>
+                <Menubar.GroupLabel class="menubar__group-label">
+                  Branches
+                </Menubar.GroupLabel>
+                <Menubar.RadioGroup value={branch()} onChange={setBranch}>
+                  <Menubar.RadioItem class="menubar__radio-item" value="main">
+                    <Menubar.ItemIndicator class="menubar__item-indicator">
+                      <DotFilledIcon />
+                    </Menubar.ItemIndicator>
+                    main
+                  </Menubar.RadioItem>
+                  <Menubar.RadioItem class="menubar__radio-item" value="develop">
+                    <Menubar.ItemIndicator class="menubar__item-indicator">
+                      <DotFilledIcon />
+                    </Menubar.ItemIndicator>
+                    develop
+                  </Menubar.RadioItem>
+                </Menubar.RadioGroup>
+              </Menubar.Group>
+            </Menubar.Content>
+          </Menubar.Portal>
+        </Menubar.Menu>
+
+        <Menubar.Menu>
+          <Menubar.Trigger class="menubar__trigger">
+            File
+          </Menubar.Trigger>
+          <Menubar.Portal>
+            <Menubar.Content class="menubar__content">
+              <Menubar.Item class="menubar__item">
+                New Tab <div class="menubar__item-right-slot">⌘+T</div>
+              </Menubar.Item>
+              <Menubar.Item class="menubar__item">
+                New Window <div class="menubar__item-right-slot">⌘+N</div>
+              </Menubar.Item>
+              <Menubar.Item class="menubar__item" disabled>
+                New Incognito Window
+              </Menubar.Item>
+
+              <Menubar.Separator class="menubar__separator"/>
+
+              <Menubar.Sub overlap gutter={4} shift={-8}>
+                <Menubar.SubTrigger class="menubar__sub-trigger">
+                  Share
+                  <div class="menubar__item-right-slot">
+                    <ChevronRightIcon width={20} height={20} />
+                  </div>
+                </Menubar.SubTrigger>
+                <Menubar.Portal>
+                  <Menubar.SubContent class="menubar__sub-content">
+                    <Menubar.Item class="menubar__item">
+                      Email Link
+                    </Menubar.Item>
+                    <Menubar.Item class="menubar__item">
+                      Messages
+                    </Menubar.Item>
+                    <Menubar.Item class="menubar__item">
+                      Notes
+                    </Menubar.Item>
+                  </Menubar.SubContent>
+                </Menubar.Portal>
+              </Menubar.Sub>
+
+              <Menubar.Separator class="menubar__separator" />
+
+              <Menubar.Item class="menubar__item">
+                Print... <div class="menubar__item-right-slot">⌘+P</div>
+              </Menubar.Item>
+            </Menubar.Content>
+          </Menubar.Portal>
+        </Menubar.Menu>
+
+        <Menubar.Menu>
+          <Menubar.Trigger class="menubar__trigger">
+            Edit
+          </Menubar.Trigger>
+          <Menubar.Portal>
+            <Menubar.Content class="menubar__content">
+              <Menubar.Item class="menubar__item">
+                Undo <div class="menubar__item-right-slot">⌘+Z</div>
+              </Menubar.Item>
+              <Menubar.Item class="menubar__item">
+                Redo <div class="menubar__item-right-slot">⇧+⌘+Z</div>
+              </Menubar.Item>
+
+              <Menubar.Separator class="menubar__separator"/>
+
+              <Menubar.Sub overlap gutter={4} shift={-8}>
+                <Menubar.SubTrigger class="menubar__sub-trigger">
+                  Find
+                  <div class="menubar__item-right-slot">
+                    <ChevronRightIcon width={20} height={20} />
+                  </div>
+                </Menubar.SubTrigger>
+                <Menubar.Portal>
+                  <Menubar.SubContent class="menubar__sub-content">
+                    <Menubar.Item class="menubar__item">
+                      Search The Web
+                    </Menubar.Item>
+                    <Menubar.Separator class="menubar__separator"/>
+                    <Menubar.Item class="menubar__item">
+                      Find...
+                    </Menubar.Item>
+                    <Menubar.Item class="menubar__item">
+                      Find Next
+                    </Menubar.Item>
+                    <Menubar.Item class="menubar__item">
+                      Find Previous
+                    </Menubar.Item>
+                  </Menubar.SubContent>
+                </Menubar.Portal>
+              </Menubar.Sub>
+
+              <Menubar.Separator class="menubar__separator" />
+
+              <Menubar.Item class="menubar__item">
+                Cut
+              </Menubar.Item>
+              <Menubar.Item class="menubar__item">
+                Copy
+              </Menubar.Item>
+              <Menubar.Item class="menubar__item">
+                Paste
+              </Menubar.Item>
+            </Menubar.Content>
+          </Menubar.Portal>
+        </Menubar.Menu>
+      </Menubar.Root>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .menubar__root {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .menubar__trigger {
+      appearance: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      width: auto;
+      outline: none;
+      padding: 0 16px;
+      background-color: #f6f6f7;
+      color: hsl(240 4% 16%);
+      font-size: 16px;
+      gap: 8px;
+      line-height: 0;
+      transition: 250ms background-color;
+    }
+
+    .menubar__trigger[data-highlighted="true"] {
+      background-color: hsl(200 98% 39%);
+      color: white;
+    }
+
+    .menubar__trigger:first-child {
+      border-radius: 4px 0 0 4px;
+    }
+
+    .menubar__trigger:last-child {
+      border-left: 2px dashed hsl(240 4% 46%);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .menubar__content,
+    .menubar__sub-content {
+      min-width: 220px;
+      padding: 8px;
+      background-color: white;
+      border-radius: 6px;
+      border: 1px solid hsl(240 6% 90%);
+      box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.1),
+      0 2px 4px -2px rgb(0 0 0 / 0.1);
+      outline: none;
+      transform-origin: var(--kb-menu-content-transform-origin);
+      animation: contentHide 250ms ease-in forwards;
+    }
+
+    .menubar__content[data-expanded],
+    .menubar__sub-content[data-expanded] {
+      animation: contentShow 250ms ease-out;
+    }
+
+    .menubar__item,
+    .menubar__checkbox-item,
+    .menubar__radio-item,
+    .menubar__sub-trigger {
+      font-size: 16px;
+      line-height: 1;
+      color: hsl(240 4% 16%);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 8px 0 24px;
+      position: relative;
+      user-select: none;
+      outline: none;
+    }
+
+    .menubar__sub-trigger[data-expanded] {
+      background-color: hsl(204 94% 94%);
+      color: hsl(201 96% 32%);
+    }
+
+    .menubar__item[data-disabled],
+    .menubar__checkbox-item[data-disabled],
+    .menubar__radio-item[data-disabled],
+    .menubar__sub-trigger[data-disabled] {
+      color: hsl(240 5% 65%);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .menubar__item[data-highlighted],
+    .menubar__checkbox-item[data-highlighted],
+    .menubar__radio-item[data-highlighted],
+    .menubar__sub-trigger[data-highlighted] {
+      outline: none;
+      background-color: hsl(200 98% 39%);
+      color: white;
+    }
+
+    .menubar__group-label {
+      padding: 0 24px;
+      font-size: 14px;
+      line-height: 32px;
+      color: hsl(240 4% 46%);
+    }
+
+    .menubar__separator {
+      height: 1px;
+      border-top: 1px solid hsl(240 6% 90%);
+      margin: 6px;
+    }
+
+    .menubar__item-indicator {
+      position: absolute;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menubar__item-right-slot {
+      margin-left: auto;
+      padding-left: 20px;
+      font-size: 14px;
+      color: hsl(240 4% 46%);
+    }
+
+    [data-highlighted] > .menubar__item-right-slot {
+      color: white;
+    }
+
+    [data-disabled] .menubar__item-right-slot {
+      color: hsl(240 5% 65%);
+      opacity: 0.5;
+    }
+
+    @keyframes contentShow {
+      from {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes contentHide {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Origin-aware animations
+
+We expose a CSS custom property `--kb-popper-content-transform-origin` which can be used to animate the content from its computed origin.
+
+```css {3}
+/* style.css */
+.context-menu__content,
+.context-menu__sub-content {
+	transform-origin: var(--kb-menu-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
+}
+
+.context-menu__content[data-expanded],
+.context-menu__sub-content[data-expanded] {
+	animation: contentShow 250ms ease-out;
+}
+
+@keyframes contentShow {
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes contentHide {
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+}
+```
+
+## API Reference
+
+### Menubar.Root
+
+| Prop          | Description                                                                                                                            |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------------------- |
+| defaultValue  | `string` <br/> The value of the menu that should be open when initially rendered. Use when you do not need to control the value state. |
+| value         | `string` <br/> The controlled value of the menu to open. Should be used in conjunction with onValueChange.                             |
+| onValueChange | `(value: string \| undefined) => void` <br/> Event handler called when the value changes.                                              |
+| loop          | `boolean` <br/> When true, keyboard navigation will loop from last item to first, and vice versa.                                      |
+| focusOnAlt    | `boolean` <br/> When true, click on alt by itsef will focus this Menubar (some browsers interfere)                                     |
+
+### Menubar.Menu
+
+| Prop          | Description                                                                                                                                                                                                                                                                                                                                    |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| onOpenChange  | `(open: boolean) => void` <br/> Event handler called when the open state of the menu changes.                                                                                                                                                                                                                                                  |
+| id            | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used.                                                                                                                                                                  |
+| modal         | `boolean` <br/> Whether the menu should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the menu content. <br/> - elements outside the menu content will not be visible for screen readers. |
+| preventScroll | `boolean` <br/> Whether the scroll should be locked even if the menu is not modal.                                                                                                                                                                                                                                                             |
+| forceMount    | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                          |
+| value         | `string` <br/> A unique value that associates the item with an active value when the navigation menu is controlled. This prop is managed automatically when uncontrolled.                                                                                                                                                                      |
+
+`Menubar.Menu` also accepts the following props to customize the placement of the `Menubar.Content`.
+
+| Prop             | Description                                                                                                                                                                                                                                                                                                                                                          |
+| :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| placement        | `Placement` <br/> The placement of the menu content.                                                                                                                                                                                                                                                                                                                 |
+| gutter           | `number` <br/> The distance between the menu content and the trigger element. By default, it's 0 plus half of the arrow offset, if it exists.                                                                                                                                                                                                                        |
+| shift            | `number` <br/> The skidding of the menu content along the trigger element.                                                                                                                                                                                                                                                                                           |
+| flip             | `boolean \| string` <br/> Controls the behavior of the menu content when it overflows the viewport:<br/> - If a `boolean`, specifies whether the menu content should flip to the opposite side when it overflows.<br/> - If a `string`, indicates the preferred fallback placements when it overflows.<br/>The placements must be spaced-delimited, e.g. "top left". |
+| slide            | `boolean` <br/> Whether the menu content should slide when it overflows.                                                                                                                                                                                                                                                                                             |
+| overlap          | `boolean` <br/> Whether the menu content can overlap the trigger element when it overflows.                                                                                                                                                                                                                                                                          |
+| sameWidth        | `boolean` <br/> Whether the menu content should have the same width as the trigger element. This will be exposed to CSS as `--kb-popper-anchor-width`.                                                                                                                                                                                                               |
+| fitViewport      | `boolean` <br/> Whether the menu content should fit the viewport. If this is set to true, the menu content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`.                                                                                           |
+| hideWhenDetached | `boolean` <br/> Whether to hide the menu content when the trigger element becomes occluded.                                                                                                                                                                                                                                                                          |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                                                                                                |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the menu content corner.                                                                                                                                                                                                                                                                                    |
+| overflowPadding  | `number` <br/> The minimum padding between the menu content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                                    |
+
+### Menubar.Trigger
+
+| Prop     | Description                                                          |
+| :------- | :------------------------------------------------------------------- |
+| disabled | `boolean` <br/> Whether the context menu trigger is disabled or not. |
+
+| Data attribute | Description                           |
+| :------------- | :------------------------------------ |
+| data-expanded  | Present when the menu is open.        |
+| data-closed    | Present when the menu is close.       |
+| data-disabled  | Present when the trigger is disabled. |
+
+`Menubar.Icon`, `Menubar.Content`, `Menubar.SubTrigger` and `Menubar.SubContent` share the same `data-expanded` attribute.
+
+### Menubar.Content
+
+| Prop                 | Description                                                                                                                                                                                                         |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| onOpenAutoFocus      | `(event: Event) => void` <br/> Event handler called when focus moves into the component after opening. It can be prevented by calling `event.preventDefault`.                                                       |
+| onCloseAutoFocus     | `(event: Event) => void` <br/> Event handler called when focus moves to the trigger after closing. It can be prevented by calling `event.preventDefault`.                                                           |
+| onEscapeKeyDown      | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                     |
+| onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
+| onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
+| onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
+
+### Menubar.Arrow
+
+| Prop | Description                           |
+| :--- | :------------------------------------ |
+| size | `number` <br/> The size of the arrow. |
+
+### Menubar.Item
+
+| Prop          | Description                                                                                                                                                                                                                                                                                              |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `Menubar.ItemLabel` part if provided, or fallback to the .textContent of the `Menubar.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| disabled      | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                     |
+| closeOnSelect | `boolean` <br/> Whether the menu should close when the item is activated.                                                                                                                                                                                                                                |
+| onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                           |
+
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-highlighted | Present when the item is highlighted. |
+
+`Menubar.ItemLabel`, `Menubar.ItemDescription` and `Menubar.ItemIndicator` shares the same data-attributes.
+
+### Menubar.ItemIndicator
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### Menubar.RadioGroup
+
+| Prop         | Description                                                                                                                                                          |
+| :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value        | `string` <br/> The controlled value of the menu radio item to check.                                                                                                 |
+| defaultValue | `string` <br/> The value of the menu radio item that should be checked when initially rendered. Useful when you do not need to control the state of the radio group. |
+| onChange     | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                         |
+| disabled     | `boolean` <br/> Whether the radio group is disabled or not.                                                                                                          |
+
+### Menubar.RadioItem
+
+| Prop          | Description                                                                                                                                                                                                                                                                                              |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value         | `string` <br/> The value of the menu item radio.                                                                                                                                                                                                                                                         |
+| textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `Menubar.ItemLabel` part if provided, or fallback to the .textContent of the `Menubar.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| disabled      | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                     |
+| closeOnSelect | `boolean` <br/> Whether the menu should close when the item is checked.                                                                                                                                                                                                                                  |
+| onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                           |
+
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-checked     | Present when the item is checked.     |
+| data-highlighted | Present when the item is highlighted. |
+
+### Menubar.CheckboxItem
+
+| Prop           | Description                                                                                                                                                                                                                                                                                              |
+| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| checked        | `boolean` <br/> The controlled checked state of the item.                                                                                                                                                                                                                                                |
+| defaultChecked | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                                                                                                                                                             |
+| onChange       | `(checked: boolean) => void` <br/> Event handler called when the checked state of the item changes.                                                                                                                                                                                                      |
+| textValue      | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `Menubar.ItemLabel` part if provided, or fallback to the .textContent of the `Menubar.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| indeterminate  | `boolean` <br/> Whether the item is in an indeterminate state.                                                                                                                                                                                                                                           |
+| disabled       | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                     |
+| closeOnSelect  | `boolean` <br/> Whether the menu should close when the item is checked/unchecked.                                                                                                                                                                                                                        |
+| onSelect       | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                           |
+
+| Data attribute     | Description                                         |
+| :----------------- | :-------------------------------------------------- |
+| data-disabled      | Present when the item is disabled.                  |
+| data-indeterminate | Present when the item is in an indeterminate state. |
+| data-checked       | Present when the item is checked.                   |
+| data-highlighted   | Present when the item is highlighted.               |
+
+### Menubar.Sub
+
+| Prop         | Description                                                                                                            |
+| :----------- | :--------------------------------------------------------------------------------------------------------------------- |
+| open         | `boolean` <br/> The controlled open state of the sub menu.                                                             |
+| defaultOpen  | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state. |
+| onOpenChange | `(open: boolean) => void` <br/> Event handler called when the open state of the sub menu changes.                      |
+
+`Menubar.Sub` also accepts the following props to customize the placement of the `Menubar.SubContent`.
+
+| Prop             | Description                                                                                                                                                                                                                                                                        |
+| :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| getAnchorRect    | `(anchor?: HTMLElement) => AnchorRect  \| undefined` <br/> Function that returns the trigger element's DOMRect.                                                                                                                                                                    |
+| gutter           | `number` <br/> The distance between the sub menu content and the trigger element. By default, it's 0 plus half of the arrow offset, if it exists.                                                                                                                                  |
+| shift            | `number` <br/> The skidding of the sub menu content along the trigger element.                                                                                                                                                                                                     |
+| slide            | `boolean` <br/> Whether the sub menu content should slide when it overflows.                                                                                                                                                                                                       |
+| overlap          | `boolean` <br/> Whether the sub menu content can overlap the trigger element when it overflows.                                                                                                                                                                                    |
+| fitViewport      | `boolean` <br/> Whether the sub menu content should fit the viewport. If this is set to true, the sub menu content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`. |
+| hideWhenDetached | `boolean` <br/> Whether to hide the sub menu content when the trigger element becomes occluded.                                                                                                                                                                                    |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                              |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the sub menu content corner.                                                                                                                                                                                              |
+| overflowPadding  | `number` <br/> The minimum padding between the sub menu content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                              |
+
+### Menubar.SubTrigger
+
+| Prop      | Description                                                                                                                                                                                                                       |
+| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| textValue | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `Menubar.SubTrigger`. Use this when the content is complex, or you have non-textual content inside. |
+| disabled  | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                  |
+
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-highlighted | Present when the item is highlighted. |
+
+### Menubar.SubContent
+
+| Prop                 | Description                                                                                                                                                                                                         |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| onEscapeKeyDown      | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                     |
+| onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
+| onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
+| onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
+
+## Rendered elements
+
+| Component                 | Default rendered element |
+| :------------------------ | :----------------------- |
+| `Menubar.Root`            | `div`                    |
+| `Menubar.Menu`            | none                     |
+| `Menubar.Trigger`         | `div`                    |
+| `Menubar.Icon`            | `div`                    |
+| `Menubar.Portal`          | `Portal`                 |
+| `Menubar.Content`         | `div`                    |
+| `Menubar.Arrow`           | `div`                    |
+| `Menubar.Separator`       | `hr`                     |
+| `Menubar.Group`           | `div`                    |
+| `Menubar.GroupLabel`      | `span`                   |
+| `Menubar.Sub`             | none                     |
+| `Menubar.SubTrigger`      | `div`                    |
+| `Menubar.SubContent`      | `div`                    |
+| `Menubar.Item`            | `div`                    |
+| `Menubar.ItemLabel`       | `div`                    |
+| `Menubar.ItemDescription` | `div`                    |
+| `Menubar.ItemIndicator`   | `div`                    |
+| `Menubar.RadioGroup`      | `div`                    |
+| `Menubar.RadioItem`       | `div`                    |
+| `Menubar.CheckboxItem`    | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                                          | Description                                                                                      |
+| :------------------------------------------- | :----------------------------------------------------------------------------------------------- |
+| <Kbd>Space</Kbd>                             | When focus is on an item, activates the item.                                                    |
+| <Kbd>Enter</Kbd>                             | When focus is on an item, activates the item.                                                    |
+| <Kbd>ArrowDown</Kbd>                         | When focus is on an item, moves focus to the next item.                                          |
+| <Kbd>ArrowUp</Kbd>                           | When focus is on an item, moves focus to the previous item.                                      |
+| <Kbd>ArrowRight</Kbd>                        | When focus is on an item (not sub menu trigger), moves focus to the next menu.                   |
+| <Kbd>ArrowLeft</Kbd>                         | When focus is on an item (not sub menu item), moves focus to the previous menu.                  |
+| <Kbd>ArrowRight</Kbd> / <Kbd>ArrowLeft</Kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction. |
+| <Kbd>Home</Kbd>                              | When focus is on an item, moves focus to first item.                                             |
+| <Kbd>End</Kbd>                               | When focus is on an item, moves focus to last item.                                              |
+| <Kbd>Esc</Kbd>                               | Closes the context menu.                                                                         |

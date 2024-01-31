@@ -1,14 +1,14 @@
 import { Preview, Kbd, TabsSnippets } from "../../../../components";
 import {
-  BasicExample,
-  DefaultValueExample,
-  ControlledExample,
-  DisabledTabsExample,
-  SingleDisabledTabExample,
-  DynamicContentExample,
-  ManualActivationExample,
-  VerticalOrientationExample,
-  FocusableContentExample,
+	BasicExample,
+	DefaultValueExample,
+	ControlledExample,
+	DisabledTabsExample,
+	SingleDisabledTabExample,
+	DynamicContentExample,
+	ManualActivationExample,
+	VerticalOrientationExample,
+	FocusableContentExample,
 } from "../../../../examples/tabs";
 
 # Tabs
@@ -43,18 +43,18 @@ The tabs consist of:
 
 ```tsx
 <Tabs.Root>
-  <Tabs.List>
-    <Tabs.Trigger />
-    <Tabs.Indicator />
-  </Tabs.List>
-  <Tabs.Content />
+	<Tabs.List>
+		<Tabs.Trigger />
+		<Tabs.Indicator />
+	</Tabs.List>
+	<Tabs.Content />
 </Tabs.Root>
 ```
 
 ## Example
 
 <Preview>
-  <BasicExample />
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -167,22 +167,22 @@ The tabs consist of:
 A default selected tab can be provided using the `defaultValue` prop, which should correspond to the `value` prop provided to each tab.
 
 <Preview>
-  <DefaultValueExample />
+	<DefaultValueExample />
 </Preview>
 
 ```tsx {0,3,9}
 <Tabs.Root defaultValue="dashboard">
-  <Tabs.List>
-    <Tabs.Trigger value="profile">Profile</Tabs.Trigger>
-    <Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
-    <Tabs.Trigger value="settings">Settings</Tabs.Trigger>
-    <Tabs.Trigger value="contact">Contact</Tabs.Trigger>
-    <Tabs.Indicator />
-  </Tabs.List>
-  <Tabs.Content value="profile">Profile details</Tabs.Content>
-  <Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
-  <Tabs.Content value="settings">Settings details</Tabs.Content>
-  <Tabs.Content value="contact">Contact details</Tabs.Content>
+	<Tabs.List>
+		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
+		<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
+		<Tabs.Trigger value="settings">Settings</Tabs.Trigger>
+		<Tabs.Trigger value="contact">Contact</Tabs.Trigger>
+		<Tabs.Indicator />
+	</Tabs.List>
+	<Tabs.Content value="profile">Profile details</Tabs.Content>
+	<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
+	<Tabs.Content value="settings">Settings details</Tabs.Content>
+	<Tabs.Content value="contact">Contact details</Tabs.Content>
 </Tabs.Root>
 ```
 
@@ -191,33 +191,33 @@ A default selected tab can be provided using the `defaultValue` prop, which shou
 Selected tab can be controlled using the `value` prop, paired with the `onChange` event. The `value` prop from the selected tab will be passed into the callback when the tab is selected, allowing you to update state accordingly.
 
 <Preview>
-  <ControlledExample />
+	<ControlledExample />
 </Preview>
 
 ```tsx {3,7}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
-  const [selectedTab, setSelectedTab] = createSignal("settings");
+	const [selectedTab, setSelectedTab] = createSignal("settings");
 
-  return (
-    <>
-      <Tabs.Root value={selectedTab()} onChange={setSelectedTab}>
-        <Tabs.List>
-          <Tabs.Trigger value="profile">Profile</Tabs.Trigger>
-          <Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
-          <Tabs.Trigger value="settings">Settings</Tabs.Trigger>
-          <Tabs.Trigger value="contact">Contact</Tabs.Trigger>
-          <Tabs.Indicator />
-        </Tabs.List>
-        <Tabs.Content value="profile">Profile details</Tabs.Content>
-        <Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
-        <Tabs.Content value="settings">Settings details</Tabs.Content>
-        <Tabs.Content value="contact">Contact details</Tabs.Content>
-      </Tabs.Root>
-      <p>Selected tab: {selectedTab()}</p>
-    </>
-  );
+	return (
+		<>
+			<Tabs.Root value={selectedTab()} onChange={setSelectedTab}>
+				<Tabs.List>
+					<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
+					<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
+					<Tabs.Trigger value="settings">Settings</Tabs.Trigger>
+					<Tabs.Trigger value="contact">Contact</Tabs.Trigger>
+					<Tabs.Indicator />
+				</Tabs.List>
+				<Tabs.Content value="profile">Profile details</Tabs.Content>
+				<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
+				<Tabs.Content value="settings">Settings details</Tabs.Content>
+				<Tabs.Content value="contact">Contact details</Tabs.Content>
+			</Tabs.Root>
+			<p>Selected tab: {selectedTab()}</p>
+		</>
+	);
 }
 ```
 
@@ -230,28 +230,28 @@ When the tab content contains focusable content, such as an `<input>`, then the 
 This example uses the same Tabs components from above. Try navigating from the tabs to each content using the keyboard.
 
 <Preview>
-  <FocusableContentExample />
+	<FocusableContentExample />
 </Preview>
 
 ```tsx {10-12}
 function FocusableContentExample() {
-  return (
-    <Tabs.Root>
-      <Tabs.List>
-        <Tabs.Trigger value="profile">Profile</Tabs.Trigger>
-        <Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
-        <Tabs.Trigger value="settings">Settings</Tabs.Trigger>
-        <Tabs.Trigger value="contact">Contact</Tabs.Trigger>
-        <Tabs.Indicator />
-      </Tabs.List>
-      <Tabs.Content value="profile">
-        <input placeholder="Change password" />
-      </Tabs.Content>
-      <Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
-      <Tabs.Content value="settings">Settings details</Tabs.Content>
-      <Tabs.Content value="contact">Contact details</Tabs.Content>
-    </Tabs.Root>
-  );
+	return (
+		<Tabs.Root>
+			<Tabs.List>
+				<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
+				<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
+				<Tabs.Trigger value="settings">Settings</Tabs.Trigger>
+				<Tabs.Trigger value="contact">Contact</Tabs.Trigger>
+				<Tabs.Indicator />
+			</Tabs.List>
+			<Tabs.Content value="profile">
+				<input placeholder="Change password" />
+			</Tabs.Content>
+			<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
+			<Tabs.Content value="settings">Settings details</Tabs.Content>
+			<Tabs.Content value="contact">Contact details</Tabs.Content>
+		</Tabs.Root>
+	);
 }
 ```
 
@@ -260,49 +260,49 @@ function FocusableContentExample() {
 Tabs can be added/removed dynamically by using a signal and SolidJS `For`.
 
 <Preview isCentered={false}>
-  <DynamicContentExample />
+	<DynamicContentExample />
 </Preview>
 
 ```tsx {3-7,32,35}
 import { createSignal } from "solid-js";
 
 function DynamicContentExample() {
-  const [tabs, setTabs] = createSignal([
-    { id: "1", title: "Tab 1", content: "Tab body 1" },
-    { id: "2", title: "Tab 2", content: "Tab body 2" },
-    { id: "3", title: "Tab 3", content: "Tab body 3" },
-  ]);
+	const [tabs, setTabs] = createSignal([
+		{ id: "1", title: "Tab 1", content: "Tab body 1" },
+		{ id: "2", title: "Tab 2", content: "Tab body 2" },
+		{ id: "3", title: "Tab 3", content: "Tab body 3" },
+	]);
 
-  const addTab = () => {
-    setTabs(prev => [
-      ...prev,
-      {
-        id: String(prev.length + 1),
-        title: `Tab ${prev.length + 1}`,
-        content: `Tab Body ${prev.length + 1}`,
-      },
-    ]);
-  };
+	const addTab = () => {
+		setTabs(prev => [
+			...prev,
+			{
+				id: String(prev.length + 1),
+				title: `Tab ${prev.length + 1}`,
+				content: `Tab Body ${prev.length + 1}`,
+			},
+		]);
+	};
 
-  const removeTab = () => {
-    if (tabs().length > 1) {
-      setTabs(prev => prev.slice(0, -1));
-    }
-  };
+	const removeTab = () => {
+		if (tabs().length > 1) {
+			setTabs(prev => prev.slice(0, -1));
+		}
+	};
 
-  return (
-    <>
-      <button onClick={addTab}>Add tab</button>
-      <button onClick={removeTab}>Remove tab</button>
-      <Tabs.Root>
-        <Tabs.List>
-          <For each={tabs()}>{tab => <Tabs.Trigger value={tab.id}>{tab.title}</Tabs.Trigger>}</For>
-          <Tabs.Indicator />
-        </Tabs.List>
-        <For each={tabs()}>{tab => <Tabs.Content value={tab.id}>{tab.content}</Tabs.Content>}</For>
-      </Tabs.Root>
-    </>
-  );
+	return (
+		<>
+			<button onClick={addTab}>Add tab</button>
+			<button onClick={removeTab}>Remove tab</button>
+			<Tabs.Root>
+				<Tabs.List>
+					<For each={tabs()}>{tab => <Tabs.Trigger value={tab.id}>{tab.title}</Tabs.Trigger>}</For>
+					<Tabs.Indicator />
+				</Tabs.List>
+				<For each={tabs()}>{tab => <Tabs.Content value={tab.id}>{tab.content}</Tabs.Content>}</For>
+			</Tabs.Root>
+		</>
+	);
 }
 ```
 
@@ -313,22 +313,22 @@ By default, pressing the arrow keys while focus is on a Tab will switch selectio
 If you would like to prevent selection change from happening automatically you can set the `activationMode` prop to `manual`. This will prevent tab selection from changing on arrow key press, requiring a subsequent <Kbd>Enter</Kbd> or <Kbd>Space</Kbd> key press to confirm tab selection.
 
 <Preview>
-  <ManualActivationExample />
+	<ManualActivationExample />
 </Preview>
 
 ```tsx {0}
 <Tabs.Root activationMode="manual">
-  <Tabs.List>
-    <Tabs.Trigger value="profile">Profile</Tabs.Trigger>
-    <Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
-    <Tabs.Trigger value="settings">Settings</Tabs.Trigger>
-    <Tabs.Trigger value="contact">Contact</Tabs.Trigger>
-    <Tabs.Indicator />
-  </Tabs.List>
-  <Tabs.Content value="profile">Profile details</Tabs.Content>
-  <Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
-  <Tabs.Content value="settings">Settings details</Tabs.Content>
-  <Tabs.Content value="contact">Contact details</Tabs.Content>
+	<Tabs.List>
+		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
+		<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
+		<Tabs.Trigger value="settings">Settings</Tabs.Trigger>
+		<Tabs.Trigger value="contact">Contact</Tabs.Trigger>
+		<Tabs.Indicator />
+	</Tabs.List>
+	<Tabs.Content value="profile">Profile details</Tabs.Content>
+	<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
+	<Tabs.Content value="settings">Settings details</Tabs.Content>
+	<Tabs.Content value="contact">Contact details</Tabs.Content>
 </Tabs.Root>
 ```
 
@@ -337,22 +337,22 @@ If you would like to prevent selection change from happening automatically you c
 By default, tabs are horizontally oriented. The `orientation` prop can be set to `vertical` to change this. This affects keyboard navigation. You are responsible for styling your tabs accordingly.
 
 <Preview>
-  <VerticalOrientationExample />
+	<VerticalOrientationExample />
 </Preview>
 
 ```tsx {0}
 <Tabs.Root orientation="vertical">
-  <Tabs.List>
-    <Tabs.Trigger value="profile">Profile</Tabs.Trigger>
-    <Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
-    <Tabs.Trigger value="settings">Settings</Tabs.Trigger>
-    <Tabs.Trigger value="contact">Contact</Tabs.Trigger>
-    <Tabs.Indicator />
-  </Tabs.List>
-  <Tabs.Content value="profile">Profile details</Tabs.Content>
-  <Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
-  <Tabs.Content value="settings">Settings details</Tabs.Content>
-  <Tabs.Content value="contact">Contact details</Tabs.Content>
+	<Tabs.List>
+		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
+		<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
+		<Tabs.Trigger value="settings">Settings</Tabs.Trigger>
+		<Tabs.Trigger value="contact">Contact</Tabs.Trigger>
+		<Tabs.Indicator />
+	</Tabs.List>
+	<Tabs.Content value="profile">Profile details</Tabs.Content>
+	<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
+	<Tabs.Content value="settings">Settings details</Tabs.Content>
+	<Tabs.Content value="contact">Contact details</Tabs.Content>
 </Tabs.Root>
 ```
 
@@ -361,46 +361,46 @@ By default, tabs are horizontally oriented. The `orientation` prop can be set to
 All tabs can be disabled using the `disabled` prop.
 
 <Preview>
-  <DisabledTabsExample />
+	<DisabledTabsExample />
 </Preview>
 
 ```tsx {0}
 <Tabs.Root disabled>
-  <Tabs.List>
-    <Tabs.Trigger value="profile">Profile</Tabs.Trigger>
-    <Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
-    <Tabs.Trigger value="settings">Settings</Tabs.Trigger>
-    <Tabs.Trigger value="contact">Contact</Tabs.Trigger>
-    <Tabs.Indicator />
-  </Tabs.List>
-  <Tabs.Content value="profile">Profile details</Tabs.Content>
-  <Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
-  <Tabs.Content value="settings">Settings details</Tabs.Content>
-  <Tabs.Content value="contact">Contact details</Tabs.Content>
+	<Tabs.List>
+		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
+		<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
+		<Tabs.Trigger value="settings">Settings</Tabs.Trigger>
+		<Tabs.Trigger value="contact">Contact</Tabs.Trigger>
+		<Tabs.Indicator />
+	</Tabs.List>
+	<Tabs.Content value="profile">Profile details</Tabs.Content>
+	<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
+	<Tabs.Content value="settings">Settings details</Tabs.Content>
+	<Tabs.Content value="contact">Contact details</Tabs.Content>
 </Tabs.Root>
 ```
 
 Individual tab can be disabled using the `disabled` prop on the tab itself.
 
 <Preview>
-  <SingleDisabledTabExample />
+	<SingleDisabledTabExample />
 </Preview>
 
 ```tsx {4}
 <Tabs.Root>
-  <Tabs.List>
-    <Tabs.Trigger value="profile">Profile</Tabs.Trigger>
-    <Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
-    <Tabs.Trigger value="settings" disabled>
-      Settings
-    </Tabs.Trigger>
-    <Tabs.Trigger value="contact">Contact</Tabs.Trigger>
-    <Tabs.Indicator />
-  </Tabs.List>
-  <Tabs.Content value="profile">Profile details</Tabs.Content>
-  <Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
-  <Tabs.Content value="settings">Settings details</Tabs.Content>
-  <Tabs.Content value="contact">Contact details</Tabs.Content>
+	<Tabs.List>
+		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
+		<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
+		<Tabs.Trigger value="settings" disabled>
+			Settings
+		</Tabs.Trigger>
+		<Tabs.Trigger value="contact">Contact</Tabs.Trigger>
+		<Tabs.Indicator />
+	</Tabs.List>
+	<Tabs.Content value="profile">Profile details</Tabs.Content>
+	<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
+	<Tabs.Content value="settings">Settings details</Tabs.Content>
+	<Tabs.Content value="contact">Contact details</Tabs.Content>
 </Tabs.Root>
 ```
 

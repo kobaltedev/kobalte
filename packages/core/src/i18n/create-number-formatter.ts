@@ -6,8 +6,11 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/i18n/src/useNumberFormatter.ts
  */
 
-import { NumberFormatOptions, NumberFormatter } from "@internationalized/number";
-import { access, MaybeAccessor } from "@kobalte/utils";
+import {
+	NumberFormatOptions,
+	NumberFormatter,
+} from "@internationalized/number";
+import { MaybeAccessor, access } from "@kobalte/utils";
 import { Accessor, createMemo } from "solid-js";
 
 import { useLocale } from "./i18n-provider";
@@ -18,9 +21,9 @@ import { useLocale } from "./i18n-provider";
  * @param options - Formatting options.
  */
 export function createNumberFormatter(
-  options: MaybeAccessor<NumberFormatOptions>,
+	options: MaybeAccessor<NumberFormatOptions>,
 ): Accessor<Intl.NumberFormat> {
-  const { locale } = useLocale();
+	const { locale } = useLocale();
 
-  return createMemo(() => new NumberFormatter(locale(), access(options)));
+	return createMemo(() => new NumberFormatter(locale(), access(options)));
 }

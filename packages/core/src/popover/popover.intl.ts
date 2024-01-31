@@ -1,5 +1,6 @@
 export const POPOVER_INTL_TRANSLATIONS = {
-  dismiss: "Dismiss",
+	// `aria-label` of Popover.CloseButton.
+	dismiss: "Dismiss",
 };
 
 export type PopoverIntlTranslations = typeof POPOVER_INTL_TRANSLATIONS;

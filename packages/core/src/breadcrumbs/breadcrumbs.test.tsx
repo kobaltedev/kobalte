@@ -12,177 +12,177 @@ import { render, screen } from "@solidjs/testing-library";
 import * as Breadcrumbs from ".";
 
 describe("Breadcrumbs", () => {
-  it("should have default 'aria-label'", () => {
-    render(() => <Breadcrumbs.Root />);
+	it("should have default 'aria-label'", () => {
+		render(() => <Breadcrumbs.Root />);
 
-    const nav = screen.getByRole("navigation");
-    expect(nav).toHaveAttribute("aria-label", "Breadcrumbs");
-  });
+		const nav = screen.getByRole("navigation");
+		expect(nav).toHaveAttribute("aria-label", "Breadcrumbs");
+	});
 
-  it("should have default separator", () => {
-    render(() => (
-      <Breadcrumbs.Root>
-        <ol>
-          <li>
-            <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-          </li>
-          <li>
-            <Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-          </li>
-          <li>
-            <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
-          </li>
-        </ol>
-      </Breadcrumbs.Root>
-    ));
+	it("should have default separator", () => {
+		render(() => (
+			<Breadcrumbs.Root>
+				<ol>
+					<li>
+						<Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+						<Breadcrumbs.Separator />
+					</li>
+					<li>
+						<Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
+						<Breadcrumbs.Separator />
+					</li>
+					<li>
+						<Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
+					</li>
+				</ol>
+			</Breadcrumbs.Root>
+		));
 
-    const separators = screen.getAllByText("/");
-    expect(separators.length).toBe(2);
-  });
+		const separators = screen.getAllByText("/");
+		expect(separators.length).toBe(2);
+	});
 
-  it("supports custom string separator", () => {
-    render(() => (
-      <Breadcrumbs.Root separator=">">
-        <ol>
-          <li>
-            <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-          </li>
-          <li>
-            <Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-          </li>
-          <li>
-            <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
-          </li>
-        </ol>
-      </Breadcrumbs.Root>
-    ));
+	it("supports custom string separator", () => {
+		render(() => (
+			<Breadcrumbs.Root separator=">">
+				<ol>
+					<li>
+						<Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+						<Breadcrumbs.Separator />
+					</li>
+					<li>
+						<Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
+						<Breadcrumbs.Separator />
+					</li>
+					<li>
+						<Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
+					</li>
+				</ol>
+			</Breadcrumbs.Root>
+		));
 
-    const separators = screen.getAllByText(">");
-    expect(separators.length).toBe(2);
-  });
+		const separators = screen.getAllByText(">");
+		expect(separators.length).toBe(2);
+	});
 
-  it("supports custom JSX.Element separator", () => {
-    render(() => (
-      <Breadcrumbs.Root separator={<span>jsx separator</span>}>
-        <ol>
-          <li>
-            <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-          </li>
-          <li>
-            <Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-          </li>
-          <li>
-            <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
-          </li>
-        </ol>
-      </Breadcrumbs.Root>
-    ));
+	it("supports custom JSX.Element separator", () => {
+		render(() => (
+			<Breadcrumbs.Root separator={<span>jsx separator</span>}>
+				<ol>
+					<li>
+						<Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+						<Breadcrumbs.Separator />
+					</li>
+					<li>
+						<Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
+						<Breadcrumbs.Separator />
+					</li>
+					<li>
+						<Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
+					</li>
+				</ol>
+			</Breadcrumbs.Root>
+		));
 
-    const separators = screen.getAllByText("jsx separator");
-    expect(separators.length).toBe(2);
-  });
+		const separators = screen.getAllByText("jsx separator");
+		expect(separators.length).toBe(2);
+	});
 
-  it("separator should be 'aria-hidden'", () => {
-    render(() => (
-      <Breadcrumbs.Root>
-        <ol>
-          <li>
-            <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-          </li>
-          <li>
-            <Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-          </li>
-          <li>
-            <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
-          </li>
-        </ol>
-      </Breadcrumbs.Root>
-    ));
+	it("separator should be 'aria-hidden'", () => {
+		render(() => (
+			<Breadcrumbs.Root>
+				<ol>
+					<li>
+						<Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+						<Breadcrumbs.Separator />
+					</li>
+					<li>
+						<Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
+						<Breadcrumbs.Separator />
+					</li>
+					<li>
+						<Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
+					</li>
+				</ol>
+			</Breadcrumbs.Root>
+		));
 
-    const separators = screen.getAllByText("/");
+		const separators = screen.getAllByText("/");
 
-    for (const el of separators) {
-      expect(el).toHaveAttribute("aria-hidden", "true");
-    }
-  });
+		for (const el of separators) {
+			expect(el).toHaveAttribute("aria-hidden", "true");
+		}
+	});
 
-  describe("Link", () => {
-    it("should have 'aria-current=page' attribute when is current link", () => {
-      render(() => (
-        <Breadcrumbs.Root>
-          <ol>
-            <li>
-              <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
-              <Breadcrumbs.Separator />
-            </li>
-            <li>
-              <Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
-              <Breadcrumbs.Separator />
-            </li>
-            <li>
-              <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
-            </li>
-          </ol>
-        </Breadcrumbs.Root>
-      ));
+	describe("Link", () => {
+		it("should have 'aria-current=page' attribute when is current link", () => {
+			render(() => (
+				<Breadcrumbs.Root>
+					<ol>
+						<li>
+							<Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+							<Breadcrumbs.Separator />
+						</li>
+						<li>
+							<Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
+							<Breadcrumbs.Separator />
+						</li>
+						<li>
+							<Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
+						</li>
+					</ol>
+				</Breadcrumbs.Root>
+			));
 
-      const currentLink = screen.getByText("Breadcrumbs");
-      expect(currentLink).toHaveAttribute("aria-current", "page");
-    });
+			const currentLink = screen.getByText("Breadcrumbs");
+			expect(currentLink).toHaveAttribute("aria-current", "page");
+		});
 
-    it("should have 'data-current' attribute when is current link", () => {
-      render(() => (
-        <Breadcrumbs.Root>
-          <ol>
-            <li>
-              <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
-              <Breadcrumbs.Separator />
-            </li>
-            <li>
-              <Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
-              <Breadcrumbs.Separator />
-            </li>
-            <li>
-              <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
-            </li>
-          </ol>
-        </Breadcrumbs.Root>
-      ));
+		it("should have 'data-current' attribute when is current link", () => {
+			render(() => (
+				<Breadcrumbs.Root>
+					<ol>
+						<li>
+							<Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+							<Breadcrumbs.Separator />
+						</li>
+						<li>
+							<Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
+							<Breadcrumbs.Separator />
+						</li>
+						<li>
+							<Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
+						</li>
+					</ol>
+				</Breadcrumbs.Root>
+			));
 
-      const currentLink = screen.getByText("Breadcrumbs");
-      expect(currentLink).toHaveAttribute("data-current");
-    });
+			const currentLink = screen.getByText("Breadcrumbs");
+			expect(currentLink).toHaveAttribute("data-current");
+		});
 
-    it("should be disabled when is current link", () => {
-      render(() => (
-        <Breadcrumbs.Root>
-          <ol>
-            <li>
-              <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
-              <Breadcrumbs.Separator />
-            </li>
-            <li>
-              <Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
-              <Breadcrumbs.Separator />
-            </li>
-            <li>
-              <Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
-            </li>
-          </ol>
-        </Breadcrumbs.Root>
-      ));
+		it("should be disabled when is current link", () => {
+			render(() => (
+				<Breadcrumbs.Root>
+					<ol>
+						<li>
+							<Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+							<Breadcrumbs.Separator />
+						</li>
+						<li>
+							<Breadcrumbs.Link href="/components">Components</Breadcrumbs.Link>
+							<Breadcrumbs.Separator />
+						</li>
+						<li>
+							<Breadcrumbs.Link current>Breadcrumbs</Breadcrumbs.Link>
+						</li>
+					</ol>
+				</Breadcrumbs.Root>
+			));
 
-      const currentLink = screen.getByText("Breadcrumbs");
-      expect(currentLink).toHaveAttribute("aria-disabled", "true");
-      expect(currentLink).toHaveAttribute("data-disabled");
-    });
-  });
+			const currentLink = screen.getByText("Breadcrumbs");
+			expect(currentLink).toHaveAttribute("aria-disabled", "true");
+			expect(currentLink).toHaveAttribute("data-disabled");
+		});
+	});
 });
