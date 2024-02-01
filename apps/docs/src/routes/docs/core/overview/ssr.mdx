@@ -4,21 +4,9 @@ import { Callout } from "../../../../components/callout";
 
 ## Usage with SolidStart
 
-If you are using [SolidStart](https://start.solidjs.com/) you will need to add the ssr setting to your `vite.config.ts`:
-
-```ts {5-7}
-import solid from "solid-start/vite";
-import { defineConfig } from "vite";
-
-export default defineConfig({
-	plugins: [solid()],
-	ssr: {
-		noExternal: ["@kobalte/core"],
-	},
-});
-```
+Kobalte works out of the box with [SolidStart](https://start.solidjs.com/).
 
 <Callout type="warning">
-	Kobalte has been tested with `solid-js@1.7.11` and `solid-start@0.3.4`, compatibility with other
-	versions is not guaranteed.
+	Kobalte has been tested with `solid-js@1.8.8` and `@solidjs/start@0.4.11`, compatibility with
+	other versions is not guaranteed.
 </Callout>

@@ -1,4 +1,4 @@
-import { Link, useLocation } from "@solidjs/router";
+import { useLocation } from "@solidjs/router";
 import { ParentProps, Show } from "solid-js";
 
 import { NavSection } from "../model/navigation";
@@ -41,7 +41,7 @@ export function Layout(props: LayoutProps) {
 									Previous
 								</dt>
 								<dd class="mt-1">
-									<Link
+									<a
 										href={previousPage().href}
 										class="text-base font-semibold text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
 									>
@@ -49,7 +49,7 @@ export function Layout(props: LayoutProps) {
 											&larr;
 										</span>
 										<span>{previousPage().title}</span>
-									</Link>
+									</a>
 								</dd>
 							</dl>
 						</Show>
@@ -59,7 +59,7 @@ export function Layout(props: LayoutProps) {
 									Next
 								</dt>
 								<dd class="mt-1">
-									<Link
+									<a
 										href={nextPage().href}
 										class="text-base font-semibold text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
 									>
@@ -67,7 +67,7 @@ export function Layout(props: LayoutProps) {
 										<span aria-hidden="true" class="ml-1">
 											&rarr;
 										</span>
-									</Link>
+									</a>
 								</dd>
 							</dl>
 						</Show>

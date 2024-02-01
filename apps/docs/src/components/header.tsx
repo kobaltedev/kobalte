@@ -1,5 +1,5 @@
 import docsearch from "@docsearch/js";
-import { Link, useMatch } from "@solidjs/router";
+import { useMatch } from "@solidjs/router";
 import { clsx } from "clsx";
 import { onMount } from "solid-js";
 
@@ -38,13 +38,13 @@ export function Header(props: HeaderProps) {
 				<MobileNavigation sections={props.navSections} />
 			</div>
 			<div class="relative flex flex-grow basis-0 items-center space-x-2">
-				<Link
+				<a
 					class="text-zinc-800 dark:text-white/90 font-medium font-display text-xl leading-none"
 					href="/"
 				>
 					Kobalte
 					<span class="text-3xl leading-[0] text-sky-600">.</span>
-				</Link>
+				</a>
 				<span class="rounded bg-zinc-100 px-1.5 py-1 text-sm leading-none dark:bg-zinc-800 dark:text-zinc-300">
 					{LATEST_CORE_VERSION_NAME}
 				</span>
@@ -53,7 +53,7 @@ export function Header(props: HeaderProps) {
 			<div class="relative flex basis-0 justify-end md:flex-grow items-center py-2">
 				<div id="docsearch" class="mx-3.5 flex items-center justify-center" />
 				<div class="hidden lg:flex lg:space-x-1.5 text-sm">
-					<Link
+					<a
 						href="/docs/core/overview/introduction"
 						class={clsx(
 							"px-3 py-2 rounded-md flex items-center justify-center transition",
@@ -63,8 +63,8 @@ export function Header(props: HeaderProps) {
 						)}
 					>
 						Components
-					</Link>
-					<Link
+					</a>
+					<a
 						href={LATEST_CORE_CHANGELOG_URL}
 						class={clsx(
 							"px-3 py-2 rounded-md flex items-center justify-center transition",
@@ -74,9 +74,9 @@ export function Header(props: HeaderProps) {
 						)}
 					>
 						Changelog
-					</Link>
+					</a>
 				</div>
-				<Link
+				<a
 					href="https://github.com/kobaltedev/kobalte"
 					target="_blank"
 					rel="noopener noreferrer"
@@ -84,7 +84,7 @@ export function Header(props: HeaderProps) {
 					aria-label="GitHub"
 				>
 					<GitHubIcon class="h-5 w-5" />
-				</Link>
+				</a>
 				<ThemeSelector />
 			</div>
 		</header>

@@ -1,5 +1,3 @@
-import { Link } from "@solidjs/router";
-
 import {
 	DiscordIcon,
 	GitHubIcon,
@@ -14,13 +12,13 @@ export function Footer() {
 				<div class="flex flex-col sm:flex-row items-baseline justify-between gap-4 py-8 md:py-12">
 					<div>
 						<div class="mb-2">
-							<Link
+							<a
 								class="inline-block font-semibold font-display text-xl"
 								href="/"
 							>
 								Kobalte
 								<span class="text-3xl text-sky-600 leading-[0]">.</span>
-							</Link>
+							</a>
 						</div>
 						<div class="text-sm text-gray-600">
 							<span class="text-sm text-zinc-700 mr-4 dark:text-zinc-400">

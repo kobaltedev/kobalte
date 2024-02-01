@@ -23,6 +23,7 @@ lerna-debug.log
 
 # solid
 .solid
+.vinxi
 
 # VSC Settings
 .vscode/settings.json

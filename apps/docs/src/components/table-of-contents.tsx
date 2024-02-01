@@ -1,4 +1,4 @@
-import { Link, useLocation } from "@solidjs/router";
+import { cache, createAsync, useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
 import {
 	Accessor,
@@ -8,9 +8,7 @@ import {
 	createSignal,
 	onCleanup,
 } from "solid-js";
-import { createServerData$ } from "solid-start/server";
-
-import { mods } from "../root";
+import { mods } from "../app";
 
 interface TocItem {
 	depth: number;
@@ -81,21 +79,19 @@ function useCurrentSection(tableOfContents: Accessor<TocItem[] | undefined>) {
 	return currentSection;
 }
 
+const getTOC = cache(async (pathname: string) => {
+	"use server";
+
+	const mod = mods[`./routes${pathname}.mdx`] ?? mods[`./routes${pathname}.md`];
+	return !mod
+		? []
+		: mod.getHeadings().filter((h) => h.depth > 1 && h.depth <= 3);
+}, "toc");
+
 export function TableOfContents() {
 	const path = useLocation();
 
-	const toc = createServerData$(
-		async (pathname) => {
-			const mod =
-				mods[`./routes${pathname}.mdx`] ?? mods[`./routes${pathname}.md`];
-			return !mod
-				? []
-				: mod.getHeadings().filter((h) => h.depth > 1 && h.depth <= 3);
-		},
-		{
-			key: () => path.pathname,
-		},
-	);
+	const toc = createAsync(() => getTOC(path.pathname));
 
 	const currentSection = useCurrentSection(toc);
 
@@ -114,7 +110,7 @@ export function TableOfContents() {
 							{(section) => (
 								<li>
 									<h3>
-										<Link
+										<a
 											href={`${path.pathname}#${section.slug}`}
 											class={clsx(
 												"block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
@@ -125,7 +121,7 @@ export function TableOfContents() {
 											)}
 										>
 											{section.text}
-										</Link>
+										</a>
 									</h3>
 								</li>
 							)}

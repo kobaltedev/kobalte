@@ -1,4 +1,4 @@
-import { Outlet } from "@solidjs/router";
+import { RouteProps } from "@solidjs/router";
 
 import { Layout } from "../../components";
 import { NavSection } from "../../model/navigation";
@@ -168,10 +168,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 	},
 ];
 
-export default function CoreLayout() {
-	return (
-		<Layout navSections={CORE_NAV_SECTIONS}>
-			<Outlet />
-		</Layout>
-	);
+export default function CoreLayout(props: RouteProps<string>) {
+	return <Layout navSections={CORE_NAV_SECTIONS}>{props.children}</Layout>;
 }

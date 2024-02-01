@@ -26,7 +26,6 @@ import {
 } from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
-import { useToastContext } from "./toast-context";
 import {
 	ToastRegionContext,
 	ToastRegionContextValue,
