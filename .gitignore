@@ -24,6 +24,7 @@ lerna-debug.log
 # solid
 .solid
 .vinxi
+.netlify
 
 # VSC Settings
 .vscode/settings.json
