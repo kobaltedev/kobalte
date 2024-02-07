@@ -11,6 +11,7 @@ import {
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
+	scrollIntoViewport,
 } from "@kobalte/utils";
 import {
 	JSX,
@@ -130,6 +131,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 			case "ArrowDown":
 				e.stopPropagation();
 				e.preventDefault();
+				scrollIntoViewport(e.currentTarget);
 				context.toggle("first");
 				break;
 			case "ArrowUp":
