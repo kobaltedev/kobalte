@@ -52,28 +52,26 @@ export default function App() {
 	return (
 		<Router
 			root={(props) => (
-				<Suspense>
-					<MetaProvider>
-						<Title>Kobalte</Title>
-						<ColorModeScript storageType={storageManager.type} />
-						<ColorModeProvider storageManager={storageManager}>
-							<MDXProvider components={mdxComponents}>
-								{props.children}
+				<MetaProvider>
+					<Title>Kobalte</Title>
+					<ColorModeScript storageType={storageManager.type} />
+					<ColorModeProvider storageManager={storageManager}>
+						<MDXProvider components={mdxComponents}>
+							<Suspense>{props.children}</Suspense>
 
-								<Portal>
-									<Toast.Region>
-										<Toast.List class={toastStyles.toast__list} />
-									</Toast.Region>
-									<Toast.Region regionId="custom-region-id">
-										<Toast.List
-											class={toastStyles["toast__list-custom-region"]}
-										/>
-									</Toast.Region>
-								</Portal>
-							</MDXProvider>
-						</ColorModeProvider>
-					</MetaProvider>
-				</Suspense>
+							<Portal>
+								<Toast.Region>
+									<Toast.List class={toastStyles.toast__list} />
+								</Toast.Region>
+								<Toast.Region regionId="custom-region-id">
+									<Toast.List
+										class={toastStyles["toast__list-custom-region"]}
+									/>
+								</Toast.Region>
+							</Portal>
+						</MDXProvider>
+					</ColorModeProvider>
+				</MetaProvider>
 			)}
 		>
 			<FileRoutes />
