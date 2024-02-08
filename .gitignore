@@ -1,4 +1,3 @@
-
 node_modules
 build
 dist
@@ -25,6 +24,10 @@ lerna-debug.log
 .solid
 .vinxi
 .netlify
+
+# kobalte dev
+packages/core/dev/App.tsx
+packages/core/dev/index.css
 
 # VSC Settings
 .vscode/settings.json

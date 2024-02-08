@@ -13,14 +13,7 @@ import {
 	mergeRefs,
 	scrollIntoViewport,
 } from "@kobalte/utils";
-import {
-	JSX,
-	createDeferred,
-	createEffect,
-	createSignal,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+import { JSX, createEffect, onCleanup, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
@@ -36,8 +29,6 @@ export interface MenuTriggerProps
  * The button that toggles the menu.
  */
 export function MenuTrigger(props: MenuTriggerProps) {
-	let ref: HTMLButtonElement | undefined;
-
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 	const optionalMenubarContext = useOptionalMenubarContext();
@@ -67,14 +58,14 @@ export function MenuTrigger(props: MenuTriggerProps) {
 
 		createEffect(() => {
 			optionalMenubarContext.registerMenu(key!, [
-				context.contentRef() ?? ref!,
+				context.contentRef()!,
 				...context.nestedMenus(),
 			]);
 		});
 
 		createEffect(() => {
 			if (optionalMenubarContext.value() === key) {
-				ref?.focus();
+				context.triggerRef()?.focus();
 				if (optionalMenubarContext.autoFocusMenu()) context.open(true);
 			} else context.close(true);
 		});
@@ -175,8 +166,6 @@ export function MenuTrigger(props: MenuTriggerProps) {
 	};
 
 	createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
-
-	const [tabIndex, setTabIndex] = createSignal<undefined | 0 | -1>(undefined);
 
 	return (
 		<Button.Root
