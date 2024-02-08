@@ -82,6 +82,19 @@ export function MenuTrigger(props: MenuTriggerProps) {
 			optionalMenubarContext.setLastValue(key);
 	}
 
+	const handleClick = () => {
+		// When opened by click, automatically focus Menubar menus
+		optionalMenubarContext?.setAutoFocusMenu(true);
+
+		// Don't auto focus element for Menubar
+		if (optionalMenubarContext !== undefined) context.toggle(false);
+		else context.toggle(true);
+
+		if (optionalMenubarContext !== undefined && !context.isOpen() && optionalMenubarContext.value() === key) {
+			optionalMenubarContext.closeMenu();
+		}
+	};
+
 	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
@@ -89,12 +102,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 
 		// For consistency with native, open the select on mouse down (main button), but touch up.
 		if (!local.disabled && e.pointerType !== "touch" && e.button === 0) {
-			// When opened by click, automatically focus Menubar menus
-			optionalMenubarContext?.setAutoFocusMenu(true);
-
-			// Don't auto focus element for Menubar
-			if (optionalMenubarContext !== undefined) context.toggle(false);
-			else context.toggle(true);
+			handleClick();
 		}
 	};
 
@@ -102,7 +110,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 		callHandler(e, local.onClick);
 
 		if (!local.disabled) {
-			if (e.currentTarget.dataset.pointerType === "touch") context.toggle(true);
+			if (e.currentTarget.dataset.pointerType === "touch") handleClick();
 		}
 	};
 
