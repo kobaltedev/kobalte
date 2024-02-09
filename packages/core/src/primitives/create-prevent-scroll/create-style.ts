@@ -18,33 +18,33 @@ export function createStyle(props: {
 	style?: Partial<CSSStyleDeclaration>;
 	properties?: { key: string; value: string }[];
 }) {
-		const style = props.style ?? {};
-		const properties = props.properties ?? [];
+	const style = props.style ?? {};
+	const properties = props.properties ?? [];
 
-		const originalStyles = (
-			Object.keys(style) as (keyof CSSStyleDeclaration)[]
-		).map((key) => {
-			return [key, props.element.style[key]];
-		});
+	const originalStyles = (
+		Object.keys(style) as (keyof CSSStyleDeclaration)[]
+	).map((key) => {
+		return [key, props.element.style[key]];
+	});
 
-		Object.assign(props.element.style, props.style);
+	Object.assign(props.element.style, props.style);
+
+	for (const property of properties) {
+		props.element.style.setProperty(property.key, property.value);
+	}
+
+	return () => {
+		for (const originalStyle of originalStyles) {
+			// @ts-expect-error: Some types of CSSStyleDeclaration can not be used as an index type and I'm not sure how to type this.
+			props.element.style[originalStyle[0]] = originalStyle[1];
+		}
 
 		for (const property of properties) {
-			props.element.style.setProperty(property.key, property.value);
+			props.element.style.removeProperty(property.key);
 		}
 
-		return () => {
-			for (const originalStyle of originalStyles) {
-				// @ts-expect-error: Some types of CSSStyleDeclaration can not be used as an index type and I'm not sure how to type this.
-				props.element.style[originalStyle[0]] = originalStyle[1];
-			}
-
-			for (const property of properties) {
-				props.element.style.removeProperty(property.key);
-			}
-
-			if (props.element.style.length === 0) {
-				props.element.removeAttribute("style");
-			}
+		if (props.element.style.length === 0) {
+			props.element.removeAttribute("style");
 		}
+	};
 }

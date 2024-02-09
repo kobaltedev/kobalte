@@ -18,21 +18,28 @@ import {
 	createUniqueId,
 	mergeProps,
 	on,
-	onCleanup, onMount, untrack
+	onCleanup,
+	onMount,
+	untrack,
 } from "solid-js";
-import { Axis, createStyle, getScrollAtLocation } from "..";
 import { isServer } from "solid-js/web";
+import { Axis, createStyle, getScrollAtLocation } from "..";
 
 const [preventScrollStack, setPreventScrollStack] = createSignal<string[]>([]);
 const [resetCallback, setResetCallback] = createSignal(() => {});
 
 // Call once all prevent prevent scroll finished
-createEffect(on(() => preventScrollStack(), (preventScrollStack) => {
-	if (preventScrollStack.length === 0) {
-		resetCallback()();
-		setResetCallback(() => () => {});
-	}
-}))
+createEffect(
+	on(
+		() => preventScrollStack(),
+		(preventScrollStack) => {
+			if (preventScrollStack.length === 0) {
+				resetCallback()();
+				setResetCallback(() => () => {});
+			}
+		},
+	),
+);
 
 function isActive(id: string) {
 	return preventScrollStack().indexOf(id) === preventScrollStack().length - 1;
@@ -70,28 +77,32 @@ export function createPreventScroll(props: {
 
 		if (!access(defaultedProps.enabled)) return;
 
-		console.log("preventscroll mount")
+		console.log("preventscroll mount");
 
 		setPreventScrollStack((stack) => [...stack, preventScrollId]);
 
 		onCleanup(() => {
 			setPreventScrollStack((stack) =>
 				stack.filter((id) => id !== preventScrollId),
-				);
+			);
 		});
 	});
 
 	createEffect(() => {
 		if (isServer) return;
 
-		if (!access(defaultedProps.enabled) || !preventScrollStack().includes(preventScrollId)) return;
+		if (
+			!access(defaultedProps.enabled) ||
+			!preventScrollStack().includes(preventScrollId)
+		)
+			return;
 
-		console.log("preventscroll run")
+		console.log("preventscroll run");
 
 		if (!preventScrollStack().includes(preventScrollId)) {
 			untrack(() => {
 				setPreventScrollStack((stack) => [...stack, preventScrollId]);
-			})
+			});
 		}
 
 		onCleanup(() => {
@@ -113,9 +124,9 @@ export function createPreventScroll(props: {
 		}[] = [];
 
 		if (scrollbarWidth > 0) {
-				style.paddingRight = `calc(${
-					window.getComputedStyle(body).paddingRight
-				} + ${scrollbarWidth}px)`;
+			style.paddingRight = `calc(${
+				window.getComputedStyle(body).paddingRight
+			} + ${scrollbarWidth}px)`;
 
 			properties.push({
 				key: "--scrollbar-width",
@@ -126,21 +137,20 @@ export function createPreventScroll(props: {
 		const offsetTop = window.scrollY;
 		const offsetLeft = window.scrollX;
 
-			if (preventScrollStack().length === 1) {
+		if (preventScrollStack().length === 1) {
+			console.log("setstyle");
+			const createStyleCleanup = createStyle({
+				element: body,
+				style,
+				properties,
+			});
 
-				console.log("setstyle")
-				const createStyleCleanup = createStyle({
-					element: body,
-					style,
-					properties,
-				});
-
-				setResetCallback(() => () => {
-					createStyleCleanup();
-					if (scrollbarWidth > 0) {
-						window.scrollTo(offsetLeft, offsetTop);
-					}
-				})
+			setResetCallback(() => () => {
+				createStyleCleanup();
+				if (scrollbarWidth > 0) {
+					window.scrollTo(offsetLeft, offsetTop);
+				}
+			});
 		}
 	});
 
