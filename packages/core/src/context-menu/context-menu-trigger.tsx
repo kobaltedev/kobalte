@@ -101,6 +101,7 @@ export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
 		if (!local.disabled && isTouchOrPen(e)) {
 			// Clear the long press here in case there's multiple touch points.
 			clearLongPressTimeout();
+			context.setAnchorRect({ x: e.clientX, y: e.clientY });
 			longPressTimoutId = window.setTimeout(() => menuContext.open(false), 700);
 		}
 	};

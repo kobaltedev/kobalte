@@ -112,7 +112,7 @@ Kobalte follows the [conventional commits](https://www.conventionalcommits.org/e
 - Build local version of all packages – `pnpm build:libs`.
 - Build local version of specific packages – `pnpm -F <package-name> build`.
 - To start docs – `pnpm dev:docs`.
-- To start playground – `pnpm dev:playground`.
+- To start playground – `pnpm dev:core`.
 
 ### Tests
 
