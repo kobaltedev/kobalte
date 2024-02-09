@@ -51,17 +51,20 @@ function isActive(id: string) {
  * @param props.element - Prevent scroll outside of this element. If the element is `null`, scroll will be prevented on the whole page. *Default = `null`*
  * @param props.enabled - Whether scroll should be prevented. *Default = `true`*
  * @param props.allowPinchZoom - Whether pinch zoom should be allowed. *Default = `true`*
+ * @param props.scrollBack - Whether to scroll back to initial position on cleanup. *Default = `true`*
  */
 export function createPreventScroll(props: {
 	element?: MaybeAccessor<HTMLElement | null>;
 	enabled?: MaybeAccessor<boolean>;
 	allowPinchZoom?: MaybeAccessor<boolean>;
+	scrollBack?: boolean;
 }) {
 	const defaultedProps = mergeProps(
 		{
 			element: null,
 			enabled: true,
 			allowPinchZoom: true,
+			scrollBack: true,
 		},
 		props,
 	);
@@ -76,8 +79,6 @@ export function createPreventScroll(props: {
 		if (isServer) return;
 
 		if (!access(defaultedProps.enabled)) return;
-
-		console.log("preventscroll mount");
 
 		setPreventScrollStack((stack) => [...stack, preventScrollId]);
 
@@ -96,8 +97,6 @@ export function createPreventScroll(props: {
 			!preventScrollStack().includes(preventScrollId)
 		)
 			return;
-
-		console.log("preventscroll run");
 
 		if (!preventScrollStack().includes(preventScrollId)) {
 			untrack(() => {
@@ -138,7 +137,6 @@ export function createPreventScroll(props: {
 		const offsetLeft = window.scrollX;
 
 		if (preventScrollStack().length === 1) {
-			console.log("setstyle");
 			const createStyleCleanup = createStyle({
 				element: body,
 				style,
@@ -147,7 +145,7 @@ export function createPreventScroll(props: {
 
 			setResetCallback(() => () => {
 				createStyleCleanup();
-				if (scrollbarWidth > 0) {
+				if (props.scrollBack && scrollbarWidth > 0) {
 					window.scrollTo(offsetLeft, offsetTop);
 				}
 			});
