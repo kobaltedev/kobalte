@@ -90,7 +90,11 @@ export function MenuTrigger(props: MenuTriggerProps) {
 		if (optionalMenubarContext !== undefined) context.toggle(false);
 		else context.toggle(true);
 
-		if (optionalMenubarContext !== undefined && !context.isOpen() && optionalMenubarContext.value() === key) {
+		if (
+			optionalMenubarContext !== undefined &&
+			!context.isOpen() &&
+			optionalMenubarContext.value() === key
+		) {
 			optionalMenubarContext.closeMenu();
 		}
 	};

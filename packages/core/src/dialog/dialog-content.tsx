@@ -176,8 +176,7 @@ export function DialogContent(props: DialogContentProps) {
 	});
 
 	createPreventScroll({
-		ownerRef: () => ref,
-		isDisabled: () => !(context.isOpen() && context.preventScroll()),
+		enabled: () => context.isOpen() && context.preventScroll(),
 	});
 
 	createFocusScope(

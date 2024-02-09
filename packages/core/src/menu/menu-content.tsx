@@ -12,22 +12,12 @@ export interface MenuContentProps
 	extends OverrideComponentProps<"div", MenuContentOptions> {}
 
 export function MenuContent(props: MenuContentProps) {
-	let ref: HTMLElement | undefined;
-
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 
-	const [local, others] = splitProps(props, ["ref"]);
-
 	createPreventScroll({
-		ownerRef: () => ref,
-		isDisabled: () => !(context.isOpen() && rootContext.preventScroll()),
+		enabled: () => context.isOpen() && rootContext.preventScroll(),
 	});
 
-	return (
-		<MenuContentBase
-			ref={mergeRefs((el) => (ref = el), local.ref)}
-			{...others}
-		/>
-	);
+	return <MenuContentBase {...props} />;
 }
