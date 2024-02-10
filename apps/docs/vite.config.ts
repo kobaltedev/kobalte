@@ -123,9 +123,9 @@ export default defineConfig({
 			jsxImportSource: "solid-js",
 			providerImportSource: "solid-mdx",
 			rehypePlugins: [
-				[rehypeRaw, { passThrough: nodeTypes }],
 				rehypePrettyCode,
 				rehypeSlug,
+				[rehypeRaw, { passThrough: nodeTypes }],
 				rehypeCollectHeadings,
 			],
 			remarkPlugins: [
@@ -163,20 +163,15 @@ export default defineConfig({
 				if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
 					const replacedId = id.replace(/\?meta$/, "");
 
-					function getCode() {
-						return `
-              export function getHeadings() { return ${JSON.stringify(
-								headingsCache.get(replacedId),
-								null,
-								2,
-							)}
-              }
-              `;
+					if (headingsCache.has(replacedId)) {
+						return {
+							code: `
+	              export function getHeadings() {
+									return ${JSON.stringify(headingsCache.get(id), null, 2)}
+	              }
+							`,
+						};
 					}
-
-					return {
-						code: getCode(),
-					};
 				}
 			},
 		},

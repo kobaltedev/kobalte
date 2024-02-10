@@ -28,6 +28,7 @@ lerna-debug.log
 # kobalte dev
 packages/core/dev/App.tsx
 packages/core/dev/index.css
+packages/core/NOTICE.txt
 
 # VSC Settings
 .vscode/settings.json

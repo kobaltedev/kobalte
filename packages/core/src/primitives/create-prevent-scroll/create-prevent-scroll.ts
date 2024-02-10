@@ -23,7 +23,8 @@ import {
 	untrack,
 } from "solid-js";
 import { isServer } from "solid-js/web";
-import { Axis, createStyle, getScrollAtLocation } from "..";
+import { createStyle } from "./create-style";
+import { Axis, getScrollAtLocation } from "./scroll";
 
 const [preventScrollStack, setPreventScrollStack] = createSignal<string[]>([]);
 const [resetCallback, setResetCallback] = createSignal(() => {});

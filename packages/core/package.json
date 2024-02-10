@@ -43,11 +43,12 @@
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+		"NOTICE.txt"
   ],
   "scripts": {
     "build": "rollup -c",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
     "dev": "vite serve dev --host",
     "test": "jest --passWithNoTests",
     "typecheck": "tsc --noEmit"
