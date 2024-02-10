@@ -126,7 +126,7 @@ export default defineConfig({
 				rehypePrettyCode,
 				rehypeSlug,
 				[rehypeRaw, { passThrough: nodeTypes }],
-				rehypeCollectHeadings,
+				//				rehypeCollectHeadings,
 			],
 			remarkPlugins: [
 				remarkGfm,
@@ -157,24 +157,24 @@ export default defineConfig({
 				],
 			],
 		}),
-		{
-			name: "mdx-meta",
-			async transform(code: any, id: any) {
-				if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
-					const replacedId = id.replace(/\?meta$/, "");
-
-					if (headingsCache.has(replacedId)) {
-						return {
-							code: `
-	              export function getHeadings() {
-									return ${JSON.stringify(headingsCache.get(id), null, 2)}
-	              }
-							`,
-						};
-					}
-				}
-			},
-		},
+		//		{
+		//			name: "mdx-meta",
+		//			async transform(code: any, id: any) {
+		//				if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
+		//					const replacedId = id.replace(/\?meta$/, "");
+		//
+		//					if (headingsCache.has(replacedId)) {
+		//						return {
+		//							code: `
+		//	              export function getHeadings() {
+		//									return ${JSON.stringify(headingsCache.get(id), null, 2)}
+		//	              }
+		//							`,
+		//						};
+		//					}
+		//				}
+		//			},
+		//		},
 	],
 	ssr: {
 		noExternal: ["@tanstack/solid-virtual"],

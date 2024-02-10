@@ -3,12 +3,15 @@ import { clsx } from "clsx";
 import {
 	Accessor,
 	For,
+	Setter,
 	Suspense,
 	createEffect,
 	createSignal,
+	on,
 	onCleanup,
 } from "solid-js";
-import { mods } from "../app";
+import { isServer } from "solid-js/web";
+//import { mods } from "../app";
 
 interface TocItem {
 	depth: number;
@@ -79,19 +82,53 @@ function useCurrentSection(tableOfContents: Accessor<TocItem[] | undefined>) {
 	return currentSection;
 }
 
-const getTOC = cache(async (pathname: string) => {
-	"use server";
+//const getTOC = cache(async (pathname: string) => {
+//	"use server";
+//
+//	const mod = mods[`./routes${pathname}.mdx`] ?? mods[`./routes${pathname}.md`];
+//	return !mod
+//		? []
+//		: mod.getHeadings().filter((h) => h.depth > 1 && h.depth <= 3);
+//}, "toc");
 
-	const mod = mods[`./routes${pathname}.mdx`] ?? mods[`./routes${pathname}.md`];
-	return !mod
-		? []
-		: mod.getHeadings().filter((h) => h.depth > 1 && h.depth <= 3);
-}, "toc");
+function updateHeadings(setter: Setter<TocItem[]>) {
+	if (document.getElementsByTagName("article").length === 0) {
+		setTimeout(() => updateHeadings(setter), 1);
+		return;
+	}
+
+	console.log("update");
+
+	setter(
+		[
+			...document
+				.getElementsByTagName("article")[0]
+				.querySelectorAll("h1, h2, h3, h4, h5, h6"),
+		].map((element) => ({
+			depth: Number(element.tagName.substr(1)),
+			text: element.textContent!,
+			slug: element.id,
+		})),
+	);
+}
 
 export function TableOfContents() {
 	const path = useLocation();
 
-	const toc = createAsync(() => getTOC(path.pathname));
+	//	const toc = createAsync(() => getTOC(path.pathname));
+
+	const [toc, setToc] = createSignal<TocItem[]>([]);
+
+	createEffect(
+		on(
+			() => path.pathname,
+			(pathname) => {
+				if (isServer) return;
+
+				updateHeadings(setToc);
+			},
+		),
+	);
 
 	const currentSection = useCurrentSection(toc);
 

@@ -19,22 +19,22 @@ import { getCookie } from "vinxi/server";
 import toastStyles from "./examples/toast.module.css";
 import { mdxComponents } from "./mdx-components";
 
-export const mods = /*#__PURE__*/ import.meta.glob<
-	true,
-	string,
-	{
-		getHeadings: () => {
-			depth: number;
-			text: string;
-			slug: string;
-		}[];
-	}
->("./routes/docs/**/*.{md,mdx}", {
-	eager: true,
-	query: {
-		meta: "",
-	},
-});
+//export const mods = /*#__PURE__*/ import.meta.glob<
+//	true,
+//	string,
+//	{
+//		getHeadings: () => {
+//			depth: number;
+//			text: string;
+//			slug: string;
+//		}[];
+//	}
+//>("./routes/docs/**/*.{md,mdx}", {
+//	eager: true,
+//	query: {
+//		meta: "",
+//	},
+//});
 
 function getServerCookies() {
 	"use server";
