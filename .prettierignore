@@ -4,4 +4,4 @@
 *.tsx
 *.json
 *.cjs
-pnpm-lock.json
+pnpm-lock.yaml
