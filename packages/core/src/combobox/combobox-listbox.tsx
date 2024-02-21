@@ -53,6 +53,7 @@ export function ComboboxListbox<Option = any, OptGroup = never>(
       aria-labelledby={ariaLabelledBy()}
       renderItem={context.renderItem}
       renderSection={context.renderSection}
+      virtualized={context.isVirtualized()}
       {...others}
     />
   );
