@@ -26,6 +26,7 @@
   "type": "module",
   "scripts": {
 		"build": "NODE_OPTIONS=\"--max-old-space-size=8192\" vinxi build",
+		"build:dev": "NODE_OPTIONS=\"--max-old-space-size=8192\" DEVELOPMENT=1 vinxi build",
     "clean": "rm -rf .solid && rm -rf netlify && rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "vinxi dev --host",
     "start": "vinxi start"

@@ -105,7 +105,7 @@ function rehypeCollectHeadings() {
 export default defineConfig({
 	start: {
 		server: {
-			preset: process.env.GITHUB_ACTIONS ? "node" : "netlify",
+			preset: (process.env.GITHUB_ACTIONS || process.env.DEVELOPMENT) ? "node-server" : "netlify",
 			experimental: {
 				asyncContext: true,
 			},
