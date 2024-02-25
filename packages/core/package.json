@@ -63,7 +63,7 @@
     "@kobalte/tests": "^0.5.0"
   },
   "peerDependencies": {
-    "solid-js": "^1.8.8"
+		"solid-js": "^1.8.15"
   },
   "publishConfig": {
     "access": "public"
