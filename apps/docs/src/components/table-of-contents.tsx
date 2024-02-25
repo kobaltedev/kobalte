@@ -131,6 +131,24 @@ export function TableOfContents() {
 
 	const currentSection = useCurrentSection(toc);
 
+	createEffect(
+		on(
+			() => currentSection(),
+			(currentSection) => {
+				if (isServer) return;
+
+				const element = document.querySelector(
+					`a[data-toc-slug="${currentSection}"]`,
+				);
+
+				element?.scrollIntoView({
+					behavior: "smooth",
+					block: "nearest",
+				});
+			},
+		),
+	);
+
 	return (
 		<div class="hidden xl:sticky xl:top-[4.5rem] xl:block xl:h-[calc(100vh-4.5rem)] xl:flex-none xl:overflow-y-auto xl:py-4 xl:pr-6">
 			<nav aria-labelledby="on-this-page-title" class="w-56">
@@ -147,6 +165,7 @@ export function TableOfContents() {
 								<li>
 									<h3>
 										<a
+											data-toc-slug={section.slug}
 											href={`${path.pathname}#${section.slug}`}
 											class={clsx(
 												"block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",
