@@ -24,6 +24,7 @@ lerna-debug.log
 .solid
 .vinxi
 .netlify
+.output
 
 # kobalte dev
 packages/core/dev/App.tsx

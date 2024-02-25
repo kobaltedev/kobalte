@@ -114,7 +114,7 @@ function updateHeadings(setter: Setter<TocItem[]>) {
 export function TableOfContents() {
 	const path = useLocation();
 
-//	const toc = createAsync(() => getTOC(path.pathname));
+	//	const toc = createAsync(() => getTOC(path.pathname));
 
 	const [toc, setToc] = createSignal<TocItem[]>([]);
 

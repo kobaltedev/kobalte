@@ -105,7 +105,10 @@ function rehypeCollectHeadings() {
 export default defineConfig({
 	start: {
 		server: {
-			preset: (process.env.GITHUB_ACTIONS || process.env.DEVELOPMENT) ? "node-server" : "netlify",
+			preset:
+				process.env.GITHUB_ACTIONS || process.env.DEVELOPMENT
+					? "node-server"
+					: "netlify",
 			experimental: {
 				asyncContext: true,
 			},
@@ -162,7 +165,7 @@ export default defineConfig({
 		//			async transform(code: any, id: any) {
 		//				if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
 		//					const replacedId = id.replace(/\?meta$/, "");
-//
+		//
 		//					if (headingsCache.has(replacedId)) {
 		//						return {
 		//							code: `
