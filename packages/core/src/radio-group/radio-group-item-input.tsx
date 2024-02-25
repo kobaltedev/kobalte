@@ -14,6 +14,7 @@ import {
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import {
+	ComponentProps,
 	JSX,
 	createEffect,
 	createSignal,
@@ -161,7 +162,7 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
 			onFocus={onFocus}
 			onBlur={onBlur}
 			{...radioContext.dataset()}
-			{...others}
+			{...(others as ComponentProps<"input">)}
 		/>
 	);
 }
