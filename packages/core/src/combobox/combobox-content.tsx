@@ -103,6 +103,7 @@ export function ComboboxContent(props: ComboboxContentProps) {
 	});
 
 	createPreventScroll({
+		element: () => ref ?? null,
 		enabled: () => context.isOpen() && context.preventScroll(),
 	});
 

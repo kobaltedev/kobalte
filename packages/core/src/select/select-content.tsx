@@ -90,6 +90,7 @@ export function SelectContent(props: SelectContentProps) {
 	});
 
 	createPreventScroll({
+		element: () => ref ?? null,
 		enabled: () => context.isOpen() && context.preventScroll(),
 	});
 

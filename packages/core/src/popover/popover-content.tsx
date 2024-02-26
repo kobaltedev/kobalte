@@ -175,6 +175,7 @@ export function PopoverContent(props: PopoverContentProps) {
 	});
 
 	createPreventScroll({
+		element: () => ref ?? null,
 		enabled: () => context.isOpen() && context.preventScroll(),
 	});
 
