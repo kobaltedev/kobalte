@@ -29,7 +29,11 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { FORM_CONTROL_PROP_NAMES, FormControlContext, createFormControl } from "../form-control";
+import {
+	FORM_CONTROL_PROP_NAMES,
+	FormControlContext,
+	createFormControl,
+} from "../form-control";
 import { createFilter } from "../i18n";
 import { ListKeyboardDelegate, createListState } from "../list";
 import { announce } from "../live-announcer";
@@ -52,8 +56,15 @@ import {
 	SelectionMode,
 	createSelectableCollection,
 } from "../selection";
-import { ComboboxContext, ComboboxContextValue, ComboboxDataSet } from "./combobox-context";
-import { COMBOBOX_INTL_TRANSLATIONS, ComboboxIntlTranslations } from "./combobox.intl";
+import {
+	ComboboxContext,
+	ComboboxContextValue,
+	ComboboxDataSet,
+} from "./combobox-context";
+import {
+	COMBOBOX_INTL_TRANSLATIONS,
+	ComboboxIntlTranslations,
+} from "./combobox.intl";
 import { ComboboxTriggerMode } from "./types";
 
 export interface ComboboxBaseItemComponentProps<T> {
@@ -67,7 +78,10 @@ export interface ComboboxBaseSectionComponentProps<T> {
 }
 
 export interface ComboboxBaseOptions<Option, OptGroup = never>
-	extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange">,
+	extends Omit<
+			PopperRootOptions,
+			"anchorRef" | "contentRef" | "onCurrentPlacementChange"
+		>,
 		AsChildProp {
 	/** The localized strings of the component. */
 	translations?: ComboboxIntlTranslations;
@@ -115,19 +129,27 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
 	 * Property name or getter function to use as the value of an option.
 	 * This is the value that will be submitted when the combobox is part of a `<form>`.
 	 */
-	optionValue?: keyof Exclude<Option, null> | ((option: Exclude<Option, null>) => string | number);
+	optionValue?:
+		| keyof Exclude<Option, null>
+		| ((option: Exclude<Option, null>) => string | number);
 
 	/** Property name or getter function to use as the text value of an option for typeahead purpose. */
-	optionTextValue?: keyof Exclude<Option, null> | ((option: Exclude<Option, null>) => string);
+	optionTextValue?:
+		| keyof Exclude<Option, null>
+		| ((option: Exclude<Option, null>) => string);
 
 	/**
 	 * Property name or getter function to use as the label of an option.
 	 * This is the string representation of the option to display in the `Combobox.Input`.
 	 */
-	optionLabel?: keyof Exclude<Option, null> | ((option: Exclude<Option, null>) => string);
+	optionLabel?:
+		| keyof Exclude<Option, null>
+		| ((option: Exclude<Option, null>) => string);
 
 	/** Property name or getter function to use as the disabled flag of an option. */
-	optionDisabled?: keyof Exclude<Option, null> | ((option: Exclude<Option, null>) => boolean);
+	optionDisabled?:
+		| keyof Exclude<Option, null>
+		| ((option: Exclude<Option, null>) => boolean);
 
 	/** Property name that refers to the children options of an option group. */
 	optionGroupChildren?: keyof Exclude<OptGroup, null>;
@@ -233,7 +255,9 @@ export interface ComboboxBaseProps<Option, OptGroup = never>
 /**
  * Base component for a combobox, provide context for its children.
  */
-export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<Option, OptGroup>) {
+export function ComboboxBase<Option, OptGroup = never>(
+	props: ComboboxBaseProps<Option, OptGroup>,
+) {
 	const defaultId = `combobox-${createUniqueId()}`;
 
 	const filter = createFilter({ sensitivity: "base" });
@@ -319,23 +343,27 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 	const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
 	const [listboxRef, setListboxRef] = createSignal<HTMLUListElement>();
 
-	const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(false);
+	const [focusStrategy, setFocusStrategy] = createSignal<
+		FocusStrategy | boolean
+	>(false);
 
 	const [isInputFocused, setIsInputFocusedState] = createSignal(false);
 
 	const [showAllOptions, setShowAllOptions] = createSignal(false);
 
-	const [lastDisplayedOptions, setLastDisplayedOptions] = createSignal(local.options);
+	const [lastDisplayedOptions, setLastDisplayedOptions] = createSignal(
+		local.options,
+	);
 
 	const disclosureState = createDisclosureState({
 		open: () => local.open,
 		defaultOpen: () => local.defaultOpen,
-		onOpenChange: isOpen => local.onOpenChange?.(isOpen, openTriggerMode),
+		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen, openTriggerMode),
 	});
 
 	const [inputValue, setInputValue] = createControllableSignal<string>({
 		defaultValue: () => "",
-		onChange: value => {
+		onChange: (value) => {
 			local.onInputChange?.(value);
 
 			// Remove selection when input is cleared and value is uncontrolled (in single selection mode).
@@ -365,7 +393,9 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 
 		// Get the value from the option object as a string.
 		return String(
-			isFunction(optionValue) ? optionValue(option as any) : (option as any)[optionValue],
+			isFunction(optionValue)
+				? optionValue(option as any)
+				: (option as any)[optionValue],
 		);
 	};
 
@@ -379,7 +409,9 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 
 		// Get the label from the option object as a string.
 		return String(
-			isFunction(optionLabel) ? optionLabel(option as any) : (option as any)[optionLabel],
+			isFunction(optionLabel)
+				? optionLabel(option as any)
+				: (option as any)[optionLabel],
 		);
 	};
 
@@ -393,7 +425,8 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 		}
 
 		return local.options.flatMap(
-			item => ((item as any)[optionGroupChildren] as Option[]) ?? (item as Option),
+			(item) =>
+				((item as any)[optionGroupChildren] as Option[]) ?? (item as Option),
 		);
 	});
 
@@ -428,9 +461,9 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 		const filteredGroups: OptGroup[] = [];
 		for (const optGroup of local.options as OptGroup[]) {
 			// Filter options of the group
-			const filteredChildrenOptions = ((optGroup as any)[optionGroupChildren] as Option[]).filter(
-				filterFn,
-			);
+			const filteredChildrenOptions = (
+				(optGroup as any)[optionGroupChildren] as Option[]
+			).filter(filterFn);
 			// Don't add any groups that are empty
 			if (filteredChildrenOptions.length === 0) continue;
 
@@ -459,8 +492,10 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 
 	const getOptionsFromValues = (values: Set<string>): Option[] => {
 		return [...values]
-			.map(value => allOptions().find(option => getOptionValue(option) === value))
-			.filter(option => option != null) as Option[];
+			.map((value) =>
+				allOptions().find((option) => getOptionValue(option) === value),
+			)
+			.filter((option) => option != null) as Option[];
 	};
 
 	const listState = createListState({
@@ -478,7 +513,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 
 			return local.defaultValue;
 		},
-		onSelectionChange: selectedKeys => {
+		onSelectionChange: (selectedKeys) => {
 			local.onChange?.(getOptionsFromValues(selectedKeys));
 
 			if (local.closeOnSelection) {
@@ -498,7 +533,8 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 				focusWithoutScrolling(inputEl);
 			}
 		},
-		allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
+		allowDuplicateSelectionEvents: () =>
+			access(local.allowDuplicateSelectionEvents),
 		disallowEmptySelection: () => local.disallowEmptySelection,
 		selectionBehavior: () => access(local.selectionBehavior),
 		selectionMode: () => local.selectionMode,
@@ -517,13 +553,20 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 		listState.selectionManager().toggleSelection(getOptionValue(option));
 	};
 
-	const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
+	const contentPresence = createPresence(
+		() => local.forceMount || disclosureState.isOpen(),
+	);
 
-	const open = (focusStrategy: FocusStrategy | boolean, triggerMode?: ComboboxTriggerMode) => {
+	const open = (
+		focusStrategy: FocusStrategy | boolean,
+		triggerMode?: ComboboxTriggerMode,
+	) => {
 		// Show all option if menu is manually opened.
 		const showAllOptions = setShowAllOptions(triggerMode === "manual");
 
-		const hasOptions = showAllOptions ? local.options.length > 0 : filteredOptions().length > 0;
+		const hasOptions = showAllOptions
+			? local.options.length > 0
+			: filteredOptions().length > 0;
 
 		// Don't open if there is no option.
 		if (!hasOptions && !local.allowsEmptyCollection) {
@@ -555,7 +598,10 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 		listState.selectionManager().setFocusedKey(undefined);
 	};
 
-	const toggle = (focusStrategy: FocusStrategy | boolean, triggerMode?: ComboboxTriggerMode) => {
+	const toggle = (
+		focusStrategy: FocusStrategy | boolean,
+		triggerMode?: ComboboxTriggerMode,
+	) => {
 		if (disclosureState.isOpen()) {
 			close();
 		} else {
@@ -581,7 +627,11 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 			return keyboardDelegate;
 		}
 
-		return new ListKeyboardDelegate(listState.collection, listboxRef, undefined);
+		return new ListKeyboardDelegate(
+			listState.collection,
+			listboxRef,
+			undefined,
+		);
 	});
 
 	// Use `createSelectableCollection` to get the keyboard handlers to apply to the input.
@@ -621,7 +671,9 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 		if (local.selectionMode === "single") {
 			const selectedKey = [...selectedKeys][0];
 
-			const selectedOption = allOptions().find(option => getOptionValue(option) === selectedKey);
+			const selectedOption = allOptions().find(
+				(option) => getOptionValue(option) === selectedKey,
+			);
 
 			setInputValue(selectedOption ? getOptionLabel(selectedOption) : "");
 		} else {
@@ -645,12 +697,16 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 				const prevFilteredOptions = prevInput[0];
 				const prevShowAllOptions = prevInput[1];
 
-				setLastDisplayedOptions(prevShowAllOptions ? local.options : prevFilteredOptions);
+				setLastDisplayedOptions(
+					prevShowAllOptions ? local.options : prevFilteredOptions,
+				);
 			} else {
 				const filteredOptions = input[0];
 				const showAllOptions = input[1];
 
-				setLastDisplayedOptions(showAllOptions ? local.options : filteredOptions);
+				setLastDisplayedOptions(
+					showAllOptions ? local.options : filteredOptions,
+				);
 			}
 		}),
 	);
@@ -665,7 +721,9 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 	);
 
 	// Reset input value when selection change
-	createEffect(on(() => listState.selectionManager().selectedKeys(), resetInputValue));
+	createEffect(
+		on(() => listState.selectionManager().selectedKeys(), resetInputValue),
+	);
 
 	// VoiceOver has issues with announcing aria-activedescendant properly on change.
 	// We use a live region announcer to announce focus changes manually.
@@ -675,11 +733,18 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 		const focusedKey = listState.selectionManager().focusedKey() ?? "";
 		const focusedItem = listState.collection().getItem(focusedKey);
 
-		if (isAppleDevice() && focusedItem != null && focusedKey !== lastAnnouncedFocusedKey) {
+		if (
+			isAppleDevice() &&
+			focusedItem != null &&
+			focusedKey !== lastAnnouncedFocusedKey
+		) {
 			const isSelected = listState.selectionManager().isSelected(focusedKey);
 
 			const announcement =
-				local.translations?.focusAnnouncement(focusedItem?.textValue || "", isSelected) ?? "";
+				local.translations?.focusAnnouncement(
+					focusedItem?.textValue || "",
+					isSelected,
+				) ?? "";
 
 			announce(announcement);
 		}
@@ -701,10 +766,15 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 		// focused item, otherwise screen readers will typically read e.g. "1 of 6".
 		// The exception is VoiceOver since this isn't included in the message above.
 		const didOpenWithoutFocusedItem =
-			isOpen !== lastOpen && (listState.selectionManager().focusedKey() == null || isAppleDevice());
+			isOpen !== lastOpen &&
+			(listState.selectionManager().focusedKey() == null || isAppleDevice());
 
-		if (isOpen && (didOpenWithoutFocusedItem || optionCount !== lastOptionCount)) {
-			const announcement = local.translations?.countAnnouncement(optionCount) ?? "";
+		if (
+			isOpen &&
+			(didOpenWithoutFocusedItem || optionCount !== lastOptionCount)
+		) {
+			const announcement =
+				local.translations?.countAnnouncement(optionCount) ?? "";
 			announce(announcement);
 		}
 
@@ -717,7 +787,8 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 	let lastAnnouncedSelectedKey = "";
 
 	createEffect(() => {
-		const lastSelectedKey = [...listState.selectionManager().selectedKeys()].pop() ?? "";
+		const lastSelectedKey =
+			[...listState.selectionManager().selectedKeys()].pop() ?? "";
 		const lastSelectedItem = listState.collection().getItem(lastSelectedKey);
 
 		if (
@@ -727,7 +798,9 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 			lastSelectedKey !== lastAnnouncedSelectedKey
 		) {
 			const announcement =
-				local.translations?.selectedAnnouncement(lastSelectedItem?.textValue || "") ?? "";
+				local.translations?.selectedAnnouncement(
+					lastSelectedItem?.textValue || "",
+				) ?? "";
 
 			announce(announcement);
 		}
@@ -784,7 +857,7 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 		renderItem,
 		renderSection,
 		removeOptionFromSelection,
-		onInputKeyDown: e => selectableCollection.onKeyDown(e),
+		onInputKeyDown: (e) => selectableCollection.onKeyDown(e),
 		generateId: createGenerateId(() => access(formControlProps.id)!),
 		registerListboxId: createRegisterId(setListboxId),
 	};
@@ -792,7 +865,11 @@ export function ComboboxBase<Option, OptGroup = never>(props: ComboboxBaseProps<
 	return (
 		<FormControlContext.Provider value={formControlContext}>
 			<ComboboxContext.Provider value={context}>
-				<PopperRoot anchorRef={controlRef} contentRef={contentRef} {...popperProps}>
+				<PopperRoot
+					anchorRef={controlRef}
+					contentRef={contentRef}
+					{...popperProps}
+				>
 					<Polymorphic
 						as="div"
 						role="group"

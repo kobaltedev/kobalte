@@ -27,7 +27,11 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { FORM_CONTROL_PROP_NAMES, FormControlContext, createFormControl } from "../form-control";
+import {
+	FORM_CONTROL_PROP_NAMES,
+	FormControlContext,
+	createFormControl,
+} from "../form-control";
 import { createCollator } from "../i18n";
 import { ListKeyboardDelegate, createListState } from "../list";
 import { AsChildProp, Polymorphic } from "../polymorphic";
@@ -46,7 +50,11 @@ import {
 	SelectionBehavior,
 	SelectionMode,
 } from "../selection";
-import { SelectContext, SelectContextValue, SelectDataSet } from "./select-context";
+import {
+	SelectContext,
+	SelectContextValue,
+	SelectDataSet,
+} from "./select-context";
 
 export interface SelectBaseItemComponentProps<T> {
 	/** The item to render. */
@@ -59,7 +67,10 @@ export interface SelectBaseSectionComponentProps<T> {
 }
 
 export interface SelectBaseOptions<Option, OptGroup = never>
-	extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange">,
+	extends Omit<
+			PopperRootOptions,
+			"anchorRef" | "contentRef" | "onCurrentPlacementChange"
+		>,
 		AsChildProp {
 	/** The controlled open state of the select. */
 	open?: boolean;
@@ -95,13 +106,19 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 	 * Property name or getter function to use as the value of an option.
 	 * This is the value that will be submitted when the select is part of a `<form>`.
 	 */
-	optionValue?: keyof Exclude<Option, null> | ((option: Exclude<Option, null>) => string | number);
+	optionValue?:
+		| keyof Exclude<Option, null>
+		| ((option: Exclude<Option, null>) => string | number);
 
 	/** Property name or getter function to use as the text value of an option for typeahead purpose. */
-	optionTextValue?: keyof Exclude<Option, null> | ((option: Exclude<Option, null>) => string);
+	optionTextValue?:
+		| keyof Exclude<Option, null>
+		| ((option: Exclude<Option, null>) => string);
 
 	/** Property name or getter function to use as the disabled flag of an option. */
-	optionDisabled?: keyof Exclude<Option, null> | ((option: Exclude<Option, null>) => boolean);
+	optionDisabled?:
+		| keyof Exclude<Option, null>
+		| ((option: Exclude<Option, null>) => boolean);
 
 	/** Property name that refers to the children options of an option group. */
 	optionGroupChildren?: keyof Exclude<OptGroup, null>;
@@ -195,7 +212,9 @@ export interface SelectBaseProps<Option, OptGroup = never>
  * Base component for a select, provide context for its children.
  * Used to build single and multi-select.
  */
-export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Option, OptGroup>) {
+export function SelectBase<Option, OptGroup = never>(
+	props: SelectBaseProps<Option, OptGroup>,
+) {
 	const defaultId = `select-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
@@ -268,8 +287,11 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 	const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
 	const [listboxRef, setListboxRef] = createSignal<HTMLUListElement>();
 
-	const [listboxAriaLabelledBy, setListboxAriaLabelledBy] = createSignal<string>();
-	const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(true);
+	const [listboxAriaLabelledBy, setListboxAriaLabelledBy] =
+		createSignal<string>();
+	const [focusStrategy, setFocusStrategy] = createSignal<
+		FocusStrategy | boolean
+	>(true);
 
 	const getOptionValue = (option: Option): string => {
 		const optionValue = local.optionValue;
@@ -281,7 +303,9 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 
 		// Get the value from the option object as a string.
 		return String(
-			isFunction(optionValue) ? optionValue(option as any) : (option as any)[optionValue],
+			isFunction(optionValue)
+				? optionValue(option as any)
+				: (option as any)[optionValue],
 		);
 	};
 
@@ -295,25 +319,28 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 		}
 
 		return local.options.flatMap(
-			item => ((item as any)[optionGroupChildren] as Option[]) ?? (item as Option),
+			(item) =>
+				((item as any)[optionGroupChildren] as Option[]) ?? (item as Option),
 		);
 	});
 
 	// Only option keys without option groups.
 	const flattenOptionKeys = createMemo(() => {
-		return flattenOptions().map(option => getOptionValue(option));
+		return flattenOptions().map((option) => getOptionValue(option));
 	});
 
 	const getOptionsFromValues = (values: Set<string>): Option[] => {
 		return [...values]
-			.map(value => flattenOptions().find(option => getOptionValue(option) === value))
-			.filter(option => option != null) as Option[];
+			.map((value) =>
+				flattenOptions().find((option) => getOptionValue(option) === value),
+			)
+			.filter((option) => option != null) as Option[];
 	};
 
 	const disclosureState = createDisclosureState({
 		open: () => local.open,
 		defaultOpen: () => local.defaultOpen,
-		onOpenChange: isOpen => local.onOpenChange?.(isOpen),
+		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
 	});
 
 	const listState = createListState({
@@ -331,14 +358,15 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 
 			return local.defaultValue;
 		},
-		onSelectionChange: selectedKeys => {
+		onSelectionChange: (selectedKeys) => {
 			local.onChange?.(getOptionsFromValues(selectedKeys));
 
 			if (local.closeOnSelection) {
 				close();
 			}
 		},
-		allowDuplicateSelectionEvents: () => access(local.allowDuplicateSelectionEvents),
+		allowDuplicateSelectionEvents: () =>
+			access(local.allowDuplicateSelectionEvents),
 		disallowEmptySelection: () => access(local.disallowEmptySelection),
 		selectionBehavior: () => access(local.selectionBehavior),
 		selectionMode: () => local.selectionMode,
@@ -357,7 +385,9 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 		listState.selectionManager().toggleSelection(getOptionValue(option));
 	};
 
-	const contentPresence = createPresence(() => local.forceMount || disclosureState.isOpen());
+	const contentPresence = createPresence(
+		() => local.forceMount || disclosureState.isOpen(),
+	);
 
 	const focusListbox = () => {
 		const listboxEl = listboxRef();
@@ -442,9 +472,13 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 		on(
 			[flattenOptionKeys],
 			([flattenOptionKeys]) => {
-				const currentSelectedKeys = [...listState.selectionManager().selectedKeys()];
+				const currentSelectedKeys = [
+					...listState.selectionManager().selectedKeys(),
+				];
 
-				const keysToKeep = currentSelectedKeys.filter(key => flattenOptionKeys.includes(key));
+				const keysToKeep = currentSelectedKeys.filter((key) =>
+					flattenOptionKeys.includes(key),
+				);
 
 				listState.selectionManager().setSelectedKeys(keysToKeep);
 			},
@@ -499,7 +533,11 @@ export function SelectBase<Option, OptGroup = never>(props: SelectBaseProps<Opti
 	return (
 		<FormControlContext.Provider value={formControlContext}>
 			<SelectContext.Provider value={context}>
-				<PopperRoot anchorRef={triggerRef} contentRef={contentRef} {...popperProps}>
+				<PopperRoot
+					anchorRef={triggerRef}
+					contentRef={contentRef}
+					{...popperProps}
+				>
 					<Polymorphic
 						as="div"
 						role="group"

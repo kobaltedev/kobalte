@@ -1,4 +1,8 @@
-import { OverrideComponentProps, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import {
+	OverrideComponentProps,
+	mergeDefaultProps,
+	mergeRefs,
+} from "@kobalte/utils";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -36,7 +40,11 @@ export function ComboboxListbox<Option = any, OptGroup = never>(
 	const [local, others] = splitProps(mergedProps, ["ref"]);
 
 	const ariaLabelledBy = () => {
-		return formControlContext.getAriaLabelledBy(others.id, context.listboxAriaLabel(), undefined);
+		return formControlContext.getAriaLabelledBy(
+			others.id,
+			context.listboxAriaLabel(),
+			undefined,
+		);
 	};
 
 	createEffect(() => onCleanup(context.registerListboxId(others.id!)));
