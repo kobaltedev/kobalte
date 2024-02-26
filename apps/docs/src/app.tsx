@@ -19,22 +19,22 @@ import { getCookie } from "vinxi/server";
 import toastStyles from "./examples/toast.module.css";
 import { mdxComponents } from "./mdx-components";
 
-export const mods = /*#__PURE__*/ import.meta.glob<
-	true,
-	string,
-	{
-		getHeadings: () => {
-			depth: number;
-			text: string;
-			slug: string;
-		}[];
-	}
->("./routes/docs/**/*.{md,mdx}", {
-	eager: true,
-	query: {
-		meta: "",
-	},
-});
+//export const mods = /*#__PURE__*/ import.meta.glob<
+//	true,
+//	string,
+//	{
+//		getHeadings: () => {
+//			depth: number;
+//			text: string;
+//			slug: string;
+//		}[];
+//	}
+//>("./routes/docs/**/*.{md,mdx}", {
+//	eager: true,
+//	query: {
+//		meta: "",
+//	},
+//});
 
 function getServerCookies() {
 	"use server";
@@ -52,28 +52,26 @@ export default function App() {
 	return (
 		<Router
 			root={(props) => (
-				<Suspense>
-					<MetaProvider>
-						<Title>Kobalte</Title>
-						<ColorModeScript storageType={storageManager.type} />
-						<ColorModeProvider storageManager={storageManager}>
-							<MDXProvider components={mdxComponents}>
-								{props.children}
+				<MetaProvider>
+					<Title>Kobalte</Title>
+					<ColorModeScript storageType={storageManager.type} />
+					<ColorModeProvider storageManager={storageManager}>
+						<MDXProvider components={mdxComponents}>
+							<Suspense>{props.children}</Suspense>
 
-								<Portal>
-									<Toast.Region>
-										<Toast.List class={toastStyles.toast__list} />
-									</Toast.Region>
-									<Toast.Region regionId="custom-region-id">
-										<Toast.List
-											class={toastStyles["toast__list-custom-region"]}
-										/>
-									</Toast.Region>
-								</Portal>
-							</MDXProvider>
-						</ColorModeProvider>
-					</MetaProvider>
-				</Suspense>
+							<Portal>
+								<Toast.Region>
+									<Toast.List class={toastStyles.toast__list} />
+								</Toast.Region>
+								<Toast.Region regionId="custom-region-id">
+									<Toast.List
+										class={toastStyles["toast__list-custom-region"]}
+									/>
+								</Toast.Region>
+							</Portal>
+						</MDXProvider>
+					</ColorModeProvider>
+				</MetaProvider>
 			)}
 		>
 			<FileRoutes />

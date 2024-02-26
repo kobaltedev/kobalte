@@ -105,7 +105,10 @@ function rehypeCollectHeadings() {
 export default defineConfig({
 	start: {
 		server: {
-			preset: process.env.GITHUB_ACTIONS ? "node" : "netlify",
+			preset:
+				process.env.GITHUB_ACTIONS || process.env.DEVELOPMENT
+					? "node-server"
+					: "netlify",
 			experimental: {
 				asyncContext: true,
 			},
@@ -123,10 +126,10 @@ export default defineConfig({
 			jsxImportSource: "solid-js",
 			providerImportSource: "solid-mdx",
 			rehypePlugins: [
-				[rehypeRaw, { passThrough: nodeTypes }],
 				rehypePrettyCode,
 				rehypeSlug,
-				rehypeCollectHeadings,
+				[rehypeRaw, { passThrough: nodeTypes }],
+				//				rehypeCollectHeadings,
 			],
 			remarkPlugins: [
 				remarkGfm,
@@ -157,29 +160,24 @@ export default defineConfig({
 				],
 			],
 		}),
-		{
-			name: "mdx-meta",
-			async transform(code: any, id: any) {
-				if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
-					const replacedId = id.replace(/\?meta$/, "");
-
-					function getCode() {
-						return `
-              export function getHeadings() { return ${JSON.stringify(
-								headingsCache.get(replacedId),
-								null,
-								2,
-							)}
-              }
-              `;
-					}
-
-					return {
-						code: getCode(),
-					};
-				}
-			},
-		},
+		//		{
+		//			name: "mdx-meta",
+		//			async transform(code: any, id: any) {
+		//				if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
+		//					const replacedId = id.replace(/\?meta$/, "");
+		//
+		//					if (headingsCache.has(replacedId)) {
+		//						return {
+		//							code: `
+		//	              export function getHeadings() {
+		//									return ${JSON.stringify(headingsCache.get(id), null, 2)}
+		//	              }
+		//							`,
+		//						};
+		//					}
+		//				}
+		//			},
+		//		},
 	],
 	ssr: {
 		noExternal: ["@tanstack/solid-virtual"],

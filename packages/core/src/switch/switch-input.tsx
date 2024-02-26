@@ -14,7 +14,7 @@ import {
 	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { ComponentProps, JSX, splitProps } from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -110,7 +110,7 @@ export function SwitchInput(props: SwitchInputProps) {
 			onBlur={onBlur}
 			{...formControlContext.dataset()}
 			{...context.dataset()}
-			{...others}
+			{...(others as ComponentProps<"input">)}
 		/>
 	);
 }

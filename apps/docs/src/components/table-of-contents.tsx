@@ -6,8 +6,10 @@ import {
 	Suspense,
 	createEffect,
 	createSignal,
+	on,
 	onCleanup,
 } from "solid-js";
+import { isServer } from "solid-js/web";
 import { mods } from "../app";
 
 interface TocItem {
@@ -79,21 +81,73 @@ function useCurrentSection(tableOfContents: Accessor<TocItem[] | undefined>) {
 	return currentSection;
 }
 
-const getTOC = cache(async (pathname: string) => {
-	"use server";
+//const getTOC = cache(async (pathname: string) => {
+//	"use server";
+//
+//	const mod = mods[`./routes${pathname}.mdx`] ?? mods[`./routes${pathname}.md`];
+//	return !mod
+//		? []
+//		: mod.getHeadings().filter((h) => h.depth > 1 && h.depth <= 3);
+//}, "toc");
 
-	const mod = mods[`./routes${pathname}.mdx`] ?? mods[`./routes${pathname}.md`];
-	return !mod
-		? []
-		: mod.getHeadings().filter((h) => h.depth > 1 && h.depth <= 3);
-}, "toc");
+function updateHeadings(setter: Setter<TocItem[]>) {
+	if (document.getElementsByTagName("article").length === 0) {
+		setTimeout(() => updateHeadings(setter), 1);
+		return;
+	}
+
+	console.log("update");
+
+	setter(
+		[
+			...document
+				.getElementsByTagName("article")[0]
+				.querySelectorAll("h1, h2, h3, h4, h5, h6"),
+		].map((element) => ({
+			depth: Number(element.tagName.substr(1)),
+			text: element.textContent!,
+			slug: element.id,
+		})),
+	);
+}
 
 export function TableOfContents() {
 	const path = useLocation();
 
-	const toc = createAsync(() => getTOC(path.pathname));
+	//	const toc = createAsync(() => getTOC(path.pathname));
+
+	const [toc, setToc] = createSignal<TocItem[]>([]);
+
+	createEffect(
+		on(
+			() => path.pathname,
+			(pathname) => {
+				if (isServer) return;
+
+				updateHeadings(setToc);
+			},
+		),
+	);
 
 	const currentSection = useCurrentSection(toc);
+
+	createEffect(
+		on(
+			() => currentSection(),
+			(currentSection) => {
+				if (isServer) return;
+
+				const element = document.querySelector(
+					`a[data-toc-slug="${currentSection}"]`,
+				);
+
+				element?.scrollIntoView({
+					behavior: "smooth",
+					block: "nearest",
+				});
+			},
+		),
+	);
 
 	return (
 		<div class="hidden xl:sticky xl:top-[4.5rem] xl:block xl:h-[calc(100vh-4.5rem)] xl:flex-none xl:overflow-y-auto xl:py-4 xl:pr-6">
@@ -111,6 +165,7 @@ export function TableOfContents() {
 								<li>
 									<h3>
 										<a
+											data-toc-slug={section.slug}
 											href={`${path.pathname}#${section.slug}`}
 											class={clsx(
 												"block w-full font-sans transition font-normal rounded px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20",

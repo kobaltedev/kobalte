@@ -11,15 +11,9 @@ import {
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
+	scrollIntoViewport,
 } from "@kobalte/utils";
-import {
-	JSX,
-	createDeferred,
-	createEffect,
-	createSignal,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+import { JSX, createEffect, onCleanup, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
@@ -35,8 +29,6 @@ export interface MenuTriggerProps
  * The button that toggles the menu.
  */
 export function MenuTrigger(props: MenuTriggerProps) {
-	let ref: HTMLButtonElement | undefined;
-
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 	const optionalMenubarContext = useOptionalMenubarContext();
@@ -66,14 +58,14 @@ export function MenuTrigger(props: MenuTriggerProps) {
 
 		createEffect(() => {
 			optionalMenubarContext.registerMenu(key!, [
-				context.contentRef() ?? ref!,
+				context.contentRef()!,
 				...context.nestedMenus(),
 			]);
 		});
 
 		createEffect(() => {
 			if (optionalMenubarContext.value() === key) {
-				ref?.focus();
+				context.triggerRef()?.focus();
 				if (optionalMenubarContext.autoFocusMenu()) context.open(true);
 			} else context.close(true);
 		});
@@ -90,6 +82,23 @@ export function MenuTrigger(props: MenuTriggerProps) {
 			optionalMenubarContext.setLastValue(key);
 	}
 
+	const handleClick = () => {
+		// When opened by click, automatically focus Menubar menus
+		optionalMenubarContext?.setAutoFocusMenu(true);
+
+		// Don't auto focus element for Menubar
+		if (optionalMenubarContext !== undefined) context.toggle(false);
+		else context.toggle(true);
+
+		if (
+			optionalMenubarContext !== undefined &&
+			!context.isOpen() &&
+			optionalMenubarContext.value() === key
+		) {
+			optionalMenubarContext.closeMenu();
+		}
+	};
+
 	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
@@ -97,12 +106,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 
 		// For consistency with native, open the select on mouse down (main button), but touch up.
 		if (!local.disabled && e.pointerType !== "touch" && e.button === 0) {
-			// When opened by click, automatically focus Menubar menus
-			optionalMenubarContext?.setAutoFocusMenu(true);
-
-			// Don't auto focus element for Menubar
-			if (optionalMenubarContext !== undefined) context.toggle(false);
-			else context.toggle(true);
+			handleClick();
 		}
 	};
 
@@ -110,7 +114,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 		callHandler(e, local.onClick);
 
 		if (!local.disabled) {
-			if (e.currentTarget.dataset.pointerType === "touch") context.toggle(true);
+			if (e.currentTarget.dataset.pointerType === "touch") handleClick();
 		}
 	};
 
@@ -130,6 +134,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 			case "ArrowDown":
 				e.stopPropagation();
 				e.preventDefault();
+				scrollIntoViewport(e.currentTarget);
 				context.toggle("first");
 				break;
 			case "ArrowUp":
@@ -173,8 +178,6 @@ export function MenuTrigger(props: MenuTriggerProps) {
 	};
 
 	createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
-
-	const [tabIndex, setTabIndex] = createSignal<undefined | 0 | -1>(undefined);
 
 	return (
 		<Button.Root

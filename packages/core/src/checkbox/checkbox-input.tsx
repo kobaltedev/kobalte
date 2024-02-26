@@ -14,7 +14,14 @@ import {
 	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { JSX, createEffect, createSignal, on, splitProps } from "solid-js";
+import {
+	ComponentProps,
+	JSX,
+	createEffect,
+	createSignal,
+	on,
+	splitProps,
+} from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -155,7 +162,7 @@ export function CheckboxInput(props: CheckboxInputProps) {
 			onBlur={onBlur}
 			{...formControlContext.dataset()}
 			{...context.dataset()}
-			{...others}
+			{...(others as ComponentProps<"input">)}
 		/>
 	);
 }
