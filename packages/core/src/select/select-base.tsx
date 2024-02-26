@@ -141,6 +141,9 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 	/** Whether the select allows empty selection. */
 	disallowEmptySelection?: boolean;
 
+	/** Whether the select closes after selection. */
+	closeOnSelection?: boolean;
+
 	/** Whether typeahead is disabled. */
 	disallowTypeAhead?: boolean;
 
@@ -219,6 +222,7 @@ export function SelectBase<Option, OptGroup = never>(
 			id: defaultId,
 			selectionMode: "single",
 			disallowEmptySelection: false,
+			closeOnSelection: props.selectionMode === "single",
 			allowDuplicateSelectionEvents: true,
 			gutter: 8,
 			sameWidth: true,
@@ -247,6 +251,7 @@ export function SelectBase<Option, OptGroup = never>(
 			"keyboardDelegate",
 			"allowDuplicateSelectionEvents",
 			"disallowEmptySelection",
+			"closeOnSelection",
 			"disallowTypeAhead",
 			"shouldFocusWrap",
 			"selectionBehavior",
@@ -356,7 +361,7 @@ export function SelectBase<Option, OptGroup = never>(
 		onSelectionChange: (selectedKeys) => {
 			local.onChange?.(getOptionsFromValues(selectedKeys));
 
-			if (local.selectionMode === "single") {
+			if (local.closeOnSelection) {
 				close();
 			}
 		},

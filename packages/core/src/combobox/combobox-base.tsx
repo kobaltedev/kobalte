@@ -182,6 +182,9 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
 	/** Whether the combobox allows empty selection. */
 	disallowEmptySelection?: boolean;
 
+	/** Whether the combobox closes after selection. */
+	closeOnSelection?: boolean;
+
 	/**
 	 * When `selectionMode` is "multiple".
 	 * Whether the last selected option should be removed when the user press the Backspace key and the input is empty.
@@ -266,6 +269,7 @@ export function ComboboxBase<Option, OptGroup = never>(
 			allowsEmptyCollection: false,
 			disallowEmptySelection: false,
 			allowDuplicateSelectionEvents: true,
+			closeOnSelection: props.selectionMode === "single",
 			removeOnBackspace: true,
 			gutter: 8,
 			sameWidth: true,
@@ -304,6 +308,7 @@ export function ComboboxBase<Option, OptGroup = never>(
 			"defaultFilter",
 			"shouldFocusWrap",
 			"allowsEmptyCollection",
+			"closeOnSelection",
 			"removeOnBackspace",
 			"selectionBehavior",
 			"selectionMode",
@@ -511,7 +516,7 @@ export function ComboboxBase<Option, OptGroup = never>(
 		onSelectionChange: (selectedKeys) => {
 			local.onChange?.(getOptionsFromValues(selectedKeys));
 
-			if (local.selectionMode === "single") {
+			if (local.closeOnSelection) {
 				// Only close if an option is selected.
 				// Prevents the combobox to close and reopen when the input is cleared.
 				if (disclosureState.isOpen() && selectedKeys.size > 0) {
