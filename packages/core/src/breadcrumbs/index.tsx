@@ -21,3 +21,4 @@ export type {
   BreadcrumbsSeparatorProps,
 };
 export { Link, Root, Separator };
+export default { Link, Root, Separator };

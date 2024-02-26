@@ -59,3 +59,4 @@ export type {
 };
 
 export { CloseButton, Description, List, ProgressFill, ProgressTrack, Region, Root, Title };
+export default { CloseButton, Description, List, ProgressFill, ProgressTrack, Region, Root, Title };

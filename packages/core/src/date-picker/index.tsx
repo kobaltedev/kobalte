@@ -146,6 +146,32 @@ export {
   Segment,
   Trigger,
 };
+export default {
+  Arrow,
+  Calendar,
+  CalendarBody,
+  CalendarGrid,
+  CalendarGridBody,
+  CalendarGridBodyCell,
+  CalendarGridBodyCellTrigger,
+  CalendarGridBodyRow,
+  CalendarGridHeader,
+  CalendarGridHeaderCell,
+  CalendarGridHeaderRow,
+  CalendarHeader,
+  CalendarHeading,
+  CalendarNextTrigger,
+  CalendarPrevTrigger,
+  Content,
+  Control,
+  Description,
+  ErrorMessage,
+  Input,
+  Portal,
+  Root,
+  Segment,
+  Trigger,
+};
 
 /*
 

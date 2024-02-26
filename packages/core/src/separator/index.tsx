@@ -6,3 +6,4 @@ import {
 
 export type { SeparatorRootOptions, SeparatorRootProps };
 export { Root };
+export default { Root };

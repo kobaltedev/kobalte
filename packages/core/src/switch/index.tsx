@@ -28,3 +28,4 @@ export type {
   SwitchThumbProps,
 };
 export { Control, Description, ErrorMessage, Input, Label, Root, Thumb };
+export default { Control, Description, ErrorMessage, Input, Label, Root, Thumb };

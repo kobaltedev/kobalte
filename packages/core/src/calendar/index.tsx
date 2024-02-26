@@ -95,3 +95,19 @@ export {
   PrevTrigger,
   Root,
 };
+export default {
+  Body,
+  Grid,
+  GridBody,
+  GridBodyCell,
+  GridBodyCellTrigger,
+  GridBodyRow,
+  GridHeader,
+  GridHeaderCell,
+  GridHeaderRow,
+  Header,
+  Heading,
+  NextTrigger,
+  PrevTrigger,
+  Root,
+};

@@ -18,3 +18,4 @@ export type {
   CollapsibleTriggerProps,
 };
 export { Content, Root, Trigger };
+export default { Content, Root, Trigger };

@@ -116,3 +116,23 @@ export {
   Section,
   Trigger,
 };
+export default {
+  Arrow,
+  Content,
+  Control,
+  Description,
+  ErrorMessage,
+  HiddenSelect,
+  Icon,
+  Input,
+  Item,
+  ItemDescription,
+  ItemIndicator,
+  ItemLabel,
+  Label,
+  Listbox,
+  Portal,
+  Root,
+  Section,
+  Trigger,
+};

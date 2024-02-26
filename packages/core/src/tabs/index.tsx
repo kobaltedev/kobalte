@@ -28,3 +28,4 @@ export type {
   TabsTriggerProps,
 };
 export { Content, Indicator, List, Root, Trigger };
+export default { Content, Indicator, List, Root, Trigger };
