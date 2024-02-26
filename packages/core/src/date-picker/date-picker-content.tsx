@@ -192,6 +192,7 @@ export function DatePickerContent(props: DatePickerContentProps) {
 	});
 
 	createPreventScroll({
+		element: () => ref ?? null,
 		enabled: () => context.isModal() && context.isOpen(),
 	});
 

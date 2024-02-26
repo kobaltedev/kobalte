@@ -176,6 +176,7 @@ export function DialogContent(props: DialogContentProps) {
 	});
 
 	createPreventScroll({
+		element: () => ref ?? null,
 		enabled: () => context.isOpen() && context.preventScroll(),
 	});
 
