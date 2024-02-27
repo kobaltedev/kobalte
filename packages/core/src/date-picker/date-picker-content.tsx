@@ -7,6 +7,7 @@ import {
 } from "@kobalte/utils";
 import { JSX, Show, createEffect, onCleanup, splitProps } from "solid-js";
 
+import createPreventScroll from "solid-prevent-scroll";
 import { DismissableLayer } from "../dismissable-layer";
 import { useFormControlContext } from "../form-control";
 import { AsChildProp } from "../polymorphic";
@@ -18,7 +19,6 @@ import {
 	createFocusScope,
 	createHideOutside,
 } from "../primitives";
-import createPreventScroll from "solid-prevent-scroll";
 import { useDatePickerContext } from "./date-picker-context";
 
 export interface DatePickerContentOptions extends AsChildProp {
