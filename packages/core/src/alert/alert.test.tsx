@@ -4,9 +4,9 @@ import * as Alert from ".";
 
 describe("Alert", () => {
 	it("should have attribute 'role=alert'", () => {
-		render(() => <Alert.Root>Alert</Alert.Root>);
+		const { getByRole } = render(() => <Alert.Root>Alert</Alert.Root>);
 
-		const alert = screen.getByRole("alert");
+		const alert = getByRole("alert");
 
 		expect(alert).toBeInTheDocument();
 	});

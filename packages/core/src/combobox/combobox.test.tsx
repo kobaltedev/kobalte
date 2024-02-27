@@ -7,7 +7,8 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen, within } from "@solidjs/testing-library";
+import { fireEvent, render, within } from "@solidjs/testing-library";
+import { vi } from 'vitest';
 
 import * as Combobox from ".";
 
@@ -30,19 +31,19 @@ describe("Combobox", () => {
 	// structuredClone polyfill, kind of ^^'
 	global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
-	const onValueChange = jest.fn();
+	const onValueChange = vi.fn();
 
 	beforeEach(() => {
-		jest.useFakeTimers();
+		vi.useFakeTimers()
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
-		jest.clearAllTimers();
+		vi.clearAllMocks();
+		vi.clearAllTimers();
 	});
 
 	it("renders correctly", () => {
-		render(() => (
+		const { getByRole } = render(() => (
 			<Combobox.Root
 				options={DATA_SOURCE}
 				optionValue="key"
@@ -70,24 +71,24 @@ describe("Combobox", () => {
 			</Combobox.Root>
 		));
 
-		const root = screen.getByRole("group");
+		const root = getByRole("group");
 
 		expect(root).toBeInTheDocument();
 		expect(root).toBeInstanceOf(HTMLDivElement);
 
-		const input = screen.getByRole("combobox");
+		const input = getByRole("combobox");
 
 		expect(input).toHaveAttribute("aria-autocomplete", "list");
 		expect(input).not.toHaveAttribute("aria-controls");
 		expect(input).not.toHaveAttribute("aria-activedescendant");
 		expect(input).not.toBeDisabled();
 
-		const trigger = screen.getByRole("button");
+		const trigger = getByRole("button");
 
 		expect(trigger).toHaveAttribute("tabindex", "-1");
 		expect(trigger).toHaveAttribute("aria-haspopup", "listbox");
 
-		const label = screen.getByText("Label");
+		const label = getByText("Label");
 
 		expect(label).toBeVisible();
 	});
@@ -105,7 +106,7 @@ describe("Combobox", () => {
 		];
 
 		it("supports string based option mapping for object options with string keys", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root<any, any>
 					options={CUSTOM_DATA_SOURCE_WITH_STRING_KEY}
 					optionValue="id"
@@ -138,8 +139,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			fireEvent(
 				trigger,
@@ -156,9 +157,9 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -199,14 +200,14 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(input).toHaveValue("Three");
 			expect(document.activeElement).toBe(input);
 		});
 
 		it("supports function based option mapping for object options with string keys", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root<any, any>
 					options={CUSTOM_DATA_SOURCE_WITH_STRING_KEY}
 					optionValue={(option) => option.id}
@@ -239,8 +240,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			fireEvent(
 				trigger,
@@ -257,9 +258,9 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -300,7 +301,7 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(input).toHaveValue("Three");
 			expect(document.activeElement).toBe(input);
@@ -318,7 +319,7 @@ describe("Combobox", () => {
 		];
 
 		it("supports string based option mapping for object options with number keys", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root<any, any>
 					options={CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY}
 					optionValue="id"
@@ -351,8 +352,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			fireEvent(
 				trigger,
@@ -369,9 +370,9 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -412,14 +413,14 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(input).toHaveValue("Three");
 			expect(document.activeElement).toBe(input);
 		});
 
 		it("supports function based option mapping for object options with number keys", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root<any, any>
 					options={CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY}
 					optionValue={(option) => option.id}
@@ -452,8 +453,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			fireEvent(
 				trigger,
@@ -470,9 +471,9 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -513,14 +514,14 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(input).toHaveValue("Three");
 			expect(document.activeElement).toBe(input);
 		});
 
 		it("supports string options without mapping", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={["One", "Two", "Three"]}
 					placeholder="Placeholder"
@@ -545,8 +546,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			fireEvent(
 				trigger,
@@ -563,9 +564,9 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -604,14 +605,14 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(input).toHaveValue("Three");
 			expect(document.activeElement).toBe(input);
 		});
 
 		it("supports function based option mapping for string options", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={["One", "Two", "Three"]}
 					optionValue={(option) => option}
@@ -640,8 +641,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			fireEvent(
 				trigger,
@@ -658,9 +659,9 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -699,14 +700,14 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(input).toHaveValue("Three");
 			expect(document.activeElement).toBe(input);
 		});
 
 		it("supports number options without mapping", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={[1, 2, 3]}
 					placeholder="Placeholder"
@@ -731,8 +732,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			fireEvent(
 				trigger,
@@ -749,9 +750,9 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -790,14 +791,14 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(input).toHaveValue("3");
 			expect(document.activeElement).toBe(input);
 		});
 
 		it("supports function based option mapping for number options", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={[1, 2, 3]}
 					optionValue={(option) => option}
@@ -826,8 +827,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			fireEvent(
 				trigger,
@@ -844,9 +845,9 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -885,7 +886,7 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(input).toHaveValue("3");
 			expect(document.activeElement).toBe(input);
@@ -894,9 +895,9 @@ describe("Combobox", () => {
 
 	describe("opening", () => {
 		it("can be opened on mouse down", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
-			render(() => (
+			const { getByRole, queryByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -924,10 +925,10 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			fireEvent(
 				trigger,
@@ -947,9 +948,9 @@ describe("Combobox", () => {
 			fireEvent.click(trigger);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -968,9 +969,9 @@ describe("Combobox", () => {
 		});
 
 		it("can be opened on touch up", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
-			render(() => (
+			const { getByRole, queryByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -998,10 +999,10 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			fireEvent(
 				trigger,
@@ -1012,7 +1013,7 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
 			fireEvent(
 				trigger,
@@ -1028,9 +1029,9 @@ describe("Combobox", () => {
 			fireEvent.click(trigger);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1049,9 +1050,9 @@ describe("Combobox", () => {
 		});
 
 		it("can be opened on ArrowDown key down and virtual focuses the first item", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
-			render(() => (
+			const { getByRole, queryByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1079,9 +1080,9 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
-			const input = screen.getByRole("combobox");
+			const input = getByRole("combobox");
 
 			fireEvent.keyDown(input, { key: "ArrowDown" });
 			await Promise.resolve();
@@ -1089,9 +1090,9 @@ describe("Combobox", () => {
 			fireEvent.keyUp(input, { key: "ArrowDown" });
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1110,9 +1111,9 @@ describe("Combobox", () => {
 		});
 
 		it("can be opened on ArrowUp key down and virtual focuses the last item", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
-			render(() => (
+			const { getByRole, queryByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1140,15 +1141,15 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
-			const input = screen.getByRole("combobox");
+			const input = getByRole("combobox");
 
 			fireEvent.keyDown(input, { key: "ArrowUp" });
 			fireEvent.keyUp(input, { key: "ArrowUp" });
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1167,9 +1168,9 @@ describe("Combobox", () => {
 		});
 
 		it("can change item focus with arrow keys", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
-			render(() => (
+			const { getByRole, queryByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1197,15 +1198,15 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
-			const input = screen.getByRole("combobox");
+			const input = getByRole("combobox");
 
 			fireEvent.keyDown(input, { key: "ArrowDown" });
 			fireEvent.keyUp(input, { key: "ArrowDown" });
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1242,9 +1243,9 @@ describe("Combobox", () => {
 		});
 
 		it("supports controlled open state", () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
-			render(() => (
+			const { getByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1273,14 +1274,14 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).not.toBeCalled();
 
-			const input = screen.getByRole("combobox");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveAttribute("aria-expanded", "true");
 			expect(input).toHaveAttribute("aria-controls", listbox.id);
@@ -1294,9 +1295,9 @@ describe("Combobox", () => {
 		});
 
 		it("supports default open state", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
-			render(() => (
+			const { getByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1325,14 +1326,14 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).not.toBeCalled();
 
-			const input = screen.getByRole("combobox");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveAttribute("aria-expanded", "true");
 			expect(input).toHaveAttribute("aria-controls", listbox.id);
@@ -1348,9 +1349,9 @@ describe("Combobox", () => {
 
 	describe("closing", () => {
 		it("can be closed by clicking on the button", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
-			render(() => (
+			const { getByRole, queryByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1378,9 +1379,9 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
-			const trigger = screen.getByRole("button");
+			const trigger = getByRole("button");
 
 			fireEvent(
 				trigger,
@@ -1391,9 +1392,9 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1410,7 +1411,7 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(listbox).not.toBeVisible();
 			expect(trigger).toHaveAttribute("aria-expanded", "false");
@@ -1420,9 +1421,9 @@ describe("Combobox", () => {
 		});
 
 		it("can be closed by clicking outside", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
-			render(() => (
+			const { getByRole, queryByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1450,9 +1451,9 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
-			const trigger = screen.getByRole("button");
+			const trigger = getByRole("button");
 
 			fireEvent(
 				trigger,
@@ -1472,9 +1473,9 @@ describe("Combobox", () => {
 			fireEvent.click(trigger);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1497,7 +1498,7 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(listbox).not.toBeVisible();
 			expect(trigger).toHaveAttribute("aria-expanded", "false");
@@ -1507,9 +1508,9 @@ describe("Combobox", () => {
 		});
 
 		it("can be closed by pressing the Escape key", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
-			render(() => (
+			const { getByRole, queryByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1537,10 +1538,10 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			fireEvent(
 				trigger,
@@ -1551,7 +1552,7 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1568,15 +1569,15 @@ describe("Combobox", () => {
 			expect(onOpenChange).toBeCalledTimes(2);
 			expect(onOpenChange).toHaveBeenCalledWith(false, "manual");
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(document.activeElement).toBe(input);
 		});
 
 		it("does not close in controlled open state", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
-			render(() => (
+			const { getByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1605,12 +1606,12 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).not.toBeCalled();
 
-			const input = screen.getByRole("combobox");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveAttribute("aria-expanded", "true");
 			expect(input).toHaveAttribute("aria-controls", listbox.id);
@@ -1625,9 +1626,9 @@ describe("Combobox", () => {
 		});
 
 		it("closes in default open state", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
-			render(() => (
+			const { getByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1656,12 +1657,12 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).not.toBeCalled();
 
-			const input = screen.getByRole("combobox");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveAttribute("aria-expanded", "true");
 			expect(input).toHaveAttribute("aria-controls", listbox.id);
@@ -1680,7 +1681,7 @@ describe("Combobox", () => {
 
 	describe("labeling", () => {
 		it("supports labeling with a visible label", async () => {
-			render(() => (
+			const { getByRole, getAllByText} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1708,12 +1709,12 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
+			const trigger = getByRole("button");
 
-			const input = screen.getByRole("combobox");
+			const input = getByRole("combobox");
 			expect(input).toHaveAttribute("aria-haspopup", "listbox");
 
-			const label = screen.getAllByText("Label")[0];
+			const label = getAllByText("Label")[0];
 
 			expect(label).toHaveAttribute("id");
 			expect(input).toHaveAttribute("aria-labelledby", `${label.id}`);
@@ -1727,7 +1728,7 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(listbox).toHaveAttribute(
@@ -1737,7 +1738,7 @@ describe("Combobox", () => {
 		});
 
 		it("supports labeling via aria-labelledby", async () => {
-			render(() => (
+			const { getByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1764,8 +1765,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveAttribute("aria-labelledby", "foo");
 
@@ -1778,13 +1779,13 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 		});
 
 		it("supports labeling via aria-label and aria-labelledby", async () => {
-			render(() => (
+			const { getByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1811,8 +1812,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveAttribute("aria-label", "bar");
 			expect(input).toHaveAttribute("aria-labelledby", `foo ${input.id}`);
@@ -1826,14 +1827,14 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 			expect(listbox).toBeVisible();
 		});
 	});
 
 	describe("help text", () => {
 		it("supports description", () => {
-			render(() => (
+			const { getByRole, getByText} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1862,15 +1863,15 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const input = screen.getByRole("combobox");
-			const description = screen.getByText("Description");
+			const input = getByRole("combobox");
+			const description = getByText("Description");
 
 			expect(description).toHaveAttribute("id");
 			expect(input).toHaveAttribute("aria-describedby", description.id);
 		});
 
 		it("supports error message", () => {
-			render(() => (
+			const { getByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1900,8 +1901,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const input = screen.getByRole("combobox");
-			const errorMessage = screen.getByText("ErrorMessage");
+			const input = getByRole("combobox");
+			const errorMessage = getByText("ErrorMessage");
 
 			expect(errorMessage).toHaveAttribute("id");
 			expect(input).toHaveAttribute("aria-describedby", errorMessage.id);
@@ -1910,7 +1911,7 @@ describe("Combobox", () => {
 
 	describe("selection", () => {
 		it("can select items on press", async () => {
-			render(() => (
+			const { getByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1938,10 +1939,10 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
-			expect(screen.getByRole("combobox")).toHaveAttribute(
+			expect(getByRole("combobox")).toHaveAttribute(
 				"placeholder",
 				"Placeholder",
 			);
@@ -1964,9 +1965,9 @@ describe("Combobox", () => {
 			fireEvent.click(trigger);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -1997,14 +1998,14 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(input).toHaveValue("Three");
 			expect(document.activeElement).toBe(input);
 		});
 
 		it("can select items with the Enter key", async () => {
-			render(() => (
+			const { getByRole} = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2032,7 +2033,7 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const input = screen.getByRole("combobox");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveAttribute("placeholder", "Placeholder");
 
@@ -2045,7 +2046,7 @@ describe("Combobox", () => {
 			fireEvent.keyUp(input, { key: "ArrowUp" });
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2105,8 +2106,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveAttribute("placeholder", "Placeholder");
 
@@ -2125,9 +2126,9 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2167,14 +2168,14 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(document.activeElement).toBe(input);
 			expect(input).toHaveValue("Three");
 		});
 
 		it("does not clear selection on escape closing the listbox", async () => {
-			const onOpenChangeSpy = jest.fn();
+			const onOpenChangeSpy = vi.fn();
 			render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
@@ -2204,10 +2205,10 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
-			expect(screen.getByRole("combobox")).toHaveAttribute(
+			expect(getByRole("combobox")).toHaveAttribute(
 				"placeholder",
 				"Placeholder",
 			);
@@ -2224,7 +2225,7 @@ describe("Combobox", () => {
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 
@@ -2254,7 +2255,7 @@ describe("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(2);
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
 			fireEvent(
 				trigger,
@@ -2273,17 +2274,17 @@ describe("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1); // still expecting it to have only been called once
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(4);
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(document.activeElement).toBe(input);
-			expect(screen.getByRole("combobox")).toHaveValue("Three");
+			expect(getByRole("combobox")).toHaveValue("Three");
 		});
 
 		it("clear selection on escape when listbox is not visible", async () => {
-			const onOpenChangeSpy = jest.fn();
+			const onOpenChangeSpy = vi.fn();
 			render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
@@ -2313,10 +2314,10 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
-			expect(screen.getByRole("combobox")).toHaveAttribute(
+			expect(getByRole("combobox")).toHaveAttribute(
 				"placeholder",
 				"Placeholder",
 			);
@@ -2333,7 +2334,7 @@ describe("Combobox", () => {
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 
@@ -2363,7 +2364,7 @@ describe("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(2);
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
 			fireEvent(
 				trigger,
@@ -2382,13 +2383,13 @@ describe("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1); // still expecting it to have only been called once
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(4);
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(document.activeElement).toBe(input);
-			expect(screen.getByRole("combobox")).toHaveValue("Three");
+			expect(getByRole("combobox")).toHaveValue("Three");
 
 			fireEvent.keyDown(input, { key: "Escape" });
 			await Promise.resolve();
@@ -2396,7 +2397,7 @@ describe("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(2);
 
 			expect(document.activeElement).toBe(input);
-			expect(screen.getByRole("combobox")).toHaveValue("");
+			expect(getByRole("combobox")).toHaveValue("");
 		});
 
 		it("supports controlled selection", async () => {
@@ -2429,8 +2430,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveValue("Two");
 
@@ -2443,7 +2444,7 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2475,7 +2476,7 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(document.activeElement).toBe(input);
 			expect(input).toHaveValue("Two");
@@ -2511,8 +2512,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveValue("Two");
 
@@ -2525,7 +2526,7 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2556,7 +2557,7 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(document.activeElement).toBe(input);
 			expect(input).toHaveValue("One");
@@ -2597,8 +2598,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveAttribute("placeholder", "Placeholder");
 
@@ -2611,9 +2612,9 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2649,7 +2650,7 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(document.activeElement).toBe(input);
 			expect(input).toHaveValue("Three");
@@ -2686,8 +2687,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			const input = screen.getByRole("combobox");
+			const trigger = getByRole("button");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveValue("Two");
 
@@ -2700,7 +2701,7 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(input).toHaveAttribute("aria-activedescendant", items[1].id);
@@ -2717,7 +2718,7 @@ describe("Combobox", () => {
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
-			jest.runAllTimers();
+			vi.runAllTimers();
 
 			expect(document.activeElement).toBe(input);
 			expect(input).toHaveValue("Two");
@@ -2764,8 +2765,8 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
-			expect(screen.getByRole("combobox")).toHaveAttribute(
+			const trigger = getByRole("button");
+			expect(getByRole("combobox")).toHaveAttribute(
 				"placeholder",
 				"Placeholder",
 			);
@@ -2788,9 +2789,9 @@ describe("Combobox", () => {
 			fireEvent.click(trigger);
 			await Promise.resolve();
 
-			jest.runAllTimers();
+			vi.runAllTimers();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(listbox).toHaveAttribute("aria-multiselectable", "true");
@@ -2848,7 +2849,7 @@ describe("Combobox", () => {
 			// Does not close on multi-select
 			expect(listbox).toBeVisible();
 
-			expect(screen.getByTestId("value")).toHaveTextContent("One, Three");
+			expect(getByTestId("value")).toHaveTextContent("One, Three");
 		});
 
 		it("supports multiple defaultValue (uncontrolled)", async () => {
@@ -2893,7 +2894,7 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
+			const trigger = getByRole("button");
 
 			fireEvent(
 				trigger,
@@ -2904,7 +2905,7 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items[0]).toHaveAttribute("aria-selected", "true");
@@ -2988,7 +2989,7 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
+			const trigger = getByRole("button");
 
 			fireEvent(
 				trigger,
@@ -2999,7 +3000,7 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items[0]).toHaveAttribute("aria-selected", "true");
@@ -3073,7 +3074,7 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const trigger = screen.getByRole("button");
+			const trigger = getByRole("button");
 
 			fireEvent(
 				trigger,
@@ -3084,7 +3085,7 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = screen.getByRole("listbox");
+			const listbox = getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items[0]).toHaveAttribute("aria-selected", "true");
@@ -3159,11 +3160,11 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const input = screen.getByRole("combobox");
+			const input = getByRole("combobox");
 
 			expect(input).toHaveAttribute("placeholder", "Placeholder");
 
-			const hiddenSelectBase = screen.getAllByRole("listbox", {
+			const hiddenSelectBase = getAllByRole("listbox", {
 				hidden: true,
 			})[0];
 
@@ -3223,7 +3224,7 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const hiddenInput = screen.getByRole("textbox", { hidden: true }); // get the hidden ones
+			const hiddenInput = getByRole("textbox", { hidden: true }); // get the hidden ones
 
 			expect(hiddenInput).toHaveAttribute("tabIndex", "0");
 			expect(hiddenInput).toHaveAttribute("style", "font-size: 16px;");
@@ -3232,7 +3233,7 @@ describe("Combobox", () => {
 			hiddenInput.focus();
 			await Promise.resolve();
 
-			const input = screen.getByRole("combobox");
+			const input = getByRole("combobox");
 
 			expect(document.activeElement).toBe(input);
 			expect(hiddenInput).toHaveAttribute("tabIndex", "-1");
@@ -3276,13 +3277,13 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const select = screen.getByRole("textbox", { hidden: true });
+			const select = getByRole("textbox", { hidden: true });
 
 			expect(select).toBeDisabled();
 		});
 
 		it("does not open on mouse down when disabled is true", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 
 			render(() => (
 				<Combobox.Root
@@ -3313,9 +3314,9 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
-			const trigger = screen.getByRole("button");
+			const trigger = getByRole("button");
 
 			fireEvent(
 				trigger,
@@ -3326,7 +3327,7 @@ describe("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
 			expect(onOpenChange).toBeCalledTimes(0);
 
@@ -3334,7 +3335,7 @@ describe("Combobox", () => {
 		});
 
 		it("does not open on Space key press when disabled is true", async () => {
-			const onOpenChange = jest.fn();
+			const onOpenChange = vi.fn();
 			render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
@@ -3364,9 +3365,9 @@ describe("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
-			const trigger = screen.getByRole("button");
+			const trigger = getByRole("button");
 
 			fireEvent.keyDown(trigger, { key: " " });
 			await Promise.resolve();
@@ -3374,7 +3375,7 @@ describe("Combobox", () => {
 			fireEvent.keyUp(trigger, { key: " " });
 			await Promise.resolve();
 
-			expect(screen.queryByRole("listbox")).toBeNull();
+			expect(queryByRole("listbox")).toBeNull();
 
 			expect(onOpenChange).toBeCalledTimes(0);
 
@@ -3387,7 +3388,7 @@ describe("Combobox", () => {
 		it("Should submit empty option by default", async () => {
 			let value: {};
 
-			const onSubmit = jest.fn((e) => {
+			const onSubmit = vi.fn((e) => {
 				e.preventDefault();
 				const formData = new FormData(e.currentTarget);
 				value = Object.fromEntries(formData).test; // same name as the select "name" prop
@@ -3427,7 +3428,7 @@ describe("Combobox", () => {
 				</form>
 			));
 
-			fireEvent.submit(screen.getByTestId("form"));
+			fireEvent.submit(getByTestId("form"));
 			await Promise.resolve();
 
 			expect(onSubmit).toHaveBeenCalledTimes(1);
@@ -3438,7 +3439,7 @@ describe("Combobox", () => {
 		it("Should submit default option", async () => {
 			let value: {};
 
-			const onSubmit = jest.fn((e) => {
+			const onSubmit = vi.fn((e) => {
 				e.preventDefault();
 				const formData = new FormData(e.currentTarget);
 				value = Object.fromEntries(formData).test; // same name as the select "name" prop
@@ -3476,7 +3477,7 @@ describe("Combobox", () => {
 				</form>
 			));
 
-			fireEvent.submit(screen.getByTestId("form"));
+			fireEvent.submit(getByTestId("form"));
 			await Promise.resolve();
 
 			expect(onSubmit).toHaveBeenCalledTimes(1);

@@ -50,7 +50,8 @@
     "build": "rollup -c",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
     "dev": "vite serve dev --host",
-    "test": "jest --passWithNoTests",
+		"test-old": "jest --passWithNoTests",
+		"test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

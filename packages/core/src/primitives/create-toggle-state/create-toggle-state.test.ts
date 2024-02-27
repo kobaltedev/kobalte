@@ -1,4 +1,5 @@
 import { createRoot } from "solid-js";
+import { vi } from 'vitest';
 
 import { createToggleState } from "./create-toggle-state";
 
@@ -17,7 +18,7 @@ describe("createToggleState", () => {
 
 	it("can be controlled", () => {
 		createRoot((dispose) => {
-			const onChangeSpy = jest.fn();
+			const onChangeSpy = vi.fn();
 
 			const state = createToggleState({
 				isSelected: true,

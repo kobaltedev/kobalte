@@ -12,7 +12,7 @@ import * as AlertDialog from ".";
 
 describe("AlertDialog", () => {
 	it("should be labelled by its alert dialog title", () => {
-		render(() => (
+		const { getByRole,getByTestId } = render(() => (
 			<AlertDialog.Root open>
 				<AlertDialog.Content>
 					<AlertDialog.Title data-testid="title">title</AlertDialog.Title>
@@ -20,14 +20,14 @@ describe("AlertDialog", () => {
 			</AlertDialog.Root>
 		));
 
-		const panel = screen.getByRole("alertdialog");
-		const title = screen.getByTestId("title");
+		const panel = getByRole("alertdialog");
+		const title = getByTestId("title");
 
 		expect(panel).toHaveAttribute("aria-labelledby", title.id);
 	});
 
 	it("should be described by its alert dialog description", () => {
-		render(() => (
+		const { getByRole,getByTestId } = render(() => (
 			<AlertDialog.Root open>
 				<AlertDialog.Content>
 					<AlertDialog.Description data-testid="description">
@@ -37,8 +37,8 @@ describe("AlertDialog", () => {
 			</AlertDialog.Root>
 		));
 
-		const panel = screen.getByRole("alertdialog");
-		const description = screen.getByTestId("description");
+		const panel = getByRole("alertdialog");
+		const description = getByTestId("description");
 
 		expect(panel).toHaveAttribute("aria-describedby", description.id);
 	});

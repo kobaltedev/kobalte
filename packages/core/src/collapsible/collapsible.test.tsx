@@ -7,8 +7,9 @@
  */
 
 import { installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen } from "@solidjs/testing-library";
+import { fireEvent, render } from "@solidjs/testing-library";
 import { ComponentProps } from "solid-js";
+import { vi } from 'vitest';
 
 import * as Collapsible from ".";
 
@@ -26,14 +27,14 @@ describe("Collapsible", () => {
 	installPointerEvent();
 
 	it("should toggle between open/close the content when clicking the trigger", async () => {
-		render(() => <Example />);
+		const { getByText, queryByText} = render(() => <Example />);
 
-		const trigger = screen.getByText(TRIGGER_TEXT);
+		const trigger = getByText(TRIGGER_TEXT);
 
 		fireEvent.click(trigger);
 		await Promise.resolve();
 
-		const content = screen.queryByText(CONTENT_TEXT);
+		const content = queryByText(CONTENT_TEXT);
 		expect(content).toBeVisible();
 
 		fireEvent.click(trigger);
@@ -43,24 +44,24 @@ describe("Collapsible", () => {
 	});
 
 	it("should not open the content when clicking the trigger if disabled", async () => {
-		render(() => <Example disabled />);
+		const { getByText, queryByText} = render(() => <Example disabled />);
 
-		const trigger = screen.getByText(TRIGGER_TEXT);
+		const trigger = getByText(TRIGGER_TEXT);
 
 		fireEvent.click(trigger);
 		await Promise.resolve();
 
-		const content = screen.queryByText(CONTENT_TEXT);
+		const content = queryByText(CONTENT_TEXT);
 		expect(content).toBeNull();
 	});
 
 	it("should close content when clicking the trigger and collapsible is open uncontrolled", async () => {
-		const onOpenChangeSpy = jest.fn();
+		const onOpenChangeSpy = vi.fn();
 
-		render(() => <Example defaultOpen onOpenChange={onOpenChangeSpy} />);
+		const { getByText} = 	render(() => <Example defaultOpen onOpenChange={onOpenChangeSpy} />);
 
-		const trigger = screen.getByText(TRIGGER_TEXT);
-		const content = screen.getByText(CONTENT_TEXT);
+		const trigger = getByText(TRIGGER_TEXT);
+		const content = getByText(CONTENT_TEXT);
 
 		fireEvent.click(trigger);
 		await Promise.resolve();
@@ -70,12 +71,12 @@ describe("Collapsible", () => {
 	});
 
 	it("should not close content when clicking the trigger and collapsible is open controlled", async () => {
-		const onOpenChangeSpy = jest.fn();
+		const onOpenChangeSpy = vi.fn();
 
-		render(() => <Example open onOpenChange={onOpenChangeSpy} />);
+		const { getByText} = render(() => <Example open onOpenChange={onOpenChangeSpy} />);
 
-		const trigger = screen.getByText(TRIGGER_TEXT);
-		const content = screen.getByText(CONTENT_TEXT);
+		const trigger = getByText(TRIGGER_TEXT);
+		const content = getByText(CONTENT_TEXT);
 
 		fireEvent.click(trigger);
 		await Promise.resolve();

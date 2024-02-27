@@ -17,7 +17,7 @@
     "skipLibCheck": true,
     "strict": true,
     "sourceMap": true,
-    "types": ["solid-js", "vite/client", "node", "jest", "@testing-library/jest-dom"]
+		"types": ["solid-js", "vite/client", "node", "jest", "@testing-library/jest-dom", "vitest/globals"]
   },
   "exclude": ["node_modules"]
 }

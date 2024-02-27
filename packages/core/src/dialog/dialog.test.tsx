@@ -6,13 +6,13 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-spectrum/dialog/test/Dialog.test.js
  */
 
-import { render, screen } from "@solidjs/testing-library";
+import { render } from "@solidjs/testing-library";
 
 import * as Dialog from ".";
 
 describe("Dialog", () => {
 	it("should be labelled by its dialog title", () => {
-		render(() => (
+		const { getByRole, getByTestId} = render(() => (
 			<Dialog.Root open>
 				<Dialog.Content>
 					<Dialog.Title data-testid="title">title</Dialog.Title>
@@ -20,14 +20,14 @@ describe("Dialog", () => {
 			</Dialog.Root>
 		));
 
-		const panel = screen.getByRole("dialog");
-		const title = screen.getByTestId("title");
+		const panel = getByRole("dialog");
+		const title = getByTestId("title");
 
 		expect(panel).toHaveAttribute("aria-labelledby", title.id);
 	});
 
 	it("should be described by its dialog description", () => {
-		render(() => (
+		const { getByRole, getByTestId} = render(() => (
 			<Dialog.Root open>
 				<Dialog.Content>
 					<Dialog.Description data-testid="description">
@@ -37,8 +37,8 @@ describe("Dialog", () => {
 			</Dialog.Root>
 		));
 
-		const panel = screen.getByRole("dialog");
-		const description = screen.getByTestId("description");
+		const panel = getByRole("dialog");
+		const description = getByTestId("description");
 
 		expect(panel).toHaveAttribute("aria-describedby", description.id);
 	});
