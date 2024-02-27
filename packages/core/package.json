@@ -44,7 +44,7 @@
   "types": "dist/types/index.d.ts",
   "files": [
     "dist",
-		"NOTICE.txt"
+    "NOTICE.txt"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -57,13 +57,14 @@
     "@floating-ui/dom": "^1.5.1",
     "@internationalized/date": "^3.4.0",
     "@internationalized/number": "^3.2.1",
-    "@kobalte/utils": "^0.9.0"
+    "@kobalte/utils": "^0.9.0",
+    "solid-prevent-scroll": "^0.1.4"
   },
   "devDependencies": {
     "@kobalte/tests": "^0.5.0"
   },
   "peerDependencies": {
-		"solid-js": "^1.8.15"
+    "solid-js": "^1.8.15"
   },
   "publishConfig": {
     "access": "public"

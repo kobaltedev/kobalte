@@ -26,6 +26,12 @@ For full documentation, visit [kobalte.dev](https://kobalte.dev/).
 
 View roadmap, give feedback and vote for new features at https://github.com/orgs/kobaltedev/projects/4.
 
+# Contributing
+
+Before contributing please refer to [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+All contributions are moderated under the [Contributor Covenant Code of Conduct](./CODE_OF_CONDUCT.md).
+
 ## Acknowledgment
 
 - [Ariakit](https://ariakit.org/)

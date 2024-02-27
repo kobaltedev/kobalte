@@ -15,6 +15,7 @@ import {
 } from "@kobalte/utils";
 import { Show, createEffect, onCleanup, splitProps } from "solid-js";
 
+import createPreventScroll from "solid-prevent-scroll";
 import { DismissableLayer } from "../dismissable-layer";
 import { AsChildProp } from "../polymorphic";
 import {
@@ -23,7 +24,6 @@ import {
 	PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
-	createPreventScroll,
 } from "../primitives";
 import { useDialogContext } from "./dialog-context";
 

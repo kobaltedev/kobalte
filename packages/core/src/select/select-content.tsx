@@ -5,6 +5,7 @@ import {
 } from "@kobalte/utils";
 import { JSX, Show, splitProps } from "solid-js";
 
+import createPreventScroll from "solid-prevent-scroll";
 import { DismissableLayer } from "../dismissable-layer";
 import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
@@ -14,7 +15,6 @@ import {
 	PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
-	createPreventScroll,
 } from "../primitives";
 import { useSelectContext } from "./select-context";
 
