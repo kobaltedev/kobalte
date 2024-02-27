@@ -225,6 +225,9 @@ importers:
       solid-js:
         specifier: ^1.8.15
         version: 1.8.15
+      solid-prevent-scroll:
+        specifier: ^0.1.4
+        version: 0.1.4(solid-js@1.8.15)
     devDependencies:
       '@kobalte/tests':
         specifier: ^0.5.0
@@ -2256,6 +2259,14 @@ packages:
     dependencies:
       chalk: 4.1.2
     dev: true
+
+  /@corvu/utils@0.1.0(solid-js@1.8.15):
+    resolution: {integrity: sha512-9pqt77fiDiqUkW7gH+tRYyNCagQPTco7ljBAkbF23wIuJYrEWyr8KpX8rlPiz4x0ll6pqTYpiif8betkhpkOLQ==}
+    peerDependencies:
+      solid-js: ^1.8
+    dependencies:
+      solid-js: 1.8.15
+    dev: false
 
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -11223,6 +11234,15 @@ packages:
       solid-js: 1.8.15
       vite: 5.1.4(@types/node@20.5.4)
     dev: true
+
+  /solid-prevent-scroll@0.1.4(solid-js@1.8.15):
+    resolution: {integrity: sha512-sMWZfGx0OtkTUFRwJjL9cgK2JGbzl9Ex8iXAXKSH01uarbqQh2tlHkEnGMABB8wlyL9UQxBl7ag//ATLFo0VxQ==}
+    peerDependencies:
+      solid-js: ^1.8
+    dependencies:
+      '@corvu/utils': 0.1.0(solid-js@1.8.15)
+      solid-js: 1.8.15
+    dev: false
 
   /solid-refresh@0.6.3(solid-js@1.8.15):
     resolution: {integrity: sha512-F3aPsX6hVw9ttm5LYlth8Q15x6MlI/J3Dn+o3EQyRTtTxidepSTwAYdozt01/YA+7ObcciagGEyXIopGZzQtbA==}

@@ -17,8 +17,8 @@ import {
 	PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
-	createPreventScroll,
 } from "../primitives";
+import createPreventScroll from "solid-prevent-scroll";
 import { useDatePickerContext } from "./date-picker-context";
 
 export interface DatePickerContentOptions extends AsChildProp {

@@ -14,8 +14,8 @@ import {
 	PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
-	createPreventScroll,
 } from "../primitives";
+import createPreventScroll from "solid-prevent-scroll";
 import { useComboboxContext } from "./combobox-context";
 
 export interface ComboboxContentOptions extends AsChildProp {

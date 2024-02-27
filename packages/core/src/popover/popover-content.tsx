@@ -16,8 +16,8 @@ import {
 	PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
-	createPreventScroll,
 } from "../primitives";
+import createPreventScroll from "solid-prevent-scroll";
 import { usePopoverContext } from "./popover-context";
 
 export interface PopoverContentOptions extends AsChildProp {

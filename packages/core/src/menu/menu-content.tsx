@@ -1,7 +1,7 @@
 import { OverrideComponentProps, mergeRefs } from "@kobalte/utils";
 import { splitProps } from "solid-js";
 
-import { createPreventScroll } from "../primitives";
+import createPreventScroll from "solid-prevent-scroll";
 import { MenuContentBase, MenuContentBaseOptions } from "./menu-content-base";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";

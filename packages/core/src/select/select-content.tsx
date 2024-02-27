@@ -14,8 +14,8 @@ import {
 	PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
-	createPreventScroll,
 } from "../primitives";
+import createPreventScroll from "solid-prevent-scroll";
 import { useSelectContext } from "./select-context";
 
 export interface SelectContentOptions extends AsChildProp {

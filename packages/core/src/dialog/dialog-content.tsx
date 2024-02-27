@@ -23,8 +23,8 @@ import {
 	PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
-	createPreventScroll,
 } from "../primitives";
+import createPreventScroll from "solid-prevent-scroll";
 import { useDialogContext } from "./dialog-context";
 
 export interface DialogContentOptions extends AsChildProp {

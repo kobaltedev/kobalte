@@ -7,7 +7,6 @@ export * from "./create-form-reset-listener";
 export * from "./create-hide-outside";
 export * from "./create-interact-outside";
 export * from "./create-presence";
-export * from "./create-prevent-scroll";
 export * from "./create-register-id";
 export * from "./create-tag-name";
 export * from "./create-toggle-state";
