@@ -15,10 +15,6 @@ import { afterAll, beforeAll, vi } from "vitest";
 
 export function installPointerEvent() {
 	beforeAll(() => {
-		console.log("=".repeat(20));
-		console.log("Polyfill pointer event");
-		console.log("=".repeat(20));
-
 		// @ts-ignore
 		vi.stubGlobal(
 			"PointerEvent",
