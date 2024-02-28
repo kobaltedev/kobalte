@@ -8,7 +8,9 @@ describe("Link", () => {
 	installPointerEvent();
 
 	it("should not have attribute 'role=link' when it's a native link", () => {
-		const { getByTestId} = render(() => <Link.Root data-testid="link">Link</Link.Root>);
+		const { getByTestId } = render(() => (
+			<Link.Root data-testid="link">Link</Link.Root>
+		));
 
 		const link = getByTestId("link");
 
@@ -16,7 +18,7 @@ describe("Link", () => {
 	});
 
 	it("should have attribute 'role=link' when it's not a native link", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<Link.Root data-testid="link" asChild>
 				<As component="div">Link</As>
 			</Link.Root>
@@ -28,7 +30,7 @@ describe("Link", () => {
 	});
 
 	it("should have attribute 'tabindex=0' when it's not a native link and is not disabled", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<Link.Root data-testid="link" asChild>
 				<As component="div">Link</As>
 			</Link.Root>
@@ -40,7 +42,7 @@ describe("Link", () => {
 	});
 
 	it("should not have attribute 'tabindex=0' when it's a native link ", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<Link.Root data-testid="link" href="https://kobalte.dev">
 				Link
 			</Link.Root>
@@ -52,7 +54,9 @@ describe("Link", () => {
 	});
 
 	it("should not have attribute 'data-disabled' by default", async () => {
-		const { getByTestId} = render(() => <Link.Root data-testid="link">Link</Link.Root>);
+		const { getByTestId } = render(() => (
+			<Link.Root data-testid="link">Link</Link.Root>
+		));
 
 		const link = getByTestId("link");
 
@@ -60,7 +64,7 @@ describe("Link", () => {
 	});
 
 	it("should have attribute 'role=link' when disabled", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<Link.Root data-testid="link" href="https://kobalte.dev" disabled>
 				Link
 			</Link.Root>
@@ -72,7 +76,7 @@ describe("Link", () => {
 	});
 
 	it("should not have attribute 'href' when disabled", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<Link.Root data-testid="link" href="https://kobalte.dev" disabled>
 				Link
 			</Link.Root>
@@ -84,7 +88,7 @@ describe("Link", () => {
 	});
 
 	it("should not have attribute 'tabindex=0' when it's disabled", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<Link.Root data-testid="link" disabled asChild>
 				<As component="div">Link</As>
 			</Link.Root>
@@ -96,7 +100,7 @@ describe("Link", () => {
 	});
 
 	it("should have attribute 'aria-disabled=true' when disabled", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<Link.Root data-testid="link" disabled>
 				Link
 			</Link.Root>
@@ -108,7 +112,7 @@ describe("Link", () => {
 	});
 
 	it("should have attribute 'data-disabled' when disabled", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<Link.Root data-testid="link" disabled>
 				Link
 			</Link.Root>

@@ -1,7 +1,7 @@
 import { installPointerEvent } from "@kobalte/tests";
 import { render } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import * as TextField from ".";
 
@@ -11,7 +11,7 @@ describe("TextField", () => {
 	it("can have a default value", async () => {
 		const onChangeSpy = vi.fn();
 
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root defaultValue="cat" onChange={onChangeSpy}>
 				<TextField.Label>Favorite Pet</TextField.Label>
 				<TextField.Input />
@@ -31,7 +31,7 @@ describe("TextField", () => {
 
 	it("value can be controlled", async () => {
 		const onChangeSpy = vi.fn();
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root value="cat" onChange={onChangeSpy}>
 				<TextField.Label>Favorite Pet</TextField.Label>
 				<TextField.Input />
@@ -52,7 +52,7 @@ describe("TextField", () => {
 	});
 
 	it("name can be controlled", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root name="favorite-pet">
 				<TextField.Label>Favorite Pet</TextField.Label>
 				<TextField.Input />
@@ -65,7 +65,7 @@ describe("TextField", () => {
 	});
 
 	it("supports visible label", async () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<TextField.Root>
 				<TextField.Label>Favorite Pet</TextField.Label>
 				<TextField.Input />
@@ -81,7 +81,7 @@ describe("TextField", () => {
 	});
 
 	it("supports 'aria-labelledby'", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root>
 				<TextField.Input aria-labelledby="foo" />
 			</TextField.Root>
@@ -93,7 +93,7 @@ describe("TextField", () => {
 	});
 
 	it("should combine 'aria-labelledby' if visible label is also provided", async () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<TextField.Root>
 				<TextField.Label>Favorite Pet</TextField.Label>
 				<TextField.Input aria-labelledby="foo" />
@@ -107,7 +107,7 @@ describe("TextField", () => {
 	});
 
 	it("supports 'aria-label'", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root>
 				<TextField.Input aria-label="My Favorite Pet" />
 			</TextField.Root>
@@ -119,7 +119,7 @@ describe("TextField", () => {
 	});
 
 	it("should combine 'aria-labelledby' if visible label and 'aria-label' is also provided", async () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<TextField.Root>
 				<TextField.Label>Favorite Pet</TextField.Label>
 				<TextField.Input aria-label="bar" aria-labelledby="foo" />
@@ -136,7 +136,7 @@ describe("TextField", () => {
 	});
 
 	it("supports visible description", async () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<TextField.Root>
 				<TextField.Input />
 				<TextField.Description>Description</TextField.Description>
@@ -155,7 +155,7 @@ describe("TextField", () => {
 	});
 
 	it("supports 'aria-describedby'", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root>
 				<TextField.Input aria-describedby="foo" />
 			</TextField.Root>
@@ -167,7 +167,7 @@ describe("TextField", () => {
 	});
 
 	it("should combine 'aria-describedby' if visible description", async () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<TextField.Root>
 				<TextField.Input aria-describedby="foo" />
 				<TextField.Description>Description</TextField.Description>
@@ -181,7 +181,7 @@ describe("TextField", () => {
 	});
 
 	it("supports visible error message when invalid", async () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<TextField.Root validationState="invalid">
 				<TextField.Input />
 				<TextField.ErrorMessage>ErrorMessage</TextField.ErrorMessage>
@@ -200,7 +200,7 @@ describe("TextField", () => {
 	});
 
 	it("should not be described by error message when not invalid", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root>
 				<TextField.Input />
 				<TextField.ErrorMessage>ErrorMessage</TextField.ErrorMessage>
@@ -213,7 +213,7 @@ describe("TextField", () => {
 	});
 
 	it("should combine 'aria-describedby' if visible error message when invalid", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<TextField.Root validationState="invalid">
 				<TextField.Input aria-describedby="foo" />
 				<TextField.ErrorMessage>ErrorMessage</TextField.ErrorMessage>
@@ -227,7 +227,7 @@ describe("TextField", () => {
 	});
 
 	it("should combine 'aria-describedby' if visible description and error message when invalid", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<TextField.Root validationState="invalid">
 				<TextField.Input aria-describedby="foo" />
 				<TextField.Description>Description</TextField.Description>
@@ -246,7 +246,7 @@ describe("TextField", () => {
 	});
 
 	it("should not have form control 'data-*' attributes by default", () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<TextField.Root data-testid="textfield">
 				<TextField.Input />
 			</TextField.Root>
@@ -265,7 +265,7 @@ describe("TextField", () => {
 	});
 
 	it("should have 'data-valid' attribute when valid", () => {
-		const { getByRole, getByTestId} = 	render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<TextField.Root data-testid="textfield" validationState="valid">
 				<TextField.Input />
 			</TextField.Root>
@@ -280,7 +280,7 @@ describe("TextField", () => {
 	});
 
 	it("should have 'data-invalid' attribute when invalid", () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<TextField.Root data-testid="textfield" validationState="invalid">
 				<TextField.Input />
 			</TextField.Root>
@@ -295,7 +295,7 @@ describe("TextField", () => {
 	});
 
 	it("should have 'data-required' attribute when required", () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<TextField.Root data-testid="textfield" required>
 				<TextField.Input />
 			</TextField.Root>
@@ -310,7 +310,7 @@ describe("TextField", () => {
 	});
 
 	it("should have 'data-disabled' attribute when disabled", () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<TextField.Root data-testid="textfield" disabled>
 				<TextField.Input />
 			</TextField.Root>
@@ -325,7 +325,7 @@ describe("TextField", () => {
 	});
 
 	it("should have 'data-readonly' attribute when readonly", () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<TextField.Root data-testid="textfield" readOnly>
 				<TextField.Input />
 			</TextField.Root>
@@ -340,7 +340,7 @@ describe("TextField", () => {
 	});
 
 	it("sets 'aria-invalid' on input when 'validationState=invalid'", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root validationState="invalid">
 				<TextField.Input />
 			</TextField.Root>
@@ -352,7 +352,7 @@ describe("TextField", () => {
 	});
 
 	it("input should not have 'required', 'disabled' or 'readonly' attributes by default", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root>
 				<TextField.Input />
 			</TextField.Root>
@@ -366,7 +366,7 @@ describe("TextField", () => {
 	});
 
 	it("sets 'required' and 'aria-required' on input when 'isRequired' is true", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root required>
 				<TextField.Input />
 			</TextField.Root>
@@ -379,7 +379,7 @@ describe("TextField", () => {
 	});
 
 	it("sets 'disabled' and 'aria-disabled' on input when 'isDisabled' is true", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root disabled>
 				<TextField.Input />
 			</TextField.Root>
@@ -392,7 +392,7 @@ describe("TextField", () => {
 	});
 
 	it("sets 'readonly' and 'aria-readonly' on input when 'isReadOnly' is true", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root readOnly>
 				<TextField.Input />
 			</TextField.Root>
@@ -405,7 +405,7 @@ describe("TextField", () => {
 	});
 
 	it("should have 'aria-multiline' set to false on textarea when 'submitOnEnter' is true", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root>
 				<TextField.TextArea submitOnEnter />
 			</TextField.Root>
@@ -416,7 +416,7 @@ describe("TextField", () => {
 	});
 
 	it("should not have 'aria-multiline' on textarea when 'submitOnEnter' is false", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<TextField.Root>
 				<TextField.TextArea />
 			</TextField.Root>
@@ -428,7 +428,7 @@ describe("TextField", () => {
 
 	it("form is submitted when 'submitOnEnter' is true and user presses the enter key", async () => {
 		const onSubmit = vi.fn();
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<form onSubmit={onSubmit}>
 				<TextField.Root>
 					<TextField.TextArea submitOnEnter />
@@ -444,7 +444,7 @@ describe("TextField", () => {
 	it("form is not submitted when 'submitOnEnter' is true and the user presses shift + enter at the same time", async () => {
 		const onSubmit = vi.fn();
 
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<form onSubmit={onSubmit}>
 				<TextField.Root>
 					<TextField.TextArea submitOnEnter />
@@ -460,7 +460,7 @@ describe("TextField", () => {
 	it("form is not submitted when 'submitOnEnter' is not set and user presses the enter key", async () => {
 		const onSubmit = vi.fn();
 
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<form onSubmit={onSubmit}>
 				<TextField.Root>
 					<TextField.TextArea />

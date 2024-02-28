@@ -13,7 +13,7 @@ import { ariaHideOutside } from "./create-hide-outside";
 
 describe("ariaHideOutside", () => {
 	it("should hide everything except the provided element [button]", () => {
-		const { getByRole, getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<>
 				<input type="checkbox" />
 				<button type="button">Button</button>
@@ -44,13 +44,15 @@ describe("ariaHideOutside", () => {
 	});
 
 	it("should hide everything except multiple elements", () => {
-		const { getByRole, getAllByRole, queryByRole, queryAllByRole} = render(() => (
-			<>
-				<input type="checkbox" />
-				<button type="button">Button</button>
-				<input type="checkbox" />
-			</>
-		));
+		const { getByRole, getAllByRole, queryByRole, queryAllByRole } = render(
+			() => (
+				<>
+					<input type="checkbox" />
+					<button type="button">Button</button>
+					<input type="checkbox" />
+				</>
+			),
+		);
 
 		const checkboxes = getAllByRole("checkbox");
 		const button = getByRole("button");
@@ -75,7 +77,7 @@ describe("ariaHideOutside", () => {
 	});
 
 	it("should not traverse into an already hidden container", () => {
-		const { getByRole, getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<>
 				<div>
 					<input type="checkbox" />
@@ -108,7 +110,7 @@ describe("ariaHideOutside", () => {
 	});
 
 	it("should not overwrite an existing aria-hidden prop", () => {
-		const { getByRole, getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<>
 				{/* biome-ignore lint/a11y/noAriaHiddenOnFocusable: test */}
 				<input type="checkbox" aria-hidden="true" />
@@ -176,7 +178,7 @@ describe("ariaHideOutside", () => {
 			);
 		};
 
-		const { getByTestId, getAllByRole} = render(() => <Test />);
+		const { getByTestId, getAllByRole } = render(() => <Test />);
 
 		const toggle = getByTestId("toggle");
 		const revert = getByTestId("revert");
@@ -187,9 +189,7 @@ describe("ariaHideOutside", () => {
 		await Promise.resolve();
 
 		// MutationObserver is async
-		await waitFor(() =>
-			expect(() => getAllByRole("checkbox")).toThrow(),
-		);
+		await waitFor(() => expect(() => getAllByRole("checkbox")).toThrow());
 		expect(() => getAllByRole("button")).not.toThrow();
 
 		// revert the 'ariaHideOutside'
@@ -214,7 +214,7 @@ describe("ariaHideOutside", () => {
 			);
 		};
 
-		const { getByRole, getAllByRole, getByTestId} = render(() => <Test />);
+		const { getByRole, getAllByRole, getByTestId } = render(() => <Test />);
 
 		const button = getByRole("button");
 		const test = getByTestId("test");
@@ -229,9 +229,7 @@ describe("ariaHideOutside", () => {
 		await Promise.resolve();
 
 		// MutationObserver is async
-		await waitFor(() =>
-			expect(() => getAllByRole("checkbox")).toThrow(),
-		);
+		await waitFor(() => expect(() => getAllByRole("checkbox")).toThrow());
 		expect(() => getByRole("button")).not.toThrow();
 
 		const checkboxes = getAllByRole("checkbox", { hidden: true });
@@ -262,7 +260,13 @@ describe("ariaHideOutside", () => {
 			);
 		};
 
-		const { getByRole, getAllByRole, getByTestId, queryByRole, queryAllByRole} = render(() => <Test />);
+		const {
+			getByRole,
+			getAllByRole,
+			getByTestId,
+			queryByRole,
+			queryAllByRole,
+		} = render(() => <Test />);
 
 		const button = getByRole("button");
 		const test = getByTestId("test");
@@ -293,7 +297,7 @@ describe("ariaHideOutside", () => {
 	});
 
 	it("work when called multiple times", () => {
-		const { getByRole, getAllByRole, getByTestId} = render(() => (
+		const { getByRole, getAllByRole, getByTestId } = render(() => (
 			<>
 				<input type="checkbox" />
 				<input type="radio" />
@@ -332,7 +336,7 @@ describe("ariaHideOutside", () => {
 	});
 
 	it("work when called multiple times and restored out of order", () => {
-		const { getByRole, getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<>
 				<input type="checkbox" />
 				<input type="radio" />
@@ -371,7 +375,7 @@ describe("ariaHideOutside", () => {
 	});
 
 	it("should hide everything except the provided element [row]", () => {
-		const { getAllByRole} = render(() => (
+		const { getAllByRole } = render(() => (
 			<div role="grid">
 				<div role="row">
 					<div role="gridcell">Cell 1</div>

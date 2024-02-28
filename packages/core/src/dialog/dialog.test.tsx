@@ -12,7 +12,7 @@ import * as Dialog from ".";
 
 describe("Dialog", () => {
 	it("should be labelled by its dialog title", () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<Dialog.Root open>
 				<Dialog.Content>
 					<Dialog.Title data-testid="title">title</Dialog.Title>
@@ -27,7 +27,7 @@ describe("Dialog", () => {
 	});
 
 	it("should be described by its dialog description", () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<Dialog.Root open>
 				<Dialog.Content>
 					<Dialog.Description data-testid="description">

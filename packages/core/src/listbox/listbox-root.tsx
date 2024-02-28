@@ -274,6 +274,9 @@ export function ListboxRoot<Option, OptGroup = never>(
 					when={!local.virtualized}
 					fallback={local.children?.(listState().collection)}
 				>
+					{() => {
+						console.log("+".repeat(40));
+					}}
 					<Key each={[...listState().collection()]} by="key">
 						{(item) => (
 							<Switch>

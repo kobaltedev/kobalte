@@ -8,7 +8,7 @@
 
 import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render } from "@solidjs/testing-library";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import * as Checkbox from ".";
 
@@ -46,7 +46,7 @@ describe("Checkbox", () => {
 	});
 
 	it("should generate ids based on checkbox id", () => {
-		const { getByTestId } = 	render(() => (
+		const { getByTestId } = render(() => (
 			<Checkbox.Root data-testid="checkbox" id="foo">
 				<Checkbox.Input data-testid="input" />
 				<Checkbox.Control data-testid="control">
@@ -242,7 +242,7 @@ describe("Checkbox", () => {
 	});
 
 	it("can be checked by clicking on the control", async () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<Checkbox.Root onChange={onChangeSpy}>
 				<Checkbox.Input />
 				<Checkbox.Control data-testid="control" />
@@ -262,7 +262,7 @@ describe("Checkbox", () => {
 	});
 
 	it("can be checked by pressing the Space key on the control", async () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<Checkbox.Root onChange={onChangeSpy}>
 				<Checkbox.Input />
 				<Checkbox.Control data-testid="control" />
@@ -283,7 +283,7 @@ describe("Checkbox", () => {
 	});
 
 	it("can be disabled", async () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<Checkbox.Root disabled onChange={onChangeSpy}>
 				<Checkbox.Input />
 				<Checkbox.Label data-testid="label">Label</Checkbox.Label>
@@ -305,7 +305,7 @@ describe("Checkbox", () => {
 	});
 
 	it("can be invalid", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Checkbox.Root validationState="invalid" onChange={onChangeSpy}>
 				<Checkbox.Input />
 			</Checkbox.Root>
@@ -317,7 +317,7 @@ describe("Checkbox", () => {
 	});
 
 	it("passes through 'aria-errormessage'", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Checkbox.Root validationState="invalid" onChange={onChangeSpy}>
 				<Checkbox.Input aria-errormessage="test" />
 			</Checkbox.Root>
@@ -330,7 +330,7 @@ describe("Checkbox", () => {
 	});
 
 	it("supports visible label", async () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Checkbox.Root>
 				<Checkbox.Label>Label</Checkbox.Label>
 				<Checkbox.Input />
@@ -346,7 +346,7 @@ describe("Checkbox", () => {
 	});
 
 	it("supports 'aria-labelledby'", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Checkbox.Root>
 				<Checkbox.Input aria-labelledby="foo" />
 			</Checkbox.Root>
@@ -358,7 +358,7 @@ describe("Checkbox", () => {
 	});
 
 	it("should combine 'aria-labelledby' if visible label is also provided", async () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Checkbox.Root>
 				<Checkbox.Label>Label</Checkbox.Label>
 				<Checkbox.Input aria-labelledby="foo" />
@@ -372,7 +372,7 @@ describe("Checkbox", () => {
 	});
 
 	it("supports 'aria-label'", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Checkbox.Root>
 				<Checkbox.Input aria-label="My Label" />
 			</Checkbox.Root>
@@ -384,7 +384,7 @@ describe("Checkbox", () => {
 	});
 
 	it("should combine 'aria-labelledby' if visible label and 'aria-label' is also provided", async () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Checkbox.Root>
 				<Checkbox.Label>Label</Checkbox.Label>
 				<Checkbox.Input aria-label="bar" aria-labelledby="foo" />
@@ -401,7 +401,7 @@ describe("Checkbox", () => {
 	});
 
 	it("supports visible description", async () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Checkbox.Root>
 				<Checkbox.Input />
 				<Checkbox.Description>Description</Checkbox.Description>
@@ -420,7 +420,7 @@ describe("Checkbox", () => {
 	});
 
 	it("supports 'aria-describedby'", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Checkbox.Root>
 				<Checkbox.Input aria-describedby="foo" />
 			</Checkbox.Root>
@@ -432,7 +432,7 @@ describe("Checkbox", () => {
 	});
 
 	it("should combine 'aria-describedby' if visible description", async () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Checkbox.Root>
 				<Checkbox.Input aria-describedby="foo" />
 				<Checkbox.Description>Description</Checkbox.Description>
@@ -446,7 +446,7 @@ describe("Checkbox", () => {
 	});
 
 	it("supports visible error message when invalid", async () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Checkbox.Root validationState="invalid">
 				<Checkbox.Input />
 				<Checkbox.ErrorMessage>ErrorMessage</Checkbox.ErrorMessage>
@@ -465,7 +465,7 @@ describe("Checkbox", () => {
 	});
 
 	it("should not be described by error message when not invalid", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Checkbox.Root>
 				<Checkbox.Input />
 				<Checkbox.ErrorMessage>ErrorMessage</Checkbox.ErrorMessage>
@@ -478,7 +478,7 @@ describe("Checkbox", () => {
 	});
 
 	it("should combine 'aria-describedby' if visible error message when invalid", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Checkbox.Root validationState="invalid">
 				<Checkbox.Input aria-describedby="foo" />
 				<Checkbox.ErrorMessage>ErrorMessage</Checkbox.ErrorMessage>
@@ -492,7 +492,7 @@ describe("Checkbox", () => {
 	});
 
 	it("should combine 'aria-describedby' if visible description and error message when invalid", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Checkbox.Root validationState="invalid">
 				<Checkbox.Input aria-describedby="foo" />
 				<Checkbox.Description>Description</Checkbox.Description>
@@ -511,7 +511,7 @@ describe("Checkbox", () => {
 	});
 
 	it("can be readonly", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Checkbox.Root checked readOnly onChange={onChangeSpy}>
 				<Checkbox.Input />
 			</Checkbox.Root>
@@ -530,7 +530,7 @@ describe("Checkbox", () => {
 	});
 
 	it("supports uncontrolled readonly", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Checkbox.Root readOnly onChange={onChangeSpy}>
 				<Checkbox.Input />
 			</Checkbox.Root>
@@ -549,7 +549,7 @@ describe("Checkbox", () => {
 
 	describe("indicator", () => {
 		it("should not display indicator by default", async () => {
-			const { queryByTestId} = render(() => (
+			const { queryByTestId } = render(() => (
 				<Checkbox.Root>
 					<Checkbox.Input />
 					<Checkbox.Control>
@@ -562,7 +562,7 @@ describe("Checkbox", () => {
 		});
 
 		it("should display indicator when 'checked'", async () => {
-			const { getByRole, queryByTestId, getByTestId} = render(() => (
+			const { getByRole, queryByTestId, getByTestId } = render(() => (
 				<Checkbox.Root>
 					<Checkbox.Input />
 					<Checkbox.Control>
@@ -590,7 +590,7 @@ describe("Checkbox", () => {
 		});
 
 		it("should display indicator when 'indeterminate'", async () => {
-			const {  getByTestId} = render(() => (
+			const { getByTestId } = render(() => (
 				<Checkbox.Root indeterminate>
 					<Checkbox.Input />
 					<Checkbox.Control>
@@ -603,7 +603,7 @@ describe("Checkbox", () => {
 		});
 
 		it("should display indicator when 'forceMount'", async () => {
-			const { getByTestId} = render(() => (
+			const { getByTestId } = render(() => (
 				<Checkbox.Root>
 					<Checkbox.Input />
 					<Checkbox.Control>
@@ -618,7 +618,7 @@ describe("Checkbox", () => {
 
 	describe("data-attributes", () => {
 		it("should have 'data-valid' attribute when checkbox is valid", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Checkbox.Root data-testid="checkbox-root" validationState="valid">
 					<Checkbox.Input />
 					<Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
@@ -636,7 +636,7 @@ describe("Checkbox", () => {
 		});
 
 		it("should have 'data-invalid' attribute when checkbox is invalid", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Checkbox.Root data-testid="checkbox-root" validationState="invalid">
 					<Checkbox.Input />
 					<Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
@@ -654,7 +654,7 @@ describe("Checkbox", () => {
 		});
 
 		it("should have 'data-checked' attribute when checkbox is checked", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Checkbox.Root data-testid="checkbox-root" checked>
 					<Checkbox.Input />
 					<Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
@@ -672,7 +672,7 @@ describe("Checkbox", () => {
 		});
 
 		it("should have 'data-indeterminate' attribute when checkbox is indeterminate", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Checkbox.Root data-testid="checkbox-root" indeterminate>
 					<Checkbox.Input />
 					<Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
@@ -690,7 +690,7 @@ describe("Checkbox", () => {
 		});
 
 		it("should have 'data-required' attribute when checkbox is required", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Checkbox.Root data-testid="checkbox-root" required>
 					<Checkbox.Input />
 					<Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
@@ -708,7 +708,7 @@ describe("Checkbox", () => {
 		});
 
 		it("should have 'data-disabled' attribute when checkbox is disabled", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Checkbox.Root data-testid="checkbox-root" disabled>
 					<Checkbox.Input />
 					<Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>
@@ -726,7 +726,7 @@ describe("Checkbox", () => {
 		});
 
 		it("should have 'data-readonly' attribute when checkbox is read only", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Checkbox.Root data-testid="checkbox-root" readOnly>
 					<Checkbox.Input />
 					<Checkbox.Label data-testid="checkbox-label">Label</Checkbox.Label>

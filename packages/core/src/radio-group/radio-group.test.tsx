@@ -8,7 +8,7 @@
 
 import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render } from "@solidjs/testing-library";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import * as RadioGroup from ".";
 
@@ -18,7 +18,7 @@ describe("RadioGroup", () => {
 	it("handles defaults", async () => {
 		const onChangeSpy = vi.fn();
 
-		const { getByRole, getAllByRole, getByLabelText} = render(() => (
+		const { getByRole, getAllByRole, getByLabelText } = render(() => (
 			<RadioGroup.Root onChange={onChangeSpy}>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -76,7 +76,7 @@ describe("RadioGroup", () => {
 	it("can have a default value", async () => {
 		const onChangeSpy = vi.fn();
 
-		const { getByRole, getAllByRole, getByLabelText} = render(() => (
+		const { getByRole, getAllByRole, getByLabelText } = render(() => (
 			<RadioGroup.Root defaultValue="cats" onChange={onChangeSpy}>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -125,7 +125,7 @@ describe("RadioGroup", () => {
 
 	it("value can be controlled", async () => {
 		const onChangeSpy = vi.fn();
-		const { getAllByRole, getByLabelText} = render(() => (
+		const { getAllByRole, getByLabelText } = render(() => (
 			<RadioGroup.Root value="cats" onChange={onChangeSpy}>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -172,7 +172,7 @@ describe("RadioGroup", () => {
 	it("can select value by clicking on the item control", async () => {
 		const onChangeSpy = vi.fn();
 
-		const { getByRole, getAllByRole, getByTestId} = render(() => (
+		const { getByRole, getAllByRole, getByTestId } = render(() => (
 			<RadioGroup.Root onChange={onChangeSpy}>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -222,7 +222,7 @@ describe("RadioGroup", () => {
 	it("can select value by pressing the Space key on the item control", async () => {
 		const onChangeSpy = vi.fn();
 
-		const { getByRole, getAllByRole, getByTestId} = render(() => (
+		const { getByRole, getAllByRole, getByTestId } = render(() => (
 			<RadioGroup.Root onChange={onChangeSpy}>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -271,7 +271,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("name can be controlled", () => {
-		const { getAllByRole} = render(() => (
+		const { getAllByRole } = render(() => (
 			<RadioGroup.Root name="test-name">
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -302,7 +302,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("supports visible label", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<RadioGroup.Root>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -334,7 +334,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("supports 'aria-labelledby'", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root aria-labelledby="foo">
 				<div>
 					<RadioGroup.Item value="dogs">
@@ -362,7 +362,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("should combine 'aria-labelledby' if visible label is also provided", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<RadioGroup.Root aria-labelledby="foo">
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -392,7 +392,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("supports 'aria-label'", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root aria-label="My Favorite Pet">
 				<div>
 					<RadioGroup.Item value="dogs">
@@ -420,7 +420,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("should combine 'aria-labelledby' if visible label and 'aria-label' is also provided", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<RadioGroup.Root aria-label="bar" aria-labelledby="foo">
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -453,7 +453,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("supports visible description", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<RadioGroup.Root>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -489,7 +489,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("supports visible description on single radio", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<RadioGroup.Root>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -512,7 +512,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("supports 'aria-describedby'", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root aria-describedby="foo">
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -541,7 +541,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("should combine 'aria-describedby' if visible description", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<RadioGroup.Root aria-describedby="foo">
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -575,7 +575,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("supports visible error message when invalid", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<RadioGroup.Root validationState="invalid">
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -611,7 +611,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("should not be described by error message when not invalid", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -641,7 +641,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("should combine 'aria-describedby' if visible error message when invalid", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<RadioGroup.Root validationState="invalid" aria-describedby="foo">
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -675,7 +675,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("should combine 'aria-describedby' if visible description and error message when invalid", () => {
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<RadioGroup.Root validationState="invalid" aria-describedby="foo">
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -711,7 +711,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("should not have form control 'data-*' attributes by default", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root>
 				<RadioGroup.Item value="cats">
 					<RadioGroup.ItemInput />
@@ -729,7 +729,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("should have 'data-valid' attribute when valid", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root validationState="valid">
 				<RadioGroup.Item value="cats">
 					<RadioGroup.ItemInput />
@@ -743,7 +743,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("should have 'data-invalid' attribute when invalid", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root validationState="invalid">
 				<RadioGroup.Item value="cats">
 					<RadioGroup.ItemInput />
@@ -757,7 +757,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("should have 'data-required' attribute when required", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root required>
 				<RadioGroup.Item value="cats">
 					<RadioGroup.ItemInput />
@@ -771,7 +771,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("should have 'data-disabled' attribute when disabled", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root disabled>
 				<RadioGroup.Item value="cats">
 					<RadioGroup.ItemInput />
@@ -785,7 +785,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("should have 'data-readonly' attribute when readonly", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root readOnly>
 				<RadioGroup.Item value="cats">
 					<RadioGroup.ItemInput />
@@ -799,7 +799,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("sets 'aria-orientation' by default", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -828,7 +828,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("sets 'aria-orientation' based on the 'orientation' prop", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root orientation="horizontal">
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -857,7 +857,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("sets 'aria-invalid' when 'validationState=invalid'", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root validationState="invalid">
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -886,7 +886,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("passes through 'aria-errormessage'", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<RadioGroup.Root validationState="invalid" aria-errormessage="test">
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -916,7 +916,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("sets 'aria-required' when 'isRequired' is true", () => {
-		const { getByRole,getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<RadioGroup.Root required>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -953,7 +953,7 @@ describe("RadioGroup", () => {
 	it("sets 'aria-disabled' and makes radios disabled when 'isDisabled' is true", async () => {
 		const groupOnChangeSpy = vi.fn();
 
-		const { getByRole,getAllByRole, getByLabelText} = render(() => (
+		const { getByRole, getAllByRole, getByLabelText } = render(() => (
 			<RadioGroup.Root disabled onChange={groupOnChangeSpy}>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -998,7 +998,7 @@ describe("RadioGroup", () => {
 	it("can have a single disabled radio", async () => {
 		const groupOnChangeSpy = vi.fn();
 
-		const { getByText,getAllByRole} = render(() => (
+		const { getByText, getAllByRole } = render(() => (
 			<RadioGroup.Root onChange={groupOnChangeSpy}>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -1051,7 +1051,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("doesn't set 'aria-disabled' or make radios disabled by default", () => {
-		const { getByRole,getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<RadioGroup.Root>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -1086,7 +1086,7 @@ describe("RadioGroup", () => {
 	});
 
 	it("doesn't set 'aria-disabled' or make radios disabled when 'isDisabled' is false", () => {
-		const { getByRole,getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<RadioGroup.Root disabled={false}>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -1122,7 +1122,7 @@ describe("RadioGroup", () => {
 
 	it("sets 'aria-readonly=true' on radio group", async () => {
 		const groupOnChangeSpy = vi.fn();
-		const { getByRole,getAllByRole, getByLabelText} = render(() => (
+		const { getByRole, getAllByRole, getByLabelText } = render(() => (
 			<RadioGroup.Root readOnly onChange={groupOnChangeSpy}>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -1164,7 +1164,7 @@ describe("RadioGroup", () => {
 	it("should not update state for readonly radio group", async () => {
 		const groupOnChangeSpy = vi.fn();
 
-		const { getAllByRole, getByLabelText} = render(() => (
+		const { getAllByRole, getByLabelText } = render(() => (
 			<RadioGroup.Root readOnly onChange={groupOnChangeSpy}>
 				<RadioGroup.Label>Favorite Pet</RadioGroup.Label>
 				<div>
@@ -1199,7 +1199,7 @@ describe("RadioGroup", () => {
 
 	describe("Radio", () => {
 		it("should generate default ids", () => {
-			const { getByTestId} = render(() => (
+			const { getByTestId } = render(() => (
 				<RadioGroup.Root>
 					<RadioGroup.Item data-testid="radio" value="cats">
 						<RadioGroup.ItemInput data-testid="input" />
@@ -1223,7 +1223,7 @@ describe("RadioGroup", () => {
 		});
 
 		it("should generate ids based on radio id", () => {
-			const { getByTestId} = render(() => (
+			const { getByTestId } = render(() => (
 				<RadioGroup.Root>
 					<RadioGroup.Item data-testid="radio" value="cats" id="foo">
 						<RadioGroup.ItemInput data-testid="input" />
@@ -1247,7 +1247,7 @@ describe("RadioGroup", () => {
 		});
 
 		it("supports custom ids", () => {
-			const { getByTestId} = render(() => (
+			const { getByTestId } = render(() => (
 				<RadioGroup.Root>
 					<RadioGroup.Item
 						data-testid="radio"
@@ -1278,7 +1278,7 @@ describe("RadioGroup", () => {
 		});
 
 		it("supports 'aria-label'", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<RadioGroup.Root>
 					<RadioGroup.Item value="cats">
 						<RadioGroup.ItemInput aria-label="Label" />
@@ -1294,7 +1294,7 @@ describe("RadioGroup", () => {
 		});
 
 		it("supports 'aria-labelledby'", () => {
-			const { getByRole, getByTestId} = render(() => (
+			const { getByRole, getByTestId } = render(() => (
 				<RadioGroup.Root>
 					<RadioGroup.Item value="cats">
 						<RadioGroup.ItemInput aria-labelledby="foo" />
@@ -1313,7 +1313,7 @@ describe("RadioGroup", () => {
 		});
 
 		it("should combine 'aria-label' and 'aria-labelledby'", () => {
-			const { getByRole, getByTestId} = render(() => (
+			const { getByRole, getByTestId } = render(() => (
 				<RadioGroup.Root>
 					<RadioGroup.Item value="cats">
 						<RadioGroup.ItemInput aria-label="Label" aria-labelledby="foo" />
@@ -1335,7 +1335,7 @@ describe("RadioGroup", () => {
 		});
 
 		it("supports 'aria-describedby'", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<RadioGroup.Root>
 					<RadioGroup.Item value="cats">
 						<RadioGroup.ItemInput aria-describedby="foo" />
@@ -1351,7 +1351,7 @@ describe("RadioGroup", () => {
 		});
 
 		it("should combine 'aria-describedby' from both radio and radio group", () => {
-			const { getByRole, getByTestId} = render(() => (
+			const { getByRole, getByTestId } = render(() => (
 				<RadioGroup.Root>
 					<RadioGroup.Item value="cats">
 						<RadioGroup.ItemInput aria-describedby="foo" />
@@ -1375,7 +1375,7 @@ describe("RadioGroup", () => {
 
 		describe("indicator", () => {
 			it("should not display indicator by default", async () => {
-				const { queryByTestId} = render(() => (
+				const { queryByTestId } = render(() => (
 					<RadioGroup.Root>
 						<RadioGroup.Item value="cats">
 							<RadioGroup.ItemInput />
@@ -1390,7 +1390,7 @@ describe("RadioGroup", () => {
 			});
 
 			it("should display indicator when 'selected'", async () => {
-				const { getByRole, queryByTestId, getByTestId} = render(() => (
+				const { getByRole, queryByTestId, getByTestId } = render(() => (
 					<RadioGroup.Root>
 						<RadioGroup.Item value="cats">
 							<RadioGroup.ItemInput />
@@ -1414,7 +1414,7 @@ describe("RadioGroup", () => {
 			});
 
 			it("should display indicator when 'forceMount'", async () => {
-				const {  getByTestId} = render(() => (
+				const { getByTestId } = render(() => (
 					<RadioGroup.Root>
 						<RadioGroup.Item value="cats">
 							<RadioGroup.ItemInput />
@@ -1431,7 +1431,7 @@ describe("RadioGroup", () => {
 
 		describe("data-attributes", () => {
 			it("should have 'data-valid' attribute on radio elements when radio group is valid", async () => {
-				const { getAllByTestId} = render(() => (
+				const { getAllByTestId } = render(() => (
 					<RadioGroup.Root validationState="valid" value="cats">
 						<RadioGroup.Item data-testid="radio-root" value="cats">
 							<RadioGroup.ItemInput />
@@ -1453,7 +1453,7 @@ describe("RadioGroup", () => {
 			});
 
 			it("should have 'data-invalid' attribute on radios when radio group is invalid", async () => {
-				const { getAllByTestId} = render(() => (
+				const { getAllByTestId } = render(() => (
 					<RadioGroup.Root validationState="invalid" value="cats">
 						<RadioGroup.Item data-testid="radio-root" value="cats">
 							<RadioGroup.ItemInput />
@@ -1475,7 +1475,7 @@ describe("RadioGroup", () => {
 			});
 
 			it("should have 'data-required' attribute on radios when radio group is required", async () => {
-				const { getAllByTestId} = render(() => (
+				const { getAllByTestId } = render(() => (
 					<RadioGroup.Root value="cats" required>
 						<RadioGroup.Item data-testid="radio-root" value="cats">
 							<RadioGroup.ItemInput />
@@ -1497,7 +1497,7 @@ describe("RadioGroup", () => {
 			});
 
 			it("should have 'data-readonly' attribute on radios when radio group is readonly", async () => {
-				const { getAllByTestId} = render(() => (
+				const { getAllByTestId } = render(() => (
 					<RadioGroup.Root value="cats" readOnly>
 						<RadioGroup.Item data-testid="radio-root" value="cats">
 							<RadioGroup.ItemInput />
@@ -1519,7 +1519,7 @@ describe("RadioGroup", () => {
 			});
 
 			it("should have 'data-disabled' attribute on radios when radio group is disabled", async () => {
-				const { getAllByTestId} = render(() => (
+				const { getAllByTestId } = render(() => (
 					<RadioGroup.Root disabled value="cats">
 						<RadioGroup.Item data-testid="radio-root" value="cats">
 							<RadioGroup.ItemInput />
@@ -1541,7 +1541,7 @@ describe("RadioGroup", () => {
 			});
 
 			it("should have 'data-disabled' attribute on single disabled radio", async () => {
-				const { getAllByTestId} = render(() => (
+				const { getAllByTestId } = render(() => (
 					<RadioGroup.Root value="cats">
 						<RadioGroup.Item data-testid="radio-root" value="cats" disabled>
 							<RadioGroup.ItemInput />
@@ -1563,7 +1563,7 @@ describe("RadioGroup", () => {
 			});
 
 			it("should have 'data-checked' attribute on checked radio", async () => {
-				const { getAllByTestId} = render(() => (
+				const { getAllByTestId } = render(() => (
 					<RadioGroup.Root value="cats">
 						<RadioGroup.Item data-testid="radio-root" value="cats">
 							<RadioGroup.ItemInput />

@@ -8,7 +8,9 @@ describe("Button", () => {
 	installPointerEvent();
 
 	it("should have attribute 'type=button' by default", () => {
-		const { getByTestId } = render(() => <Button.Root data-testid="button">Button</Button.Root>);
+		const { getByTestId } = render(() => (
+			<Button.Root data-testid="button">Button</Button.Root>
+		));
 
 		const button = getByTestId("button");
 
@@ -42,7 +44,9 @@ describe("Button", () => {
 	});
 
 	it("should not have attribute 'role=button' when it's a native button", () => {
-		const { getByTestId } = render(() => <Button.Root data-testid="button">Button</Button.Root>);
+		const { getByTestId } = render(() => (
+			<Button.Root data-testid="button">Button</Button.Root>
+		));
 
 		const button = getByTestId("button");
 
@@ -165,7 +169,9 @@ describe("Button", () => {
 	});
 
 	it("should not have attribute 'data-disabled'  by default", async () => {
-		const { getByTestId } = render(() => <Button.Root data-testid="button">Button</Button.Root>);
+		const { getByTestId } = render(() => (
+			<Button.Root data-testid="button">Button</Button.Root>
+		));
 
 		const button = getByTestId("button");
 

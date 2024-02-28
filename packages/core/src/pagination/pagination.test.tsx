@@ -1,11 +1,11 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import * as Pagination from ".";
 
 describe("Pagination", () => {
 	it("renders correctly when changing page", () => {
-		const { getByText, queryAllByText} = render(() => (
+		const { getByText, queryAllByText } = render(() => (
 			<Pagination.Root
 				count={7}
 				itemComponent={(props) => (
@@ -79,7 +79,7 @@ describe("Pagination", () => {
 	});
 
 	it("renders correct number of pages", () => {
-		const { getByText} = render(() => (
+		const { getByText } = render(() => (
 			<Pagination.Root
 				count={10}
 				itemComponent={(props) => (
@@ -101,7 +101,7 @@ describe("Pagination", () => {
 	});
 
 	it("renders correct number of siblings", () => {
-		const { getByText} = render(() => (
+		const { getByText } = render(() => (
 			<Pagination.Root
 				count={10}
 				defaultPage={4}
@@ -133,7 +133,7 @@ describe("Pagination", () => {
 	});
 
 	it("renders correctly when hiding first/last", () => {
-		const { getByText, queryAllByText} = render(() => (
+		const { getByText, queryByText } = render(() => (
 			<Pagination.Root
 				count={10}
 				defaultPage={4}
@@ -162,7 +162,7 @@ describe("Pagination", () => {
 	});
 
 	it("renders correct number of siblings with fixedItems=true", () => {
-		const { getByText} = render(() => (
+		const { getByText } = render(() => (
 			<Pagination.Root
 				count={10}
 				fixedItems
@@ -192,7 +192,7 @@ describe("Pagination", () => {
 	});
 
 	it("renders correct number of siblings with fixedItems=no-ellipsis", () => {
-		const { getByText} = render(() => (
+		const { getByText } = render(() => (
 			<Pagination.Root
 				count={10}
 				fixedItems="no-ellipsis"
@@ -222,7 +222,7 @@ describe("Pagination", () => {
 	it("supports default page", () => {
 		const onPageChange = vi.fn();
 
-		const { getByText} = render(() => (
+		const { getByText } = render(() => (
 			<Pagination.Root
 				defaultPage={4}
 				onPageChange={onPageChange}
@@ -247,7 +247,7 @@ describe("Pagination", () => {
 	it("supports controlled state", () => {
 		const onPageChange = vi.fn();
 
-		const { getByText} = render(() => (
+		const { getByText } = render(() => (
 			<Pagination.Root
 				page={4}
 				onPageChange={onPageChange}

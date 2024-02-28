@@ -10,7 +10,7 @@ import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, within } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps, For } from "solid-js";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import * as Accordion from ".";
 
@@ -35,7 +35,9 @@ describe("Accordion", () => {
 	installPointerEvent();
 
 	it("renders properly", () => {
-		const { getAllByRole } = render(() => <AccordionTest defaultValue={["one"]} />);
+		const { getAllByRole } = render(() => (
+			<AccordionTest defaultValue={["one"]} />
+		));
 
 		const items = getAllByRole("heading");
 		expect(items.length).toBe(3);
@@ -59,7 +61,9 @@ describe("Accordion", () => {
 	});
 
 	it("can have default expanded value", async () => {
-		const { getAllByRole,getByText } = render(() => <AccordionTest defaultValue={["one"]} />);
+		const { getAllByRole, getByText } = render(() => (
+			<AccordionTest defaultValue={["one"]} />
+		));
 
 		const buttons = getAllByRole("button");
 		const [firstItem] = buttons;
@@ -72,7 +76,9 @@ describe("Accordion", () => {
 	it("can be controlled", async () => {
 		const onChangeSpy = vi.fn();
 
-		const { getAllByRole,getByText } = render(() => <AccordionTest value={["one"]} onChange={onChangeSpy} />);
+		const { getAllByRole, getByText } = render(() => (
+			<AccordionTest value={["one"]} onChange={onChangeSpy} />
+		));
 
 		const buttons = getAllByRole("button");
 		const [firstItem, secondItem] = buttons;
@@ -93,7 +99,7 @@ describe("Accordion", () => {
 	});
 
 	it("allows users to navigate accordion headers through arrow keys", async () => {
-		const { getAllByRole} = render(() => <AccordionTest />);
+		const { getAllByRole } = render(() => <AccordionTest />);
 
 		const buttons = getAllByRole("button");
 		const [firstItem, secondItem, thirdItem] = buttons;
@@ -123,7 +129,9 @@ describe("Accordion", () => {
 	});
 
 	it("should not wrap focus when navigating accordion headers through arrow keys if 'shouldFocusWrap=false'", async () => {
-		const { getAllByRole} = render(() => <AccordionTest shouldFocusWrap={false} />);
+		const { getAllByRole } = render(() => (
+			<AccordionTest shouldFocusWrap={false} />
+		));
 
 		const buttons = getAllByRole("button");
 		const [firstItem, secondItem, thirdItem] = buttons;
@@ -201,7 +209,7 @@ describe("Accordion", () => {
 	});
 
 	it("should toggle between different accordion items when clicking a trigger", async () => {
-		const { getAllByRole,getByText } = render(() => <AccordionTest />);
+		const { getAllByRole, getByText } = render(() => <AccordionTest />);
 
 		const buttons = getAllByRole("button");
 		const [firstItem, secondItem] = buttons;
@@ -221,7 +229,7 @@ describe("Accordion", () => {
 	});
 
 	it("should no toggle the same accordion item when clicking its trigger by default", async () => {
-		const { getAllByRole,getByText } = render(() => <AccordionTest />);
+		const { getAllByRole, getByText } = render(() => <AccordionTest />);
 
 		const buttons = getAllByRole("button");
 		const [firstItem] = buttons;
@@ -241,7 +249,9 @@ describe("Accordion", () => {
 	it("should call 'onChange' when clicking a trigger", async () => {
 		const onChangeSpy = vi.fn();
 
-		const { getAllByRole } = render(() => <AccordionTest onChange={onChangeSpy} />);
+		const { getAllByRole } = render(() => (
+			<AccordionTest onChange={onChangeSpy} />
+		));
 
 		const buttons = getAllByRole("button");
 		const [firstItem, secondItem] = buttons;
@@ -261,7 +271,9 @@ describe("Accordion", () => {
 
 	describe("collapsible", () => {
 		it("should toggle the same accordion item when clicking its trigger if collapsible", async () => {
-			const { getAllByRole,getByText, queryByText } = render(() => <AccordionTest collapsible defaultValue={["one"]} />);
+			const { getAllByRole, getByText, queryByText } = render(() => (
+				<AccordionTest collapsible defaultValue={["one"]} />
+			));
 
 			const buttons = getAllByRole("button");
 			const [firstItem] = buttons;
@@ -279,7 +291,9 @@ describe("Accordion", () => {
 		});
 
 		it("should allows users to open and close accordion item with enter / space key when collapsible", async () => {
-			const { getAllByRole,getByText, queryByText } = render(() => <AccordionTest collapsible defaultValue={["one"]} />);
+			const { getAllByRole, getByText, queryByText } = render(() => (
+				<AccordionTest collapsible defaultValue={["one"]} />
+			));
 
 			const buttons = getAllByRole("button");
 			const [firstItem] = buttons;
@@ -308,7 +322,9 @@ describe("Accordion", () => {
 
 	describe("multiple", () => {
 		it("should expand multiple accordion items when clicking triggers", async () => {
-			const { getAllByRole,getByText } = render(() => <AccordionTest multiple />);
+			const { getAllByRole, getByText } = render(() => (
+				<AccordionTest multiple />
+			));
 
 			const buttons = getAllByRole("button");
 			const [firstItem, secondItem] = buttons;
@@ -329,7 +345,9 @@ describe("Accordion", () => {
 		});
 
 		it("should toggle the same accordion item when clicking its trigger if multiple", async () => {
-			const { getAllByRole,getByText, queryByText } = render(() => <AccordionTest multiple defaultValue={["one"]} />);
+			const { getAllByRole, getByText, queryByText } = render(() => (
+				<AccordionTest multiple defaultValue={["one"]} />
+			));
 
 			const buttons = getAllByRole("button");
 			const [firstItem] = buttons;
@@ -347,7 +365,9 @@ describe("Accordion", () => {
 		});
 
 		it("should allows users to open and close accordion item with enter / space key when multiple", async () => {
-			const { getAllByRole,getByText, queryByText } = render(() => <AccordionTest multiple defaultValue={["one"]} />);
+			const { getAllByRole, getByText, queryByText } = render(() => (
+				<AccordionTest multiple defaultValue={["one"]} />
+			));
 
 			const buttons = getAllByRole("button");
 			const [firstItem] = buttons;
@@ -376,7 +396,9 @@ describe("Accordion", () => {
 		it("should call 'onChange' when clicking triggers", async () => {
 			const onChangeSpy = vi.fn();
 
-			const { getAllByRole } = render(() => <AccordionTest multiple onChange={onChangeSpy} />);
+			const { getAllByRole } = render(() => (
+				<AccordionTest multiple onChange={onChangeSpy} />
+			));
 
 			const buttons = getAllByRole("button");
 			const [firstItem, secondItem] = buttons;

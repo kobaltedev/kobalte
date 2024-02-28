@@ -43,7 +43,7 @@ describe("Breadcrumbs", () => {
 	});
 
 	it("supports custom string separator", () => {
-		const { getAllByText } =	render(() => (
+		const { getAllByText } = render(() => (
 			<Breadcrumbs.Root separator=">">
 				<ol>
 					<li>
@@ -66,7 +66,7 @@ describe("Breadcrumbs", () => {
 	});
 
 	it("supports custom JSX.Element separator", () => {
-		const { getAllByText } = 	render(() => (
+		const { getAllByText } = render(() => (
 			<Breadcrumbs.Root separator={<span>jsx separator</span>}>
 				<ol>
 					<li>

@@ -8,7 +8,7 @@
 
 import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render } from "@solidjs/testing-library";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import * as Switch from ".";
 
@@ -22,7 +22,7 @@ describe("Switch", () => {
 	});
 
 	it("should generate default ids", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<Switch.Root data-testid="switch">
 				<Switch.Input data-testid="input" />
 				<Switch.Control data-testid="control">
@@ -46,7 +46,7 @@ describe("Switch", () => {
 	});
 
 	it("should generate ids based on switch id", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<Switch.Root data-testid="switch" id="foo">
 				<Switch.Input data-testid="input" />
 				<Switch.Control data-testid="control">
@@ -70,7 +70,7 @@ describe("Switch", () => {
 	});
 
 	it("supports custom ids", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<Switch.Root data-testid="switch" id="custom-switch-id">
 				<Switch.Input data-testid="input" id="custom-input-id" />
 				<Switch.Control data-testid="control" id="custom-control-id">
@@ -96,7 +96,7 @@ describe("Switch", () => {
 	});
 
 	it("should set input type to checkbox", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root>
 				<Switch.Input />
 			</Switch.Root>
@@ -108,7 +108,7 @@ describe("Switch", () => {
 	});
 
 	it("should set input role to switch", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root>
 				<Switch.Input />
 			</Switch.Root>
@@ -120,7 +120,7 @@ describe("Switch", () => {
 	});
 
 	it("should have default value of 'on'", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root>
 				<Switch.Input />
 			</Switch.Root>
@@ -132,7 +132,7 @@ describe("Switch", () => {
 	});
 
 	it("supports custom value", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root value="custom">
 				<Switch.Input />
 			</Switch.Root>
@@ -144,7 +144,7 @@ describe("Switch", () => {
 	});
 
 	it("ensure default unchecked can be checked", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root onChange={onChangeSpy}>
 				<Switch.Input />
 			</Switch.Root>
@@ -168,7 +168,7 @@ describe("Switch", () => {
 	});
 
 	it("can be default checked", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root defaultChecked onChange={onChangeSpy}>
 				<Switch.Input />
 			</Switch.Root>
@@ -186,7 +186,7 @@ describe("Switch", () => {
 	});
 
 	it("can be controlled checked", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root checked onChange={onChangeSpy}>
 				<Switch.Input />
 			</Switch.Root>
@@ -204,7 +204,7 @@ describe("Switch", () => {
 	});
 
 	it("can be controlled unchecked", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root checked={false} onChange={onChangeSpy}>
 				<Switch.Input />
 			</Switch.Root>
@@ -222,7 +222,7 @@ describe("Switch", () => {
 	});
 
 	it("can be checked by clicking on the control", async () => {
-		const { getByRole,getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<Switch.Root onChange={onChangeSpy}>
 				<Switch.Input />
 				<Switch.Control data-testid="control" />
@@ -242,7 +242,7 @@ describe("Switch", () => {
 	});
 
 	it("can be checked by pressing the Space key on the control", async () => {
-		const { getByRole,getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<Switch.Root onChange={onChangeSpy}>
 				<Switch.Input />
 				<Switch.Control data-testid="control" />
@@ -263,7 +263,7 @@ describe("Switch", () => {
 	});
 
 	it("can be disabled", async () => {
-		const { getByRole,getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<Switch.Root disabled onChange={onChangeSpy}>
 				<Switch.Input />
 				<Switch.Label data-testid="label">Label</Switch.Label>
@@ -286,7 +286,7 @@ describe("Switch", () => {
 	});
 
 	it("can be invalid", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root validationState="invalid" onChange={onChangeSpy}>
 				<Switch.Input />
 			</Switch.Root>
@@ -298,7 +298,7 @@ describe("Switch", () => {
 	});
 
 	it("passes through 'aria-errormessage'", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root validationState="invalid" onChange={onChangeSpy}>
 				<Switch.Input aria-errormessage="test" />
 			</Switch.Root>
@@ -311,7 +311,7 @@ describe("Switch", () => {
 	});
 
 	it("supports visible label", async () => {
-		const { getByRole,getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Switch.Root>
 				<Switch.Label>Label</Switch.Label>
 				<Switch.Input />
@@ -327,7 +327,7 @@ describe("Switch", () => {
 	});
 
 	it("supports 'aria-labelledby'", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root>
 				<Switch.Input aria-labelledby="foo" />
 			</Switch.Root>
@@ -339,7 +339,7 @@ describe("Switch", () => {
 	});
 
 	it("should combine 'aria-labelledby' if visible label is also provided", async () => {
-		const { getByRole,getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Switch.Root>
 				<Switch.Label>Label</Switch.Label>
 				<Switch.Input aria-labelledby="foo" />
@@ -353,7 +353,7 @@ describe("Switch", () => {
 	});
 
 	it("supports 'aria-label'", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root>
 				<Switch.Input aria-label="My Label" />
 			</Switch.Root>
@@ -365,7 +365,7 @@ describe("Switch", () => {
 	});
 
 	it("should combine 'aria-labelledby' if visible label and 'aria-label' is also provided", async () => {
-		const { getByRole,getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Switch.Root>
 				<Switch.Label>Label</Switch.Label>
 				<Switch.Input aria-label="bar" aria-labelledby="foo" />
@@ -382,7 +382,7 @@ describe("Switch", () => {
 	});
 
 	it("supports visible description", async () => {
-		const { getByRole,getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Switch.Root>
 				<Switch.Input />
 				<Switch.Description>Description</Switch.Description>
@@ -401,7 +401,7 @@ describe("Switch", () => {
 	});
 
 	it("supports 'aria-describedby'", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root>
 				<Switch.Input aria-describedby="foo" />
 			</Switch.Root>
@@ -413,7 +413,7 @@ describe("Switch", () => {
 	});
 
 	it("should combine 'aria-describedby' if visible description", async () => {
-		const { getByRole,getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Switch.Root>
 				<Switch.Input aria-describedby="foo" />
 				<Switch.Description>Description</Switch.Description>
@@ -427,7 +427,7 @@ describe("Switch", () => {
 	});
 
 	it("supports visible error message when invalid", async () => {
-		const { getByRole,getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Switch.Root validationState="invalid">
 				<Switch.Input />
 				<Switch.ErrorMessage>ErrorMessage</Switch.ErrorMessage>
@@ -446,7 +446,7 @@ describe("Switch", () => {
 	});
 
 	it("should not be described by error message when not invalid", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root>
 				<Switch.Input />
 				<Switch.ErrorMessage>ErrorMessage</Switch.ErrorMessage>
@@ -459,7 +459,7 @@ describe("Switch", () => {
 	});
 
 	it("should combine 'aria-describedby' if visible error message when invalid", () => {
-		const { getByRole,getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Switch.Root validationState="invalid">
 				<Switch.Input aria-describedby="foo" />
 				<Switch.ErrorMessage>ErrorMessage</Switch.ErrorMessage>
@@ -473,7 +473,7 @@ describe("Switch", () => {
 	});
 
 	it("should combine 'aria-describedby' if visible description and error message when invalid", () => {
-		const { getByRole,getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Switch.Root validationState="invalid">
 				<Switch.Input aria-describedby="foo" />
 				<Switch.Description>Description</Switch.Description>
@@ -492,7 +492,7 @@ describe("Switch", () => {
 	});
 
 	it("can be read only", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root checked readOnly onChange={onChangeSpy}>
 				<Switch.Input />
 			</Switch.Root>
@@ -511,7 +511,7 @@ describe("Switch", () => {
 	});
 
 	it("supports uncontrolled read only", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Switch.Root readOnly onChange={onChangeSpy}>
 				<Switch.Input />
 			</Switch.Root>
@@ -530,7 +530,7 @@ describe("Switch", () => {
 
 	describe("data-attributes", () => {
 		it("should have 'data-valid' attribute when switch is valid", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Switch.Root data-testid="switch-root" validationState="valid">
 					<Switch.Input />
 					<Switch.Label data-testid="switch-label">Label</Switch.Label>
@@ -548,7 +548,7 @@ describe("Switch", () => {
 		});
 
 		it("should have 'data-invalid' attribute when switch is invalid", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Switch.Root data-testid="switch-root" validationState="invalid">
 					<Switch.Input />
 					<Switch.Label data-testid="switch-label">Label</Switch.Label>
@@ -566,7 +566,7 @@ describe("Switch", () => {
 		});
 
 		it("should have 'data-checked' attribute when switch is checked", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Switch.Root data-testid="switch-root" checked>
 					<Switch.Input />
 					<Switch.Label data-testid="switch-label">Label</Switch.Label>
@@ -584,7 +584,7 @@ describe("Switch", () => {
 		});
 
 		it("should have 'data-required' attribute when switch is required", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Switch.Root data-testid="switch-root" required>
 					<Switch.Input />
 					<Switch.Label data-testid="switch-label">Label</Switch.Label>
@@ -602,7 +602,7 @@ describe("Switch", () => {
 		});
 
 		it("should have 'data-disabled' attribute when switch is disabled", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Switch.Root data-testid="switch-root" disabled>
 					<Switch.Input />
 					<Switch.Label data-testid="switch-label">Label</Switch.Label>
@@ -620,7 +620,7 @@ describe("Switch", () => {
 		});
 
 		it("should have 'data-readonly' attribute when switch is read only", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Switch.Root data-testid="switch-root" readOnly>
 					<Switch.Input />
 					<Switch.Label data-testid="switch-label">Label</Switch.Label>

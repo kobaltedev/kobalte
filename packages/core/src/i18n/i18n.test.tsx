@@ -1,9 +1,9 @@
 import { render } from "@solidjs/testing-library";
 import { createRoot, onCleanup, onMount } from "solid-js";
 
+import { vi } from "vitest";
 import { createDefaultLocale } from "./create-default-locale";
 import { I18nProvider, useLocale } from "./i18n-provider";
-import {vi} from "vitest";
 
 function Example() {
 	const { locale, direction } = useLocale();
@@ -17,7 +17,7 @@ function Example() {
 
 describe("I18nProvider", () => {
 	it("should use default locale when no one is provided", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<I18nProvider>
 				<Example />
 			</I18nProvider>
@@ -31,7 +31,7 @@ describe("I18nProvider", () => {
 	});
 
 	it("should use provided locale", () => {
-		const { getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<I18nProvider locale="ar-AR">
 				<Example />
 			</I18nProvider>

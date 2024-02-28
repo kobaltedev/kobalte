@@ -1,5 +1,5 @@
 import { createRoot } from "solid-js";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import { createToggleState } from "./create-toggle-state";
 

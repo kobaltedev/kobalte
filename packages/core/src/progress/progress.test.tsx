@@ -13,7 +13,7 @@ import * as Progress from ".";
 
 describe("Progress", () => {
 	it("handles defaults", () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<Progress.Root>
 				<Progress.Label>Progress Bar</Progress.Label>
 				<Progress.ValueLabel data-testid="value-label" />
@@ -40,7 +40,7 @@ describe("Progress", () => {
 	});
 
 	it("supports custom value label", () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<Progress.Root
 				value={3}
 				minValue={0}
@@ -63,7 +63,7 @@ describe("Progress", () => {
 	});
 
 	it("should update all fields by value", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Progress.Root value={30}>
 				<Progress.Label>Progress Bar</Progress.Label>
 				<Progress.ValueLabel />
@@ -82,7 +82,7 @@ describe("Progress", () => {
 	});
 
 	it("should clamps values to 'minValue'", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Progress.Root value={-1} minValue={0}>
 				<Progress.Label>Progress Bar</Progress.Label>
 				<Progress.ValueLabel />
@@ -98,7 +98,7 @@ describe("Progress", () => {
 	});
 
 	it("should clamps values to 'maxValue'", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Progress.Root value={200} maxValue={100}>
 				<Progress.Label>Progress Bar</Progress.Label>
 				<Progress.ValueLabel />
@@ -114,7 +114,7 @@ describe("Progress", () => {
 	});
 
 	it("supports negative values", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Progress.Root value={0} minValue={-5} maxValue={5}>
 				<Progress.Label>Progress Bar</Progress.Label>
 				<Progress.ValueLabel />
@@ -130,7 +130,7 @@ describe("Progress", () => {
 	});
 
 	it("supports indeterminate state", () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<Progress.Root indeterminate>
 				<Progress.Label>Progress Bar</Progress.Label>
 				<Progress.ValueLabel data-testid="value-label" />
@@ -152,7 +152,7 @@ describe("Progress", () => {
 
 	describe("data-attributes", () => {
 		it("should have 'data-progress=loading' attribute when the progress is not complete", () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Progress.Root
 					value={30}
 					minValue={0}
@@ -177,7 +177,7 @@ describe("Progress", () => {
 		});
 
 		it("should have 'data-progress=complete' attribute when the progress is complete", () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Progress.Root
 					value={100}
 					minValue={0}
@@ -202,7 +202,7 @@ describe("Progress", () => {
 		});
 
 		it("should not have 'data-indeterminate' attribute by default", () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Progress.Root data-testid="progress-root">
 					<Progress.Label data-testid="progress-label">
 						Progress Bar
@@ -222,7 +222,7 @@ describe("Progress", () => {
 		});
 
 		it("should have 'data-indeterminate' attribute when indeterminate", () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Progress.Root indeterminate data-testid="progress-root">
 					<Progress.Label data-testid="progress-label">
 						Progress Bar

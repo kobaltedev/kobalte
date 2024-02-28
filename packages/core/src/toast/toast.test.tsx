@@ -1,6 +1,6 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render } from "@solidjs/testing-library";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import * as Toast from ".";
 import { I18nProvider } from "../i18n";
@@ -44,7 +44,7 @@ describe("Toast", () => {
 	};
 
 	it("renders correctly", async () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -63,7 +63,7 @@ describe("Toast", () => {
 	});
 
 	it("should have 'aria-live' set to 'assertive' when priority is 'high'", async () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -86,7 +86,7 @@ describe("Toast", () => {
 	});
 
 	it("should have 'aria-live' set to 'polite' when priority is 'low'", async () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -109,7 +109,7 @@ describe("Toast", () => {
 	});
 
 	it("should have 'aria-atomic' set to 'true'", async () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -128,7 +128,7 @@ describe("Toast", () => {
 	});
 
 	it("should be labelled by its toast title", async () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -149,7 +149,7 @@ describe("Toast", () => {
 	});
 
 	it("should be described by its toast description", async () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -172,7 +172,7 @@ describe("Toast", () => {
 	it("should close after duration", async () => {
 		const duration = 1000;
 
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -197,7 +197,7 @@ describe("Toast", () => {
 	it("supports overriding toast region duration", async () => {
 		const durationOverride = 1000;
 
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -226,7 +226,7 @@ describe("Toast", () => {
 	it("should not close after duration if persistent", async () => {
 		const duration = 1000;
 
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -253,7 +253,7 @@ describe("Toast", () => {
 	});
 
 	it("should close when clicking the toast close button", async () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -276,7 +276,7 @@ describe("Toast", () => {
 	});
 
 	it("should close when using toaster dismiss method", async () => {
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -301,7 +301,7 @@ describe("Toast", () => {
 	it("can be updated with the toaster", async () => {
 		let toastId = -1;
 
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -348,7 +348,7 @@ describe("Toast", () => {
 				setTimeout(() => resolve("data"), timeout),
 			);
 
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -388,7 +388,7 @@ describe("Toast", () => {
 				setTimeout(() => reject(new Error("error")), timeout),
 			);
 
-		const { getByRole, getByTestId} = render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -425,7 +425,7 @@ describe("Toast", () => {
 
 	describe("Toast.Region", () => {
 		it("renders correctly", async () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Toast.Region>
 					<Toast.List />
 				</Toast.Region>
@@ -437,7 +437,7 @@ describe("Toast", () => {
 		});
 
 		it("has default 'aria-label' with hot keys", async () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<I18nProvider locale="en">
 					<Toast.Region>
 						<Toast.List />
@@ -451,7 +451,7 @@ describe("Toast", () => {
 		});
 
 		it("supports custom 'aria-label' with hot keys placeholder replacement", async () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<I18nProvider locale="en">
 					<Toast.Region aria-label="Toasts - {hotkey}">
 						<Toast.List />
@@ -465,7 +465,7 @@ describe("Toast", () => {
 		});
 
 		it("has 'pointer-events' set to 'none' when no toast", async () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Toast.Region>
 					<Toast.List />
 				</Toast.Region>
@@ -480,7 +480,7 @@ describe("Toast", () => {
 			const limit = 3;
 			const aboveLimit = limit + 1;
 
-			const { getAllByRole, getByTestId} = render(() => (
+			const { getAllByRole, getByTestId } = render(() => (
 				<>
 					<button
 						type="button"
@@ -505,7 +505,7 @@ describe("Toast", () => {
 		});
 
 		it("should render multiple regions simultaneously", async () => {
-			const { getByTestId} = render(() => (
+			const { getByTestId } = render(() => (
 				<>
 					<button
 						type="button"
@@ -541,10 +541,10 @@ describe("Toast", () => {
 
 			fireEvent.click(getByTestId("trigger"));
 
-			const defaultRegionToasts = getByTestId("default-region")
-				.querySelectorAll('[role="status"]');
-			const customRegionToasts = getByTestId("custom-region")
-				.querySelectorAll('[role="status"]');
+			const defaultRegionToasts =
+				getByTestId("default-region").querySelectorAll('[role="status"]');
+			const customRegionToasts =
+				getByTestId("custom-region").querySelectorAll('[role="status"]');
 
 			expect(defaultRegionToasts.length).toBe(3);
 			expect(customRegionToasts.length).toBe(2);
@@ -555,7 +555,7 @@ describe("Toast", () => {
 		it("pauses timers on pointer move and resume on pointer leave when 'pauseOnInteraction'", async () => {
 			const duration = 1000;
 
-			const { getByRole, getByTestId} = render(() => (
+			const { getByRole, getByTestId } = render(() => (
 				<>
 					<button
 						type="button"
@@ -608,7 +608,7 @@ describe("Toast", () => {
 		it("pauses timers on focus in and resume on focus out when 'pauseOnInteraction'", async () => {
 			const duration = 1000;
 
-			const { getByRole, getByTestId} = render(() => (
+			const { getByRole, getByTestId } = render(() => (
 				<>
 					<button
 						type="button"

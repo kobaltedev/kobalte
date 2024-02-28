@@ -8,7 +8,7 @@
 
 import { createPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import * as Listbox from ".";
 
@@ -34,7 +34,7 @@ describe("Listbox", () => {
 	});
 
 	it("renders properly", () => {
-		const { getByRole, getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				selectionMode="single"
@@ -60,7 +60,7 @@ describe("Listbox", () => {
 	});
 
 	it("allows user to change option focus via up/down arrow keys", async () => {
-		const { getByRole, getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				renderItem={(item) => (
@@ -89,7 +89,7 @@ describe("Listbox", () => {
 	});
 
 	it("wraps focus from first to last/last to first option if up/down arrow is pressed if shouldFocusWrap is true", async () => {
-		const { getByRole, getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				shouldFocusWrap
@@ -131,7 +131,7 @@ describe("Listbox", () => {
 		];
 
 		it("supports string based option mapping for object options", async () => {
-			const { getAllByRole} = render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root<any, any>
 					options={CUSTOM_DATA_SOURCE}
 					optionValue="id"
@@ -165,7 +165,7 @@ describe("Listbox", () => {
 		});
 
 		it("supports function based option mapping for object options", async () => {
-			const { getAllByRole} = render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root<any, any>
 					options={CUSTOM_DATA_SOURCE}
 					optionValue={(option) => option.id}
@@ -199,7 +199,7 @@ describe("Listbox", () => {
 		});
 
 		it("supports function based option mapping for string options", async () => {
-			const { getAllByRole} = render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root
 					options={["One", "Two", "Three"]}
 					optionValue={(option) => option}
@@ -233,7 +233,7 @@ describe("Listbox", () => {
 		it("supports defaultValue (uncontrolled)", async () => {
 			const defaultValue = new Set(["2"]);
 
-			const { getByRole, getAllByRole} = render(() => (
+			const { getByRole, getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="single"
@@ -260,7 +260,7 @@ describe("Listbox", () => {
 			const value = new Set(["2"]);
 			const onValueChangeSpy = vi.fn();
 
-			const { getByRole, getAllByRole} = render(() => (
+			const { getByRole, getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="single"
@@ -300,7 +300,7 @@ describe("Listbox", () => {
 		it("supports using space key to change option selection", async () => {
 			const onValueChangeSpy = vi.fn();
 
-			const { getByRole, getAllByRole} = render(() => (
+			const { getByRole, getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="single"
@@ -332,7 +332,7 @@ describe("Listbox", () => {
 		it("supports using pointer up to change option selection", async () => {
 			const onValueChangeSpy = vi.fn();
 
-			const { getByRole, getAllByRole} = render(() => (
+			const { getByRole, getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="single"
@@ -381,7 +381,7 @@ describe("Listbox", () => {
 				{ key: "3", label: "Three", textValue: "Three", disabled: false },
 			];
 
-			const { getByRole, getAllByRole} = render(() => (
+			const { getByRole, getAllByRole } = render(() => (
 				<Listbox.Root
 					options={dataSource}
 					selectionMode="single"
@@ -435,7 +435,7 @@ describe("Listbox", () => {
 		it("supports selecting multiple options", async () => {
 			const onValueChangeSpy = vi.fn();
 
-			const { getByRole, getAllByRole} = render(() => (
+			const { getByRole, getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="multiple"
@@ -494,7 +494,7 @@ describe("Listbox", () => {
 
 			const defaultValue = new Set(["1", "2"]);
 
-			const { getAllByRole} = render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="multiple"
@@ -544,7 +544,7 @@ describe("Listbox", () => {
 
 			const value = new Set(["1", "2"]);
 
-			const { getAllByRole} = render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="multiple"
@@ -592,7 +592,7 @@ describe("Listbox", () => {
 
 			const defaultValue = new Set(["1", "2"]);
 
-			const { getAllByRole} = render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="multiple"
@@ -645,7 +645,7 @@ describe("Listbox", () => {
 				{ key: "3", label: "Three", textValue: "Three", disabled: true },
 			];
 
-			const { getAllByRole} = render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root
 					options={dataSource}
 					selectionMode="multiple"
@@ -692,7 +692,7 @@ describe("Listbox", () => {
 
 		const defaultValue = new Set(["2"]);
 
-		const { getAllByRole} = render(() => (
+		const { getAllByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				selectionMode="single"
@@ -731,7 +731,7 @@ describe("Listbox", () => {
 	});
 
 	it("supports type to select", async () => {
-		const { getByRole, getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				renderItem={(item) => (
@@ -762,7 +762,7 @@ describe("Listbox", () => {
 	});
 
 	it("resets the search text after a timeout", async () => {
-		const { getByRole, getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				renderItem={(item) => (
@@ -795,7 +795,7 @@ describe("Listbox", () => {
 			{ key: "1", label: "One", textValue: "One", disabled: false },
 		];
 
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Listbox.Root
 				options={dataSource}
 				renderItem={(item) => (
@@ -826,7 +826,7 @@ describe("Listbox", () => {
 			},
 		];
 
-		const { getByRole, getByText} = render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Listbox.Root
 				options={dataSource}
 				renderItem={(item) => (
@@ -851,7 +851,7 @@ describe("Listbox", () => {
 	});
 
 	it("supports aria-label", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				aria-label="Test"
@@ -868,7 +868,7 @@ describe("Listbox", () => {
 
 	describe("item indicator", () => {
 		it("should not display item indicator by default", async () => {
-			const { queryByTestId} = render(() => (
+			const { queryByTestId } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					renderItem={(item) => (
@@ -884,7 +884,7 @@ describe("Listbox", () => {
 		});
 
 		it("should display item indicator when 'selected'", async () => {
-			const { getByTestId} = render(() => (
+			const { getByTestId } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					value={["2"]}
@@ -901,7 +901,7 @@ describe("Listbox", () => {
 		});
 
 		it("should display item indicator when 'forceMount'", async () => {
-			const { getAllByTestId} = render(() => (
+			const { getAllByTestId } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					renderItem={(item) => (

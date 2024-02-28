@@ -5,7 +5,7 @@ import { As } from "../polymorphic";
 
 describe("Separator", () => {
 	it("should render an 'hr' by default", () => {
-		const { getByRole} = render(() => <Separator.Root />);
+		const { getByRole } = render(() => <Separator.Root />);
 
 		const separator = getByRole("separator");
 
@@ -13,7 +13,7 @@ describe("Separator", () => {
 	});
 
 	it("should not have implicit 'aria-orientation' by default", () => {
-		const { getByRole} = render(() => <Separator.Root />);
+		const { getByRole } = render(() => <Separator.Root />);
 
 		const separator = getByRole("separator");
 
@@ -21,7 +21,7 @@ describe("Separator", () => {
 	});
 
 	it("should not have implicit 'role=separator' by default", () => {
-		const { getByRole} = render(() => <Separator.Root />);
+		const { getByRole } = render(() => <Separator.Root />);
 
 		const separator = getByRole("separator");
 
@@ -29,7 +29,9 @@ describe("Separator", () => {
 	});
 
 	it("should not have implicit 'aria-orientation' when 'orientation=horizontal'", () => {
-		const { getByRole} = render(() => <Separator.Root orientation="horizontal" />);
+		const { getByRole } = render(() => (
+			<Separator.Root orientation="horizontal" />
+		));
 
 		const separator = getByRole("separator");
 
@@ -37,7 +39,9 @@ describe("Separator", () => {
 	});
 
 	it("should have 'aria-orientation' set to vertical when 'orientation=vertical'", () => {
-		const { getByRole} = render(() => <Separator.Root orientation="vertical" />);
+		const { getByRole } = render(() => (
+			<Separator.Root orientation="vertical" />
+		));
 
 		const separator = getByRole("separator");
 
@@ -45,7 +49,7 @@ describe("Separator", () => {
 	});
 
 	it("should have 'role=separator' when rendered element is not 'hr'", () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Separator.Root asChild>
 				<As component="span" />
 			</Separator.Root>
@@ -58,7 +62,9 @@ describe("Separator", () => {
 	});
 
 	it("should have 'data-orientation=horizontal' when 'orientation=horizontal'", () => {
-		const { getByRole} = render(() => <Separator.Root orientation="horizontal" />);
+		const { getByRole } = render(() => (
+			<Separator.Root orientation="horizontal" />
+		));
 
 		const separator = getByRole("separator");
 
@@ -66,7 +72,9 @@ describe("Separator", () => {
 	});
 
 	it("should have 'data-orientation=vertical' when 'orientation=vertical'", () => {
-		const { getByRole} = render(() => <Separator.Root orientation="vertical" />);
+		const { getByRole } = render(() => (
+			<Separator.Root orientation="vertical" />
+		));
 
 		const separator = getByRole("separator");
 

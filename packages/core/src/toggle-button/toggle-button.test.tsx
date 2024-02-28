@@ -1,6 +1,6 @@
 import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render } from "@solidjs/testing-library";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import * as ToggleButton from ".";
 
@@ -8,7 +8,7 @@ describe("ToggleButton", () => {
 	installPointerEvent();
 
 	it("can be default selected (uncontrolled)", () => {
-		const {  getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<ToggleButton.Root data-testid="toggle" defaultPressed>
 				Button
 			</ToggleButton.Root>
@@ -23,7 +23,7 @@ describe("ToggleButton", () => {
 	it("can be controlled", async () => {
 		const onChangeSpy = vi.fn();
 
-		const {  getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<ToggleButton.Root data-testid="toggle" pressed onChange={onChangeSpy}>
 				Button
 			</ToggleButton.Root>
@@ -44,7 +44,7 @@ describe("ToggleButton", () => {
 	});
 
 	it("should have correct attributes when the toggle button is off (not selected)", () => {
-		const {  getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<ToggleButton.Root data-testid="toggle">Button</ToggleButton.Root>
 		));
 
@@ -55,7 +55,7 @@ describe("ToggleButton", () => {
 	});
 
 	it("should have correct attributes when the toggle button is on (selected)", () => {
-		const {  getByTestId} = render(() => (
+		const { getByTestId } = render(() => (
 			<ToggleButton.Root data-testid="toggle" pressed>
 				Button
 			</ToggleButton.Root>

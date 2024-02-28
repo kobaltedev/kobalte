@@ -1,17 +1,15 @@
-import { defineConfig } from 'vitest/config';
-import solidPlugin from 'vite-plugin-solid';
+import solidPlugin from "vite-plugin-solid";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-	plugins: [
-		solidPlugin(),
-	],
+	plugins: [solidPlugin()],
 	test: {
-		environment: 'jsdom',
+		environment: "jsdom",
 		globals: true,
-		setupFiles: ['../../node_modules/@testing-library/jest-dom/vitest'],
+		setupFiles: ["../../node_modules/@testing-library/jest-dom/vitest"],
 		isolate: false,
 	},
 	resolve: {
-		conditions: ['development', 'browser'],
+		conditions: ["development", "browser"],
 	},
 });

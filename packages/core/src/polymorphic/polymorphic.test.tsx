@@ -8,7 +8,7 @@
 
 import { fireEvent, render } from "@solidjs/testing-library";
 import { ComponentProps, JSX, splitProps } from "solid-js";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import { As, AsChildProp, Polymorphic } from "./polymorphic";
 
@@ -36,7 +36,7 @@ function ButtonExample(props: ButtonExampleProps & AsChildProp) {
 describe("Polymorphic", () => {
 	describe("render", () => {
 		it("should render the fallback if no 'asChild' prop", () => {
-			const { getByTestId} = render(() => (
+			const { getByTestId } = render(() => (
 				<Polymorphic data-testid="polymorphic" as="button">
 					Button
 				</Polymorphic>
@@ -48,7 +48,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should render the component from 'As' when 'asChild' prop is true and the only direct child is 'As'", () => {
-			const { getByTestId} = render(() => (
+			const { getByTestId } = render(() => (
 				<Polymorphic data-testid="polymorphic" as="button" asChild>
 					<As component="a">Link</As>
 				</Polymorphic>
@@ -60,7 +60,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should render the component from 'As' when 'asChild' prop is true and one of the direct children is 'As'", () => {
-			const { getByTestId} = render(() => (
+			const { getByTestId } = render(() => (
 				<Polymorphic data-testid="polymorphic" as="button" asChild>
 					<span>before</span>
 					<As component="a">Link</As>
@@ -76,7 +76,7 @@ describe("Polymorphic", () => {
 
 	describe("style", () => {
 		it("should apply Polymorphic string 'style' on child", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" style={{ "background-color": "red" }} asChild>
 					<As component="button" type="button">
 						Click me
@@ -88,7 +88,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply Polymorphic string 'style' on child when child's 'style' is undefined", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" style={{ "background-color": "red" }} asChild>
 					<As component="button" type="button" style={undefined}>
 						Click me
@@ -100,7 +100,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply child's string 'style' on child", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" asChild>
 					<As
 						component="button"
@@ -116,7 +116,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply child's string 'style' on child when Polymorphic 'style' is undefined", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" style={undefined} asChild>
 					<As
 						component="button"
@@ -132,7 +132,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply both Polymorphic and child's string 'style' on child", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" style={{ "background-color": "red" }} asChild>
 					<As component="button" type="button" style={{ color: "white" }}>
 						Click me
@@ -146,7 +146,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("support overriding same style attribute by child when using string 'sytle'", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" style={{ "background-color": "red" }} asChild>
 					<As
 						component="button"
@@ -162,7 +162,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply Polymorphic object 'style' on child", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" style={{ "background-color": "red" }} asChild>
 					<As component="button" type="button">
 						Click me
@@ -174,7 +174,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply Polymorphic object 'style' on child when child's style is undefined", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" style={{ "background-color": "red" }} asChild>
 					<As component="button" type="button" style={undefined}>
 						Click me
@@ -186,7 +186,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply child's object 'style' on child", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" asChild>
 					<As
 						component="button"
@@ -202,7 +202,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply child's object 'style' on child when Polymorphic 'style' is undefined", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" style={undefined} asChild>
 					<As
 						component="button"
@@ -218,7 +218,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply both Polymorphic and child's object 'style' on child", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" style={{ "background-color": "red" }} asChild>
 					<As component="button" type="button" style={{ color: "white" }}>
 						Click me
@@ -232,7 +232,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("support overriding same style attribute by child when using object 'sytle'", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" style={{ "background-color": "red" }} asChild>
 					<As
 						component="button"
@@ -248,7 +248,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("support mixing object and string 'style'", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic
 					as="div"
 					style={{ "background-color": "red", padding: "14px" }}
@@ -272,7 +272,7 @@ describe("Polymorphic", () => {
 
 	describe("class", () => {
 		it("should apply Polymorphic 'class' on child", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" class="foo" asChild>
 					<As component="button" type="button">
 						Click me
@@ -284,7 +284,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply Polymorphic 'class' on child when child's 'class' is undefined", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" class="foo" asChild>
 					<As component="button" type="button" class={undefined}>
 						Click me
@@ -296,7 +296,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply child's 'class' on child", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" asChild>
 					<As component="button" type="button" class="foo">
 						Click me
@@ -308,7 +308,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply child's 'class' on child when Polymorphic 'class' is undefined", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" class={undefined} asChild>
 					<As component="button" type="button" class="foo">
 						Click me
@@ -320,7 +320,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should apply both Polymorphic and child's 'class' on child", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" class="foo" asChild>
 					<As component="button" type="button" class="bar">
 						Click me
@@ -339,7 +339,7 @@ describe("Polymorphic", () => {
 		it("should call the 'onClick' passed to the Polymorphic", () => {
 			const onPolymorphicClickSpy = vi.fn();
 
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" onClick={onPolymorphicClickSpy} asChild>
 					<As component="button" type="button">
 						Click me
@@ -355,7 +355,7 @@ describe("Polymorphic", () => {
 		it("should call the child's 'onClick'", () => {
 			const onChildClickSpy = vi.fn();
 
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" asChild>
 					<As component="button" type="button" onClick={onChildClickSpy}>
 						Click me
@@ -372,7 +372,7 @@ describe("Polymorphic", () => {
 			const onPolymorphicClickSpy = vi.fn();
 			const onChildClickSpy = vi.fn();
 
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" onClick={onPolymorphicClickSpy} asChild>
 					<As component="button" type="button" onClick={onChildClickSpy}>
 						Click me
@@ -389,7 +389,7 @@ describe("Polymorphic", () => {
 		it("should call the Polymorphic 'onClick' even if child's 'onClick' is undefined", () => {
 			const onPolymorphicClickSpy = vi.fn();
 
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" onClick={onPolymorphicClickSpy} asChild>
 					<As component="button" type="button" onClick={undefined}>
 						Click me
@@ -405,7 +405,7 @@ describe("Polymorphic", () => {
 		it("should call the child's 'onClick' even if Polymorphic 'onClick' is undefined", () => {
 			const onChildClickSpy = vi.fn();
 
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<Polymorphic as="div" onClick={undefined} asChild>
 					<As component="button" type="button" onClick={onChildClickSpy}>
 						Click me
@@ -421,7 +421,7 @@ describe("Polymorphic", () => {
 
 	describe("With slottable content", () => {
 		it("should render a button with icon on the left/right when no 'asChild' prop", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<ButtonExample
 					leftIcon={<span>left</span>}
 					rightIcon={<span>right</span>}
@@ -439,7 +439,7 @@ describe("Polymorphic", () => {
 		});
 
 		it("should render a link with icon on the left/right when 'asChild' prop is true and content is 'As'", () => {
-			const { getByRole} = render(() => (
+			const { getByRole } = render(() => (
 				<ButtonExample
 					leftIcon={<span>left</span>}
 					rightIcon={<span>right</span>}

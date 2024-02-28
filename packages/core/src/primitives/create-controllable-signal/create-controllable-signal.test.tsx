@@ -1,6 +1,6 @@
 import { fireEvent, render } from "@solidjs/testing-library";
 import { createRoot, createSignal } from "solid-js";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import { createControllableSignal } from "./create-controllable-signal";
 
@@ -165,7 +165,9 @@ describe("createControllableSignal", () => {
 				);
 			};
 
-			const { getByRole, getByTestId } = render(() => <TestComponentWrapper value="controlledValue" />);
+			const { getByRole, getByTestId } = render(() => (
+				<TestComponentWrapper value="controlledValue" />
+			));
 
 			const button = getByRole("button");
 			const testComponent = getByTestId("test-component");

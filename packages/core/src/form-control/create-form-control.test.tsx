@@ -32,7 +32,7 @@ function FormControl(props: ParentProps<CreateFormControlProps>) {
 describe("createFormControl", () => {
 	describe("ids", () => {
 		it("should generate default ids", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="invalid">
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
@@ -50,7 +50,7 @@ describe("createFormControl", () => {
 		});
 
 		it("should generate ids based on form control id", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl id="foo" validationState="invalid">
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
@@ -68,7 +68,7 @@ describe("createFormControl", () => {
 		});
 
 		it("supports custom ids", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl id="custom-form-control-id" validationState="invalid">
 					<FormControlLabel id="custom-label-id">Label</FormControlLabel>
 					<FormControlDescription id="custom-description-id">
@@ -92,7 +92,7 @@ describe("createFormControl", () => {
 
 	describe("data-attributes", () => {
 		it("should not have 'data-*' attributes by default", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl>
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
@@ -112,7 +112,7 @@ describe("createFormControl", () => {
 		});
 
 		it("should have 'data-valid' attribute when form control is valid", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="valid">
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
@@ -128,7 +128,7 @@ describe("createFormControl", () => {
 		});
 
 		it("should have 'data-invalid' attribute when form control is invalid", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="invalid">
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
@@ -144,7 +144,7 @@ describe("createFormControl", () => {
 		});
 
 		it("should have 'data-required' attribute when form control is required", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl required>
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
@@ -160,7 +160,7 @@ describe("createFormControl", () => {
 		});
 
 		it("should have 'data-disabled' attribute when form control is disabled", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl disabled>
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
@@ -176,7 +176,7 @@ describe("createFormControl", () => {
 		});
 
 		it("should have 'data-readonly' attribute when form control is readonly", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl readOnly>
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
@@ -192,7 +192,7 @@ describe("createFormControl", () => {
 		});
 
 		it("should add 'data-invalid' attribute on error message when form control is invalid", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="invalid">
 					<FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
 				</FormControl>
@@ -207,7 +207,7 @@ describe("createFormControl", () => {
 		});
 
 		it("should add 'data-required' attribute on error message when form control is invalid", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="invalid" required>
 					<FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
 				</FormControl>
@@ -219,7 +219,7 @@ describe("createFormControl", () => {
 		});
 
 		it("should add 'data-disabled' attribute on error message when form control is invalid", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="invalid" disabled>
 					<FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
 				</FormControl>
@@ -231,7 +231,7 @@ describe("createFormControl", () => {
 		});
 
 		it("should add 'data-readonly' attribute on error message when form control is invalid", () => {
-			const { getByText} = render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="invalid" readOnly>
 					<FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
 				</FormControl>

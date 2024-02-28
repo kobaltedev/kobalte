@@ -9,7 +9,7 @@
 import { createPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, within } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import * as Tabs from ".";
 
@@ -34,7 +34,7 @@ describe("Tabs", () => {
 	});
 
 	it("renders properly", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -74,7 +74,7 @@ describe("Tabs", () => {
 	});
 
 	it("allows user to change tab item select via left/right arrow keys with horizontal tabs", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -132,7 +132,7 @@ describe("Tabs", () => {
 	});
 
 	it("allows user to change tab item select via up/down arrow keys with vertical tabs", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root orientation="vertical">
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -196,7 +196,7 @@ describe("Tabs", () => {
 	});
 
 	it("wraps focus from first to last/last to first item", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -233,7 +233,7 @@ describe("Tabs", () => {
 	});
 
 	it("select last item via end key / select first item via home key", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -270,7 +270,7 @@ describe("Tabs", () => {
 	});
 
 	it("does not select via left / right keys if 'activationMode' is manual, select on enter / spacebar", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root
 				activationMode="manual"
 				defaultValue="one"
@@ -323,7 +323,7 @@ describe("Tabs", () => {
 	it("supports using click to change tab", async () => {
 		const onValueChangeSpy = vi.fn();
 
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -369,7 +369,7 @@ describe("Tabs", () => {
 	});
 
 	it("should focus the selected tab when tabbing in for the first time", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root defaultValue="two">
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -391,7 +391,7 @@ describe("Tabs", () => {
 	});
 
 	it("should not focus any tabs when isDisabled tabbing in for the first time", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root defaultValue="two" disabled>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -414,7 +414,7 @@ describe("Tabs", () => {
 	it("disabled tabs cannot be keyboard navigated to", async () => {
 		const onValueChangeSpy = vi.fn();
 
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -448,7 +448,7 @@ describe("Tabs", () => {
 	it("disabled tabs cannot be pressed", async () => {
 		const onValueChangeSpy = vi.fn();
 
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -476,7 +476,7 @@ describe("Tabs", () => {
 	});
 
 	it("selects first tab if all tabs are disabled", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root onChange={onValueChangeSpy}>
 				<Tabs.List>
 					<Tabs.Trigger value="one" disabled>
@@ -507,7 +507,7 @@ describe("Tabs", () => {
 	});
 
 	it("tabpanel should have tabIndex=0 only when there are no focusable elements", async () => {
-		const { getByRole, getAllByRole} = render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<Tabs.Root>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -564,7 +564,7 @@ describe("Tabs", () => {
 	});
 
 	it("fires onValueChange when clicking on the current tab", async () => {
-		const { getByRole} = render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>

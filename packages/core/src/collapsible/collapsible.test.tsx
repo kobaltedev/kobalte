@@ -9,7 +9,7 @@
 import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render } from "@solidjs/testing-library";
 import { ComponentProps } from "solid-js";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 import * as Collapsible from ".";
 
@@ -27,7 +27,7 @@ describe("Collapsible", () => {
 	installPointerEvent();
 
 	it("should toggle between open/close the content when clicking the trigger", async () => {
-		const { getByText, queryByText} = render(() => <Example />);
+		const { getByText, queryByText } = render(() => <Example />);
 
 		const trigger = getByText(TRIGGER_TEXT);
 
@@ -44,7 +44,7 @@ describe("Collapsible", () => {
 	});
 
 	it("should not open the content when clicking the trigger if disabled", async () => {
-		const { getByText, queryByText} = render(() => <Example disabled />);
+		const { getByText, queryByText } = render(() => <Example disabled />);
 
 		const trigger = getByText(TRIGGER_TEXT);
 
@@ -58,7 +58,9 @@ describe("Collapsible", () => {
 	it("should close content when clicking the trigger and collapsible is open uncontrolled", async () => {
 		const onOpenChangeSpy = vi.fn();
 
-		const { getByText} = 	render(() => <Example defaultOpen onOpenChange={onOpenChangeSpy} />);
+		const { getByText } = render(() => (
+			<Example defaultOpen onOpenChange={onOpenChangeSpy} />
+		));
 
 		const trigger = getByText(TRIGGER_TEXT);
 		const content = getByText(CONTENT_TEXT);
@@ -73,7 +75,9 @@ describe("Collapsible", () => {
 	it("should not close content when clicking the trigger and collapsible is open controlled", async () => {
 		const onOpenChangeSpy = vi.fn();
 
-		const { getByText} = render(() => <Example open onOpenChange={onOpenChangeSpy} />);
+		const { getByText } = render(() => (
+			<Example open onOpenChange={onOpenChangeSpy} />
+		));
 
 		const trigger = getByText(TRIGGER_TEXT);
 		const content = getByText(CONTENT_TEXT);

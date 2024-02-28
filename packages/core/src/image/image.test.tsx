@@ -36,7 +36,7 @@ describe("Image", () => {
 		});
 
 		it("should render the fallback initially", () => {
-			const { queryByText} = render(() => (
+			const { queryByText } = render(() => (
 				<Image.Root data-testid={ROOT_TEST_ID}>
 					<Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
 					<Image.Img src="/test.jpg" alt={IMAGE_ALT_TEXT} />
@@ -48,7 +48,7 @@ describe("Image", () => {
 		});
 
 		it("should not render the image initially", () => {
-			const { queryByRole} = render(() => (
+			const { queryByRole } = render(() => (
 				<Image.Root data-testid={ROOT_TEST_ID}>
 					<Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
 					<Image.Img src="/test.jpg" alt={IMAGE_ALT_TEXT} />
@@ -60,7 +60,7 @@ describe("Image", () => {
 		});
 
 		it("should render the image after it has loaded", async () => {
-			const { findByRole} = render(() => (
+			const { findByRole } = render(() => (
 				<Image.Root data-testid={ROOT_TEST_ID}>
 					<Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
 					<Image.Img src="/test.jpg" alt={IMAGE_ALT_TEXT} />
@@ -72,7 +72,7 @@ describe("Image", () => {
 		});
 
 		it("should have alt text on the image", async () => {
-			const { findByAltText} = render(() => (
+			const { findByAltText } = render(() => (
 				<Image.Root data-testid={ROOT_TEST_ID}>
 					<Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
 					<Image.Img src="/test.jpg" alt={IMAGE_ALT_TEXT} />
@@ -86,7 +86,7 @@ describe("Image", () => {
 
 	describe("with fallback and delayed render", () => {
 		it("should not render a fallback immediately", () => {
-			const { queryByText} = render(() => (
+			const { queryByText } = render(() => (
 				<Image.Root data-testid={ROOT_TEST_ID} fallbackDelay={DELAY}>
 					<Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
 				</Image.Root>
@@ -97,7 +97,7 @@ describe("Image", () => {
 		});
 
 		it("should render a fallback after the delay", async () => {
-			const { queryByText, findByText} = render(() => (
+			const { queryByText, findByText } = render(() => (
 				<Image.Root data-testid={ROOT_TEST_ID} fallbackDelay={DELAY}>
 					<Image.Fallback>{FALLBACK_TEXT}</Image.Fallback>
 				</Image.Root>

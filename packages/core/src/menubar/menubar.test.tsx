@@ -80,13 +80,11 @@ const commonUI = () => (
 );
 
 describe("Menubar", () => {
-	it("renders correctly", async () => {
+	it.skip("renders correctly", async () => {
 		// Can't be tested as jsdom doesn't support onPointer events.
 		// Test code should be valid for the future.
-		// biome-ignore lint/correctness/noConstantCondition: disabled code
-		if (true) return;
 
-		const { getByText, queryByText} = render(commonUI);
+		const { getByText, queryByText } = render(commonUI);
 
 		expect(getByText("Test 1")).toBeVisible();
 		expect(getByText("Test 2")).toBeVisible();
@@ -94,10 +92,7 @@ describe("Menubar", () => {
 
 		getByText("Test 1").click();
 
-		expect(getByText("Test 1")).toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 1")).toHaveAttribute("data-highlighted", "true");
 
 		expect(getByText("Item 1")).toBeVisible();
 		expect(getByText("Item 2")).toBeVisible();
@@ -105,14 +100,8 @@ describe("Menubar", () => {
 
 		getByText("Test 2").click();
 
-		expect(getByText("Test 1")).not.toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
-		expect(getByText("Test 2")).toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 1")).not.toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 2")).toHaveAttribute("data-highlighted", "true");
 
 		expect(queryByText("Item 1")).not.toBeInTheDocument();
 		expect(queryByText("Item 2")).not.toBeInTheDocument();
@@ -129,41 +118,30 @@ describe("Menubar", () => {
 
 		fireEvent.click(getByText("External"));
 
-		expect(getByText("Test 2")).not.toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 2")).not.toHaveAttribute("data-highlighted", "true");
 
 		expect(queryByText("Item A")).not.toBeInTheDocument();
 		expect(queryByText("Item B")).not.toBeInTheDocument();
 		expect(queryByText("Sub C")).not.toBeInTheDocument();
 	});
 
-	it("handles keyboard navigation correctly", async () => {
+	it.skip("handles keyboard navigation correctly", async () => {
 		// Can't be tested as jsdom doesn't support onPointer events.
 		// Test code should be valid for the future.
-		// biome-ignore lint/correctness/noConstantCondition: disabled code
-		if (true) return;
 
-		const { getByText, queryByText} = render(commonUI);
+		const { getByText, queryByText } = render(commonUI);
 
 		expect(getByText("Test 1")).toHaveAttribute("tabindex", "0");
 		expect(getByText("Test 2")).toHaveAttribute("tabindex", "-1");
 		expect(getByText("Test 3")).toHaveAttribute("tabindex", "-1");
 
-		expect(getByText("Test 1")).not.toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 1")).not.toHaveAttribute("data-highlighted", "true");
 
 		fireEvent.focus(getByText("Test 1"));
 
 		expect(queryByText("Item 1")).not.toBeInTheDocument();
 
-		expect(getByText("Test 1")).toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 1")).toHaveAttribute("data-highlighted", "true");
 
 		fireEvent.keyPress(getByText("Test 1"), {
 			key: "ArrowRight",
@@ -172,14 +150,8 @@ describe("Menubar", () => {
 
 		expect(queryByText("Item A")).not.toBeInTheDocument();
 
-		expect(getByText("Test 1")).not.toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
-		expect(getByText("Test 2")).toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 1")).not.toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 2")).toHaveAttribute("data-highlighted", "true");
 
 		expect(getByText("Test 1")).toHaveAttribute("tabindex", "-1");
 		expect(getByText("Test 2")).toHaveAttribute("tabindex", "0");
@@ -193,14 +165,8 @@ describe("Menubar", () => {
 
 		expect(queryByText("Item Z")).not.toBeInTheDocument();
 
-		expect(getByText("Test 2")).not.toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
-		expect(getByText("Test 3")).toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 2")).not.toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 3")).toHaveAttribute("data-highlighted", "true");
 
 		expect(getByText("Test 2")).toHaveAttribute("tabindex", "-1");
 		expect(getByText("Test 3")).toHaveAttribute("tabindex", "0");
@@ -272,13 +238,11 @@ describe("Menubar", () => {
 		expect(getByText("Item Z")).toBeVisible();
 	});
 
-	it("handles hover correctly", async () => {
+	it.skip("handles hover correctly", async () => {
 		// Can't be tested as jsdom doesn't support onPointer events.
 		// Test code should be valid for the future.
-		// biome-ignore lint/correctness/noConstantCondition: disabled code
-		if (true) return;
 
-		const { getByText, queryByText} = render(commonUI);
+		const { getByText, queryByText } = render(commonUI);
 
 		fireEvent.mouseEnter(getByText("Test 2"));
 
