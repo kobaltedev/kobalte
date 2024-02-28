@@ -16,7 +16,7 @@ import * as Tabs from ".";
 describe("Tabs", () => {
 	// Make userEvent work with jest fakeTimers
 	// See https://github.com/testing-library/user-event/issues/833#issuecomment-1013797822
-	const user = userEvent.setup({ delay: null, advanceTimers: vi.advanceTimersByTime});
+	const user = userEvent.setup({ delay: null});
 
 	const onValueChangeSpy = vi.fn();
 
