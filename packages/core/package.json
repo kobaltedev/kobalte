@@ -1,6 +1,6 @@
 {
   "name": "@kobalte/core",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "private": false,
   "description": "Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
   "keywords": [
@@ -50,8 +50,8 @@
     "build": "rollup -c",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
     "dev": "vite serve dev --host",
-		"test-old": "jest --passWithNoTests",
-		"test": "vitest run",
+    "test-old": "jest --passWithNoTests",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -62,7 +62,7 @@
     "solid-prevent-scroll": "^0.1.4"
   },
   "devDependencies": {
-    "@kobalte/tests": "^0.5.0"
+    "@kobalte/tests": "^0.6.0"
   },
   "peerDependencies": {
     "solid-js": "^1.8.15"
