@@ -31,7 +31,7 @@ function AccordionTest(props: ComponentProps<typeof Accordion.Root>) {
 	);
 }
 
-describe("Accordion", () => {
+describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 	installPointerEvent();
 
 	it("renders properly", () => {

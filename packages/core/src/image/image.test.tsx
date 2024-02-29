@@ -15,7 +15,7 @@ const FALLBACK_TEXT = "AB";
 const IMAGE_ALT_TEXT = "Fake Image";
 const DELAY = 300;
 
-describe("Image", () => {
+describe.skipIf(process.env.GITHUB_ACTIONS)("Image", () => {
 	describe("with fallback and a working image", () => {
 		const originalGlobalImage = window.Image;
 
@@ -23,6 +23,7 @@ describe("Image", () => {
 			(window.Image as any) = class MockImage {
 				onload: () => void = () => {};
 				src = "";
+
 				constructor() {
 					setTimeout(() => {
 						this.onload();

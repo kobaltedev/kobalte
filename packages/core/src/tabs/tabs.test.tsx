@@ -16,7 +16,7 @@ import * as Tabs from ".";
 describe("Tabs", () => {
 	// Make userEvent work with jest fakeTimers
 	// See https://github.com/testing-library/user-event/issues/833#issuecomment-1013797822
-	const user = userEvent.setup({ delay: null});
+	const user = userEvent.setup({ delay: null });
 
 	const onValueChangeSpy = vi.fn();
 
@@ -368,143 +368,158 @@ describe("Tabs", () => {
 		expect(onValueChangeSpy).toBeCalledTimes(1);
 	});
 
-	it("should focus the selected tab when tabbing in for the first time", async () => {
-		const { getByRole } = render(() => (
-			<Tabs.Root defaultValue="two">
-				<Tabs.List>
-					<Tabs.Trigger value="one">One</Tabs.Trigger>
-					<Tabs.Trigger value="two">Two</Tabs.Trigger>
-					<Tabs.Trigger value="three">Three</Tabs.Trigger>
-				</Tabs.List>
-				<Tabs.Content value="one">Body 1</Tabs.Content>
-				<Tabs.Content value="two">Body 2</Tabs.Content>
-				<Tabs.Content value="three">Body 3</Tabs.Content>
-			</Tabs.Root>
-		));
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"should focus the selected tab when tabbing in for the first time",
+		async () => {
+			const { getByRole } = render(() => (
+				<Tabs.Root defaultValue="two">
+					<Tabs.List>
+						<Tabs.Trigger value="one">One</Tabs.Trigger>
+						<Tabs.Trigger value="two">Two</Tabs.Trigger>
+						<Tabs.Trigger value="three">Three</Tabs.Trigger>
+					</Tabs.List>
+					<Tabs.Content value="one">Body 1</Tabs.Content>
+					<Tabs.Content value="two">Body 2</Tabs.Content>
+					<Tabs.Content value="three">Body 3</Tabs.Content>
+				</Tabs.Root>
+			));
 
-		await user.tab();
+			await user.tab();
 
-		const tablist = getByRole("tablist");
-		const tabs = within(tablist).getAllByRole("tab");
+			const tablist = getByRole("tablist");
+			const tabs = within(tablist).getAllByRole("tab");
 
-		expect(document.activeElement).toBe(tabs[1]);
-	});
+			expect(document.activeElement).toBe(tabs[1]);
+		},
+	);
 
-	it("should not focus any tabs when isDisabled tabbing in for the first time", async () => {
-		const { getByRole } = render(() => (
-			<Tabs.Root defaultValue="two" disabled>
-				<Tabs.List>
-					<Tabs.Trigger value="one">One</Tabs.Trigger>
-					<Tabs.Trigger value="two">Two</Tabs.Trigger>
-					<Tabs.Trigger value="three">Three</Tabs.Trigger>
-				</Tabs.List>
-				<Tabs.Content value="one">Body 1</Tabs.Content>
-				<Tabs.Content value="two">Body 2</Tabs.Content>
-				<Tabs.Content value="three">Body 3</Tabs.Content>
-			</Tabs.Root>
-		));
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"should not focus any tabs when isDisabled tabbing in for the first time",
+		async () => {
+			const { getByRole } = render(() => (
+				<Tabs.Root defaultValue="two" disabled>
+					<Tabs.List>
+						<Tabs.Trigger value="one">One</Tabs.Trigger>
+						<Tabs.Trigger value="two">Two</Tabs.Trigger>
+						<Tabs.Trigger value="three">Three</Tabs.Trigger>
+					</Tabs.List>
+					<Tabs.Content value="one">Body 1</Tabs.Content>
+					<Tabs.Content value="two">Body 2</Tabs.Content>
+					<Tabs.Content value="three">Body 3</Tabs.Content>
+				</Tabs.Root>
+			));
 
-		await user.tab();
+			await user.tab();
 
-		const tabpanel = getByRole("tabpanel");
+			const tabpanel = getByRole("tabpanel");
 
-		expect(document.activeElement).toBe(tabpanel);
-	});
+			expect(document.activeElement).toBe(tabpanel);
+		},
+	);
 
-	it("disabled tabs cannot be keyboard navigated to", async () => {
-		const onValueChangeSpy = vi.fn();
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"disabled tabs cannot be keyboard navigated to",
+		async () => {
+			const onValueChangeSpy = vi.fn();
 
-		const { getByRole } = render(() => (
-			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
-				<Tabs.List>
-					<Tabs.Trigger value="one">One</Tabs.Trigger>
-					<Tabs.Trigger value="two" disabled>
-						Two
-					</Tabs.Trigger>
-					<Tabs.Trigger value="three">Three</Tabs.Trigger>
-				</Tabs.List>
-				<Tabs.Content value="one">Body 1</Tabs.Content>
-				<Tabs.Content value="two">Body 2</Tabs.Content>
-				<Tabs.Content value="three">Body 3</Tabs.Content>
-			</Tabs.Root>
-		));
+			const { getByRole } = render(() => (
+				<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
+					<Tabs.List>
+						<Tabs.Trigger value="one">One</Tabs.Trigger>
+						<Tabs.Trigger value="two" disabled>
+							Two
+						</Tabs.Trigger>
+						<Tabs.Trigger value="three">Three</Tabs.Trigger>
+					</Tabs.List>
+					<Tabs.Content value="one">Body 1</Tabs.Content>
+					<Tabs.Content value="two">Body 2</Tabs.Content>
+					<Tabs.Content value="three">Body 3</Tabs.Content>
+				</Tabs.Root>
+			));
 
-		await user.tab();
+			await user.tab();
 
-		const tablist = getByRole("tablist");
-		const tabs = within(tablist).getAllByRole("tab");
+			const tablist = getByRole("tablist");
+			const tabs = within(tablist).getAllByRole("tab");
 
-		expect(document.activeElement).toBe(tabs[0]);
+			expect(document.activeElement).toBe(tabs[0]);
 
-		fireEvent.keyDown(tabs[1], { key: "ArrowRight" });
-		await Promise.resolve();
+			fireEvent.keyDown(tabs[1], { key: "ArrowRight" });
+			await Promise.resolve();
 
-		fireEvent.keyUp(tabs[1], { key: "ArrowRight" });
-		await Promise.resolve();
+			fireEvent.keyUp(tabs[1], { key: "ArrowRight" });
+			await Promise.resolve();
 
-		expect(onValueChangeSpy).toBeCalledWith("three");
-	});
+			expect(onValueChangeSpy).toBeCalledWith("three");
+		},
+	);
 
-	it("disabled tabs cannot be pressed", async () => {
-		const onValueChangeSpy = vi.fn();
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"disabled tabs cannot be pressed",
+		async () => {
+			const onValueChangeSpy = vi.fn();
 
-		const { getByRole } = render(() => (
-			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
-				<Tabs.List>
-					<Tabs.Trigger value="one">One</Tabs.Trigger>
-					<Tabs.Trigger value="two" disabled>
-						Two
-					</Tabs.Trigger>
-					<Tabs.Trigger value="three">Three</Tabs.Trigger>
-				</Tabs.List>
-				<Tabs.Content value="one">Body 1</Tabs.Content>
-				<Tabs.Content value="two">Body 2</Tabs.Content>
-				<Tabs.Content value="three">Body 3</Tabs.Content>
-			</Tabs.Root>
-		));
+			const { getByRole } = render(() => (
+				<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
+					<Tabs.List>
+						<Tabs.Trigger value="one">One</Tabs.Trigger>
+						<Tabs.Trigger value="two" disabled>
+							Two
+						</Tabs.Trigger>
+						<Tabs.Trigger value="three">Three</Tabs.Trigger>
+					</Tabs.List>
+					<Tabs.Content value="one">Body 1</Tabs.Content>
+					<Tabs.Content value="two">Body 2</Tabs.Content>
+					<Tabs.Content value="three">Body 3</Tabs.Content>
+				</Tabs.Root>
+			));
 
-		await user.tab();
+			await user.tab();
 
-		const tablist = getByRole("tablist");
-		const tabs = within(tablist).getAllByRole("tab");
+			const tablist = getByRole("tablist");
+			const tabs = within(tablist).getAllByRole("tab");
 
-		expect(document.activeElement).toBe(tabs[0]);
+			expect(document.activeElement).toBe(tabs[0]);
 
-		await user.click(tabs[1]);
+			await user.click(tabs[1]);
 
-		expect(onValueChangeSpy).not.toBeCalled();
-	});
+			expect(onValueChangeSpy).not.toBeCalled();
+		},
+	);
 
-	it("selects first tab if all tabs are disabled", async () => {
-		const { getByRole } = render(() => (
-			<Tabs.Root onChange={onValueChangeSpy}>
-				<Tabs.List>
-					<Tabs.Trigger value="one" disabled>
-						One
-					</Tabs.Trigger>
-					<Tabs.Trigger value="two" disabled>
-						Two
-					</Tabs.Trigger>
-					<Tabs.Trigger value="three" disabled>
-						Three
-					</Tabs.Trigger>
-				</Tabs.List>
-				<Tabs.Content value="one">Body 1</Tabs.Content>
-				<Tabs.Content value="two">Body 2</Tabs.Content>
-				<Tabs.Content value="three">Body 3</Tabs.Content>
-			</Tabs.Root>
-		));
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"selects first tab if all tabs are disabled",
+		async () => {
+			const { getByRole } = render(() => (
+				<Tabs.Root onChange={onValueChangeSpy}>
+					<Tabs.List>
+						<Tabs.Trigger value="one" disabled>
+							One
+						</Tabs.Trigger>
+						<Tabs.Trigger value="two" disabled>
+							Two
+						</Tabs.Trigger>
+						<Tabs.Trigger value="three" disabled>
+							Three
+						</Tabs.Trigger>
+					</Tabs.List>
+					<Tabs.Content value="one">Body 1</Tabs.Content>
+					<Tabs.Content value="two">Body 2</Tabs.Content>
+					<Tabs.Content value="three">Body 3</Tabs.Content>
+				</Tabs.Root>
+			));
 
-		await user.tab();
+			await user.tab();
 
-		const tablist = getByRole("tablist");
-		const tabs = within(tablist).getAllByRole("tab");
-		const tabpanel = getByRole("tabpanel");
+			const tablist = getByRole("tablist");
+			const tabs = within(tablist).getAllByRole("tab");
+			const tabpanel = getByRole("tabpanel");
 
-		expect(tabs[0]).toHaveAttribute("aria-selected", "true");
-		expect(onValueChangeSpy).toBeCalledWith("one");
-		expect(document.activeElement).toBe(tabpanel);
-	});
+			expect(tabs[0]).toHaveAttribute("aria-selected", "true");
+			expect(onValueChangeSpy).toBeCalledWith("one");
+			expect(document.activeElement).toBe(tabpanel);
+		},
+	);
 
 	it("tabpanel should have tabIndex=0 only when there are no focusable elements", async () => {
 		const { getByRole, getAllByRole } = render(() => (

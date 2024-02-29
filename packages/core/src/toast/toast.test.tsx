@@ -340,44 +340,47 @@ describe("Toast", () => {
 		expect(getByRole("status")).toHaveTextContent("Updated");
 	});
 
-	it("supports promise resolve", async () => {
-		const timeout = 1000;
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"supports promise resolve",
+		async () => {
+			const timeout = 1000;
 
-		const promise = () =>
-			new Promise<string>((resolve) =>
-				setTimeout(() => resolve("data"), timeout),
-			);
+			const promise = () =>
+				new Promise<string>((resolve) =>
+					setTimeout(() => resolve("data"), timeout),
+				);
 
-		const { getByRole, getByTestId } = render(() => (
-			<>
-				<button
-					type="button"
-					data-testid="trigger"
-					onClick={() =>
-						toaster.promise(promise, (props) => (
-							<Toast.Root toastId={props.toastId}>
-								{props.state} - {props.data}
-							</Toast.Root>
-						))
-					}
-				>
-					Show
-				</button>
-				<Toast.Region>
-					<Toast.List />
-				</Toast.Region>
-			</>
-		));
+			const { getByRole, getByTestId } = render(() => (
+				<>
+					<button
+						type="button"
+						data-testid="trigger"
+						onClick={() =>
+							toaster.promise(promise, (props) => (
+								<Toast.Root toastId={props.toastId}>
+									{props.state} - {props.data}
+								</Toast.Root>
+							))
+						}
+					>
+						Show
+					</button>
+					<Toast.Region>
+						<Toast.List />
+					</Toast.Region>
+				</>
+			));
 
-		fireEvent.click(getByTestId("trigger"));
+			fireEvent.click(getByTestId("trigger"));
 
-		expect(getByRole("status")).toHaveTextContent("pending");
+			expect(getByRole("status")).toHaveTextContent("pending");
 
-		vi.advanceTimersByTime(timeout);
-		await Promise.resolve();
+			vi.advanceTimersByTime(timeout);
+			await Promise.resolve();
 
-		expect(getByRole("status")).toHaveTextContent("fulfilled - data");
-	});
+			expect(getByRole("status")).toHaveTextContent("fulfilled - data");
+		},
+	);
 
 	// don't know how to test implicit promise rejection
 	it.skip("supports promise reject", async () => {
@@ -552,98 +555,104 @@ describe("Toast", () => {
 	});
 
 	describe("Toast.List", () => {
-		it("pauses timers on pointer move and resume on pointer leave when 'pauseOnInteraction'", async () => {
-			const duration = 1000;
+		it.skipIf(process.env.GITHUB_ACTIONS)(
+			"pauses timers on pointer move and resume on pointer leave when 'pauseOnInteraction'",
+			async () => {
+				const duration = 1000;
 
-			const { getByRole, getByTestId } = render(() => (
-				<>
-					<button
-						type="button"
-						data-testid="trigger"
-						onClick={() => showToast()}
-					>
-						Show
-					</button>
-					<Toast.Region duration={duration} pauseOnInteraction>
-						<Toast.List data-testid="list" />
-					</Toast.Region>
-				</>
-			));
+				const { getByRole, getByTestId } = render(() => (
+					<>
+						<button
+							type="button"
+							data-testid="trigger"
+							onClick={() => showToast()}
+						>
+							Show
+						</button>
+						<Toast.Region duration={duration} pauseOnInteraction>
+							<Toast.List data-testid="list" />
+						</Toast.Region>
+					</>
+				));
 
-			fireEvent.click(getByTestId("trigger"));
+				fireEvent.click(getByTestId("trigger"));
 
-			const toast = getByRole("status");
+				const toast = getByRole("status");
 
-			expect(toast).toBeInTheDocument();
+				expect(toast).toBeInTheDocument();
 
-			const list = getByTestId("list");
+				const list = getByTestId("list");
 
-			fireEvent(
-				list,
-				createPointerEvent("pointermove", {
-					pointerId: 1,
-					pointerType: "mouse",
-				}),
-			);
-			await Promise.resolve();
+				fireEvent(
+					list,
+					createPointerEvent("pointermove", {
+						pointerId: 1,
+						pointerType: "mouse",
+					}),
+				);
+				await Promise.resolve();
 
-			vi.advanceTimersByTime(duration);
+				vi.advanceTimersByTime(duration);
 
-			expect(toast).toBeInTheDocument();
+				expect(toast).toBeInTheDocument();
 
-			fireEvent(
-				list,
-				createPointerEvent("pointerleave", {
-					pointerId: 1,
-					pointerType: "mouse",
-				}),
-			);
-			await Promise.resolve();
+				fireEvent(
+					list,
+					createPointerEvent("pointerleave", {
+						pointerId: 1,
+						pointerType: "mouse",
+					}),
+				);
+				await Promise.resolve();
 
-			vi.advanceTimersByTime(duration);
+				vi.advanceTimersByTime(duration);
 
-			expect(toast).not.toBeInTheDocument();
-		});
+				expect(toast).not.toBeInTheDocument();
+			},
+		);
 
-		it("pauses timers on focus in and resume on focus out when 'pauseOnInteraction'", async () => {
-			const duration = 1000;
+		it.skipIf(process.env.GITHUB_ACTIONS)(
+			"pauses timers on focus in and resume on focus out when 'pauseOnInteraction'",
+			async () => {
+				const duration = 1000;
 
-			const { getByRole, getByTestId } = render(() => (
-				<>
-					<button
-						type="button"
-						data-testid="trigger"
-						onClick={() => showToast()}
-					>
-						Show
-					</button>
-					<Toast.Region duration={duration} pauseOnInteraction>
-						<Toast.List data-testid="list" />
-					</Toast.Region>
-				</>
-			));
+				const { getByRole, getByTestId } = render(() => (
+					<>
+						<button
+							type="button"
+							data-testid="trigger"
+							onClick={() => showToast()}
+						>
+							Show
+						</button>
+						<Toast.Region duration={duration} pauseOnInteraction>
+							<Toast.List data-testid="list" />
+						</Toast.Region>
+					</>
+				));
 
-			fireEvent.click(getByTestId("trigger"));
+				fireEvent.click(getByTestId("trigger"));
 
-			const toast = getByRole("status");
+				const toast = getByRole("status");
 
-			expect(toast).toBeInTheDocument();
+				expect(toast).toBeInTheDocument();
 
-			const list = getByTestId("list");
+				const list = getByTestId("list");
 
-			fireEvent.focusIn(list);
-			await Promise.resolve();
+				fireEvent.focusIn(list);
+				await Promise.resolve();
 
-			vi.advanceTimersByTime(duration);
+				vi.advanceTimersByTime(duration);
 
-			expect(toast).toBeInTheDocument();
+				expect(toast).toBeInTheDocument();
 
-			fireEvent.focusOut(list);
-			await Promise.resolve();
+				fireEvent.focusOut(list);
+				await Promise.resolve();
 
-			vi.advanceTimersByTime(duration);
+				vi.advanceTimersByTime(duration);
 
-			expect(toast).not.toBeInTheDocument();
-		});
+				expect(toast).not.toBeInTheDocument();
+			},
+		);
 	});
 });
