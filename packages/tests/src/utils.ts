@@ -11,42 +11,53 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+import { afterAll, beforeAll, vi } from "vitest";
 
 export function installPointerEvent() {
 	beforeAll(() => {
 		// @ts-ignore
-		global.PointerEvent = class FakePointerEvent extends MouseEvent {
-			_init: {
-				pageX: number;
-				pageY: number;
-				pointerType: string;
-				pointerId: number;
-				width: number;
-				height: number;
-			};
-			constructor(name: any, init: any) {
-				super(name, init);
-				this._init = init;
-			}
-			get pointerType() {
-				return this._init.pointerType;
-			}
-			get pointerId() {
-				return this._init.pointerId;
-			}
-			get pageX() {
-				return this._init.pageX;
-			}
-			get pageY() {
-				return this._init.pageY;
-			}
-			get width() {
-				return this._init.width;
-			}
-			get height() {
-				return this._init.height;
-			}
-		};
+		vi.stubGlobal(
+			"PointerEvent",
+			class FakePointerEvent extends MouseEvent {
+				_init: {
+					pageX: number;
+					pageY: number;
+					pointerType: string;
+					pointerId: number;
+					width: number;
+					height: number;
+				};
+
+				constructor(name: any, init: any) {
+					super(name, init);
+					this._init = init;
+				}
+
+				get pointerType() {
+					return this._init.pointerType;
+				}
+
+				get pointerId() {
+					return this._init.pointerId;
+				}
+
+				get pageX() {
+					return this._init.pageX;
+				}
+
+				get pageY() {
+					return this._init.pageY;
+				}
+
+				get width() {
+					return this._init.width;
+				}
+
+				get height() {
+					return this._init.height;
+				}
+			},
+		);
 	});
 
 	afterAll(() => {

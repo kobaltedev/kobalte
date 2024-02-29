@@ -1,12 +1,13 @@
-import { fireEvent, render, screen } from "@solidjs/testing-library";
+import { fireEvent, render } from "@solidjs/testing-library";
 import { createRoot, createSignal } from "solid-js";
+import { vi } from "vitest";
 
 import { createControllableSignal } from "./create-controllable-signal";
 
 describe("createControllableSignal", () => {
 	it("should handle setValue behavior (uncontrolled mode)", async () =>
 		createRoot(async (dispose) => {
-			const onChangeSpy = jest.fn();
+			const onChangeSpy = vi.fn();
 
 			const [value, setValue] = createControllableSignal<string | undefined>({
 				defaultValue: () => "defaultValue",
@@ -38,7 +39,7 @@ describe("createControllableSignal", () => {
 
 	it("should handle setValue with callback behavior (uncontrolled mode)", async () =>
 		createRoot(async (dispose) => {
-			const onChangeSpy = jest.fn();
+			const onChangeSpy = vi.fn();
 
 			const [value, setValue] = createControllableSignal<string | undefined>({
 				defaultValue: () => "defaultValue",
@@ -76,7 +77,7 @@ describe("createControllableSignal", () => {
 
 	it("should handle setValue behavior (controlled mode)", async () =>
 		createRoot(async (dispose) => {
-			const onChangeSpy = jest.fn();
+			const onChangeSpy = vi.fn();
 
 			const [value, setValue] = createControllableSignal<string>({
 				value: () => "controlledValue",
@@ -108,7 +109,7 @@ describe("createControllableSignal", () => {
 
 	it("should handle setValue with callback behavior (controlled mode)", async () =>
 		createRoot(async (dispose) => {
-			const onChangeSpy = jest.fn();
+			const onChangeSpy = vi.fn();
 
 			const [value, setValue] = createControllableSignal<string>({
 				value: () => "controlledValue",
@@ -146,7 +147,7 @@ describe("createControllableSignal", () => {
 
 	it("should update value after props.value change (controlled mode)", async () =>
 		createRoot(async (dispose) => {
-			const onChangeSpy = jest.fn();
+			const onChangeSpy = vi.fn();
 
 			const TestComponent = (props: any) => {
 				const [value] = createControllableSignal<string>(props);
@@ -164,10 +165,12 @@ describe("createControllableSignal", () => {
 				);
 			};
 
-			render(() => <TestComponentWrapper value="controlledValue" />);
+			const { getByRole, getByTestId } = render(() => (
+				<TestComponentWrapper value="controlledValue" />
+			));
 
-			const button = screen.getByRole("button");
-			const testComponent = screen.getByTestId("test-component");
+			const button = getByRole("button");
+			const testComponent = getByTestId("test-component");
 
 			expect(testComponent).toHaveTextContent("controlledValue");
 			expect(onChangeSpy).not.toHaveBeenCalled();
@@ -183,7 +186,7 @@ describe("createControllableSignal", () => {
 
 	it("should only trigger onChange once when using NaN", async () =>
 		createRoot(async (dispose) => {
-			const onChangeSpy = jest.fn();
+			const onChangeSpy = vi.fn();
 
 			const [value, setValue] = createControllableSignal<number | undefined>({
 				onChange: onChangeSpy,

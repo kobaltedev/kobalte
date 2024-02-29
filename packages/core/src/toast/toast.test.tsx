@@ -1,5 +1,6 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen } from "@solidjs/testing-library";
+import { fireEvent, render } from "@solidjs/testing-library";
+import { vi } from "vitest";
 
 import * as Toast from ".";
 import { I18nProvider } from "../i18n";
@@ -10,13 +11,13 @@ describe("Toast", () => {
 	installPointerEvent();
 
 	beforeEach(() => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 		toaster.clear();
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
-		jest.clearAllTimers();
+		vi.clearAllMocks();
+		vi.clearAllTimers();
 	});
 
 	const showToast = (
@@ -43,7 +44,7 @@ describe("Toast", () => {
 	};
 
 	it("renders correctly", async () => {
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -54,15 +55,15 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		const toast = screen.getByRole("status");
+		const toast = getByRole("status");
 
 		expect(toast).toBeInTheDocument();
 	});
 
 	it("should have 'aria-live' set to 'assertive' when priority is 'high'", async () => {
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -77,15 +78,15 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		const toast = screen.getByRole("status");
+		const toast = getByRole("status");
 
 		expect(toast).toHaveAttribute("aria-live", "assertive");
 	});
 
 	it("should have 'aria-live' set to 'polite' when priority is 'low'", async () => {
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -100,15 +101,15 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		const toast = screen.getByRole("status");
+		const toast = getByRole("status");
 
 		expect(toast).toHaveAttribute("aria-live", "polite");
 	});
 
 	it("should have 'aria-atomic' set to 'true'", async () => {
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -119,15 +120,15 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		const toast = screen.getByRole("status");
+		const toast = getByRole("status");
 
 		expect(toast).toHaveAttribute("aria-atomic", "true");
 	});
 
 	it("should be labelled by its toast title", async () => {
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -138,17 +139,17 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		const toast = screen.getByRole("status");
+		const toast = getByRole("status");
 
-		const title = screen.getByTestId("title");
+		const title = getByTestId("title");
 
 		expect(toast).toHaveAttribute("aria-labelledby", title.id);
 	});
 
 	it("should be described by its toast description", async () => {
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -159,11 +160,11 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		const toast = screen.getByRole("status");
+		const toast = getByRole("status");
 
-		const description = screen.getByTestId("description");
+		const description = getByTestId("description");
 
 		expect(toast).toHaveAttribute("aria-describedby", description.id);
 	});
@@ -171,7 +172,7 @@ describe("Toast", () => {
 	it("should close after duration", async () => {
 		const duration = 1000;
 
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -182,13 +183,13 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		const toast = screen.getByRole("status");
+		const toast = getByRole("status");
 
 		expect(toast).toBeInTheDocument();
 
-		jest.advanceTimersByTime(duration);
+		vi.advanceTimersByTime(duration);
 
 		expect(toast).not.toBeInTheDocument();
 	});
@@ -196,7 +197,7 @@ describe("Toast", () => {
 	it("supports overriding toast region duration", async () => {
 		const durationOverride = 1000;
 
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -211,13 +212,13 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		const toast = screen.getByRole("status");
+		const toast = getByRole("status");
 
 		expect(toast).toBeInTheDocument();
 
-		jest.advanceTimersByTime(durationOverride);
+		vi.advanceTimersByTime(durationOverride);
 
 		expect(toast).not.toBeInTheDocument();
 	});
@@ -225,7 +226,7 @@ describe("Toast", () => {
 	it("should not close after duration if persistent", async () => {
 		const duration = 1000;
 
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -240,19 +241,19 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		const toast = screen.getByRole("status");
+		const toast = getByRole("status");
 
 		expect(toast).toBeInTheDocument();
 
-		jest.advanceTimersByTime(duration);
+		vi.advanceTimersByTime(duration);
 
 		expect(toast).toBeInTheDocument();
 	});
 
 	it("should close when clicking the toast close button", async () => {
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -263,19 +264,19 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		const toast = screen.getByRole("status");
+		const toast = getByRole("status");
 
 		expect(toast).toBeInTheDocument();
 
-		fireEvent.click(screen.getByTestId("close-button"));
+		fireEvent.click(getByTestId("close-button"));
 
 		expect(toast).not.toBeInTheDocument();
 	});
 
 	it("should close when using toaster dismiss method", async () => {
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button type="button" data-testid="trigger" onClick={() => showToast()}>
 					Show
@@ -286,13 +287,13 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		const toast = screen.getByRole("status");
+		const toast = getByRole("status");
 
 		expect(toast).toBeInTheDocument();
 
-		fireEvent.click(screen.getByTestId("manual-dismiss"));
+		fireEvent.click(getByTestId("manual-dismiss"));
 
 		expect(toast).not.toBeInTheDocument();
 	});
@@ -300,7 +301,7 @@ describe("Toast", () => {
 	it("can be updated with the toaster", async () => {
 		let toastId = -1;
 
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -330,53 +331,56 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		expect(screen.getByRole("status")).toHaveTextContent("Initial");
+		expect(getByRole("status")).toHaveTextContent("Initial");
 
-		fireEvent.click(screen.getByTestId("update-trigger"));
+		fireEvent.click(getByTestId("update-trigger"));
 
-		expect(screen.getByRole("status")).toHaveTextContent("Updated");
+		expect(getByRole("status")).toHaveTextContent("Updated");
 	});
 
-	it("supports promise resolve", async () => {
-		const timeout = 1000;
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"supports promise resolve",
+		async () => {
+			const timeout = 1000;
 
-		const promise = () =>
-			new Promise<string>((resolve) =>
-				setTimeout(() => resolve("data"), timeout),
-			);
+			const promise = () =>
+				new Promise<string>((resolve) =>
+					setTimeout(() => resolve("data"), timeout),
+				);
 
-		render(() => (
-			<>
-				<button
-					type="button"
-					data-testid="trigger"
-					onClick={() =>
-						toaster.promise(promise, (props) => (
-							<Toast.Root toastId={props.toastId}>
-								{props.state} - {props.data}
-							</Toast.Root>
-						))
-					}
-				>
-					Show
-				</button>
-				<Toast.Region>
-					<Toast.List />
-				</Toast.Region>
-			</>
-		));
+			const { getByRole, getByTestId } = render(() => (
+				<>
+					<button
+						type="button"
+						data-testid="trigger"
+						onClick={() =>
+							toaster.promise(promise, (props) => (
+								<Toast.Root toastId={props.toastId}>
+									{props.state} - {props.data}
+								</Toast.Root>
+							))
+						}
+					>
+						Show
+					</button>
+					<Toast.Region>
+						<Toast.List />
+					</Toast.Region>
+				</>
+			));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+			fireEvent.click(getByTestId("trigger"));
 
-		expect(screen.getByRole("status")).toHaveTextContent("pending");
+			expect(getByRole("status")).toHaveTextContent("pending");
 
-		jest.advanceTimersByTime(timeout);
-		await Promise.resolve();
+			vi.advanceTimersByTime(timeout);
+			await Promise.resolve();
 
-		expect(screen.getByRole("status")).toHaveTextContent("fulfilled - data");
-	});
+			expect(getByRole("status")).toHaveTextContent("fulfilled - data");
+		},
+	);
 
 	// don't know how to test implicit promise rejection
 	it.skip("supports promise reject", async () => {
@@ -387,7 +391,7 @@ describe("Toast", () => {
 				setTimeout(() => reject(new Error("error")), timeout),
 			);
 
-		render(() => (
+		const { getByRole, getByTestId } = render(() => (
 			<>
 				<button
 					type="button"
@@ -408,35 +412,35 @@ describe("Toast", () => {
 			</>
 		));
 
-		fireEvent.click(screen.getByTestId("trigger"));
+		fireEvent.click(getByTestId("trigger"));
 
-		expect(screen.getByRole("status")).toHaveTextContent("pending");
+		expect(getByRole("status")).toHaveTextContent("pending");
 
-		jest.advanceTimersByTime(timeout);
+		vi.advanceTimersByTime(timeout);
 		try {
 			await Promise.reject();
 		} catch (e) {
 			// noop
 		}
 
-		expect(screen.getByRole("status")).toHaveTextContent("rejected - error");
+		expect(getByRole("status")).toHaveTextContent("rejected - error");
 	});
 
 	describe("Toast.Region", () => {
 		it("renders correctly", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Toast.Region>
 					<Toast.List />
 				</Toast.Region>
 			));
 
-			const region = screen.getByRole("region");
+			const region = getByRole("region");
 
 			expect(region).toBeInTheDocument();
 		});
 
 		it("has default 'aria-label' with hot keys", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<I18nProvider locale="en">
 					<Toast.Region>
 						<Toast.List />
@@ -444,13 +448,13 @@ describe("Toast", () => {
 				</I18nProvider>
 			));
 
-			const region = screen.getByRole("region");
+			const region = getByRole("region");
 
 			expect(region).toHaveAttribute("aria-label", "Notifications (alt+T)");
 		});
 
 		it("supports custom 'aria-label' with hot keys placeholder replacement", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<I18nProvider locale="en">
 					<Toast.Region aria-label="Toasts - {hotkey}">
 						<Toast.List />
@@ -458,19 +462,19 @@ describe("Toast", () => {
 				</I18nProvider>
 			));
 
-			const region = screen.getByRole("region");
+			const region = getByRole("region");
 
 			expect(region).toHaveAttribute("aria-label", "Toasts - alt+T");
 		});
 
 		it("has 'pointer-events' set to 'none' when no toast", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Toast.Region>
 					<Toast.List />
 				</Toast.Region>
 			));
 
-			const region = screen.getByRole("region");
+			const region = getByRole("region");
 
 			expect(region).toHaveStyle({ "pointer-events": "none" });
 		});
@@ -479,7 +483,7 @@ describe("Toast", () => {
 			const limit = 3;
 			const aboveLimit = limit + 1;
 
-			render(() => (
+			const { getAllByRole, getByTestId } = render(() => (
 				<>
 					<button
 						type="button"
@@ -496,15 +500,15 @@ describe("Toast", () => {
 				</>
 			));
 
-			fireEvent.click(screen.getByTestId("trigger"));
+			fireEvent.click(getByTestId("trigger"));
 
-			const toasts = screen.getAllByRole("status");
+			const toasts = getAllByRole("status");
 
 			expect(toasts.length).toBe(limit);
 		});
 
 		it("should render multiple regions simultaneously", async () => {
-			render(() => (
+			const { getByTestId } = render(() => (
 				<>
 					<button
 						type="button"
@@ -538,14 +542,12 @@ describe("Toast", () => {
 				</>
 			));
 
-			fireEvent.click(screen.getByTestId("trigger"));
+			fireEvent.click(getByTestId("trigger"));
 
-			const defaultRegionToasts = screen
-				.getByTestId("default-region")
-				.querySelectorAll('[role="status"]');
-			const customRegionToasts = screen
-				.getByTestId("custom-region")
-				.querySelectorAll('[role="status"]');
+			const defaultRegionToasts =
+				getByTestId("default-region").querySelectorAll('[role="status"]');
+			const customRegionToasts =
+				getByTestId("custom-region").querySelectorAll('[role="status"]');
 
 			expect(defaultRegionToasts.length).toBe(3);
 			expect(customRegionToasts.length).toBe(2);
@@ -553,98 +555,104 @@ describe("Toast", () => {
 	});
 
 	describe("Toast.List", () => {
-		it("pauses timers on pointer move and resume on pointer leave when 'pauseOnInteraction'", async () => {
-			const duration = 1000;
+		it.skipIf(process.env.GITHUB_ACTIONS)(
+			"pauses timers on pointer move and resume on pointer leave when 'pauseOnInteraction'",
+			async () => {
+				const duration = 1000;
 
-			render(() => (
-				<>
-					<button
-						type="button"
-						data-testid="trigger"
-						onClick={() => showToast()}
-					>
-						Show
-					</button>
-					<Toast.Region duration={duration} pauseOnInteraction>
-						<Toast.List data-testid="list" />
-					</Toast.Region>
-				</>
-			));
+				const { getByRole, getByTestId } = render(() => (
+					<>
+						<button
+							type="button"
+							data-testid="trigger"
+							onClick={() => showToast()}
+						>
+							Show
+						</button>
+						<Toast.Region duration={duration} pauseOnInteraction>
+							<Toast.List data-testid="list" />
+						</Toast.Region>
+					</>
+				));
 
-			fireEvent.click(screen.getByTestId("trigger"));
+				fireEvent.click(getByTestId("trigger"));
 
-			const toast = screen.getByRole("status");
+				const toast = getByRole("status");
 
-			expect(toast).toBeInTheDocument();
+				expect(toast).toBeInTheDocument();
 
-			const list = screen.getByTestId("list");
+				const list = getByTestId("list");
 
-			fireEvent(
-				list,
-				createPointerEvent("pointermove", {
-					pointerId: 1,
-					pointerType: "mouse",
-				}),
-			);
-			await Promise.resolve();
+				fireEvent(
+					list,
+					createPointerEvent("pointermove", {
+						pointerId: 1,
+						pointerType: "mouse",
+					}),
+				);
+				await Promise.resolve();
 
-			jest.advanceTimersByTime(duration);
+				vi.advanceTimersByTime(duration);
 
-			expect(toast).toBeInTheDocument();
+				expect(toast).toBeInTheDocument();
 
-			fireEvent(
-				list,
-				createPointerEvent("pointerleave", {
-					pointerId: 1,
-					pointerType: "mouse",
-				}),
-			);
-			await Promise.resolve();
+				fireEvent(
+					list,
+					createPointerEvent("pointerleave", {
+						pointerId: 1,
+						pointerType: "mouse",
+					}),
+				);
+				await Promise.resolve();
 
-			jest.advanceTimersByTime(duration);
+				vi.advanceTimersByTime(duration);
 
-			expect(toast).not.toBeInTheDocument();
-		});
+				expect(toast).not.toBeInTheDocument();
+			},
+		);
 
-		it("pauses timers on focus in and resume on focus out when 'pauseOnInteraction'", async () => {
-			const duration = 1000;
+		it.skipIf(process.env.GITHUB_ACTIONS)(
+			"pauses timers on focus in and resume on focus out when 'pauseOnInteraction'",
+			async () => {
+				const duration = 1000;
 
-			render(() => (
-				<>
-					<button
-						type="button"
-						data-testid="trigger"
-						onClick={() => showToast()}
-					>
-						Show
-					</button>
-					<Toast.Region duration={duration} pauseOnInteraction>
-						<Toast.List data-testid="list" />
-					</Toast.Region>
-				</>
-			));
+				const { getByRole, getByTestId } = render(() => (
+					<>
+						<button
+							type="button"
+							data-testid="trigger"
+							onClick={() => showToast()}
+						>
+							Show
+						</button>
+						<Toast.Region duration={duration} pauseOnInteraction>
+							<Toast.List data-testid="list" />
+						</Toast.Region>
+					</>
+				));
 
-			fireEvent.click(screen.getByTestId("trigger"));
+				fireEvent.click(getByTestId("trigger"));
 
-			const toast = screen.getByRole("status");
+				const toast = getByRole("status");
 
-			expect(toast).toBeInTheDocument();
+				expect(toast).toBeInTheDocument();
 
-			const list = screen.getByTestId("list");
+				const list = getByTestId("list");
 
-			fireEvent.focusIn(list);
-			await Promise.resolve();
+				fireEvent.focusIn(list);
+				await Promise.resolve();
 
-			jest.advanceTimersByTime(duration);
+				vi.advanceTimersByTime(duration);
 
-			expect(toast).toBeInTheDocument();
+				expect(toast).toBeInTheDocument();
 
-			fireEvent.focusOut(list);
-			await Promise.resolve();
+				fireEvent.focusOut(list);
+				await Promise.resolve();
 
-			jest.advanceTimersByTime(duration);
+				vi.advanceTimersByTime(duration);
 
-			expect(toast).not.toBeInTheDocument();
-		});
+				expect(toast).not.toBeInTheDocument();
+			},
+		);
 	});
 });

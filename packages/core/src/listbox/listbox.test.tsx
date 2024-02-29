@@ -8,6 +8,7 @@
 
 import { createPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
+import { vi } from "vitest";
 
 import * as Listbox from ".";
 
@@ -19,8 +20,8 @@ const DATA_SOURCE = [
 
 describe("Listbox", () => {
 	beforeEach(() => {
-		jest.useFakeTimers();
-		jest.spyOn(window, "requestAnimationFrame").mockImplementation((cb) => {
+		vi.useFakeTimers();
+		vi.spyOn(window, "requestAnimationFrame").mockImplementation((cb) => {
 			cb(0);
 			return 0;
 		});
@@ -29,11 +30,11 @@ describe("Listbox", () => {
 	afterEach(() => {
 		// @ts-ignore
 		window.requestAnimationFrame.mockRestore();
-		jest.clearAllTimers();
+		vi.clearAllTimers();
 	});
 
 	it("renders properly", () => {
-		render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				selectionMode="single"
@@ -43,8 +44,8 @@ describe("Listbox", () => {
 			/>
 		));
 
-		const listbox = screen.getByRole("listbox");
-		const options = screen.getAllByRole("option");
+		const listbox = getByRole("listbox");
+		const options = getAllByRole("option");
 
 		expect(listbox).toBeInTheDocument();
 
@@ -59,7 +60,7 @@ describe("Listbox", () => {
 	});
 
 	it("allows user to change option focus via up/down arrow keys", async () => {
-		render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				renderItem={(item) => (
@@ -68,8 +69,8 @@ describe("Listbox", () => {
 			/>
 		));
 
-		const listbox = screen.getByRole("listbox");
-		const options = screen.getAllByRole("option");
+		const listbox = getByRole("listbox");
+		const options = getAllByRole("option");
 
 		fireEvent.focusIn(listbox);
 		await Promise.resolve();
@@ -88,7 +89,7 @@ describe("Listbox", () => {
 	});
 
 	it("wraps focus from first to last/last to first option if up/down arrow is pressed if shouldFocusWrap is true", async () => {
-		render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				shouldFocusWrap
@@ -98,8 +99,8 @@ describe("Listbox", () => {
 			/>
 		));
 
-		const listbox = screen.getByRole("listbox");
-		const options = screen.getAllByRole("option");
+		const listbox = getByRole("listbox");
+		const options = getAllByRole("option");
 
 		fireEvent.focusIn(listbox);
 		await Promise.resolve();
@@ -130,7 +131,7 @@ describe("Listbox", () => {
 		];
 
 		it("supports string based option mapping for object options", async () => {
-			render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root<any, any>
 					options={CUSTOM_DATA_SOURCE}
 					optionValue="id"
@@ -146,7 +147,7 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const items = screen.getAllByRole("option");
+			const items = getAllByRole("option");
 
 			expect(items.length).toBe(3);
 
@@ -164,7 +165,7 @@ describe("Listbox", () => {
 		});
 
 		it("supports function based option mapping for object options", async () => {
-			render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root<any, any>
 					options={CUSTOM_DATA_SOURCE}
 					optionValue={(option) => option.id}
@@ -180,7 +181,7 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const items = screen.getAllByRole("option");
+			const items = getAllByRole("option");
 
 			expect(items.length).toBe(3);
 
@@ -198,7 +199,7 @@ describe("Listbox", () => {
 		});
 
 		it("supports function based option mapping for string options", async () => {
-			render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root
 					options={["One", "Two", "Three"]}
 					optionValue={(option) => option}
@@ -210,7 +211,7 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const items = screen.getAllByRole("option");
+			const items = getAllByRole("option");
 
 			expect(items.length).toBe(3);
 
@@ -232,7 +233,7 @@ describe("Listbox", () => {
 		it("supports defaultValue (uncontrolled)", async () => {
 			const defaultValue = new Set(["2"]);
 
-			render(() => (
+			const { getByRole, getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="single"
@@ -243,8 +244,8 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const listbox = screen.getByRole("listbox");
-			const options = screen.getAllByRole("option");
+			const listbox = getByRole("listbox");
+			const options = getAllByRole("option");
 			const selectedItem = options[1];
 
 			fireEvent.focusIn(listbox);
@@ -257,9 +258,9 @@ describe("Listbox", () => {
 
 		it("supports value (controlled)", async () => {
 			const value = new Set(["2"]);
-			const onValueChangeSpy = jest.fn();
+			const onValueChangeSpy = vi.fn();
 
-			render(() => (
+			const { getByRole, getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="single"
@@ -271,8 +272,8 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const listbox = screen.getByRole("listbox");
-			const options = screen.getAllByRole("option");
+			const listbox = getByRole("listbox");
+			const options = getAllByRole("option");
 			const selectedItem = options[1];
 
 			fireEvent.focusIn(listbox);
@@ -297,9 +298,9 @@ describe("Listbox", () => {
 		});
 
 		it("supports using space key to change option selection", async () => {
-			const onValueChangeSpy = jest.fn();
+			const onValueChangeSpy = vi.fn();
 
-			render(() => (
+			const { getByRole, getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="single"
@@ -310,8 +311,8 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const listbox = screen.getByRole("listbox");
-			const options = screen.getAllByRole("option");
+			const listbox = getByRole("listbox");
+			const options = getAllByRole("option");
 
 			fireEvent.focusIn(listbox);
 			await Promise.resolve();
@@ -329,9 +330,9 @@ describe("Listbox", () => {
 		});
 
 		it("supports using pointer up to change option selection", async () => {
-			const onValueChangeSpy = jest.fn();
+			const onValueChangeSpy = vi.fn();
 
-			render(() => (
+			const { getByRole, getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="single"
@@ -342,8 +343,8 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const listbox = screen.getByRole("listbox");
-			const options = screen.getAllByRole("option");
+			const listbox = getByRole("listbox");
+			const options = getAllByRole("option");
 
 			fireEvent.focusIn(listbox);
 			await Promise.resolve();
@@ -372,7 +373,7 @@ describe("Listbox", () => {
 		});
 
 		it("supports disabled options", async () => {
-			const onValueChangeSpy = jest.fn();
+			const onValueChangeSpy = vi.fn();
 
 			const dataSource = [
 				{ key: "1", label: "One", textValue: "One", disabled: false },
@@ -380,7 +381,7 @@ describe("Listbox", () => {
 				{ key: "3", label: "Three", textValue: "Three", disabled: false },
 			];
 
-			render(() => (
+			const { getByRole, getAllByRole } = render(() => (
 				<Listbox.Root
 					options={dataSource}
 					selectionMode="single"
@@ -391,8 +392,8 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const listbox = screen.getByRole("listbox");
-			const options = screen.getAllByRole("option");
+			const listbox = getByRole("listbox");
+			const options = getAllByRole("option");
 
 			const disabledItem = options[1];
 
@@ -432,9 +433,9 @@ describe("Listbox", () => {
 
 	describe("supports multi selection", () => {
 		it("supports selecting multiple options", async () => {
-			const onValueChangeSpy = jest.fn();
+			const onValueChangeSpy = vi.fn();
 
-			render(() => (
+			const { getByRole, getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="multiple"
@@ -445,8 +446,8 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const listbox = screen.getByRole("listbox");
-			const options = screen.getAllByRole("option");
+			const listbox = getByRole("listbox");
+			const options = getAllByRole("option");
 
 			expect(listbox).toHaveAttribute("aria-multiselectable", "true");
 
@@ -489,11 +490,11 @@ describe("Listbox", () => {
 		});
 
 		it("supports multiple defaultValue (uncontrolled)", async () => {
-			const onValueChangeSpy = jest.fn();
+			const onValueChangeSpy = vi.fn();
 
 			const defaultValue = new Set(["1", "2"]);
 
-			render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="multiple"
@@ -505,7 +506,7 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const options = screen.getAllByRole("option");
+			const options = getAllByRole("option");
 
 			const firstItem = options[0];
 			const secondItem = options[1];
@@ -539,11 +540,11 @@ describe("Listbox", () => {
 		});
 
 		it("supports multiple value (controlled)", async () => {
-			const onValueChangeSpy = jest.fn();
+			const onValueChangeSpy = vi.fn();
 
 			const value = new Set(["1", "2"]);
 
-			render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="multiple"
@@ -555,7 +556,7 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const options = screen.getAllByRole("option");
+			const options = getAllByRole("option");
 
 			const firstItem = options[0];
 			const secondItem = options[1];
@@ -587,11 +588,11 @@ describe("Listbox", () => {
 		});
 
 		it("supports deselection", async () => {
-			const onValueChangeSpy = jest.fn();
+			const onValueChangeSpy = vi.fn();
 
 			const defaultValue = new Set(["1", "2"]);
 
-			render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					selectionMode="multiple"
@@ -603,7 +604,7 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const options = screen.getAllByRole("option");
+			const options = getAllByRole("option");
 
 			const firstItem = options[0];
 			const secondItem = options[1];
@@ -634,7 +635,7 @@ describe("Listbox", () => {
 		});
 
 		it("supports disabled options", async () => {
-			const onValueChangeSpy = jest.fn();
+			const onValueChangeSpy = vi.fn();
 
 			const defaultValue = new Set(["1", "2"]);
 
@@ -644,7 +645,7 @@ describe("Listbox", () => {
 				{ key: "3", label: "Three", textValue: "Three", disabled: true },
 			];
 
-			render(() => (
+			const { getAllByRole } = render(() => (
 				<Listbox.Root
 					options={dataSource}
 					selectionMode="multiple"
@@ -656,7 +657,7 @@ describe("Listbox", () => {
 				/>
 			));
 
-			const options = screen.getAllByRole("option");
+			const options = getAllByRole("option");
 
 			const firstItem = options[0];
 			const secondItem = options[1];
@@ -687,11 +688,11 @@ describe("Listbox", () => {
 	});
 
 	it("supports empty selection when disallowEmptySelection is false", async () => {
-		const onValueChangeSpy = jest.fn();
+		const onValueChangeSpy = vi.fn();
 
 		const defaultValue = new Set(["2"]);
 
-		render(() => (
+		const { getAllByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				selectionMode="single"
@@ -704,7 +705,7 @@ describe("Listbox", () => {
 			/>
 		));
 
-		const options = screen.getAllByRole("option");
+		const options = getAllByRole("option");
 
 		const secondItem = options[1];
 
@@ -730,7 +731,7 @@ describe("Listbox", () => {
 	});
 
 	it("supports type to select", async () => {
-		render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				renderItem={(item) => (
@@ -739,8 +740,8 @@ describe("Listbox", () => {
 			/>
 		));
 
-		const listbox = screen.getByRole("listbox");
-		const options = screen.getAllByRole("option");
+		const listbox = getByRole("listbox");
+		const options = getAllByRole("option");
 
 		fireEvent.focusIn(listbox);
 		await Promise.resolve();
@@ -748,20 +749,20 @@ describe("Listbox", () => {
 		expect(document.activeElement).toBe(options[0]);
 
 		fireEvent.keyDown(listbox, { key: "T" });
-		jest.runAllTimers();
+		vi.runAllTimers();
 		await Promise.resolve();
 
 		expect(document.activeElement).toBe(options[1]);
 
 		fireEvent.keyDown(listbox, { key: "O" });
-		jest.runAllTimers();
+		vi.runAllTimers();
 		await Promise.resolve();
 
 		expect(document.activeElement).toBe(options[0]);
 	});
 
 	it("resets the search text after a timeout", async () => {
-		render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				renderItem={(item) => (
@@ -770,20 +771,20 @@ describe("Listbox", () => {
 			/>
 		));
 
-		const listbox = screen.getByRole("listbox");
-		const options = screen.getAllByRole("option");
+		const listbox = getByRole("listbox");
+		const options = getAllByRole("option");
 
 		fireEvent.focusIn(listbox);
 		await Promise.resolve();
 
 		fireEvent.keyDown(listbox, { key: "O" });
-		jest.runAllTimers();
+		vi.runAllTimers();
 		await Promise.resolve();
 
 		expect(document.activeElement).toBe(options[0]);
 
 		fireEvent.keyDown(listbox, { key: "O" });
-		jest.runAllTimers();
+		vi.runAllTimers();
 		await Promise.resolve();
 
 		expect(document.activeElement).toBe(options[0]);
@@ -794,7 +795,7 @@ describe("Listbox", () => {
 			{ key: "1", label: "One", textValue: "One", disabled: false },
 		];
 
-		render(() => (
+		const { getByRole } = render(() => (
 			<Listbox.Root
 				options={dataSource}
 				renderItem={(item) => (
@@ -805,9 +806,9 @@ describe("Listbox", () => {
 			/>
 		));
 
-		jest.runAllTimers();
+		vi.runAllTimers();
 
-		const option = screen.getByRole("option");
+		const option = getByRole("option");
 
 		expect(option).toHaveAttribute("aria-label", "Item");
 		expect(option).not.toHaveAttribute("aria-labelledby");
@@ -825,7 +826,7 @@ describe("Listbox", () => {
 			},
 		];
 
-		render(() => (
+		const { getByRole, getByText } = render(() => (
 			<Listbox.Root
 				options={dataSource}
 				renderItem={(item) => (
@@ -839,18 +840,18 @@ describe("Listbox", () => {
 			/>
 		));
 
-		jest.runAllTimers();
+		vi.runAllTimers();
 
-		const option = screen.getByRole("option");
-		const label = screen.getByText("Label");
-		const description = screen.getByText("Description");
+		const option = getByRole("option");
+		const label = getByText("Label");
+		const description = getByText("Description");
 
 		expect(option).toHaveAttribute("aria-labelledby", label.id);
 		expect(option).toHaveAttribute("aria-describedby", description.id);
 	});
 
 	it("supports aria-label", () => {
-		render(() => (
+		const { getByRole } = render(() => (
 			<Listbox.Root
 				options={DATA_SOURCE}
 				aria-label="Test"
@@ -860,14 +861,14 @@ describe("Listbox", () => {
 			/>
 		));
 
-		const listbox = screen.getByRole("listbox");
+		const listbox = getByRole("listbox");
 
 		expect(listbox).toHaveAttribute("aria-label", "Test");
 	});
 
 	describe("item indicator", () => {
 		it("should not display item indicator by default", async () => {
-			render(() => (
+			const { queryByTestId } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					renderItem={(item) => (
@@ -879,11 +880,11 @@ describe("Listbox", () => {
 				/>
 			));
 
-			expect(screen.queryByTestId("indicator")).toBeNull();
+			expect(queryByTestId("indicator")).toBeNull();
 		});
 
 		it("should display item indicator when 'selected'", async () => {
-			render(() => (
+			const { getByTestId } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					value={["2"]}
@@ -896,11 +897,11 @@ describe("Listbox", () => {
 				/>
 			));
 
-			expect(screen.getByTestId("indicator")).toBeInTheDocument();
+			expect(getByTestId("indicator")).toBeInTheDocument();
 		});
 
 		it("should display item indicator when 'forceMount'", async () => {
-			render(() => (
+			const { getAllByTestId } = render(() => (
 				<Listbox.Root
 					options={DATA_SOURCE}
 					renderItem={(item) => (
@@ -912,7 +913,7 @@ describe("Listbox", () => {
 				/>
 			));
 
-			for (const indicator of screen.getAllByTestId("indicator")) {
+			for (const indicator of getAllByTestId("indicator")) {
 				expect(indicator).toBeInTheDocument();
 			}
 		});

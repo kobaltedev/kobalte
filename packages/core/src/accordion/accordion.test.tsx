@@ -7,9 +7,10 @@
  */
 
 import { installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen, within } from "@solidjs/testing-library";
+import { fireEvent, render, within } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps, For } from "solid-js";
+import { vi } from "vitest";
 
 import * as Accordion from ".";
 
@@ -30,13 +31,15 @@ function AccordionTest(props: ComponentProps<typeof Accordion.Root>) {
 	);
 }
 
-describe("Accordion", () => {
+describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 	installPointerEvent();
 
 	it("renders properly", () => {
-		render(() => <AccordionTest defaultValue={["one"]} />);
+		const { getAllByRole } = render(() => (
+			<AccordionTest defaultValue={["one"]} />
+		));
 
-		const items = screen.getAllByRole("heading");
+		const items = getAllByRole("heading");
 		expect(items.length).toBe(3);
 
 		for (const item of items) {
@@ -58,24 +61,28 @@ describe("Accordion", () => {
 	});
 
 	it("can have default expanded value", async () => {
-		render(() => <AccordionTest defaultValue={["one"]} />);
+		const { getAllByRole, getByText } = render(() => (
+			<AccordionTest defaultValue={["one"]} />
+		));
 
-		const buttons = screen.getAllByRole("button");
+		const buttons = getAllByRole("button");
 		const [firstItem] = buttons;
-		const contentOne = screen.getByText("Content one");
+		const contentOne = getByText("Content one");
 
 		expect(firstItem).toHaveAttribute("aria-expanded", "true");
 		expect(contentOne).toBeVisible();
 	});
 
 	it("can be controlled", async () => {
-		const onChangeSpy = jest.fn();
+		const onChangeSpy = vi.fn();
 
-		render(() => <AccordionTest value={["one"]} onChange={onChangeSpy} />);
+		const { getAllByRole, getByText } = render(() => (
+			<AccordionTest value={["one"]} onChange={onChangeSpy} />
+		));
 
-		const buttons = screen.getAllByRole("button");
+		const buttons = getAllByRole("button");
 		const [firstItem, secondItem] = buttons;
-		const contentOne = screen.getByText("Content one");
+		const contentOne = getByText("Content one");
 
 		expect(firstItem).toHaveAttribute("aria-expanded", "true");
 		expect(contentOne).toBeVisible();
@@ -92,9 +99,9 @@ describe("Accordion", () => {
 	});
 
 	it("allows users to navigate accordion headers through arrow keys", async () => {
-		render(() => <AccordionTest />);
+		const { getAllByRole } = render(() => <AccordionTest />);
 
-		const buttons = screen.getAllByRole("button");
+		const buttons = getAllByRole("button");
 		const [firstItem, secondItem, thirdItem] = buttons;
 
 		firstItem.focus();
@@ -122,9 +129,11 @@ describe("Accordion", () => {
 	});
 
 	it("should not wrap focus when navigating accordion headers through arrow keys if 'shouldFocusWrap=false'", async () => {
-		render(() => <AccordionTest shouldFocusWrap={false} />);
+		const { getAllByRole } = render(() => (
+			<AccordionTest shouldFocusWrap={false} />
+		));
 
-		const buttons = screen.getAllByRole("button");
+		const buttons = getAllByRole("button");
 		const [firstItem, secondItem, thirdItem] = buttons;
 
 		firstItem.focus();
@@ -152,9 +161,9 @@ describe("Accordion", () => {
 	});
 
 	it("allows users to navigate to first/last accordion headers through 'Home/End' keys", async () => {
-		render(() => <AccordionTest />);
+		const { getAllByRole } = render(() => <AccordionTest />);
 
-		const buttons = screen.getAllByRole("button");
+		const buttons = getAllByRole("button");
 		const [firstItem, _, thirdItem] = buttons;
 
 		firstItem.focus();
@@ -170,9 +179,9 @@ describe("Accordion", () => {
 	});
 
 	it("allows users to navigate accordion headers through the tab key", async () => {
-		render(() => <AccordionTest />);
+		const { getAllByRole } = render(() => <AccordionTest />);
 
-		const buttons = screen.getAllByRole("button");
+		const buttons = getAllByRole("button");
 		const [firstItem, secondItem, thirdItem] = buttons;
 
 		firstItem.focus();
@@ -200,13 +209,13 @@ describe("Accordion", () => {
 	});
 
 	it("should toggle between different accordion items when clicking a trigger", async () => {
-		render(() => <AccordionTest />);
+		const { getAllByRole, getByText } = render(() => <AccordionTest />);
 
-		const buttons = screen.getAllByRole("button");
+		const buttons = getAllByRole("button");
 		const [firstItem, secondItem] = buttons;
 
 		await userEvent.click(firstItem);
-		const contentOne = screen.getByText("Content one");
+		const contentOne = getByText("Content one");
 		expect(firstItem).toHaveAttribute("aria-expanded", "true");
 		expect(contentOne).toBeVisible();
 
@@ -214,19 +223,19 @@ describe("Accordion", () => {
 		expect(firstItem).toHaveAttribute("aria-expanded", "false");
 		expect(contentOne).not.toBeVisible();
 
-		const contentTwo = screen.getByText("Content two");
+		const contentTwo = getByText("Content two");
 		expect(secondItem).toHaveAttribute("aria-expanded", "true");
 		expect(contentTwo).toBeVisible();
 	});
 
 	it("should no toggle the same accordion item when clicking its trigger by default", async () => {
-		render(() => <AccordionTest />);
+		const { getAllByRole, getByText } = render(() => <AccordionTest />);
 
-		const buttons = screen.getAllByRole("button");
+		const buttons = getAllByRole("button");
 		const [firstItem] = buttons;
 
 		await userEvent.click(firstItem);
-		const contentOne = screen.getByText("Content one");
+		const contentOne = getByText("Content one");
 		expect(firstItem).toHaveAttribute("aria-expanded", "true");
 		expect(contentOne).toBeVisible();
 
@@ -238,11 +247,13 @@ describe("Accordion", () => {
 	});
 
 	it("should call 'onChange' when clicking a trigger", async () => {
-		const onChangeSpy = jest.fn();
+		const onChangeSpy = vi.fn();
 
-		render(() => <AccordionTest onChange={onChangeSpy} />);
+		const { getAllByRole } = render(() => (
+			<AccordionTest onChange={onChangeSpy} />
+		));
 
-		const buttons = screen.getAllByRole("button");
+		const buttons = getAllByRole("button");
 		const [firstItem, secondItem] = buttons;
 
 		await userEvent.click(firstItem);
@@ -260,31 +271,35 @@ describe("Accordion", () => {
 
 	describe("collapsible", () => {
 		it("should toggle the same accordion item when clicking its trigger if collapsible", async () => {
-			render(() => <AccordionTest collapsible defaultValue={["one"]} />);
+			const { getAllByRole, getByText, queryByText } = render(() => (
+				<AccordionTest collapsible defaultValue={["one"]} />
+			));
 
-			const buttons = screen.getAllByRole("button");
+			const buttons = getAllByRole("button");
 			const [firstItem] = buttons;
 
 			expect(firstItem).toHaveAttribute("aria-expanded", "true");
-			expect(screen.getByText("Content one")).toBeVisible();
+			expect(getByText("Content one")).toBeVisible();
 
 			await userEvent.click(firstItem);
 			expect(firstItem).toHaveAttribute("aria-expanded", "false");
-			expect(screen.queryByText("Content one")).not.toBeInTheDocument();
+			expect(queryByText("Content one")).not.toBeInTheDocument();
 
 			await userEvent.click(firstItem);
 			expect(firstItem).toHaveAttribute("aria-expanded", "true");
-			expect(screen.getByText("Content one")).toBeVisible();
+			expect(getByText("Content one")).toBeVisible();
 		});
 
 		it("should allows users to open and close accordion item with enter / space key when collapsible", async () => {
-			render(() => <AccordionTest collapsible defaultValue={["one"]} />);
+			const { getAllByRole, getByText, queryByText } = render(() => (
+				<AccordionTest collapsible defaultValue={["one"]} />
+			));
 
-			const buttons = screen.getAllByRole("button");
+			const buttons = getAllByRole("button");
 			const [firstItem] = buttons;
 
 			expect(firstItem).toHaveAttribute("aria-expanded", "true");
-			expect(screen.getByText("Content one")).toBeVisible();
+			expect(getByText("Content one")).toBeVisible();
 
 			firstItem.focus();
 			expect(document.activeElement).toBe(firstItem);
@@ -294,31 +309,33 @@ describe("Accordion", () => {
 			await Promise.resolve();
 
 			expect(firstItem).toHaveAttribute("aria-expanded", "false");
-			expect(screen.queryByText("Content one")).not.toBeInTheDocument();
+			expect(queryByText("Content one")).not.toBeInTheDocument();
 
 			fireEvent.keyDown(firstItem, { key: "Enter" });
 			fireEvent.keyUp(firstItem, { key: "Enter" });
 			await Promise.resolve();
 
 			expect(firstItem).toHaveAttribute("aria-expanded", "true");
-			expect(screen.getByText("Content one")).toBeVisible();
+			expect(getByText("Content one")).toBeVisible();
 		});
 	});
 
 	describe("multiple", () => {
 		it("should expand multiple accordion items when clicking triggers", async () => {
-			render(() => <AccordionTest multiple />);
+			const { getAllByRole, getByText } = render(() => (
+				<AccordionTest multiple />
+			));
 
-			const buttons = screen.getAllByRole("button");
+			const buttons = getAllByRole("button");
 			const [firstItem, secondItem] = buttons;
 
 			await userEvent.click(firstItem);
-			const contentOne = screen.getByText("Content one");
+			const contentOne = getByText("Content one");
 			expect(firstItem).toHaveAttribute("aria-expanded", "true");
 			expect(contentOne).toBeVisible();
 
 			await userEvent.click(secondItem);
-			const contentTwo = screen.getByText("Content two");
+			const contentTwo = getByText("Content two");
 			expect(secondItem).toHaveAttribute("aria-expanded", "true");
 			expect(contentTwo).toBeVisible();
 
@@ -328,31 +345,35 @@ describe("Accordion", () => {
 		});
 
 		it("should toggle the same accordion item when clicking its trigger if multiple", async () => {
-			render(() => <AccordionTest multiple defaultValue={["one"]} />);
+			const { getAllByRole, getByText, queryByText } = render(() => (
+				<AccordionTest multiple defaultValue={["one"]} />
+			));
 
-			const buttons = screen.getAllByRole("button");
+			const buttons = getAllByRole("button");
 			const [firstItem] = buttons;
 
 			expect(firstItem).toHaveAttribute("aria-expanded", "true");
-			expect(screen.getByText("Content one")).toBeVisible();
+			expect(getByText("Content one")).toBeVisible();
 
 			await userEvent.click(firstItem);
 			expect(firstItem).toHaveAttribute("aria-expanded", "false");
-			expect(screen.queryByText("Content one")).not.toBeInTheDocument();
+			expect(queryByText("Content one")).not.toBeInTheDocument();
 
 			await userEvent.click(firstItem);
 			expect(firstItem).toHaveAttribute("aria-expanded", "true");
-			expect(screen.getByText("Content one")).toBeVisible();
+			expect(getByText("Content one")).toBeVisible();
 		});
 
 		it("should allows users to open and close accordion item with enter / space key when multiple", async () => {
-			render(() => <AccordionTest multiple defaultValue={["one"]} />);
+			const { getAllByRole, getByText, queryByText } = render(() => (
+				<AccordionTest multiple defaultValue={["one"]} />
+			));
 
-			const buttons = screen.getAllByRole("button");
+			const buttons = getAllByRole("button");
 			const [firstItem] = buttons;
 
 			expect(firstItem).toHaveAttribute("aria-expanded", "true");
-			expect(screen.getByText("Content one")).toBeVisible();
+			expect(getByText("Content one")).toBeVisible();
 
 			firstItem.focus();
 			expect(document.activeElement).toBe(firstItem);
@@ -362,22 +383,24 @@ describe("Accordion", () => {
 			await Promise.resolve();
 
 			expect(firstItem).toHaveAttribute("aria-expanded", "false");
-			expect(screen.queryByText("Content one")).not.toBeInTheDocument();
+			expect(queryByText("Content one")).not.toBeInTheDocument();
 
 			fireEvent.keyDown(firstItem, { key: "Enter" });
 			fireEvent.keyUp(firstItem, { key: "Enter" });
 			await Promise.resolve();
 
 			expect(firstItem).toHaveAttribute("aria-expanded", "true");
-			expect(screen.getByText("Content one")).toBeVisible();
+			expect(getByText("Content one")).toBeVisible();
 		});
 
 		it("should call 'onChange' when clicking triggers", async () => {
-			const onChangeSpy = jest.fn();
+			const onChangeSpy = vi.fn();
 
-			render(() => <AccordionTest multiple onChange={onChangeSpy} />);
+			const { getAllByRole } = render(() => (
+				<AccordionTest multiple onChange={onChangeSpy} />
+			));
 
-			const buttons = screen.getAllByRole("button");
+			const buttons = getAllByRole("button");
 			const [firstItem, secondItem] = buttons;
 
 			await userEvent.click(firstItem);

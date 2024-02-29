@@ -1,5 +1,6 @@
 import { installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen } from "@solidjs/testing-library";
+import { fireEvent, render } from "@solidjs/testing-library";
+import { vi } from "vitest";
 
 import * as ToggleButton from ".";
 
@@ -7,28 +8,28 @@ describe("ToggleButton", () => {
 	installPointerEvent();
 
 	it("can be default selected (uncontrolled)", () => {
-		render(() => (
+		const { getByTestId } = render(() => (
 			<ToggleButton.Root data-testid="toggle" defaultPressed>
 				Button
 			</ToggleButton.Root>
 		));
 
-		const toggle = screen.getByTestId("toggle");
+		const toggle = getByTestId("toggle");
 
 		expect(toggle).toHaveAttribute("aria-pressed", "true");
 		expect(toggle).toHaveAttribute("data-pressed");
 	});
 
 	it("can be controlled", async () => {
-		const onChangeSpy = jest.fn();
+		const onChangeSpy = vi.fn();
 
-		render(() => (
+		const { getByTestId } = render(() => (
 			<ToggleButton.Root data-testid="toggle" pressed onChange={onChangeSpy}>
 				Button
 			</ToggleButton.Root>
 		));
 
-		const toggle = screen.getByTestId("toggle");
+		const toggle = getByTestId("toggle");
 
 		expect(toggle).toHaveAttribute("aria-pressed", "true");
 		expect(toggle).toHaveAttribute("data-pressed");
@@ -43,24 +44,24 @@ describe("ToggleButton", () => {
 	});
 
 	it("should have correct attributes when the toggle button is off (not selected)", () => {
-		render(() => (
+		const { getByTestId } = render(() => (
 			<ToggleButton.Root data-testid="toggle">Button</ToggleButton.Root>
 		));
 
-		const toggle = screen.getByTestId("toggle");
+		const toggle = getByTestId("toggle");
 
 		expect(toggle).toHaveAttribute("aria-pressed", "false");
 		expect(toggle).not.toHaveAttribute("data-pressed");
 	});
 
 	it("should have correct attributes when the toggle button is on (selected)", () => {
-		render(() => (
+		const { getByTestId } = render(() => (
 			<ToggleButton.Root data-testid="toggle" pressed>
 				Button
 			</ToggleButton.Root>
 		));
 
-		const toggle = screen.getByTestId("toggle");
+		const toggle = getByTestId("toggle");
 
 		expect(toggle).toHaveAttribute("aria-pressed", "true");
 		expect(toggle).toHaveAttribute("data-pressed");

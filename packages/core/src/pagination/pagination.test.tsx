@@ -1,10 +1,11 @@
-import { fireEvent, render, screen } from "@solidjs/testing-library";
+import { fireEvent, render } from "@solidjs/testing-library";
+import { vi } from "vitest";
 
 import * as Pagination from ".";
 
 describe("Pagination", () => {
 	it("renders correctly when changing page", () => {
-		render(() => (
+		const { getByText, queryAllByText } = render(() => (
 			<Pagination.Root
 				count={7}
 				itemComponent={(props) => (
@@ -19,66 +20,66 @@ describe("Pagination", () => {
 			</Pagination.Root>
 		));
 
-		const next = screen.getByText("Next");
+		const next = getByText("Next");
 
-		expect(screen.getByText("Page 1")).toBeVisible();
-		expect(screen.getByText("Page 2")).toBeVisible();
-		expect(screen.queryAllByText("Ellipsis")).toHaveLength(1);
-		expect(screen.getByText("Page 7")).toBeVisible();
-
-		fireEvent.click(next);
-
-		expect(screen.getByText("Page 1")).toBeVisible();
-		expect(screen.getByText("Page 2")).toBeVisible();
-		expect(screen.getByText("Page 3")).toBeVisible();
-		expect(screen.queryAllByText("Ellipsis")).toHaveLength(1);
-		expect(screen.getByText("Page 7")).toBeVisible();
+		expect(getByText("Page 1")).toBeVisible();
+		expect(getByText("Page 2")).toBeVisible();
+		expect(queryAllByText("Ellipsis")).toHaveLength(1);
+		expect(getByText("Page 7")).toBeVisible();
 
 		fireEvent.click(next);
 
-		expect(screen.getByText("Page 1")).toBeVisible();
-		expect(screen.getByText("Page 2")).toBeVisible();
-		expect(screen.getByText("Page 3")).toBeVisible();
-		expect(screen.getByText("Page 4")).toBeVisible();
-		expect(screen.queryAllByText("Ellipsis")).toHaveLength(1);
-		expect(screen.getByText("Page 7")).toBeVisible();
+		expect(getByText("Page 1")).toBeVisible();
+		expect(getByText("Page 2")).toBeVisible();
+		expect(getByText("Page 3")).toBeVisible();
+		expect(queryAllByText("Ellipsis")).toHaveLength(1);
+		expect(getByText("Page 7")).toBeVisible();
 
 		fireEvent.click(next);
 
-		expect(screen.getByText("Page 1")).toBeVisible();
-		expect(screen.getByText("Page 3")).toBeVisible();
-		expect(screen.getByText("Page 4")).toBeVisible();
-		expect(screen.getByText("Page 5")).toBeVisible();
-		expect(screen.queryAllByText("Ellipsis")).toHaveLength(2);
-		expect(screen.getByText("Page 7")).toBeVisible();
+		expect(getByText("Page 1")).toBeVisible();
+		expect(getByText("Page 2")).toBeVisible();
+		expect(getByText("Page 3")).toBeVisible();
+		expect(getByText("Page 4")).toBeVisible();
+		expect(queryAllByText("Ellipsis")).toHaveLength(1);
+		expect(getByText("Page 7")).toBeVisible();
 
 		fireEvent.click(next);
 
-		expect(screen.getByText("Page 1")).toBeVisible();
-		expect(screen.queryAllByText("Ellipsis")).toHaveLength(1);
-		expect(screen.getByText("Page 4")).toBeVisible();
-		expect(screen.getByText("Page 5")).toBeVisible();
-		expect(screen.getByText("Page 6")).toBeVisible();
-		expect(screen.getByText("Page 7")).toBeVisible();
+		expect(getByText("Page 1")).toBeVisible();
+		expect(getByText("Page 3")).toBeVisible();
+		expect(getByText("Page 4")).toBeVisible();
+		expect(getByText("Page 5")).toBeVisible();
+		expect(queryAllByText("Ellipsis")).toHaveLength(2);
+		expect(getByText("Page 7")).toBeVisible();
 
 		fireEvent.click(next);
 
-		expect(screen.getByText("Page 1")).toBeVisible();
-		expect(screen.queryAllByText("Ellipsis")).toHaveLength(1);
-		expect(screen.getByText("Page 5")).toBeVisible();
-		expect(screen.getByText("Page 6")).toBeVisible();
-		expect(screen.getByText("Page 7")).toBeVisible();
+		expect(getByText("Page 1")).toBeVisible();
+		expect(queryAllByText("Ellipsis")).toHaveLength(1);
+		expect(getByText("Page 4")).toBeVisible();
+		expect(getByText("Page 5")).toBeVisible();
+		expect(getByText("Page 6")).toBeVisible();
+		expect(getByText("Page 7")).toBeVisible();
 
 		fireEvent.click(next);
 
-		expect(screen.getByText("Page 1")).toBeVisible();
-		expect(screen.queryAllByText("Ellipsis")).toHaveLength(1);
-		expect(screen.getByText("Page 6")).toBeVisible();
-		expect(screen.getByText("Page 7")).toBeVisible();
+		expect(getByText("Page 1")).toBeVisible();
+		expect(queryAllByText("Ellipsis")).toHaveLength(1);
+		expect(getByText("Page 5")).toBeVisible();
+		expect(getByText("Page 6")).toBeVisible();
+		expect(getByText("Page 7")).toBeVisible();
+
+		fireEvent.click(next);
+
+		expect(getByText("Page 1")).toBeVisible();
+		expect(queryAllByText("Ellipsis")).toHaveLength(1);
+		expect(getByText("Page 6")).toBeVisible();
+		expect(getByText("Page 7")).toBeVisible();
 	});
 
 	it("renders correct number of pages", () => {
-		render(() => (
+		const { getByText } = render(() => (
 			<Pagination.Root
 				count={10}
 				itemComponent={(props) => (
@@ -90,9 +91,9 @@ describe("Pagination", () => {
 			</Pagination.Root>
 		));
 
-		const page1 = screen.getByText("Page 1");
-		const page2 = screen.getByText("Page 2");
-		const page10 = screen.getByText("Page 10");
+		const page1 = getByText("Page 1");
+		const page2 = getByText("Page 2");
+		const page10 = getByText("Page 10");
 
 		expect(page1).toBeVisible();
 		expect(page2).toBeVisible();
@@ -100,7 +101,7 @@ describe("Pagination", () => {
 	});
 
 	it("renders correct number of siblings", () => {
-		render(() => (
+		const { getByText } = render(() => (
 			<Pagination.Root
 				count={10}
 				defaultPage={4}
@@ -114,13 +115,13 @@ describe("Pagination", () => {
 			</Pagination.Root>
 		));
 
-		const page1 = screen.getByText("Page 1");
-		const page2 = screen.getByText("Page 2");
-		const page3 = screen.getByText("Page 3");
-		const page4 = screen.getByText("Page 4");
-		const page5 = screen.getByText("Page 5");
-		const page6 = screen.getByText("Page 6");
-		const page10 = screen.getByText("Page 10");
+		const page1 = getByText("Page 1");
+		const page2 = getByText("Page 2");
+		const page3 = getByText("Page 3");
+		const page4 = getByText("Page 4");
+		const page5 = getByText("Page 5");
+		const page6 = getByText("Page 6");
+		const page10 = getByText("Page 10");
 
 		expect(page1).toBeVisible();
 		expect(page2).toBeVisible();
@@ -132,7 +133,7 @@ describe("Pagination", () => {
 	});
 
 	it("renders correctly when hiding first/last", () => {
-		render(() => (
+		const { getByText, queryByText } = render(() => (
 			<Pagination.Root
 				count={10}
 				defaultPage={4}
@@ -147,11 +148,11 @@ describe("Pagination", () => {
 			</Pagination.Root>
 		));
 
-		const page1 = screen.queryByText("Page 1");
-		const page3 = screen.getByText("Page 3");
-		const page4 = screen.getByText("Page 4");
-		const page5 = screen.getByText("Page 5");
-		const page10 = screen.queryByText("Page 10");
+		const page1 = queryByText("Page 1");
+		const page3 = getByText("Page 3");
+		const page4 = getByText("Page 4");
+		const page5 = getByText("Page 5");
+		const page10 = queryByText("Page 10");
 
 		expect(page1).not.toBeInTheDocument();
 		expect(page3).toBeVisible();
@@ -161,7 +162,7 @@ describe("Pagination", () => {
 	});
 
 	it("renders correct number of siblings with fixedItems=true", () => {
-		render(() => (
+		const { getByText } = render(() => (
 			<Pagination.Root
 				count={10}
 				fixedItems
@@ -175,12 +176,12 @@ describe("Pagination", () => {
 			</Pagination.Root>
 		));
 
-		const page1 = screen.getByText("Page 1");
-		const page2 = screen.getByText("Page 2");
-		const page3 = screen.getByText("Page 3");
-		const page4 = screen.getByText("Page 4");
-		const page5 = screen.getByText("Page 5");
-		const page10 = screen.getByText("Page 10");
+		const page1 = getByText("Page 1");
+		const page2 = getByText("Page 2");
+		const page3 = getByText("Page 3");
+		const page4 = getByText("Page 4");
+		const page5 = getByText("Page 5");
+		const page10 = getByText("Page 10");
 
 		expect(page1).toBeVisible();
 		expect(page2).toBeVisible();
@@ -191,7 +192,7 @@ describe("Pagination", () => {
 	});
 
 	it("renders correct number of siblings with fixedItems=no-ellipsis", () => {
-		render(() => (
+		const { getByText } = render(() => (
 			<Pagination.Root
 				count={10}
 				fixedItems="no-ellipsis"
@@ -205,11 +206,11 @@ describe("Pagination", () => {
 			</Pagination.Root>
 		));
 
-		const page1 = screen.getByText("Page 1");
-		const page2 = screen.getByText("Page 2");
-		const page3 = screen.getByText("Page 3");
-		const page4 = screen.getByText("Page 4");
-		const page10 = screen.getByText("Page 10");
+		const page1 = getByText("Page 1");
+		const page2 = getByText("Page 2");
+		const page3 = getByText("Page 3");
+		const page4 = getByText("Page 4");
+		const page10 = getByText("Page 10");
 
 		expect(page1).toBeVisible();
 		expect(page2).toBeVisible();
@@ -219,9 +220,9 @@ describe("Pagination", () => {
 	});
 
 	it("supports default page", () => {
-		const onPageChange = jest.fn();
+		const onPageChange = vi.fn();
 
-		render(() => (
+		const { getByText } = render(() => (
 			<Pagination.Root
 				defaultPage={4}
 				onPageChange={onPageChange}
@@ -235,7 +236,7 @@ describe("Pagination", () => {
 
 		expect(onPageChange).not.toBeCalled();
 
-		const next = screen.getByText("Next");
+		const next = getByText("Next");
 
 		fireEvent.click(next);
 
@@ -244,9 +245,9 @@ describe("Pagination", () => {
 	});
 
 	it("supports controlled state", () => {
-		const onPageChange = jest.fn();
+		const onPageChange = vi.fn();
 
-		render(() => (
+		const { getByText } = render(() => (
 			<Pagination.Root
 				page={4}
 				onPageChange={onPageChange}
@@ -260,7 +261,7 @@ describe("Pagination", () => {
 
 		expect(onPageChange).not.toBeCalled();
 
-		const next = screen.getByText("Next");
+		const next = getByText("Next");
 
 		fireEvent.click(next);
 

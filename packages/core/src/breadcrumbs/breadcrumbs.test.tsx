@@ -13,14 +13,14 @@ import * as Breadcrumbs from ".";
 
 describe("Breadcrumbs", () => {
 	it("should have default 'aria-label'", () => {
-		render(() => <Breadcrumbs.Root />);
+		const { getByRole } = render(() => <Breadcrumbs.Root />);
 
-		const nav = screen.getByRole("navigation");
+		const nav = getByRole("navigation");
 		expect(nav).toHaveAttribute("aria-label", "Breadcrumbs");
 	});
 
 	it("should have default separator", () => {
-		render(() => (
+		const { getAllByText } = render(() => (
 			<Breadcrumbs.Root>
 				<ol>
 					<li>
@@ -38,12 +38,12 @@ describe("Breadcrumbs", () => {
 			</Breadcrumbs.Root>
 		));
 
-		const separators = screen.getAllByText("/");
+		const separators = getAllByText("/");
 		expect(separators.length).toBe(2);
 	});
 
 	it("supports custom string separator", () => {
-		render(() => (
+		const { getAllByText } = render(() => (
 			<Breadcrumbs.Root separator=">">
 				<ol>
 					<li>
@@ -61,12 +61,12 @@ describe("Breadcrumbs", () => {
 			</Breadcrumbs.Root>
 		));
 
-		const separators = screen.getAllByText(">");
+		const separators = getAllByText(">");
 		expect(separators.length).toBe(2);
 	});
 
 	it("supports custom JSX.Element separator", () => {
-		render(() => (
+		const { getAllByText } = render(() => (
 			<Breadcrumbs.Root separator={<span>jsx separator</span>}>
 				<ol>
 					<li>
@@ -84,12 +84,12 @@ describe("Breadcrumbs", () => {
 			</Breadcrumbs.Root>
 		));
 
-		const separators = screen.getAllByText("jsx separator");
+		const separators = getAllByText("jsx separator");
 		expect(separators.length).toBe(2);
 	});
 
 	it("separator should be 'aria-hidden'", () => {
-		render(() => (
+		const { getAllByText } = render(() => (
 			<Breadcrumbs.Root>
 				<ol>
 					<li>
@@ -107,7 +107,7 @@ describe("Breadcrumbs", () => {
 			</Breadcrumbs.Root>
 		));
 
-		const separators = screen.getAllByText("/");
+		const separators = getAllByText("/");
 
 		for (const el of separators) {
 			expect(el).toHaveAttribute("aria-hidden", "true");
@@ -116,7 +116,7 @@ describe("Breadcrumbs", () => {
 
 	describe("Link", () => {
 		it("should have 'aria-current=page' attribute when is current link", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<Breadcrumbs.Root>
 					<ol>
 						<li>
@@ -134,12 +134,12 @@ describe("Breadcrumbs", () => {
 				</Breadcrumbs.Root>
 			));
 
-			const currentLink = screen.getByText("Breadcrumbs");
+			const currentLink = getByText("Breadcrumbs");
 			expect(currentLink).toHaveAttribute("aria-current", "page");
 		});
 
 		it("should have 'data-current' attribute when is current link", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<Breadcrumbs.Root>
 					<ol>
 						<li>
@@ -157,12 +157,12 @@ describe("Breadcrumbs", () => {
 				</Breadcrumbs.Root>
 			));
 
-			const currentLink = screen.getByText("Breadcrumbs");
+			const currentLink = getByText("Breadcrumbs");
 			expect(currentLink).toHaveAttribute("data-current");
 		});
 
 		it("should be disabled when is current link", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<Breadcrumbs.Root>
 					<ol>
 						<li>
@@ -180,7 +180,7 @@ describe("Breadcrumbs", () => {
 				</Breadcrumbs.Root>
 			));
 
-			const currentLink = screen.getByText("Breadcrumbs");
+			const currentLink = getByText("Breadcrumbs");
 			expect(currentLink).toHaveAttribute("aria-disabled", "true");
 			expect(currentLink).toHaveAttribute("data-disabled");
 		});

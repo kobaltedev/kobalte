@@ -7,7 +7,7 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/label/test/useField.test.js
  */
 
-import { render, screen } from "@solidjs/testing-library";
+import { render } from "@solidjs/testing-library";
 import { ParentProps } from "solid-js";
 
 import {
@@ -32,7 +32,7 @@ function FormControl(props: ParentProps<CreateFormControlProps>) {
 describe("createFormControl", () => {
 	describe("ids", () => {
 		it("should generate default ids", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="invalid">
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
@@ -40,9 +40,9 @@ describe("createFormControl", () => {
 				</FormControl>
 			));
 
-			const label = screen.getByText("Label");
-			const description = screen.getByText("Description");
-			const error = screen.getByText("ErrorMessage");
+			const label = getByText("Label");
+			const description = getByText("Description");
+			const error = getByText("ErrorMessage");
 
 			expect(label.id).toMatch(/^.*-label$/);
 			expect(description.id).toMatch(/^.*-description$/);
@@ -50,7 +50,7 @@ describe("createFormControl", () => {
 		});
 
 		it("should generate ids based on form control id", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl id="foo" validationState="invalid">
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
@@ -58,9 +58,9 @@ describe("createFormControl", () => {
 				</FormControl>
 			));
 
-			const label = screen.getByText("Label");
-			const description = screen.getByText("Description");
-			const error = screen.getByText("ErrorMessage");
+			const label = getByText("Label");
+			const description = getByText("Description");
+			const error = getByText("ErrorMessage");
 
 			expect(label.id).toBe("foo-label");
 			expect(description.id).toBe("foo-description");
@@ -68,7 +68,7 @@ describe("createFormControl", () => {
 		});
 
 		it("supports custom ids", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl id="custom-form-control-id" validationState="invalid">
 					<FormControlLabel id="custom-label-id">Label</FormControlLabel>
 					<FormControlDescription id="custom-description-id">
@@ -80,9 +80,9 @@ describe("createFormControl", () => {
 				</FormControl>
 			));
 
-			const label = screen.getByText("Label");
-			const description = screen.getByText("Description");
-			const error = screen.getByText("ErrorMessage");
+			const label = getByText("Label");
+			const description = getByText("Description");
+			const error = getByText("ErrorMessage");
 
 			expect(label.id).toBe("custom-label-id");
 			expect(description.id).toBe("custom-description-id");
@@ -92,15 +92,15 @@ describe("createFormControl", () => {
 
 	describe("data-attributes", () => {
 		it("should not have 'data-*' attributes by default", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl>
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
 				</FormControl>
 			));
 
-			const label = screen.getByText("Label");
-			const description = screen.getByText("Description");
+			const label = getByText("Label");
+			const description = getByText("Description");
 
 			for (const el of [label, description]) {
 				expect(el).not.toHaveAttribute("data-valid");
@@ -112,15 +112,15 @@ describe("createFormControl", () => {
 		});
 
 		it("should have 'data-valid' attribute when form control is valid", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="valid">
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
 				</FormControl>
 			));
 
-			const label = screen.getByText("Label");
-			const description = screen.getByText("Description");
+			const label = getByText("Label");
+			const description = getByText("Description");
 
 			for (const el of [label, description]) {
 				expect(el).toHaveAttribute("data-valid");
@@ -128,15 +128,15 @@ describe("createFormControl", () => {
 		});
 
 		it("should have 'data-invalid' attribute when form control is invalid", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="invalid">
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
 				</FormControl>
 			));
 
-			const label = screen.getByText("Label");
-			const description = screen.getByText("Description");
+			const label = getByText("Label");
+			const description = getByText("Description");
 
 			for (const el of [label, description]) {
 				expect(el).toHaveAttribute("data-invalid");
@@ -144,15 +144,15 @@ describe("createFormControl", () => {
 		});
 
 		it("should have 'data-required' attribute when form control is required", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl required>
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
 				</FormControl>
 			));
 
-			const label = screen.getByText("Label");
-			const description = screen.getByText("Description");
+			const label = getByText("Label");
+			const description = getByText("Description");
 
 			for (const el of [label, description]) {
 				expect(el).toHaveAttribute("data-required");
@@ -160,15 +160,15 @@ describe("createFormControl", () => {
 		});
 
 		it("should have 'data-disabled' attribute when form control is disabled", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl disabled>
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
 				</FormControl>
 			));
 
-			const label = screen.getByText("Label");
-			const description = screen.getByText("Description");
+			const label = getByText("Label");
+			const description = getByText("Description");
 
 			for (const el of [label, description]) {
 				expect(el).toHaveAttribute("data-disabled");
@@ -176,15 +176,15 @@ describe("createFormControl", () => {
 		});
 
 		it("should have 'data-readonly' attribute when form control is readonly", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl readOnly>
 					<FormControlLabel>Label</FormControlLabel>
 					<FormControlDescription>Description</FormControlDescription>
 				</FormControl>
 			));
 
-			const label = screen.getByText("Label");
-			const description = screen.getByText("Description");
+			const label = getByText("Label");
+			const description = getByText("Description");
 
 			for (const el of [label, description]) {
 				expect(el).toHaveAttribute("data-readonly");
@@ -192,13 +192,13 @@ describe("createFormControl", () => {
 		});
 
 		it("should add 'data-invalid' attribute on error message when form control is invalid", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="invalid">
 					<FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
 				</FormControl>
 			));
 
-			const error = screen.getByText("ErrorMessage");
+			const error = getByText("ErrorMessage");
 
 			expect(error).toHaveAttribute("data-invalid");
 			expect(error).not.toHaveAttribute("data-required");
@@ -207,37 +207,37 @@ describe("createFormControl", () => {
 		});
 
 		it("should add 'data-required' attribute on error message when form control is invalid", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="invalid" required>
 					<FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
 				</FormControl>
 			));
 
-			const error = screen.getByText("ErrorMessage");
+			const error = getByText("ErrorMessage");
 
 			expect(error).toHaveAttribute("data-required");
 		});
 
 		it("should add 'data-disabled' attribute on error message when form control is invalid", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="invalid" disabled>
 					<FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
 				</FormControl>
 			));
 
-			const error = screen.getByText("ErrorMessage");
+			const error = getByText("ErrorMessage");
 
 			expect(error).toHaveAttribute("data-disabled");
 		});
 
 		it("should add 'data-readonly' attribute on error message when form control is invalid", () => {
-			render(() => (
+			const { getByText } = render(() => (
 				<FormControl validationState="invalid" readOnly>
 					<FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
 				</FormControl>
 			));
 
-			const error = screen.getByText("ErrorMessage");
+			const error = getByText("ErrorMessage");
 
 			expect(error).toHaveAttribute("data-readonly");
 		});

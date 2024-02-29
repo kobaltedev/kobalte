@@ -1,6 +1,7 @@
-import { render, screen } from "@solidjs/testing-library";
+import { render } from "@solidjs/testing-library";
 import { createRoot, onCleanup, onMount } from "solid-js";
 
+import { vi } from "vitest";
 import { createDefaultLocale } from "./create-default-locale";
 import { I18nProvider, useLocale } from "./i18n-provider";
 
@@ -16,28 +17,28 @@ function Example() {
 
 describe("I18nProvider", () => {
 	it("should use default locale when no one is provided", () => {
-		render(() => (
+		const { getByTestId } = render(() => (
 			<I18nProvider>
 				<Example />
 			</I18nProvider>
 		));
 
-		const locale = screen.getByTestId("locale");
-		const direction = screen.getByTestId("direction");
+		const locale = getByTestId("locale");
+		const direction = getByTestId("direction");
 
 		expect(locale).toHaveTextContent("en-US");
 		expect(direction).toHaveTextContent("ltr");
 	});
 
 	it("should use provided locale", () => {
-		render(() => (
+		const { getByTestId } = render(() => (
 			<I18nProvider locale="ar-AR">
 				<Example />
 			</I18nProvider>
 		));
 
-		const locale = screen.getByTestId("locale");
-		const direction = screen.getByTestId("direction");
+		const locale = getByTestId("locale");
+		const direction = getByTestId("direction");
 
 		expect(locale).toHaveTextContent("ar-AR");
 		expect(direction).toHaveTextContent("rtl");
@@ -58,8 +59,8 @@ describe("createDefaultLocale", () => {
 
 	it("should add and remove languagechange listener correctly", () => {
 		createRoot((dispose) => {
-			jest.spyOn(window, "addEventListener").mock;
-			jest.spyOn(window, "removeEventListener").mock;
+			vi.spyOn(window, "addEventListener").mock;
+			vi.spyOn(window, "removeEventListener").mock;
 
 			createDefaultLocale();
 

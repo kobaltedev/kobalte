@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@solidjs/testing-library";
+import { fireEvent, render } from "@solidjs/testing-library";
 
 import * as Menubar from ".";
 
@@ -80,160 +80,126 @@ const commonUI = () => (
 );
 
 describe("Menubar", () => {
-	it("renders correctly", async () => {
+	it.skip("renders correctly", async () => {
 		// Can't be tested as jsdom doesn't support onPointer events.
 		// Test code should be valid for the future.
-		// biome-ignore lint/correctness/noConstantCondition: disabled code
-		if (true) return;
 
-		render(commonUI);
+		const { getByText, queryByText } = render(commonUI);
 
-		expect(screen.getByText("Test 1")).toBeVisible();
-		expect(screen.getByText("Test 2")).toBeVisible();
-		expect(screen.getByText("Test 3")).toBeVisible();
+		expect(getByText("Test 1")).toBeVisible();
+		expect(getByText("Test 2")).toBeVisible();
+		expect(getByText("Test 3")).toBeVisible();
 
-		screen.getByText("Test 1").click();
+		getByText("Test 1").click();
 
-		expect(screen.getByText("Test 1")).toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 1")).toHaveAttribute("data-highlighted", "true");
 
-		expect(screen.getByText("Item 1")).toBeVisible();
-		expect(screen.getByText("Item 2")).toBeVisible();
-		expect(screen.getByText("Sub 3")).toBeVisible();
+		expect(getByText("Item 1")).toBeVisible();
+		expect(getByText("Item 2")).toBeVisible();
+		expect(getByText("Sub 3")).toBeVisible();
 
-		screen.getByText("Test 2").click();
+		getByText("Test 2").click();
 
-		expect(screen.getByText("Test 1")).not.toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
-		expect(screen.getByText("Test 2")).toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 1")).not.toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 2")).toHaveAttribute("data-highlighted", "true");
 
-		expect(screen.queryByText("Item 1")).not.toBeInTheDocument();
-		expect(screen.queryByText("Item 2")).not.toBeInTheDocument();
-		expect(screen.queryByText("Sub 3")).not.toBeInTheDocument();
+		expect(queryByText("Item 1")).not.toBeInTheDocument();
+		expect(queryByText("Item 2")).not.toBeInTheDocument();
+		expect(queryByText("Sub 3")).not.toBeInTheDocument();
 
-		expect(screen.getByText("Item A")).toBeVisible();
-		expect(screen.getByText("Item B")).toBeVisible();
-		expect(screen.getByText("Sub C")).toBeVisible();
+		expect(getByText("Item A")).toBeVisible();
+		expect(getByText("Item B")).toBeVisible();
+		expect(getByText("Sub C")).toBeVisible();
 
-		fireEvent.click(screen.getByText("Sub C"));
+		fireEvent.click(getByText("Sub C"));
 
-		expect(screen.getByText("Item D")).toBeVisible();
-		expect(screen.getByText("Item E")).toBeVisible();
+		expect(getByText("Item D")).toBeVisible();
+		expect(getByText("Item E")).toBeVisible();
 
-		fireEvent.click(screen.getByText("External"));
+		fireEvent.click(getByText("External"));
 
-		expect(screen.getByText("Test 2")).not.toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 2")).not.toHaveAttribute("data-highlighted", "true");
 
-		expect(screen.queryByText("Item A")).not.toBeInTheDocument();
-		expect(screen.queryByText("Item B")).not.toBeInTheDocument();
-		expect(screen.queryByText("Sub C")).not.toBeInTheDocument();
+		expect(queryByText("Item A")).not.toBeInTheDocument();
+		expect(queryByText("Item B")).not.toBeInTheDocument();
+		expect(queryByText("Sub C")).not.toBeInTheDocument();
 	});
 
-	it("handles keyboard navigation correctly", async () => {
+	it.skip("handles keyboard navigation correctly", async () => {
 		// Can't be tested as jsdom doesn't support onPointer events.
 		// Test code should be valid for the future.
-		// biome-ignore lint/correctness/noConstantCondition: disabled code
-		if (true) return;
 
-		render(commonUI);
+		const { getByText, queryByText } = render(commonUI);
 
-		expect(screen.getByText("Test 1")).toHaveAttribute("tabindex", "0");
-		expect(screen.getByText("Test 2")).toHaveAttribute("tabindex", "-1");
-		expect(screen.getByText("Test 3")).toHaveAttribute("tabindex", "-1");
+		expect(getByText("Test 1")).toHaveAttribute("tabindex", "0");
+		expect(getByText("Test 2")).toHaveAttribute("tabindex", "-1");
+		expect(getByText("Test 3")).toHaveAttribute("tabindex", "-1");
 
-		expect(screen.getByText("Test 1")).not.toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 1")).not.toHaveAttribute("data-highlighted", "true");
 
-		fireEvent.focus(screen.getByText("Test 1"));
+		fireEvent.focus(getByText("Test 1"));
 
-		expect(screen.queryByText("Item 1")).not.toBeInTheDocument();
+		expect(queryByText("Item 1")).not.toBeInTheDocument();
 
-		expect(screen.getByText("Test 1")).toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 1")).toHaveAttribute("data-highlighted", "true");
 
-		fireEvent.keyPress(screen.getByText("Test 1"), {
+		fireEvent.keyPress(getByText("Test 1"), {
 			key: "ArrowRight",
 			code: "ArrowRight",
 		});
 
-		expect(screen.queryByText("Item A")).not.toBeInTheDocument();
+		expect(queryByText("Item A")).not.toBeInTheDocument();
 
-		expect(screen.getByText("Test 1")).not.toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
-		expect(screen.getByText("Test 2")).toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 1")).not.toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 2")).toHaveAttribute("data-highlighted", "true");
 
-		expect(screen.getByText("Test 1")).toHaveAttribute("tabindex", "-1");
-		expect(screen.getByText("Test 2")).toHaveAttribute("tabindex", "0");
+		expect(getByText("Test 1")).toHaveAttribute("tabindex", "-1");
+		expect(getByText("Test 2")).toHaveAttribute("tabindex", "0");
 
-		expect(screen.getByText("Test 2")).toHaveFocus();
+		expect(getByText("Test 2")).toHaveFocus();
 
-		fireEvent.keyPress(screen.getByText("Test 2"), {
+		fireEvent.keyPress(getByText("Test 2"), {
 			key: "ArrowRight",
 			code: "ArrowRight",
 		});
 
-		expect(screen.queryByText("Item Z")).not.toBeInTheDocument();
+		expect(queryByText("Item Z")).not.toBeInTheDocument();
 
-		expect(screen.getByText("Test 2")).not.toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
-		expect(screen.getByText("Test 3")).toHaveAttribute(
-			"data-highlighted",
-			"true",
-		);
+		expect(getByText("Test 2")).not.toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 3")).toHaveAttribute("data-highlighted", "true");
 
-		expect(screen.getByText("Test 2")).toHaveAttribute("tabindex", "-1");
-		expect(screen.getByText("Test 3")).toHaveAttribute("tabindex", "0");
+		expect(getByText("Test 2")).toHaveAttribute("tabindex", "-1");
+		expect(getByText("Test 3")).toHaveAttribute("tabindex", "0");
 
-		expect(screen.getByText("Test 3")).toHaveFocus();
+		expect(getByText("Test 3")).toHaveFocus();
 
-		fireEvent.keyPress(screen.getByText("Test 3"), {
+		fireEvent.keyPress(getByText("Test 3"), {
 			key: "ArrowRight",
 			code: "ArrowRight",
 		});
 
-		expect(screen.getByText("Test 1")).toHaveFocus();
+		expect(getByText("Test 1")).toHaveFocus();
 
-		fireEvent.keyPress(screen.getByText("Test 1"), {
+		fireEvent.keyPress(getByText("Test 1"), {
 			key: "ArrowDown",
 			code: "ArrowDown",
 		});
 
-		expect(screen.getByText("Item 1")).toBeVisible();
+		expect(getByText("Item 1")).toBeVisible();
 
 		fireEvent.keyPress(document.activeElement as Element, {
 			key: "ArrowRight",
 			code: "ArrowRight",
 		});
 
-		expect(screen.getByText("Item A")).toBeVisible();
+		expect(getByText("Item A")).toBeVisible();
 
 		fireEvent.keyPress(document.activeElement as Element, {
 			key: "ArrowDown",
 			code: "ArrowDown",
 		});
 
-		expect(screen.getByText("Item A")).toHaveFocus();
+		expect(getByText("Item A")).toHaveFocus();
 
 		fireEvent.keyPress(document.activeElement as Element, {
 			key: "ArrowDown",
@@ -244,21 +210,21 @@ describe("Menubar", () => {
 			code: "ArrowDown",
 		});
 
-		expect(screen.getByText("Sub C")).toHaveFocus();
+		expect(getByText("Sub C")).toHaveFocus();
 
 		fireEvent.keyPress(document.activeElement as Element, {
 			key: "ArrowRight",
 			code: "ArrowRight",
 		});
 
-		expect(screen.getByText("Item D")).toHaveFocus();
+		expect(getByText("Item D")).toHaveFocus();
 
 		fireEvent.keyPress(document.activeElement as Element, {
 			key: "ArrowLeft",
 			code: "ArrowLeft",
 		});
 
-		expect(screen.getByText("Sub C")).toHaveFocus();
+		expect(getByText("Sub C")).toHaveFocus();
 
 		fireEvent.keyPress(document.activeElement as Element, {
 			key: "ArrowRight",
@@ -269,30 +235,28 @@ describe("Menubar", () => {
 			code: "ArrowRight",
 		});
 
-		expect(screen.getByText("Item Z")).toBeVisible();
+		expect(getByText("Item Z")).toBeVisible();
 	});
 
-	it("handles hover correctly", async () => {
+	it.skip("handles hover correctly", async () => {
 		// Can't be tested as jsdom doesn't support onPointer events.
 		// Test code should be valid for the future.
-		// biome-ignore lint/correctness/noConstantCondition: disabled code
-		if (true) return;
 
-		render(commonUI);
+		const { getByText, queryByText } = render(commonUI);
 
-		fireEvent.mouseEnter(screen.getByText("Test 2"));
+		fireEvent.mouseEnter(getByText("Test 2"));
 
-		expect(screen.getByText("Test 1")).toHaveAttribute("tabindex", "0");
+		expect(getByText("Test 1")).toHaveAttribute("tabindex", "0");
 
-		expect(screen.queryByText("Item A")).not.toBeInTheDocument();
+		expect(queryByText("Item A")).not.toBeInTheDocument();
 
-		screen.getByText("Test 1").click();
+		getByText("Test 1").click();
 
-		expect(screen.getByText("Item 1")).toBeVisible();
+		expect(getByText("Item 1")).toBeVisible();
 
-		screen.getByText("Test 2").click();
+		getByText("Test 2").click();
 
-		expect(screen.queryByText("Item 1")).not.toBeInTheDocument();
-		expect(screen.getByText("Item A")).toBeVisible();
+		expect(queryByText("Item 1")).not.toBeInTheDocument();
+		expect(getByText("Item A")).toBeVisible();
 	});
 });

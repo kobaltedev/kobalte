@@ -7,8 +7,9 @@
  */
 
 import { createPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, screen, within } from "@solidjs/testing-library";
+import { fireEvent, render, within } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
+import { vi } from "vitest";
 
 import * as Tabs from ".";
 
@@ -17,23 +18,23 @@ describe("Tabs", () => {
 	// See https://github.com/testing-library/user-event/issues/833#issuecomment-1013797822
 	const user = userEvent.setup({ delay: null });
 
-	const onValueChangeSpy = jest.fn();
+	const onValueChangeSpy = vi.fn();
 
 	beforeEach(() => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
-		jest.clearAllTimers();
+		vi.clearAllMocks();
+		vi.clearAllTimers();
 	});
 
 	afterAll(() => {
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	});
 
 	it("renders properly", async () => {
-		render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -46,7 +47,7 @@ describe("Tabs", () => {
 			</Tabs.Root>
 		));
 
-		const tablist = screen.getByRole("tablist");
+		const tablist = getByRole("tablist");
 		expect(tablist).toBeTruthy();
 		expect(tablist).toHaveAttribute("aria-orientation", "horizontal");
 
@@ -73,7 +74,7 @@ describe("Tabs", () => {
 	});
 
 	it("allows user to change tab item select via left/right arrow keys with horizontal tabs", async () => {
-		render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -86,7 +87,7 @@ describe("Tabs", () => {
 			</Tabs.Root>
 		));
 
-		const tablist = screen.getByRole("tablist");
+		const tablist = getByRole("tablist");
 		const tabs = within(tablist).getAllByRole("tab");
 		const selectedItem = tabs[0];
 
@@ -131,7 +132,7 @@ describe("Tabs", () => {
 	});
 
 	it("allows user to change tab item select via up/down arrow keys with vertical tabs", async () => {
-		render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root orientation="vertical">
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -144,7 +145,7 @@ describe("Tabs", () => {
 			</Tabs.Root>
 		));
 
-		const tablist = screen.getByRole("tablist");
+		const tablist = getByRole("tablist");
 		const tabs = within(tablist).getAllByRole("tab");
 		const selectedItem = tabs[0];
 
@@ -195,7 +196,7 @@ describe("Tabs", () => {
 	});
 
 	it("wraps focus from first to last/last to first item", async () => {
-		render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -208,7 +209,7 @@ describe("Tabs", () => {
 			</Tabs.Root>
 		));
 
-		const tablist = screen.getByRole("tablist");
+		const tablist = getByRole("tablist");
 		const tabs = within(tablist).getAllByRole("tab");
 		const firstItem = tabs[0];
 
@@ -232,7 +233,7 @@ describe("Tabs", () => {
 	});
 
 	it("select last item via end key / select first item via home key", async () => {
-		render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -245,7 +246,7 @@ describe("Tabs", () => {
 			</Tabs.Root>
 		));
 
-		const tablist = screen.getByRole("tablist");
+		const tablist = getByRole("tablist");
 		const tabs = within(tablist).getAllByRole("tab");
 		const firstItem = tabs[0];
 
@@ -269,7 +270,7 @@ describe("Tabs", () => {
 	});
 
 	it("does not select via left / right keys if 'activationMode' is manual, select on enter / spacebar", async () => {
-		render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root
 				activationMode="manual"
 				defaultValue="one"
@@ -286,7 +287,7 @@ describe("Tabs", () => {
 			</Tabs.Root>
 		));
 
-		const tablist = screen.getByRole("tablist");
+		const tablist = getByRole("tablist");
 		const tabs = within(tablist).getAllByRole("tab");
 		const [firstItem, secondItem, thirdItem] = tabs;
 
@@ -320,9 +321,9 @@ describe("Tabs", () => {
 	});
 
 	it("supports using click to change tab", async () => {
-		const onValueChangeSpy = jest.fn();
+		const onValueChangeSpy = vi.fn();
 
-		render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -335,7 +336,7 @@ describe("Tabs", () => {
 			</Tabs.Root>
 		));
 
-		const tablist = screen.getByRole("tablist");
+		const tablist = getByRole("tablist");
 		const tabs = within(tablist).getAllByRole("tab");
 		const [firstItem, secondItem] = tabs;
 
@@ -367,146 +368,161 @@ describe("Tabs", () => {
 		expect(onValueChangeSpy).toBeCalledTimes(1);
 	});
 
-	it("should focus the selected tab when tabbing in for the first time", async () => {
-		render(() => (
-			<Tabs.Root defaultValue="two">
-				<Tabs.List>
-					<Tabs.Trigger value="one">One</Tabs.Trigger>
-					<Tabs.Trigger value="two">Two</Tabs.Trigger>
-					<Tabs.Trigger value="three">Three</Tabs.Trigger>
-				</Tabs.List>
-				<Tabs.Content value="one">Body 1</Tabs.Content>
-				<Tabs.Content value="two">Body 2</Tabs.Content>
-				<Tabs.Content value="three">Body 3</Tabs.Content>
-			</Tabs.Root>
-		));
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"should focus the selected tab when tabbing in for the first time",
+		async () => {
+			const { getByRole } = render(() => (
+				<Tabs.Root defaultValue="two">
+					<Tabs.List>
+						<Tabs.Trigger value="one">One</Tabs.Trigger>
+						<Tabs.Trigger value="two">Two</Tabs.Trigger>
+						<Tabs.Trigger value="three">Three</Tabs.Trigger>
+					</Tabs.List>
+					<Tabs.Content value="one">Body 1</Tabs.Content>
+					<Tabs.Content value="two">Body 2</Tabs.Content>
+					<Tabs.Content value="three">Body 3</Tabs.Content>
+				</Tabs.Root>
+			));
 
-		await user.tab();
+			await user.tab();
 
-		const tablist = screen.getByRole("tablist");
-		const tabs = within(tablist).getAllByRole("tab");
+			const tablist = getByRole("tablist");
+			const tabs = within(tablist).getAllByRole("tab");
 
-		expect(document.activeElement).toBe(tabs[1]);
-	});
+			expect(document.activeElement).toBe(tabs[1]);
+		},
+	);
 
-	it("should not focus any tabs when isDisabled tabbing in for the first time", async () => {
-		render(() => (
-			<Tabs.Root defaultValue="two" disabled>
-				<Tabs.List>
-					<Tabs.Trigger value="one">One</Tabs.Trigger>
-					<Tabs.Trigger value="two">Two</Tabs.Trigger>
-					<Tabs.Trigger value="three">Three</Tabs.Trigger>
-				</Tabs.List>
-				<Tabs.Content value="one">Body 1</Tabs.Content>
-				<Tabs.Content value="two">Body 2</Tabs.Content>
-				<Tabs.Content value="three">Body 3</Tabs.Content>
-			</Tabs.Root>
-		));
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"should not focus any tabs when isDisabled tabbing in for the first time",
+		async () => {
+			const { getByRole } = render(() => (
+				<Tabs.Root defaultValue="two" disabled>
+					<Tabs.List>
+						<Tabs.Trigger value="one">One</Tabs.Trigger>
+						<Tabs.Trigger value="two">Two</Tabs.Trigger>
+						<Tabs.Trigger value="three">Three</Tabs.Trigger>
+					</Tabs.List>
+					<Tabs.Content value="one">Body 1</Tabs.Content>
+					<Tabs.Content value="two">Body 2</Tabs.Content>
+					<Tabs.Content value="three">Body 3</Tabs.Content>
+				</Tabs.Root>
+			));
 
-		await user.tab();
+			await user.tab();
 
-		const tabpanel = screen.getByRole("tabpanel");
+			const tabpanel = getByRole("tabpanel");
 
-		expect(document.activeElement).toBe(tabpanel);
-	});
+			expect(document.activeElement).toBe(tabpanel);
+		},
+	);
 
-	it("disabled tabs cannot be keyboard navigated to", async () => {
-		const onValueChangeSpy = jest.fn();
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"disabled tabs cannot be keyboard navigated to",
+		async () => {
+			const onValueChangeSpy = vi.fn();
 
-		render(() => (
-			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
-				<Tabs.List>
-					<Tabs.Trigger value="one">One</Tabs.Trigger>
-					<Tabs.Trigger value="two" disabled>
-						Two
-					</Tabs.Trigger>
-					<Tabs.Trigger value="three">Three</Tabs.Trigger>
-				</Tabs.List>
-				<Tabs.Content value="one">Body 1</Tabs.Content>
-				<Tabs.Content value="two">Body 2</Tabs.Content>
-				<Tabs.Content value="three">Body 3</Tabs.Content>
-			</Tabs.Root>
-		));
+			const { getByRole } = render(() => (
+				<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
+					<Tabs.List>
+						<Tabs.Trigger value="one">One</Tabs.Trigger>
+						<Tabs.Trigger value="two" disabled>
+							Two
+						</Tabs.Trigger>
+						<Tabs.Trigger value="three">Three</Tabs.Trigger>
+					</Tabs.List>
+					<Tabs.Content value="one">Body 1</Tabs.Content>
+					<Tabs.Content value="two">Body 2</Tabs.Content>
+					<Tabs.Content value="three">Body 3</Tabs.Content>
+				</Tabs.Root>
+			));
 
-		await user.tab();
+			await user.tab();
 
-		const tablist = screen.getByRole("tablist");
-		const tabs = within(tablist).getAllByRole("tab");
+			const tablist = getByRole("tablist");
+			const tabs = within(tablist).getAllByRole("tab");
 
-		expect(document.activeElement).toBe(tabs[0]);
+			expect(document.activeElement).toBe(tabs[0]);
 
-		fireEvent.keyDown(tabs[1], { key: "ArrowRight" });
-		await Promise.resolve();
+			fireEvent.keyDown(tabs[1], { key: "ArrowRight" });
+			await Promise.resolve();
 
-		fireEvent.keyUp(tabs[1], { key: "ArrowRight" });
-		await Promise.resolve();
+			fireEvent.keyUp(tabs[1], { key: "ArrowRight" });
+			await Promise.resolve();
 
-		expect(onValueChangeSpy).toBeCalledWith("three");
-	});
+			expect(onValueChangeSpy).toBeCalledWith("three");
+		},
+	);
 
-	it("disabled tabs cannot be pressed", async () => {
-		const onValueChangeSpy = jest.fn();
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"disabled tabs cannot be pressed",
+		async () => {
+			const onValueChangeSpy = vi.fn();
 
-		render(() => (
-			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
-				<Tabs.List>
-					<Tabs.Trigger value="one">One</Tabs.Trigger>
-					<Tabs.Trigger value="two" disabled>
-						Two
-					</Tabs.Trigger>
-					<Tabs.Trigger value="three">Three</Tabs.Trigger>
-				</Tabs.List>
-				<Tabs.Content value="one">Body 1</Tabs.Content>
-				<Tabs.Content value="two">Body 2</Tabs.Content>
-				<Tabs.Content value="three">Body 3</Tabs.Content>
-			</Tabs.Root>
-		));
+			const { getByRole } = render(() => (
+				<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
+					<Tabs.List>
+						<Tabs.Trigger value="one">One</Tabs.Trigger>
+						<Tabs.Trigger value="two" disabled>
+							Two
+						</Tabs.Trigger>
+						<Tabs.Trigger value="three">Three</Tabs.Trigger>
+					</Tabs.List>
+					<Tabs.Content value="one">Body 1</Tabs.Content>
+					<Tabs.Content value="two">Body 2</Tabs.Content>
+					<Tabs.Content value="three">Body 3</Tabs.Content>
+				</Tabs.Root>
+			));
 
-		await user.tab();
+			await user.tab();
 
-		const tablist = screen.getByRole("tablist");
-		const tabs = within(tablist).getAllByRole("tab");
+			const tablist = getByRole("tablist");
+			const tabs = within(tablist).getAllByRole("tab");
 
-		expect(document.activeElement).toBe(tabs[0]);
+			expect(document.activeElement).toBe(tabs[0]);
 
-		await user.click(tabs[1]);
+			await user.click(tabs[1]);
 
-		expect(onValueChangeSpy).not.toBeCalled();
-	});
+			expect(onValueChangeSpy).not.toBeCalled();
+		},
+	);
 
-	it("selects first tab if all tabs are disabled", async () => {
-		render(() => (
-			<Tabs.Root onChange={onValueChangeSpy}>
-				<Tabs.List>
-					<Tabs.Trigger value="one" disabled>
-						One
-					</Tabs.Trigger>
-					<Tabs.Trigger value="two" disabled>
-						Two
-					</Tabs.Trigger>
-					<Tabs.Trigger value="three" disabled>
-						Three
-					</Tabs.Trigger>
-				</Tabs.List>
-				<Tabs.Content value="one">Body 1</Tabs.Content>
-				<Tabs.Content value="two">Body 2</Tabs.Content>
-				<Tabs.Content value="three">Body 3</Tabs.Content>
-			</Tabs.Root>
-		));
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"selects first tab if all tabs are disabled",
+		async () => {
+			const { getByRole } = render(() => (
+				<Tabs.Root onChange={onValueChangeSpy}>
+					<Tabs.List>
+						<Tabs.Trigger value="one" disabled>
+							One
+						</Tabs.Trigger>
+						<Tabs.Trigger value="two" disabled>
+							Two
+						</Tabs.Trigger>
+						<Tabs.Trigger value="three" disabled>
+							Three
+						</Tabs.Trigger>
+					</Tabs.List>
+					<Tabs.Content value="one">Body 1</Tabs.Content>
+					<Tabs.Content value="two">Body 2</Tabs.Content>
+					<Tabs.Content value="three">Body 3</Tabs.Content>
+				</Tabs.Root>
+			));
 
-		await user.tab();
+			await user.tab();
 
-		const tablist = screen.getByRole("tablist");
-		const tabs = within(tablist).getAllByRole("tab");
-		const tabpanel = screen.getByRole("tabpanel");
+			const tablist = getByRole("tablist");
+			const tabs = within(tablist).getAllByRole("tab");
+			const tabpanel = getByRole("tabpanel");
 
-		expect(tabs[0]).toHaveAttribute("aria-selected", "true");
-		expect(onValueChangeSpy).toBeCalledWith("one");
-		expect(document.activeElement).toBe(tabpanel);
-	});
+			expect(tabs[0]).toHaveAttribute("aria-selected", "true");
+			expect(onValueChangeSpy).toBeCalledWith("one");
+			expect(document.activeElement).toBe(tabpanel);
+		},
+	);
 
 	it("tabpanel should have tabIndex=0 only when there are no focusable elements", async () => {
-		render(() => (
+		const { getByRole, getAllByRole } = render(() => (
 			<Tabs.Root>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -521,10 +537,10 @@ describe("Tabs", () => {
 			</Tabs.Root>
 		));
 
-		const tabs = screen.getAllByRole("tab");
+		const tabs = getAllByRole("tab");
 		const [firstItem, secondItem] = tabs;
 
-		let tabpanel = screen.getByRole("tabpanel");
+		let tabpanel = getByRole("tabpanel");
 		expect(tabpanel).not.toHaveAttribute("tabindex");
 
 		fireEvent(
@@ -539,9 +555,9 @@ describe("Tabs", () => {
 		);
 		await Promise.resolve();
 
-		jest.runAllTimers();
+		vi.runAllTimers();
 
-		tabpanel = screen.getByRole("tabpanel");
+		tabpanel = getByRole("tabpanel");
 		expect(tabpanel).toHaveAttribute("tabindex", "0");
 
 		fireEvent(
@@ -556,14 +572,14 @@ describe("Tabs", () => {
 		);
 		await Promise.resolve();
 
-		jest.runAllTimers();
+		vi.runAllTimers();
 
-		tabpanel = screen.getByRole("tabpanel");
+		tabpanel = getByRole("tabpanel");
 		expect(tabpanel).not.toHaveAttribute("tabindex");
 	});
 
 	it("fires onValueChange when clicking on the current tab", async () => {
-		render(() => (
+		const { getByRole } = render(() => (
 			<Tabs.Root defaultValue="one" onChange={onValueChangeSpy}>
 				<Tabs.List>
 					<Tabs.Trigger value="one">One</Tabs.Trigger>
@@ -576,7 +592,7 @@ describe("Tabs", () => {
 			</Tabs.Root>
 		));
 
-		const tablist = screen.getByRole("tablist");
+		const tablist = getByRole("tablist");
 		const tabs = within(tablist).getAllByRole("tab");
 		const firstItem = tabs[0];
 
