@@ -108,7 +108,7 @@ importers:
         specifier: 3.5.2
         version: 3.5.2(@algolia/client-search@4.20.0)(search-insights@2.9.0)
       '@kobalte/core':
-        specifier: 0.12.1
+        specifier: 0.12.2
         version: link:../../packages/core
       '@solidjs/meta':
         specifier: 0.29.3
@@ -218,7 +218,7 @@ importers:
         version: 0.1.4(solid-js@1.8.15)
     devDependencies:
       '@kobalte/tests':
-        specifier: ^0.5.0
+        specifier: ^0.6.0
         version: link:../tests
 
   packages/tailwindcss:
