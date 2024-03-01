@@ -27,13 +27,18 @@ const THEME_OPTIONS: ThemeOption[] = [
 	},
 ];
 
+function parseCookie(): MaybeConfigColorMode {
+	const match = document.cookie.match(/(^| )kb-color-mode=([^;]+)/);
+	return match?.[2] as MaybeConfigColorMode;
+}
+
 export function ThemeSelector() {
 	const { colorMode, setColorMode } = useColorMode();
 	const [selectedTheme, setSelectedTheme] = createSignal<ThemeOption>();
 
 	onMount(() => {
 		setSelectedTheme(
-			THEME_OPTIONS.find((option) => option.value === colorMode()),
+			THEME_OPTIONS.find((option) => option.value === parseCookie()),
 		);
 	});
 
