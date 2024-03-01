@@ -96,8 +96,6 @@ function updateHeadings(setter: Setter<TocItem[]>) {
 		return;
 	}
 
-	console.log("update");
-
 	setter(
 		[
 			...document
