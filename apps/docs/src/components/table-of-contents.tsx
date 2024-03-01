@@ -1,14 +1,6 @@
 import { cache, createAsync, useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
-import {
-	Accessor,
-	For,
-	Suspense,
-	createEffect,
-	createSignal,
-	on,
-	onCleanup,
-} from "solid-js";
+import { Accessor, For, Suspense, createEffect, createSignal, on, onCleanup } from "solid-js";
 import { isServer } from "solid-js/web";
 import { mods } from "../app";
 
@@ -36,9 +28,7 @@ function getHeadingsFromToc(tableOfContents: TocItem[]) {
 }
 
 function useCurrentSection(tableOfContents: Accessor<TocItem[] | undefined>) {
-	const [currentSection, setCurrentSection] = createSignal(
-		tableOfContents()?.[0]?.slug,
-	);
+	const [currentSection, setCurrentSection] = createSignal(tableOfContents()?.[0]?.slug);
 
 	createEffect(() => {
 		const toc = tableOfContents();
@@ -96,18 +86,14 @@ function updateHeadings(setter: Setter<TocItem[]>) {
 		return;
 	}
 
-	console.log("update");
-
 	setter(
-		[
-			...document
-				.getElementsByTagName("article")[0]
-				.querySelectorAll("h1, h2, h3, h4, h5, h6"),
-		].map((element) => ({
-			depth: Number(element.tagName.substr(1)),
-			text: element.textContent!,
-			slug: element.id,
-		})),
+		[...document.getElementsByTagName("article")[0].querySelectorAll("h1, h2, h3, h4, h5, h6")].map(
+			element => ({
+				depth: Number(element.tagName.substr(1)),
+				text: element.textContent!,
+				slug: element.id,
+			}),
+		),
 	);
 }
 
@@ -121,7 +107,7 @@ export function TableOfContents() {
 	createEffect(
 		on(
 			() => path.pathname,
-			(pathname) => {
+			pathname => {
 				if (isServer) return;
 
 				updateHeadings(setToc);
@@ -134,12 +120,10 @@ export function TableOfContents() {
 	createEffect(
 		on(
 			() => currentSection(),
-			(currentSection) => {
+			currentSection => {
 				if (isServer) return;
 
-				const element = document.querySelector(
-					`a[data-toc-slug="${currentSection}"]`,
-				);
+				const element = document.querySelector(`a[data-toc-slug="${currentSection}"]`);
 
 				element?.scrollIntoView({
 					behavior: "smooth",
@@ -161,7 +145,7 @@ export function TableOfContents() {
 					</h2>
 					<ol class="mt-3 text-sm">
 						<For each={toc()}>
-							{(section) => (
+							{section => (
 								<li>
 									<h3>
 										<a
