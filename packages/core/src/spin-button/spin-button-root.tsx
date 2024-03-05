@@ -27,7 +27,7 @@ export interface SpinButtonRootOptions extends AsChildProp {
 	translations?: SpinButtonIntlTranslations;
 
 	/** The controlled value of the spin button. */
-	value?: number;
+	value?: number | string;
 
 	/** The string representation of the value. */
 	textValue?: string;
@@ -90,9 +90,6 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 		"minValue",
 		"maxValue",
 		"validationState",
-		"required",
-		"disabled",
-		"readOnly",
 		"onIncrement",
 		"onIncrementPage",
 		"onDecrement",
@@ -123,7 +120,7 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 	) => {
 		callHandler(e, local.onKeyDown);
 
-		if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || local.readOnly) {
+		if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || props.readOnly) {
 			return;
 		}
 
@@ -205,9 +202,9 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 			aria-valuetext={textValue()}
 			aria-valuemin={local.minValue}
 			aria-valuemax={local.maxValue}
-			aria-required={local.required || undefined}
-			aria-disabled={local.disabled || undefined}
-			aria-readonly={local.readOnly || undefined}
+			aria-required={props.required || undefined}
+			aria-disabled={props.disabled || undefined}
+			aria-readonly={props.readOnly || undefined}
 			aria-invalid={local.validationState === "invalid" || undefined}
 			onKeyDown={onKeyDown}
 			onFocus={onFocus}
