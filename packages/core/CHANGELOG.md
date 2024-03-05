@@ -1,5 +1,16 @@
 # @kobalte/core
 
+## 0.12.3
+
+### Patch Changes
+
+- c182d05: ## v0.12.3 (March 5, 2024)
+
+  **New features**
+
+  - Update to Solid Start `0.6.1` ([#354](https://github.com/kobaltedev/kobalte/pull/354))
+  - [New `NumberField` component](/docs/core/components/number-field) ([#354](https://github.com/kobaltedev/kobalte/pull/354))
+
 ## 0.12.2
 
 ### Patch Changes
