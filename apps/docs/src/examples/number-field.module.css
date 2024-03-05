@@ -76,6 +76,52 @@
 	top: -25%;
 }
 
+.number-field__custom-trigger-decrement,
+.number-field__custom-trigger-increment {
+	appearance: none;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: auto;
+	outline: none;
+	border-radius: 6px;
+	padding: 0 16px;
+	background-color: hsl(200 98% 39%);
+	color: white;
+	font-size: 16px;
+	line-height: 0;
+	transition: 250ms background-color;
+	border: 1px solid hsl(240 6% 90%);
+	box-sizing: content-box;
+}
+
+.number-field__custom-trigger-decrement:hover,
+.number-field__custom-trigger-increment:hover {
+	background-color: hsl(201 96% 32%);
+}
+
+.number-field__custom-trigger-decrement {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border-right-style: none;
+}
+
+.number-field__custom-trigger-increment {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-left-style: none;
+}
+
+.number-field__custom-trigger-decrement + input {
+	border-radius: 0;
+}
+
+[data-kb-theme="dark"] .number-field__custom-trigger-decrement,
+[data-kb-theme="dark"] .number-field__custom-trigger-increment {
+	border-color: hsl(240 5% 34%);
+}
+
 .number-field__input:hover {
 	border-color: hsl(240 5% 65%);
 }

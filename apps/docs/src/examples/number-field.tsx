@@ -205,3 +205,58 @@ export function HTMLFormExample() {
 		</form>
 	);
 }
+
+export function TriggersExample() {
+	return (
+		<NumberField.Root class={style["number-field"]}>
+			<NumberField.Label class={style["number-field__label"]}>
+				Quantity
+			</NumberField.Label>
+			<div class={style["number-field__group"]}>
+				<NumberField.DecrementTrigger
+					aria-label="Decrement"
+					class={style["number-field__custom-trigger-decrement"]}
+				>
+					-
+				</NumberField.DecrementTrigger>
+				<NumberField.Input class={style["number-field__input"]} />
+				<NumberField.IncrementTrigger
+					aria-label="Increment"
+					class={style["number-field__custom-trigger-increment"]}
+				>
+					+
+				</NumberField.IncrementTrigger>
+			</div>
+		</NumberField.Root>
+	);
+}
+
+export function FormatExample() {
+	return (
+		<div>
+			<NumberField.Root
+				class={style["number-field"]}
+				formatOptions={{ style: "currency", currency: "USD" }}
+			>
+				<NumberField.Label class={style["number-field__label"]}>
+					Quantity
+				</NumberField.Label>
+				<div class={style["number-field__group"]}>
+					<NumberField.Input class={style["number-field__input"]} />
+					<NumberField.IncrementTrigger
+						aria-label="Increment"
+						class={style["number-field__increment"]}
+					>
+						<ArrowIcon />
+					</NumberField.IncrementTrigger>
+					<NumberField.DecrementTrigger
+						aria-label="Decrement"
+						class={style["number-field__decrement"]}
+					>
+						<ArrowIcon style="transform: rotate(180deg);" />
+					</NumberField.DecrementTrigger>
+				</div>
+			</NumberField.Root>
+		</div>
+	);
+}

@@ -6,6 +6,8 @@ import {
 	BasicExample,
 	DescriptionExample,
 	ErrorMessageExample,
+	FormatExample,
+	TriggersExample,
 } from "../../../../examples/number-field";
 
 # Number Field
@@ -312,6 +314,44 @@ function HTMLFormExample() {
 }
 ```
 
+### Triggers
+
+The number field supports optional increment/decrement triggers that are easily customizable.
+
+<Preview>
+	<TriggersExample />
+</Preview>
+
+```tsx {3,5}
+<NumberField.Root>
+	<NumberField.Label>Quantity</NumberField.Label>
+	<div>
+		<NumberField.DecrementTrigger class="custom-trigger">-</NumberField.DecrementTrigger>
+		<NumberField.Input />
+		<NumberField.IncrementTrigger class="custom-trigger">+</NumberField.IncrementTrigger>
+	</div>
+</NumberField.Root>
+```
+
+### Format
+
+The value of the number field component can be formatted based on the [locale with the `I18NProvider`](/docs/core/components/i18n-provider) and `formatOptions`. For more information see [React Spectrum NumberField](https://react-spectrum.adobe.com/react-spectrum/NumberField.html).
+
+<Preview>
+	<FormatExample />
+</Preview>
+
+```tsx {0}
+<NumberField.Root formatOptions={{ style: "currency", currency: "USD" }}>
+	<NumberField.Label>Quantity</NumberField.Label>
+	<div>
+		<NumberField.Input />
+		<NumberField.IncrementTrigger />
+		<NumberField.DecrementTrigger />
+	</div>
+</NumberField.Root>
+```
+
 ## API Reference
 
 ### NumberField.Root
@@ -329,7 +369,7 @@ function HTMLFormExample() {
 | changeOnWheel    | `boolean` <br/> Whether to increment/decrement on wheel scroll inside the number field.                                                                                                                           |
 | format           | `boolean` <br/> Whether to format the input value.                                                                                                                                                                |
 | formatOptions    | [`Intl.NumberFormatOptions`](https://github.com/microsoft/TypeScript/blob/353ccb7688351ae33ccf6e0acb913aa30621eaf4/src/lib/es2020.intl.d.ts#L243-L251) <br/> Formating options for the value of the number field. |
-| allowedInput     | `RegExp` <br/> Allowed input characters in the number field (only prevents onInput, not paste), defautls to `/[-\d,.\s]/`.                                                                                          |
+| allowedInput     | `RegExp` <br/> Allowed input characters in the number field (only prevents onInput, not paste), defautls to `/[-\d,.\s]/`.                                                                                        |
 | name             | `string` <br/> The name of the NumberField.HiddenInput of the number field, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).        |
 | validationState  | `'valid' \| 'invalid'` <br/> Whether the number field should display its "valid" or "invalid" visual styling.                                                                                                     |
 | required         | `boolean` <br/> Whether the user must fill the number field before the owning form can be submitted.                                                                                                              |
