@@ -37,13 +37,13 @@ export interface NumberFieldRootOptions
 	extends Pick<SpinButtonRootOptions, "textValue" | "translations">,
 		AsChildProp {
 	/** The controlled formatted value of the text field. */
-	value?: number | string;
+	value?: string | number;
 
 	/**
 	 * The default formatted value when initially rendered.
 	 * Useful when you do not need to control the value.
 	 */
-	defaultValue?: number | string;
+	defaultValue?: string | number;
 
 	/** Event handler called when the formatted value of the text field changes. */
 	onChange?: (value: string) => void;
@@ -57,22 +57,22 @@ export interface NumberFieldRootOptions
 	/** The largest value allowed, defaults to `Number.MAX_SAFE_INTEGER`. */
 	maxValue?: number;
 
-	/** Increment/Decrement step (Arrow) */
+	/** Increment/Decrement step (Arrow). */
 	step?: number;
 
-	/** Increment/Decrement step (Page Up/Down), defaults `10 * step` */
+	/** Increment/Decrement step (Page Up/Down), defaults `10 * step`. */
 	largeStep?: number;
 
-	/** Whether to increment/decrement on wheel */
+	/** Whether to increment/decrement on wheel. */
 	changeOnWheel?: boolean;
 
-	/** Whether to format the input value */
+	/** Whether to format the input value. */
 	format?: boolean;
 
-	/** Options for formatting input value */
+	/** Options for formatting input value. */
 	formatOptions?: Intl.NumberFormatOptions;
 
-	/** Allowed input characters, defautls to /[-\d,.\s]/ */
+	/** Allowed input characters, defautls to `/[-\d,.\s]/`. */
 	allowedInput?: RegExp;
 
 	/**
@@ -172,9 +172,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		},
 	});
 
-	onMount(() => {
-		local.onRawValueChange?.(parseRawValue(value()));
-	});
+	local.onRawValueChange?.(parseRawValue(value()));
 
 	const { formControlContext } = createFormControl(formControlProps);
 
@@ -187,6 +185,8 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		},
 	);
 
+	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
+	const [hiddenInputRef, setHiddenInputRef] = createSignal<HTMLInputElement>();
 	const onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
 		if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
 			return;
@@ -194,7 +194,10 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 
 		const target = e.target as HTMLInputElement;
 
-		if (local.allowedInput!.test(e.data || "")) {
+		if (
+			e.inputType !== "insertText" ||
+			local.allowedInput!.test(e.data || "")
+		) {
 			setValue(target.value);
 		}
 
@@ -206,9 +209,6 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		target.value = String(value() ?? "");
 	};
 
-	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
-	const [hiddenInputRef, setHiddenInputRef] = createSignal<HTMLInputElement>();
-
 	const context: NumberFieldContextValue = {
 		value,
 		setValue,
@@ -217,7 +217,10 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		format: () => {
 			if (!local.format) return;
 			let rawValue = context.rawValue();
-			if (Number.isNaN(rawValue)) return;
+			if (Number.isNaN(rawValue)) {
+				if (hiddenInputRef()) hiddenInputRef()!.value = "";
+				return;
+			}
 
 			if (context.minValue())
 				rawValue = Math.max(rawValue, context.minValue()!);
@@ -245,8 +248,8 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		hiddenInputRef,
 		setHiddenInputRef,
 		varyValue: (offset) => {
-			const rawValue = context.rawValue() || 0;
-			if (Number.isNaN(rawValue)) return;
+			let rawValue = context.rawValue() || 0;
+			if (Number.isNaN(rawValue)) rawValue = 0;
 
 			context.setValue(rawValue + offset);
 			context.format();

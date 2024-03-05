@@ -21,7 +21,7 @@ export function NumberFieldHiddenInput(props: NumberFieldHiddenInputProps) {
 				tabIndex={-1}
 				style={{ "font-size": "16px" }}
 				name={formControlContext.name()}
-				value={context.rawValue()}
+				value={Number.isNaN(context.rawValue()) ? "" : context.rawValue()}
 				required={formControlContext.isRequired()}
 				disabled={formControlContext.isDisabled()}
 				readOnly={formControlContext.isReadOnly()}

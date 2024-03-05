@@ -225,7 +225,7 @@ function ControlledExample() {
 
 ### Description
 
-The `NumberField.Description` component can be used to associate additional help text with a text field.
+The `NumberField.Description` component can be used to associate additional help text with a number field.
 
 <Preview>
 	<DescriptionExample />
@@ -253,7 +253,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {9,12}
+```tsx {8,16}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
@@ -261,7 +261,7 @@ function ErrorMessageExample() {
 
 	return (
 		<NumberField.Root
-			onChange={setRawValue}
+			onRawValueChange={setRawValue}
 			validationState={rawValue() !== 40 ? "invalid" : "valid"}
 		>
 			<NumberField.Label>Quantity</NumberField.Label>
@@ -278,13 +278,15 @@ function ErrorMessageExample() {
 
 ### HTML forms
 
-The text field `name` prop can be used for integration with HTML forms.
+The number field `name` prop along with `<NumberField.HiddenInput/>` can be used for integration with HTML forms. Only the raw value is passed to the form.
+
+If the formatted value is wanted (unrecommended) set the `name` attribute on `<NumberField.Input/>`.
 
 <Preview>
 	<HTMLFormExample />
 </Preview>
 
-```tsx {7}
+```tsx {7,9}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.
@@ -292,9 +294,14 @@ function HTMLFormExample() {
 
 	return (
 		<form onSubmit={onSubmit}>
-			<NumberField.Root name="favorite-fruit">
-				<NumberField.Label>Favorite fruit</NumberField.Label>
-				<NumberField.Input />
+			<NumberField.Root name="quantity">
+				<NumberField.Label>Quantity</NumberField.Label>
+				<NumberField.HiddenInput />
+				<div>
+					<NumberField.Input />
+					<NumberField.IncrementTrigger />
+					<NumberField.DecrementTrigger />
+				</div>
 			</NumberField.Root>
 			<div>
 				<button type="reset">Reset</button>
@@ -309,33 +316,35 @@ function HTMLFormExample() {
 
 ### NumberField.Root
 
-| Prop            | Description                                                                                                                                                               |
-| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| value           | `string` <br/> The controlled value of the text field to check.                                                                                                           |
-| defaultValue    | `string` <br/> The default value when initially rendered. Useful when you do not need to control the value.                                                               |
-| onChange        | `(value: string) => void` <br/> Event handler called when the value of the NumberField changes.                                                                           |
-| name            | `string` <br/> The name of the text field, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname). |
-| validationState | `'valid' \| 'invalid'` <br/> Whether the text field should display its "valid" or "invalid" visual styling.                                                               |
-| required        | `boolean` <br/> Whether the user must fill the text field before the owning form can be submitted.                                                                        |
-| disabled        | `boolean` <br/> Whether the text field is disabled.                                                                                                                       |
-| readOnly        | `boolean` <br/> Whether the text field items can be selected but not changed by the user.                                                                                 |
+| Prop             | Description                                                                                                                                                                                                       |
+| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value            | `string \| number` <br/> The controlled value of the number field.                                                                                                                                                |
+| defaultValue     | `string \| number` <br/> The default value when initially rendered. Useful when you do not need to control the value.                                                                                             |
+| onChange         | `(value: string) => void` <br/> Event handler called when the value of the NumberField changes as a formatted value.                                                                                              |
+| onRawValueChange | `(value: number) => void` <br/> Event handler called when the value of the NumberField changes as a number.                                                                                                       |
+| minValue         | `number` <br/> The smallest value allowed in the number field, defaults to `Number.MIN_SAFE_INTEGER`.                                                                                                             |
+| maxValue         | `number` <br/> The largest value allowed in the number field, defaults to `Number.MAX_SAFE_INTEGER`.                                                                                                              |
+| step             | `number` <br/> Increment/Decrement step when using the triggers or the arrows on keyboard in the number field.                                                                                                    |
+| largeStep        | `number` <br/> Increment/Decrement step when using the Page UP/Down keys in the number field, defaults `10 * step`.                                                                                               |
+| changeOnWheel    | `boolean` <br/> Whether to increment/decrement on wheel scroll inside the number field.                                                                                                                           |
+| format           | `boolean` <br/> Whether to format the input value.                                                                                                                                                                |
+| formatOptions    | [`Intl.NumberFormatOptions`](https://github.com/microsoft/TypeScript/blob/353ccb7688351ae33ccf6e0acb913aa30621eaf4/src/lib/es2020.intl.d.ts#L243-L251) <br/> Formating options for the value of the number field. |
+| allowedInput     | `RegExp` <br/> Allowed input characters in the number field (only prevents onInput, not paste), defautls to `/[-\d,.\s]/`.                                                                                          |
+| name             | `string` <br/> The name of the NumberField.HiddenInput of the number field, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).        |
+| validationState  | `'valid' \| 'invalid'` <br/> Whether the number field should display its "valid" or "invalid" visual styling.                                                                                                     |
+| required         | `boolean` <br/> Whether the user must fill the number field before the owning form can be submitted.                                                                                                              |
+| disabled         | `boolean` <br/> Whether the number field is disabled.                                                                                                                                                             |
+| readOnly         | `boolean` <br/> Whether the number field items can be selected but not changed by the user.                                                                                                                       |
 
-| Data attribute | Description                                                                             |
-| :------------- | :-------------------------------------------------------------------------------------- |
-| data-valid     | Present when the text field is valid according to the validation rules.                 |
-| data-invalid   | Present when the text field is invalid according to the validation rules.               |
-| data-required  | Present when the user must fill the text field before the owning form can be submitted. |
-| data-disabled  | Present when the text field is disabled.                                                |
-| data-readonly  | Present when the text field is read only.                                               |
+| Data attribute | Description                                                                               |
+| :------------- | :---------------------------------------------------------------------------------------- |
+| data-valid     | Present when the number field is valid according to the validation rules.                 |
+| data-invalid   | Present when the number field is invalid according to the validation rules.               |
+| data-required  | Present when the user must fill the number field before the owning form can be submitted. |
+| data-disabled  | Present when the number field is disabled.                                                |
+| data-readonly  | Present when the number field is read only.                                               |
 
-`NumberField.Label`, `NumberField.Input`, `NumberField.TextArea`, `NumberField.Description` and `NumberField.ErrorMesssage` share the same data-attributes.
-
-### NumberField.TextArea
-
-| Prop          | Description                                                                               |
-| :------------ | :---------------------------------------------------------------------------------------- |
-| autoResize    | `boolean` <br/> Whether the textarea should adjust its height when the value changes.     |
-| submitOnEnter | `boolean` <br/> Whether the form should be submitted when the user presses the enter key. |
+`NumberField.Label`, `NumberField.Input`, `NumberField.HiddenInput`, `NumberField.Description` and `NumberField.ErrorMesssage` share the same data-attributes.
 
 ### NumberField.ErrorMessage
 
@@ -345,11 +354,13 @@ function HTMLFormExample() {
 
 ## Rendered elements
 
-| Component                  | Default rendered element |
-| :------------------------- | :----------------------- |
-| `NumberField.Root`         | `div`                    |
-| `NumberField.Label`        | `label`                  |
-| `NumberField.Input`        | `input`                  |
-| `NumberField.TextArea`     | `textarea`               |
-| `NumberField.Description`  | `div`                    |
-| `NumberField.ErrorMessage` | `div`                    |
+| Component                      | Default rendered element |
+| :----------------------------- | :----------------------- |
+| `NumberField.Root`             | `div`                    |
+| `NumberField.Label`            | `label`                  |
+| `NumberField.Input`            | `input`                  |
+| `NumberField.HiddenInput`      | `input`                  |
+| `NumberField.IncrementTrigger` | `button`                 |
+| `NumberField.DecrementTrigger` | `button`                 |
+| `NumberField.Description`      | `div`                    |
+| `NumberField.ErrorMessage`     | `div`                    |

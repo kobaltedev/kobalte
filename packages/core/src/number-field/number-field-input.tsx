@@ -45,6 +45,8 @@ export function NumberFieldInput(props: NumberFieldInputProps) {
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
+	context.format();
+
 	onMount(() => {
 		context.format();
 	});

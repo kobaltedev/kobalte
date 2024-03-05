@@ -127,7 +127,7 @@ export function ErrorMessageExample() {
 	return (
 		<NumberField.Root
 			class={style["number-field"]}
-			onChange={setRawValue}
+			onRawValueChange={setRawValue}
 			validationState={rawValue() !== 40 ? "invalid" : "valid"}
 		>
 			<NumberField.Label class={style["number-field__label"]}>
@@ -173,11 +173,26 @@ export function HTMLFormExample() {
 			onSubmit={onSubmit}
 			class="flex flex-col items-center space-y-6"
 		>
-			<NumberField.Root class={style["number-field"]} name="favorite-fruit">
+			<NumberField.Root class={style["number-field"]} name="quantity">
 				<NumberField.Label class={style["number-field__label"]}>
-					Favorite fruit
+					Quantity
 				</NumberField.Label>
-				<NumberField.Input class={style["number-field__input"]} />
+				<NumberField.HiddenInput />
+				<div class={style["number-field__group"]}>
+					<NumberField.Input class={style["number-field__input"]} />
+					<NumberField.IncrementTrigger
+						aria-label="Increment"
+						class={style["number-field__increment"]}
+					>
+						<ArrowIcon />
+					</NumberField.IncrementTrigger>
+					<NumberField.DecrementTrigger
+						aria-label="Decrement"
+						class={style["number-field__decrement"]}
+					>
+						<ArrowIcon style="transform: rotate(180deg);" />
+					</NumberField.DecrementTrigger>
+				</div>
 			</NumberField.Root>
 			<div class="flex space-x-2">
 				<button type="reset" class="kb-button">
