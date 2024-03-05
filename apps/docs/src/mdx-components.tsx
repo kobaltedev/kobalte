@@ -10,11 +10,26 @@ export const mdxComponents = {
 		const [local, others] = splitProps(props, ["children"]);
 
 		return (
-			<h1 {...others}>
+			<h1 data-toc="" {...others}>
 				<MetaTitle>{`${local.children} – Kobalte`}</MetaTitle>
 				{local.children}
 			</h1>
 		);
+	},
+	h2: (props: ComponentProps<"h2">) => {
+		return <h2 data-toc="" {...props} />;
+	},
+	h3: (props: ComponentProps<"h3">) => {
+		return <h3 data-toc="" {...props} />;
+	},
+	h4: (props: ComponentProps<"h4">) => {
+		return <h4 data-toc="" {...props} />;
+	},
+	h5: (props: ComponentProps<"h5">) => {
+		return <h5 data-toc="" {...props} />;
+	},
+	h6: (props: ComponentProps<"h6">) => {
+		return <h6 data-toc="" {...props} />;
 	},
 	code: (props: ComponentProps<"code">) => {
 		const [local, others] = splitProps(props, ["class"]);
