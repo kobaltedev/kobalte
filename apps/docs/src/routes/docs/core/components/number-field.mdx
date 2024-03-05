@@ -1,0 +1,355 @@
+import { Preview, TabsSnippets } from "../../../../components";
+import {
+	ControlledExample,
+	DefaultValueExample,
+	HTMLFormExample,
+	BasicExample,
+	DescriptionExample,
+	ErrorMessageExample,
+} from "../../../../examples/number-field";
+
+# Number Field
+
+A number input that allow users to input custom number entries with a keyboard.
+
+## Import
+
+```ts
+import { NumberField } from "@kobalte/core";
+```
+
+## Features
+
+- Follows the [WAI ARIA Spinbutton](https://www.w3.org/WAI/ARIA/apg/patterns/spinbutton/) design pattern.
+- Built with a native `<input>` element.
+- Visual and ARIA labeling support.
+- Required and invalid states exposed to assistive technology via ARIA.
+- Support for description and error message help text linked to the input via ARIA.
+- Syncs with form reset events.
+- Can be controlled or uncontrolled.
+- Supports increment and decrement buttons.
+- Format and localize input number and raw input.
+- Supports mouse wheel event and all keyboard events.
+
+## Anatomy
+
+The number field consists of:
+
+- **NumberField.Root**: The root container for the number field.
+- **NumberField.Label**: The label that gives the user information on the number field.
+- **NumberField.Input**: The native HTML input of the number field, used for display number.
+- **NumberField.HiddenInput**: The native HTML input of the number field, used for raw number form submition.
+- **NumberField.IncrementTrigger**: The increment button of the number field.
+- **NumberField.DecrementTrigger**: The increment button of the number field.
+- **NumberField.Description**: The description that gives the user more information on the number field.
+- **NumberField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on number field.
+
+```tsx
+<NumberField.Root>
+	<NumberField.Label />
+	<NumberField.Input />
+	<NumberField.HiddenInput />
+	<NumberField.IncrementTrigger />
+	<NumberField.DecrementTrigger />
+	<NumberField.Description />
+	<NumberField.ErrorMessage />
+</NumberField.Root>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { NumberField } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      return (
+        <NumberField.Root class="number-field">
+          <NumberField.Label class="number-field__label">
+            Quantity
+          </NumberField.Label>
+          <div class="number-field__group">
+            <NumberField.Input class="number-field__input" />
+            <NumberField.IncrementTrigger aria-label="Increment" class="number-field__increment"><ArrowUpIcon/></NumberField.IncrementTrigger>
+            <NumberField.DecrementTrigger aria-label="Decrement" class="number-field__decrement"><ArrowDownIcon/></NumberField.DecrementTrigger>
+          </div>
+        </NumberField.Root>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .number-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+      .number-field__label {
+        color: hsl(240 6% 10%);
+        font-size: 14px;
+        font-weight: 500;
+        user-select: none;
+      }
+
+      .number-field__input {
+        display: inline-flex;
+        width: 200px;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 16px;
+        outline: none;
+        background-color: white;
+        border: 1px solid hsl(240 6% 90%);
+        color: hsl(240 4% 16%);
+        transition:
+        border-color 250ms,
+        color 250ms;
+      }
+
+      .number-field__group {
+        position: relative;
+        border-radius: 6px;
+      }
+
+      .number-field__increment {
+        top: .25rem;
+        border-top-left-radius: .25rem;
+        border-top-right-radius: .25rem;
+      }
+
+      .number-field__decrement {
+        bottom: .25rem;
+        border-bottom-left-radius: .25rem;
+        border-bottom-right-radius: .25rem;
+      }
+
+      .number-field__increment, .number-field__decrement {
+        right: .25rem;
+        position: absolute;
+        height: 1rem;
+        width: 1rem;
+        background: rgba(0,0,0,0.1);
+        cursor: default;
+      }
+
+      .number-field__increment:hover, .number-field__decrement:hover {
+        background: rgba(0,0,0,0.2);
+      }
+
+      .number-field__input:hover {
+        border-color: hsl(240 5% 65%);
+      }
+
+      .number-field__input:focus-visible {
+        outline: none;
+      }
+
+      .number-field__group:focus-within {
+        outline: 2px solid hsl(200 98% 39%);
+        outline-offset: 2px;
+      }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Default value
+
+An initial, uncontrolled value can be provided using the `defaultValue` prop.
+
+<Preview>
+	<DefaultValueExample />
+</Preview>
+
+```tsx {0}
+<NumberField.Root defaultValue={40}>
+	<NumberField.Label>Quantity</NumberField.Label>
+	<div>
+		<NumberField.Input />
+		<NumberField.IncrementTrigger />
+		<NumberField.DecrementTrigger />
+	</div>
+</NumberField.Root>
+```
+
+### Controlled value
+
+The `value` prop can be used to make the value controlled. The `onChange` event is fired when the user type into the input and receive the new value.
+The `onRawValueChange` prop is called when the value changes and receives a `number`.
+
+<Preview>
+	<ControlledExample />
+</Preview>
+
+```tsx {3,4,8}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal("40");
+	const [rawValue, setRawValue] = createSignal<number>();
+
+	return (
+		<>
+			<NumberField.Root value={value()} onChange={setValue} onRawValueChange={setRawValue}>
+				<NumberField.Label>Quantity</NumberField.Label>
+				<div>
+					<NumberField.Input />
+					<NumberField.IncrementTrigger />
+					<NumberField.DecrementTrigger />
+				</div>
+			</NumberField.Root>
+			<p>
+				Quantity: {value()}. Raw: {rawValue()}.
+			</p>
+		</>
+	);
+}
+```
+
+### Description
+
+The `NumberField.Description` component can be used to associate additional help text with a text field.
+
+<Preview>
+	<DescriptionExample />
+</Preview>
+
+```tsx {7}
+<NumberField.Root>
+	<NumberField.Label>Quantity</NumberField.Label>
+	<div>
+		<NumberField.Input />
+		<NumberField.IncrementTrigger />
+		<NumberField.DecrementTrigger />
+	</div>
+	<NumberField.Description>Choose a quantity.</NumberField.Description>
+</NumberField.Root>
+```
+
+### Error message
+
+The `NumberField.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the text field as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+<Preview>
+	<ErrorMessageExample />
+</Preview>
+
+```tsx {9,12}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+	const [rawValue, setRawValue] = createSignal<number>();
+
+	return (
+		<NumberField.Root
+			onChange={setRawValue}
+			validationState={rawValue() !== 40 ? "invalid" : "valid"}
+		>
+			<NumberField.Label>Quantity</NumberField.Label>
+			<div>
+				<NumberField.Input />
+				<NumberField.IncrementTrigger />
+				<NumberField.DecrementTrigger />
+			</div>
+			<NumberField.ErrorMessage>Hmm, I prefer 40.</NumberField.ErrorMessage>
+		</NumberField.Root>
+	);
+}
+```
+
+### HTML forms
+
+The text field `name` prop can be used for integration with HTML forms.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx {7}
+function HTMLFormExample() {
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+
+	return (
+		<form onSubmit={onSubmit}>
+			<NumberField.Root name="favorite-fruit">
+				<NumberField.Label>Favorite fruit</NumberField.Label>
+				<NumberField.Input />
+			</NumberField.Root>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
+}
+```
+
+## API Reference
+
+### NumberField.Root
+
+| Prop            | Description                                                                                                                                                               |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| value           | `string` <br/> The controlled value of the text field to check.                                                                                                           |
+| defaultValue    | `string` <br/> The default value when initially rendered. Useful when you do not need to control the value.                                                               |
+| onChange        | `(value: string) => void` <br/> Event handler called when the value of the NumberField changes.                                                                           |
+| name            | `string` <br/> The name of the text field, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname). |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the text field should display its "valid" or "invalid" visual styling.                                                               |
+| required        | `boolean` <br/> Whether the user must fill the text field before the owning form can be submitted.                                                                        |
+| disabled        | `boolean` <br/> Whether the text field is disabled.                                                                                                                       |
+| readOnly        | `boolean` <br/> Whether the text field items can be selected but not changed by the user.                                                                                 |
+
+| Data attribute | Description                                                                             |
+| :------------- | :-------------------------------------------------------------------------------------- |
+| data-valid     | Present when the text field is valid according to the validation rules.                 |
+| data-invalid   | Present when the text field is invalid according to the validation rules.               |
+| data-required  | Present when the user must fill the text field before the owning form can be submitted. |
+| data-disabled  | Present when the text field is disabled.                                                |
+| data-readonly  | Present when the text field is read only.                                               |
+
+`NumberField.Label`, `NumberField.Input`, `NumberField.TextArea`, `NumberField.Description` and `NumberField.ErrorMesssage` share the same data-attributes.
+
+### NumberField.TextArea
+
+| Prop          | Description                                                                               |
+| :------------ | :---------------------------------------------------------------------------------------- |
+| autoResize    | `boolean` <br/> Whether the textarea should adjust its height when the value changes.     |
+| submitOnEnter | `boolean` <br/> Whether the form should be submitted when the user presses the enter key. |
+
+### NumberField.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component                  | Default rendered element |
+| :------------------------- | :----------------------- |
+| `NumberField.Root`         | `div`                    |
+| `NumberField.Label`        | `label`                  |
+| `NumberField.Input`        | `input`                  |
+| `NumberField.TextArea`     | `textarea`               |
+| `NumberField.Description`  | `div`                    |
+| `NumberField.ErrorMessage` | `div`                    |

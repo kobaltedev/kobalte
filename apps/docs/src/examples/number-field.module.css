@@ -1,0 +1,138 @@
+.number-field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.number-field__label {
+	color: hsl(240 6% 10%);
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
+}
+
+.number-field__input {
+	display: inline-flex;
+	width: 200px;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 16px;
+	outline: none;
+	background-color: white;
+	border: 1px solid hsl(240 6% 90%);
+	color: hsl(240 4% 16%);
+	transition:
+		border-color 250ms,
+		color 250ms;
+}
+
+.number-field__group {
+	position: relative;
+	border-radius: 6px;
+}
+
+.number-field__increment {
+	top: 0.25rem;
+	border-top-left-radius: 0.25rem;
+	border-top-right-radius: 0.25rem;
+}
+
+.number-field__decrement {
+	bottom: 0.25rem;
+	border-bottom-left-radius: 0.25rem;
+	border-bottom-right-radius: 0.25rem;
+}
+
+.number-field__increment,
+.number-field__decrement {
+	right: 0.25rem;
+	position: absolute;
+	height: 1rem;
+	width: 1rem;
+	background: rgba(0, 0, 0, 0.1);
+	cursor: default;
+}
+
+.number-field__increment:hover,
+.number-field__decrement:hover {
+	background: rgba(0, 0, 0, 0.2);
+}
+
+[data-kb-theme="dark"] .number-field__increment,
+[data-kb-theme="dark"] .number-field__decrement {
+	background: rgba(0, 0, 0, 0.5);
+}
+
+[data-kb-theme="dark"] .number-field__increment:hover,
+[data-kb-theme="dark"] .number-field__decrement:hover {
+	background: rgba(0, 0, 0, 0.25);
+}
+
+.number-field__decrement svg,
+.number-field__increment svg {
+	height: 150%;
+	left: -25%;
+	position: relative;
+	top: -25%;
+}
+
+.number-field__input:hover {
+	border-color: hsl(240 5% 65%);
+}
+
+.number-field__input:focus-visible {
+	outline: none;
+}
+
+.number-field__group:focus-within {
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
+}
+
+.number-field__input[data-invalid] {
+	border-color: hsl(0 72% 51%);
+	color: hsl(0 72% 51%);
+}
+
+.number-field__input::placeholder {
+	color: hsl(240 4% 46%);
+}
+
+.number-field__description {
+	color: hsl(240 5% 26%);
+	font-size: 12px;
+	user-select: none;
+}
+
+.number-field__error-message {
+	color: hsl(0 72% 51%);
+	font-size: 12px;
+	user-select: none;
+}
+
+[data-kb-theme="dark"] .number-field__input {
+	background-color: hsl(240 4% 16%);
+	border: 1px solid hsl(240 5% 34%);
+	color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .number-field__input:hover {
+	border-color: hsl(240 4% 46%);
+}
+
+[data-kb-theme="dark"] .number-field__input[data-invalid] {
+	border-color: hsl(0 72% 51%);
+	color: hsl(0 72% 51%);
+}
+
+[data-kb-theme="dark"] .number-field__input::placeholder {
+	color: hsl(0 100% 100% / 0.5);
+}
+
+[data-kb-theme="dark"] .number-field__label {
+	color: hsl(240 5% 84%);
+}
+
+[data-kb-theme="dark"] .number-field__description {
+	color: hsl(240 5% 65%);
+}

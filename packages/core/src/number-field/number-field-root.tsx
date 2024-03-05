@@ -11,6 +11,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	onMount,
 	splitProps,
 } from "solid-js";
 
@@ -45,7 +46,7 @@ export interface NumberFieldRootOptions
 	defaultValue?: number | string;
 
 	/** Event handler called when the formatted value of the text field changes. */
-	onChange?: (value: number | string) => void;
+	onChange?: (value: string) => void;
 
 	/** Event handler called when the raw value of the text field changes. */
 	onRawValueChange?: (value: number) => void;
@@ -71,8 +72,8 @@ export interface NumberFieldRootOptions
 	/** Options for formatting input value */
 	formatOptions?: Intl.NumberFormatOptions;
 
-	/** Allowed input characters, defautls to /[\d,\.\s]/ */
-	allowedInput: RegExp;
+	/** Allowed input characters, defautls to /[-\d,.\s]/ */
+	allowedInput?: RegExp;
 
 	/**
 	 * A unique identifier for the component.
@@ -119,7 +120,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 			maxValue: Number.MAX_SAFE_INTEGER,
 			step: 1,
 			changeOnWheel: true,
-			allowedInput: /[\d,\.\s]/,
+			allowedInput: /[-\d,.\s]/,
 		},
 		props,
 	);
@@ -166,9 +167,13 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		value: () => local.value,
 		defaultValue: () => local.defaultValue,
 		onChange: (value) => {
-			local.onChange?.(value);
+			local.onChange?.(String(value));
 			local.onRawValueChange?.(parseRawValue(value));
 		},
+	});
+
+	onMount(() => {
+		local.onRawValueChange?.(parseRawValue(value()));
 	});
 
 	const { formControlContext } = createFormControl(formControlProps);
@@ -189,7 +194,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 
 		const target = e.target as HTMLInputElement;
 
-		if (local.allowedInput.test(e.data || "")) {
+		if (local.allowedInput!.test(e.data || "")) {
 			setValue(target.value);
 		}
 
