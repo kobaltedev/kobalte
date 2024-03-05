@@ -14,10 +14,7 @@ import {
 } from "../form-control";
 import { AsChildProp } from "../polymorphic";
 import * as SpinButton from "../spin-button";
-import {
-	NumberFieldContextValue,
-	useNumberFieldContext,
-} from "./number-field-context";
+import { useNumberFieldContext } from "./number-field-context";
 
 export interface NumberFieldInputProps
 	extends Omit<

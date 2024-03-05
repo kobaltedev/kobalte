@@ -17,7 +17,7 @@ export function NumberFieldHiddenInput(props: NumberFieldHiddenInputProps) {
 		<div style={visuallyHiddenStyles} aria-hidden="true">
 			<input
 				ref={mergeRefs(context.setHiddenInputRef, local.ref)}
-				type="number"
+				type="text"
 				tabIndex={-1}
 				style={{ "font-size": "16px" }}
 				name={formControlContext.name()}

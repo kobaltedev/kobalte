@@ -71,6 +71,9 @@ export interface NumberFieldRootOptions
 	/** Options for formatting input value */
 	formatOptions?: Intl.NumberFormatOptions;
 
+	/** Allowed input characters, defautls to /[\d,\.\s]/ */
+	allowedInput: RegExp;
+
 	/**
 	 * A unique identifier for the component.
 	 * The id is used to generate id attributes for nested components.
@@ -116,6 +119,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 			maxValue: Number.MAX_SAFE_INTEGER,
 			step: 1,
 			changeOnWheel: true,
+			allowedInput: /[\d,\.\s]/,
 		},
 		props,
 	);
@@ -138,6 +142,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 			"largeStep",
 			"changeOnWheel",
 			"translations",
+			"allowedInput",
 		],
 		FORM_CONTROL_PROP_NAMES,
 	);
@@ -184,7 +189,9 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 
 		const target = e.target as HTMLInputElement;
 
-		setValue(target.value);
+		if (local.allowedInput.test(e.data || "")) {
+			setValue(target.value);
+		}
 
 		// Unlike in React, inputs `value` can be out of sync with our value state.
 		// even if an input is controlled (ex: `<input value="foo" />`,
