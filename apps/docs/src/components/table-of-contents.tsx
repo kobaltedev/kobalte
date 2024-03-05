@@ -100,7 +100,9 @@ function updateHeadings(setter: Setter<TocItem[]>) {
 		[
 			...document
 				.getElementsByTagName("article")[0]
-				.querySelectorAll("h1, h2, h3, h4, h5, h6"),
+				.querySelectorAll(
+					"h1[data-toc], h2[data-toc], h3[data-toc], h4[data-toc], h5[data-toc], h6[data-toc]",
+				),
 		].map((element) => ({
 			depth: Number(element.tagName.substr(1)),
 			text: element.textContent!,
