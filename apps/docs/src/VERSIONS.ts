@@ -18,4 +18,4 @@ export const LATEST_CORE_CHANGELOG_URL = `/docs/changelog/${CORE_VERSIONS[0].rep
 	"-",
 )}`;
 
-export const LATEST_CORE_VERSION_NAME = "v0.12.2";
+export const LATEST_CORE_VERSION_NAME = "v0.12.3";
