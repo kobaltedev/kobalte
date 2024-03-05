@@ -32,6 +32,7 @@ import { NumberField } from "@kobalte/core";
 - Supports increment and decrement buttons.
 - Format and localize input number and raw input.
 - Supports mouse wheel event and all keyboard events.
+- Supports browser autofill.
 
 ## Anatomy
 
@@ -344,6 +345,22 @@ The value of the number field component can be formatted based on the [locale wi
 ```tsx {0}
 <NumberField.Root formatOptions={{ style: "currency", currency: "USD" }}>
 	<NumberField.Label>Quantity</NumberField.Label>
+	<div>
+		<NumberField.Input />
+		<NumberField.IncrementTrigger />
+		<NumberField.DecrementTrigger />
+	</div>
+</NumberField.Root>
+```
+
+### Autofill
+
+The number field supports autofill through `NumberField.HiddenInput`.
+
+```tsx {2}
+<NumberField.Root>
+	<NumberField.Label>Quantity</NumberField.Label>
+	<NumberField.HiddenInput />
 	<div>
 		<NumberField.Input />
 		<NumberField.IncrementTrigger />
