@@ -103,83 +103,85 @@ function rehypeCollectHeadings() {
 }
 
 export default defineConfig({
-	start: {
-		server: {
-			preset:
-				process.env.GITHUB_ACTIONS || process.env.DEVELOPMENT
-					? "node-server"
-					: "netlify",
-			experimental: {
-				asyncContext: true,
-			},
-		},
-
-		extensions: ["mdx", "md"],
-		// @ts-ignore: type should be optional, bugged in @solidjs/start@0.4.11
-		solid: {
-			extensions: ["mdx", "md"],
+	server: {
+		preset:
+			process.env.GITHUB_ACTIONS || process.env.DEVELOPMENT
+				? "node-server"
+				: "netlify",
+		experimental: {
+			asyncContext: true,
 		},
 	},
-	plugins: [
-		vinxiMdx.withImports({})({
-			jsx: true,
-			jsxImportSource: "solid-js",
-			providerImportSource: "solid-mdx",
-			rehypePlugins: [
-				rehypePrettyCode,
-				rehypeSlug,
-				[rehypeRaw, { passThrough: nodeTypes }],
-				//				rehypeCollectHeadings,
-			],
-			remarkPlugins: [
-				remarkGfm,
-				[
-					// @ts-ignore
-					remarkShikiTwoslash.default,
-					{
-						disableImplicitReactImport: true,
-						includeJSDocInHover: true,
-						themes: ["github-light", "github-dark"],
-						defaultOptions: {
-							lib: ["dom", "es2015"],
-						},
-						defaultCompilerOptions: {
-							allowSyntheticDefaultImports: true,
-							esModuleInterop: true,
-							target: "ESNext",
-							module: "ESNext",
-							lib: ["dom", "es2015"],
-							jsxImportSource: "solid-js",
-							jsx: "preserve",
-							types: ["vite/client"],
-							paths: {
-								"~/*": ["./src/*"],
+
+	extensions: ["mdx", "md"],
+	// @ts-ignore: type should be optional, bugged in @solidjs/start@0.6.1
+	solid: {
+		extensions: ["mdx", "md"],
+	},
+	vite() {
+		return {
+			plugins: [
+				vinxiMdx.withImports({})({
+					jsx: true,
+					jsxImportSource: "solid-js",
+					providerImportSource: "solid-mdx",
+					rehypePlugins: [
+						rehypePrettyCode,
+						rehypeSlug,
+						[rehypeRaw, { passThrough: nodeTypes }],
+						//				rehypeCollectHeadings,
+					],
+					remarkPlugins: [
+						remarkGfm,
+						[
+							// @ts-ignore
+							remarkShikiTwoslash.default,
+							{
+								disableImplicitReactImport: true,
+								includeJSDocInHover: true,
+								themes: ["github-light", "github-dark"],
+								defaultOptions: {
+									lib: ["dom", "es2015"],
+								},
+								defaultCompilerOptions: {
+									allowSyntheticDefaultImports: true,
+									esModuleInterop: true,
+									target: "ESNext",
+									module: "ESNext",
+									lib: ["dom", "es2015"],
+									jsxImportSource: "solid-js",
+									jsx: "preserve",
+									types: ["vite/client"],
+									paths: {
+										"~/*": ["./src/*"],
+									},
+								},
 							},
-						},
-					},
-				],
+						],
+					],
+				}),
+				//		{
+				//			name: "mdx-meta",
+				//			async transform(code: any, id: any) {
+				//				if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
+				//					const replacedId = id.replace(/\?meta$/, "");
+				//
+				//					if (headingsCache.has(replacedId)) {
+				//						return {
+				//							code: `
+				//	              export function getHeadings() {
+				//									return ${JSON.stringify(headingsCache.get(id), null, 2)}
+				//	              }
+				//							`,
+				//						};
+				//					}
+				//				}
+				//			},
+				//		},
 			],
-		}),
-		//		{
-		//			name: "mdx-meta",
-		//			async transform(code: any, id: any) {
-		//				if (id.endsWith(".mdx?meta") || id.endsWith(".md?meta")) {
-		//					const replacedId = id.replace(/\?meta$/, "");
-		//
-		//					if (headingsCache.has(replacedId)) {
-		//						return {
-		//							code: `
-		//	              export function getHeadings() {
-		//									return ${JSON.stringify(headingsCache.get(id), null, 2)}
-		//	              }
-		//							`,
-		//						};
-		//					}
-		//				}
-		//			},
-		//		},
-	],
-	ssr: {
-		noExternal: ["@tanstack/solid-virtual"],
+			ssr: {
+				noExternal: ["@tanstack/solid-virtual"],
+			},
+		};
 	},
 });

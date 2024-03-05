@@ -255,3 +255,17 @@ export function LoaderIcon(props: ComponentProps<"svg">) {
 		</svg>
 	);
 }
+
+export function ArrowIcon(props: ComponentProps<"svg">) {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+			{...props}
+		>
+			<title>Arrow</title>
+			<path d="M12 10L16 14H8L12 10Z" />
+		</svg>
+	);
+}

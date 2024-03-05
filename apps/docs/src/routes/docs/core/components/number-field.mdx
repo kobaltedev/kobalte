@@ -1,0 +1,423 @@
+import { Preview, TabsSnippets } from "../../../../components";
+import {
+	ControlledExample,
+	DefaultValueExample,
+	HTMLFormExample,
+	BasicExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	FormatExample,
+	TriggersExample,
+} from "../../../../examples/number-field";
+
+# Number Field
+
+A number input that allow users to input custom number entries with a keyboard.
+
+## Import
+
+```ts
+import { NumberField } from "@kobalte/core";
+```
+
+## Features
+
+- Follows the [WAI ARIA Spinbutton](https://www.w3.org/WAI/ARIA/apg/patterns/spinbutton/) design pattern.
+- Built with a native `<input>` element.
+- Visual and ARIA labeling support.
+- Required and invalid states exposed to assistive technology via ARIA.
+- Support for description and error message help text linked to the input via ARIA.
+- Syncs with form reset events.
+- Can be controlled or uncontrolled.
+- Supports increment and decrement buttons.
+- Format and localize input number and raw input.
+- Supports mouse wheel event and all keyboard events.
+- Supports browser autofill.
+
+## Anatomy
+
+The number field consists of:
+
+- **NumberField.Root**: The root container for the number field.
+- **NumberField.Label**: The label that gives the user information on the number field.
+- **NumberField.Input**: The native HTML input of the number field, used for display number.
+- **NumberField.HiddenInput**: The native HTML input of the number field, used for raw number form submition.
+- **NumberField.IncrementTrigger**: The increment button of the number field.
+- **NumberField.DecrementTrigger**: The increment button of the number field.
+- **NumberField.Description**: The description that gives the user more information on the number field.
+- **NumberField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on number field.
+
+```tsx
+<NumberField.Root>
+	<NumberField.Label />
+	<NumberField.Input />
+	<NumberField.HiddenInput />
+	<NumberField.IncrementTrigger />
+	<NumberField.DecrementTrigger />
+	<NumberField.Description />
+	<NumberField.ErrorMessage />
+</NumberField.Root>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { NumberField } from "@kobalte/core";
+    import "./style.css";
+
+    function App() {
+      return (
+        <NumberField.Root class="number-field">
+          <NumberField.Label class="number-field__label">
+            Quantity
+          </NumberField.Label>
+          <div class="number-field__group">
+            <NumberField.Input class="number-field__input" />
+            <NumberField.IncrementTrigger aria-label="Increment" class="number-field__increment"><ArrowUpIcon/></NumberField.IncrementTrigger>
+            <NumberField.DecrementTrigger aria-label="Decrement" class="number-field__decrement"><ArrowDownIcon/></NumberField.DecrementTrigger>
+          </div>
+        </NumberField.Root>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .number-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+      .number-field__label {
+        color: hsl(240 6% 10%);
+        font-size: 14px;
+        font-weight: 500;
+        user-select: none;
+      }
+
+      .number-field__input {
+        display: inline-flex;
+        width: 200px;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 16px;
+        outline: none;
+        background-color: white;
+        border: 1px solid hsl(240 6% 90%);
+        color: hsl(240 4% 16%);
+        transition:
+        border-color 250ms,
+        color 250ms;
+      }
+
+      .number-field__group {
+        position: relative;
+        border-radius: 6px;
+      }
+
+      .number-field__increment {
+        top: .25rem;
+        border-top-left-radius: .25rem;
+        border-top-right-radius: .25rem;
+      }
+
+      .number-field__decrement {
+        bottom: .25rem;
+        border-bottom-left-radius: .25rem;
+        border-bottom-right-radius: .25rem;
+      }
+
+      .number-field__increment, .number-field__decrement {
+        right: .25rem;
+        position: absolute;
+        height: 1rem;
+        width: 1rem;
+        background: rgba(0,0,0,0.1);
+        cursor: default;
+      }
+
+      .number-field__increment:hover, .number-field__decrement:hover {
+        background: rgba(0,0,0,0.2);
+      }
+
+      .number-field__input:hover {
+        border-color: hsl(240 5% 65%);
+      }
+
+      .number-field__input:focus-visible {
+        outline: none;
+      }
+
+      .number-field__group:focus-within {
+        outline: 2px solid hsl(200 98% 39%);
+        outline-offset: 2px;
+      }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Default value
+
+An initial, uncontrolled value can be provided using the `defaultValue` prop.
+
+<Preview>
+	<DefaultValueExample />
+</Preview>
+
+```tsx {0}
+<NumberField.Root defaultValue={40}>
+	<NumberField.Label>Quantity</NumberField.Label>
+	<div>
+		<NumberField.Input />
+		<NumberField.IncrementTrigger />
+		<NumberField.DecrementTrigger />
+	</div>
+</NumberField.Root>
+```
+
+### Controlled value
+
+The `value` prop can be used to make the value controlled. The `onChange` event is fired when the user type into the input and receive the new value.
+The `onRawValueChange` prop is called when the value changes and receives a `number`.
+
+<Preview>
+	<ControlledExample />
+</Preview>
+
+```tsx {3,4,8}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal("40");
+	const [rawValue, setRawValue] = createSignal<number>();
+
+	return (
+		<>
+			<NumberField.Root value={value()} onChange={setValue} onRawValueChange={setRawValue}>
+				<NumberField.Label>Quantity</NumberField.Label>
+				<div>
+					<NumberField.Input />
+					<NumberField.IncrementTrigger />
+					<NumberField.DecrementTrigger />
+				</div>
+			</NumberField.Root>
+			<p>
+				Quantity: {value()}. Raw: {rawValue()}.
+			</p>
+		</>
+	);
+}
+```
+
+### Description
+
+The `NumberField.Description` component can be used to associate additional help text with a number field.
+
+<Preview>
+	<DescriptionExample />
+</Preview>
+
+```tsx {7}
+<NumberField.Root>
+	<NumberField.Label>Quantity</NumberField.Label>
+	<div>
+		<NumberField.Input />
+		<NumberField.IncrementTrigger />
+		<NumberField.DecrementTrigger />
+	</div>
+	<NumberField.Description>Choose a quantity.</NumberField.Description>
+</NumberField.Root>
+```
+
+### Error message
+
+The `NumberField.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the text field as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+<Preview>
+	<ErrorMessageExample />
+</Preview>
+
+```tsx {8,16}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+	const [rawValue, setRawValue] = createSignal<number>();
+
+	return (
+		<NumberField.Root
+			onRawValueChange={setRawValue}
+			validationState={rawValue() !== 40 ? "invalid" : "valid"}
+		>
+			<NumberField.Label>Quantity</NumberField.Label>
+			<div>
+				<NumberField.Input />
+				<NumberField.IncrementTrigger />
+				<NumberField.DecrementTrigger />
+			</div>
+			<NumberField.ErrorMessage>Hmm, I prefer 40.</NumberField.ErrorMessage>
+		</NumberField.Root>
+	);
+}
+```
+
+### HTML forms
+
+The number field `name` prop along with `<NumberField.HiddenInput/>` can be used for integration with HTML forms. Only the raw value is passed to the form.
+
+If the formatted value is wanted (unrecommended) set the `name` attribute on `<NumberField.Input/>`.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx {7,9}
+function HTMLFormExample() {
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+
+	return (
+		<form onSubmit={onSubmit}>
+			<NumberField.Root name="quantity">
+				<NumberField.Label>Quantity</NumberField.Label>
+				<NumberField.HiddenInput />
+				<div>
+					<NumberField.Input />
+					<NumberField.IncrementTrigger />
+					<NumberField.DecrementTrigger />
+				</div>
+			</NumberField.Root>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
+}
+```
+
+### Triggers
+
+The number field supports optional increment/decrement triggers that are easily customizable.
+
+<Preview>
+	<TriggersExample />
+</Preview>
+
+```tsx {3,5}
+<NumberField.Root>
+	<NumberField.Label>Quantity</NumberField.Label>
+	<div>
+		<NumberField.DecrementTrigger class="custom-trigger">-</NumberField.DecrementTrigger>
+		<NumberField.Input />
+		<NumberField.IncrementTrigger class="custom-trigger">+</NumberField.IncrementTrigger>
+	</div>
+</NumberField.Root>
+```
+
+### Format
+
+The value of the number field component can be formatted based on the [locale with the `I18NProvider`](/docs/core/components/i18n-provider) and `formatOptions`. For more information see [React Spectrum NumberField](https://react-spectrum.adobe.com/react-spectrum/NumberField.html).
+
+<Preview>
+	<FormatExample />
+</Preview>
+
+```tsx {0}
+<NumberField.Root formatOptions={{ style: "currency", currency: "USD" }}>
+	<NumberField.Label>Quantity</NumberField.Label>
+	<div>
+		<NumberField.Input />
+		<NumberField.IncrementTrigger />
+		<NumberField.DecrementTrigger />
+	</div>
+</NumberField.Root>
+```
+
+### Autofill
+
+The number field supports autofill through `NumberField.HiddenInput`.
+
+```tsx {2}
+<NumberField.Root>
+	<NumberField.Label>Quantity</NumberField.Label>
+	<NumberField.HiddenInput />
+	<div>
+		<NumberField.Input />
+		<NumberField.IncrementTrigger />
+		<NumberField.DecrementTrigger />
+	</div>
+</NumberField.Root>
+```
+
+## API Reference
+
+### NumberField.Root
+
+| Prop             | Description                                                                                                                                                                                                       |
+| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value            | `string \| number` <br/> The controlled value of the number field.                                                                                                                                                |
+| defaultValue     | `string \| number` <br/> The default value when initially rendered. Useful when you do not need to control the value.                                                                                             |
+| onChange         | `(value: string) => void` <br/> Event handler called when the value of the NumberField changes as a formatted value.                                                                                              |
+| onRawValueChange | `(value: number) => void` <br/> Event handler called when the value of the NumberField changes as a number.                                                                                                       |
+| minValue         | `number` <br/> The smallest value allowed in the number field, defaults to `Number.MIN_SAFE_INTEGER`.                                                                                                             |
+| maxValue         | `number` <br/> The largest value allowed in the number field, defaults to `Number.MAX_SAFE_INTEGER`.                                                                                                              |
+| step             | `number` <br/> Increment/Decrement step when using the triggers or the arrows on keyboard in the number field.                                                                                                    |
+| largeStep        | `number` <br/> Increment/Decrement step when using the Page UP/Down keys in the number field, defaults `10 * step`.                                                                                               |
+| changeOnWheel    | `boolean` <br/> Whether to increment/decrement on wheel scroll inside the number field.                                                                                                                           |
+| format           | `boolean` <br/> Whether to format the input value.                                                                                                                                                                |
+| formatOptions    | [`Intl.NumberFormatOptions`](https://github.com/microsoft/TypeScript/blob/353ccb7688351ae33ccf6e0acb913aa30621eaf4/src/lib/es2020.intl.d.ts#L243-L251) <br/> Formating options for the value of the number field. |
+| allowedInput     | `RegExp` <br/> Allowed input characters in the number field (only prevents onInput, not paste), defautls to `/[-\d,.\s]/`.                                                                                        |
+| name             | `string` <br/> The name of the NumberField.HiddenInput of the number field, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).        |
+| validationState  | `'valid' \| 'invalid'` <br/> Whether the number field should display its "valid" or "invalid" visual styling.                                                                                                     |
+| required         | `boolean` <br/> Whether the user must fill the number field before the owning form can be submitted.                                                                                                              |
+| disabled         | `boolean` <br/> Whether the number field is disabled.                                                                                                                                                             |
+| readOnly         | `boolean` <br/> Whether the number field items can be selected but not changed by the user.                                                                                                                       |
+
+| Data attribute | Description                                                                               |
+| :------------- | :---------------------------------------------------------------------------------------- |
+| data-valid     | Present when the number field is valid according to the validation rules.                 |
+| data-invalid   | Present when the number field is invalid according to the validation rules.               |
+| data-required  | Present when the user must fill the number field before the owning form can be submitted. |
+| data-disabled  | Present when the number field is disabled.                                                |
+| data-readonly  | Present when the number field is read only.                                               |
+
+`NumberField.Label`, `NumberField.Input`, `NumberField.HiddenInput`, `NumberField.Description` and `NumberField.ErrorMesssage` share the same data-attributes.
+
+### NumberField.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component                      | Default rendered element |
+| :----------------------------- | :----------------------- |
+| `NumberField.Root`             | `div`                    |
+| `NumberField.Label`            | `label`                  |
+| `NumberField.Input`            | `input`                  |
+| `NumberField.HiddenInput`      | `input`                  |
+| `NumberField.IncrementTrigger` | `button`                 |
+| `NumberField.DecrementTrigger` | `button`                 |
+| `NumberField.Description`      | `div`                    |
+| `NumberField.ErrorMessage`     | `div`                    |

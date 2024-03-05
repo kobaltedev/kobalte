@@ -26,7 +26,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Polymorphism",
 				href: "/docs/core/overview/polymorphism",
-				status: "updated",
 			},
 			{
 				title: "Server side rendering",
@@ -53,7 +52,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Breadcrumbs",
 				href: "/docs/core/components/breadcrumbs",
-				status: "updated",
 			},
 			{
 				title: "Button",
@@ -70,7 +68,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Combobox",
 				href: "/docs/core/components/combobox",
-				status: "updated",
 			},
 			{
 				title: "Context Menu",
@@ -79,7 +76,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Dialog",
 				href: "/docs/core/components/dialog",
-				status: "updated",
 			},
 			{
 				title: "Dropdown Menu",
@@ -100,6 +96,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Menubar",
 				href: "/docs/core/components/menubar",
+			},
+			{
+				title: "Number Field",
+				href: "/docs/core/components/number-field",
 				status: "new",
 			},
 			{
@@ -109,7 +109,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Popover",
 				href: "/docs/core/components/popover",
-				status: "updated",
 			},
 			{
 				title: "Progress",
@@ -150,7 +149,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Toast",
 				href: "/docs/core/components/toast",
-				status: "updated",
 			},
 			{
 				title: "Toggle Button",
