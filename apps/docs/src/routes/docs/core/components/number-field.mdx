@@ -194,14 +194,16 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
 ### Controlled value
 
-The `value` prop can be used to make the value controlled. The `onChange` event is fired when the user type into the input and receive the new value.
+The `value` and `rawValue` props can be used to make the value controlled.
+It is recommended to only use the `rawValue` as it is of type `number`.
+The `onChange` event is fired when the user type into the input and receive the new value.
 The `onRawValueChange` prop is called when the value changes and receives a `number`.
 
 <Preview>
 	<ControlledExample />
 </Preview>
 
-```tsx {3,4,8}
+```tsx {3,4,9-12}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
@@ -210,7 +212,12 @@ function ControlledExample() {
 
 	return (
 		<>
-			<NumberField.Root value={value()} onChange={setValue} onRawValueChange={setRawValue}>
+			<NumberField.Root
+				value={value()}
+				onChange={setValue}
+				rawValue={rawValue()}
+				onRawValueChange={setRawValue}
+			>
 				<NumberField.Label>Quantity</NumberField.Label>
 				<div>
 					<NumberField.Input />
@@ -343,8 +350,8 @@ The value of the number field component can be formatted based on the [locale wi
 </Preview>
 
 ```tsx {0}
-<NumberField.Root formatOptions={{ style: "currency", currency: "USD" }}>
-	<NumberField.Label>Quantity</NumberField.Label>
+<NumberField.Root formatOptions={{ style: "currency", currency: "USD" }} defaultValue={4}>
+	<NumberField.Label>Price</NumberField.Label>
 	<div>
 		<NumberField.Input />
 		<NumberField.IncrementTrigger />
@@ -375,9 +382,10 @@ The number field supports autofill through `NumberField.HiddenInput`.
 
 | Prop             | Description                                                                                                                                                                                                       |
 | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value            | `string \| number` <br/> The controlled value of the number field.                                                                                                                                                |
+| value            | `string \| number` <br/> The controlled formatted value of the number field.                                                                                                                                      |
 | defaultValue     | `string \| number` <br/> The default value when initially rendered. Useful when you do not need to control the value.                                                                                             |
 | onChange         | `(value: string) => void` <br/> Event handler called when the value of the NumberField changes as a formatted value.                                                                                              |
+| rawValue         | `number` <br/> The controlled raw value of the number field.                                                                                                                                                      |
 | onRawValueChange | `(value: number) => void` <br/> Event handler called when the value of the NumberField changes as a number.                                                                                                       |
 | minValue         | `number` <br/> The smallest value allowed in the number field, defaults to `Number.MIN_SAFE_INTEGER`.                                                                                                             |
 | maxValue         | `number` <br/> The largest value allowed in the number field, defaults to `Number.MAX_SAFE_INTEGER`.                                                                                                              |

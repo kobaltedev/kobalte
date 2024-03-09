@@ -64,6 +64,7 @@ export function ControlledExample() {
 				class={style["number-field"]}
 				value={value()}
 				onChange={setValue}
+				rawValue={rawValue()}
 				onRawValueChange={setRawValue}
 			>
 				<NumberField.Label class={style["number-field__label"]}>
@@ -237,9 +238,10 @@ export function FormatExample() {
 			<NumberField.Root
 				class={style["number-field"]}
 				formatOptions={{ style: "currency", currency: "USD" }}
+				defaultValue={4}
 			>
 				<NumberField.Label class={style["number-field__label"]}>
-					Quantity
+					Price
 				</NumberField.Label>
 				<div class={style["number-field__group"]}>
 					<NumberField.Input class={style["number-field__input"]} />

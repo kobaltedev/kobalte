@@ -6,6 +6,7 @@ export interface NumberFieldContextValue {
 	setValue: (value: number | string) => void;
 	rawValue: Accessor<number>;
 	generateId: (part: string) => string;
+	formatNumber: (number: number) => string;
 	format: () => void;
 	onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent>;
 	textValue: Accessor<string | undefined>;
