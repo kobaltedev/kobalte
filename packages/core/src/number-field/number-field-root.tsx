@@ -8,10 +8,11 @@ import {
 } from "@kobalte/utils";
 import {
 	JSX,
+	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	onMount,
+	on,
 	splitProps,
 } from "solid-js";
 
@@ -36,7 +37,7 @@ import {
 export interface NumberFieldRootOptions
 	extends Pick<SpinButtonRootOptions, "textValue" | "translations">,
 		AsChildProp {
-	/** The controlled formatted value of the text field. */
+	/** The controlled formatted value of the number field. */
 	value?: string | number;
 
 	/**
@@ -45,10 +46,13 @@ export interface NumberFieldRootOptions
 	 */
 	defaultValue?: string | number;
 
-	/** Event handler called when the formatted value of the text field changes. */
+	/** Event handler called when the formatted value of the number field changes. */
 	onChange?: (value: string) => void;
 
-	/** Event handler called when the raw value of the text field changes. */
+	/** The controlled raw value of the number field. */
+	rawValue?: number;
+
+	/** Event handler called when the raw value of the number field changes. */
 	onRawValueChange?: (value: number) => void;
 
 	/** The smallest value allowed, defaults to `Number.MIN_SAFE_INTEGER`. */
@@ -132,6 +136,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 			"value",
 			"defaultValue",
 			"onChange",
+			"rawValue",
 			"onRawValueChange",
 			"translations",
 			"format",
@@ -165,7 +170,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 
 	const [value, setValue] = createControllableSignal({
 		value: () => local.value,
-		defaultValue: () => local.defaultValue,
+		defaultValue: () => local.defaultValue ?? local.rawValue,
 		onChange: (value) => {
 			local.onChange?.(String(value));
 			local.onRawValueChange?.(parseRawValue(value));
@@ -214,9 +219,11 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		setValue,
 		rawValue: () => parseRawValue(value()),
 		generateId: createGenerateId(() => access(formControlProps.id)!),
+		formatNumber: (number: number) => numberFormatter().format(number),
 		format: () => {
 			if (!local.format) return;
 			let rawValue = context.rawValue();
+
 			if (Number.isNaN(rawValue)) {
 				if (hiddenInputRef()) hiddenInputRef()!.value = "";
 				return;
@@ -227,7 +234,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 			if (context.maxValue())
 				rawValue = Math.min(rawValue, context.maxValue()!);
 
-			const formattedValue = numberFormatter().format(rawValue);
+			const formattedValue = context.formatNumber(rawValue);
 
 			// biome-ignore lint/suspicious/noDoubleEquals: loose comparison
 			if (value() != formattedValue) setValue(formattedValue);
@@ -255,6 +262,19 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 			context.format();
 		},
 	};
+
+	createEffect(
+		on(
+			() => local.rawValue,
+			(rawValue) => {
+				if (rawValue !== context.rawValue()) {
+					setValue(rawValue ?? "");
+					context.format();
+				}
+			},
+			{ defer: true },
+		),
+	);
 
 	return (
 		<FormControlContext.Provider value={formControlContext}>

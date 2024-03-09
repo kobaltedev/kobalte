@@ -12,7 +12,7 @@ import {
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { AsChildProp } from "../polymorphic";
+import { As, AsChildProp } from "../polymorphic";
 import * as SpinButton from "../spin-button";
 import { useNumberFieldContext } from "./number-field-context";
 
@@ -45,55 +45,13 @@ export function NumberFieldInput(props: NumberFieldInputProps) {
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
-	context.format();
-
-	onMount(() => {
-		context.format();
-	});
-
 	return (
-		// @ts-ignore: Polymorphic error
 		<SpinButton.Root
-			// @ts-ignore: Polymorphic error
-			ref={mergeRefs(context.setInputRef, local.ref)}
-			as="input"
-			type="text"
-			id={fieldProps.id()}
 			value={context.value()}
+			validationState={formControlContext.validationState()}
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readOnly={formControlContext.isReadOnly()}
-			aria-label={fieldProps.ariaLabel()}
-			aria-labelledby={fieldProps.ariaLabelledBy()}
-			aria-describedby={fieldProps.ariaDescribedBy()}
-			validationState={formControlContext.validationState()}
-			aria-required={formControlContext.isRequired() || undefined}
-			aria-disabled={formControlContext.isDisabled() || undefined}
-			aria-readonly={formControlContext.isReadOnly() || undefined}
-			onInput={composeEventHandlers([local.onInput, context.onInput])}
-			onChange={(e) => {
-				// @ts-ignore: Polymorphic error
-				callHandler(e, local.onChange);
-
-				// format on change end
-				context.format();
-			}}
-			// @ts-ignore: Polymorphic error
-			onWheel={(e) => {
-				// @ts-ignore: Polymorphic error
-				callHandler(e, local.onWheel);
-
-				if (
-					!context.changeOnWheel() ||
-					document.activeElement !== context.inputRef()
-				)
-					return;
-
-				e.preventDefault();
-
-				if (e.deltaY < 0) context.varyValue(context.step());
-				else context.varyValue(-context.step());
-			}}
 			textValue={context.textValue()}
 			minValue={context.minValue()}
 			maxValue={context.maxValue()}
@@ -118,8 +76,53 @@ export function NumberFieldInput(props: NumberFieldInputProps) {
 				context.format();
 			}}
 			translations={context.translations()}
-			{...formControlContext.dataset()}
-			{...others}
-		/>
+			asChild
+		>
+			{/* @ts-ignore: Polymorphic error */}
+			<As
+				component={"input"}
+				type="text"
+				// @ts-ignore: Polymorphic error
+				ref={mergeRefs(context.setInputRef, local.ref)}
+				id={fieldProps.id()}
+				value={
+					Number.isNaN(context.rawValue())
+						? ""
+						: context.formatNumber(context.rawValue())
+				}
+				required={formControlContext.isRequired()}
+				disabled={formControlContext.isDisabled()}
+				readOnly={formControlContext.isReadOnly()}
+				aria-label={fieldProps.ariaLabel()}
+				aria-labelledby={fieldProps.ariaLabelledBy()}
+				aria-describedby={fieldProps.ariaDescribedBy()}
+				onInput={composeEventHandlers([local.onInput, context.onInput])}
+				onChange={(e) => {
+					// @ts-ignore: Polymorphic error
+					callHandler(e, local.onChange);
+
+					// format on change end
+					context.format();
+				}}
+				// @ts-ignore: Polymorphic error
+				onWheel={(e) => {
+					// @ts-ignore: Polymorphic error
+					callHandler(e, local.onWheel);
+
+					if (
+						!context.changeOnWheel() ||
+						document.activeElement !== context.inputRef()
+					)
+						return;
+
+					e.preventDefault();
+
+					if (e.deltaY < 0) context.varyValue(context.step());
+					else context.varyValue(-context.step());
+				}}
+				{...formControlContext.dataset()}
+				{...others}
+			/>
+		</SpinButton.Root>
 	);
 }
