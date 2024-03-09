@@ -74,7 +74,7 @@ export function ThemeSelector() {
 				</Select.Value>
 			</Select.Trigger>
 			<Select.Portal>
-				<Select.Content class="bg-white border border-zinc-300 rounded shadow-md py-1 z-50 dark:text-zinc-300 dark:bg-zinc-800 dark:border-none dark:shadow-none">
+				<Select.Content class="bg-white border border-zinc-300 rounded shadow-md py-1 z-50 dark:text-zinc-300 dark:bg-zinc-800 dark:border-none dark:shadow-none select-none">
 					<Select.Listbox />
 				</Select.Content>
 			</Select.Portal>
