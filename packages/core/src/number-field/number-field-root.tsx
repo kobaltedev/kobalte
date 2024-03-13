@@ -164,8 +164,8 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 	});
 
 	const parseRawValue = (value: string | number | undefined) =>
-		local.format
-			? numberParser().parse(String(value ?? ""))
+		local.format && typeof value !== "number"
+			? numberParser().parse(value ?? "")
 			: Number(value ?? "");
 
 	const [value, setValue] = createControllableSignal({
