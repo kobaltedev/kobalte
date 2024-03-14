@@ -8,6 +8,7 @@ import {
 } from "@kobalte/utils";
 import {
 	JSX,
+	batch,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -164,15 +165,17 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 	});
 
 	const parseRawValue = (value: string | number | undefined) =>
-		local.format
-			? numberParser().parse(String(value ?? ""))
+		local.format && typeof value !== "number"
+			? numberParser().parse(value ?? "")
 			: Number(value ?? "");
 
 	const [value, setValue] = createControllableSignal({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue ?? local.rawValue,
 		onChange: (value) => {
-			local.onChange?.(String(value));
+			local.onChange?.(
+				typeof value === "number" ? numberFormatter().format(value) : value,
+			);
 			local.onRawValueChange?.(parseRawValue(value));
 		},
 	});
@@ -185,8 +188,6 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		() => ref,
 		() => {
 			setValue(local.defaultValue ?? "");
-			// @ts-ignore
-			setValue(local.defaultValue);
 		},
 	);
 
@@ -226,6 +227,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 
 			if (Number.isNaN(rawValue)) {
 				if (hiddenInputRef()) hiddenInputRef()!.value = "";
+				local.onRawValueChange?.(rawValue);
 				return;
 			}
 
@@ -255,11 +257,21 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		hiddenInputRef,
 		setHiddenInputRef,
 		varyValue: (offset) => {
-			let rawValue = context.rawValue() || 0;
+			let rawValue = context.rawValue() ?? 0;
 			if (Number.isNaN(rawValue)) rawValue = 0;
 
-			context.setValue(rawValue + offset);
-			context.format();
+			batch(() => {
+				const decimals = Math.max(
+					local.formatOptions?.minimumFractionDigits ?? 0,
+					local.formatOptions?.maximumFractionDigits ?? 3,
+				);
+				const newValue = Number.parseFloat(
+					(rawValue + offset).toFixed(decimals),
+				);
+
+				context.setValue(newValue);
+				context.format();
+			});
 		},
 	};
 
@@ -268,8 +280,11 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 			() => local.rawValue,
 			(rawValue) => {
 				if (rawValue !== context.rawValue()) {
-					setValue(rawValue ?? "");
-					context.format();
+					if (Number.isNaN(rawValue)) return;
+					batch(() => {
+						setValue(rawValue ?? "");
+						context.format();
+					});
 				}
 			},
 			{ defer: true },

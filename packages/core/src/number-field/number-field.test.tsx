@@ -1,10 +1,9 @@
-import { installPointerEvent } from "@kobalte/tests";
-import { render } from "@solidjs/testing-library";
-import { fireEvent } from "@solidjs/testing-library";
+import { fireEvent, render } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
 import { expect, vi } from "vitest";
 
 import * as NumberField from ".";
+import { I18nProvider } from "../i18n";
 
 describe("NumberField", () => {
 	it("can have a default value", async () => {
@@ -661,5 +660,69 @@ describe("NumberField", () => {
 		trigger.click();
 
 		expect(document.activeElement).toBe(input);
+	});
+
+	it("formats decimal value correctly for locale", async () => {
+		const { getByRole } = render(() => (
+			<I18nProvider locale="de">
+				<NumberField.Root value={1.1}>
+					<NumberField.Input />
+				</NumberField.Root>
+			</I18nProvider>
+		));
+
+		const input = getByRole("spinbutton") as HTMLInputElement;
+
+		expect(input.value).toBe("1,1");
+	});
+
+	it("formats decimal rawValue correctly for locale", async () => {
+		const { getByRole } = render(() => (
+			<I18nProvider locale="de">
+				<NumberField.Root rawValue={1.1}>
+					<NumberField.Input />
+				</NumberField.Root>
+			</I18nProvider>
+		));
+
+		const input = getByRole("spinbutton") as HTMLInputElement;
+
+		expect(input.value).toBe("1,1");
+	});
+
+	it("increments decimal values correctly for locale", async () => {
+		const { getByRole, getByTestId } = render(() => (
+			<I18nProvider locale="de">
+				<NumberField.Root defaultValue={1.1}>
+					<NumberField.Input />
+					<NumberField.IncrementTrigger data-testId="trigger" />
+				</NumberField.Root>
+			</I18nProvider>
+		));
+
+		const input = getByRole("spinbutton") as HTMLInputElement;
+		const trigger = getByTestId("trigger") as HTMLButtonElement;
+
+		trigger.click();
+
+		expect(input.value).toBe("2,1");
+	});
+
+	it("decrements decimal values correctly for locale", async () => {
+		const { getByRole, getByTestId } = render(() => (
+			<I18nProvider locale="de">
+				<NumberField.Root defaultValue={1.1}>
+					<NumberField.Input />
+					<NumberField.DecrementTrigger data-testId="trigger" />
+				</NumberField.Root>
+			</I18nProvider>
+		));
+
+		const input = getByRole("spinbutton") as HTMLInputElement;
+		const trigger = getByTestId("trigger") as HTMLButtonElement;
+
+		trigger.click();
+
+		expect(input.value).toBe("0,1");
 	});
 });
