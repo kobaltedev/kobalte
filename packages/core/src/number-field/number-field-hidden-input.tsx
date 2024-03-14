@@ -1,5 +1,5 @@
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
-import { ComponentProps, splitProps } from "solid-js";
+import { ComponentProps, batch, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { useNumberFieldContext } from "./number-field-context";
@@ -28,8 +28,10 @@ export function NumberFieldHiddenInput(props: NumberFieldHiddenInputProps) {
 				onChange={(e) => {
 					callHandler(e, local.onChange);
 					// enable form autofill
-					context.setValue((e.target as HTMLInputElement).value);
-					context.format();
+					batch(() => {
+						context.setValue((e.target as HTMLInputElement).value);
+						context.format();
+					});
 				}}
 				{...others}
 			/>
