@@ -2,7 +2,7 @@
 "@kobalte/core": patch
 ---
 
-## v0.12.4 (March 14, 2024)
+## v0.12.5 (March 14, 2024)
 
 **Bug fixes**
 
