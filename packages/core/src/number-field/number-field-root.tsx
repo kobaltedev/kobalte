@@ -185,8 +185,6 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		() => ref,
 		() => {
 			setValue(local.defaultValue ?? "");
-			// @ts-ignore
-			setValue(local.defaultValue);
 		},
 	);
 
@@ -226,6 +224,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 
 			if (Number.isNaN(rawValue)) {
 				if (hiddenInputRef()) hiddenInputRef()!.value = "";
+				local.onRawValueChange?.(rawValue);
 				return;
 			}
 
@@ -268,6 +267,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 			() => local.rawValue,
 			(rawValue) => {
 				if (rawValue !== context.rawValue()) {
+					if (Number.isNaN(rawValue)) return;
 					setValue(rawValue ?? "");
 					context.format();
 				}
