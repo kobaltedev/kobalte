@@ -77,7 +77,7 @@ export interface NumberFieldRootOptions
 	/** Options for formatting input value. */
 	formatOptions?: Intl.NumberFormatOptions;
 
-	/** Allowed input characters, defautls to `/[-\d,.\s]/`. */
+	/** Allowed input characters, defaults to locale and format characters. */
 	allowedInput?: RegExp;
 
 	/**
@@ -125,7 +125,6 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 			maxValue: Number.MAX_SAFE_INTEGER,
 			step: 1,
 			changeOnWheel: true,
-			allowedInput: /[-\d,.\s]/,
 		},
 		props,
 	);
@@ -164,6 +163,39 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		return new NumberFormatter(locale(), local.formatOptions);
 	});
 
+	const allNumberFormatParts = createMemo(() => [
+		...numberFormatter().formatToParts(-1234567890.1),
+		...numberFormatter().formatToParts(1),
+	]);
+
+	const uniquePartTypes: Array<Intl.NumberFormatPart["type"]> = [
+		"decimal",
+		"minusSign",
+		"plusSign",
+	];
+	const commonPartTypes: Array<Intl.NumberFormatPart["type"]> = [
+		"integer",
+		"group",
+		"percentSign",
+	];
+
+	const uniqueCharacters = () =>
+		new Set(
+			allNumberFormatParts()
+				.filter((part) => uniquePartTypes.includes(part.type))
+				.map((part) => part.value)
+				.join("")
+				.split(""),
+		);
+	const commonCharacters = () =>
+		new Set(
+			allNumberFormatParts()
+				.filter((part) => commonPartTypes.includes(part.type))
+				.map((part) => part.value)
+				.join("")
+				.split(""),
+		);
+
 	const parseRawValue = (value: string | number | undefined) =>
 		local.format && typeof value !== "number"
 			? numberParser().parse(value ?? "")
@@ -181,6 +213,21 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 	});
 
 	local.onRawValueChange?.(parseRawValue(value()));
+
+	function isAllowedInput(char: string): boolean {
+		if (local.allowedInput !== undefined) return local.allowedInput.test(char);
+
+		if (commonCharacters().has(char)) return true;
+
+		if (uniqueCharacters().has(char)) {
+			let val = value() ?? "";
+			if (typeof val === "number") val = numberFormatter().format(val);
+
+			return !val.split("").includes(char);
+		}
+
+		return false;
+	}
 
 	const { formControlContext } = createFormControl(formControlProps);
 
@@ -200,10 +247,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 
 		const target = e.target as HTMLInputElement;
 
-		if (
-			e.inputType !== "insertText" ||
-			local.allowedInput!.test(e.data || "")
-		) {
+		if (e.inputType !== "insertText" || isAllowedInput(e.data || "")) {
 			setValue(target.value);
 		}
 
