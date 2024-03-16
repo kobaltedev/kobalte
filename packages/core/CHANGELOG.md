@@ -1,5 +1,15 @@
 # @kobalte/core
 
+## 0.12.6
+
+### Patch Changes
+
+- 570a6e9: ## v0.12.6 (March 16, 2024)
+
+  **New features**
+
+  - NumberField: `allowedInput` defaults to locale and format characters. ([#372](https://github.com/kobaltedev/kobalte/pull/372))
+
 ## 0.12.5
 
 ### Patch Changes
