@@ -45,6 +45,7 @@ import {
 	type ToastPromiseState,
 	type ToastSwipeDirection,
 } from "./types";
+import { type ToastTime, useToastTime } from "./use-toast-time";
 
 export type {
 	ToastCloseButtonOptions,
@@ -66,6 +67,7 @@ export type {
 	ToastRootOptions,
 	ToastRootProps,
 	ToastSwipeDirection,
+	ToastTime,
 	ToastTitleOptions,
 	ToastTitleProps,
 };
@@ -79,4 +81,5 @@ export {
 	Region,
 	Root,
 	Title,
+	useToastTime,
 };
