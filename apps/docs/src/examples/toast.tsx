@@ -114,3 +114,24 @@ export function MultipleRegionsExample() {
 		</div>
 	);
 }
+
+function CustomProgress() {
+	const { remainingFraction } = Toast.useToastTime();
+	return <progress value={remainingFraction()} max={1} />;
+}
+
+export function CustomProgressExample() {
+	const showToast = () => {
+		toaster.show((props) => (
+			<Toast.Root toastId={props.toastId} class={style.toast}>
+				<CustomProgress />
+			</Toast.Root>
+		));
+	};
+
+	return (
+		<button type="button" class="kb-button-primary" onClick={() => showToast()}>
+			Show toast
+		</button>
+	);
+}

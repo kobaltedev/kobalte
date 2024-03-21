@@ -1,5 +1,9 @@
 import { Preview, TabsSnippets, Callout, Kbd } from "../../../../components";
-import { BasicExample, MultipleRegionsExample } from "../../../../examples/toast";
+import {
+	BasicExample,
+	CustomProgressExample,
+	MultipleRegionsExample,
+} from "../../../../examples/toast";
 
 # Toast
 
@@ -552,6 +556,30 @@ Inside your application, use add your custom region:
 
 <Preview isRounded>
 	<MultipleRegionsExample />
+</Preview>
+
+### The `useToastTime` primitive
+
+`Toast.useToastTime` allows components to access the remaining time usually displayed by `Toast.ProgressFillTrack`.
+It should be used within `Toast.Root`, e. g. in a component that replaces `Toast.ProgressTrack` and `Toast.ProgressFill`.
+
+```tsx
+import { Toast, toaster } from "@kobalte/core";
+
+function CustomProgress() {
+	const { remainingFraction } = Toast.useToastTime();
+	return <progress value={remainingFraction()} max={1} />;
+}
+
+toaster.show(props => (
+	<Toast.Root toastId={props.toastId}>
+		<CustomProgress />
+	</Toast.Root>
+));
+```
+
+<Preview isRounded>
+	<CustomProgressExample />
 </Preview>
 
 ## API reference
