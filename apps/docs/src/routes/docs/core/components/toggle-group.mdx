@@ -1,4 +1,4 @@
-import {Preview, TabsSnippets, Kbd} from "../../../../components";
+import { Kbd, Preview, TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	ControlledExample,
@@ -41,7 +41,7 @@ The toggle item consists of:
 ## Example
 
 <Preview>
-	<BasicExample/>
+	<BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -56,60 +56,60 @@ The toggle item consists of:
 		import {BoldIcon, ItalicIcon, UnderlineIcon} from "some-icon-library";
 		import "./style.css";
 
-		<ToggleGroup.Root class="toggle-group">
-			<ToggleGroup.Item class="toggle-group__item" value="bold" aria-label="Bold">
-				<BoldIcon/>
-			</ToggleGroup.Item>
-			<ToggleGroup.Item class="toggle-group__item" value="italic" aria-label="Italic">
-				<ItalicIcon/>
-			</ToggleGroup.Item>
-			<ToggleGroup.Item class="toggle-group__item" value="underline" aria-label="Underline">
-				<UnderlineIcon/>
-			</ToggleGroup.Item>
-		</ToggleGroup.Root>
-		```
+    	<ToggleGroup.Root class="toggle-group">
+    		<ToggleGroup.Item class="toggle-group__item" value="bold" aria-label="Bold">
+    			<BoldIcon/>
+    		</ToggleGroup.Item>
+    		<ToggleGroup.Item class="toggle-group__item" value="italic" aria-label="Italic">
+    			<ItalicIcon/>
+    		</ToggleGroup.Item>
+    		<ToggleGroup.Item class="toggle-group__item" value="underline" aria-label="Underline">
+    			<UnderlineIcon/>
+    		</ToggleGroup.Item>
+    	</ToggleGroup.Root>
+    	```
 
-	</TabsSnippets.Content>
-	<TabsSnippets.Content value="style.css">
-		```css
-		.toggle-group {
-		display: flex;
-		padding: .5rem;
-		gap: .5rem;
-	}
+    </TabsSnippets.Content>
+    <TabsSnippets.Content value="style.css">
+    	```css
+    	.toggle-group {
+    	display: flex;
+    	padding: .5rem;
+    	gap: .5rem;
+    }
 
-		.toggle-group[data-orientation="vertical"] {
-		flex - direction: column;
-	}
+    	.toggle-group[data-orientation="vertical"] {
+    	flex - direction: column;
+    }
 
-		.toggle-group__item {
-		padding: .5rem;
-		border-radius: .5rem;
-		appearance: none;
-		user-select: none;
-		outline: none;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		transition-property: background-color, color;
-		transition-duration: 150ms;
-		transition-timing-function: ease-in-out
-	}
+    	.toggle-group__item {
+    	padding: .5rem;
+    	border-radius: .5rem;
+    	appearance: none;
+    	user-select: none;
+    	outline: none;
+    	display: flex;
+    	justify-content: center;
+    	align-items: center;
+    	transition-property: background-color, color;
+    	transition-duration: 150ms;
+    	transition-timing-function: ease-in-out
+    }
 
-		.toggle-group__item:hover,
-		.toggle-group__item[data-pressed] {
-		background - color: hsl(200 98% 39%);
-		color: white;
-	}
+    	.toggle-group__item:hover,
+    	.toggle-group__item[data-pressed] {
+    	background - color: hsl(200 98% 39%);
+    	color: white;
+    }
 
-		.toggle-group__item:focus-visible {
-		outline: 2px solid hsl(200 98% 39%);
-		outline-offset: 2px;
-	}
-		```
+    	.toggle-group__item:focus-visible {
+    	outline: 2px solid hsl(200 98% 39%);
+    	outline-offset: 2px;
+    }
+    	```
 
-	</TabsSnippets.Content>
-	{ /* <!-- prettier-ignore-end -->*/}
+    </TabsSnippets.Content>
+    { /* <!-- prettier-ignore-end -->*/}
 
 </TabsSnippets>
 
@@ -120,7 +120,7 @@ The toggle item consists of:
 An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
 <Preview>
-	<DefaultValueExample/>
+	<DefaultValueExample />
 </Preview>
 
 ```tsx {0, 7-9}
@@ -142,7 +142,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 The `value` prop can be used to make the pressed state controlled. The `onChange` event is fired when the user toggle the button, and receives the new value.
 
 <Preview>
-	<ControlledExample/>
+	<ControlledExample />
 </Preview>
 
 ```tsx {3,7}
@@ -167,7 +167,7 @@ function ControlledExample() {
 The `multiple` prop can be used to create a select that allow multi-selection.
 
 <Preview>
-	<MultipleSelectionExample/>
+	<MultipleSelectionExample />
 </Preview>
 
 ```tsx {3,8-10,22-23,28,32,39}
@@ -202,7 +202,7 @@ function MultipleSelectionExample() {
 | defaultValue | `string \| string[]` <br/> The default pressed state when initially rendered. Useful when you do not need to control the pressed state. |
 | onChange     | `(value: string \| string[]) => void` <br/> Event handler called when the pressed state of an item changes.                             |
 | multiple     | `boolean` <br/> Whether the toggle group allows multi-selection.                                                                        |
-| orientation  | `'automatic' \| 'manual'` <br/> The orientation of the toggle group.                                                                    |
+| orientation  | `'horizontal' \| 'vertical'` <br/> The orientation of the toggle group.                                                                 |
 | disabled     | `boolean` <br/> Whether toggle group should be disabled.                                                                                |
 
 | Data attribute                | Description                                            |
@@ -212,11 +212,11 @@ function MultipleSelectionExample() {
 
 ### ToggleGroup.Item
 
-| Prop     | Description                                                                                                                                                                            |
-| :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value    | `string` <br/> A unique value for the item.                                                                                                                                            |
-| disabled | `string \| string[]` <br/> Whether the item is disabled.                                                                                                                               |
-| children | `JSX.Element \| (state: ToggleButtonState) => JSX.Element` <br/> The children of the toggle button. Can be a `JSX.Element` or a _render prop_ for having access to the internal state. |
+| Prop     | Description                                                                                                                                                                   |
+| :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value    | `string` <br/> A unique value for the item.                                                                                                                                   |
+| disabled | `boolean` <br/> Whether the item is disabled.                                                                                                                                 |
+| children | `JSX.Element \| (state: ToggleButtonState) => JSX.Element` <br/> The children of the item. Can be a `JSX.Element` or a _render prop_ for having access to the internal state. |
 
 | Render Prop | Description                                                                               |
 | :---------- | :---------------------------------------------------------------------------------------- |
