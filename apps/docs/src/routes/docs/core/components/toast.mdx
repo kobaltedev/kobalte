@@ -1,5 +1,5 @@
 import { Preview, TabsSnippets, Callout, Kbd } from "../../../../components";
-import { BasicExample, MultipleRegionsExample } from "../../../../examples/toast";
+import { BasicExample, MultipleRegionsExample, ToastTimeExample } from "../../../../examples/toast";
 
 # Toast
 
@@ -554,6 +554,52 @@ Inside your application, use add your custom region:
 	<MultipleRegionsExample />
 </Preview>
 
+### The `useToastTime` primitive
+
+`Toast.useToastTime` allows components to access the remaining time usually displayed by `Toast.ProgressFillTrack`.
+It should be used within `Toast.Root`, e. g. in a component that replaces `Toast.ProgressTrack` and `Toast.ProgressFill`.
+
+```tsx
+import { Toast, toaster } from "@kobalte/core";
+
+function ToastBody() {
+	const { remainingTime, remainingFraction, elapsedTime, elapsedFraction } = Toast.useToastTime();
+	const format = (time: Accessor<number>, fraction: Accessor<number>) => (
+		<>
+			{(time() / 1000).toFixed(1)}s ({Math.round(fraction() * 100)}%)
+		</>
+	);
+	return (
+		<>
+			<div class="toast__content">
+				<div>
+					<Toast.Title class="toast__title">
+						Remaining time: {format(remainingTime, remainingFraction)}
+					</Toast.Title>
+					<Toast.Description class="toast__description">
+						Elapsed time: {format(elapsedTime, elapsedFraction)}
+					</Toast.Description>
+				</div>
+				<Toast.CloseButton class="toast__close-button">
+					<CrossIcon />
+				</Toast.CloseButton>
+			</div>
+			<progress value={remainingFraction()} max={1} />
+		</>
+	);
+}
+
+toaster.show(props => (
+	<Toast.Root toastId={props.toastId}>
+		<ToastBody />
+	</Toast.Root>
+));
+```
+
+<Preview isRounded>
+	<ToastTimeExample />
+</Preview>
+
 ## API reference
 
 ### toaster
@@ -612,6 +658,17 @@ Inside your application, use add your custom region:
 | --kb-toast-swipe-move-y | The offset position of the toast when vertically swiping.        |
 | --kb-toast-swipe-end-x  | The offset end position of the toast after horizontally swiping. |
 | --kb-toast-swipe-end-y  | The offset end position of the toast after vertically swiping.   |
+
+### Toast.useToastTime
+
+The `Toast.useToastTime` primitive returns the following properties. All of the properties ignore paused time.
+
+| Name              | Description                                                                                                                                                           |
+| :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| elapsedTime       | `Accessor<number>` <br /> The time this toast has been open in milliseconds. <br /> Range: `0` to `duration` of the toast, increasing over time.                      |
+| elapsedFraction   | `Accessor<number>` <br /> The fraction of this toast's duration it has been open. <br /> Range: `0` to `1`, increasing over time.                                     |
+| remainingTime     | `Accessor<number>` <br /> The time this toast will been open before it is closed in milliseconds. <br /> Range: `0` to `duration` of the toast, decreasing over time. |
+| remainingFraction | `Accessor<number>` <br /> The fraction of this toast's duration it will been open before it is closed. <br /> Range: `0` to `1`, decreasing over time.                |
 
 ## Rendered elements
 
