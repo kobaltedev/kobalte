@@ -253,7 +253,10 @@ describe("ToggleGroup", () => {
 
 		expect(secondItem).toHaveAttribute("aria-pressed", "true");
 
-		fireEvent(firstItem, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+		fireEvent(
+			firstItem,
+			createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
+		);
 		await Promise.resolve();
 
 		expect(firstItem).toHaveAttribute("aria-pressed", "true");
@@ -287,7 +290,10 @@ describe("ToggleGroup", () => {
 		);
 		await Promise.resolve();
 
-		fireEvent(firstItem, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+		fireEvent(
+			firstItem,
+			createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
+		);
 		await Promise.resolve();
 
 		expect(firstItem).toHaveAttribute("aria-pressed", "true");
@@ -320,53 +326,59 @@ describe("ToggleGroup", () => {
 		},
 	);
 
-	it.skipIf(process.env.GITHUB_ACTIONS)("should not focus if group is disabled", async () => {
-		const { getByTestId } = render(() => (
-			<>
-				<ToggleGroup.Root disabled>
-					<ToggleGroup.Item value="dogs">Dogs</ToggleGroup.Item>
-					<ToggleGroup.Item value="cats">Cats</ToggleGroup.Item>
-					<ToggleGroup.Item value="dragons">Dragons</ToggleGroup.Item>
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"should not focus if group is disabled",
+		async () => {
+			const { getByTestId } = render(() => (
+				<>
+					<ToggleGroup.Root disabled>
+						<ToggleGroup.Item value="dogs">Dogs</ToggleGroup.Item>
+						<ToggleGroup.Item value="cats">Cats</ToggleGroup.Item>
+						<ToggleGroup.Item value="dragons">Dragons</ToggleGroup.Item>
+					</ToggleGroup.Root>
+					<button data-testid="focus-btn" type="button">
+						hi
+					</button>
+				</>
+			));
+
+			await user.tab();
+
+			const button = getByTestId("focus-btn");
+
+			expect(document.activeElement).toBe(button);
+		},
+	);
+
+	it.skipIf(process.env.GITHUB_ACTIONS)(
+		"disabled item should be be pressed",
+		async () => {
+			const onValueChangeSpy = vi.fn();
+
+			const { getByRole } = render(() => (
+				<ToggleGroup.Root>
+					<ToggleGroup.Item data-testid="item" value="dogs">
+						Dogs
+					</ToggleGroup.Item>
+					<ToggleGroup.Item data-testid="item" value="cats" disabled>
+						Cats
+					</ToggleGroup.Item>
+					<ToggleGroup.Item data-testid="item" value="dragons">
+						Dragons
+					</ToggleGroup.Item>
 				</ToggleGroup.Root>
-				<button data-testid="focus-btn" type="button">
-					hi
-				</button>
-			</>
-		));
+			));
 
-		await user.tab();
+			await user.tab();
 
-		const button = getByTestId("focus-btn");
+			const toggleGroup = getByRole("group");
+			const toggles = within(toggleGroup).getAllByTestId("item");
 
-		expect(document.activeElement).toBe(button);
-	});
+			expect(document.activeElement).toBe(toggles[0]);
 
-	it.skipIf(process.env.GITHUB_ACTIONS)("disabled item should be be pressed", async () => {
-		const onValueChangeSpy = vi.fn();
+			await user.click(toggles[1]);
 
-		const { getByRole } = render(() => (
-			<ToggleGroup.Root>
-				<ToggleGroup.Item data-testid="item" value="dogs">
-					Dogs
-				</ToggleGroup.Item>
-				<ToggleGroup.Item data-testid="item" value="cats" disabled>
-					Cats
-				</ToggleGroup.Item>
-				<ToggleGroup.Item data-testid="item" value="dragons">
-					Dragons
-				</ToggleGroup.Item>
-			</ToggleGroup.Root>
-		));
-
-		await user.tab();
-
-		const toggleGroup = getByRole("group");
-		const toggles = within(toggleGroup).getAllByTestId("item");
-
-		expect(document.activeElement).toBe(toggles[0]);
-
-		await user.click(toggles[1]);
-
-		expect(onValueChangeSpy).not.toBeCalled();
-	});
+			expect(onValueChangeSpy).not.toBeCalled();
+		},
+	);
 });

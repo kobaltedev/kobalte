@@ -6,8 +6,17 @@ import style from "./toggle-group.module.css";
 export function BasicExample() {
 	return (
 		<ToggleGroup.Root class={style["toggle-group"]}>
-			<ToggleGroup.Item class={style["toggle-group__item"]} value="bold" aria-label="Bold">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+			<ToggleGroup.Item
+				class={style["toggle-group__item"]}
+				value="bold"
+				aria-label="Bold"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24px"
+					height="24px"
+					viewBox="0 0 24 24"
+				>
 					<path
 						fill="none"
 						stroke="currentColor"
@@ -19,8 +28,17 @@ export function BasicExample() {
 					<title>Bold</title>
 				</svg>
 			</ToggleGroup.Item>
-			<ToggleGroup.Item class={style["toggle-group__item"]} value="italic" aria-label="Italic">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+			<ToggleGroup.Item
+				class={style["toggle-group__item"]}
+				value="italic"
+				aria-label="Italic"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24px"
+					height="24px"
+					viewBox="0 0 24 24"
+				>
 					<path
 						fill="none"
 						stroke="currentColor"
@@ -37,7 +55,12 @@ export function BasicExample() {
 				value="underline"
 				aria-label="Underline"
 			>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24px"
+					height="24px"
+					viewBox="0 0 24 24"
+				>
 					<path
 						fill="none"
 						stroke="currentColor"
@@ -56,8 +79,17 @@ export function BasicExample() {
 export function DefaultValueExample() {
 	return (
 		<ToggleGroup.Root class={style["toggle-group"]} defaultValue="bold">
-			<ToggleGroup.Item class={style["toggle-group__item"]} value="bold" aria-label="Bold">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+			<ToggleGroup.Item
+				class={style["toggle-group__item"]}
+				value="bold"
+				aria-label="Bold"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24px"
+					height="24px"
+					viewBox="0 0 24 24"
+				>
 					<path
 						fill="none"
 						stroke="currentColor"
@@ -69,8 +101,17 @@ export function DefaultValueExample() {
 					<title>Bold</title>
 				</svg>
 			</ToggleGroup.Item>
-			<ToggleGroup.Item class={style["toggle-group__item"]} value="italic" aria-label="Italic">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+			<ToggleGroup.Item
+				class={style["toggle-group__item"]}
+				value="italic"
+				aria-label="Italic"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24px"
+					height="24px"
+					viewBox="0 0 24 24"
+				>
 					<path
 						fill="none"
 						stroke="currentColor"
@@ -87,7 +128,12 @@ export function DefaultValueExample() {
 				value="underline"
 				aria-label="Underline"
 			>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24px"
+					height="24px"
+					viewBox="0 0 24 24"
+				>
 					<path
 						fill="none"
 						stroke="currentColor"
@@ -118,9 +164,22 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<ToggleGroup.Root class={style["toggle-group"]} value={value()} onChange={setValue}>
-				<ToggleGroup.Item class={style["toggle-group__item"]} value="bold" aria-label="Bold">
-					<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+			<ToggleGroup.Root
+				class={style["toggle-group"]}
+				value={value()}
+				onChange={setValue}
+			>
+				<ToggleGroup.Item
+					class={style["toggle-group__item"]}
+					value="bold"
+					aria-label="Bold"
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24px"
+						height="24px"
+						viewBox="0 0 24 24"
+					>
 						<path
 							fill="none"
 							stroke="currentColor"
@@ -132,8 +191,17 @@ export function ControlledExample() {
 						<title>Bold</title>
 					</svg>
 				</ToggleGroup.Item>
-				<ToggleGroup.Item class={style["toggle-group__item"]} value="italic" aria-label="Italic">
-					<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+				<ToggleGroup.Item
+					class={style["toggle-group__item"]}
+					value="italic"
+					aria-label="Italic"
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24px"
+						height="24px"
+						viewBox="0 0 24 24"
+					>
 						<path
 							fill="none"
 							stroke="currentColor"
@@ -150,7 +218,12 @@ export function ControlledExample() {
 					value="underline"
 					aria-label="Underline"
 				>
-					<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24px"
+						height="24px"
+						viewBox="0 0 24 24"
+					>
 						<path
 							fill="none"
 							stroke="currentColor"
@@ -172,9 +245,22 @@ export function ControlledExample() {
 
 export function MultipleSelectionExample() {
 	return (
-		<ToggleGroup.Root class={style["toggle-group"]} multiple defaultValue={["bold", "underline"]}>
-			<ToggleGroup.Item class={style["toggle-group__item"]} value="bold" aria-label="Bold">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+		<ToggleGroup.Root
+			class={style["toggle-group"]}
+			multiple
+			defaultValue={["bold", "underline"]}
+		>
+			<ToggleGroup.Item
+				class={style["toggle-group__item"]}
+				value="bold"
+				aria-label="Bold"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24px"
+					height="24px"
+					viewBox="0 0 24 24"
+				>
 					<path
 						fill="none"
 						stroke="currentColor"
@@ -186,8 +272,17 @@ export function MultipleSelectionExample() {
 					<title>Bold</title>
 				</svg>
 			</ToggleGroup.Item>
-			<ToggleGroup.Item class={style["toggle-group__item"]} value="italic" aria-label="Italic">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+			<ToggleGroup.Item
+				class={style["toggle-group__item"]}
+				value="italic"
+				aria-label="Italic"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24px"
+					height="24px"
+					viewBox="0 0 24 24"
+				>
 					<path
 						fill="none"
 						stroke="currentColor"
@@ -204,7 +299,12 @@ export function MultipleSelectionExample() {
 				value="underline"
 				aria-label="Underline"
 			>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24px"
+					height="24px"
+					viewBox="0 0 24 24"
+				>
 					<path
 						fill="none"
 						stroke="currentColor"
