@@ -26,24 +26,30 @@ describe("ToggleGroup", () => {
 	it("can have a default value", async () => {
 		const onChangeSpy = vi.fn();
 
-		const { getByRole, getAllByRole, getByText } = render(() => (
+		const { getByRole, getAllByTestId, getByText } = render(() => (
 			<ToggleGroup.Root defaultValue="cats" onChange={onChangeSpy}>
-				<ToggleGroup.Item value="dogs">Dogs</ToggleGroup.Item>
-				<ToggleGroup.Item value="cats">Cats</ToggleGroup.Item>
-				<ToggleGroup.Item value="dragons">Dragons</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="dogs">
+					Dogs
+				</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="cats">
+					Cats
+				</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="dragons">
+					Dragons
+				</ToggleGroup.Item>
 			</ToggleGroup.Root>
 		));
 
 		const toggleGroup = getByRole("group");
-		const buttons = getAllByRole("radio") as HTMLButtonElement[];
+		const buttons = getAllByTestId("item") as HTMLButtonElement[];
 
 		expect(toggleGroup).toBeTruthy();
 		expect(buttons.length).toBe(3);
 		expect(onChangeSpy).not.toHaveBeenCalled();
 
-		expect(buttons[0]).toHaveAttribute("aria-checked", "false");
-		expect(buttons[1]).toHaveAttribute("aria-checked", "true");
-		expect(buttons[2]).toHaveAttribute("aria-checked", "false");
+		expect(buttons[0]).toHaveAttribute("aria-pressed", "false");
+		expect(buttons[1]).toHaveAttribute("aria-pressed", "true");
+		expect(buttons[2]).toHaveAttribute("aria-pressed", "false");
 
 		const dragons = getByText("Dragons");
 
@@ -53,22 +59,28 @@ describe("ToggleGroup", () => {
 		expect(onChangeSpy).toHaveBeenCalledTimes(1);
 		expect(onChangeSpy).toHaveBeenCalledWith("dragons");
 
-		expect(buttons[0]).toHaveAttribute("aria-checked", "false");
-		expect(buttons[1]).toHaveAttribute("aria-checked", "false");
-		expect(buttons[2]).toHaveAttribute("aria-checked", "true");
+		expect(buttons[0]).toHaveAttribute("aria-pressed", "false");
+		expect(buttons[1]).toHaveAttribute("aria-pressed", "false");
+		expect(buttons[2]).toHaveAttribute("aria-pressed", "true");
 	});
 
 	it("allows user to change toggle item via left/right arrow keys with horizontal group", async () => {
 		const { getByRole } = render(() => (
 			<ToggleGroup.Root>
-				<ToggleGroup.Item value="dogs">Dogs</ToggleGroup.Item>
-				<ToggleGroup.Item value="cats">Cats</ToggleGroup.Item>
-				<ToggleGroup.Item value="dragons">Dragons</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="dogs">
+					Dogs
+				</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="cats">
+					Cats
+				</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="dragons">
+					Dragons
+				</ToggleGroup.Item>
 			</ToggleGroup.Root>
 		));
 
 		const toggleGroup = getByRole("group");
-		const toggles = within(toggleGroup).getAllByRole("radio");
+		const toggles = within(toggleGroup).getAllByTestId("item");
 		const selectedItem = toggles[0];
 
 		expect(toggleGroup).toHaveAttribute("data-orientation", "horizontal");
@@ -114,14 +126,20 @@ describe("ToggleGroup", () => {
 	it("allows user to change toggle item via up/down arrow keys with vertical group", async () => {
 		const { getByRole } = render(() => (
 			<ToggleGroup.Root orientation="vertical">
-				<ToggleGroup.Item value="dogs">Dogs</ToggleGroup.Item>
-				<ToggleGroup.Item value="cats">Cats</ToggleGroup.Item>
-				<ToggleGroup.Item value="dragons">Dragons</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="dogs">
+					Dogs
+				</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="cats">
+					Cats
+				</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="dragons">
+					Dragons
+				</ToggleGroup.Item>
 			</ToggleGroup.Root>
 		));
 
 		const toggleGroup = getByRole("group");
-		const toggles = within(toggleGroup).getAllByRole("radio");
+		const toggles = within(toggleGroup).getAllByTestId("item");
 		const selectedItem = toggles[0];
 
 		expect(toggleGroup).toHaveAttribute("data-orientation", "vertical");
@@ -171,14 +189,20 @@ describe("ToggleGroup", () => {
 	it("select last item via end key / select first item via home key", async () => {
 		const { getByRole } = render(() => (
 			<ToggleGroup.Root>
-				<ToggleGroup.Item value="dogs">Dogs</ToggleGroup.Item>
-				<ToggleGroup.Item value="cats">Cats</ToggleGroup.Item>
-				<ToggleGroup.Item value="dragons">Dragons</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="dogs">
+					Dogs
+				</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="cats">
+					Cats
+				</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="dragons">
+					Dragons
+				</ToggleGroup.Item>
 			</ToggleGroup.Root>
 		));
 
 		const toggleGroup = getByRole("group");
-		const toggles = within(toggleGroup).getAllByRole("radio");
+		const toggles = within(toggleGroup).getAllByTestId("item");
 		const firstItem = toggles[0];
 
 		firstItem.focus();
@@ -203,53 +227,20 @@ describe("ToggleGroup", () => {
 	it("supports using click to change state", async () => {
 		const { getByRole } = render(() => (
 			<ToggleGroup.Root>
-				<ToggleGroup.Item value="dogs">Dogs</ToggleGroup.Item>
-				<ToggleGroup.Item value="cats">Cats</ToggleGroup.Item>
-				<ToggleGroup.Item value="dragons">Dragons</ToggleGroup.Item>
-			</ToggleGroup.Root>
-		));
-
-		const toggleGroup = getByRole("group");
-		const toggles = within(toggleGroup).getAllByRole("radio");
-		const [firstItem, secondItem] = toggles;
-
-		expect(firstItem).toHaveAttribute("aria-checked", "false");
-
-		fireEvent(
-			secondItem,
-			createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
-		);
-		await Promise.resolve();
-
-		expect(secondItem).toHaveAttribute("aria-checked", "true");
-
-		fireEvent(
-			firstItem,
-			createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
-		);
-		await Promise.resolve();
-
-		expect(firstItem).toHaveAttribute("aria-checked", "true");
-		expect(secondItem).toHaveAttribute("aria-checked", "false");
-	});
-
-	it("multi-select", async () => {
-		const { getByRole } = render(() => (
-			<ToggleGroup.Root multiple>
-				<ToggleGroup.Item data-testid="toggle" value="dogs">
+				<ToggleGroup.Item data-testid="item" value="dogs">
 					Dogs
 				</ToggleGroup.Item>
-				<ToggleGroup.Item data-testid="toggle" value="cats">
+				<ToggleGroup.Item data-testid="item" value="cats">
 					Cats
 				</ToggleGroup.Item>
-				<ToggleGroup.Item data-testid="toggle" value="dragons">
+				<ToggleGroup.Item data-testid="item" value="dragons">
 					Dragons
 				</ToggleGroup.Item>
 			</ToggleGroup.Root>
 		));
 
 		const toggleGroup = getByRole("group");
-		const toggles = within(toggleGroup).getAllByTestId("toggle");
+		const toggles = within(toggleGroup).getAllByTestId("item");
 		const [firstItem, secondItem] = toggles;
 
 		expect(firstItem).toHaveAttribute("aria-pressed", "false");
@@ -260,10 +251,43 @@ describe("ToggleGroup", () => {
 		);
 		await Promise.resolve();
 
+		expect(secondItem).toHaveAttribute("aria-pressed", "true");
+
+		fireEvent(firstItem, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
+		await Promise.resolve();
+
+		expect(firstItem).toHaveAttribute("aria-pressed", "true");
+		expect(secondItem).toHaveAttribute("aria-pressed", "false");
+	});
+
+	it("multi-select", async () => {
+		const { getByRole } = render(() => (
+			<ToggleGroup.Root multiple>
+				<ToggleGroup.Item data-testid="item" value="dogs">
+					Dogs
+				</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="cats">
+					Cats
+				</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="dragons">
+					Dragons
+				</ToggleGroup.Item>
+			</ToggleGroup.Root>
+		));
+
+		const toggleGroup = getByRole("group");
+		const toggles = within(toggleGroup).getAllByTestId("item");
+		const [firstItem, secondItem] = toggles;
+
+		expect(firstItem).toHaveAttribute("aria-pressed", "false");
+
 		fireEvent(
-			firstItem,
+			secondItem,
 			createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
 		);
+		await Promise.resolve();
+
+		fireEvent(firstItem, createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }));
 		await Promise.resolve();
 
 		expect(firstItem).toHaveAttribute("aria-pressed", "true");
@@ -275,70 +299,74 @@ describe("ToggleGroup", () => {
 		async () => {
 			const { getByRole } = render(() => (
 				<ToggleGroup.Root defaultValue="dragons">
-					<ToggleGroup.Item value="dogs">Dogs</ToggleGroup.Item>
-					<ToggleGroup.Item value="cats">Cats</ToggleGroup.Item>
-					<ToggleGroup.Item value="dragons">Dragons</ToggleGroup.Item>
+					<ToggleGroup.Item data-testid="item" value="dogs">
+						Dogs
+					</ToggleGroup.Item>
+					<ToggleGroup.Item data-testid="item" value="cats">
+						Cats
+					</ToggleGroup.Item>
+					<ToggleGroup.Item data-testid="item" value="dragons">
+						Dragons
+					</ToggleGroup.Item>
 				</ToggleGroup.Root>
 			));
 
 			await user.tab();
 
 			const toggleGroup = getByRole("group");
-			const toggles = within(toggleGroup).getAllByRole("radio");
+			const toggles = within(toggleGroup).getAllByTestId("item");
 
 			expect(document.activeElement).toBe(toggles[2]);
 		},
 	);
 
-	it.skipIf(process.env.GITHUB_ACTIONS)(
-		"should not focus if group is disabled",
-		async () => {
-			const { getByTestId } = render(() => (
-				<>
-					<ToggleGroup.Root disabled>
-						<ToggleGroup.Item value="dogs">Dogs</ToggleGroup.Item>
-						<ToggleGroup.Item value="cats">Cats</ToggleGroup.Item>
-						<ToggleGroup.Item value="dragons">Dragons</ToggleGroup.Item>
-					</ToggleGroup.Root>
-					<button data-testid="focus-btn" type="button">
-						hi
-					</button>
-				</>
-			));
-
-			await user.tab();
-
-			const button = getByTestId("focus-btn");
-
-			expect(document.activeElement).toBe(button);
-		},
-	);
-
-	it.skipIf(process.env.GITHUB_ACTIONS)(
-		"disabled item should be be pressed",
-		async () => {
-			const onValueChangeSpy = vi.fn();
-
-			const { getByRole } = render(() => (
-				<ToggleGroup.Root>
+	it.skipIf(process.env.GITHUB_ACTIONS)("should not focus if group is disabled", async () => {
+		const { getByTestId } = render(() => (
+			<>
+				<ToggleGroup.Root disabled>
 					<ToggleGroup.Item value="dogs">Dogs</ToggleGroup.Item>
-					<ToggleGroup.Item value="cats" disabled>
-						Cats
-					</ToggleGroup.Item>
+					<ToggleGroup.Item value="cats">Cats</ToggleGroup.Item>
 					<ToggleGroup.Item value="dragons">Dragons</ToggleGroup.Item>
 				</ToggleGroup.Root>
-			));
+				<button data-testid="focus-btn" type="button">
+					hi
+				</button>
+			</>
+		));
 
-			await user.tab();
+		await user.tab();
 
-			const toggleGroup = getByRole("group");
-			const toggles = within(toggleGroup).getAllByRole("radio");
+		const button = getByTestId("focus-btn");
 
-			expect(document.activeElement).toBe(toggles[0]);
+		expect(document.activeElement).toBe(button);
+	});
 
-			await user.click(toggles[1]);
+	it.skipIf(process.env.GITHUB_ACTIONS)("disabled item should be be pressed", async () => {
+		const onValueChangeSpy = vi.fn();
 
-			expect(onValueChangeSpy).not.toBeCalled();
-		},
-	);
+		const { getByRole } = render(() => (
+			<ToggleGroup.Root>
+				<ToggleGroup.Item data-testid="item" value="dogs">
+					Dogs
+				</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="cats" disabled>
+					Cats
+				</ToggleGroup.Item>
+				<ToggleGroup.Item data-testid="item" value="dragons">
+					Dragons
+				</ToggleGroup.Item>
+			</ToggleGroup.Root>
+		));
+
+		await user.tab();
+
+		const toggleGroup = getByRole("group");
+		const toggles = within(toggleGroup).getAllByTestId("item");
+
+		expect(document.activeElement).toBe(toggles[0]);
+
+		await user.click(toggles[1]);
+
+		expect(onValueChangeSpy).not.toBeCalled();
+	});
 });
