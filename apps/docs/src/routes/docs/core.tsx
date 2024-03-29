@@ -100,7 +100,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Number Field",
 				href: "/docs/core/components/number-field",
-				status: "new",
 			},
 			{
 				title: "Pagination",
@@ -153,6 +152,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Toggle Button",
 				href: "/docs/core/components/toggle-button",
+			},
+			{
+				title: "Toggle Group",
+				href: "/docs/core/components/toggle-group",
+				status: "new",
 			},
 			{
 				title: "Tooltip",
