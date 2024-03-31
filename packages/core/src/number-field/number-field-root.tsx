@@ -201,6 +201,11 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 			? numberParser().parse(value ?? "")
 			: Number(value ?? "");
 
+	const isValidPartialValue = (value: string | number | undefined) =>
+		local.format && typeof value !== "number"
+			? numberParser().isValidPartialNumber(value ?? "", mergedProps.minValue, mergedProps.maxValue)
+			: !isNaN(Number(value));
+
 	const [value, setValue] = createControllableSignal({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue ?? local.rawValue,
@@ -246,9 +251,13 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		}
 
 		const target = e.target as HTMLInputElement;
+		// cache the cursor position in case we need to update the input's value.
+		let cursorPosition = target.selectionStart;
 
-		if (e.inputType !== "insertText" || isAllowedInput(e.data || "")) {
-			setValue(target.value);
+		if(isValidPartialValue(target.value)) {
+			if (e.inputType !== "insertText" || isAllowedInput(e.data || "")) {
+				setValue(target.value);
+			}
 		}
 
 		// Unlike in React, inputs `value` can be out of sync with our value state.
@@ -256,7 +265,12 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 		// typing on the input will change its internal `value`.
 		//
 		// To prevent this, we need to force the input `value` to be in sync with the text field value state.
-		target.value = String(value() ?? "");
+		const v = value();
+		if (v !== target.value) {
+			target.value = String(v ?? "");
+			target.selectionStart = cursorPosition;
+			target.selectionEnd = cursorPosition;
+		}
 	};
 
 	const context: NumberFieldContextValue = {
