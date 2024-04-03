@@ -13,33 +13,43 @@
  */
 
 import {
-	OverrideComponentProps,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { createMemo, splitProps } from "solid-js";
+import { createMemo, splitProps, ValidComponent } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createTagName } from "../primitives";
 import { isButton } from "./is-button";
 
-export interface ButtonRootOptions extends AsChildProp {
-	/** Whether the button is disabled. */
-	disabled?: boolean;
+export interface ButtonRootOptions {
 }
 
-export interface ButtonRootProps
-	extends OverrideComponentProps<"button", ButtonRootOptions> {}
+export interface ButtonRootCommonProps {
+	/** Whether the button is disabled. */
+	disabled: boolean | undefined;
+	type: "submit" | "reset" | "button" | undefined;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	tabIndex: number | undefined;
+}
+
+export interface ButtonRootRenderProps extends ButtonRootCommonProps {
+	role: "button" | undefined;
+	"aria-disabled": boolean | undefined;
+	"data-disabled": string | undefined;
+}
+
+export type ButtonRootProps = ButtonRootOptions & Partial<ButtonRootCommonProps>;
 
 /**
  * Button enables users to trigger an action or event, such as submitting a form,
  * opening a dialog, canceling an action, or performing a delete operation.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export function ButtonRoot(props: ButtonRootProps) {
-	let ref: HTMLButtonElement | undefined;
+export function ButtonRoot<T extends ValidComponent = "button">(props: PolymorphicProps<T, ButtonRootProps>) {
+	let ref: HTMLElement | undefined;
 
-	const mergedProps = mergeDefaultProps({ type: "button" }, props);
+	const mergedProps = mergeDefaultProps({ type: "button" }, props as ButtonRootProps);
 
 	const [local, others] = splitProps(mergedProps, ["ref", "type", "disabled"]);
 
@@ -67,7 +77,7 @@ export function ButtonRoot(props: ButtonRootProps) {
 	});
 
 	return (
-		<Polymorphic
+		<Polymorphic<ButtonRootRenderProps>
 			as="button"
 			ref={mergeRefs((el) => (ref = el), local.ref)}
 			type={isNativeButton() || isNativeInput() ? local.type : undefined}
