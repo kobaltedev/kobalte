@@ -1,37 +1,37 @@
 import {
 	AccordionContent as Content,
-	type AccordionContentOptions,
 	type AccordionContentCommonProps,
-	type AccordionContentRenderProps,
+	type AccordionContentOptions,
 	type AccordionContentProps,
+	type AccordionContentRenderProps,
 } from "./accordion-content";
 import {
 	AccordionHeader as Header,
-	type AccordionHeaderOptions,
 	type AccordionHeaderCommonProps,
-	type AccordionHeaderRenderProps,
+	type AccordionHeaderOptions,
 	type AccordionHeaderProps,
+	type AccordionHeaderRenderProps,
 } from "./accordion-header";
 import {
 	AccordionItem as Item,
-	type AccordionItemOptions,
 	type AccordionItemCommonProps,
-	type AccordionItemRenderProps,
+	type AccordionItemOptions,
 	type AccordionItemProps,
+	type AccordionItemRenderProps,
 } from "./accordion-item";
 import {
 	AccordionRoot as Root,
-	type AccordionRootOptions,
 	type AccordionRootCommonProps,
-	type AccordionRootRenderProps,
+	type AccordionRootOptions,
 	type AccordionRootProps,
+	type AccordionRootRenderProps,
 } from "./accordion-root";
 import {
 	AccordionTrigger as Trigger,
-	type AccordionTriggerOptions,
 	type AccordionTriggerCommonProps,
-	type AccordionTriggerRenderProps,
+	type AccordionTriggerOptions,
 	type AccordionTriggerProps,
+	type AccordionTriggerRenderProps,
 } from "./accordion-trigger";
 
 export type {

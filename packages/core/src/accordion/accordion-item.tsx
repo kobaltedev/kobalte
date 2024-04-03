@@ -9,11 +9,11 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
 	Component,
+	JSX,
+	ValidComponent,
 	createSignal,
 	createUniqueId,
-	JSX,
 	splitProps,
-	ValidComponent,
 } from "solid-js";
 
 import * as Collapsible from "../collapsible";

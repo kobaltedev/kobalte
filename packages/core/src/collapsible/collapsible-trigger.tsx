@@ -7,22 +7,23 @@
  */
 
 import { callHandler } from "@kobalte/utils";
-import { Component, JSX, splitProps, ValidComponent } from "solid-js";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { PolymorphicProps } from "../polymorphic";
 import { useCollapsibleContext } from "./collapsible-context";
 
-export interface CollapsibleTriggerOptions extends Button.ButtonRootProps {
-}
+export interface CollapsibleTriggerOptions extends Button.ButtonRootProps {}
 
-export interface CollapsibleTriggerCommonProps extends Button.ButtonRootCommonProps {
+export interface CollapsibleTriggerCommonProps
+	extends Button.ButtonRootCommonProps {
 	ref: HTMLElement | ((el: HTMLElement) => void);
 	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
 }
 
 export interface CollapsibleTriggerRenderProps
-	extends CollapsibleTriggerCommonProps, Button.ButtonRootRenderProps {
+	extends CollapsibleTriggerCommonProps,
+		Button.ButtonRootRenderProps {
 	"aria-expanded": boolean;
 	"aria-controls": string | undefined;
 }
@@ -46,7 +47,11 @@ export function CollapsibleTrigger<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<Button.Root<Component<Omit<CollapsibleTriggerRenderProps, keyof Button.ButtonRootRenderProps>>>
+		<Button.Root<
+			Component<
+				Omit<CollapsibleTriggerRenderProps, keyof Button.ButtonRootRenderProps>
+			>
+		>
 			aria-expanded={context.isOpen()}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
 			disabled={context.disabled()}

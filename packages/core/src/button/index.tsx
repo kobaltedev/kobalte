@@ -1,15 +1,15 @@
 import {
 	ButtonRoot as Root,
-	type ButtonRootOptions,
 	type ButtonRootCommonProps,
-	type ButtonRootRenderProps,
+	type ButtonRootOptions,
 	type ButtonRootProps,
+	type ButtonRootRenderProps,
 } from "./button-root";
 
 export type {
 	ButtonRootOptions,
 	ButtonRootCommonProps,
 	ButtonRootRenderProps,
-	ButtonRootProps
+	ButtonRootProps,
 };
 export { Root };

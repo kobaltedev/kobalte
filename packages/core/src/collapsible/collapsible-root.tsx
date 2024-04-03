@@ -13,11 +13,11 @@ import {
 } from "@kobalte/utils";
 import {
 	Accessor,
+	ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	splitProps,
-	ValidComponent,
 } from "solid-js";
 
 import { Polymorphic, PolymorphicProps } from "../polymorphic";

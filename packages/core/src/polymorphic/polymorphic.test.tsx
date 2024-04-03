@@ -25,7 +25,9 @@ describe("Polymorphic", () => {
 	});
 
 	it("should render the 'as' custom component prop", () => {
-		const CustomButton = (props: any) => <button id="custom" {...props} />;
+		const CustomButton = (props: any) => (
+			<button id="custom" type="button" {...props} />
+		);
 
 		const { getByTestId } = render(() => (
 			<Polymorphic data-testid="polymorphic" as={CustomButton}>

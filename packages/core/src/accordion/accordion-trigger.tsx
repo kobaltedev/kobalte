@@ -14,12 +14,12 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
+	Component,
 	JSX,
+	ValidComponent,
 	createEffect,
 	onCleanup,
 	splitProps,
-	ValidComponent,
-	Component,
 } from "solid-js";
 
 import * as Collapsible from "../collapsible";

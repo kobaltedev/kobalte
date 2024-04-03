@@ -31,7 +31,7 @@ describe("Button", () => {
 	it("should keep attribute 'type' when provided and it's a native 'button' or 'input'", () => {
 		const { getByTestId } = render(() => (
 			<Button.Root data-testid="button" as="input" type="submit">
-					Button
+				Button
 			</Button.Root>
 		));
 
@@ -101,7 +101,7 @@ describe("Button", () => {
 	it("should not have attribute 'tabindex=0' when it's an 'a' tag with 'href'", () => {
 		const { getByTestId } = render(() => (
 			<Button.Root data-testid="button" as="a" href="https://kobalte.dev">
-					Button
+				Button
 			</Button.Root>
 		));
 

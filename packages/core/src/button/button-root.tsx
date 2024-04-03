@@ -12,18 +12,14 @@
  * https://github.com/ariakit/ariakit/blob/8a13899ff807bbf39f3d89d2d5964042ba4d5287/packages/ariakit/src/button/button.ts
  */
 
-import {
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
-import { createMemo, splitProps, ValidComponent } from "solid-js";
+import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { ValidComponent, createMemo, splitProps } from "solid-js";
 
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createTagName } from "../primitives";
 import { isButton } from "./is-button";
 
-export interface ButtonRootOptions {
-}
+export interface ButtonRootOptions {}
 
 export interface ButtonRootCommonProps {
 	/** Whether the button is disabled. */
@@ -39,17 +35,23 @@ export interface ButtonRootRenderProps extends ButtonRootCommonProps {
 	"data-disabled": string | undefined;
 }
 
-export type ButtonRootProps = ButtonRootOptions & Partial<ButtonRootCommonProps>;
+export type ButtonRootProps = ButtonRootOptions &
+	Partial<ButtonRootCommonProps>;
 
 /**
  * Button enables users to trigger an action or event, such as submitting a form,
  * opening a dialog, canceling an action, or performing a delete operation.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export function ButtonRoot<T extends ValidComponent = "button">(props: PolymorphicProps<T, ButtonRootProps>) {
+export function ButtonRoot<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, ButtonRootProps>,
+) {
 	let ref: HTMLElement | undefined;
 
-	const mergedProps = mergeDefaultProps({ type: "button" }, props as ButtonRootProps);
+	const mergedProps = mergeDefaultProps(
+		{ type: "button" },
+		props as ButtonRootProps,
+	);
 
 	const [local, others] = splitProps(mergedProps, ["ref", "type", "disabled"]);
 

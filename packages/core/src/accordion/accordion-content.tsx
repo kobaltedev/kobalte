@@ -9,10 +9,10 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	Component,
+	ValidComponent,
 	createEffect,
 	onCleanup,
 	splitProps,
-	ValidComponent,
 } from "solid-js";
 
 import * as Collapsible from "../collapsible";

@@ -10,13 +10,13 @@ import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
 	JSX,
 	Show,
+	ValidComponent,
 	createEffect,
 	createSignal,
 	on,
 	onCleanup,
 	onMount,
 	splitProps,
-	ValidComponent,
 } from "solid-js";
 
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
