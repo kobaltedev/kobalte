@@ -6,25 +6,26 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import { OverrideComponentProps, callHandler } from "@kobalte/utils";
-import { JSX, splitProps, ValidComponent } from "solid-js";
+import { callHandler } from "@kobalte/utils";
+import { Component, JSX, splitProps, ValidComponent } from "solid-js";
 
 import * as Button from "../button";
 import { PolymorphicProps } from "../polymorphic";
 import { useCollapsibleContext } from "./collapsible-context";
 
-export interface CollapsibleTriggerOptions {
-	onClick?: any; // TODO
+export interface CollapsibleTriggerOptions extends Button.ButtonRootProps {
 }
 
-export interface CollapsibleTriggerCommonProps {
-	id: string;
+export interface CollapsibleTriggerCommonProps extends Button.ButtonRootCommonProps {
 	ref: HTMLElement | ((el: HTMLElement) => void);
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
 }
 
-// TODO impl ButtonRenderProps!
 export interface CollapsibleTriggerRenderProps
-	extends CollapsibleTriggerCommonProps {}
+	extends CollapsibleTriggerCommonProps, Button.ButtonRootRenderProps {
+	"aria-expanded": boolean;
+	"aria-controls": string | undefined;
+}
 
 export type CollapsibleTriggerProps = CollapsibleTriggerOptions &
 	Partial<CollapsibleTriggerCommonProps>;
@@ -40,12 +41,12 @@ export function CollapsibleTrigger<T extends ValidComponent = "div">(
 	const [local, others] = splitProps(props, ["onClick"]);
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick as typeof onClick);
+		callHandler(e, local.onClick);
 		context.toggle();
 	};
 
 	return (
-		<Button.Root
+		<Button.Root<Component<Omit<CollapsibleTriggerRenderProps, keyof Button.ButtonRootRenderProps>>>
 			aria-expanded={context.isOpen()}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
 			disabled={context.disabled()}
