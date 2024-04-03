@@ -23,7 +23,7 @@ export function AlertRoot<T extends ValidComponent = "div">(
 		<Polymorphic<AlertRootRenderProps>
 			as="div"
 			role="alert"
-			{...(props as object)}
+			{...(props as AlertRootProps)}
 		/>
 	);
 }
