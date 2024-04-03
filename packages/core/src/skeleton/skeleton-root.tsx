@@ -5,11 +5,11 @@
  * Credits to the Mantine team:
  * https://github.com/mantinedev/mantine/blob/master/src/mantine-core/src/components/Skeleton/Skeleton.tsx
  */
-import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { JSX, createUniqueId, splitProps } from "solid-js";
-import { Polymorphic } from "../polymorphic";
+import { mergeDefaultProps } from "@kobalte/utils";
+import { JSX, ValidComponent, createUniqueId, splitProps } from "solid-js";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 
-interface SkeletonOptions {
+export interface SkeletonRootOptions {
 	/** Whether the skeleton is visible. Sets data attribute. */
 	visible?: boolean;
 
@@ -27,15 +27,26 @@ interface SkeletonOptions {
 
 	/** Whether the skeleton should animate. */
 	animate?: boolean;
+}
 
+export interface SkeletonRootCommonProps {
+	id: string;
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
 
-export interface SkeletonProps
-	extends OverrideComponentProps<"div", SkeletonOptions> {}
+export interface SkeletonRootRenderProps extends SkeletonRootCommonProps {
+	role: "group";
+	"data-animate": boolean;
+	"data-visible": boolean;
+}
 
-export function Skeleton(props: SkeletonProps) {
+export type SkeletonRootProps = SkeletonRootOptions &
+	Partial<SkeletonRootCommonProps>;
+
+export function Skeleton<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, SkeletonRootProps>,
+) {
 	const defaultId = `skeleton-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
@@ -44,12 +55,11 @@ export function Skeleton(props: SkeletonProps) {
 			animate: true,
 			id: defaultId,
 		},
-		props,
+		props as SkeletonRootProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
 		"style",
-		"ref",
 		"radius",
 		"animate",
 		"height",
@@ -59,7 +69,7 @@ export function Skeleton(props: SkeletonProps) {
 	]);
 
 	return (
-		<Polymorphic
+		<Polymorphic<SkeletonRootRenderProps>
 			as="div"
 			role="group"
 			data-animate={local.animate}
