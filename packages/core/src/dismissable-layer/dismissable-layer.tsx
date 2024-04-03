@@ -12,14 +12,10 @@
  * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/dismissable/src/dismissable-layer.ts
  */
 
-import {
-	OverrideComponentProps,
-	contains,
-	getDocument,
-	mergeRefs,
-} from "@kobalte/utils";
+import { contains, getDocument, mergeRefs } from "@kobalte/utils";
 import {
 	Accessor,
+	ValidComponent,
 	createEffect,
 	on,
 	onCleanup,
@@ -27,7 +23,7 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	FocusOutsideEvent,
 	InteractOutsideEvent,
@@ -42,7 +38,7 @@ import {
 } from "./dismissable-layer-context";
 import { layerStack } from "./layer-stack";
 
-export interface DismissableLayerOptions extends AsChildProp {
+export interface DismissableLayerOptions {
 	/**
 	 * When `true`, hover/focus/click interactions will be disabled on elements outside
 	 * the layer. Users will need to click twice on outside elements to
@@ -85,15 +81,24 @@ export interface DismissableLayerOptions extends AsChildProp {
 	bypassTopMostLayerCheck?: boolean;
 }
 
-export interface DismissableLayerProps
-	extends OverrideComponentProps<"div", DismissableLayerOptions> {}
+export interface DismissableLayerCommonProps {
+	ref: HTMLElement | ((el: HTMLElement) => void);
+}
 
-export function DismissableLayer(props: DismissableLayerProps) {
+export interface DismissableLayerRenderProps
+	extends DismissableLayerCommonProps {}
+
+export type DismissableLayerProps = DismissableLayerOptions &
+	Partial<DismissableLayerCommonProps>;
+
+export function DismissableLayer<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, DismissableLayerProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const parentContext = useOptionalDismissableLayerContext();
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(props as DismissableLayerProps, [
 		"ref",
 		"disableOutsidePointerEvents",
 		"excludedElements",
@@ -251,7 +256,7 @@ export function DismissableLayer(props: DismissableLayerProps) {
 
 	return (
 		<DismissableLayerContext.Provider value={context}>
-			<Polymorphic
+			<Polymorphic<DismissableLayerRenderProps>
 				as="div"
 				ref={mergeRefs((el) => (ref = el), local.ref)}
 				{...others}
