@@ -2,7 +2,6 @@ import { installPointerEvent } from "@kobalte/tests";
 import { render } from "@solidjs/testing-library";
 
 import * as Link from ".";
-import { As } from "../polymorphic";
 
 describe("Link", () => {
 	installPointerEvent();
@@ -19,8 +18,8 @@ describe("Link", () => {
 
 	it("should have attribute 'role=link' when it's not a native link", () => {
 		const { getByTestId } = render(() => (
-			<Link.Root data-testid="link" asChild>
-				<As component="div">Link</As>
+			<Link.Root data-testid="link" as="div">
+				Link
 			</Link.Root>
 		));
 
@@ -31,8 +30,8 @@ describe("Link", () => {
 
 	it("should have attribute 'tabindex=0' when it's not a native link and is not disabled", () => {
 		const { getByTestId } = render(() => (
-			<Link.Root data-testid="link" asChild>
-				<As component="div">Link</As>
+			<Link.Root data-testid="link" as="div">
+				Link
 			</Link.Root>
 		));
 
@@ -89,8 +88,8 @@ describe("Link", () => {
 
 	it("should not have attribute 'tabindex=0' when it's disabled", () => {
 		const { getByTestId } = render(() => (
-			<Link.Root data-testid="link" disabled asChild>
-				<As component="div">Link</As>
+			<Link.Root data-testid="link" disabled as="div">
+				Link
 			</Link.Root>
 		));
 

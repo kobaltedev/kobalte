@@ -6,29 +6,41 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/link/src/useLink.ts
  */
 
-import { OverrideComponentProps, mergeRefs } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { mergeRefs } from "@kobalte/utils";
+import { ValidComponent, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createTagName } from "../primitives";
 
-export interface LinkRootOptions extends AsChildProp {
+export interface LinkRootOptions {
 	/** Whether the link is disabled. */
 	disabled?: boolean;
 }
 
-export interface LinkRootProps
-	extends OverrideComponentProps<"a", LinkRootOptions> {}
+export interface LinkRootCommonProps {
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	href: string | undefined;
+}
+
+export interface LinkRootRenderProps extends LinkRootCommonProps {
+	role: "link" | undefined;
+	tabIndex: number | undefined;
+	"aria-disabled": boolean | undefined;
+	"data-disabled": string | undefined;
+}
+
+export type LinkRootProps = LinkRootOptions & Partial<LinkRootCommonProps>;
 
 /**
  * Link allows a user to navigate to another page or resource within a web page or application.
  */
-export function LinkRoot(props: LinkRootProps) {
-	let ref: HTMLAnchorElement | undefined;
+export function LinkRoot<T extends ValidComponent = "a">(
+	props: PolymorphicProps<T, LinkRootProps>,
+) {
+	let ref: HTMLElement | undefined;
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(props as LinkRootProps, [
 		"ref",
-		"type",
 		"href",
 		"disabled",
 	]);
@@ -39,7 +51,7 @@ export function LinkRoot(props: LinkRootProps) {
 	);
 
 	return (
-		<Polymorphic
+		<Polymorphic<LinkRootRenderProps>
 			as="a"
 			ref={mergeRefs((el) => (ref = el), local.ref)}
 			role={tagName() !== "a" || local.disabled ? "link" : undefined}
