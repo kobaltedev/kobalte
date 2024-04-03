@@ -19,6 +19,7 @@ import {
 import {
 	Accessor,
 	JSX,
+	ValidComponent,
 	children,
 	createMemo,
 	createSignal,
@@ -29,9 +30,10 @@ import {
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	FormControlDataSet,
 	createFormControl,
 } from "../form-control";
-import { Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createFormResetListener, createToggleState } from "../primitives";
 import {
 	CheckboxContext,
@@ -98,14 +100,30 @@ export interface CheckboxRootOptions {
 	children?: JSX.Element | ((state: CheckboxRootState) => JSX.Element);
 }
 
-export interface CheckboxRootProps
-	extends OverrideComponentProps<"div", CheckboxRootOptions> {}
+export interface CheckboxRootCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+}
+
+export interface CheckboxRootRenderProps
+	extends CheckboxRootCommonProps,
+		FormControlDataSet,
+		CheckboxDataSet {
+	children: JSX.Element;
+	role: "group";
+}
+
+export type CheckboxRootProps = CheckboxRootOptions &
+	Partial<CheckboxRootCommonProps>;
 
 /**
  * A control that allows the user to toggle between checked and not checked.
  */
-export function CheckboxRoot(props: CheckboxRootProps) {
-	let ref: HTMLDivElement | undefined;
+export function CheckboxRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, CheckboxRootProps>,
+) {
+	let ref: HTMLElement | undefined;
 
 	const defaultId = `checkbox-${createUniqueId()}`;
 
@@ -114,7 +132,7 @@ export function CheckboxRoot(props: CheckboxRootProps) {
 			value: "on",
 			id: defaultId,
 		},
-		props,
+		props as CheckboxRootProps,
 	);
 
 	const [local, formControlProps, others] = splitProps(
@@ -153,7 +171,7 @@ export function CheckboxRoot(props: CheckboxRootProps) {
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown as typeof onPointerDown);
+		callHandler(e, local.onPointerDown);
 
 		// For consistency with native, prevent the input blurs on pointer down.
 		if (isFocused()) {
@@ -182,7 +200,7 @@ export function CheckboxRoot(props: CheckboxRootProps) {
 	return (
 		<FormControlContext.Provider value={formControlContext}>
 			<CheckboxContext.Provider value={context}>
-				<Polymorphic
+				<Polymorphic<CheckboxRootRenderProps>
 					as="div"
 					ref={mergeRefs((el) => (ref = el), local.ref)}
 					role="group"
