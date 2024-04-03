@@ -1,14 +1,12 @@
 /* @refresh reload */
 
+import { OverrideProps } from "@kobalte/utils";
 import { ComponentProps, JSX, ValidComponent, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 /* -------------------------------------------------------------------------------------------------
  * Polymorphic
  * -----------------------------------------------------------------------------------------------*/
-
-// Combine T and P by overriding T
-export type OverrideProps<T, P> = Omit<T, keyof P> & P;
 
 /**
  * Polymorphic attribute.
