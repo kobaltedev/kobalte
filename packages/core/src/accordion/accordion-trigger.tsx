@@ -13,24 +13,51 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, createEffect, onCleanup, splitProps } from "solid-js";
+import {
+	JSX,
+	createEffect,
+	onCleanup,
+	splitProps,
+	ValidComponent,
+	Component,
+} from "solid-js";
 
 import * as Collapsible from "../collapsible";
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
-import { AsChildProp } from "../polymorphic";
+import { PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useAccordionContext } from "./accordion-context";
 import { useAccordionItemContext } from "./accordion-item-context";
 
-export interface AccordionTriggerProps
-	extends OverrideComponentProps<"button", AsChildProp> {}
+export interface AccordionTriggerOptions
+	extends Collapsible.CollapsibleTriggerOptions {}
+
+export interface AccordionTriggerCommonProps
+	extends Collapsible.CollapsibleTriggerCommonProps {
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+}
+
+export interface AccordionTriggerRenderProps
+	extends AccordionTriggerCommonProps,
+		Collapsible.CollapsibleTriggerRenderProps {
+	"data-key": string | undefined;
+}
+
+export type AccordionTriggerProps = AccordionTriggerOptions &
+	Partial<AccordionTriggerCommonProps>;
 
 /**
  * Toggles the collapsed state of its associated item. It should be nested inside an `Accordion.Header`.
  */
-export function AccordionTrigger(props: AccordionTriggerProps) {
+export function AccordionTrigger<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, AccordionTriggerProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const accordionContext = useAccordionContext();
@@ -39,7 +66,10 @@ export function AccordionTrigger(props: AccordionTriggerProps) {
 
 	const defaultId = itemContext.generateId("trigger");
 
-	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps(
+		{ id: defaultId },
+		props as AccordionTriggerProps,
+	);
 
 	const [local, others] = splitProps(mergedProps, [
 		"ref",
@@ -84,7 +114,14 @@ export function AccordionTrigger(props: AccordionTriggerProps) {
 	createEffect(() => onCleanup(itemContext.registerTriggerId(others.id!)));
 
 	return (
-		<Collapsible.Trigger
+		<Collapsible.Trigger<
+			Component<
+				Omit<
+					AccordionTriggerRenderProps,
+					keyof Collapsible.CollapsibleTriggerRenderProps
+				>
+			>
+		>
 			ref={mergeRefs((el) => (ref = el), local.ref)}
 			data-key={selectableItem.dataKey()}
 			onPointerDown={composeEventHandlers([

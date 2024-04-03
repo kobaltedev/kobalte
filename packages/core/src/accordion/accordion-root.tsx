@@ -7,21 +7,26 @@
  */
 
 import {
-	OverrideComponentProps,
 	composeEventHandlers,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { createSignal, createUniqueId, splitProps } from "solid-js";
+import {
+	createSignal,
+	createUniqueId,
+	splitProps,
+	ValidComponent,
+	JSX,
+} from "solid-js";
 
 import { createListState, createSelectableList } from "../list";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { AccordionContext, AccordionContextValue } from "./accordion-context";
 
-export interface AccordionRootOptions extends AsChildProp {
+export interface AccordionRootOptions {
 	/** The controlled value of the accordion item(s) to expand. */
 	value?: string[];
 
@@ -44,14 +49,27 @@ export interface AccordionRootOptions extends AsChildProp {
 	shouldFocusWrap?: boolean;
 }
 
-export interface AccordionRootProps
-	extends OverrideComponentProps<"div", AccordionRootOptions> {}
+export interface AccordionRootCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+}
+
+export interface AccordionRootRenderProps extends AccordionRootCommonProps {}
+
+export type AccordionRootProps = AccordionRootOptions &
+	Partial<AccordionRootCommonProps>;
 
 /**
  * A vertically stacked set of interactive headings that each reveal an associated section of content.
  */
-export function AccordionRoot(props: AccordionRootProps) {
-	let ref: HTMLDivElement | undefined;
+export function AccordionRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, AccordionRootProps>,
+) {
+	let ref: HTMLElement | undefined;
 
 	const defaultId = `accordion-${createUniqueId()}`;
 
@@ -62,10 +80,11 @@ export function AccordionRoot(props: AccordionRootProps) {
 			collapsible: false,
 			shouldFocusWrap: true,
 		},
-		props,
+		props as AccordionRootProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
+		"id",
 		"ref",
 		"value",
 		"defaultValue",
@@ -110,14 +129,15 @@ export function AccordionRoot(props: AccordionRootProps) {
 
 	const context: AccordionContextValue = {
 		listState: () => listState,
-		generateId: createGenerateId(() => others.id!),
+		generateId: createGenerateId(() => local.id),
 	};
 
 	return (
 		<DomCollectionProvider>
 			<AccordionContext.Provider value={context}>
-				<Polymorphic
+				<Polymorphic<AccordionRootRenderProps>
 					as="div"
+					id={local.id}
 					ref={mergeRefs((el) => (ref = el), local.ref)}
 					onKeyDown={composeEventHandlers([
 						local.onKeyDown,
