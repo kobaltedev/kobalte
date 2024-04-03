@@ -7,19 +7,30 @@
  */
 
 import { OverrideComponentProps, callHandler } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { JSX, splitProps, ValidComponent } from "solid-js";
 
 import * as Button from "../button";
-import { AsChildProp } from "../polymorphic";
+import { PolymorphicProps } from "../polymorphic";
 import { useCollapsibleContext } from "./collapsible-context";
 
-export interface CollapsibleTriggerProps
-	extends OverrideComponentProps<"button", AsChildProp> {}
+export interface CollapsibleTriggerOptions {
+	onClick?: any; // TODO
+}
+
+export interface CollapsibleTriggerCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+}
+
+// TODO impl ButtonRenderProps!
+export interface CollapsibleTriggerRenderProps extends CollapsibleTriggerCommonProps {}
+
+export type CollapsibleTriggerProps = CollapsibleTriggerOptions & Partial<CollapsibleTriggerCommonProps>;
 
 /**
  * The button that expands/collapses the collapsible content.
  */
-export function CollapsibleTrigger(props: CollapsibleTriggerProps) {
+export function CollapsibleTrigger<T extends ValidComponent = "div">(props: PolymorphicProps<T, CollapsibleTriggerProps>) {
 	const context = useCollapsibleContext();
 
 	const [local, others] = splitProps(props, ["onClick"]);
