@@ -3,19 +3,37 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createTagName } from "../primitives";
-import { useFormControlContext } from "./form-control-context";
+import {
+	FormControlDataSet,
+	useFormControlContext,
+} from "./form-control-context";
 
-export interface FormControlLabelProps
-	extends OverrideComponentProps<"label", AsChildProp> {}
+export interface FormControlLabelOptions {}
+
+export interface FormControlLabelCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+}
+
+export interface FormControlLabelRenderProps
+	extends FormControlLabelCommonProps,
+		FormControlDataSet {
+	for: string | undefined;
+}
+
+export type FormControlLabelProps = FormControlLabelOptions &
+	Partial<FormControlLabelCommonProps>;
 
 /**
  * The label that gives the user information on the form control.
  */
-export function FormControlLabel(props: FormControlLabelProps) {
+export function FormControlLabel<T extends ValidComponent = "label">(
+	props: PolymorphicProps<T, FormControlLabelProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const context = useFormControlContext();
@@ -24,7 +42,7 @@ export function FormControlLabel(props: FormControlLabelProps) {
 		{
 			id: context.generateId("label"),
 		},
-		props,
+		props as FormControlLabelProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["ref"]);
@@ -34,10 +52,10 @@ export function FormControlLabel(props: FormControlLabelProps) {
 		() => "label",
 	);
 
-	createEffect(() => onCleanup(context.registerLabel(others.id!)));
+	createEffect(() => onCleanup(context.registerLabel(others.id)));
 
 	return (
-		<Polymorphic
+		<Polymorphic<FormControlLabelRenderProps>
 			as="label"
 			ref={mergeRefs((el) => (ref = el), local.ref)}
 			for={tagName() === "label" ? context.fieldId() : undefined}
