@@ -7,13 +7,13 @@
  */
 
 import { OverrideComponentProps } from "@kobalte/utils";
-import { createSignal, splitProps } from "solid-js";
+import { ValidComponent, createSignal, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { ImageContext, ImageContextValue } from "./image-context";
 import { ImageLoadingStatus } from "./types";
 
-export interface ImageRootOptions extends AsChildProp {
+export interface ImageRootOptions {
 	/**
 	 * The delay (in ms) before displaying the image fallback.
 	 * Useful if you notice a flash during loading for delaying rendering,
@@ -28,14 +28,19 @@ export interface ImageRootOptions extends AsChildProp {
 	onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
 }
 
-export interface ImageRootProps
-	extends OverrideComponentProps<"span", ImageRootOptions> {}
+export interface ImageRootCommonProps {}
+
+export interface ImageRootRenderProps extends ImageRootCommonProps {}
+
+export type ImageRootProps = ImageRootOptions & Partial<ImageRootCommonProps>;
 
 /**
  * An image element with an optional fallback for loading and error status.
  */
-export function ImageRoot(props: ImageRootProps) {
-	const [local, others] = splitProps(props, [
+export function ImageRoot<T extends ValidComponent = "span">(
+	props: PolymorphicProps<T, ImageRootProps>,
+) {
+	const [local, others] = splitProps(props as ImageRootProps, [
 		"fallbackDelay",
 		"onLoadingStatusChange",
 	]);
@@ -54,7 +59,7 @@ export function ImageRoot(props: ImageRootProps) {
 
 	return (
 		<ImageContext.Provider value={context}>
-			<Polymorphic as="span" {...others} />
+			<Polymorphic<ImageRootRenderProps> as="span" {...others} />
 		</ImageContext.Provider>
 	);
 }
