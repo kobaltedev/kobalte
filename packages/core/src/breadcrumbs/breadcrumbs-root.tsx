@@ -6,10 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/38a57d3360268fb0cb55c6b42b9a5f6f13bb57d6/packages/@react-aria/breadcrumbs/src/useBreadcrumbs.ts
  */
 
-import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { mergeDefaultProps } from "@kobalte/utils";
+import { JSX, ValidComponent, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	BreadcrumbsContext,
 	BreadcrumbsContextValue,
@@ -19,7 +19,7 @@ import {
 	BreadcrumbsIntlTranslations,
 } from "./breadcrumbs.intl";
 
-export interface BreadcrumbsRootOptions extends AsChildProp {
+export interface BreadcrumbsRootOptions {
 	/**
 	 * The visual separator between each breadcrumb item.
 	 * It will be used as the default children of `Breadcrumbs.Separator`.
@@ -30,19 +30,27 @@ export interface BreadcrumbsRootOptions extends AsChildProp {
 	translations?: BreadcrumbsIntlTranslations;
 }
 
-export interface BreadcrumbsRootProps
-	extends OverrideComponentProps<"nav", BreadcrumbsRootOptions> {}
+export interface BreadcrumbsRootCommonProps {}
+
+export interface BreadcrumbsRootRenderProps extends BreadcrumbsRootCommonProps {
+	"aria-label": string;
+}
+
+export type BreadcrumbsRootProps = BreadcrumbsRootOptions &
+	Partial<BreadcrumbsRootCommonProps>;
 
 /**
  * Breadcrumbs show hierarchy and navigational context for a user’s location within an application.
  */
-export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
+export function BreadcrumbsRoot<T extends ValidComponent = "nav">(
+	props: PolymorphicProps<T, BreadcrumbsRootProps>,
+) {
 	const mergedProps = mergeDefaultProps(
 		{
 			separator: "/",
 			translations: BREADCRUMBS_INTL_TRANSLATIONS,
 		},
-		props,
+		props as BreadcrumbsRootProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -56,9 +64,9 @@ export function BreadcrumbsRoot(props: BreadcrumbsRootProps) {
 
 	return (
 		<BreadcrumbsContext.Provider value={context}>
-			<Polymorphic
+			<Polymorphic<BreadcrumbsRootRenderProps>
 				as="nav"
-				aria-label={local.translations?.breadcrumbs}
+				aria-label={local.translations.breadcrumbs}
 				{...others}
 			/>
 		</BreadcrumbsContext.Provider>

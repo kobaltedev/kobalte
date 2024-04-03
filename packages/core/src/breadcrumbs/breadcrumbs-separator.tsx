@@ -1,24 +1,37 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { JSX, ValidComponent } from "solid-js";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useBreadcrumbsContext } from "./breadcrumbs-context";
 
-export interface BreadcrumbsSeparatorProps
-	extends OverrideComponentProps<"span", AsChildProp> {}
+export interface BreadcrumbsSeparatorOptions {}
+
+export interface BreadcrumbsSeparatorCommonProps {}
+
+export interface BreadcrumbsSeparatorRenderProps
+	extends BreadcrumbsSeparatorCommonProps {
+	children: JSX.Element;
+	"aria-hidden": "true";
+}
+
+export type BreadcrumbsSeparatorProps = BreadcrumbsSeparatorOptions &
+	Partial<BreadcrumbsSeparatorCommonProps>;
 
 /**
  * The visual separator between each breadcrumb items.
  * It will not be visible by screen readers.
  */
-export function BreadcrumbsSeparator(props: BreadcrumbsSeparatorProps) {
+export function BreadcrumbsSeparator<T extends ValidComponent = "span">(
+	props: PolymorphicProps<T, BreadcrumbsSeparatorProps>,
+) {
 	const context = useBreadcrumbsContext();
 
 	return (
-		<Polymorphic
+		<Polymorphic<BreadcrumbsSeparatorRenderProps>
 			as="span"
 			children={context.separator()}
 			aria-hidden="true"
-			{...props}
+			{...(props as BreadcrumbsSeparatorProps)}
 		/>
 	);
 }
