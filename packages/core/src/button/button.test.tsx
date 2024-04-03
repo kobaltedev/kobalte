@@ -1,5 +1,5 @@
 import { installPointerEvent } from "@kobalte/tests";
-import { render, screen } from "@solidjs/testing-library";
+import { render } from "@solidjs/testing-library";
 
 import * as Button from ".";
 
