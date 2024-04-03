@@ -23,14 +23,18 @@ export interface CollapsibleTriggerCommonProps {
 }
 
 // TODO impl ButtonRenderProps!
-export interface CollapsibleTriggerRenderProps extends CollapsibleTriggerCommonProps {}
+export interface CollapsibleTriggerRenderProps
+	extends CollapsibleTriggerCommonProps {}
 
-export type CollapsibleTriggerProps = CollapsibleTriggerOptions & Partial<CollapsibleTriggerCommonProps>;
+export type CollapsibleTriggerProps = CollapsibleTriggerOptions &
+	Partial<CollapsibleTriggerCommonProps>;
 
 /**
  * The button that expands/collapses the collapsible content.
  */
-export function CollapsibleTrigger<T extends ValidComponent = "div">(props: PolymorphicProps<T, CollapsibleTriggerProps>) {
+export function CollapsibleTrigger<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, CollapsibleTriggerProps>,
+) {
 	const context = useCollapsibleContext();
 
 	const [local, others] = splitProps(props, ["onClick"]);

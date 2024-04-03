@@ -56,8 +56,8 @@ export interface CollapsibleRootCommonProps {
 }
 
 export interface CollapsibleRootRenderProps
-	extends CollapsibleRootCommonProps, CollapsibleDataSet {
-}
+	extends CollapsibleRootCommonProps,
+		CollapsibleDataSet {}
 
 export type CollapsibleRootProps = CollapsibleRootOptions &
 	Partial<CollapsibleRootCommonProps>;
@@ -65,7 +65,9 @@ export type CollapsibleRootProps = CollapsibleRootOptions &
 /**
  * An interactive component which expands/collapses a content.
  */
-export function CollapsibleRoot<T extends ValidComponent = "div">(props: PolymorphicProps<T, CollapsibleRootProps>) {
+export function CollapsibleRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, CollapsibleRootProps>,
+) {
 	const defaultId = `collapsible-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(

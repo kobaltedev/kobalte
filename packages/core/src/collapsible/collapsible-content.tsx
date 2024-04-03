@@ -6,10 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import {
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
 	JSX,
 	Show,
@@ -24,10 +21,12 @@ import {
 
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createPresence } from "../primitives";
-import { CollapsibleDataSet, useCollapsibleContext } from "./collapsible-context";
+import {
+	CollapsibleDataSet,
+	useCollapsibleContext,
+} from "./collapsible-context";
 
-export interface CollapsibleContentOptions {
-}
+export interface CollapsibleContentOptions {}
 
 export interface CollapsibleContentCommonProps {
 	id: string;
@@ -35,14 +34,19 @@ export interface CollapsibleContentCommonProps {
 	style?: JSX.CSSProperties;
 }
 
-export interface CollapsibleContentRenderProps extends CollapsibleContentCommonProps, CollapsibleDataSet {}
+export interface CollapsibleContentRenderProps
+	extends CollapsibleContentCommonProps,
+		CollapsibleDataSet {}
 
-export type CollapsibleContentProps = CollapsibleContentOptions & Partial<CollapsibleContentCommonProps>;
+export type CollapsibleContentProps = CollapsibleContentOptions &
+	Partial<CollapsibleContentCommonProps>;
 
 /**
  * Contains the content to be rendered when the collapsible is expanded.
  */
-export function CollapsibleContent<T extends ValidComponent = "div">(props: PolymorphicProps<T, CollapsibleContentProps>) {
+export function CollapsibleContent<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, CollapsibleContentProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const context = useCollapsibleContext();
