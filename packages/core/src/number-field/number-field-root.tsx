@@ -203,8 +203,12 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 
 	const isValidPartialValue = (value: string | number | undefined) =>
 		local.format && typeof value !== "number"
-			? numberParser().isValidPartialNumber(value ?? "", mergedProps.minValue, mergedProps.maxValue)
-			: !isNaN(Number(value));
+			? numberParser().isValidPartialNumber(
+					value ?? "",
+					mergedProps.minValue,
+					mergedProps.maxValue,
+			  )
+			: !Number.isNaN(Number(value));
 
 	const [value, setValue] = createControllableSignal({
 		value: () => local.value,
@@ -252,9 +256,9 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 
 		const target = e.target as HTMLInputElement;
 		// cache the cursor position in case we need to update the input's value.
-		let cursorPosition = target.selectionStart;
+		const cursorPosition = target.selectionStart;
 
-		if(isValidPartialValue(target.value)) {
+		if (isValidPartialValue(target.value)) {
 			if (e.inputType !== "insertText" || isAllowedInput(e.data || "")) {
 				setValue(target.value);
 			}
