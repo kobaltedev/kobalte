@@ -25,8 +25,7 @@ import {
 	AccordionItemContextValue,
 } from "./accordion-item-context";
 
-export interface AccordionItemOptions
-	extends Collapsible.CollapsibleRootOptions {
+export interface AccordionItemOptions {
 	/** A unique value for the item. */
 	value: string;
 

@@ -7,7 +7,6 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	composeEventHandlers,
 	mergeDefaultProps,
@@ -31,11 +30,11 @@ import { createSelectableItem } from "../selection";
 import { useAccordionContext } from "./accordion-context";
 import { useAccordionItemContext } from "./accordion-item-context";
 
-export interface AccordionTriggerOptions
-	extends Collapsible.CollapsibleTriggerOptions {}
+export interface AccordionTriggerOptions {}
 
 export interface AccordionTriggerCommonProps
 	extends Collapsible.CollapsibleTriggerCommonProps {
+	id: string;
 	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
 	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
 	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;

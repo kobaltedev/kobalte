@@ -13,7 +13,7 @@ import * as Button from "../button";
 import { PolymorphicProps } from "../polymorphic";
 import { useCollapsibleContext } from "./collapsible-context";
 
-export interface CollapsibleTriggerOptions extends Button.ButtonRootProps {}
+export interface CollapsibleTriggerOptions {}
 
 export interface CollapsibleTriggerCommonProps
 	extends Button.ButtonRootCommonProps {

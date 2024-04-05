@@ -8,14 +8,12 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import {
-	ComponentProps,
 	JSX,
 	ValidComponent,
 	createEffect,
@@ -39,7 +37,7 @@ export interface CheckboxInputCommonProps {
 	id: string;
 	ref: HTMLInputElement | ((el: HTMLInputElement) => void);
 	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style: JSX.CSSProperties;
 	onChange: JSX.EventHandlerUnion<HTMLInputElement, InputEvent>;
 	onFocus: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent>;
 	onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent>;

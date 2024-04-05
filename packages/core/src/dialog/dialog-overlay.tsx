@@ -4,8 +4,7 @@ import { JSX, Show, ValidComponent, splitProps } from "solid-js";
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useDialogContext } from "./dialog-context";
 
-export interface DialogOverlayOptions {
-}
+export interface DialogOverlayOptions {}
 
 export interface DialogOverlayCommonProps {
 	ref: HTMLElement | ((el: HTMLElement) => void);

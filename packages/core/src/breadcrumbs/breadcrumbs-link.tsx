@@ -11,7 +11,7 @@ import { Component, ValidComponent, splitProps } from "solid-js";
 import * as Link from "../link";
 import { PolymorphicProps } from "../polymorphic";
 
-export interface BreadcrumbsLinkOptions extends Link.LinkRootOptions {
+export interface BreadcrumbsLinkOptions {
 	/** Whether the breadcrumb link represents the current page. */
 	current?: boolean;
 }

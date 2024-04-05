@@ -1,30 +1,30 @@
 import {
 	DialogCloseButton as CloseButton,
-	type DialogCloseButtonOptions,
 	type DialogCloseButtonCommonProps,
-	type DialogCloseButtonRenderProps,
+	type DialogCloseButtonOptions,
 	type DialogCloseButtonProps,
+	type DialogCloseButtonRenderProps,
 } from "./dialog-close-button";
 import {
 	DialogContent as Content,
-	type DialogContentOptions,
 	type DialogContentCommonProps,
-	type DialogContentRenderProps,
+	type DialogContentOptions,
 	type DialogContentProps,
+	type DialogContentRenderProps,
 } from "./dialog-content";
 import {
 	DialogDescription as Description,
-	type DialogDescriptionOptions,
 	type DialogDescriptionCommonProps,
-	type DialogDescriptionRenderProps,
+	type DialogDescriptionOptions,
 	type DialogDescriptionProps,
+	type DialogDescriptionRenderProps,
 } from "./dialog-description";
 import {
 	DialogOverlay as Overlay,
-	type DialogOverlayOptions,
 	type DialogOverlayCommonProps,
-	type DialogOverlayRenderProps,
+	type DialogOverlayOptions,
 	type DialogOverlayProps,
+	type DialogOverlayRenderProps,
 } from "./dialog-overlay";
 import {
 	DialogPortal as Portal,
@@ -35,31 +35,48 @@ import {
 	type DialogRootOptions,
 	type DialogRootProps,
 } from "./dialog-root";
-import { DialogTitle as Title,
-	type DialogTitleOptions,
+import {
+	DialogTitle as Title,
 	type DialogTitleCommonProps,
+	type DialogTitleOptions,
+	type DialogTitleProps,
 	type DialogTitleRenderProps,
-	type DialogTitleProps
 } from "./dialog-title";
 import {
 	DialogTrigger as Trigger,
-	type DialogTriggerOptions,
 	type DialogTriggerCommonProps,
-	type DialogTriggerRenderProps,
+	type DialogTriggerOptions,
 	type DialogTriggerProps,
+	type DialogTriggerRenderProps,
 } from "./dialog-trigger";
 
 export type {
+	DialogCloseButtonOptions,
+	DialogCloseButtonCommonProps,
+	DialogCloseButtonRenderProps,
 	DialogCloseButtonProps,
 	DialogContentOptions,
+	DialogContentCommonProps,
+	DialogContentRenderProps,
 	DialogContentProps,
+	DialogDescriptionCommonProps,
+	DialogDescriptionOptions,
+	DialogDescriptionRenderProps,
 	DialogDescriptionProps,
 	DialogOverlayOptions,
+	DialogOverlayCommonProps,
+	DialogOverlayRenderProps,
 	DialogOverlayProps,
 	DialogPortalProps,
 	DialogRootOptions,
 	DialogRootProps,
+	DialogTitleCommonProps,
+	DialogTitleOptions,
+	DialogTitleRenderProps,
 	DialogTitleProps,
+	DialogTriggerCommonProps,
+	DialogTriggerRenderProps,
+	DialogTriggerOptions,
 	DialogTriggerProps,
 };
 

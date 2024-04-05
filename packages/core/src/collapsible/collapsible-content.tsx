@@ -31,7 +31,7 @@ export interface CollapsibleContentOptions {}
 export interface CollapsibleContentCommonProps {
 	id: string;
 	ref: HTMLElement | ((el: HTMLElement) => void);
-	style?: JSX.CSSProperties;
+	style: JSX.CSSProperties;
 }
 
 export interface CollapsibleContentRenderProps

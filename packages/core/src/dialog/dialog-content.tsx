@@ -7,7 +7,6 @@
  */
 
 import {
-	OverrideComponentProps,
 	contains,
 	focusWithoutScrolling,
 	mergeDefaultProps,
@@ -26,7 +25,6 @@ import createPreventScroll from "solid-prevent-scroll";
 import {
 	DismissableLayer,
 	DismissableLayerCommonProps,
-	DismissableLayerOptions,
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import { PolymorphicProps } from "../polymorphic";
@@ -84,7 +82,7 @@ export interface DialogContentCommonProps extends DismissableLayerCommonProps {
 export interface DialogContentRenderProps
 	extends DialogContentCommonProps,
 		DismissableLayerRenderProps {
-	role: "dialog";
+	role: "dialog" | "alertdialog";
 	tabIndex: -1;
 }
 

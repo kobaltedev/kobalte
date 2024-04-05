@@ -7,7 +7,7 @@
  */
 
 import { callHandler, mergeRefs } from "@kobalte/utils";
-import { Component, JSX, splitProps, ValidComponent } from "solid-js";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { PolymorphicProps } from "../polymorphic";
@@ -19,7 +19,9 @@ export interface DialogTriggerCommonProps extends Button.ButtonRootCommonProps {
 	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
 }
 
-export interface DialogTriggerRenderProps extends DialogTriggerCommonProps, Button.ButtonRootRenderProps {
+export interface DialogTriggerRenderProps
+	extends DialogTriggerCommonProps,
+		Button.ButtonRootRenderProps {
 	"aria-haspopup": "dialog";
 	"aria-expanded": boolean;
 	"aria-controls": string | undefined;
@@ -27,16 +29,21 @@ export interface DialogTriggerRenderProps extends DialogTriggerCommonProps, Butt
 	"data-closed": string | undefined;
 }
 
-export type DialogTriggerProps = DialogTriggerOptions & Partial<DialogTriggerCommonProps>;
-
+export type DialogTriggerProps = DialogTriggerOptions &
+	Partial<DialogTriggerCommonProps>;
 
 /**
  * The button that opens the dialog.
  */
-export function DialogTrigger<T extends ValidComponent = "button">(props: PolymorphicProps<T, DialogTriggerProps>) {
+export function DialogTrigger<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, DialogTriggerProps>,
+) {
 	const context = useDialogContext();
 
-	const [local, others] = splitProps(props as DialogTriggerProps, ["ref", "onClick"]);
+	const [local, others] = splitProps(props as DialogTriggerProps, [
+		"ref",
+		"onClick",
+	]);
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
@@ -46,10 +53,7 @@ export function DialogTrigger<T extends ValidComponent = "button">(props: Polymo
 	return (
 		<Button.Root<
 			Component<
-				Omit<
-					DialogTriggerRenderProps,
-					keyof Button.ButtonRootRenderProps
-				>
+				Omit<DialogTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
 			ref={mergeRefs(context.setTriggerRef, local.ref)}

@@ -32,7 +32,7 @@ export interface SkeletonRootOptions {
 export interface SkeletonRootCommonProps {
 	id: string;
 	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style: JSX.CSSProperties;
 }
 
 export interface SkeletonRootRenderProps extends SkeletonRootCommonProps {

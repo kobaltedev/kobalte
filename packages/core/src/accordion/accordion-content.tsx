@@ -19,8 +19,7 @@ import * as Collapsible from "../collapsible";
 import { PolymorphicProps } from "../polymorphic";
 import { useAccordionItemContext } from "./accordion-item-context";
 
-export interface AccordionContentOptions
-	extends Collapsible.CollapsibleContentOptions {}
+export interface AccordionContentOptions {}
 
 export interface AccordionContentCommonProps
 	extends Collapsible.CollapsibleContentCommonProps {
