@@ -13,11 +13,23 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { Show, createEffect, onCleanup, splitProps } from "solid-js";
+import {
+	Component,
+	Show,
+	ValidComponent,
+	createEffect,
+	onCleanup,
+	splitProps,
+} from "solid-js";
 
 import createPreventScroll from "solid-prevent-scroll";
-import { DismissableLayer } from "../dismissable-layer";
-import { AsChildProp } from "../polymorphic";
+import {
+	DismissableLayer,
+	DismissableLayerCommonProps,
+	DismissableLayerOptions,
+	DismissableLayerRenderProps,
+} from "../dismissable-layer";
+import { PolymorphicProps } from "../polymorphic";
 import {
 	FocusOutsideEvent,
 	InteractOutsideEvent,
@@ -27,7 +39,7 @@ import {
 } from "../primitives";
 import { useDialogContext } from "./dialog-context";
 
-export interface DialogContentOptions extends AsChildProp {
+export interface DialogContentOptions {
 	/**
 	 * Event handler called when focus moves into the component after opening.
 	 * It can be prevented by calling `event.preventDefault`.
@@ -65,13 +77,26 @@ export interface DialogContentOptions extends AsChildProp {
 	onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export interface DialogContentProps
-	extends OverrideComponentProps<"div", DialogContentOptions> {}
+export interface DialogContentCommonProps extends DismissableLayerCommonProps {
+	id: string;
+}
+
+export interface DialogContentRenderProps
+	extends DialogContentCommonProps,
+		DismissableLayerRenderProps {
+	role: "dialog";
+	tabIndex: -1;
+}
+
+export type DialogContentProps = DialogContentOptions &
+	Partial<DialogContentCommonProps>;
 
 /**
  * Contains the content to be rendered when the dialog is open.
  */
-export function DialogContent(props: DialogContentProps) {
+export function DialogContent<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, DialogContentProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const context = useDialogContext();
@@ -80,7 +105,7 @@ export function DialogContent(props: DialogContentProps) {
 		{
 			id: context.generateId("content"),
 		},
-		props,
+		props as DialogContentProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -193,7 +218,11 @@ export function DialogContent(props: DialogContentProps) {
 
 	return (
 		<Show when={context.contentPresence.isPresent()}>
-			<DismissableLayer
+			<DismissableLayer<
+				Component<
+					Omit<DialogContentRenderProps, keyof DismissableLayerRenderProps>
+				>
+			>
 				ref={mergeRefs((el) => {
 					context.contentPresence.setRef(el);
 					ref = el;
