@@ -21,13 +21,14 @@ import {
 	Match,
 	Show,
 	Switch,
+	ValidComponent,
 	createMemo,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
 import { ListState, createListState, createSelectableList } from "../list";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { Collection, CollectionNode } from "../primitives";
 import {
 	FocusStrategy,
@@ -37,8 +38,7 @@ import {
 } from "../selection";
 import { ListboxContext, ListboxContextValue } from "./listbox-context";
 
-export interface ListboxRootOptions<Option, OptGroup = never>
-	extends AsChildProp {
+export interface ListboxRootOptions<Option, OptGroup = never> {
 	/** The controlled value of the listbox. */
 	value?: Iterable<string>;
 
@@ -132,15 +132,35 @@ export interface ListboxRootOptions<Option, OptGroup = never>
 	) => JSX.Element;
 }
 
-export interface ListboxRootProps<Option, OptGroup = never>
-	extends OverrideComponentProps<"ul", ListboxRootOptions<Option, OptGroup>> {}
+export interface ListboxRootCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+}
+
+export interface ListboxRootRenderProps extends ListboxRootCommonProps {
+	role: "listbox";
+	children: JSX.Element;
+	tabIndex: number | undefined;
+}
+
+export type ListboxRootProps<Option, OptGroup = never> = ListboxRootOptions<
+	Option,
+	OptGroup
+> &
+	Partial<ListboxRootCommonProps>;
 
 /**
  * Listbox presents a list of options and allows a user to select one or more of them.
  */
-export function ListboxRoot<Option, OptGroup = never>(
-	props: ListboxRootProps<Option, OptGroup>,
-) {
+export function ListboxRoot<
+	Option,
+	OptGroup = never,
+	T extends ValidComponent = "ul",
+>(props: PolymorphicProps<T, ListboxRootProps<Option, OptGroup>>) {
 	let ref: HTMLElement | undefined;
 
 	const defaultId = `listbox-${createUniqueId()}`;
@@ -150,8 +170,8 @@ export function ListboxRoot<Option, OptGroup = never>(
 			id: defaultId,
 			selectionMode: "single",
 			virtualized: false,
-		},
-		props,
+		} as const,
+		props as ListboxRootProps<Option, OptGroup>,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -242,7 +262,7 @@ export function ListboxRoot<Option, OptGroup = never>(
 
 	return (
 		<ListboxContext.Provider value={context}>
-			<Polymorphic
+			<Polymorphic<ListboxRootRenderProps>
 				as="ul"
 				ref={mergeRefs((el) => (ref = el), local.ref)}
 				role="listbox"

@@ -7,7 +7,6 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	composeEventHandlers,
 	createGenerateId,
@@ -20,13 +19,14 @@ import {
 import {
 	Accessor,
 	JSX,
+	ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionNode, createRegisterId, getItemCount } from "../primitives";
 import { createSelectableItem } from "../selection";
 import { useListboxContext } from "./listbox-context";
@@ -36,25 +36,57 @@ import {
 	ListboxItemDataSet,
 } from "./listbox-item-context";
 
-export interface ListboxItemOptions extends AsChildProp {
+export interface ListboxItemOptions {
 	/** The collection node to render. */
 	item: CollectionNode;
 }
 
-export interface ListboxItemProps
-	extends OverrideComponentProps<"li", ListboxItemOptions> {}
+export interface ListboxItemCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	"aria-label": string | undefined;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
+	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+}
+
+export interface ListboxItemRenderProps
+	extends ListboxItemCommonProps,
+		ListboxItemDataSet {
+	role: "option";
+	tabIndex: number | undefined;
+	"aria-disabled": boolean;
+	"aria-selected": boolean | undefined;
+	"aria-posinset": number | undefined;
+	"aria-setsize": number | undefined;
+	"data-key": string | undefined;
+}
+
+export type ListboxItemProps = ListboxItemOptions &
+	Partial<ListboxItemCommonProps>;
 
 /**
  * An item of the listbox.
  */
-export function ListboxItem(props: ListboxItemProps) {
+export function ListboxItem<T extends ValidComponent = "li">(
+	props: PolymorphicProps<T, ListboxItemProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const listBoxContext = useListboxContext();
 
 	const defaultId = `${listBoxContext.generateId("item")}-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps(
+		{ id: defaultId },
+		props as ListboxItemProps,
+	);
 
 	const [local, others] = splitProps(mergedProps, [
 		"ref",
@@ -177,7 +209,7 @@ export function ListboxItem(props: ListboxItemProps) {
 
 	return (
 		<ListboxItemContext.Provider value={context}>
-			<Polymorphic
+			<Polymorphic<ListboxItemRenderProps>
 				as="li"
 				ref={mergeRefs((el) => (ref = el), local.ref)}
 				role="option"

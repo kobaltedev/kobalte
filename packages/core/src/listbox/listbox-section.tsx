@@ -1,14 +1,30 @@
-import { OverrideComponentProps } from "@kobalte/utils";
+import { ValidComponent } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 
-export interface ListboxSectionProps
-	extends OverrideComponentProps<"li", AsChildProp> {}
+export interface ListboxSectionOptions {}
+
+export interface ListboxSectionCommonProps {}
+
+export interface ListboxSectionRenderProps extends ListboxSectionCommonProps {
+	role: "presentation";
+}
+
+export type ListboxSectionProps = ListboxSectionOptions &
+	Partial<ListboxSectionCommonProps>;
 
 /**
  * A component used to render the label of a listbox option group.
  * It won't be focusable using arrow keys.
  */
-export function ListboxSection(props: ListboxSectionProps) {
-	return <Polymorphic as="li" role="presentation" {...props} />;
+export function ListboxSection<T extends ValidComponent = "li">(
+	props: PolymorphicProps<T, ListboxSectionProps>,
+) {
+	return (
+		<Polymorphic<ListboxSectionRenderProps>
+			as="li"
+			role="presentation"
+			{...(props as ListboxSectionProps)}
+		/>
+	);
 }
