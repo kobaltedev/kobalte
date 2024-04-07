@@ -1,8 +1,12 @@
-import { OverrideComponentProps } from "@kobalte/utils";
-import { createMemo, splitProps } from "solid-js";
+import { Component, ValidComponent, createMemo, splitProps } from "solid-js";
+import { PolymorphicProps } from "../polymorphic";
 
-import { AsChildProp } from "../polymorphic";
-import { SelectBase, SelectBaseOptions } from "./select-base";
+import {
+	SelectBase,
+	SelectBaseCommonProps,
+	SelectBaseOptions,
+	SelectBaseRenderProps,
+} from "./select-base";
 
 export interface SelectSingleSelectionOptions<T> {
 	/** The controlled value of the select. */
@@ -42,29 +46,35 @@ export type SelectRootOptions<Option, OptGroup = never> = (
 	| SelectSingleSelectionOptions<Option>
 	| SelectMultipleSelectionOptions<Option>
 ) &
-	AsChildProp &
 	Omit<
 		SelectBaseOptions<Option, OptGroup>,
 		"value" | "defaultValue" | "onChange" | "selectionMode"
 	>;
 
-export type SelectRootProps<Option, OptGroup = never> = OverrideComponentProps<
-	"div",
-	SelectRootOptions<Option, OptGroup>
->;
+export interface SelectRootCommonProps extends SelectBaseCommonProps {}
+
+export interface SelectRootRenderProps
+	extends SelectRootCommonProps,
+		SelectBaseRenderProps {}
+
+export type SelectRootProps<Option, OptGroup = never> = SelectRootOptions<
+	Option,
+	OptGroup
+> &
+	Partial<SelectRootCommonProps>;
 
 /**
  * Displays a list of options for the user to pick from — triggered by a button.
  */
-export function SelectRoot<Option, OptGroup = never>(
-	props: SelectRootProps<Option, OptGroup>,
-) {
-	const [local, others] = splitProps(props, [
-		"value",
-		"defaultValue",
-		"onChange",
-		"multiple",
-	]);
+export function SelectRoot<
+	Option,
+	OptGroup = never,
+	T extends ValidComponent = "div",
+>(props: PolymorphicProps<T, SelectRootProps<Option, OptGroup>>) {
+	const [local, others] = splitProps(
+		props as SelectRootProps<Option, OptGroup>,
+		["value", "defaultValue", "onChange", "multiple"],
+	);
 
 	const value = createMemo(() => {
 		if (local.value != null) {
@@ -92,7 +102,11 @@ export function SelectRoot<Option, OptGroup = never>(
 	};
 
 	return (
-		<SelectBase<Option, OptGroup>
+		<SelectBase<
+			Option,
+			OptGroup,
+			Component<Omit<SelectRootRenderProps, keyof SelectBaseRenderProps>>
+		>
 			value={value() as any}
 			defaultValue={defaultValue() as any}
 			onChange={onChange}

@@ -3,11 +3,15 @@ import {
 	focusWithoutScrolling,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, Show, splitProps } from "solid-js";
+import { Component, JSX, Show, ValidComponent, splitProps } from "solid-js";
 
 import createPreventScroll from "solid-prevent-scroll";
-import { DismissableLayer } from "../dismissable-layer";
-import { AsChildProp } from "../polymorphic";
+import {
+	DismissableLayer,
+	DismissableLayerCommonProps,
+	DismissableLayerRenderProps,
+} from "../dismissable-layer";
+import { PolymorphicProps } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
 	FocusOutsideEvent,
@@ -16,9 +20,9 @@ import {
 	createFocusScope,
 	createHideOutside,
 } from "../primitives";
-import { useSelectContext } from "./select-context";
+import { SelectDataSet, useSelectContext } from "./select-context";
 
-export interface SelectContentOptions extends AsChildProp {
+export interface SelectContentOptions {
 	/**
 	 * Event handler called when focus moves to the trigger after closing.
 	 * It can be prevented by calling `event.preventDefault`.
@@ -42,25 +46,33 @@ export interface SelectContentOptions extends AsChildProp {
 	 * It can be prevented by calling `event.preventDefault`.
 	 */
 	onInteractOutside?: (event: InteractOutsideEvent) => void;
+}
 
+export interface SelectContentCommonProps extends DismissableLayerCommonProps {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
 
-export interface SelectContentProps
-	extends OverrideComponentProps<"div", SelectContentOptions> {}
+export interface SelectContentRenderProps
+	extends SelectContentCommonProps,
+		SelectDataSet,
+		DismissableLayerRenderProps {}
+
+export type SelectContentProps = SelectContentOptions &
+	Partial<SelectContentCommonProps>;
 
 /**
  * The component that pops out when the select is open.
  */
-export function SelectContent(props: SelectContentProps) {
+export function SelectContent<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, SelectContentProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const context = useSelectContext();
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(props as SelectContentProps, [
 		"ref",
-		"id",
 		"style",
 		"onCloseAutoFocus",
 		"onFocusOutside",
@@ -116,7 +128,11 @@ export function SelectContent(props: SelectContentProps) {
 	return (
 		<Show when={context.contentPresence.isPresent()}>
 			<PopperPositioner>
-				<DismissableLayer
+				<DismissableLayer<
+					Component<
+						Omit<SelectContentRenderProps, keyof DismissableLayerRenderProps>
+					>
+				>
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
 						context.contentPresence.setRef(el);

@@ -1,12 +1,16 @@
+import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
-	OverrideComponentProps,
-	callHandler,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
-import { JSX, createEffect, onCleanup, splitProps } from "solid-js";
+	Component,
+	JSX,
+	ValidComponent,
+	createEffect,
+	onCleanup,
+	splitProps,
+} from "solid-js";
 
 import * as Listbox from "../listbox";
+import { ListboxRootCommonProps, ListboxRootRenderProps } from "../listbox";
+import { PolymorphicProps } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
 export interface SelectListboxOptions<Option, OptGroup = never>
@@ -15,34 +19,42 @@ export interface SelectListboxOptions<Option, OptGroup = never>
 		"scrollRef" | "scrollToItem" | "children"
 	> {}
 
-export interface SelectListboxProps<Option, OptGroup = never>
-	extends Omit<
-		OverrideComponentProps<"ul", SelectListboxOptions<Option, OptGroup>>,
-		"onChange"
-	> {}
+export interface SelectListboxCommonProps extends ListboxRootCommonProps {
+	"aria-labelledby": string | undefined;
+}
+
+export interface SelectListboxRenderProps
+	extends SelectListboxCommonProps,
+		ListboxRootRenderProps {}
+
+export type SelectListboxProps<Option, OptGroup = never> = SelectListboxOptions<
+	Option,
+	OptGroup
+> &
+	Partial<SelectListboxCommonProps>;
 
 /**
  * Contains all the items of a `Select`.
  */
-export function SelectListbox<Option = any, OptGroup = never>(
-	props: SelectListboxProps<Option, OptGroup>,
-) {
+export function SelectListbox<
+	Option = any,
+	OptGroup = never,
+	T extends ValidComponent = "ul",
+>(props: PolymorphicProps<T, SelectListboxProps<Option, OptGroup>>) {
 	const context = useSelectContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("listbox"),
 		},
-		props,
+		props as SelectListboxProps<Option, OptGroup>,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["ref", "id", "onKeyDown"]);
 
-	createEffect(() => onCleanup(context.registerListboxId(local.id!)));
+	createEffect(() => onCleanup(context.registerListboxId(local.id)));
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLUListElement, KeyboardEvent> = (
-		e,
-	) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		// Prevent from clearing the selection by `createSelectableCollection` on escape.
@@ -52,7 +64,11 @@ export function SelectListbox<Option = any, OptGroup = never>(
 	};
 
 	return (
-		<Listbox.Root
+		<Listbox.Root<
+			Option,
+			OptGroup,
+			Component<Omit<SelectListboxRenderProps, keyof ListboxRootRenderProps>>
+		>
 			ref={mergeRefs(context.setListboxRef, local.ref)}
 			id={local.id}
 			state={context.listState()}

@@ -22,7 +22,7 @@ export interface SelectContextValue {
 	selectedOptions: Accessor<any[]>;
 	contentPresence: CreatePresenceResult;
 	autoFocus: Accessor<FocusStrategy | boolean>;
-	triggerRef: Accessor<HTMLButtonElement | undefined>;
+	triggerRef: Accessor<HTMLElement | undefined>;
 	triggerId: Accessor<string | undefined>;
 	valueId: Accessor<string | undefined>;
 	listboxId: Accessor<string | undefined>;
@@ -30,9 +30,9 @@ export interface SelectContextValue {
 	listState: Accessor<ListState>;
 	keyboardDelegate: Accessor<KeyboardDelegate>;
 	setListboxAriaLabelledBy: Setter<string | undefined>;
-	setTriggerRef: (el: HTMLButtonElement) => void;
-	setContentRef: (el: HTMLDivElement) => void;
-	setListboxRef: (el: HTMLUListElement) => void;
+	setTriggerRef: (el: HTMLElement) => void;
+	setContentRef: (el: HTMLElement) => void;
+	setListboxRef: (el: HTMLElement) => void;
 	open: (focusStrategy: FocusStrategy | boolean) => void;
 	close: () => void;
 	toggle: (focusStrategy: FocusStrategy | boolean) => void;

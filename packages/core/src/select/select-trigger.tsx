@@ -7,27 +7,58 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuTrigger.ts
  */
 
+import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
-	OverrideComponentProps,
-	callHandler,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
-import { JSX, createEffect, onCleanup, splitProps } from "solid-js";
+	Component,
+	JSX,
+	ValidComponent,
+	createEffect,
+	onCleanup,
+	splitProps,
+} from "solid-js";
 
 import * as Button from "../button";
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
+	FormControlDataSet,
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
+import { PolymorphicProps } from "../polymorphic";
 import { createTypeSelect } from "../selection";
-import { useSelectContext } from "./select-context";
+import { SelectDataSet, useSelectContext } from "./select-context";
 
-export interface SelectTriggerProps
-	extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
+export interface SelectTriggerOptions {}
 
-export function SelectTrigger(props: SelectTriggerProps) {
+export interface SelectTriggerCommonProps extends Button.ButtonRootCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	"aria-label": string | undefined;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
+}
+
+export interface SelectTriggerRenderProps
+	extends SelectTriggerCommonProps,
+		SelectDataSet,
+		FormControlDataSet,
+		Button.ButtonRootRenderProps {
+	"aria-haspopup": "listbox";
+	"aria-expanded": boolean;
+	"aria-controls": string | undefined;
+}
+
+export type SelectTriggerProps = SelectTriggerOptions &
+	Partial<SelectTriggerCommonProps>;
+
+export function SelectTrigger<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, SelectTriggerProps>,
+) {
 	const formControlContext = useFormControlContext();
 	const context = useSelectContext();
 
@@ -35,7 +66,7 @@ export function SelectTrigger(props: SelectTriggerProps) {
 		{
 			id: context.generateId("trigger"),
 		},
-		props,
+		props as SelectTriggerProps,
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
@@ -73,7 +104,9 @@ export function SelectTrigger(props: SelectTriggerProps) {
 		);
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerDown);
 
 		e.currentTarget.dataset.pointerType = e.pointerType;
@@ -87,7 +120,7 @@ export function SelectTrigger(props: SelectTriggerProps) {
 		}
 	};
 
-	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		if (!isDisabled() && e.currentTarget.dataset.pointerType === "touch") {
@@ -95,9 +128,7 @@ export function SelectTrigger(props: SelectTriggerProps) {
 		}
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = (
-		e,
-	) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		if (isDisabled()) {
@@ -164,7 +195,7 @@ export function SelectTrigger(props: SelectTriggerProps) {
 		}
 	};
 
-	const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		if (selectionManager().isFocused()) {
@@ -174,7 +205,7 @@ export function SelectTrigger(props: SelectTriggerProps) {
 		selectionManager().setFocused(true);
 	};
 
-	const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 
 		if (context.isOpen()) {
@@ -200,7 +231,11 @@ export function SelectTrigger(props: SelectTriggerProps) {
 	});
 
 	return (
-		<Button.Root
+		<Button.Root<
+			Component<
+				Omit<SelectTriggerRenderProps, keyof Button.ButtonRootRenderProps>
+			>
+		>
 			ref={mergeRefs(context.setTriggerRef, local.ref)}
 			id={fieldProps.id()}
 			disabled={isDisabled()}

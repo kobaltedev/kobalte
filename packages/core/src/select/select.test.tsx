@@ -2437,7 +2437,7 @@ describe.skip("Select", () => {
 
 		it("does not clear selection on escape closing the listbox", async () => {
 			const onOpenChangeSpy = vi.fn();
-			const { getByRole, getAllByText, getByText } = render(() => (
+			const { getByRole, getAllByText, queryByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"

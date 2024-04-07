@@ -1,20 +1,36 @@
-import { OverrideComponentProps, callHandler } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { callHandler } from "@kobalte/utils";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
-import { FormControlLabel } from "../form-control";
-import { AsChildProp } from "../polymorphic";
+import {
+	FormControlLabel,
+	FormControlLabelCommonProps,
+	FormControlLabelRenderProps,
+} from "../form-control";
+import { PolymorphicProps } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
-export interface SelectLabelProps
-	extends OverrideComponentProps<"span", AsChildProp> {}
+export interface SelectLabelOptions {}
+
+export interface SelectLabelCommonProps extends FormControlLabelCommonProps {
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+}
+
+export interface SelectLabelRenderProps
+	extends SelectLabelCommonProps,
+		FormControlLabelRenderProps {}
+
+export type SelectLabelProps = SelectLabelOptions &
+	Partial<SelectLabelCommonProps>;
 
 /**
  * The label that gives the user information on the select.
  */
-export function SelectLabel(props: SelectLabelProps) {
+export function SelectLabel<T extends ValidComponent = "span">(
+	props: PolymorphicProps<T, SelectLabelProps>,
+) {
 	const context = useSelectContext();
 
-	const [local, others] = splitProps(props, ["onClick"]);
+	const [local, others] = splitProps(props as SelectLabelProps, ["onClick"]);
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
@@ -24,5 +40,13 @@ export function SelectLabel(props: SelectLabelProps) {
 		}
 	};
 
-	return <FormControlLabel as="span" onClick={onClick} {...(others as any)} />;
+	return (
+		<FormControlLabel<
+			Component<Omit<SelectLabelRenderProps, keyof FormControlLabelRenderProps>>
+		>
+			as="span"
+			onClick={onClick}
+			{...others}
+		/>
+	);
 }
