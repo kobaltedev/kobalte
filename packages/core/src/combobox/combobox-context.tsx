@@ -28,10 +28,10 @@ export interface ComboboxContextValue {
 	activeDescendant: Accessor<string | undefined>;
 	inputValue: Accessor<string | undefined>;
 	triggerMode: Accessor<ComboboxTriggerMode>;
-	controlRef: Accessor<HTMLDivElement | undefined>;
+	controlRef: Accessor<HTMLElement | undefined>;
 	inputRef: Accessor<HTMLInputElement | undefined>;
-	triggerRef: Accessor<HTMLButtonElement | undefined>;
-	contentRef: Accessor<HTMLDivElement | undefined>;
+	triggerRef: Accessor<HTMLElement | undefined>;
+	contentRef: Accessor<HTMLElement | undefined>;
 	listboxId: Accessor<string | undefined>;
 	triggerAriaLabel: Accessor<string | undefined>;
 	listboxAriaLabel: Accessor<string | undefined>;
@@ -40,11 +40,11 @@ export interface ComboboxContextValue {
 	resetInputValue: (selectedKeys: Set<string>) => void;
 	setIsInputFocused: (isFocused: boolean) => void;
 	setInputValue: (value: string) => void;
-	setControlRef: (el: HTMLDivElement) => void;
+	setControlRef: (el: HTMLElement) => void;
 	setInputRef: (el: HTMLInputElement) => void;
-	setTriggerRef: (el: HTMLButtonElement) => void;
-	setContentRef: (el: HTMLDivElement) => void;
-	setListboxRef: (el: HTMLUListElement) => void;
+	setTriggerRef: (el: HTMLElement) => void;
+	setContentRef: (el: HTMLElement) => void;
+	setListboxRef: (el: HTMLElement) => void;
 	open: (
 		focusStrategy: FocusStrategy | boolean,
 		triggerMode?: ComboboxTriggerMode,

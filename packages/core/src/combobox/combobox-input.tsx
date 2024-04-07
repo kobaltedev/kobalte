@@ -8,28 +8,67 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	contains,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { JSX, ValidComponent, splitProps } from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
+	FormControlDataSet,
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useComboboxContext } from "./combobox-context";
 
 export interface ComboboxInputOptions {}
 
-export interface ComboboxInputProps
-	extends OverrideComponentProps<"input", ComboboxInputOptions> {}
+export interface ComboboxInputCommonProps {
+	id: string;
+	ref: HTMLInputElement | ((el: HTMLInputElement) => void);
+	onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent>;
+	onKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onTouchEnd: JSX.EventHandlerUnion<HTMLElement, TouchEvent>;
+	disabled: boolean | undefined;
+	"aria-label": string | undefined;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
+}
 
-export function ComboboxInput(props: ComboboxInputProps) {
+export interface ComboboxInputRenderProps
+	extends ComboboxInputCommonProps,
+		FormControlDataSet {
+	value: string | undefined;
+	required: boolean | undefined;
+	readonly: boolean | undefined;
+	placeholder: JSX.Element;
+	"aria-invalid": boolean | undefined;
+	"aria-required": boolean | undefined;
+	"aria-disabled": boolean | undefined;
+	"aria-readonly": boolean | undefined;
+	type: "text";
+	role: "combobox";
+	autoComplete: "off";
+	autoCorrect: "off";
+	spellCheck: "false";
+	"aria-haspopup": "listbox";
+	"aria-autocomplete": "list";
+	"aria-expanded": boolean;
+	"aria-controls": string | undefined;
+	"aria-activedescendant": string | undefined;
+}
+
+export type ComboboxInputProps = ComboboxInputOptions &
+	Partial<ComboboxInputCommonProps>;
+
+export function ComboboxInput<T extends ValidComponent = "input">(
+	props: PolymorphicProps<T, ComboboxInputProps>,
+) {
 	let ref: HTMLInputElement | undefined;
 
 	const formControlContext = useFormControlContext();
@@ -39,7 +78,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
 		{
 			id: context.generateId("input"),
 		},
-		props,
+		props as ComboboxInputProps,
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
@@ -48,11 +87,10 @@ export function ComboboxInput(props: ComboboxInputProps) {
 			"ref",
 			"disabled",
 			"onInput",
-			"onPointerDown",
-			"onClick",
 			"onKeyDown",
 			"onFocus",
 			"onBlur",
+			"onTouchEnd",
 		],
 		FORM_CONTROL_FIELD_PROP_NAMES,
 	);
@@ -68,9 +106,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
-	const onInput: JSX.InputEventHandlerUnion<HTMLInputElement, InputEvent> = (
-		e,
-	) => {
+	const onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
 		callHandler(e, local.onInput);
 
 		if (formControlContext.isReadOnly() || isDisabled()) {
@@ -181,9 +217,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
 		}
 	};
 
-	const onFocus: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
-		e,
-	) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		if (context.isInputFocused()) {
@@ -193,9 +227,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
 		context.setIsInputFocused(true);
 	};
 
-	const onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
-		e,
-	) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 
 		// Ignore blur if focused moved into the control or menu.
@@ -212,9 +244,9 @@ export function ComboboxInput(props: ComboboxInputProps) {
 	// If a touch happens on direct center of Combobox input, might be virtual click from iPad so open ComboBox menu
 	let lastEventTime = 0;
 
-	const onTouchEnd: JSX.EventHandlerUnion<HTMLInputElement, TouchEvent> = (
-		e,
-	) => {
+	const onTouchEnd: JSX.EventHandlerUnion<HTMLElement, TouchEvent> = (e) => {
+		callHandler(e, local.onTouchEnd);
+
 		if (!ref || formControlContext.isReadOnly() || isDisabled()) {
 			return;
 		}
@@ -243,7 +275,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
 
 	// Omit `formControlContext.name()` here because it's used in the hidden select.
 	return (
-		<Polymorphic
+		<Polymorphic<ComboboxInputRenderProps>
 			as="input"
 			ref={mergeRefs((el) => {
 				context.setInputRef(el);

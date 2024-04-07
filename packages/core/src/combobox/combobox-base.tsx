@@ -8,7 +8,6 @@
  */
 
 import {
-	OverrideComponentProps,
 	ValidationState,
 	access,
 	createGenerateId,
@@ -21,6 +20,7 @@ import {
 	Accessor,
 	Component,
 	JSX,
+	ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -32,12 +32,13 @@ import {
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	FormControlDataSet,
 	createFormControl,
 } from "../form-control";
 import { createFilter } from "../i18n";
 import { ListKeyboardDelegate, createListState } from "../list";
 import { announce } from "../live-announcer";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
 	CollectionNode,
@@ -67,22 +68,21 @@ import {
 } from "./combobox.intl";
 import { ComboboxTriggerMode } from "./types";
 
-export interface ComboboxBaseItemComponentProps<T> {
+export interface ComboboxBaseItemComponentProps<Option> {
 	/** The item to render. */
-	item: CollectionNode<T>;
+	item: CollectionNode<Option>;
 }
 
-export interface ComboboxBaseSectionComponentProps<T> {
+export interface ComboboxBaseSectionComponentProps<OptGroup> {
 	/** The section to render. */
-	section: CollectionNode<T>;
+	section: CollectionNode<OptGroup>;
 }
 
 export interface ComboboxBaseOptions<Option, OptGroup = never>
 	extends Omit<
-			PopperRootOptions,
-			"anchorRef" | "contentRef" | "onCurrentPlacementChange"
-		>,
-		AsChildProp {
+		PopperRootOptions,
+		"anchorRef" | "contentRef" | "onCurrentPlacementChange"
+	> {
 	/** The localized strings of the component. */
 	translations?: ComboboxIntlTranslations;
 
@@ -243,21 +243,33 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
 
 	/** Whether the combobox is read only. */
 	readOnly?: boolean;
-
-	/** The children of the combobox. */
-	children?: JSX.Element;
 }
 
-export interface ComboboxBaseProps<Option, OptGroup = never>
-	extends OverrideComponentProps<"div", ComboboxBaseOptions<Option, OptGroup>>,
-		AsChildProp {}
+export interface ComboboxBaseCommonProps {
+	id: string;
+}
+
+export interface ComboboxBaseRenderProps
+	extends ComboboxBaseCommonProps,
+		FormControlDataSet,
+		ComboboxDataSet {
+	role: "group";
+}
+
+export type ComboboxBaseProps<Option, OptGroup = never> = ComboboxBaseOptions<
+	Option,
+	OptGroup
+> &
+	Partial<ComboboxBaseCommonProps>;
 
 /**
  * Base component for a combobox, provide context for its children.
  */
-export function ComboboxBase<Option, OptGroup = never>(
-	props: ComboboxBaseProps<Option, OptGroup>,
-) {
+export function ComboboxBase<
+	Option,
+	OptGroup = never,
+	T extends ValidComponent = "div",
+>(props: PolymorphicProps<T, ComboboxBaseProps<Option, OptGroup>>) {
 	const defaultId = `combobox-${createUniqueId()}`;
 
 	const filter = createFilter({ sensitivity: "base" });
@@ -278,7 +290,7 @@ export function ComboboxBase<Option, OptGroup = never>(
 			triggerMode: "input",
 			translations: COMBOBOX_INTL_TRANSLATIONS,
 		},
-		props,
+		props as ComboboxBaseProps<Option, OptGroup>,
 	);
 
 	const [local, popperProps, formControlProps, others] = splitProps(
@@ -352,7 +364,7 @@ export function ComboboxBase<Option, OptGroup = never>(
 	const [showAllOptions, setShowAllOptions] = createSignal(false);
 
 	const [lastDisplayedOptions, setLastDisplayedOptions] = createSignal(
-		local.options,
+		local.options!,
 	);
 
 	const disclosureState = createDisclosureState({
@@ -424,7 +436,7 @@ export function ComboboxBase<Option, OptGroup = never>(
 			return local.options as Option[];
 		}
 
-		return local.options.flatMap(
+		return local.options!.flatMap(
 			(item) =>
 				((item as any)[optionGroupChildren] as Option[]) ?? (item as Option),
 		);
@@ -480,7 +492,7 @@ export function ComboboxBase<Option, OptGroup = never>(
 	const displayedOptions = createMemo(() => {
 		if (disclosureState.isOpen()) {
 			if (showAllOptions()) {
-				return local.options;
+				return local.options!;
 			}
 			return filteredOptions();
 		}
@@ -565,7 +577,7 @@ export function ComboboxBase<Option, OptGroup = never>(
 		const showAllOptions = setShowAllOptions(triggerMode === "manual");
 
 		const hasOptions = showAllOptions
-			? local.options.length > 0
+			? local.options!.length > 0
 			: filteredOptions().length > 0;
 
 		// Don't open if there is no option.
@@ -698,14 +710,14 @@ export function ComboboxBase<Option, OptGroup = never>(
 				const prevShowAllOptions = prevInput[1];
 
 				setLastDisplayedOptions(
-					prevShowAllOptions ? local.options : prevFilteredOptions,
+					prevShowAllOptions ? local.options! : prevFilteredOptions,
 				);
 			} else {
 				const filteredOptions = input[0];
 				const showAllOptions = input[1];
 
 				setLastDisplayedOptions(
-					showAllOptions ? local.options : filteredOptions,
+					showAllOptions ? local.options! : filteredOptions,
 				);
 			}
 		}),
@@ -870,10 +882,10 @@ export function ComboboxBase<Option, OptGroup = never>(
 					contentRef={contentRef}
 					{...popperProps}
 				>
-					<Polymorphic
+					<Polymorphic<ComboboxBaseRenderProps>
 						as="div"
 						role="group"
-						id={access(formControlProps.id)}
+						id={access(formControlProps.id)!}
 						{...formControlContext.dataset()}
 						{...dataset()}
 						{...others}

@@ -1,13 +1,13 @@
-import {
-	OverrideComponentProps,
-	focusWithoutScrolling,
-	mergeRefs,
-} from "@kobalte/utils";
-import { JSX, Show, splitProps } from "solid-js";
+import { focusWithoutScrolling, mergeRefs } from "@kobalte/utils";
+import { Component, JSX, Show, ValidComponent, splitProps } from "solid-js";
 
 import createPreventScroll from "solid-prevent-scroll";
-import { DismissableLayer } from "../dismissable-layer";
-import { AsChildProp } from "../polymorphic";
+import {
+	DismissableLayer,
+	DismissableLayerCommonProps,
+	DismissableLayerRenderProps,
+} from "../dismissable-layer";
+import { PolymorphicProps } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
 	FocusOutsideEvent,
@@ -16,9 +16,9 @@ import {
 	createFocusScope,
 	createHideOutside,
 } from "../primitives";
-import { useComboboxContext } from "./combobox-context";
+import { ComboboxDataSet, useComboboxContext } from "./combobox-context";
 
-export interface ComboboxContentOptions extends AsChildProp {
+export interface ComboboxContentOptions {
 	/**
 	 * Event handler called when focus moves to the trigger after closing.
 	 * It can be prevented by calling `event.preventDefault`.
@@ -42,25 +42,34 @@ export interface ComboboxContentOptions extends AsChildProp {
 	 * It can be prevented by calling `event.preventDefault`.
 	 */
 	onInteractOutside?: (event: InteractOutsideEvent) => void;
+}
 
+export interface ComboboxContentCommonProps
+	extends DismissableLayerCommonProps {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
 
-export interface ComboboxContentProps
-	extends OverrideComponentProps<"div", ComboboxContentOptions> {}
+export interface ComboboxContentRenderProps
+	extends ComboboxContentCommonProps,
+		DismissableLayerRenderProps,
+		ComboboxDataSet {}
+
+export type ComboboxContentProps = ComboboxContentOptions &
+	Partial<ComboboxContentCommonProps>;
 
 /**
  * The component that pops out when the combobox is open.
  */
-export function ComboboxContent(props: ComboboxContentProps) {
+export function ComboboxContent<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, ComboboxContentProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const context = useComboboxContext();
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(props as ComboboxContentProps, [
 		"ref",
-		"id",
 		"style",
 		"onCloseAutoFocus",
 		"onFocusOutside",
@@ -129,7 +138,11 @@ export function ComboboxContent(props: ComboboxContentProps) {
 	return (
 		<Show when={context.contentPresence.isPresent()}>
 			<PopperPositioner>
-				<DismissableLayer
+				<DismissableLayer<
+					Component<
+						Omit<ComboboxContentRenderProps, keyof DismissableLayerRenderProps>
+					>
+				>
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
 						context.contentPresence.setRef(el);

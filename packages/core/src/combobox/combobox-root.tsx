@@ -1,8 +1,12 @@
 import { OverrideComponentProps } from "@kobalte/utils";
-import { createMemo, splitProps } from "solid-js";
+import { Component, ValidComponent, createMemo, splitProps } from "solid-js";
 
-import { AsChildProp } from "../polymorphic";
-import { ComboboxBase, ComboboxBaseOptions } from "./combobox-base";
+import { PolymorphicProps } from "../polymorphic";
+import {
+	ComboboxBase,
+	ComboboxBaseOptions,
+	ComboboxBaseRenderProps,
+} from "./combobox-base";
 
 export interface ComboboxSingleSelectionOptions<T> {
 	/** The controlled value of the combobox. */
@@ -42,29 +46,35 @@ export type ComboboxRootOptions<Option, OptGroup = never> = (
 	| ComboboxSingleSelectionOptions<Option>
 	| ComboboxMultipleSelectionOptions<Option>
 ) &
-	AsChildProp &
 	Omit<
 		ComboboxBaseOptions<Option, OptGroup>,
 		"value" | "defaultValue" | "onChange" | "selectionMode"
 	>;
 
-export type ComboboxRootProps<
+export interface ComboboxRootCommonProps {}
+
+export interface ComboboxRootRenderProps
+	extends ComboboxRootCommonProps,
+		ComboboxBaseRenderProps {}
+
+export type ComboboxRootProps<Option, OptGroup = never> = ComboboxRootOptions<
 	Option,
-	OptGroup = never,
-> = OverrideComponentProps<"div", ComboboxRootOptions<Option, OptGroup>>;
+	OptGroup
+> &
+	Partial<ComboboxRootCommonProps>;
 
 /**
  * A combo box combines a text input with a listbox, allowing users to filter a list of options to items matching a query.
  */
-export function ComboboxRoot<Option, OptGroup = never>(
-	props: ComboboxRootProps<Option, OptGroup>,
-) {
-	const [local, others] = splitProps(props, [
-		"value",
-		"defaultValue",
-		"onChange",
-		"multiple",
-	]);
+export function ComboboxRoot<
+	Option,
+	OptGroup = never,
+	T extends ValidComponent = "div",
+>(props: PolymorphicProps<T, ComboboxRootProps<Option, OptGroup>>) {
+	const [local, others] = splitProps(
+		props as ComboboxRootProps<Option, OptGroup>,
+		["value", "defaultValue", "onChange", "multiple"],
+	);
 
 	const value = createMemo(() => {
 		if (local.value != null) {
@@ -92,7 +102,11 @@ export function ComboboxRoot<Option, OptGroup = never>(
 	};
 
 	return (
-		<ComboboxBase<Option, OptGroup>
+		<ComboboxBase<
+			Option,
+			OptGroup,
+			Component<Omit<ComboboxRootRenderProps, keyof ComboboxBaseRenderProps>>
+		>
 			value={value() as any}
 			defaultValue={defaultValue() as any}
 			onChange={onChange}
