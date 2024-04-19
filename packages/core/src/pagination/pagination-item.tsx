@@ -1,21 +1,38 @@
-import { OverrideComponentProps, composeEventHandlers } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { composeEventHandlers } from "@kobalte/utils";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import * as Button from "../button";
+import { PolymorphicProps } from "../polymorphic";
 import { usePaginationContext } from "./pagination-context";
 
-export interface PaginationItemOptions extends AsChildProp {
+export interface PaginationItemOptions {
 	/** The page number of this item. (1-indexed) */
 	page: number;
 }
 
-export interface PaginationItemProps
-	extends OverrideComponentProps<"button", PaginationItemOptions> {}
+export interface PaginationItemCommonProps {
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+}
 
-export function PaginationItem(props: PaginationItemProps) {
+export interface PaginationItemRenderProps
+	extends PaginationItemCommonProps,
+		Button.ButtonRootRenderProps {
+	"aria-current": "page" | undefined;
+	"data-current": "" | undefined;
+}
+
+export type PaginationItemProps = PaginationItemOptions &
+	Partial<PaginationItemCommonProps>;
+
+export function PaginationItem<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, PaginationItemProps>,
+) {
 	const context = usePaginationContext();
 
-	const [local, others] = splitProps(props, ["page", "onClick"]);
+	const [local, others] = splitProps(props as PaginationItemProps, [
+		"page",
+		"onClick",
+	]);
 
 	const isCurrent = () => {
 		return context.page() === local.page;
@@ -27,8 +44,11 @@ export function PaginationItem(props: PaginationItemProps) {
 
 	return (
 		<li>
-			<Polymorphic
-				as="button"
+			<Button.Root<
+				Component<
+					Omit<PaginationItemRenderProps, keyof Button.ButtonRootRenderProps>
+				>
+			>
 				aria-current={isCurrent() ? "page" : undefined}
 				data-current={isCurrent() ? "" : undefined}
 				onClick={composeEventHandlers([local.onClick, onClick])}
