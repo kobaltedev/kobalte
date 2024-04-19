@@ -1,15 +1,20 @@
 import {
 	Orientation,
-	OverrideComponentProps,
 	composeEventHandlers,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { createSignal, createUniqueId, splitProps } from "solid-js";
+import {
+	JSX,
+	ValidComponent,
+	createSignal,
+	createUniqueId,
+	splitProps,
+} from "solid-js";
 import { useLocale } from "../i18n";
 import { createListState } from "../list";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { SelectionMode, createSelectableCollection } from "../selection";
@@ -19,7 +24,7 @@ import {
 	ToggleGroupContextValue,
 } from "./toggle-group-context";
 
-export interface ToggleGroupBaseOptions extends AsChildProp {
+export interface ToggleGroupBaseOptions {
 	/** The controlled value of the toggle group. */
 	value?: string[];
 
@@ -42,12 +47,28 @@ export interface ToggleGroupBaseOptions extends AsChildProp {
 	orientation?: Orientation;
 }
 
-export interface ToggleGroupBaseProps
-	extends OverrideComponentProps<"div", ToggleGroupBaseOptions>,
-		AsChildProp {}
+export interface ToggleGroupBaseCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+}
 
-export const ToggleGroupBase = (props: ToggleGroupBaseProps) => {
-	let ref: HTMLDivElement | undefined;
+export interface ToggleGroupBaseRenderProps extends ToggleGroupBaseCommonProps {
+	role: "group";
+	tabIndex: number | undefined;
+	"data-orientation": Orientation | undefined;
+}
+
+export type ToggleGroupBaseProps = ToggleGroupBaseOptions &
+	Partial<ToggleGroupBaseCommonProps>;
+
+export function ToggleGroupBase<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, ToggleGroupBaseProps>,
+) {
+	let ref: HTMLElement | undefined;
 
 	const defaultID = `group-${createUniqueId()}`;
 
@@ -57,7 +78,7 @@ export const ToggleGroupBase = (props: ToggleGroupBaseProps) => {
 			selectionMode: "single",
 			orientation: "horizontal",
 		},
-		props,
+		props as ToggleGroupBaseProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -120,7 +141,7 @@ export const ToggleGroupBase = (props: ToggleGroupBaseProps) => {
 	return (
 		<DomCollectionProvider>
 			<ToggleGroupContext.Provider value={context}>
-				<Polymorphic
+				<Polymorphic<ToggleGroupBaseRenderProps>
 					as="div"
 					role="group"
 					ref={mergeRefs((el) => (ref = el), local.ref)}
@@ -142,9 +163,9 @@ export const ToggleGroupBase = (props: ToggleGroupBaseProps) => {
 						local.onFocusOut,
 						selectableList.onFocusOut,
 					])}
-					{...others}
+					{...(others as { id: string })}
 				/>
 			</ToggleGroupContext.Provider>
 		</DomCollectionProvider>
 	);
-};
+}

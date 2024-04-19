@@ -1,11 +1,18 @@
 import {
-	OverrideComponentProps,
+	Orientation,
 	callHandler,
 	composeEventHandlers,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, createUniqueId, splitProps } from "solid-js";
+import {
+	Component,
+	JSX,
+	ValidComponent,
+	createUniqueId,
+	splitProps,
+} from "solid-js";
+import { PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -23,11 +30,32 @@ export interface ToggleGroupItemOptions
 	onChange?: JSX.ChangeEventHandlerUnion<HTMLButtonElement, Event>;
 }
 
-export interface ToggleGroupItemProps
-	extends OverrideComponentProps<"button", ToggleGroupItemOptions> {}
+export interface ToggleGroupItemCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	disabled: boolean | undefined;
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+}
 
-export const ToggleGroupItem = (props: ToggleGroupItemProps) => {
-	let ref: HTMLButtonElement | undefined;
+export interface ToggleGroupItemRenderProps
+	extends ToggleGroupItemCommonProps,
+		ToggleButton.ToggleButtonRootRenderProps {
+	tabIndex: number | undefined;
+	"data-orientation": Orientation;
+}
+
+export type ToggleGroupItemProps = ToggleGroupItemOptions &
+	Partial<ToggleGroupItemCommonProps>;
+
+export function ToggleGroupItem<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, ToggleGroupItemProps>,
+) {
+	let ref: HTMLElement | undefined;
 
 	const rootContext = useToggleGroupContext();
 
@@ -37,7 +65,7 @@ export const ToggleGroupItem = (props: ToggleGroupItemProps) => {
 		{
 			id: defaultID,
 		},
-		props,
+		props as ToggleGroupItemProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -87,10 +115,15 @@ export const ToggleGroupItem = (props: ToggleGroupItemProps) => {
 	};
 
 	return (
-		<ToggleButton.Root
-			{...others}
+		<ToggleButton.Root<
+			Component<
+				Omit<
+					ToggleGroupItemRenderProps,
+					Exclude<keyof ToggleButton.ToggleButtonRootRenderProps, "tabIndex">
+				>
+			>
+		>
 			ref={mergeRefs((el) => (ref = el), local.ref)}
-			type="button"
 			pressed={selectionManager().isSelected(local.value)}
 			tabIndex={selectableItem.tabIndex()}
 			data-orientation={rootContext.orientation()}
@@ -110,6 +143,7 @@ export const ToggleGroupItem = (props: ToggleGroupItemProps) => {
 				selectableItem.onMouseDown,
 			])}
 			onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
+			{...others}
 		/>
 	);
-};
+}
