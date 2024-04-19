@@ -7,22 +7,24 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
+import { ValidationState, callHandler } from "@kobalte/utils";
 import {
-	OverrideComponentProps,
-	ValidationState,
-	callHandler,
-	mergeRefs,
-} from "@kobalte/utils";
-import { JSX, createEffect, createMemo, on, splitProps } from "solid-js";
+	JSX,
+	ValidComponent,
+	createEffect,
+	createMemo,
+	on,
+	splitProps,
+} from "solid-js";
 
 import { announce, clearAnnouncer } from "../live-announcer";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	SPIN_BUTTON_INTL_TRANSLATIONS,
 	SpinButtonIntlTranslations,
 } from "./spin-button.intl";
 
-export interface SpinButtonRootOptions extends AsChildProp {
+export interface SpinButtonRootOptions {
 	/** The localized strings of the component. */
 	translations?: SpinButtonIntlTranslations;
 
@@ -69,22 +71,39 @@ export interface SpinButtonRootOptions extends AsChildProp {
 	onIncrementToMax?: () => void;
 }
 
-export interface SpinButtonRootProps
-	extends OverrideComponentProps<"div", SpinButtonRootOptions> {}
+export interface SpinButtonRootCommonProps {
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+}
 
-export function SpinButtonRoot(props: SpinButtonRootProps) {
-	let ref: HTMLDivElement | undefined;
+export interface SpinButtonRootRenderProps extends SpinButtonRootCommonProps {
+	role: "spinbutton";
+	"aria-valuenow": number | string | undefined;
+	"aria-valuetext": string | undefined;
+	"aria-valuemin": number | undefined;
+	"aria-valuemax": number | undefined;
+	"aria-required": boolean | undefined;
+	"aria-disabled": boolean | undefined;
+	"aria-readonly": boolean | undefined;
+	"aria-invalid": boolean | undefined;
+}
 
+export type SpinButtonRootProps = SpinButtonRootOptions &
+	Partial<SpinButtonRootCommonProps>;
+
+export function SpinButtonRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, SpinButtonRootProps>,
+) {
 	const mergedProps = mergeDefaultProps(
 		{
 			translations: SPIN_BUTTON_INTL_TRANSLATIONS,
 		},
-		props,
+		props as SpinButtonRootProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
 		"translations",
-		"ref",
 		"value",
 		"textValue",
 		"minValue",
@@ -115,9 +134,7 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 		return (local.textValue || `${local.value}`).replace("-", "\u2212");
 	});
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLDivElement, KeyboardEvent> = (
-		e,
-	) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || props.readOnly) {
@@ -170,13 +187,13 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 		}
 	};
 
-	const onFocus: JSX.EventHandlerUnion<HTMLDivElement, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		isFocused = true;
 	};
 
-	const onBlur: JSX.EventHandlerUnion<HTMLDivElement, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 
 		isFocused = false;
@@ -192,12 +209,13 @@ export function SpinButtonRoot(props: SpinButtonRootProps) {
 	);
 
 	return (
-		<Polymorphic
-			ref={mergeRefs((el) => (ref = el), local.ref)}
+		<Polymorphic<SpinButtonRootRenderProps>
 			as="div"
 			role="spinbutton"
 			aria-valuenow={
-				local.value != null && !Number.isNaN(local.value) ? local.value : null
+				local.value != null && !Number.isNaN(local.value)
+					? local.value
+					: undefined
 			}
 			aria-valuetext={textValue()}
 			aria-valuemin={local.minValue}
