@@ -17,9 +17,17 @@ import {
 	callHandler,
 	isFunction,
 } from "@kobalte/utils";
-import { Accessor, JSX, children, splitProps } from "solid-js";
+import {
+	Accessor,
+	Component,
+	JSX,
+	ValidComponent,
+	children,
+	splitProps,
+} from "solid-js";
 
 import * as Button from "../button";
+import { PolymorphicProps } from "../polymorphic";
 import { createToggleState } from "../primitives";
 
 export interface ToggleButtonRootState {
@@ -47,15 +55,30 @@ export interface ToggleButtonRootOptions extends Button.ButtonRootOptions {
 	children?: JSX.Element | ((state: ToggleButtonRootState) => JSX.Element);
 }
 
-export interface ToggleButtonRootProps
-	extends OverrideComponentProps<"button", ToggleButtonRootOptions> {}
+export interface ToggleButtonRootCommonProps {
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	disabled: boolean | undefined;
+}
+
+export interface ToggleButtonRootRenderProps
+	extends ToggleButtonRootCommonProps,
+		Button.ButtonRootRenderProps {
+	children: JSX.Element;
+	"aria-pressed": boolean;
+	"data-pressed": "" | undefined;
+}
+
+export type ToggleButtonRootProps = ToggleButtonRootOptions &
+	Partial<ToggleButtonRootCommonProps>;
 
 /**
  * A two-state button that allow users to toggle a selection on or off.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
-export function ToggleButtonRoot(props: ToggleButtonRootProps) {
-	const [local, others] = splitProps(props, [
+export function ToggleButtonRoot<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, ToggleButtonRootProps>,
+) {
+	const [local, others] = splitProps(props as ToggleButtonRootProps, [
 		"children",
 		"pressed",
 		"defaultPressed",
@@ -76,7 +99,11 @@ export function ToggleButtonRoot(props: ToggleButtonRootProps) {
 	};
 
 	return (
-		<Button.Root
+		<Button.Root<
+			Component<
+				Omit<ToggleButtonRootRenderProps, keyof Button.ButtonRootRenderProps>
+			>
+		>
 			aria-pressed={state.isSelected()}
 			data-pressed={state.isSelected() ? "" : undefined}
 			onClick={onClick}
