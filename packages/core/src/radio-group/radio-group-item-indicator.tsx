@@ -1,15 +1,14 @@
-import {
-	OverrideComponentProps,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
-import { Show, splitProps } from "solid-js";
+import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { Show, ValidComponent, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createPresence } from "../primitives";
-import { useRadioGroupItemContext } from "./radio-group-item-context";
+import {
+	RadioGroupItemDataSet,
+	useRadioGroupItemContext,
+} from "./radio-group-item-context";
 
-export interface RadioGroupItemIndicatorOptions extends AsChildProp {
+export interface RadioGroupItemIndicatorOptions {
 	/**
 	 * Used to force mounting when more control is needed.
 	 * Useful when controlling animation with SolidJS animation libraries.
@@ -17,21 +16,32 @@ export interface RadioGroupItemIndicatorOptions extends AsChildProp {
 	forceMount?: boolean;
 }
 
-export interface RadioGroupItemIndicatorProps
-	extends OverrideComponentProps<"div", RadioGroupItemIndicatorOptions> {}
+export interface RadioGroupItemIndicatorCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+}
+
+export interface RadioGroupItemIndicatorRenderProps
+	extends RadioGroupItemIndicatorCommonProps,
+		RadioGroupItemDataSet {}
+
+export type RadioGroupItemIndicatorProps = RadioGroupItemIndicatorOptions &
+	Partial<RadioGroupItemIndicatorCommonProps>;
 
 /**
  * The visual indicator rendered when the radio item is in a checked state.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export function RadioGroupItemIndicator(props: RadioGroupItemIndicatorProps) {
+export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, RadioGroupItemIndicatorProps>,
+) {
 	const context = useRadioGroupItemContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("indicator"),
 		},
-		props,
+		props as RadioGroupItemIndicatorProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["ref", "forceMount"]);
@@ -42,7 +52,7 @@ export function RadioGroupItemIndicator(props: RadioGroupItemIndicatorProps) {
 
 	return (
 		<Show when={presence.isPresent()}>
-			<Polymorphic
+			<Polymorphic<RadioGroupItemIndicatorRenderProps>
 				as="div"
 				ref={mergeRefs(presence.setRef, local.ref)}
 				{...context.dataset()}

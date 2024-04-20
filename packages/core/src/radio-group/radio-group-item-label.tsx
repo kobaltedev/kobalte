@@ -1,26 +1,50 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { ComponentProps, createEffect, onCleanup } from "solid-js";
+import { ValidComponent, createEffect, onCleanup } from "solid-js";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 
-import { useRadioGroupItemContext } from "./radio-group-item-context";
+import {
+	RadioGroupItemDataSet,
+	useRadioGroupItemContext,
+} from "./radio-group-item-context";
 
-export interface RadioGroupItemLabelProps extends ComponentProps<"label"> {}
+export interface RadioGroupItemLabelOptions {}
+
+export interface RadioGroupItemLabelCommonProps {
+	id: string;
+}
+
+export interface RadioGroupItemLabelRenderProps
+	extends RadioGroupItemLabelCommonProps,
+		RadioGroupItemDataSet {
+	for: string | undefined;
+}
+
+export type RadioGroupItemLabelProps = RadioGroupItemLabelOptions &
+	Partial<RadioGroupItemLabelCommonProps>;
 
 /**
  * The label that gives the user information on the radio button.
  */
-export function RadioGroupItemLabel(props: RadioGroupItemLabelProps) {
+export function RadioGroupItemLabel<T extends ValidComponent = "label">(
+	props: PolymorphicProps<T, RadioGroupItemLabelProps>,
+) {
 	const context = useRadioGroupItemContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("label"),
 		},
-		props,
+		props as RadioGroupItemLabelProps,
 	);
 
 	createEffect(() => onCleanup(context.registerLabel(mergedProps.id!)));
 
 	return (
-		<label for={context.inputId()} {...context.dataset()} {...mergedProps} />
+		<Polymorphic<RadioGroupItemLabelRenderProps>
+			as="label"
+			for={context.inputId()}
+			{...context.dataset()}
+			{...mergedProps}
+		/>
 	);
 }
