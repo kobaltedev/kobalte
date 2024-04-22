@@ -14,33 +14,65 @@ import {
 	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { ComponentProps, JSX, splitProps } from "solid-js";
+import { ComponentProps, JSX, ValidComponent, splitProps } from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
+	FormControlDataSet,
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { useSwitchContext } from "./switch-context";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { SwitchDataSet, useSwitchContext } from "./switch-context";
 
-export interface SwitchInputOptions {
+export interface SwitchInputOptions {}
+
+export interface SwitchInputCommonProps {
+	id: string;
+	ref: HTMLInputElement | ((el: HTMLInputElement) => void);
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
+	onChange: JSX.EventHandlerUnion<HTMLInputElement, Event>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	"aria-label": string | undefined;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
 }
 
-export interface SwitchInputProps
-	extends OverrideComponentProps<"input", SwitchInputOptions> {}
+export interface SwitchInputRenderProps
+	extends SwitchInputCommonProps,
+		FormControlDataSet,
+		SwitchDataSet {
+	type: "checkbox";
+	role: "switch";
+	name: string;
+	value: string;
+	checked: boolean;
+	required: boolean | undefined;
+	disabled: boolean | undefined;
+	readonly: boolean | undefined;
+	"aria-invalid": boolean | undefined;
+	"aria-required": boolean | undefined;
+	"aria-disabled": boolean | undefined;
+	"aria-readonly": boolean | undefined;
+}
+
+export type SwitchInputProps = SwitchInputOptions &
+	Partial<SwitchInputCommonProps>;
 
 /**
  * The native html input that is visually hidden in the switch.
  */
-export function SwitchInput(props: SwitchInputProps) {
+export function SwitchInput<T extends ValidComponent = "input">(
+	props: PolymorphicProps<T, SwitchInputProps>,
+) {
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();
 
 	const mergedProps = mergeDefaultProps(
 		{ id: context.generateId("input") },
-		props,
+		props as SwitchInputProps,
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
@@ -51,9 +83,7 @@ export function SwitchInput(props: SwitchInputProps) {
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
-	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
-		e,
-	) => {
+	const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (e) => {
 		callHandler(e, local.onChange);
 
 		e.stopPropagation();
@@ -72,18 +102,18 @@ export function SwitchInput(props: SwitchInputProps) {
 		target.checked = context.checked();
 	};
 
-	const onFocus: JSX.FocusEventHandlerUnion<any, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 		context.setIsFocused(true);
 	};
 
-	const onBlur: JSX.FocusEventHandlerUnion<any, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 		context.setIsFocused(false);
 	};
 
 	return (
-		<input
+		<Polymorphic<SwitchInputRenderProps>
 			ref={mergeRefs(context.setInputRef, local.ref)}
 			type="checkbox"
 			role="switch"
@@ -110,7 +140,7 @@ export function SwitchInput(props: SwitchInputProps) {
 			onBlur={onBlur}
 			{...formControlContext.dataset()}
 			{...context.dataset()}
-			{...(others as ComponentProps<"input">)}
+			{...others}
 		/>
 	);
 }

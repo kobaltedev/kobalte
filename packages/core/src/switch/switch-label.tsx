@@ -1,13 +1,40 @@
-import { FormControlLabel, FormControlLabelProps } from "../form-control";
-import { useSwitchContext } from "./switch-context";
+import { Component, ValidComponent } from "solid-js";
+import {
+	FormControlLabel,
+	FormControlLabelCommonProps,
+	FormControlLabelOptions,
+	FormControlLabelRenderProps,
+} from "../form-control";
+import { PolymorphicProps } from "../polymorphic";
+import { SwitchDataSet, useSwitchContext } from "./switch-context";
+import { SwitchDescriptionCommonProps } from "./switch-description";
 
-export interface SwitchLabelProps extends FormControlLabelProps {}
+export interface SwitchLabelOptions extends FormControlLabelOptions {}
+
+export interface SwitchLabelCommonProps extends FormControlLabelCommonProps {}
+
+export interface SwitchLabelRenderProps
+	extends SwitchDescriptionCommonProps,
+		FormControlLabelRenderProps,
+		SwitchDataSet {}
+
+export type SwitchLabelProps = SwitchLabelOptions &
+	Partial<SwitchLabelCommonProps>;
 
 /**
  * The label that gives the user information on the switch.
  */
-export function SwitchLabel(props: SwitchLabelProps) {
+export function SwitchLabel<T extends ValidComponent = "label">(
+	props: PolymorphicProps<T, SwitchLabelProps>,
+) {
 	const context = useSwitchContext();
 
-	return <FormControlLabel {...context.dataset()} {...props} />;
+	return (
+		<FormControlLabel<
+			Component<Omit<SwitchLabelRenderProps, keyof FormControlLabelRenderProps>>
+		>
+			{...context.dataset()}
+			{...(props as SwitchLabelProps)}
+		/>
+	);
 }
