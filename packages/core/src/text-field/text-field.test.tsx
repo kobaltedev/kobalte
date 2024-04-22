@@ -1,7 +1,7 @@
 import { installPointerEvent } from "@kobalte/tests";
 import { render } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
-import { beforeAll, vi } from "vitest";
+import { vi } from "vitest";
 
 import * as TextField from ".";
 
