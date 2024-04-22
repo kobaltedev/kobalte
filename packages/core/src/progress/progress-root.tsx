@@ -6,14 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/1ddcde7b4fef9af7f08e11bb78d71fe60bbcc64b/packages/@react-aria/progress/src/useProgressBar.ts
  */
 
-import {
-	OverrideComponentProps,
-	clamp,
-	createGenerateId,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { clamp, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
 	Accessor,
+	ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
@@ -21,7 +17,7 @@ import {
 } from "solid-js";
 
 import { createNumberFormatter } from "../i18n";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import {
 	ProgressContext,
@@ -35,7 +31,7 @@ interface GetValueLabelParams {
 	max: number;
 }
 
-export interface ProgressRootOptions extends AsChildProp {
+export interface ProgressRootOptions {
 	/**
 	 * The progress value.
 	 * @default 0
@@ -64,13 +60,30 @@ export interface ProgressRootOptions extends AsChildProp {
 	getValueLabel?: (params: GetValueLabelParams) => string;
 }
 
-export interface ProgressRootProps
-	extends OverrideComponentProps<"div", ProgressRootOptions> {}
+export interface ProgressRootCommonProps {
+	id: string;
+}
+
+export interface ProgressRootRenderProps
+	extends ProgressRootCommonProps,
+		ProgressDataSet {
+	role: "progressbar";
+	"aria-valuenow": number | undefined;
+	"aria-valuemin": number;
+	"aria-valuemax": number;
+	"aria-valuetext": string | undefined;
+	"aria-labelledby": string | undefined;
+}
+
+export type ProgressRootProps = ProgressRootOptions &
+	Partial<ProgressRootCommonProps>;
 
 /**
  * Progress show either determinate or indeterminate progress of an operation over time.
  */
-export function ProgressRoot(props: ProgressRootProps) {
+export function ProgressRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, ProgressRootProps>,
+) {
 	const defaultId = `progress-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
@@ -80,7 +93,7 @@ export function ProgressRoot(props: ProgressRootProps) {
 			minValue: 0,
 			maxValue: 100,
 		},
-		props,
+		props as ProgressRootProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -151,12 +164,12 @@ export function ProgressRoot(props: ProgressRootProps) {
 
 	return (
 		<ProgressContext.Provider value={context}>
-			<Polymorphic
+			<Polymorphic<ProgressRootRenderProps>
 				as="div"
 				role="progressbar"
 				aria-valuenow={local.indeterminate ? undefined : value()}
-				aria-valuemin={local.minValue!}
-				aria-valuemax={local.maxValue!}
+				aria-valuemin={local.minValue}
+				aria-valuemax={local.maxValue}
 				aria-valuetext={valueLabel()}
 				aria-labelledby={labelId()}
 				{...dataset()}
