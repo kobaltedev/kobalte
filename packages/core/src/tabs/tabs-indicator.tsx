@@ -5,10 +5,9 @@
  * Credits to the React Spectrum team:
  * https://github.com/adobe/react-spectrum/blob/703ab7b4559ecd4fc611e7f2c0e758867990fe01/packages/@react-spectrum/tabs/src/Tabs.tsx
  */
-
-import { OverrideComponentProps } from "@kobalte/utils";
 import {
 	JSX,
+	ValidComponent,
 	createEffect,
 	createSignal,
 	on,
@@ -16,26 +15,36 @@ import {
 	splitProps,
 } from "solid-js";
 
+import { Orientation } from "@kobalte/utils";
 import { useLocale } from "../i18n";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsIndicatorOptions extends AsChildProp {
+export interface TabsIndicatorOptions {}
+
+export interface TabsIndicatorCommonProps {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
 
-export interface TabsIndicatorProps
-	extends OverrideComponentProps<"div", TabsIndicatorOptions> {}
+export interface TabsIndicatorRenderProps extends TabsIndicatorCommonProps {
+	role: "presentation";
+	"data-orientation": Orientation;
+}
+
+export type TabsIndicatorProps = TabsIndicatorOptions &
+	Partial<TabsIndicatorCommonProps>;
 
 /**
  * The visual indicator displayed at the bottom of the tab list to indicate the selected tab.
  * It provides the base style needed to display a smooth transition to the new selected tab.
  */
-export function TabsIndicator(props: TabsIndicatorProps) {
+export function TabsIndicator<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, TabsIndicatorProps>,
+) {
 	const context = useTabsContext();
 
-	const [local, others] = splitProps(props, ["style"]);
+	const [local, others] = splitProps(props as TabsIndicatorProps, ["style"]);
 
 	const [style, setStyle] = createSignal<JSX.CSSProperties>({
 		width: undefined,
@@ -101,7 +110,7 @@ export function TabsIndicator(props: TabsIndicatorProps) {
 	);
 
 	return (
-		<Polymorphic
+		<Polymorphic<TabsIndicatorRenderProps>
 			as="div"
 			role="presentation"
 			style={{ ...style(), ...local.style }}

@@ -6,13 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabPanel.ts
  */
 
-import {
-	OverrideComponentProps,
-	getFocusableTreeWalker,
-	mergeRefs,
-} from "@kobalte/utils";
+import { Orientation, getFocusableTreeWalker, mergeRefs } from "@kobalte/utils";
 import {
 	Show,
+	ValidComponent,
 	createEffect,
 	createSignal,
 	on,
@@ -20,11 +17,11 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createPresence } from "../primitives";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsContentOptions extends AsChildProp {
+export interface TabsContentOptions {
 	/** The unique key that associates the tab panel with a tab. */
 	value: string;
 
@@ -35,18 +32,33 @@ export interface TabsContentOptions extends AsChildProp {
 	forceMount?: boolean;
 }
 
-export interface TabsContentProps
-	extends OverrideComponentProps<"div", TabsContentOptions> {}
+export interface TabsContentCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+}
+
+export interface TabsContentRenderProps extends TabsContentCommonProps {
+	role: "tabpanel";
+	tabIndex: number | undefined;
+	"aria-labelledby": string | undefined;
+	"data-orientation": Orientation;
+	"data-selected": string | undefined;
+}
+
+export type TabsContentProps = TabsContentOptions &
+	Partial<TabsContentCommonProps>;
 
 /**
  * Contains the content associated with a tab trigger.
  */
-export function TabsContent(props: TabsContentProps) {
+export function TabsContent<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, TabsContentProps>,
+) {
 	let ref!: HTMLElement;
 
 	const context = useTabsContext();
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(props as TabsContentProps, [
 		"ref",
 		"id",
 		"value",
@@ -99,7 +111,7 @@ export function TabsContent(props: TabsContentProps) {
 
 	return (
 		<Show when={presence.isPresent()}>
-			<Polymorphic
+			<Polymorphic<TabsContentRenderProps>
 				as="div"
 				ref={mergeRefs((el) => {
 					presence.setRef(el);
