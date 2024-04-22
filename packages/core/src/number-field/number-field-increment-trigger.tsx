@@ -1,12 +1,38 @@
-import { OverrideComponentProps } from "@kobalte/utils";
-import * as Button from "../button";
-import { NumberFieldVaryTrigger } from "./number-field-vary-trigger";
+import { Component, ValidComponent } from "solid-js";
+import { PolymorphicProps } from "../polymorphic";
+import {
+	NumberFieldVaryTrigger,
+	NumberFieldVaryTriggerCommonProps,
+	NumberFieldVaryTriggerRenderProps,
+} from "./number-field-vary-trigger";
 
-export interface NumberFieldIncrementTriggerProps
-	extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
+export interface NumberFieldIncrementTriggerOptions {}
 
-export function NumberFieldIncrementTrigger(
-	props: NumberFieldIncrementTriggerProps,
-) {
-	return <NumberFieldVaryTrigger numberFieldVaryType="increment" {...props} />;
+export interface NumberFieldIncrementTriggerCommonProps
+	extends NumberFieldVaryTriggerCommonProps {}
+
+export interface NumberFieldIncrementTriggerRenderProps
+	extends NumberFieldIncrementTriggerCommonProps,
+		NumberFieldVaryTriggerRenderProps {}
+
+export type NumberFieldIncrementTriggerProps =
+	NumberFieldIncrementTriggerOptions &
+		Partial<NumberFieldIncrementTriggerCommonProps>;
+
+export function NumberFieldIncrementTrigger<
+	T extends ValidComponent = "button",
+>(props: PolymorphicProps<T, NumberFieldIncrementTriggerProps>) {
+	return (
+		<NumberFieldVaryTrigger<
+			Component<
+				Omit<
+					NumberFieldIncrementTriggerRenderProps,
+					keyof NumberFieldVaryTriggerRenderProps
+				>
+			>
+		>
+			numberFieldVaryType="increment"
+			{...(props as NumberFieldIncrementTriggerProps)}
+		/>
+	);
 }
