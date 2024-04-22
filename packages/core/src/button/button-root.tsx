@@ -26,7 +26,7 @@ export interface ButtonRootCommonProps {
 	disabled: boolean | undefined;
 	type: "submit" | "reset" | "button" | undefined;
 	ref: HTMLElement | ((el: HTMLElement) => void);
-	tabIndex: number | undefined;
+	tabIndex: number | string | undefined;
 }
 
 export interface ButtonRootRenderProps extends ButtonRootCommonProps {
