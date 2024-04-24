@@ -13,7 +13,6 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	contains,
 	focusWithoutScrolling,
@@ -21,25 +20,39 @@ import {
 	getWindow,
 	mergeRefs,
 } from "@kobalte/utils";
-import { For, JSX, createEffect, on, onCleanup, splitProps } from "solid-js";
+import { For, JSX, createEffect, on, onCleanup, splitProps, ValidComponent } from "solid-js";
 import { isServer } from "solid-js/web";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 
 import { useToastRegionContext } from "./toast-region-context";
 
 export interface ToastListOptions {}
 
-export type ToastListProps = OverrideComponentProps<"ol", ToastListOptions>;
+export interface ToastListCommonProps {
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+}
+
+export interface ToastListRenderProps extends ToastListCommonProps {
+	children: JSX.Element;
+	tabIndex: -1;
+}
+
+export type ToastListProps = ToastListOptions & Partial<ToastListCommonProps>;
 
 /**
  * The list containing all rendered toasts.
  * Must be inside a `Toast.Region`.
  */
-export function ToastList(props: ToastListProps) {
-	let ref: HTMLOListElement | undefined;
+export function ToastList<T extends ValidComponent = "ol">(props: PolymorphicProps<T, ToastListProps>) {
+	let ref: HTMLElement | undefined;
 
 	const context = useToastRegionContext();
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(props as ToastListProps, [
 		"ref",
 		"onFocusIn",
 		"onFocusOut",
@@ -47,7 +60,7 @@ export function ToastList(props: ToastListProps) {
 		"onPointerLeave",
 	]);
 
-	const onFocusIn: JSX.EventHandlerUnion<HTMLOListElement, FocusEvent> = (
+	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (
 		e,
 	) => {
 		callHandler(e, local.onFocusIn);
@@ -57,7 +70,7 @@ export function ToastList(props: ToastListProps) {
 		}
 	};
 
-	const onFocusOut: JSX.EventHandlerUnion<HTMLOListElement, FocusEvent> = (
+	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (
 		e,
 	) => {
 		callHandler(e, local.onFocusOut);
@@ -68,7 +81,7 @@ export function ToastList(props: ToastListProps) {
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLOListElement, PointerEvent> = (
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
 		callHandler(e, local.onPointerMove);
@@ -78,7 +91,7 @@ export function ToastList(props: ToastListProps) {
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<HTMLOListElement, PointerEvent> =
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> =
 		(e) => {
 			callHandler(e, local.onPointerLeave);
 
@@ -133,7 +146,7 @@ export function ToastList(props: ToastListProps) {
 	});
 
 	return (
-		<ol
+		<Polymorphic<ToastListRenderProps>
 			ref={mergeRefs((el) => (ref = el), local.ref)}
 			tabIndex={-1}
 			onFocusIn={onFocusIn}
@@ -151,6 +164,6 @@ export function ToastList(props: ToastListProps) {
 					})
 				}
 			</For>
-		</ol>
+		</Polymorphic>
 	);
 }

@@ -1,33 +1,31 @@
-import { OverrideComponentProps } from "@kobalte/utils";
-import {
-	JSX,
-	createEffect,
-	createSignal,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+import { JSX, createEffect, createSignal, onCleanup, splitProps, ValidComponent } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useToastContext } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
 
-export interface ToastProgressFillOptions extends AsChildProp {
+export interface ToastProgressFillOptions {
+}
+
+export interface ToastProgressFillCommonProps {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
 
-export interface ToastProgressFillProps
-	extends OverrideComponentProps<"div", ToastProgressFillOptions> {}
+export interface ToastProgressFillRenderProps extends ToastProgressFillCommonProps {
+}
+
+export type ToastProgressFillProps = ToastProgressFillOptions & Partial<ToastProgressFillCommonProps>;
 
 /**
  * The component that visually represents the toast remaining lifetime.
  * Used to visually show the fill of `Toast.ProgressTrack`.
  */
-export function ToastProgressFill(props: ToastProgressFillProps) {
+export function ToastProgressFill<T extends ValidComponent = "div">(props: PolymorphicProps<T, ToastProgressFillProps>) {
 	const rootContext = useToastRegionContext();
 	const context = useToastContext();
 
-	const [local, others] = splitProps(props, ["style"]);
+	const [local, others] = splitProps(props as ToastProgressFillProps, ["style"]);
 
 	const [lifeTime, setLifeTime] = createSignal(100);
 	let totalElapsedTime = 0;
@@ -52,7 +50,7 @@ export function ToastProgressFill(props: ToastProgressFillProps) {
 	});
 
 	return (
-		<Polymorphic
+		<Polymorphic<ToastProgressFillRenderProps>
 			as="div"
 			style={{
 				"--kb-toast-progress-fill-width": `${lifeTime()}%`,

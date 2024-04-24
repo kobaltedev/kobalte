@@ -13,7 +13,6 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	createGenerateId,
 	mergeDefaultProps,
@@ -29,7 +28,9 @@ import {
 	on,
 	onMount,
 	splitProps,
+	ValidComponent,
 } from "solid-js";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 
 import { createPresence, createRegisterId } from "../primitives";
 import { ToastContext, ToastContextValue } from "./toast-context";
@@ -100,28 +101,39 @@ export interface ToastRootOptions {
 	 * It can be prevented by calling `event.preventDefault`.
 	 */
 	onEscapeKeyDown?: (event: KeyboardEvent) => void;
-
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
 }
 
-export type ToastRootProps = OverrideComponentProps<"li", ToastRootOptions>;
+export interface ToastRootCommonProps {
+	/** The HTML styles attribute (object form only). */
+	style?: JSX.CSSProperties;
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+}
 
-export function ToastRoot(props: ToastRootProps) {
-	const defaultId = `toast-${createUniqueId()}`;
+export interface ToastRootRenderProps extends ToastRootCommonProps {
+	role: "status";
+	tabIndex: 0;
+}
 
+export type ToastRootProps = ToastRootOptions & Partial<ToastRootCommonProps>;
+
+export function ToastRoot<T extends ValidComponent = "li">(props: PolymorphicProps<T, ToastRootProps>) {
 	const rootContext = useToastRegionContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
-			id: defaultId,
+			id: `toast-${createUniqueId()}`,
 			priority: "high",
 			translations: TOAST_INTL_TRANSLATIONS,
 		},
-		props,
+		props as ToastRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const [local, others] = splitProps(mergedProps as typeof mergedProps & {toastId: string, id: string}, [
 		"ref",
 		"translations",
 		"toastId",
@@ -195,7 +207,7 @@ export function ToastRoot(props: ToastRootProps) {
 		local.onPause?.();
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLLIElement, KeyboardEvent> = (
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (
 		e,
 	) => {
 		callHandler(e, local.onKeyDown);
@@ -211,7 +223,7 @@ export function ToastRoot(props: ToastRootProps) {
 		}
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLLIElement, PointerEvent> = (
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
 		callHandler(e, local.onPointerDown);
@@ -223,7 +235,7 @@ export function ToastRoot(props: ToastRootProps) {
 		pointerStart = { x: e.clientX, y: e.clientY };
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLLIElement, PointerEvent> = (
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
 		callHandler(e, local.onPointerMove);
@@ -286,7 +298,7 @@ export function ToastRoot(props: ToastRootProps) {
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<HTMLLIElement, PointerEvent> = (
+	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
 		callHandler(e, local.onPointerUp);
@@ -414,7 +426,7 @@ export function ToastRoot(props: ToastRootProps) {
 	return (
 		<Show when={presence.isPresent()}>
 			<ToastContext.Provider value={context}>
-				<li
+				<Polymorphic<ToastRootRenderProps>
 					ref={mergeRefs(presence.setRef, local.ref)}
 					role="status"
 					tabIndex={0}

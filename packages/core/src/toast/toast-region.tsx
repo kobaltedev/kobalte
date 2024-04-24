@@ -23,9 +23,11 @@ import {
 	createSignal,
 	createUniqueId,
 	splitProps,
+	ValidComponent,
 } from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	ToastRegionContext,
 	ToastRegionContextValue,
@@ -88,24 +90,32 @@ export interface ToastRegionOptions {
 
 	/** The id of the toast region, used for multiple toast regions. */
 	regionId?: string;
-
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
 }
 
-export interface ToastRegionProps
-	extends OverrideComponentProps<"div", ToastRegionOptions> {}
+export interface ToastRegionCommonProps {
+	/** The HTML styles attribute (object form only). */
+	style?: JSX.CSSProperties;
+	id: string;
+}
+
+export interface ToastRegionRenderProps extends ToastRegionCommonProps {
+	"role": "region";
+	"tabIndex": -1;
+	"aria-label": string;
+	"data-kb-top-layer": string | undefined;
+}
+
+export type ToastRegionProps = ToastRegionOptions & Partial<ToastRegionCommonProps>;
 
 /**
  * The fixed area where toasts appear. Users can jump to by pressing a hotkey.
  * It is up to you to ensure the discoverability of the hotkey for keyboard users.
  */
-export function ToastRegion(props: ToastRegionProps) {
-	const defaultId = `toast-region-${createUniqueId()}`;
+export function ToastRegion<T extends ValidComponent = "div">(props: PolymorphicProps<T, ToastRegionProps>) {
 
 	const mergedProps = mergeDefaultProps(
 		{
-			id: defaultId,
+			id: `toast-region-${createUniqueId()}`,
 			hotkey: ["altKey", "KeyT"],
 			duration: 5000,
 			limit: 3,
@@ -116,10 +126,10 @@ export function ToastRegion(props: ToastRegionProps) {
 			topLayer: true,
 			translations: TOAST_REGION_INTL_TRANSLATIONS,
 		},
-		props,
+		props as ToastRegionProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const [local, others] = splitProps(mergedProps as typeof mergedProps & {id: string}, [
 		"translations",
 		"style",
 		"hotkey",
@@ -177,7 +187,7 @@ export function ToastRegion(props: ToastRegionProps) {
 
 	return (
 		<ToastRegionContext.Provider value={context}>
-			<div
+			<Polymorphic<ToastRegionRenderProps>
 				role="region"
 				tabIndex={-1}
 				aria-label={ariaLabel()}
@@ -192,7 +202,7 @@ export function ToastRegion(props: ToastRegionProps) {
 						: "none",
 					...local.style,
 				}}
-				{...topLayerAttr}
+				{...topLayerAttr()}
 				{...others}
 			/>
 		</ToastRegionContext.Provider>
