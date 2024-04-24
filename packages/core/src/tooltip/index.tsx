@@ -1,12 +1,16 @@
 import {
 	PopperArrow as Arrow,
+	type PopperArrowCommonProps as TooltipArrowCommonProps,
 	type PopperArrowOptions as TooltipArrowOptions,
 	type PopperArrowProps as TooltipArrowProps,
+	type PopperArrowRenderProps as TooltipArrowRenderProps,
 } from "../popper";
 import {
 	TooltipContent as Content,
+	type TooltipContentCommonProps,
 	type TooltipContentOptions,
 	type TooltipContentProps,
+	type TooltipContentRenderProps,
 } from "./tooltip-content";
 import {
 	TooltipPortal as Portal,
@@ -19,17 +23,27 @@ import {
 } from "./tooltip-root";
 import {
 	TooltipTrigger as Trigger,
+	type TooltipTriggerCommonProps,
+	type TooltipTriggerOptions,
 	type TooltipTriggerProps,
+	type TooltipTriggerRenderProps,
 } from "./tooltip-trigger";
 
 export type {
 	TooltipArrowOptions,
+	TooltipArrowCommonProps,
+	TooltipArrowRenderProps,
 	TooltipArrowProps,
 	TooltipContentOptions,
+	TooltipContentCommonProps,
+	TooltipContentRenderProps,
 	TooltipContentProps,
 	TooltipPortalProps,
 	TooltipRootOptions,
 	TooltipRootProps,
+	TooltipTriggerOptions,
+	TooltipTriggerCommonProps,
+	TooltipTriggerRenderProps,
 	TooltipTriggerProps,
 };
 

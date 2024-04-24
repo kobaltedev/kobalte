@@ -19,25 +19,42 @@
  */
 
 import { callHandler, getDocument, mergeRefs } from "@kobalte/utils";
-import { ComponentProps, JSX, onCleanup, splitProps } from "solid-js";
+import { JSX, ValidComponent, onCleanup, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useTooltipContext } from "./tooltip-context";
 
-export interface TooltipTriggerProps
-	extends ComponentProps<"button">,
-		AsChildProp {}
+export interface TooltipTriggerOptions {}
+
+export interface TooltipTriggerCommonProps {
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+}
+
+export interface TooltipTriggerRenderProps extends TooltipTriggerCommonProps {
+	"aria-describedby": string | undefined;
+}
+
+export type TooltipTriggerProps = TooltipTriggerOptions &
+	Partial<TooltipTriggerCommonProps>;
 
 /**
  * The button that opens the tooltip when hovered.
  */
-export function TooltipTrigger(props: TooltipTriggerProps) {
-	let ref: HTMLButtonElement | undefined;
+export function TooltipTrigger<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, TooltipTriggerProps>,
+) {
+	let ref: HTMLElement | undefined;
 
 	const context = useTooltipContext();
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(props as TooltipTriggerProps, [
 		"ref",
 		"onPointerEnter",
 		"onPointerLeave",
@@ -45,7 +62,6 @@ export function TooltipTrigger(props: TooltipTriggerProps) {
 		"onClick",
 		"onFocus",
 		"onBlur",
-		"onTouchStart",
 	]);
 
 	let isPointerDown = false;
@@ -68,54 +84,57 @@ export function TooltipTrigger(props: TooltipTriggerProps) {
 		}
 	};
 
-	const onPointerEnter: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> =
-		(e) => {
-			callHandler(e, local.onPointerEnter);
+	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onPointerEnter);
 
-			if (
-				e.pointerType === "touch" ||
-				context.triggerOnFocusOnly() ||
-				context.isDisabled() ||
-				e.defaultPrevented
-			) {
-				return;
-			}
+		if (
+			e.pointerType === "touch" ||
+			context.triggerOnFocusOnly() ||
+			context.isDisabled() ||
+			e.defaultPrevented
+		) {
+			return;
+		}
 
-			isHovered = true;
+		isHovered = true;
 
-			handleShow();
-		};
+		handleShow();
+	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> =
-		(e) => {
-			callHandler(e, local.onPointerLeave);
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onPointerLeave);
 
-			if (e.pointerType === "touch") {
-				return;
-			}
+		if (e.pointerType === "touch") {
+			return;
+		}
 
-			// No matter how the trigger is left, we should close the tooltip.
-			isHovered = false;
-			isFocused = false;
+		// No matter how the trigger is left, we should close the tooltip.
+		isHovered = false;
+		isFocused = false;
 
-			if (context.isOpen()) {
-				handleHide();
-			} else {
-				context.cancelOpening();
-			}
-		};
+		if (context.isOpen()) {
+			handleHide();
+		} else {
+			context.cancelOpening();
+		}
+	};
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> =
-		(e) => {
-			callHandler(e, local.onPointerDown);
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onPointerDown);
 
-			isPointerDown = true;
-			getDocument(ref).addEventListener("pointerup", handlePointerUp, {
-				once: true,
-			});
-		};
+		isPointerDown = true;
+		getDocument(ref).addEventListener("pointerup", handlePointerUp, {
+			once: true,
+		});
+	};
 
-	const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		// No matter how the trigger is left, we should close the tooltip.
@@ -125,7 +144,7 @@ export function TooltipTrigger(props: TooltipTriggerProps) {
 		handleHide(true);
 	};
 
-	const onFocus: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		if (context.isDisabled() || e.defaultPrevented || isPointerDown) {
@@ -137,7 +156,7 @@ export function TooltipTrigger(props: TooltipTriggerProps) {
 		handleShow();
 	};
 
-	const onBlur: JSX.EventHandlerUnion<HTMLButtonElement, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 
 		const relatedTarget = e.relatedTarget as Node | null;
@@ -164,7 +183,7 @@ export function TooltipTrigger(props: TooltipTriggerProps) {
 	// We purposefully avoid using Kobalte `Button` here because tooltip triggers can be any element
 	// and should not always be announced as a button to screen readers.
 	return (
-		<Polymorphic
+		<Polymorphic<TooltipTriggerRenderProps>
 			as="button"
 			ref={mergeRefs((el) => {
 				context.setTriggerRef(el);
