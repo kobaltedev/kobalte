@@ -1,27 +1,34 @@
-import { OverrideComponentProps, mergeRefs } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { mergeRefs } from "@kobalte/utils";
+import { JSX, splitProps, ValidComponent } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { usePopperContext } from "./popper-context";
 
-export interface PopperPositionerOptions extends AsChildProp {
+export interface PopperPositionerOptions {
+}
+
+export interface PopperPositionerCommonProps {
+	ref: HTMLElement | ((el: HTMLElement) => void);
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
 
-export interface PopperPositionerProps
-	extends OverrideComponentProps<"div", PopperPositionerOptions> {}
+export interface PopperPositionerRenderProps extends PopperPositionerCommonProps {
+	"data-popper-positioner": "";
+}
+
+export type PopperPositionerProps = PopperPositionerOptions & Partial<PopperPositionerCommonProps>;
 
 /**
  * The wrapper component that positions the popper content relative to the popper anchor.
  */
-export function PopperPositioner(props: PopperPositionerProps) {
+export function PopperPositioner<T extends ValidComponent = "div">(props: PolymorphicProps<T, PopperPositionerProps>) {
 	const context = usePopperContext();
 
-	const [local, others] = splitProps(props, ["ref", "style"]);
+	const [local, others] = splitProps(props as PopperPositionerProps, ["ref", "style"]);
 
 	return (
-		<Polymorphic
+		<Polymorphic<PopperPositionerRenderProps>
 			as="div"
 			ref={mergeRefs(context.setPositionerRef, local.ref)}
 			data-popper-positioner=""
