@@ -1,25 +1,29 @@
-import { OverrideComponentProps } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { JSX, splitProps, ValidComponent } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useSliderContext } from "./slider-context";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { SliderDataSet, useSliderContext } from "./slider-context";
 
-export interface SliderFillOptions extends AsChildProp {
+export interface SliderFillOptions {
+}
+
+export interface SliderFillCommonProps {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
 
-export interface SliderFillProps
-	extends OverrideComponentProps<"div", SliderFillOptions> {}
+export interface SliderFillRenderProps extends SliderFillCommonProps, SliderDataSet {
+}
+
+export type SliderFillProps = SliderFillOptions & Partial<SliderFillCommonProps>;
 
 /**
  * The component that visually represents the slider value.
  * Used to visually show the fill of `Slider.Track`.
  */
-export function SliderFill(props: SliderFillProps) {
+export function SliderFill<T extends ValidComponent = "div">(props: PolymorphicProps<T, SliderFillProps>) {
 	const context = useSliderContext();
 
-	const [local, others] = splitProps(props, ["style"]);
+	const [local, others] = splitProps(props as SliderFillProps, ["style"]);
 
 	const percentages = () => {
 		return context.state
@@ -35,7 +39,7 @@ export function SliderFill(props: SliderFillProps) {
 	};
 
 	return (
-		<Polymorphic
+		<Polymorphic<SliderFillRenderProps>
 			as="div"
 			style={{
 				[context.startEdge()]: `${offsetStart()}%`,
