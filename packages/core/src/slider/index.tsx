@@ -1,56 +1,56 @@
 import {
 	FormControlDescription as Description,
-	type FormControlDescriptionOptions as SliderDescriptionOptions,
 	type FormControlDescriptionCommonProps as SliderDescriptionCommonProps,
-	type FormControlDescriptionRenderProps as SliderDescriptionRenderProps,
+	type FormControlDescriptionOptions as SliderDescriptionOptions,
 	type FormControlDescriptionProps as SliderDescriptionProps,
+	type FormControlDescriptionRenderProps as SliderDescriptionRenderProps,
 	FormControlErrorMessage as ErrorMessage,
-	type FormControlErrorMessageOptions as SliderErrorMessageOptions,
 	type FormControlErrorMessageCommonProps as SliderErrorMessageCommonProps,
-	type FormControlErrorMessageRenderProps as SliderErrorMessageRenderProps,
+	type FormControlErrorMessageOptions as SliderErrorMessageOptions,
 	type FormControlErrorMessageProps as SliderErrorMessageProps,
+	type FormControlErrorMessageRenderProps as SliderErrorMessageRenderProps,
 	FormControlLabel as Label,
-	type FormControlLabelOptions as SliderLabelOptions,
 	type FormControlLabelCommonProps as SliderLabelCommonProps,
-	type FormControlLabelRenderProps as SliderLabelRenderProps,
+	type FormControlLabelOptions as SliderLabelOptions,
 	type FormControlLabelProps as SliderLabelProps,
+	type FormControlLabelRenderProps as SliderLabelRenderProps,
 } from "../form-control";
 import {
 	SliderFill as Fill,
-	type SliderFillOptions,
 	type SliderFillCommonProps,
-	type SliderFillRenderProps,
+	type SliderFillOptions,
 	type SliderFillProps,
+	type SliderFillRenderProps,
 } from "./slider-fill";
-import { SliderInput as Input,
-	type SliderInputProps,
-} from "./slider-input";
+import { SliderInput as Input, type SliderInputProps } from "./slider-input";
 import {
 	type GetValueLabelParams as SliderGetValueLabelParams,
 	SliderRoot as Root,
-	type SliderRootOptions,
 	type SliderRootCommonProps,
-	type SliderRootRenderProps,
+	type SliderRootOptions,
 	type SliderRootProps,
+	type SliderRootRenderProps,
 } from "./slider-root";
-import { SliderThumb as Thumb,
-	type SliderThumbOptions,
+import {
+	SliderThumb as Thumb,
 	type SliderThumbCommonProps,
-	type SliderThumbRenderProps,
+	type SliderThumbOptions,
 	type SliderThumbProps,
+	type SliderThumbRenderProps,
 } from "./slider-thumb";
-import { SliderTrack as Track,
-	type SliderTrackOptions,
+import {
+	SliderTrack as Track,
 	type SliderTrackCommonProps,
-	type SliderTrackRenderProps,
+	type SliderTrackOptions,
 	type SliderTrackProps,
+	type SliderTrackRenderProps,
 } from "./slider-track";
 import {
 	SliderValueLabel as ValueLabel,
-	type SliderValueLabelOptions,
 	type SliderValueLabelCommonProps,
-	type SliderValueLabelRenderProps,
+	type SliderValueLabelOptions,
 	type SliderValueLabelProps,
+	type SliderValueLabelRenderProps,
 } from "./slider-value-label";
 
 export type {

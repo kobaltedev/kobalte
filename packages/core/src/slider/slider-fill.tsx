@@ -1,26 +1,29 @@
-import { JSX, splitProps, ValidComponent } from "solid-js";
+import { JSX, ValidComponent, splitProps } from "solid-js";
 
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { SliderDataSet, useSliderContext } from "./slider-context";
 
-export interface SliderFillOptions {
-}
+export interface SliderFillOptions {}
 
 export interface SliderFillCommonProps {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
 
-export interface SliderFillRenderProps extends SliderFillCommonProps, SliderDataSet {
-}
+export interface SliderFillRenderProps
+	extends SliderFillCommonProps,
+		SliderDataSet {}
 
-export type SliderFillProps = SliderFillOptions & Partial<SliderFillCommonProps>;
+export type SliderFillProps = SliderFillOptions &
+	Partial<SliderFillCommonProps>;
 
 /**
  * The component that visually represents the slider value.
  * Used to visually show the fill of `Slider.Track`.
  */
-export function SliderFill<T extends ValidComponent = "div">(props: PolymorphicProps<T, SliderFillProps>) {
+export function SliderFill<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, SliderFillProps>,
+) {
 	const context = useSliderContext();
 
 	const [local, others] = splitProps(props as SliderFillProps, ["style"]);

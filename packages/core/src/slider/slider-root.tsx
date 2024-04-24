@@ -16,11 +16,11 @@ import {
 } from "@kobalte/utils";
 import {
 	Accessor,
+	ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	splitProps,
-	ValidComponent,
 } from "solid-js";
 
 import {
@@ -136,13 +136,18 @@ export interface SliderRootCommonProps {
 	ref: HTMLElement | ((el: HTMLElement) => void);
 }
 
-export interface SliderRootRenderProps extends SliderRootCommonProps, SliderDataSet {
+export interface SliderRootRenderProps
+	extends SliderRootCommonProps,
+		SliderDataSet {
 	role: "group";
 }
 
-export type SliderRootProps = SliderRootOptions & Partial<SliderRootCommonProps>;
+export type SliderRootProps = SliderRootOptions &
+	Partial<SliderRootCommonProps>;
 
-export function SliderRoot<T extends ValidComponent = "div">(props: PolymorphicProps<T, SliderRootProps>) {
+export function SliderRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, SliderRootProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const defaultId = `slider-${createUniqueId()}`;
@@ -163,7 +168,7 @@ export function SliderRoot<T extends ValidComponent = "div">(props: PolymorphicP
 	);
 
 	const [local, formControlProps, others] = splitProps(
-		mergedProps as typeof mergedProps & {id: string},
+		mergedProps as typeof mergedProps & { id: string },
 		[
 			"ref",
 			"value",

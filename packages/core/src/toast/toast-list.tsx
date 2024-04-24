@@ -20,7 +20,15 @@ import {
 	getWindow,
 	mergeRefs,
 } from "@kobalte/utils";
-import { For, JSX, createEffect, on, onCleanup, splitProps, ValidComponent } from "solid-js";
+import {
+	For,
+	JSX,
+	ValidComponent,
+	createEffect,
+	on,
+	onCleanup,
+	splitProps,
+} from "solid-js";
 import { isServer } from "solid-js/web";
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
 
@@ -47,7 +55,9 @@ export type ToastListProps = ToastListOptions & Partial<ToastListCommonProps>;
  * The list containing all rendered toasts.
  * Must be inside a `Toast.Region`.
  */
-export function ToastList<T extends ValidComponent = "ol">(props: PolymorphicProps<T, ToastListProps>) {
+export function ToastList<T extends ValidComponent = "ol">(
+	props: PolymorphicProps<T, ToastListProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const context = useToastRegionContext();
@@ -60,9 +70,7 @@ export function ToastList<T extends ValidComponent = "ol">(props: PolymorphicPro
 		"onPointerLeave",
 	]);
 
-	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (
-		e,
-	) => {
+	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocusIn);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
@@ -70,9 +78,7 @@ export function ToastList<T extends ValidComponent = "ol">(props: PolymorphicPro
 		}
 	};
 
-	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (
-		e,
-	) => {
+	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocusOut);
 
 		// The newly focused element isn't inside the toast list.
@@ -91,15 +97,16 @@ export function ToastList<T extends ValidComponent = "ol">(props: PolymorphicPro
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> =
-		(e) => {
-			callHandler(e, local.onPointerLeave);
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onPointerLeave);
 
-			// The current active element isn't inside the toast list.
-			if (!contains(ref, getDocument(ref).activeElement)) {
-				context.resumeAllTimer();
-			}
-		};
+		// The current active element isn't inside the toast list.
+		if (!contains(ref, getDocument(ref).activeElement)) {
+			context.resumeAllTimer();
+		}
+	};
 
 	createEffect(
 		on([() => ref, () => context.hotkey()], ([ref, hotkey]) => {

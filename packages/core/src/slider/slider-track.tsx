@@ -1,5 +1,5 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
-import { JSX, createSignal, splitProps, ValidComponent } from "solid-js";
+import { JSX, ValidComponent, createSignal, splitProps } from "solid-js";
 
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { SliderDataSet, useSliderContext } from "./slider-context";
@@ -13,16 +13,20 @@ export interface SliderTrackCommonProps {
 	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
 }
 
-export interface SliderTrackRenderProps extends SliderTrackCommonProps, SliderDataSet {
-}
+export interface SliderTrackRenderProps
+	extends SliderTrackCommonProps,
+		SliderDataSet {}
 
-export type SliderTrackProps = SliderTrackOptions & Partial<SliderTrackCommonProps>;
+export type SliderTrackProps = SliderTrackOptions &
+	Partial<SliderTrackCommonProps>;
 
 /**
  * The component that visually represents the slider track.
  * Act as a container for `Slider.Fill`.
  */
-export function SliderTrack<T extends ValidComponent = "div">(props: PolymorphicProps<T, SliderTrackProps>) {
+export function SliderTrack<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, SliderTrackProps>,
+) {
 	const context = useSliderContext();
 
 	const [local, others] = splitProps(props as SliderTrackProps, [
@@ -63,7 +67,9 @@ export function SliderTrack<T extends ValidComponent = "div">(props: Polymorphic
 
 	let startPosition = 0;
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerDown);
 
 		const target = e.target as HTMLElement;
@@ -79,7 +85,9 @@ export function SliderTrack<T extends ValidComponent = "div">(props: Polymorphic
 		context.onSlideStart?.(closestIndex, value);
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		const target = e.target as HTMLElement;

@@ -13,20 +13,20 @@
  */
 
 import {
+	Orientation,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-    Orientation,
 } from "@kobalte/utils";
 import {
 	Accessor,
 	JSX,
+	ValidComponent,
 	createContext,
 	createUniqueId,
 	onMount,
 	splitProps,
 	useContext,
-	ValidComponent,
 } from "solid-js";
 
 import {
@@ -53,12 +53,14 @@ export interface SliderThumbCommonProps {
 	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
 }
 
-export interface SliderThumbRenderProps extends SliderThumbCommonProps, SliderDataSet {
+export interface SliderThumbRenderProps
+	extends SliderThumbCommonProps,
+		SliderDataSet {
 	role: "slider";
 	tabIndex: 0 | undefined;
 	"aria-valuetext": string;
 	"aria-valuemin": number;
-	"aria-valuenow": number | undefined ;
+	"aria-valuenow": number | undefined;
 	"aria-valuemax": number;
 	"aria-orientation": Orientation;
 	"aria-label": string | undefined;
@@ -66,9 +68,12 @@ export interface SliderThumbRenderProps extends SliderThumbCommonProps, SliderDa
 	"aria-describedby": string | undefined;
 }
 
-export type SliderThumbProps = SliderThumbOptions & Partial<SliderThumbCommonProps>;
+export type SliderThumbProps = SliderThumbOptions &
+	Partial<SliderThumbCommonProps>;
 
-export function SliderThumb<T extends ValidComponent = "span">(props: PolymorphicProps<T, SliderThumbProps>) {
+export function SliderThumb<T extends ValidComponent = "span">(
+	props: PolymorphicProps<T, SliderThumbProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const context = useSliderContext();

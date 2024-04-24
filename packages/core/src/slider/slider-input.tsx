@@ -3,7 +3,13 @@ import {
 	mergeDefaultProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { JSX, createEffect, createSignal, splitProps, ComponentProps } from "solid-js";
+import {
+	ComponentProps,
+	JSX,
+	createEffect,
+	createSignal,
+	splitProps,
+} from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -13,8 +19,7 @@ import {
 import { useSliderContext } from "./slider-context";
 import { useThumbContext } from "./slider-thumb";
 
-export interface SliderInputProps
-	extends ComponentProps<"input"> {
+export interface SliderInputProps extends ComponentProps<"input"> {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }

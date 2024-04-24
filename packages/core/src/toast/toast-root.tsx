@@ -21,6 +21,7 @@ import {
 import {
 	JSX,
 	Show,
+	ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -28,7 +29,6 @@ import {
 	on,
 	onMount,
 	splitProps,
-	ValidComponent,
 } from "solid-js";
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
 
@@ -121,7 +121,9 @@ export interface ToastRootRenderProps extends ToastRootCommonProps {
 
 export type ToastRootProps = ToastRootOptions & Partial<ToastRootCommonProps>;
 
-export function ToastRoot<T extends ValidComponent = "li">(props: PolymorphicProps<T, ToastRootProps>) {
+export function ToastRoot<T extends ValidComponent = "li">(
+	props: PolymorphicProps<T, ToastRootProps>,
+) {
 	const rootContext = useToastRegionContext();
 
 	const mergedProps = mergeDefaultProps(
@@ -133,26 +135,29 @@ export function ToastRoot<T extends ValidComponent = "li">(props: PolymorphicPro
 		props as ToastRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps as typeof mergedProps & {toastId: string, id: string}, [
-		"ref",
-		"translations",
-		"toastId",
-		"style",
-		"priority",
-		"duration",
-		"persistent",
-		"onPause",
-		"onResume",
-		"onSwipeStart",
-		"onSwipeMove",
-		"onSwipeCancel",
-		"onSwipeEnd",
-		"onEscapeKeyDown",
-		"onKeyDown",
-		"onPointerDown",
-		"onPointerMove",
-		"onPointerUp",
-	]);
+	const [local, others] = splitProps(
+		mergedProps as typeof mergedProps & { toastId: string; id: string },
+		[
+			"ref",
+			"translations",
+			"toastId",
+			"style",
+			"priority",
+			"duration",
+			"persistent",
+			"onPause",
+			"onResume",
+			"onSwipeStart",
+			"onSwipeMove",
+			"onSwipeCancel",
+			"onSwipeEnd",
+			"onEscapeKeyDown",
+			"onKeyDown",
+			"onPointerDown",
+			"onPointerMove",
+			"onPointerUp",
+		],
+	);
 
 	const [isOpen, setIsOpen] = createSignal(true);
 	const [titleId, setTitleId] = createSignal<string>();
@@ -207,9 +212,7 @@ export function ToastRoot<T extends ValidComponent = "li">(props: PolymorphicPro
 		local.onPause?.();
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (
-		e,
-	) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		if (e.key !== "Escape") {
@@ -298,9 +301,7 @@ export function ToastRoot<T extends ValidComponent = "li">(props: PolymorphicPro
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerUp);
 
 		const delta = swipeDelta;

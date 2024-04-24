@@ -19,11 +19,11 @@ import {
 } from "@kobalte/utils";
 import {
 	JSX,
+	ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	splitProps,
-	ValidComponent,
 } from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
@@ -99,20 +99,22 @@ export interface ToastRegionCommonProps {
 }
 
 export interface ToastRegionRenderProps extends ToastRegionCommonProps {
-	"role": "region";
-	"tabIndex": -1;
+	role: "region";
+	tabIndex: -1;
 	"aria-label": string;
 	"data-kb-top-layer": string | undefined;
 }
 
-export type ToastRegionProps = ToastRegionOptions & Partial<ToastRegionCommonProps>;
+export type ToastRegionProps = ToastRegionOptions &
+	Partial<ToastRegionCommonProps>;
 
 /**
  * The fixed area where toasts appear. Users can jump to by pressing a hotkey.
  * It is up to you to ensure the discoverability of the hotkey for keyboard users.
  */
-export function ToastRegion<T extends ValidComponent = "div">(props: PolymorphicProps<T, ToastRegionProps>) {
-
+export function ToastRegion<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, ToastRegionProps>,
+) {
 	const mergedProps = mergeDefaultProps(
 		{
 			id: `toast-region-${createUniqueId()}`,
@@ -129,20 +131,23 @@ export function ToastRegion<T extends ValidComponent = "div">(props: Polymorphic
 		props as ToastRegionProps,
 	);
 
-	const [local, others] = splitProps(mergedProps as typeof mergedProps & {id: string}, [
-		"translations",
-		"style",
-		"hotkey",
-		"duration",
-		"limit",
-		"swipeDirection",
-		"swipeThreshold",
-		"pauseOnInteraction",
-		"pauseOnPageIdle",
-		"topLayer",
-		"aria-label",
-		"regionId",
-	]);
+	const [local, others] = splitProps(
+		mergedProps as typeof mergedProps & { id: string },
+		[
+			"translations",
+			"style",
+			"hotkey",
+			"duration",
+			"limit",
+			"swipeDirection",
+			"swipeThreshold",
+			"pauseOnInteraction",
+			"pauseOnPageIdle",
+			"topLayer",
+			"aria-label",
+			"regionId",
+		],
+	);
 
 	const toasts = createMemo(() =>
 		toastStore

@@ -13,7 +13,14 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { Accessor, JSX, createEffect, createSignal, splitProps, ValidComponent } from "solid-js";
+import {
+	Accessor,
+	JSX,
+	ValidComponent,
+	createEffect,
+	createSignal,
+	splitProps,
+} from "solid-js";
 
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { usePopperContext } from "./popper-context";
@@ -48,13 +55,16 @@ export interface PopperArrowRenderProps extends PopperArrowCommonProps {
 	"aria-hidden": "true";
 }
 
-export type PopperArrowProps = PopperArrowOptions & Partial<PopperArrowCommonProps>;
+export type PopperArrowProps = PopperArrowOptions &
+	Partial<PopperArrowCommonProps>;
 
 /**
  * An optional arrow element to render alongside the popper content.
  * Must be rendered in the popper content.
  */
-export function PopperArrow<T extends ValidComponent = "div">(props: PolymorphicProps<T, PopperArrowProps>) {
+export function PopperArrow<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, PopperArrowProps>,
+) {
 	const context = usePopperContext();
 
 	const mergedProps = mergeDefaultProps(
@@ -64,11 +74,7 @@ export function PopperArrow<T extends ValidComponent = "div">(props: Polymorphic
 		props as PopperArrowProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"style",
-		"size",
-	]);
+	const [local, others] = splitProps(mergedProps, ["ref", "style", "size"]);
 
 	const dir = () => context.currentPlacement().split("-")[0] as BasePlacement;
 	const contentStyle = createComputedStyle(context.contentRef);
