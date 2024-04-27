@@ -30,7 +30,7 @@ export interface ButtonRootCommonProps {
 }
 
 export interface ButtonRootRenderProps extends ButtonRootCommonProps {
-	role: "button" | undefined;
+	role: "menuitem" | "button" | undefined;
 	"aria-disabled": boolean | undefined;
 	"data-disabled": string | undefined;
 }
