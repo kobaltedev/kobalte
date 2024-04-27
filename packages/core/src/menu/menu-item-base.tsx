@@ -7,7 +7,6 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	composeEventHandlers,
 	createGenerateId,
@@ -22,9 +21,10 @@ import {
 	createSignal,
 	createUniqueId,
 	splitProps,
+	ValidComponent,
 } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -36,7 +36,7 @@ import {
 } from "./menu-item.context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuItemBaseOptions extends AsChildProp {
+export interface MenuItemBaseOptions {
 	/**
 	 * Optional text used for typeahead purposes.
 	 * By default, the typeahead behavior will use the .textContent of the Menu.ItemLabel part
@@ -65,14 +65,35 @@ export interface MenuItemBaseOptions extends AsChildProp {
 	onSelect?: () => void;
 }
 
-export interface MenuItemBaseProps
-	extends OverrideComponentProps<"div", MenuItemBaseOptions> {}
+export interface MenuItemBaseCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+}
+
+export interface MenuItemBaseRenderProps extends MenuItemBaseCommonProps, MenuItemDataSet {
+	tabIndex: number | undefined;
+	"aria-checked": boolean | "mixed" | undefined;
+	"aria-disabled": boolean | undefined;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
+	"data-key": string | undefined;
+}
+
+export type MenuItemBaseProps = MenuItemBaseOptions & Partial<MenuItemBaseCommonProps>;
 
 /**
  * Base component for a menu item.
  */
-export function MenuItemBase(props: MenuItemBaseProps) {
-	let ref: HTMLDivElement | undefined;
+export function MenuItemBase<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuItemBaseProps>) {
+	let ref: HTMLElement | undefined;
 
 	const rootContext = useMenuRootContext();
 	const menuContext = useMenuContext();
@@ -81,7 +102,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
 		{
 			id: rootContext.generateId(`item-${createUniqueId()}`),
 		},
-		props,
+		props as MenuItemBaseProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -153,7 +174,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
 	 * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
 	 * wiggles. This is to match native menu implementation.
 	 */
-	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
@@ -173,7 +194,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerLeave);
 
 		if (e.pointerType !== "mouse") {
@@ -183,7 +204,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
 		menuContext.onItemLeave(e);
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerUp);
 
 		// Selection occurs on pointer up (main button).
@@ -192,7 +213,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
 		}
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		// Ignore repeating events, which may have started on the menu trigger before moving
@@ -243,7 +264,7 @@ export function MenuItemBase(props: MenuItemBaseProps) {
 
 	return (
 		<MenuItemContext.Provider value={context}>
-			<Polymorphic
+			<Polymorphic<MenuItemBaseRenderProps>
 				as="div"
 				ref={mergeRefs((el) => (ref = el), local.ref)}
 				tabIndex={selectableItem.tabIndex()}

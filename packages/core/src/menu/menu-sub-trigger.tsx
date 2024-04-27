@@ -13,7 +13,6 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	composeEventHandlers,
 	focusWithoutScrolling,
@@ -27,17 +26,18 @@ import {
 	on,
 	onCleanup,
 	splitProps,
+	ValidComponent,
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
 import { Direction, useLocale } from "../i18n";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createSelectableItem } from "../selection";
-import { useMenuContext } from "./menu-context";
+import { MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 import { Side, getPointerGraceArea } from "./utils";
 
-export interface MenuSubTriggerOptions extends AsChildProp {
+export interface MenuSubTriggerOptions {
 	/**
 	 * Optional text used for typeahead purposes.
 	 * By default, the typeahead behavior will use the .textContent of the Menu.SubTrigger.
@@ -49,20 +49,44 @@ export interface MenuSubTriggerOptions extends AsChildProp {
 	disabled?: boolean;
 }
 
+export interface MenuSubTriggerCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+}
+
+export interface MenuSubTriggerRenderProps extends MenuSubTriggerCommonProps, MenuDataSet {
+	role: "menuitem";
+	tabIndex: number | undefined;
+	"aria-haspopup": "true";
+	"aria-expanded": boolean;
+	"aria-controls": string | undefined;
+	"aria-disabled": boolean | undefined;
+	"data-key": string | undefined;
+	"data-highlighted": "" | undefined;
+	"data-disabled": "" | undefined;
+}
+
+export type MenuSubTriggerProps = MenuSubTriggerOptions & Partial<MenuSubTriggerCommonProps>;
+
 const SELECTION_KEYS = ["Enter", " "];
 const SUB_OPEN_KEYS: Record<Direction, string[]> = {
 	ltr: [...SELECTION_KEYS, "ArrowRight"],
 	rtl: [...SELECTION_KEYS, "ArrowLeft"],
 };
 
-export interface MenuSubTriggerProps
-	extends OverrideComponentProps<"div", MenuSubTriggerOptions> {}
-
 /**
  * An item that opens a submenu.
  */
-export function MenuSubTrigger(props: MenuSubTriggerProps) {
-	let ref: HTMLDivElement | undefined;
+export function MenuSubTrigger<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuSubTriggerProps>) {
+	let ref: HTMLElement | undefined;
 
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
@@ -71,7 +95,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
 		{
 			id: rootContext.generateId(`sub-trigger-${createUniqueId()}`),
 		},
-		props,
+		props as MenuSubTriggerProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -134,7 +158,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
 		() => ref,
 	);
 
-	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		if (!context.isOpen() && !local.disabled) {
@@ -142,7 +166,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
@@ -187,7 +211,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerLeave);
 
 		if (e.pointerType !== "mouse") {
@@ -228,7 +252,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
 		parentMenuContext?.onItemLeave(e);
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		// Ignore repeating events, which may have started on the menu trigger before moving
@@ -304,7 +328,7 @@ export function MenuSubTrigger(props: MenuSubTriggerProps) {
 	});
 
 	return (
-		<Polymorphic
+		<Polymorphic<MenuSubTriggerRenderProps>
 			as="div"
 			ref={mergeRefs((el) => {
 				context.setTriggerRef(el);

@@ -1,23 +1,33 @@
 import { OverrideComponentProps, mergeRefs } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { Component, splitProps, ValidComponent } from "solid-js";
 
 import createPreventScroll from "solid-prevent-scroll";
-import { MenuContentBase, MenuContentBaseOptions } from "./menu-content-base";
+import { PolymorphicProps } from "../polymorphic";
+import {
+	MenuContentBase,
+	MenuContentBaseCommonProps,
+	MenuContentBaseOptions,
+	MenuContentBaseRenderProps,
+} from "./menu-content-base";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuContentOptions extends MenuContentBaseOptions {}
 
-export interface MenuContentProps
-	extends OverrideComponentProps<"div", MenuContentOptions> {}
+export interface MenuContentCommonProps extends MenuContentBaseCommonProps {
+}
 
-export function MenuContent(props: MenuContentProps) {
+export interface MenuContentRenderProps extends MenuContentCommonProps, MenuContentBaseRenderProps {}
+
+export type MenuContentProps = MenuContentOptions & Partial<MenuContentCommonProps>;
+
+export function MenuContent<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuContentProps>) {
 	let ref: HTMLElement | undefined;
 
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 
-	const [local, others] = splitProps(props, ["ref"]);
+	const [local, others] = splitProps(props as MenuContentProps, ["ref"]);
 
 	createPreventScroll({
 		element: () => ref ?? null,
@@ -25,7 +35,7 @@ export function MenuContent(props: MenuContentProps) {
 	});
 
 	return (
-		<MenuContentBase
+		<MenuContentBase<Component<Omit<MenuContentRenderProps, keyof MenuContentBaseRenderProps>>>
 			ref={mergeRefs((el) => {
 				ref = el;
 			}, local.ref)}

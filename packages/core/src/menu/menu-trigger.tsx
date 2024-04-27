@@ -7,28 +7,40 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
 	scrollIntoViewport,
 } from "@kobalte/utils";
-import { JSX, createEffect, onCleanup, splitProps } from "solid-js";
+import { JSX, createEffect, onCleanup, splitProps, ValidComponent, Component } from "solid-js";
 
 import * as Button from "../button";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import { useMenuContext } from "./menu-context";
+import { PolymorphicProps } from "../polymorphic";
+import { MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuTriggerOptions extends Button.ButtonRootOptions {}
+export interface MenuTriggerOptions {}
 
-export interface MenuTriggerProps
-	extends OverrideComponentProps<"button", MenuTriggerOptions> {}
+export interface MenuTriggerCommonProps extends Button.ButtonRootCommonProps {
+	id: string;
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onMouseOver: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+}
+
+export interface MenuTriggerRenderProps extends MenuTriggerCommonProps, Button.ButtonRootRenderProps, MenuDataSet {
+	role: "menuitem" | undefined;
+}
+
+export type MenuTriggerProps = MenuTriggerOptions & Partial<MenuTriggerCommonProps>;
 
 /**
  * The button that toggles the menu.
  */
-export function MenuTrigger(props: MenuTriggerProps) {
+export function MenuTrigger<T extends ValidComponent = "button">(props: PolymorphicProps<T, MenuTriggerProps>) {
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 	const optionalMenubarContext = useOptionalMenubarContext();
@@ -37,7 +49,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 		{
 			id: rootContext.generateId("trigger"),
 		},
-		props,
+		props as MenuTriggerProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -99,7 +111,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 		}
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		e.currentTarget.dataset.pointerType = e.pointerType;
@@ -110,7 +122,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 		}
 	};
 
-	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		if (!local.disabled) {
@@ -118,7 +130,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 		}
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = (
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (
 		e,
 	) => {
 		callHandler(e, local.onKeyDown);
@@ -157,7 +169,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 		}
 	};
 
-	const onMouseOver: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
+	const onMouseOver: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onMouseOver);
 
 		// When one of the menubar menus is open, automatically open others on trigger hover
@@ -170,7 +182,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 		}
 	};
 
-	const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		if (optionalMenubarContext !== undefined)
@@ -180,7 +192,7 @@ export function MenuTrigger(props: MenuTriggerProps) {
 	createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
 
 	return (
-		<Button.Root
+		<Button.Root<Component<Omit<MenuTriggerRenderProps, Exclude<keyof Button.ButtonRootRenderProps, "role">>>>
 			ref={mergeRefs(context.setTriggerRef, local.ref)}
 			id={local.id}
 			disabled={local.disabled}

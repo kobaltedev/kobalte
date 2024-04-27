@@ -7,19 +7,19 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-stately/radio/src/useRadioGroupState.ts
  */
 
-import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { createUniqueId, splitProps } from "solid-js";
+import { mergeDefaultProps } from "@kobalte/utils";
+import { Component, createUniqueId, splitProps, ValidComponent } from "solid-js";
 
-import { AsChildProp } from "../polymorphic";
+import { PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
-import { MenuGroup } from "./menu-group";
+import { MenuGroup, MenuGroupCommonProps, MenuGroupRenderProps } from "./menu-group";
 import {
 	MenuRadioGroupContext,
 	MenuRadioGroupContextValue,
 } from "./menu-radio-group-context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuRadioGroupOptions extends AsChildProp {
+export interface MenuRadioGroupOptions {
 	/** The controlled value of the item radio to check. */
 	value?: string;
 
@@ -36,13 +36,18 @@ export interface MenuRadioGroupOptions extends AsChildProp {
 	disabled?: boolean;
 }
 
-export interface MenuRadioGroupProps
-	extends OverrideComponentProps<"div", MenuRadioGroupOptions> {}
+export interface MenuRadioGroupCommonProps extends MenuGroupCommonProps {
+	id: string;
+}
+
+export interface MenuRadioGroupRenderProps extends MenuRadioGroupCommonProps, MenuGroupRenderProps {}
+
+export type MenuRadioGroupProps = MenuRadioGroupOptions & Partial<MenuRadioGroupCommonProps>;
 
 /**
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
-export function MenuRadioGroup(props: MenuRadioGroupProps) {
+export function MenuRadioGroup<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuRadioGroupProps>) {
 	const rootContext = useMenuRootContext();
 
 	const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);
@@ -51,7 +56,7 @@ export function MenuRadioGroup(props: MenuRadioGroupProps) {
 		{
 			id: defaultId,
 		},
-		props,
+		props as MenuRadioGroupProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -75,7 +80,7 @@ export function MenuRadioGroup(props: MenuRadioGroupProps) {
 
 	return (
 		<MenuRadioGroupContext.Provider value={context}>
-			<MenuGroup {...others} />
+			<MenuGroup<Component<Omit<MenuRadioGroupRenderProps, keyof MenuGroupRenderProps>>> {...others} />
 		</MenuRadioGroupContext.Provider>
 	);
 }

@@ -7,31 +7,41 @@
  */
 
 import {
-	OverrideComponentProps,
 	createGenerateId,
 	mergeDefaultProps,
 } from "@kobalte/utils";
-import { createSignal, createUniqueId } from "solid-js";
+import { createSignal, createUniqueId, ValidComponent } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { MenuGroupContext, MenuGroupContextValue } from "./menu-group-context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuGroupProps
-	extends OverrideComponentProps<"div", AsChildProp> {}
+export interface MenuGroupOptions {
+}
+
+export interface MenuGroupCommonProps {
+	id: string;
+}
+
+export interface MenuGroupRenderProps extends MenuGroupCommonProps {
+	role: "group";
+	"aria-labelledby": string | undefined;
+}
+
+export type MenuGroupProps = MenuGroupOptions & Partial<MenuGroupCommonProps>;
 
 /**
  * A container used to group multiple `Menu.Item`s.
  */
-export function MenuGroup(props: MenuGroupProps) {
+export function MenuGroup<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuGroupProps>) {
 	const rootContext = useMenuRootContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
 			id: rootContext.generateId(`group-${createUniqueId()}`),
 		},
-		props,
+		props as MenuGroupProps,
 	);
 
 	const [labelId, setLabelId] = createSignal<string>();
@@ -43,7 +53,7 @@ export function MenuGroup(props: MenuGroupProps) {
 
 	return (
 		<MenuGroupContext.Provider value={context}>
-			<Polymorphic
+			<Polymorphic<MenuGroupRenderProps>
 				as="div"
 				role="group"
 				aria-labelledby={labelId()}
