@@ -652,7 +652,7 @@ The `multiple` prop can be used to create a select that allow multi-selection. I
 
 The `Select.Value` children _render prop_ expose an array of selected options, and two method for removing an option from the selection and clear the selection.
 
-Additionally, the example below uses the `asChild` pattern to render a `div` for the `Select.Trigger` since HTML button can't contain interactive elements according to the [W3C](https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element).
+Additionally, the example below uses the `as` prop to render a `div` for the `Select.Trigger` since HTML button can't contain interactive elements according to the [W3C](https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element).
 
 <Preview>
 	<MultipleSelectionExample />
@@ -681,33 +681,31 @@ function MultipleSelectionExample() {
 					</Select.Item>
 				)}
 			>
-				<Select.Trigger aria-label="Fruits" asChild>
-					<As component="div">
-						<Select.Value<string>>
-							{state => (
-								<>
-									<div>
-										<For each={state.selectedOptions()}>
-											{option => (
-												<span onPointerDown={e => e.stopPropagation()}>
-													{option}
-													<button onClick={() => state.remove(option)}>
-														<CrossIcon />
-													</button>
-												</span>
-											)}
-										</For>
-									</div>
-									<button onPointerDown={e => e.stopPropagation()} onClick={state.clear}>
-										<CrossIcon />
-									</button>
-								</>
-							)}
-						</Select.Value>
-						<Select.Icon>
-							<CaretSortIcon />
-						</Select.Icon>
-					</As>
+				<Select.Trigger aria-label="Fruits" as="div">
+					<Select.Value<string>>
+						{state => (
+							<>
+								<div>
+									<For each={state.selectedOptions()}>
+										{option => (
+											<span onPointerDown={e => e.stopPropagation()}>
+												{option}
+												<button onClick={() => state.remove(option)}>
+													<CrossIcon />
+												</button>
+											</span>
+										)}
+									</For>
+								</div>
+								<button onPointerDown={e => e.stopPropagation()} onClick={state.clear}>
+									<CrossIcon />
+								</button>
+							</>
+						)}
+					</Select.Value>
+					<Select.Icon>
+						<CaretSortIcon />
+					</Select.Icon>
 				</Select.Trigger>
 				<Select.Portal>
 					<Select.Content>
