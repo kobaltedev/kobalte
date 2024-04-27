@@ -8,11 +8,20 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import { Component, createUniqueId, splitProps, ValidComponent } from "solid-js";
+import {
+	Component,
+	ValidComponent,
+	createUniqueId,
+	splitProps,
+} from "solid-js";
 
 import { PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
-import { MenuGroup, MenuGroupCommonProps, MenuGroupRenderProps } from "./menu-group";
+import {
+	MenuGroup,
+	MenuGroupCommonProps,
+	MenuGroupRenderProps,
+} from "./menu-group";
 import {
 	MenuRadioGroupContext,
 	MenuRadioGroupContextValue,
@@ -40,14 +49,19 @@ export interface MenuRadioGroupCommonProps extends MenuGroupCommonProps {
 	id: string;
 }
 
-export interface MenuRadioGroupRenderProps extends MenuRadioGroupCommonProps, MenuGroupRenderProps {}
+export interface MenuRadioGroupRenderProps
+	extends MenuRadioGroupCommonProps,
+		MenuGroupRenderProps {}
 
-export type MenuRadioGroupProps = MenuRadioGroupOptions & Partial<MenuRadioGroupCommonProps>;
+export type MenuRadioGroupProps = MenuRadioGroupOptions &
+	Partial<MenuRadioGroupCommonProps>;
 
 /**
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
-export function MenuRadioGroup<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuRadioGroupProps>) {
+export function MenuRadioGroup<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenuRadioGroupProps>,
+) {
 	const rootContext = useMenuRootContext();
 
 	const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);
@@ -80,7 +94,11 @@ export function MenuRadioGroup<T extends ValidComponent = "div">(props: Polymorp
 
 	return (
 		<MenuRadioGroupContext.Provider value={context}>
-			<MenuGroup<Component<Omit<MenuRadioGroupRenderProps, keyof MenuGroupRenderProps>>> {...others} />
+			<MenuGroup<
+				Component<Omit<MenuRadioGroupRenderProps, keyof MenuGroupRenderProps>>
+			>
+				{...others}
+			/>
 		</MenuRadioGroupContext.Provider>
 	);
 }

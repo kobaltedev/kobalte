@@ -21,12 +21,12 @@ import {
 } from "@kobalte/utils";
 import {
 	JSX,
+	ValidComponent,
 	createEffect,
 	createUniqueId,
 	on,
 	onCleanup,
 	splitProps,
-	ValidComponent,
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
@@ -62,7 +62,9 @@ export interface MenuSubTriggerCommonProps {
 	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
 }
 
-export interface MenuSubTriggerRenderProps extends MenuSubTriggerCommonProps, MenuDataSet {
+export interface MenuSubTriggerRenderProps
+	extends MenuSubTriggerCommonProps,
+		MenuDataSet {
 	role: "menuitem";
 	tabIndex: number | undefined;
 	"aria-haspopup": "true";
@@ -74,7 +76,8 @@ export interface MenuSubTriggerRenderProps extends MenuSubTriggerCommonProps, Me
 	"data-disabled": "" | undefined;
 }
 
-export type MenuSubTriggerProps = MenuSubTriggerOptions & Partial<MenuSubTriggerCommonProps>;
+export type MenuSubTriggerProps = MenuSubTriggerOptions &
+	Partial<MenuSubTriggerCommonProps>;
 
 const SELECTION_KEYS = ["Enter", " "];
 const SUB_OPEN_KEYS: Record<Direction, string[]> = {
@@ -85,7 +88,9 @@ const SUB_OPEN_KEYS: Record<Direction, string[]> = {
 /**
  * An item that opens a submenu.
  */
-export function MenuSubTrigger<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuSubTriggerProps>) {
+export function MenuSubTrigger<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenuSubTriggerProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const rootContext = useMenuRootContext();
@@ -166,7 +171,9 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(props: Polymorp
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
@@ -211,7 +218,9 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(props: Polymorp
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerLeave);
 
 		if (e.pointerType !== "mouse") {

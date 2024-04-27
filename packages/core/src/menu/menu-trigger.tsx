@@ -12,7 +12,14 @@ import {
 	mergeRefs,
 	scrollIntoViewport,
 } from "@kobalte/utils";
-import { JSX, createEffect, onCleanup, splitProps, ValidComponent, Component } from "solid-js";
+import {
+	Component,
+	JSX,
+	ValidComponent,
+	createEffect,
+	onCleanup,
+	splitProps,
+} from "solid-js";
 
 import * as Button from "../button";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
@@ -31,16 +38,22 @@ export interface MenuTriggerCommonProps extends Button.ButtonRootCommonProps {
 	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
 }
 
-export interface MenuTriggerRenderProps extends MenuTriggerCommonProps, Button.ButtonRootRenderProps, MenuDataSet {
+export interface MenuTriggerRenderProps
+	extends MenuTriggerCommonProps,
+		Button.ButtonRootRenderProps,
+		MenuDataSet {
 	role: "menuitem" | undefined;
 }
 
-export type MenuTriggerProps = MenuTriggerOptions & Partial<MenuTriggerCommonProps>;
+export type MenuTriggerProps = MenuTriggerOptions &
+	Partial<MenuTriggerCommonProps>;
 
 /**
  * The button that toggles the menu.
  */
-export function MenuTrigger<T extends ValidComponent = "button">(props: PolymorphicProps<T, MenuTriggerProps>) {
+export function MenuTrigger<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, MenuTriggerProps>,
+) {
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 	const optionalMenubarContext = useOptionalMenubarContext();
@@ -111,7 +124,9 @@ export function MenuTrigger<T extends ValidComponent = "button">(props: Polymorp
 		}
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerDown);
 
 		e.currentTarget.dataset.pointerType = e.pointerType;
@@ -130,9 +145,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(props: Polymorp
 		}
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (
-		e,
-	) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		if (local.disabled) {
@@ -192,7 +205,14 @@ export function MenuTrigger<T extends ValidComponent = "button">(props: Polymorp
 	createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
 
 	return (
-		<Button.Root<Component<Omit<MenuTriggerRenderProps, Exclude<keyof Button.ButtonRootRenderProps, "role">>>>
+		<Button.Root<
+			Component<
+				Omit<
+					MenuTriggerRenderProps,
+					Exclude<keyof Button.ButtonRootRenderProps, "role">
+				>
+			>
+		>
 			ref={mergeRefs(context.setTriggerRef, local.ref)}
 			id={local.id}
 			disabled={local.disabled}

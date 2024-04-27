@@ -10,6 +10,6 @@ export type {
 	SeparatorRootOptions,
 	SeparatorRootCommonProps,
 	SeparatorRootRenderProps,
-	SeparatorRootProps
+	SeparatorRootProps,
 };
 export { Root };

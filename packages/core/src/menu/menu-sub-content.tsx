@@ -12,15 +12,16 @@ import {
 	contains,
 	focusWithoutScrolling,
 } from "@kobalte/utils";
-import { Component, JSX, splitProps, ValidComponent } from "solid-js";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import { Direction, useLocale } from "../i18n";
 import { PolymorphicProps } from "../polymorphic";
 import { FocusOutsideEvent } from "../primitives";
 import {
-	MenuContentBase, MenuContentBaseCommonProps,
+	MenuContentBase,
+	MenuContentBaseCommonProps,
 	MenuContentBaseOptions,
-	MenuContentBaseRenderProps
+	MenuContentBaseRenderProps,
 } from "./menu-content-base";
 import { useMenuContext } from "./menu-context";
 
@@ -34,9 +35,12 @@ export interface MenuSubContentCommonProps extends MenuContentBaseCommonProps {
 	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
 }
 
-export interface MenuSubContentRenderProps extends MenuSubContentCommonProps, MenuContentBaseRenderProps {}
+export interface MenuSubContentRenderProps
+	extends MenuSubContentCommonProps,
+		MenuContentBaseRenderProps {}
 
-export type MenuSubContentProps = MenuSubContentOptions & Partial<MenuSubContentCommonProps>;
+export type MenuSubContentProps = MenuSubContentOptions &
+	Partial<MenuSubContentCommonProps>;
 
 const SUB_CLOSE_KEYS: Record<Direction, string[]> = {
 	ltr: ["ArrowLeft"],
@@ -46,7 +50,9 @@ const SUB_CLOSE_KEYS: Record<Direction, string[]> = {
 /**
  * The component that pops out when a submenu is open.
  */
-export function MenuSubContent<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuSubContentProps>) {
+export function MenuSubContent<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenuSubContentProps>,
+) {
 	const context = useMenuContext();
 
 	const [local, others] = splitProps(props as MenuSubContentProps, [
@@ -96,7 +102,11 @@ export function MenuSubContent<T extends ValidComponent = "div">(props: Polymorp
 	};
 
 	return (
-		<MenuContentBase<Component<Omit<MenuSubContentRenderProps, keyof MenuContentBaseRenderProps>>>
+		<MenuContentBase<
+			Component<
+				Omit<MenuSubContentRenderProps, keyof MenuContentBaseRenderProps>
+			>
+		>
 			onOpenAutoFocus={onOpenAutoFocus}
 			onCloseAutoFocus={onCloseAutoFocus}
 			onFocusOutside={onFocusOutside}

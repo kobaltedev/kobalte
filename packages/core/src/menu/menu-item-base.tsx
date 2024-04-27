@@ -17,11 +17,11 @@ import {
 import {
 	Accessor,
 	JSX,
+	ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	splitProps,
-	ValidComponent,
 } from "solid-js";
 
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
@@ -78,7 +78,9 @@ export interface MenuItemBaseCommonProps {
 	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
 }
 
-export interface MenuItemBaseRenderProps extends MenuItemBaseCommonProps, MenuItemDataSet {
+export interface MenuItemBaseRenderProps
+	extends MenuItemBaseCommonProps,
+		MenuItemDataSet {
 	tabIndex: number | undefined;
 	"aria-checked": boolean | "mixed" | undefined;
 	"aria-disabled": boolean | undefined;
@@ -87,12 +89,15 @@ export interface MenuItemBaseRenderProps extends MenuItemBaseCommonProps, MenuIt
 	"data-key": string | undefined;
 }
 
-export type MenuItemBaseProps = MenuItemBaseOptions & Partial<MenuItemBaseCommonProps>;
+export type MenuItemBaseProps = MenuItemBaseOptions &
+	Partial<MenuItemBaseCommonProps>;
 
 /**
  * Base component for a menu item.
  */
-export function MenuItemBase<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuItemBaseProps>) {
+export function MenuItemBase<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenuItemBaseProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const rootContext = useMenuRootContext();
@@ -174,7 +179,9 @@ export function MenuItemBase<T extends ValidComponent = "div">(props: Polymorphi
 	 * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
 	 * wiggles. This is to match native menu implementation.
 	 */
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
@@ -194,7 +201,9 @@ export function MenuItemBase<T extends ValidComponent = "div">(props: Polymorphi
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerLeave);
 
 		if (e.pointerType !== "mouse") {

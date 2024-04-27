@@ -6,32 +6,33 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/listbox/src/useOption.ts
  */
 
-import {
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps, ValidComponent } from "solid-js";
+import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { MenuItemDataSet, useMenuItemContext } from "./menu-item.context";
 
-export interface MenuItemLabelOptions {
-}
+export interface MenuItemLabelOptions {}
 
 export interface MenuItemLabelCommonProps {
 	id: string;
 	ref: HTMLElement | ((el: HTMLElement) => void);
 }
 
-export interface MenuItemLabelRenderProps extends MenuItemLabelCommonProps, MenuItemDataSet {}
+export interface MenuItemLabelRenderProps
+	extends MenuItemLabelCommonProps,
+		MenuItemDataSet {}
 
-export type MenuItemLabelProps = MenuItemLabelOptions & Partial<MenuItemLabelCommonProps>;
+export type MenuItemLabelProps = MenuItemLabelOptions &
+	Partial<MenuItemLabelCommonProps>;
 
 /**
  * An accessible label to be announced for the menu item.
  * Useful for menu items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
-export function MenuItemLabel<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuItemLabelProps>) {
+export function MenuItemLabel<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenuItemLabelProps>,
+) {
 	const context = useMenuItemContext();
 
 	const mergedProps = mergeDefaultProps(

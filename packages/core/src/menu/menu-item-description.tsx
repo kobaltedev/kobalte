@@ -7,27 +7,31 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps, ValidComponent } from "solid-js";
+import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { MenuItemDataSet, useMenuItemContext } from "./menu-item.context";
 
-export interface MenuItemDescriptionOptions {
-}
+export interface MenuItemDescriptionOptions {}
 
 export interface MenuItemDescriptionCommonProps {
 	id: string;
 }
 
-export interface MenuItemDescriptionRenderProps extends MenuItemDescriptionCommonProps, MenuItemDataSet {}
+export interface MenuItemDescriptionRenderProps
+	extends MenuItemDescriptionCommonProps,
+		MenuItemDataSet {}
 
-export type MenuItemDescriptionProps = MenuItemDescriptionOptions & Partial<MenuItemDescriptionCommonProps>;
+export type MenuItemDescriptionProps = MenuItemDescriptionOptions &
+	Partial<MenuItemDescriptionCommonProps>;
 
 /**
  * An optional accessible description to be announced for the menu item.
  * Useful for menu items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
-export function MenuItemDescription<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuItemDescriptionProps>) {
+export function MenuItemDescription<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenuItemDescriptionProps>,
+) {
 	const context = useMenuItemContext();
 
 	const mergedProps = mergeDefaultProps(
@@ -42,6 +46,11 @@ export function MenuItemDescription<T extends ValidComponent = "div">(props: Pol
 	createEffect(() => onCleanup(context.registerDescription(local.id)));
 
 	return (
-		<Polymorphic<MenuItemDescriptionRenderProps> as="div" id={local.id} {...context.dataset()} {...others} />
+		<Polymorphic<MenuItemDescriptionRenderProps>
+			as="div"
+			id={local.id}
+			{...context.dataset()}
+			{...others}
+		/>
 	);
 }

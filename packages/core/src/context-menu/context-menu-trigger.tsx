@@ -6,12 +6,8 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/context-menu/src/ContextMenu.tsx
  */
 
-import {
-	callHandler,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
-import { JSX, onCleanup, splitProps, ValidComponent } from "solid-js";
+import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { JSX, ValidComponent, onCleanup, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
 import { MenuDataSet, useMenuContext } from "../menu/menu-context";
@@ -37,11 +33,16 @@ export interface ContextMenuTriggerCommonProps {
 	style?: JSX.CSSProperties;
 }
 
-export interface ContextMenuTriggerRenderProps extends ContextMenuTriggerCommonProps, MenuDataSet {}
+export interface ContextMenuTriggerRenderProps
+	extends ContextMenuTriggerCommonProps,
+		MenuDataSet {}
 
-export type ContextMenuTriggerProps = ContextMenuTriggerOptions & Partial<ContextMenuTriggerCommonProps>;
+export type ContextMenuTriggerProps = ContextMenuTriggerOptions &
+	Partial<ContextMenuTriggerCommonProps>;
 
-export function ContextMenuTrigger<T extends ValidComponent = "div">(props: PolymorphicProps<T, ContextMenuTriggerProps>) {
+export function ContextMenuTrigger<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, ContextMenuTriggerProps>,
+) {
 	const rootContext = useMenuRootContext();
 	const menuContext = useMenuContext();
 	const context = useContextMenuContext();
@@ -116,7 +117,9 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(props: Poly
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		if (!local.disabled && isTouchOrPen(e)) {
@@ -124,7 +127,9 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(props: Poly
 		}
 	};
 
-	const onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerCancel);
 
 		if (!local.disabled && isTouchOrPen(e)) {

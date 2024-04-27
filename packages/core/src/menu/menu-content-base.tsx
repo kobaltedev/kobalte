@@ -14,17 +14,20 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
+	Component,
 	JSX,
 	Show,
+	ValidComponent,
 	createEffect,
 	createUniqueId,
 	onCleanup,
 	splitProps,
-	ValidComponent,
-	Component,
 } from "solid-js";
 
-import { DismissableLayer, DismissableLayerRenderProps } from "../dismissable-layer";
+import {
+	DismissableLayer,
+	DismissableLayerRenderProps,
+} from "../dismissable-layer";
 import { createSelectableList } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { PolymorphicProps } from "../polymorphic";
@@ -87,18 +90,23 @@ export interface MenuContentBaseCommonProps {
 	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
-
 }
 
-export interface MenuContentBaseRenderProps extends MenuContentBaseCommonProps, DismissableLayerRenderProps, MenuDataSet {
+export interface MenuContentBaseRenderProps
+	extends MenuContentBaseCommonProps,
+		DismissableLayerRenderProps,
+		MenuDataSet {
 	role: "menu";
 	tabIndex: number | undefined;
 	"aria-labelledby": string | undefined;
 }
 
-export type MenuContentBaseProps = MenuContentBaseOptions & Partial<MenuContentBaseCommonProps>;
+export type MenuContentBaseProps = MenuContentBaseOptions &
+	Partial<MenuContentBaseCommonProps>;
 
-export function MenuContentBase<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuContentBaseProps>) {
+export function MenuContentBase<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenuContentBaseProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const rootContext = useMenuRootContext();
@@ -220,7 +228,9 @@ export function MenuContentBase<T extends ValidComponent = "div">(props: Polymor
 		}
 	};
 
-	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerEnter);
 
 		if (!context.isOpen()) {
@@ -240,7 +250,9 @@ export function MenuContentBase<T extends ValidComponent = "div">(props: Polymor
 			.setFocusedKey(undefined);
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
@@ -263,7 +275,11 @@ export function MenuContentBase<T extends ValidComponent = "div">(props: Polymor
 	return (
 		<Show when={context.contentPresence.isPresent()}>
 			<PopperPositioner>
-				<DismissableLayer<Component<Omit<MenuContentBaseRenderProps, keyof DismissableLayerRenderProps>>>
+				<DismissableLayer<
+					Component<
+						Omit<MenuContentBaseRenderProps, keyof DismissableLayerRenderProps>
+					>
+				>
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
 						context.contentPresence.setRef(el);

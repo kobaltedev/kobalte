@@ -1,9 +1,14 @@
 import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { Component, splitProps, ValidComponent } from "solid-js";
+import { Component, ValidComponent, splitProps } from "solid-js";
 import { PolymorphicProps } from "../polymorphic";
 
 import { createToggleState } from "../primitives";
-import { MenuItemBase, MenuItemBaseCommonProps, MenuItemBaseOptions, MenuItemBaseRenderProps } from "./menu-item-base";
+import {
+	MenuItemBase,
+	MenuItemBaseCommonProps,
+	MenuItemBaseOptions,
+	MenuItemBaseRenderProps,
+} from "./menu-item-base";
 
 export interface MenuCheckboxItemOptions
 	extends Omit<MenuItemBaseOptions, "checked"> {
@@ -20,19 +25,23 @@ export interface MenuCheckboxItemOptions
 	onChange?: (isChecked: boolean) => void;
 }
 
-export interface MenuCheckboxItemCommonProps extends MenuItemBaseCommonProps {
-}
+export interface MenuCheckboxItemCommonProps extends MenuItemBaseCommonProps {}
 
-export interface MenuCheckboxItemRenderProps extends MenuCheckboxItemCommonProps, MenuItemBaseRenderProps {
+export interface MenuCheckboxItemRenderProps
+	extends MenuCheckboxItemCommonProps,
+		MenuItemBaseRenderProps {
 	role: "menuitemcheckbox";
 }
 
-export type MenuCheckboxItemProps = MenuCheckboxItemOptions & Partial<MenuCheckboxItemCommonProps>;
+export type MenuCheckboxItemProps = MenuCheckboxItemOptions &
+	Partial<MenuCheckboxItemCommonProps>;
 
 /**
  * An item that can be controlled and rendered like a checkbox.
  */
-export function MenuCheckboxItem<T extends ValidComponent = "div">(props: PolymorphicProps<T, MenuCheckboxItemProps>) {
+export function MenuCheckboxItem<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenuCheckboxItemProps>,
+) {
 	const mergedProps = mergeDefaultProps(
 		{
 			closeOnSelect: false,
@@ -60,7 +69,11 @@ export function MenuCheckboxItem<T extends ValidComponent = "div">(props: Polymo
 	};
 
 	return (
-		<MenuItemBase<Component<Omit<MenuCheckboxItemRenderProps, keyof MenuItemBaseRenderProps>>>
+		<MenuItemBase<
+			Component<
+				Omit<MenuCheckboxItemRenderProps, keyof MenuItemBaseRenderProps>
+			>
+		>
 			role="menuitemcheckbox"
 			checked={state.isSelected()}
 			onSelect={onSelect}
