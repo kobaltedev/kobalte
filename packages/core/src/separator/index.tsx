@@ -6,5 +6,10 @@ import {
 	type SeparatorRootRenderProps,
 } from "./separator-root";
 
-export type { SeparatorRootOptions, SeparatorRootProps };
+export type {
+	SeparatorRootOptions,
+	SeparatorRootCommonProps,
+	SeparatorRootRenderProps,
+	SeparatorRootProps
+};
 export { Root };
