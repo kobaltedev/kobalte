@@ -9,7 +9,6 @@
 
 import {
 	Orientation,
-	OverrideComponentProps,
 	ValidationState,
 	access,
 	mergeDefaultProps,
@@ -23,7 +22,7 @@ import {
 	FormControlDataSet,
 	createFormControl,
 } from "../form-control";
-import { AsChildProp, Polymorphic, PolymorphicProps } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	createControllableSignal,
 	createFormResetListener,
@@ -33,7 +32,7 @@ import {
 	RadioGroupContextValue,
 } from "./radio-group-context";
 
-export interface RadioGroupRootOptions extends AsChildProp {
+export interface RadioGroupRootOptions {
 	/** The controlled value of the radio button to check. */
 	value?: string;
 

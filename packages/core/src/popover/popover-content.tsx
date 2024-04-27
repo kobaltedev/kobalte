@@ -20,7 +20,6 @@ import {
 	DismissableLayer,
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { AsChildProp } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
 	FocusOutsideEvent,

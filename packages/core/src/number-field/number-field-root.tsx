@@ -37,8 +37,7 @@ import {
 } from "./number-field-context";
 
 export interface NumberFieldRootOptions
-	extends Pick<SpinButtonRootOptions, "textValue" | "translations">,
-		AsChildProp {
+	extends Pick<SpinButtonRootOptions, "textValue" | "translations"> {
 	/** The controlled formatted value of the number field. */
 	value?: string | number;
 

@@ -32,9 +32,9 @@ export type PolymorphicProps<
  */
 export type PolymorphicCallbackProps<
 	CustomProps extends {},
-	BaseProps extends {},
+	Options extends {},
 	RenderProps extends {},
-> = Omit<CustomProps, keyof BaseProps | keyof RenderProps> & RenderProps;
+> = Omit<CustomProps, keyof Options | keyof RenderProps> & RenderProps;
 
 /**
  * A utility component that render its `as` prop.
