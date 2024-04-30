@@ -2,12 +2,6 @@
 import "@docsearch/css";
 import "./root.css";
 
-import {
-	ColorModeProvider,
-	ColorModeScript,
-	Toast,
-	cookieStorageManagerSSR,
-} from "@kobalte/core";
 import { MetaProvider, Title } from "@solidjs/meta";
 import { Router } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start";
@@ -15,6 +9,12 @@ import { Suspense } from "solid-js";
 import { Portal, isServer } from "solid-js/web";
 import { MDXProvider } from "solid-mdx";
 
+import {
+	ColorModeProvider,
+	ColorModeScript,
+	cookieStorageManagerSSR,
+} from "@kobalte/core/color-mode";
+import { Toast } from "@kobalte/core/toast";
 import { getCookie } from "vinxi/server";
 import toastStyles from "./examples/toast.module.css";
 import { mdxComponents } from "./mdx-components";

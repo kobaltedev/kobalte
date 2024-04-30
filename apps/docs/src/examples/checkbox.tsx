@@ -1,4 +1,4 @@
-import { Checkbox } from "@kobalte/core";
+import { Checkbox } from "@kobalte/core/checkbox";
 import { clsx } from "clsx";
 import { createSignal } from "solid-js";
 
@@ -7,7 +7,7 @@ import style from "./checkbox.module.css";
 
 export function BasicExample() {
 	return (
-		<Checkbox.Root class={style.checkbox}>
+		<Checkbox class={style.checkbox}>
 			<Checkbox.Input class={style.checkbox__input} />
 			<Checkbox.Control class={style.checkbox__control}>
 				<Checkbox.Indicator>
@@ -15,13 +15,13 @@ export function BasicExample() {
 				</Checkbox.Indicator>
 			</Checkbox.Control>
 			<Checkbox.Label class={style.checkbox__label}>Subscribe</Checkbox.Label>
-		</Checkbox.Root>
+		</Checkbox>
 	);
 }
 
 export function DefaultCheckedExample() {
 	return (
-		<Checkbox.Root class={style.checkbox} defaultChecked>
+		<Checkbox class={style.checkbox} defaultChecked>
 			<Checkbox.Input class={style.checkbox__input} />
 			<Checkbox.Control class={style.checkbox__control}>
 				<Checkbox.Indicator>
@@ -29,7 +29,7 @@ export function DefaultCheckedExample() {
 				</Checkbox.Indicator>
 			</Checkbox.Control>
 			<Checkbox.Label class={style.checkbox__label}>Subscribe</Checkbox.Label>
-		</Checkbox.Root>
+		</Checkbox>
 	);
 }
 
@@ -38,7 +38,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<Checkbox.Root
+			<Checkbox
 				class={style.checkbox}
 				checked={checked()}
 				onChange={setChecked}
@@ -50,7 +50,7 @@ export function ControlledExample() {
 					</Checkbox.Indicator>
 				</Checkbox.Control>
 				<Checkbox.Label class={style.checkbox__label}>Subscribe</Checkbox.Label>
-			</Checkbox.Root>
+			</Checkbox>
 			<p class="not-prose text-sm mt-2">
 				You are {checked() ? "subscribed" : "unsubscribed"}.
 			</p>
@@ -60,7 +60,7 @@ export function ControlledExample() {
 
 export function DescriptionExample() {
 	return (
-		<Checkbox.Root class={clsx(style.checkbox, "!items-start")}>
+		<Checkbox class={clsx(style.checkbox, "!items-start")}>
 			<Checkbox.Input class={style.checkbox__input} />
 			<Checkbox.Control class={style.checkbox__control}>
 				<Checkbox.Indicator>
@@ -73,7 +73,7 @@ export function DescriptionExample() {
 					You will receive our weekly newsletter.
 				</Checkbox.Description>
 			</div>
-		</Checkbox.Root>
+		</Checkbox>
 	);
 }
 
@@ -81,7 +81,7 @@ export function ErrorMessageExample() {
 	const [checked, setChecked] = createSignal(false);
 
 	return (
-		<Checkbox.Root
+		<Checkbox
 			class={clsx(style.checkbox, "!items-start")}
 			checked={checked()}
 			onChange={setChecked}
@@ -99,7 +99,7 @@ export function ErrorMessageExample() {
 					You must agree to our Terms and Conditions.
 				</Checkbox.ErrorMessage>
 			</div>
-		</Checkbox.Root>
+		</Checkbox>
 	);
 }
 
@@ -121,7 +121,7 @@ export function HTMLFormExample() {
 			onSubmit={onSubmit}
 			class="flex flex-col items-center space-y-6"
 		>
-			<Checkbox.Root class={style.checkbox} name="newsletter" value="subscribe">
+			<Checkbox class={style.checkbox} name="newsletter" value="subscribe">
 				<Checkbox.Input class={style.checkbox__input} />
 				<Checkbox.Control class={style.checkbox__control}>
 					<Checkbox.Indicator>
@@ -129,7 +129,7 @@ export function HTMLFormExample() {
 					</Checkbox.Indicator>
 				</Checkbox.Control>
 				<Checkbox.Label class={style.checkbox__label}>Subscribe</Checkbox.Label>
-			</Checkbox.Root>
+			</Checkbox>
 			<div class="flex space-x-2">
 				<button type="reset" class="kb-button">
 					Reset

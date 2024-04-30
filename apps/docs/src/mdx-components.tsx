@@ -1,4 +1,4 @@
-import { Button } from "@kobalte/core";
+import { Button } from "@kobalte/core/button";
 import { Title as MetaTitle } from "@solidjs/meta";
 import { clsx } from "clsx";
 import { ComponentProps, Show, createSignal, splitProps } from "solid-js";
@@ -65,7 +65,7 @@ export const mdxComponents = {
 
 		return (
 			<pre ref={domRef} onMouseLeave={reset} {...others}>
-				<Button.Root
+				<Button
 					aria-label="copy to clipboard"
 					onClick={copyToClipboard}
 					class={clsx(
@@ -78,7 +78,7 @@ export const mdxComponents = {
 					<Show when={isCopied()} fallback={<CopyIcon class="h-4 w-4" />}>
 						<CheckIcon class="h-4 w-4" />
 					</Show>
-				</Button.Root>
+				</Button>
 				{local.children}
 			</pre>
 		);

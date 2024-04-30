@@ -8,6 +8,10 @@ Visually or semantically separates content.
 ## Import
 
 ```ts
+import { Separator } from "@kobalte/core/separator";
+// or
+import { Root } from "@kobalte/core/separator";
+// or (deprecated)
 import { Separator } from "@kobalte/core";
 ```
 
@@ -21,10 +25,10 @@ import { Separator } from "@kobalte/core";
 
 The separator consists of:
 
-- **Separator.Root:** The root container for a separator.
+- **Separator:** The root container for a separator.
 
 ```tsx
-<Separator.Root />
+<Separator />
 ```
 
 ## Example
@@ -41,14 +45,14 @@ The separator consists of:
   {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Separator } from "@kobalte/core";
+		import { Separator } from "@kobalte/core/separator";
     import "./style.css";
 
     function App() {
       return (
         <div>
           <span>Content above</span>
-          <Separator.Root class="separator" />
+          <Separator class="separator" />
           <span>Content below</span>
         </div>
       );
@@ -75,7 +79,9 @@ The separator consists of:
 
 ## API Reference
 
-### Separator.Root
+### Separator
+
+`Separator` is equivalent to the `Root` import from `@kobalte/core/separator` (and deprecated `Separator.Root`).
 
 | Prop        | Description                                                          |
 | :---------- | :------------------------------------------------------------------- |
@@ -88,6 +94,6 @@ The separator consists of:
 
 ## Rendered elements
 
-| Component        | Default rendered element |
-| :--------------- | :----------------------- |
-| `Separator.Root` | `hr`                     |
+| Component   | Default rendered element |
+| :---------- | :----------------------- |
+| `Separator` | `hr`                     |

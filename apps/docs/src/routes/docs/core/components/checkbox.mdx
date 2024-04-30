@@ -15,6 +15,10 @@ A control that allows the user to toggle between checked and not checked.
 ## Import
 
 ```ts
+import { Checkbox } from "@kobalte/core/checkbox";
+// or
+import { Root, Input, ... } from "@kobalte/core/checkbox";
+// or (deprecated)
 import { Checkbox } from "@kobalte/core";
 ```
 
@@ -30,7 +34,7 @@ import { Checkbox } from "@kobalte/core";
 
 The checkbox consists of:
 
-- **Checkbox.Root:** The root container for a checkbox.
+- **Checkbox:** The root container for a checkbox.
 - **Checkbox.Input:** The native html input that is visually hidden in the checkbox.
 - **Checkbox.Control:** The element that visually represents a checkbox.
 - **Checkbox.Indicator:** The visual indicator rendered when the checkbox is in a checked or indeterminate state.
@@ -39,7 +43,7 @@ The checkbox consists of:
 - **Checkbox.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the checkbox.
 
 ```tsx
-<Checkbox.Root>
+<Checkbox>
 	<Checkbox.Input />
 	<Checkbox.Control>
 		<Checkbox.Indicator />
@@ -47,7 +51,7 @@ The checkbox consists of:
 	<Checkbox.Label />
 	<Checkbox.Description />
 	<Checkbox.ErrorMessage />
-</Checkbox.Root>
+</Checkbox>
 ```
 
 ## Example
@@ -64,13 +68,13 @@ The checkbox consists of:
 {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Checkbox } from "@kobalte/core";
+		import { Checkbox } from "@kobalte/core/checkbox";
     import { CheckIcon } from "some-icon-library";
     import "./style.css";
 
     function App() {
       return (
-        <Checkbox.Root class="checkbox">
+        <Checkbox class="checkbox">
           <Checkbox.Input class="checkbox__input" />
           <Checkbox.Control class="checkbox__control">
             <Checkbox.Indicator>
@@ -78,7 +82,7 @@ The checkbox consists of:
             </Checkbox.Indicator>
           </Checkbox.Control>
           <Checkbox.Label class="checkbox__label">Subscribe</Checkbox.Label>
-        </Checkbox.Root>
+        </Checkbox>
       );
     }
     ```
@@ -133,7 +137,7 @@ An initial, uncontrolled value can be provided using the `defaultChecked` prop.
 </Preview>
 
 ```tsx
-<Checkbox.Root defaultChecked>...</Checkbox.Root>
+<Checkbox defaultChecked>...</Checkbox>
 ```
 
 ### Controlled checked
@@ -152,9 +156,9 @@ function ControlledExample() {
 
 	return (
 		<>
-			<Checkbox.Root checked={checked()} onChange={setChecked}>
+			<Checkbox checked={checked()} onChange={setChecked}>
 				...
-			</Checkbox.Root>
+			</Checkbox>
 			<p>You are {checked() ? "subscribed" : "unsubscribed"}.</p>
 		</>
 	);
@@ -170,7 +174,7 @@ The `Checkbox.Description` component can be used to associate additional help te
 </Preview>
 
 ```tsx {8}
-<Checkbox.Root>
+<Checkbox>
 	<Checkbox.Input />
 	<Checkbox.Control>
 		<Checkbox.Indicator>
@@ -179,7 +183,7 @@ The `Checkbox.Description` component can be used to associate additional help te
 	</Checkbox.Control>
 	<Checkbox.Label>Subscribe</Checkbox.Label>
 	<Checkbox.Description>You will receive our weekly newsletter.</Checkbox.Description>
-</Checkbox.Root>
+</Checkbox>
 ```
 
 ### Error message
@@ -199,7 +203,7 @@ function ErrorMessageExample() {
 	const [checked, setChecked] = createSignal(false);
 
 	return (
-		<Checkbox.Root
+		<Checkbox
 			checked={checked()}
 			onChange={setChecked}
 			validationState={!checked() ? "invalid" : "valid"}
@@ -212,7 +216,7 @@ function ErrorMessageExample() {
 			</Checkbox.Control>
 			<Checkbox.Label>Agree</Checkbox.Label>
 			<Checkbox.ErrorMessage>You must agree to our Terms and Conditions.</Checkbox.ErrorMessage>
-		</Checkbox.Root>
+		</Checkbox>
 	);
 }
 ```
@@ -233,9 +237,9 @@ function HTMLFormExample() {
 
 	return (
 		<form onSubmit={onSubmit}>
-			<Checkbox.Root name="newsletter" value="subscribe">
+			<Checkbox name="newsletter" value="subscribe">
 				...
-			</Checkbox.Root>
+			</Checkbox>
 			<div>
 				<button type="reset">Reset</button>
 				<button type="submit">Submit</button>
@@ -247,7 +251,9 @@ function HTMLFormExample() {
 
 ## API Reference
 
-### Checkbox.Root
+### Checkbox
+
+`Checkbox` is equivalent to the `Root` import from `@kobalte/core/checkbox` (and deprecated `Checkbox.Root`).
 
 | Prop            | Description                                                                                                                                                                   |
 | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -296,7 +302,7 @@ function HTMLFormExample() {
 
 | Component               | Default rendered element |
 | :---------------------- | :----------------------- |
-| `Checkbox.Root`         | `div`                    |
+| `Checkbox`              | `div`                    |
 | `Checkbox.Input`        | `input`                  |
 | `Checkbox.Control`      | `div`                    |
 | `Checkbox.Indicator`    | `div`                    |

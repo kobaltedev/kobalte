@@ -1,8 +1,9 @@
-import { cache, createAsync, useLocation } from "@solidjs/router";
+import { useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
 import {
 	Accessor,
 	For,
+	Setter,
 	Suspense,
 	createEffect,
 	createSignal,
@@ -10,7 +11,7 @@ import {
 	onCleanup,
 } from "solid-js";
 import { isServer } from "solid-js/web";
-import { mods } from "../app";
+//import { mods } from "../app";
 
 interface TocItem {
 	depth: number;

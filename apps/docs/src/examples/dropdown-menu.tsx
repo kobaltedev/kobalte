@@ -1,4 +1,4 @@
-import { DropdownMenu } from "@kobalte/core";
+import { DropdownMenu } from "@kobalte/core/dropdown-menu";
 import { createSignal } from "solid-js";
 
 import {
@@ -15,7 +15,7 @@ export function BasicExample() {
 	const [branch, setBranch] = createSignal("main");
 
 	return (
-		<DropdownMenu.Root>
+		<DropdownMenu>
 			<DropdownMenu.Trigger class={style["dropdown-menu__trigger"]}>
 				<span>Git Settings</span>
 				<DropdownMenu.Icon class={style["dropdown-menu__trigger-icon"]}>
@@ -132,7 +132,7 @@ export function BasicExample() {
 					<DropdownMenu.Arrow />
 				</DropdownMenu.Content>
 			</DropdownMenu.Portal>
-		</DropdownMenu.Root>
+		</DropdownMenu>
 	);
 }
 
@@ -140,7 +140,7 @@ export function ControlledExample() {
 	const [open, setOpen] = createSignal(false);
 
 	return (
-		<DropdownMenu.Root open={open()} onOpenChange={setOpen} gutter={8}>
+		<DropdownMenu open={open()} onOpenChange={setOpen} gutter={8}>
 			<DropdownMenu.Trigger class={style["dropdown-menu__trigger"]}>
 				{open() ? "Close" : "Open"}
 			</DropdownMenu.Trigger>
@@ -157,6 +157,6 @@ export function ControlledExample() {
 					</DropdownMenu.Item>
 				</DropdownMenu.Content>
 			</DropdownMenu.Portal>
-		</DropdownMenu.Root>
+		</DropdownMenu>
 	);
 }

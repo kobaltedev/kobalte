@@ -1,11 +1,11 @@
-import { Tooltip } from "@kobalte/core";
+import { Tooltip } from "@kobalte/core/tooltip";
 import { createSignal } from "solid-js";
 
 import style from "./tooltip.module.css";
 
 export function BasicExample() {
 	return (
-		<Tooltip.Root>
+		<Tooltip>
 			<Tooltip.Trigger class={style.tooltip__trigger}>Trigger</Tooltip.Trigger>
 			<Tooltip.Portal>
 				<Tooltip.Content class={style.tooltip__content}>
@@ -13,7 +13,7 @@ export function BasicExample() {
 					<p>Tooltip content</p>
 				</Tooltip.Content>
 			</Tooltip.Portal>
-		</Tooltip.Root>
+		</Tooltip>
 	);
 }
 
@@ -25,7 +25,7 @@ export function ControlledExample() {
 			<p class="not-prose text-sm mb-2">
 				Tooltip is {open() ? "showing" : "not showing"}.
 			</p>
-			<Tooltip.Root open={open()} onOpenChange={setOpen}>
+			<Tooltip open={open()} onOpenChange={setOpen}>
 				<Tooltip.Trigger class={style.tooltip__trigger}>
 					Trigger
 				</Tooltip.Trigger>
@@ -35,7 +35,7 @@ export function ControlledExample() {
 						<p>Tooltip content</p>
 					</Tooltip.Content>
 				</Tooltip.Portal>
-			</Tooltip.Root>
+			</Tooltip>
 		</>
 	);
 }

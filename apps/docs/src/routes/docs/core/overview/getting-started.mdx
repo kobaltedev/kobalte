@@ -52,12 +52,12 @@ The example below demonstrate how to create a Popover component with Kobalte.
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Popover } from "@kobalte/core";
+    import { Popover } from "@kobalte/core/popover";
     import { CrossIcon } from "some-icon-library";
     import "./style.css";
 
     function App() {
-      <Popover.Root>
+      <Popover>
         <Popover.Trigger class="popover__trigger">Learn more</Popover.Trigger>
         <Popover.Portal>
           <Popover.Content class="popover__content">
@@ -73,7 +73,7 @@ The example below demonstrate how to create a Popover component with Kobalte.
             </Popover.Description>
           </Popover.Content>
         </Popover.Portal>
-      </Popover.Root>
+      </Popover>
     }
     ```
 

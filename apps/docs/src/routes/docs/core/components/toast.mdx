@@ -8,6 +8,10 @@ A succinct message that is displayed temporarily.
 ## Import
 
 ```ts
+import { Toast, toaster } from "@kobalte/core/toast";
+// or
+import { Root, toaster, ... } from "@kobalte/core/toast";
+// or (deprecated)
 import { Toast, toaster } from "@kobalte/core";
 ```
 
@@ -38,7 +42,7 @@ The toast region consists of:
 
 The toast consists of:
 
-- **Toast.Root:** The root container for a toast.
+- **Toast:** The root container for a toast.
 - **Toast.CloseButton:** The button that closes the toast.
 - **Toast.Title:** An accessible title to be announced when the toast is opened.
 - **Toast.Description:** An optional accessible description to be announced when the toast is opened.
@@ -46,14 +50,14 @@ The toast consists of:
 - **Toast.ProgressFill:** The component that visually represents the remaining lifetime of the toast.
 
 ```tsx
-<Toast.Root>
+<Toast>
 	<Toast.CloseButton />
 	<Toast.Title />
 	<Toast.Description />
 	<Toast.ProgressTrack>
 		<Toast.ProgressFill />
 	</Toast.ProgressTrack>
-</Toast.Root>
+</Toast>
 ```
 
 ## Example
@@ -70,7 +74,7 @@ The toast consists of:
   {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Toast, toaster } from "@kobalte/core";
+    import { Toast, toaster } from "@kobalte/core/toast";
     import { CrossIcon } from "some-icon-library";
     import "./style.css";
 
@@ -79,7 +83,7 @@ The toast consists of:
 
       const showToast = () => {
         id = toaster.show(props => (
-          <Toast.Root toastId={props.toastId} class="toast">
+          <Toast toastId={props.toastId} class="toast">
             <div class="toast__content">
               <div>
                 <Toast.Title class="toast__title">Event has been created</Toast.Title>
@@ -94,13 +98,13 @@ The toast consists of:
             <Toast.ProgressTrack class="toast__progress-track">
               <Toast.ProgressFill class="toast__progress-fill" />
             </Toast.ProgressTrack>
-          </Toast.Root>
+          </Toast>
         ));
       };
 
       const updateToast = () => {
         toaster.update(id, props => (
-          <Toast.Root toastId={props.toastId} class="toast">
+          <Toast toastId={props.toastId} class="toast">
             <div class="toast__content">
               <div>
                 <Toast.Title class="toast__title">Event has been updated</Toast.Title>
@@ -115,7 +119,7 @@ The toast consists of:
             <Toast.ProgressTrack class="toast__progress-track">
               <Toast.ProgressFill class="toast__progress-fill" />
             </Toast.ProgressTrack>
-          </Toast.Root>
+          </Toast>
         ));
       };
 
@@ -270,7 +274,7 @@ The toast consists of:
 To create a toast, use the `toaster.show()` method and pass the generated `toastId` to `Toast.Root`.
 
 ```tsx
-const id = toaster.show(props => <Toast.Root toastId={props.toastId}>...</Toast.Root>);
+const id = toaster.show(props => <Toast toastId={props.toastId}>...</Toast>);
 ```
 
 ### Updating a toast
@@ -278,12 +282,12 @@ const id = toaster.show(props => <Toast.Root toastId={props.toastId}>...</Toast.
 The `toaster.update()` method can be used to update a toast by providing a toast id and the new component to render.
 
 ```tsx
-toaster.update(id, props => <Toast.Root toastId={props.toastId}>...</Toast.Root>);
+toaster.update(id, props => <Toast toastId={props.toastId}>...</Toast>);
 ```
 
 <Callout>
-	Notice that you always need to pass the `toastId` to `Toast.Root`, because it doesn't know
-	anything about the `toaster` nor the toast it is supposed to represent.
+	Notice that you always need to pass the `toastId` to `Toast`, because it doesn't know anything
+	about the `toaster` nor the toast it is supposed to represent.
 </Callout>
 
 ### Dismissing a toast
@@ -314,13 +318,13 @@ In addition to the `toastId`, props will contain the following properties:
 
 ```tsx {3-5}
 toaster.promise(promise, props => (
-	<Toast.Root toastId={props.toastId}>
+	<Toast toastId={props.toastId}>
 		<Switch>
 			<Match when={props.state === "pending"}>Loading</Match>
 			<Match when={props.state === "fulfilled"}>{props.data}</Match>
 			<Match when={props.state === "rejected"}>{props.error}</Match>
 		</Switch>
-	</Toast.Root>
+	</Toast>
 ));
 ```
 
@@ -370,15 +374,15 @@ We expose the CSS custom properties `--kb-toast-swipe-move-[x|y]` and `--kb-toas
 ```tsx {18}
 // index.tsx
 
-import { Toast, toaster } from "@kobalte/core";
+import { Toast, toaster } from "@kobalte/core/toast";
 import "./style.css";
 
 function App() {
 	const showToast = () => {
 		toaster.show(props => (
-			<Toast.Root toastId={props.toastId} class="toast">
+			<Toast toastId={props.toastId} class="toast">
 				...
-			</Toast.Root>
+			</Toast>
 		));
 	};
 
@@ -428,31 +432,31 @@ It's common in toast libraries to have method for displaying different type of t
 ```tsx
 // toast.tsx
 
-import { Toast, toaster } from "@kobalte/core";
+import { Toast, toaster } from "@kobalte/core/toast";
 import { JSX } from "solid-js/jsx-runtime";
 import { Switch, Match } from "solid-js/web";
 
 function show(message: string) {
 	return toaster.show(props => (
-		<Toast.Root toastId={props.toastId} class="toast">
+		<Toast toastId={props.toastId} class="toast">
 			{message}
-		</Toast.Root>
+		</Toast>
 	));
 }
 
 function success(message: string) {
 	return toaster.show(props => (
-		<Toast.Root toastId={props.toastId} class="toast toast--success">
+		<Toast toastId={props.toastId} class="toast toast--success">
 			{message}
-		</Toast.Root>
+		</Toast>
 	));
 }
 
 function error(message: string) {
 	return toaster.show(props => (
-		<Toast.Root toastId={props.toastId} class="toast toast--error">
+		<Toast toastId={props.toastId} class="toast toast--error">
 			{message}
-		</Toast.Root>
+		</Toast>
 	));
 }
 
@@ -465,7 +469,7 @@ function promise<T, U>(
 	},
 ) {
 	return toaster.promise(promise, props => (
-		<Toast.Root
+		<Toast
 			toastId={props.toastId}
 			classList={{
 				toast: true,
@@ -479,12 +483,12 @@ function promise<T, U>(
 				<Match when={props.state === "fulfilled"}>{options.success?.(props.data)}</Match>
 				<Match when={props.state === "rejected"}>{options.error?.(props.error)}</Match>
 			</Switch>
-		</Toast.Root>
+		</Toast>
 	));
 }
 
 function custom(jsx: () => JSX.Element) {
-	return toaster.show(props => <Toast.Root toastId={props.toastId}>{jsx}</Toast.Root>);
+	return toaster.show(props => <Toast toastId={props.toastId}>{jsx}</Toast>);
 }
 
 function dismiss(id: number) {
@@ -531,7 +535,7 @@ function App() {
 The `region` option in `toaster.show()` allows you to display toast in multiple regions at the same time. Not providing a region uses the default one.
 
 ```tsx {1}
-toaster.show(props => <Toast.Root toastId={props.toastId}>...</Toast.Root>, {
+toaster.show(props => <Toast toastId={props.toastId}>...</Toast>, {
 	region: "custom-region-id",
 });
 ```
@@ -582,7 +586,9 @@ Inside your application, use add your custom region:
 | regionId           | `string` <br/> The custom id of the region used for multiple regions.                                                                                                                                                                                                                                     |
 | translations       | [`ToastRegionIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/toast/toast.intl.ts) <br/> Localization strings.                                                                                                                                                        |
 
-### Toast.Root
+### Toast
+
+`Toast` is equivalent to the `Root` import from `@kobalte/core/toast` (and deprecated `Toast.Root`).
 
 | Prop            | Description                                                                                                                                                                                                                                 |
 | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -617,7 +623,7 @@ Inside your application, use add your custom region:
 
 | Component             | Default rendered element |
 | :-------------------- | :----------------------- |
-| `Toast.Root`          | `li`                     |
+| `Toast`               | `li`                     |
 | `Toast.CloseButton`   | `button`                 |
 | `Toast.Title`         | `div`                    |
 | `Toast.Description`   | `div`                    |

@@ -1,11 +1,11 @@
-import { AlertDialog } from "@kobalte/core";
+import { AlertDialog } from "@kobalte/core/alert-dialog";
 
 import { CrossIcon } from "../components";
 import style from "./alert-dialog.module.css";
 
 export function BasicExample() {
 	return (
-		<AlertDialog.Root modal={false} preventScroll>
+		<AlertDialog modal={false} preventScroll>
 			<AlertDialog.Trigger class={style["alert-dialog__trigger"]}>
 				Open
 			</AlertDialog.Trigger>
@@ -32,6 +32,6 @@ export function BasicExample() {
 					</AlertDialog.Content>
 				</div>
 			</AlertDialog.Portal>
-		</AlertDialog.Root>
+		</AlertDialog>
 	);
 }

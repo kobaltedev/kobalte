@@ -17,6 +17,10 @@ A text input that allow users to input custom text entries with a keyboard.
 ## Import
 
 ```ts
+import { TextField } from "@kobalte/core/text-field";
+// or
+import { Root, Label, ... } from "@kobalte/core/text-field";
+// or (deprecated)
 import { TextField } from "@kobalte/core";
 ```
 
@@ -33,7 +37,7 @@ import { TextField } from "@kobalte/core";
 
 The text field consists of:
 
-- **TextField.Root**: The root container for the text field.
+- **TextField**: The root container for the text field.
 - **TextField.Label**: The label that gives the user information on the text field.
 - **TextField.Input**: The native HTML input of the text field, used for single line text.
 - **TextField.TextArea**: The native HTML textarea of the text field, used for multiline text.
@@ -41,12 +45,12 @@ The text field consists of:
 - **TextField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the text field.
 
 ```tsx
-<TextField.Root>
+<TextField>
 	<TextField.Label />
 	<TextField.Input /> {/* or <TextField.TextArea /> */}
 	<TextField.Description />
 	<TextField.ErrorMessage />
-</TextField.Root>
+</TextField>
 ```
 
 ## Example
@@ -63,15 +67,15 @@ The text field consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { TextField } from "@kobalte/core";
+		import { TextField } from "@kobalte/core/text-field";
     import "./style.css";
 
     function App() {
       return (
-        <TextField.Root class="text-field">
+        <TextField class="text-field">
           <TextField.Label class="text-field__label">Favorite fruit</TextField.Label>
           <TextField.Input class="text-field__input" />
-        </TextField.Root>
+        </TextField>
       );
     }
     ```
@@ -151,10 +155,10 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 </Preview>
 
 ```tsx {0}
-<TextField.Root defaultValue="Apple">
+<TextField defaultValue="Apple">
 	<TextField.Label>Favorite fruit</TextField.Label>
 	<TextField.Input />
-</TextField.Root>
+</TextField>
 ```
 
 ### Controlled value
@@ -173,10 +177,10 @@ function ControlledExample() {
 
 	return (
 		<>
-			<TextField.Root value={value()} onChange={setValue}>
+			<TextField value={value()} onChange={setValue}>
 				<TextField.Label>Favorite fruit</TextField.Label>
 				<TextField.Input />
-			</TextField.Root>
+			</TextField>
 			<p>Your favorite fruit is: {value()}.</p>
 		</>
 	);
@@ -192,10 +196,10 @@ Use the `TextField.TextArea` component instead of `TextField.Input` to create a 
 </Preview>
 
 ```tsx {2}
-<TextField.Root>
+<TextField>
 	<TextField.Label>Favorite fruit</TextField.Label>
 	<TextField.TextArea />
-</TextField.Root>
+</TextField>
 ```
 
 In addition, the `autoResize` prop can be used to make the textarea height adjust to it's content. Try typing in the text field below to see it in action.
@@ -205,10 +209,10 @@ In addition, the `autoResize` prop can be used to make the textarea height adjus
 </Preview>
 
 ```tsx {2}
-<TextField.Root>
+<TextField>
 	<TextField.Label>Favorite fruit</TextField.Label>
 	<TextField.TextArea autoResize />
-</TextField.Root>
+</TextField>
 ```
 
 ### Description
@@ -220,11 +224,11 @@ The `TextField.Description` component can be used to associate additional help t
 </Preview>
 
 ```tsx {3}
-<TextField.Root>
+<TextField>
 	<TextField.Label>Favorite fruit</TextField.Label>
 	<TextField.Input />
 	<TextField.Description>Choose the fruit you like the most.</TextField.Description>
-</TextField.Root>
+</TextField>
 ```
 
 ### Error message
@@ -244,7 +248,7 @@ function ErrorMessageExample() {
 	const [value, setValue] = createSignal("Orange");
 
 	return (
-		<TextField.Root
+		<TextField
 			value={value()}
 			onChange={setValue}
 			validationState={value() !== "Apple" ? "invalid" : "valid"}
@@ -252,7 +256,7 @@ function ErrorMessageExample() {
 			<TextField.Label>Favorite fruit</TextField.Label>
 			<TextField.Input />
 			<TextField.ErrorMessage>Hmm, I prefer apples.</TextField.ErrorMessage>
-		</TextField.Root>
+		</TextField>
 	);
 }
 ```
@@ -273,10 +277,10 @@ function HTMLFormExample() {
 
 	return (
 		<form onSubmit={onSubmit}>
-			<TextField.Root name="favorite-fruit">
+			<TextField name="favorite-fruit">
 				<TextField.Label>Favorite fruit</TextField.Label>
 				<TextField.Input />
-			</TextField.Root>
+			</TextField>
 			<div>
 				<button type="reset">Reset</button>
 				<button type="submit">Submit</button>
@@ -288,7 +292,9 @@ function HTMLFormExample() {
 
 ## API Reference
 
-### TextField.Root
+### TextField
+
+`TextField` is equivalent to the `Root` import from `@kobalte/core/text-field` (and deprecated `TextField.Root`).
 
 | Prop            | Description                                                                                                                                                               |
 | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -328,7 +334,7 @@ function HTMLFormExample() {
 
 | Component                | Default rendered element |
 | :----------------------- | :----------------------- |
-| `TextField.Root`         | `div`                    |
+| `TextField`              | `div`                    |
 | `TextField.Label`        | `label`                  |
 | `TextField.Input`        | `input`                  |
 | `TextField.TextArea`     | `textarea`               |

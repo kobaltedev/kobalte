@@ -15,6 +15,10 @@ A control that allows users to choose one of two values: on or off.
 ## Import
 
 ```ts
+import { Switch } from "@kobalte/core/switch";
+// or
+import { Root, Input, ... } from "@kobalte/core/switch";
+// or (deprecated)
 import { Switch } from "@kobalte/core";
 ```
 
@@ -31,7 +35,7 @@ import { Switch } from "@kobalte/core";
 
 The switch consists of:
 
-- **Switch.Root:** The root container for a switch.
+- **Switch:** The root container for a switch.
 - **Switch.Input:** The native html input that is visually hidden in the switch.
 - **Switch.Control:** The element that visually represents a switch.
 - **Switch.Thumb:** The thumb that is used to visually indicate whether the switch is on or off.
@@ -40,7 +44,7 @@ The switch consists of:
 - **Switch.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the switch.
 
 ```tsx
-<Switch.Root>
+<Switch>
 	<Switch.Label />
 	<Switch.Description />
 	<Switch.ErrorMessage />
@@ -48,7 +52,7 @@ The switch consists of:
 	<Switch.Control>
 		<Switch.Thumb />
 	</Switch.Control>
-</Switch.Root>
+</Switch>
 ```
 
 ## Example
@@ -65,18 +69,18 @@ The switch consists of:
   {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Switch } from "@kobalte/core";
+		import { Switch } from "@kobalte/core/switch";
     import "./style.css";
 
     function App() {
       return (
-        <Switch.Root class="switch">
+        <Switch class="switch">
           <Switch.Label class="switch__label">Airplane mode</Switch.Label>
           <Switch.Input class="switch__input" />
           <Switch.Control class="switch__control">
             <Switch.Thumb class="switch__thumb" />
           </Switch.Control>
-        </Switch.Root>
+        </Switch>
       );
     }
     ```
@@ -146,7 +150,7 @@ An initial, uncontrolled value can be provided using the `defaultChecked` prop.
 </Preview>
 
 ```tsx
-<Switch.Root defaultChecked>...</Switch.Root>
+<Switch defaultChecked>...</Switch>
 ```
 
 ### Controlled checked
@@ -165,9 +169,9 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<Switch.Root checked={checked()} onChange={setChecked}>
+			<Switch checked={checked()} onChange={setChecked}>
 				...
-			</Switch.Root>
+			</Switch>
 			<p>Airplane mode is {checked() ? "active" : "inactive"}.</p>
 		</>
 	);
@@ -183,14 +187,14 @@ The `Switch.Description` component can be used to associate additional help text
 </Preview>
 
 ```tsx {2}
-<Switch.Root>
+<Switch>
 	<Switch.Label>Airplane mode</Switch.Label>
 	<Switch.Description>Disable all network connections.</Switch.Description>
 	<Switch.Input />
 	<Switch.Control>
 		<Switch.Thumb />
 	</Switch.Control>
-</Switch.Root>
+</Switch>
 ```
 
 ### Error message
@@ -210,7 +214,7 @@ function ErrorMessageExample() {
 	const [checked, setChecked] = createSignal(false);
 
 	return (
-		<Switch.Root
+		<Switch
 			checked={checked()}
 			onChange={setChecked}
 			validationState={!checked() ? "invalid" : "valid"}
@@ -221,7 +225,7 @@ function ErrorMessageExample() {
 			<Switch.Control>
 				<Switch.Thumb />
 			</Switch.Control>
-		</Switch.Root>
+		</Switch>
 	);
 }
 ```
@@ -241,9 +245,9 @@ function HTMLFormExample() {
 	};
 	return (
 		<form onSubmit={onSubmit}>
-			<Switch.Root name="airplane-mode" value="on">
+			<Switch name="airplane-mode" value="on">
 				...
-			</Switch.Root>
+			</Switch>
 			<div>
 				<button type="reset">Reset</button>
 				<button type="submit">Submit</button>
@@ -255,7 +259,9 @@ function HTMLFormExample() {
 
 ## API Reference
 
-### Switch.Root
+### Switch
+
+`Switch` is equivalent to the `Root` import from `@kobalte/core/switch` (and deprecated `Switch.Root`).
 
 | Prop            | Description                                                                                                                                                             |
 | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -294,7 +300,7 @@ function HTMLFormExample() {
 
 | Component             | Default rendered element |
 | :-------------------- | :----------------------- |
-| `Switch.Root`         | `div`                    |
+| `Switch`              | `div`                    |
 | `Switch.Input`        | `input`                  |
 | `Switch.Control`      | `div`                    |
 | `Switch.Indicator`    | `div`                    |

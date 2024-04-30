@@ -1,11 +1,11 @@
-import { RadioGroup } from "@kobalte/core";
+import { RadioGroup } from "@kobalte/core/radio-group";
 import { For, createSignal } from "solid-js";
 
 import style from "./radio-group.module.css";
 
 export function BasicExample() {
 	return (
-		<RadioGroup.Root class={style["radio-group"]}>
+		<RadioGroup class={style["radio-group"]}>
 			<RadioGroup.Label class={style["radio-group__label"]}>
 				Favorite fruit
 			</RadioGroup.Label>
@@ -24,13 +24,13 @@ export function BasicExample() {
 					)}
 				</For>
 			</div>
-		</RadioGroup.Root>
+		</RadioGroup>
 	);
 }
 
 export function DefaultValueExample() {
 	return (
-		<RadioGroup.Root class={style["radio-group"]} defaultValue="Orange">
+		<RadioGroup class={style["radio-group"]} defaultValue="Orange">
 			<RadioGroup.Label class={style["radio-group__label"]}>
 				Favorite fruit
 			</RadioGroup.Label>
@@ -49,7 +49,7 @@ export function DefaultValueExample() {
 					)}
 				</For>
 			</div>
-		</RadioGroup.Root>
+		</RadioGroup>
 	);
 }
 
@@ -58,7 +58,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<RadioGroup.Root
+			<RadioGroup
 				class={style["radio-group"]}
 				value={value()}
 				onChange={setValue}
@@ -81,7 +81,7 @@ export function ControlledExample() {
 						)}
 					</For>
 				</div>
-			</RadioGroup.Root>
+			</RadioGroup>
 			<p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
 		</>
 	);
@@ -89,7 +89,7 @@ export function ControlledExample() {
 
 export function DescriptionExample() {
 	return (
-		<RadioGroup.Root class={style["radio-group"]}>
+		<RadioGroup class={style["radio-group"]}>
 			<RadioGroup.Label class={style["radio-group__label"]}>
 				Favorite fruit
 			</RadioGroup.Label>
@@ -111,7 +111,7 @@ export function DescriptionExample() {
 			<RadioGroup.Description class={style["radio-group__description"]}>
 				Choose the fruit you like the most.
 			</RadioGroup.Description>
-		</RadioGroup.Root>
+		</RadioGroup>
 	);
 }
 
@@ -119,7 +119,7 @@ export function ErrorMessageExample() {
 	const [value, setValue] = createSignal("Orange");
 
 	return (
-		<RadioGroup.Root
+		<RadioGroup
 			class={style["radio-group"]}
 			value={value()}
 			onChange={setValue}
@@ -146,7 +146,7 @@ export function ErrorMessageExample() {
 			<RadioGroup.ErrorMessage class={style["radio-group__error-message"]}>
 				Hmm, I prefer apples.
 			</RadioGroup.ErrorMessage>
-		</RadioGroup.Root>
+		</RadioGroup>
 	);
 }
 
@@ -168,7 +168,7 @@ export function HTMLFormExample() {
 			onSubmit={onSubmit}
 			class="flex flex-col items-center space-y-6"
 		>
-			<RadioGroup.Root class={style["radio-group"]} name="favorite-fruit">
+			<RadioGroup class={style["radio-group"]} name="favorite-fruit">
 				<RadioGroup.Label class={style["radio-group__label"]}>
 					Favorite fruit
 				</RadioGroup.Label>
@@ -187,7 +187,7 @@ export function HTMLFormExample() {
 						)}
 					</For>
 				</div>
-			</RadioGroup.Root>
+			</RadioGroup>
 			<div class="flex space-x-2">
 				<button type="reset" class="kb-button">
 					Reset

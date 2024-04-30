@@ -8,6 +8,10 @@ Allows sighted users to preview content available behind a link.
 ## Import
 
 ```ts
+import { HoverCard } from "@kobalte/core/hover-card";
+// or
+import { Root, Trigger, ... } from "@kobalte/core/hover-card";
+// or (deprecated)
 import { HoverCard } from "@kobalte/core";
 ```
 
@@ -23,21 +27,21 @@ import { HoverCard } from "@kobalte/core";
 
 The hovercard consists of:
 
-- **HoverCard.Root:** The root container for a hovercard.
+- **HoverCard:** The root container for a hovercard.
 - **HoverCard.Trigger:** The link that opens the hovercard.
 - **HoverCard.Portal:** Portals its children into the `body` when the hovercard is open.
 - **HoverCard.Content:** Contains the content to be rendered when the hovercard is open.
 - **HoverCard.Arrow:** An optional arrow element to render alongside the hovercard.
 
 ```tsx
-<HoverCard.Root>
+<HoverCard>
 	<HoverCard.Trigger />
 	<HoverCard.Portal>
 		<HoverCard.Content>
 			<HoverCard.Arrow />
 		</HoverCard.Content>
 	</HoverCard.Portal>
-</HoverCard.Root>
+</HoverCard>
 ```
 
 ## Example
@@ -54,12 +58,12 @@ The hovercard consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { HoverCard } from "@kobalte/core";
+		import { HoverCard } from "@kobalte/core/hover-card";
     import "./style.css";
 
     function App() {
       return (
-        <HoverCard.Root>
+        <HoverCard>
           <HoverCard.Trigger
             class="hovercard__trigger"
             href="https://twitter.com/mlfabien"
@@ -81,7 +85,7 @@ The hovercard consists of:
               </p>
             </HoverCard.Content>
           </HoverCard.Portal>
-        </HoverCard.Root>
+        </HoverCard>
       );
     }
     ```
@@ -170,7 +174,7 @@ The hovercard consists of:
 An initial, uncontrolled open value can be provided using the `defaultOpen` prop.
 
 ```tsx
-<HoverCard.Root defaultOpen>...</HoverCard.Root>
+<HoverCard defaultOpen>...</HoverCard>
 ```
 
 ### Controlled open
@@ -184,9 +188,9 @@ function ControlledExample() {
 	const [open, setOpen] = createSignal(false);
 
 	return (
-		<HoverCard.Root open={open()} onOpenChange={setOpen}>
+		<HoverCard open={open()} onOpenChange={setOpen}>
 			...
-		</HoverCard.Root>
+		</HoverCard>
 	);
 }
 ```
@@ -231,7 +235,9 @@ We expose a CSS custom property `--kb-hovercard-content-transform-origin` which 
 
 ## API Reference
 
-### HoverCard.Root
+### HoverCard
+
+`HoverCard` is equivalent to the `Root` import from `@kobalte/core/hover-card` (and deprecated `HoverCard.Root`).
 
 | Prop           | Description                                                                                                                                                                   |
 | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -244,7 +250,7 @@ We expose a CSS custom property `--kb-hovercard-content-transform-origin` which 
 | id             | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used. |
 | forceMount     | `boolean` <br/> Used to force mounting the hovercard (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.    |
 
-`HoverCard.Root` also accepts the following props to customize the placement of the `HoverCard.Content`.
+`HoverCard` also accepts the following props to customize the placement of the `HoverCard.Content`.
 
 | Prop             | Description                                                                                                                                                                                                                                                                                                                                                    |
 | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -277,7 +283,7 @@ We expose a CSS custom property `--kb-hovercard-content-transform-origin` which 
 
 | Component           | Default rendered element |
 | :------------------ | :----------------------- |
-| `HoverCard.Root`    | none                     |
+| `HoverCard`         | none                     |
 | `HoverCard.Trigger` | `a`                      |
 | `HoverCard.Portal`  | `Portal`                 |
 | `HoverCard.Content` | `div`                    |

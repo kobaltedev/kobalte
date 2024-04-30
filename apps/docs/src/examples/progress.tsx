@@ -1,11 +1,10 @@
-import { Progress } from "@kobalte/core";
-import { createSignal } from "solid-js";
+import { Progress } from "@kobalte/core/progress";
 
 import style from "./progress.module.css";
 
 export function BasicExample() {
 	return (
-		<Progress.Root value={80} class={style.progress}>
+		<Progress value={80} class={style.progress}>
 			<div class={style["progress__label-container"]}>
 				<Progress.Label class={style.progress__label}>
 					Loading...
@@ -15,18 +14,13 @@ export function BasicExample() {
 			<Progress.Track class={style.progress__track}>
 				<Progress.Fill class={style.progress__fill} />
 			</Progress.Track>
-		</Progress.Root>
+		</Progress>
 	);
 }
 
 export function CustomValueScaleExample() {
 	return (
-		<Progress.Root
-			value={100}
-			minValue={50}
-			maxValue={150}
-			class={style.progress}
-		>
+		<Progress value={100} minValue={50} maxValue={150} class={style.progress}>
 			<div class={style["progress__label-container"]}>
 				<Progress.Label class={style.progress__label}>
 					Loading...
@@ -36,13 +30,13 @@ export function CustomValueScaleExample() {
 			<Progress.Track class={style.progress__track}>
 				<Progress.Fill class={style.progress__fill} />
 			</Progress.Track>
-		</Progress.Root>
+		</Progress>
 	);
 }
 
 export function CustomValueLabelExample() {
 	return (
-		<Progress.Root
+		<Progress
 			value={3}
 			minValue={0}
 			maxValue={10}
@@ -58,6 +52,6 @@ export function CustomValueLabelExample() {
 			<Progress.Track class={style.progress__track}>
 				<Progress.Fill class={style.progress__fill} />
 			</Progress.Track>
-		</Progress.Root>
+		</Progress>
 	);
 }

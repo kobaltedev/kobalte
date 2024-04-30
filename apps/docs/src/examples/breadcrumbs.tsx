@@ -1,11 +1,11 @@
-import { Breadcrumbs } from "@kobalte/core";
+import { Breadcrumbs } from "@kobalte/core/breadcrumbs";
 
 import { ChevronRightIcon } from "../components";
 import style from "./breadcrumbs.module.css";
 
 export function BasicExample() {
 	return (
-		<Breadcrumbs.Root>
+		<Breadcrumbs>
 			<ol class={style.breadcrumbs__list}>
 				<li class={style.breadcrumbs__item}>
 					<Breadcrumbs.Link href="/" class={style.breadcrumbs__link}>
@@ -25,13 +25,13 @@ export function BasicExample() {
 					</Breadcrumbs.Link>
 				</li>
 			</ol>
-		</Breadcrumbs.Root>
+		</Breadcrumbs>
 	);
 }
 
 export function CustomSeparatorExample() {
 	return (
-		<Breadcrumbs.Root separator={<ChevronRightIcon width={20} height={20} />}>
+		<Breadcrumbs separator={<ChevronRightIcon width={20} height={20} />}>
 			<ol class={style.breadcrumbs__list}>
 				<li class={style.breadcrumbs__item}>
 					<Breadcrumbs.Link href="/" class={style.breadcrumbs__link}>
@@ -51,6 +51,6 @@ export function CustomSeparatorExample() {
 					</Breadcrumbs.Link>
 				</li>
 			</ol>
-		</Breadcrumbs.Root>
+		</Breadcrumbs>
 	);
 }

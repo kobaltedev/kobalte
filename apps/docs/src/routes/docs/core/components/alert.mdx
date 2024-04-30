@@ -8,6 +8,10 @@ Display a brief, important message in a way that attracts the user's attention w
 ## Import
 
 ```ts
+import { Alert } from "@kobalte/core/alert";
+// or
+import { Root } from "@kobalte/core/alert";
+// or (deprecated)
 import { Alert } from "@kobalte/core";
 ```
 
@@ -19,10 +23,10 @@ import { Alert } from "@kobalte/core";
 
 The alert consists of :
 
-- **Alert.Root:** The root container for an alert.
+- **Alert:** The root container for an alert.
 
 ```tsx
-<Alert.Root />
+<Alert />
 ```
 
 ## Example
@@ -39,11 +43,11 @@ The alert consists of :
 {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Alert } from "@kobalte/core";
+    import { Alert } from "@kobalte/core/alert";
     import "./style.css";
 
     function App() {
-      return <Alert.Root class="alert">Kobalte is going live soon, get ready!</Alert.Root>;
+      return <Alert class="alert">Kobalte is going live soon, get ready!</Alert>;
     }
     ```
 
@@ -64,12 +68,14 @@ The alert consists of :
 
 ## API reference
 
-### Alert.Root
+### Alert
+
+`Alert` is equivalent to the `Root` import from `@kobalte/core/alert` (and deprecated `Alert.Root`).
 
 Renders a `div` by default and support all its props.
 
 ## Rendered elements
 
-| Component    | Default rendered element |
-| :----------- | :----------------------- |
-| `Alert.Root` | `div`                    |
+| Component | Default rendered element |
+| :-------- | :----------------------- |
+| `Alert`   | `div`                    |

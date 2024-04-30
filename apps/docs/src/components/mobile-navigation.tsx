@@ -1,4 +1,6 @@
-import { Dialog, Separator, createDisclosureState } from "@kobalte/core";
+import { Dialog } from "@kobalte/core/dialog";
+import { createDisclosureState } from "@kobalte/core/primitives/create-disclosure-state";
+import { Separator } from "@kobalte/core/separator";
 import { useIsRouting, useMatch } from "@solidjs/router";
 import { clsx } from "clsx";
 import { ComponentProps, createComputed, splitProps } from "solid-js";
@@ -36,11 +38,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
 			>
 				<HamburgerMenuIcon class="h-6 w-6 text-zinc-500" />
 			</button>
-			<Dialog.Root
-				open={isOpen()}
-				onOpenChange={setIsOpen}
-				aria-label="Navigation"
-			>
+			<Dialog open={isOpen()} onOpenChange={setIsOpen} aria-label="Navigation">
 				<Dialog.Portal>
 					<Dialog.Overlay class="fixed inset-0 z-50 flex items-start overflow-y-auto bg-zinc-900/50 pr-10 backdrop-blur lg:hidden" />
 
@@ -91,11 +89,11 @@ export function MobileNavigation(props: MobileNavigationProps) {
 								Changelog
 							</a>
 						</div>
-						<Separator.Root class="lg:hidden" />
+						<Separator class="lg:hidden" />
 						<Navigation sections={local.sections} class="mt-5 px-1" />
 					</Dialog.Content>
 				</Dialog.Portal>
-			</Dialog.Root>
+			</Dialog>
 		</>
 	);
 }

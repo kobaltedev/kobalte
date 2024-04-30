@@ -1,4 +1,4 @@
-import { ContextMenu } from "@kobalte/core";
+import { ContextMenu } from "@kobalte/core/context-menu";
 import { createSignal } from "solid-js";
 
 import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "../components";
@@ -10,7 +10,7 @@ export function BasicExample() {
 	const [branch, setBranch] = createSignal("main");
 
 	return (
-		<ContextMenu.Root>
+		<ContextMenu>
 			<ContextMenu.Trigger class={style["context-menu__trigger"]}>
 				Right click here.
 			</ContextMenu.Trigger>
@@ -116,6 +116,6 @@ export function BasicExample() {
 					</ContextMenu.Group>
 				</ContextMenu.Content>
 			</ContextMenu.Portal>
-		</ContextMenu.Root>
+		</ContextMenu>
 	);
 }

@@ -18,6 +18,10 @@ A set of layered sections of content, known as tab panels, that display one pane
 ## Import
 
 ```ts
+import { Tabs } from "@kobalte/core/tabs";
+// or
+import { Root, List, ... } from "@kobalte/core/tabs";
+// or (deprecated)
 import { Tabs } from "@kobalte/core";
 ```
 
@@ -35,20 +39,20 @@ import { Tabs } from "@kobalte/core";
 
 The tabs consist of:
 
-- **Tabs.Root:** The root container for tabs and tab contents.
+- **Tabs:** The root container for tabs and tab contents.
 - **Tabs.List:** Contains the tabs that are aligned along the edge of the active tab content.
 - **Tabs.Trigger:** The button that activates its associated tab content.
 - **Tabs.Indicator:** The visual indicator displayed at the bottom of the tab list to indicate the selected tab.
 - **Tabs.Content:** Contains the content associated with a tab trigger.
 
 ```tsx
-<Tabs.Root>
+<Tabs>
 	<Tabs.List>
 		<Tabs.Trigger />
 		<Tabs.Indicator />
 	</Tabs.List>
 	<Tabs.Content />
-</Tabs.Root>
+</Tabs>
 ```
 
 ## Example
@@ -65,12 +69,12 @@ The tabs consist of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Tabs } from "@kobalte/core";
+		import { Tabs } from "@kobalte/core/tabs";
     import "./style.css";
 
     function App() {
       return (
-        <Tabs.Root aria-label="Main navigation" class="tabs">
+        <Tabs aria-label="Main navigation" class="tabs">
           <Tabs.List class="tabs__list">
             <Tabs.Trigger class="tabs__trigger" value="profile">Profile</Tabs.Trigger>
             <Tabs.Trigger class="tabs__trigger" value="dashboard">Dashboard</Tabs.Trigger>
@@ -82,7 +86,7 @@ The tabs consist of:
           <Tabs.Content class="tabs__content" value="dashboard">Dashboard details</Tabs.Content>
           <Tabs.Content class="tabs__content" value="settings">Settings details</Tabs.Content>
           <Tabs.Content class="tabs__content" value="contact">Contact details</Tabs.Content>
-        </Tabs.Root>
+        </Tabs>
       );
     }
     ```
@@ -171,7 +175,7 @@ A default selected tab can be provided using the `defaultValue` prop, which shou
 </Preview>
 
 ```tsx {0,3,9}
-<Tabs.Root defaultValue="dashboard">
+<Tabs defaultValue="dashboard">
 	<Tabs.List>
 		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
 		<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
@@ -183,7 +187,7 @@ A default selected tab can be provided using the `defaultValue` prop, which shou
 	<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
 	<Tabs.Content value="settings">Settings details</Tabs.Content>
 	<Tabs.Content value="contact">Contact details</Tabs.Content>
-</Tabs.Root>
+</Tabs>
 ```
 
 ### Controlled value
@@ -202,7 +206,7 @@ function ControlledExample() {
 
 	return (
 		<>
-			<Tabs.Root value={selectedTab()} onChange={setSelectedTab}>
+			<Tabs value={selectedTab()} onChange={setSelectedTab}>
 				<Tabs.List>
 					<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
 					<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
@@ -214,7 +218,7 @@ function ControlledExample() {
 				<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
 				<Tabs.Content value="settings">Settings details</Tabs.Content>
 				<Tabs.Content value="contact">Contact details</Tabs.Content>
-			</Tabs.Root>
+			</Tabs>
 			<p>Selected tab: {selectedTab()}</p>
 		</>
 	);
@@ -236,7 +240,7 @@ This example uses the same Tabs components from above. Try navigating from the t
 ```tsx {10-12}
 function FocusableContentExample() {
 	return (
-		<Tabs.Root>
+		<Tabs>
 			<Tabs.List>
 				<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
 				<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
@@ -250,7 +254,7 @@ function FocusableContentExample() {
 			<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
 			<Tabs.Content value="settings">Settings details</Tabs.Content>
 			<Tabs.Content value="contact">Contact details</Tabs.Content>
-		</Tabs.Root>
+		</Tabs>
 	);
 }
 ```
@@ -294,13 +298,13 @@ function DynamicContentExample() {
 		<>
 			<button onClick={addTab}>Add tab</button>
 			<button onClick={removeTab}>Remove tab</button>
-			<Tabs.Root>
+			<Tabs>
 				<Tabs.List>
 					<For each={tabs()}>{tab => <Tabs.Trigger value={tab.id}>{tab.title}</Tabs.Trigger>}</For>
 					<Tabs.Indicator />
 				</Tabs.List>
 				<For each={tabs()}>{tab => <Tabs.Content value={tab.id}>{tab.content}</Tabs.Content>}</For>
-			</Tabs.Root>
+			</Tabs>
 		</>
 	);
 }
@@ -317,7 +321,7 @@ If you would like to prevent selection change from happening automatically you c
 </Preview>
 
 ```tsx {0}
-<Tabs.Root activationMode="manual">
+<Tabs activationMode="manual">
 	<Tabs.List>
 		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
 		<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
@@ -329,7 +333,7 @@ If you would like to prevent selection change from happening automatically you c
 	<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
 	<Tabs.Content value="settings">Settings details</Tabs.Content>
 	<Tabs.Content value="contact">Contact details</Tabs.Content>
-</Tabs.Root>
+</Tabs>
 ```
 
 ### Orientation
@@ -341,7 +345,7 @@ By default, tabs are horizontally oriented. The `orientation` prop can be set to
 </Preview>
 
 ```tsx {0}
-<Tabs.Root orientation="vertical">
+<Tabs orientation="vertical">
 	<Tabs.List>
 		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
 		<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
@@ -353,7 +357,7 @@ By default, tabs are horizontally oriented. The `orientation` prop can be set to
 	<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
 	<Tabs.Content value="settings">Settings details</Tabs.Content>
 	<Tabs.Content value="contact">Contact details</Tabs.Content>
-</Tabs.Root>
+</Tabs>
 ```
 
 ### Disabled
@@ -365,7 +369,7 @@ All tabs can be disabled using the `disabled` prop.
 </Preview>
 
 ```tsx {0}
-<Tabs.Root disabled>
+<Tabs disabled>
 	<Tabs.List>
 		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
 		<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
@@ -377,7 +381,7 @@ All tabs can be disabled using the `disabled` prop.
 	<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
 	<Tabs.Content value="settings">Settings details</Tabs.Content>
 	<Tabs.Content value="contact">Contact details</Tabs.Content>
-</Tabs.Root>
+</Tabs>
 ```
 
 Individual tab can be disabled using the `disabled` prop on the tab itself.
@@ -387,7 +391,7 @@ Individual tab can be disabled using the `disabled` prop on the tab itself.
 </Preview>
 
 ```tsx {4}
-<Tabs.Root>
+<Tabs>
 	<Tabs.List>
 		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
 		<Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
@@ -401,12 +405,14 @@ Individual tab can be disabled using the `disabled` prop on the tab itself.
 	<Tabs.Content value="dashboard">Dashboard details</Tabs.Content>
 	<Tabs.Content value="settings">Settings details</Tabs.Content>
 	<Tabs.Content value="contact">Contact details</Tabs.Content>
-</Tabs.Root>
+</Tabs>
 ```
 
 ## API Reference
 
-### Tabs.Root
+### Tabs
+
+`Tabs` is equivalent to the `Root` import from `@kobalte/core/tabs` (and deprecated `Tabs.Root`).
 
 | Prop           | Description                                                                                                                          |
 | :------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
@@ -452,7 +458,7 @@ Individual tab can be disabled using the `disabled` prop on the tab itself.
 
 | Component        | Default rendered element |
 | :--------------- | :----------------------- |
-| `Tabs.Root`      | `div`                    |
+| `Tabs`           | `div`                    |
 | `Tabs.List`      | `div`                    |
 | `Tabs.Trigger`   | `button`                 |
 | `Tabs.Indicator` | `div`                    |

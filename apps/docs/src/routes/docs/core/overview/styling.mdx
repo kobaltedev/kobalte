@@ -21,14 +21,14 @@ All components and their parts accept a `class` prop. This class will be passed 
 
     export const Popover = () => {
       return (
-        <KPopover.Root>
+        <KPopover>
           <KPopover.Trigger class="popover__trigger">
             Open
           </KPopover.Trigger>
           <KPopover.Content class="popover__content">
             ...
           </KPopover.Content>
-        </KPopover.Root>
+        </KPopover>
       );
     };
     ```
@@ -134,15 +134,15 @@ module.exports = {
 Style your component:
 
 ```tsx
-import { Popover as KPopover } from "@kobalte/core";
+import { Popover as KPopover } from "@kobalte/core/popover";
 
 export const Popover = () => (
-	<KPopover.Root>
+	<KPopover>
 		<KPopover.Trigger class="inline-flex px-4 py-2 rounded ui-disabled:bg-slate-100">
 			Open
 		</KPopover.Trigger>
 		<KPopover.Content class="flex p-4 rounded bg-white">...</KPopover.Content>
-	</KPopover.Root>
+	</KPopover>
 );
 ```
 
@@ -239,10 +239,10 @@ const button = style([
 Then apply your styles to the component:
 
 ```tsx
-import { Button } from "@kobalte/core";
+import { Button } from "@kobalte/core/button";
 import { button } from "./styles.css";
 
-export const MyButton = () => <Button.Root class={button}>...</Button.Root>;
+export const MyButton = () => <Button class={button}>...</Button>;
 ```
 
 ## Usage with UnoCSS
@@ -254,7 +254,7 @@ The [UnoCSS preset](https://github.com/zirbest/unocss-preset-primitives#kobalte)
 Extending a component is done the same way you extend any SolidJS component.
 
 ```tsx
-import { Popover as KPopover } from "@kobalte/core";
+import { Popover as KPopover } from "@kobalte/core/popover";
 import { ComponentProps } from "solid-js";
 
 export const PopoverTrigger = (props: ComponentProps<typeof KPopover.Trigger>) => {

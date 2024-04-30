@@ -1,4 +1,4 @@
-import { Accordion } from "@kobalte/core";
+import { Accordion } from "@kobalte/core/accordion";
 import { createSignal } from "solid-js";
 
 import { ChevronDownIcon } from "../components";
@@ -6,7 +6,7 @@ import style from "./accordion.module.css";
 
 export function BasicExample() {
 	return (
-		<Accordion.Root class={style.accordion} defaultValue={["item-1"]}>
+		<Accordion class={style.accordion} defaultValue={["item-1"]}>
 			<Accordion.Item class={style.accordion__item} value="item-1">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
@@ -58,13 +58,13 @@ export function BasicExample() {
 					</p>
 				</Accordion.Content>
 			</Accordion.Item>
-		</Accordion.Root>
+		</Accordion>
 	);
 }
 
 export function DefaultValueExample() {
 	return (
-		<Accordion.Root class={style.accordion} defaultValue={["item-2"]}>
+		<Accordion class={style.accordion} defaultValue={["item-2"]}>
 			<Accordion.Item class={style.accordion__item} value="item-1">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
@@ -116,7 +116,7 @@ export function DefaultValueExample() {
 					</p>
 				</Accordion.Content>
 			</Accordion.Item>
-		</Accordion.Root>
+		</Accordion>
 	);
 }
 
@@ -125,7 +125,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<Accordion.Root
+			<Accordion
 				class={style.accordion}
 				value={expandedItem()}
 				onChange={setExpandedItem}
@@ -181,7 +181,7 @@ export function ControlledExample() {
 						</p>
 					</Accordion.Content>
 				</Accordion.Item>
-			</Accordion.Root>
+			</Accordion>
 			<p class="not-prose text-sm mt-2">
 				Expanded item: {expandedItem().join(",")}
 			</p>
@@ -191,7 +191,7 @@ export function ControlledExample() {
 
 export function CollapsibleExample() {
 	return (
-		<Accordion.Root class={style.accordion} collapsible>
+		<Accordion class={style.accordion} collapsible>
 			<Accordion.Item class={style.accordion__item} value="item-1">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
@@ -243,13 +243,13 @@ export function CollapsibleExample() {
 					</p>
 				</Accordion.Content>
 			</Accordion.Item>
-		</Accordion.Root>
+		</Accordion>
 	);
 }
 
 export function AllowMultipleExample() {
 	return (
-		<Accordion.Root class={style.accordion} multiple>
+		<Accordion class={style.accordion} multiple>
 			<Accordion.Item class={style.accordion__item} value="item-1">
 				<Accordion.Header class={style["accordion__item-header"]}>
 					<Accordion.Trigger class={style["accordion__item-trigger"]}>
@@ -301,6 +301,6 @@ export function AllowMultipleExample() {
 					</p>
 				</Accordion.Content>
 			</Accordion.Item>
-		</Accordion.Root>
+		</Accordion>
 	);
 }

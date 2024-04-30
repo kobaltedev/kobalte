@@ -1,4 +1,4 @@
-import { Menubar } from "@kobalte/core";
+import { Menubar } from "@kobalte/core/menubar";
 import { createSignal } from "solid-js";
 
 import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "../components";
@@ -10,7 +10,7 @@ export function BasicExample() {
 	const [branch, setBranch] = createSignal("main");
 
 	return (
-		<Menubar.Root class={style.menubar__root}>
+		<Menubar class={style.menubar__root}>
 			<Menubar.Menu>
 				<Menubar.Trigger class={style.menubar__trigger}>Git</Menubar.Trigger>
 				<Menubar.Portal>
@@ -202,6 +202,6 @@ export function BasicExample() {
 					</Menubar.Content>
 				</Menubar.Portal>
 			</Menubar.Menu>
-		</Menubar.Root>
+		</Menubar>
 	);
 }

@@ -1,4 +1,4 @@
-import { NumberField } from "@kobalte/core";
+import { NumberField } from "@kobalte/core/number-field";
 import { createSignal } from "solid-js";
 
 import { ArrowIcon } from "../components";
@@ -6,7 +6,7 @@ import style from "./number-field.module.css";
 
 export function BasicExample() {
 	return (
-		<NumberField.Root class={style["number-field"]}>
+		<NumberField class={style["number-field"]}>
 			<NumberField.Label class={style["number-field__label"]}>
 				Quantity
 			</NumberField.Label>
@@ -25,13 +25,13 @@ export function BasicExample() {
 					<ArrowIcon style="transform: rotate(180deg);" />
 				</NumberField.DecrementTrigger>
 			</div>
-		</NumberField.Root>
+		</NumberField>
 	);
 }
 
 export function DefaultValueExample() {
 	return (
-		<NumberField.Root class={style["number-field"]} defaultValue={40}>
+		<NumberField class={style["number-field"]} defaultValue={40}>
 			<NumberField.Label class={style["number-field__label"]}>
 				Quantity
 			</NumberField.Label>
@@ -50,7 +50,7 @@ export function DefaultValueExample() {
 					<ArrowIcon style="transform: rotate(180deg);" />
 				</NumberField.DecrementTrigger>
 			</div>
-		</NumberField.Root>
+		</NumberField>
 	);
 }
 
@@ -60,7 +60,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<NumberField.Root
+			<NumberField
 				class={style["number-field"]}
 				value={value()}
 				onChange={setValue}
@@ -85,7 +85,7 @@ export function ControlledExample() {
 						<ArrowIcon style="transform: rotate(180deg);" />
 					</NumberField.DecrementTrigger>
 				</div>
-			</NumberField.Root>
+			</NumberField>
 
 			<p class="not-prose text-sm mt-4">
 				Quantity: {value()}. Raw: {rawValue()}.
@@ -96,7 +96,7 @@ export function ControlledExample() {
 
 export function DescriptionExample() {
 	return (
-		<NumberField.Root class={style["number-field"]}>
+		<NumberField class={style["number-field"]}>
 			<NumberField.Label class={style["number-field__label"]}>
 				Quantity
 			</NumberField.Label>
@@ -118,7 +118,7 @@ export function DescriptionExample() {
 			<NumberField.Description class={style["number-field__description"]}>
 				Choose a quantity.
 			</NumberField.Description>
-		</NumberField.Root>
+		</NumberField>
 	);
 }
 
@@ -126,7 +126,7 @@ export function ErrorMessageExample() {
 	const [rawValue, setRawValue] = createSignal<number>();
 
 	return (
-		<NumberField.Root
+		<NumberField
 			class={style["number-field"]}
 			onRawValueChange={setRawValue}
 			validationState={rawValue() !== 40 ? "invalid" : "valid"}
@@ -152,7 +152,7 @@ export function ErrorMessageExample() {
 			<NumberField.ErrorMessage class={style["number-field__error-message"]}>
 				Hmm, I prefer 40.
 			</NumberField.ErrorMessage>
-		</NumberField.Root>
+		</NumberField>
 	);
 }
 
@@ -174,7 +174,7 @@ export function HTMLFormExample() {
 			onSubmit={onSubmit}
 			class="flex flex-col items-center space-y-6"
 		>
-			<NumberField.Root class={style["number-field"]} name="quantity">
+			<NumberField class={style["number-field"]} name="quantity">
 				<NumberField.Label class={style["number-field__label"]}>
 					Quantity
 				</NumberField.Label>
@@ -194,7 +194,7 @@ export function HTMLFormExample() {
 						<ArrowIcon style="transform: rotate(180deg);" />
 					</NumberField.DecrementTrigger>
 				</div>
-			</NumberField.Root>
+			</NumberField>
 			<div class="flex space-x-2">
 				<button type="reset" class="kb-button">
 					Reset
@@ -209,7 +209,7 @@ export function HTMLFormExample() {
 
 export function TriggersExample() {
 	return (
-		<NumberField.Root class={style["number-field"]}>
+		<NumberField class={style["number-field"]}>
 			<NumberField.Label class={style["number-field__label"]}>
 				Quantity
 			</NumberField.Label>
@@ -228,14 +228,14 @@ export function TriggersExample() {
 					+
 				</NumberField.IncrementTrigger>
 			</div>
-		</NumberField.Root>
+		</NumberField>
 	);
 }
 
 export function FormatExample() {
 	return (
 		<div>
-			<NumberField.Root
+			<NumberField
 				class={style["number-field"]}
 				formatOptions={{ style: "currency", currency: "USD" }}
 				defaultValue={4}
@@ -258,7 +258,7 @@ export function FormatExample() {
 						<ArrowIcon style="transform: rotate(180deg);" />
 					</NumberField.DecrementTrigger>
 				</div>
-			</NumberField.Root>
+			</NumberField>
 		</div>
 	);
 }

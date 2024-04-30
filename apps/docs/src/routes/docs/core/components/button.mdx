@@ -9,6 +9,10 @@ Enables users to trigger an action or event, such as submitting a form, opening 
 ## Import
 
 ```ts
+import { Button } from "@kobalte/core/button";
+// or
+import { Root } from "@kobalte/core/button";
+// or (deprecated)
 import { Button } from "@kobalte/core";
 ```
 
@@ -22,10 +26,10 @@ import { Button } from "@kobalte/core";
 
 The button consists of:
 
-- **Button.Root:** The root container for a button.
+- **Button:** The root container for a button.
 
 ```tsx
-<Button.Root />
+<Button />
 ```
 
 ## Example
@@ -42,11 +46,11 @@ The button consists of:
   {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Button } from "@kobalte/core";
+    import { Button } from "@kobalte/core/button";
     import "./style.css";
 
     function App() {
-      return <Button.Root class="button">Click me</Button.Root>;
+      return <Button class="button">Click me</Button>;
     }
     ```
 
@@ -90,7 +94,9 @@ The button consists of:
 
 ## API Reference
 
-### Button.Root
+### Button
+
+`Button` is equivalent to the `Root` import from `@kobalte/core/button` (and deprecated `Button.Root`).
 
 | Prop     | Description                                     |
 | :------- | :---------------------------------------------- |
@@ -102,9 +108,9 @@ The button consists of:
 
 ## Rendered elements
 
-| Component     | Default rendered element |
-| :------------ | :----------------------- |
-| `Button.Root` | `button`                 |
+| Component | Default rendered element |
+| :-------- | :----------------------- |
+| `Button`  | `button`                 |
 
 ## Accessibility
 

@@ -1,4 +1,4 @@
-import { ToggleButton } from "@kobalte/core";
+import { ToggleButton } from "@kobalte/core/toggle-button";
 import { Show, createSignal } from "solid-js";
 
 import { VolumeOffIcon, VolumeOnIcon } from "../components";
@@ -6,7 +6,7 @@ import style from "./toggle-button.module.css";
 
 export function BasicExample() {
 	return (
-		<ToggleButton.Root class={style["toggle-button"]} aria-label="Mute">
+		<ToggleButton class={style["toggle-button"]} aria-label="Mute">
 			{(state) => (
 				<Show
 					when={state.pressed()}
@@ -15,13 +15,13 @@ export function BasicExample() {
 					<VolumeOffIcon class="h-6 w-6" />
 				</Show>
 			)}
-		</ToggleButton.Root>
+		</ToggleButton>
 	);
 }
 
 export function DefaultPressedExample() {
 	return (
-		<ToggleButton.Root
+		<ToggleButton
 			class={style["toggle-button"]}
 			aria-label="Mute"
 			defaultPressed
@@ -34,7 +34,7 @@ export function DefaultPressedExample() {
 					<VolumeOffIcon class="h-6 w-6" />
 				</Show>
 			)}
-		</ToggleButton.Root>
+		</ToggleButton>
 	);
 }
 
@@ -43,7 +43,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<ToggleButton.Root
+			<ToggleButton
 				class={style["toggle-button"]}
 				aria-label="Mute"
 				pressed={pressed()}
@@ -57,7 +57,7 @@ export function ControlledExample() {
 						<VolumeOffIcon class="h-6 w-6" />
 					</Show>
 				)}
-			</ToggleButton.Root>
+			</ToggleButton>
 			<p class="not-prose text-sm mt-2">
 				The microphone is {pressed() ? "muted" : "active"}.
 			</p>

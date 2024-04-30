@@ -1,4 +1,4 @@
-import { Select } from "@kobalte/core";
+import { Select } from "@kobalte/core/select";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { For, createSignal } from "solid-js";
 
@@ -9,7 +9,7 @@ const STRING_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 export function BasicExample() {
 	return (
-		<Select.Root
+		<Select
 			options={STRING_OPTIONS}
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
@@ -34,13 +34,13 @@ export function BasicExample() {
 					<Select.Listbox class={style.select__listbox} />
 				</Select.Content>
 			</Select.Portal>
-		</Select.Root>
+		</Select>
 	);
 }
 
 export function DefaultValueExample() {
 	return (
-		<Select.Root
+		<Select
 			defaultValue="Blueberry"
 			options={STRING_OPTIONS}
 			placeholder="Select a fruit…"
@@ -66,7 +66,7 @@ export function DefaultValueExample() {
 					<Select.Listbox class={style.select__listbox} />
 				</Select.Content>
 			</Select.Portal>
-		</Select.Root>
+		</Select>
 	);
 }
 
@@ -75,7 +75,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<Select.Root
+			<Select
 				value={value()}
 				onChange={setValue}
 				options={STRING_OPTIONS}
@@ -102,7 +102,7 @@ export function ControlledExample() {
 						<Select.Listbox class={style.select__listbox} />
 					</Select.Content>
 				</Select.Portal>
-			</Select.Root>
+			</Select>
 			<p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
 		</>
 	);
@@ -110,7 +110,7 @@ export function ControlledExample() {
 
 export function DescriptionExample() {
 	return (
-		<Select.Root
+		<Select
 			options={STRING_OPTIONS}
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
@@ -138,7 +138,7 @@ export function DescriptionExample() {
 					<Select.Listbox class={style.select__listbox} />
 				</Select.Content>
 			</Select.Portal>
-		</Select.Root>
+		</Select>
 	);
 }
 
@@ -146,7 +146,7 @@ export function ErrorMessageExample() {
 	const [value, setValue] = createSignal("Grapes");
 
 	return (
-		<Select.Root
+		<Select
 			value={value()}
 			onChange={setValue}
 			validationState={value() !== "Apple" ? "invalid" : "valid"}
@@ -177,7 +177,7 @@ export function ErrorMessageExample() {
 					<Select.Listbox class={style.select__listbox} />
 				</Select.Content>
 			</Select.Portal>
-		</Select.Root>
+		</Select>
 	);
 }
 
@@ -199,7 +199,7 @@ export function HTMLFormExample() {
 			onSubmit={onSubmit}
 			class="flex flex-col items-center space-y-6"
 		>
-			<Select.Root
+			<Select
 				name="fruit"
 				options={STRING_OPTIONS}
 				placeholder="Select a fruit…"
@@ -226,7 +226,7 @@ export function HTMLFormExample() {
 						<Select.Listbox class={style.select__listbox} />
 					</Select.Content>
 				</Select.Portal>
-			</Select.Root>
+			</Select>
 			<div class="flex space-x-2">
 				<button type="reset" class="kb-button">
 					Reset
@@ -255,7 +255,7 @@ const OBJECT_OPTIONS: Food[] = [
 
 export function ObjectExample() {
 	return (
-		<Select.Root
+		<Select
 			options={OBJECT_OPTIONS}
 			optionValue="value"
 			optionTextValue="label"
@@ -283,7 +283,7 @@ export function ObjectExample() {
 					<Select.Listbox class={style.select__listbox} />
 				</Select.Content>
 			</Select.Portal>
-		</Select.Root>
+		</Select>
 	);
 }
 
@@ -316,7 +316,7 @@ const GROUP_OBJECT_OPTIONS: Category[] = [
 
 export function OptionGroupExample() {
 	return (
-		<Select.Root<Food, Category>
+		<Select<Food, Category>
 			options={GROUP_OBJECT_OPTIONS}
 			optionValue="value"
 			optionTextValue="label"
@@ -350,7 +350,7 @@ export function OptionGroupExample() {
 					<Select.Listbox class={style.select__listbox} />
 				</Select.Content>
 			</Select.Portal>
-		</Select.Root>
+		</Select>
 	);
 }
 
@@ -359,7 +359,7 @@ export function MultipleSelectionExample() {
 
 	return (
 		<>
-			<Select.Root<string>
+			<Select<string>
 				multiple
 				value={values()}
 				onChange={setValues}
@@ -421,7 +421,7 @@ export function MultipleSelectionExample() {
 						<Select.Listbox class={style.select__listbox} />
 					</Select.Content>
 				</Select.Portal>
-			</Select.Root>
+			</Select>
 			<p class="not-prose text-sm mt-4">
 				Your favorite fruits are: {values().join(", ")}.
 			</p>
@@ -511,7 +511,7 @@ export function VirtualizedExample() {
 	}));
 
 	return (
-		<Select.Root
+		<Select
 			virtualized
 			options={options}
 			optionValue="value"
@@ -530,6 +530,6 @@ export function VirtualizedExample() {
 			<Select.Portal>
 				<SelectContent options={options} />
 			</Select.Portal>
-		</Select.Root>
+		</Select>
 	);
 }

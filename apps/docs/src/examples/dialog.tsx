@@ -1,11 +1,11 @@
-import { Dialog } from "@kobalte/core";
+import { Dialog } from "@kobalte/core/dialog";
 
 import { CrossIcon } from "../components";
 import style from "./dialog.module.css";
 
 export function BasicExample() {
 	return (
-		<Dialog.Root>
+		<Dialog>
 			<Dialog.Trigger class={style.dialog__trigger}>Open</Dialog.Trigger>
 			<Dialog.Portal>
 				<Dialog.Overlay class={style.dialog__overlay} />
@@ -28,6 +28,6 @@ export function BasicExample() {
 					</Dialog.Content>
 				</div>
 			</Dialog.Portal>
-		</Dialog.Root>
+		</Dialog>
 	);
 }

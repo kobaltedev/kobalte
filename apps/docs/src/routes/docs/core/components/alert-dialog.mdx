@@ -8,6 +8,10 @@ A modal dialog that interrupts the user's workflow to communicate an important m
 ## Import
 
 ```ts
+import { AlertDialog } from "@kobalte/core/alert-dialog";
+// or
+import { Root, Trigger, ... } from "@kobalte/core/alert-dialog";
+// or (deprecated)
 import { AlertDialog } from "@kobalte/core";
 ```
 
@@ -24,7 +28,7 @@ import { AlertDialog } from "@kobalte/core";
 
 The alert dialog consists of:
 
-- **AlertDialog.Root:** Contains all the parts of a dialog.
+- **AlertDialog:** Contains all the parts of a dialog.
 - **AlertDialog.Trigger:** The button that opens the dialog.
 - **AlertDialog.Portal:** Portals its children into the `body` when the dialog is open.
 - **AlertDialog.Overlay:** The layer that covers the inert portion of the view when the dialog is open.
@@ -34,7 +38,7 @@ The alert dialog consists of:
 - **AlertDialog.Description:** An optional accessible description to be announced when the dialog is opened.
 
 ```tsx
-<AlertDialog.Root>
+<AlertDialog>
 	<AlertDialog.Trigger />
 	<AlertDialog.Portal>
 		<AlertDialog.Overlay />
@@ -44,7 +48,7 @@ The alert dialog consists of:
 			<AlertDialog.Description />
 		</AlertDialog.Content>
 	</AlertDialog.Portal>
-</AlertDialog.Root>
+</AlertDialog>
 ```
 
 ## Example
@@ -61,13 +65,13 @@ The alert dialog consists of:
   {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { AlertDialog } from "@kobalte/core";
+		import { AlertDialog } from "@kobalte/core/alert-dialog";
     import { CrossIcon } from "some-icon-library";
     import "./style.css";
 
     function App() {
       return (
-        <AlertDialog.Root>
+        <AlertDialog>
           <AlertDialog.Trigger class="alert-dialog__trigger">Open</AlertDialog.Trigger>
           <AlertDialog.Portal>
             <AlertDialog.Overlay class="alert-dialog__overlay" />
@@ -85,7 +89,7 @@ The alert dialog consists of:
               </AlertDialog.Content>
             </div>
           </AlertDialog.Portal>
-        </AlertDialog.Root>
+        </AlertDialog>
       );
     }
     ```
@@ -235,7 +239,7 @@ The alert dialog consists of:
 An initial, uncontrolled open value can be provided using the `defaultOpen` prop.
 
 ```tsx
-<AlertDialog.Root defaultOpen>...</AlertDialog.Root>
+<AlertDialog defaultOpen>...</AlertDialog>
 ```
 
 ### Controlled open
@@ -249,16 +253,18 @@ function ControlledExample() {
 	const [open, setOpen] = createSignal(false);
 
 	return (
-		<AlertDialog.Root open={open()} onOpenChange={setOpen}>
+		<AlertDialog open={open()} onOpenChange={setOpen}>
 			...
-		</AlertDialog.Root>
+		</AlertDialog>
 	);
 }
 ```
 
 ## API Reference
 
-### AlertDialog.Root
+### AlertDialog
+
+`AlertDialog` is equivalent to the `Root` import from `@kobalte/core/alert-dialog` (and deprecated `AlertDialog.Root`).
 
 | Prop          | Description                                                                                                                                                                                                                                                                                                                                          |
 | :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -296,7 +302,7 @@ function ControlledExample() {
 
 | Component                 | Default rendered element |
 | :------------------------ | :----------------------- |
-| `AlertDialog.Root`        | none                     |
+| `AlertDialog`             | none                     |
 | `AlertDialog.Trigger`     | `button`                 |
 | `AlertDialog.Portal`      | `Portal`                 |
 | `AlertDialog.Overlay`     | `div`                    |

@@ -18,6 +18,10 @@ Combines a text input with a listbox, allowing users to filter a list of options
 ## Import
 
 ```ts
+import { Combobox } from "@kobalte/core/combobox";
+// or
+import { Root, Label, ... } from "@kobalte/core/combobox";
+// or (deprecated)
 import { Combobox } from "@kobalte/core";
 ```
 
@@ -41,7 +45,7 @@ import { Combobox } from "@kobalte/core";
 
 The combobox consists of:
 
-- **Combobox.Root:** The root container for a combobox component.
+- **Combobox:** The root container for a combobox component.
 - **Combobox.Label:** The label that gives the user information on the combobox.
 - **Combobox.Description:** The description that gives the user more information on the combobox.
 - **Combobox.ErrorMessage:** The error message that gives the user information about how to fix a validation error on the combobox.
@@ -60,7 +64,7 @@ The combobox consists of:
 - **Combobox.ItemIndicator:** The visual indicator rendered when the item is selected.
 
 ```tsx
-<Combobox.Root>
+<Combobox>
 	<Combobox.Label />
 	<Combobox.Control>
 		<Combobox.Input />
@@ -77,7 +81,7 @@ The combobox consists of:
 			<Combobox.Listbox />
 		</Combobox.Content>
 	</Combobox.Portal>
-</Combobox.Root>
+</Combobox>
 ```
 
 ## Example
@@ -94,7 +98,7 @@ The combobox consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Combobox } from "@kobalte/core";
+		import { Combobox } from "@kobalte/core/combobox";
     import { CaretSortIcon, CheckIcon } from "some-icon-library";
     import { createSignal } from "solid-js";
     import "./style.css";
@@ -103,7 +107,7 @@ The combobox consists of:
 
     function App() {
       return (
-        <Combobox.Root
+        <Combobox
           options={ALL_OPTIONS}
           placeholder="Search a fruit…"
           itemComponent={props => (
@@ -128,7 +132,7 @@ The combobox consists of:
               <Combobox.Listbox class="combobox__listbox" />
             </Combobox.Content>
           </Combobox.Portal>
-        </Combobox.Root>
+        </Combobox>
       );
     }
     ```
@@ -323,15 +327,15 @@ For convenience, we provide 3 built-in filtering mechanism based on substring ma
 A custom filter function can also be passed to the `defaultFilter` prop, it receives _an option and the input value_ as parameters, and should return a `boolean`.
 
 ```tsx {6}
-import { Combobox } from "@kobalte/core";
+import { Combobox } from "@kobalte/core/combobox";
 
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 function FilteringExample() {
 	return (
-		<Combobox.Root options={ALL_OPTIONS} defaultFilter="startsWith">
+		<Combobox options={ALL_OPTIONS} defaultFilter="startsWith">
 			//...rest of the component.
-		</Combobox.Root>
+		</Combobox>
 	);
 }
 ```
@@ -345,14 +349,14 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 </Preview>
 
 ```tsx {8}
-import { Combobox } from "@kobalte/core";
+import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 function DefaultValueExample() {
 	return (
-		<Combobox.Root
+		<Combobox
 			defaultValue="Blueberry"
 			options={ALL_OPTIONS}
 			placeholder="Search a fruit…"
@@ -378,7 +382,7 @@ function DefaultValueExample() {
 					<Combobox.Listbox />
 				</Combobox.Content>
 			</Combobox.Portal>
-		</Combobox.Root>
+		</Combobox>
 	);
 }
 ```
@@ -392,7 +396,7 @@ The `value` prop, which accepts a value corresponding with the `options` prop, c
 </Preview>
 
 ```tsx {7,20-21}
-import { Combobox } from "@kobalte/core";
+import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 import { createSignal } from "solid-js";
 
@@ -410,7 +414,7 @@ function ControlledExample() {
 
 	return (
 		<>
-			<Combobox.Root
+			<Combobox
 				options={ALL_OPTIONS}
 				value={value()}
 				onChange={setValue}
@@ -438,7 +442,7 @@ function ControlledExample() {
 						<Combobox.Listbox />
 					</Combobox.Content>
 				</Combobox.Portal>
-			</Combobox.Root>
+			</Combobox>
 			<p>Your favorite fruit is: {value()}.</p>
 		</>
 	);
@@ -454,14 +458,14 @@ The `Combobox.Description` component can be used to associate additional help te
 </Preview>
 
 ```tsx {27}
-import { Combobox } from "@kobalte/core";
+import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
 
 function DescriptionExample() {
 	return (
-		<Combobox.Root
+		<Combobox
 			options={ALL_OPTIONS}
 			placeholder="Search a fruit…"
 			itemComponent={props => (
@@ -487,7 +491,7 @@ function DescriptionExample() {
 					<Combobox.Listbox />
 				</Combobox.Content>
 			</Combobox.Portal>
-		</Combobox.Root>
+		</Combobox>
 	);
 }
 ```
@@ -503,7 +507,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 </Preview>
 
 ```tsx {22,41}
-import { Combobox } from "@kobalte/core";
+import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 import { createSignal } from "solid-js";
 
@@ -520,7 +524,7 @@ function ErrorMessageExample() {
 	};
 
 	return (
-		<Combobox.Root
+		<Combobox
 			options={ALL_OPTIONS}
 			value={value()}
 			onChange={setValue}
@@ -550,7 +554,7 @@ function ErrorMessageExample() {
 					<Combobox.Listbox />
 				</Combobox.Content>
 			</Combobox.Portal>
-		</Combobox.Root>
+		</Combobox>
 	);
 }
 ```
@@ -564,7 +568,7 @@ The combobox `name` prop, paired with the `Combobox.HiddenSelect` component, can
 </Preview>
 
 ```tsx {13,25}
-import { Combobox } from "@kobalte/core";
+import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
@@ -576,7 +580,7 @@ function HTMLFormExample() {
 
 	return (
 		<form onSubmit={onSubmit}>
-			<Combobox.Root
+			<Combobox
 				name="fruit"
 				options={ALL_OPTIONS}
 				placeholder="Search a fruit…"
@@ -603,7 +607,7 @@ function HTMLFormExample() {
 						<Combobox.Listbox />
 					</Combobox.Content>
 				</Combobox.Portal>
-			</Combobox.Root>
+			</Combobox>
 			<div>
 				<button type="reset">Reset</button>
 				<button>Submit</button>
@@ -627,7 +631,7 @@ Objects can be used as options instead of plain strings. In this case you have t
 </Preview>
 
 ```tsx {21-24}
-import { Combobox } from "@kobalte/core";
+import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 
 interface Fruit {
@@ -646,7 +650,7 @@ const ALL_OPTIONS: Fruit[] = [
 
 function ObjectExample() {
 	return (
-		<Combobox.Root
+		<Combobox
 			options={ALL_OPTIONS}
 			optionValue="value"
 			optionTextValue="label"
@@ -675,7 +679,7 @@ function ObjectExample() {
 					<Combobox.Listbox />
 				</Combobox.Content>
 			</Combobox.Portal>
-		</Combobox.Root>
+		</Combobox>
 	);
 }
 ```
@@ -693,7 +697,7 @@ Additionally, the `sectionComponent` prop is used to display the option group la
 </Preview>
 
 ```tsx {44}
-import { Combobox } from "@kobalte/core";
+import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 
 interface Food {
@@ -731,7 +735,7 @@ const ALL_OPTIONS: Category[] = [
 
 export function OptionGroupExample() {
 	return (
-		<Combobox.Root<Food, Category>
+		<Combobox<Food, Category>
 			options={ALL_OPTIONS}
 			optionValue="value"
 			optionTextValue="label"
@@ -764,13 +768,13 @@ export function OptionGroupExample() {
 					<Combobox.Listbox />
 				</Combobox.Content>
 			</Combobox.Portal>
-		</Combobox.Root>
+		</Combobox>
 	);
 }
 ```
 
 <Callout type="note">
-	Notice the usage of generics on `Combobox.Root` for proper TypeScript support.
+	Notice the usage of generics on `Combobox` for proper TypeScript support.
 </Callout>
 
 ### Multiple selection
@@ -784,7 +788,7 @@ In this case `Combobox.Input` can't display the values, instead the `Combobox.Co
 </Preview>
 
 ```tsx {7,12,14-15,30,34,42}
-import { Combobox } from "@kobalte/core";
+import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 import { createSignal } from "solid-js";
 
@@ -795,7 +799,7 @@ function MultipleSelectionExample() {
 
 	return (
 		<>
-			<Combobox.Root<string>
+			<Combobox<string>
 				multiple
 				options={ALL_OPTIONS}
 				value={values()}
@@ -842,7 +846,7 @@ function MultipleSelectionExample() {
 						<Combobox.Listbox />
 					</Combobox.Content>
 				</Combobox.Portal>
-			</Combobox.Root>
+			</Combobox>
 			<p>Your favorite fruits are: {values().join(", ")}.</p>
 		</>
 	);
@@ -889,7 +893,9 @@ We expose a CSS custom property `--kb-combobox-content-transform-origin` which c
 
 ## API Reference
 
-### Combobox.Root
+### Combobox
+
+`Combobox` is equivalent to the `Root` import from `@kobalte/core/combobox` (and deprecated `Combobox.Root`).
 
 | Prop                          | Description                                                                                                                                                                                                                                                                                                                                                                               |
 | :---------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -929,7 +935,7 @@ We expose a CSS custom property `--kb-combobox-content-transform-origin` which c
 | autoComplete                  | `string` <br/> Describes the type of autocomplete functionality the input should provide if any. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete)                                                                                                                                                                                       |
 | translations                  | [`ComboboxIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/combobox/combobox.intl.ts) <br/> Localization strings.                                                                                                                                                                                                                                     |
 
-`Combobox.Root` also accepts the following props to customize the placement of the `Combobox.Content`.
+`Combobox` also accepts the following props to customize the placement of the `Combobox.Content`.
 
 | Prop             | Description                                                                                                                                                                                                                                                                                                                                                                   |
 | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -1031,7 +1037,7 @@ We expose a CSS custom property `--kb-combobox-content-transform-origin` which c
 
 | Component                  | Default rendered element |
 | :------------------------- | :----------------------- |
-| `Combobox.Root`            | `div`                    |
+| `Combobox`                 | `div`                    |
 | `Combobox.Label`           | `span`                   |
 | `Combobox.Description`     | `div`                    |
 | `Combobox.ErrorMessage`    | `div`                    |

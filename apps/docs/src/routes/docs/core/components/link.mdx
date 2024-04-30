@@ -8,6 +8,10 @@ Allows a user to navigate to another page or resource within a web page or appli
 ## Import
 
 ```ts
+import { Link } from "@kobalte/core/link";
+// or
+import { Root } from "@kobalte/core/link";
+// or (deprecated)
 import { Link } from "@kobalte/core";
 ```
 
@@ -21,10 +25,10 @@ import { Link } from "@kobalte/core";
 
 The link consists of:
 
-- **Link.Root:** The root container for a link.
+- **Link:** The root container for a link.
 
 ```tsx
-<Link.Root />
+<Link />
 ```
 
 ## Example
@@ -41,14 +45,14 @@ The link consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Link } from "@kobalte/core";
+    import { Link } from "@kobalte/core/link";
     import "./style.css";
 
     function App() {
       return (
-        <Link.Root class="link" href="https://kobalte.dev">
+        <Link class="link" href="https://kobalte.dev">
           Kobalte
-        </Link.Root>
+        </Link>
       );
     }
     ```
@@ -90,14 +94,16 @@ Use the `disabled` prop to disable a link while keeping it accessible for screen
 </Preview>
 
 ```tsx
-<Link.Root href="https://kobalte.dev" disabled>
+<Link href="https://kobalte.dev" disabled>
 	Kobalte
-</Link.Root>
+</Link>
 ```
 
 ## API Reference
 
-### Link.Root
+### Link
+
+`Link` is equivalent to the `Root` import from `@kobalte/core/link` (and deprecated `Link.Root`).
 
 | Prop     | Description                                                                                                                                         |
 | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -109,9 +115,9 @@ Use the `disabled` prop to disable a link while keeping it accessible for screen
 
 ## Rendered elements
 
-| Component   | Default rendered element |
-| :---------- | :----------------------- |
-| `Link.Root` | `a`                      |
+| Component | Default rendered element |
+| :-------- | :----------------------- |
+| `Link`    | `a`                      |
 
 ## Accessibility
 

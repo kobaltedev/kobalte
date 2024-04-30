@@ -1,11 +1,11 @@
-import { ToggleGroup } from "@kobalte/core";
+import { ToggleGroup } from "@kobalte/core/toggle-group";
 
 import { JSXElement, createSignal } from "solid-js";
 import style from "./toggle-group.module.css";
 
 export function BasicExample() {
 	return (
-		<ToggleGroup.Root class={style["toggle-group"]}>
+		<ToggleGroup class={style["toggle-group"]}>
 			<ToggleGroup.Item
 				class={style["toggle-group__item"]}
 				value="bold"
@@ -72,13 +72,13 @@ export function BasicExample() {
 					<title>Underline</title>
 				</svg>
 			</ToggleGroup.Item>
-		</ToggleGroup.Root>
+		</ToggleGroup>
 	);
 }
 
 export function DefaultValueExample() {
 	return (
-		<ToggleGroup.Root class={style["toggle-group"]} defaultValue="bold">
+		<ToggleGroup class={style["toggle-group"]} defaultValue="bold">
 			<ToggleGroup.Item
 				class={style["toggle-group__item"]}
 				value="bold"
@@ -145,7 +145,7 @@ export function DefaultValueExample() {
 					<title>Underline</title>
 				</svg>
 			</ToggleGroup.Item>
-		</ToggleGroup.Root>
+		</ToggleGroup>
 	);
 }
 
@@ -164,7 +164,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<ToggleGroup.Root
+			<ToggleGroup
 				class={style["toggle-group"]}
 				value={value()}
 				onChange={setValue}
@@ -235,7 +235,7 @@ export function ControlledExample() {
 						<title>Underline</title>
 					</svg>
 				</ToggleGroup.Item>
-			</ToggleGroup.Root>
+			</ToggleGroup>
 			<div class="text-sm">
 				Your text style is: <span class="capitalize">{render()}.</span>
 			</div>
@@ -245,7 +245,7 @@ export function ControlledExample() {
 
 export function MultipleSelectionExample() {
 	return (
-		<ToggleGroup.Root
+		<ToggleGroup
 			class={style["toggle-group"]}
 			multiple
 			defaultValue={["bold", "underline"]}
@@ -316,6 +316,6 @@ export function MultipleSelectionExample() {
 					<title>Underline</title>
 				</svg>
 			</ToggleGroup.Item>
-		</ToggleGroup.Root>
+		</ToggleGroup>
 	);
 }

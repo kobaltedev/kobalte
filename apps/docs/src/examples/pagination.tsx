@@ -1,11 +1,11 @@
-import { Pagination } from "@kobalte/core";
+import { Pagination } from "@kobalte/core/pagination";
 
 import { createSignal } from "solid-js";
 import style from "./pagination.module.css";
 
 export function BasicExample() {
 	return (
-		<Pagination.Root
+		<Pagination
 			class={style.pagination__root}
 			count={10}
 			itemComponent={(props) => (
@@ -24,13 +24,13 @@ export function BasicExample() {
 			</Pagination.Previous>
 			<Pagination.Items />
 			<Pagination.Next class={style.pagination__item}>Next</Pagination.Next>
-		</Pagination.Root>
+		</Pagination>
 	);
 }
 
 export function DefaultPageExample() {
 	return (
-		<Pagination.Root
+		<Pagination
 			class={style.pagination__root}
 			count={10}
 			defaultPage={4}
@@ -50,7 +50,7 @@ export function DefaultPageExample() {
 			</Pagination.Previous>
 			<Pagination.Items />
 			<Pagination.Next class={style.pagination__item}>Next</Pagination.Next>
-		</Pagination.Root>
+		</Pagination>
 	);
 }
 
@@ -58,7 +58,7 @@ export function ControlledExample() {
 	const [page, setPage] = createSignal(4);
 
 	return (
-		<Pagination.Root
+		<Pagination
 			class={style.pagination__root}
 			page={page()}
 			onPageChange={setPage}
@@ -79,13 +79,13 @@ export function ControlledExample() {
 			</Pagination.Previous>
 			<Pagination.Items />
 			<Pagination.Next class={style.pagination__item}>Next</Pagination.Next>
-		</Pagination.Root>
+		</Pagination>
 	);
 }
 
 export function ButtonsExample() {
 	return (
-		<Pagination.Root
+		<Pagination
 			class={style.pagination__root}
 			count={10}
 			itemComponent={(props) => (
@@ -100,13 +100,13 @@ export function ButtonsExample() {
 			)}
 		>
 			<Pagination.Items />
-		</Pagination.Root>
+		</Pagination>
 	);
 }
 
 export function FirstLastExample() {
 	return (
-		<Pagination.Root
+		<Pagination
 			class={style.pagination__root}
 			count={10}
 			showFirst={false}
@@ -127,13 +127,13 @@ export function FirstLastExample() {
 			</Pagination.Previous>
 			<Pagination.Items />
 			<Pagination.Next class={style.pagination__item}>Next</Pagination.Next>
-		</Pagination.Root>
+		</Pagination>
 	);
 }
 
 export function SiblingsExample() {
 	return (
-		<Pagination.Root
+		<Pagination
 			class={style.pagination__root}
 			count={10}
 			siblingCount={2}
@@ -153,13 +153,13 @@ export function SiblingsExample() {
 			</Pagination.Previous>
 			<Pagination.Items />
 			<Pagination.Next class={style.pagination__item}>Next</Pagination.Next>
-		</Pagination.Root>
+		</Pagination>
 	);
 }
 
 export function FixedItemsExample() {
 	return (
-		<Pagination.Root
+		<Pagination
 			class={style.pagination__root}
 			count={10}
 			fixedItems
@@ -179,6 +179,6 @@ export function FixedItemsExample() {
 			</Pagination.Previous>
 			<Pagination.Items />
 			<Pagination.Next class={style.pagination__item}>Next</Pagination.Next>
-		</Pagination.Root>
+		</Pagination>
 	);
 }
