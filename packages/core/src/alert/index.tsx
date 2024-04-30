@@ -1,4 +1,15 @@
-import { AlertRoot as Root, type AlertRootProps } from "./alert-root";
+import {
+	AlertRoot as Root,
+	type AlertRootCommonProps,
+	type AlertRootOptions,
+	type AlertRootProps,
+	type AlertRootRenderProps,
+} from "./alert-root";
 
-export type { AlertRootProps };
+export type {
+	AlertRootOptions,
+	AlertRootCommonProps,
+	AlertRootRenderProps,
+	AlertRootProps,
+};
 export { Root };

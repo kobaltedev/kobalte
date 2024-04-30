@@ -19,6 +19,7 @@ import {
 	Accessor,
 	Component,
 	JSX,
+	ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -30,11 +31,12 @@ import {
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	FormControlDataSet,
 	createFormControl,
 } from "../form-control";
 import { createCollator } from "../i18n";
 import { ListKeyboardDelegate, createListState } from "../list";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { PopperRoot, PopperRootOptions } from "../popper";
 import {
 	CollectionNode,
@@ -68,10 +70,9 @@ export interface SelectBaseSectionComponentProps<T> {
 
 export interface SelectBaseOptions<Option, OptGroup = never>
 	extends Omit<
-			PopperRootOptions,
-			"anchorRef" | "contentRef" | "onCurrentPlacementChange"
-		>,
-		AsChildProp {
+		PopperRootOptions,
+		"anchorRef" | "contentRef" | "onCurrentPlacementChange"
+	> {
 	/** The controlled open state of the select. */
 	open?: boolean;
 
@@ -199,22 +200,34 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 
 	/** Whether the select is read only. */
 	readOnly?: boolean;
-
-	/** The children of the select. */
-	children?: JSX.Element;
 }
 
-export interface SelectBaseProps<Option, OptGroup = never>
-	extends OverrideComponentProps<"div", SelectBaseOptions<Option, OptGroup>>,
-		AsChildProp {}
+export interface SelectBaseCommonProps {
+	id: string;
+}
+
+export interface SelectBaseRenderProps
+	extends SelectBaseCommonProps,
+		SelectDataSet,
+		FormControlDataSet {
+	role: "group";
+}
+
+export type SelectBaseProps<Option, OptGroup = never> = SelectBaseOptions<
+	Option,
+	OptGroup
+> &
+	Partial<SelectBaseCommonProps>;
 
 /**
  * Base component for a select, provide context for its children.
  * Used to build single and multi-select.
  */
-export function SelectBase<Option, OptGroup = never>(
-	props: SelectBaseProps<Option, OptGroup>,
-) {
+export function SelectBase<
+	Option,
+	OptGroup = never,
+	T extends ValidComponent = "div",
+>(props: PolymorphicProps<T, SelectBaseProps<Option, OptGroup>>) {
 	const defaultId = `select-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
@@ -228,7 +241,7 @@ export function SelectBase<Option, OptGroup = never>(
 			sameWidth: true,
 			modal: false,
 		},
-		props,
+		props as SelectBaseProps<Option, OptGroup>,
 	);
 
 	const [local, popperProps, formControlProps, others] = splitProps(
@@ -318,7 +331,7 @@ export function SelectBase<Option, OptGroup = never>(
 			return local.options as Option[];
 		}
 
-		return local.options.flatMap(
+		return local.options!.flatMap(
 			(item) =>
 				((item as any)[optionGroupChildren] as Option[]) ?? (item as Option),
 		);
@@ -399,7 +412,7 @@ export function SelectBase<Option, OptGroup = never>(
 
 	const open = (focusStrategy: FocusStrategy | boolean) => {
 		// Don't open if there is no option.
-		if (local.options.length <= 0) {
+		if (local.options!.length <= 0) {
 			return;
 		}
 
@@ -538,10 +551,10 @@ export function SelectBase<Option, OptGroup = never>(
 					contentRef={contentRef}
 					{...popperProps}
 				>
-					<Polymorphic
+					<Polymorphic<SelectBaseRenderProps>
 						as="div"
 						role="group"
-						id={access(formControlProps.id)}
+						id={access(formControlProps.id)!}
 						{...formControlContext.dataset()}
 						{...dataset()}
 						{...others}

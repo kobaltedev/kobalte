@@ -13,13 +13,14 @@ import {
 } from "@kobalte/utils";
 import {
 	Accessor,
+	ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createDisclosureState, createRegisterId } from "../primitives";
 import {
 	CollapsibleContext,
@@ -27,7 +28,7 @@ import {
 	CollapsibleDataSet,
 } from "./collapsible-context";
 
-export interface CollapsibleRootOptions extends AsChildProp {
+export interface CollapsibleRootOptions {
 	/** The controlled open state of the collapsible. */
 	open?: boolean;
 
@@ -50,16 +51,29 @@ export interface CollapsibleRootOptions extends AsChildProp {
 	forceMount?: boolean;
 }
 
-export interface CollapsibleRootProps
-	extends OverrideComponentProps<"div", CollapsibleRootOptions> {}
+export interface CollapsibleRootCommonProps {
+	id: string;
+}
+
+export interface CollapsibleRootRenderProps
+	extends CollapsibleRootCommonProps,
+		CollapsibleDataSet {}
+
+export type CollapsibleRootProps = CollapsibleRootOptions &
+	Partial<CollapsibleRootCommonProps>;
 
 /**
  * An interactive component which expands/collapses a content.
  */
-export function CollapsibleRoot(props: CollapsibleRootProps) {
+export function CollapsibleRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, CollapsibleRootProps>,
+) {
 	const defaultId = `collapsible-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps(
+		{ id: defaultId },
+		props as CollapsibleRootProps,
+	);
 
 	const [local, others] = splitProps(mergedProps, [
 		"open",
@@ -96,7 +110,11 @@ export function CollapsibleRoot(props: CollapsibleRootProps) {
 
 	return (
 		<CollapsibleContext.Provider value={context}>
-			<Polymorphic as="div" {...dataset()} {...others} />
+			<Polymorphic<CollapsibleRootRenderProps>
+				as="div"
+				{...dataset()}
+				{...others}
+			/>
 		</CollapsibleContext.Provider>
 	);
 }

@@ -1,28 +1,57 @@
 import {
-	OverrideComponentProps,
 	callHandler,
 	composeEventHandlers,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { onMount, splitProps } from "solid-js";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { As, AsChildProp } from "../polymorphic";
+import {
+	Polymorphic,
+	PolymorphicCallbackProps,
+	PolymorphicProps,
+} from "../polymorphic";
 import * as SpinButton from "../spin-button";
 import { useNumberFieldContext } from "./number-field-context";
 
-export interface NumberFieldInputProps
-	extends Omit<
-		OverrideComponentProps<"input", AsChildProp>,
-		"value" | "step"
-	> {}
+export interface NumberFieldInputOptions {}
 
-export function NumberFieldInput(props: NumberFieldInputProps) {
+export interface NumberFieldInputCommonProps {
+	id: string;
+	ref: HTMLInputElement | ((el: HTMLInputElement) => void);
+	onInput: JSX.EventHandlerUnion<HTMLElement, InputEvent>;
+	onChange: JSX.EventHandlerUnion<HTMLElement, Event>;
+	onWheel: JSX.EventHandlerUnion<HTMLElement, WheelEvent>;
+	"aria-label": string | undefined;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
+	inputMode?: string;
+	autocomplete?: string;
+	autocorrect?: string;
+	spellcheck?: boolean;
+}
+
+export interface NumberFieldInputRenderProps
+	extends NumberFieldInputCommonProps,
+		SpinButton.SpinButtonRootRenderProps {
+	type: "text";
+	value: string;
+	required: boolean | undefined;
+	disabled: boolean | undefined;
+	readOnly: boolean | undefined;
+}
+
+export type NumberFieldInputProps = NumberFieldInputOptions &
+	Partial<NumberFieldInputCommonProps>;
+
+export function NumberFieldInput<T extends ValidComponent = "input">(
+	props: PolymorphicProps<T, NumberFieldInputProps>,
+) {
 	const formControlContext = useFormControlContext();
 	const context = useNumberFieldContext();
 
@@ -34,19 +63,33 @@ export function NumberFieldInput(props: NumberFieldInputProps) {
 			autocorrect: "off",
 			spellcheck: false,
 		},
-		props,
+		props as NumberFieldInputProps,
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
-		mergedProps,
-		["ref", "onInput", "onChange", "onWheel"],
+		mergedProps as typeof mergedProps & { as: ValidComponent },
+		["ref", "onInput", "onChange", "onWheel", "as"],
 		FORM_CONTROL_FIELD_PROP_NAMES,
 	);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
 	return (
-		<SpinButton.Root
+		<SpinButton.Root<
+			Component<
+				Omit<
+					NumberFieldInputRenderProps,
+					| keyof SpinButton.SpinButtonRootRenderProps
+					| "value"
+					| "required"
+					| "disabled"
+					| "readOnly"
+				>
+			>
+		>
+			type="text"
+			id={fieldProps.id()}
+			ref={mergeRefs(context.setInputRef, local.ref)}
 			value={context.value()}
 			validationState={formControlContext.validationState()}
 			required={formControlContext.isRequired()}
@@ -76,53 +119,57 @@ export function NumberFieldInput(props: NumberFieldInputProps) {
 				context.format();
 			}}
 			translations={context.translations()}
-			asChild
-		>
-			{/* @ts-ignore: Polymorphic error */}
-			<As
-				component={"input"}
-				type="text"
+			onChange={(e) => {
 				// @ts-ignore: Polymorphic error
-				ref={mergeRefs(context.setInputRef, local.ref)}
-				id={fieldProps.id()}
-				value={
-					Number.isNaN(context.rawValue())
-						? ""
-						: context.formatNumber(context.rawValue())
-				}
-				required={formControlContext.isRequired()}
-				disabled={formControlContext.isDisabled()}
-				readOnly={formControlContext.isReadOnly()}
-				aria-label={fieldProps.ariaLabel()}
-				aria-labelledby={fieldProps.ariaLabelledBy()}
-				aria-describedby={fieldProps.ariaDescribedBy()}
-				onInput={composeEventHandlers([local.onInput, context.onInput])}
-				onChange={(e) => {
-					// @ts-ignore: Polymorphic error
-					callHandler(e, local.onChange);
+				callHandler(e, local.onChange);
 
-					// format on change end
-					context.format();
-				}}
+				// format on change end
+				context.format();
+			}}
+			// @ts-ignore: Polymorphic error
+			onWheel={(e) => {
 				// @ts-ignore: Polymorphic error
-				onWheel={(e) => {
-					// @ts-ignore: Polymorphic error
-					callHandler(e, local.onWheel);
+				callHandler(e, local.onWheel);
 
-					if (
-						!context.changeOnWheel() ||
-						document.activeElement !== context.inputRef()
-					)
-						return;
+				if (
+					!context.changeOnWheel() ||
+					document.activeElement !== context.inputRef()
+				)
+					return;
 
-					e.preventDefault();
+				e.preventDefault();
 
-					if (e.deltaY < 0) context.varyValue(context.step());
-					else context.varyValue(-context.step());
-				}}
-				{...formControlContext.dataset()}
-				{...others}
-			/>
-		</SpinButton.Root>
+				if (e.deltaY < 0) context.varyValue(context.step());
+				else context.varyValue(-context.step());
+			}}
+			onInput={composeEventHandlers([local.onInput, context.onInput])}
+			aria-label={fieldProps.ariaLabel()}
+			aria-labelledby={fieldProps.ariaLabelledBy()}
+			aria-describedby={fieldProps.ariaDescribedBy()}
+			{...formControlContext.dataset()}
+			as={(props) => (
+				<Polymorphic<
+					Omit<
+						Pick<
+							NumberFieldInputRenderProps,
+							"required" | "disabled" | "readOnly" | "value"
+						>,
+						keyof SpinButton.SpinButtonRootRenderProps
+					>
+				>
+					as={local.as || "input"}
+					value={
+						Number.isNaN(context.rawValue())
+							? ""
+							: context.formatNumber(context.rawValue())
+					}
+					required={formControlContext.isRequired()}
+					disabled={formControlContext.isDisabled()}
+					readOnly={formControlContext.isReadOnly()}
+					{...props}
+					{...others}
+				/>
+			)}
+		/>
 	);
 }

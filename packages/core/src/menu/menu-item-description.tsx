@@ -6,34 +6,51 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/listbox/src/useOption.ts
  */
 
-import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+import { mergeDefaultProps } from "@kobalte/utils";
+import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useMenuItemContext } from "./menu-item.context";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { MenuItemDataSet, useMenuItemContext } from "./menu-item.context";
 
-export interface MenuItemDescriptionProps
-	extends OverrideComponentProps<"div", AsChildProp> {}
+export interface MenuItemDescriptionOptions {}
+
+export interface MenuItemDescriptionCommonProps {
+	id: string;
+}
+
+export interface MenuItemDescriptionRenderProps
+	extends MenuItemDescriptionCommonProps,
+		MenuItemDataSet {}
+
+export type MenuItemDescriptionProps = MenuItemDescriptionOptions &
+	Partial<MenuItemDescriptionCommonProps>;
 
 /**
  * An optional accessible description to be announced for the menu item.
  * Useful for menu items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
-export function MenuItemDescription(props: MenuItemDescriptionProps) {
+export function MenuItemDescription<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenuItemDescriptionProps>,
+) {
 	const context = useMenuItemContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("description"),
 		},
-		props,
+		props as MenuItemDescriptionProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["id"]);
 
-	createEffect(() => onCleanup(context.registerDescription(local.id!)));
+	createEffect(() => onCleanup(context.registerDescription(local.id)));
 
 	return (
-		<Polymorphic as="div" id={local.id} {...context.dataset()} {...others} />
+		<Polymorphic<MenuItemDescriptionRenderProps>
+			as="div"
+			id={local.id}
+			{...context.dataset()}
+			{...others}
+		/>
 	);
 }

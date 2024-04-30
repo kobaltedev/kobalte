@@ -6,21 +6,22 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, createUniqueId, splitProps } from "solid-js";
+import { JSX, ValidComponent, createUniqueId, splitProps } from "solid-js";
 
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	FormControlDataSet,
 	createFormControl,
 } from "../form-control";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	createControllableSignal,
 	createFormResetListener,
 } from "../primitives";
 import { TextFieldContext, TextFieldContextValue } from "./text-field-context";
 
-export interface TextFieldRootOptions extends AsChildProp {
+export interface TextFieldRootOptions {
 	/** The controlled value of the text field. */
 	value?: string;
 
@@ -59,18 +60,34 @@ export interface TextFieldRootOptions extends AsChildProp {
 	readOnly?: boolean;
 }
 
-export interface TextFieldRootProps
-	extends OverrideComponentProps<"div", TextFieldRootOptions> {}
+export interface TextFieldRootCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+}
+
+export interface TextFieldRootRenderProps
+	extends TextFieldRootCommonProps,
+		FormControlDataSet {
+	role: "group";
+}
+
+export type TextFieldRootProps = TextFieldRootOptions &
+	Partial<TextFieldRootCommonProps>;
 
 /**
  * A text input that allow users to input custom text entries with a keyboard.
  */
-export function TextFieldRoot(props: TextFieldRootProps) {
-	let ref: HTMLDivElement | undefined;
+export function TextFieldRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, TextFieldRootProps>,
+) {
+	let ref: HTMLElement | undefined;
 
 	const defaultId = `textfield-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps(
+		{ id: defaultId },
+		props as TextFieldRootProps,
+	);
 
 	const [local, formControlProps, others] = splitProps(
 		mergedProps,
@@ -120,7 +137,7 @@ export function TextFieldRoot(props: TextFieldRootProps) {
 	return (
 		<FormControlContext.Provider value={formControlContext}>
 			<TextFieldContext.Provider value={context}>
-				<Polymorphic
+				<Polymorphic<TextFieldRootRenderProps>
 					as="div"
 					ref={mergeRefs((el) => (ref = el), local.ref)}
 					role="group"

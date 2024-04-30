@@ -7,7 +7,6 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	createGenerateId,
 	mergeDefaultProps,
@@ -15,6 +14,7 @@ import {
 import {
 	Accessor,
 	JSX,
+	ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
@@ -22,7 +22,7 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { useRadioGroupContext } from "./radio-group-context";
 import {
@@ -42,13 +42,26 @@ export interface RadioGroupItemOptions {
 	disabled?: boolean;
 }
 
-export interface RadioGroupItemProps
-	extends OverrideComponentProps<"div", RadioGroupItemOptions> {}
+export interface RadioGroupItemCommonProps {
+	id: string;
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+}
+
+export interface RadioGroupItemRenderProps
+	extends RadioGroupItemCommonProps,
+		RadioGroupItemDataSet {
+	role: "group";
+}
+
+export type RadioGroupItemProps = RadioGroupItemOptions &
+	Partial<RadioGroupItemCommonProps>;
 
 /**
  * The root container for a radio button.
  */
-export function RadioGroupItem(props: RadioGroupItemProps) {
+export function RadioGroupItem<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, RadioGroupItemProps>,
+) {
 	const formControlContext = useFormControlContext();
 	const radioGroupContext = useRadioGroupContext();
 
@@ -60,7 +73,7 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
 		{
 			id: defaultId,
 		},
-		props,
+		props as RadioGroupItemProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -119,7 +132,7 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
 
 	return (
 		<RadioGroupItemContext.Provider value={context}>
-			<Polymorphic
+			<Polymorphic<RadioGroupItemRenderProps>
 				as="div"
 				role="group"
 				onPointerDown={onPointerDown}

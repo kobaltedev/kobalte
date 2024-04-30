@@ -7,12 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
+import { Orientation, mergeDefaultProps } from "@kobalte/utils";
 import {
-	Orientation,
-	OverrideComponentProps,
-	mergeDefaultProps,
-} from "@kobalte/utils";
-import {
+	ValidComponent,
 	createEffect,
 	createSignal,
 	createUniqueId,
@@ -21,13 +18,13 @@ import {
 } from "solid-js";
 
 import { createSingleSelectListState } from "../list";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { TabsContext, TabsContextValue } from "./tabs-context";
 import { TabsActivationMode } from "./types";
 
-export interface TabsRootOptions extends AsChildProp {
+export interface TabsRootOptions {
 	/** The controlled value of the tab to activate. */
 	value?: string;
 
@@ -50,14 +47,23 @@ export interface TabsRootOptions extends AsChildProp {
 	disabled?: boolean;
 }
 
-export interface TabsRootProps
-	extends OverrideComponentProps<"div", TabsRootOptions> {}
+export interface TabsRootCommonProps {
+	id?: string;
+}
+
+export interface TabsRootRenderProps extends TabsRootCommonProps {
+	"data-orientation": Orientation;
+}
+
+export type TabsRootProps = TabsRootOptions & Partial<TabsRootCommonProps>;
 
 /**
  * A set of layered sections of content, known as tab panels, that display one panel of content at a time.
  * `Tabs` contains all the parts of a tabs component and provide context for its children.
  */
-export function TabsRoot(props: TabsRootProps) {
+export function TabsRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, TabsRootProps>,
+) {
 	const defaultId = `tabs-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
@@ -66,7 +72,7 @@ export function TabsRoot(props: TabsRootProps) {
 			orientation: "horizontal",
 			activationMode: "automatic",
 		},
-		props,
+		props as TabsRootProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -176,7 +182,7 @@ export function TabsRoot(props: TabsRootProps) {
 	return (
 		<DomCollectionProvider>
 			<TabsContext.Provider value={context}>
-				<Polymorphic
+				<Polymorphic<TabsRootRenderProps>
 					as="div"
 					data-orientation={context.orientation()}
 					{...others}

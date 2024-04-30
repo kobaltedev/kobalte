@@ -1,4 +1,4 @@
-import { render, screen } from "@solidjs/testing-library";
+import { render } from "@solidjs/testing-library";
 
 import * as Alert from ".";
 

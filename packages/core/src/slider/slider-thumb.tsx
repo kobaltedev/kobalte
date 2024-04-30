@@ -13,7 +13,7 @@
  */
 
 import {
-	OverrideComponentProps,
+	Orientation,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
@@ -21,6 +21,7 @@ import {
 import {
 	Accessor,
 	JSX,
+	ValidComponent,
 	createContext,
 	createUniqueId,
 	onMount,
@@ -32,18 +33,47 @@ import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
 } from "../form-control";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { useSliderContext } from "./slider-context";
+import { SliderDataSet, useSliderContext } from "./slider-context";
 
-export interface SliderThumbProps
-	extends OverrideComponentProps<"span", AsChildProp> {
+export interface SliderThumbOptions {}
+
+export interface SliderThumbCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
 }
 
-export function SliderThumb(props: SliderThumbProps) {
+export interface SliderThumbRenderProps
+	extends SliderThumbCommonProps,
+		SliderDataSet {
+	role: "slider";
+	tabIndex: 0 | undefined;
+	"aria-valuetext": string;
+	"aria-valuemin": number;
+	"aria-valuenow": number | undefined;
+	"aria-valuemax": number;
+	"aria-orientation": Orientation;
+	"aria-label": string | undefined;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
+}
+
+export type SliderThumbProps = SliderThumbOptions &
+	Partial<SliderThumbCommonProps>;
+
+export function SliderThumb<T extends ValidComponent = "span">(
+	props: PolymorphicProps<T, SliderThumbProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const context = useSliderContext();
@@ -52,7 +82,7 @@ export function SliderThumb(props: SliderThumbProps) {
 		{
 			id: context.generateId(`thumb-${createUniqueId()}`),
 		},
-		props,
+		props as SliderThumbProps,
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
@@ -181,7 +211,7 @@ export function SliderThumb(props: SliderThumbProps) {
 
 	return (
 		<ThumbContext.Provider value={{ index }}>
-			<Polymorphic
+			<Polymorphic<SliderThumbRenderProps>
 				as="span"
 				ref={mergeRefs((el) => (ref = el), local.ref)}
 				role="slider"

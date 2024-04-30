@@ -1,17 +1,32 @@
-import { OverrideComponentProps } from "@kobalte/utils";
+import { ValidComponent } from "solid-js";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ProgressDataSet, useProgressContext } from "./progress-context";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useProgressContext } from "./progress-context";
+export interface ProgressTrackOptions {}
 
-export interface ProgressTrackProps
-	extends OverrideComponentProps<"div", AsChildProp> {}
+export interface ProgressTrackCommonProps {}
+
+export interface ProgressTrackRenderProps
+	extends ProgressTrackCommonProps,
+		ProgressDataSet {}
+
+export type ProgressTrackProps = ProgressTrackOptions &
+	Partial<ProgressTrackCommonProps>;
 
 /**
  * The component that visually represents the progress track.
  * Act as a container for `Progress.Fill`.
  */
-export function ProgressTrack(props: ProgressTrackProps) {
+export function ProgressTrack<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, ProgressTrackProps>,
+) {
 	const context = useProgressContext();
 
-	return <Polymorphic as="div" {...context.dataset()} {...props} />;
+	return (
+		<Polymorphic<ProgressTrackRenderProps>
+			as="div"
+			{...context.dataset()}
+			{...(props as ProgressTrackProps)}
+		/>
+	);
 }

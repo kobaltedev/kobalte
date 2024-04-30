@@ -1,28 +1,49 @@
-import {
-	OverrideComponentProps,
-	callHandler,
-	mergeRefs,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
-import { ComponentProps, splitProps } from "solid-js";
+import { callHandler } from "@kobalte/utils";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
+import { PolymorphicProps } from "../polymorphic";
 
 import { useNumberFieldContext } from "./number-field-context";
 
-export interface NumberFieldVaryTriggerProps
-	extends OverrideComponentProps<"button", Button.ButtonRootOptions> {
+export interface NumberFieldVaryTriggerOptions {
 	numberFieldVaryType: "increment" | "decrement";
 }
 
-export function NumberFieldVaryTrigger(props: NumberFieldVaryTriggerProps) {
+export interface NumberFieldVaryTriggerCommonProps
+	extends Button.ButtonRootCommonProps {
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+}
+
+export interface NumberFieldVaryTriggerRenderProps
+	extends NumberFieldVaryTriggerCommonProps,
+		Button.ButtonRootRenderProps {
+	"aria-controls": string | undefined;
+}
+
+export type NumberFieldVaryTriggerProps = NumberFieldVaryTriggerOptions &
+	Partial<NumberFieldVaryTriggerCommonProps>;
+
+export function NumberFieldVaryTrigger<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, NumberFieldVaryTriggerProps>,
+) {
 	const formControlContext = useFormControlContext();
 	const context = useNumberFieldContext();
 
-	const [local, others] = splitProps(props, ["numberFieldVaryType", "onClick"]);
+	const [local, others] = splitProps(props as NumberFieldVaryTriggerProps, [
+		"numberFieldVaryType",
+		"onClick",
+	]);
 
 	return (
-		<Button.Root
+		<Button.Root<
+			Component<
+				Omit<
+					NumberFieldVaryTriggerRenderProps,
+					keyof Button.ButtonRootRenderProps
+				>
+			>
+		>
 			tabIndex={-1}
 			disabled={
 				formControlContext.isDisabled() ||

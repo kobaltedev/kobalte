@@ -15,6 +15,7 @@ import {
 } from "@kobalte/utils";
 import {
 	Accessor,
+	ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -24,7 +25,7 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal, createInteractOutside } from "../primitives";
 import {
 	MenubarContext,
@@ -32,7 +33,7 @@ import {
 	MenubarDataSet,
 } from "./menubar-context";
 
-export interface MenubarRootOptions extends AsChildProp {
+export interface MenubarRootOptions {
 	/** The value of the menu that should be open when initially rendered. Use when you do not need to control the value state. */
 	defaultValue?: string;
 
@@ -49,17 +50,32 @@ export interface MenubarRootOptions extends AsChildProp {
 	focusOnAlt?: boolean;
 }
 
-export interface MenubarRootProps
-	extends OverrideComponentProps<"div", MenubarRootOptions> {}
+export interface MenubarRootCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+}
+
+export interface MenubarRootRenderProps extends MenubarRootCommonProps {
+	role: "menubar";
+	"data-orientation": "horizontal";
+}
+
+export type MenubarRootProps = MenubarRootOptions &
+	Partial<MenubarRootCommonProps>;
 
 /**
  * A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.
  */
-export function MenubarRoot(props: MenubarRootProps) {
-	let ref: HTMLDivElement | undefined;
+export function MenubarRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenubarRootProps>,
+) {
+	let ref: HTMLElement | undefined;
 	const defaultId = `menubar-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps({ id: defaultId, loop: true }, props);
+	const mergedProps = mergeDefaultProps(
+		{ id: defaultId, loop: true },
+		props as MenubarRootProps,
+	);
 
 	const [local, others] = splitProps(mergedProps, [
 		"ref",
@@ -191,12 +207,12 @@ export function MenubarRoot(props: MenubarRootProps) {
 
 	return (
 		<MenubarContext.Provider value={context}>
-			<Polymorphic
+			<Polymorphic<MenubarRootRenderProps>
 				as="div"
 				ref={mergeRefs((el) => (ref = el), local.ref)}
-				{...others}
 				role="menubar"
 				data-orientation="horizontal"
+				{...others}
 			/>
 		</MenubarContext.Provider>
 	);

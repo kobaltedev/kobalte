@@ -1,44 +1,92 @@
 import {
 	FormControlDescription as Description,
+	type FormControlDescriptionCommonProps as SliderDescriptionCommonProps,
+	type FormControlDescriptionOptions as SliderDescriptionOptions,
 	type FormControlDescriptionProps as SliderDescriptionProps,
+	type FormControlDescriptionRenderProps as SliderDescriptionRenderProps,
 	FormControlErrorMessage as ErrorMessage,
+	type FormControlErrorMessageCommonProps as SliderErrorMessageCommonProps,
 	type FormControlErrorMessageOptions as SliderErrorMessageOptions,
 	type FormControlErrorMessageProps as SliderErrorMessageProps,
+	type FormControlErrorMessageRenderProps as SliderErrorMessageRenderProps,
 	FormControlLabel as Label,
+	type FormControlLabelCommonProps as SliderLabelCommonProps,
+	type FormControlLabelOptions as SliderLabelOptions,
 	type FormControlLabelProps as SliderLabelProps,
+	type FormControlLabelRenderProps as SliderLabelRenderProps,
 } from "../form-control";
 import {
 	SliderFill as Fill,
+	type SliderFillCommonProps,
 	type SliderFillOptions,
 	type SliderFillProps,
+	type SliderFillRenderProps,
 } from "./slider-fill";
 import { SliderInput as Input, type SliderInputProps } from "./slider-input";
 import {
 	type GetValueLabelParams as SliderGetValueLabelParams,
 	SliderRoot as Root,
+	type SliderRootCommonProps,
 	type SliderRootOptions,
 	type SliderRootProps,
+	type SliderRootRenderProps,
 } from "./slider-root";
-import { SliderThumb as Thumb, type SliderThumbProps } from "./slider-thumb";
-import { SliderTrack as Track, type SliderTrackProps } from "./slider-track";
+import {
+	SliderThumb as Thumb,
+	type SliderThumbCommonProps,
+	type SliderThumbOptions,
+	type SliderThumbProps,
+	type SliderThumbRenderProps,
+} from "./slider-thumb";
+import {
+	SliderTrack as Track,
+	type SliderTrackCommonProps,
+	type SliderTrackOptions,
+	type SliderTrackProps,
+	type SliderTrackRenderProps,
+} from "./slider-track";
 import {
 	SliderValueLabel as ValueLabel,
+	type SliderValueLabelCommonProps,
+	type SliderValueLabelOptions,
 	type SliderValueLabelProps,
+	type SliderValueLabelRenderProps,
 } from "./slider-value-label";
 
 export type {
 	SliderDescriptionProps,
+	SliderDescriptionOptions,
+	SliderDescriptionCommonProps,
+	SliderDescriptionRenderProps,
 	SliderErrorMessageOptions,
+	SliderErrorMessageCommonProps,
+	SliderErrorMessageRenderProps,
 	SliderErrorMessageProps,
 	SliderFillOptions,
+	SliderFillCommonProps,
+	SliderFillRenderProps,
 	SliderFillProps,
 	SliderGetValueLabelParams,
 	SliderInputProps,
+	SliderLabelOptions,
+	SliderLabelCommonProps,
+	SliderLabelRenderProps,
 	SliderLabelProps,
 	SliderRootOptions,
+	SliderRootCommonProps,
+	SliderRootRenderProps,
 	SliderRootProps,
+	SliderThumbOptions,
+	SliderThumbCommonProps,
+	SliderThumbRenderProps,
 	SliderThumbProps,
+	SliderTrackOptions,
+	SliderTrackCommonProps,
+	SliderTrackRenderProps,
 	SliderTrackProps,
+	SliderValueLabelOptions,
+	SliderValueLabelCommonProps,
+	SliderValueLabelRenderProps,
 	SliderValueLabelProps,
 };
 export {

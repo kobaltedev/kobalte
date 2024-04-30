@@ -7,22 +7,22 @@
  */
 
 import {
-	OverrideComponentProps,
+	Orientation,
 	composeEventHandlers,
 	focusWithoutScrolling,
 	isWebKit,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, createEffect, on, splitProps } from "solid-js";
+import { JSX, ValidComponent, createEffect, on, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useTabsContext } from "./tabs-context";
 
-export interface TabsTriggerOptions extends AsChildProp {
+export interface TabsTriggerOptions {
 	/** The unique key that associates the tab with a tab panel. */
 	value: string;
 
@@ -30,22 +30,50 @@ export interface TabsTriggerOptions extends AsChildProp {
 	disabled?: boolean;
 }
 
-export interface TabsTriggerProps
-	extends OverrideComponentProps<"button", TabsTriggerOptions> {}
+export interface TabsTriggerCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	type: "button";
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+}
+
+export interface TabsTriggerRenderProps extends TabsTriggerCommonProps {
+	role: "tab";
+	tabIndex: number | undefined;
+	disabled: boolean;
+	"aria-selected": boolean;
+	"aria-disabled": boolean | undefined;
+	"aria-controls": string | undefined;
+	"data-key": string | undefined;
+	"data-orientation": Orientation;
+	"data-selected": string | undefined;
+	"data-highlighted": string | undefined;
+	"data-disabled": string | undefined;
+}
+
+export type TabsTriggerProps = TabsTriggerOptions &
+	Partial<TabsTriggerCommonProps>;
 
 /**
  * The button that activates its associated tab panel.
  */
-export function TabsTrigger(props: TabsTriggerProps) {
-	let ref: HTMLButtonElement | undefined;
+export function TabsTrigger<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, TabsTriggerProps>,
+) {
+	let ref: HTMLElement | undefined;
 
 	const context = useTabsContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
 			type: "button",
-		},
-		props,
+		} as const,
+		props as TabsTriggerProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -103,7 +131,7 @@ export function TabsTrigger(props: TabsTriggerProps) {
 	);
 
 	return (
-		<Polymorphic
+		<Polymorphic<TabsTriggerRenderProps>
 			as="button"
 			ref={mergeRefs((el) => (ref = el), local.ref)}
 			id={id()}

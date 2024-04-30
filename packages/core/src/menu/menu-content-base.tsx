@@ -7,7 +7,6 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	composeEventHandlers,
 	contains,
@@ -15,18 +14,23 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
+	Component,
 	JSX,
 	Show,
+	ValidComponent,
 	createEffect,
 	createUniqueId,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
-import { DismissableLayer } from "../dismissable-layer";
+import {
+	DismissableLayer,
+	DismissableLayerRenderProps,
+} from "../dismissable-layer";
 import { createSelectableList } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import { AsChildProp } from "../polymorphic";
+import { PolymorphicProps } from "../polymorphic";
 import { PopperPositioner } from "../popper";
 import {
 	FocusOutsideEvent,
@@ -34,13 +38,10 @@ import {
 	PointerDownOutsideEvent,
 	createFocusScope,
 } from "../primitives";
-import { useMenuContext } from "./menu-context";
+import { MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuContentBaseOptions extends AsChildProp {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
-
+export interface MenuContentBaseOptions {
 	/**
 	 * Event handler called when focus moves into the component after opening.
 	 * It can be prevented by calling `event.preventDefault`.
@@ -78,10 +79,34 @@ export interface MenuContentBaseOptions extends AsChildProp {
 	onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export interface MenuContentBaseProps
-	extends OverrideComponentProps<"div", MenuContentBaseOptions> {}
+export interface MenuContentBaseCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	/** The HTML styles attribute (object form only). */
+	style?: JSX.CSSProperties;
+}
 
-export function MenuContentBase(props: MenuContentBaseProps) {
+export interface MenuContentBaseRenderProps
+	extends MenuContentBaseCommonProps,
+		DismissableLayerRenderProps,
+		MenuDataSet {
+	role: "menu";
+	tabIndex: number | undefined;
+	"aria-labelledby": string | undefined;
+}
+
+export type MenuContentBaseProps = MenuContentBaseOptions &
+	Partial<MenuContentBaseCommonProps>;
+
+export function MenuContentBase<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenuContentBaseProps>,
+) {
 	let ref: HTMLElement | undefined;
 
 	const rootContext = useMenuRootContext();
@@ -92,7 +117,7 @@ export function MenuContentBase(props: MenuContentBaseProps) {
 		{
 			id: rootContext.generateId(`content-${createUniqueId()}`),
 		},
-		props,
+		props as MenuContentBaseProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -147,7 +172,7 @@ export function MenuContentBase(props: MenuContentBaseProps) {
 		() => ref,
 	);
 
-	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		// Submenu key events bubble through portals. We only care about keys in this menu.
 		if (!contains(e.currentTarget, e.target)) {
 			return;
@@ -203,7 +228,9 @@ export function MenuContentBase(props: MenuContentBaseProps) {
 		}
 	};
 
-	const onPointerEnter: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerEnter);
 
 		if (!context.isOpen()) {
@@ -223,7 +250,9 @@ export function MenuContentBase(props: MenuContentBaseProps) {
 			.setFocusedKey(undefined);
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
@@ -246,7 +275,11 @@ export function MenuContentBase(props: MenuContentBaseProps) {
 	return (
 		<Show when={context.contentPresence.isPresent()}>
 			<PopperPositioner>
-				<DismissableLayer
+				<DismissableLayer<
+					Component<
+						Omit<MenuContentBaseRenderProps, keyof DismissableLayerRenderProps>
+					>
+				>
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
 						context.contentPresence.setRef(el);

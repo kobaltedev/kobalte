@@ -8,15 +8,14 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import {
-	ComponentProps,
 	JSX,
+	ValidComponent,
 	createEffect,
 	createSignal,
 	on,
@@ -25,23 +24,54 @@ import {
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
+	FormControlDataSet,
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { useCheckboxContext } from "./checkbox-context";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
 
-export interface CheckboxInputOptions {
+export interface CheckboxInputOptions {}
+
+export interface CheckboxInputCommonProps {
+	id: string;
+	ref: HTMLInputElement | ((el: HTMLInputElement) => void);
 	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style: JSX.CSSProperties;
+	onChange: JSX.EventHandlerUnion<HTMLInputElement, InputEvent>;
+	onFocus: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent>;
+	onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent>;
+	"aria-label": string | undefined;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
 }
 
-export interface CheckboxInputProps
-	extends OverrideComponentProps<"input", CheckboxInputOptions> {}
+export interface CheckboxInputRenderProps
+	extends CheckboxInputCommonProps,
+		FormControlDataSet,
+		CheckboxDataSet {
+	type: "checkbox";
+	name: string;
+	value: string;
+	checked: boolean;
+	required: boolean | undefined;
+	disabled: boolean | undefined;
+	readonly: boolean | undefined;
+	"aria-invalid": boolean | undefined;
+	"aria-required": boolean | undefined;
+	"aria-disabled": boolean | undefined;
+	"aria-readonly": boolean | undefined;
+}
+
+export type CheckboxInputProps = CheckboxInputOptions &
+	Partial<CheckboxInputCommonProps>;
 
 /**
  * The native html input that is visually hidden in the checkbox.
  */
-export function CheckboxInput(props: CheckboxInputProps) {
+export function CheckboxInput<T extends ValidComponent = "input">(
+	props: PolymorphicProps<T, CheckboxInputProps>,
+) {
 	let ref: HTMLInputElement | undefined;
 
 	const formControlContext = useFormControlContext();
@@ -51,7 +81,7 @@ export function CheckboxInput(props: CheckboxInputProps) {
 		{
 			id: context.generateId("input"),
 		},
-		props,
+		props as CheckboxInputProps,
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
@@ -64,9 +94,7 @@ export function CheckboxInput(props: CheckboxInputProps) {
 
 	const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
 
-	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
-		e,
-	) => {
+	const onChange: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
 		callHandler(e, local.onChange);
 
 		e.stopPropagation();
@@ -88,13 +116,17 @@ export function CheckboxInput(props: CheckboxInputProps) {
 		setIsInternalChangeEvent(false);
 	};
 
-	const onFocus: JSX.FocusEventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus as typeof onFocus);
+	const onFocus: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onFocus);
 		context.setIsFocused(true);
 	};
 
-	const onBlur: JSX.FocusEventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur as typeof onBlur);
+	const onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onBlur);
 		context.setIsFocused(false);
 	};
 
@@ -134,7 +166,8 @@ export function CheckboxInput(props: CheckboxInputProps) {
 	);
 
 	return (
-		<input
+		<Polymorphic<CheckboxInputRenderProps>
+			as="input"
 			ref={mergeRefs((el) => {
 				context.setInputRef(el);
 				ref = el;
@@ -154,15 +187,15 @@ export function CheckboxInput(props: CheckboxInputProps) {
 			aria-invalid={
 				formControlContext.validationState() === "invalid" || undefined
 			}
-			aria-required={formControlContext.isRequired() || undefined}
-			aria-disabled={formControlContext.isDisabled() || undefined}
-			aria-readonly={formControlContext.isReadOnly() || undefined}
+			aria-required={formControlContext.isRequired()}
+			aria-disabled={formControlContext.isDisabled()}
+			aria-readonly={formControlContext.isReadOnly()}
 			onChange={onChange}
 			onFocus={onFocus}
 			onBlur={onBlur}
 			{...formControlContext.dataset()}
 			{...context.dataset()}
-			{...(others as ComponentProps<"input">)}
+			{...others}
 		/>
 	);
 }

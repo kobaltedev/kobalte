@@ -9,21 +9,33 @@
 import {
 	ComponentProps,
 	Show,
+	ValidComponent,
 	createEffect,
 	createSignal,
 	on,
 	onCleanup,
 } from "solid-js";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 
 import { useImageContext } from "./image-context";
 import { ImageLoadingStatus } from "./types";
 
-export interface ImageImgProps extends ComponentProps<"img"> {}
+export interface ImageImgOptions {}
+
+export interface ImageImgCommonProps {
+	src?: string;
+}
+
+export interface ImageImgRenderProps extends ImageImgCommonProps {}
+
+export type ImageImgProps = ImageImgOptions & Partial<ImageImgCommonProps>;
 
 /**
  * The image to render. By default, it will only render when it has loaded.
  */
-export function ImageImg(props: ImageImgProps) {
+export function ImageImg<T extends ValidComponent = "img">(
+	props: PolymorphicProps<T, ImageImgProps>,
+) {
 	const context = useImageContext();
 
 	const [loadingStatus, setLoadingStatus] =
@@ -71,8 +83,10 @@ export function ImageImg(props: ImageImgProps) {
 
 	return (
 		<Show when={loadingStatus() === "loaded"}>
-			{/* biome-ignore lint/a11y/useAltText: from props */}
-			<img {...props} />
+			<Polymorphic<ImageImgRenderProps>
+				as="img"
+				{...(props as ImageImgProps)}
+			/>
 		</Show>
 	);
 }

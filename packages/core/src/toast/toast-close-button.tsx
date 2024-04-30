@@ -6,26 +6,39 @@
  * https://github.com/radix-ui/primitives/blob/72018163e1fdb79b51d322d471c8fc7d14df2b59/packages/react/toast/src/Toast.tsx
  */
 
-import { OverrideComponentProps, callHandler } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { callHandler } from "@kobalte/utils";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import * as Button from "../button";
+import { PolymorphicProps } from "../polymorphic";
 import { useToastContext } from "./toast-context";
 
-export interface ToastCloseButtonOptions extends Button.ButtonRootOptions {}
+export interface ToastCloseButtonOptions {}
 
-export type ToastCloseButtonProps = OverrideComponentProps<
-	"button",
-	ToastCloseButtonOptions
->;
+export interface ToastCloseButtonCommonProps {
+	"aria-label": string;
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+}
+
+export interface ToastCloseButtonRenderProps
+	extends ToastCloseButtonCommonProps,
+		Button.ButtonRootRenderProps {}
+
+export type ToastCloseButtonProps = ToastCloseButtonOptions &
+	Partial<ToastCloseButtonCommonProps>;
 
 /**
  * The button that closes the toast.
  */
-export function ToastCloseButton(props: ToastCloseButtonProps) {
+export function ToastCloseButton<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, ToastCloseButtonProps>,
+) {
 	const context = useToastContext();
 
-	const [local, others] = splitProps(props, ["aria-label", "onClick"]);
+	const [local, others] = splitProps(props as ToastCloseButtonProps, [
+		"aria-label",
+		"onClick",
+	]);
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
@@ -33,7 +46,11 @@ export function ToastCloseButton(props: ToastCloseButtonProps) {
 	};
 
 	return (
-		<Button.Root
+		<Button.Root<
+			Component<
+				Omit<ToastCloseButtonRenderProps, keyof Button.ButtonRootRenderProps>
+			>
+		>
 			aria-label={local["aria-label"] || context.translations().close}
 			onClick={onClick}
 			{...others}

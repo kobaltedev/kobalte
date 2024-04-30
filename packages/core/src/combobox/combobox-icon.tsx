@@ -1,19 +1,37 @@
-import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
+import { JSX, ValidComponent } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useComboboxContext } from "./combobox-context";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ComboboxDataSet, useComboboxContext } from "./combobox-context";
 
-export interface ComboboxIconProps
-	extends OverrideComponentProps<"span", AsChildProp> {}
+export interface ComboboxIconOptions {}
+
+export interface ComboboxIconCommonProps {
+	children: JSX.Element;
+}
+
+export interface ComboboxIconRenderProps
+	extends ComboboxIconCommonProps,
+		ComboboxDataSet {
+	"aria-hidden": "true";
+}
+
+export type ComboboxIconProps = ComboboxIconOptions &
+	Partial<ComboboxIconCommonProps>;
 
 /**
  * A small icon often displayed next to the value as a visual affordance for the fact it can be open.
  * It renders a `▼` by default, but you can use your own icon `children`.
  */
-export function ComboboxIcon(props: ComboboxIconProps) {
+export function ComboboxIcon<T extends ValidComponent = "span">(
+	props: PolymorphicProps<T, ComboboxIconProps>,
+) {
 	const context = useComboboxContext();
 
-	const mergedProps = mergeDefaultProps({ children: "▼" }, props);
+	const mergedProps = mergeDefaultProps(
+		{ children: "▼" },
+		props as ComboboxIconProps,
+	);
 
 	return (
 		<Polymorphic

@@ -6,20 +6,33 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/avatar/src/Avatar.tsx
  */
 
-import { OverrideComponentProps } from "@kobalte/utils";
-import { Show, createEffect, createSignal, onCleanup } from "solid-js";
+import {
+	Show,
+	ValidComponent,
+	createEffect,
+	createSignal,
+	onCleanup,
+} from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useImageContext } from "./image-context";
 
-export interface ImageFallbackProps
-	extends OverrideComponentProps<"span", AsChildProp> {}
+export interface ImageFallbackOptions {}
+
+export interface ImageFallbackCommonProps {}
+
+export interface ImageFallbackRenderProps extends ImageFallbackCommonProps {}
+
+export type ImageFallbackProps = ImageFallbackOptions &
+	Partial<ImageFallbackCommonProps>;
 
 /**
  * An element that renders when the image hasn't loaded.
  * This means whilst it's loading, or if there was an error.
  */
-export function ImageFallback(props: ImageFallbackProps) {
+export function ImageFallback<T extends ValidComponent = "span">(
+	props: PolymorphicProps<T, ImageFallbackProps>,
+) {
 	const context = useImageContext();
 
 	const [canRender, setCanRender] = createSignal(
@@ -37,7 +50,10 @@ export function ImageFallback(props: ImageFallbackProps) {
 
 	return (
 		<Show when={canRender() && context.imageLoadingStatus() !== "loaded"}>
-			<Polymorphic as="span" {...props} />
+			<Polymorphic<ImageFallbackRenderProps>
+				as="span"
+				{...(props as ImageFallbackProps)}
+			/>
 		</Show>
 	);
 }

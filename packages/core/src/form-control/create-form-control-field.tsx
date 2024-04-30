@@ -39,16 +39,18 @@ export function createFormControlField(props: CreateFormControlFieldProps) {
 
 	return {
 		fieldProps: {
-			id: () => access(mergedProps.id),
-			ariaLabel: () => access(mergedProps["aria-label"]),
+			id: () => access(mergedProps.id) as string,
+			ariaLabel: () => access(mergedProps["aria-label"]) as string | undefined,
 			ariaLabelledBy: () =>
 				context.getAriaLabelledBy(
 					access(mergedProps.id),
 					access(mergedProps["aria-label"]),
 					access(mergedProps["aria-labelledby"]),
-				),
+				) as string | undefined,
 			ariaDescribedBy: () =>
-				context.getAriaDescribedBy(access(mergedProps["aria-describedby"])),
+				context.getAriaDescribedBy(access(mergedProps["aria-describedby"])) as
+					| string
+					| undefined,
 		},
 	};
 }

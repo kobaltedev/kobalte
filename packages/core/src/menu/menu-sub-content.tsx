@@ -12,11 +12,17 @@ import {
 	contains,
 	focusWithoutScrolling,
 } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import { Direction, useLocale } from "../i18n";
+import { PolymorphicProps } from "../polymorphic";
 import { FocusOutsideEvent } from "../primitives";
-import { MenuContentBase, MenuContentBaseOptions } from "./menu-content-base";
+import {
+	MenuContentBase,
+	MenuContentBaseCommonProps,
+	MenuContentBaseOptions,
+	MenuContentBaseRenderProps,
+} from "./menu-content-base";
 import { useMenuContext } from "./menu-context";
 
 export interface MenuSubContentOptions
@@ -25,24 +31,33 @@ export interface MenuSubContentOptions
 		"onOpenAutoFocus" | "onCloseAutoFocus"
 	> {}
 
+export interface MenuSubContentCommonProps extends MenuContentBaseCommonProps {
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+}
+
+export interface MenuSubContentRenderProps
+	extends MenuSubContentCommonProps,
+		MenuContentBaseRenderProps {}
+
+export type MenuSubContentProps = MenuSubContentOptions &
+	Partial<MenuSubContentCommonProps>;
+
 const SUB_CLOSE_KEYS: Record<Direction, string[]> = {
 	ltr: ["ArrowLeft"],
 	rtl: ["ArrowRight"],
 };
 
-export interface MenuSubContentProps
-	extends OverrideComponentProps<"div", MenuSubContentOptions> {}
-
 /**
  * The component that pops out when a submenu is open.
  */
-export function MenuSubContent(props: MenuSubContentProps) {
+export function MenuSubContent<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenuSubContentProps>,
+) {
 	const context = useMenuContext();
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(props as MenuSubContentProps, [
 		"onFocusOutside",
 		"onKeyDown",
-		"onFocusOut",
 	]);
 
 	const { direction } = useLocale();
@@ -70,7 +85,7 @@ export function MenuSubContent(props: MenuSubContentProps) {
 		}
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		// Submenu key events bubble through portals. We only care about keys in this menu.
@@ -87,7 +102,11 @@ export function MenuSubContent(props: MenuSubContentProps) {
 	};
 
 	return (
-		<MenuContentBase
+		<MenuContentBase<
+			Component<
+				Omit<MenuSubContentRenderProps, keyof MenuContentBaseRenderProps>
+			>
+		>
 			onOpenAutoFocus={onOpenAutoFocus}
 			onCloseAutoFocus={onCloseAutoFocus}
 			onFocusOutside={onFocusOutside}

@@ -1,21 +1,22 @@
-import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	Accessor,
 	Component,
 	JSX,
 	Setter,
+	ValidComponent,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import {
 	PaginationContext,
 	PaginationContextValue,
 } from "./pagination-context";
 
-export interface PaginationRootOptions extends AsChildProp {
+export interface PaginationRootOptions {
 	/** The controlled page number of the pagination. (1-indexed) */
 	page?: number;
 
@@ -56,20 +57,31 @@ export interface PaginationRootOptions extends AsChildProp {
 	disabled?: boolean;
 }
 
-export interface PaginationRootProps
-	extends OverrideComponentProps<"nav", PaginationRootOptions> {}
+export interface PaginationRootCommonProps {
+	id: string;
+	children: JSX.Element;
+}
+
+export interface PaginationRootRenderProps extends PaginationRootCommonProps {
+	"data-disabled": "" | undefined;
+}
+
+export type PaginationRootProps = PaginationRootOptions &
+	Partial<PaginationRootCommonProps>;
 
 /**
  * A list of page number that allows users to change the current page.
  */
-export function PaginationRoot(props: PaginationRootProps) {
+export function PaginationRoot<T extends ValidComponent = "nav">(
+	props: PolymorphicProps<T, PaginationRootProps>,
+) {
 	const defaultId = `pagination-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 		},
-		props,
+		props as PaginationRootProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -108,7 +120,7 @@ export function PaginationRoot(props: PaginationRootProps) {
 
 	return (
 		<PaginationContext.Provider value={context}>
-			<Polymorphic
+			<Polymorphic<PaginationRootRenderProps>
 				as="nav"
 				data-disabled={local.disabled ? "" : undefined}
 				{...others}

@@ -1,4 +1,4 @@
-import { As, Select } from "@kobalte/core";
+import { Select } from "@kobalte/core";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { For, createSignal } from "solid-js";
 
@@ -377,46 +377,44 @@ export function MultipleSelectionExample() {
 				<Select.Trigger
 					class={`${style.select__trigger} ${style.select__trigger_multi}`}
 					aria-label="Fruits"
-					asChild
+					as="div"
 				>
-					<As component="div">
-						<Select.Value<string> class={style.select__value}>
-							{(state) => (
-								<>
-									<div class="flex items-center gap-2 flex-wrap">
-										<For each={state.selectedOptions()}>
-											{(option) => (
-												<span
-													class="bg-zinc-100 dark:bg-zinc-700 text-sm px-2 py-0.5 rounded inline-flex items-center gap-x-2"
-													onPointerDown={(e) => e.stopPropagation()}
+					<Select.Value<string> class={style.select__value}>
+						{(state) => (
+							<>
+								<div class="flex items-center gap-2 flex-wrap">
+									<For each={state.selectedOptions()}>
+										{(option) => (
+											<span
+												class="bg-zinc-100 dark:bg-zinc-700 text-sm px-2 py-0.5 rounded inline-flex items-center gap-x-2"
+												onPointerDown={(e) => e.stopPropagation()}
+											>
+												{option}
+												<button
+													type="button"
+													onClick={() => state.remove(option)}
+													class="rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600 p-1"
 												>
-													{option}
-													<button
-														type="button"
-														onClick={() => state.remove(option)}
-														class="rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600 p-1"
-													>
-														<CrossIcon class="h3 w-3" />
-													</button>
-												</span>
-											)}
-										</For>
-									</div>
-									<button
-										type="button"
-										onPointerDown={(e) => e.stopPropagation()}
-										onClick={state.clear}
-										class="ml-auto mr-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-600 p-1"
-									>
-										<CrossIcon class="h-3.5 w-3.5" />
-									</button>
-								</>
-							)}
-						</Select.Value>
-						<Select.Icon class={style.select__icon}>
-							<CaretSortIcon />
-						</Select.Icon>
-					</As>
+													<CrossIcon class="h3 w-3" />
+												</button>
+											</span>
+										)}
+									</For>
+								</div>
+								<button
+									type="button"
+									onPointerDown={(e) => e.stopPropagation()}
+									onClick={state.clear}
+									class="ml-auto mr-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-600 p-1"
+								>
+									<CrossIcon class="h-3.5 w-3.5" />
+								</button>
+							</>
+						)}
+					</Select.Value>
+					<Select.Icon class={style.select__icon}>
+						<CaretSortIcon />
+					</Select.Icon>
 				</Select.Trigger>
 				<Select.Portal>
 					<Select.Content class={style.select__content}>

@@ -6,14 +6,11 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import {
-	OverrideComponentProps,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
 	JSX,
 	Show,
+	ValidComponent,
 	createEffect,
 	createSignal,
 	on,
@@ -22,29 +19,41 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createPresence } from "../primitives";
-import { useCollapsibleContext } from "./collapsible-context";
+import {
+	CollapsibleDataSet,
+	useCollapsibleContext,
+} from "./collapsible-context";
 
-export interface CollapsibleContentOptions extends AsChildProp {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+export interface CollapsibleContentOptions {}
+
+export interface CollapsibleContentCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	style: JSX.CSSProperties;
 }
 
-export interface CollapsibleContentProps
-	extends OverrideComponentProps<"div", CollapsibleContentOptions> {}
+export interface CollapsibleContentRenderProps
+	extends CollapsibleContentCommonProps,
+		CollapsibleDataSet {}
+
+export type CollapsibleContentProps = CollapsibleContentOptions &
+	Partial<CollapsibleContentCommonProps>;
 
 /**
  * Contains the content to be rendered when the collapsible is expanded.
  */
-export function CollapsibleContent(props: CollapsibleContentProps) {
-	let ref: HTMLDivElement | undefined;
+export function CollapsibleContent<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, CollapsibleContentProps>,
+) {
+	let ref: HTMLElement | undefined;
 
 	const context = useCollapsibleContext();
 
 	const mergedProps = mergeDefaultProps(
 		{ id: context.generateId("content") },
-		props,
+		props as CollapsibleContentProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["ref", "id", "style"]);
@@ -107,11 +116,11 @@ export function CollapsibleContent(props: CollapsibleContentProps) {
 		),
 	);
 
-	createEffect(() => onCleanup(context.registerContentId(local.id!)));
+	createEffect(() => onCleanup(context.registerContentId(local.id)));
 
 	return (
 		<Show when={presence.isPresent()}>
-			<Polymorphic
+			<Polymorphic<CollapsibleContentRenderProps>
 				as="div"
 				ref={mergeRefs((el) => {
 					presence.setRef(el);

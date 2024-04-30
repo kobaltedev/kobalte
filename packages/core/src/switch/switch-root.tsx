@@ -19,6 +19,7 @@ import {
 import {
 	Accessor,
 	JSX,
+	ValidComponent,
 	children,
 	createMemo,
 	createSignal,
@@ -29,9 +30,10 @@ import {
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	FormControlDataSet,
 	createFormControl,
 } from "../form-control";
-import { Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createFormResetListener, createToggleState } from "../primitives";
 import {
 	SwitchContext,
@@ -88,14 +90,30 @@ export interface SwitchRootOptions {
 	children?: JSX.Element | ((state: SwitchRootState) => JSX.Element);
 }
 
-export interface SwitchRootProps
-	extends OverrideComponentProps<"div", SwitchRootOptions> {}
+export interface SwitchRootCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+}
+
+export interface SwitchRootRenderProps
+	extends SwitchRootCommonProps,
+		SwitchDataSet,
+		FormControlDataSet {
+	role: "group";
+	children: JSX.Element;
+}
+
+export type SwitchRootProps = SwitchRootOptions &
+	Partial<SwitchRootCommonProps>;
 
 /**
  * A control that allows users to choose one of two values: on or off.
  */
-export function SwitchRoot(props: SwitchRootProps) {
-	let ref: HTMLDivElement | undefined;
+export function SwitchRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, SwitchRootProps>,
+) {
+	let ref: HTMLElement | undefined;
 
 	const defaultId = `switch-${createUniqueId()}`;
 
@@ -104,7 +122,7 @@ export function SwitchRoot(props: SwitchRootProps) {
 			value: "on",
 			id: defaultId,
 		},
-		props,
+		props as SwitchRootProps,
 	);
 
 	const [local, formControlProps, others] = splitProps(
@@ -139,7 +157,9 @@ export function SwitchRoot(props: SwitchRootProps) {
 		() => state.setIsSelected(local.defaultChecked ?? false),
 	);
 
-	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerDown);
 
 		// For consistency with native, prevent the input blurs on pointer down.
@@ -167,7 +187,7 @@ export function SwitchRoot(props: SwitchRootProps) {
 	return (
 		<FormControlContext.Provider value={formControlContext}>
 			<SwitchContext.Provider value={context}>
-				<Polymorphic
+				<Polymorphic<SwitchRootRenderProps>
 					as="div"
 					ref={mergeRefs((el) => (ref = el), local.ref)}
 					role="group"

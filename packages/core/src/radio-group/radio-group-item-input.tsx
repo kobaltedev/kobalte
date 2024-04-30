@@ -7,15 +7,14 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import {
-	ComponentProps,
 	JSX,
+	ValidComponent,
 	createEffect,
 	createSignal,
 	on,
@@ -24,21 +23,51 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useRadioGroupContext } from "./radio-group-context";
-import { useRadioGroupItemContext } from "./radio-group-item-context";
+import {
+	RadioGroupItemDataSet,
+	useRadioGroupItemContext,
+} from "./radio-group-item-context";
 
 export interface RadioGroupItemInputOptions {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
 
-export interface RadioGroupItemInputProps
-	extends OverrideComponentProps<"input", RadioGroupItemInputOptions> {}
+export interface RadioGroupItemInputCommonProps {
+	id: string;
+	ref: HTMLInputElement | ((el: HTMLInputElement) => void);
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
+	onChange: JSX.EventHandlerUnion<HTMLInputElement, Event>;
+	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	"aria-label"?: string;
+	style: JSX.CSSProperties;
+}
+
+export interface RadioGroupItemInputRenderProps
+	extends RadioGroupItemInputCommonProps,
+		RadioGroupItemDataSet {
+	type: "radio";
+	name: string;
+	value: string;
+	checked: boolean;
+	required: boolean | undefined;
+	disabled: boolean | undefined;
+	readonly: boolean | undefined;
+}
+
+export type RadioGroupItemInputProps = RadioGroupItemInputOptions &
+	Partial<RadioGroupItemInputCommonProps>;
 
 /**
  * The native html input that is visually hidden in the radio button.
  */
-export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
+export function RadioGroupItemInput<T extends ValidComponent = "input">(
+	props: PolymorphicProps<T, RadioGroupItemInputProps>,
+) {
 	const formControlContext = useFormControlContext();
 	const radioGroupContext = useRadioGroupContext();
 	const radioContext = useRadioGroupItemContext();
@@ -47,7 +76,7 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
 		{
 			id: radioContext.generateId("input"),
 		},
-		props,
+		props as RadioGroupItemInputProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -89,9 +118,7 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
 
 	const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
 
-	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
-		e,
-	) => {
+	const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (e) => {
 		callHandler(e, local.onChange);
 
 		e.stopPropagation();
@@ -113,12 +140,12 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
 		setIsInternalChangeEvent(false);
 	};
 
-	const onFocus: JSX.FocusEventHandlerUnion<any, FocusEvent> = (e) => {
+	const onFocus: JSX.FocusEventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 		radioContext.setIsFocused(true);
 	};
 
-	const onBlur: JSX.FocusEventHandlerUnion<any, FocusEvent> = (e) => {
+	const onBlur: JSX.FocusEventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 		radioContext.setIsFocused(false);
 	};
@@ -146,7 +173,8 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
 	createEffect(() => onCleanup(radioContext.registerInput(others.id!)));
 
 	return (
-		<input
+		<Polymorphic<RadioGroupItemInputRenderProps>
+			as="input"
 			ref={mergeRefs(radioContext.setInputRef, local.ref)}
 			type="radio"
 			name={formControlContext.name()}
@@ -162,7 +190,7 @@ export function RadioGroupItemInput(props: RadioGroupItemInputProps) {
 			onFocus={onFocus}
 			onBlur={onBlur}
 			{...radioContext.dataset()}
-			{...(others as ComponentProps<"input">)}
+			{...others}
 		/>
 	);
 }

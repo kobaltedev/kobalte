@@ -1,5 +1,4 @@
 import {
-	OverrideComponentProps,
 	ValidationState,
 	access,
 	createGenerateId,
@@ -8,6 +7,7 @@ import {
 } from "@kobalte/utils";
 import {
 	JSX,
+	ValidComponent,
 	batch,
 	createEffect,
 	createMemo,
@@ -21,10 +21,11 @@ import { NumberFormatter, NumberParser } from "@internationalized/number";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
+	FormControlDataSet,
 	createFormControl,
 } from "../form-control";
 import { useLocale } from "../i18n";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	createControllableSignal,
 	createFormResetListener,
@@ -36,8 +37,7 @@ import {
 } from "./number-field-context";
 
 export interface NumberFieldRootOptions
-	extends Pick<SpinButtonRootOptions, "textValue" | "translations">,
-		AsChildProp {
+	extends Pick<SpinButtonRootOptions, "textValue" | "translations"> {
 	/** The controlled formatted value of the number field. */
 	value?: string | number;
 
@@ -106,14 +106,27 @@ export interface NumberFieldRootOptions
 	readOnly?: boolean;
 }
 
-export interface NumberFieldRootProps
-	extends OverrideComponentProps<"div", NumberFieldRootOptions> {}
+export interface NumberFieldRootCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+}
+
+export interface NumberFieldRootRenderProps
+	extends NumberFieldRootCommonProps,
+		FormControlDataSet {
+	role: "group";
+}
+
+export type NumberFieldRootProps = NumberFieldRootOptions &
+	Partial<NumberFieldRootCommonProps>;
 
 /**
  * A text input that allow users to input custom text entries with a keyboard.
  */
-export function NumberFieldRoot(props: NumberFieldRootProps) {
-	let ref: HTMLDivElement | undefined;
+export function NumberFieldRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, NumberFieldRootProps>,
+) {
+	let ref: HTMLElement | undefined;
 
 	const defaultId = `NumberField-${createUniqueId()}`;
 
@@ -126,7 +139,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 			step: 1,
 			changeOnWheel: true,
 		},
-		props,
+		props as NumberFieldRootProps,
 	);
 
 	const [local, formControlProps, others] = splitProps(
@@ -338,7 +351,7 @@ export function NumberFieldRoot(props: NumberFieldRootProps) {
 	return (
 		<FormControlContext.Provider value={formControlContext}>
 			<NumberFieldContext.Provider value={context}>
-				<Polymorphic
+				<Polymorphic<NumberFieldRootRenderProps>
 					as="div"
 					ref={mergeRefs((el) => (ref = el), local.ref)}
 					role="group"

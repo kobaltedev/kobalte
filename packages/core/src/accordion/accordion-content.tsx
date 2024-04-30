@@ -6,34 +6,64 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/accordion/src/useAccordion.ts
  */
 
-import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+import { mergeDefaultProps } from "@kobalte/utils";
+import {
+	Component,
+	ValidComponent,
+	createEffect,
+	onCleanup,
+	splitProps,
+} from "solid-js";
 
 import * as Collapsible from "../collapsible";
+import { PolymorphicProps } from "../polymorphic";
 import { useAccordionItemContext } from "./accordion-item-context";
 
-export interface AccordionContentOptions
-	extends Collapsible.CollapsibleContentOptions {}
+export interface AccordionContentOptions {}
 
-export interface AccordionContentProps
-	extends OverrideComponentProps<"div", AccordionContentOptions> {}
+export interface AccordionContentCommonProps
+	extends Collapsible.CollapsibleContentCommonProps {
+	id: string;
+}
+
+export interface AccordionContentRenderProps
+	extends AccordionContentCommonProps,
+		Collapsible.CollapsibleContentRenderProps {
+	role: "region";
+	"aria-labelledby": string | undefined;
+}
+
+export type AccordionContentProps = AccordionContentOptions &
+	Partial<AccordionContentCommonProps>;
 
 /**
  * Contains the content to be rendered when the `Accordion.Item` is expanded.
  */
-export function AccordionContent(props: AccordionContentProps) {
+export function AccordionContent<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, AccordionContentProps>,
+) {
 	const itemContext = useAccordionItemContext();
 
 	const defaultId = itemContext.generateId("content");
 
-	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps(
+		{ id: defaultId },
+		props as AccordionContentProps,
+	);
 
-	const [local, others] = splitProps(mergedProps, ["style"]);
+	const [local, others] = splitProps(mergedProps, ["id", "style"]);
 
-	createEffect(() => onCleanup(itemContext.registerContentId(others.id!)));
+	createEffect(() => onCleanup(itemContext.registerContentId(local.id)));
 
 	return (
-		<Collapsible.Content
+		<Collapsible.Content<
+			Component<
+				Omit<
+					AccordionContentRenderProps,
+					keyof Collapsible.CollapsibleContentRenderProps
+				>
+			>
+		>
 			role="region"
 			aria-labelledby={itemContext.triggerId()}
 			style={{

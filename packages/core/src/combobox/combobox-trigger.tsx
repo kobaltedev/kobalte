@@ -13,16 +13,40 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
-import { useComboboxContext } from "./combobox-context";
+import { PolymorphicProps } from "../polymorphic";
+import { ComboboxDataSet, useComboboxContext } from "./combobox-context";
 
-export interface ComboboxTriggerProps
-	extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
+export interface ComboboxTriggerOptions {}
 
-export function ComboboxTrigger(props: ComboboxTriggerProps) {
+export interface ComboboxTriggerCommonProps
+	extends Button.ButtonRootCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	"aria-labelledby": string | undefined;
+}
+
+export interface ComboboxTriggerRenderProps
+	extends ComboboxTriggerCommonProps,
+		ComboboxDataSet,
+		Button.ButtonRootRenderProps {
+	"aria-label": string | undefined;
+	"aria-haspopup": "listbox";
+	"aria-expanded": boolean;
+	"aria-controls": string | undefined;
+}
+
+export type ComboboxTriggerProps = ComboboxTriggerOptions &
+	Partial<ComboboxTriggerCommonProps>;
+
+export function ComboboxTrigger<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, ComboboxTriggerProps>,
+) {
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 
@@ -30,7 +54,7 @@ export function ComboboxTrigger(props: ComboboxTriggerProps) {
 		{
 			id: context.generateId("trigger"),
 		},
-		props,
+		props as ComboboxTriggerProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -50,22 +74,23 @@ export function ComboboxTrigger(props: ComboboxTriggerProps) {
 		);
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> =
-		(e) => {
-			callHandler(e, local.onPointerDown);
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
+		callHandler(e, local.onPointerDown);
 
-			e.currentTarget.dataset.pointerType = e.pointerType;
+		e.currentTarget.dataset.pointerType = e.pointerType;
 
-			// For consistency with native, open the combobox on mouse down (main button), but touch up.
-			if (!isDisabled() && e.pointerType !== "touch" && e.button === 0) {
-				// prevent trigger from stealing focus from the active item after opening.
-				e.preventDefault();
+		// For consistency with native, open the combobox on mouse down (main button), but touch up.
+		if (!isDisabled() && e.pointerType !== "touch" && e.button === 0) {
+			// prevent trigger from stealing focus from the active item after opening.
+			e.preventDefault();
 
-				context.toggle(false, "manual");
-			}
-		};
+			context.toggle(false, "manual");
+		}
+	};
 
-	const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		if (!isDisabled()) {
@@ -87,10 +112,14 @@ export function ComboboxTrigger(props: ComboboxTriggerProps) {
 	};
 
 	return (
-		<Button.Root
+		<Button.Root<
+			Component<
+				Omit<ComboboxTriggerRenderProps, keyof Button.ButtonRootRenderProps>
+			>
+		>
 			ref={mergeRefs(context.setTriggerRef, local.ref)}
 			disabled={isDisabled()}
-			tabIndex="-1"
+			tabIndex={-1}
 			aria-haspopup="listbox"
 			aria-expanded={context.isOpen()}
 			aria-controls={context.isOpen() ? context.listboxId() : undefined}

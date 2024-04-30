@@ -1,23 +1,25 @@
 import {
-	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
-	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { JSX, createEffect, createSignal, on, splitProps } from "solid-js";
+import {
+	ComponentProps,
+	JSX,
+	createEffect,
+	createSignal,
+	splitProps,
+} from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { AsChildProp } from "../polymorphic";
 import { useSliderContext } from "./slider-context";
 import { useThumbContext } from "./slider-thumb";
 
-export interface SliderInputProps
-	extends OverrideComponentProps<"input", AsChildProp> {
+export interface SliderInputProps extends ComponentProps<"input"> {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
@@ -26,8 +28,6 @@ export interface SliderInputProps
  * The native html input that is visually hidden in the slider thumb.
  */
 export function SliderInput(props: SliderInputProps) {
-	let ref: HTMLInputElement | undefined;
-
 	const formControlContext = useFormControlContext();
 	const context = useSliderContext();
 	const thumb = useThumbContext();
@@ -41,7 +41,7 @@ export function SliderInput(props: SliderInputProps) {
 
 	const [local, formControlFieldProps, others] = splitProps(
 		mergedProps,
-		["ref", "style", "onChange"],
+		["style", "onChange"],
 		FORM_CONTROL_FIELD_PROP_NAMES,
 	);
 
@@ -76,7 +76,6 @@ export function SliderInput(props: SliderInputProps) {
 
 	return (
 		<input
-			ref={mergeRefs((el) => (ref = el), local.ref)}
 			type="range"
 			id={fieldProps.id()}
 			name={formControlContext.name()}

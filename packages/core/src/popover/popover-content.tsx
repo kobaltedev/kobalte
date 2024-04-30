@@ -5,11 +5,21 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, Show, createEffect, onCleanup, splitProps } from "solid-js";
+import {
+	Component,
+	JSX,
+	Show,
+	ValidComponent,
+	createEffect,
+	onCleanup,
+	splitProps,
+} from "solid-js";
 
 import createPreventScroll from "solid-prevent-scroll";
-import { DismissableLayer } from "../dismissable-layer";
-import { AsChildProp } from "../polymorphic";
+import {
+	DismissableLayer,
+	DismissableLayerRenderProps,
+} from "../dismissable-layer";
 import { PopperPositioner } from "../popper";
 import {
 	FocusOutsideEvent,
@@ -18,12 +28,9 @@ import {
 	createFocusScope,
 	createHideOutside,
 } from "../primitives";
-import { usePopoverContext } from "./popover-context";
+import { PopoverDataSet, usePopoverContext } from "./popover-context";
 
-export interface PopoverContentOptions extends AsChildProp {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
-
+export interface PopoverContentOptions {
 	/**
 	 * Event handler called when focus moves into the component after opening.
 	 * It can be prevented by calling `event.preventDefault`.
@@ -61,13 +68,32 @@ export interface PopoverContentOptions extends AsChildProp {
 	onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export interface PopoverContentProps
-	extends OverrideComponentProps<"div", PopoverContentOptions> {}
+export interface PopoverContentCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	/** The HTML styles attribute (object form only). */
+	style?: JSX.CSSProperties;
+}
+
+export interface PopoverContentRenderProps
+	extends PopoverContentCommonProps,
+		DismissableLayerRenderProps,
+		PopoverDataSet {
+	role: "dialog";
+	tabIndex: -1;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
+}
+
+export type PopoverContentProps = PopoverContentOptions &
+	Partial<PopoverContentCommonProps>;
 
 /**
  * Contains the content to be rendered when the popover is open.
  */
-export function PopoverContent(props: PopoverContentProps) {
+export function PopoverContent<T extends ValidComponent = "div">(
+	props: PopoverContentProps,
+) {
 	let ref: HTMLElement | undefined;
 
 	const context = usePopoverContext();
@@ -76,7 +102,7 @@ export function PopoverContent(props: PopoverContentProps) {
 		{
 			id: context.generateId("content"),
 		},
-		props,
+		props as PopoverContentProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -193,7 +219,11 @@ export function PopoverContent(props: PopoverContentProps) {
 	return (
 		<Show when={context.contentPresence.isPresent()}>
 			<PopperPositioner>
-				<DismissableLayer
+				<DismissableLayer<
+					Component<
+						Omit<PopoverContentRenderProps, keyof DismissableLayerRenderProps>
+					>
+				>
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
 						context.contentPresence.setRef(el);

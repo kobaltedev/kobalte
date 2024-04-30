@@ -1,22 +1,32 @@
-import {
-	EventKey,
-	OverrideComponentProps,
-	callHandler,
-	mergeDefaultProps,
-} from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { EventKey, callHandler, mergeDefaultProps } from "@kobalte/utils";
+import { JSX, ValidComponent, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useCheckboxContext } from "./checkbox-context";
+import { FormControlDataSet, useFormControlContext } from "../form-control";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
 
-export interface CheckboxControlProps
-	extends OverrideComponentProps<"div", AsChildProp> {}
+export interface CheckboxControlOptions {}
+
+export interface CheckboxControlCommonProps {
+	id: string;
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+}
+
+export interface CheckboxControlRenderProps
+	extends CheckboxControlCommonProps,
+		FormControlDataSet,
+		CheckboxDataSet {}
+
+export type CheckboxControlProps = CheckboxControlOptions &
+	Partial<CheckboxControlCommonProps>;
 
 /**
  * The element that visually represents a checkbox.
  */
-export function CheckboxControl(props: CheckboxControlProps) {
+export function CheckboxControl<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, CheckboxControlProps>,
+) {
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
 
@@ -24,20 +34,20 @@ export function CheckboxControl(props: CheckboxControlProps) {
 		{
 			id: context.generateId("control"),
 		},
-		props,
+		props as CheckboxControlProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["onClick", "onKeyDown"]);
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick as typeof onClick);
+		callHandler(e, local.onClick);
 
 		context.toggle();
 		context.inputRef()?.focus();
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown as typeof onKeyDown);
+		callHandler(e, local.onKeyDown);
 
 		if (e.key === EventKey.Space) {
 			context.toggle();
@@ -46,7 +56,7 @@ export function CheckboxControl(props: CheckboxControlProps) {
 	};
 
 	return (
-		<Polymorphic
+		<Polymorphic<CheckboxControlRenderProps>
 			as="div"
 			onClick={onClick}
 			onKeyDown={onKeyDown}

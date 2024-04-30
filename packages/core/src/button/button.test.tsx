@@ -1,8 +1,7 @@
 import { installPointerEvent } from "@kobalte/tests";
-import { render, screen } from "@solidjs/testing-library";
+import { render } from "@solidjs/testing-library";
 
 import * as Button from ".";
-import { As } from "../polymorphic";
 
 describe("Button", () => {
 	installPointerEvent();
@@ -19,8 +18,8 @@ describe("Button", () => {
 
 	it("should not have attribute 'type=button' by default when it's not a 'button' tag", () => {
 		const { getByTestId } = render(() => (
-			<Button.Root data-testid="button" asChild>
-				<As component="div">Button</As>
+			<Button.Root data-testid="button" as="div">
+				Button
 			</Button.Root>
 		));
 
@@ -31,10 +30,8 @@ describe("Button", () => {
 
 	it("should keep attribute 'type' when provided and it's a native 'button' or 'input'", () => {
 		const { getByTestId } = render(() => (
-			<Button.Root data-testid="button" asChild>
-				<As component="input" type="submit">
-					Button
-				</As>
+			<Button.Root data-testid="button" as="input" type="submit">
+				Button
 			</Button.Root>
 		));
 
@@ -55,10 +52,8 @@ describe("Button", () => {
 
 	it("should not have attribute 'role=button' when it's an 'a' tag with 'href'", () => {
 		const { getByTestId } = render(() => (
-			<Button.Root data-testid="button" asChild>
-				<As component="a" href="https://kobalte.dev">
-					Button
-				</As>
+			<Button.Root data-testid="button" as="a" href="https://kobalte.dev">
+				Button
 			</Button.Root>
 		));
 
@@ -69,8 +64,8 @@ describe("Button", () => {
 
 	it("should have attribute 'role=button' when it's not a native button", () => {
 		const { getByTestId } = render(() => (
-			<Button.Root data-testid="button" asChild>
-				<As component="div">Button</As>
+			<Button.Root data-testid="button" as="div">
+				Button
 			</Button.Root>
 		));
 
@@ -81,8 +76,8 @@ describe("Button", () => {
 
 	it("should have attribute 'role=button' when it's an 'a' tag without 'href'", () => {
 		const { getByTestId } = render(() => (
-			<Button.Root data-testid="button" asChild>
-				<As component="a">Button</As>
+			<Button.Root data-testid="button" as="a">
+				Button
 			</Button.Root>
 		));
 
@@ -93,8 +88,8 @@ describe("Button", () => {
 
 	it("should have attribute 'tabindex=0' when it's not a native button", () => {
 		const { getByTestId } = render(() => (
-			<Button.Root data-testid="button" asChild>
-				<As component="div">Button</As>
+			<Button.Root data-testid="button" as="div">
+				Button
 			</Button.Root>
 		));
 
@@ -105,10 +100,8 @@ describe("Button", () => {
 
 	it("should not have attribute 'tabindex=0' when it's an 'a' tag with 'href'", () => {
 		const { getByTestId } = render(() => (
-			<Button.Root data-testid="button" asChild>
-				<As component="a" href="https://kobalte.dev">
-					Button
-				</As>
+			<Button.Root data-testid="button" as="a" href="https://kobalte.dev">
+				Button
 			</Button.Root>
 		));
 
@@ -119,8 +112,8 @@ describe("Button", () => {
 
 	it("should not have attribute 'tabindex=0' when it's disabled", () => {
 		const { getByTestId } = render(() => (
-			<Button.Root data-testid="button" disabled asChild>
-				<As component="div">Button</As>
+			<Button.Root data-testid="button" disabled as="div">
+				Button
 			</Button.Root>
 		));
 
@@ -144,8 +137,8 @@ describe("Button", () => {
 
 	it("should have correct 'disabled' attribute when disabled and it's an input", () => {
 		const { getByTestId } = render(() => (
-			<Button.Root data-testid="button" disabled asChild>
-				<As component="input">Button</As>
+			<Button.Root data-testid="button" disabled as="input">
+				Button
 			</Button.Root>
 		));
 
@@ -157,8 +150,8 @@ describe("Button", () => {
 
 	it("should have correct 'disabled' attribute when disabled and it's not a native button nor input", () => {
 		const { getByTestId } = render(() => (
-			<Button.Root data-testid="button" disabled asChild>
-				<As component="div">Button</As>
+			<Button.Root data-testid="button" disabled as="div">
+				Button
 			</Button.Root>
 		));
 

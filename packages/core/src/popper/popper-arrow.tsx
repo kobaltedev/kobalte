@@ -16,12 +16,13 @@ import {
 import {
 	Accessor,
 	JSX,
+	ValidComponent,
 	createEffect,
 	createSignal,
 	splitProps,
 } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { usePopperContext } from "./popper-context";
 import { BasePlacement } from "./utils";
 
@@ -38,37 +39,42 @@ const ROTATION_DEG = {
 export const ARROW_PATH =
 	"M23,27.8c1.1,1.2,3.4,2.2,5,2.2h2H0h2c1.7,0,3.9-1,5-2.2l6.6-7.2c0.7-0.8,2-0.8,2.7,0L23,27.8L23,27.8z";
 
-export interface PopperArrowOptions extends AsChildProp {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
-
+export interface PopperArrowOptions {
 	/** The size of the arrow. */
 	size?: number;
 }
 
-export interface PopperArrowProps
-	extends OverrideComponentProps<"div", PopperArrowOptions> {}
+export interface PopperArrowCommonProps {
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	/** The HTML styles attribute (object form only). */
+	style?: JSX.CSSProperties;
+}
+
+export interface PopperArrowRenderProps extends PopperArrowCommonProps {
+	children: JSX.Element;
+	"aria-hidden": "true";
+}
+
+export type PopperArrowProps = PopperArrowOptions &
+	Partial<PopperArrowCommonProps>;
 
 /**
  * An optional arrow element to render alongside the popper content.
  * Must be rendered in the popper content.
  */
-export function PopperArrow(props: PopperArrowProps) {
+export function PopperArrow<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, PopperArrowProps>,
+) {
 	const context = usePopperContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
 			size: DEFAULT_SIZE,
 		},
-		props,
+		props as PopperArrowProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"style",
-		"children",
-		"size",
-	]);
+	const [local, others] = splitProps(mergedProps, ["ref", "style", "size"]);
 
 	const dir = () => context.currentPlacement().split("-")[0] as BasePlacement;
 	const contentStyle = createComputedStyle(context.contentRef);
@@ -88,7 +94,7 @@ export function PopperArrow(props: PopperArrowProps) {
 	};
 
 	return (
-		<Polymorphic
+		<Polymorphic<PopperArrowRenderProps>
 			as="div"
 			ref={mergeRefs(context.setArrowRef, local.ref)}
 			aria-hidden="true"

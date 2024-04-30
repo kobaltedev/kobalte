@@ -8,18 +8,28 @@
  */
 
 import {
-	OverrideComponentProps,
 	composeEventHandlers,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { createEffect, on, splitProps } from "solid-js";
+import {
+	Component,
+	JSX,
+	ValidComponent,
+	createEffect,
+	on,
+	splitProps,
+} from "solid-js";
+import { PolymorphicProps } from "../polymorphic";
 
-import { AsChildProp } from "../polymorphic";
 import { useTextFieldContext } from "./text-field-context";
-import { TextFieldInputBase } from "./text-field-input";
+import {
+	TextFieldInputBase,
+	TextFieldInputCommonProps,
+	TextFieldInputRenderProps,
+} from "./text-field-input";
 
-export interface TextFieldTextAreaOptions extends AsChildProp {
+export interface TextFieldTextAreaOptions {
 	/** Whether the textarea should adjust its height when the value changes. */
 	autoResize?: boolean;
 
@@ -27,14 +37,28 @@ export interface TextFieldTextAreaOptions extends AsChildProp {
 	submitOnEnter?: boolean;
 }
 
-export interface TextFieldTextAreaProps
-	extends OverrideComponentProps<"textarea", TextFieldTextAreaOptions> {}
+export interface TextFieldTextAreaCommonProps
+	extends TextFieldInputCommonProps {
+	ref: HTMLFormElement | ((el: HTMLFormElement) => void);
+	onKeyPress: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+}
+
+export interface TextFieldTextAreaRenderProps
+	extends TextFieldTextAreaCommonProps,
+		TextFieldInputRenderProps {
+	"aria-multiline": string | undefined;
+}
+
+export type TextFieldTextAreaProps = TextFieldTextAreaOptions &
+	Partial<TextFieldTextAreaCommonProps>;
 
 /**
  * The native html textarea of the textfield.
  */
-export function TextFieldTextArea(props: TextFieldTextAreaProps) {
-	let ref: HTMLTextAreaElement | undefined;
+export function TextFieldTextArea<T extends ValidComponent = "textarea">(
+	props: PolymorphicProps<T, TextFieldTextAreaProps>,
+) {
+	let ref: HTMLFormElement | undefined;
 
 	const context = useTextFieldContext();
 
@@ -42,7 +66,7 @@ export function TextFieldTextArea(props: TextFieldTextAreaProps) {
 		{
 			id: context.generateId("textarea"),
 		},
-		props,
+		props as TextFieldTextAreaProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -80,12 +104,16 @@ export function TextFieldTextArea(props: TextFieldTextAreaProps) {
 	};
 
 	return (
-		<TextFieldInputBase
+		<TextFieldInputBase<
+			Component<
+				Omit<TextFieldTextAreaRenderProps, keyof TextFieldInputRenderProps>
+			>
+		>
 			as="textarea"
 			aria-multiline={local.submitOnEnter ? "false" : undefined}
 			onKeyPress={composeEventHandlers([local.onKeyPress, onKeyPress])}
 			ref={mergeRefs((el) => (ref = el), local.ref) as any}
-			{...(others as any)}
+			{...others}
 		/>
 	);
 }
@@ -93,7 +121,7 @@ export function TextFieldTextArea(props: TextFieldTextAreaProps) {
 /**
  * Adjust the height of the textarea based on its text value.
  */
-function adjustHeight(el: HTMLTextAreaElement) {
+function adjustHeight(el: HTMLElement) {
 	const prevAlignment = el.style.alignSelf;
 	const prevOverflow = el.style.overflow;
 

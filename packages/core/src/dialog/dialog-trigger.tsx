@@ -6,30 +6,56 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/src/useOverlayTrigger.ts
  */
 
-import { OverrideComponentProps, callHandler, mergeRefs } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { callHandler, mergeRefs } from "@kobalte/utils";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import * as Button from "../button";
+import { PolymorphicProps } from "../polymorphic";
 import { useDialogContext } from "./dialog-context";
 
-export interface DialogTriggerProps
-	extends OverrideComponentProps<"button", Button.ButtonRootOptions> {}
+export interface DialogTriggerOptions {}
+
+export interface DialogTriggerCommonProps extends Button.ButtonRootCommonProps {
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+}
+
+export interface DialogTriggerRenderProps
+	extends DialogTriggerCommonProps,
+		Button.ButtonRootRenderProps {
+	"aria-haspopup": "dialog";
+	"aria-expanded": boolean;
+	"aria-controls": string | undefined;
+	"data-expanded": string | undefined;
+	"data-closed": string | undefined;
+}
+
+export type DialogTriggerProps = DialogTriggerOptions &
+	Partial<DialogTriggerCommonProps>;
 
 /**
  * The button that opens the dialog.
  */
-export function DialogTrigger(props: DialogTriggerProps) {
+export function DialogTrigger<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, DialogTriggerProps>,
+) {
 	const context = useDialogContext();
 
-	const [local, others] = splitProps(props, ["ref", "onClick"]);
+	const [local, others] = splitProps(props as DialogTriggerProps, [
+		"ref",
+		"onClick",
+	]);
 
-	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 		context.toggle();
 	};
 
 	return (
-		<Button.Root
+		<Button.Root<
+			Component<
+				Omit<DialogTriggerRenderProps, keyof Button.ButtonRootRenderProps>
+			>
+		>
 			ref={mergeRefs(context.setTriggerRef, local.ref)}
 			aria-haspopup="dialog"
 			aria-expanded={context.isOpen()}

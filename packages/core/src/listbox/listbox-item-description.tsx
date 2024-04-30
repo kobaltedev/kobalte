@@ -6,34 +6,51 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/listbox/src/useOption.ts
  */
 
-import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+import { mergeDefaultProps } from "@kobalte/utils";
+import { ValidComponent, createEffect, onCleanup } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { useListboxItemContext } from "./listbox-item-context";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	ListboxItemDataSet,
+	useListboxItemContext,
+} from "./listbox-item-context";
 
-export interface ListboxItemDescriptionProps
-	extends OverrideComponentProps<"div", AsChildProp> {}
+export interface ListboxItemDescriptionOptions {}
+
+export interface ListboxItemDescriptionCommonProps {
+	id: string;
+}
+
+export interface ListboxItemDescriptionRenderProps
+	extends ListboxItemDescriptionCommonProps,
+		ListboxItemDataSet {}
+
+export type ListboxItemDescriptionProps = ListboxItemDescriptionOptions &
+	Partial<ListboxItemDescriptionCommonProps>;
 
 /**
  * An optional accessible description to be announced for the item.
  * Useful for items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
-export function ListboxItemDescription(props: ListboxItemDescriptionProps) {
+export function ListboxItemDescription<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, ListboxItemDescriptionProps>,
+) {
 	const context = useListboxItemContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("description"),
 		},
-		props,
+		props as ListboxItemDescriptionProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["id"]);
-
-	createEffect(() => onCleanup(context.registerDescriptionId(local.id!)));
+	createEffect(() => onCleanup(context.registerDescriptionId(mergedProps.id)));
 
 	return (
-		<Polymorphic as="div" id={local.id} {...context.dataset()} {...others} />
+		<Polymorphic<ListboxItemDescriptionRenderProps>
+			as="div"
+			{...context.dataset()}
+			{...mergedProps}
+		/>
 	);
 }

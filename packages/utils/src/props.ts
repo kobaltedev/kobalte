@@ -19,9 +19,9 @@ export type OverrideComponentProps<T extends ValidComponent, P> = OverrideProps<
 	P
 >;
 
-export function mergeDefaultProps<T extends Record<string, any>>(
-	defaultProps: Partial<T>,
+export function mergeDefaultProps<T extends {}, D extends Partial<T>>(
+	defaultProps: D,
 	props: T,
-): T {
-	return mergeProps(defaultProps, props);
+): OverrideProps<T, D> {
+	return mergeProps(defaultProps, props) as OverrideProps<T, D>;
 }

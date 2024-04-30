@@ -3,14 +3,14 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { Show, splitProps } from "solid-js";
+import { Show, ValidComponent, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { FormControlDataSet, useFormControlContext } from "../form-control";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createPresence } from "../primitives";
-import { useCheckboxContext } from "./checkbox-context";
+import { CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
 
-export interface CheckboxIndicatorOptions extends AsChildProp {
+export interface CheckboxIndicatorOptions {
 	/**
 	 * Used to force mounting when more control is needed.
 	 * Useful when controlling animation with SolidJS animation libraries.
@@ -18,14 +18,26 @@ export interface CheckboxIndicatorOptions extends AsChildProp {
 	forceMount?: boolean;
 }
 
-export interface CheckboxIndicatorProps
-	extends OverrideComponentProps<"div", CheckboxIndicatorOptions> {}
+export interface CheckboxIndicatorCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+}
+
+export interface CheckboxIndicatorRenderProps
+	extends CheckboxIndicatorCommonProps,
+		FormControlDataSet,
+		CheckboxDataSet {}
+
+export type CheckboxIndicatorProps = CheckboxIndicatorOptions &
+	Partial<CheckboxIndicatorCommonProps>;
 
 /**
  * The visual indicator rendered when the checkbox is in a checked or indeterminate state.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
-export function CheckboxIndicator(props: CheckboxIndicatorProps) {
+export function CheckboxIndicator<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, CheckboxIndicatorProps>,
+) {
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
 
@@ -33,7 +45,7 @@ export function CheckboxIndicator(props: CheckboxIndicatorProps) {
 		{
 			id: context.generateId("indicator"),
 		},
-		props,
+		props as CheckboxIndicatorProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["ref", "forceMount"]);
@@ -44,7 +56,7 @@ export function CheckboxIndicator(props: CheckboxIndicatorProps) {
 
 	return (
 		<Show when={presence.isPresent()}>
-			<Polymorphic
+			<Polymorphic<CheckboxIndicatorRenderProps>
 				as="div"
 				ref={mergeRefs(presence.setRef, local.ref)}
 				{...formControlContext.dataset()}

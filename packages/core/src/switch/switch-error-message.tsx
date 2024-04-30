@@ -1,16 +1,46 @@
+import { Component, ValidComponent } from "solid-js";
 import {
 	FormControlErrorMessage,
-	FormControlErrorMessageProps,
+	FormControlErrorMessageCommonProps,
+	FormControlErrorMessageOptions,
+	FormControlErrorMessageRenderProps,
 } from "../form-control";
-import { useSwitchContext } from "./switch-context";
+import { PolymorphicProps } from "../polymorphic";
+import { SwitchDataSet, useSwitchContext } from "./switch-context";
 
-export interface SwitchErrorMessageProps extends FormControlErrorMessageProps {}
+export interface SwitchErrorMessageOptions
+	extends FormControlErrorMessageOptions {}
+
+export interface SwitchErrorMessageCommonProps
+	extends FormControlErrorMessageCommonProps {}
+
+export interface SwitchErrorMessageRenderProps
+	extends SwitchErrorMessageCommonProps,
+		FormControlErrorMessageRenderProps,
+		SwitchDataSet {}
+
+export type SwitchErrorMessageProps = SwitchErrorMessageOptions &
+	Partial<SwitchErrorMessageCommonProps>;
 
 /**
  * The error message that gives the user information about how to fix a validation error on the switch.
  */
-export function SwitchErrorMessage(props: SwitchErrorMessageProps) {
+export function SwitchErrorMessage<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, SwitchErrorMessageProps>,
+) {
 	const context = useSwitchContext();
 
-	return <FormControlErrorMessage {...context.dataset()} {...props} />;
+	return (
+		<FormControlErrorMessage<
+			Component<
+				Omit<
+					SwitchErrorMessageRenderProps,
+					keyof FormControlErrorMessageRenderProps
+				>
+			>
+		>
+			{...context.dataset()}
+			{...(props as SwitchErrorMessageProps)}
+		/>
+	);
 }

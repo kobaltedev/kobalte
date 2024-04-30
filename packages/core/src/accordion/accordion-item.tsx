@@ -6,15 +6,18 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/accordion/src/useAccordion.ts
  */
 
+import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
-	OverrideComponentProps,
-	createGenerateId,
-	mergeDefaultProps,
-} from "@kobalte/utils";
-import { createSignal, createUniqueId, splitProps } from "solid-js";
+	Component,
+	JSX,
+	ValidComponent,
+	createSignal,
+	createUniqueId,
+	splitProps,
+} from "solid-js";
 
 import * as Collapsible from "../collapsible";
-import { AsChildProp } from "../polymorphic";
+import { PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { useAccordionContext } from "./accordion-context";
 import {
@@ -22,7 +25,7 @@ import {
 	AccordionItemContextValue,
 } from "./accordion-item-context";
 
-export interface AccordionItemOptions extends AsChildProp {
+export interface AccordionItemOptions {
 	/** A unique value for the item. */
 	value: string;
 
@@ -36,20 +39,32 @@ export interface AccordionItemOptions extends AsChildProp {
 	forceMount?: boolean;
 }
 
-export interface AccordionItemProps
-	extends OverrideComponentProps<"div", AccordionItemOptions> {}
+export interface AccordionItemCommonProps
+	extends Collapsible.CollapsibleRootCommonProps {}
+
+export interface AccordionItemRenderProps
+	extends AccordionItemCommonProps,
+		Collapsible.CollapsibleRootRenderProps {}
+
+export type AccordionItemProps = AccordionItemOptions &
+	Partial<AccordionItemRenderProps>;
 
 /**
  * An item of the accordion, contains all the parts of a collapsible section.
  */
-export function AccordionItem(props: AccordionItemProps) {
+export function AccordionItem<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, AccordionItemProps>,
+) {
 	const accordionContext = useAccordionContext();
 
 	const defaultId = `${accordionContext.generateId(
 		"item",
 	)}-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps({ id: defaultId }, props);
+	const mergedProps = mergeDefaultProps(
+		{ id: defaultId },
+		props as AccordionItemProps,
+	);
 
 	const [local, others] = splitProps(mergedProps, ["value", "disabled"]);
 
@@ -74,7 +89,14 @@ export function AccordionItem(props: AccordionItemProps) {
 
 	return (
 		<AccordionItemContext.Provider value={context}>
-			<Collapsible.Root
+			<Collapsible.Root<
+				Component<
+					Omit<
+						AccordionItemRenderProps,
+						keyof Collapsible.CollapsibleRootRenderProps
+					>
+				>
+			>
 				open={isExpanded()}
 				disabled={local.disabled}
 				{...others}

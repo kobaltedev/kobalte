@@ -1,32 +1,45 @@
-import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+import { mergeDefaultProps } from "@kobalte/utils";
+import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useToastContext } from "./toast-context";
 
-export interface ToastDescriptionOptions extends AsChildProp {}
+export interface ToastDescriptionOptions {}
 
-export type ToastDescriptionProps = OverrideComponentProps<
-	"div",
-	ToastDescriptionOptions
->;
+export interface ToastDescriptionCommonProps {
+	id: string;
+}
+
+export interface ToastDescriptionRenderProps
+	extends ToastDescriptionCommonProps {}
+
+export type ToastDescriptionProps = ToastDescriptionOptions &
+	Partial<ToastDescriptionCommonProps>;
 
 /**
  * An optional accessible description to be announced when the toast is open.
  */
-export function ToastDescription(props: ToastDescriptionProps) {
+export function ToastDescription<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, ToastDescriptionProps>,
+) {
 	const context = useToastContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("description"),
 		},
-		props,
+		props as ToastDescriptionProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["id"]);
 
 	createEffect(() => onCleanup(context.registerDescriptionId(local.id!)));
 
-	return <Polymorphic as="div" id={local.id} {...others} />;
+	return (
+		<Polymorphic<ToastDescriptionRenderProps>
+			as="div"
+			id={local.id}
+			{...others}
+		/>
+	);
 }

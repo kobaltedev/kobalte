@@ -6,32 +6,43 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/context-menu/src/ContextMenu.tsx
  */
 
-import {
-	OverrideComponentProps,
-	callHandler,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
-import { JSX, onCleanup, splitProps } from "solid-js";
+import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { JSX, ValidComponent, onCleanup, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { useMenuContext } from "../menu/menu-context";
+import { MenuDataSet, useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useContextMenuContext } from "./context-menu-context";
 
-export interface ContextMenuTriggerOptions extends AsChildProp {
+export interface ContextMenuTriggerOptions {
 	/** Whether the context menu trigger is disabled. */
 	disabled?: boolean;
+}
+
+export interface ContextMenuTriggerCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+	onContextMenu: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
 
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
 
-export interface ContextMenuTriggerProps
-	extends OverrideComponentProps<"div", ContextMenuTriggerOptions> {}
+export interface ContextMenuTriggerRenderProps
+	extends ContextMenuTriggerCommonProps,
+		MenuDataSet {}
 
-export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
+export type ContextMenuTriggerProps = ContextMenuTriggerOptions &
+	Partial<ContextMenuTriggerCommonProps>;
+
+export function ContextMenuTrigger<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, ContextMenuTriggerProps>,
+) {
 	const rootContext = useMenuRootContext();
 	const menuContext = useMenuContext();
 	const context = useContextMenuContext();
@@ -40,7 +51,7 @@ export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
 		{
 			id: rootContext.generateId("trigger"),
 		},
-		props,
+		props as ContextMenuTriggerProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -68,7 +79,7 @@ export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
 		clearLongPressTimeout();
 	});
 
-	const onContextMenu: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
+	const onContextMenu: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// If trigger is disabled, enable the native Context Menu.
 		if (local.disabled) {
 			callHandler(e, local.onContextMenu);
@@ -106,7 +117,9 @@ export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		if (!local.disabled && isTouchOrPen(e)) {
@@ -114,7 +127,9 @@ export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
 		}
 	};
 
-	const onPointerCancel: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerCancel);
 
 		if (!local.disabled && isTouchOrPen(e)) {
@@ -122,7 +137,7 @@ export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerUp);
 
 		if (!local.disabled && isTouchOrPen(e)) {
@@ -131,7 +146,7 @@ export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
 	};
 
 	return (
-		<Polymorphic
+		<Polymorphic<ContextMenuTriggerRenderProps>
 			as="div"
 			ref={mergeRefs(menuContext.setTriggerRef, local.ref)}
 			style={{

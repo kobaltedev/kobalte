@@ -1,16 +1,26 @@
-import { OverrideComponentProps } from "@kobalte/utils";
+import { ValidComponent } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 
-export interface PaginationEllipsisOptions extends AsChildProp {}
+export interface PaginationEllipsisOptions {}
 
-export interface PaginationEllipsisProps
-	extends OverrideComponentProps<"div", PaginationEllipsisOptions> {}
+export interface PaginationEllipsisCommonProps {}
 
-export function PaginationEllipsis(props: PaginationEllipsisProps) {
+export interface PaginationEllipsisRenderProps
+	extends PaginationEllipsisCommonProps {}
+
+export type PaginationEllipsisProps = PaginationEllipsisOptions &
+	Partial<PaginationEllipsisCommonProps>;
+
+export function PaginationEllipsis<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, PaginationEllipsisProps>,
+) {
 	return (
 		<li>
-			<Polymorphic as="div" {...props} />
+			<Polymorphic<PaginationEllipsisRenderProps>
+				as="div"
+				{...(props as PaginationEllipsisProps)}
+			/>
 		</li>
 	);
 }

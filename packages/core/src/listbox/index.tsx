@@ -1,40 +1,70 @@
 import {
 	ListboxItem as Item,
+	type ListboxItemCommonProps,
 	type ListboxItemOptions,
 	type ListboxItemProps,
+	type ListboxItemRenderProps,
 } from "./listbox-item";
 import {
 	ListboxItemDescription as ItemDescription,
+	type ListboxItemDescriptionCommonProps,
+	type ListboxItemDescriptionOptions,
 	type ListboxItemDescriptionProps,
+	type ListboxItemDescriptionRenderProps,
 } from "./listbox-item-description";
 import {
 	ListboxItemIndicator as ItemIndicator,
+	type ListboxItemIndicatorCommonProps,
 	type ListboxItemIndicatorOptions,
 	type ListboxItemIndicatorProps,
+	type ListboxItemIndicatorRenderProps,
 } from "./listbox-item-indicator";
 import {
 	ListboxItemLabel as ItemLabel,
+	type ListboxItemLabelCommonProps,
+	type ListboxItemLabelOptions,
 	type ListboxItemLabelProps,
+	type ListboxItemLabelRenderProps,
 } from "./listbox-item-label";
 import {
 	ListboxRoot as Root,
+	type ListboxRootCommonProps,
 	type ListboxRootOptions,
 	type ListboxRootProps,
+	type ListboxRootRenderProps,
 } from "./listbox-root";
 import {
 	ListboxSection as Section,
+	type ListboxSectionCommonProps,
+	type ListboxSectionOptions,
 	type ListboxSectionProps,
+	type ListboxSectionRenderProps,
 } from "./listbox-section";
 
 export type {
+	ListboxItemDescriptionOptions,
+	ListboxItemDescriptionCommonProps,
+	ListboxItemDescriptionRenderProps,
 	ListboxItemDescriptionProps,
 	ListboxItemIndicatorOptions,
+	ListboxItemIndicatorCommonProps,
+	ListboxItemIndicatorRenderProps,
 	ListboxItemIndicatorProps,
+	ListboxItemLabelOptions,
+	ListboxItemLabelCommonProps,
+	ListboxItemLabelRenderProps,
 	ListboxItemLabelProps,
 	ListboxItemOptions,
+	ListboxItemCommonProps,
+	ListboxItemRenderProps,
 	ListboxItemProps,
 	ListboxRootOptions,
+	ListboxRootCommonProps,
+	ListboxRootRenderProps,
 	ListboxRootProps,
+	ListboxSectionOptions,
+	ListboxSectionCommonProps,
+	ListboxSectionRenderProps,
 	ListboxSectionProps,
 };
 

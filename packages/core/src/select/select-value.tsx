@@ -7,44 +7,59 @@ import {
 	Accessor,
 	JSX,
 	Show,
+	ValidComponent,
 	children,
 	createEffect,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
+import { FormControlDataSet, useFormControlContext } from "../form-control";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
-export interface SelectValueState<T> {
+export interface SelectValueState<Option> {
 	/** The first (or only, in case of single select) selected option. */
-	selectedOption: Accessor<T>;
+	selectedOption: Accessor<Option>;
 
 	/** An array of selected options. It will contain only one value in case of single select. */
-	selectedOptions: Accessor<T[]>;
+	selectedOptions: Accessor<Option[]>;
 
 	/** A function to remove an option from the selection. */
-	remove: (option: T) => void;
+	remove: (option: Option) => void;
 
 	/** A function to clear the selection. */
 	clear: () => void;
 }
 
-export interface SelectValueOptions<T> {
+export interface SelectValueOptions<Option> {
 	/**
 	 * The children of the select value.
 	 * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
 	 */
-	children?: JSX.Element | ((state: SelectValueState<T>) => JSX.Element);
+	children?: JSX.Element | ((state: SelectValueState<Option>) => JSX.Element);
 }
 
-export interface SelectValueProps<T>
-	extends OverrideComponentProps<"span", SelectValueOptions<T>> {}
+export interface SelectValueCommonProps {
+	id: string;
+}
+
+export interface SelectValueRenderProps
+	extends SelectValueCommonProps,
+		FormControlDataSet {
+	children: JSX.Element;
+	"data-placeholder-shown": string | undefined;
+}
+
+export type SelectValueProps<Option> = SelectValueOptions<Option> &
+	Partial<SelectValueCommonProps>;
 
 /**
  * The part that reflects the selected value(s).
  */
-export function SelectValue<T>(props: SelectValueProps<T>) {
+export function SelectValue<Option, T extends ValidComponent = "span">(
+	props: PolymorphicProps<T, SelectValueProps<Option>>,
+) {
 	const formControlContext = useFormControlContext();
 	const context = useSelectContext();
 
@@ -52,7 +67,7 @@ export function SelectValue<T>(props: SelectValueProps<T>) {
 		{
 			id: context.generateId("value"),
 		},
-		props,
+		props as SelectValueProps<Option>,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["id", "children"]);
@@ -74,7 +89,8 @@ export function SelectValue<T>(props: SelectValueProps<T>) {
 	createEffect(() => onCleanup(context.registerValueId(local.id!)));
 
 	return (
-		<span
+		<Polymorphic<SelectValueRenderProps>
+			as="span"
 			id={local.id}
 			data-placeholder-shown={isSelectionEmpty() ? "" : undefined}
 			{...formControlContext.dataset()}
@@ -91,7 +107,7 @@ export function SelectValue<T>(props: SelectValueProps<T>) {
 					children={local.children}
 				/>
 			</Show>
-		</span>
+		</Polymorphic>
 	);
 }
 

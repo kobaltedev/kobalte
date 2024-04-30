@@ -1,28 +1,45 @@
 import {
 	FormControlDescription as Description,
+	type FormControlDescriptionCommonProps as SelectDescriptionCommonProps,
+	type FormControlDescriptionOptions as SelectDescriptionOptions,
 	type FormControlDescriptionProps as SelectDescriptionProps,
+	type FormControlDescriptionRenderProps as SelectDescriptionRenderProps,
 	FormControlErrorMessage as ErrorMessage,
+	type FormControlErrorMessageCommonProps as SelectErrorMessageCommonProps,
 	type FormControlErrorMessageOptions as SelectErrorMessageOptions,
 	type FormControlErrorMessageProps as SelectErrorMessageProps,
+	type FormControlErrorMessageRenderProps as SelectErrorMessageRenderProps,
 } from "../form-control";
 import {
 	Item,
 	ItemDescription,
 	ItemIndicator,
 	ItemLabel,
+	type ListboxItemCommonProps as SelectItemCommonProps,
+	type ListboxItemDescriptionCommonProps as SelectItemDescriptionCommonProps,
+	type ListboxItemDescriptionOptions as SelectItemDescriptionOptions,
 	type ListboxItemDescriptionProps as SelectItemDescriptionProps,
+	type ListboxItemDescriptionRenderProps as SelectItemDescriptionRenderProps,
+	type ListboxItemIndicatorCommonProps as SelectItemIndicatorCommonProps,
 	type ListboxItemIndicatorOptions as SelectItemIndicatorOptions,
 	type ListboxItemIndicatorProps as SelectItemIndicatorProps,
+	type ListboxItemIndicatorRenderProps as SelectItemIndicatorRenderProps,
+	type ListboxItemLabelCommonProps as SelectItemLabelCommonProps,
+	type ListboxItemLabelOptions as SelectItemLabelOptions,
 	type ListboxItemLabelProps as SelectItemLabelProps,
+	type ListboxItemLabelRenderProps as SelectItemLabelRenderProps,
 	type ListboxItemOptions as SelectItemOptions,
 	type ListboxItemProps as SelectItemProps,
+	type ListboxItemRenderProps as SelectItemRenderProps,
 	type ListboxSectionProps as SelectSectionProps,
 	Section,
 } from "../listbox";
 import {
 	PopperArrow as Arrow,
+	type PopperArrowCommonProps as SelectArrowCommonProps,
 	type PopperArrowOptions as SelectArrowOptions,
 	type PopperArrowProps as SelectArrowProps,
+	type PopperArrowRenderProps as SelectArrowRenderProps,
 } from "../popper";
 import {
 	type SelectBaseItemComponentProps as SelectRootItemComponentProps,
@@ -30,19 +47,35 @@ import {
 } from "./select-base";
 import {
 	SelectContent as Content,
+	type SelectContentCommonProps,
 	type SelectContentOptions,
 	type SelectContentProps,
+	type SelectContentRenderProps,
 } from "./select-content";
 import {
 	SelectHiddenSelect as HiddenSelect,
 	type SelectHiddenSelectProps,
 } from "./select-hidden-select";
-import { SelectIcon as Icon, type SelectIconProps } from "./select-icon";
-import { SelectLabel as Label, type SelectLabelProps } from "./select-label";
+import {
+	SelectIcon as Icon,
+	type SelectIconCommonProps,
+	type SelectIconOptions,
+	type SelectIconProps,
+	type SelectIconRenderProps,
+} from "./select-icon";
+import {
+	SelectLabel as Label,
+	type SelectLabelCommonProps,
+	type SelectLabelOptions,
+	type SelectLabelProps,
+	type SelectLabelRenderProps,
+} from "./select-label";
 import {
 	SelectListbox as Listbox,
+	type SelectListboxCommonProps,
 	type SelectListboxOptions,
 	type SelectListboxProps,
+	type SelectListboxRenderProps,
 } from "./select-listbox";
 import {
 	SelectPortal as Portal,
@@ -51,44 +84,90 @@ import {
 import {
 	type SelectMultipleSelectionOptions,
 	SelectRoot as Root,
+	type SelectRootCommonProps,
 	type SelectRootOptions,
 	type SelectRootProps,
+	type SelectRootRenderProps,
 	type SelectSingleSelectionOptions,
 } from "./select-root";
 import {
 	SelectTrigger as Trigger,
+	type SelectTriggerCommonProps,
+	type SelectTriggerOptions,
 	type SelectTriggerProps,
+	type SelectTriggerRenderProps,
 } from "./select-trigger";
-import { SelectValue as Value, type SelectValueProps } from "./select-value";
+import {
+	SelectValue as Value,
+	type SelectValueCommonProps,
+	type SelectValueOptions,
+	type SelectValueProps,
+	type SelectValueRenderProps,
+} from "./select-value";
 
 export type {
 	SelectArrowOptions,
+	SelectArrowCommonProps,
+	SelectArrowRenderProps,
 	SelectArrowProps,
 	SelectContentOptions,
+	SelectContentCommonProps,
+	SelectContentRenderProps,
 	SelectContentProps,
 	SelectDescriptionProps,
 	SelectErrorMessageOptions,
+	SelectErrorMessageCommonProps,
+	SelectErrorMessageRenderProps,
 	SelectErrorMessageProps,
 	SelectHiddenSelectProps,
+	SelectIconOptions,
+	SelectIconCommonProps,
+	SelectIconRenderProps,
 	SelectIconProps,
+	SelectDescriptionOptions,
+	SelectDescriptionCommonProps,
+	SelectDescriptionRenderProps,
+	SelectItemDescriptionOptions,
+	SelectItemDescriptionCommonProps,
+	SelectItemDescriptionRenderProps,
 	SelectItemDescriptionProps,
 	SelectItemIndicatorOptions,
+	SelectItemIndicatorCommonProps,
+	SelectItemIndicatorRenderProps,
 	SelectItemIndicatorProps,
+	SelectItemLabelOptions,
+	SelectItemLabelCommonProps,
+	SelectItemLabelRenderProps,
+	SelectLabelOptions,
+	SelectLabelCommonProps,
+	SelectLabelRenderProps,
 	SelectItemLabelProps,
 	SelectItemOptions,
+	SelectItemCommonProps,
+	SelectItemRenderProps,
 	SelectItemProps,
 	SelectLabelProps,
 	SelectListboxOptions,
+	SelectListboxCommonProps,
+	SelectListboxRenderProps,
 	SelectListboxProps,
 	SelectMultipleSelectionOptions,
 	SelectPortalProps,
 	SelectRootItemComponentProps,
 	SelectRootOptions,
+	SelectRootCommonProps,
+	SelectRootRenderProps,
 	SelectRootProps,
 	SelectRootSectionComponentProps,
 	SelectSectionProps,
 	SelectSingleSelectionOptions,
+	SelectTriggerOptions,
+	SelectTriggerCommonProps,
+	SelectTriggerRenderProps,
 	SelectTriggerProps,
+	SelectValueOptions,
+	SelectValueCommonProps,
+	SelectValueRenderProps,
 	SelectValueProps,
 };
 

@@ -1,18 +1,29 @@
-import { OverrideComponentProps, composeEventHandlers } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { composeEventHandlers } from "@kobalte/utils";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import * as Button from "../button";
+import { PolymorphicProps } from "../polymorphic";
 import { usePaginationContext } from "./pagination-context";
 
-export interface PaginationNextOptions extends AsChildProp {}
+export interface PaginationNextOptions {}
 
-export interface PaginationNextProps
-	extends OverrideComponentProps<"button", PaginationNextOptions> {}
+export interface PaginationNextCommonProps {
+	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+}
 
-export function PaginationNext(props: PaginationNextProps) {
+export interface PaginationNextRenderProps
+	extends PaginationNextCommonProps,
+		Button.ButtonRootRenderProps {}
+
+export type PaginationNextProps = PaginationNextOptions &
+	Partial<PaginationNextCommonProps>;
+
+export function PaginationNext<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, PaginationNextProps>,
+) {
 	const context = usePaginationContext();
 
-	const [local, others] = splitProps(props, ["onClick"]);
+	const [local, others] = splitProps(props as PaginationNextProps, ["onClick"]);
 
 	const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = () => {
 		context.setPage(context.page() + 1);
@@ -22,10 +33,13 @@ export function PaginationNext(props: PaginationNextProps) {
 
 	return (
 		<li>
-			<Polymorphic
-				as="button"
+			<Button.Root<
+				Component<
+					Omit<PaginationNextRenderProps, keyof Button.ButtonRootRenderProps>
+				>
+			>
 				tabIndex={
-					isDisabled() || context.page() === context.count() ? "-1" : undefined
+					isDisabled() || context.page() === context.count() ? -1 : undefined
 				}
 				disabled={isDisabled()}
 				aria-disabled={isDisabled() || undefined}

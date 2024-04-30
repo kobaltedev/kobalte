@@ -7,7 +7,6 @@
  */
 
 import {
-	OverrideComponentProps,
 	ValidationState,
 	access,
 	clamp,
@@ -17,6 +16,7 @@ import {
 } from "@kobalte/utils";
 import {
 	Accessor,
+	ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
@@ -29,7 +29,7 @@ import {
 	createFormControl,
 } from "../form-control";
 import { createNumberFormatter, useLocale } from "../i18n";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef, createFormResetListener } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "./create-slider-state";
@@ -50,7 +50,7 @@ export interface GetValueLabelParams {
 	max: number;
 }
 
-export interface SliderRootOptions extends AsChildProp {
+export interface SliderRootOptions {
 	/** The slider values. */
 	value?: number[];
 
@@ -131,11 +131,24 @@ export interface SliderRootOptions extends AsChildProp {
 	readOnly?: boolean;
 }
 
-export interface SliderRootProps
-	extends OverrideComponentProps<"div", SliderRootOptions> {}
+export interface SliderRootCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+}
 
-export function SliderRoot(props: SliderRootProps) {
-	let ref: HTMLDivElement | undefined;
+export interface SliderRootRenderProps
+	extends SliderRootCommonProps,
+		SliderDataSet {
+	role: "group";
+}
+
+export type SliderRootProps = SliderRootOptions &
+	Partial<SliderRootCommonProps>;
+
+export function SliderRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, SliderRootProps>,
+) {
+	let ref: HTMLElement | undefined;
 
 	const defaultId = `slider-${createUniqueId()}`;
 
@@ -151,11 +164,11 @@ export function SliderRoot(props: SliderRootProps) {
 			inverted: false,
 			getValueLabel: (params) => params.values.join(", "),
 		},
-		props,
+		props as SliderRootProps,
 	);
 
 	const [local, formControlProps, others] = splitProps(
-		mergedProps,
+		mergedProps as typeof mergedProps & { id: string },
 		[
 			"ref",
 			"value",
@@ -397,7 +410,7 @@ export function SliderRoot(props: SliderRootProps) {
 		<DomCollectionProvider>
 			<FormControlContext.Provider value={formControlContext}>
 				<SliderContext.Provider value={context}>
-					<Polymorphic
+					<Polymorphic<SliderRootRenderProps>
 						as="div"
 						ref={mergeRefs((el) => (ref = el), local.ref)}
 						role="group"

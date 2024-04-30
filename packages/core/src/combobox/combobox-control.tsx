@@ -1,45 +1,63 @@
 import { OverrideComponentProps, isFunction, mergeRefs } from "@kobalte/utils";
-import { Accessor, JSX, children, splitProps } from "solid-js";
+import { Accessor, JSX, ValidComponent, children, splitProps } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { Polymorphic } from "../polymorphic";
-import { useComboboxContext } from "./combobox-context";
+import { FormControlDataSet, useFormControlContext } from "../form-control";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ComboboxDataSet, useComboboxContext } from "./combobox-context";
 
-export interface ComboboxControlState<T> {
+export interface ComboboxControlState<Option> {
 	/** The selected options. */
-	selectedOptions: Accessor<T[]>;
+	selectedOptions: Accessor<Option[]>;
 
 	/** A function to remove an option from the selection. */
-	remove: (option: T) => void;
+	remove: (option: Option) => void;
 
 	/** A function to clear the selection. */
 	clear: () => void;
 }
 
-export interface ComboboxControlOptions<T> {
+export interface ComboboxControlOptions<Option> {
 	/**
 	 * The children of the combobox control.
 	 * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
 	 */
-	children?: JSX.Element | ((state: ComboboxControlState<T>) => JSX.Element);
+	children?:
+		| JSX.Element
+		| ((state: ComboboxControlState<Option>) => JSX.Element);
 }
 
-export interface ComboboxControlProps<T>
-	extends OverrideComponentProps<"div", ComboboxControlOptions<T>> {}
+export interface ComboboxControlCommonProps {
+	ref: HTMLElement | ((el: HTMLElement) => void);
+}
+
+export interface ComboboxControlRenderProps
+	extends ComboboxControlCommonProps,
+		FormControlDataSet,
+		ComboboxDataSet {
+	children: JSX.Element;
+}
+
+export type ComboboxControlProps<Option> = ComboboxControlOptions<Option> &
+	Partial<ComboboxControlCommonProps>;
 
 /**
  * Contains the combobox input and trigger.
  */
-export function ComboboxControl<T>(props: ComboboxControlProps<T>) {
+export function ComboboxControl<Option, T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, ComboboxControlProps<Option>>,
+) {
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 
-	const [local, others] = splitProps(props, ["ref", "children"]);
+	const [local, others] = splitProps(props as ComboboxControlProps<Option>, [
+		"ref",
+		"children",
+	]);
 
 	const selectionManager = () => context.listState().selectionManager();
 
 	return (
-		<Polymorphic
+		<Polymorphic<ComboboxControlRenderProps>
 			as="div"
 			ref={mergeRefs(context.setControlRef, local.ref)}
 			{...context.dataset()}
@@ -58,12 +76,14 @@ export function ComboboxControl<T>(props: ComboboxControlProps<T>) {
 	);
 }
 
-interface ComboboxControlChildProps<T>
-	extends Pick<ComboboxControlOptions<T>, "children"> {
-	state: ComboboxControlState<T>;
+interface ComboboxControlChildProps<Option>
+	extends Pick<ComboboxControlOptions<Option>, "children"> {
+	state: ComboboxControlState<Option>;
 }
 
-function ComboboxControlChild<T>(props: ComboboxControlChildProps<T>) {
+function ComboboxControlChild<Option>(
+	props: ComboboxControlChildProps<Option>,
+) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
 		return isFunction(body) ? body(props.state) : body;

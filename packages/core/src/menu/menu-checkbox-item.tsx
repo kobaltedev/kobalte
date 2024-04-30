@@ -1,8 +1,14 @@
 import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { Component, ValidComponent, splitProps } from "solid-js";
+import { PolymorphicProps } from "../polymorphic";
 
 import { createToggleState } from "../primitives";
-import { MenuItemBase, MenuItemBaseOptions } from "./menu-item-base";
+import {
+	MenuItemBase,
+	MenuItemBaseCommonProps,
+	MenuItemBaseOptions,
+	MenuItemBaseRenderProps,
+} from "./menu-item-base";
 
 export interface MenuCheckboxItemOptions
 	extends Omit<MenuItemBaseOptions, "checked"> {
@@ -19,18 +25,28 @@ export interface MenuCheckboxItemOptions
 	onChange?: (isChecked: boolean) => void;
 }
 
-export interface MenuCheckboxItemProps
-	extends OverrideComponentProps<"div", MenuCheckboxItemOptions> {}
+export interface MenuCheckboxItemCommonProps extends MenuItemBaseCommonProps {}
+
+export interface MenuCheckboxItemRenderProps
+	extends MenuCheckboxItemCommonProps,
+		MenuItemBaseRenderProps {
+	role: "menuitemcheckbox";
+}
+
+export type MenuCheckboxItemProps = MenuCheckboxItemOptions &
+	Partial<MenuCheckboxItemCommonProps>;
 
 /**
  * An item that can be controlled and rendered like a checkbox.
  */
-export function MenuCheckboxItem(props: MenuCheckboxItemProps) {
+export function MenuCheckboxItem<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, MenuCheckboxItemProps>,
+) {
 	const mergedProps = mergeDefaultProps(
 		{
 			closeOnSelect: false,
 		},
-		props,
+		props as MenuCheckboxItemProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -53,7 +69,11 @@ export function MenuCheckboxItem(props: MenuCheckboxItemProps) {
 	};
 
 	return (
-		<MenuItemBase
+		<MenuItemBase<
+			Component<
+				Omit<MenuCheckboxItemRenderProps, keyof MenuItemBaseRenderProps>
+			>
+		>
 			role="menuitemcheckbox"
 			checked={state.isSelected()}
 			onSelect={onSelect}

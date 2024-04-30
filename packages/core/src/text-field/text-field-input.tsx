@@ -6,32 +6,54 @@
  * https://github.com/adobe/react-spectrum/blob/0af91c08c745f4bb35b6ad4932ca17a0d85dd02c/packages/@react-aria/textfield/src/useTextField.ts
  */
 
-import {
-	OverrideComponentProps,
-	composeEventHandlers,
-	mergeDefaultProps,
-} from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import { composeEventHandlers, mergeDefaultProps } from "@kobalte/utils";
+import { JSX, ValidComponent, splitProps } from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
+	FormControlDataSet,
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useTextFieldContext } from "./text-field-context";
 
-export interface TextFieldInputProps
-	extends OverrideComponentProps<"input", AsChildProp> {}
+export interface TextFieldInputOptions {}
 
-/**
- * The native html input of the textfield.
- */
-export function TextFieldInput(props: TextFieldInputProps) {
-	return <TextFieldInputBase type="text" {...props} />;
+export interface TextFieldInputCommonProps {
+	id: string;
+	onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent>;
+	"aria-label": string | undefined;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
 }
 
-export function TextFieldInputBase(props: TextFieldInputProps) {
+export interface TextFieldInputRenderProps
+	extends TextFieldInputCommonProps,
+		FormControlDataSet {
+	name: string;
+	value: string | undefined;
+	required: boolean | undefined;
+	disabled: boolean | undefined;
+	readonly: boolean | undefined;
+	"aria-invalid": boolean | undefined;
+	"aria-required": boolean | undefined;
+	"aria-disabled": boolean | undefined;
+	"aria-readonly": boolean | undefined;
+}
+
+export type TextFieldInputProps = TextFieldInputOptions &
+	Partial<TextFieldInputCommonProps>;
+
+export function TextFieldInput<T extends ValidComponent = "input">(
+	props: PolymorphicProps<T, TextFieldInputProps>,
+) {
+	return <TextFieldInputBase type="text" {...(props as TextFieldInputProps)} />;
+}
+
+export function TextFieldInputBase<T extends ValidComponent = "input">(
+	props: PolymorphicProps<T, TextFieldInputProps>,
+) {
 	const formControlContext = useFormControlContext();
 	const context = useTextFieldContext();
 
@@ -39,7 +61,7 @@ export function TextFieldInputBase(props: TextFieldInputProps) {
 		{
 			id: context.generateId("input"),
 		},
-		props,
+		props as TextFieldInputProps,
 	);
 
 	const [local, formControlFieldProps, others] = splitProps(
@@ -51,7 +73,7 @@ export function TextFieldInputBase(props: TextFieldInputProps) {
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
 	return (
-		<Polymorphic
+		<Polymorphic<TextFieldInputRenderProps>
 			as="input"
 			id={fieldProps.id()}
 			name={formControlContext.name()}

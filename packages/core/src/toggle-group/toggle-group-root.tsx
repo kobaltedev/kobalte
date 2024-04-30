@@ -1,6 +1,10 @@
-import { OverrideComponentProps } from "@kobalte/utils";
-import { createMemo, splitProps } from "solid-js";
-import { ToggleGroupBase, ToggleGroupBaseOptions } from "./toggle-group-base";
+import { Component, ValidComponent, createMemo, splitProps } from "solid-js";
+import { PolymorphicProps } from "../polymorphic";
+import {
+	ToggleGroupBase,
+	ToggleGroupBaseOptions,
+	ToggleGroupBaseRenderProps,
+} from "./toggle-group-base";
 
 export interface ToggleGroupSingleOptions {
 	/** The controlled value of the toggle group. */
@@ -45,13 +49,18 @@ export type ToggleGroupRootOptions = (
 		"value" | "defaultValue" | "onChange" | "selectionMode"
 	>;
 
-export type ToggleGroupRootProps = OverrideComponentProps<
-	"div",
-	ToggleGroupRootOptions
->;
+export interface ToggleGroupRootCommonProps {}
 
-export const ToggleGroup = (props: ToggleGroupRootProps) => {
-	const [local, others] = splitProps(props, [
+export interface ToggleGroupRootRenderProps
+	extends ToggleGroupRootCommonProps {}
+
+export type ToggleGroupRootProps = ToggleGroupRootOptions &
+	Partial<ToggleGroupRootCommonProps>;
+
+export function ToggleGroup<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, ToggleGroupRootProps>,
+) {
+	const [local, others] = splitProps(props as ToggleGroupRootProps, [
 		"value",
 		"defaultValue",
 		"onChange",
@@ -84,7 +93,11 @@ export const ToggleGroup = (props: ToggleGroupRootProps) => {
 	};
 
 	return (
-		<ToggleGroupBase
+		<ToggleGroupBase<
+			Component<
+				Omit<ToggleGroupRootRenderProps, keyof ToggleGroupBaseRenderProps>
+			>
+		>
 			value={value() as any}
 			defaultValue={defaultValue() as any}
 			onChange={onChange}
@@ -92,4 +105,4 @@ export const ToggleGroup = (props: ToggleGroupRootProps) => {
 			{...others}
 		/>
 	);
-};
+}

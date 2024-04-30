@@ -1,12 +1,15 @@
+import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
-	OverrideComponentProps,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
-import { createEffect, onCleanup, splitProps } from "solid-js";
+	Component,
+	ValidComponent,
+	createEffect,
+	onCleanup,
+	splitProps,
+} from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import * as Listbox from "../listbox";
+import { PolymorphicProps } from "../polymorphic";
 import { useComboboxContext } from "./combobox-context";
 
 export interface ComboboxListboxOptions<Option, OptGroup = never>
@@ -15,18 +18,32 @@ export interface ComboboxListboxOptions<Option, OptGroup = never>
 		"scrollRef" | "scrollToItem" | "children"
 	> {}
 
-export interface ComboboxListboxProps<Option, OptGroup = never>
-	extends Omit<
-		OverrideComponentProps<"ul", ComboboxListboxOptions<Option, OptGroup>>,
-		"onChange"
-	> {}
+export interface ComboboxListboxCommonProps {
+	id: string;
+	ref: HTMLElement | ((el: HTMLElement) => void);
+}
+
+export interface ComboboxListboxRenderProps
+	extends ComboboxListboxCommonProps,
+		Listbox.ListboxRootRenderProps {
+	"aria-label": string | undefined;
+	"aria-labelledby": string | undefined;
+}
+
+export type ComboboxListboxProps<
+	Option,
+	OptGroup = never,
+> = ComboboxListboxOptions<Option, OptGroup> &
+	Partial<ComboboxListboxCommonProps>;
 
 /**
  * Contains all the items of a `Combobox`.
  */
-export function ComboboxListbox<Option = any, OptGroup = never>(
-	props: ComboboxListboxProps<Option, OptGroup>,
-) {
+export function ComboboxListbox<
+	Option = any,
+	OptGroup = never,
+	T extends ValidComponent = "ul",
+>(props: PolymorphicProps<T, ComboboxListboxProps<Option, OptGroup>>) {
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 
@@ -34,7 +51,7 @@ export function ComboboxListbox<Option = any, OptGroup = never>(
 		{
 			id: context.generateId("listbox"),
 		},
-		props,
+		props as ComboboxListboxProps<Option, OptGroup>,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["ref"]);
@@ -50,7 +67,13 @@ export function ComboboxListbox<Option = any, OptGroup = never>(
 	createEffect(() => onCleanup(context.registerListboxId(others.id!)));
 
 	return (
-		<Listbox.Root
+		<Listbox.Root<
+			Option,
+			OptGroup,
+			Component<
+				Omit<ComboboxListboxRenderProps, keyof Listbox.ListboxRootRenderProps>
+			>
+		>
 			ref={mergeRefs(context.setListboxRef, local.ref)}
 			state={context.listState()}
 			autoFocus={context.autoFocus()}
