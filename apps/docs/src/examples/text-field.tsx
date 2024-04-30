@@ -58,12 +58,12 @@ export function TextAreaExample() {
 
 export function TextAreaAutoResizeExample() {
 	return (
-		<TextField.Root class={style["text-field"]}>
+		<TextField class={style["text-field"]}>
 			<TextField.Label class={style["text-field__label"]}>
 				Favorite fruit
 			</TextField.Label>
 			<TextField.TextArea autoResize class={style["text-field__input"]} />
-		</TextField.Root>
+		</TextField>
 	);
 }
 
