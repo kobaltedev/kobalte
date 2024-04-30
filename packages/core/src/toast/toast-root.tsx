@@ -428,6 +428,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		<Show when={presence.isPresent()}>
 			<ToastContext.Provider value={context}>
 				<Polymorphic<ToastRootRenderProps>
+					as="li"
 					ref={mergeRefs(presence.setRef, local.ref)}
 					role="status"
 					tabIndex={0}

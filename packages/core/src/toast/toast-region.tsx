@@ -193,6 +193,7 @@ export function ToastRegion<T extends ValidComponent = "div">(
 	return (
 		<ToastRegionContext.Provider value={context}>
 			<Polymorphic<ToastRegionRenderProps>
+				as="div"
 				role="region"
 				tabIndex={-1}
 				aria-label={ariaLabel()}

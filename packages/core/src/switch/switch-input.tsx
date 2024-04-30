@@ -114,6 +114,7 @@ export function SwitchInput<T extends ValidComponent = "input">(
 
 	return (
 		<Polymorphic<SwitchInputRenderProps>
+			as="input"
 			ref={mergeRefs(context.setInputRef, local.ref)}
 			type="checkbox"
 			role="switch"

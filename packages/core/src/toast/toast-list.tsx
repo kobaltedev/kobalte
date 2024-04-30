@@ -154,6 +154,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 
 	return (
 		<Polymorphic<ToastListRenderProps>
+			as="ol"
 			ref={mergeRefs((el) => (ref = el), local.ref)}
 			tabIndex={-1}
 			onFocusIn={onFocusIn}

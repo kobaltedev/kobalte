@@ -44,6 +44,12 @@ export function Polymorphic<RenderProps>(
 ): JSX.Element {
 	const [local, others] = splitProps(props, ["as"]);
 
+	if (!local.as) {
+		throw new Error(
+			"[kobalte]: Polymorphic is missing the required `as` prop.",
+		);
+	}
+
 	return (
 		// @ts-ignore: Props are valid but not worth calculating
 		<Dynamic component={local.as} {...others} />
