@@ -6,7 +6,7 @@ import {
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import { PolymorphicProps } from "../polymorphic";
-import { PopperPositioner } from "../popper";
+import { Popper } from "../popper";
 import { HoverCardDataSet, useHoverCardContext } from "./hover-card-context";
 
 export interface HoverCardContentOptions {}
@@ -42,7 +42,7 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 
 	return (
 		<Show when={context.contentPresence.isPresent()}>
-			<PopperPositioner>
+			<Popper.Positioner>
 				<DismissableLayer<
 					Component<
 						Omit<HoverCardContentRenderProps, keyof DismissableLayerRenderProps>
@@ -64,7 +64,7 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 					{...context.dataset()}
 					{...others}
 				/>
-			</PopperPositioner>
+			</Popper.Positioner>
 		</Show>
 	);
 }

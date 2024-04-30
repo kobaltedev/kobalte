@@ -35,3 +35,8 @@ export type {
 	ImageRootProps,
 };
 export { Fallback, Img, Root };
+
+export const Image = Object.assign(Root, {
+	Fallback,
+	Img,
+});

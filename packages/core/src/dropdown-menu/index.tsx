@@ -71,7 +71,7 @@ import {
 	type MenuTriggerRenderProps as DropdownMenuTriggerRenderProps,
 } from "../menu";
 import {
-	PopperArrow as Arrow,
+	Arrow,
 	type PopperArrowCommonProps as DropdownMenuArrowCommonProps,
 	type PopperArrowOptions as DropdownMenuArrowOptions,
 	type PopperArrowProps as DropdownMenuArrowProps,
@@ -190,3 +190,24 @@ export {
 	SubTrigger,
 	Trigger,
 };
+
+export const DropdownMenu = Object.assign(Root, {
+	Arrow,
+	CheckboxItem,
+	Content,
+	Group,
+	GroupLabel,
+	Icon,
+	Item,
+	ItemDescription,
+	ItemIndicator,
+	ItemLabel,
+	Portal,
+	RadioGroup,
+	RadioItem,
+	Separator,
+	Sub,
+	SubContent,
+	SubTrigger,
+	Trigger,
+});

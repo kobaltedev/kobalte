@@ -15,3 +15,5 @@ export type {
 	ToggleButtonRootState,
 };
 export { Root };
+
+export const ToggleButton = Root;

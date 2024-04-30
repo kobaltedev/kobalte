@@ -31,3 +31,8 @@ export type {
 	BreadcrumbsSeparatorProps,
 };
 export { Link, Root, Separator };
+
+export const Breadcrumbs = Object.assign(Root, {
+	Link,
+	Separator,
+});

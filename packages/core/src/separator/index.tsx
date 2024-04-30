@@ -13,3 +13,5 @@ export type {
 	SeparatorRootProps,
 };
 export { Root };
+
+export const Separator = Root;

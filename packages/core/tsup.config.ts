@@ -17,9 +17,9 @@
 //
 //export default defineConfig(config => {
 //	const watching = !!config.watch;
-//	
+//
 //	const componentIndexes = globSync('src/*/index.tsx');
-//	
+//
 //	(preset_options.entries as preset.EntryOptions[]).push(...componentIndexes.map(s => ({
 //		entry: s,
 //	})));
@@ -40,39 +40,36 @@
 //	return preset.generateTsupOptions(parsed_data);
 //})
 
+import { solidPlugin } from "esbuild-plugin-solid";
 /**
  * Adapted from https://github.com/corvudev/corvu/blob/b1f36db096867a88ef5b62bec1e46cc0c8e09089/packages/corvu/tsup.config.ts
  */
-import { defineConfig, Options } from 'tsup'
-import { solidPlugin } from 'esbuild-plugin-solid';
+import { Options, defineConfig } from "tsup";
 
 function generateConfig(jsx: boolean): Options {
 	return {
-		target: 'esnext',
-		platform: 'browser',
+		target: "esnext",
+		platform: "browser",
 		format: "esm",
 		clean: true,
 		dts: !jsx,
-		entry: ['src/index.tsx', 'src/*/index.tsx'],
-		outDir: 'dist/',
-		treeshake: { preset: 'smallest' },
+		entry: ["src/index.tsx", "src/*/index.tsx", "src/primitives/*/index.ts"],
+		outDir: "dist/",
+		treeshake: { preset: "smallest" },
 		replaceNodeEnv: true,
 		esbuildOptions(options) {
 			if (jsx) {
-				options.jsx = 'preserve'
+				options.jsx = "preserve";
 			}
-			options.chunkNames = '[name]/[hash]'
-			options.drop = ['console', 'debugger']
+			options.chunkNames = "[name]/[hash]";
+			options.drop = ["console", "debugger"];
 		},
 		outExtension() {
-			return jsx ? { js: '.jsx' } : {};
+			return jsx ? { js: ".jsx" } : {};
 		},
 		// @ts-ignore
-		esbuildPlugins: !jsx ? [solidPlugin({ solid: { generate: 'dom' } })] : [],
-	}
+		esbuildPlugins: !jsx ? [solidPlugin({ solid: { generate: "dom" } })] : [],
+	};
 }
 
-export default defineConfig([
-	generateConfig(false),
-	generateConfig(true),
-]);
+export default defineConfig([generateConfig(false), generateConfig(true)]);

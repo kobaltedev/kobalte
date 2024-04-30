@@ -22,7 +22,7 @@ import {
 } from "solid-js";
 
 import { createListState } from "../list";
-import { PopperRoot, PopperRootOptions } from "../popper";
+import { Popper, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
 import {
 	CollectionItemWithRef,
@@ -259,7 +259,7 @@ export function Menu(props: MenuProps) {
 	return (
 		<DomCollectionProvider>
 			<MenuContext.Provider value={context}>
-				<PopperRoot
+				<Popper
 					anchorRef={triggerRef}
 					contentRef={contentRef}
 					onCurrentPlacementChange={setCurrentPlacement}

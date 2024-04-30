@@ -57,3 +57,10 @@ export type {
 	TabsTriggerProps,
 };
 export { Content, Indicator, List, Root, Trigger };
+
+export const Tabs = Object.assign(Root, {
+	Content,
+	Indicator,
+	List,
+	Trigger,
+});

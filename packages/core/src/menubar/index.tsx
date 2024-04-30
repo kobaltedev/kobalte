@@ -76,7 +76,7 @@ import {
 	type MenuTriggerRenderProps as MenubarTriggerRenderProps,
 } from "../menu";
 import {
-	PopperArrow as Arrow,
+	Arrow,
 	type PopperArrowCommonProps as MenubarArrowCommonProps,
 	type PopperArrowOptions as MenubarArrowOptions,
 	type PopperArrowProps as MenubarArrowProps,
@@ -200,3 +200,25 @@ export {
 	SubTrigger,
 	Trigger,
 };
+
+export const Menubar = Object.assign(Root, {
+	Arrow,
+	CheckboxItem,
+	Content,
+	Group,
+	GroupLabel,
+	Icon,
+	Item,
+	ItemDescription,
+	ItemIndicator,
+	ItemLabel,
+	Portal,
+	RadioGroup,
+	RadioItem,
+	Menu,
+	Separator,
+	Sub,
+	SubContent,
+	SubTrigger,
+	Trigger,
+});

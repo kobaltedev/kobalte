@@ -35,7 +35,7 @@ import {
 	Section,
 } from "../listbox";
 import {
-	PopperArrow as Arrow,
+	Arrow,
 	type PopperArrowCommonProps as SelectArrowCommonProps,
 	type PopperArrowOptions as SelectArrowOptions,
 	type PopperArrowProps as SelectArrowProps,
@@ -190,3 +190,22 @@ export {
 	Trigger,
 	Value,
 };
+
+export const Select = Object.assign(Root, {
+	Arrow,
+	Content,
+	Description,
+	ErrorMessage,
+	HiddenSelect,
+	Icon,
+	Item,
+	ItemDescription,
+	ItemIndicator,
+	ItemLabel,
+	Label,
+	Listbox,
+	Portal,
+	Section,
+	Trigger,
+	Value,
+});

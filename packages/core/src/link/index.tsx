@@ -13,3 +13,5 @@ export type {
 	LinkRootProps,
 };
 export { Root };
+
+export const Link = Root;

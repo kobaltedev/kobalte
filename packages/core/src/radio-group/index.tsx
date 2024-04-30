@@ -122,3 +122,15 @@ export {
 	Label,
 	Root,
 };
+
+export const RadioGroup = Object.assign(Root, {
+	Description,
+	ErrorMessage,
+	Item,
+	ItemControl,
+	ItemDescription,
+	ItemIndicator,
+	ItemInput,
+	ItemLabel,
+	Label,
+});

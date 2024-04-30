@@ -57,3 +57,10 @@ export type {
 	ProgressValueLabelProps,
 };
 export { Fill, Label, Root, Track, ValueLabel };
+
+export const Progress = Object.assign(Root, {
+	Fill,
+	Label,
+	Track,
+	ValueLabel,
+});

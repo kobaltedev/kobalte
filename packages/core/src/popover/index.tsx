@@ -1,5 +1,5 @@
 import {
-	PopperArrow as Arrow,
+	Arrow,
 	type PopperArrowCommonProps as PopoverArrowCommonProps,
 	type PopperArrowOptions as PopoverArrowOptions,
 	type PopperArrowProps as PopoverArrowProps,
@@ -102,3 +102,14 @@ export {
 	Title,
 	Trigger,
 };
+
+export const Popover = Object.assign(Root, {
+	Anchor,
+	Arrow,
+	CloseButton,
+	Content,
+	Description,
+	Portal,
+	Title,
+	Trigger,
+});

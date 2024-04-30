@@ -64,3 +64,11 @@ export type {
 	TextFieldTextAreaProps,
 };
 export { Description, ErrorMessage, Input, Label, Root, TextArea };
+
+export const TextField = Object.assign(Root, {
+	Description,
+	ErrorMessage,
+	Input,
+	Label,
+	TextArea,
+});

@@ -37,7 +37,7 @@ import {
 import { createCollator } from "../i18n";
 import { ListKeyboardDelegate, createListState } from "../list";
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
-import { PopperRoot, PopperRootOptions } from "../popper";
+import { Popper, PopperRootOptions } from "../popper";
 import {
 	CollectionNode,
 	createDisclosureState,
@@ -546,11 +546,7 @@ export function SelectBase<
 	return (
 		<FormControlContext.Provider value={formControlContext}>
 			<SelectContext.Provider value={context}>
-				<PopperRoot
-					anchorRef={triggerRef}
-					contentRef={contentRef}
-					{...popperProps}
-				>
+				<Popper anchorRef={triggerRef} contentRef={contentRef} {...popperProps}>
 					<Polymorphic<SelectBaseRenderProps>
 						as="div"
 						role="group"
@@ -559,7 +555,7 @@ export function SelectBase<
 						{...dataset()}
 						{...others}
 					/>
-				</PopperRoot>
+				</Popper>
 			</SelectContext.Provider>
 		</FormControlContext.Provider>
 	);

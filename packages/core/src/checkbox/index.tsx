@@ -77,3 +77,12 @@ export type {
 	CheckboxRootProps,
 };
 export { Control, Description, ErrorMessage, Indicator, Input, Label, Root };
+
+export const Checkbox = Object.assign(Root, {
+	Control,
+	Description,
+	ErrorMessage,
+	Indicator,
+	Input,
+	Label,
+});

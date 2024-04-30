@@ -14,3 +14,5 @@ export type {
 };
 
 export { Root };
+
+export const SpinButton = Root;

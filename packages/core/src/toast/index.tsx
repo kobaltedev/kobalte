@@ -54,6 +54,7 @@ import {
 	type ToastTitleProps,
 	type ToastTitleRenderProps,
 } from "./toast-title";
+import { toaster } from "./toaster";
 import {
 	type ToastComponent,
 	type ToastComponentProps,
@@ -113,4 +114,16 @@ export {
 	Region,
 	Root,
 	Title,
+	toaster,
 };
+
+export const Toast = Object.assign(Root, {
+	CloseButton,
+	Description,
+	List,
+	ProgressFill,
+	ProgressTrack,
+	Region,
+	Title,
+	toaster,
+});

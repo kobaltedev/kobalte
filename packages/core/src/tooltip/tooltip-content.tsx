@@ -22,7 +22,7 @@ import {
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import { PolymorphicProps } from "../polymorphic";
-import { PopperPositioner } from "../popper";
+import { Popper } from "../popper";
 import { PointerDownOutsideEvent } from "../primitives";
 import { TooltipDataSet, useTooltipContext } from "./tooltip-context";
 
@@ -79,7 +79,7 @@ export function TooltipContent<T extends ValidComponent = "div">(
 
 	return (
 		<Show when={context.contentPresence.isPresent()}>
-			<PopperPositioner>
+			<Popper.Positioner>
 				<DismissableLayer<
 					Component<
 						Omit<TooltipContentRenderProps, keyof DismissableLayerRenderProps>
@@ -102,7 +102,7 @@ export function TooltipContent<T extends ValidComponent = "div">(
 					{...context.dataset()}
 					{...others}
 				/>
-			</PopperPositioner>
+			</Popper.Positioner>
 		</Show>
 	);
 }

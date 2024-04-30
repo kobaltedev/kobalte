@@ -31,7 +31,7 @@ import {
 import { createSelectableList } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { PolymorphicProps } from "../polymorphic";
-import { PopperPositioner } from "../popper";
+import { Popper } from "../popper";
 import {
 	FocusOutsideEvent,
 	InteractOutsideEvent,
@@ -274,7 +274,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 	return (
 		<Show when={context.contentPresence.isPresent()}>
-			<PopperPositioner>
+			<Popper.Positioner>
 				<DismissableLayer<
 					Component<
 						Omit<MenuContentBaseRenderProps, keyof DismissableLayerRenderProps>
@@ -323,7 +323,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 					{...context.dataset()}
 					{...others}
 				/>
-			</PopperPositioner>
+			</Popper.Positioner>
 		</Show>
 	);
 }

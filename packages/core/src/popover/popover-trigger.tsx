@@ -7,9 +7,10 @@
  */
 
 import { callHandler, mergeRefs } from "@kobalte/utils";
-import { Component, JSX, splitProps } from "solid-js";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import * as Button from "../button";
+import { PolymorphicProps } from "../polymorphic";
 import { PopoverDataSet, usePopoverContext } from "./popover-context";
 
 export interface PopoverTriggerOptions {}
@@ -35,10 +36,12 @@ export type PopoverTriggerProps = PopoverTriggerOptions &
 /**
  * The button that opens the popover.
  */
-export function PopoverTrigger(props: PopoverTriggerProps) {
+export function PopoverTrigger<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, PopoverTriggerProps>,
+) {
 	const context = usePopoverContext();
 
-	const [local, others] = splitProps(props, [
+	const [local, others] = splitProps(props as PopoverTriggerProps, [
 		"ref",
 		"onClick",
 		"onPointerDown",

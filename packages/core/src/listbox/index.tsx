@@ -69,3 +69,11 @@ export type {
 };
 
 export { Item, ItemDescription, ItemIndicator, ItemLabel, Root, Section };
+
+export const Listbox = Object.assign(Root, {
+	Item,
+	ItemDescription,
+	ItemIndicator,
+	ItemLabel,
+	Section,
+});

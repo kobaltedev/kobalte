@@ -8,7 +8,7 @@ import {
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import { PolymorphicProps } from "../polymorphic";
-import { PopperPositioner } from "../popper";
+import { Popper } from "../popper";
 import {
 	FocusOutsideEvent,
 	InteractOutsideEvent,
@@ -137,7 +137,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 
 	return (
 		<Show when={context.contentPresence.isPresent()}>
-			<PopperPositioner>
+			<Popper.Positioner>
 				<DismissableLayer<
 					Component<
 						Omit<ComboboxContentRenderProps, keyof DismissableLayerRenderProps>
@@ -161,7 +161,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 					{...context.dataset()}
 					{...others}
 				/>
-			</PopperPositioner>
+			</Popper.Positioner>
 		</Show>
 	);
 }
