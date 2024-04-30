@@ -66,7 +66,7 @@ import {
 	type MenuSubTriggerRenderProps as ContextMenuSubTriggerRenderProps,
 } from "../menu";
 import {
-	PopperArrow as Arrow,
+	Arrow,
 	type PopperArrowCommonProps as ContextMenuArrowCommonProps,
 	type PopperArrowOptions as ContextMenuArrowOptions,
 	type PopperArrowProps as ContextMenuArrowProps,
@@ -192,3 +192,24 @@ export {
 	SubTrigger,
 	Trigger,
 };
+
+export const ContextMenu = Object.assign(Root, {
+	Arrow,
+	CheckboxItem,
+	Content,
+	Group,
+	GroupLabel,
+	Icon,
+	Item,
+	ItemDescription,
+	ItemIndicator,
+	ItemLabel,
+	Portal,
+	RadioGroup,
+	RadioItem,
+	Separator,
+	Sub,
+	SubContent,
+	SubTrigger,
+	Trigger,
+});

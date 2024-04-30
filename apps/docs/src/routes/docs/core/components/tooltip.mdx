@@ -8,6 +8,10 @@ A popup that displays information related to an element when the element receive
 ## Import
 
 ```ts
+import { Tooltip } from "@kobalte/core/tooltip";
+// or
+import { Root, Trigger, ... } from "@kobalte/core/tooltip";
+// or (deprecated)
 import { Tooltip } from "@kobalte/core";
 ```
 
@@ -25,21 +29,21 @@ import { Tooltip } from "@kobalte/core";
 
 The tooltip consists of:
 
-- **Tooltip.Root:** The root container for a tooltip.
+- **Tooltip:** The root container for a tooltip.
 - **Tooltip.Trigger:** The button that toggles the tooltip.
 - **Tooltip.Portal:** Portals its children into the `body` when the tooltip is open.
 - **Tooltip.Content:** Contains the content to be rendered when the tooltip is open.
 - **Tooltip.Arrow:** An optional arrow element to render alongside the tooltip.
 
 ```tsx
-<Tooltip.Root>
+<Tooltip>
 	<Tooltip.Trigger />
 	<Tooltip.Portal>
 		<Tooltip.Content>
 			<Tooltip.Arrow />
 		</Tooltip.Content>
 	</Tooltip.Portal>
-</Tooltip.Root>
+</Tooltip>
 ```
 
 ## Example
@@ -56,12 +60,12 @@ The tooltip consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Tooltip } from "@kobalte/core";
+		import { Tooltip } from "@kobalte/core/tooltip";
     import "./style.css";
 
     function App() {
       return (
-        <Tooltip.Root>
+        <Tooltip>
           <Tooltip.Trigger class="tooltip__trigger">Trigger</Tooltip.Trigger>
           <Tooltip.Portal>
             <Tooltip.Content class="tooltip__content">
@@ -69,7 +73,7 @@ The tooltip consists of:
               <p>Tooltip content</p>
             </Tooltip.Content>
           </Tooltip.Portal>
-        </Tooltip.Root>
+        </Tooltip>
       );
     }
     ```
@@ -159,7 +163,7 @@ The tooltip consists of:
 An initial, uncontrolled open value can be provided using the `defaultOpen` prop.
 
 ```tsx
-<Tooltip.Root defaultOpen>...</Tooltip.Root>
+<Tooltip defaultOpen>...</Tooltip>
 ```
 
 ### Controlled open
@@ -179,7 +183,7 @@ function ControlledExample() {
 	return (
 		<>
 			<p>Tooltip is {open() ? "showing" : "not showing"}.</p>
-			<Tooltip.Root open={open()} onOpenChange={setOpen}>
+			<Tooltip open={open()} onOpenChange={setOpen}>
 				<Tooltip.Trigger>Trigger</Tooltip.Trigger>
 				<Tooltip.Portal>
 					<Tooltip.Content>
@@ -187,7 +191,7 @@ function ControlledExample() {
 						<p>Tooltip content</p>
 					</Tooltip.Content>
 				</Tooltip.Portal>
-			</Tooltip.Root>
+			</Tooltip>
 		</>
 	);
 }
@@ -233,7 +237,9 @@ We expose a CSS custom property `--kb-tooltip-content-transform-origin` which ca
 
 ## API Reference
 
-### Tooltip.Root
+### Tooltip
+
+`Tooltip` is equivalent to the `Root` import from `@kobalte/core/tooltip` (and deprecated `Tooltip.Root`).
 
 | Prop               | Description                                                                                                                                                                   |
 | :----------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -247,7 +253,7 @@ We expose a CSS custom property `--kb-tooltip-content-transform-origin` which ca
 | id                 | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used. |
 | forceMount         | `boolean` <br/> Used to force mounting the tooltip (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.      |
 
-`Tooltip.Root` also accepts the following props to customize the placement of the `Tooltip.Content`.
+`Tooltip` also accepts the following props to customize the placement of the `Tooltip.Content`.
 
 | Prop             | Description                                                                                                                                                                                                                                                                                                                                                |
 | :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -291,7 +297,7 @@ We expose a CSS custom property `--kb-tooltip-content-transform-origin` which ca
 
 | Component         | Default rendered element |
 | :---------------- | :----------------------- |
-| `Tooltip.Root`    | none                     |
+| `Tooltip`         | none                     |
 | `Tooltip.Trigger` | `button`                 |
 | `Tooltip.Portal`  | `Portal`                 |
 | `Tooltip.Content` | `div`                    |

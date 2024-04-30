@@ -33,7 +33,7 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { PopperRoot, PopperRootOptions } from "../popper";
+import { Popper, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
 import {
 	createDisclosureState,
@@ -395,7 +395,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 
 	return (
 		<TooltipContext.Provider value={context}>
-			<PopperRoot
+			<Popper
 				anchorRef={triggerRef}
 				contentRef={contentRef}
 				onCurrentPlacementChange={setCurrentPlacement}

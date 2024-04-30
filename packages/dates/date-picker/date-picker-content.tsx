@@ -11,7 +11,7 @@ import createPreventScroll from "solid-prevent-scroll";
 import { DismissableLayer } from "../dismissable-layer";
 import { useFormControlContext } from "../form-control";
 import { AsChildProp } from "../polymorphic";
-import { PopperPositioner } from "../popper";
+import { Popper } from "../popper";
 import {
 	FocusOutsideEvent,
 	InteractOutsideEvent,
@@ -212,7 +212,7 @@ export function DatePickerContent(props: DatePickerContentProps) {
 
 	return (
 		<Show when={context.contentPresence.isPresent()}>
-			<PopperPositioner>
+			<Popper.Positioner>
 				<DismissableLayer
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
@@ -237,7 +237,7 @@ export function DatePickerContent(props: DatePickerContentProps) {
 					{...context.dataset()}
 					{...others}
 				/>
-			</PopperPositioner>
+			</Popper.Positioner>
 		</Show>
 	);
 }

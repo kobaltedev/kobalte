@@ -78,3 +78,13 @@ export {
 	Title,
 	Trigger,
 };
+
+export const AlertDialog = Object.assign(Root, {
+	CloseButton,
+	Content,
+	Description,
+	Overlay,
+	Portal,
+	Title,
+	Trigger,
+});

@@ -15,6 +15,10 @@ A set of checkable buttons, known as radio buttons, where no more than one of th
 ## Import
 
 ```ts
+import { RadioGroup } from "@kobalte/core/radio-group";
+// or
+import { Root, Label, ... } from "@kobalte/core/radio-group";
+// or (deprecated)
 import { RadioGroup } from "@kobalte/core";
 ```
 
@@ -30,7 +34,7 @@ import { RadioGroup } from "@kobalte/core";
 
 The radio group consists of:
 
-- **RadioGroup.Root**: The root container for the radio group.
+- **RadioGroup**: The root container for the radio group.
 - **RadioGroup.Label**: The label that gives the user information on the radio group.
 - **RadioGroup.Description**: The description that gives the user more information on the radio group.
 - **RadioGroup.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the radio group.
@@ -45,7 +49,7 @@ The radio item consists of:
 - **RadioGroup.ItemDescription**: The description that gives the user more information on the radio button.
 
 ```tsx
-<RadioGroup.Root>
+<RadioGroup>
 	<RadioGroup.Label />
 	<RadioGroup.Item>
 		<RadioGroup.ItemInput />
@@ -57,7 +61,7 @@ The radio item consists of:
 	</RadioGroup.Item>
 	<RadioGroup.Description />
 	<RadioGroup.ErrorMessage />
-</RadioGroup.Root>
+</RadioGroup>
 ```
 
 ## Example
@@ -74,12 +78,12 @@ The radio item consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { RadioGroup } from "@kobalte/core";
+		import { RadioGroup } from "@kobalte/core/radio-group";
     import "./style.css";
 
     function App() {
       return (
-        <RadioGroup.Root class="radio-group">
+        <RadioGroup class="radio-group">
           <RadioGroup.Label class="radio-group__label">Favorite fruit</RadioGroup.Label>
           <div class="radio-group__items">
             <For each={["Apple", "Orange", "Watermelon"]}>
@@ -94,7 +98,7 @@ The radio item consists of:
               )}
             </For>
           </div>
-        </RadioGroup.Root>
+        </RadioGroup>
       );
     }
     ```
@@ -193,14 +197,14 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 </Preview>
 
 ```tsx {0,4}
-<RadioGroup.Root defaultValue="Orange">
+<RadioGroup defaultValue="Orange">
 	<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
 	<div>
 		<For each={["Apple", "Orange", "Watermelon"]}>
 			{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
 		</For>
 	</div>
-</RadioGroup.Root>
+</RadioGroup>
 ```
 
 ### Controlled value
@@ -219,14 +223,14 @@ function ControlledExample() {
 
 	return (
 		<>
-			<RadioGroup.Root value={value()} onChange={setValue}>
+			<RadioGroup value={value()} onChange={setValue}>
 				<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
 				<div>
 					<For each={["Apple", "Orange", "Watermelon"]}>
 						{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
 					</For>
 				</div>
-			</RadioGroup.Root>
+			</RadioGroup>
 			<p>Your favorite fruit is: {value()}.</p>
 		</>
 	);
@@ -242,7 +246,7 @@ The `RadioGroup.Description` component can be used to associate additional help 
 </Preview>
 
 ```tsx {7}
-<RadioGroup.Root>
+<RadioGroup>
 	<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
 	<div>
 		<For each={["Apple", "Orange", "Watermelon"]}>
@@ -250,7 +254,7 @@ The `RadioGroup.Description` component can be used to associate additional help 
 		</For>
 	</div>
 	<RadioGroup.Description>Choose the fruit you like the most.</RadioGroup.Description>
-</RadioGroup.Root>
+</RadioGroup>
 ```
 
 ### Error message
@@ -270,7 +274,7 @@ function ErrorMessageExample() {
 	const [value, setValue] = createSignal("Orange");
 
 	return (
-		<RadioGroup.Root
+		<RadioGroup
 			value={value()}
 			onChange={setValue}
 			validationState={value() !== "Apple" ? "invalid" : "valid"}
@@ -282,7 +286,7 @@ function ErrorMessageExample() {
 				</For>
 			</div>
 			<RadioGroup.ErrorMessage>Hmm, I prefer apples.</RadioGroup.ErrorMessage>
-		</RadioGroup.Root>
+		</RadioGroup>
 	);
 }
 ```
@@ -303,14 +307,14 @@ function HTMLFormExample() {
 
 	return (
 		<form onSubmit={onSubmit}>
-			<RadioGroup.Root name="favorite-fruit">
+			<RadioGroup name="favorite-fruit">
 				<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
 				<div>
 					<For each={["Apple", "Orange", "Watermelon"]}>
 						{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
 					</For>
 				</div>
-			</RadioGroup.Root>
+			</RadioGroup>
 			<div>
 				<button type="reset">Reset</button>
 				<button type="submit">Submit</button>
@@ -322,7 +326,9 @@ function HTMLFormExample() {
 
 ## API Reference
 
-### RadioGroup.Root
+### RadioGroup
+
+`RadioGroup` is equivalent to the `Root` import from `@kobalte/core/radio-group` (and deprecated `RadioGroup.Root`).
 
 | Prop            | Description                                                                                                                                                         |
 | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -378,7 +384,7 @@ function HTMLFormExample() {
 
 | Component                    | Default rendered element |
 | :--------------------------- | :----------------------- |
-| `RadioGroup.Root`            | `div`                    |
+| `RadioGroup`                 | `div`                    |
 | `RadioGroup.Label`           | `span`                   |
 | `RadioGroup.Description`     | `div`                    |
 | `RadioGroup.ErrorMessage`    | `div`                    |

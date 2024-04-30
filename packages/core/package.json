@@ -27,27 +27,34 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "solid": "./dist/source/index.jsx",
-      "import": "./dist/esm/index.js",
-      "browser": {
-        "import": "./dist/esm/index.js",
-        "require": "./dist/cjs/index.js"
-      },
-      "require": "./dist/cjs/index.js",
-      "node": "./dist/cjs/index.js"
-    }
+		".": {
+			"types": "./dist/index.d.ts",
+			"solid": "./dist/index.jsx",
+			"default": "./dist/index.js"
+    },
+		"./*": {
+			"types": "./dist/*/index.d.ts",
+      "solid": "./dist/*/index.jsx",
+			"default": "./dist/*/index.js"
+		}
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/types/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"typesVersions": {
+		"*": {
+			"*": [
+				"./dist/*/index.d.ts",
+				"./dist/index.d.ts"
+			]
+		}
+	},
   "files": [
     "dist",
     "NOTICE.txt"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "cp ../../NOTICE.txt . && tsup",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
     "dev": "vite serve dev --host",
     "test-old": "jest --passWithNoTests",
@@ -62,7 +69,9 @@
     "solid-prevent-scroll": "^0.1.4"
   },
   "devDependencies": {
-    "@kobalte/tests": "^0.6.0"
+    "@kobalte/tests": "^0.6.0",
+    "esbuild-plugin-solid": "^0.5.0",
+    "tsup": "7.2.0"
   },
   "peerDependencies": {
     "solid-js": "^1.8.15"

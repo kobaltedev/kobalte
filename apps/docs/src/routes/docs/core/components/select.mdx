@@ -19,6 +19,10 @@ Displays a list of options for the user to pick from — triggered by a button.
 ## Import
 
 ```ts
+import { Select } from "@kobalte/core/select";
+// or
+import { Root, Label, ... } from "@kobalte/core/select";
+// or (deprecated)
 import { Select } from "@kobalte/core";
 ```
 
@@ -41,7 +45,7 @@ import { Select } from "@kobalte/core";
 
 The select consists of:
 
-- **Select.Root:** The root container for a select component.
+- **Select:** The root container for a select component.
 - **Select.Label:** The label that gives the user information on the select.
 - **Select.Description:** The description that gives the user more information on the select.
 - **Select.ErrorMessage:** The error message that gives the user information about how to fix a validation error on the select.
@@ -59,7 +63,7 @@ The select consists of:
 - **Select.ItemIndicator:** The visual indicator rendered when the item is selected.
 
 ```tsx
-<Select.Root>
+<Select>
 	<Select.Label />
 	<Select.Trigger>
 		<Select.Value />
@@ -74,7 +78,7 @@ The select consists of:
 			<Select.Listbox />
 		</Select.Content>
 	</Select.Portal>
-</Select.Root>
+</Select>
 ```
 
 ## Example
@@ -91,13 +95,13 @@ The select consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Select } from "@kobalte/core";
+		import { Select } from "@kobalte/core/select";
     import { CaretSortIcon, CheckIcon } from "some-icon-library";
     import "./style.css";
 
     function App() {
       return (
-        <Select.Root
+        <Select
           options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
           placeholder="Select a fruit…"
           itemComponent={props => (
@@ -122,7 +126,7 @@ The select consists of:
               <Select.Listbox class="select__listbox" />
             </Select.Content>
           </Select.Portal>
-        </Select.Root>
+        </Select>
       );
     }
     ```
@@ -290,7 +294,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 </Preview>
 
 ```tsx {1}
-<Select.Root
+<Select
 	defaultValue="Blueberry"
 	options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
 	placeholder="Select a fruit…"
@@ -314,7 +318,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 			<Select.Listbox />
 		</Select.Content>
 	</Select.Portal>
-</Select.Root>
+</Select>
 ```
 
 ### Controlled value
@@ -333,7 +337,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<Select.Root
+			<Select
 				value={value()}
 				onChange={setValue}
 				options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
@@ -358,7 +362,7 @@ export function ControlledExample() {
 						<Select.Listbox />
 					</Select.Content>
 				</Select.Portal>
-			</Select.Root>
+			</Select>
 			<p>Your favorite fruit is: {value()}.</p>
 		</>
 	);
@@ -374,7 +378,7 @@ The `Select.Description` component can be used to associate additional help text
 </Preview>
 
 ```tsx {18}
-<Select.Root
+<Select
 	options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
 	placeholder="Select a fruit…"
 	itemComponent={props => (
@@ -398,7 +402,7 @@ The `Select.Description` component can be used to associate additional help text
 			<Select.Listbox />
 		</Select.Content>
 	</Select.Portal>
-</Select.Root>
+</Select>
 ```
 
 ### Error message
@@ -418,7 +422,7 @@ export function ErrorMessageExample() {
 	const [value, setValue] = createSignal("Grapes");
 
 	return (
-		<Select.Root
+		<Select
 			value={value()}
 			onChange={setValue}
 			validationState={value() !== "Apple" ? "invalid" : "valid"}
@@ -445,7 +449,7 @@ export function ErrorMessageExample() {
 					<Select.Listbox />
 				</Select.Content>
 			</Select.Portal>
-		</Select.Root>
+		</Select>
 	);
 }
 ```
@@ -466,7 +470,7 @@ function HTMLFormExample() {
 
 	return (
 		<form onSubmit={onSubmit}>
-			<Select.Root
+			<Select
 				name="fruit"
 				options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
 				placeholder="Select a fruit…"
@@ -491,7 +495,7 @@ function HTMLFormExample() {
 						<Select.Listbox />
 					</Select.Content>
 				</Select.Portal>
-			</Select.Root>
+			</Select>
 			<div>
 				<button type="reset">Reset</button>
 				<button>Submit</button>
@@ -530,7 +534,7 @@ const options: Fruit[] = [
 
 function ObjectExample() {
 	return (
-		<Select.Root
+		<Select
 			options={options}
 			optionValue="value"
 			optionTextValue="label"
@@ -556,7 +560,7 @@ function ObjectExample() {
 					<Select.Listbox />
 				</Select.Content>
 			</Select.Portal>
-		</Select.Root>
+		</Select>
 	);
 }
 ```
@@ -609,7 +613,7 @@ const options: Category[] = [
 
 function OptionGroupExample() {
 	return (
-		<Select.Root<Food, Category>
+		<Select<Food, Category>
 			options={options}
 			optionValue="value"
 			optionTextValue="label"
@@ -637,13 +641,13 @@ function OptionGroupExample() {
 					<Select.Listbox />
 				</Select.Content>
 			</Select.Portal>
-		</Select.Root>
+		</Select>
 	);
 }
 ```
 
 <Callout type="note">
-	Notice the usage of generics on `Select.Root` for proper TypeScript support.
+	Notice the usage of generics on `Select` for proper TypeScript support.
 </Callout>
 
 ### Multiple selection
@@ -666,7 +670,7 @@ function MultipleSelectionExample() {
 
 	return (
 		<>
-			<Select.Root<string>
+			<Select<string>
 				multiple
 				value={values()}
 				onChange={setValues}
@@ -712,7 +716,7 @@ function MultipleSelectionExample() {
 						<Select.Listbox />
 					</Select.Content>
 				</Select.Portal>
-			</Select.Root>
+			</Select>
 			<p>Your favorite fruits are: {values().join(", ")}.</p>
 		</>
 	);
@@ -730,7 +734,7 @@ While Kobalte doesn't provide any built-in virtual scrolling API, it can easily 
 </Preview>
 
 ```tsx {18-25,31-33,46,80,101}
-import { Select } from "@kobalte/core";
+import { Select } from "@kobalte/core/select";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 
 interface Item {
@@ -809,7 +813,7 @@ function SelectContent(props: { options: Item[] }) {
 
 function VirtualizedExample() {
 	return (
-		<Select.Root
+		<Select
 			virtualized
 			options={options}
 			optionValue="value"
@@ -826,7 +830,7 @@ function VirtualizedExample() {
 			<Select.Portal>
 				<SelectContent options={options} />
 			</Select.Portal>
-		</Select.Root>
+		</Select>
 	);
 }
 ```
@@ -871,7 +875,9 @@ We expose a CSS custom property `--kb-select-content-transform-origin` which can
 
 ## API Reference
 
-### Select.Root
+### Select
+
+`Select` is equivalent to the `Root` import from `@kobalte/core/select` (and deprecated `Select.Root`).
 
 | Prop                          | Description                                                                                                                                                                                                                                                                                                                                          |
 | :---------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -905,7 +911,7 @@ We expose a CSS custom property `--kb-select-content-transform-origin` which can
 | readOnly                      | `boolean` <br/> Whether the select items can be selected but not changed by the user.                                                                                                                                                                                                                                                                |
 | autoComplete                  | `string` <br/> Describes the type of autocomplete functionality the input should provide if any. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete)                                                                                                                                                  |
 
-`Select.Root` also accepts the following props to customize the placement of the `Select.Content`.
+`Select` also accepts the following props to customize the placement of the `Select.Content`.
 
 | Prop             | Description                                                                                                                                                                                                                                                                                                                                                               |
 | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -1012,7 +1018,7 @@ We expose a CSS custom property `--kb-select-content-transform-origin` which can
 
 | Component                | Default rendered element |
 | :----------------------- | :----------------------- |
-| `Select.Root`            | `div`                    |
+| `Select`                 | `div`                    |
 | `Select.Label`           | `span`                   |
 | `Select.Description`     | `div`                    |
 | `Select.ErrorMessage`    | `div`                    |

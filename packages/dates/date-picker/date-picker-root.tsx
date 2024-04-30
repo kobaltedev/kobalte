@@ -54,7 +54,7 @@ import {
 } from "../form-control";
 import { getReadingDirection, useLocale } from "../i18n";
 import { AsChildProp, Polymorphic } from "../polymorphic";
-import { PopperRoot, PopperRootOptions } from "../popper";
+import { Popper, PopperRootOptions } from "../popper";
 import {
 	createControllableSignal,
 	createDisclosureState,
@@ -620,11 +620,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
 	return (
 		<FormControlContext.Provider value={formControlContext}>
 			<DatePickerContext.Provider value={context}>
-				<PopperRoot
-					anchorRef={controlRef}
-					contentRef={contentRef}
-					{...popperProps}
-				>
+				<Popper anchorRef={controlRef} contentRef={contentRef} {...popperProps}>
 					<Polymorphic
 						as="div"
 						role="group"
@@ -633,7 +629,7 @@ export function DatePickerRoot(props: DatePickerRootProps) {
 						{...dataset()}
 						{...others}
 					/>
-				</PopperRoot>
+				</Popper>
 			</DatePickerContext.Provider>
 		</FormControlContext.Provider>
 	);

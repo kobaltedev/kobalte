@@ -24,3 +24,7 @@ export type {
 	ToggleGroupRootRenderProps,
 	ToggleGroupRootProps,
 };
+
+export const ToggleGroup = Object.assign(Root, {
+	Item,
+});

@@ -35,3 +35,8 @@ export type {
 	CollapsibleTriggerProps,
 };
 export { Content, Root, Trigger };
+
+export const Collapsible = Object.assign(Root, {
+	Content,
+	Trigger,
+});

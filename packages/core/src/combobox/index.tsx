@@ -68,7 +68,7 @@ import {
 	Section,
 } from "../listbox";
 import {
-	PopperArrow as Arrow,
+	Arrow,
 	type PopperArrowOptions as ComboboxArrowOptions,
 	type PopperArrowProps as ComboboxArrowProps,
 } from "../popper";
@@ -195,3 +195,23 @@ export {
 	Section,
 	Trigger,
 };
+
+export const Combobox = Object.assign(Root, {
+	Arrow,
+	Content,
+	Control,
+	Description,
+	ErrorMessage,
+	HiddenSelect,
+	Icon,
+	Input,
+	Item,
+	ItemDescription,
+	ItemIndicator,
+	ItemLabel,
+	Label,
+	Listbox,
+	Portal,
+	Section,
+	Trigger,
+});

@@ -39,7 +39,7 @@ import { createFilter } from "../i18n";
 import { ListKeyboardDelegate, createListState } from "../list";
 import { announce } from "../live-announcer";
 import { Polymorphic, PolymorphicProps } from "../polymorphic";
-import { PopperRoot, PopperRootOptions } from "../popper";
+import { Popper, PopperRootOptions } from "../popper";
 import {
 	CollectionNode,
 	createControllableSignal,
@@ -877,11 +877,7 @@ export function ComboboxBase<
 	return (
 		<FormControlContext.Provider value={formControlContext}>
 			<ComboboxContext.Provider value={context}>
-				<PopperRoot
-					anchorRef={controlRef}
-					contentRef={contentRef}
-					{...popperProps}
-				>
+				<Popper anchorRef={controlRef} contentRef={contentRef} {...popperProps}>
 					<Polymorphic<ComboboxBaseRenderProps>
 						as="div"
 						role="group"
@@ -890,7 +886,7 @@ export function ComboboxBase<
 						{...dataset()}
 						{...others}
 					/>
-				</PopperRoot>
+				</Popper>
 			</ComboboxContext.Provider>
 		</FormControlContext.Provider>
 	);

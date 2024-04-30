@@ -20,7 +20,8 @@ import {
 	DismissableLayer,
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { PopperPositioner } from "../popper";
+import { PolymorphicProps } from "../polymorphic";
+import { Popper } from "../popper";
 import {
 	FocusOutsideEvent,
 	InteractOutsideEvent,
@@ -92,7 +93,7 @@ export type PopoverContentProps = PopoverContentOptions &
  * Contains the content to be rendered when the popover is open.
  */
 export function PopoverContent<T extends ValidComponent = "div">(
-	props: PopoverContentProps,
+	props: PolymorphicProps<T, PopoverContentProps>,
 ) {
 	let ref: HTMLElement | undefined;
 
@@ -218,7 +219,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 
 	return (
 		<Show when={context.contentPresence.isPresent()}>
-			<PopperPositioner>
+			<Popper.Positioner>
 				<DismissableLayer<
 					Component<
 						Omit<PopoverContentRenderProps, keyof DismissableLayerRenderProps>
@@ -248,7 +249,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 					{...context.dataset()}
 					{...others}
 				/>
-			</PopperPositioner>
+			</Popper.Positioner>
 		</Show>
 	);
 }

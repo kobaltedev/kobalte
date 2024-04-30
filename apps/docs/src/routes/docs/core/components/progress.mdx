@@ -12,6 +12,10 @@ Show either determinate or indeterminate progress of an operation over time.
 ## Import
 
 ```ts
+import { Progress } from "@kobalte/core/progress";
+// or
+import { Root, Label, ... } from "@kobalte/core/progress";
+// or (deprecated)
 import { Progress } from "@kobalte/core";
 ```
 
@@ -26,20 +30,20 @@ import { Progress } from "@kobalte/core";
 
 The progress consists of:
 
-- **Progress.Root:** The root container for a progress bar.
+- **Progress:** The root container for a progress bar.
 - **Progress.Label:** An accessible label that gives the user information on the progress.
 - **Progress.ValueLabel:** The accessible label text representing the current value in a human-readable format.
 - **Progress.Track:** The component that visually represents the progress track.
 - **Progress.Fill:** The component that visually represents the progress value.
 
 ```tsx
-<Progress.Root>
+<Progress>
 	<Progress.Label />
 	<Progress.ValueLabel />
 	<Progress.Track>
 		<Progress.Fill />
 	</Progress.Track>
-</Progress.Root>
+</Progress>
 ```
 
 ## Example
@@ -56,12 +60,12 @@ The progress consists of:
   {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Progress } from "@kobalte/core";
+		import { Progress } from "@kobalte/core/progress";
     import "./style.css";
 
     function App() {
       return (
-        <Progress.Root value={80} class="progress">
+        <Progress value={80} class="progress">
           <div class="progress__label-container">
             <Progress.Label class="progress__label">Loading...</Progress.Label>
             <Progress.ValueLabel class="progress__value-label" />
@@ -69,7 +73,7 @@ The progress consists of:
           <Progress.Track class="progress__track">
             <Progress.Fill class="progress__fill" />
           </Progress.Track>
-        </Progress.Root>
+        </Progress>
       );
     }
     ```
@@ -127,7 +131,7 @@ By default, the `value` prop represents the current percentage of progress, as t
 </Preview>
 
 ```tsx {0}
-<Progress.Root value={100} minValue={50} maxValue={150} class="progress">
+<Progress value={100} minValue={50} maxValue={150} class="progress">
 	<div class="progress__label-container">
 		<Progress.Label class="progress__label">Loading...</Progress.Label>
 		<Progress.ValueLabel class="progress__value-label" />
@@ -135,7 +139,7 @@ By default, the `value` prop represents the current percentage of progress, as t
 	<Progress.Track class="progress__track">
 		<Progress.Fill class="progress__fill" />
 	</Progress.Track>
-</Progress.Root>
+</Progress>
 ```
 
 ### Custom value label
@@ -147,7 +151,7 @@ The `getValueLabel` prop allows the formatted value used in `Progress.ValueLabel
 </Preview>
 
 ```tsx {4}
-<Progress.Root
+<Progress
 	value={3}
 	minValue={0}
 	maxValue={10}
@@ -161,7 +165,7 @@ The `getValueLabel` prop allows the formatted value used in `Progress.ValueLabel
 	<Progress.Track class="progress__track">
 		<Progress.Fill class="progress__fill" />
 	</Progress.Track>
-</Progress.Root>
+</Progress>
 ```
 
 ### Progress bar fill width
@@ -170,7 +174,9 @@ We expose a CSS custom property `--kb-progress-fill-width` which corresponds to 
 
 ## API Reference
 
-### Progress.Root
+### Progress
+
+`Progress` is equivalent to the `Root` import from `@kobalte/core/progress` (and deprecated `Progress.Root`).
 
 | Prop          | Description                                                                                                                                                                                                                                                    |
 | :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -192,7 +198,7 @@ We expose a CSS custom property `--kb-progress-fill-width` which corresponds to 
 
 | Component             | Default rendered element |
 | :-------------------- | :----------------------- |
-| `Progress.Root`       | `div`                    |
+| `Progress`            | `div`                    |
 | `Progress.Label`      | `span`                   |
 | `Progress.ValueLabel` | `div`                    |
 | `Progress.Track`      | `div`                    |

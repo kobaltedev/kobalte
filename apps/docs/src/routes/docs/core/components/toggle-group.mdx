@@ -13,6 +13,10 @@ A set of two-state buttons that can be toggled on (pressed) or off (not pressed)
 ## Import
 
 ```ts
+import { ToggleGroup } from "@kobalte/core/toggle-group";
+// or
+import { Root, Item, ... } from "@kobalte/core/toggle-group";
+// or (deprecated)
 import { ToggleGroup } from "@kobalte/core";
 ```
 
@@ -26,16 +30,16 @@ import { ToggleGroup } from "@kobalte/core";
 
 The toggle group consists of:
 
-- **ToggleGroup.Root:** the root container for a toggle group.
+- **ToggleGroup:** the root container for a toggle group.
 
 The toggle item consists of:
 
 - **ToggleGroup.Item:** the root container for a toggle button.
 
 ```tsx
-<ToggleGroup.Root>
+<ToggleGroup>
 	<ToggleGroup.Item />
-</ToggleGroup.Root>
+</ToggleGroup>
 ```
 
 ## Example
@@ -52,11 +56,11 @@ The toggle item consists of:
 	{ /* <!-- prettier-ignore-start -->*/}
 	<TabsSnippets.Content value="index.tsx">
 		```tsx
-		import {ToggleButton} from "@kobalte/core";
+		import {ToggleButton} from "@kobalte/core/toggle-group";
 		import {BoldIcon, ItalicIcon, UnderlineIcon} from "some-icon-library";
 		import "./style.css";
 
-    	<ToggleGroup.Root class="toggle-group">
+    	<ToggleGroup class="toggle-group">
     		<ToggleGroup.Item class="toggle-group__item" value="bold" aria-label="Bold">
     			<BoldIcon/>
     		</ToggleGroup.Item>
@@ -66,7 +70,7 @@ The toggle item consists of:
     		<ToggleGroup.Item class="toggle-group__item" value="underline" aria-label="Underline">
     			<UnderlineIcon/>
     		</ToggleGroup.Item>
-    	</ToggleGroup.Root>
+    	</ToggleGroup>
     	```
 
     </TabsSnippets.Content>
@@ -124,7 +128,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 </Preview>
 
 ```tsx {0, 7-9}
-<ToggleGroup.Root defaultValue="underline">
+<ToggleGroup defaultValue="underline">
 	<ToggleGroup.Item value="bold" aria-label="Bold">
 		<BoldIcon />
 	</ToggleGroup.Item>
@@ -134,7 +138,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 	<ToggleGroup.Item value="underline" aria-label="Underline">
 		<UnderlineIcon />
 	</ToggleGroup.Item>
-</ToggleGroup.Root>
+</ToggleGroup>
 ```
 
 ### Controlled pressed
@@ -153,9 +157,9 @@ function ControlledExample() {
 
 	return (
 		<>
-			<ToggleGroup.Root value={value()} onChange={setValue}>
+			<ToggleGroup value={value()} onChange={setValue}>
 				...
-			</ToggleGroup.Root>
+			</ToggleGroup>
 			<p>Your text style is: {value()}.</p>
 		</>
 	);
@@ -177,7 +181,7 @@ function MultipleSelectionExample() {
 	const [values, setValues] = createSignal(["bold", "underline"]);
 
 	return (
-		<ToggleGroup.Root class="toggle-group" value={values()} onChange={setValues}>
+		<ToggleGroup class="toggle-group" value={values()} onChange={setValues}>
 			<ToggleGroup.Item class="toggle-group__item" value="bold" aria-label="Bold">
 				<BoldIcon />
 			</ToggleGroup.Item>
@@ -187,14 +191,16 @@ function MultipleSelectionExample() {
 			<ToggleGroup.Item class="toggle-group__item" value="underline" aria-label="Underline">
 				<UnderlineIcon />
 			</ToggleGroup.Item>
-		</ToggleGroup.Root>
+		</ToggleGroup>
 	);
 }
 ```
 
 ## API Reference
 
-### ToggleGroup.Root
+### ToggleGroup
+
+`ToggleGroup` is equivalent to the `Root` import from `@kobalte/core/toggle-group` (and deprecated `ToggleGroup.Root`).
 
 | Prop         | Description                                                                                                                             |
 | :----------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
@@ -233,7 +239,7 @@ function MultipleSelectionExample() {
 
 | Component          | Default rendered element |
 | :----------------- | :----------------------- |
-| `ToggleGroup.Root` | `div`                    |
+| `ToggleGroup`      | `div`                    |
 | `ToggleGroup.Item` | `button`                 |
 
 ## Accessibility

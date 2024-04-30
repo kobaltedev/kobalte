@@ -1,11 +1,11 @@
-import { Collapsible } from "@kobalte/core";
+import { Collapsible } from "@kobalte/core/collapsible";
 
 import { ChevronDownIcon } from "../components";
 import style from "./collapsible.module.css";
 
 export function BasicExample() {
 	return (
-		<Collapsible.Root class={style.collapsible}>
+		<Collapsible class={style.collapsible}>
 			<Collapsible.Trigger class={style.collapsible__trigger}>
 				<span>What is Kobalte ?</span>
 				<ChevronDownIcon class={style["collapsible__trigger-icon"]} />
@@ -18,6 +18,6 @@ export function BasicExample() {
 					implementation.
 				</p>
 			</Collapsible.Content>
-		</Collapsible.Root>
+		</Collapsible>
 	);
 }

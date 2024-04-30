@@ -8,6 +8,10 @@ Displays a menu located at the pointer, triggered by a right-click or a long-pre
 ## Import
 
 ```ts
+import { ContextMenu } from "@kobalte/core/context-menu";
+// or
+import { Root, Trigger, ... } from "@kobalte/core/context-menu";
+// or (deprecated)
 import { ContextMenu } from "@kobalte/core";
 ```
 
@@ -31,7 +35,7 @@ import { ContextMenu } from "@kobalte/core";
 
 The context menu consists of:
 
-- **ContextMenu.Root:** The root container for a context menu.
+- **ContextMenu:** The root container for a context menu.
 - **ContextMenu.Trigger:** The button that toggles the menu.
 - **ContextMenu.Icon:** A small icon that can be displayed inside the menu trigger as a visual affordance for the fact it can be open.
 - **ContextMenu.Portal:** Portals its children into the `body` when the menu is open.
@@ -58,7 +62,7 @@ The checkable menu item consists of:
 - **ContextMenu.CheckboxItem:** An item that can be controlled and rendered like a checkbox.
 
 ```tsx
-<ContextMenu.Root>
+<ContextMenu>
 	<ContextMenu.Trigger>
 		<ContextMenu.Icon />
 	</ContextMenu.Trigger>
@@ -97,7 +101,7 @@ The checkable menu item consists of:
 			<ContextMenu.Separator />
 		</ContextMenu.Content>
 	</ContextMenu.Portal>
-</ContextMenu.Root>
+</ContextMenu>
 ```
 
 ## Example
@@ -114,7 +118,7 @@ The checkable menu item consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { ContextMenu } from "@kobalte/core";
+		import { ContextMenu } from "@kobalte/core/context-menu";
     import { createSignal } from "solid-js";
     import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "some-icon-library";
     import "./style.css";
@@ -125,7 +129,7 @@ The checkable menu item consists of:
       const [branch, setBranch] = createSignal("main");
 
       return (
-        <ContextMenu.Root>
+        <ContextMenu>
           <ContextMenu.Trigger class="context-menu__trigger">
             Right click here.
           </ContextMenu.Trigger>
@@ -212,7 +216,7 @@ The checkable menu item consists of:
               </ContextMenu.Group>
             </ContextMenu.Content>
           </ContextMenu.Portal>
-        </ContextMenu.Root>
+        </ContextMenu>
       );
     }
     ```
@@ -400,7 +404,9 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 ## API Reference
 
-### ContextMenu.Root
+### ContextMenu
+
+`ContextMenu` is equivalent to the `Root` import from `@kobalte/core/context-menu` (and deprecated `ContextMenu.Root`).
 
 | Prop          | Description                                                                                                                                                                                                                                                                                                                                    |
 | :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -410,7 +416,7 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | preventScroll | `boolean` <br/> Whether the scroll should be locked even if the menu is not modal.                                                                                                                                                                                                                                                             |
 | forceMount    | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                          |
 
-`ContextMenu.Root` also accepts the following props to customize the placement of the `ContextMenu.Content`.
+`ContextMenu` also accepts the following props to customize the placement of the `ContextMenu.Content`.
 
 | Prop             | Description                                                                                                                                                                                                                                                                                                                                                          |
 | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -573,7 +579,7 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 | Component                     | Default rendered element |
 | :---------------------------- | :----------------------- |
-| `ContextMenu.Root`            | none                     |
+| `ContextMenu`                 | none                     |
 | `ContextMenu.Trigger`         | `div`                    |
 | `ContextMenu.Icon`            | `div`                    |
 | `ContextMenu.Portal`          | `Portal`                 |

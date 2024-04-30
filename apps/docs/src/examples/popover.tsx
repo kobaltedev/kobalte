@@ -1,4 +1,4 @@
-import { Popover } from "@kobalte/core";
+import { Popover } from "@kobalte/core/popover";
 import { createSignal } from "solid-js";
 
 import { CrossIcon } from "../components";
@@ -6,7 +6,7 @@ import style from "./popover.module.css";
 
 export function BasicExample() {
 	return (
-		<Popover.Root>
+		<Popover>
 			<Popover.Trigger class={style.popover__trigger}>Open</Popover.Trigger>
 			<Popover.Portal>
 				<Popover.Content class={style.popover__content}>
@@ -25,7 +25,7 @@ export function BasicExample() {
 					</Popover.Description>
 				</Popover.Content>
 			</Popover.Portal>
-		</Popover.Root>
+		</Popover>
 	);
 }
 
@@ -33,7 +33,7 @@ export function ControlledExample() {
 	const [open, setOpen] = createSignal(false);
 
 	return (
-		<Popover.Root open={open()} onOpenChange={setOpen}>
+		<Popover open={open()} onOpenChange={setOpen}>
 			<Popover.Trigger class={style.popover__trigger}>
 				{open() ? "Close" : "Open"}
 			</Popover.Trigger>
@@ -54,13 +54,13 @@ export function ControlledExample() {
 					</Popover.Description>
 				</Popover.Content>
 			</Popover.Portal>
-		</Popover.Root>
+		</Popover>
 	);
 }
 
 export function CustomAnchorExample() {
 	return (
-		<Popover.Root>
+		<Popover>
 			<Popover.Anchor class={style.popover__anchor}>
 				<p>
 					The popover opens when you click{" "}
@@ -86,6 +86,6 @@ export function CustomAnchorExample() {
 					</Popover.Description>
 				</Popover.Content>
 			</Popover.Portal>
-		</Popover.Root>
+		</Popover>
 	);
 }

@@ -1,10 +1,10 @@
-import { Slider } from "@kobalte/core";
+import { Slider } from "@kobalte/core/slider";
 import { createSignal } from "solid-js";
 import style from "./slider.module.css";
 
 export function BasicExample() {
 	return (
-		<Slider.Root class={style.SliderRoot}>
+		<Slider class={style.SliderRoot}>
 			<div class={style.SliderLabel}>
 				<Slider.Label>Label</Slider.Label>
 				<Slider.ValueLabel />
@@ -15,13 +15,13 @@ export function BasicExample() {
 					<Slider.Input />
 				</Slider.Thumb>
 			</Slider.Track>
-		</Slider.Root>
+		</Slider>
 	);
 }
 
 export function MultipleThumbsExample() {
 	return (
-		<Slider.Root class={style.SliderRoot} defaultValue={[0, 20]}>
+		<Slider class={style.SliderRoot} defaultValue={[0, 20]}>
 			<div class={style.SliderLabel}>
 				<Slider.Label>Label</Slider.Label>
 				<Slider.ValueLabel />
@@ -35,14 +35,14 @@ export function MultipleThumbsExample() {
 					<Slider.Input />
 				</Slider.Thumb>
 			</Slider.Track>
-		</Slider.Root>
+		</Slider>
 	);
 }
 
 export function StepExample() {
 	return (
 		<div class="flex flex-col space-y-4">
-			<Slider.Root class={style.SliderRoot} step={8}>
+			<Slider class={style.SliderRoot} step={8}>
 				<div class={style.SliderLabel}>
 					<Slider.Label>Step size 8</Slider.Label>
 					<Slider.ValueLabel />
@@ -53,8 +53,8 @@ export function StepExample() {
 						<Slider.Input />
 					</Slider.Thumb>
 				</Slider.Track>
-			</Slider.Root>
-			<Slider.Root class={style.SliderRoot} step={10}>
+			</Slider>
+			<Slider class={style.SliderRoot} step={10}>
 				<div class={style.SliderLabel}>
 					<Slider.Label>Step size 10</Slider.Label>
 					<Slider.ValueLabel />
@@ -65,8 +65,8 @@ export function StepExample() {
 						<Slider.Input />
 					</Slider.Thumb>
 				</Slider.Track>
-			</Slider.Root>
-			<Slider.Root class={style.SliderRoot} step={20}>
+			</Slider>
+			<Slider class={style.SliderRoot} step={20}>
 				<div class={style.SliderLabel}>
 					<Slider.Label>Step size 20</Slider.Label>
 					<Slider.ValueLabel />
@@ -77,14 +77,14 @@ export function StepExample() {
 						<Slider.Input />
 					</Slider.Thumb>
 				</Slider.Track>
-			</Slider.Root>
+			</Slider>
 		</div>
 	);
 }
 
 export function MinStepsBetweenExample() {
 	return (
-		<Slider.Root
+		<Slider
 			class={style.SliderRoot}
 			defaultValue={[10, 20]}
 			minStepsBetweenThumbs={10}
@@ -102,13 +102,13 @@ export function MinStepsBetweenExample() {
 					<Slider.Input />
 				</Slider.Thumb>
 			</Slider.Track>
-		</Slider.Root>
+		</Slider>
 	);
 }
 
 export function VerticalSliderExample() {
 	return (
-		<Slider.Root class={style.SliderRoot} orientation="vertical">
+		<Slider class={style.SliderRoot} orientation="vertical">
 			<div class={style.SliderLabel}>
 				<Slider.Label>Label</Slider.Label>
 				<Slider.ValueLabel />
@@ -119,13 +119,13 @@ export function VerticalSliderExample() {
 					<Slider.Input />
 				</Slider.Thumb>
 			</Slider.Track>
-		</Slider.Root>
+		</Slider>
 	);
 }
 
 export function CustomValueLabelExample() {
 	return (
-		<Slider.Root
+		<Slider
 			class={style.SliderRoot}
 			minValue={10}
 			maxValue={2000}
@@ -145,14 +145,14 @@ export function CustomValueLabelExample() {
 					<Slider.Input />
 				</Slider.Thumb>
 			</Slider.Track>
-		</Slider.Root>
+		</Slider>
 	);
 }
 
 export function ControlledExample() {
 	const [values, setValues] = createSignal<number[]>([40]);
 	return (
-		<Slider.Root class={style.SliderRoot} value={values()} onChange={setValues}>
+		<Slider class={style.SliderRoot} value={values()} onChange={setValues}>
 			<div class={style.SliderLabel}>
 				<Slider.Label>Label</Slider.Label>
 				<Slider.ValueLabel />
@@ -163,6 +163,6 @@ export function ControlledExample() {
 					<Slider.Input />
 				</Slider.Thumb>
 			</Slider.Track>
-		</Slider.Root>
+		</Slider>
 	);
 }

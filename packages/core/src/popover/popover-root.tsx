@@ -16,7 +16,7 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { PopperRoot, PopperRootOptions } from "../popper";
+import { Popper, PopperRootOptions } from "../popper";
 import {
 	createDisclosureState,
 	createPresence,
@@ -165,7 +165,7 @@ export function PopoverRoot(props: PopoverRootProps) {
 
 	return (
 		<PopoverContext.Provider value={context}>
-			<PopperRoot anchorRef={anchorRef} contentRef={contentRef} {...others} />
+			<Popper anchorRef={anchorRef} contentRef={contentRef} {...others} />
 		</PopoverContext.Provider>
 	);
 }

@@ -90,3 +90,13 @@ export {
 	Title,
 	Trigger,
 };
+
+export const Dialog = Object.assign(Root, {
+	CloseButton,
+	Content,
+	Description,
+	Overlay,
+	Portal,
+	Title,
+	Trigger,
+});

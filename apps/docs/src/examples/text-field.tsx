@@ -1,27 +1,27 @@
-import { TextField } from "@kobalte/core";
+import { TextField } from "@kobalte/core/text-field";
 import { createSignal } from "solid-js";
 
 import style from "./text-field.module.css";
 
 export function BasicExample() {
 	return (
-		<TextField.Root class={style["text-field"]}>
+		<TextField class={style["text-field"]}>
 			<TextField.Label class={style["text-field__label"]}>
 				Favorite fruit
 			</TextField.Label>
 			<TextField.Input class={style["text-field__input"]} />
-		</TextField.Root>
+		</TextField>
 	);
 }
 
 export function DefaultValueExample() {
 	return (
-		<TextField.Root class={style["text-field"]} defaultValue="Apple">
+		<TextField class={style["text-field"]} defaultValue="Apple">
 			<TextField.Label class={style["text-field__label"]}>
 				Favorite fruit
 			</TextField.Label>
 			<TextField.Input class={style["text-field__input"]} />
-		</TextField.Root>
+		</TextField>
 	);
 }
 
@@ -30,7 +30,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<TextField.Root
+			<TextField
 				class={style["text-field"]}
 				value={value()}
 				onChange={setValue}
@@ -39,7 +39,7 @@ export function ControlledExample() {
 					Favorite fruit
 				</TextField.Label>
 				<TextField.Input class={style["text-field__input"]} />
-			</TextField.Root>
+			</TextField>
 			<p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
 		</>
 	);
@@ -47,29 +47,29 @@ export function ControlledExample() {
 
 export function TextAreaExample() {
 	return (
-		<TextField.Root class={style["text-field"]}>
+		<TextField class={style["text-field"]}>
 			<TextField.Label class={style["text-field__label"]}>
 				Favorite fruit
 			</TextField.Label>
 			<TextField.TextArea class={style["text-field__input"]} />
-		</TextField.Root>
+		</TextField>
 	);
 }
 
 export function TextAreaAutoResizeExample() {
 	return (
-		<TextField.Root class={style["text-field"]}>
+		<TextField class={style["text-field"]}>
 			<TextField.Label class={style["text-field__label"]}>
 				Favorite fruit
 			</TextField.Label>
 			<TextField.TextArea autoResize class={style["text-field__input"]} />
-		</TextField.Root>
+		</TextField>
 	);
 }
 
 export function DescriptionExample() {
 	return (
-		<TextField.Root class={style["text-field"]}>
+		<TextField class={style["text-field"]}>
 			<TextField.Label class={style["text-field__label"]}>
 				Favorite fruit
 			</TextField.Label>
@@ -77,7 +77,7 @@ export function DescriptionExample() {
 			<TextField.Description class={style["text-field__description"]}>
 				Choose the fruit you like the most.
 			</TextField.Description>
-		</TextField.Root>
+		</TextField>
 	);
 }
 
@@ -85,7 +85,7 @@ export function ErrorMessageExample() {
 	const [value, setValue] = createSignal("Orange");
 
 	return (
-		<TextField.Root
+		<TextField
 			class={style["text-field"]}
 			value={value()}
 			onChange={setValue}
@@ -98,7 +98,7 @@ export function ErrorMessageExample() {
 			<TextField.ErrorMessage class={style["text-field__error-message"]}>
 				Hmm, I prefer apples.
 			</TextField.ErrorMessage>
-		</TextField.Root>
+		</TextField>
 	);
 }
 
@@ -120,12 +120,12 @@ export function HTMLFormExample() {
 			onSubmit={onSubmit}
 			class="flex flex-col items-center space-y-6"
 		>
-			<TextField.Root class={style["text-field"]} name="favorite-fruit">
+			<TextField class={style["text-field"]} name="favorite-fruit">
 				<TextField.Label class={style["text-field__label"]}>
 					Favorite fruit
 				</TextField.Label>
 				<TextField.Input class={style["text-field__input"]} />
-			</TextField.Root>
+			</TextField>
 			<div class="flex space-x-2">
 				<button type="reset" class="kb-button">
 					Reset

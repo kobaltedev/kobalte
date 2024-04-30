@@ -1,10 +1,10 @@
-import { HoverCard } from "@kobalte/core";
+import { HoverCard } from "@kobalte/core/hover-card";
 
 import style from "./hover-card.module.css";
 
 export function BasicExample() {
 	return (
-		<HoverCard.Root>
+		<HoverCard>
 			<HoverCard.Trigger
 				class={style.hovercard__trigger}
 				href="https://twitter.com/mlfabien"
@@ -27,6 +27,6 @@ export function BasicExample() {
 					</p>
 				</HoverCard.Content>
 			</HoverCard.Portal>
-		</HoverCard.Root>
+		</HoverCard>
 	);
 }

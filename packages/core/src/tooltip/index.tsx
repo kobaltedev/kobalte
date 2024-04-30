@@ -1,5 +1,5 @@
 import {
-	PopperArrow as Arrow,
+	Arrow,
 	type PopperArrowCommonProps as TooltipArrowCommonProps,
 	type PopperArrowOptions as TooltipArrowOptions,
 	type PopperArrowProps as TooltipArrowProps,
@@ -48,3 +48,10 @@ export type {
 };
 
 export { Arrow, Content, Portal, Root, Trigger };
+
+export const Tooltip = Object.assign(Root, {
+	Arrow,
+	Content,
+	Portal,
+	Trigger,
+});

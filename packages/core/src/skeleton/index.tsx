@@ -14,3 +14,5 @@ export type {
 	SkeletonRootRenderProps,
 	SkeletonRootProps,
 };
+
+export const Skeleton = Root;

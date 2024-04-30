@@ -8,6 +8,10 @@ An image element with an optional fallback for loading and error status.
 ## Import
 
 ```ts
+import { Image } from "@kobalte/core/image";
+// or
+import { Root, Img, ... } from "@kobalte/core/image";
+// or (deprecated)
 import { Image } from "@kobalte/core";
 ```
 
@@ -21,15 +25,15 @@ import { Image } from "@kobalte/core";
 
 The image consists of:
 
-- **Image.Root:** The root container for an image.
+- **Image:** The root container for an image.
 - **Image.Img:** The image to render. By default, it will only render when it has loaded.
 - **Image.Fallback:** An element that renders when the image hasn't loaded. This means whilst it's loading, or if there was an error.
 
 ```tsx
-<Image.Root>
+<Image>
 	<Image.Img />
 	<Image.Fallback />
-</Image.Root>
+</Image>
 ```
 
 ## Example
@@ -46,23 +50,23 @@ The image consists of:
   {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Image } from "@kobalte/core";
+		import { Image } from "@kobalte/core/image";
     import "./style.css";
 
     function App() {
       return (
         <>
-          <Image.Root fallbackDelay={600} class="image">
+          <Image fallbackDelay={600} class="image">
             <Image.Img
               class="image__img"
               src="https://randomuser.me/api/portraits/women/44.jpg"
               alt="Nicole Steeves"
             />
             <Image.Fallback class="image__fallback">NS</Image.Fallback>
-          </Image.Root>
-          <Image.Root class="image">
+          </Image>
+          <Image class="image">
             <Image.Fallback class="image__fallback">MD</Image.Fallback>
-          </Image.Root>
+          </Image>
         </>
       );
     }
@@ -118,19 +122,21 @@ By default `Image.Fallback` will render when the image hasn't loaded. This means
 If you notice a flash during loading, use the `fallbackDelay` prop to delay its rendering, so it only renders for those with slower internet connections.
 
 ```tsx {0}
-<Image.Root fallbackDelay={600} class="image">
+<Image fallbackDelay={600} class="image">
 	<Image.Img
 		class="image__img"
 		src="https://randomuser.me/api/portraits/women/44.jpg"
 		alt="Nicole Steeves"
 	/>
 	<Image.Fallback class="image__fallback">NS</Image.Fallback>
-</Image.Root>
+</Image>
 ```
 
 ## API Reference
 
-### Image.Root
+### Image
+
+`Image` is equivalent to the `Root` import from `@kobalte/core/image` (and deprecated `Image.Root`).
 
 | Prop                  | Description                                                                                                                                                                                                                                    |
 | :-------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -141,6 +147,6 @@ If you notice a flash during loading, use the `fallbackDelay` prop to delay its 
 
 | Component        | Default rendered element |
 | :--------------- | :----------------------- |
-| `Image.Root`     | `span`                   |
+| `Image`          | `span`                   |
 | `Image.Img`      | `img`                    |
 | `Image.Fallback` | `span`                   |

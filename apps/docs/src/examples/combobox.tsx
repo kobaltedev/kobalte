@@ -1,4 +1,4 @@
-import { Combobox } from "@kobalte/core";
+import { Combobox } from "@kobalte/core/combobox";
 import { For, createSignal } from "solid-js";
 
 import { CaretSortIcon, CheckIcon, CrossIcon } from "../components";
@@ -14,7 +14,7 @@ const ALL_STRING_OPTIONS = [
 
 export function BasicExample() {
 	return (
-		<Combobox.Root
+		<Combobox
 			options={ALL_STRING_OPTIONS}
 			placeholder="Search a fruit…"
 			itemComponent={(props) => (
@@ -39,13 +39,13 @@ export function BasicExample() {
 					<Combobox.Listbox class={style.combobox__listbox} />
 				</Combobox.Content>
 			</Combobox.Portal>
-		</Combobox.Root>
+		</Combobox>
 	);
 }
 
 export function DefaultValueExample() {
 	return (
-		<Combobox.Root
+		<Combobox
 			defaultValue="Blueberry"
 			options={ALL_STRING_OPTIONS}
 			placeholder="Search a fruit…"
@@ -71,7 +71,7 @@ export function DefaultValueExample() {
 					<Combobox.Listbox class={style.combobox__listbox} />
 				</Combobox.Content>
 			</Combobox.Portal>
-		</Combobox.Root>
+		</Combobox>
 	);
 }
 
@@ -87,7 +87,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<Combobox.Root
+			<Combobox
 				options={ALL_STRING_OPTIONS}
 				value={value()}
 				onChange={setValue}
@@ -115,7 +115,7 @@ export function ControlledExample() {
 						<Combobox.Listbox class={style.combobox__listbox} />
 					</Combobox.Content>
 				</Combobox.Portal>
-			</Combobox.Root>
+			</Combobox>
 			<p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
 		</>
 	);
@@ -123,7 +123,7 @@ export function ControlledExample() {
 
 export function DescriptionExample() {
 	return (
-		<Combobox.Root
+		<Combobox
 			options={ALL_STRING_OPTIONS}
 			placeholder="Search a fruit…"
 			itemComponent={(props) => (
@@ -151,7 +151,7 @@ export function DescriptionExample() {
 					<Combobox.Listbox class={style.combobox__listbox} />
 				</Combobox.Content>
 			</Combobox.Portal>
-		</Combobox.Root>
+		</Combobox>
 	);
 }
 
@@ -166,7 +166,7 @@ export function ErrorMessageExample() {
 	};
 
 	return (
-		<Combobox.Root
+		<Combobox
 			options={ALL_STRING_OPTIONS}
 			value={value()}
 			onChange={setValue}
@@ -198,7 +198,7 @@ export function ErrorMessageExample() {
 					<Combobox.Listbox class={style.combobox__listbox} />
 				</Combobox.Content>
 			</Combobox.Portal>
-		</Combobox.Root>
+		</Combobox>
 	);
 }
 
@@ -220,7 +220,7 @@ export function HTMLFormExample() {
 			onSubmit={onSubmit}
 			class="flex flex-col items-center space-y-6"
 		>
-			<Combobox.Root
+			<Combobox
 				name="fruit"
 				options={ALL_STRING_OPTIONS}
 				placeholder="Search a fruit…"
@@ -250,7 +250,7 @@ export function HTMLFormExample() {
 						<Combobox.Listbox class={style.combobox__listbox} />
 					</Combobox.Content>
 				</Combobox.Portal>
-			</Combobox.Root>
+			</Combobox>
 			<div class="flex space-x-2">
 				<button type="reset" class="kb-button">
 					Reset
@@ -279,7 +279,7 @@ const ALL_OBJECT_OPTIONS: Food[] = [
 
 export function ObjectExample() {
 	return (
-		<Combobox.Root
+		<Combobox
 			options={ALL_OBJECT_OPTIONS}
 			optionValue="value"
 			optionTextValue="label"
@@ -308,7 +308,7 @@ export function ObjectExample() {
 					<Combobox.Listbox class={style.combobox__listbox} />
 				</Combobox.Content>
 			</Combobox.Portal>
-		</Combobox.Root>
+		</Combobox>
 	);
 }
 
@@ -341,7 +341,7 @@ const ALL_GROUP_OBJECT_OPTIONS: Category[] = [
 
 export function OptionGroupExample() {
 	return (
-		<Combobox.Root<Food, Category>
+		<Combobox<Food, Category>
 			options={ALL_GROUP_OBJECT_OPTIONS}
 			optionValue="value"
 			optionTextValue="label"
@@ -376,7 +376,7 @@ export function OptionGroupExample() {
 					<Combobox.Listbox class={style.combobox__listbox} />
 				</Combobox.Content>
 			</Combobox.Portal>
-		</Combobox.Root>
+		</Combobox>
 	);
 }
 
@@ -385,7 +385,7 @@ export function MultipleSelectionExample() {
 
 	return (
 		<>
-			<Combobox.Root<string>
+			<Combobox<string>
 				multiple
 				options={ALL_STRING_OPTIONS}
 				value={values()}
@@ -455,7 +455,7 @@ export function MultipleSelectionExample() {
 						<Combobox.Listbox class={style.combobox__listbox} />
 					</Combobox.Content>
 				</Combobox.Portal>
-			</Combobox.Root>
+			</Combobox>
 			<p class="not-prose text-sm mt-4">
 				Your favorite fruits are: {values().join(", ")}.
 			</p>

@@ -16,6 +16,10 @@ An input where the user selects a value from within a given range.
 ## Import
 
 ```ts
+import { Slider } from "@kobalte/core/slider";
+// or
+import { Root, Track, ... } from "@kobalte/core/slider";
+// or (deprecated)
 import { Slider } from "@kobalte/core";
 ```
 
@@ -33,7 +37,7 @@ import { Slider } from "@kobalte/core";
 
 The slider consists of:
 
-- **Slider.Root:** The root container for the slider.
+- **Slider:** The root container for the slider.
 - **Slider.Track:** The component that visually represents the slider track.
 - **Slider.Fill:** The component that visually represents the slider value.
 - **Slider.Thumb:** The thumb that is used to visually indicate a value in the slider.
@@ -42,7 +46,7 @@ The slider consists of:
 - **Slider.ValueLabel:** The accessible label text representing the current value in a human-readable format.
 
 ```tsx
-<Slider.Root>
+<Slider>
 	<Slider.Label />
 	<Slider.ValueLabel />
 	<Slider.Track>
@@ -51,7 +55,7 @@ The slider consists of:
 			<Slider.Input />
 		</Slider.Thumb>
 	</Slider.Track>
-</Slider.Root>
+</Slider>
 ```
 
 ## Example
@@ -68,12 +72,12 @@ The slider consists of:
 {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Slider } from "@kobalte/core";
+		import { Slider } from "@kobalte/core/slider";
     import "./style.css";
 
     function App() {
       return (
-        <Slider.Root class="SliderRoot">
+        <Slider class="SliderRoot">
           <div class="SliderLabel">
             <Slider.Label>Label</Slider.Label>
             <Slider.ValueLabel />
@@ -84,7 +88,7 @@ The slider consists of:
               <Slider.Input />
             </Slider.Thumb>
           </Slider.Track>
-        </Slider.Root>
+        </Slider>
       );
     }
     ```
@@ -162,12 +166,12 @@ The slider consists of:
 {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Slider } from "@kobalte/core";
+		import { Slider } from "@kobalte/core/slider";
     import "./style.css";
 
     function App() {
       return (
-        <Slider.Root class="SliderRoot" defaultValue={[0, 20]}>
+        <Slider class="SliderRoot" defaultValue={[0, 20]}>
           <div class="SliderLabel">
             <Slider.Label>Label</Slider.Label>
             <Slider.ValueLabel />
@@ -181,7 +185,7 @@ The slider consists of:
               <Slider.Input />
             </Slider.Thumb>
           </Slider.Track>
-        </Slider.Root>
+        </Slider>
       );
     }
     ```
@@ -257,13 +261,13 @@ The slider consists of:
 {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Slider } from "@kobalte/core";
+		import { Slider } from "@kobalte/core/slider";
     import "./style.css";
 
     function App() {
       return (
         <>
-        <Slider.Root class="SliderRoot" step={8}>
+        <Slider class="SliderRoot" step={8}>
           <div class="SliderLabel">
             <Slider.Label>Step size 8</Slider.Label>
             <Slider.ValueLabel />
@@ -277,8 +281,8 @@ The slider consists of:
               <Slider.Input />
             </Slider.Thumb>
           </Slider.Track>
-        </Slider.Root>
-        <Slider.Root class="SliderRoot" step={10}>
+        </Slider>
+        <Slider class="SliderRoot" step={10}>
           <div class="SliderLabel">
             <Slider.Label>Step size 10</Slider.Label>
             <Slider.ValueLabel />
@@ -292,8 +296,8 @@ The slider consists of:
               <Slider.Input />
             </Slider.Thumb>
           </Slider.Track>
-        </Slider.Root>
-        <Slider.Root class="SliderRoot" step={20}>
+        </Slider>
+        <Slider class="SliderRoot" step={20}>
           <div class="SliderLabel">
             <Slider.Label>Step size 20</Slider.Label>
             <Slider.ValueLabel />
@@ -307,7 +311,7 @@ The slider consists of:
               <Slider.Input />
             </Slider.Thumb>
           </Slider.Track>
-        </Slider.Root>
+        </Slider>
         </>
       );
     }
@@ -384,12 +388,12 @@ The slider consists of:
 {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Slider } from "@kobalte/core";
+		import { Slider } from "@kobalte/core/slider";
     import "./style.css";
 
     function App() {
       return (
-        <Slider.Root class="SliderRoot" defaultValue={[10, 20]} minStepsBetweenThumbs={10}>
+        <Slider class="SliderRoot" defaultValue={[10, 20]} minStepsBetweenThumbs={10}>
           <div class="SliderLabel">
             <Slider.Label>Label</Slider.Label>
             <Slider.ValueLabel />
@@ -403,7 +407,7 @@ The slider consists of:
               <Slider.Input />
             </Slider.Thumb>
           </Slider.Track>
-        </Slider.Root>
+        </Slider>
       );
     }
     ```
@@ -479,12 +483,12 @@ The slider consists of:
 {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Slider } from "@kobalte/core";
+		import { Slider } from "@kobalte/core/slider";
     import "./style.css";
 
     function App() {
       return (
-        <Slider.Root class="SliderRoot" orientation="vertical">
+        <Slider class="SliderRoot" orientation="vertical">
           <div class="SliderLabel">
             <Slider.Label>Label</Slider.Label>
             <Slider.ValueLabel />
@@ -495,7 +499,7 @@ The slider consists of:
               <Slider.Input />
             </Slider.Thumb>
           </Slider.Track>
-        </Slider.Root>
+        </Slider>
       );
     }
     ```
@@ -571,12 +575,12 @@ The slider consists of:
 {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Slider } from "@kobalte/core";
+		import { Slider } from "@kobalte/core/slider";
     import "./style.css";
 
     function App() {
       return (
-        <Slider.Root class="SliderRoot"
+        <Slider class="SliderRoot"
           minValue={10}
           maxValue={2000}
           defaultValue={[20, 500]}
@@ -595,7 +599,7 @@ The slider consists of:
               <Slider.Input />
             </Slider.Thumb>
           </Slider.Track>
-        </Slider.Root>
+        </Slider>
       );
     }
     ```
@@ -672,14 +676,14 @@ The slider consists of:
   <TabsSnippets.Content value="index.tsx">
     ```tsx
     import { createSignal } from 'solid-js'
-    import { Slider } from "@kobalte/core";
+		import { Slider } from "@kobalte/core/slider";
     import "./style.css";
 
     function App() {
       const [values, setValues] = createSignal<number[]>([40])
 
       return (
-        <Slider.Root class="SliderRoot" value={values()} onChange={setValues}>
+        <Slider class="SliderRoot" value={values()} onChange={setValues}>
           <div class="SliderLabel">
             <Slider.Label>Label</Slider.Label>
             <Slider.ValueLabel />
@@ -690,7 +694,7 @@ The slider consists of:
               <Slider.Input />
             </Slider.Thumb>
           </Slider.Track>
-        </Slider.Root>
+        </Slider>
       );
     }
     ```
@@ -753,7 +757,9 @@ The slider consists of:
 </TabsSnippets>
 ## API Reference
 
-### Slider.Root
+### Slider
+
+`Slider` is equivalent to the `Root` import from `@kobalte/core/slider` (and deprecated `Slider.Root`).
 
 | Prop                  | Description                                                                                                                                                                                                                            |
 | :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -790,7 +796,7 @@ The slider consists of:
 
 | Component           | Default rendered element |
 | :------------------ | :----------------------- |
-| `Slider.Root`       | `div`                    |
+| `Slider`            | `div`                    |
 | `Slider.Track`      | `div`                    |
 | `Slider.Fill`       | `div`                    |
 | `Slider.Thumb`      | `span`                   |

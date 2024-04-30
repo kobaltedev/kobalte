@@ -51,6 +51,9 @@ export interface SliderThumbCommonProps {
 	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
 	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
 	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	"aria-label": string | undefined;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
 }
 
 export interface SliderThumbRenderProps
@@ -63,9 +66,6 @@ export interface SliderThumbRenderProps
 	"aria-valuenow": number | undefined;
 	"aria-valuemax": number;
 	"aria-orientation": Orientation;
-	"aria-label": string | undefined;
-	"aria-labelledby": string | undefined;
-	"aria-describedby": string | undefined;
 }
 
 export type SliderThumbProps = SliderThumbOptions &

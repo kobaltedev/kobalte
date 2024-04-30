@@ -1,4 +1,4 @@
-import { Tabs } from "@kobalte/core";
+import { Tabs, TabsRootProps } from "@kobalte/core/tabs";
 import { clsx } from "clsx";
 import { ComponentProps, ParentComponent, splitProps } from "solid-js";
 
@@ -8,12 +8,12 @@ type TabsSnippetsComposite = {
 	Content: typeof Tabs.Content;
 };
 
-export const TabsSnippets: ParentComponent<ComponentProps<typeof Tabs.Root>> &
+export const TabsSnippets: ParentComponent<TabsRootProps & { class: string }> &
 	TabsSnippetsComposite = (props) => {
 	const [local, others] = splitProps(props, ["class"]);
 
 	return (
-		<Tabs.Root
+		<Tabs
 			class={clsx(
 				"kb-tabs-snippets not-prose my-6 overflow-y-auto rounded-lg border border-solid border-zinc-200 bg-[#fafafa] dark:bg-[#27272a] dark:border-[#3f3f46]",
 				local.class,

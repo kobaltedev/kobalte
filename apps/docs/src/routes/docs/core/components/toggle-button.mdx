@@ -14,6 +14,10 @@ A two-state button that can be either on (pressed) or off (not pressed).
 ## Import
 
 ```ts
+import { ToggleButton } from "@kobalte/core/toggle-button";
+// or
+import { Root } from "@kobalte/core/toggle-button";
+// or (deprecated)
 import { ToggleButton } from "@kobalte/core";
 ```
 
@@ -29,10 +33,10 @@ import { ToggleButton } from "@kobalte/core";
 
 The toggle button consists of:
 
-- **ToggleButton.Root:** the root container for a toggle button.
+- **ToggleButton:** the root container for a toggle button.
 
 ```tsx
-<ToggleButton.Root />
+<ToggleButton />
 ```
 
 ## Example
@@ -49,20 +53,20 @@ The toggle button consists of:
   {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { ToggleButton } from "@kobalte/core";
+		import { ToggleButton } from "@kobalte/core/toggle-button";
     import { Show } from "solid-js";
     import { VolumeOffIcon, VolumeOnIcon } from "some-icon-library";
     import "./style.css";
 
     function App() {
       return (
-        <ToggleButton.Root class="toggle-button" aria-label="Mute">
+        <ToggleButton class="toggle-button" aria-label="Mute">
           {state => (
             <Show when={state.pressed()} fallback={<VolumeOnIcon />}>
               <VolumeOffIcon />
             </Show>
           )}
-        </ToggleButton.Root>
+        </ToggleButton>
       );
     }
     ```
@@ -110,7 +114,7 @@ An initial, uncontrolled value can be provided using the `defaultPressed` prop.
 </Preview>
 
 ```tsx
-<ToggleButton.Root defaultPressed>...</ToggleButton.Root>
+<ToggleButton defaultPressed>...</ToggleButton>
 ```
 
 ### Controlled pressed
@@ -129,9 +133,9 @@ function ControlledExample() {
 
 	return (
 		<>
-			<ToggleButton.Root pressed={pressed()} onChange={setPressed}>
+			<ToggleButton pressed={pressed()} onChange={setPressed}>
 				...
-			</ToggleButton.Root>
+			</ToggleButton>
 			<p>The microphone is {pressed() ? "muted" : "active"}.</p>
 		</>
 	);
@@ -140,9 +144,11 @@ function ControlledExample() {
 
 ## API Reference
 
-### ToggleButton.Root
+### ToggleButton
 
-`ToggleButton.Root` consists of [Button.Root](/docs/core/components/button) and additional props.
+`ToggleButton` is equivalent to the `Root` import from `@kobalte/core/toggle-button` (and deprecated `ToggleButton.Root`).
+
+`ToggleButton` consists of [Button](/docs/core/components/button) and additional props.
 
 | Prop           | Description                                                                                                                                                                            |
 | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -161,9 +167,9 @@ function ControlledExample() {
 
 ## Rendered elements
 
-| Component           | Default rendered element |
-| :------------------ | :----------------------- |
-| `ToggleButton.Root` | `button`                 |
+| Component      | Default rendered element |
+| :------------- | :----------------------- |
+| `ToggleButton` | `button`                 |
 
 ## Accessibility
 

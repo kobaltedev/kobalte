@@ -8,6 +8,10 @@ An interactive component which expands/collapses a content.
 ## Import
 
 ```ts
+import { Collapsible } from "@kobalte/core/collapsible";
+// or
+import { Root, Trigger, ... } from "@kobalte/core/collapsible";
+// or (deprecated)
 import { Collapsible } from "@kobalte/core";
 ```
 
@@ -20,15 +24,15 @@ import { Collapsible } from "@kobalte/core";
 
 The collapsible consists of:
 
-- **Collapsible.Root:** The root container for a collapsible.
+- **Collapsible:** The root container for a collapsible.
 - **Collapsible.Trigger:** The button that expands/collapses the collapsible content.
 - **Collapsible.Content:** Contains the content to be rendered when the collapsible is expanded.
 
 ```tsx
-<Collapsible.Root>
+<Collapsible>
 	<Collapsible.Trigger />
 	<Collapsible.Content />
-</Collapsible.Root>
+</Collapsible>
 ```
 
 ## Example
@@ -45,13 +49,13 @@ The collapsible consists of:
   {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Collapsible } from "@kobalte/core";
+		import { Collapsible } from "@kobalte/core/collapsible";
     import { ChevronDownIcon } from "some-icon-library";
     import "./style.css";
 
     function App() {
       return (
-        <Collapsible.Root class="collapsible">
+        <Collapsible class="collapsible">
           <Collapsible.Trigger class="collapsible__trigger">
             <span>What is Kobalte ?</span>
             <ChevronDownIcon class="collapsible__trigger-icon" />
@@ -63,7 +67,7 @@ The collapsible consists of:
               for your design system implementation.
             </p>
           </Collapsible.Content>
-        </Collapsible.Root>
+        </Collapsible>
       );
     }
     ```
@@ -181,7 +185,9 @@ We expose the CSS custom properties `--kb-collapsible-content-width` and `--kb-c
 
 ## API Reference
 
-### Collapsible.Root
+### Collapsible
+
+`Collapsible` is equivalent to the `Root` import from `@kobalte/core/collapsible` (and deprecated `Collapsible.Root`).
 
 | Prop         | Description                                                                                                                                                     |
 | :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -203,7 +209,7 @@ We expose the CSS custom properties `--kb-collapsible-content-width` and `--kb-c
 
 | Component             | Default rendered element |
 | :-------------------- | :----------------------- |
-| `Collapsible.Root`    | `div`                    |
+| `Collapsible`         | `div`                    |
 | `Collapsible.Trigger` | `button`                 |
 | `Collapsible.Content` | `div`                    |
 

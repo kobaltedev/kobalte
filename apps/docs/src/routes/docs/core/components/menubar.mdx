@@ -9,13 +9,12 @@ A visually persistent menu common in desktop applications that provides quick ac
 ## Import
 
 ```ts
+import { Menubar } from "@kobalte/core/menubar";
+// or
+import { Root, Menu, ... } from "@kobalte/core/menubar";
+// or (deprecated)
 import { Menubar } from "@kobalte/core";
 ```
-
-<Callout type="warning">
-	Menubar was removed by mistake from version `0.12.0`, please make sure to update to `0.12.1` or
-	later.
-</Callout>
 
 ## Features
 
@@ -36,7 +35,7 @@ import { Menubar } from "@kobalte/core";
 
 The context menu consists of:
 
-- **Menubar.Root:** The root container for a menubar.
+- **Menubar:** The root container for a menubar.
 - **Menubar.Menu:** The container of each menu.
 - **Menubar.Trigger:** The button that toggles the menu.
 - **Menubar.Icon:** A small icon that can be displayed inside the menu trigger as a visual affordance for the fact it can be open.
@@ -64,7 +63,7 @@ The checkable menu item consists of:
 - **Menubar.CheckboxItem:** An item that can be controlled and rendered like a checkbox.
 
 ```tsx
-<Menubar.Root>
+<Menubar>
 	<Menubar.Menu>
 		<Menubar.Trigger>
 			<Menubar.Icon />
@@ -105,7 +104,7 @@ The checkable menu item consists of:
 			</Menubar.Content>
 		</Menubar.Portal>
 	</Menubar.Menu>
-</Menubar.Root>
+</Menubar>
 ```
 
 ## Example
@@ -122,7 +121,7 @@ The checkable menu item consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Menubar } from "@kobalte/core";
+		import { Menubar } from "@kobalte/core/menubar";
     import { createSignal } from "solid-js";
     import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "some-icon-library";
     import "./style.css";
@@ -133,7 +132,7 @@ The checkable menu item consists of:
       const [branch, setBranch] = createSignal("main");
 
       return (
-          <Menubar.Root class="menubar__root">
+          <Menubar class="menubar__root">
             <Menubar.Menu>
               <Menubar.Trigger class="menubar__trigger">
                 Git
@@ -325,7 +324,7 @@ The checkable menu item consists of:
             </Menubar.Content>
           </Menubar.Portal>
         </Menubar.Menu>
-      </Menubar.Root>
+      </Menubar>
       );
     }
     ```
@@ -540,7 +539,9 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 ## API Reference
 
-### Menubar.Root
+### Menubar
+
+`Menubar` is equivalent to the `Root` import from `@kobalte/core/menubar` (and deprecated `Menubar.Root`).
 
 | Prop          | Description                                                                                                                            |
 | :------------ | :------------------------------------------------------------------------------------------------------------------------------------- |
@@ -724,7 +725,7 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 | Component                 | Default rendered element |
 | :------------------------ | :----------------------- |
-| `Menubar.Root`            | `div`                    |
+| `Menubar`                 | `div`                    |
 | `Menubar.Menu`            | none                     |
 | `Menubar.Trigger`         | `div`                    |
 | `Menubar.Icon`            | `div`                    |

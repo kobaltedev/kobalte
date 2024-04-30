@@ -1,5 +1,5 @@
 import {
-	PopperArrow as Arrow,
+	Arrow,
 	type PopperArrowCommonProps as HoverCardArrowCommonProps,
 	type PopperArrowOptions as HoverCardArrowOptions,
 	type PopperArrowProps as HoverCardArrowProps,
@@ -48,3 +48,10 @@ export type {
 };
 
 export { Arrow, Content, Portal, Root, Trigger };
+
+export const HoverCard = Object.assign(Root, {
+	Arrow,
+	Content,
+	Portal,
+	Trigger,
+});

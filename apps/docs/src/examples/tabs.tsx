@@ -1,11 +1,11 @@
-import { Tabs } from "@kobalte/core";
+import { Tabs } from "@kobalte/core/tabs";
 import { For, createSignal } from "solid-js";
 
 import style from "./tabs.module.css";
 
 export function BasicExample() {
 	return (
-		<Tabs.Root aria-label="Main navigation" class={style.tabs}>
+		<Tabs aria-label="Main navigation" class={style.tabs}>
 			<Tabs.List class={style.tabs__list}>
 				<Tabs.Trigger class={style.tabs__trigger} value="profile">
 					Profile
@@ -33,13 +33,13 @@ export function BasicExample() {
 			<Tabs.Content class={style.tabs__content} value="contact">
 				Contact details
 			</Tabs.Content>
-		</Tabs.Root>
+		</Tabs>
 	);
 }
 
 export function DefaultValueExample() {
 	return (
-		<Tabs.Root
+		<Tabs
 			aria-label="Main navigation"
 			defaultValue="dashboard"
 			class={style.tabs}
@@ -71,7 +71,7 @@ export function DefaultValueExample() {
 			<Tabs.Content class={style.tabs__content} value="contact">
 				Contact details
 			</Tabs.Content>
-		</Tabs.Root>
+		</Tabs>
 	);
 }
 
@@ -80,7 +80,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<Tabs.Root
+			<Tabs
 				value={selectedTab()}
 				onChange={setSelectedTab}
 				aria-label="Main navigation"
@@ -113,7 +113,7 @@ export function ControlledExample() {
 				<Tabs.Content class={style.tabs__content} value="contact">
 					Contact details
 				</Tabs.Content>
-			</Tabs.Root>
+			</Tabs>
 			<p class="not-prose text-sm mt-2">Selected tab: {selectedTab()}</p>
 		</>
 	);
@@ -121,7 +121,7 @@ export function ControlledExample() {
 
 export function FocusableContentExample() {
 	return (
-		<Tabs.Root aria-label="Main navigation" class={style.tabs}>
+		<Tabs aria-label="Main navigation" class={style.tabs}>
 			<Tabs.List class={style.tabs__list}>
 				<Tabs.Trigger class={style.tabs__trigger} value="profile">
 					Profile
@@ -152,7 +152,7 @@ export function FocusableContentExample() {
 			<Tabs.Content class={style.tabs__content} value="contact">
 				Contact details
 			</Tabs.Content>
-		</Tabs.Root>
+		</Tabs>
 	);
 }
 
@@ -198,7 +198,7 @@ export function DynamicContentExample() {
 					Remove tab
 				</button>
 			</div>
-			<Tabs.Root>
+			<Tabs>
 				<Tabs.List class={style.tabs__list}>
 					<For each={tabs()}>
 						{(tab) => (
@@ -216,14 +216,14 @@ export function DynamicContentExample() {
 						</Tabs.Content>
 					)}
 				</For>
-			</Tabs.Root>
+			</Tabs>
 		</>
 	);
 }
 
 export function ManualActivationExample() {
 	return (
-		<Tabs.Root
+		<Tabs
 			aria-label="Main navigation"
 			activationMode="manual"
 			class={style.tabs}
@@ -255,13 +255,13 @@ export function ManualActivationExample() {
 			<Tabs.Content class={style.tabs__content} value="contact">
 				Contact details
 			</Tabs.Content>
-		</Tabs.Root>
+		</Tabs>
 	);
 }
 
 export function VerticalOrientationExample() {
 	return (
-		<Tabs.Root
+		<Tabs
 			aria-label="Main navigation"
 			orientation="vertical"
 			class={style.tabs}
@@ -293,13 +293,13 @@ export function VerticalOrientationExample() {
 			<Tabs.Content class={style.tabs__content} value="contact">
 				Contact details
 			</Tabs.Content>
-		</Tabs.Root>
+		</Tabs>
 	);
 }
 
 export function DisabledTabsExample() {
 	return (
-		<Tabs.Root aria-label="Main navigation" disabled class={style.tabs}>
+		<Tabs aria-label="Main navigation" disabled class={style.tabs}>
 			<Tabs.List class={style.tabs__list}>
 				<Tabs.Trigger class={style.tabs__trigger} value="profile">
 					Profile
@@ -327,13 +327,13 @@ export function DisabledTabsExample() {
 			<Tabs.Content class={style.tabs__content} value="contact">
 				Contact details
 			</Tabs.Content>
-		</Tabs.Root>
+		</Tabs>
 	);
 }
 
 export function SingleDisabledTabExample() {
 	return (
-		<Tabs.Root aria-label="Main navigation" class={style.tabs}>
+		<Tabs aria-label="Main navigation" class={style.tabs}>
 			<Tabs.List class={style.tabs__list}>
 				<Tabs.Trigger class={style.tabs__trigger} value="profile">
 					Profile
@@ -361,6 +361,6 @@ export function SingleDisabledTabExample() {
 			<Tabs.Content class={style.tabs__content} value="contact">
 				Contact details
 			</Tabs.Content>
-		</Tabs.Root>
+		</Tabs>
 	);
 }

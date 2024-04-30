@@ -100,3 +100,14 @@ export {
 	Track,
 	ValueLabel,
 };
+
+export const Slider = Object.assign(Root, {
+	Description,
+	ErrorMessage,
+	Fill,
+	Input,
+	Label,
+	Thumb,
+	Track,
+	ValueLabel,
+});

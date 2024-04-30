@@ -41,7 +41,7 @@ import {
 	type FormControlErrorMessageProps as DatePickerErrorMessageProps,
 } from "../form-control";
 import {
-	PopperArrow as Arrow,
+	Arrow,
 	type PopperArrowOptions as DatePickerArrowOptions,
 	type PopperArrowProps as DatePickerArrowProps,
 } from "../popper";

@@ -17,6 +17,10 @@ A number input that allow users to input custom number entries with a keyboard.
 ## Import
 
 ```ts
+import { NumberField } from "@kobalte/core/number-field";
+// or
+import { Root, Label, ... } from "@kobalte/core/number-field";
+// or (deprecated)
 import { NumberField } from "@kobalte/core";
 ```
 
@@ -38,7 +42,7 @@ import { NumberField } from "@kobalte/core";
 
 The number field consists of:
 
-- **NumberField.Root**: The root container for the number field.
+- **NumberField**: The root container for the number field.
 - **NumberField.Label**: The label that gives the user information on the number field.
 - **NumberField.Input**: The native HTML input of the number field, used for display number.
 - **NumberField.HiddenInput**: The native HTML input of the number field, used for raw number form submition.
@@ -48,7 +52,7 @@ The number field consists of:
 - **NumberField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on number field.
 
 ```tsx
-<NumberField.Root>
+<NumberField>
 	<NumberField.Label />
 	<NumberField.Input />
 	<NumberField.HiddenInput />
@@ -56,7 +60,7 @@ The number field consists of:
 	<NumberField.DecrementTrigger />
 	<NumberField.Description />
 	<NumberField.ErrorMessage />
-</NumberField.Root>
+</NumberField>
 ```
 
 ## Example
@@ -73,12 +77,12 @@ The number field consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { NumberField } from "@kobalte/core";
+		import { NumberField } from "@kobalte/core/number-field";
     import "./style.css";
 
     function App() {
       return (
-        <NumberField.Root class="number-field">
+        <NumberField class="number-field">
           <NumberField.Label class="number-field__label">
             Quantity
           </NumberField.Label>
@@ -87,7 +91,7 @@ The number field consists of:
             <NumberField.IncrementTrigger aria-label="Increment" class="number-field__increment"><ArrowUpIcon/></NumberField.IncrementTrigger>
             <NumberField.DecrementTrigger aria-label="Decrement" class="number-field__decrement"><ArrowDownIcon/></NumberField.DecrementTrigger>
           </div>
-        </NumberField.Root>
+        </NumberField>
       );
     }
     ```
@@ -182,14 +186,14 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 </Preview>
 
 ```tsx {0}
-<NumberField.Root defaultValue={40}>
+<NumberField defaultValue={40}>
 	<NumberField.Label>Quantity</NumberField.Label>
 	<div>
 		<NumberField.Input />
 		<NumberField.IncrementTrigger />
 		<NumberField.DecrementTrigger />
 	</div>
-</NumberField.Root>
+</NumberField>
 ```
 
 ### Controlled value
@@ -212,7 +216,7 @@ function ControlledExample() {
 
 	return (
 		<>
-			<NumberField.Root
+			<NumberField
 				value={value()}
 				onChange={setValue}
 				rawValue={rawValue()}
@@ -224,7 +228,7 @@ function ControlledExample() {
 					<NumberField.IncrementTrigger />
 					<NumberField.DecrementTrigger />
 				</div>
-			</NumberField.Root>
+			</NumberField>
 			<p>
 				Quantity: {value()}. Raw: {rawValue()}.
 			</p>
@@ -242,7 +246,7 @@ The `NumberField.Description` component can be used to associate additional help
 </Preview>
 
 ```tsx {7}
-<NumberField.Root>
+<NumberField>
 	<NumberField.Label>Quantity</NumberField.Label>
 	<div>
 		<NumberField.Input />
@@ -250,7 +254,7 @@ The `NumberField.Description` component can be used to associate additional help
 		<NumberField.DecrementTrigger />
 	</div>
 	<NumberField.Description>Choose a quantity.</NumberField.Description>
-</NumberField.Root>
+</NumberField>
 ```
 
 ### Error message
@@ -270,7 +274,7 @@ function ErrorMessageExample() {
 	const [rawValue, setRawValue] = createSignal<number>();
 
 	return (
-		<NumberField.Root
+		<NumberField
 			onRawValueChange={setRawValue}
 			validationState={rawValue() !== 40 ? "invalid" : "valid"}
 		>
@@ -281,7 +285,7 @@ function ErrorMessageExample() {
 				<NumberField.DecrementTrigger />
 			</div>
 			<NumberField.ErrorMessage>Hmm, I prefer 40.</NumberField.ErrorMessage>
-		</NumberField.Root>
+		</NumberField>
 	);
 }
 ```
@@ -304,7 +308,7 @@ function HTMLFormExample() {
 
 	return (
 		<form onSubmit={onSubmit}>
-			<NumberField.Root name="quantity">
+			<NumberField name="quantity">
 				<NumberField.Label>Quantity</NumberField.Label>
 				<NumberField.HiddenInput />
 				<div>
@@ -312,7 +316,7 @@ function HTMLFormExample() {
 					<NumberField.IncrementTrigger />
 					<NumberField.DecrementTrigger />
 				</div>
-			</NumberField.Root>
+			</NumberField>
 			<div>
 				<button type="reset">Reset</button>
 				<button type="submit">Submit</button>
@@ -331,14 +335,14 @@ The number field supports optional increment/decrement triggers that are easily 
 </Preview>
 
 ```tsx {3,5}
-<NumberField.Root>
+<NumberField>
 	<NumberField.Label>Quantity</NumberField.Label>
 	<div>
 		<NumberField.DecrementTrigger class="custom-trigger">-</NumberField.DecrementTrigger>
 		<NumberField.Input />
 		<NumberField.IncrementTrigger class="custom-trigger">+</NumberField.IncrementTrigger>
 	</div>
-</NumberField.Root>
+</NumberField>
 ```
 
 ### Format
@@ -350,14 +354,14 @@ The value of the number field component can be formatted based on the [locale wi
 </Preview>
 
 ```tsx {0}
-<NumberField.Root formatOptions={{ style: "currency", currency: "USD" }} defaultValue={4}>
+<NumberField formatOptions={{ style: "currency", currency: "USD" }} defaultValue={4}>
 	<NumberField.Label>Price</NumberField.Label>
 	<div>
 		<NumberField.Input />
 		<NumberField.IncrementTrigger />
 		<NumberField.DecrementTrigger />
 	</div>
-</NumberField.Root>
+</NumberField>
 ```
 
 ### Autofill
@@ -365,7 +369,7 @@ The value of the number field component can be formatted based on the [locale wi
 The number field supports autofill through `NumberField.HiddenInput`.
 
 ```tsx {2}
-<NumberField.Root>
+<NumberField>
 	<NumberField.Label>Quantity</NumberField.Label>
 	<NumberField.HiddenInput />
 	<div>
@@ -373,12 +377,14 @@ The number field supports autofill through `NumberField.HiddenInput`.
 		<NumberField.IncrementTrigger />
 		<NumberField.DecrementTrigger />
 	</div>
-</NumberField.Root>
+</NumberField>
 ```
 
 ## API Reference
 
-### NumberField.Root
+### NumberField
+
+`NumberField` is equivalent to the `Root` import from `@kobalte/core/number-field` (and deprecated `NumberField.Root`).
 
 | Prop             | Description                                                                                                                                                                                                       |
 | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -421,7 +427,7 @@ The number field supports autofill through `NumberField.HiddenInput`.
 
 | Component                      | Default rendered element |
 | :----------------------------- | :----------------------- |
-| `NumberField.Root`             | `div`                    |
+| `NumberField`                  | `div`                    |
 | `NumberField.Label`            | `label`                  |
 | `NumberField.Input`            | `input`                  |
 | `NumberField.HiddenInput`      | `input`                  |

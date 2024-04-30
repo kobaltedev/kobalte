@@ -79,3 +79,12 @@ export type {
 	SwitchThumbProps,
 };
 export { Control, Description, ErrorMessage, Input, Label, Root, Thumb };
+
+export const Switch = Object.assign(Root, {
+	Control,
+	Description,
+	ErrorMessage,
+	Input,
+	Label,
+	Thumb,
+});

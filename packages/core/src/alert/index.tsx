@@ -13,3 +13,5 @@ export type {
 	AlertRootProps,
 };
 export { Root };
+
+export const Alert = Root;

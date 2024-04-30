@@ -7,12 +7,12 @@ All component parts that render a DOM element have an `as` prop.
 For simple use cases the `as` prop can be used, either with native HTML elements or custom Solid components:
 
 ```tsx {8, 13}
-import { Tabs as KTabs } from "@kobalte/core";
+import { Tabs as KTabs } from "@kobalte/core/tabs";
 import { MyCustomButton } from "./components";
 
 function App() {
 	return (
-		<KTabs.Root>
+		<KTabs>
 			<KTabs.List>
 				{/* Render an anchor tag instead of the default button */}
 				<KTabs.Trigger value="one" as="a">
@@ -25,7 +25,7 @@ function App() {
 				</KTabs.Trigger>
 			</KTabs.List>
 			<KTabs.Content value="one">Content one</KTabs.Content>
-		</KTabs.Root>
+		</KTabs>
 	);
 }
 ```
@@ -43,12 +43,12 @@ When using this pattern the following rules apply to the callback:
 - You should set your event handlers on the parent and not inside your callback.
 
 ```tsx {15}
-import { Tabs as KTabs } from "@kobalte/core";
+import { Tabs as KTabs } from "@kobalte/core/tabs";
 import { MyCustomButton } from "./components";
 
 function App() {
 	return (
-		<KTabs.Root>
+		<KTabs>
 			<KTabs.List>
 				{/* The `value` prop is used by Kobalte and not passed to MyCustomButton */}
 				<KTabs.Trigger value="one" as={MyCustomButton}>
@@ -67,15 +67,16 @@ function App() {
 				</KTabs.Trigger>
 			</KTabs.List>
 			<KTabs.Content value="one">Content one</KTabs.Content>
-		</KTabs.Root>
+		</KTabs>
 	);
 }
 ```
 
 You can optionally use a type helper to get the exact types passed to your callback:
 
-```tsx {4}
-import { Tabs as KTabs, PolymorphicCallbackProps } from "@kobalte/core";
+```tsx {5}
+import { Tabs as KTabs } from "@kobalte/core/tabs";
+import { PolymorphicCallbackProps } from "@kobalte/core/polymorphic";
 
 <KTabs.Trigger
 	value="one"
@@ -145,7 +146,8 @@ If you're writing a custom component and want to expose Kobalte's `as` prop to t
 and keep proper typing, be sure to use `PolymorphicProps<T, ComponentProps>` for your props type.
 
 ```tsx
-import { Tabs as KTabs, PolymorphicProps } from "@kobalte/core";
+import { Tabs as KTabs } from "@kobalte/core/tabs";
+import { PolymorphicProps } from "@kobalte/core/polymorphic";
 
 // Optionally extend `KTabs.TabsTriggerProps` if you wish to
 // expose Kobalte props to your end user.

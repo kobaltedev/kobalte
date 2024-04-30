@@ -16,6 +16,10 @@ Allows the user to select a specific page from a range of pages.
 ## Import
 
 ```ts
+import { Pagination } from "@kobalte/core/pagination";
+// or
+import { Root, Item, ... } from "@kobalte/core/pagination";
+// or (deprecated)
 import { Pagination } from "@kobalte/core";
 ```
 
@@ -30,7 +34,7 @@ import { Pagination } from "@kobalte/core";
 
 The pagination consists of:
 
-- **Pagination.Root:** The root container for the pagination component.
+- **Pagination:** The root container for the pagination component.
 - **Pagination.Item:** An item of the pagination.
 - **Pagination.Ellipsis:** Ellipsis item of the pagination.
 - **Pagination.Previous:** Previous button of the pagination.
@@ -38,11 +42,11 @@ The pagination consists of:
 - **Pagination.Items:** Contains the list of items and allows a user to select one of them.
 
 ```tsx
-<Pagination.Root>
+<Pagination>
   <Pagination.Previous/>
   <Pagination.Items/>
   <Pagination.Next/>
-</Select.Root>
+</Select>
 ```
 
 ## Example
@@ -59,12 +63,12 @@ The pagination consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Pagination } from "@kobalte/core";
+		import { Pagination } from "@kobalte/core/pagination";
     import "./style.css";
 
     function App() {
       return (
-      <Pagination.Root
+      <Pagination
         class="pagination__root"
         count={10}
         itemComponent={props => (
@@ -77,7 +81,7 @@ The pagination consists of:
           <Pagination.Previous class="pagination__item">Previous</Pagination.Previous>
           <Pagination.Items/>
           <Pagination.Next class="pagination__item">Next</Pagination.Next>
-        </Pagination.Root>
+        </Pagination>
       );
     }
     ```
@@ -162,7 +166,7 @@ An initial, uncontrolled page can be provided using the `defaultPage` prop, whic
 </Preview>
 
 ```tsx {2}
-<Pagination.Root
+<Pagination
 	count={10}
 	defaultPage={4}
 	itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
@@ -171,7 +175,7 @@ An initial, uncontrolled page can be provided using the `defaultPage` prop, whic
 	<Pagination.Previous>Previous</Pagination.Previous>
 	<Pagination.Items />
 	<Pagination.Next>Next</Pagination.Next>
-</Pagination.Root>
+</Pagination>
 ```
 
 ### Controlled value
@@ -189,7 +193,7 @@ export function ControlledExample() {
 	const [page, setPage] = createSignal(4);
 
 	return (
-		<Pagination.Root
+		<Pagination
 			page={page()}
 			onPageChange={setPage}
 			count={10}
@@ -199,7 +203,7 @@ export function ControlledExample() {
 			<Pagination.Previous>Previous</Pagination.Previous>
 			<Pagination.Items />
 			<Pagination.Next>Next</Pagination.Next>
-		</Pagination.Root>
+		</Pagination>
 	);
 }
 ```
@@ -213,13 +217,13 @@ The appearance can be customized by omitting the Next and Previous Button.
 </Preview>
 
 ```tsx {5}
-<Pagination.Root
+<Pagination
 	count={10}
 	itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
 	ellipsisComponent={() => <Pagination.Ellipsis>...</Pagination.Ellipsis>}
 >
 	<Pagination.Items />
-</Pagination.Root>
+</Pagination>
 ```
 
 ### First / Last item example
@@ -231,7 +235,7 @@ The First and Last item can be hidden instead of displaying at all times.
 </Preview>
 
 ```tsx {2-3}
-<Pagination.Root
+<Pagination
 	count={10}
 	showFirst={false}
 	showLast={false}
@@ -241,7 +245,7 @@ The First and Last item can be hidden instead of displaying at all times.
 	<Pagination.Previous>Previous</Pagination.Previous>
 	<Pagination.Items />
 	<Pagination.Next>Next</Pagination.Next>
-</Pagination.Root>
+</Pagination>
 ```
 
 ### Siblings example
@@ -253,7 +257,7 @@ The number of items around the current page item can be customized.
 </Preview>
 
 ```tsx {2}
-<Pagination.Root
+<Pagination
 	count={10}
 	siblingCount={2}
 	itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
@@ -262,7 +266,7 @@ The number of items around the current page item can be customized.
 	<Pagination.Previous>Previous</Pagination.Previous>
 	<Pagination.Items />
 	<Pagination.Next>Next</Pagination.Next>
-</Pagination.Root>
+</Pagination>
 ```
 
 ### Fixed Items example
@@ -274,7 +278,7 @@ The total number of items can be fixed to avoid content shift. If ellipsis are d
 </Preview>
 
 ```tsx {2}
-<Pagination.Root
+<Pagination
 	count={10}
 	fixedItems
 	itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
@@ -283,12 +287,14 @@ The total number of items can be fixed to avoid content shift. If ellipsis are d
 	<Pagination.Previous>Previous</Pagination.Previous>
 	<Pagination.Items />
 	<Pagination.Next>Next</Pagination.Next>
-</Pagination.Root>
+</Pagination>
 ```
 
 ## API Reference
 
-### Pagination.Root
+### Pagination
+
+`Pagination` is equivalent to the `Root` import from `@kobalte/core/pagination` (and deprecated `Pagination.Root`).
 
 | Prop              | Description                                                                                                                                                                                                         |
 | :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -322,7 +328,7 @@ The total number of items can be fixed to avoid content shift. If ellipsis are d
 
 | Component             | Default rendered element |
 | :-------------------- | :----------------------- |
-| `Pagination.Root`     | `div`                    |
+| `Pagination`          | `div`                    |
 | `Pagination.Item`     | `button`                 |
 | `Pagination.Ellipsis` | `div`                    |
 | `Pagination.Previous` | `button`                 |

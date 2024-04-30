@@ -1,4 +1,4 @@
-import { Toast, toaster } from "@kobalte/core";
+import { Toast, toaster } from "@kobalte/core/toast";
 
 import { CrossIcon } from "../components";
 import style from "./toast.module.css";
@@ -8,7 +8,7 @@ export function BasicExample() {
 
 	const showToast = () => {
 		id = toaster.show((props) => (
-			<Toast.Root toastId={props.toastId} class={style.toast}>
+			<Toast toastId={props.toastId} class={style.toast}>
 				<div class={style.toast__content}>
 					<div>
 						<Toast.Title class={style.toast__title}>
@@ -25,13 +25,13 @@ export function BasicExample() {
 				<Toast.ProgressTrack class={style["toast__progress-track"]}>
 					<Toast.ProgressFill class={style["toast__progress-fill"]} />
 				</Toast.ProgressTrack>
-			</Toast.Root>
+			</Toast>
 		));
 	};
 
 	const updateToast = () => {
 		toaster.update(id, (props) => (
-			<Toast.Root toastId={props.toastId} class={style.toast}>
+			<Toast toastId={props.toastId} class={style.toast}>
 				<div class={style.toast__content}>
 					<div>
 						<Toast.Title class={style.toast__title}>
@@ -48,7 +48,7 @@ export function BasicExample() {
 				<Toast.ProgressTrack class={style["toast__progress-track"]}>
 					<Toast.ProgressFill class={style["toast__progress-fill"]} />
 				</Toast.ProgressTrack>
-			</Toast.Root>
+			</Toast>
 		));
 	};
 
@@ -70,7 +70,7 @@ export function MultipleRegionsExample() {
 	const showToast = (region?: string) => {
 		id = toaster.show(
 			(props) => (
-				<Toast.Root toastId={props.toastId} class={style.toast}>
+				<Toast toastId={props.toastId} class={style.toast}>
 					<div class={style.toast__content}>
 						<div>
 							<Toast.Title class={style.toast__title}>
@@ -87,7 +87,7 @@ export function MultipleRegionsExample() {
 					<Toast.ProgressTrack class={style["toast__progress-track"]}>
 						<Toast.ProgressFill class={style["toast__progress-fill"]} />
 					</Toast.ProgressTrack>
-				</Toast.Root>
+				</Toast>
 			),
 			{
 				region,

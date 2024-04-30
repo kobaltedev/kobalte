@@ -13,3 +13,5 @@ export type {
 	ButtonRootProps,
 };
 export { Root };
+
+export const Button = Root;

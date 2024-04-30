@@ -12,6 +12,10 @@ Visually indicates content loading
 ## Import
 
 ```ts
+import { Skeleton } from "@kobalte/core/skeleton";
+// or
+import { Root } from "@kobalte/core/skeleton";
+// or (deprecated)
 import { Skeleton } from "@kobalte/core";
 ```
 
@@ -25,10 +29,10 @@ import { Skeleton } from "@kobalte/core";
 
 The skeleton consists of:
 
-- **Skeleton.Root:** The root container for a skeleton.
+- **Skeleton:** The root container for a skeleton.
 
 ```tsx
-<Skeleton.Root />
+<Skeleton />
 ```
 
 ## Example
@@ -45,16 +49,16 @@ The skeleton consists of:
 {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Skeleton } from "@kobalte/core";
+		import { Skeleton } from "@kobalte/core/skeleton";
     import "./style.css";
 
     function App() {
       return (
-      <Skeleton.Root class="skeleton" radius={10}>
+      <Skeleton class="skeleton" radius={10}>
         <p>
           A UI toolkit for building accessible web apps and design systems with SolidJS.
         </p>
-      </Skeleton.Root>
+      </Skeleton>
       );
     }
     ```
@@ -124,31 +128,32 @@ The skeleton consists of:
 {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Skeleton, Image } from "@kobalte/core";
+		import { Skeleton } from "@kobalte/core/skeleton";
+		import { Image } from "@kobalte/core/image";
     import "./style.css";
 
     function App() {
       return (
         <div class="multiple-root">
           <div class="multiple-profile">
-            <Skeleton.Root class="skeleton" height={50} circle>
-              <Image.Root class="multiple-avatar">
+            <Skeleton class="skeleton" height={50} circle>
+              <Image class="multiple-avatar">
                 <Image.Img
                   class="image__img"
                   src="https://pbs.twimg.com/profile_images/1509139491671445507/pzWYjlYN_400x400.jpg"
                   alt="Nicole Steeves"
                 />
-              </Image.Root>
-            </Skeleton.Root>
-            <Skeleton.Root class="skeleton" height={20} radius={10}>
+              </Image>
+            </Skeleton>
+            <Skeleton class="skeleton" height={20} radius={10}>
               Kobalte
-            </Skeleton.Root>
+            </Skeleton>
           </div>
-          <Skeleton.Root class="skeleton" radius={10}>
+          <Skeleton class="skeleton" radius={10}>
             <p>
               A UI toolkit for building accessible web apps and design systems with SolidJS.
             </p>
-          </Skeleton.Root>
+          </Skeleton>
         </div>
       );
     }
@@ -229,21 +234,22 @@ The skeleton consists of:
 {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Skeleton, ToggleButton } from "@kobalte/core";
+		import { Skeleton } from "@kobalte/core/skeleton";
+		import { ToggleButton } from "@kobalte/core/toggle-button";
     import "./style.css";
 
     function App() {
       const [visible, setVisible] = createSignal(true);
       return (
         <div class="toggle-root">
-          <ToggleButton.Root class="toggle-button" pressed={visible()} onChange={setVisible}>
+          <ToggleButton class="toggle-button" pressed={visible()} onChange={setVisible}>
             Skeleton {visible() ? "Visible" : "Not Visible"}
-          </ToggleButton.Root>
-          <Skeleton.Root class="skeleton" visible={visible()}>
+          </ToggleButton>
+          <Skeleton class="skeleton" visible={visible()}>
             <p>
               A UI toolkit for building accessible web apps and design systems with SolidJS.
             </p>
-          </Skeleton.Root>
+          </Skeleton>
         </div>
       );
     }
@@ -331,7 +337,9 @@ The skeleton consists of:
 
 ## API Reference
 
-### Skeleton.Root
+### Skeleton
+
+`Skeleton` is equivalent to the `Root` import from `@kobalte/core/skeleton` (and deprecated `Skeleton.Root`).
 
 | Prop     | Description                                                                                          |
 | :------- | :--------------------------------------------------------------------------------------------------- |
@@ -350,6 +358,6 @@ The skeleton consists of:
 
 ## Rendered elements
 
-| Component       | Default rendered element |
-| :-------------- | :----------------------- |
-| `Skeleton.Root` | `div`                    |
+| Component  | Default rendered element |
+| :--------- | :----------------------- |
+| `Skeleton` | `div`                    |

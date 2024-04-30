@@ -57,3 +57,10 @@ export type {
 	AccordionTriggerProps,
 };
 export { Content, Header, Item, Root, Trigger };
+
+export const Accordion = Object.assign(Root, {
+	Content,
+	Header,
+	Item,
+	Trigger,
+});

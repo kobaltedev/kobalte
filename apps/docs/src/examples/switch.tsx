@@ -1,30 +1,29 @@
-import { Switch } from "@kobalte/core";
-import { clsx } from "clsx";
+import { Switch } from "@kobalte/core/switch";
 import { createSignal } from "solid-js";
 
 import style from "./switch.module.css";
 
 export function BasicExample() {
 	return (
-		<Switch.Root class={style.switch}>
+		<Switch class={style.switch}>
 			<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
 			<Switch.Input class={style.switch__input} />
 			<Switch.Control class={style.switch__control}>
 				<Switch.Thumb class={style.switch__thumb} />
 			</Switch.Control>
-		</Switch.Root>
+		</Switch>
 	);
 }
 
 export function DefaultCheckedExample() {
 	return (
-		<Switch.Root class={style.switch} defaultChecked>
+		<Switch class={style.switch} defaultChecked>
 			<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
 			<Switch.Input class={style.switch__input} />
 			<Switch.Control class={style.switch__control}>
 				<Switch.Thumb class={style.switch__thumb} />
 			</Switch.Control>
-		</Switch.Root>
+		</Switch>
 	);
 }
 
@@ -33,17 +32,13 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<Switch.Root
-				class={style.switch}
-				checked={checked()}
-				onChange={setChecked}
-			>
+			<Switch class={style.switch} checked={checked()} onChange={setChecked}>
 				<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
 				<Switch.Input class={style.switch__input} />
 				<Switch.Control class={style.switch__control}>
 					<Switch.Thumb class={style.switch__thumb} />
 				</Switch.Control>
-			</Switch.Root>
+			</Switch>
 			<p class="not-prose text-sm mt-2">
 				Airplane mode is {checked() ? "active" : "inactive"}.
 			</p>
@@ -53,7 +48,7 @@ export function ControlledExample() {
 
 export function DescriptionExample() {
 	return (
-		<Switch.Root class={style.switch}>
+		<Switch class={style.switch}>
 			<div class="flex flex-col items-start  mr-2">
 				<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
 				<Switch.Description class={style.switch__description}>
@@ -64,7 +59,7 @@ export function DescriptionExample() {
 			<Switch.Control class={style.switch__control}>
 				<Switch.Thumb class={style.switch__thumb} />
 			</Switch.Control>
-		</Switch.Root>
+		</Switch>
 	);
 }
 
@@ -72,7 +67,7 @@ export function ErrorMessageExample() {
 	const [checked, setChecked] = createSignal(false);
 
 	return (
-		<Switch.Root
+		<Switch
 			class={style.switch}
 			checked={checked()}
 			onChange={setChecked}
@@ -88,7 +83,7 @@ export function ErrorMessageExample() {
 			<Switch.Control class={style.switch__control}>
 				<Switch.Thumb class={style.switch__thumb} />
 			</Switch.Control>
-		</Switch.Root>
+		</Switch>
 	);
 }
 
@@ -110,13 +105,13 @@ export function HTMLFormExample() {
 			onSubmit={onSubmit}
 			class="flex flex-col items-center space-y-6"
 		>
-			<Switch.Root class={style.switch} name="airplane-mode" value="on">
+			<Switch class={style.switch} name="airplane-mode" value="on">
 				<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
 				<Switch.Input class={style.switch__input} />
 				<Switch.Control class={style.switch__control}>
 					<Switch.Thumb class={style.switch__thumb} />
 				</Switch.Control>
-			</Switch.Root>
+			</Switch>
 			<div class="flex space-x-2">
 				<button type="reset" class="kb-button">
 					Reset

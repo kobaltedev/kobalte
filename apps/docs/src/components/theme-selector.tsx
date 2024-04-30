@@ -1,4 +1,9 @@
-import { ConfigColorMode, Select, useColorMode } from "@kobalte/core";
+import {
+	ConfigColorMode,
+	MaybeConfigColorMode,
+	useColorMode,
+} from "@kobalte/core/color-mode";
+import { Select } from "@kobalte/core/select";
 import { JSX, createSignal, onMount } from "solid-js";
 
 import { DesktopIcon, MoonIcon, SunIcon } from "./icons";
@@ -43,7 +48,7 @@ export function ThemeSelector() {
 	});
 
 	return (
-		<Select.Root<ThemeOption>
+		<Select<ThemeOption>
 			options={THEME_OPTIONS}
 			optionValue="value"
 			optionTextValue="label"
@@ -78,6 +83,6 @@ export function ThemeSelector() {
 					<Select.Listbox />
 				</Select.Content>
 			</Select.Portal>
-		</Select.Root>
+		</Select>
 	);
 }

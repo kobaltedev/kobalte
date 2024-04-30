@@ -8,6 +8,10 @@ A popover positioned relative to an anchor element.
 ## Import
 
 ```ts
+import { Popover } from "@kobalte/core/popover";
+// or
+import { Root, Trigger, ... } from "@kobalte/core/popover";
+// or (deprecated)
 import { Popover } from "@kobalte/core";
 ```
 
@@ -24,7 +28,7 @@ import { Popover } from "@kobalte/core";
 
 The popover consists of:
 
-- **Popover.Root:** The root container for a popover.
+- **Popover:** The root container for a popover.
 - **Popover.Trigger:** The button that opens the popover.
 - **Popover.Anchor:** An optional element to position the `Popover.Content` against.
 - **Popover.Portal:** Portals its children into the `body` when the popover is open.
@@ -35,7 +39,7 @@ The popover consists of:
 - **Popover.Description:** An optional accessible description to be announced when the popover is open.
 
 ```tsx
-<Popover.Root>
+<Popover>
 	<Popover.Trigger />
 	<Popover.Anchor />
 	<Popover.Portal>
@@ -46,7 +50,7 @@ The popover consists of:
 			<Popover.Description />
 		</Popover.Content>
 	</Popover.Portal>
-</Popover.Root>
+</Popover>
 ```
 
 ## Example
@@ -63,13 +67,13 @@ The popover consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { Popover } from "@kobalte/core";
+    import { Popover } from "@kobalte/core/popover";
     import { CrossIcon } from "some-icon-library";
     import "./style.css";
 
     function App() {
       return (
-        <Popover.Root>
+        <Popover>
           <Popover.Trigger class="popover__trigger">Open</Popover.Trigger>
           <Popover.Portal>
             <Popover.Content class="popover__content">
@@ -85,7 +89,7 @@ The popover consists of:
               </Popover.Description>
             </Popover.Content>
           </Popover.Portal>
-        </Popover.Root>
+        </Popover>
       );
     }
     ```
@@ -196,7 +200,7 @@ The popover consists of:
 An initial, uncontrolled open value can be provided using the `defaultOpen` prop.
 
 ```tsx
-<Popover.Root defaultOpen>...</Popover.Root>
+<Popover defaultOpen>...</Popover>
 ```
 
 ### Controlled open
@@ -214,12 +218,12 @@ function ControlledExample() {
 	const [open, setOpen] = createSignal(false);
 
 	return (
-		<Popover.Root open={open()} onOpenChange={setOpen}>
+		<Popover open={open()} onOpenChange={setOpen}>
 			<Popover.Trigger>{open() ? "Close" : "Open"}</Popover.Trigger>
 			<Popover.Portal>
 				<Popover.Content>...</Popover.Content>
 			</Popover.Portal>
-		</Popover.Root>
+		</Popover>
 	);
 }
 ```
@@ -233,7 +237,7 @@ Use the `Popover.Anchor` component to anchor the content to another element if y
 </Preview>
 
 ```tsx {1,6}
-<Popover.Root>
+<Popover>
 	<Popover.Anchor>
 		<p>
 			The popover opens when you click <Popover.Trigger>here</Popover.Trigger>.
@@ -243,7 +247,7 @@ Use the `Popover.Anchor` component to anchor the content to another element if y
 	<Popover.Portal>
 		<Popover.Content>...</Popover.Content>
 	</Popover.Portal>
-</Popover.Root>
+</Popover>
 ```
 
 ### Origin-aware animations
@@ -286,7 +290,9 @@ We expose a CSS custom property `--kb-popover-content-transform-origin` which ca
 
 ## API Reference
 
-### Popover.Root
+### Popover
+
+`Popover` is equivalent to the `Root` import from `@kobalte/core/popover` (and deprecated `Popover.Root`).
 
 | Prop          | Description                                                                                                                                                                                                                                                                                                                                             |
 | :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -299,7 +305,7 @@ We expose a CSS custom property `--kb-popover-content-transform-origin` which ca
 | forceMount    | `boolean` <br/> Used to force mounting the popover (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                                |
 | translations  | [`PopoverIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/popover/popover.intl.ts) <br/> Localization strings.                                                                                                                                                                                                      |
 
-`Popover.Root` also accepts the following props to customize the placement of the `Popover.Content`.
+`Popover` also accepts the following props to customize the placement of the `Popover.Content`.
 
 | Prop             | Description                                                                                                                                                                                                                                                                                                                                                |
 | :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -350,7 +356,7 @@ We expose a CSS custom property `--kb-popover-content-transform-origin` which ca
 
 | Component             | Default rendered element |
 | :-------------------- | :----------------------- |
-| `Popover.Root`        | none                     |
+| `Popover`             | none                     |
 | `Popover.Trigger`     | `button`                 |
 | `Popover.Anchor`      | `div`                    |
 | `Popover.Portal`      | `Portal`                 |

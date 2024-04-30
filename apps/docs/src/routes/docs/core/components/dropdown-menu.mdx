@@ -8,6 +8,10 @@ Displays a menu to the user —such as a set of actions or functions— triggere
 ## Import
 
 ```ts
+import { DropdownMenu } from "@kobalte/core/dropdown-menu";
+// or
+import { Root, Trigger, ... } from "@kobalte/core/dropdown-menu";
+// or (deprecated)
 import { DropdownMenu } from "@kobalte/core";
 ```
 
@@ -31,7 +35,7 @@ import { DropdownMenu } from "@kobalte/core";
 
 The dropdown menu consists of:
 
-- **DropdownMenu.Root:** The root container for a dropdown menu.
+- **DropdownMenu:** The root container for a dropdown menu.
 - **DropdownMenu.Trigger:** The button that toggles the menu.
 - **DropdownMenu.Icon:** A small icon often displayed next to the menu trigger as a visual affordance for the fact it can be open.
 - **DropdownMenu.Portal:** Portals its children into the `body` when the menu is open.
@@ -58,7 +62,7 @@ The checkable menu item consists of:
 - **DropdownMenu.CheckboxItem:** An item that can be controlled and rendered like a checkbox.
 
 ```tsx
-<DropdownMenu.Root>
+<DropdownMenu>
 	<DropdownMenu.Trigger>
 		<DropdownMenu.Icon />
 	</DropdownMenu.Trigger>
@@ -97,7 +101,7 @@ The checkable menu item consists of:
 			<DropdownMenu.Separator />
 		</DropdownMenu.Content>
 	</DropdownMenu.Portal>
-</DropdownMenu.Root>
+</DropdownMenu>
 ```
 
 ## Example
@@ -114,7 +118,7 @@ The checkable menu item consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-    import { DropdownMenu } from "@kobalte/core";
+		import { DropdownMenu } from "@kobalte/core/dropdown-menu";
     import { createSignal } from "solid-js";
     import { CheckIcon, ChevronDownIcon, ChevronRightIcon, DotFilledIcon } from "some-icon-library";
     import "./style.css";
@@ -125,7 +129,7 @@ The checkable menu item consists of:
       const [branch, setBranch] = createSignal("main");
 
       return (
-        <DropdownMenu.Root>
+        <DropdownMenu>
           <DropdownMenu.Trigger class="dropdown-menu__trigger">
             <span>Git Settings</span>
             <DropdownMenu.Icon class="dropdown-menu__trigger-icon">
@@ -217,7 +221,7 @@ The checkable menu item consists of:
               <DropdownMenu.Arrow />
             </DropdownMenu.Content>
           </DropdownMenu.Portal>
-        </DropdownMenu.Root>
+        </DropdownMenu>
       );
     }
     ```
@@ -398,7 +402,7 @@ The checkable menu item consists of:
 An initial, uncontrolled open value can be provided using the `defaultOpen` prop.
 
 ```tsx
-<DropdownMenu.Root defaultOpen>...</DropdownMenu.Root>
+<DropdownMenu defaultOpen>...</DropdownMenu>
 ```
 
 ### Controlled open
@@ -416,12 +420,12 @@ function ControlledExample() {
 	const [open, setOpen] = createSignal(false);
 
 	return (
-		<DropdownMenu.Root open={open()} onOpenChange={setOpen}>
+		<DropdownMenu open={open()} onOpenChange={setOpen}>
 			<DropdownMenu.Trigger>{open() ? "Close" : "Open"}</DropdownMenu.Trigger>
 			<DropdownMenu.Portal>
 				<DropdownMenu.Content>...</DropdownMenu.Content>
 			</DropdownMenu.Portal>
-		</DropdownMenu.Root>
+		</DropdownMenu>
 	);
 }
 ```
@@ -468,7 +472,9 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 
 ## API Reference
 
-### DropdownMenu.Root
+### DropdownMenu
+
+`DropdownMenu` is equivalent to the `Root` import from `@kobalte/core/dropdown-menu` (and deprecated `DropdownMenu.Root`).
 
 | Prop          | Description                                                                                                                                                                                                                                                                                                                                    |
 | :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -480,7 +486,7 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 | preventScroll | `boolean` <br/> Whether the scroll should be locked even if the menu is not modal.                                                                                                                                                                                                                                                             |
 | forceMount    | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                          |
 
-`DropdownMenu.Root` also accepts the following props to customize the placement of the `DropdownMenu.Content`.
+`DropdownMenu` also accepts the following props to customize the placement of the `DropdownMenu.Content`.
 
 | Prop             | Description                                                                                                                                                                                                                                                                                                                                                          |
 | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -641,7 +647,7 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 
 | Component                      | Default rendered element |
 | :----------------------------- | :----------------------- |
-| `DropdownMenu.Root`            | none                     |
+| `DropdownMenu`                 | none                     |
 | `DropdownMenu.Trigger`         | `button`                 |
 | `DropdownMenu.Icon`            | `span`                   |
 | `DropdownMenu.Portal`          | `Portal`                 |

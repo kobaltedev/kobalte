@@ -148,7 +148,7 @@ export function PopperRoot(props: PopperRootProps) {
 
 	// Floating UI - reference element.
 	const anchorRef = () =>
-		getAnchorElement(mergedProps.anchorRef(), mergedProps.getAnchorRect!);
+		getAnchorElement(mergedProps.anchorRef?.(), mergedProps.getAnchorRect!);
 
 	const { direction } = useLocale();
 
@@ -354,7 +354,7 @@ export function PopperRoot(props: PopperRootProps) {
 	// so users only need to set the z-index once.
 	createEffect(() => {
 		const positioner = positionerRef();
-		const content = mergedProps.contentRef();
+		const content = mergedProps.contentRef?.();
 
 		if (!positioner || !content) {
 			return;
@@ -367,7 +367,7 @@ export function PopperRoot(props: PopperRootProps) {
 
 	const context: PopperContextValue = {
 		currentPlacement,
-		contentRef: () => mergedProps.contentRef(),
+		contentRef: () => mergedProps.contentRef?.(),
 		setPositionerRef,
 		setArrowRef,
 	};

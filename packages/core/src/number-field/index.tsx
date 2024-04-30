@@ -89,3 +89,13 @@ export {
 	Label,
 	Root,
 };
+
+export const NumberField = Object.assign(Root, {
+	Description,
+	ErrorMessage,
+	HiddenInput,
+	Input,
+	IncrementTrigger,
+	DecrementTrigger,
+	Label,
+});

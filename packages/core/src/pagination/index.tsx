@@ -62,3 +62,11 @@ export type {
 	PaginationRootProps,
 };
 export { Ellipsis, Item, Items, Next, Previous, Root };
+
+export const Pagination = Object.assign(Root, {
+	Ellipsis,
+	Item,
+	Items,
+	Next,
+	Previous,
+});

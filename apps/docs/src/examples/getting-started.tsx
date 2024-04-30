@@ -1,10 +1,10 @@
-import { Popover } from "@kobalte/core";
+import { Popover } from "@kobalte/core/popover";
 
 import { CrossIcon } from "../components";
 import style from "./popover.module.css";
 
 export const PopoverDemo = () => (
-	<Popover.Root>
+	<Popover>
 		<Popover.Trigger class={style.popover__trigger}>Learn more</Popover.Trigger>
 		<Popover.Portal>
 			<Popover.Content class={style.popover__content}>
@@ -23,5 +23,5 @@ export const PopoverDemo = () => (
 				</Popover.Description>
 			</Popover.Content>
 		</Popover.Portal>
-	</Popover.Root>
+	</Popover>
 );
