@@ -22,7 +22,16 @@ export function Footer() {
 						</div>
 						<div class="text-sm text-gray-600">
 							<span class="text-sm text-zinc-700 mr-4 dark:text-zinc-400">
-								Made in 🇫🇷 by Fabien MARIE-LOUISE.
+								Made with care by{" "}
+								<a
+									class="text-sm shadow-[inset_0_-2px_0_0_rgba(212,212,216,0.25)] hover:shadow-[inset_0_-4px_0_0_rgba(212,212,216,0.5)] text-zinc-700 mr-4 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-300"
+									href="https://github.com/kobaltedev/kobalte/graphs/contributors"
+									target="_blank"
+									rel="noreferrer"
+								>
+									contributors
+								</a>
+								.
 							</span>
 						</div>
 					</div>
@@ -64,17 +73,6 @@ export function Footer() {
 									<DiscordIcon class="h-4 w-4" />
 								</a>
 							</li>
-							<li class="mb-2">
-								<a
-									aria-label="Twitter"
-									class="flex items-center text-zinc-600 hover:text-zinc-700 dark:text-zinc-400 transition duration-150 ease-in-out"
-									href="https://twitter.com/MLFabien"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<TwitterIcon class="h-4 w-4" />
-								</a>
-							</li>
 						</ul>
 					</div>
 				</div>
@@ -84,6 +82,8 @@ export function Footer() {
 				<a
 					class="text-sm shadow-[inset_0_-2px_0_0_rgba(212,212,216,0.25)] hover:shadow-[inset_0_-4px_0_0_rgba(212,212,216,0.5)] text-zinc-700 mr-4 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-300"
 					href="https://www.netlify.com"
+					target="_blank"
+					rel="noreferrer"
 				>
 					This site is powered by Netlify.
 				</a>

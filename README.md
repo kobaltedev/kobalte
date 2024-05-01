@@ -38,7 +38,10 @@ All contributions are moderated under the [Contributor Covenant Code of Conduct]
 - [Radix UI](https://www.radix-ui.com/)
 - [React Aria](https://react-spectrum.adobe.com/react-aria/)
 - [Zag](https://zagjs.com/)
+- [corvu](https://corvu.dev/)
+
+Created by Fabien Marie-Louise.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](./LICENSE.md).
