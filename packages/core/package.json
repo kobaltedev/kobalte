@@ -22,8 +22,9 @@
     "type": "git",
     "url": "git+https://github.com/kobaltedev/kobalte.git"
   },
-  "license": "MIT",
-  "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
+	"license": "MIT",
+	"author": "jer3m01 <jer3m01@jer3m01.com>",
+	"contributors": ["Fabien Marie-Louise <fabienml.dev@gmail.com>"],
   "sideEffects": false,
   "type": "module",
   "exports": {
