@@ -1,4 +1,5 @@
 export const CORE_VERSIONS = [
+	"0.13.x",
 	"0.12.x",
 	"0.11.x",
 	"0.10.x",
@@ -18,4 +19,4 @@ export const LATEST_CORE_CHANGELOG_URL = `/docs/changelog/${CORE_VERSIONS[0].rep
 	"-",
 )}`;
 
-export const LATEST_CORE_VERSION_NAME = "v0.12.5";
+export const LATEST_CORE_VERSION_NAME = "v0.13.0";
