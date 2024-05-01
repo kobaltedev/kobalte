@@ -1,6 +1,6 @@
 {
   "name": "@kobalte/core",
-  "version": "0.12.6",
+  "version": "0.13.0",
   "private": false,
   "description": "Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
   "keywords": [
@@ -22,34 +22,36 @@
     "type": "git",
     "url": "git+https://github.com/kobaltedev/kobalte.git"
   },
-	"license": "MIT",
-	"author": "jer3m01 <jer3m01@jer3m01.com>",
-	"contributors": ["Fabien Marie-Louise <fabienml.dev@gmail.com>"],
+  "license": "MIT",
+  "author": "jer3m01 <jer3m01@jer3m01.com>",
+  "contributors": [
+    "Fabien Marie-Louise <fabienml.dev@gmail.com>"
+  ],
   "sideEffects": false,
   "type": "module",
   "exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"solid": "./dist/index.jsx",
-			"default": "./dist/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "solid": "./dist/index.jsx",
+      "default": "./dist/index.js"
     },
-		"./*": {
-			"types": "./dist/*/index.d.ts",
+    "./*": {
+      "types": "./dist/*/index.d.ts",
       "solid": "./dist/*/index.jsx",
-			"default": "./dist/*/index.js"
-		}
+      "default": "./dist/*/index.js"
+    }
   },
   "main": "dist/index.js",
   "module": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"typesVersions": {
-		"*": {
-			"*": [
-				"./dist/*/index.d.ts",
-				"./dist/index.d.ts"
-			]
-		}
-	},
+  "types": "dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*/index.d.ts",
+        "./dist/index.d.ts"
+      ]
+    }
+  },
   "files": [
     "dist",
     "NOTICE.txt"
