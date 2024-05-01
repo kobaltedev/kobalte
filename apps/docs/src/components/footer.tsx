@@ -24,7 +24,7 @@ export function Footer() {
 							<span class="text-sm text-zinc-700 mr-4 dark:text-zinc-400">
 								Made with care by{" "}
 								<a
-									class="text-sm shadow-[inset_0_-2px_0_0_rgba(212,212,216,0.25)] hover:shadow-[inset_0_-4px_0_0_rgba(212,212,216,0.5)] text-zinc-700 mr-4 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-300"
+									class="text-sm shadow-[inset_0_-2px_0_0_rgba(212,212,216,0.25)] hover:shadow-[inset_0_-4px_0_0_rgba(212,212,216,0.5)] text-zinc-700 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-300"
 									href="https://github.com/kobaltedev/kobalte/graphs/contributors"
 									target="_blank"
 									rel="noreferrer"
@@ -80,7 +80,7 @@ export function Footer() {
 
 			<div class="max-w-4xl mx-auto px-4 flex justify-center">
 				<a
-					class="text-sm shadow-[inset_0_-2px_0_0_rgba(212,212,216,0.25)] hover:shadow-[inset_0_-4px_0_0_rgba(212,212,216,0.5)] text-zinc-700 mr-4 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-300"
+					class="text-sm shadow-[inset_0_-2px_0_0_rgba(212,212,216,0.25)] hover:shadow-[inset_0_-4px_0_0_rgba(212,212,216,0.5)] text-zinc-700 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-300"
 					href="https://www.netlify.com"
 					target="_blank"
 					rel="noreferrer"
