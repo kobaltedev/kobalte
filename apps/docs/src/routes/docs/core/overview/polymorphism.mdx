@@ -7,25 +7,25 @@ All component parts that render a DOM element have an `as` prop.
 For simple use cases the `as` prop can be used, either with native HTML elements or custom Solid components:
 
 ```tsx {8, 13}
-import { Tabs as KTabs } from "@kobalte/core/tabs";
+import { Tabs } from "@kobalte/core/tabs";
 import { MyCustomButton } from "./components";
 
 function App() {
 	return (
-		<KTabs>
-			<KTabs.List>
+		<Tabs>
+			<Tabs.List>
 				{/* Render an anchor tag instead of the default button */}
-				<KTabs.Trigger value="one" as="a">
+				<Tabs.Trigger value="one" as="a">
 					A Trigger
-				</KTabs.Trigger>
+				</Tabs.Trigger>
 
 				{/* Render MyCustomButton instead of the default button */}
-				<KTabs.Trigger value="one" as={MyCustomButton}>
+				<Tabs.Trigger value="one" as={MyCustomButton}>
 					Custom Button Trigger
-				</KTabs.Trigger>
-			</KTabs.List>
-			<KTabs.Content value="one">Content one</KTabs.Content>
-		</KTabs>
+				</Tabs.Trigger>
+			</Tabs.List>
+			<Tabs.Content value="one">Content one</Tabs.Content>
+		</Tabs>
 	);
 }
 ```
@@ -42,21 +42,21 @@ When using this pattern the following rules apply to the callback:
 - Kobalte options are not passed to the callback, only the resulting html attributes.
 - You should set your event handlers on the parent and not inside your callback.
 
-```tsx {15}
-import { Tabs as KTabs } from "@kobalte/core/tabs";
+```tsx {17}
+import { Tabs } from "@kobalte/core/tabs";
 import { MyCustomButton } from "./components";
 
 function App() {
 	return (
-		<KTabs>
-			<KTabs.List>
+		<Tabs>
+			<Tabs.List>
 				{/* The `value` prop is used by Kobalte and not passed to MyCustomButton */}
-				<KTabs.Trigger value="one" as={MyCustomButton}>
+				<Tabs.Trigger value="one" as={MyCustomButton}>
 					A Trigger
-				</KTabs.Trigger>
+				</Tabs.Trigger>
 
 				{/* The `value` prop is used by Kobalte and not passed to MyCustomButton */}
-				<KTabs.Trigger
+				<Tabs.Trigger
 					value="one"
 					as={props => (
 						// The `value` prop is directly passed to MyCustomButton
@@ -64,27 +64,27 @@ function App() {
 					)}
 				>
 					Custom Button Trigger
-				</KTabs.Trigger>
-			</KTabs.List>
-			<KTabs.Content value="one">Content one</KTabs.Content>
-		</KTabs>
+				</Tabs.Trigger>
+			</Tabs.List>
+			<Tabs.Content value="one">Content one</Tabs.Content>
+		</Tabs>
 	);
 }
 ```
 
 You can optionally use a type helper to get the exact types passed to your callback:
 
-```tsx {5}
-import { Tabs as KTabs } from "@kobalte/core/tabs";
+```tsx {6-9}
+import { Tabs, TabsTriggerOptions, TabsTriggerRenderProps } from "@kobalte/core/tabs";
 import { PolymorphicCallbackProps } from "@kobalte/core/polymorphic";
 
-<KTabs.Trigger
+<Tabs.Trigger
 	value="one"
 	as={(
 		props: PolymorphicCallbackProps<
 			MyCustomButtonProps,
-			KTabs.TabsTriggerOptions,
-			KTabs.TabsTriggerRenderProps
+			TabsTriggerOptions,
+			TabsTriggerRenderProps
 		>,
 	) => (
 		// The `value` prop is directly passed to MyCustomButton
@@ -92,7 +92,7 @@ import { PolymorphicCallbackProps } from "@kobalte/core/polymorphic";
 	)}
 >
 	Custom Button Trigger
-</KTabs.Trigger>;
+</Tabs.Trigger>;
 ```
 
 ## Event lifecycle
@@ -112,10 +112,10 @@ Every component that renders an HTML element has the following types:
 - `ComponentProps`
 
 For example, `Tabs.Trigger` has the types `TabsTriggerOptions`, `TabsTriggerCommonProps`,
-`TabsTriggerRenderProps` and `TabsTriggerProps` namespaced as `Tabs.TabsTriggerOptions`, etc.
+`TabsTriggerRenderProps` and `TabsTriggerProps`.
 
 Components themselves accept props as `PolymorphicProps<T, ComponentProps>` where `T` is a generic
-that extends `ValidComponent` and the `ComponentProps` of the Kobalte component.
+that extends `ValidComponent` and `ComponentProps` are the props of the Kobalte component.
 This type allows components to accept Kobalte's props and all other props accepted by `T`.
 
 ### `ComponentOptions`
@@ -146,12 +146,12 @@ If you're writing a custom component and want to expose Kobalte's `as` prop to t
 and keep proper typing, be sure to use `PolymorphicProps<T, ComponentProps>` for your props type.
 
 ```tsx
-import { Tabs as KTabs } from "@kobalte/core/tabs";
+import { Tabs, TabsTriggerProps } from "@kobalte/core/tabs";
 import { PolymorphicProps } from "@kobalte/core/polymorphic";
 
-// Optionally extend `KTabs.TabsTriggerProps` if you wish to
+// Optionally extend `TabsTriggerProps` if you wish to
 // expose Kobalte props to your end user.
-interface CustomProps extends KTabs.TabsTriggerProps {
+interface CustomProps extends TabsTriggerProps {
 	variant: "default" | "outline";
 }
 
@@ -164,7 +164,7 @@ function CustomTabsTrigger<T extends ValidComponent = "button">(
 	const [local, others] = splitProps(props as CustomProps, ["variant"]);
 
 	return (
-		<KTabs.Trigger
+		<Tabs.Trigger
 			// Optional, will default to Kobalte otherwise.
 			// This should match with your generic `T` default.
 			as="button"
@@ -176,21 +176,24 @@ function CustomTabsTrigger<T extends ValidComponent = "button">(
 }
 ```
 
+If you do not wish to allow changing the element type, you can simplify your types by making
+props: `OverrideComponentProps<"button", CustomProps>`, replace `"button"` with the correct
+tagname for other components.
+
 If you also want to export exact types, you can re-export and extends component types:
 
 ```tsx
-export interface CustomTabsTriggerOptions extends KTabs.TabsTriggerOptions {
+export interface CustomTabsTriggerOptions extends TabsTriggerOptions {
 	variant: "default" | "outline";
 }
 
-export interface CustomTabsTriggerCommonProps extends KTabs.TabsTriggerCommonProps {
+export interface CustomTabsTriggerCommonProps extends TabsTriggerCommonProps {
 	// If you allow users to set classes and extend them.
 	//class: string;
 }
 
 export interface CustomTabsTriggerRenderProps
-	extends CustomTabsTriggerCommonProps,
-		KTabs.TabsTriggerRenderProps {
+	extends CustomTabsTriggerCommonProps, TabsTriggerRenderProps {
 	// If you do not allow users to set classes and manage all of them.
 	class: string;
 }
