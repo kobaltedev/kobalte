@@ -7,7 +7,7 @@
  */
 
 import { access } from "@kobalte/utils";
-import { Accessor, createEffect, createSignal, on } from "solid-js";
+import { Accessor, createEffect, createMemo, createSignal, on } from "solid-js";
 
 import { Collection, CollectionBase, CollectionNode } from "./types";
 import { buildNodes } from "./utils";
@@ -25,52 +25,18 @@ export function createCollection<C extends Collection<CollectionNode>>(
 	props: CreateCollectionProps<C>,
 	deps: Array<Accessor<any>> = [],
 ) {
-	const initialNodes = buildNodes({
-		dataSource: access(props.dataSource),
-		getKey: access(props.getKey),
-		getTextValue: access(props.getTextValue),
-		getDisabled: access(props.getDisabled),
-		getSectionChildren: access(props.getSectionChildren),
+	return createMemo(() => {
+		const nodes = buildNodes({
+			dataSource: access(props.dataSource),
+			getKey: access(props.getKey),
+			getTextValue: access(props.getTextValue),
+			getDisabled: access(props.getDisabled),
+			getSectionChildren: access(props.getSectionChildren),
+		});
+
+		// Subscribe to all deps
+		for (let i = 0; i < deps.length; i++) deps[i]();
+
+		return props.factory(nodes);
 	});
-
-	const [collection, setCollection] = createSignal<C>(
-		props.factory(initialNodes),
-	);
-
-	createEffect(
-		on(
-			[
-				() => access(props.dataSource),
-				() => access(props.getKey),
-				() => access(props.getTextValue),
-				() => access(props.getDisabled),
-				() => access(props.getSectionChildren),
-				() => props.factory,
-				...deps,
-			],
-			([
-				dataSource,
-				getKey,
-				getTextValue,
-				getDisabled,
-				getSectionChildren,
-				factory,
-			]) => {
-				const nodes = buildNodes({
-					dataSource,
-					getKey,
-					getTextValue,
-					getDisabled,
-					getSectionChildren,
-				});
-
-				setCollection(() => factory(nodes));
-			},
-			{
-				defer: true,
-			},
-		),
-	);
-
-	return collection;
 }
