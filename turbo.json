@@ -7,7 +7,7 @@
 			"outputs": ["dist/**"]
 		},
 		"test": {
-			"dependsOn": ["^build"]
+			"dependsOn": ["@kobalte/tests#build", "@kobalte/utils#build"]
 		},
 		"typecheck": {
 			"cache": false

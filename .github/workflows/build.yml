@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build and Test
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -32,10 +32,4 @@ jobs:
       - name: Build
         run: pnpm build
         env:
-          NODE_OPTIONS: "--max_old_space_size=4096"
-
-      - name: Test
-        run: pnpm test
-        env:
-          CI: true
           NODE_OPTIONS: "--max_old_space_size=4096"

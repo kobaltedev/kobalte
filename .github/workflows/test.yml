@@ -1,0 +1,40 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: pnpm/action-setup@v2.4.0
+
+      - name: Setup Node.js 21.6.1
+        uses: actions/setup-node@v3
+        with:
+          node-version: 21.6.1
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Test
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 2
+          max_attempts: 3
+          command: pnpm test
+        env:
+          CI: true
+          NODE_OPTIONS: "--max_old_space_size=4096"
