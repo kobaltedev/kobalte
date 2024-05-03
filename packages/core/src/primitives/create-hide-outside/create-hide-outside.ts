@@ -1,4 +1,4 @@
-/*!
+/*
  * This file is based on code from react-spectrum.
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *

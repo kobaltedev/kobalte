@@ -1,4 +1,4 @@
-/*!
+/*
  * Portions of this file are based on code from radix-ui.
  * MIT Licensed, Copyright (c) 2022 WorkOS.
  *

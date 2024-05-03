@@ -1,4 +1,4 @@
-/*!
+/*
  * Portions of this file are based on code from ariakit.
  * MIT Licensed, Copyright (c) Diego Haz.
  *

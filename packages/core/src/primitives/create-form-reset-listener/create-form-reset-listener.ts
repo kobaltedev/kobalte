@@ -1,4 +1,4 @@
-/*!
+/*
  * Portions of this file are based on code from zag.
  * MIT Licensed, Copyright (c) 2021 Chakra UI.
  *

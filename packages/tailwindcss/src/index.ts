@@ -1,4 +1,4 @@
-/*!
+/*
  * Portions of this file are based on code from headlessui.
  * MIT Licensed, Copyright (c) 2020 Tailwind Labs.
  *
