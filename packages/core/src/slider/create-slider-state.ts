@@ -79,6 +79,8 @@ interface StateOpts {
 }
 
 export function createSliderState(props: StateOpts): SliderState {
+	let dirty = false;
+
 	const mergedProps: StateOpts = mergeDefaultProps(
 		{
 			minValue: () => 0,
@@ -239,10 +241,12 @@ export function createSliderState(props: StateOpts): SliderState {
 	};
 
 	const incrementThumb = (index: number, stepSize = 1) => {
+		dirty = true;
 		snapThumbValue(index, Math.max(stepSize, props.step!()));
 	};
 
 	const decrementThumb = (index: number, stepSize = 1) => {
+		dirty = true;
 		snapThumbValue(index, -Math.max(stepSize, props.step!()));
 	};
 
@@ -254,7 +258,13 @@ export function createSliderState(props: StateOpts): SliderState {
 		isThumbDragging: (index) => isDragging()[index],
 		setThumbDragging: updateDragging,
 		focusedThumb: focusedIndex,
-		setFocusedThumb: setFocusedIndex,
+		setFocusedThumb: (index: number | undefined) => {
+			if (index === undefined && dirty) {
+				dirty = false;
+				mergedProps.onChangeEnd?.(values());
+			}
+			setFocusedIndex(index);
+		},
 		getThumbPercent: (index) => getValuePercent(values()[index]),
 		getValuePercent,
 		getThumbValueLabel: (index) => getFormattedValue(values()[index]),
