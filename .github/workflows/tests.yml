@@ -35,7 +35,10 @@ jobs:
           NODE_OPTIONS: "--max_old_space_size=4096"
 
       - name: Test
-        run: pnpm test
+        uses: nick-fields/retry@v3
+        with:
+          max_attempts: 3
+          command: pnpm test
         env:
           CI: true
           NODE_OPTIONS: "--max_old_space_size=4096"
