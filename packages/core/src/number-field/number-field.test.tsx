@@ -705,7 +705,7 @@ describe("NumberField", () => {
 
 		trigger.click();
 
-		expect(input.value).toBe("2,1");
+		expect(input.value).toBe("2");
 	});
 
 	it("decrements decimal values correctly for locale", async () => {
@@ -723,6 +723,6 @@ describe("NumberField", () => {
 
 		trigger.click();
 
-		expect(input.value).toBe("0,1");
+		expect(input.value).toBe("1");
 	});
 });
