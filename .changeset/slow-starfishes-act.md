@@ -1,4 +1,6 @@
-# v0.13.x
+---
+"@kobalte/core": patch
+---
 
 ## v0.13.1 (May 3, 2024)
 
@@ -12,17 +14,3 @@
 - Select: `options` non reactive inside suspense ([#401](https://github.com/kobaltedev/kobalte/pull/401))
 - Combobox: close on select with `focus` trigger mode ([#400](https://github.com/kobaltedev/kobalte/pull/400))
 - Menu: open link menu items ([#397](https://github.com/kobaltedev/kobalte/pull/397))
-
-## v0.13.0 (May 1, 2024)
-
-**Breaking changes**
-
-- [#381](https://github.com/kobaltedev/kobalte/pull/381)
-- Removed `asChild` and `<As/>`: [Polymorphism documentation](/docs/core/overview/polymorphism)
-- Refactored `as` prop: [Polymorphism documentation](/docs/core/overview/polymorphism)
-- [New component types](/docs/core/overview/polymorphism#types)
-
-**New features**
-
-- Allow importing individual components ([#391](https://github.com/kobaltedev/kobalte/pull/391))
-- [New `ToggleGroup` component](/docs/core/components/toggle-group) ([#378](https://github.com/kobaltedev/kobalte/pull/378))
