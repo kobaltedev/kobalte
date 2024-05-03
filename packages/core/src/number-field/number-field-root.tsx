@@ -77,7 +77,7 @@ export interface NumberFieldRootOptions
 	/** Options for formatting input value. */
 	formatOptions?: Intl.NumberFormatOptions;
 
-	/** Allowed input characters, defaults to locale and format characters. */
+	/** Allowed input characters, defaults to valid format characters. */
 	allowedInput?: RegExp;
 
 	/**
@@ -176,39 +176,6 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		return new NumberFormatter(locale(), local.formatOptions);
 	});
 
-	const allNumberFormatParts = createMemo(() => [
-		...numberFormatter().formatToParts(-1234567890.1),
-		...numberFormatter().formatToParts(1),
-	]);
-
-	const uniquePartTypes: Array<Intl.NumberFormatPart["type"]> = [
-		"decimal",
-		"minusSign",
-		"plusSign",
-	];
-	const commonPartTypes: Array<Intl.NumberFormatPart["type"]> = [
-		"integer",
-		"group",
-		"percentSign",
-	];
-
-	const uniqueCharacters = () =>
-		new Set(
-			allNumberFormatParts()
-				.filter((part) => uniquePartTypes.includes(part.type))
-				.map((part) => part.value)
-				.join("")
-				.split(""),
-		);
-	const commonCharacters = () =>
-		new Set(
-			allNumberFormatParts()
-				.filter((part) => commonPartTypes.includes(part.type))
-				.map((part) => part.value)
-				.join("")
-				.split(""),
-		);
-
 	const parseRawValue = (value: string | number | undefined) =>
 		local.format && typeof value !== "number"
 			? numberParser().parse(value ?? "")
@@ -238,17 +205,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 
 	function isAllowedInput(char: string): boolean {
 		if (local.allowedInput !== undefined) return local.allowedInput.test(char);
-
-		if (commonCharacters().has(char)) return true;
-
-		if (uniqueCharacters().has(char)) {
-			let val = value() ?? "";
-			if (typeof val === "number") val = numberFormatter().format(val);
-
-			return !val.split("").includes(char);
-		}
-
-		return false;
+		return true;
 	}
 
 	const { formControlContext } = createFormControl(formControlProps);
@@ -269,11 +226,15 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 
 		const target = e.target as HTMLInputElement;
 		// cache the cursor position in case we need to update the input's value.
-		const cursorPosition = target.selectionStart;
+		let cursorPosition = target.selectionStart;
 
 		if (isValidPartialValue(target.value)) {
 			if (e.inputType !== "insertText" || isAllowedInput(e.data || "")) {
 				setValue(target.value);
+			}
+		} else {
+			if (e.inputType === "deleteContentBackward") {
+				if (cursorPosition !== null) cursorPosition += 1;
 			}
 		}
 
@@ -285,8 +246,10 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		const v = value();
 		if (v !== target.value) {
 			target.value = String(v ?? "");
-			target.selectionStart = cursorPosition;
-			target.selectionEnd = cursorPosition;
+			if (cursorPosition !== null) {
+				target.selectionStart = cursorPosition;
+				target.selectionEnd = cursorPosition;
+			}
 		}
 	};
 
@@ -336,13 +299,14 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 			if (Number.isNaN(rawValue)) rawValue = 0;
 
 			batch(() => {
-				const decimals = Math.max(
-					local.formatOptions?.minimumFractionDigits ?? 0,
-					local.formatOptions?.maximumFractionDigits ?? 3,
-				);
-				const newValue = Number.parseFloat(
-					(rawValue + offset).toFixed(decimals),
-				);
+				let newValue = rawValue;
+
+				if (rawValue % 1 === 0) {
+					newValue += offset;
+				} else {
+					if (offset > 0) newValue = Math.ceil(newValue);
+					else newValue = Math.floor(newValue);
+				}
 
 				context.setValue(newValue);
 				context.format();
