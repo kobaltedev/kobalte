@@ -142,7 +142,9 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		local.onSelect?.();
 
 		if (local.closeOnSelect) {
-			menuContext.close(true);
+			setTimeout(() => {
+				menuContext.close(true);
+			});
 		}
 	};
 
