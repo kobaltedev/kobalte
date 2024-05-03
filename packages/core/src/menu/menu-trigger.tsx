@@ -17,6 +17,7 @@ import {
 	JSX,
 	ValidComponent,
 	createEffect,
+	createMemo,
 	onCleanup,
 	splitProps,
 } from "solid-js";
@@ -24,6 +25,7 @@ import {
 import * as Button from "../button";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { PolymorphicProps } from "../polymorphic";
+import { createTagName } from "../primitives/create-tag-name";
 import { MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 
@@ -107,6 +109,17 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 			optionalMenubarContext.setLastValue(key);
 	}
 
+	const tagName = createTagName(
+		() => context.triggerRef(),
+		() => "button",
+	);
+
+	const isNativeLink = createMemo(() => {
+		return (
+			tagName() === "a" && context.triggerRef()?.getAttribute("href") != null
+		);
+	});
+
 	const handleClick = () => {
 		// When opened by click, automatically focus Menubar menus
 		optionalMenubarContext?.setAutoFocusMenu(true);
@@ -150,6 +163,14 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 
 		if (local.disabled) {
 			return;
+		}
+
+		if (isNativeLink()) {
+			switch (e.key) {
+				case "Enter":
+				case " ":
+					return;
+			}
 		}
 
 		// For consistency with native, open the menu on key down.
