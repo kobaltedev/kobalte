@@ -533,6 +533,7 @@ export function ComboboxBase<
 				// Prevents the combobox to close and reopen when the input is cleared.
 				if (disclosureState.isOpen() && selectedKeys.size > 0) {
 					close();
+					setTimeout(close);
 				}
 			}
 
