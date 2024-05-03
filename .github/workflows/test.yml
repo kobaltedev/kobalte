@@ -1,4 +1,4 @@
-name: Build and Test
+name: Test
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build and Test
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -29,14 +29,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build
-        run: pnpm build
-        env:
-          NODE_OPTIONS: "--max_old_space_size=4096"
-
       - name: Test
         uses: nick-fields/retry@v3
         with:
+          timeout_minutes: 2
           max_attempts: 3
           command: pnpm test
         env:
