@@ -1,4 +1,4 @@
-/*!
+/*
  * Original code by Chakra UI
  * MIT Licensed, Copyright (c) 2019 Segun Adebayo.
  *

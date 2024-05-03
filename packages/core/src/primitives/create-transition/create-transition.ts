@@ -1,4 +1,4 @@
-/*!
+/*
  * Portions of this file are based on code from mantinedev.
  * MIT Licensed, Copyright (c) 2021 Vitaly Rtishchev.
  *
