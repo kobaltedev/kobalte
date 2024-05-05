@@ -39,7 +39,8 @@
       "types": "./dist/*/index.d.ts",
       "solid": "./dist/*/index.jsx",
       "default": "./dist/*/index.js"
-    }
+    },
+    "./src/*": "./src/*"
   },
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -52,8 +53,10 @@
       ]
     }
   },
+  "source": "src/index.tsx",
   "files": [
     "dist",
+    "src",
     "NOTICE.txt"
   ],
   "scripts": {

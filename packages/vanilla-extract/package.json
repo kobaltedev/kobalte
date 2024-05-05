@@ -30,13 +30,16 @@
       "default": "./dist/index.mjs",
       "require": "./dist/index.js",
       "node": "./dist/index.js"
-    }
+    },
+    "./src/*": "./src/*"
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "source": "src/index.ts",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "build": "tsup",
