@@ -69,7 +69,6 @@ import {
 	type MenuSubTriggerOptions as MenubarSubTriggerOptions,
 	type MenuSubTriggerProps as MenubarSubTriggerProps,
 	type MenuSubTriggerRenderProps as MenubarSubTriggerRenderProps,
-	MenuTrigger as Trigger,
 	type MenuTriggerCommonProps as MenubarTriggerCommonProps,
 	type MenuTriggerOptions as MenubarTriggerOptions,
 	type MenuTriggerProps as MenubarTriggerProps,
@@ -101,6 +100,7 @@ import {
 	type MenubarRootProps,
 	type MenubarRootRenderProps,
 } from "./menubar-root";
+import { MenubarTrigger as Trigger } from "./menubar-trigger";
 
 export type {
 	MenubarRootOptions,
