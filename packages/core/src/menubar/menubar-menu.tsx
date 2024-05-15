@@ -5,16 +5,6 @@ import { MenuRoot, MenuRootOptions } from "../menu";
 import { useMenubarContext } from "./menubar-context";
 
 export interface MenubarMenuOptions extends MenuRootOptions {
-	/**
-	 * Whether the menu should be the only visible content for screen readers.
-	 * When set to `true`:
-	 * - interaction with outside elements will be disabled.
-	 * - scroll will be locked.
-	 * - focus will be locked inside the menu content.
-	 * - elements outside the menu content will not be visible for screen readers.
-	 * Default false
-	 */
-	modal?: boolean;
 }
 
 export interface MenubarMenuProps extends ParentProps<MenubarMenuOptions> {}

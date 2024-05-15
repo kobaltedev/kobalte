@@ -22,6 +22,7 @@ import {
 	createUniqueId,
 	onCleanup,
 	splitProps,
+	Setter,
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
@@ -48,6 +49,9 @@ export interface MenubarRootOptions {
 
 	/** When true, click on alt by itsef will focus this Menubar (some browsers interfere) */
 	focusOnAlt?: boolean;
+
+	autoFocusMenu?: boolean;
+	onAutoFocusMenuChange?: Setter<boolean>;
 }
 
 export interface MenubarRootCommonProps<T extends HTMLElement = HTMLElement> {
@@ -85,6 +89,8 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		"onValueChange",
 		"loop",
 		"focusOnAlt",
+		"autoFocusMenu",
+		"onAutoFocusMenuChange",
 	]);
 
 	const [value, setValue] = createControllableSignal<string | undefined>({
@@ -104,7 +110,11 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		"data-closed": value() === undefined ? "" : undefined,
 	}));
 
-	const [autoFocusMenu, setAutoFocusMenu] = createSignal(false);
+	const [autoFocusMenu, setAutoFocusMenu] = createControllableSignal({
+		value: () => local.autoFocusMenu,
+		defaultValue: () => false,
+		onChange: local.onAutoFocusMenuChange,
+	})
 
 	const context: MenubarContextValue = {
 		dataset,
@@ -164,7 +174,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 			setAutoFocusMenu(false);
 			setValue(undefined);
 		},
-		autoFocusMenu,
+		autoFocusMenu: () => autoFocusMenu()!,
 		setAutoFocusMenu,
 		generateId: createGenerateId(() => others.id!),
 	};
