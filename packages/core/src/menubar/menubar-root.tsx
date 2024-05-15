@@ -15,6 +15,7 @@ import {
 } from "@kobalte/utils";
 import {
 	Accessor,
+	Setter,
 	ValidComponent,
 	createEffect,
 	createMemo,
@@ -22,7 +23,6 @@ import {
 	createUniqueId,
 	onCleanup,
 	splitProps,
-	Setter,
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
@@ -114,7 +114,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		value: () => local.autoFocusMenu,
 		defaultValue: () => false,
 		onChange: local.onAutoFocusMenuChange,
-	})
+	});
 
 	const context: MenubarContextValue = {
 		dataset,

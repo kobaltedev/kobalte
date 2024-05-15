@@ -4,8 +4,7 @@ import { ParentProps, createUniqueId, splitProps } from "solid-js";
 import { MenuRoot, MenuRootOptions } from "../menu";
 import { useMenubarContext } from "./menubar-context";
 
-export interface MenubarMenuOptions extends MenuRootOptions {
-}
+export interface MenubarMenuOptions extends MenuRootOptions {}
 
 export interface MenubarMenuProps extends ParentProps<MenubarMenuOptions> {}
 

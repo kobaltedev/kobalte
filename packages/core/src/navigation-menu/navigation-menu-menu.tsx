@@ -2,8 +2,7 @@ import { MenubarMenuOptions, MenubarMenuProps } from "../menubar";
 import { MenubarMenu } from "../menubar/menubar-menu";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 
-export interface NavigationMenuMenuOptions extends MenubarMenuOptions {
-}
+export interface NavigationMenuMenuOptions extends MenubarMenuOptions {}
 
 export interface NavigationMenuMenuProps extends MenubarMenuProps {}
 

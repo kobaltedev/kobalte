@@ -1,4 +1,4 @@
-import { Accessor, createContext, Setter, useContext } from "solid-js";
+import { Accessor, Setter, createContext, useContext } from "solid-js";
 
 export interface NavigationMenuContextValue {
 	delayDuration: Accessor<number>;
@@ -9,7 +9,8 @@ export interface NavigationMenuContextValue {
 	cancelLeaveTimer: () => void;
 }
 
-export const NavigationMenuContext = createContext<NavigationMenuContextValue>();
+export const NavigationMenuContext =
+	createContext<NavigationMenuContextValue>();
 
 export function useOptionalNavigationMenuContext() {
 	return useContext(NavigationMenuContext);

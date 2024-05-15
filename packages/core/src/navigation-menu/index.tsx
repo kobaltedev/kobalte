@@ -80,6 +80,13 @@ import {
 	type SeparatorRootRenderProps as NavigationMenuSeparatorRenderProps,
 } from "../separator";
 import {
+	NavigationMenuContent as Content,
+	type NavigationMenuContentCommonProps,
+	type NavigationMenuContentOptions,
+	type NavigationMenuContentProps,
+	type NavigationMenuContentRenderProps,
+} from "./navigation-menu-content";
+import {
 	NavigationMenuMenu as Menu,
 	type NavigationMenuMenuOptions,
 	type NavigationMenuMenuProps,
@@ -93,18 +100,11 @@ import {
 } from "./navigation-menu-root";
 import {
 	NavigationMenuTrigger as Trigger,
-	type NavigationMenuTriggerOptions,
 	type NavigationMenuTriggerCommonProps,
-	type NavigationMenuTriggerRenderProps,
+	type NavigationMenuTriggerOptions,
 	type NavigationMenuTriggerProps,
+	type NavigationMenuTriggerRenderProps,
 } from "./navigation-menu-trigger";
-import {
-	NavigationMenuContent as Content,
-	type NavigationMenuContentCommonProps,
-	type NavigationMenuContentOptions,
-	type NavigationMenuContentProps,
-	type NavigationMenuContentRenderProps,
-} from "./navigation-menu-content";
 
 export type {
 	NavigationMenuRootOptions,

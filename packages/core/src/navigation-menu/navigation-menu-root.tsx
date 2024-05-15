@@ -1,28 +1,41 @@
 import { callHandler, mergeDefaultProps } from "@kobalte/utils";
-import { ValidComponent, splitProps, Component, createSignal, JSX } from "solid-js";
-import { MenubarRootCommonProps, MenubarRootOptions, MenubarRootRenderProps } from "../menubar";
+import {
+	Component,
+	JSX,
+	ValidComponent,
+	createSignal,
+	splitProps,
+} from "solid-js";
+import {
+	MenubarRootCommonProps,
+	MenubarRootOptions,
+	MenubarRootRenderProps,
+} from "../menubar";
 import { MenubarRoot } from "../menubar/menubar-root";
 
 import { PolymorphicProps } from "../polymorphic";
-import { NavigationMenuContext, NavigationMenuContextValue } from "./navigation-menu-context";
+import {
+	NavigationMenuContext,
+	NavigationMenuContextValue,
+} from "./navigation-menu-context";
 
 export interface NavigationMenuRootOptions extends MenubarRootOptions {
 	/**
-	* Delay before the menu opens on hover (default 200).
-  */
+	 * Delay before the menu opens on hover (default 200).
+	 */
 	delayDuration?: number;
-	
+
 	/**
-	* Open immediately if hovered again within delay (default 300).
-	*/
+	 * Open immediately if hovered again within delay (default 300).
+	 */
 	skipDelayDuration?: number;
 }
 
-export interface NavigationMenuRootCommonProps extends MenubarRootCommonProps {
-}
+export interface NavigationMenuRootCommonProps extends MenubarRootCommonProps {}
 
-export interface NavigationMenuRootRenderProps extends NavigationMenuRootCommonProps, MenubarRootRenderProps {
-}
+export interface NavigationMenuRootRenderProps
+	extends NavigationMenuRootCommonProps,
+		MenubarRootRenderProps {}
 
 export type NavigationMenuRootProps = NavigationMenuRootOptions &
 	Partial<NavigationMenuRootCommonProps>;
@@ -45,11 +58,11 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 		"delayDuration",
 		"skipDelayDuration",
 	]);
-	
+
 	const [autoFocusMenu, setAutoFocusMenu] = createSignal(false);
-	
+
 	let timeoutId: number | undefined;
-	
+
 	const context: NavigationMenuContextValue = {
 		delayDuration: () => local.delayDuration,
 		skipDelayDuration: () => local.skipDelayDuration,
@@ -67,9 +80,13 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 
 	return (
 		<NavigationMenuContext.Provider value={context}>
-			<MenubarRoot<Component<Omit<NavigationMenuRootRenderProps, keyof MenubarRootRenderProps>>>
+			<MenubarRoot<
+				Component<
+					Omit<NavigationMenuRootRenderProps, keyof MenubarRootRenderProps>
+				>
+			>
 				autoFocusMenu={autoFocusMenu()}
-	      onAutoFocusMenuChange={setAutoFocusMenu}
+				onAutoFocusMenuChange={setAutoFocusMenu}
 				{...others}
 			/>
 		</NavigationMenuContext.Provider>

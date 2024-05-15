@@ -1,18 +1,26 @@
 import { callHandler } from "@kobalte/utils";
-import { Component, ValidComponent, splitProps, JSX } from "solid-js";
+import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
-import { MenuContent, MenuContentCommonProps, MenuContentOptions, MenuContentRenderProps } from "../menu";
+import {
+	MenuContent,
+	MenuContentCommonProps,
+	MenuContentOptions,
+	MenuContentRenderProps,
+} from "../menu";
+import { useMenuContext } from "../menu/menu-context";
 import { PolymorphicProps } from "../polymorphic";
 import { useNavigationMenuContext } from "./navigation-menu-context";
-import { useMenuContext } from "../menu/menu-context";
 export interface NavigationMenuContentOptions extends MenuContentOptions {}
 
-export interface NavigationMenuContentCommonProps extends MenuContentCommonProps {
+export interface NavigationMenuContentCommonProps
+	extends MenuContentCommonProps {
 	onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
 	onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
 }
 
-export interface NavigationMenuContentRenderProps extends MenuContentRenderProps, NavigationMenuContentCommonProps {}
+export interface NavigationMenuContentRenderProps
+	extends MenuContentRenderProps,
+		NavigationMenuContentCommonProps {}
 
 export type NavigationMenuContentProps = NavigationMenuContentOptions &
 	Partial<NavigationMenuContentCommonProps>;
@@ -22,9 +30,12 @@ export function NavigationMenuContent<T extends ValidComponent = "div">(
 ) {
 	const context = useNavigationMenuContext();
 	const menuContext = useMenuContext();
-	
-	const [local, others] = splitProps(props as NavigationMenuContentProps, ["onPointerEnter", "onPointerLeave"]);
-	
+
+	const [local, others] = splitProps(props as NavigationMenuContentProps, [
+		"onPointerEnter",
+		"onPointerLeave",
+	]);
+
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
@@ -37,18 +48,20 @@ export function NavigationMenuContent<T extends ValidComponent = "div">(
 		e,
 	) => {
 		callHandler(e, local.onPointerLeave);
-		
+
 		context.startLeaveTimer();
-		
+
 		menuContext.close(true);
 	};
 
 	return (
 		<MenuContent<
-			Component<Omit<NavigationMenuContentRenderProps, keyof MenuContentRenderProps>>
+			Component<
+				Omit<NavigationMenuContentRenderProps, keyof MenuContentRenderProps>
+			>
 		>
-		  onPointerEnter={onPointerEnter}
-		 onPointerLeave={onPointerLeave}
+			onPointerEnter={onPointerEnter}
+			onPointerLeave={onPointerLeave}
 			{...others}
 		/>
 	);
