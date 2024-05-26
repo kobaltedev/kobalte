@@ -39,8 +39,6 @@ import {
 	type MenuItemOptions as NavigationMenuItemOptions,
 	type MenuItemProps as NavigationMenuItemProps,
 	type MenuItemRenderProps as NavigationMenuItemRenderProps,
-	MenuPortal as Portal,
-	type MenuPortalProps as NavigationMenuPortalProps,
 	MenuRadioGroup as RadioGroup,
 	type MenuRadioGroupCommonProps as NavigationMenuRadioGroupCommonProps,
 	type MenuRadioGroupOptions as NavigationMenuRadioGroupOptions,
@@ -92,6 +90,10 @@ import {
 	type NavigationMenuMenuProps,
 } from "./navigation-menu-menu";
 import {
+	NavigationMenuPortal as Portal,
+	type NavigationMenuPortalProps,
+} from "./navigation-menu-portal";
+import {
 	NavigationMenuRoot as Root,
 	type NavigationMenuRootCommonProps,
 	type NavigationMenuRootOptions,
@@ -105,6 +107,13 @@ import {
 	type NavigationMenuTriggerProps,
 	type NavigationMenuTriggerRenderProps,
 } from "./navigation-menu-trigger";
+import {
+	NavigationMenuViewport as Viewport,
+	type NavigationMenuViewportCommonProps,
+	type NavigationMenuViewportOptions,
+	type NavigationMenuViewportProps,
+	type NavigationMenuViewportRenderProps,
+} from "./navigation-menu-viewport";
 
 export type {
 	NavigationMenuRootOptions,
@@ -180,6 +189,10 @@ export type {
 	NavigationMenuTriggerCommonProps,
 	NavigationMenuTriggerRenderProps,
 	NavigationMenuTriggerProps,
+	NavigationMenuViewportOptions,
+	NavigationMenuViewportCommonProps,
+	NavigationMenuViewportRenderProps,
+	NavigationMenuViewportProps,
 };
 
 export {
@@ -203,6 +216,7 @@ export {
 	SubContent,
 	SubTrigger,
 	Trigger,
+	Viewport,
 };
 
 export const NavigationMenu = Object.assign(Root, {
@@ -225,4 +239,5 @@ export const NavigationMenu = Object.assign(Root, {
 	SubContent,
 	SubTrigger,
 	Trigger,
+	Viewport,
 });

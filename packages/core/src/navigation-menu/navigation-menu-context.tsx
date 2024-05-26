@@ -7,6 +7,11 @@ export interface NavigationMenuContextValue {
 	setAutoFocusMenu: Setter<boolean>;
 	startLeaveTimer: () => void;
 	cancelLeaveTimer: () => void;
+	rootRef: Accessor<HTMLElement | undefined>;
+	setRootRef: Setter<HTMLElement>;
+	viewportRef: Accessor<HTMLElement | undefined>;
+	setViewportRef: Setter<HTMLElement>;
+	currentPlacement: Accessor<Placement>;
 }
 
 export const NavigationMenuContext =

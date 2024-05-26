@@ -14,6 +14,7 @@ import {
 import {
 	Accessor,
 	ParentProps,
+	Show,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -22,6 +23,7 @@ import {
 } from "solid-js";
 
 import { createListState } from "../list";
+import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
 import { Popper, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
 import {
@@ -72,6 +74,7 @@ export function Menu(props: MenuProps) {
 	const rootContext = useMenuRootContext();
 	const parentDomCollectionContext = useOptionalDomCollectionContext();
 	const parentMenuContext = useOptionalMenuContext();
+	const optionalNavigationMenuContext = useOptionalNavigationMenuContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
@@ -259,12 +262,17 @@ export function Menu(props: MenuProps) {
 	return (
 		<DomCollectionProvider>
 			<MenuContext.Provider value={context}>
-				<Popper
-					anchorRef={triggerRef}
-					contentRef={contentRef}
-					onCurrentPlacementChange={setCurrentPlacement}
-					{...others}
-				/>
+				<Show
+					when={optionalNavigationMenuContext === undefined}
+					fallback={others.children}
+				>
+					<Popper
+						anchorRef={triggerRef}
+						contentRef={contentRef}
+						onCurrentPlacementChange={setCurrentPlacement}
+						{...others}
+					/>
+				</Show>
 			</MenuContext.Provider>
 		</DomCollectionProvider>
 	);
