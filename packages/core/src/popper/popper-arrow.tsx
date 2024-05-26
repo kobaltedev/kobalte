@@ -7,12 +7,7 @@
  * https://github.com/ariakit/ariakit/blob/a178c2f2dcc6571ba338fd74c79e3b0eab2a27c5/packages/ariakit/src/popover/__popover-arrow-path.ts
  */
 
-import {
-	OverrideComponentProps,
-	getWindow,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { getWindow, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
 	Accessor,
 	JSX,

@@ -64,19 +64,19 @@ import {
 	type MenuSubTriggerRenderProps as NavigationMenuSubTriggerRenderProps,
 } from "../menu";
 import {
-	Arrow,
-	type PopperArrowCommonProps as NavigationMenuArrowCommonProps,
-	type PopperArrowOptions as NavigationMenuArrowOptions,
-	type PopperArrowProps as NavigationMenuArrowProps,
-	type PopperArrowRenderProps as NavigationMenuArrowRenderProps,
-} from "../popper";
-import {
 	Root as Separator,
 	type SeparatorRootCommonProps as NavigationMenuSeparatorCommonProps,
 	type SeparatorRootOptions as NavigationMenuSeparatorOptions,
 	type SeparatorRootProps as NavigationMenuSeparatorProps,
 	type SeparatorRootRenderProps as NavigationMenuSeparatorRenderProps,
 } from "../separator";
+import {
+	NavigationMenuArrow as Arrow,
+	type NavigationMenuArrowCommonProps,
+	type NavigationMenuArrowOptions,
+	type NavigationMenuArrowProps,
+	type NavigationMenuArrowRenderProps,
+} from "./navigation-menu-arrow";
 import {
 	NavigationMenuContent as Content,
 	type NavigationMenuContentCommonProps,

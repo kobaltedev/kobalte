@@ -4,7 +4,7 @@ import {
 	DismissableLayer,
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { useMenubarContext } from "../menubar/menubar-context";
+import { MenubarDataSet, useMenubarContext } from "../menubar/menubar-context";
 import { PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
 import {
@@ -48,7 +48,8 @@ export interface NavigationMenuViewportCommonProps {
 
 export interface NavigationMenuViewportRenderProps
 	extends NavigationMenuViewportCommonProps,
-		DismissableLayerRenderProps {}
+		DismissableLayerRenderProps,
+		MenubarDataSet {}
 
 export type NavigationMenuViewportProps = NavigationMenuViewportOptions &
 	Partial<NavigationMenuViewportCommonProps>;
@@ -97,6 +98,7 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 				}}
 				onEscapeKeyDown={onEscapeKeyDown}
 				onDismiss={close}
+				{...menubarContext.dataset()}
 				{...others}
 			/>
 		</Popper.Positioner>

@@ -1,5 +1,6 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
+	Accessor,
 	Component,
 	JSX,
 	Setter,
@@ -17,6 +18,7 @@ import { MenubarRoot } from "../menubar/menubar-root";
 import { PolymorphicProps } from "../polymorphic";
 import { Popper, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
+import { createControllableSignal } from "../primitives/create-controllable-signal";
 import {
 	NavigationMenuContext,
 	NavigationMenuContextValue,
@@ -37,6 +39,18 @@ export interface NavigationMenuRootOptions
 	 * Open immediately if hovered again within delay (default 300).
 	 */
 	skipDelayDuration?: number;
+
+	/** The value of the menu that should be open when initially rendered. Use when you do not need to control the value state. */
+	defaultValue?: string;
+
+	/** The controlled value of the menu to open. Should be used in conjunction with onValueChange. */
+	value?: string;
+
+	/** Event handler called when the value changes. */
+	onValueChange?: (value: string | undefined) => void;
+
+	autoFocusMenu?: boolean;
+	onAutoFocusMenuChange?: Setter<boolean>;
 }
 
 export interface NavigationMenuRootCommonProps extends MenubarRootCommonProps {
@@ -66,7 +80,16 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 
 	const [local, popperProps, others] = splitProps(
 		mergedProps,
-		["ref", "delayDuration", "skipDelayDuration"],
+		[
+			"ref",
+			"delayDuration",
+			"skipDelayDuration",
+			"autoFocusMenu",
+			"onAutoFocusMenuChange",
+			"defaultValue",
+			"value",
+			"onValueChange",
+		],
 		[
 			"getAnchorRect",
 			"placement",
@@ -84,7 +107,17 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 		],
 	);
 
-	const [autoFocusMenu, setAutoFocusMenu] = createSignal(false);
+	const [value, setValue] = createControllableSignal<string | undefined>({
+		value: () => local.value,
+		defaultValue: () => local.defaultValue,
+		onChange: (value) => local.onValueChange?.(value),
+	});
+	const [autoFocusMenu, setAutoFocusMenu] = createControllableSignal({
+		value: () => local.autoFocusMenu,
+		defaultValue: () => false,
+		onChange: local.onAutoFocusMenuChange,
+	});
+
 	const [viewportRef, setViewportRef] = createSignal<HTMLElement>();
 	const [rootRef, setRootRef] = createSignal<HTMLElement>();
 
@@ -97,14 +130,18 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 	const context: NavigationMenuContextValue = {
 		delayDuration: () => local.delayDuration,
 		skipDelayDuration: () => local.skipDelayDuration,
-		autoFocusMenu,
+		autoFocusMenu: autoFocusMenu as Accessor<boolean>,
 		setAutoFocusMenu,
 		startLeaveTimer: () => {
+			console.log("start leave");
 			timeoutId = window.setTimeout(() => {
+				console.log("run leave");
 				context.setAutoFocusMenu(false);
+				setValue(undefined);
 			}, context.skipDelayDuration());
 		},
 		cancelLeaveTimer: () => {
+			console.log("stop leave");
 			if (timeoutId) clearTimeout(timeoutId);
 		},
 		rootRef,
@@ -128,6 +165,8 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 					>
 				>
 					ref={mergeRefs(context.setRootRef, local.ref)}
+					value={value()}
+					onValueChange={setValue}
 					autoFocusMenu={autoFocusMenu()}
 					onAutoFocusMenuChange={setAutoFocusMenu}
 					{...others}

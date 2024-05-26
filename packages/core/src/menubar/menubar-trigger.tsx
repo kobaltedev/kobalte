@@ -1,8 +1,9 @@
-import { ValidComponent } from "solid-js";
+import { ValidComponent, createUniqueId } from "solid-js";
 
 import { MenuTrigger, MenuTriggerProps } from "../menu";
 import { useOptionalMenuContext } from "../menu/menu-context";
 import { PolymorphicProps } from "../polymorphic";
+import { useMenubarContext } from "./menubar-context";
 import { MenubarMenu } from "./menubar-menu";
 
 /**
@@ -11,11 +12,14 @@ import { MenubarMenu } from "./menubar-menu";
 export function MenubarTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, MenuTriggerProps>,
 ) {
-	const context = useOptionalMenuContext();
+	const menubarContext = useMenubarContext();
+	const menuContext = useOptionalMenuContext();
 
-	if (context === undefined && Object.hasOwn(props, "href")) {
+	if (menuContext === undefined && Object.hasOwn(props, "href")) {
 		return (
-			<MenubarMenu>
+			<MenubarMenu
+				value={menubarContext.generateId("link-trigger-") + createUniqueId()}
+			>
 				<MenuTrigger {...props} />
 			</MenubarMenu>
 		);

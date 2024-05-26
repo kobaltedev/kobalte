@@ -1,4 +1,5 @@
 import { Accessor, Setter, createContext, useContext } from "solid-js";
+import { Placement } from "../popper/utils";
 
 export interface NavigationMenuContextValue {
 	delayDuration: Accessor<number>;

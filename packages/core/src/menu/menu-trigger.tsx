@@ -46,6 +46,7 @@ export interface MenuTriggerRenderProps
 		Button.ButtonRootRenderProps,
 		MenuDataSet {
 	role: "menuitem" | undefined;
+	"data-kb-menu-value-trigger": string | undefined;
 }
 
 export type MenuTriggerProps<
@@ -237,6 +238,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 			>
 		>
 			ref={mergeRefs(context.setTriggerRef, local.ref)}
+		 	data-kb-menu-value-trigger={rootContext.value()}
 			id={local.id}
 			disabled={local.disabled}
 			aria-haspopup="true"

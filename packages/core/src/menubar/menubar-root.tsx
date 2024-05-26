@@ -105,9 +105,12 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		new Map<string, Array<HTMLElement>>(),
 	);
 
+	const expanded = () =>
+		value() !== undefined && !value()?.includes("link-trigger-");
+
 	const dataset: Accessor<MenubarDataSet> = createMemo(() => ({
-		"data-expanded": value() !== undefined ? "" : undefined,
-		"data-closed": value() === undefined ? "" : undefined,
+		"data-expanded": expanded() ? "" : undefined,
+		"data-closed": !expanded() ? "" : undefined,
 	}));
 
 	const [autoFocusMenu, setAutoFocusMenu] = createControllableSignal({

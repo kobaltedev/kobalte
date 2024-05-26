@@ -10,6 +10,7 @@ import {
 } from "../menu";
 import { useMenuContext, useOptionalMenuContext } from "../menu/menu-context";
 import { useMenubarContext } from "../menubar/menubar-context";
+import { MenubarTrigger } from "../menubar/menubar-trigger";
 import { PolymorphicProps } from "../polymorphic";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 
@@ -35,7 +36,7 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, NavigationMenuTriggerProps>,
 ) {
 	const context = useNavigationMenuContext();
-	const menuContext = useMenuContext();
+	const menuContext = useOptionalMenuContext();
 
 	const [local, others] = splitProps(props as NavigationMenuTriggerProps, [
 		"onPointerEnter",
@@ -59,7 +60,7 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 		context.cancelLeaveTimer();
 
 		timeoutId = window.setTimeout(() => {
-			menuContext.open(true);
+			menuContext?.open(true);
 			context.setAutoFocusMenu(true);
 		}, context.delayDuration());
 	};
@@ -74,7 +75,7 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 	};
 
 	return (
-		<MenuTrigger<
+		<MenubarTrigger<
 			Component<
 				Omit<NavigationMenuTriggerRenderProps, keyof MenuTriggerRenderProps>
 			>
