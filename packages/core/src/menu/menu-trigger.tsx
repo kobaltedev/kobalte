@@ -81,33 +81,10 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		"onFocus",
 	]);
 
-	let key: string | undefined;
+	let key = rootContext.value();
 
 	if (optionalMenubarContext !== undefined) {
 		key = rootContext.value() ?? local.id!;
-
-		createEffect(() => {
-			optionalMenubarContext.registerMenu(key!, [
-				context.contentRef()!,
-				...context.nestedMenus(),
-			]);
-		});
-
-		createEffect(() => {
-			if (optionalMenubarContext.value() === key) {
-				context.triggerRef()?.focus();
-				if (optionalMenubarContext.autoFocusMenu()) context.open(true);
-			} else context.close(true);
-		});
-
-		createEffect(() => {
-			if (context.isOpen()) optionalMenubarContext.setValue(key);
-		});
-
-		onCleanup(() => {
-			optionalMenubarContext.unregisterMenu(key!);
-		});
-
 		if (optionalMenubarContext.lastValue() === undefined)
 			optionalMenubarContext.setLastValue(key);
 	}

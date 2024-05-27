@@ -1,5 +1,5 @@
 import { mergeRefs } from "@kobalte/utils";
-import { Component, JSX, ValidComponent, splitProps } from "solid-js";
+import { Component, JSX, ValidComponent, splitProps, createEffect } from "solid-js";
 import {
 	DismissableLayer,
 	DismissableLayerRenderProps,
@@ -76,6 +76,11 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 
 		close();
 	};
+
+	createEffect(() => {
+		console.log(menubarContext.value());
+		console.log(menubarContext.dataset());
+	})
 
 	return (
 		<Popper.Positioner>

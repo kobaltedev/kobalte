@@ -6,7 +6,7 @@ import {
 	Setter,
 	ValidComponent,
 	createSignal,
-	splitProps,
+	splitProps, createEffect
 } from "solid-js";
 import {
 	MenubarRootCommonProps,
@@ -127,6 +127,11 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 
 	let timeoutId: number | undefined;
 
+	createEffect((prev) => {
+		console.log(prev, "=>", value());
+		return value();
+	});
+
 	const context: NavigationMenuContextValue = {
 		delayDuration: () => local.delayDuration,
 		skipDelayDuration: () => local.skipDelayDuration,
@@ -138,6 +143,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 				console.log("run leave");
 				context.setAutoFocusMenu(false);
 				setValue(undefined);
+				setTimeout(() => setValue(undefined));
 			}, context.skipDelayDuration());
 		},
 		cancelLeaveTimer: () => {
@@ -165,7 +171,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 					>
 				>
 					ref={mergeRefs(context.setRootRef, local.ref)}
-					value={value()}
+					value={value() ?? null}
 					onValueChange={setValue}
 					autoFocusMenu={autoFocusMenu()}
 					onAutoFocusMenuChange={setAutoFocusMenu}

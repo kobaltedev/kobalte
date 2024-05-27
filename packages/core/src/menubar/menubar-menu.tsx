@@ -27,7 +27,7 @@ export function MenubarMenu(props: MenubarMenuProps) {
 
 	const defaultId = menubarContext.generateId(`menubar-menu-${uniqueid}`);
 
-	const mergedPropsWithId = mergeDefaultProps({ id: defaultId }, mergedProps);
+	const mergedPropsWithId = mergeDefaultProps({ id: defaultId }, others);
 
 	return <MenuRoot value={local.value ?? uniqueid} {...mergedPropsWithId} />;
 }

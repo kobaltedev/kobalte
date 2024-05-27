@@ -57,6 +57,8 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 	) => {
 		callHandler(e, local.onPointerEnter);
 
+		if ("href" in props) return;
+
 		context.cancelLeaveTimer();
 
 		timeoutId = window.setTimeout(() => {

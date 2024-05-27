@@ -23,6 +23,7 @@ import {
 } from "solid-js";
 
 import { createListState } from "../list";
+import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
 import { Popper, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
@@ -74,6 +75,7 @@ export function Menu(props: MenuProps) {
 	const rootContext = useMenuRootContext();
 	const parentDomCollectionContext = useOptionalDomCollectionContext();
 	const parentMenuContext = useOptionalMenuContext();
+	const optionalMenubarContext = useOptionalMenubarContext();
 	const optionalNavigationMenuContext = useOptionalNavigationMenuContext();
 
 	const mergedProps = mergeDefaultProps(
@@ -219,6 +221,34 @@ export function Menu(props: MenuProps) {
 		onCleanup(() => {
 			parentUnregister();
 		});
+	});
+
+	createEffect(() => {
+		if (parentMenuContext !== undefined) return;
+		optionalMenubarContext?.registerMenu(rootContext.value()!, [
+			contentRef()!,
+			...nestedMenus(),
+		]);
+	});
+
+	createEffect(() => {
+		if (parentMenuContext !== undefined || optionalMenubarContext === undefined) return;
+		if (optionalMenubarContext.value() === rootContext.value()!) {
+			triggerRef()?.focus();
+			if (optionalMenubarContext.autoFocusMenu()) open(true);
+		} else close();
+
+		console.log("menu", optionalMenubarContext.value(), rootContext.value(), optionalMenubarContext.value() === rootContext.value())
+	});
+
+	createEffect(() => {
+		if (parentMenuContext !== undefined || optionalMenubarContext === undefined) return;
+		if (disclosureState.isOpen()) optionalMenubarContext.setValue(rootContext.value()!);
+	});
+
+	onCleanup(() => {
+		if (parentMenuContext !== undefined) return;
+		optionalMenubarContext?.unregisterMenu(rootContext.value()!);
 	});
 
 	const dataset: Accessor<MenuDataSet> = createMemo(() => ({

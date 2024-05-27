@@ -39,7 +39,7 @@ export interface MenubarRootOptions {
 	defaultValue?: string;
 
 	/** The controlled value of the menu to open. Should be used in conjunction with onValueChange. */
-	value?: string;
+	value?: string | null;
 
 	/** Event handler called when the value changes. */
 	onValueChange?: (value: string | undefined) => void;
@@ -93,11 +93,15 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		"onAutoFocusMenuChange",
 	]);
 
-	const [value, setValue] = createControllableSignal<string | undefined>({
+	const [value, setValue] = createControllableSignal<string | null | undefined>({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue,
 		onChange: (value) => local.onValueChange?.(value),
 	});
+
+	createEffect(() => {
+		console.log("why", local.value, value())
+	})
 
 	const [lastValue, setLastValue] = createSignal<string | undefined>();
 
@@ -105,8 +109,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		new Map<string, Array<HTMLElement>>(),
 	);
 
-	const expanded = () =>
-		value() !== undefined && !value()?.includes("link-trigger-");
+	const expanded = () => value() && !value()?.includes("link-trigger-");
 
 	const dataset: Accessor<MenubarDataSet> = createMemo(() => ({
 		"data-expanded": expanded() ? "" : undefined,
