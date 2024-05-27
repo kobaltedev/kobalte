@@ -237,8 +237,6 @@ export function Menu(props: MenuProps) {
 			triggerRef()?.focus();
 			if (optionalMenubarContext.autoFocusMenu()) open(true);
 		} else close();
-
-		console.log("menu", optionalMenubarContext.value(), rootContext.value(), optionalMenubarContext.value() === rootContext.value())
 	});
 
 	createEffect(() => {

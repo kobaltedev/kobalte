@@ -42,7 +42,7 @@ export interface MenubarRootOptions {
 	value?: string | null;
 
 	/** Event handler called when the value changes. */
-	onValueChange?: (value: string | undefined) => void;
+	onValueChange?: (value: string | undefined | null) => void;
 
 	/** When true, keyboard navigation will loop from last item to first, and vice versa. (default: true) */
 	loop?: boolean;
@@ -99,8 +99,9 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		onChange: (value) => local.onValueChange?.(value),
 	});
 
-	createEffect(() => {
-		console.log("why", local.value, value())
+	createEffect((val) => {
+		console.trace("why", local.value, val, "=>", value());
+		return value();
 	})
 
 	const [lastValue, setLastValue] = createSignal<string | undefined>();
@@ -184,10 +185,12 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		setAutoFocusMenu,
 		generateId: createGenerateId(() => others.id!),
 	};
+
 	createInteractOutside(
 		{
 			onInteractOutside: () => {
 				context.closeMenu();
+				setTimeout(() => context.closeMenu());
 			},
 			shouldExcludeElement: (element) => {
 				return [ref, ...menuRefs().values()]
@@ -214,7 +217,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 	});
 
 	createEffect(() => {
-		if (value() !== undefined) setLastValue(value());
+		if (value() !== undefined && value() !== null) setLastValue(value()!);
 	});
 
 	onCleanup(() => {

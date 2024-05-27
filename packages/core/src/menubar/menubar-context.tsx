@@ -7,12 +7,13 @@ export interface MenubarDataSet {
 
 export interface MenubarContextValue {
 	dataset: Accessor<MenubarDataSet>;
-	value: Accessor<string | undefined>;
+	value: Accessor<string | undefined | null>;
 	setValue: (
 		next:
 			| string
-			| ((prev: string | undefined) => string | undefined)
-			| undefined,
+			| ((prev: string | undefined | null) => string | undefined)
+			| undefined
+			| null,
 	) => void;
 	menus: Accessor<Set<string>>;
 	menuRefs: Accessor<Array<Element>>;
