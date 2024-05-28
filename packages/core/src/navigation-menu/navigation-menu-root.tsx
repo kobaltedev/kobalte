@@ -44,10 +44,10 @@ export interface NavigationMenuRootOptions
 	defaultValue?: string;
 
 	/** The controlled value of the menu to open. Should be used in conjunction with onValueChange. */
-	value?: string;
+	value?: string | null;
 
 	/** Event handler called when the value changes. */
-	onValueChange?: (value: string | undefined) => void;
+	onValueChange?: (value: string | undefined | null) => void;
 
 	autoFocusMenu?: boolean;
 	onAutoFocusMenuChange?: Setter<boolean>;
@@ -107,7 +107,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 		],
 	);
 
-	const [value, setValue] = createControllableSignal<string | undefined>({
+	const [value, setValue] = createControllableSignal<string | undefined | null>({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue,
 		onChange: (value) => local.onValueChange?.(value),
@@ -128,7 +128,6 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 	let timeoutId: number | undefined;
 
 	createEffect((prev) => {
-		console.log(prev, "=>", value());
 		return value();
 	});
 
@@ -138,16 +137,13 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 		autoFocusMenu: autoFocusMenu as Accessor<boolean>,
 		setAutoFocusMenu,
 		startLeaveTimer: () => {
-			console.log("start leave");
 			timeoutId = window.setTimeout(() => {
-				console.log("run leave");
 				context.setAutoFocusMenu(false);
 				setValue(undefined);
 				setTimeout(() => setValue(undefined));
 			}, context.skipDelayDuration());
 		},
 		cancelLeaveTimer: () => {
-			console.log("stop leave");
 			if (timeoutId) clearTimeout(timeoutId);
 		},
 		rootRef,

@@ -57,13 +57,11 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 	) => {
 		callHandler(e, local.onPointerEnter);
 
-		if ("href" in props) return;
-
 		context.cancelLeaveTimer();
 
 		timeoutId = window.setTimeout(() => {
-			menuContext?.open(true);
 			context.setAutoFocusMenu(true);
+			menuContext?.triggerRef()?.focus();
 		}, context.delayDuration());
 	};
 

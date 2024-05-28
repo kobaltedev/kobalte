@@ -16,9 +16,11 @@ export function MenubarTrigger<T extends ValidComponent = "button">(
 	const menuContext = useOptionalMenuContext();
 
 	if (menuContext === undefined && Object.hasOwn(props, "href")) {
+		const id = menubarContext.generateId("link-trigger-") + createUniqueId();
+
 		return (
 			<MenubarMenu
-				value={menubarContext.generateId("link-trigger-") + createUniqueId()}
+				value={id}
 			>
 				<MenuTrigger {...props} />
 			</MenubarMenu>

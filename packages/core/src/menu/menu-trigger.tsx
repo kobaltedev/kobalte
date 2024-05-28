@@ -20,6 +20,7 @@ import {
 	createMemo,
 	onCleanup,
 	splitProps,
+	on,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -100,6 +101,12 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		);
 	});
 
+	// When native link focus the trigger instead of the content when current menu is active.
+	createEffect(on(() => optionalMenubarContext?.value(), (value) => {
+		if (!isNativeLink()) return;
+		if (value === key) context.triggerRef()?.focus();
+	}));
+
 	const handleClick = () => {
 		// When opened by click, automatically focus Menubar menus
 		optionalMenubarContext?.setAutoFocusMenu(true);
@@ -162,6 +169,8 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 				e.preventDefault();
 				scrollIntoViewport(e.currentTarget);
 				context.toggle("first");
+				optionalMenubarContext?.setAutoFocusMenu(true);
+				optionalMenubarContext?.setValue(key);
 				break;
 			case "ArrowUp":
 				e.stopPropagation();

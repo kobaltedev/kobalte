@@ -71,6 +71,8 @@ export function createPresence(
 				 */
 				const isAnimating = prevAnimationName !== currentAnimationName;
 
+				console.log("animation", node(), prevAnimationName, currentAnimationName);
+
 				if (prevPresent && isAnimating) {
 					send("ANIMATION_OUT");
 				} else {

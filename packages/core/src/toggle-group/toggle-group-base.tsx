@@ -73,11 +73,11 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 ) {
 	let ref: HTMLElement | undefined;
 
-	const defaultID = `group-${createUniqueId()}`;
+	const defaultId = `group-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
 		{
-			id: defaultID,
+			id: defaultId,
 			selectionMode: "single",
 			orientation: "horizontal",
 		},

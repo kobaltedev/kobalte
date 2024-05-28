@@ -100,7 +100,6 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 	});
 
 	createEffect((val) => {
-		console.trace("why", local.value, val, "=>", value());
 		return value();
 	})
 
@@ -110,18 +109,24 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		new Map<string, Array<HTMLElement>>(),
 	);
 
-	const expanded = () => value() && !value()?.includes("link-trigger-");
-
-	const dataset: Accessor<MenubarDataSet> = createMemo(() => ({
-		"data-expanded": expanded() ? "" : undefined,
-		"data-closed": !expanded() ? "" : undefined,
-	}));
-
 	const [autoFocusMenu, setAutoFocusMenu] = createControllableSignal({
 		value: () => local.autoFocusMenu,
 		defaultValue: () => false,
 		onChange: local.onAutoFocusMenuChange,
 	});
+
+	const expanded = () => {
+		console.log("called")
+		const val = value();
+		const focus = autoFocusMenu();
+		// Call both to track signal
+		return val && focus && !value()?.includes("link-trigger-")
+	};
+
+	const dataset: Accessor<MenubarDataSet> = createMemo(() => ({
+		"data-expanded": expanded() ? "" : undefined,
+		"data-closed": !expanded() ? "" : undefined,
+	}));
 
 	const context: MenubarContextValue = {
 		dataset,
@@ -185,6 +190,10 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		setAutoFocusMenu,
 		generateId: createGenerateId(() => others.id!),
 	};
+
+	createEffect((last) => {
+		return lastValue();
+	});
 
 	createInteractOutside(
 		{
