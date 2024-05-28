@@ -8,7 +8,6 @@ import {
 	PopperArrowRenderProps,
 } from "../popper";
 import { PopperArrow } from "../popper/popper-arrow";
-import { useNavigationMenuContext } from "./navigation-menu-context";
 import { useMenubarContext } from "../menubar/menubar-context";
 
 export interface NavigationMenuArrowOptions extends PopperArrowOptions {}

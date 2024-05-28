@@ -24,6 +24,8 @@ import {
 } from "solid-js";
 
 import * as Button from "../button";
+import { useLocale } from "../i18n/i18n-provider";
+import { Direction } from "../i18n/utils";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createTagName } from "../primitives/create-tag-name";
@@ -54,6 +56,11 @@ export type MenuTriggerProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
 > = MenuTriggerOptions & Partial<MenuTriggerCommonProps<ElementOf<T>>>;
 
+const MENUBAR_KEYS = {
+	next: (dir: Direction) => dir === "ltr" ? "ArrowRight" : "ArrowLeft",
+	previous: (dir: Direction) => MENUBAR_KEYS.next(dir === "ltr" ? "rtl" : "ltr"),
+};
+
 /**
  * The button that toggles the menu.
  */
@@ -63,6 +70,8 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 	const optionalMenubarContext = useOptionalMenubarContext();
+
+	const { direction } = useLocale();
 
 	const mergedProps = mergeDefaultProps(
 		{
@@ -177,13 +186,13 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 				e.preventDefault();
 				context.toggle("last");
 				break;
-			case "ArrowRight":
+			case MENUBAR_KEYS.next(direction()):
 				if (optionalMenubarContext === undefined) break;
 				e.stopPropagation();
 				e.preventDefault();
 				optionalMenubarContext.nextMenu();
 				break;
-			case "ArrowLeft":
+			case MENUBAR_KEYS.previous(direction()):
 				if (optionalMenubarContext === undefined) break;
 				e.stopPropagation();
 				e.preventDefault();

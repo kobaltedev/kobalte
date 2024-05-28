@@ -28,6 +28,8 @@ import {
 	DismissableLayer,
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
+import { useLocale } from "../i18n/i18n-provider";
+import { Direction } from "../i18n/utils";
 import { createSelectableList } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
@@ -108,6 +110,11 @@ export type MenuContentBaseProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
 > = MenuContentBaseOptions & Partial<MenuContentBaseCommonProps<ElementOf<T>>>;
 
+const MENUBAR_KEYS = {
+	next: (dir: Direction) => dir === "ltr" ? "ArrowRight" : "ArrowLeft",
+	previous: (dir: Direction) => MENUBAR_KEYS.next(dir === "ltr" ? "rtl" : "ltr"),
+};
+
 export function MenuContentBase<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuContentBaseProps<T>>,
 ) {
@@ -117,6 +124,8 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 	const context = useMenuContext();
 	const optionalMenubarContext = useOptionalMenubarContext();
 	const optionalNavigationMenuContext = useOptionalNavigationMenuContext();
+
+	const { direction } = useLocale();
 
 	const mergedProps = mergeDefaultProps(
 		{
@@ -191,7 +200,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		if (optionalMenubarContext !== undefined) {
 			if (e.currentTarget.getAttribute("aria-haspopup") !== "true")
 				switch (e.key) {
-					case "ArrowRight":
+					case MENUBAR_KEYS.next(direction()):
 						e.stopPropagation();
 						e.preventDefault();
 						context.close(true);
@@ -199,7 +208,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 						optionalMenubarContext.nextMenu();
 
 						break;
-					case "ArrowLeft":
+					case MENUBAR_KEYS.previous(direction()):
 						if (e.currentTarget.hasAttribute("data-closed")) break;
 
 						e.stopPropagation();
