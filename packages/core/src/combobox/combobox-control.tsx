@@ -39,7 +39,10 @@ export interface ComboboxControlRenderProps
 	children: JSX.Element;
 }
 
-export type ComboboxControlProps<Option, T extends ValidComponent | HTMLElement = HTMLElement> = ComboboxControlOptions<Option> &
+export type ComboboxControlProps<
+	Option,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ComboboxControlOptions<Option> &
 	Partial<ComboboxControlCommonProps<ElementOf<T>>>;
 
 /**

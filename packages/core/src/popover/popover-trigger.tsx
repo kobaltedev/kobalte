@@ -50,7 +50,9 @@ export function PopoverTrigger<T extends ValidComponent = "button">(
 		"onPointerDown",
 	]);
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerDown);
 
 		// Prevent popover from opening then closing immediately when inside an overlay in safari.

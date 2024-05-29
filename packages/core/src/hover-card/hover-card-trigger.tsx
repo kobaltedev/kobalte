@@ -58,7 +58,9 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 		"onBlur",
 	]);
 
-	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerEnter);
 
 		if (e.pointerType === "touch" || others.disabled || e.defaultPrevented) {
@@ -72,7 +74,9 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerLeave);
 
 		if (e.pointerType === "touch") {

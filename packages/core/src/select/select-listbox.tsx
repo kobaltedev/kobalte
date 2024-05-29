@@ -28,10 +28,11 @@ export interface SelectListboxRenderProps
 	extends SelectListboxCommonProps,
 		ListboxRootRenderProps {}
 
-export type SelectListboxProps<Option, OptGroup = never,T extends ValidComponent | HTMLElement = HTMLElement> = SelectListboxOptions<
+export type SelectListboxProps<
 	Option,
-	OptGroup
-> &
+	OptGroup = never,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SelectListboxOptions<Option, OptGroup> &
 	Partial<SelectListboxCommonProps<ElementOf<T>>>;
 
 /**

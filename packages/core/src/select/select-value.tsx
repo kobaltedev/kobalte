@@ -51,8 +51,10 @@ export interface SelectValueRenderProps
 	"data-placeholder-shown": string | undefined;
 }
 
-export type SelectValueProps<Option, T extends ValidComponent | HTMLElement = HTMLElement> = SelectValueOptions<Option> &
-	Partial<SelectValueCommonProps<ElementOf<T>>>;
+export type SelectValueProps<
+	Option,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SelectValueOptions<Option> & Partial<SelectValueCommonProps<ElementOf<T>>>;
 
 /**
  * The part that reflects the selected value(s).

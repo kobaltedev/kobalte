@@ -12,10 +12,10 @@ import {
 	useFormControlContext,
 } from "../form-control";
 import {
+	ElementOf,
 	Polymorphic,
 	PolymorphicCallbackProps,
 	PolymorphicProps,
-	ElementOf,
 } from "../polymorphic";
 import * as SpinButton from "../spin-button";
 import { useNumberFieldContext } from "./number-field-context";

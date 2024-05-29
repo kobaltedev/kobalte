@@ -58,10 +58,11 @@ export interface SelectRootRenderProps
 	extends SelectRootCommonProps,
 		SelectBaseRenderProps {}
 
-export type SelectRootProps<Option, OptGroup = never, T extends ValidComponent | HTMLElement = HTMLElement> = SelectRootOptions<
+export type SelectRootProps<
 	Option,
-	OptGroup
-> &
+	OptGroup = never,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SelectRootOptions<Option, OptGroup> &
 	Partial<SelectRootCommonProps<ElementOf<T>>>;
 
 /**

@@ -121,7 +121,9 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		if (!local.disabled && isTouchOrPen(e)) {
@@ -129,7 +131,9 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerCancel);
 
 		if (!local.disabled && isTouchOrPen(e)) {

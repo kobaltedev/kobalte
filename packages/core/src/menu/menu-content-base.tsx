@@ -231,7 +231,9 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerEnter);
 
 		if (!context.isOpen()) {
@@ -251,7 +253,9 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			.setFocusedKey(undefined);
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {

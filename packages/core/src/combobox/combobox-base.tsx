@@ -256,10 +256,11 @@ export interface ComboboxBaseRenderProps
 	role: "group";
 }
 
-export type ComboboxBaseProps<Option, OptGroup = never,T extends ValidComponent | HTMLElement = HTMLElement> = ComboboxBaseOptions<
+export type ComboboxBaseProps<
 	Option,
-	OptGroup
-> &
+	OptGroup = never,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ComboboxBaseOptions<Option, OptGroup> &
 	Partial<ComboboxBaseCommonProps<ElementOf<T>>>;
 
 /**

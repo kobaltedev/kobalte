@@ -182,7 +182,9 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	 * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
 	 * wiggles. This is to match native menu implementation.
 	 */
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
@@ -202,7 +204,9 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerLeave);
 
 		if (e.pointerType !== "mouse") {

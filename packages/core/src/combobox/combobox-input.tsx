@@ -247,7 +247,9 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	// If a touch happens on direct center of Combobox input, might be virtual click from iPad so open ComboBox menu
 	let lastEventTime = 0;
 
-	const onTouchEnd: JSX.EventHandlerUnion<HTMLInputElement, TouchEvent> = (e) => {
+	const onTouchEnd: JSX.EventHandlerUnion<HTMLInputElement, TouchEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onTouchEnd);
 
 		if (!ref || formControlContext.isReadOnly() || isDisabled()) {

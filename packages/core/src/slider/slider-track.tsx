@@ -68,7 +68,9 @@ export function SliderTrack<T extends ValidComponent = "div">(
 
 	let startPosition = 0;
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerDown);
 
 		const target = e.target as HTMLElement;
@@ -84,7 +86,9 @@ export function SliderTrack<T extends ValidComponent = "div">(
 		context.onSlideStart?.(closestIndex, value);
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		const target = e.target as HTMLElement;

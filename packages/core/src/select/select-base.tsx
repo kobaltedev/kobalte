@@ -213,10 +213,11 @@ export interface SelectBaseRenderProps
 	role: "group";
 }
 
-export type SelectBaseProps<Option, OptGroup = never, T extends ValidComponent | HTMLElement = HTMLElement> = SelectBaseOptions<
+export type SelectBaseProps<
 	Option,
-	OptGroup
-> &
+	OptGroup = never,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SelectBaseOptions<Option, OptGroup> &
 	Partial<SelectBaseCommonProps<ElementOf<T>>>;
 
 /**

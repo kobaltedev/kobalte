@@ -57,10 +57,11 @@ export interface ComboboxRootRenderProps
 	extends ComboboxRootCommonProps,
 		ComboboxBaseRenderProps {}
 
-export type ComboboxRootProps<Option, OptGroup = never, T extends ValidComponent | HTMLElement = HTMLElement> = ComboboxRootOptions<
+export type ComboboxRootProps<
 	Option,
-	OptGroup
-> &
+	OptGroup = never,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ComboboxRootOptions<Option, OptGroup> &
 	Partial<ComboboxRootCommonProps<ElementOf<T>>>;
 
 /**

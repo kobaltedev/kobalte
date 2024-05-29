@@ -89,7 +89,9 @@ export function ToastList<T extends ValidComponent = "ol">(
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
@@ -97,7 +99,9 @@ export function ToastList<T extends ValidComponent = "ol">(
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerLeave);
 
 		// The current active element isn't inside the toast list.

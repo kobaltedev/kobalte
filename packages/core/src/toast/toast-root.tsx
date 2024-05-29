@@ -228,7 +228,9 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		}
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerDown);
 
 		if (e.button !== 0) {
@@ -238,7 +240,9 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		pointerStart = { x: e.clientX, y: e.clientY };
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		if (!pointerStart) {

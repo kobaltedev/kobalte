@@ -87,7 +87,9 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerEnter);
 
 		if (
@@ -104,7 +106,9 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		handleShow();
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerLeave);
 
 		if (e.pointerType === "touch") {
@@ -122,7 +126,9 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerDown);
 
 		isPointerDown = true;

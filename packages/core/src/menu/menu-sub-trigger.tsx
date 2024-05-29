@@ -174,7 +174,9 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
@@ -219,7 +221,9 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerLeave);
 
 		if (e.pointerType !== "mouse") {
