@@ -286,7 +286,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 	createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
-	const commonAttributes: MenuContentBaseRenderProps = {
+	const commonAttributes: Omit<MenuContentBaseRenderProps, keyof MenuDataSet> = {
 		ref: mergeRefs((el) => {
 			context.setContentRef(el);
 			context.contentPresence.setRef(el);
@@ -321,7 +321,6 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		]),
 		onPointerEnter,
 		onPointerMove,
-		...context.dataset(),
 		...others,
 	};
 
@@ -332,6 +331,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 				fallback={
 					<Polymorphic<MenuContentBaseRenderProps>
 						as="div"
+						{...context.dataset()}
 						{...commonAttributes}
 					/>
 				}
@@ -359,6 +359,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 						onEscapeKeyDown={onEscapeKeyDown}
 						onFocusOutside={onFocusOutside}
 						onDismiss={context.close}
+					  {...context.dataset()}
 						{...commonAttributes}
 					/>
 				</Popper.Positioner>

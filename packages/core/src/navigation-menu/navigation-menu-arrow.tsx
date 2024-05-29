@@ -44,7 +44,7 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 	
 	const [offset, setOffset] = createSignal(0);
 	
-	createEffect(on(menubarContext.value, (value) => {
+	createEffect(on(() => [menubarContext.value(), menubarContext.dataset()], ([value]) => {
 		if (!value || value.includes("link-trigger-")) return;
 		const triggerRef = document.querySelector(`[data-kb-menu-value-trigger="${value}"]`);
 		if (!triggerRef || !ref) return; 

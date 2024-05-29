@@ -125,6 +125,9 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 		popperProps.placement!,
 	);
 
+	const [viewportWidth, setViewportWidth] = createSignal<number | undefined>();
+	const [viewportHeight, setViewportHeight] = createSignal<number | undefined>();
+
 	let timeoutId: number | undefined;
 
 	createEffect((prev) => {
@@ -140,7 +143,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 			timeoutId = window.setTimeout(() => {
 				context.setAutoFocusMenu(false);
 				setValue(undefined);
-				setTimeout(() => setValue(undefined));
+//				setTimeout(() => setValue(undefined));
 			}, context.skipDelayDuration());
 		},
 		cancelLeaveTimer: () => {
@@ -151,6 +154,10 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 		viewportRef,
 		setViewportRef: setViewportRef as Setter<HTMLElement>,
 		currentPlacement,
+		viewportWidth,
+		setViewportWidth,
+		viewportHeight,
+		setViewportHeight,
 	};
 
 	return (

@@ -105,7 +105,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 
 	const [lastValue, setLastValue] = createSignal<string | undefined>();
 
-	const [menuRefs, setMenuRefs] = createSignal<Map<string, Array<Element>>>(
+	const [menuRefs, setMenuRefs] = createSignal<Map<string, Array<HTMLElement>>>(
 		new Map<string, Array<HTMLElement>>(),
 	);
 
@@ -116,7 +116,6 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 	});
 
 	const expanded = () => {
-		console.log("called")
 		const val = value();
 		const focus = autoFocusMenu();
 		// Call both to track signal
@@ -136,16 +135,21 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		setLastValue,
 		menus: () => new Set([...menuRefs().keys()]),
 		menuRefs: () => [...menuRefs().values()].flat(),
+		menuRefMap: () => menuRefs(),
 		registerMenu: (value, refs) => {
 			setMenuRefs((prev) => {
-				prev.set(value, refs);
-				return prev;
+				const map = new Map<string, Array<HTMLElement>>();
+				prev.forEach((value, key) => map.set(key, value));
+				map.set(value, refs);
+				return map;
 			});
 		},
 		unregisterMenu: (value: string) => {
 			setMenuRefs((prev) => {
 				prev.delete(value);
-				return prev;
+				const map = new Map<string, Array<HTMLElement>>();
+				prev.forEach((value, key) => map.set(key, value));
+				return map;
 			});
 		},
 		nextMenu: () => {
@@ -190,10 +194,6 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		setAutoFocusMenu,
 		generateId: createGenerateId(() => others.id!),
 	};
-
-	createEffect((last) => {
-		return lastValue();
-	});
 
 	createInteractOutside(
 		{

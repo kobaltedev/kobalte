@@ -16,7 +16,8 @@ export interface MenubarContextValue {
 			| null,
 	) => void;
 	menus: Accessor<Set<string>>;
-	menuRefs: Accessor<Array<Element>>;
+	menuRefs: Accessor<Array<HTMLElement>>;
+	menuRefMap: Accessor<Map<string, Array<HTMLElement>>>;
 	lastValue: Accessor<string | undefined>;
 	setLastValue: (
 		next:
@@ -24,7 +25,7 @@ export interface MenubarContextValue {
 			| ((prev: string | undefined) => string | undefined)
 			| undefined,
 	) => void;
-	registerMenu: (value: string, refs: Array<Element>) => void;
+	registerMenu: (value: string, refs: Array<HTMLElement>) => void;
 	unregisterMenu: (value: string) => void;
 	nextMenu: () => void;
 	previousMenu: () => void;

@@ -1,5 +1,5 @@
 import { mergeRefs } from "@kobalte/utils";
-import { Component, JSX, ValidComponent, splitProps, createEffect } from "solid-js";
+import { Component, JSX, ValidComponent, splitProps, createEffect, on } from "solid-js";
 import {
 	DismissableLayer,
 	DismissableLayerRenderProps,
@@ -77,10 +77,36 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 		close();
 	};
 
-	createEffect(() => {
-		console.log(menubarContext.value());
-		console.log(menubarContext.dataset());
-	})
+	const updateSize = (element: HTMLElement) => {
+		if (element.offsetHeight === 0 || element.offsetWidth === 0) return;
+
+		context.setViewportHeight(element.offsetHeight);
+		context.setViewportWidth(element.offsetWidth);
+	}
+
+	let previousOpenState = false;
+
+	createEffect(on(() => menubarContext.value() ? menubarContext.menuRefMap().get(menubarContext.value()!) : undefined, (menu) => {
+		if (menu === undefined) {
+			context.setViewportHeight(undefined);
+			context.setViewportWidth(undefined);
+			previousOpenState = false;
+			return;
+		}
+		if (menu[0] === undefined) return;
+
+		const animations = menu[0].getAnimations();
+
+		if (previousOpenState || animations.length === 0) {
+			updateSize(menu[0]);
+		}
+
+		animations.map(animation => animation.finished.then(() => {
+			updateSize(menu[0]);
+		}));
+
+		previousOpenState = true;
+	}))
 
 	return (
 		<Popper.Positioner>
@@ -96,8 +122,9 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 				excludedElements={[context.rootRef]}
 				bypassTopMostLayerCheck
 				style={{
-					"--kb-menu-content-transform-origin":
-						"var(--kb-popper-content-transform-origin)",
+					"--kb-menu-content-transform-origin":	"var(--kb-popper-content-transform-origin)",
+					"--kb-navigation-menu-viewport-height": context.viewportHeight() ? `${context.viewportHeight()}px` : undefined,
+					"--kb-navigation-menu-viewport-width": context.viewportWidth() ? `${context.viewportWidth()}px` : undefined,
 					position: "relative",
 					...local.style,
 				}}
