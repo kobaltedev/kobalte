@@ -1,5 +1,15 @@
 # @kobalte/core
 
+## 0.13.2
+
+### Patch Changes
+
+- a430a78: ## v0.13.2 (May 29, 2024)
+
+  **Bug fixes**
+
+  - Refactored polymorphic element type in CommonProps ([#420](https://github.com/kobaltedev/kobalte/pull/420))
+
 ## 0.13.1
 
 ### Patch Changes
