@@ -16,13 +16,14 @@ import {
 } from "solid-js";
 
 import * as Collapsible from "../collapsible";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useAccordionItemContext } from "./accordion-item-context";
 
 export interface AccordionContentOptions {}
 
-export interface AccordionContentCommonProps
-	extends Collapsible.CollapsibleContentCommonProps {
+export interface AccordionContentCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends Collapsible.CollapsibleContentCommonProps<T> {
 	id: string;
 }
 
@@ -33,14 +34,16 @@ export interface AccordionContentRenderProps
 	"aria-labelledby": string | undefined;
 }
 
-export type AccordionContentProps = AccordionContentOptions &
-	Partial<AccordionContentCommonProps>;
+export type AccordionContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = AccordionContentOptions &
+	Partial<AccordionContentCommonProps<ElementOf<T>>>;
 
 /**
  * Contains the content to be rendered when the `Accordion.Item` is expanded.
  */
 export function AccordionContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, AccordionContentProps>,
+	props: PolymorphicProps<T, AccordionContentProps<T>>,
 ) {
 	const itemContext = useAccordionItemContext();
 

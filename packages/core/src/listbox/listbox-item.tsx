@@ -26,7 +26,7 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionNode, createRegisterId, getItemCount } from "../primitives";
 import { createSelectableItem } from "../selection";
 import { useListboxContext } from "./listbox-context";
@@ -41,19 +41,19 @@ export interface ListboxItemOptions {
 	item: CollectionNode;
 }
 
-export interface ListboxItemCommonProps {
+export interface ListboxItemCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 	"aria-label": string | undefined;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
-	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface ListboxItemRenderProps
@@ -68,14 +68,15 @@ export interface ListboxItemRenderProps
 	"data-key": string | undefined;
 }
 
-export type ListboxItemProps = ListboxItemOptions &
-	Partial<ListboxItemCommonProps>;
+export type ListboxItemProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ListboxItemOptions & Partial<ListboxItemCommonProps<ElementOf<T>>>;
 
 /**
  * An item of the listbox.
  */
 export function ListboxItem<T extends ValidComponent = "li">(
-	props: PolymorphicProps<T, ListboxItemProps>,
+	props: PolymorphicProps<T, ListboxItemProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

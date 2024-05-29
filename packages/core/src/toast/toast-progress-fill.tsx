@@ -7,13 +7,15 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useToastContext } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
 
 export interface ToastProgressFillOptions {}
 
-export interface ToastProgressFillCommonProps {
+export interface ToastProgressFillCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
@@ -21,15 +23,17 @@ export interface ToastProgressFillCommonProps {
 export interface ToastProgressFillRenderProps
 	extends ToastProgressFillCommonProps {}
 
-export type ToastProgressFillProps = ToastProgressFillOptions &
-	Partial<ToastProgressFillCommonProps>;
+export type ToastProgressFillProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToastProgressFillOptions &
+	Partial<ToastProgressFillCommonProps<ElementOf<T>>>;
 
 /**
  * The component that visually represents the toast remaining lifetime.
  * Used to visually show the fill of `Toast.ProgressTrack`.
  */
 export function ToastProgressFill<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ToastProgressFillProps>,
+	props: PolymorphicProps<T, ToastProgressFillProps<T>>,
 ) {
 	const rootContext = useToastRegionContext();
 	const context = useToastContext();

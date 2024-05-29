@@ -14,24 +14,27 @@ import {
 	onCleanup,
 } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useImageContext } from "./image-context";
 
 export interface ImageFallbackOptions {}
 
-export interface ImageFallbackCommonProps {}
+export interface ImageFallbackCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {}
 
 export interface ImageFallbackRenderProps extends ImageFallbackCommonProps {}
 
-export type ImageFallbackProps = ImageFallbackOptions &
-	Partial<ImageFallbackCommonProps>;
+export type ImageFallbackProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ImageFallbackOptions & Partial<ImageFallbackCommonProps<ElementOf<T>>>;
 
 /**
  * An element that renders when the image hasn't loaded.
  * This means whilst it's loading, or if there was an error.
  */
 export function ImageFallback<T extends ValidComponent = "span">(
-	props: PolymorphicProps<T, ImageFallbackProps>,
+	props: PolymorphicProps<T, ImageFallbackProps<T>>,
 ) {
 	const context = useImageContext();
 

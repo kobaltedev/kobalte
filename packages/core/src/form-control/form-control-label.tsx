@@ -5,7 +5,7 @@ import {
 } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createTagName } from "../primitives";
 import {
 	FormControlDataSet,
@@ -14,9 +14,11 @@ import {
 
 export interface FormControlLabelOptions {}
 
-export interface FormControlLabelCommonProps {
+export interface FormControlLabelCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 }
 
 export interface FormControlLabelRenderProps
@@ -25,14 +27,16 @@ export interface FormControlLabelRenderProps
 	for: string | undefined;
 }
 
-export type FormControlLabelProps = FormControlLabelOptions &
-	Partial<FormControlLabelCommonProps>;
+export type FormControlLabelProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = FormControlLabelOptions &
+	Partial<FormControlLabelCommonProps<ElementOf<T>>>;
 
 /**
  * The label that gives the user information on the form control.
  */
 export function FormControlLabel<T extends ValidComponent = "label">(
-	props: PolymorphicProps<T, FormControlLabelProps>,
+	props: PolymorphicProps<T, FormControlLabelProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

@@ -45,9 +45,13 @@ export interface ColorModeOptions {
 	storageManager?: ColorModeStorageManager;
 }
 
-export type ColorModeProviderProps = ParentProps<ColorModeOptions>;
+export type ColorModeProviderProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ParentProps<ColorModeOptions>;
 
-export type ColorModeScriptProps = {
+export type ColorModeScriptProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = {
 	/** The initial color mode to use. */
 	initialColorMode?: ConfigColorMode;
 

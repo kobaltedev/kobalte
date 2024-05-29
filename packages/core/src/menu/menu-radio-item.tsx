@@ -1,6 +1,6 @@
 import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import { Component, ValidComponent, splitProps } from "solid-js";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import {
 	MenuItemBase,
@@ -16,7 +16,8 @@ export interface MenuRadioItemOptions
 	value: string;
 }
 
-export interface MenuRadioItemCommonProps extends MenuItemBaseCommonProps {}
+export interface MenuRadioItemCommonProps<T extends HTMLElement = HTMLElement>
+	extends MenuItemBaseCommonProps<T> {}
 
 export interface MenuRadioItemRenderProps
 	extends MenuRadioItemCommonProps,
@@ -24,14 +25,15 @@ export interface MenuRadioItemRenderProps
 	role: "menuitemradio";
 }
 
-export type MenuRadioItemProps = MenuRadioItemOptions &
-	Partial<MenuRadioItemCommonProps>;
+export type MenuRadioItemProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuRadioItemOptions & Partial<MenuRadioItemCommonProps<ElementOf<T>>>;
 
 /**
  * An item that can be controlled and rendered like a radio.
  */
 export function MenuRadioItem<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuRadioItemProps>,
+	props: PolymorphicProps<T, MenuRadioItemProps<T>>,
 ) {
 	const context = useMenuRadioGroupContext();
 

@@ -7,7 +7,7 @@ import {
 	DismissableLayerCommonProps,
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
 import {
 	FocusOutsideEvent,
@@ -44,8 +44,8 @@ export interface ComboboxContentOptions {
 	onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export interface ComboboxContentCommonProps
-	extends DismissableLayerCommonProps {
+export interface ComboboxContentCommonProps<T extends HTMLElement = HTMLElement>
+	extends DismissableLayerCommonProps<T> {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
@@ -55,14 +55,15 @@ export interface ComboboxContentRenderProps
 		DismissableLayerRenderProps,
 		ComboboxDataSet {}
 
-export type ComboboxContentProps = ComboboxContentOptions &
-	Partial<ComboboxContentCommonProps>;
+export type ComboboxContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ComboboxContentOptions & Partial<ComboboxContentCommonProps<ElementOf<T>>>;
 
 /**
  * The component that pops out when the combobox is open.
  */
 export function ComboboxContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ComboboxContentProps>,
+	props: PolymorphicProps<T, ComboboxContentProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

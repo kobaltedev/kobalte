@@ -1,26 +1,30 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useToastContext } from "./toast-context";
 
 export interface ToastDescriptionOptions {}
 
-export interface ToastDescriptionCommonProps {
+export interface ToastDescriptionCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
 export interface ToastDescriptionRenderProps
 	extends ToastDescriptionCommonProps {}
 
-export type ToastDescriptionProps = ToastDescriptionOptions &
-	Partial<ToastDescriptionCommonProps>;
+export type ToastDescriptionProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToastDescriptionOptions &
+	Partial<ToastDescriptionCommonProps<ElementOf<T>>>;
 
 /**
  * An optional accessible description to be announced when the toast is open.
  */
 export function ToastDescription<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ToastDescriptionProps>,
+	props: PolymorphicProps<T, ToastDescriptionProps<T>>,
 ) {
 	const context = useToastContext();
 

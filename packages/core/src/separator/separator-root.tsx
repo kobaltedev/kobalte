@@ -9,7 +9,7 @@
 import { Orientation, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { ValidComponent, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createTagName } from "../primitives";
 
 export interface SeparatorRootOptions {
@@ -17,8 +17,8 @@ export interface SeparatorRootOptions {
 	orientation?: Orientation;
 }
 
-export interface SeparatorRootCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
+export interface SeparatorRootCommonProps<T extends HTMLElement = HTMLElement> {
+	ref: T | ((el: T) => void);
 }
 
 export interface SeparatorRootRenderProps extends SeparatorRootCommonProps {
@@ -27,14 +27,15 @@ export interface SeparatorRootRenderProps extends SeparatorRootCommonProps {
 	"data-orientation": Orientation | undefined;
 }
 
-export type SeparatorRootProps = SeparatorRootOptions &
-	Partial<SeparatorRootCommonProps>;
+export type SeparatorRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SeparatorRootOptions & Partial<SeparatorRootCommonProps<ElementOf<T>>>;
 
 /**
  * A separator visually or semantically separates content.
  */
 export function SeparatorRoot<T extends ValidComponent = "hr">(
-	props: PolymorphicProps<T, SeparatorRootProps>,
+	props: PolymorphicProps<T, SeparatorRootProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

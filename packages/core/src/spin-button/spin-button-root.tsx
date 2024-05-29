@@ -18,7 +18,7 @@ import {
 } from "solid-js";
 
 import { announce, clearAnnouncer } from "../live-announcer";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	SPIN_BUTTON_INTL_TRANSLATIONS,
 	SpinButtonIntlTranslations,
@@ -71,10 +71,12 @@ export interface SpinButtonRootOptions {
 	onIncrementToMax?: () => void;
 }
 
-export interface SpinButtonRootCommonProps {
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+export interface SpinButtonRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface SpinButtonRootRenderProps extends SpinButtonRootCommonProps {
@@ -89,11 +91,12 @@ export interface SpinButtonRootRenderProps extends SpinButtonRootCommonProps {
 	"aria-invalid": boolean | undefined;
 }
 
-export type SpinButtonRootProps = SpinButtonRootOptions &
-	Partial<SpinButtonRootCommonProps>;
+export type SpinButtonRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SpinButtonRootOptions & Partial<SpinButtonRootCommonProps<ElementOf<T>>>;
 
 export function SpinButtonRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, SpinButtonRootProps>,
+	props: PolymorphicProps<T, SpinButtonRootProps<T>>,
 ) {
 	const mergedProps = mergeDefaultProps(
 		{
@@ -134,7 +137,7 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		return (local.textValue || `${local.value}`).replace("-", "\u2212");
 	});
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || props.readOnly) {
@@ -187,13 +190,13 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		isFocused = true;
 	};
 
-	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 
 		isFocused = false;

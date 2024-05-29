@@ -2,14 +2,15 @@ import { callHandler } from "@kobalte/utils";
 import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import * as Button from "../button";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useDialogContext } from "./dialog-context";
 
 export interface DialogCloseButtonOptions extends Button.ButtonRootOptions {}
 
-export interface DialogCloseButtonCommonProps
-	extends Button.ButtonRootCommonProps {
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+export interface DialogCloseButtonCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends Button.ButtonRootCommonProps<T> {
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	"aria-label": string;
 }
 
@@ -17,14 +18,16 @@ export interface DialogCloseButtonRenderProps
 	extends DialogCloseButtonCommonProps,
 		Button.ButtonRootRenderProps {}
 
-export type DialogCloseButtonProps = DialogCloseButtonOptions &
-	Partial<DialogCloseButtonCommonProps>;
+export type DialogCloseButtonProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = DialogCloseButtonOptions &
+	Partial<DialogCloseButtonCommonProps<ElementOf<T>>>;
 
 /**
  * The button that closes the dialog.
  */
 export function DialogCloseButton<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, DialogCloseButtonProps>,
+	props: PolymorphicProps<T, DialogCloseButtonProps<T>>,
 ) {
 	const context = useDialogContext();
 

@@ -6,7 +6,7 @@ import {
 import { Show, ValidComponent, splitProps } from "solid-js";
 
 import { FormControlDataSet, useFormControlContext } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createPresence } from "../primitives";
 import { CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
 
@@ -18,9 +18,11 @@ export interface CheckboxIndicatorOptions {
 	forceMount?: boolean;
 }
 
-export interface CheckboxIndicatorCommonProps {
+export interface CheckboxIndicatorCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 }
 
 export interface CheckboxIndicatorRenderProps
@@ -28,15 +30,17 @@ export interface CheckboxIndicatorRenderProps
 		FormControlDataSet,
 		CheckboxDataSet {}
 
-export type CheckboxIndicatorProps = CheckboxIndicatorOptions &
-	Partial<CheckboxIndicatorCommonProps>;
+export type CheckboxIndicatorProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = CheckboxIndicatorOptions &
+	Partial<CheckboxIndicatorCommonProps<ElementOf<T>>>;
 
 /**
  * The visual indicator rendered when the checkbox is in a checked or indeterminate state.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
 export function CheckboxIndicator<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, CheckboxIndicatorProps>,
+	props: PolymorphicProps<T, CheckboxIndicatorProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();

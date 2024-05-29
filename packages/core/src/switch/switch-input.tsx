@@ -22,19 +22,21 @@ import {
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { SwitchDataSet, useSwitchContext } from "./switch-context";
 
 export interface SwitchInputOptions {}
 
-export interface SwitchInputCommonProps {
+export interface SwitchInputCommonProps<
+	T extends HTMLElement = HTMLInputElement,
+> {
 	id: string;
-	ref: HTMLInputElement | ((el: HTMLInputElement) => void);
+	ref: T | ((el: T) => void);
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
-	onChange: JSX.EventHandlerUnion<HTMLInputElement, Event>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onChange: JSX.EventHandlerUnion<T, Event>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
 	"aria-label": string | undefined;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
@@ -58,14 +60,15 @@ export interface SwitchInputRenderProps
 	"aria-readonly": boolean | undefined;
 }
 
-export type SwitchInputProps = SwitchInputOptions &
-	Partial<SwitchInputCommonProps>;
+export type SwitchInputProps<
+	T extends ValidComponent | HTMLElement = HTMLInputElement,
+> = SwitchInputOptions & Partial<SwitchInputCommonProps<ElementOf<T>>>;
 
 /**
  * The native html input that is visually hidden in the switch.
  */
 export function SwitchInput<T extends ValidComponent = "input">(
-	props: PolymorphicProps<T, SwitchInputProps>,
+	props: PolymorphicProps<T, SwitchInputProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();
@@ -102,12 +105,12 @@ export function SwitchInput<T extends ValidComponent = "input">(
 		target.checked = context.checked();
 	};
 
-	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 		context.setIsFocused(true);
 	};
 
-	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 		context.setIsFocused(false);
 	};

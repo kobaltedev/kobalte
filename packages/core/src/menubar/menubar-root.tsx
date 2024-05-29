@@ -25,7 +25,7 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal, createInteractOutside } from "../primitives";
 import {
 	MenubarContext,
@@ -50,9 +50,9 @@ export interface MenubarRootOptions {
 	focusOnAlt?: boolean;
 }
 
-export interface MenubarRootCommonProps {
+export interface MenubarRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 }
 
 export interface MenubarRootRenderProps extends MenubarRootCommonProps {
@@ -60,14 +60,15 @@ export interface MenubarRootRenderProps extends MenubarRootCommonProps {
 	"data-orientation": "horizontal";
 }
 
-export type MenubarRootProps = MenubarRootOptions &
-	Partial<MenubarRootCommonProps>;
+export type MenubarRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenubarRootOptions & Partial<MenubarRootCommonProps<ElementOf<T>>>;
 
 /**
  * A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.
  */
 export function MenubarRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenubarRootProps>,
+	props: PolymorphicProps<T, MenubarRootProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 	const defaultId = `menubar-${createUniqueId()}`;

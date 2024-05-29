@@ -33,24 +33,24 @@ import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
 } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { SliderDataSet, useSliderContext } from "./slider-context";
 
 export interface SliderThumbOptions {}
 
-export interface SliderThumbCommonProps {
+export interface SliderThumbCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
 	"aria-label": string | undefined;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
@@ -68,11 +68,12 @@ export interface SliderThumbRenderProps
 	"aria-orientation": Orientation;
 }
 
-export type SliderThumbProps = SliderThumbOptions &
-	Partial<SliderThumbCommonProps>;
+export type SliderThumbProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SliderThumbOptions & Partial<SliderThumbCommonProps<ElementOf<T>>>;
 
 export function SliderThumb<T extends ValidComponent = "span">(
-	props: PolymorphicProps<T, SliderThumbProps>,
+	props: PolymorphicProps<T, SliderThumbProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

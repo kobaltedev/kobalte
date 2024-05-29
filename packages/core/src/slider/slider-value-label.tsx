@@ -1,11 +1,13 @@
 import { JSX, ValidComponent } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { SliderDataSet, useSliderContext } from "./slider-context";
 
 export interface SliderValueLabelOptions {}
 
-export interface SliderValueLabelCommonProps {}
+export interface SliderValueLabelCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {}
 
 export interface SliderValueLabelRenderProps
 	extends SliderValueLabelCommonProps,
@@ -13,14 +15,16 @@ export interface SliderValueLabelRenderProps
 	children: JSX.Element;
 }
 
-export type SliderValueLabelProps = SliderValueLabelOptions &
-	Partial<SliderValueLabelCommonProps>;
+export type SliderValueLabelProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SliderValueLabelOptions &
+	Partial<SliderValueLabelCommonProps<ElementOf<T>>>;
 
 /**
  * The accessible label text representing the current value in a human-readable format.
  */
 export function SliderValueLabel<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, SliderValueLabelProps>,
+	props: PolymorphicProps<T, SliderValueLabelProps<T>>,
 ) {
 	const context = useSliderContext();
 

@@ -11,7 +11,9 @@ import { ComponentProps } from "solid-js";
 import { HiddenSelectBase } from "./hidden-select-base";
 import { useSelectContext } from "./select-context";
 
-export type SelectHiddenSelectProps = ComponentProps<"select">;
+export type SelectHiddenSelectProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ComponentProps<"select">;
 
 export function SelectHiddenSelect(props: SelectHiddenSelectProps) {
 	const context = useSelectContext();

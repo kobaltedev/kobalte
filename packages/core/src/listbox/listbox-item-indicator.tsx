@@ -1,7 +1,7 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { Show, ValidComponent, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	ListboxItemDataSet,
 	useListboxItemContext,
@@ -15,7 +15,9 @@ export interface ListboxItemIndicatorOptions {
 	forceMount?: boolean;
 }
 
-export interface ListboxItemIndicatorCommonProps {
+export interface ListboxItemIndicatorCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -25,15 +27,17 @@ export interface ListboxItemIndicatorRenderProps
 	"aria-hidden": "true";
 }
 
-export type ListboxItemIndicatorProps = ListboxItemIndicatorOptions &
-	Partial<ListboxItemIndicatorCommonProps>;
+export type ListboxItemIndicatorProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ListboxItemIndicatorOptions &
+	Partial<ListboxItemIndicatorCommonProps<ElementOf<T>>>;
 
 /**
  * The visual indicator rendered when the item is selected.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
 export function ListboxItemIndicator<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ListboxItemIndicatorProps>,
+	props: PolymorphicProps<T, ListboxItemIndicatorProps<T>>,
 ) {
 	const context = useListboxItemContext();
 

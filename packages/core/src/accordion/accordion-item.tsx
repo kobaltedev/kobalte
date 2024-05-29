@@ -17,7 +17,7 @@ import {
 } from "solid-js";
 
 import * as Collapsible from "../collapsible";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { useAccordionContext } from "./accordion-context";
 import {
@@ -39,21 +39,22 @@ export interface AccordionItemOptions {
 	forceMount?: boolean;
 }
 
-export interface AccordionItemCommonProps
-	extends Collapsible.CollapsibleRootCommonProps {}
+export interface AccordionItemCommonProps<T extends HTMLElement = HTMLElement>
+	extends Collapsible.CollapsibleRootCommonProps<T> {}
 
 export interface AccordionItemRenderProps
 	extends AccordionItemCommonProps,
 		Collapsible.CollapsibleRootRenderProps {}
 
-export type AccordionItemProps = AccordionItemOptions &
-	Partial<AccordionItemRenderProps>;
+export type AccordionItemProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = AccordionItemOptions & Partial<AccordionItemRenderProps>;
 
 /**
  * An item of the accordion, contains all the parts of a collapsible section.
  */
 export function AccordionItem<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, AccordionItemProps>,
+	props: PolymorphicProps<T, AccordionItemProps<T>>,
 ) {
 	const accordionContext = useAccordionContext();
 

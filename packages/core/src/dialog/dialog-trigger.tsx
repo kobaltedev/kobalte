@@ -10,13 +10,14 @@ import { callHandler, mergeRefs } from "@kobalte/utils";
 import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import * as Button from "../button";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useDialogContext } from "./dialog-context";
 
 export interface DialogTriggerOptions {}
 
-export interface DialogTriggerCommonProps extends Button.ButtonRootCommonProps {
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+export interface DialogTriggerCommonProps<T extends HTMLElement = HTMLElement>
+	extends Button.ButtonRootCommonProps<T> {
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 }
 
 export interface DialogTriggerRenderProps
@@ -29,14 +30,15 @@ export interface DialogTriggerRenderProps
 	"data-closed": string | undefined;
 }
 
-export type DialogTriggerProps = DialogTriggerOptions &
-	Partial<DialogTriggerCommonProps>;
+export type DialogTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = DialogTriggerOptions & Partial<DialogTriggerCommonProps<ElementOf<T>>>;
 
 /**
  * The button that opens the dialog.
  */
 export function DialogTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, DialogTriggerProps>,
+	props: PolymorphicProps<T, DialogTriggerProps<T>>,
 ) {
 	const context = useDialogContext();
 
@@ -45,7 +47,7 @@ export function DialogTrigger<T extends ValidComponent = "button">(
 		"onClick",
 	]);
 
-	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 		context.toggle();
 	};

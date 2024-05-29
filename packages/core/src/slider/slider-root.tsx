@@ -29,7 +29,7 @@ import {
 	createFormControl,
 } from "../form-control";
 import { createNumberFormatter, useLocale } from "../i18n";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef, createFormResetListener } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "./create-slider-state";
@@ -131,9 +131,9 @@ export interface SliderRootOptions {
 	readOnly?: boolean;
 }
 
-export interface SliderRootCommonProps {
+export interface SliderRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 }
 
 export interface SliderRootRenderProps
@@ -142,11 +142,12 @@ export interface SliderRootRenderProps
 	role: "group";
 }
 
-export type SliderRootProps = SliderRootOptions &
-	Partial<SliderRootCommonProps>;
+export type SliderRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SliderRootOptions & Partial<SliderRootCommonProps<ElementOf<T>>>;
 
 export function SliderRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, SliderRootProps>,
+	props: PolymorphicProps<T, SliderRootProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

@@ -15,26 +15,28 @@ import {
 	on,
 	onCleanup,
 } from "solid-js";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 
 import { useImageContext } from "./image-context";
 import { ImageLoadingStatus } from "./types";
 
 export interface ImageImgOptions {}
 
-export interface ImageImgCommonProps {
+export interface ImageImgCommonProps<T extends HTMLElement = HTMLElement> {
 	src?: string;
 }
 
 export interface ImageImgRenderProps extends ImageImgCommonProps {}
 
-export type ImageImgProps = ImageImgOptions & Partial<ImageImgCommonProps>;
+export type ImageImgProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ImageImgOptions & Partial<ImageImgCommonProps<ElementOf<T>>>;
 
 /**
  * The image to render. By default, it will only render when it has loaded.
  */
 export function ImageImg<T extends ValidComponent = "img">(
-	props: PolymorphicProps<T, ImageImgProps>,
+	props: PolymorphicProps<T, ImageImgProps<T>>,
 ) {
 	const context = useImageContext();
 

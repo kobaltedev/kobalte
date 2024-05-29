@@ -15,7 +15,7 @@ import {
 } from "solid-js";
 
 import { FormControlDataSet, useFormControlContext } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
 export interface SelectValueState<Option> {
@@ -40,7 +40,7 @@ export interface SelectValueOptions<Option> {
 	children?: JSX.Element | ((state: SelectValueState<Option>) => JSX.Element);
 }
 
-export interface SelectValueCommonProps {
+export interface SelectValueCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -52,7 +52,7 @@ export interface SelectValueRenderProps
 }
 
 export type SelectValueProps<Option> = SelectValueOptions<Option> &
-	Partial<SelectValueCommonProps>;
+	Partial<SelectValueCommonProps<ElementOf<T>>>;
 
 /**
  * The part that reflects the selected value(s).

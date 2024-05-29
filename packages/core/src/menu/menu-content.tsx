@@ -2,7 +2,7 @@ import { OverrideComponentProps, mergeRefs } from "@kobalte/utils";
 import { Component, ValidComponent, splitProps } from "solid-js";
 
 import createPreventScroll from "solid-prevent-scroll";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	MenuContentBase,
 	MenuContentBaseCommonProps,
@@ -14,17 +14,19 @@ import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuContentOptions extends MenuContentBaseOptions {}
 
-export interface MenuContentCommonProps extends MenuContentBaseCommonProps {}
+export interface MenuContentCommonProps<T extends HTMLElement = HTMLElement>
+	extends MenuContentBaseCommonProps<T> {}
 
 export interface MenuContentRenderProps
 	extends MenuContentCommonProps,
 		MenuContentBaseRenderProps {}
 
-export type MenuContentProps = MenuContentOptions &
-	Partial<MenuContentCommonProps>;
+export type MenuContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuContentOptions & Partial<MenuContentCommonProps<ElementOf<T>>>;
 
 export function MenuContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuContentProps>,
+	props: PolymorphicProps<T, MenuContentProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

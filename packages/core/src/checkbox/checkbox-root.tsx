@@ -33,7 +33,7 @@ import {
 	FormControlDataSet,
 	createFormControl,
 } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createFormResetListener, createToggleState } from "../primitives";
 import {
 	CheckboxContext,
@@ -100,10 +100,10 @@ export interface CheckboxRootOptions {
 	children?: JSX.Element | ((state: CheckboxRootState) => JSX.Element);
 }
 
-export interface CheckboxRootCommonProps {
+export interface CheckboxRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	ref: T | ((el: T) => void);
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
 export interface CheckboxRootRenderProps
@@ -114,14 +114,15 @@ export interface CheckboxRootRenderProps
 	role: "group";
 }
 
-export type CheckboxRootProps = CheckboxRootOptions &
-	Partial<CheckboxRootCommonProps>;
+export type CheckboxRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = CheckboxRootOptions & Partial<CheckboxRootCommonProps<ElementOf<T>>>;
 
 /**
  * A control that allows the user to toggle between checked and not checked.
  */
 export function CheckboxRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, CheckboxRootProps>,
+	props: PolymorphicProps<T, CheckboxRootProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 
@@ -168,9 +169,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 		() => state.setIsSelected(local.defaultChecked ?? false),
 	);
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		// For consistency with native, prevent the input blurs on pointer down.

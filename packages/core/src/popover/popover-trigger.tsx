@@ -10,15 +10,17 @@ import { callHandler, mergeRefs } from "@kobalte/utils";
 import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import * as Button from "../button";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { PopoverDataSet, usePopoverContext } from "./popover-context";
 
 export interface PopoverTriggerOptions {}
 
-export interface PopoverTriggerCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+export interface PopoverTriggerCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
+	ref: T | ((el: T) => void);
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
 export interface PopoverTriggerRenderProps
@@ -30,14 +32,15 @@ export interface PopoverTriggerRenderProps
 	"aria-controls": string | undefined;
 }
 
-export type PopoverTriggerProps = PopoverTriggerOptions &
-	Partial<PopoverTriggerCommonProps>;
+export type PopoverTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = PopoverTriggerOptions & Partial<PopoverTriggerCommonProps<ElementOf<T>>>;
 
 /**
  * The button that opens the popover.
  */
 export function PopoverTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, PopoverTriggerProps>,
+	props: PolymorphicProps<T, PopoverTriggerProps<T>>,
 ) {
 	const context = usePopoverContext();
 
@@ -47,16 +50,14 @@ export function PopoverTrigger<T extends ValidComponent = "button">(
 		"onPointerDown",
 	]);
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		// Prevent popover from opening then closing immediately when inside an overlay in safari.
 		e.preventDefault();
 	};
 
-	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 		context.toggle();
 	};

@@ -1,7 +1,7 @@
 import { EventKey, callHandler, mergeDefaultProps } from "@kobalte/utils";
 import { JSX, ValidComponent, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	RadioGroupItemDataSet,
 	useRadioGroupItemContext,
@@ -9,24 +9,28 @@ import {
 
 export interface RadioGroupItemControlOptions {}
 
-export interface RadioGroupItemControlCommonProps {
+export interface RadioGroupItemControlCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 }
 
 export interface RadioGroupItemControlRenderProps
 	extends RadioGroupItemControlCommonProps,
 		RadioGroupItemDataSet {}
 
-export type RadioGroupItemControlProps = RadioGroupItemControlOptions &
-	Partial<RadioGroupItemControlCommonProps>;
+export type RadioGroupItemControlProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = RadioGroupItemControlOptions &
+	Partial<RadioGroupItemControlCommonProps<ElementOf<T>>>;
 
 /**
  * The element that visually represents a radio button.
  */
 export function RadioGroupItemControl<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, RadioGroupItemControlProps>,
+	props: PolymorphicProps<T, RadioGroupItemControlProps<T>>,
 ) {
 	const context = useRadioGroupItemContext();
 

@@ -1,7 +1,7 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { Component, ValidComponent, createMemo, splitProps } from "solid-js";
 
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	ComboboxBase,
 	ComboboxBaseOptions,
@@ -51,7 +51,7 @@ export type ComboboxRootOptions<Option, OptGroup = never> = (
 		"value" | "defaultValue" | "onChange" | "selectionMode"
 	>;
 
-export interface ComboboxRootCommonProps {}
+export interface ComboboxRootCommonProps<T extends HTMLElement = HTMLElement> {}
 
 export interface ComboboxRootRenderProps
 	extends ComboboxRootCommonProps,
@@ -61,7 +61,7 @@ export type ComboboxRootProps<Option, OptGroup = never> = ComboboxRootOptions<
 	Option,
 	OptGroup
 > &
-	Partial<ComboboxRootCommonProps>;
+	Partial<ComboboxRootCommonProps<ElementOf<T>>>;
 
 /**
  * A combo box combines a text input with a listbox, allowing users to filter a list of options to items matching a query.

@@ -1,5 +1,5 @@
 import { Component, ValidComponent, createMemo, splitProps } from "solid-js";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import {
 	SelectBase,
@@ -51,7 +51,8 @@ export type SelectRootOptions<Option, OptGroup = never> = (
 		"value" | "defaultValue" | "onChange" | "selectionMode"
 	>;
 
-export interface SelectRootCommonProps extends SelectBaseCommonProps {}
+export interface SelectRootCommonProps<T extends HTMLElement = HTMLElement>
+	extends SelectBaseCommonProps<T> {}
 
 export interface SelectRootRenderProps
 	extends SelectRootCommonProps,
@@ -61,7 +62,7 @@ export type SelectRootProps<Option, OptGroup = never> = SelectRootOptions<
 	Option,
 	OptGroup
 > &
-	Partial<SelectRootCommonProps>;
+	Partial<SelectRootCommonProps<ElementOf<T>>>;
 
 /**
  * Displays a list of options for the user to pick from — triggered by a button.

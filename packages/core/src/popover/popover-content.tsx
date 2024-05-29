@@ -20,7 +20,7 @@ import {
 	DismissableLayer,
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
 import {
 	FocusOutsideEvent,
@@ -69,9 +69,11 @@ export interface PopoverContentOptions {
 	onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export interface PopoverContentCommonProps {
+export interface PopoverContentCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
@@ -86,14 +88,15 @@ export interface PopoverContentRenderProps
 	"aria-describedby": string | undefined;
 }
 
-export type PopoverContentProps = PopoverContentOptions &
-	Partial<PopoverContentCommonProps>;
+export type PopoverContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = PopoverContentOptions & Partial<PopoverContentCommonProps<ElementOf<T>>>;
 
 /**
  * Contains the content to be rendered when the popover is open.
  */
 export function PopoverContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, PopoverContentProps>,
+	props: PolymorphicProps<T, PopoverContentProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

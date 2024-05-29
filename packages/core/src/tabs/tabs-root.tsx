@@ -18,7 +18,7 @@ import {
 } from "solid-js";
 
 import { createSingleSelectListState } from "../list";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { TabsContext, TabsContextValue } from "./tabs-context";
@@ -47,7 +47,7 @@ export interface TabsRootOptions {
 	disabled?: boolean;
 }
 
-export interface TabsRootCommonProps {
+export interface TabsRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id?: string;
 }
 
@@ -55,14 +55,16 @@ export interface TabsRootRenderProps extends TabsRootCommonProps {
 	"data-orientation": Orientation;
 }
 
-export type TabsRootProps = TabsRootOptions & Partial<TabsRootCommonProps>;
+export type TabsRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = TabsRootOptions & Partial<TabsRootCommonProps<ElementOf<T>>>;
 
 /**
  * A set of layered sections of content, known as tab panels, that display one panel of content at a time.
  * `Tabs` contains all the parts of a tabs component and provide context for its children.
  */
 export function TabsRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, TabsRootProps>,
+	props: PolymorphicProps<T, TabsRootProps<T>>,
 ) {
 	const defaultId = `tabs-${createUniqueId()}`;
 

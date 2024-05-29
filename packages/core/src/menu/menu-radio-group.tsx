@@ -15,7 +15,7 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import {
 	MenuGroup,
@@ -45,7 +45,8 @@ export interface MenuRadioGroupOptions {
 	disabled?: boolean;
 }
 
-export interface MenuRadioGroupCommonProps extends MenuGroupCommonProps {
+export interface MenuRadioGroupCommonProps<T extends HTMLElement = HTMLElement>
+	extends MenuGroupCommonProps<T> {
 	id: string;
 }
 
@@ -53,14 +54,15 @@ export interface MenuRadioGroupRenderProps
 	extends MenuRadioGroupCommonProps,
 		MenuGroupRenderProps {}
 
-export type MenuRadioGroupProps = MenuRadioGroupOptions &
-	Partial<MenuRadioGroupCommonProps>;
+export type MenuRadioGroupProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuRadioGroupOptions & Partial<MenuRadioGroupCommonProps<ElementOf<T>>>;
 
 /**
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
 export function MenuRadioGroup<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuRadioGroupProps>,
+	props: PolymorphicProps<T, MenuRadioGroupProps<T>>,
 ) {
 	const rootContext = useMenuRootContext();
 

@@ -15,17 +15,17 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { ValidComponent, createMemo, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createTagName } from "../primitives";
 import { isButton } from "./is-button";
 
 export interface ButtonRootOptions {}
 
-export interface ButtonRootCommonProps {
+export interface ButtonRootCommonProps<T extends HTMLElement = HTMLElement> {
 	/** Whether the button is disabled. */
 	disabled: boolean | undefined;
 	type: string | undefined;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 	tabIndex: number | string | undefined;
 }
 
@@ -35,8 +35,9 @@ export interface ButtonRootRenderProps extends ButtonRootCommonProps {
 	"data-disabled": string | undefined;
 }
 
-export type ButtonRootProps = ButtonRootOptions &
-	Partial<ButtonRootCommonProps>;
+export type ButtonRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ButtonRootOptions & Partial<ButtonRootCommonProps<ElementOf<T>>>;
 
 /**
  * Button enables users to trigger an action or event, such as submitting a form,
@@ -44,7 +45,7 @@ export type ButtonRootProps = ButtonRootOptions &
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
 export function ButtonRoot<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, ButtonRootProps>,
+	props: PolymorphicProps<T, ButtonRootProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

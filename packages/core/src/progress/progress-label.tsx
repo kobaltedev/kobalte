@@ -1,12 +1,12 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { ProgressDataSet, useProgressContext } from "./progress-context";
 
 export interface ProgressLabelOptions {}
 
-export interface ProgressLabelCommonProps {
+export interface ProgressLabelCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -14,14 +14,15 @@ export interface ProgressLabelRenderProps
 	extends ProgressLabelCommonProps,
 		ProgressDataSet {}
 
-export type ProgressLabelProps = ProgressLabelOptions &
-	Partial<ProgressLabelCommonProps>;
+export type ProgressLabelProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ProgressLabelOptions & Partial<ProgressLabelCommonProps<ElementOf<T>>>;
 
 /**
  * An accessible label that gives the user information on the progress.
  */
 export function ProgressLabel<T extends ValidComponent = "span">(
-	props: PolymorphicProps<T, ProgressLabelProps>,
+	props: PolymorphicProps<T, ProgressLabelProps<T>>,
 ) {
 	const context = useProgressContext();
 

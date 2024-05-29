@@ -10,19 +10,19 @@ import { Orientation, composeEventHandlers, mergeRefs } from "@kobalte/utils";
 import { JSX, ValidComponent, createEffect, splitProps } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createSelectableCollection } from "../selection";
 import { useTabsContext } from "./tabs-context";
 import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate";
 
 export interface TabsListOptions {}
 
-export interface TabsListCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+export interface TabsListCommonProps<T extends HTMLElement = HTMLElement> {
+	ref: T | ((el: T) => void);
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
+	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface TabsListRenderProps extends TabsListCommonProps {
@@ -31,13 +31,15 @@ export interface TabsListRenderProps extends TabsListCommonProps {
 	"data-orientation": Orientation;
 }
 
-export type TabsListProps = TabsListOptions & Partial<TabsListCommonProps>;
+export type TabsListProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = TabsListOptions & Partial<TabsListCommonProps<ElementOf<T>>>;
 
 /**
  * Contains the tabs that are aligned along the edge of the active tab panel.
  */
 export function TabsList<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, TabsListProps>,
+	props: PolymorphicProps<T, TabsListProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

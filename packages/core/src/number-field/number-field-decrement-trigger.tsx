@@ -1,5 +1,5 @@
 import { Component, ValidComponent } from "solid-js";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	NumberFieldVaryTrigger,
 	NumberFieldVaryTriggerCommonProps,
@@ -8,20 +8,22 @@ import {
 
 export interface NumberFieldDecrementTriggerOptions {}
 
-export interface NumberFieldDecrementTriggerCommonProps
-	extends NumberFieldVaryTriggerCommonProps {}
+export interface NumberFieldDecrementTriggerCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends NumberFieldVaryTriggerCommonProps<T> {}
 
 export interface NumberFieldDecrementTriggerRenderProps
 	extends NumberFieldDecrementTriggerCommonProps,
 		NumberFieldVaryTriggerRenderProps {}
 
-export type NumberFieldDecrementTriggerProps =
-	NumberFieldDecrementTriggerOptions &
-		Partial<NumberFieldDecrementTriggerCommonProps>;
+export type NumberFieldDecrementTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = NumberFieldDecrementTriggerOptions &
+	Partial<NumberFieldDecrementTriggerCommonProps<ElementOf<T>>>;
 
 export function NumberFieldDecrementTrigger<
 	T extends ValidComponent = "button",
->(props: PolymorphicProps<T, NumberFieldDecrementTriggerProps>) {
+>(props: PolymorphicProps<T, NumberFieldDecrementTriggerProps<T>>) {
 	return (
 		<NumberFieldVaryTrigger<
 			Component<

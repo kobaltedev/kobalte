@@ -1,14 +1,14 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { JSX, Show, ValidComponent, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useDialogContext } from "./dialog-context";
 
 export interface DialogOverlayOptions {}
 
-export interface DialogOverlayCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+export interface DialogOverlayCommonProps<T extends HTMLElement = HTMLElement> {
+	ref: T | ((el: T) => void);
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	/** The HTML styles attribute (object form only). */
 	style: JSX.CSSProperties;
 }
@@ -18,14 +18,15 @@ export interface DialogOverlayRenderProps extends DialogOverlayCommonProps {
 	"data-closed": string | undefined;
 }
 
-export type DialogOverlayProps = DialogOverlayOptions &
-	Partial<DialogOverlayCommonProps>;
+export type DialogOverlayProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = DialogOverlayOptions & Partial<DialogOverlayCommonProps<ElementOf<T>>>;
 
 /**
  * A layer that covers the inert portion of the view when the dialog is open.
  */
 export function DialogOverlay<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, DialogOverlayProps>,
+	props: PolymorphicProps<T, DialogOverlayProps<T>>,
 ) {
 	const context = useDialogContext();
 
@@ -35,9 +36,7 @@ export function DialogOverlay<T extends ValidComponent = "div">(
 		"onPointerDown",
 	]);
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		// fixes a firefox issue that starts text selection https://bugzilla.mozilla.org/show_bug.cgi?id=1675846

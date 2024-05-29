@@ -10,7 +10,7 @@ import {
 
 import * as Listbox from "../listbox";
 import { ListboxRootCommonProps, ListboxRootRenderProps } from "../listbox";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
 export interface SelectListboxOptions<Option, OptGroup = never>
@@ -19,7 +19,8 @@ export interface SelectListboxOptions<Option, OptGroup = never>
 		"scrollRef" | "scrollToItem" | "children"
 	> {}
 
-export interface SelectListboxCommonProps extends ListboxRootCommonProps {
+export interface SelectListboxCommonProps<T extends HTMLElement = HTMLElement>
+	extends ListboxRootCommonProps<T> {
 	"aria-labelledby": string | undefined;
 }
 
@@ -31,7 +32,7 @@ export type SelectListboxProps<Option, OptGroup = never> = SelectListboxOptions<
 	Option,
 	OptGroup
 > &
-	Partial<SelectListboxCommonProps>;
+	Partial<SelectListboxCommonProps<ElementOf<T>>>;
 
 /**
  * Contains all the items of a `Select`.
@@ -54,7 +55,7 @@ export function SelectListbox<
 
 	createEffect(() => onCleanup(context.registerListboxId(local.id)));
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		// Prevent from clearing the selection by `createSelectableCollection` on escape.

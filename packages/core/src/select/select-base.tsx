@@ -36,7 +36,7 @@ import {
 } from "../form-control";
 import { createCollator } from "../i18n";
 import { ListKeyboardDelegate, createListState } from "../list";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { Popper, PopperRootOptions } from "../popper";
 import {
 	CollectionNode,
@@ -202,7 +202,7 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 	readOnly?: boolean;
 }
 
-export interface SelectBaseCommonProps {
+export interface SelectBaseCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -217,7 +217,7 @@ export type SelectBaseProps<Option, OptGroup = never> = SelectBaseOptions<
 	Option,
 	OptGroup
 > &
-	Partial<SelectBaseCommonProps>;
+	Partial<SelectBaseCommonProps<ElementOf<T>>>;
 
 /**
  * Base component for a select, provide context for its children.

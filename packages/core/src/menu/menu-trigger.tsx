@@ -24,20 +24,21 @@ import {
 
 import * as Button from "../button";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createTagName } from "../primitives/create-tag-name";
 import { MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuTriggerOptions {}
 
-export interface MenuTriggerCommonProps extends Button.ButtonRootCommonProps {
+export interface MenuTriggerCommonProps<T extends HTMLElement = HTMLElement>
+	extends Button.ButtonRootCommonProps<T> {
 	id: string;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onMouseOver: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onMouseOver: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface MenuTriggerRenderProps
@@ -47,14 +48,15 @@ export interface MenuTriggerRenderProps
 	role: "menuitem" | undefined;
 }
 
-export type MenuTriggerProps = MenuTriggerOptions &
-	Partial<MenuTriggerCommonProps>;
+export type MenuTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuTriggerOptions & Partial<MenuTriggerCommonProps<ElementOf<T>>>;
 
 /**
  * The button that toggles the menu.
  */
 export function MenuTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, MenuTriggerProps>,
+	props: PolymorphicProps<T, MenuTriggerProps<T>>,
 ) {
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
@@ -137,9 +139,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		e.currentTarget.dataset.pointerType = e.pointerType;
@@ -150,7 +150,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		if (!local.disabled) {
@@ -158,7 +158,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		if (local.disabled) {
@@ -203,7 +203,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onMouseOver: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+	const onMouseOver: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
 		callHandler(e, local.onMouseOver);
 
 		// When one of the menubar menus is open, automatically open others on trigger hover
@@ -216,7 +216,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		if (optionalMenubarContext !== undefined)

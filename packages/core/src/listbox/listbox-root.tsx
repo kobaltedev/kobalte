@@ -28,7 +28,7 @@ import {
 } from "solid-js";
 
 import { ListState, createListState, createSelectableList } from "../list";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { Collection, CollectionNode } from "../primitives";
 import {
 	FocusStrategy,
@@ -132,13 +132,13 @@ export interface ListboxRootOptions<Option, OptGroup = never> {
 	) => JSX.Element;
 }
 
-export interface ListboxRootCommonProps {
+export interface ListboxRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	ref: T | ((el: T) => void);
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
+	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface ListboxRootRenderProps extends ListboxRootCommonProps {
@@ -151,7 +151,7 @@ export type ListboxRootProps<Option, OptGroup = never> = ListboxRootOptions<
 	Option,
 	OptGroup
 > &
-	Partial<ListboxRootCommonProps>;
+	Partial<ListboxRootCommonProps<ElementOf<T>>>;
 
 /**
  * Listbox presents a list of options and allows a user to select one or more of them.

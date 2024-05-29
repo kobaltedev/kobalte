@@ -9,26 +9,29 @@ import {
 } from "../menu";
 import { useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { InteractOutsideEvent } from "../primitives";
 
 export interface DropdownMenuContentOptions extends MenuContentOptions {}
 
-export interface DropdownMenuContentCommonProps
-	extends MenuContentCommonProps {}
+export interface DropdownMenuContentCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends MenuContentCommonProps<T> {}
 
 export interface DropdownMenuContentRenderProps
 	extends DropdownMenuContentCommonProps,
 		MenuContentRenderProps {}
 
-export type DropdownMenuContentProps = DropdownMenuContentOptions &
-	Partial<DropdownMenuContentCommonProps>;
+export type DropdownMenuContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = DropdownMenuContentOptions &
+	Partial<DropdownMenuContentCommonProps<ElementOf<T>>>;
 
 /**
  * Contains the content to be rendered when the dropdown menu is open.
  */
 export function DropdownMenuContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, DropdownMenuContentProps>,
+	props: PolymorphicProps<T, DropdownMenuContentProps<T>>,
 ) {
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();

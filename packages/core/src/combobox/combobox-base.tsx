@@ -38,7 +38,7 @@ import {
 import { createFilter } from "../i18n";
 import { ListKeyboardDelegate, createListState } from "../list";
 import { announce } from "../live-announcer";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { Popper, PopperRootOptions } from "../popper";
 import {
 	CollectionNode,
@@ -245,7 +245,7 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
 	readOnly?: boolean;
 }
 
-export interface ComboboxBaseCommonProps {
+export interface ComboboxBaseCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -260,7 +260,7 @@ export type ComboboxBaseProps<Option, OptGroup = never> = ComboboxBaseOptions<
 	Option,
 	OptGroup
 > &
-	Partial<ComboboxBaseCommonProps>;
+	Partial<ComboboxBaseCommonProps<ElementOf<T>>>;
 
 /**
  * Base component for a combobox, provide context for its children.

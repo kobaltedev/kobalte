@@ -30,18 +30,18 @@ import {
 	splitProps,
 } from "solid-js";
 import { isServer } from "solid-js/web";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 
 import { useToastRegionContext } from "./toast-region-context";
 
 export interface ToastListOptions {}
 
-export interface ToastListCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+export interface ToastListCommonProps<T extends HTMLElement = HTMLElement> {
+	ref: T | ((el: T) => void);
+	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
+	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
+	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
 export interface ToastListRenderProps extends ToastListCommonProps {
@@ -49,14 +49,16 @@ export interface ToastListRenderProps extends ToastListCommonProps {
 	tabIndex: -1;
 }
 
-export type ToastListProps = ToastListOptions & Partial<ToastListCommonProps>;
+export type ToastListProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToastListOptions & Partial<ToastListCommonProps<ElementOf<T>>>;
 
 /**
  * The list containing all rendered toasts.
  * Must be inside a `Toast.Region`.
  */
 export function ToastList<T extends ValidComponent = "ol">(
-	props: PolymorphicProps<T, ToastListProps>,
+	props: PolymorphicProps<T, ToastListProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 
@@ -70,7 +72,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		"onPointerLeave",
 	]);
 
-	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onFocusIn: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
 		callHandler(e, local.onFocusIn);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
@@ -78,7 +80,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		}
 	};
 
-	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onFocusOut: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
 		callHandler(e, local.onFocusOut);
 
 		// The newly focused element isn't inside the toast list.
@@ -87,9 +89,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerMove: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
@@ -97,9 +97,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerLeave);
 
 		// The current active element isn't inside the toast list.

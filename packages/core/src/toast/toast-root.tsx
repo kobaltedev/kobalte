@@ -30,7 +30,7 @@ import {
 	onMount,
 	splitProps,
 } from "solid-js";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 
 import { createPresence, createRegisterId } from "../primitives";
 import { ToastContext, ToastContextValue } from "./toast-context";
@@ -103,15 +103,15 @@ export interface ToastRootOptions {
 	onEscapeKeyDown?: (event: KeyboardEvent) => void;
 }
 
-export interface ToastRootCommonProps {
+export interface ToastRootCommonProps<T extends HTMLElement = HTMLElement> {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	ref: T | ((el: T) => void);
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
 export interface ToastRootRenderProps extends ToastRootCommonProps {
@@ -119,10 +119,12 @@ export interface ToastRootRenderProps extends ToastRootCommonProps {
 	tabIndex: 0;
 }
 
-export type ToastRootProps = ToastRootOptions & Partial<ToastRootCommonProps>;
+export type ToastRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToastRootOptions & Partial<ToastRootCommonProps<ElementOf<T>>>;
 
 export function ToastRoot<T extends ValidComponent = "li">(
-	props: PolymorphicProps<T, ToastRootProps>,
+	props: PolymorphicProps<T, ToastRootProps<T>>,
 ) {
 	const rootContext = useToastRegionContext();
 
@@ -212,7 +214,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		local.onPause?.();
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		if (e.key !== "Escape") {
@@ -226,9 +228,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		}
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		if (e.button !== 0) {
@@ -238,9 +238,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		pointerStart = { x: e.clientX, y: e.clientY };
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerMove: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		if (!pointerStart) {
@@ -301,7 +299,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerUp: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerUp);
 
 		const delta = swipeDelta;

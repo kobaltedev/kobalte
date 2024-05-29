@@ -9,14 +9,14 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent, createSignal, createUniqueId } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { MenuGroupContext, MenuGroupContextValue } from "./menu-group-context";
 import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuGroupOptions {}
 
-export interface MenuGroupCommonProps {
+export interface MenuGroupCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -25,13 +25,15 @@ export interface MenuGroupRenderProps extends MenuGroupCommonProps {
 	"aria-labelledby": string | undefined;
 }
 
-export type MenuGroupProps = MenuGroupOptions & Partial<MenuGroupCommonProps>;
+export type MenuGroupProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuGroupOptions & Partial<MenuGroupCommonProps<ElementOf<T>>>;
 
 /**
  * A container used to group multiple `Menu.Item`s.
  */
 export function MenuGroup<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuGroupProps>,
+	props: PolymorphicProps<T, MenuGroupProps<T>>,
 ) {
 	const rootContext = useMenuRootContext();
 

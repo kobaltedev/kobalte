@@ -17,17 +17,17 @@ import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { ComboboxDataSet, useComboboxContext } from "./combobox-context";
 
 export interface ComboboxTriggerOptions {}
 
-export interface ComboboxTriggerCommonProps
-	extends Button.ButtonRootCommonProps {
+export interface ComboboxTriggerCommonProps<T extends HTMLElement = HTMLElement>
+	extends Button.ButtonRootCommonProps<T> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	ref: T | ((el: T) => void);
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	"aria-labelledby": string | undefined;
 }
 
@@ -41,11 +41,12 @@ export interface ComboboxTriggerRenderProps
 	"aria-controls": string | undefined;
 }
 
-export type ComboboxTriggerProps = ComboboxTriggerOptions &
-	Partial<ComboboxTriggerCommonProps>;
+export type ComboboxTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ComboboxTriggerOptions & Partial<ComboboxTriggerCommonProps<ElementOf<T>>>;
 
 export function ComboboxTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, ComboboxTriggerProps>,
+	props: PolymorphicProps<T, ComboboxTriggerProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
@@ -74,9 +75,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 		);
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		e.currentTarget.dataset.pointerType = e.pointerType;
@@ -90,7 +89,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		if (!isDisabled()) {

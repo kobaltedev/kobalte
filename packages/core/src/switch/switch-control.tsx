@@ -2,15 +2,15 @@ import { EventKey, callHandler, mergeDefaultProps } from "@kobalte/utils";
 import { JSX, ValidComponent, splitProps } from "solid-js";
 
 import { FormControlDataSet, useFormControlContext } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { SwitchDataSet, useSwitchContext } from "./switch-context";
 
 export interface SwitchControlOptions {}
 
-export interface SwitchControlCommonProps {
+export interface SwitchControlCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 }
 
 export interface SwitchControlRenderProps
@@ -18,14 +18,15 @@ export interface SwitchControlRenderProps
 		FormControlDataSet,
 		SwitchDataSet {}
 
-export type SwitchControlProps = SwitchControlOptions &
-	Partial<SwitchControlCommonProps>;
+export type SwitchControlProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SwitchControlOptions & Partial<SwitchControlCommonProps<ElementOf<T>>>;
 
 /**
  * The element that visually represents a switch.
  */
 export function SwitchControl<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, SwitchControlProps>,
+	props: PolymorphicProps<T, SwitchControlProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();

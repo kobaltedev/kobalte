@@ -22,7 +22,7 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { useRadioGroupContext } from "./radio-group-context";
 import {
@@ -42,9 +42,11 @@ export interface RadioGroupItemOptions {
 	disabled?: boolean;
 }
 
-export interface RadioGroupItemCommonProps {
+export interface RadioGroupItemCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
 export interface RadioGroupItemRenderProps
@@ -53,14 +55,15 @@ export interface RadioGroupItemRenderProps
 	role: "group";
 }
 
-export type RadioGroupItemProps = RadioGroupItemOptions &
-	Partial<RadioGroupItemCommonProps>;
+export type RadioGroupItemProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = RadioGroupItemOptions & Partial<RadioGroupItemCommonProps<ElementOf<T>>>;
 
 /**
  * The root container for a radio button.
  */
 export function RadioGroupItem<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, RadioGroupItemProps>,
+	props: PolymorphicProps<T, RadioGroupItemProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const radioGroupContext = useRadioGroupContext();

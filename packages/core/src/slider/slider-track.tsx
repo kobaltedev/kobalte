@@ -1,31 +1,32 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { JSX, ValidComponent, createSignal, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { SliderDataSet, useSliderContext } from "./slider-context";
 import { getClosestValueIndex, linearScale } from "./utils";
 
 export interface SliderTrackOptions {}
 
-export interface SliderTrackCommonProps {
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+export interface SliderTrackCommonProps<T extends HTMLElement = HTMLElement> {
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
 export interface SliderTrackRenderProps
 	extends SliderTrackCommonProps,
 		SliderDataSet {}
 
-export type SliderTrackProps = SliderTrackOptions &
-	Partial<SliderTrackCommonProps>;
+export type SliderTrackProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SliderTrackOptions & Partial<SliderTrackCommonProps<ElementOf<T>>>;
 
 /**
  * The component that visually represents the slider track.
  * Act as a container for `Slider.Fill`.
  */
 export function SliderTrack<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, SliderTrackProps>,
+	props: PolymorphicProps<T, SliderTrackProps<T>>,
 ) {
 	const context = useSliderContext();
 
@@ -67,9 +68,7 @@ export function SliderTrack<T extends ValidComponent = "div">(
 
 	let startPosition = 0;
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		const target = e.target as HTMLElement;
@@ -85,9 +84,7 @@ export function SliderTrack<T extends ValidComponent = "div">(
 		context.onSlideStart?.(closestIndex, value);
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerMove: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		const target = e.target as HTMLElement;
@@ -102,7 +99,7 @@ export function SliderTrack<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerUp: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerUp);
 
 		const target = e.target as HTMLElement;

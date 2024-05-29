@@ -2,7 +2,7 @@ import { composeEventHandlers } from "@kobalte/utils";
 import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import * as Button from "../button";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { usePaginationContext } from "./pagination-context";
 
 export interface PaginationItemOptions {
@@ -10,8 +10,10 @@ export interface PaginationItemOptions {
 	page: number;
 }
 
-export interface PaginationItemCommonProps {
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+export interface PaginationItemCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 }
 
 export interface PaginationItemRenderProps
@@ -21,11 +23,12 @@ export interface PaginationItemRenderProps
 	"data-current": "" | undefined;
 }
 
-export type PaginationItemProps = PaginationItemOptions &
-	Partial<PaginationItemCommonProps>;
+export type PaginationItemProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = PaginationItemOptions & Partial<PaginationItemCommonProps<ElementOf<T>>>;
 
 export function PaginationItem<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, PaginationItemProps>,
+	props: PolymorphicProps<T, PaginationItemProps<T>>,
 ) {
 	const context = usePaginationContext();
 

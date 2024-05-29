@@ -1,25 +1,26 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useDialogContext } from "./dialog-context";
 
 export interface DialogTitleOptions {}
 
-export interface DialogTitleCommonProps {
+export interface DialogTitleCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
 export interface DialogTitleRenderProps extends DialogTitleCommonProps {}
 
-export type DialogTitleProps = DialogTitleOptions &
-	Partial<DialogTitleCommonProps>;
+export type DialogTitleProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = DialogTitleOptions & Partial<DialogTitleCommonProps<ElementOf<T>>>;
 
 /**
  * An accessible title to be announced when the dialog is open.
  */
 export function DialogTitle<T extends ValidComponent = "h2">(
-	props: PolymorphicProps<T, DialogTitleProps>,
+	props: PolymorphicProps<T, DialogTitleProps<T>>,
 ) {
 	const context = useDialogContext();
 

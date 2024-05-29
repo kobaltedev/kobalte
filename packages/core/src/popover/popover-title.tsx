@@ -1,12 +1,12 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { PopoverDataSet, usePopoverContext } from "./popover-context";
 
 export interface PopoverTitleOptions {}
 
-export interface PopoverTitleCommonProps {
+export interface PopoverTitleCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -14,14 +14,15 @@ export interface PopoverTitleRenderProps
 	extends PopoverTitleCommonProps,
 		PopoverDataSet {}
 
-export type PopoverTitleProps = PopoverTitleOptions &
-	Partial<PopoverTitleCommonProps>;
+export type PopoverTitleProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = PopoverTitleOptions & Partial<PopoverTitleCommonProps<ElementOf<T>>>;
 
 /**
  * An accessible title to be announced when the popover is open.
  */
 export function PopoverTitle<T extends ValidComponent = "h2">(
-	props: PolymorphicProps<T, PopoverTitleProps>,
+	props: PolymorphicProps<T, PopoverTitleProps<T>>,
 ) {
 	const context = usePopoverContext();
 

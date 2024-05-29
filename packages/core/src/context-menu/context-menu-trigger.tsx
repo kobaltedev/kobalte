@@ -12,7 +12,7 @@ import { isServer } from "solid-js/web";
 
 import { MenuDataSet, useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useContextMenuContext } from "./context-menu-context";
 
 export interface ContextMenuTriggerOptions {
@@ -20,14 +20,16 @@ export interface ContextMenuTriggerOptions {
 	disabled?: boolean;
 }
 
-export interface ContextMenuTriggerCommonProps {
+export interface ContextMenuTriggerCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onContextMenu: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	ref: T | ((el: T) => void);
+	onContextMenu: JSX.EventHandlerUnion<T, MouseEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerCancel: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
 
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
@@ -37,11 +39,13 @@ export interface ContextMenuTriggerRenderProps
 	extends ContextMenuTriggerCommonProps,
 		MenuDataSet {}
 
-export type ContextMenuTriggerProps = ContextMenuTriggerOptions &
-	Partial<ContextMenuTriggerCommonProps>;
+export type ContextMenuTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ContextMenuTriggerOptions &
+	Partial<ContextMenuTriggerCommonProps<ElementOf<T>>>;
 
 export function ContextMenuTrigger<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ContextMenuTriggerProps>,
+	props: PolymorphicProps<T, ContextMenuTriggerProps<T>>,
 ) {
 	const rootContext = useMenuRootContext();
 	const menuContext = useMenuContext();
@@ -79,7 +83,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		clearLongPressTimeout();
 	});
 
-	const onContextMenu: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+	const onContextMenu: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
 		// If trigger is disabled, enable the native Context Menu.
 		if (local.disabled) {
 			callHandler(e, local.onContextMenu);
@@ -117,9 +121,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerMove: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		if (!local.disabled && isTouchOrPen(e)) {
@@ -127,9 +129,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerCancel: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerCancel);
 
 		if (!local.disabled && isTouchOrPen(e)) {
@@ -137,7 +137,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerUp: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerUp);
 
 		if (!local.disabled && isTouchOrPen(e)) {

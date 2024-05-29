@@ -11,7 +11,9 @@ import { ComponentProps } from "solid-js";
 import { HiddenSelectBase } from "../select/hidden-select-base";
 import { useComboboxContext } from "./combobox-context";
 
-export type ComboboxHiddenSelectProps = ComponentProps<"select">;
+export type ComboboxHiddenSelectProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ComponentProps<"select">;
 
 export function ComboboxHiddenSelect(props: ComboboxHiddenSelectProps) {
 	const context = useComboboxContext();

@@ -30,7 +30,7 @@ import {
 } from "../dismissable-layer";
 import { createSelectableList } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
 import {
 	FocusOutsideEvent,
@@ -79,15 +79,17 @@ export interface MenuContentBaseOptions {
 	onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export interface MenuContentBaseCommonProps {
+export interface MenuContentBaseCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	ref: T | ((el: T) => void);
+	onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
+	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
@@ -101,11 +103,12 @@ export interface MenuContentBaseRenderProps
 	"aria-labelledby": string | undefined;
 }
 
-export type MenuContentBaseProps = MenuContentBaseOptions &
-	Partial<MenuContentBaseCommonProps>;
+export type MenuContentBaseProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuContentBaseOptions & Partial<MenuContentBaseCommonProps<ElementOf<T>>>;
 
 export function MenuContentBase<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuContentBaseProps>,
+	props: PolymorphicProps<T, MenuContentBaseProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 
@@ -172,7 +175,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		() => ref,
 	);
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
 		// Submenu key events bubble through portals. We only care about keys in this menu.
 		if (!contains(e.currentTarget, e.target)) {
 			return;
@@ -228,9 +231,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerEnter);
 
 		if (!context.isOpen()) {
@@ -250,9 +251,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			.setFocusedKey(undefined);
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerMove: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {

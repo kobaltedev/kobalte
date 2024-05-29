@@ -21,19 +21,21 @@ import {
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useComboboxContext } from "./combobox-context";
 
 export interface ComboboxInputOptions {}
 
-export interface ComboboxInputCommonProps {
+export interface ComboboxInputCommonProps<
+	T extends HTMLElement = HTMLInputElement,
+> {
 	id: string;
-	ref: HTMLInputElement | ((el: HTMLInputElement) => void);
-	onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent>;
-	onKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onTouchEnd: JSX.EventHandlerUnion<HTMLElement, TouchEvent>;
+	ref: T | ((el: T) => void);
+	onInput: JSX.EventHandlerUnion<T, InputEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
+	onTouchEnd: JSX.EventHandlerUnion<T, TouchEvent>;
 	disabled: boolean | undefined;
 	"aria-label": string | undefined;
 	"aria-labelledby": string | undefined;
@@ -63,11 +65,12 @@ export interface ComboboxInputRenderProps
 	"aria-activedescendant": string | undefined;
 }
 
-export type ComboboxInputProps = ComboboxInputOptions &
-	Partial<ComboboxInputCommonProps>;
+export type ComboboxInputProps<
+	T extends ValidComponent | HTMLElement = HTMLInputElement,
+> = ComboboxInputOptions & Partial<ComboboxInputCommonProps<ElementOf<T>>>;
 
 export function ComboboxInput<T extends ValidComponent = "input">(
-	props: PolymorphicProps<T, ComboboxInputProps>,
+	props: PolymorphicProps<T, ComboboxInputProps<T>>,
 ) {
 	let ref: HTMLInputElement | undefined;
 
@@ -217,7 +220,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 		}
 	};
 
-	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		if (context.isInputFocused()) {
@@ -227,7 +230,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 		context.setIsInputFocused(true);
 	};
 
-	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 
 		// Ignore blur if focused moved into the control or menu.
@@ -244,7 +247,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	// If a touch happens on direct center of Combobox input, might be virtual click from iPad so open ComboBox menu
 	let lastEventTime = 0;
 
-	const onTouchEnd: JSX.EventHandlerUnion<HTMLElement, TouchEvent> = (e) => {
+	const onTouchEnd: JSX.EventHandlerUnion<T, TouchEvent> = (e) => {
 		callHandler(e, local.onTouchEnd);
 
 		if (!ref || formControlContext.isReadOnly() || isDisabled()) {

@@ -7,7 +7,7 @@
  */
 import { mergeDefaultProps } from "@kobalte/utils";
 import { JSX, ValidComponent, createUniqueId, splitProps } from "solid-js";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 
 export interface SkeletonRootOptions {
 	/** Whether the skeleton is visible. Sets data attribute. */
@@ -29,7 +29,7 @@ export interface SkeletonRootOptions {
 	animate?: boolean;
 }
 
-export interface SkeletonRootCommonProps {
+export interface SkeletonRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 	/** The HTML styles attribute (object form only). */
 	style: JSX.CSSProperties;
@@ -41,11 +41,12 @@ export interface SkeletonRootRenderProps extends SkeletonRootCommonProps {
 	"data-visible": boolean;
 }
 
-export type SkeletonRootProps = SkeletonRootOptions &
-	Partial<SkeletonRootCommonProps>;
+export type SkeletonRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SkeletonRootOptions & Partial<SkeletonRootCommonProps<ElementOf<T>>>;
 
 export function Skeleton<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, SkeletonRootProps>,
+	props: PolymorphicProps<T, SkeletonRootProps<T>>,
 ) {
 	const defaultId = `skeleton-${createUniqueId()}`;
 

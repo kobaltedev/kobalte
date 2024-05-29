@@ -16,7 +16,7 @@ import {
 } from "@kobalte/utils";
 import { JSX, ValidComponent, createEffect, on, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -30,16 +30,16 @@ export interface TabsTriggerOptions {
 	disabled?: boolean;
 }
 
-export interface TabsTriggerCommonProps {
+export interface TabsTriggerCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 	type: "button";
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface TabsTriggerRenderProps extends TabsTriggerCommonProps {
@@ -56,14 +56,15 @@ export interface TabsTriggerRenderProps extends TabsTriggerCommonProps {
 	"data-disabled": string | undefined;
 }
 
-export type TabsTriggerProps = TabsTriggerOptions &
-	Partial<TabsTriggerCommonProps>;
+export type TabsTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = TabsTriggerOptions & Partial<TabsTriggerCommonProps<ElementOf<T>>>;
 
 /**
  * The button that activates its associated tab panel.
  */
 export function TabsTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, TabsTriggerProps>,
+	props: PolymorphicProps<T, TabsTriggerProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

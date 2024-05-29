@@ -27,7 +27,7 @@ import {
 } from "solid-js";
 
 import * as Button from "../button";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createToggleState } from "../primitives";
 
 export interface ToggleButtonRootState {
@@ -55,8 +55,10 @@ export interface ToggleButtonRootOptions extends Button.ButtonRootOptions {
 	children?: JSX.Element | ((state: ToggleButtonRootState) => JSX.Element);
 }
 
-export interface ToggleButtonRootCommonProps {
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+export interface ToggleButtonRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	disabled: boolean | undefined;
 }
 
@@ -68,15 +70,17 @@ export interface ToggleButtonRootRenderProps
 	"data-pressed": "" | undefined;
 }
 
-export type ToggleButtonRootProps = ToggleButtonRootOptions &
-	Partial<ToggleButtonRootCommonProps>;
+export type ToggleButtonRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToggleButtonRootOptions &
+	Partial<ToggleButtonRootCommonProps<ElementOf<T>>>;
 
 /**
  * A two-state button that allow users to toggle a selection on or off.
  * This component is based on the [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
  */
 export function ToggleButtonRoot<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, ToggleButtonRootProps>,
+	props: PolymorphicProps<T, ToggleButtonRootProps<T>>,
 ) {
 	const [local, others] = splitProps(props as ToggleButtonRootProps, [
 		"children",

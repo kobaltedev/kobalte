@@ -2,7 +2,7 @@ import { callHandler } from "@kobalte/utils";
 import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import { useNumberFieldContext } from "./number-field-context";
 
@@ -10,9 +10,10 @@ export interface NumberFieldVaryTriggerOptions {
 	numberFieldVaryType: "increment" | "decrement";
 }
 
-export interface NumberFieldVaryTriggerCommonProps
-	extends Button.ButtonRootCommonProps {
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+export interface NumberFieldVaryTriggerCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends Button.ButtonRootCommonProps<T> {
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 }
 
 export interface NumberFieldVaryTriggerRenderProps
@@ -21,11 +22,13 @@ export interface NumberFieldVaryTriggerRenderProps
 	"aria-controls": string | undefined;
 }
 
-export type NumberFieldVaryTriggerProps = NumberFieldVaryTriggerOptions &
-	Partial<NumberFieldVaryTriggerCommonProps>;
+export type NumberFieldVaryTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = NumberFieldVaryTriggerOptions &
+	Partial<NumberFieldVaryTriggerCommonProps<ElementOf<T>>>;
 
 export function NumberFieldVaryTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, NumberFieldVaryTriggerProps>,
+	props: PolymorphicProps<T, NumberFieldVaryTriggerProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useNumberFieldContext();
