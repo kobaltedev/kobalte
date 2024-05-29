@@ -21,7 +21,7 @@ import {
 	DismissableLayer,
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
 import { PointerDownOutsideEvent } from "../primitives";
 import { TooltipDataSet, useTooltipContext } from "./tooltip-context";
@@ -40,9 +40,11 @@ export interface TooltipContentOptions {
 	onPointerDownOutside?: (event: PointerDownOutsideEvent) => void;
 }
 
-export interface TooltipContentCommonProps {
+export interface TooltipContentCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
@@ -55,14 +57,15 @@ export interface TooltipContentRenderProps
 	role: "tooltip";
 }
 
-export type TooltipContentProps = TooltipContentOptions &
-	Partial<TooltipContentCommonProps>;
+export type TooltipContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = TooltipContentOptions & Partial<TooltipContentCommonProps<ElementOf<T>>>;
 
 /**
  * Contains the content to be rendered when the tooltip is open.
  */
 export function TooltipContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, TooltipContentProps>,
+	props: PolymorphicProps<T, TooltipContentProps<T>>,
 ) {
 	const context = useTooltipContext();
 

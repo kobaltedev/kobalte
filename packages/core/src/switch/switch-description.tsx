@@ -5,28 +5,31 @@ import {
 	FormControlDescriptionOptions,
 	FormControlDescriptionRenderProps,
 } from "../form-control";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { SwitchDataSet, useSwitchContext } from "./switch-context";
 
 export interface SwitchDescriptionOptions
 	extends FormControlDescriptionOptions {}
 
-export interface SwitchDescriptionCommonProps
-	extends FormControlDescriptionCommonProps {}
+export interface SwitchDescriptionCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends FormControlDescriptionCommonProps<T> {}
 
 export interface SwitchDescriptionRenderProps
 	extends SwitchDescriptionCommonProps,
 		FormControlDescriptionRenderProps,
 		SwitchDataSet {}
 
-export type SwitchDescriptionProps = SwitchDescriptionOptions &
-	Partial<SwitchDescriptionCommonProps>;
+export type SwitchDescriptionProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SwitchDescriptionOptions &
+	Partial<SwitchDescriptionCommonProps<ElementOf<T>>>;
 
 /**
  * The description that gives the user more information on the switch.
  */
 export function SwitchDescription<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, SwitchDescriptionProps>,
+	props: PolymorphicProps<T, SwitchDescriptionProps<T>>,
 ) {
 	const context = useSwitchContext();
 

@@ -36,7 +36,7 @@ import {
 } from "../form-control";
 import { createCollator } from "../i18n";
 import { ListKeyboardDelegate, createListState } from "../list";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { Popper, PopperRootOptions } from "../popper";
 import {
 	CollectionNode,
@@ -202,7 +202,7 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 	readOnly?: boolean;
 }
 
-export interface SelectBaseCommonProps {
+export interface SelectBaseCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -213,11 +213,12 @@ export interface SelectBaseRenderProps
 	role: "group";
 }
 
-export type SelectBaseProps<Option, OptGroup = never> = SelectBaseOptions<
+export type SelectBaseProps<
 	Option,
-	OptGroup
-> &
-	Partial<SelectBaseCommonProps>;
+	OptGroup = never,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SelectBaseOptions<Option, OptGroup> &
+	Partial<SelectBaseCommonProps<ElementOf<T>>>;
 
 /**
  * Base component for a select, provide context for its children.
@@ -227,7 +228,7 @@ export function SelectBase<
 	Option,
 	OptGroup = never,
 	T extends ValidComponent = "div",
->(props: PolymorphicProps<T, SelectBaseProps<Option, OptGroup>>) {
+>(props: PolymorphicProps<T, SelectBaseProps<Option, OptGroup, T>>) {
 	const defaultId = `select-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(

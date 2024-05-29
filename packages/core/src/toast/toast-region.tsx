@@ -27,7 +27,7 @@ import {
 } from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	ToastRegionContext,
 	ToastRegionContextValue,
@@ -92,7 +92,7 @@ export interface ToastRegionOptions {
 	regionId?: string;
 }
 
-export interface ToastRegionCommonProps {
+export interface ToastRegionCommonProps<T extends HTMLElement = HTMLElement> {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 	id: string;
@@ -105,15 +105,16 @@ export interface ToastRegionRenderProps extends ToastRegionCommonProps {
 	"data-kb-top-layer": string | undefined;
 }
 
-export type ToastRegionProps = ToastRegionOptions &
-	Partial<ToastRegionCommonProps>;
+export type ToastRegionProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToastRegionOptions & Partial<ToastRegionCommonProps<ElementOf<T>>>;
 
 /**
  * The fixed area where toasts appear. Users can jump to by pressing a hotkey.
  * It is up to you to ensure the discoverability of the hotkey for keyboard users.
  */
 export function ToastRegion<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ToastRegionProps>,
+	props: PolymorphicProps<T, ToastRegionProps<T>>,
 ) {
 	const mergedProps = mergeDefaultProps(
 		{

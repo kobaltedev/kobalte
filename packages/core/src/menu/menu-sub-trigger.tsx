@@ -31,7 +31,7 @@ import {
 import { isServer } from "solid-js/web";
 
 import { Direction, useLocale } from "../i18n";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createSelectableItem } from "../selection";
 import { MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
@@ -49,17 +49,19 @@ export interface MenuSubTriggerOptions {
 	disabled?: boolean;
 }
 
-export interface MenuSubTriggerCommonProps {
+export interface MenuSubTriggerCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	ref: T | ((el: T) => void);
+	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface MenuSubTriggerRenderProps
@@ -76,8 +78,9 @@ export interface MenuSubTriggerRenderProps
 	"data-disabled": "" | undefined;
 }
 
-export type MenuSubTriggerProps = MenuSubTriggerOptions &
-	Partial<MenuSubTriggerCommonProps>;
+export type MenuSubTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuSubTriggerOptions & Partial<MenuSubTriggerCommonProps<ElementOf<T>>>;
 
 const SELECTION_KEYS = ["Enter", " "];
 const SUB_OPEN_KEYS: Record<Direction, string[]> = {
@@ -89,7 +92,7 @@ const SUB_OPEN_KEYS: Record<Direction, string[]> = {
  * An item that opens a submenu.
  */
 export function MenuSubTrigger<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuSubTriggerProps>,
+	props: PolymorphicProps<T, MenuSubTriggerProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

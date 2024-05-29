@@ -16,18 +16,20 @@ import {
 } from "solid-js";
 
 import * as Link from "../link";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { HoverCardDataSet, useHoverCardContext } from "./hover-card-context";
 
 export interface HoverCardTriggerOptions {}
 
-export interface HoverCardTriggerCommonProps {
+export interface HoverCardTriggerCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	disabled: boolean;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	ref: T | ((el: T) => void);
+	onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface HoverCardTriggerRenderProps
@@ -35,14 +37,16 @@ export interface HoverCardTriggerRenderProps
 		Link.LinkRootRenderProps,
 		HoverCardDataSet {}
 
-export type HoverCardTriggerProps = HoverCardTriggerOptions &
-	Partial<HoverCardTriggerCommonProps>;
+export type HoverCardTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = HoverCardTriggerOptions &
+	Partial<HoverCardTriggerCommonProps<ElementOf<T>>>;
 
 /**
  * The link that opens the hovercard when hovered.
  */
 export function HoverCardTrigger<T extends ValidComponent = "a">(
-	props: PolymorphicProps<T, HoverCardTriggerProps>,
+	props: PolymorphicProps<T, HoverCardTriggerProps<T>>,
 ) {
 	const context = useHoverCardContext();
 

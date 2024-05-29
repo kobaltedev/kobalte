@@ -30,18 +30,18 @@ import {
 	splitProps,
 } from "solid-js";
 import { isServer } from "solid-js/web";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 
 import { useToastRegionContext } from "./toast-region-context";
 
 export interface ToastListOptions {}
 
-export interface ToastListCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+export interface ToastListCommonProps<T extends HTMLElement = HTMLElement> {
+	ref: T | ((el: T) => void);
+	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
+	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
+	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
 export interface ToastListRenderProps extends ToastListCommonProps {
@@ -49,14 +49,16 @@ export interface ToastListRenderProps extends ToastListCommonProps {
 	tabIndex: -1;
 }
 
-export type ToastListProps = ToastListOptions & Partial<ToastListCommonProps>;
+export type ToastListProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToastListOptions & Partial<ToastListCommonProps<ElementOf<T>>>;
 
 /**
  * The list containing all rendered toasts.
  * Must be inside a `Toast.Region`.
  */
 export function ToastList<T extends ValidComponent = "ol">(
-	props: PolymorphicProps<T, ToastListProps>,
+	props: PolymorphicProps<T, ToastListProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

@@ -15,22 +15,26 @@ import {
 	MenuContentRenderProps,
 } from "../menu";
 import { useMenuRootContext } from "../menu/menu-root-context";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { InteractOutsideEvent } from "../primitives";
 
 export interface ContextMenuContentOptions extends MenuContentOptions {}
 
-export interface ContextMenuContentCommonProps extends MenuContentCommonProps {}
+export interface ContextMenuContentCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends MenuContentCommonProps<T> {}
 
 export interface ContextMenuContentRenderProps
 	extends ContextMenuContentCommonProps,
 		MenuContentRenderProps {}
 
-export type ContextMenuContentProps = ContextMenuContentOptions &
-	Partial<ContextMenuContentCommonProps>;
+export type ContextMenuContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ContextMenuContentOptions &
+	Partial<ContextMenuContentCommonProps<ElementOf<T>>>;
 
 export function ContextMenuContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ContextMenuContentProps>,
+	props: PolymorphicProps<T, ContextMenuContentProps<T>>,
 ) {
 	const rootContext = useMenuRootContext();
 

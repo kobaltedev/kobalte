@@ -1,7 +1,7 @@
 import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 import { Show, ValidComponent, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { MenuItemDataSet, useMenuItemContext } from "./menu-item.context";
 
 export interface MenuItemIndicatorOptions {
@@ -12,7 +12,9 @@ export interface MenuItemIndicatorOptions {
 	forceMount?: boolean;
 }
 
-export interface MenuItemIndicatorCommonProps {
+export interface MenuItemIndicatorCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -20,15 +22,17 @@ export interface MenuItemIndicatorRenderProps
 	extends MenuItemIndicatorCommonProps,
 		MenuItemDataSet {}
 
-export type MenuItemIndicatorProps = MenuItemIndicatorOptions &
-	Partial<MenuItemIndicatorCommonProps>;
+export type MenuItemIndicatorProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuItemIndicatorOptions &
+	Partial<MenuItemIndicatorCommonProps<ElementOf<T>>>;
 
 /**
  * The visual indicator rendered when the parent menu `CheckboxItem` or `RadioItem` is checked.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
 export function MenuItemIndicator<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuItemIndicatorProps>,
+	props: PolymorphicProps<T, MenuItemIndicatorProps<T>>,
 ) {
 	const context = useMenuItemContext();
 

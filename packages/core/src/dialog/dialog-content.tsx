@@ -27,7 +27,7 @@ import {
 	DismissableLayerCommonProps,
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	FocusOutsideEvent,
 	InteractOutsideEvent,
@@ -75,7 +75,8 @@ export interface DialogContentOptions {
 	onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export interface DialogContentCommonProps extends DismissableLayerCommonProps {
+export interface DialogContentCommonProps<T extends HTMLElement = HTMLElement>
+	extends DismissableLayerCommonProps<T> {
 	id: string;
 }
 
@@ -86,14 +87,15 @@ export interface DialogContentRenderProps
 	tabIndex: -1;
 }
 
-export type DialogContentProps = DialogContentOptions &
-	Partial<DialogContentCommonProps>;
+export type DialogContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = DialogContentOptions & Partial<DialogContentCommonProps<ElementOf<T>>>;
 
 /**
  * Contains the content to be rendered when the dialog is open.
  */
 export function DialogContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, DialogContentProps>,
+	props: PolymorphicProps<T, DialogContentProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

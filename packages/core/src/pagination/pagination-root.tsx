@@ -9,7 +9,7 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import {
 	PaginationContext,
@@ -57,7 +57,9 @@ export interface PaginationRootOptions {
 	disabled?: boolean;
 }
 
-export interface PaginationRootCommonProps {
+export interface PaginationRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 	children: JSX.Element;
 }
@@ -66,14 +68,15 @@ export interface PaginationRootRenderProps extends PaginationRootCommonProps {
 	"data-disabled": "" | undefined;
 }
 
-export type PaginationRootProps = PaginationRootOptions &
-	Partial<PaginationRootCommonProps>;
+export type PaginationRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = PaginationRootOptions & Partial<PaginationRootCommonProps<ElementOf<T>>>;
 
 /**
  * A list of page number that allows users to change the current page.
  */
 export function PaginationRoot<T extends ValidComponent = "nav">(
-	props: PolymorphicProps<T, PaginationRootProps>,
+	props: PolymorphicProps<T, PaginationRootProps<T>>,
 ) {
 	const defaultId = `pagination-${createUniqueId()}`;
 

@@ -19,7 +19,7 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createPresence } from "../primitives";
 import {
 	CollapsibleDataSet,
@@ -28,9 +28,11 @@ import {
 
 export interface CollapsibleContentOptions {}
 
-export interface CollapsibleContentCommonProps {
+export interface CollapsibleContentCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 	style: JSX.CSSProperties;
 }
 
@@ -38,14 +40,16 @@ export interface CollapsibleContentRenderProps
 	extends CollapsibleContentCommonProps,
 		CollapsibleDataSet {}
 
-export type CollapsibleContentProps = CollapsibleContentOptions &
-	Partial<CollapsibleContentCommonProps>;
+export type CollapsibleContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = CollapsibleContentOptions &
+	Partial<CollapsibleContentCommonProps<ElementOf<T>>>;
 
 /**
  * Contains the content to be rendered when the collapsible is expanded.
  */
 export function CollapsibleContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, CollapsibleContentProps>,
+	props: PolymorphicProps<T, CollapsibleContentProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

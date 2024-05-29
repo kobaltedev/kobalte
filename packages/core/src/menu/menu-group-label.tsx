@@ -9,12 +9,14 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useMenuGroupContext } from "./menu-group-context";
 
 export interface MenuGroupLabelOptions {}
 
-export interface MenuGroupLabelCommonProps {
+export interface MenuGroupLabelCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -22,15 +24,16 @@ export interface MenuGroupLabelRenderProps extends MenuGroupLabelCommonProps {
 	"aria-hidden": "true";
 }
 
-export type MenuGroupLabelProps = MenuGroupLabelOptions &
-	Partial<MenuGroupLabelCommonProps>;
+export type MenuGroupLabelProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuGroupLabelOptions & Partial<MenuGroupLabelCommonProps<ElementOf<T>>>;
 
 /**
  * A component used to render the label of a `Menu.Group`.
  * It won't be focusable using arrow keys.
  */
 export function MenuGroupLabel<T extends ValidComponent = "span">(
-	props: PolymorphicProps<T, MenuGroupLabelProps>,
+	props: PolymorphicProps<T, MenuGroupLabelProps<T>>,
 ) {
 	const context = useMenuGroupContext();
 

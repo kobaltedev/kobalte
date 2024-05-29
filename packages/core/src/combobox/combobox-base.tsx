@@ -38,7 +38,7 @@ import {
 import { createFilter } from "../i18n";
 import { ListKeyboardDelegate, createListState } from "../list";
 import { announce } from "../live-announcer";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { Popper, PopperRootOptions } from "../popper";
 import {
 	CollectionNode,
@@ -245,7 +245,7 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
 	readOnly?: boolean;
 }
 
-export interface ComboboxBaseCommonProps {
+export interface ComboboxBaseCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -256,11 +256,12 @@ export interface ComboboxBaseRenderProps
 	role: "group";
 }
 
-export type ComboboxBaseProps<Option, OptGroup = never> = ComboboxBaseOptions<
+export type ComboboxBaseProps<
 	Option,
-	OptGroup
-> &
-	Partial<ComboboxBaseCommonProps>;
+	OptGroup = never,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ComboboxBaseOptions<Option, OptGroup> &
+	Partial<ComboboxBaseCommonProps<ElementOf<T>>>;
 
 /**
  * Base component for a combobox, provide context for its children.
@@ -269,7 +270,7 @@ export function ComboboxBase<
 	Option,
 	OptGroup = never,
 	T extends ValidComponent = "div",
->(props: PolymorphicProps<T, ComboboxBaseProps<Option, OptGroup>>) {
+>(props: PolymorphicProps<T, ComboboxBaseProps<Option, OptGroup, T>>) {
 	const defaultId = `combobox-${createUniqueId()}`;
 
 	const filter = createFilter({ sensitivity: "base" });

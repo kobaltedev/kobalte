@@ -14,7 +14,7 @@ import {
 } from "solid-js";
 import { useLocale } from "../i18n";
 import { createListState } from "../list";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { SelectionMode, createSelectableCollection } from "../selection";
@@ -47,13 +47,15 @@ export interface ToggleGroupBaseOptions {
 	orientation?: Orientation;
 }
 
-export interface ToggleGroupBaseCommonProps {
+export interface ToggleGroupBaseCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	ref: T | ((el: T) => void);
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
+	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface ToggleGroupBaseRenderProps extends ToggleGroupBaseCommonProps {
@@ -62,11 +64,12 @@ export interface ToggleGroupBaseRenderProps extends ToggleGroupBaseCommonProps {
 	"data-orientation": Orientation | undefined;
 }
 
-export type ToggleGroupBaseProps = ToggleGroupBaseOptions &
-	Partial<ToggleGroupBaseCommonProps>;
+export type ToggleGroupBaseProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToggleGroupBaseOptions & Partial<ToggleGroupBaseCommonProps<ElementOf<T>>>;
 
 export function ToggleGroupBase<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ToggleGroupBaseProps>,
+	props: PolymorphicProps<T, ToggleGroupBaseProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

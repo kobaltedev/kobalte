@@ -1,5 +1,5 @@
 import { Component, ValidComponent } from "solid-js";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import {
 	MenuItemBase,
@@ -11,7 +11,8 @@ import {
 export interface MenuItemOptions
 	extends Omit<MenuItemBaseOptions, "checked" | "indeterminate"> {}
 
-export interface MenuItemCommonProps extends MenuItemBaseCommonProps {}
+export interface MenuItemCommonProps<T extends HTMLElement = HTMLElement>
+	extends MenuItemBaseCommonProps<T> {}
 
 export interface MenuItemRenderProps
 	extends MenuItemCommonProps,
@@ -19,13 +20,15 @@ export interface MenuItemRenderProps
 	role: "menuitem";
 }
 
-export type MenuItemProps = MenuItemOptions & Partial<MenuItemCommonProps>;
+export type MenuItemProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuItemOptions & Partial<MenuItemCommonProps<ElementOf<T>>>;
 
 /**
  * An item of the menu.
  */
 export function MenuItem<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuItemProps>,
+	props: PolymorphicProps<T, MenuItemProps<T>>,
 ) {
 	return (
 		<MenuItemBase<

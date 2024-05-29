@@ -10,7 +10,7 @@ import {
 
 import * as Listbox from "../listbox";
 import { ListboxRootCommonProps, ListboxRootRenderProps } from "../listbox";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
 export interface SelectListboxOptions<Option, OptGroup = never>
@@ -19,7 +19,8 @@ export interface SelectListboxOptions<Option, OptGroup = never>
 		"scrollRef" | "scrollToItem" | "children"
 	> {}
 
-export interface SelectListboxCommonProps extends ListboxRootCommonProps {
+export interface SelectListboxCommonProps<T extends HTMLElement = HTMLElement>
+	extends ListboxRootCommonProps<T> {
 	"aria-labelledby": string | undefined;
 }
 
@@ -27,11 +28,12 @@ export interface SelectListboxRenderProps
 	extends SelectListboxCommonProps,
 		ListboxRootRenderProps {}
 
-export type SelectListboxProps<Option, OptGroup = never> = SelectListboxOptions<
+export type SelectListboxProps<
 	Option,
-	OptGroup
-> &
-	Partial<SelectListboxCommonProps>;
+	OptGroup = never,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SelectListboxOptions<Option, OptGroup> &
+	Partial<SelectListboxCommonProps<ElementOf<T>>>;
 
 /**
  * Contains all the items of a `Select`.
@@ -40,7 +42,7 @@ export function SelectListbox<
 	Option = any,
 	OptGroup = never,
 	T extends ValidComponent = "ul",
->(props: PolymorphicProps<T, SelectListboxProps<Option, OptGroup>>) {
+>(props: PolymorphicProps<T, SelectListboxProps<Option, OptGroup, T>>) {
 	const context = useSelectContext();
 
 	const mergedProps = mergeDefaultProps(

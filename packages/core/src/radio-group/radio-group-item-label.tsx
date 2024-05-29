@@ -1,6 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup } from "solid-js";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 
 import {
 	RadioGroupItemDataSet,
@@ -9,7 +9,9 @@ import {
 
 export interface RadioGroupItemLabelOptions {}
 
-export interface RadioGroupItemLabelCommonProps {
+export interface RadioGroupItemLabelCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -19,14 +21,16 @@ export interface RadioGroupItemLabelRenderProps
 	for: string | undefined;
 }
 
-export type RadioGroupItemLabelProps = RadioGroupItemLabelOptions &
-	Partial<RadioGroupItemLabelCommonProps>;
+export type RadioGroupItemLabelProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = RadioGroupItemLabelOptions &
+	Partial<RadioGroupItemLabelCommonProps<ElementOf<T>>>;
 
 /**
  * The label that gives the user information on the radio button.
  */
 export function RadioGroupItemLabel<T extends ValidComponent = "label">(
-	props: PolymorphicProps<T, RadioGroupItemLabelProps>,
+	props: PolymorphicProps<T, RadioGroupItemLabelProps<T>>,
 ) {
 	const context = useRadioGroupItemContext();
 

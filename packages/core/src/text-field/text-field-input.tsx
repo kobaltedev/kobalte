@@ -15,14 +15,16 @@ import {
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useTextFieldContext } from "./text-field-context";
 
 export interface TextFieldInputOptions {}
 
-export interface TextFieldInputCommonProps {
+export interface TextFieldInputCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent>;
+	onInput: JSX.EventHandlerUnion<T, InputEvent>;
 	"aria-label": string | undefined;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
@@ -42,17 +44,18 @@ export interface TextFieldInputRenderProps
 	"aria-readonly": boolean | undefined;
 }
 
-export type TextFieldInputProps = TextFieldInputOptions &
-	Partial<TextFieldInputCommonProps>;
+export type TextFieldInputProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = TextFieldInputOptions & Partial<TextFieldInputCommonProps<ElementOf<T>>>;
 
 export function TextFieldInput<T extends ValidComponent = "input">(
-	props: PolymorphicProps<T, TextFieldInputProps>,
+	props: PolymorphicProps<T, TextFieldInputProps<T>>,
 ) {
 	return <TextFieldInputBase type="text" {...(props as TextFieldInputProps)} />;
 }
 
 export function TextFieldInputBase<T extends ValidComponent = "input">(
-	props: PolymorphicProps<T, TextFieldInputProps>,
+	props: PolymorphicProps<T, TextFieldInputProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useTextFieldContext();

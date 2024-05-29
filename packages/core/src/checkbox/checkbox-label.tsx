@@ -5,26 +5,28 @@ import {
 	FormControlLabelOptions,
 	FormControlLabelRenderProps,
 } from "../form-control";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
 
 export interface CheckboxLabelOptions extends FormControlLabelOptions {}
 
-export interface CheckboxLabelCommonProps extends FormControlLabelCommonProps {}
+export interface CheckboxLabelCommonProps<T extends HTMLElement = HTMLElement>
+	extends FormControlLabelCommonProps<T> {}
 
 export interface CheckboxLabelRenderProps
 	extends CheckboxLabelCommonProps,
 		FormControlLabelRenderProps,
 		CheckboxDataSet {}
 
-export type CheckboxLabelProps = CheckboxLabelOptions &
-	Partial<CheckboxLabelCommonProps>;
+export type CheckboxLabelProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = CheckboxLabelOptions & Partial<CheckboxLabelCommonProps<ElementOf<T>>>;
 
 /**
  * The label that gives the user information on the checkbox.
  */
 export function CheckboxLabel<T extends ValidComponent = "label">(
-	props: PolymorphicProps<T, CheckboxLabelProps>,
+	props: PolymorphicProps<T, CheckboxLabelProps<T>>,
 ) {
 	const context = useCheckboxContext();
 

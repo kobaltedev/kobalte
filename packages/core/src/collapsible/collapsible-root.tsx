@@ -20,7 +20,7 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createDisclosureState, createRegisterId } from "../primitives";
 import {
 	CollapsibleContext,
@@ -51,7 +51,9 @@ export interface CollapsibleRootOptions {
 	forceMount?: boolean;
 }
 
-export interface CollapsibleRootCommonProps {
+export interface CollapsibleRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -59,14 +61,15 @@ export interface CollapsibleRootRenderProps
 	extends CollapsibleRootCommonProps,
 		CollapsibleDataSet {}
 
-export type CollapsibleRootProps = CollapsibleRootOptions &
-	Partial<CollapsibleRootCommonProps>;
+export type CollapsibleRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = CollapsibleRootOptions & Partial<CollapsibleRootCommonProps<ElementOf<T>>>;
 
 /**
  * An interactive component which expands/collapses a content.
  */
 export function CollapsibleRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, CollapsibleRootProps>,
+	props: PolymorphicProps<T, CollapsibleRootProps<T>>,
 ) {
 	const defaultId = `collapsible-${createUniqueId()}`;
 

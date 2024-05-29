@@ -6,27 +6,29 @@ import {
 	FormControlLabelCommonProps,
 	FormControlLabelRenderProps,
 } from "../form-control";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
 export interface SelectLabelOptions {}
 
-export interface SelectLabelCommonProps extends FormControlLabelCommonProps {
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+export interface SelectLabelCommonProps<T extends HTMLElement = HTMLElement>
+	extends FormControlLabelCommonProps<T> {
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 }
 
 export interface SelectLabelRenderProps
 	extends SelectLabelCommonProps,
 		FormControlLabelRenderProps {}
 
-export type SelectLabelProps = SelectLabelOptions &
-	Partial<SelectLabelCommonProps>;
+export type SelectLabelProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SelectLabelOptions & Partial<SelectLabelCommonProps<ElementOf<T>>>;
 
 /**
  * The label that gives the user information on the select.
  */
 export function SelectLabel<T extends ValidComponent = "span">(
-	props: PolymorphicProps<T, SelectLabelProps>,
+	props: PolymorphicProps<T, SelectLabelProps<T>>,
 ) {
 	const context = useSelectContext();
 

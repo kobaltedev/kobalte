@@ -12,7 +12,7 @@ import {
 	createUniqueId,
 	splitProps,
 } from "solid-js";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -26,20 +26,20 @@ export interface ToggleGroupItemOptions
 	> {
 	/** A string value for the toggle group item. All items within a toggle group should use a unique value. */
 	value: string;
-
-	onChange?: JSX.ChangeEventHandlerUnion<HTMLButtonElement, Event>;
 }
 
-export interface ToggleGroupItemCommonProps {
+export interface ToggleGroupItemCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 	disabled: boolean | undefined;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface ToggleGroupItemRenderProps
@@ -49,11 +49,12 @@ export interface ToggleGroupItemRenderProps
 	"data-orientation": Orientation;
 }
 
-export type ToggleGroupItemProps = ToggleGroupItemOptions &
-	Partial<ToggleGroupItemCommonProps>;
+export type ToggleGroupItemProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToggleGroupItemOptions & Partial<ToggleGroupItemCommonProps<ElementOf<T>>>;
 
 export function ToggleGroupItem<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, ToggleGroupItemProps>,
+	props: PolymorphicProps<T, ToggleGroupItemProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 
@@ -78,7 +79,6 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 		"onKeyDown",
 		"onMouseDown",
 		"onFocus",
-		"onChange",
 	]);
 
 	const selectionManager = () => rootContext.listState().selectionManager();

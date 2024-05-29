@@ -21,7 +21,7 @@ import {
 } from "solid-js";
 
 import { createListState, createSelectableList } from "../list";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { AccordionContext, AccordionContextValue } from "./accordion-context";
@@ -49,25 +49,26 @@ export interface AccordionRootOptions {
 	shouldFocusWrap?: boolean;
 }
 
-export interface AccordionRootCommonProps {
+export interface AccordionRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	ref: T | ((el: T) => void);
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
+	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface AccordionRootRenderProps extends AccordionRootCommonProps {}
 
-export type AccordionRootProps = AccordionRootOptions &
-	Partial<AccordionRootCommonProps>;
+export type AccordionRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = AccordionRootOptions & Partial<AccordionRootCommonProps<ElementOf<T>>>;
 
 /**
  * A vertically stacked set of interactive headings that each reveal an associated section of content.
  */
 export function AccordionRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, AccordionRootProps>,
+	props: PolymorphicProps<T, AccordionRootProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

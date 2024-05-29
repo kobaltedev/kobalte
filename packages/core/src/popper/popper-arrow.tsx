@@ -22,7 +22,7 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { usePopperContext } from "./popper-context";
 import { BasePlacement } from "./utils";
 
@@ -44,8 +44,8 @@ export interface PopperArrowOptions {
 	size?: number;
 }
 
-export interface PopperArrowCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
+export interface PopperArrowCommonProps<T extends HTMLElement = HTMLElement> {
+	ref: T | ((el: T) => void);
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
@@ -55,15 +55,16 @@ export interface PopperArrowRenderProps extends PopperArrowCommonProps {
 	"aria-hidden": "true";
 }
 
-export type PopperArrowProps = PopperArrowOptions &
-	Partial<PopperArrowCommonProps>;
+export type PopperArrowProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = PopperArrowOptions & Partial<PopperArrowCommonProps<ElementOf<T>>>;
 
 /**
  * An optional arrow element to render alongside the popper content.
  * Must be rendered in the popper content.
  */
 export function PopperArrow<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, PopperArrowProps>,
+	props: PolymorphicProps<T, PopperArrowProps<T>>,
 ) {
 	const context = usePopperContext();
 

@@ -1,7 +1,7 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	RadioGroupItemDataSet,
 	useRadioGroupItemContext,
@@ -9,7 +9,9 @@ import {
 
 export interface RadioGroupItemDescriptionOptions {}
 
-export interface RadioGroupItemDescriptionCommonProps {
+export interface RadioGroupItemDescriptionCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -17,14 +19,16 @@ export interface RadioGroupItemDescriptionRenderProps
 	extends RadioGroupItemDescriptionCommonProps,
 		RadioGroupItemDataSet {}
 
-export type RadioGroupItemDescriptionProps = RadioGroupItemDescriptionOptions &
-	Partial<RadioGroupItemDescriptionCommonProps>;
+export type RadioGroupItemDescriptionProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = RadioGroupItemDescriptionOptions &
+	Partial<RadioGroupItemDescriptionCommonProps<ElementOf<T>>>;
 
 /**
  * The description that gives the user more information on the radio button.
  */
 export function RadioGroupItemDescription<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, RadioGroupItemDescriptionProps>,
+	props: PolymorphicProps<T, RadioGroupItemDescriptionProps<T>>,
 ) {
 	const context = useRadioGroupItemContext();
 

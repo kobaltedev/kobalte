@@ -15,7 +15,7 @@ import {
 import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import { Direction, useLocale } from "../i18n";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { FocusOutsideEvent } from "../primitives";
 import {
 	MenuContentBase,
@@ -31,16 +31,18 @@ export interface MenuSubContentOptions
 		"onOpenAutoFocus" | "onCloseAutoFocus"
 	> {}
 
-export interface MenuSubContentCommonProps extends MenuContentBaseCommonProps {
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+export interface MenuSubContentCommonProps<T extends HTMLElement = HTMLElement>
+	extends MenuContentBaseCommonProps<T> {
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 }
 
 export interface MenuSubContentRenderProps
 	extends MenuSubContentCommonProps,
 		MenuContentBaseRenderProps {}
 
-export type MenuSubContentProps = MenuSubContentOptions &
-	Partial<MenuSubContentCommonProps>;
+export type MenuSubContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuSubContentOptions & Partial<MenuSubContentCommonProps<ElementOf<T>>>;
 
 const SUB_CLOSE_KEYS: Record<Direction, string[]> = {
 	ltr: ["ArrowLeft"],
@@ -51,7 +53,7 @@ const SUB_CLOSE_KEYS: Record<Direction, string[]> = {
  * The component that pops out when a submenu is open.
  */
 export function MenuSubContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuSubContentProps>,
+	props: PolymorphicProps<T, MenuSubContentProps<T>>,
 ) {
 	const context = useMenuContext();
 

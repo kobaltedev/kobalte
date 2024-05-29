@@ -1,25 +1,26 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useToastContext } from "./toast-context";
 
 export interface ToastTitleOptions {}
 
-export interface ToastTitleCommonProps {
+export interface ToastTitleCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
 export interface ToastTitleRenderProps extends ToastTitleCommonProps {}
 
-export type ToastTitleProps = ToastTitleOptions &
-	Partial<ToastTitleCommonProps>;
+export type ToastTitleProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToastTitleOptions & Partial<ToastTitleCommonProps<ElementOf<T>>>;
 
 /**
  * An accessible title to be announced when the toast is open.
  */
 export function ToastTitle<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ToastTitleProps>,
+	props: PolymorphicProps<T, ToastTitleProps<T>>,
 ) {
 	const context = useToastContext();
 

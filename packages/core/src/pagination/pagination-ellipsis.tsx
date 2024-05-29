@@ -1,19 +1,23 @@
 import { ValidComponent } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 
 export interface PaginationEllipsisOptions {}
 
-export interface PaginationEllipsisCommonProps {}
+export interface PaginationEllipsisCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {}
 
 export interface PaginationEllipsisRenderProps
 	extends PaginationEllipsisCommonProps {}
 
-export type PaginationEllipsisProps = PaginationEllipsisOptions &
-	Partial<PaginationEllipsisCommonProps>;
+export type PaginationEllipsisProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = PaginationEllipsisOptions &
+	Partial<PaginationEllipsisCommonProps<ElementOf<T>>>;
 
 export function PaginationEllipsis<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, PaginationEllipsisProps>,
+	props: PolymorphicProps<T, PaginationEllipsisProps<T>>,
 ) {
 	return (
 		<li>

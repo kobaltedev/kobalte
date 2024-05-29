@@ -23,7 +23,7 @@ import {
 
 import * as Collapsible from "../collapsible";
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -32,14 +32,15 @@ import { useAccordionItemContext } from "./accordion-item-context";
 
 export interface AccordionTriggerOptions {}
 
-export interface AccordionTriggerCommonProps
-	extends Collapsible.CollapsibleTriggerCommonProps {
+export interface AccordionTriggerCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends Collapsible.CollapsibleTriggerCommonProps<T> {
 	id: string;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface AccordionTriggerRenderProps
@@ -48,14 +49,16 @@ export interface AccordionTriggerRenderProps
 	"data-key": string | undefined;
 }
 
-export type AccordionTriggerProps = AccordionTriggerOptions &
-	Partial<AccordionTriggerCommonProps>;
+export type AccordionTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = AccordionTriggerOptions &
+	Partial<AccordionTriggerCommonProps<ElementOf<T>>>;
 
 /**
  * Toggles the collapsed state of its associated item. It should be nested inside an `Accordion.Header`.
  */
 export function AccordionTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, AccordionTriggerProps>,
+	props: PolymorphicProps<T, AccordionTriggerProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

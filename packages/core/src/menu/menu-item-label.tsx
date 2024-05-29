@@ -9,29 +9,30 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { MenuItemDataSet, useMenuItemContext } from "./menu-item.context";
 
 export interface MenuItemLabelOptions {}
 
-export interface MenuItemLabelCommonProps {
+export interface MenuItemLabelCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 }
 
 export interface MenuItemLabelRenderProps
 	extends MenuItemLabelCommonProps,
 		MenuItemDataSet {}
 
-export type MenuItemLabelProps = MenuItemLabelOptions &
-	Partial<MenuItemLabelCommonProps>;
+export type MenuItemLabelProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuItemLabelOptions & Partial<MenuItemLabelCommonProps<ElementOf<T>>>;
 
 /**
  * An accessible label to be announced for the menu item.
  * Useful for menu items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
 export function MenuItemLabel<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuItemLabelProps>,
+	props: PolymorphicProps<T, MenuItemLabelProps<T>>,
 ) {
 	const context = useMenuItemContext();
 

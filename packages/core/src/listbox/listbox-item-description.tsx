@@ -9,7 +9,7 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	ListboxItemDataSet,
 	useListboxItemContext,
@@ -17,7 +17,9 @@ import {
 
 export interface ListboxItemDescriptionOptions {}
 
-export interface ListboxItemDescriptionCommonProps {
+export interface ListboxItemDescriptionCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -25,15 +27,17 @@ export interface ListboxItemDescriptionRenderProps
 	extends ListboxItemDescriptionCommonProps,
 		ListboxItemDataSet {}
 
-export type ListboxItemDescriptionProps = ListboxItemDescriptionOptions &
-	Partial<ListboxItemDescriptionCommonProps>;
+export type ListboxItemDescriptionProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ListboxItemDescriptionOptions &
+	Partial<ListboxItemDescriptionCommonProps<ElementOf<T>>>;
 
 /**
  * An optional accessible description to be announced for the item.
  * Useful for items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
 export function ListboxItemDescription<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ListboxItemDescriptionProps>,
+	props: PolymorphicProps<T, ListboxItemDescriptionProps<T>>,
 ) {
 	const context = useListboxItemContext();
 

@@ -15,7 +15,7 @@ import {
 } from "solid-js";
 
 import { FormControlDataSet, useFormControlContext } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
 export interface SelectValueState<Option> {
@@ -40,7 +40,7 @@ export interface SelectValueOptions<Option> {
 	children?: JSX.Element | ((state: SelectValueState<Option>) => JSX.Element);
 }
 
-export interface SelectValueCommonProps {
+export interface SelectValueCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -51,14 +51,16 @@ export interface SelectValueRenderProps
 	"data-placeholder-shown": string | undefined;
 }
 
-export type SelectValueProps<Option> = SelectValueOptions<Option> &
-	Partial<SelectValueCommonProps>;
+export type SelectValueProps<
+	Option,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SelectValueOptions<Option> & Partial<SelectValueCommonProps<ElementOf<T>>>;
 
 /**
  * The part that reflects the selected value(s).
  */
 export function SelectValue<Option, T extends ValidComponent = "span">(
-	props: PolymorphicProps<T, SelectValueProps<Option>>,
+	props: PolymorphicProps<T, SelectValueProps<Option, T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useSelectContext();

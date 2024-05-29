@@ -2,12 +2,12 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent } from "solid-js";
 
 import { FormControlDataSet, useFormControlContext } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { SwitchDataSet, useSwitchContext } from "./switch-context";
 
 export interface SwitchThumbOptions {}
 
-export interface SwitchThumbCommonProps {
+export interface SwitchThumbCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -16,14 +16,15 @@ export interface SwitchThumbRenderProps
 		FormControlDataSet,
 		SwitchDataSet {}
 
-export type SwitchThumbProps = SwitchThumbOptions &
-	Partial<SwitchThumbCommonProps>;
+export type SwitchThumbProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SwitchThumbOptions & Partial<SwitchThumbCommonProps<ElementOf<T>>>;
 
 /**
  * The thumb that is used to visually indicate whether the switch is on or off.
  */
 export function SwitchThumb<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, SwitchThumbProps>,
+	props: PolymorphicProps<T, SwitchThumbProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();

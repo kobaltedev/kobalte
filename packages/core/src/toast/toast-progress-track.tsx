@@ -1,10 +1,12 @@
 import { ValidComponent } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 
 export interface ToastProgressTrackOptions {}
 
-export interface ToastProgressTrackCommonProps {}
+export interface ToastProgressTrackCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {}
 
 export interface ToastProgressTrackRenderProps
 	extends ToastProgressTrackCommonProps {
@@ -12,15 +14,17 @@ export interface ToastProgressTrackRenderProps
 	role: "presentation";
 }
 
-export type ToastProgressTrackProps = ToastProgressTrackOptions &
-	Partial<ToastProgressTrackCommonProps>;
+export type ToastProgressTrackProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToastProgressTrackOptions &
+	Partial<ToastProgressTrackCommonProps<ElementOf<T>>>;
 
 /**
  * The component that visually represents the toast lifetime.
  * Act as a container for `Toast.ProgressFill`.
  */
 export function ToastProgressTrack<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ToastProgressTrackProps>,
+	props: PolymorphicProps<T, ToastProgressTrackProps<T>>,
 ) {
 	return (
 		<Polymorphic<ToastProgressTrackRenderProps>

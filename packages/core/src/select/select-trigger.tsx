@@ -24,20 +24,21 @@ import {
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createTypeSelect } from "../selection";
 import { SelectDataSet, useSelectContext } from "./select-context";
 
 export interface SelectTriggerOptions {}
 
-export interface SelectTriggerCommonProps extends Button.ButtonRootCommonProps {
+export interface SelectTriggerCommonProps<T extends HTMLElement = HTMLElement>
+	extends Button.ButtonRootCommonProps<T> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	ref: T | ((el: T) => void);
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
 	"aria-label": string | undefined;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
@@ -53,11 +54,12 @@ export interface SelectTriggerRenderProps
 	"aria-controls": string | undefined;
 }
 
-export type SelectTriggerProps = SelectTriggerOptions &
-	Partial<SelectTriggerCommonProps>;
+export type SelectTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SelectTriggerOptions & Partial<SelectTriggerCommonProps<ElementOf<T>>>;
 
 export function SelectTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, SelectTriggerProps>,
+	props: PolymorphicProps<T, SelectTriggerProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useSelectContext();

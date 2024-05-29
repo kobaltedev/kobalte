@@ -5,12 +5,13 @@ import {
 	DialogContentOptions,
 	DialogContentRenderProps,
 } from "../dialog/dialog-content";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 
 export interface AlertDialogContentOptions extends DialogContentOptions {}
 
-export interface AlertDialogContentCommonProps
-	extends DialogContentCommonProps {}
+export interface AlertDialogContentCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends DialogContentCommonProps<T> {}
 
 export interface AlertDialogContentRenderProps
 	extends AlertDialogContentCommonProps,
@@ -18,14 +19,16 @@ export interface AlertDialogContentRenderProps
 	role: "alertdialog";
 }
 
-export type AlertDialogContentProps = AlertDialogContentOptions &
-	Partial<AlertDialogContentCommonProps>;
+export type AlertDialogContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = AlertDialogContentOptions &
+	Partial<AlertDialogContentCommonProps<ElementOf<T>>>;
 
 /**
  * Overrides the regular `Dialog.Content` with role="alertdialog" to interrupt the user.
  */
 export function AlertDialogContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, AlertDialogContentProps>,
+	props: PolymorphicProps<T, AlertDialogContentProps<T>>,
 ) {
 	return (
 		<DialogContent<

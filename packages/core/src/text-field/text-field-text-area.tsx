@@ -20,7 +20,7 @@ import {
 	on,
 	splitProps,
 } from "solid-js";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import { useTextFieldContext } from "./text-field-context";
 import {
@@ -37,10 +37,11 @@ export interface TextFieldTextAreaOptions {
 	submitOnEnter?: boolean;
 }
 
-export interface TextFieldTextAreaCommonProps
-	extends TextFieldInputCommonProps {
-	ref: HTMLFormElement | ((el: HTMLFormElement) => void);
-	onKeyPress: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
+export interface TextFieldTextAreaCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends TextFieldInputCommonProps<T> {
+	ref: T | ((el: T) => void);
+	onKeyPress: JSX.EventHandlerUnion<T, KeyboardEvent>;
 }
 
 export interface TextFieldTextAreaRenderProps
@@ -49,16 +50,18 @@ export interface TextFieldTextAreaRenderProps
 	"aria-multiline": string | undefined;
 }
 
-export type TextFieldTextAreaProps = TextFieldTextAreaOptions &
-	Partial<TextFieldTextAreaCommonProps>;
+export type TextFieldTextAreaProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = TextFieldTextAreaOptions &
+	Partial<TextFieldTextAreaCommonProps<ElementOf<T>>>;
 
 /**
  * The native html textarea of the textfield.
  */
 export function TextFieldTextArea<T extends ValidComponent = "textarea">(
-	props: PolymorphicProps<T, TextFieldTextAreaProps>,
+	props: PolymorphicProps<T, TextFieldTextAreaProps<T>>,
 ) {
-	let ref: HTMLFormElement | undefined;
+	let ref: HTMLElement | undefined;
 
 	const context = useTextFieldContext();
 
@@ -96,8 +99,8 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 			event.key === "Enter" &&
 			!event.shiftKey
 		) {
-			if (ref.form) {
-				ref.form.requestSubmit();
+			if ((ref as HTMLTextAreaElement).form) {
+				(ref as HTMLTextAreaElement).form!.requestSubmit();
 				event.preventDefault();
 			}
 		}

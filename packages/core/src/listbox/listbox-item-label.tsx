@@ -9,7 +9,7 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	ListboxItemDataSet,
 	useListboxItemContext,
@@ -17,7 +17,9 @@ import {
 
 export interface ListboxItemLabelOptions {}
 
-export interface ListboxItemLabelCommonProps {
+export interface ListboxItemLabelCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -25,15 +27,17 @@ export interface ListboxItemLabelRenderProps
 	extends ListboxItemLabelCommonProps,
 		ListboxItemDataSet {}
 
-export type ListboxItemLabelProps = ListboxItemLabelOptions &
-	Partial<ListboxItemLabelCommonProps>;
+export type ListboxItemLabelProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ListboxItemLabelOptions &
+	Partial<ListboxItemLabelCommonProps<ElementOf<T>>>;
 
 /**
  * An accessible label to be announced for the item.
  * Useful for items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
 export function ListboxItemLabel<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ListboxItemLabelProps>,
+	props: PolymorphicProps<T, ListboxItemLabelProps<T>>,
 ) {
 	const context = useListboxItemContext();
 

@@ -1,31 +1,32 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { JSX, ValidComponent, createSignal, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { SliderDataSet, useSliderContext } from "./slider-context";
 import { getClosestValueIndex, linearScale } from "./utils";
 
 export interface SliderTrackOptions {}
 
-export interface SliderTrackCommonProps {
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+export interface SliderTrackCommonProps<T extends HTMLElement = HTMLElement> {
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
 export interface SliderTrackRenderProps
 	extends SliderTrackCommonProps,
 		SliderDataSet {}
 
-export type SliderTrackProps = SliderTrackOptions &
-	Partial<SliderTrackCommonProps>;
+export type SliderTrackProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SliderTrackOptions & Partial<SliderTrackCommonProps<ElementOf<T>>>;
 
 /**
  * The component that visually represents the slider track.
  * Act as a container for `Slider.Fill`.
  */
 export function SliderTrack<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, SliderTrackProps>,
+	props: PolymorphicProps<T, SliderTrackProps<T>>,
 ) {
 	const context = useSliderContext();
 

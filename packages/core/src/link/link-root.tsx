@@ -9,7 +9,7 @@
 import { mergeRefs } from "@kobalte/utils";
 import { ValidComponent, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createTagName } from "../primitives";
 
 export interface LinkRootOptions {
@@ -17,8 +17,8 @@ export interface LinkRootOptions {
 	disabled?: boolean;
 }
 
-export interface LinkRootCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
+export interface LinkRootCommonProps<T extends HTMLElement = HTMLElement> {
+	ref: T | ((el: T) => void);
 	href: string | undefined;
 }
 
@@ -29,13 +29,15 @@ export interface LinkRootRenderProps extends LinkRootCommonProps {
 	"data-disabled": string | undefined;
 }
 
-export type LinkRootProps = LinkRootOptions & Partial<LinkRootCommonProps>;
+export type LinkRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = LinkRootOptions & Partial<LinkRootCommonProps<ElementOf<T>>>;
 
 /**
  * Link allows a user to navigate to another page or resource within a web page or application.
  */
 export function LinkRoot<T extends ValidComponent = "a">(
-	props: PolymorphicProps<T, LinkRootProps>,
+	props: PolymorphicProps<T, LinkRootProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

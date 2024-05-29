@@ -9,7 +9,7 @@ import {
 
 import { useFormControlContext } from "../form-control";
 import * as Listbox from "../listbox";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useComboboxContext } from "./combobox-context";
 
 export interface ComboboxListboxOptions<Option, OptGroup = never>
@@ -18,9 +18,11 @@ export interface ComboboxListboxOptions<Option, OptGroup = never>
 		"scrollRef" | "scrollToItem" | "children"
 	> {}
 
-export interface ComboboxListboxCommonProps {
+export interface ComboboxListboxCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 }
 
 export interface ComboboxListboxRenderProps
@@ -33,8 +35,9 @@ export interface ComboboxListboxRenderProps
 export type ComboboxListboxProps<
 	Option,
 	OptGroup = never,
+	T extends ValidComponent | HTMLElement = HTMLElement,
 > = ComboboxListboxOptions<Option, OptGroup> &
-	Partial<ComboboxListboxCommonProps>;
+	Partial<ComboboxListboxCommonProps<ElementOf<T>>>;
 
 /**
  * Contains all the items of a `Combobox`.
@@ -43,7 +46,7 @@ export function ComboboxListbox<
 	Option = any,
 	OptGroup = never,
 	T extends ValidComponent = "ul",
->(props: PolymorphicProps<T, ComboboxListboxProps<Option, OptGroup>>) {
+>(props: PolymorphicProps<T, ComboboxListboxProps<Option, OptGroup, T>>) {
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 

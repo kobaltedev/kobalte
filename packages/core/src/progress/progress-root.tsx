@@ -17,7 +17,7 @@ import {
 } from "solid-js";
 
 import { createNumberFormatter } from "../i18n";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import {
 	ProgressContext,
@@ -60,7 +60,7 @@ export interface ProgressRootOptions {
 	getValueLabel?: (params: GetValueLabelParams) => string;
 }
 
-export interface ProgressRootCommonProps {
+export interface ProgressRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -75,14 +75,15 @@ export interface ProgressRootRenderProps
 	"aria-labelledby": string | undefined;
 }
 
-export type ProgressRootProps = ProgressRootOptions &
-	Partial<ProgressRootCommonProps>;
+export type ProgressRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ProgressRootOptions & Partial<ProgressRootCommonProps<ElementOf<T>>>;
 
 /**
  * Progress show either determinate or indeterminate progress of an operation over time.
  */
 export function ProgressRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ProgressRootProps>,
+	props: PolymorphicProps<T, ProgressRootProps<T>>,
 ) {
 	const defaultId = `progress-${createUniqueId()}`;
 

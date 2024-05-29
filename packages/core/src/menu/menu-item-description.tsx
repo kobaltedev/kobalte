@@ -9,12 +9,14 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { MenuItemDataSet, useMenuItemContext } from "./menu-item.context";
 
 export interface MenuItemDescriptionOptions {}
 
-export interface MenuItemDescriptionCommonProps {
+export interface MenuItemDescriptionCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -22,15 +24,17 @@ export interface MenuItemDescriptionRenderProps
 	extends MenuItemDescriptionCommonProps,
 		MenuItemDataSet {}
 
-export type MenuItemDescriptionProps = MenuItemDescriptionOptions &
-	Partial<MenuItemDescriptionCommonProps>;
+export type MenuItemDescriptionProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuItemDescriptionOptions &
+	Partial<MenuItemDescriptionCommonProps<ElementOf<T>>>;
 
 /**
  * An optional accessible description to be announced for the menu item.
  * Useful for menu items that have more complex content (e.g. icons, multiple lines of text, etc.)
  */
 export function MenuItemDescription<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuItemDescriptionProps>,
+	props: PolymorphicProps<T, MenuItemDescriptionProps<T>>,
 ) {
 	const context = useMenuItemContext();
 

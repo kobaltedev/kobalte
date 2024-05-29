@@ -23,7 +23,7 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useRadioGroupContext } from "./radio-group-context";
 import {
 	RadioGroupItemDataSet,
@@ -35,14 +35,16 @@ export interface RadioGroupItemInputOptions {
 	style?: JSX.CSSProperties;
 }
 
-export interface RadioGroupItemInputCommonProps {
+export interface RadioGroupItemInputCommonProps<
+	T extends HTMLElement = HTMLInputElement,
+> {
 	id: string;
-	ref: HTMLInputElement | ((el: HTMLInputElement) => void);
+	ref: T | ((el: T) => void);
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
-	onChange: JSX.EventHandlerUnion<HTMLInputElement, Event>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	onChange: JSX.EventHandlerUnion<T, Event>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
 	"aria-label"?: string;
 	style: JSX.CSSProperties;
 }
@@ -59,14 +61,16 @@ export interface RadioGroupItemInputRenderProps
 	readonly: boolean | undefined;
 }
 
-export type RadioGroupItemInputProps = RadioGroupItemInputOptions &
-	Partial<RadioGroupItemInputCommonProps>;
+export type RadioGroupItemInputProps<
+	T extends ValidComponent | HTMLElement = HTMLInputElement,
+> = RadioGroupItemInputOptions &
+	Partial<RadioGroupItemInputCommonProps<ElementOf<T>>>;
 
 /**
  * The native html input that is visually hidden in the radio button.
  */
 export function RadioGroupItemInput<T extends ValidComponent = "input">(
-	props: PolymorphicProps<T, RadioGroupItemInputProps>,
+	props: PolymorphicProps<T, RadioGroupItemInputProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const radioGroupContext = useRadioGroupContext();
@@ -140,12 +144,12 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 		setIsInternalChangeEvent(false);
 	};
 
-	const onFocus: JSX.FocusEventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 		radioContext.setIsFocused(true);
 	};
 
-	const onBlur: JSX.FocusEventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 		radioContext.setIsFocused(false);
 	};

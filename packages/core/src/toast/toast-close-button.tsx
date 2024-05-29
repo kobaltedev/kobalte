@@ -10,28 +10,32 @@ import { callHandler } from "@kobalte/utils";
 import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import * as Button from "../button";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useToastContext } from "./toast-context";
 
 export interface ToastCloseButtonOptions {}
 
-export interface ToastCloseButtonCommonProps {
+export interface ToastCloseButtonCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	"aria-label": string;
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 }
 
 export interface ToastCloseButtonRenderProps
 	extends ToastCloseButtonCommonProps,
 		Button.ButtonRootRenderProps {}
 
-export type ToastCloseButtonProps = ToastCloseButtonOptions &
-	Partial<ToastCloseButtonCommonProps>;
+export type ToastCloseButtonProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToastCloseButtonOptions &
+	Partial<ToastCloseButtonCommonProps<ElementOf<T>>>;
 
 /**
  * The button that closes the toast.
  */
 export function ToastCloseButton<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, ToastCloseButtonProps>,
+	props: PolymorphicProps<T, ToastCloseButtonProps<T>>,
 ) {
 	const context = useToastContext();
 

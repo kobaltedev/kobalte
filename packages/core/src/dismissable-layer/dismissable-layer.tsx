@@ -23,7 +23,7 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	FocusOutsideEvent,
 	InteractOutsideEvent,
@@ -81,18 +81,22 @@ export interface DismissableLayerOptions {
 	bypassTopMostLayerCheck?: boolean;
 }
 
-export interface DismissableLayerCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
+export interface DismissableLayerCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
+	ref: T | ((el: T) => void);
 }
 
 export interface DismissableLayerRenderProps
 	extends DismissableLayerCommonProps {}
 
-export type DismissableLayerProps = DismissableLayerOptions &
-	Partial<DismissableLayerCommonProps>;
+export type DismissableLayerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = DismissableLayerOptions &
+	Partial<DismissableLayerCommonProps<ElementOf<T>>>;
 
 export function DismissableLayer<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, DismissableLayerProps>,
+	props: PolymorphicProps<T, DismissableLayerProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

@@ -2,7 +2,7 @@ import { OverrideComponentProps, isFunction, mergeRefs } from "@kobalte/utils";
 import { Accessor, JSX, ValidComponent, children, splitProps } from "solid-js";
 
 import { FormControlDataSet, useFormControlContext } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { ComboboxDataSet, useComboboxContext } from "./combobox-context";
 
 export interface ComboboxControlState<Option> {
@@ -26,8 +26,10 @@ export interface ComboboxControlOptions<Option> {
 		| ((state: ComboboxControlState<Option>) => JSX.Element);
 }
 
-export interface ComboboxControlCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
+export interface ComboboxControlCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
+	ref: T | ((el: T) => void);
 }
 
 export interface ComboboxControlRenderProps
@@ -37,14 +39,17 @@ export interface ComboboxControlRenderProps
 	children: JSX.Element;
 }
 
-export type ComboboxControlProps<Option> = ComboboxControlOptions<Option> &
-	Partial<ComboboxControlCommonProps>;
+export type ComboboxControlProps<
+	Option,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ComboboxControlOptions<Option> &
+	Partial<ComboboxControlCommonProps<ElementOf<T>>>;
 
 /**
  * Contains the combobox input and trigger.
  */
 export function ComboboxControl<Option, T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ComboboxControlProps<Option>>,
+	props: PolymorphicProps<T, ComboboxControlProps<Option, T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();

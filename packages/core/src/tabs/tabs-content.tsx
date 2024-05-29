@@ -17,7 +17,7 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createPresence } from "../primitives";
 import { useTabsContext } from "./tabs-context";
 
@@ -32,9 +32,9 @@ export interface TabsContentOptions {
 	forceMount?: boolean;
 }
 
-export interface TabsContentCommonProps {
+export interface TabsContentCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 }
 
 export interface TabsContentRenderProps extends TabsContentCommonProps {
@@ -45,14 +45,15 @@ export interface TabsContentRenderProps extends TabsContentCommonProps {
 	"data-selected": string | undefined;
 }
 
-export type TabsContentProps = TabsContentOptions &
-	Partial<TabsContentCommonProps>;
+export type TabsContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = TabsContentOptions & Partial<TabsContentCommonProps<ElementOf<T>>>;
 
 /**
  * Contains the content associated with a tab trigger.
  */
 export function TabsContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, TabsContentProps>,
+	props: PolymorphicProps<T, TabsContentProps<T>>,
 ) {
 	let ref!: HTMLElement;
 

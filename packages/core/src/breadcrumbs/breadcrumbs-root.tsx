@@ -9,7 +9,7 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { JSX, ValidComponent, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	BreadcrumbsContext,
 	BreadcrumbsContextValue,
@@ -30,20 +30,23 @@ export interface BreadcrumbsRootOptions {
 	translations?: BreadcrumbsIntlTranslations;
 }
 
-export interface BreadcrumbsRootCommonProps {}
+export interface BreadcrumbsRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {}
 
 export interface BreadcrumbsRootRenderProps extends BreadcrumbsRootCommonProps {
 	"aria-label": string;
 }
 
-export type BreadcrumbsRootProps = BreadcrumbsRootOptions &
-	Partial<BreadcrumbsRootCommonProps>;
+export type BreadcrumbsRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = BreadcrumbsRootOptions & Partial<BreadcrumbsRootCommonProps<ElementOf<T>>>;
 
 /**
  * Breadcrumbs show hierarchy and navigational context for a user’s location within an application.
  */
 export function BreadcrumbsRoot<T extends ValidComponent = "nav">(
-	props: PolymorphicProps<T, BreadcrumbsRootProps>,
+	props: PolymorphicProps<T, BreadcrumbsRootProps<T>>,
 ) {
 	const mergedProps = mergeDefaultProps(
 		{

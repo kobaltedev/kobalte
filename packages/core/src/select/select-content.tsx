@@ -11,7 +11,7 @@ import {
 	DismissableLayerCommonProps,
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
 import {
 	FocusOutsideEvent,
@@ -48,7 +48,8 @@ export interface SelectContentOptions {
 	onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export interface SelectContentCommonProps extends DismissableLayerCommonProps {
+export interface SelectContentCommonProps<T extends HTMLElement = HTMLElement>
+	extends DismissableLayerCommonProps<T> {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
@@ -58,14 +59,15 @@ export interface SelectContentRenderProps
 		SelectDataSet,
 		DismissableLayerRenderProps {}
 
-export type SelectContentProps = SelectContentOptions &
-	Partial<SelectContentCommonProps>;
+export type SelectContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SelectContentOptions & Partial<SelectContentCommonProps<ElementOf<T>>>;
 
 /**
  * The component that pops out when the select is open.
  */
 export function SelectContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, SelectContentProps>,
+	props: PolymorphicProps<T, SelectContentProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

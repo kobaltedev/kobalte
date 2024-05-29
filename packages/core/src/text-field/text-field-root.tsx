@@ -14,7 +14,7 @@ import {
 	FormControlDataSet,
 	createFormControl,
 } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	createControllableSignal,
 	createFormResetListener,
@@ -60,9 +60,9 @@ export interface TextFieldRootOptions {
 	readOnly?: boolean;
 }
 
-export interface TextFieldRootCommonProps {
+export interface TextFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 }
 
 export interface TextFieldRootRenderProps
@@ -71,14 +71,15 @@ export interface TextFieldRootRenderProps
 	role: "group";
 }
 
-export type TextFieldRootProps = TextFieldRootOptions &
-	Partial<TextFieldRootCommonProps>;
+export type TextFieldRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = TextFieldRootOptions & Partial<TextFieldRootCommonProps<ElementOf<T>>>;
 
 /**
  * A text input that allow users to input custom text entries with a keyboard.
  */
 export function TextFieldRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, TextFieldRootProps>,
+	props: PolymorphicProps<T, TextFieldRootProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

@@ -12,6 +12,7 @@ import {
 	useFormControlContext,
 } from "../form-control";
 import {
+	ElementOf,
 	Polymorphic,
 	PolymorphicCallbackProps,
 	PolymorphicProps,
@@ -21,12 +22,14 @@ import { useNumberFieldContext } from "./number-field-context";
 
 export interface NumberFieldInputOptions {}
 
-export interface NumberFieldInputCommonProps {
+export interface NumberFieldInputCommonProps<
+	T extends HTMLElement = HTMLInputElement,
+> {
 	id: string;
-	ref: HTMLInputElement | ((el: HTMLInputElement) => void);
-	onInput: JSX.EventHandlerUnion<HTMLElement, InputEvent>;
-	onChange: JSX.EventHandlerUnion<HTMLElement, Event>;
-	onWheel: JSX.EventHandlerUnion<HTMLElement, WheelEvent>;
+	ref: T | ((el: T) => void);
+	onInput: JSX.EventHandlerUnion<T, InputEvent>;
+	onChange: JSX.EventHandlerUnion<T, Event>;
+	onWheel: JSX.EventHandlerUnion<T, WheelEvent>;
 	"aria-label": string | undefined;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
@@ -46,11 +49,13 @@ export interface NumberFieldInputRenderProps
 	readOnly: boolean | undefined;
 }
 
-export type NumberFieldInputProps = NumberFieldInputOptions &
-	Partial<NumberFieldInputCommonProps>;
+export type NumberFieldInputProps<
+	T extends ValidComponent | HTMLElement = HTMLInputElement,
+> = NumberFieldInputOptions &
+	Partial<NumberFieldInputCommonProps<ElementOf<T>>>;
 
 export function NumberFieldInput<T extends ValidComponent = "input">(
-	props: PolymorphicProps<T, NumberFieldInputProps>,
+	props: PolymorphicProps<T, NumberFieldInputProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useNumberFieldContext();

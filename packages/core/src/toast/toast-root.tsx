@@ -30,7 +30,7 @@ import {
 	onMount,
 	splitProps,
 } from "solid-js";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 
 import { createPresence, createRegisterId } from "../primitives";
 import { ToastContext, ToastContextValue } from "./toast-context";
@@ -103,15 +103,15 @@ export interface ToastRootOptions {
 	onEscapeKeyDown?: (event: KeyboardEvent) => void;
 }
 
-export interface ToastRootCommonProps {
+export interface ToastRootCommonProps<T extends HTMLElement = HTMLElement> {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	ref: T | ((el: T) => void);
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
 export interface ToastRootRenderProps extends ToastRootCommonProps {
@@ -119,10 +119,12 @@ export interface ToastRootRenderProps extends ToastRootCommonProps {
 	tabIndex: 0;
 }
 
-export type ToastRootProps = ToastRootOptions & Partial<ToastRootCommonProps>;
+export type ToastRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ToastRootOptions & Partial<ToastRootCommonProps<ElementOf<T>>>;
 
 export function ToastRoot<T extends ValidComponent = "li">(
-	props: PolymorphicProps<T, ToastRootProps>,
+	props: PolymorphicProps<T, ToastRootProps<T>>,
 ) {
 	const rootContext = useToastRegionContext();
 

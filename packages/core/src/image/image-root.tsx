@@ -9,7 +9,7 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import { ValidComponent, createSignal, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { ImageContext, ImageContextValue } from "./image-context";
 import { ImageLoadingStatus } from "./types";
 
@@ -28,17 +28,19 @@ export interface ImageRootOptions {
 	onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
 }
 
-export interface ImageRootCommonProps {}
+export interface ImageRootCommonProps<T extends HTMLElement = HTMLElement> {}
 
 export interface ImageRootRenderProps extends ImageRootCommonProps {}
 
-export type ImageRootProps = ImageRootOptions & Partial<ImageRootCommonProps>;
+export type ImageRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ImageRootOptions & Partial<ImageRootCommonProps<ElementOf<T>>>;
 
 /**
  * An image element with an optional fallback for loading and error status.
  */
 export function ImageRoot<T extends ValidComponent = "span">(
-	props: PolymorphicProps<T, ImageRootProps>,
+	props: PolymorphicProps<T, ImageRootProps<T>>,
 ) {
 	const [local, others] = splitProps(props as ImageRootProps, [
 		"fallbackDelay",

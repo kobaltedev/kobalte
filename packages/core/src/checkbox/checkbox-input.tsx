@@ -28,19 +28,21 @@ import {
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
 
 export interface CheckboxInputOptions {}
 
-export interface CheckboxInputCommonProps {
+export interface CheckboxInputCommonProps<
+	T extends HTMLElement = HTMLInputElement,
+> {
 	id: string;
-	ref: HTMLInputElement | ((el: HTMLInputElement) => void);
+	ref: T | ((el: T) => void);
 	/** The HTML styles attribute (object form only). */
 	style: JSX.CSSProperties;
-	onChange: JSX.EventHandlerUnion<HTMLInputElement, InputEvent>;
-	onFocus: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent>;
-	onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent>;
+	onChange: JSX.EventHandlerUnion<T, InputEvent>;
+	onFocus: JSX.FocusEventHandlerUnion<T, FocusEvent>;
+	onBlur: JSX.FocusEventHandlerUnion<T, FocusEvent>;
 	"aria-label": string | undefined;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
@@ -63,14 +65,15 @@ export interface CheckboxInputRenderProps
 	"aria-readonly": boolean | undefined;
 }
 
-export type CheckboxInputProps = CheckboxInputOptions &
-	Partial<CheckboxInputCommonProps>;
+export type CheckboxInputProps<
+	T extends ValidComponent | HTMLElement = HTMLInputElement,
+> = CheckboxInputOptions & Partial<CheckboxInputCommonProps<ElementOf<T>>>;
 
 /**
  * The native html input that is visually hidden in the checkbox.
  */
 export function CheckboxInput<T extends ValidComponent = "input">(
-	props: PolymorphicProps<T, CheckboxInputProps>,
+	props: PolymorphicProps<T, CheckboxInputProps<T>>,
 ) {
 	let ref: HTMLInputElement | undefined;
 

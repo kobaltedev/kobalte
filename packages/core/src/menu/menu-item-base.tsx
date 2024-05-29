@@ -24,7 +24,7 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -65,17 +65,17 @@ export interface MenuItemBaseOptions {
 	onSelect?: () => void;
 }
 
-export interface MenuItemBaseCommonProps {
+export interface MenuItemBaseCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>;
-	onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+	ref: T | ((el: T) => void);
+	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface MenuItemBaseRenderProps
@@ -89,14 +89,15 @@ export interface MenuItemBaseRenderProps
 	"data-key": string | undefined;
 }
 
-export type MenuItemBaseProps = MenuItemBaseOptions &
-	Partial<MenuItemBaseCommonProps>;
+export type MenuItemBaseProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = MenuItemBaseOptions & Partial<MenuItemBaseCommonProps<ElementOf<T>>>;
 
 /**
  * Base component for a menu item.
  */
 export function MenuItemBase<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuItemBaseProps>,
+	props: PolymorphicProps<T, MenuItemBaseProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

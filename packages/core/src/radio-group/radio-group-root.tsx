@@ -22,7 +22,7 @@ import {
 	FormControlDataSet,
 	createFormControl,
 } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	createControllableSignal,
 	createFormResetListener,
@@ -74,9 +74,11 @@ export interface RadioGroupRootOptions {
 	readOnly?: boolean;
 }
 
-export interface RadioGroupRootCommonProps {
+export interface RadioGroupRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 	"aria-label"?: string;
@@ -93,15 +95,16 @@ export interface RadioGroupRootRenderProps
 	"aria-orientation": Orientation | undefined;
 }
 
-export type RadioGroupRootProps = RadioGroupRootOptions &
-	Partial<RadioGroupRootCommonProps>;
+export type RadioGroupRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = RadioGroupRootOptions & Partial<RadioGroupRootCommonProps<ElementOf<T>>>;
 
 /**
  * A set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time.
  * This component is based on the [WAI-ARIA Radio Group Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radiobutton/)
  */
 export function RadioGroupRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, RadioGroupRootProps>,
+	props: PolymorphicProps<T, RadioGroupRootProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

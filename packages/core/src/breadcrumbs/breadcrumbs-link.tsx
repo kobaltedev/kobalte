@@ -9,14 +9,16 @@
 import { Component, ValidComponent, splitProps } from "solid-js";
 
 import * as Link from "../link";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 
 export interface BreadcrumbsLinkOptions {
 	/** Whether the breadcrumb link represents the current page. */
 	current?: boolean;
 }
 
-export interface BreadcrumbsLinkCommonProps {
+export interface BreadcrumbsLinkCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	/** Whether the breadcrumb link is disabled. */
 	disabled: boolean;
 	"aria-current": string | undefined;
@@ -26,14 +28,15 @@ export interface BreadcrumbsLinkRenderProps extends BreadcrumbsLinkCommonProps {
 	"data-current": string | undefined;
 }
 
-export type BreadcrumbsLinkProps = BreadcrumbsLinkOptions &
-	Partial<BreadcrumbsLinkCommonProps>;
+export type BreadcrumbsLinkProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = BreadcrumbsLinkOptions & Partial<BreadcrumbsLinkCommonProps<ElementOf<T>>>;
 
 /**
  * The breadcrumbs link.
  */
 export function BreadcrumbsLink<T extends ValidComponent = "a">(
-	props: PolymorphicProps<T, BreadcrumbsLinkProps>,
+	props: PolymorphicProps<T, BreadcrumbsLinkProps<T>>,
 ) {
 	const [local, others] = splitProps(props as BreadcrumbsLinkProps, [
 		"current",

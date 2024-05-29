@@ -1,7 +1,7 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { Show, ValidComponent, splitProps } from "solid-js";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createPresence } from "../primitives";
 import {
 	RadioGroupItemDataSet,
@@ -16,24 +16,28 @@ export interface RadioGroupItemIndicatorOptions {
 	forceMount?: boolean;
 }
 
-export interface RadioGroupItemIndicatorCommonProps {
+export interface RadioGroupItemIndicatorCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 }
 
 export interface RadioGroupItemIndicatorRenderProps
 	extends RadioGroupItemIndicatorCommonProps,
 		RadioGroupItemDataSet {}
 
-export type RadioGroupItemIndicatorProps = RadioGroupItemIndicatorOptions &
-	Partial<RadioGroupItemIndicatorCommonProps>;
+export type RadioGroupItemIndicatorProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = RadioGroupItemIndicatorOptions &
+	Partial<RadioGroupItemIndicatorCommonProps<ElementOf<T>>>;
 
 /**
  * The visual indicator rendered when the radio item is in a checked state.
  * You can style this element directly, or you can use it as a wrapper to put an icon into, or both.
  */
 export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, RadioGroupItemIndicatorProps>,
+	props: PolymorphicProps<T, RadioGroupItemIndicatorProps<T>>,
 ) {
 	const context = useRadioGroupItemContext();
 

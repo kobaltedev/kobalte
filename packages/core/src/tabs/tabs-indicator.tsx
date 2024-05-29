@@ -17,12 +17,12 @@ import {
 
 import { Orientation } from "@kobalte/utils";
 import { useLocale } from "../i18n";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useTabsContext } from "./tabs-context";
 
 export interface TabsIndicatorOptions {}
 
-export interface TabsIndicatorCommonProps {
+export interface TabsIndicatorCommonProps<T extends HTMLElement = HTMLElement> {
 	/** The HTML styles attribute (object form only). */
 	style?: JSX.CSSProperties;
 }
@@ -32,15 +32,16 @@ export interface TabsIndicatorRenderProps extends TabsIndicatorCommonProps {
 	"data-orientation": Orientation;
 }
 
-export type TabsIndicatorProps = TabsIndicatorOptions &
-	Partial<TabsIndicatorCommonProps>;
+export type TabsIndicatorProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = TabsIndicatorOptions & Partial<TabsIndicatorCommonProps<ElementOf<T>>>;
 
 /**
  * The visual indicator displayed at the bottom of the tab list to indicate the selected tab.
  * It provides the base style needed to display a smooth transition to the new selected tab.
  */
 export function TabsIndicator<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, TabsIndicatorProps>,
+	props: PolymorphicProps<T, TabsIndicatorProps<T>>,
 ) {
 	const context = useTabsContext();
 

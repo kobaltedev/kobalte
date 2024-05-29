@@ -25,7 +25,7 @@ import {
 	createFormControl,
 } from "../form-control";
 import { useLocale } from "../i18n";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
 	createControllableSignal,
 	createFormResetListener,
@@ -106,9 +106,11 @@ export interface NumberFieldRootOptions
 	readOnly?: boolean;
 }
 
-export interface NumberFieldRootCommonProps {
+export interface NumberFieldRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
+	ref: T | ((el: T) => void);
 }
 
 export interface NumberFieldRootRenderProps
@@ -117,14 +119,15 @@ export interface NumberFieldRootRenderProps
 	role: "group";
 }
 
-export type NumberFieldRootProps = NumberFieldRootOptions &
-	Partial<NumberFieldRootCommonProps>;
+export type NumberFieldRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = NumberFieldRootOptions & Partial<NumberFieldRootCommonProps<ElementOf<T>>>;
 
 /**
  * A text input that allow users to input custom text entries with a keyboard.
  */
 export function NumberFieldRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, NumberFieldRootProps>,
+	props: PolymorphicProps<T, NumberFieldRootProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

@@ -33,7 +33,7 @@ import {
 	FormControlDataSet,
 	createFormControl,
 } from "../form-control";
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { createFormResetListener, createToggleState } from "../primitives";
 import {
 	SwitchContext,
@@ -90,10 +90,10 @@ export interface SwitchRootOptions {
 	children?: JSX.Element | ((state: SwitchRootState) => JSX.Element);
 }
 
-export interface SwitchRootCommonProps {
+export interface SwitchRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+	ref: T | ((el: T) => void);
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
 export interface SwitchRootRenderProps
@@ -104,14 +104,15 @@ export interface SwitchRootRenderProps
 	children: JSX.Element;
 }
 
-export type SwitchRootProps = SwitchRootOptions &
-	Partial<SwitchRootCommonProps>;
+export type SwitchRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = SwitchRootOptions & Partial<SwitchRootCommonProps<ElementOf<T>>>;
 
 /**
  * A control that allows users to choose one of two values: on or off.
  */
 export function SwitchRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, SwitchRootProps>,
+	props: PolymorphicProps<T, SwitchRootProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

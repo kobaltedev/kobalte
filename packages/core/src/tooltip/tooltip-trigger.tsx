@@ -22,33 +22,36 @@ import { callHandler, getDocument, mergeRefs } from "@kobalte/utils";
 import { JSX, ValidComponent, onCleanup, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { Polymorphic, PolymorphicProps } from "../polymorphic";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useTooltipContext } from "./tooltip-context";
 
 export interface TooltipTriggerOptions {}
 
-export interface TooltipTriggerCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
-	onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>;
-	onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
-	onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent>;
+export interface TooltipTriggerCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
+	ref: T | ((el: T) => void);
+	onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface TooltipTriggerRenderProps extends TooltipTriggerCommonProps {
 	"aria-describedby": string | undefined;
 }
 
-export type TooltipTriggerProps = TooltipTriggerOptions &
-	Partial<TooltipTriggerCommonProps>;
+export type TooltipTriggerProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = TooltipTriggerOptions & Partial<TooltipTriggerCommonProps<ElementOf<T>>>;
 
 /**
  * The button that opens the tooltip when hovered.
  */
 export function TooltipTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, TooltipTriggerProps>,
+	props: PolymorphicProps<T, TooltipTriggerProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 
