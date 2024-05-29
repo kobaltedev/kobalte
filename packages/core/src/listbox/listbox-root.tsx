@@ -147,10 +147,11 @@ export interface ListboxRootRenderProps extends ListboxRootCommonProps {
 	tabIndex: number | undefined;
 }
 
-export type ListboxRootProps<Option, OptGroup = never> = ListboxRootOptions<
+export type ListboxRootProps<
 	Option,
-	OptGroup
-> &
+	OptGroup = never,
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ListboxRootOptions<Option, OptGroup> &
 	Partial<ListboxRootCommonProps<ElementOf<T>>>;
 
 /**
