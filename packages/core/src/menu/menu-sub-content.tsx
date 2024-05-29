@@ -87,7 +87,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		// Submenu key events bubble through portals. We only care about keys in this menu.

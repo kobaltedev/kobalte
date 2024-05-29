@@ -75,7 +75,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 		);
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		e.currentTarget.dataset.pointerType = e.pointerType;
@@ -89,7 +89,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		if (!isDisabled()) {

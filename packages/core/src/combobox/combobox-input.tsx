@@ -220,7 +220,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 		}
 	};
 
-	const onFocus: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		if (context.isInputFocused()) {
@@ -230,7 +230,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 		context.setIsInputFocused(true);
 	};
 
-	const onBlur: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 
 		// Ignore blur if focused moved into the control or menu.
@@ -247,7 +247,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	// If a touch happens on direct center of Combobox input, might be virtual click from iPad so open ComboBox menu
 	let lastEventTime = 0;
 
-	const onTouchEnd: JSX.EventHandlerUnion<T, TouchEvent> = (e) => {
+	const onTouchEnd: JSX.EventHandlerUnion<HTMLInputElement, TouchEvent> = (e) => {
 		callHandler(e, local.onTouchEnd);
 
 		if (!ref || formControlContext.isReadOnly() || isDisabled()) {
@@ -261,7 +261,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 			return;
 		}
 
-		const rect = (e.target as Element).getBoundingClientRect();
+		const rect = e.target.getBoundingClientRect();
 		const touch = e.changedTouches[0];
 
 		const centerX = Math.ceil(rect.left + 0.5 * rect.width);

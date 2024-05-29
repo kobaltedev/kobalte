@@ -47,7 +47,7 @@ export function DialogTrigger<T extends ValidComponent = "button">(
 		"onClick",
 	]);
 
-	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 		context.toggle();
 	};

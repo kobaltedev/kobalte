@@ -256,7 +256,7 @@ export interface ComboboxBaseRenderProps
 	role: "group";
 }
 
-export type ComboboxBaseProps<Option, OptGroup = never> = ComboboxBaseOptions<
+export type ComboboxBaseProps<Option, OptGroup = never,T extends ValidComponent | HTMLElement = HTMLElement> = ComboboxBaseOptions<
 	Option,
 	OptGroup
 > &
@@ -269,7 +269,7 @@ export function ComboboxBase<
 	Option,
 	OptGroup = never,
 	T extends ValidComponent = "div",
->(props: PolymorphicProps<T, ComboboxBaseProps<Option, OptGroup>>) {
+>(props: PolymorphicProps<T, ComboboxBaseProps<Option, OptGroup, T>>) {
 	const defaultId = `combobox-${createUniqueId()}`;
 
 	const filter = createFilter({ sensitivity: "base" });

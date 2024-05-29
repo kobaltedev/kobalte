@@ -105,12 +105,12 @@ export function SwitchInput<T extends ValidComponent = "input">(
 		target.checked = context.checked();
 	};
 
-	const onFocus: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 		context.setIsFocused(true);
 	};
 
-	const onBlur: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 		context.setIsFocused(false);
 	};

@@ -50,14 +50,14 @@ export function PopoverTrigger<T extends ValidComponent = "button">(
 		"onPointerDown",
 	]);
 
-	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		// Prevent popover from opening then closing immediately when inside an overlay in safari.
 		e.preventDefault();
 	};
 
-	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 		context.toggle();
 	};

@@ -175,7 +175,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		() => ref,
 	);
 
-	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		// Submenu key events bubble through portals. We only care about keys in this menu.
 		if (!contains(e.currentTarget, e.target)) {
 			return;
@@ -231,7 +231,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerEnter);
 
 		if (!context.isOpen()) {
@@ -251,7 +251,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			.setFocusedKey(undefined);
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {

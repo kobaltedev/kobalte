@@ -36,7 +36,7 @@ export function DialogOverlay<T extends ValidComponent = "div">(
 		"onPointerDown",
 	]);
 
-	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		// fixes a firefox issue that starts text selection https://bugzilla.mozilla.org/show_bug.cgi?id=1675846

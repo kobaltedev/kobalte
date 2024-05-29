@@ -35,6 +35,7 @@ export interface ComboboxListboxRenderProps
 export type ComboboxListboxProps<
 	Option,
 	OptGroup = never,
+	T extends ValidComponent | HTMLElement = HTMLElement,
 > = ComboboxListboxOptions<Option, OptGroup> &
 	Partial<ComboboxListboxCommonProps<ElementOf<T>>>;
 
@@ -45,7 +46,7 @@ export function ComboboxListbox<
 	Option = any,
 	OptGroup = never,
 	T extends ValidComponent = "ul",
->(props: PolymorphicProps<T, ComboboxListboxProps<Option, OptGroup>>) {
+>(props: PolymorphicProps<T, ComboboxListboxProps<Option, OptGroup, T>>) {
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 

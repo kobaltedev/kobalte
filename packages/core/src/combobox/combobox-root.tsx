@@ -57,7 +57,7 @@ export interface ComboboxRootRenderProps
 	extends ComboboxRootCommonProps,
 		ComboboxBaseRenderProps {}
 
-export type ComboboxRootProps<Option, OptGroup = never> = ComboboxRootOptions<
+export type ComboboxRootProps<Option, OptGroup = never, T extends ValidComponent | HTMLElement = HTMLElement> = ComboboxRootOptions<
 	Option,
 	OptGroup
 > &
@@ -70,7 +70,7 @@ export function ComboboxRoot<
 	Option,
 	OptGroup = never,
 	T extends ValidComponent = "div",
->(props: PolymorphicProps<T, ComboboxRootProps<Option, OptGroup>>) {
+>(props: PolymorphicProps<T, ComboboxRootProps<Option, OptGroup, T>>) {
 	const [local, others] = splitProps(
 		props as ComboboxRootProps<Option, OptGroup>,
 		["value", "defaultValue", "onChange", "multiple"],

@@ -39,14 +39,14 @@ export interface ComboboxControlRenderProps
 	children: JSX.Element;
 }
 
-export type ComboboxControlProps<Option> = ComboboxControlOptions<Option> &
+export type ComboboxControlProps<Option, T extends ValidComponent | HTMLElement = HTMLElement> = ComboboxControlOptions<Option> &
 	Partial<ComboboxControlCommonProps<ElementOf<T>>>;
 
 /**
  * Contains the combobox input and trigger.
  */
 export function ComboboxControl<Option, T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ComboboxControlProps<Option>>,
+	props: PolymorphicProps<T, ComboboxControlProps<Option, T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();

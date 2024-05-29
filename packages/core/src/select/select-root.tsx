@@ -58,7 +58,7 @@ export interface SelectRootRenderProps
 	extends SelectRootCommonProps,
 		SelectBaseRenderProps {}
 
-export type SelectRootProps<Option, OptGroup = never> = SelectRootOptions<
+export type SelectRootProps<Option, OptGroup = never, T extends ValidComponent | HTMLElement = HTMLElement> = SelectRootOptions<
 	Option,
 	OptGroup
 > &
@@ -71,7 +71,7 @@ export function SelectRoot<
 	Option,
 	OptGroup = never,
 	T extends ValidComponent = "div",
->(props: PolymorphicProps<T, SelectRootProps<Option, OptGroup>>) {
+>(props: PolymorphicProps<T, SelectRootProps<Option, OptGroup, T>>) {
 	const [local, others] = splitProps(
 		props as SelectRootProps<Option, OptGroup>,
 		["value", "defaultValue", "onChange", "multiple"],

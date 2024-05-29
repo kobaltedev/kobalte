@@ -83,7 +83,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		clearLongPressTimeout();
 	});
 
-	const onContextMenu: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
+	const onContextMenu: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// If trigger is disabled, enable the native Context Menu.
 		if (local.disabled) {
 			callHandler(e, local.onContextMenu);
@@ -121,7 +121,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		if (!local.disabled && isTouchOrPen(e)) {
@@ -129,7 +129,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerCancel: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerCancel);
 
 		if (!local.disabled && isTouchOrPen(e)) {
@@ -137,7 +137,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerUp);
 
 		if (!local.disabled && isTouchOrPen(e)) {

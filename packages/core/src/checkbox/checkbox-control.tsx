@@ -42,14 +42,14 @@ export function CheckboxControl<T extends ValidComponent = "div">(
 
 	const [local, others] = splitProps(mergedProps, ["onClick", "onKeyDown"]);
 
-	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		context.toggle();
 		context.inputRef()?.focus();
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		if (e.key === EventKey.Space) {

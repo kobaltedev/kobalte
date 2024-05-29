@@ -169,7 +169,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 		() => state.setIsSelected(local.defaultChecked ?? false),
 	);
 
-	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		// For consistency with native, prevent the input blurs on pointer down.

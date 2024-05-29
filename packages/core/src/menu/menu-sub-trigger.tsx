@@ -166,7 +166,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		() => ref,
 	);
 
-	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		if (!context.isOpen() && !local.disabled) {
@@ -174,7 +174,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
@@ -219,7 +219,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerLeave);
 
 		if (e.pointerType !== "mouse") {
@@ -260,7 +260,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		parentMenuContext?.onItemLeave(e);
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		// Ignore repeating events, which may have started on the menu trigger before moving

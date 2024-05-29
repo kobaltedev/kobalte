@@ -72,7 +72,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		"onPointerLeave",
 	]);
 
-	const onFocusIn: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocusIn);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
@@ -80,7 +80,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		}
 	};
 
-	const onFocusOut: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocusOut);
 
 		// The newly focused element isn't inside the toast list.
@@ -89,7 +89,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
@@ -97,7 +97,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerLeave);
 
 		// The current active element isn't inside the toast list.

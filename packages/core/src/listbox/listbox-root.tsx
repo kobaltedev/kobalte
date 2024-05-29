@@ -161,7 +161,7 @@ export function ListboxRoot<
 	Option,
 	OptGroup = never,
 	T extends ValidComponent = "ul",
->(props: PolymorphicProps<T, ListboxRootProps<Option, OptGroup>>) {
+>(props: PolymorphicProps<T, ListboxRootProps<Option, OptGroup, T>>) {
 	let ref: HTMLElement | undefined;
 
 	const defaultId = `listbox-${createUniqueId()}`;

@@ -125,7 +125,7 @@ export function createSelectableCollection<
 		selectionManager: () => access(mergedProps.selectionManager),
 	});
 
-	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, typeSelectHandlers.onKeyDown);
 
 		// Prevent option + tab from doing anything since it doesn't move focus to the cells, only buttons/checkboxes
@@ -350,7 +350,7 @@ export function createSelectableCollection<
 		}
 	};
 
-	const onFocusIn: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		const manager = access(mergedProps.selectionManager);
 		const delegate = access(mergedProps.keyboardDelegate);
 		const selectOnFocus = access(mergedProps.selectOnFocus);
@@ -423,7 +423,7 @@ export function createSelectableCollection<
 		}
 	};
 
-	const onFocusOut: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		const manager = access(mergedProps.selectionManager);
 
 		// Don't set blurred and then focused again if moving focus within the collection.
@@ -432,7 +432,7 @@ export function createSelectableCollection<
 		}
 	};
 
-	const onMouseDown: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
+	const onMouseDown: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// Ignore events that bubbled through portals.
 		if (finalScrollRef() === e.target) {
 			// Prevent focus going to the collection when clicking on the scrollbar.

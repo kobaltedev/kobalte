@@ -106,7 +106,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 		);
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		e.currentTarget.dataset.pointerType = e.pointerType;
@@ -120,7 +120,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		if (!isDisabled() && e.currentTarget.dataset.pointerType === "touch") {
@@ -128,7 +128,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		if (isDisabled()) {
@@ -195,7 +195,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onFocus: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		if (selectionManager().isFocused()) {
@@ -205,7 +205,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 		selectionManager().setFocused(true);
 	};
 
-	const onBlur: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 
 		if (context.isOpen()) {

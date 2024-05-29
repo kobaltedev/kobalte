@@ -44,7 +44,7 @@ export function CollapsibleTrigger<T extends ValidComponent = "div">(
 
 	const [local, others] = splitProps(props, ["onClick"]);
 
-	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 		context.toggle();
 	};

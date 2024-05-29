@@ -139,7 +139,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		e.currentTarget.dataset.pointerType = e.pointerType;
@@ -150,7 +150,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		if (!local.disabled) {
@@ -158,7 +158,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		if (local.disabled) {
@@ -203,7 +203,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onMouseOver: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
+	const onMouseOver: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onMouseOver);
 
 		// When one of the menubar menus is open, automatically open others on trigger hover
@@ -216,7 +216,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onFocus: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		if (optionalMenubarContext !== undefined)

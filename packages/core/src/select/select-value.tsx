@@ -51,14 +51,14 @@ export interface SelectValueRenderProps
 	"data-placeholder-shown": string | undefined;
 }
 
-export type SelectValueProps<Option> = SelectValueOptions<Option> &
+export type SelectValueProps<Option, T extends ValidComponent | HTMLElement = HTMLElement> = SelectValueOptions<Option> &
 	Partial<SelectValueCommonProps<ElementOf<T>>>;
 
 /**
  * The part that reflects the selected value(s).
  */
 export function SelectValue<Option, T extends ValidComponent = "span">(
-	props: PolymorphicProps<T, SelectValueProps<Option>>,
+	props: PolymorphicProps<T, SelectValueProps<Option, T>>,
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useSelectContext();

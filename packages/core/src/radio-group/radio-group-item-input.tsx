@@ -144,12 +144,12 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 		setIsInternalChangeEvent(false);
 	};
 
-	const onFocus: JSX.FocusEventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 		radioContext.setIsFocused(true);
 	};
 
-	const onBlur: JSX.FocusEventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 		radioContext.setIsFocused(false);
 	};

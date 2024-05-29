@@ -137,7 +137,7 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		return (local.textValue || `${local.value}`).replace("-", "\u2212");
 	});
 
-	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || props.readOnly) {
@@ -190,13 +190,13 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onFocus: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		isFocused = true;
 	};
 
-	const onBlur: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 
 		isFocused = false;

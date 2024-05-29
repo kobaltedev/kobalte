@@ -213,7 +213,7 @@ export interface SelectBaseRenderProps
 	role: "group";
 }
 
-export type SelectBaseProps<Option, OptGroup = never> = SelectBaseOptions<
+export type SelectBaseProps<Option, OptGroup = never, T extends ValidComponent | HTMLElement = HTMLElement> = SelectBaseOptions<
 	Option,
 	OptGroup
 > &
@@ -227,7 +227,7 @@ export function SelectBase<
 	Option,
 	OptGroup = never,
 	T extends ValidComponent = "div",
->(props: PolymorphicProps<T, SelectBaseProps<Option, OptGroup>>) {
+>(props: PolymorphicProps<T, SelectBaseProps<Option, OptGroup, T>>) {
 	const defaultId = `select-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(

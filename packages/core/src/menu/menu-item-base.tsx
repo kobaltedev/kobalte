@@ -182,7 +182,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	 * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
 	 * wiggles. This is to match native menu implementation.
 	 */
-	const onPointerMove: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
@@ -202,7 +202,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerLeave);
 
 		if (e.pointerType !== "mouse") {
@@ -212,7 +212,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		menuContext.onItemLeave(e);
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerUp);
 
 		// Selection occurs on pointer up (main button).
@@ -221,7 +221,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		// Ignore repeating events, which may have started on the menu trigger before moving

@@ -214,7 +214,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		local.onPause?.();
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		if (e.key !== "Escape") {
@@ -228,7 +228,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		}
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		if (e.button !== 0) {
@@ -238,7 +238,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		pointerStart = { x: e.clientX, y: e.clientY };
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerMove);
 
 		if (!pointerStart) {
@@ -299,7 +299,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerUp);
 
 		const delta = swipeDelta;

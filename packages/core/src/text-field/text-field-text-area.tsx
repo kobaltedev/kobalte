@@ -99,8 +99,8 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 			event.key === "Enter" &&
 			!event.shiftKey
 		) {
-			if (ref.form) {
-				ref.form.requestSubmit();
+			if ((ref as HTMLTextAreaElement).form) {
+				(ref as HTMLTextAreaElement).form!.requestSubmit();
 				event.preventDefault();
 			}
 		}

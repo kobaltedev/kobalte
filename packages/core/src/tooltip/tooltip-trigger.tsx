@@ -87,7 +87,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerEnter);
 
 		if (
@@ -104,7 +104,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		handleShow();
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerLeave);
 
 		if (e.pointerType === "touch") {
@@ -122,7 +122,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		}
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerDown);
 
 		isPointerDown = true;
@@ -131,7 +131,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		});
 	};
 
-	const onClick: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
 		// No matter how the trigger is left, we should close the tooltip.
@@ -141,7 +141,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		handleHide(true);
 	};
 
-	const onFocus: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
 		if (context.isDisabled() || e.defaultPrevented || isPointerDown) {
@@ -153,7 +153,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		handleShow();
 	};
 
-	const onBlur: JSX.EventHandlerUnion<T, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 
 		const relatedTarget = e.relatedTarget as Node | null;

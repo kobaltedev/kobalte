@@ -28,7 +28,7 @@ export interface SelectListboxRenderProps
 	extends SelectListboxCommonProps,
 		ListboxRootRenderProps {}
 
-export type SelectListboxProps<Option, OptGroup = never> = SelectListboxOptions<
+export type SelectListboxProps<Option, OptGroup = never,T extends ValidComponent | HTMLElement = HTMLElement> = SelectListboxOptions<
 	Option,
 	OptGroup
 > &
@@ -41,7 +41,7 @@ export function SelectListbox<
 	Option = any,
 	OptGroup = never,
 	T extends ValidComponent = "ul",
->(props: PolymorphicProps<T, SelectListboxProps<Option, OptGroup>>) {
+>(props: PolymorphicProps<T, SelectListboxProps<Option, OptGroup, T>>) {
 	const context = useSelectContext();
 
 	const mergedProps = mergeDefaultProps(
@@ -55,7 +55,7 @@ export function SelectListbox<
 
 	createEffect(() => onCleanup(context.registerListboxId(local.id)));
 
-	const onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
 		// Prevent from clearing the selection by `createSelectableCollection` on escape.
