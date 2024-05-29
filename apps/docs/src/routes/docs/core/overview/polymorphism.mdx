@@ -107,12 +107,12 @@ to your end users.
 Every component that renders an HTML element has the following types:
 
 - `ComponentOptions`
-- `ComponentCommonProps`
+- `ComponentCommonProps<T>`
 - `ComponentRenderProps`
-- `ComponentProps`
+- `ComponentProps<T>`
 
-For example, `Tabs.Trigger` has the types `TabsTriggerOptions`, `TabsTriggerCommonProps`,
-`TabsTriggerRenderProps` and `TabsTriggerProps`.
+For example, `Tabs.Trigger` has the types `TabsTriggerOptions`, `TabsTriggerCommonProps<T>`,
+`TabsTriggerRenderProps` and `TabsTriggerProps<T>`.
 
 Components themselves accept props as `PolymorphicProps<T, ComponentProps>` where `T` is a generic
 that extends `ValidComponent` and `ComponentProps` are the props of the Kobalte component.
@@ -123,11 +123,12 @@ This type allows components to accept Kobalte's props and all other props accept
 This type contains all custom props consumed by Kobalte, these props do not exist in HTML.
 These are not passed to the HTML element nor to the `as` callback.
 
-### `ComponentCommonProps`
+### `ComponentCommonProps<T>`
 
 This type contains HTML attributes optionally accepted by the Kobalte component and will
 be forwarded to the rendered DOM node. These are managed by Kobalte but can be customized by the end
-user. It includes attributes such as `id`, `ref`, event handlers, etc.
+user. It includes attributes such as `id`, `ref`, event handlers, etc. The generic is used by `ref` and event handlers,
+by default it is `HTMLElement`.
 
 ### `ComponentRenderProps`
 
@@ -135,10 +136,10 @@ This type extends `ComponentCommonProps` and additionally contains attributes th
 to the DOM node and fully managed by Kobalte. You should never assign these yourself or set them on
 the Kobalte component. Modifying these props will break your component's behavior and accessibity.
 
-### `ComponentProps`
+### `ComponentProps<T>`
 
 This is the final type exported by components, it is equal to `ComponentOptions & Partial<ComponentCommonProps>`.
-It combines all props expected by Kobalte's component.
+It combines all props expected by Kobalte's component. The generic is used by the CommonProps, by default it is `HTMLElement`.
 
 ### `PolymorphicProps<T, ComponentProps>`
 
@@ -151,13 +152,13 @@ import { PolymorphicProps } from "@kobalte/core/polymorphic";
 
 // Optionally extend `TabsTriggerProps` if you wish to
 // expose Kobalte props to your end user.
-interface CustomProps extends TabsTriggerProps {
+interface CustomProps<T extends ValidComponent = "button"> extends TabsTriggerProps<T> {
 	variant: "default" | "outline";
 }
 
 // Your generic `T` should extend ValidComponent and have a default value of the default DOM node.
 function CustomTabsTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, CustomProps>,
+	props: PolymorphicProps<T, CustomProps<T>>,
 ) {
 	// Typescript degrades typechecking when using generics, as long as we
 	// spread `others` to our element, we can effectively ignore them.
@@ -178,7 +179,7 @@ function CustomTabsTrigger<T extends ValidComponent = "button">(
 
 If you do not wish to allow changing the element type, you can simplify your types by making
 props: `OverrideComponentProps<"button", CustomProps>`, replace `"button"` with the correct
-tagname for other components.
+tagname for other components, imported from `"@kobalte/utils"`.
 
 If you also want to export exact types, you can re-export and extends component types:
 
@@ -187,7 +188,7 @@ export interface CustomTabsTriggerOptions extends TabsTriggerOptions {
 	variant: "default" | "outline";
 }
 
-export interface CustomTabsTriggerCommonProps extends TabsTriggerCommonProps {
+export interface CustomTabsTriggerCommonProps<T extends HTMLElement = HTMLElement> extends TabsTriggerCommonProps<T> {
 	// If you allow users to set classes and extend them.
 	//class: string;
 }
@@ -199,10 +200,13 @@ export interface CustomTabsTriggerRenderProps
 	class: string;
 }
 
-export type CustomTabsTriggerProps = CustomTabsTriggerOptions &
-	Partial<CustomTabsTriggerCommonProps>;
+export type CustomTabsTriggerProps<T extends ValidComponent = "button"> = CustomTabsTriggerOptions &
+	Partial<CustomTabsTriggerCommonProps<ElementOf<T>>>;
 
 export function CustomTabsTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, CustomTabsTriggerProps>,
+	props: PolymorphicProps<T, CustomTabsTriggerProps<T>,
 ) {}
 ```
+
+`ElementOf<T>` is a helper from `"@kobalte/core/polymorphic"` that converts a tag name into its element
+(e.g. `ElementOf<"button"> = HTMLButtonElement`).
