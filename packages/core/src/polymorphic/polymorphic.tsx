@@ -8,6 +8,8 @@ import { Dynamic } from "solid-js/web";
  * Polymorphic
  * -----------------------------------------------------------------------------------------------*/
 
+export type ElementOf<T> = T extends HTMLElement ? T : T extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[T] : any;
+
 /**
  * Polymorphic attribute.
  */

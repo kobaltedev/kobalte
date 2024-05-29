@@ -24,7 +24,7 @@ export interface ButtonRootOptions {}
 export interface ButtonRootCommonProps {
 	/** Whether the button is disabled. */
 	disabled: boolean | undefined;
-	type: "submit" | "reset" | "button" | undefined;
+	type: string | undefined;
 	ref: HTMLElement | ((el: HTMLElement) => void);
 	tabIndex: number | string | undefined;
 }
