@@ -1,5 +1,15 @@
 import { mergeRefs } from "@kobalte/utils";
-import { Component, JSX, ValidComponent, splitProps, createEffect, on } from "solid-js";
+import {
+	Component,
+	JSX,
+	ValidComponent,
+	createEffect,
+	createMemo,
+	createSignal,
+	on,
+	splitProps,
+} from "solid-js";
+import createTransitionSize from "solid-transition-size";
 import {
 	DismissableLayer,
 	DismissableLayerRenderProps,
@@ -12,6 +22,7 @@ import {
 	InteractOutsideEvent,
 	PointerDownOutsideEvent,
 } from "../primitives/create-interact-outside";
+import { createSize } from "../primitives/create-size";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuViewportOptions {
@@ -60,6 +71,8 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 	const context = useNavigationMenuContext();
 	const menubarContext = useMenubarContext();
 
+	const [ref, setRef] = createSignal<HTMLElement>();
+
 	const [local, others] = splitProps(props as NavigationMenuViewportProps, [
 		"ref",
 		"style",
@@ -77,36 +90,29 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 		close();
 	};
 
-	const updateSize = (element: HTMLElement) => {
-		if (element.offsetHeight === 0 || element.offsetWidth === 0) return;
+	const size = createSize(ref);
 
-		context.setViewportHeight(element.offsetHeight);
-		context.setViewportWidth(element.offsetWidth);
-	}
+	createEffect(
+		on(
+			() =>
+				menubarContext.value()
+					? menubarContext.menuRefMap().get(menubarContext.value()!)
+					: undefined,
+			(menu) => {
+				if (menu === undefined || menu[0] === undefined) return;
+				setRef(menu[0]);
+			},
+		),
+	);
 
-	let previousOpenState = false;
-
-	createEffect(on(() => menubarContext.value() ? menubarContext.menuRefMap().get(menubarContext.value()!) : undefined, (menu) => {
-		if (menu === undefined) {
-			context.setViewportHeight(undefined);
-			context.setViewportWidth(undefined);
-			previousOpenState = false;
-			return;
-		}
-		if (menu[0] === undefined) return;
-
-		const animations = menu[0].getAnimations();
-
-		if (previousOpenState || animations.length === 0) {
-			updateSize(menu[0]);
-		}
-
-		animations.map(animation => animation.finished.then(() => {
-			updateSize(menu[0]);
-		}));
-
-		previousOpenState = true;
-	}))
+	const height = createMemo((prev) => {
+		if (size.height() === 0) return prev;
+		return size.height();
+	});
+	const width = createMemo((prev) => {
+		if (size.width() === 0) return prev;
+		return size.width();
+	});
 
 	return (
 		<Popper.Positioner>
@@ -122,9 +128,14 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 				excludedElements={[context.rootRef]}
 				bypassTopMostLayerCheck
 				style={{
-					"--kb-menu-content-transform-origin":	"var(--kb-popper-content-transform-origin)",
-					"--kb-navigation-menu-viewport-height": context.viewportHeight() ? `${context.viewportHeight()}px` : undefined,
-					"--kb-navigation-menu-viewport-width": context.viewportWidth() ? `${context.viewportWidth()}px` : undefined,
+					"--kb-menu-content-transform-origin":
+						"var(--kb-popper-content-transform-origin)",
+					"--kb-navigation-menu-viewport-height": height()
+						? `${height()}px`
+						: undefined,
+					"--kb-navigation-menu-viewport-width": width()
+						? `${width()}px`
+						: undefined,
 					position: "relative",
 					...local.style,
 				}}

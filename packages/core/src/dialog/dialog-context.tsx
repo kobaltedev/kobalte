@@ -12,8 +12,12 @@ export interface DialogContextValue {
 	titleId: Accessor<string | undefined>;
 	descriptionId: Accessor<string | undefined>;
 	triggerRef: Accessor<HTMLElement | undefined>;
-	overlayPresence: CreatePresenceResult;
-	contentPresence: CreatePresenceResult;
+	overlayRef: Accessor<HTMLElement | undefined>;
+	setOverlayRef: Setter<HTMLElement | undefined>;
+	contentRef: Accessor<HTMLElement | undefined>;
+	setContentRef: Setter<HTMLElement | undefined>;
+	overlayPresent: Accessor<boolean>;
+	contentPresent: Accessor<boolean>;
 	close: () => void;
 	toggle: () => void;
 	setTriggerRef: Setter<HTMLElement | undefined>;

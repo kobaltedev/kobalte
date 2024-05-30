@@ -22,6 +22,7 @@ import {
 	splitProps,
 } from "solid-js";
 
+import createPresence from "solid-presence";
 import { createListState } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
@@ -31,7 +32,6 @@ import {
 	CollectionItemWithRef,
 	createDisclosureState,
 	createHideOutside,
-	createPresence,
 	createRegisterId,
 } from "../primitives";
 import {
@@ -122,9 +122,10 @@ export function Menu(props: MenuProps) {
 		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
 	});
 
-	const contentPresence = createPresence(
-		() => rootContext.forceMount() || disclosureState.isOpen(),
-	);
+	const { present: contentPresent } = createPresence({
+		show: () => rootContext.forceMount() || disclosureState.isOpen(),
+		element: () => contentRef() ?? null,
+	});
 
 	const listState = createListState({
 		selectionMode: "none",
@@ -232,7 +233,8 @@ export function Menu(props: MenuProps) {
 	});
 
 	createEffect(() => {
-		if (parentMenuContext !== undefined || optionalMenubarContext === undefined) return;
+		if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
+			return;
 		if (optionalMenubarContext.value() === rootContext.value()!) {
 			triggerRef()?.focus();
 			if (optionalMenubarContext.autoFocusMenu()) open(true);
@@ -240,8 +242,10 @@ export function Menu(props: MenuProps) {
 	});
 
 	createEffect(() => {
-		if (parentMenuContext !== undefined || optionalMenubarContext === undefined) return;
-		if (disclosureState.isOpen()) optionalMenubarContext.setValue(rootContext.value()!);
+		if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
+			return;
+		if (disclosureState.isOpen())
+			optionalMenubarContext.setValue(rootContext.value()!);
 	});
 
 	onCleanup(() => {
@@ -257,7 +261,7 @@ export function Menu(props: MenuProps) {
 	const context: MenuContextValue = {
 		dataset,
 		isOpen: disclosureState.isOpen,
-		contentPresence,
+		contentPresent,
 		nestedMenus,
 		currentPlacement,
 		pointerGraceTimeoutId: () => pointerGraceTimeoutId,

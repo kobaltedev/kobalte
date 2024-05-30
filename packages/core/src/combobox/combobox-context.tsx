@@ -23,7 +23,7 @@ export interface ComboboxContextValue {
 	shouldFocusWrap: Accessor<boolean>;
 	removeOnBackspace: Accessor<boolean>;
 	selectedOptions: Accessor<any[]>;
-	contentPresence: CreatePresenceResult;
+	contentPresent: Accessor<boolean>;
 	autoFocus: Accessor<FocusStrategy | boolean>;
 	activeDescendant: Accessor<string | undefined>;
 	inputValue: Accessor<string | undefined>;

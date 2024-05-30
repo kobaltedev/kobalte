@@ -14,7 +14,7 @@ export interface MenuDataSet {
 export interface MenuContextValue {
 	dataset: Accessor<MenuDataSet>;
 	isOpen: Accessor<boolean>;
-	contentPresence: CreatePresenceResult;
+	contentPresent: Accessor<boolean>;
 	currentPlacement: Accessor<Placement>;
 	pointerGraceTimeoutId: Accessor<number>;
 	autoFocus: Accessor<FocusStrategy | boolean | undefined>;

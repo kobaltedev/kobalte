@@ -28,6 +28,7 @@ import {
 	splitProps,
 } from "solid-js";
 
+import createPresence from "solid-presence";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
@@ -42,7 +43,6 @@ import {
 	CollectionNode,
 	createDisclosureState,
 	createFormResetListener,
-	createPresence,
 	createRegisterId,
 } from "../primitives";
 import {
@@ -399,9 +399,10 @@ export function SelectBase<
 		listState.selectionManager().toggleSelection(getOptionValue(option));
 	};
 
-	const contentPresence = createPresence(
-		() => local.forceMount || disclosureState.isOpen(),
-	);
+	const { present: contentPresent } = createPresence({
+		show: () => local.forceMount || disclosureState.isOpen(),
+		element: () => contentRef() ?? null,
+	});
 
 	const focusListbox = () => {
 		const listboxEl = listboxRef();
@@ -518,7 +519,7 @@ export function SelectBase<
 		disallowTypeAhead: () => local.disallowTypeAhead ?? false,
 		shouldFocusWrap: () => local.shouldFocusWrap ?? false,
 		selectedOptions,
-		contentPresence,
+		contentPresent,
 		autoFocus: focusStrategy,
 		triggerRef,
 		listState: () => listState,

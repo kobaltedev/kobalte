@@ -13,7 +13,7 @@ export interface TooltipContextValue {
 	isDisabled: Accessor<boolean>;
 	triggerOnFocusOnly: Accessor<boolean>;
 	contentId: Accessor<string | undefined>;
-	contentPresence: CreatePresenceResult;
+	contentPresent: Accessor<boolean>;
 	openTooltip: (immediate?: boolean) => void;
 	hideTooltip: (immediate?: boolean) => void;
 	cancelOpening: () => void;

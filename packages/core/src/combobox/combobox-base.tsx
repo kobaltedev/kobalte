@@ -29,6 +29,7 @@ import {
 	splitProps,
 } from "solid-js";
 
+import createPresence from "solid-presence";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
@@ -45,7 +46,6 @@ import {
 	createControllableSignal,
 	createDisclosureState,
 	createFormResetListener,
-	createPresence,
 	createRegisterId,
 	getItemCount,
 } from "../primitives";
@@ -350,11 +350,11 @@ export function ComboboxBase<
 
 	const [listboxId, setListboxId] = createSignal<string>();
 
-	const [controlRef, setControlRef] = createSignal<HTMLDivElement>();
+	const [controlRef, setControlRef] = createSignal<HTMLElement>();
 	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
-	const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
-	const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
-	const [listboxRef, setListboxRef] = createSignal<HTMLUListElement>();
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
+	const [contentRef, setContentRef] = createSignal<HTMLElement>();
+	const [listboxRef, setListboxRef] = createSignal<HTMLElement>();
 
 	const [focusStrategy, setFocusStrategy] = createSignal<
 		FocusStrategy | boolean
@@ -567,9 +567,10 @@ export function ComboboxBase<
 		listState.selectionManager().toggleSelection(getOptionValue(option));
 	};
 
-	const contentPresence = createPresence(
-		() => local.forceMount || disclosureState.isOpen(),
-	);
+	const { present: contentPresent } = createPresence({
+		show: () => local.forceMount || disclosureState.isOpen(),
+		element: contentRef,
+	});
 
 	const open = (
 		focusStrategy: FocusStrategy | boolean,
@@ -842,7 +843,7 @@ export function ComboboxBase<
 		removeOnBackspace: () => local.removeOnBackspace ?? true,
 		selectedOptions,
 		isInputFocused,
-		contentPresence,
+		contentPresent,
 		autoFocus: focusStrategy,
 		inputValue,
 		triggerMode: () => local.triggerMode!,

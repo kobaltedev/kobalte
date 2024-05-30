@@ -45,7 +45,7 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 	]);
 
 	return (
-		<Show when={context.contentPresence.isPresent()}>
+		<Show when={context.contentPresent()}>
 			<Popper.Positioner>
 				<DismissableLayer<
 					Component<
@@ -54,7 +54,6 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 				>
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
-						context.contentPresence.setRef(el);
 					}, local.ref)}
 					disableOutsidePointerEvents={false}
 					style={{

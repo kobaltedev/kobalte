@@ -19,9 +19,7 @@ export function MenubarTrigger<T extends ValidComponent = "button">(
 		const id = menubarContext.generateId("link-trigger-") + createUniqueId();
 
 		return (
-			<MenubarMenu
-				value={id}
-			>
+			<MenubarMenu value={id}>
 				<MenuTrigger {...props} />
 			</MenubarMenu>
 		);

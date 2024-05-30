@@ -33,13 +33,10 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
+import createPresence from "solid-presence";
 import { Popper, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
-import {
-	createDisclosureState,
-	createPresence,
-	createRegisterId,
-} from "../primitives";
+import { createDisclosureState, createRegisterId } from "../primitives";
 import {
 	TooltipContext,
 	TooltipContextValue,
@@ -152,9 +149,10 @@ export function TooltipRoot(props: TooltipRootProps) {
 		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
 	});
 
-	const contentPresence = createPresence(
-		() => local.forceMount || disclosureState.isOpen(),
-	);
+	const { present: contentPresent } = createPresence({
+		show: () => local.forceMount || disclosureState.isOpen(),
+		element: () => contentRef() ?? null,
+	});
 
 	const ensureTooltipEntry = () => {
 		tooltips[tooltipId] = hideTooltip;
@@ -382,7 +380,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 		isDisabled: () => local.disabled ?? false,
 		triggerOnFocusOnly: () => local.triggerOnFocusOnly ?? false,
 		contentId,
-		contentPresence,
+		contentPresent,
 		openTooltip,
 		hideTooltip,
 		cancelOpening,

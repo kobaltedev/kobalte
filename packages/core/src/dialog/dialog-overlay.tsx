@@ -48,10 +48,10 @@ export function DialogOverlay<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<Show when={context.overlayPresence.isPresent()}>
+		<Show when={context.overlayPresent()}>
 			<Polymorphic<DialogOverlayRenderProps>
 				as="div"
-				ref={mergeRefs(context.overlayPresence.setRef, local.ref)}
+				ref={mergeRefs(context.setOverlayRef, local.ref)}
 				// We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling.
 				style={{ "pointer-events": "auto", ...local.style }}
 				data-expanded={context.isOpen() ? "" : undefined}

@@ -111,8 +111,9 @@ export type MenuContentBaseProps<
 > = MenuContentBaseOptions & Partial<MenuContentBaseCommonProps<ElementOf<T>>>;
 
 const MENUBAR_KEYS = {
-	next: (dir: Direction) => dir === "ltr" ? "ArrowRight" : "ArrowLeft",
-	previous: (dir: Direction) => MENUBAR_KEYS.next(dir === "ltr" ? "rtl" : "ltr"),
+	next: (dir: Direction) => (dir === "ltr" ? "ArrowRight" : "ArrowLeft"),
+	previous: (dir: Direction) =>
+		MENUBAR_KEYS.next(dir === "ltr" ? "rtl" : "ltr"),
 };
 
 export function MenuContentBase<T extends ValidComponent = "div">(
@@ -286,46 +287,46 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 	createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
-	const commonAttributes: Omit<MenuContentBaseRenderProps, keyof MenuDataSet> = {
-		ref: mergeRefs((el) => {
-			context.setContentRef(el);
-			context.contentPresence.setRef(el);
-			ref = el;
-		}, local.ref),
-		role: "menu",
-		get id() {
-			return local.id;
-		},
-		get tabIndex() {
-			return selectableList.tabIndex();
-		},
-		get "aria-labelledby"() {
-			return context.triggerId();
-		},
-		onKeyDown: composeEventHandlers([
-			local.onKeyDown,
-			selectableList.onKeyDown,
-			onKeyDown,
-		]),
-		onMouseDown: composeEventHandlers([
-			local.onMouseDown,
-			selectableList.onMouseDown,
-		]),
-		onFocusIn: composeEventHandlers([
-			local.onFocusIn,
-			selectableList.onFocusIn,
-		]),
-		onFocusOut: composeEventHandlers([
-			local.onFocusOut,
-			selectableList.onFocusOut,
-		]),
-		onPointerEnter,
-		onPointerMove,
-		...others,
-	};
+	const commonAttributes: Omit<MenuContentBaseRenderProps, keyof MenuDataSet> =
+		{
+			ref: mergeRefs((el) => {
+				context.setContentRef(el);
+				ref = el;
+			}, local.ref),
+			role: "menu",
+			get id() {
+				return local.id;
+			},
+			get tabIndex() {
+				return selectableList.tabIndex();
+			},
+			get "aria-labelledby"() {
+				return context.triggerId();
+			},
+			onKeyDown: composeEventHandlers([
+				local.onKeyDown,
+				selectableList.onKeyDown,
+				onKeyDown,
+			]),
+			onMouseDown: composeEventHandlers([
+				local.onMouseDown,
+				selectableList.onMouseDown,
+			]),
+			onFocusIn: composeEventHandlers([
+				local.onFocusIn,
+				selectableList.onFocusIn,
+			]),
+			onFocusOut: composeEventHandlers([
+				local.onFocusOut,
+				selectableList.onFocusOut,
+			]),
+			onPointerEnter,
+			onPointerMove,
+			...others,
+		};
 
 	return (
-		<Show when={context.contentPresence.isPresent()}>
+		<Show when={context.contentPresent()}>
 			<Show
 				when={optionalNavigationMenuContext === undefined}
 				fallback={
@@ -359,7 +360,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 						onEscapeKeyDown={onEscapeKeyDown}
 						onFocusOutside={onFocusOutside}
 						onDismiss={context.close}
-					  {...context.dataset()}
+						{...context.dataset()}
 						{...commonAttributes}
 					/>
 				</Popper.Positioner>

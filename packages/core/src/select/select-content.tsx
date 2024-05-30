@@ -128,7 +128,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 	);
 
 	return (
-		<Show when={context.contentPresence.isPresent()}>
+		<Show when={context.contentPresent()}>
 			<Popper.Positioner>
 				<DismissableLayer<
 					Component<
@@ -137,7 +137,6 @@ export function SelectContent<T extends ValidComponent = "div">(
 				>
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
-						context.contentPresence.setRef(el);
 						ref = el;
 					}, local.ref)}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}

@@ -93,15 +93,17 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		"onAutoFocusMenuChange",
 	]);
 
-	const [value, setValue] = createControllableSignal<string | null | undefined>({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue,
-		onChange: (value) => local.onValueChange?.(value),
-	});
+	const [value, setValue] = createControllableSignal<string | null | undefined>(
+		{
+			value: () => local.value,
+			defaultValue: () => local.defaultValue,
+			onChange: (value) => local.onValueChange?.(value),
+		},
+	);
 
 	createEffect((val) => {
 		return value();
-	})
+	});
 
 	const [lastValue, setLastValue] = createSignal<string | undefined>();
 
@@ -119,7 +121,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		const val = value();
 		const focus = autoFocusMenu();
 		// Call both to track signal
-		return val && focus && !value()?.includes("link-trigger-")
+		return val && focus && !value()?.includes("link-trigger-");
 	};
 
 	const dataset: Accessor<MenubarDataSet> = createMemo(() => ({

@@ -10,7 +10,7 @@ export interface HoverCardDataSet {
 export interface HoverCardContextValue {
 	dataset: Accessor<HoverCardDataSet>;
 	isOpen: Accessor<boolean>;
-	contentPresence: CreatePresenceResult;
+	contentPresent: Accessor<boolean>;
 	openWithDelay: () => void;
 	closeWithDelay: () => void;
 	cancelOpening: () => void;

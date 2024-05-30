@@ -18,9 +18,9 @@ import {
 	ValidComponent,
 	createEffect,
 	createMemo,
+	on,
 	onCleanup,
 	splitProps,
-	on,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -57,8 +57,9 @@ export type MenuTriggerProps<
 > = MenuTriggerOptions & Partial<MenuTriggerCommonProps<ElementOf<T>>>;
 
 const MENUBAR_KEYS = {
-	next: (dir: Direction) => dir === "ltr" ? "ArrowRight" : "ArrowLeft",
-	previous: (dir: Direction) => MENUBAR_KEYS.next(dir === "ltr" ? "rtl" : "ltr"),
+	next: (dir: Direction) => (dir === "ltr" ? "ArrowRight" : "ArrowLeft"),
+	previous: (dir: Direction) =>
+		MENUBAR_KEYS.next(dir === "ltr" ? "rtl" : "ltr"),
 };
 
 /**
@@ -111,10 +112,15 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 	});
 
 	// When native link focus the trigger instead of the content when current menu is active.
-	createEffect(on(() => optionalMenubarContext?.value(), (value) => {
-		if (!isNativeLink()) return;
-		if (value === key) context.triggerRef()?.focus();
-	}));
+	createEffect(
+		on(
+			() => optionalMenubarContext?.value(),
+			(value) => {
+				if (!isNativeLink()) return;
+				if (value === key) context.triggerRef()?.focus();
+			},
+		),
+	);
 
 	const handleClick = () => {
 		// When opened by click, automatically focus Menubar menus
@@ -233,7 +239,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 			>
 		>
 			ref={mergeRefs(context.setTriggerRef, local.ref)}
-		 	data-kb-menu-value-trigger={rootContext.value()}
+			data-kb-menu-value-trigger={rootContext.value()}
 			id={local.id}
 			disabled={local.disabled}
 			aria-haspopup="true"

@@ -16,12 +16,9 @@ import {
 	splitProps,
 } from "solid-js";
 
+import createPresence from "solid-presence";
 import { Popper, PopperRootOptions } from "../popper";
-import {
-	createDisclosureState,
-	createPresence,
-	createRegisterId,
-} from "../primitives";
+import { createDisclosureState, createRegisterId } from "../primitives";
 import {
 	PopoverContext,
 	PopoverContextValue,
@@ -132,9 +129,10 @@ export function PopoverRoot(props: PopoverRootProps) {
 		return local.anchorRef?.() ?? defaultAnchorRef() ?? triggerRef();
 	};
 
-	const contentPresence = createPresence(
-		() => local.forceMount || disclosureState.isOpen(),
-	);
+	const { present: contentPresent } = createPresence({
+		show: () => local.forceMount || disclosureState.isOpen(),
+		element: () => contentRef() ?? null,
+	});
 
 	const dataset: Accessor<PopoverDataSet> = createMemo(() => ({
 		"data-expanded": disclosureState.isOpen() ? "" : undefined,
@@ -147,7 +145,7 @@ export function PopoverRoot(props: PopoverRootProps) {
 		isOpen: disclosureState.isOpen,
 		isModal: () => local.modal ?? false,
 		preventScroll: () => local.preventScroll ?? context.isModal(),
-		contentPresence,
+		contentPresent,
 		triggerRef,
 		contentId,
 		titleId,

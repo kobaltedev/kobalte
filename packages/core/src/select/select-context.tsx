@@ -20,7 +20,7 @@ export interface SelectContextValue {
 	disallowTypeAhead: Accessor<boolean>;
 	shouldFocusWrap: Accessor<boolean>;
 	selectedOptions: Accessor<any[]>;
-	contentPresence: CreatePresenceResult;
+	contentPresent: Accessor<boolean>;
 	autoFocus: Accessor<FocusStrategy | boolean>;
 	triggerRef: Accessor<HTMLElement | undefined>;
 	triggerId: Accessor<string | undefined>;

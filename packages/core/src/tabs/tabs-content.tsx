@@ -18,7 +18,7 @@ import {
 } from "solid-js";
 
 import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { createPresence } from "../primitives";
+import createPresence from "solid-presence";
 import { useTabsContext } from "./tabs-context";
 
 export interface TabsContentOptions {
@@ -72,7 +72,10 @@ export function TabsContent<T extends ValidComponent = "div">(
 
 	const isSelected = () => context.listState().selectedKey() === local.value;
 
-	const presence = createPresence(() => local.forceMount || isSelected());
+	const { present } = createPresence({
+		show: () => local.forceMount || isSelected(),
+		element: () => ref ?? null,
+	});
 
 	createEffect(
 		on([() => ref, () => presence.isPresent()], ([ref, isPresent]) => {
@@ -111,11 +114,10 @@ export function TabsContent<T extends ValidComponent = "div">(
 	);
 
 	return (
-		<Show when={presence.isPresent()}>
+		<Show when={present()}>
 			<Polymorphic<TabsContentRenderProps>
 				as="div"
 				ref={mergeRefs((el) => {
-					presence.setRef(el);
 					ref = el;
 				}, local.ref)}
 				id={id()}

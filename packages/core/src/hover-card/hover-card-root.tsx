@@ -25,9 +25,10 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
+import createPresence from "solid-presence";
 import { Popper, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
-import { createDisclosureState, createPresence } from "../primitives";
+import { createDisclosureState } from "../primitives";
 import {
 	HoverCardContext,
 	HoverCardContextValue,
@@ -119,9 +120,10 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
 	});
 
-	const contentPresence = createPresence(
-		() => local.forceMount || disclosureState.isOpen(),
-	);
+	const { present: contentPresent } = createPresence({
+		show: () => local.forceMount || disclosureState.isOpen(),
+		element: () => contentRef() ?? null,
+	});
 
 	const { addGlobalListener, removeGlobalListener } = createGlobalListeners();
 
@@ -236,7 +238,7 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 	const context: HoverCardContextValue = {
 		dataset,
 		isOpen: disclosureState.isOpen,
-		contentPresence,
+		contentPresent,
 		openWithDelay,
 		closeWithDelay,
 		cancelOpening,

@@ -5,8 +5,9 @@ import {
 	JSX,
 	Setter,
 	ValidComponent,
+	createEffect,
 	createSignal,
-	splitProps, createEffect
+	splitProps,
 } from "solid-js";
 import {
 	MenubarRootCommonProps,
@@ -107,11 +108,13 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 		],
 	);
 
-	const [value, setValue] = createControllableSignal<string | undefined | null>({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue,
-		onChange: (value) => local.onValueChange?.(value),
-	});
+	const [value, setValue] = createControllableSignal<string | undefined | null>(
+		{
+			value: () => local.value,
+			defaultValue: () => local.defaultValue,
+			onChange: (value) => local.onValueChange?.(value),
+		},
+	);
 	const [autoFocusMenu, setAutoFocusMenu] = createControllableSignal({
 		value: () => local.autoFocusMenu,
 		defaultValue: () => false,
@@ -124,9 +127,6 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
 		popperProps.placement!,
 	);
-
-	const [viewportWidth, setViewportWidth] = createSignal<number | undefined>();
-	const [viewportHeight, setViewportHeight] = createSignal<number | undefined>();
 
 	let timeoutId: number | undefined;
 
@@ -143,7 +143,6 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 			timeoutId = window.setTimeout(() => {
 				context.setAutoFocusMenu(false);
 				setValue(undefined);
-//				setTimeout(() => setValue(undefined));
 			}, context.skipDelayDuration());
 		},
 		cancelLeaveTimer: () => {
@@ -154,10 +153,6 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 		viewportRef,
 		setViewportRef: setViewportRef as Setter<HTMLElement>,
 		currentPlacement,
-		viewportWidth,
-		setViewportWidth,
-		viewportHeight,
-		setViewportHeight,
 	};
 
 	return (
