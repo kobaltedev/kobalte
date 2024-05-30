@@ -65,9 +65,6 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 		element: () => ref ?? null,
 	});
 
-	const [height, setHeight] = createSignal(0);
-	const [width, setWidth] = createSignal(0);
-
 	const size = createSize(() => ref);
 
 	createEffect(() => onCleanup(context.registerContentId(local.id)));
