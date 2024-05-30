@@ -322,7 +322,6 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			]),
 			onPointerEnter,
 			onPointerMove,
-			...others,
 		};
 
 	return (
@@ -334,6 +333,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 						as="div"
 						{...context.dataset()}
 						{...commonAttributes}
+						{...others}
 					/>
 				}
 			>
@@ -362,6 +362,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 						onDismiss={context.close}
 						{...context.dataset()}
 						{...commonAttributes}
+					 	{...others}
 					/>
 				</Popper.Positioner>
 			</Show>

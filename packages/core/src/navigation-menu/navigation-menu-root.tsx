@@ -24,6 +24,7 @@ import {
 	NavigationMenuContext,
 	NavigationMenuContextValue,
 } from "./navigation-menu-context";
+import createPresence from "solid-presence";
 
 export interface NavigationMenuRootOptions
 	extends MenubarRootOptions,
@@ -130,9 +131,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 
 	let timeoutId: number | undefined;
 
-	createEffect((prev) => {
-		return value();
-	});
+	const [previousMenu, setPreviousMenu] = createSignal<string>();
 
 	const context: NavigationMenuContextValue = {
 		delayDuration: () => local.delayDuration,
@@ -153,6 +152,8 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 		viewportRef,
 		setViewportRef: setViewportRef as Setter<HTMLElement>,
 		currentPlacement,
+		previousMenu,
+		setPreviousMenu,
 	};
 
 	return (

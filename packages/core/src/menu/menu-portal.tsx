@@ -12,7 +12,7 @@ export function MenuPortal(props: MenuPortalProps) {
 	const context = useMenuContext();
 
 	return (
-		<Show when={context.contentPresence.isPresent()}>
+		<Show when={context.contentPresent()}>
 			<Portal {...props} />
 		</Show>
 	);

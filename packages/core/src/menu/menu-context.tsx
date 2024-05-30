@@ -2,7 +2,7 @@ import { Accessor, createContext, useContext } from "solid-js";
 
 import { ListState } from "../list";
 import { Placement } from "../popper/utils";
-import { CollectionItemWithRef, CreatePresenceResult } from "../primitives";
+import { CollectionItemWithRef } from "../primitives";
 import { FocusStrategy } from "../selection";
 import { GraceIntent, Side } from "./utils";
 

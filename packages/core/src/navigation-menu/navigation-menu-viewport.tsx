@@ -8,8 +8,8 @@ import {
 	createSignal,
 	on,
 	splitProps,
+	Show,
 } from "solid-js";
-import createTransitionSize from "solid-transition-size";
 import {
 	DismissableLayer,
 	DismissableLayerRenderProps,

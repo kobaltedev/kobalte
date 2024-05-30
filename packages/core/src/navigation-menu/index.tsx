@@ -83,6 +83,7 @@ import {
 	type NavigationMenuContentOptions,
 	type NavigationMenuContentProps,
 	type NavigationMenuContentRenderProps,
+	type Motion,
 } from "./navigation-menu-content";
 import {
 	NavigationMenuMenu as Menu,
@@ -193,6 +194,7 @@ export type {
 	NavigationMenuViewportCommonProps,
 	NavigationMenuViewportRenderProps,
 	NavigationMenuViewportProps,
+	Motion,
 };
 
 export {

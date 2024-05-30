@@ -13,6 +13,8 @@ export interface NavigationMenuContextValue {
 	viewportRef: Accessor<HTMLElement | undefined>;
 	setViewportRef: Setter<HTMLElement>;
 	currentPlacement: Accessor<Placement>;
+	previousMenu: Accessor<string | undefined>;
+	setPreviousMenu: Setter<string | undefined>;
 }
 
 export const NavigationMenuContext =

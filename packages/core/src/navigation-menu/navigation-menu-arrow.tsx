@@ -64,10 +64,13 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 				const middle =
 					triggerRef.getBoundingClientRect().x +
 					triggerRef.getBoundingClientRect().width / 2;
+
+				const computed = window.getComputedStyle(ref);
+				
 				const initalArrowPos =
 					ref.getBoundingClientRect().x +
 					ref.getBoundingClientRect().width / 2 -
-					offset();
+					Number.parseFloat(computed.transform.split(",")[4]);
 
 				setOffset(middle - initalArrowPos);
 			},

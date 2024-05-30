@@ -1,6 +1,5 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { CreatePresenceResult } from "../primitives";
 import { PopoverIntlTranslations } from "./popover.intl";
 
 export interface PopoverDataSet {

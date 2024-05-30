@@ -1,7 +1,7 @@
 import { Accessor, JSX, createContext, useContext } from "solid-js";
 
 import { ListState } from "../list";
-import { CollectionNode, CreatePresenceResult } from "../primitives";
+import { CollectionNode } from "../primitives";
 import { FocusStrategy, KeyboardDelegate } from "../selection";
 import { ComboboxTriggerMode } from "./types";
 
