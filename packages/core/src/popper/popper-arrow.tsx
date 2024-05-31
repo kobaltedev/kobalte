@@ -111,7 +111,11 @@ export function PopperArrow<T extends ValidComponent = "div">(
 			{...others}
 		>
 			{/* biome-ignore lint/a11y/noSvgWithoutTitle: aria hidden */}
-			<svg display="block" viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`} style="transform:scale(1.02)">
+			<svg
+				display="block"
+				viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}
+				style="transform:scale(1.02)"
+			>
 				<g transform={rotate()}>
 					<path fill="none" d={ARROW_PATH} />
 					<path stroke="none" d={ARROW_PATH} />

@@ -362,7 +362,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 						onDismiss={context.close}
 						{...context.dataset()}
 						{...commonAttributes}
-					 	{...others}
+						{...others}
 					/>
 				</Popper.Positioner>
 			</Show>

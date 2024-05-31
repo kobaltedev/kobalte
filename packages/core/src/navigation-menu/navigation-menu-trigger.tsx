@@ -9,6 +9,7 @@ import {
 	MenuTriggerRenderProps,
 } from "../menu";
 import { useMenuContext, useOptionalMenuContext } from "../menu/menu-context";
+import { useMenuRootContext } from "../menu/menu-root-context";
 import { useMenubarContext } from "../menubar/menubar-context";
 import { MenubarTrigger } from "../menubar/menubar-trigger";
 import { PolymorphicProps } from "../polymorphic";

@@ -78,12 +78,12 @@ import {
 	type NavigationMenuArrowRenderProps,
 } from "./navigation-menu-arrow";
 import {
+	type Motion,
 	NavigationMenuContent as Content,
 	type NavigationMenuContentCommonProps,
 	type NavigationMenuContentOptions,
 	type NavigationMenuContentProps,
 	type NavigationMenuContentRenderProps,
-	type Motion,
 } from "./navigation-menu-content";
 import {
 	NavigationMenuMenu as Menu,

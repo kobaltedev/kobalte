@@ -3,12 +3,13 @@ import {
 	Component,
 	JSX,
 	ValidComponent,
-	splitProps,
-	createSignal,
+	batch,
 	createEffect,
+	createSignal,
 	on,
 	onCleanup,
 	onMount,
+	splitProps,
 } from "solid-js";
 
 import {
@@ -75,38 +76,41 @@ export function NavigationMenuContent<T extends ValidComponent = "div">(
 		menuContext.close(true);
 	};
 
-	onMount(() => {
-		if (context.previousMenu() !== undefined) {
-			const menus = [...menubarContext.menus()];
-			const prevIndex = menus.indexOf(context.previousMenu()!);
-			const nextIndex = menus.indexOf(menuRootContext.value()!);
+	createEffect(
+		on(menubarContext.value, (contextValue) => {
+			batch(() => {
+				// When no menu open (or trigger) reset
+				if (!contextValue || contextValue.includes("link-trigger-")) {
+					context.setPreviousMenu(undefined);
+					return;
+				}
 
-			if (prevIndex < nextIndex) setMotion("from-end");
-			else setMotion("from-start");
-		}
+				// When currently active menu set `from-*` motion if there is a previous then upate previous menu
+				if (contextValue === menuRootContext.value()) {
+					if (context.previousMenu() !== undefined) {
+						const menus = [...menubarContext.menus()];
+						const prevIndex = menus.indexOf(context.previousMenu()!);
+						const nextIndex = menus.indexOf(contextValue);
 
-		context.setPreviousMenu(menuRootContext.value())}
+						if (prevIndex < nextIndex) setMotion("from-end");
+						else setMotion("from-start");
+					} else {
+						setMotion(undefined);
+					}
+
+					context.setPreviousMenu(contextValue);
+					return;
+				}
+
+				const menus = [...menubarContext.menus()];
+				const prevIndex = menus.indexOf(context.previousMenu()!);
+				const nextIndex = menus.indexOf(contextValue);
+
+				if (prevIndex > nextIndex) setMotion("to-end");
+				else setMotion("to-start");
+			});
+		}),
 	);
-
-	onCleanup(() => {
-		if (menubarContext.value() && !menubarContext.value()!.includes("link-trigger-")) return;
-		if (context.previousMenu() === menuRootContext.value()) context.setPreviousMenu(undefined);
-	});
-
-	createEffect(on(menubarContext.value, (current) => {
-		if (!current) return;
-
-		if (current === menuRootContext.value()) return;
-
-		if (current.includes("link-trigger-")) return;
-
-		const menus = [...menubarContext.menus()];
-		const prevIndex = menus.indexOf(menuRootContext.value()!);
-		const nextIndex = menus.indexOf(current);
-
-		if (prevIndex > nextIndex) setMotion("to-end");
-		else setMotion("to-start");
-	}));
 
 	return (
 		<MenuContent<
@@ -116,7 +120,7 @@ export function NavigationMenuContent<T extends ValidComponent = "div">(
 		>
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}
-		 	data-motion={motion()}
+			data-motion={motion()}
 			{...others}
 		/>
 	);

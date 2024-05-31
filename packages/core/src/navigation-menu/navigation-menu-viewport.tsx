@@ -2,13 +2,13 @@ import { mergeRefs } from "@kobalte/utils";
 import {
 	Component,
 	JSX,
+	Show,
 	ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
 	on,
 	splitProps,
-	Show,
 } from "solid-js";
 import {
 	DismissableLayer,

@@ -1,9 +1,16 @@
-import { MenubarMenuOptions, MenubarMenuProps } from "../menubar";
-import { MenubarMenu } from "../menubar/menubar-menu";
-import { useMenubarContext } from "../menubar/menubar-context";
-import { createEffect, createSignal, createUniqueId, on, splitProps } from "solid-js";
-import { useNavigationMenuContext } from "./navigation-menu-context";
 import { mergeDefaultProps } from "@kobalte/utils";
+import {
+	batch,
+	createEffect,
+	createSignal,
+	createUniqueId,
+	on,
+	splitProps,
+} from "solid-js";
+import { MenubarMenuOptions, MenubarMenuProps } from "../menubar";
+import { useMenubarContext } from "../menubar/menubar-context";
+import { MenubarMenu } from "../menubar/menubar-menu";
+import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuMenuOptions extends MenubarMenuOptions {}
 
@@ -20,7 +27,9 @@ export function NavigationMenuMenu(props: NavigationMenuMenuProps) {
 
 	const uniqueid = createUniqueId();
 
-	const defaultId = menubarContext.generateId(`navigation-menu-menu-${uniqueid}`);
+	const defaultId = menubarContext.generateId(
+		`navigation-menu-menu-${uniqueid}`,
+	);
 
 	const mergedPropsWithId = mergeDefaultProps({ id: defaultId }, others);
 
@@ -29,37 +38,41 @@ export function NavigationMenuMenu(props: NavigationMenuMenuProps) {
 	const [forceMount, setForceMount] = createSignal(false);
 
 	const animationEnd = () => {
-		setForceMount(false);
+		if (menubarContext.value() !== value()) {
+			setForceMount(false);
+		}
 
 		context.viewportRef()?.removeEventListener("animationend", animationEnd);
 		context.viewportRef()?.removeEventListener("animationcancel", animationEnd);
-	}
+	};
 
+	createEffect(
+		on(menubarContext.value, (contextValue) => {
+			if (contextValue === value()) {
+				setForceMount(true);
+			} else {
+				const viewportRef = context.viewportRef();
 
-	createEffect(on(() => [menubarContext.value(), menubarContext.dataset()["data-expanded"]], ([contextValue, expanded]) => {
-		if ((contextValue && !contextValue?.includes("link-trigger-")) || expanded) {
-			setForceMount(false)
-			return;
-		}
-		if (context.previousMenu() !== value()) return;
+				if (
+					!viewportRef ||
+					["", "none"].includes(
+						window.getComputedStyle(viewportRef).animationName,
+					)
+				) {
+					setForceMount(false);
+					return;
+				}
 
-		const viewportRef = context.viewportRef();
+				viewportRef.addEventListener("animationend", animationEnd);
+			}
+		}),
+	);
 
-		if (!viewportRef) return;
-
-		if (["", "none"].includes(window.getComputedStyle(viewportRef).animationName)) return;
-
-		viewportRef.addEventListener("animationend", animationEnd);
-		viewportRef.addEventListener("animationcancel", animationEnd);
-
-		setForceMount(true);
-	}))
-
-//	createEffect(() => {
-//		if (context.previousMenu() !== props.value) return;
-//
-//		setForceMount(context.previousMenu() === props.value)
-//	})
-
-	return <MenubarMenu forceMount={forceMount()} value={value()} {...mergedPropsWithId} />;
+	return (
+		<MenubarMenu
+			forceMount={forceMount()}
+			value={value()}
+			{...mergedPropsWithId}
+		/>
+	);
 }

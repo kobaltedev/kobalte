@@ -16,6 +16,7 @@ import {
 } from "../menubar";
 import { MenubarRoot } from "../menubar/menubar-root";
 
+import createPresence from "solid-presence";
 import { PolymorphicProps } from "../polymorphic";
 import { Popper, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
@@ -24,7 +25,6 @@ import {
 	NavigationMenuContext,
 	NavigationMenuContextValue,
 } from "./navigation-menu-context";
-import createPresence from "solid-presence";
 
 export interface NavigationMenuRootOptions
 	extends MenubarRootOptions,
