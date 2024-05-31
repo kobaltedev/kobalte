@@ -10,7 +10,7 @@ import {
 	OverrideComponentProps,
 	callHandler,
 	contains,
-	focusWithoutScrolling,
+	focusWithoutScrolling, Orientation
 } from "@kobalte/utils";
 import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
@@ -24,6 +24,7 @@ import {
 	MenuContentBaseRenderProps,
 } from "./menu-content-base";
 import { useMenuContext } from "./menu-context";
+import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuSubContentOptions
 	extends Omit<
@@ -44,10 +45,14 @@ export type MenuSubContentProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
 > = MenuSubContentOptions & Partial<MenuSubContentCommonProps<ElementOf<T>>>;
 
-const SUB_CLOSE_KEYS: Record<Direction, string[]> = {
-	ltr: ["ArrowLeft"],
-	rtl: ["ArrowRight"],
-};
+const SUB_CLOSE_KEYS = {
+	close: (dir: Direction, orientation: Orientation) => {
+		if (dir === "ltr") {
+			return [orientation === "horizontal" ? "ArrowLeft" : "ArrowUp"];
+		}
+		return [orientation === "horizontal" ? "ArrowRight" : "ArrowDown"];
+	}
+}
 
 /**
  * The component that pops out when a submenu is open.
@@ -56,6 +61,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuSubContentProps<T>>,
 ) {
 	const context = useMenuContext();
+	const rootContext = useMenuRootContext();
 
 	const [local, others] = splitProps(props as MenuSubContentProps, [
 		"onFocusOutside",
@@ -92,7 +98,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 
 		// Submenu key events bubble through portals. We only care about keys in this menu.
 		const isKeyDownInside = contains(e.currentTarget, e.target);
-		const isCloseKey = SUB_CLOSE_KEYS[direction()].includes(e.key);
+		const isCloseKey = SUB_CLOSE_KEYS.close(direction(), rootContext.orientation()).includes(e.key);
 		const isSubMenu = context.parentMenuContext() != null;
 
 		if (isKeyDownInside && isCloseKey && isSubMenu) {

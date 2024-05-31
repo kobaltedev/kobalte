@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableList.ts
  */
 
-import { MaybeAccessor, access } from "@kobalte/utils";
+import { MaybeAccessor, access, Orientation } from "@kobalte/utils";
 import { Accessor, createMemo } from "solid-js";
 
 import { createCollator } from "../i18n";
@@ -58,6 +58,9 @@ export interface CreateSelectableListProps {
 
 	/** When virtualized, the Virtualizer function used to scroll to the item of the key provided. */
 	scrollToKey?: MaybeAccessor<((key: string) => void) | undefined>;
+
+	/** The orientation of the selectable list. */
+	orientation?: MaybeAccessor<Orientation | undefined>;
 }
 
 /**
@@ -101,6 +104,7 @@ export function createSelectableList<
 			allowsTabNavigation: () => access(props.allowsTabNavigation),
 			isVirtualized: () => access(props.isVirtualized),
 			scrollToKey: (key) => access(props.scrollToKey)?.(key),
+			orientation: () => access(props.orientation),
 		},
 		ref,
 		scrollRef,

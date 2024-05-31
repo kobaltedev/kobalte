@@ -13,7 +13,7 @@ import {
 	createEventListener,
 	focusWithoutScrolling,
 	getFocusableTreeWalker,
-	scrollIntoView,
+	scrollIntoView, Orientation
 } from "@kobalte/utils";
 import {
 	Accessor,
@@ -73,6 +73,9 @@ interface CreateSelectableCollectionProps {
 
 	/** When virtualized, the Virtualizer function used to scroll to the item of the key provided. */
 	scrollToKey?: (key: string) => void;
+
+	/** The orientation of the selectable collection interactions. */
+	orientation?: MaybeAccessor<Orientation | undefined>;
 }
 
 /**
@@ -92,6 +95,7 @@ export function createSelectableCollection<
 	const defaultProps: Partial<CreateSelectableCollectionProps> = {
 		selectOnFocus: () =>
 			access(props.selectionManager).selectionBehavior() === "replace",
+		orientation: "vertical",
 	};
 
 	const mergedProps = mergeProps(defaultProps, props);
@@ -124,6 +128,8 @@ export function createSelectableCollection<
 		keyboardDelegate: () => access(mergedProps.keyboardDelegate),
 		selectionManager: () => access(mergedProps.selectionManager),
 	});
+
+	const orientation = access(mergedProps.orientation);
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, typeSelectHandlers.onKeyDown);
@@ -162,7 +168,7 @@ export function createSelectableCollection<
 		const focusedKey = manager.focusedKey();
 
 		switch (e.key) {
-			case "ArrowDown": {
+			case (orientation === "vertical" ? "ArrowDown" : "ArrowRight"): {
 				if (delegate.getKeyBelow) {
 					e.preventDefault();
 
@@ -182,7 +188,7 @@ export function createSelectableCollection<
 				}
 				break;
 			}
-			case "ArrowUp": {
+			case (orientation === "vertical" ? "ArrowUp" : "ArrowLeft"): {
 				if (delegate.getKeyAbove) {
 					e.preventDefault();
 
@@ -202,7 +208,7 @@ export function createSelectableCollection<
 				}
 				break;
 			}
-			case "ArrowLeft": {
+			case (orientation === "vertical" ? "ArrowLeft" : "ArrowUp"): {
 				if (delegate.getKeyLeftOf) {
 					e.preventDefault();
 
@@ -222,7 +228,7 @@ export function createSelectableCollection<
 				}
 				break;
 			}
-			case "ArrowRight": {
+			case (orientation === "vertical" ? "ArrowRight" : "ArrowDown"): {
 				if (delegate.getKeyRightOf) {
 					e.preventDefault();
 

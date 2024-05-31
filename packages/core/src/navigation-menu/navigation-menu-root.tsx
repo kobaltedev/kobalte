@@ -72,12 +72,20 @@ export type NavigationMenuRootProps = NavigationMenuRootOptions &
 export function NavigationMenuRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, NavigationMenuRootProps>,
 ) {
+	const mergedOrientation = mergeDefaultProps(
+		{
+			orientation: "horizontal",
+		},
+		props as NavigationMenuRootProps,
+	);
+
 	const mergedProps = mergeDefaultProps(
 		{
 			delayDuration: 200,
 			skipDelayDuration: 300,
+			placement: mergedOrientation.orientation === "horizontal" ? "bottom" : "right",
 		},
-		props as NavigationMenuRootProps,
+		mergedOrientation,
 	);
 
 	const [local, popperProps, others] = splitProps(
@@ -134,8 +142,8 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 	const [previousMenu, setPreviousMenu] = createSignal<string>();
 
 	const context: NavigationMenuContextValue = {
-		delayDuration: () => local.delayDuration,
-		skipDelayDuration: () => local.skipDelayDuration,
+		delayDuration: () => local.delayDuration!,
+		skipDelayDuration: () => local.skipDelayDuration!,
 		autoFocusMenu: autoFocusMenu as Accessor<boolean>,
 		setAutoFocusMenu,
 		startLeaveTimer: () => {

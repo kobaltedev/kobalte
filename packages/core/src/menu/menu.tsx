@@ -80,7 +80,7 @@ export function Menu(props: MenuProps) {
 
 	const mergedProps = mergeDefaultProps(
 		{
-			placement: "bottom-start",
+			placement: rootContext.orientation() === "horizontal" ? "bottom-start" : "right-start",
 		},
 		props,
 	);

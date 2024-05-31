@@ -11,7 +11,7 @@ import {
 	composeEventHandlers,
 	contains,
 	mergeDefaultProps,
-	mergeRefs,
+	mergeRefs, Orientation
 } from "@kobalte/utils";
 import {
 	Component,
@@ -29,7 +29,6 @@ import {
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import { useLocale } from "../i18n/i18n-provider";
-import { Direction } from "../i18n/utils";
 import { createSelectableList } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
@@ -43,6 +42,7 @@ import {
 } from "../primitives";
 import { MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
+import { MENUBAR_KEYS } from "./menu-trigger";
 
 export interface MenuContentBaseOptions {
 	/**
@@ -104,17 +104,12 @@ export interface MenuContentBaseRenderProps
 	role: "menu";
 	tabIndex: number | undefined;
 	"aria-labelledby": string | undefined;
+	"data-orientation": Orientation;
 }
 
 export type MenuContentBaseProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
 > = MenuContentBaseOptions & Partial<MenuContentBaseCommonProps<ElementOf<T>>>;
-
-const MENUBAR_KEYS = {
-	next: (dir: Direction) => (dir === "ltr" ? "ArrowRight" : "ArrowLeft"),
-	previous: (dir: Direction) =>
-		MENUBAR_KEYS.next(dir === "ltr" ? "rtl" : "ltr"),
-};
 
 export function MenuContentBase<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuContentBaseProps<T>>,
@@ -171,6 +166,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			shouldFocusWrap: true,
 			disallowTypeAhead: () =>
 				!context.listState().selectionManager().isFocused(),
+			orientation: () => rootContext.orientation() === "horizontal" ? "vertical" : "horizontal",
 		},
 		() => ref,
 	);
@@ -201,7 +197,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		if (optionalMenubarContext !== undefined) {
 			if (e.currentTarget.getAttribute("aria-haspopup") !== "true")
 				switch (e.key) {
-					case MENUBAR_KEYS.next(direction()):
+					case MENUBAR_KEYS.next(direction(), rootContext.orientation()):
 						e.stopPropagation();
 						e.preventDefault();
 						context.close(true);
@@ -209,7 +205,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 						optionalMenubarContext.nextMenu();
 
 						break;
-					case MENUBAR_KEYS.previous(direction()):
+					case MENUBAR_KEYS.previous(direction(), rootContext.orientation()):
 						if (e.currentTarget.hasAttribute("data-closed")) break;
 
 						e.stopPropagation();
@@ -322,6 +318,9 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			]),
 			onPointerEnter,
 			onPointerMove,
+			get "data-orientation"() {
+        return rootContext.orientation();
+			},
 		};
 
 	return (

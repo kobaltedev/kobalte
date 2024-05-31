@@ -9,8 +9,8 @@
 import {
 	callHandler,
 	mergeDefaultProps,
-	mergeRefs,
-	scrollIntoViewport,
+	mergeRefs, Orientation,
+	scrollIntoViewport
 } from "@kobalte/utils";
 import {
 	Component,
@@ -56,10 +56,15 @@ export type MenuTriggerProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
 > = MenuTriggerOptions & Partial<MenuTriggerCommonProps<ElementOf<T>>>;
 
-const MENUBAR_KEYS = {
-	next: (dir: Direction) => (dir === "ltr" ? "ArrowRight" : "ArrowLeft"),
-	previous: (dir: Direction) =>
-		MENUBAR_KEYS.next(dir === "ltr" ? "rtl" : "ltr"),
+export const MENUBAR_KEYS = {
+	next: (dir: Direction, orientation: Orientation) => (dir === "ltr" ? (orientation === "horizontal" ? "ArrowRight" : "ArrowDown") : (orientation === "horizontal" ? "ArrowLeft" : "ArrowUp")),
+	previous: (dir: Direction, orientation: Orientation) =>
+		MENUBAR_KEYS.next(dir === "ltr" ? "rtl" : "ltr", orientation),
+};
+
+const MENU_KEYS = {
+	first: (orientation: Orientation) => (orientation === "horizontal" ? "ArrowDown" : "ArrowRight"),
+	last: (orientation: Orientation) => (orientation === "horizontal" ? "ArrowUp" : "ArrowLeft"),
 };
 
 /**
@@ -179,7 +184,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		switch (e.key) {
 			case "Enter":
 			case " ":
-			case "ArrowDown":
+			case MENU_KEYS.first(rootContext.orientation()):
 				e.stopPropagation();
 				e.preventDefault();
 				scrollIntoViewport(e.currentTarget);
@@ -187,18 +192,18 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 				optionalMenubarContext?.setAutoFocusMenu(true);
 				optionalMenubarContext?.setValue(key);
 				break;
-			case "ArrowUp":
+			case MENU_KEYS.last(rootContext.orientation()):
 				e.stopPropagation();
 				e.preventDefault();
 				context.toggle("last");
 				break;
-			case MENUBAR_KEYS.next(direction()):
+			case MENUBAR_KEYS.next(direction(), rootContext.orientation()):
 				if (optionalMenubarContext === undefined) break;
 				e.stopPropagation();
 				e.preventDefault();
 				optionalMenubarContext.nextMenu();
 				break;
-			case MENUBAR_KEYS.previous(direction()):
+			case MENUBAR_KEYS.previous(direction(), rootContext.orientation()):
 				if (optionalMenubarContext === undefined) break;
 				e.stopPropagation();
 				e.preventDefault();

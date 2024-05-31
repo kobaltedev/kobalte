@@ -17,7 +17,7 @@ import {
 	composeEventHandlers,
 	focusWithoutScrolling,
 	mergeDefaultProps,
-	mergeRefs,
+	mergeRefs, Orientation
 } from "@kobalte/utils";
 import {
 	JSX,
@@ -83,10 +83,14 @@ export type MenuSubTriggerProps<
 > = MenuSubTriggerOptions & Partial<MenuSubTriggerCommonProps<ElementOf<T>>>;
 
 const SELECTION_KEYS = ["Enter", " "];
-const SUB_OPEN_KEYS: Record<Direction, string[]> = {
-	ltr: [...SELECTION_KEYS, "ArrowRight"],
-	rtl: [...SELECTION_KEYS, "ArrowLeft"],
-};
+const SUB_OPEN_KEYS = {
+	open: (dir: Direction, orientation: Orientation) => {
+		if (dir === "ltr") {
+			return [...SELECTION_KEYS, orientation === "horizontal" ? "ArrowRight" : "ArrowDown"];
+		}
+		return [...SELECTION_KEYS, orientation === "horizontal" ? "ArrowLeft" : "ArrowUp"];
+	},
+}
 
 /**
  * An item that opens a submenu.
@@ -278,7 +282,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		}
 
 		// For consistency with native, open the menu on key down.
-		if (SUB_OPEN_KEYS[direction()].includes(e.key)) {
+		if (SUB_OPEN_KEYS.open(direction(), rootContext.orientation()).includes(e.key)) {
 			e.stopPropagation();
 			e.preventDefault();
 

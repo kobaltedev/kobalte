@@ -1,4 +1,4 @@
-import { mergeRefs } from "@kobalte/utils";
+import { mergeRefs, Orientation } from "@kobalte/utils";
 import {
 	Component,
 	JSX,
@@ -60,7 +60,9 @@ export interface NavigationMenuViewportCommonProps {
 export interface NavigationMenuViewportRenderProps
 	extends NavigationMenuViewportCommonProps,
 		DismissableLayerRenderProps,
-		MenubarDataSet {}
+		MenubarDataSet {
+	"data-orientation": Orientation;
+}
 
 export type NavigationMenuViewportProps = NavigationMenuViewportOptions &
 	Partial<NavigationMenuViewportCommonProps>;
@@ -141,6 +143,7 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 				}}
 				onEscapeKeyDown={onEscapeKeyDown}
 				onDismiss={close}
+			  data-orientation={menubarContext.orientation()}
 				{...menubarContext.dataset()}
 				{...others}
 			/>

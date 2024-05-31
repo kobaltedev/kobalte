@@ -1,10 +1,12 @@
 import { Accessor, createContext, useContext } from "solid-js";
+import { Orientation } from "@kobalte/utils";
 
 export interface MenuRootContextValue {
 	isModal: Accessor<boolean>;
 	preventScroll: Accessor<boolean>;
 	forceMount: Accessor<boolean>;
 	generateId: (part: string) => string;
+	orientation: Accessor<Orientation>;
 
 	/** Used for Menubar */
 	value: Accessor<string | undefined>;

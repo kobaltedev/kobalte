@@ -1,4 +1,5 @@
 import { Accessor, Setter, createContext, useContext } from "solid-js";
+import { Orientation } from "@kobalte/utils";
 
 export interface MenubarDataSet {
 	"data-expanded": string | undefined;
@@ -33,6 +34,7 @@ export interface MenubarContextValue {
 	setAutoFocusMenu: Setter<boolean>;
 	autoFocusMenu: Accessor<boolean>;
 	generateId: (part: string) => string;
+	orientation: Accessor<Orientation>;
 }
 
 export const MenubarContext = createContext<MenubarContextValue>();

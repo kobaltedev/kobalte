@@ -12,6 +12,7 @@ import {
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	Orientation,
 } from "@kobalte/utils";
 import {
 	Accessor,
@@ -50,6 +51,9 @@ export interface MenubarRootOptions {
 	/** When true, click on alt by itsef will focus this Menubar (some browsers interfere) */
 	focusOnAlt?: boolean;
 
+	/** The orientation of the menubar. */
+	orientation?: Orientation;
+
 	autoFocusMenu?: boolean;
 	onAutoFocusMenuChange?: Setter<boolean>;
 }
@@ -61,7 +65,8 @@ export interface MenubarRootCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface MenubarRootRenderProps extends MenubarRootCommonProps {
 	role: "menubar";
-	"data-orientation": "horizontal";
+	"data-orientation": "horizontal" | "vertical";
+	"aria-orientation": "horizontal" | "vertical";
 }
 
 export type MenubarRootProps<
@@ -78,11 +83,11 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 	const defaultId = `menubar-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
-		{ id: defaultId, loop: true },
+		{ id: defaultId, loop: true, orientation: "horizontal" },
 		props as MenubarRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const [local, others] = splitProps(mergedProps as typeof mergedProps & {id: string}, [
 		"ref",
 		"value",
 		"defaultValue",
@@ -91,6 +96,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		"focusOnAlt",
 		"autoFocusMenu",
 		"onAutoFocusMenuChange",
+		"orientation",
 	]);
 
 	const [value, setValue] = createControllableSignal<string | null | undefined>(
@@ -100,10 +106,6 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 			onChange: (value) => local.onValueChange?.(value),
 		},
 	);
-
-	createEffect((val) => {
-		return value();
-	});
 
 	const [lastValue, setLastValue] = createSignal<string | undefined>();
 
@@ -195,6 +197,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		autoFocusMenu: () => autoFocusMenu()!,
 		setAutoFocusMenu,
 		generateId: createGenerateId(() => others.id!),
+		orientation: () => local.orientation!,
 	};
 
 	createInteractOutside(
@@ -242,7 +245,8 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 				as="div"
 				ref={mergeRefs((el) => (ref = el), local.ref)}
 				role="menubar"
-				data-orientation="horizontal"
+				data-orientation={local.orientation!}
+			  aria-orientation={local.orientation!}
 				{...others}
 			/>
 		</MenubarContext.Provider>

@@ -51,6 +51,8 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 
 	const [offset, setOffset] = createSignal(0);
 
+	const horizontal = () => menubarContext.orientation() === "horizontal";
+
 	createEffect(
 		on(
 			() => [menubarContext.value(), menubarContext.dataset()],
@@ -62,15 +64,15 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 				if (!triggerRef || !ref) return;
 
 				const middle =
-					triggerRef.getBoundingClientRect().x +
-					triggerRef.getBoundingClientRect().width / 2;
+					triggerRef.getBoundingClientRect()[horizontal() ? "x" : "y"] +
+					triggerRef.getBoundingClientRect()[horizontal() ? "width" : "height"] / 2;
 
 				const computed = window.getComputedStyle(ref);
 
 				const initalArrowPos =
-					ref.getBoundingClientRect().x +
-					ref.getBoundingClientRect().width / 2 -
-					Number.parseFloat(computed.transform.split(",")[4]);
+					ref.getBoundingClientRect()[horizontal() ? "x" : "y"] +
+					ref.getBoundingClientRect()[horizontal() ? "width" : "height"] / 2 -
+					Number.parseFloat(computed.transform.split(",")[horizontal() ? 4 : 5]);
 
 				setOffset(middle - initalArrowPos);
 			},
@@ -85,7 +87,7 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 		>
 			ref={mergeRefs((el) => (ref = el), local.ref)}
 			style={{
-				transform: `translateX(${offset()}px)`,
+			 transform: `translate${horizontal() ? "X" : "Y"}(${offset()}px)`,
 				color: "red",
 			}}
 			{...others}
