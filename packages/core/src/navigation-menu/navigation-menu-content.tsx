@@ -123,9 +123,6 @@ export function NavigationMenuContent<T extends ValidComponent = "div">(
 			onInteractOutside={(event) => {
 				context.setAutoFocusMenu(false);
 			}}
-			//			onCloseAutoFocus={(event) => {
-			//	if (menubarContext.value() == null) event.preventDefault();
-			//																																																 }}
 			data-motion={motion()}
 			{...others}
 		/>
