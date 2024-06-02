@@ -1,3 +1,4 @@
+import type { Orientation } from "@kobalte/utils";
 import {
 	MenuCheckboxItem as CheckboxItem,
 	type MenuCheckboxItemCommonProps as NavigationMenuCheckboxItemCommonProps,
@@ -195,6 +196,7 @@ export type {
 	NavigationMenuViewportRenderProps,
 	NavigationMenuViewportProps,
 	Motion,
+	Orientation,
 };
 
 export {

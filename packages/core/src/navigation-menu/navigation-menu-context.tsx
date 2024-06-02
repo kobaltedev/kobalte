@@ -2,6 +2,7 @@ import { Accessor, Setter, createContext, useContext } from "solid-js";
 import { Placement } from "../popper/utils";
 
 export interface NavigationMenuContextValue {
+	dataset: Accessor<NavigationMenuDataSet>;
 	delayDuration: Accessor<number>;
 	skipDelayDuration: Accessor<number>;
 	autoFocusMenu: Accessor<boolean>;
@@ -12,6 +13,7 @@ export interface NavigationMenuContextValue {
 	setRootRef: Setter<HTMLElement>;
 	viewportRef: Accessor<HTMLElement | undefined>;
 	setViewportRef: Setter<HTMLElement>;
+	viewportPresent: Accessor<boolean>;
 	currentPlacement: Accessor<Placement>;
 	previousMenu: Accessor<string | undefined>;
 	setPreviousMenu: Setter<string | undefined>;

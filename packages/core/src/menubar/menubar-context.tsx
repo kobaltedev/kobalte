@@ -1,5 +1,5 @@
-import { Accessor, Setter, createContext, useContext } from "solid-js";
 import { Orientation } from "@kobalte/utils";
+import { Accessor, Setter, createContext, useContext } from "solid-js";
 
 export interface MenubarDataSet {
 	"data-expanded": string | undefined;

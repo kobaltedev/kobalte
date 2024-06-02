@@ -7,10 +7,11 @@
  */
 
 import {
+	Orientation,
 	OverrideComponentProps,
 	callHandler,
 	contains,
-	focusWithoutScrolling, Orientation
+	focusWithoutScrolling,
 } from "@kobalte/utils";
 import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
@@ -51,8 +52,8 @@ const SUB_CLOSE_KEYS = {
 			return [orientation === "horizontal" ? "ArrowLeft" : "ArrowUp"];
 		}
 		return [orientation === "horizontal" ? "ArrowRight" : "ArrowDown"];
-	}
-}
+	},
+};
 
 /**
  * The component that pops out when a submenu is open.
@@ -98,7 +99,10 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 
 		// Submenu key events bubble through portals. We only care about keys in this menu.
 		const isKeyDownInside = contains(e.currentTarget, e.target);
-		const isCloseKey = SUB_CLOSE_KEYS.close(direction(), rootContext.orientation()).includes(e.key);
+		const isCloseKey = SUB_CLOSE_KEYS.close(
+			direction(),
+			rootContext.orientation(),
+		).includes(e.key);
 		const isSubMenu = context.parentMenuContext() != null;
 
 		if (isKeyDownInside && isCloseKey && isSubMenu) {

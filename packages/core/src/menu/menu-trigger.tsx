@@ -7,10 +7,11 @@
  */
 
 import {
+	Orientation,
 	callHandler,
 	mergeDefaultProps,
-	mergeRefs, Orientation,
-	scrollIntoViewport
+	mergeRefs,
+	scrollIntoViewport,
 } from "@kobalte/utils";
 import {
 	Component,
@@ -57,14 +58,23 @@ export type MenuTriggerProps<
 > = MenuTriggerOptions & Partial<MenuTriggerCommonProps<ElementOf<T>>>;
 
 export const MENUBAR_KEYS = {
-	next: (dir: Direction, orientation: Orientation) => (dir === "ltr" ? (orientation === "horizontal" ? "ArrowRight" : "ArrowDown") : (orientation === "horizontal" ? "ArrowLeft" : "ArrowUp")),
+	next: (dir: Direction, orientation: Orientation) =>
+		dir === "ltr"
+			? orientation === "horizontal"
+				? "ArrowRight"
+				: "ArrowDown"
+			: orientation === "horizontal"
+			  ? "ArrowLeft"
+			  : "ArrowUp",
 	previous: (dir: Direction, orientation: Orientation) =>
 		MENUBAR_KEYS.next(dir === "ltr" ? "rtl" : "ltr", orientation),
 };
 
 const MENU_KEYS = {
-	first: (orientation: Orientation) => (orientation === "horizontal" ? "ArrowDown" : "ArrowRight"),
-	last: (orientation: Orientation) => (orientation === "horizontal" ? "ArrowUp" : "ArrowLeft"),
+	first: (orientation: Orientation) =>
+		orientation === "horizontal" ? "ArrowDown" : "ArrowRight",
+	last: (orientation: Orientation) =>
+		orientation === "horizontal" ? "ArrowUp" : "ArrowLeft",
 };
 
 /**

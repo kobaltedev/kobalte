@@ -78,7 +78,7 @@ export function TabsContent<T extends ValidComponent = "div">(
 	});
 
 	createEffect(
-		on([() => ref, () => presence.isPresent()], ([ref, isPresent]) => {
+		on([() => ref, () => present()], ([ref, isPresent]) => {
 			if (ref == null || !isPresent) {
 				return;
 			}

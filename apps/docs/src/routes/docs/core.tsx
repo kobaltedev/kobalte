@@ -113,6 +113,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				status: "updated",
 			},
 			{
+				title: "Navigation Menu",
+				href: "/docs/core/components/navigation-menu",
+				status: "new",
+			},
+			{
 				title: "Number Field",
 				href: "/docs/core/components/number-field",
 				status: "updated",

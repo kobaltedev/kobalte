@@ -80,7 +80,10 @@ export function Menu(props: MenuProps) {
 
 	const mergedProps = mergeDefaultProps(
 		{
-			placement: rootContext.orientation() === "horizontal" ? "bottom-start" : "right-start",
+			placement:
+				rootContext.orientation() === "horizontal"
+					? "bottom-start"
+					: "right-start",
 		},
 		props,
 	);
@@ -107,7 +110,7 @@ export function Menu(props: MenuProps) {
 	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
 		others.placement!,
 	);
-	const [nestedMenus, setNestedMenus] = createSignal<Element[]>([]);
+	const [nestedMenus, setNestedMenus] = createSignal<HTMLElement[]>([]);
 
 	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 
@@ -160,7 +163,7 @@ export function Menu(props: MenuProps) {
 		}
 	};
 
-	const registerNestedMenu = (element: Element) => {
+	const registerNestedMenu = (element: HTMLElement) => {
 		setNestedMenus((prev) => [...prev, element]);
 
 		const parentUnregister = parentMenuContext?.registerNestedMenu(element);

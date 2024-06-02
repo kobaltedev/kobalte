@@ -1,5 +1,5 @@
-import { Accessor, createContext, useContext } from "solid-js";
 import { Orientation } from "@kobalte/utils";
+import { Accessor, createContext, useContext } from "solid-js";
 
 export interface MenuRootContextValue {
 	isModal: Accessor<boolean>;

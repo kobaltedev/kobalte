@@ -7,11 +7,12 @@
  */
 
 import {
+	Orientation,
 	callHandler,
 	composeEventHandlers,
 	contains,
 	mergeDefaultProps,
-	mergeRefs, Orientation
+	mergeRefs,
 } from "@kobalte/utils";
 import {
 	Component,
@@ -21,6 +22,7 @@ import {
 	createEffect,
 	createUniqueId,
 	onCleanup,
+	onMount,
 	splitProps,
 } from "solid-js";
 
@@ -166,7 +168,8 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			shouldFocusWrap: true,
 			disallowTypeAhead: () =>
 				!context.listState().selectionManager().isFocused(),
-			orientation: () => rootContext.orientation() === "horizontal" ? "vertical" : "horizontal",
+			orientation: () =>
+				rootContext.orientation() === "horizontal" ? "vertical" : "horizontal",
 		},
 		() => ref,
 	);
@@ -319,14 +322,32 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			onPointerEnter,
 			onPointerMove,
 			get "data-orientation"() {
-        return rootContext.orientation();
+				return rootContext.orientation();
 			},
 		};
+
+	createEffect(() =>
+		console.log(
+			"base",
+			optionalNavigationMenuContext === undefined,
+			context.parentMenuContext() != null,
+			optionalNavigationMenuContext === undefined ||
+				context.parentMenuContext() != null,
+		),
+	);
+	onMount(() => {
+		console.log("base mount");
+
+		onCleanup(() => console.log("base unmount"));
+	});
 
 	return (
 		<Show when={context.contentPresent()}>
 			<Show
-				when={optionalNavigationMenuContext === undefined}
+				when={
+					optionalNavigationMenuContext === undefined ||
+					context.parentMenuContext() != null
+				}
 				fallback={
 					<Polymorphic<MenuContentBaseRenderProps>
 						as="div"

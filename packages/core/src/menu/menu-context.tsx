@@ -36,7 +36,7 @@ export interface MenuContextValue {
 	setPointerDir: (dir: Side) => void;
 	setPointerGraceTimeoutId: (id: number) => void;
 	setPointerGraceIntent: (intent: GraceIntent | null) => void;
-	registerNestedMenu: (element: Element) => () => void;
+	registerNestedMenu: (element: HTMLElement) => () => void;
 	registerItemToParentDomCollection:
 		| ((item: CollectionItemWithRef) => () => void)
 		| undefined;

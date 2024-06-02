@@ -4,6 +4,8 @@ import { OverrideProps } from "@kobalte/utils";
 import { ComponentProps, JSX, ValidComponent, splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
+export type { OverrideComponentProps, OverrideProps } from "@kobalte/utils";
+
 /* -------------------------------------------------------------------------------------------------
  * Polymorphic
  * -----------------------------------------------------------------------------------------------*/

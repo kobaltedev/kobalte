@@ -6,17 +6,17 @@ import {
 	Setter,
 	ValidComponent,
 	createEffect,
+	createMemo,
 	createSignal,
 	splitProps,
 } from "solid-js";
+import createPresence from "solid-presence";
 import {
 	MenubarRootCommonProps,
 	MenubarRootOptions,
 	MenubarRootRenderProps,
 } from "../menubar";
 import { MenubarRoot } from "../menubar/menubar-root";
-
-import createPresence from "solid-presence";
 import { PolymorphicProps } from "../polymorphic";
 import { Popper, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
@@ -51,6 +51,12 @@ export interface NavigationMenuRootOptions
 	/** Event handler called when the value changes. */
 	onValueChange?: (value: string | undefined | null) => void;
 
+	/**
+	 * Used to force mounting when more control is needed.
+	 * Useful when controlling animation with SolidJS animation libraries.
+	 */
+	forceMount?: boolean;
+
 	autoFocusMenu?: boolean;
 	onAutoFocusMenuChange?: Setter<boolean>;
 }
@@ -72,20 +78,12 @@ export type NavigationMenuRootProps = NavigationMenuRootOptions &
 export function NavigationMenuRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, NavigationMenuRootProps>,
 ) {
-	const mergedOrientation = mergeDefaultProps(
-		{
-			orientation: "horizontal",
-		},
-		props as NavigationMenuRootProps,
-	);
-
 	const mergedProps = mergeDefaultProps(
 		{
 			delayDuration: 200,
 			skipDelayDuration: 300,
-			placement: mergedOrientation.orientation === "horizontal" ? "bottom" : "right",
 		},
-		mergedOrientation,
+		props as NavigationMenuRootProps,
 	);
 
 	const [local, popperProps, others] = splitProps(
@@ -99,6 +97,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 			"defaultValue",
 			"value",
 			"onValueChange",
+			"forceMount",
 		],
 		[
 			"getAnchorRect",
@@ -133,8 +132,18 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 	const [viewportRef, setViewportRef] = createSignal<HTMLElement>();
 	const [rootRef, setRootRef] = createSignal<HTMLElement>();
 
+	const { present: viewportPresent } = createPresence({
+		show: () =>
+			local.forceMount || (value() && !value()!.includes("link-trigger-")),
+		element: () => viewportRef() ?? null,
+	});
+
+	createEffect(() => console.log("present", viewportPresent()));
+
 	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
-		popperProps.placement!,
+		popperProps.placement ?? others.orientation === "vertical"
+			? "right"
+			: "bottom",
 	);
 
 	let timeoutId: number | undefined;
@@ -159,6 +168,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 		setRootRef: setRootRef as Setter<HTMLElement>,
 		viewportRef,
 		setViewportRef: setViewportRef as Setter<HTMLElement>,
+		viewportPresent,
 		currentPlacement,
 		previousMenu,
 		setPreviousMenu,

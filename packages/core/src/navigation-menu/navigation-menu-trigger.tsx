@@ -2,15 +2,11 @@ import { callHandler } from "@kobalte/utils";
 import { Component, JSX, ValidComponent, splitProps } from "solid-js";
 
 import {
-	MenuTrigger,
 	MenuTriggerCommonProps,
 	MenuTriggerOptions,
-	MenuTriggerProps,
 	MenuTriggerRenderProps,
 } from "../menu";
-import { useMenuContext, useOptionalMenuContext } from "../menu/menu-context";
-import { useMenuRootContext } from "../menu/menu-root-context";
-import { useMenubarContext } from "../menubar/menubar-context";
+import { useOptionalMenuContext } from "../menu/menu-context";
 import { MenubarTrigger } from "../menubar/menubar-trigger";
 import { PolymorphicProps } from "../polymorphic";
 import { useNavigationMenuContext } from "./navigation-menu-context";

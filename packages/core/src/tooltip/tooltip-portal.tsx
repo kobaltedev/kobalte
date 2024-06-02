@@ -12,7 +12,7 @@ export function TooltipPortal(props: TooltipPortalProps) {
 	const context = useTooltipContext();
 
 	return (
-		<Show when={context.contentPresence.isPresent()}>
+		<Show when={context.contentPresent()}>
 			<Portal {...props} />
 		</Show>
 	);

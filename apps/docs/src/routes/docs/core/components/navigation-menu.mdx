@@ -1,24 +1,21 @@
 import { Preview, Kbd, TabsSnippets } from "../../../../components";
-import { BasicExample } from "../../../../examples/menubar";
-import { Callout } from "../../../../components/callout";
+import { BasicExample } from "../../../../examples/navigation-menu";
 
-# Menubar
+# Navigation Menu
 
-A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.
+A collection of links for navigating websites.
 
 ## Import
 
 ```ts
-import { Menubar } from "@kobalte/core/menubar";
+import { NavigationMenu } from "@kobalte/core/navigation-menu";
 // or
-import { Root, Menu, ... } from "@kobalte/core/menubar";
-// or (deprecated)
-import { Menubar } from "@kobalte/core";
+import { Root, Menu, ... } from "@kobalte/core/navigation-menu";
 ```
 
 ## Features
 
-- Follows the [WAI ARIA Menubar](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/) design pattern.
+- Follows the [WAI ARIA Navigation Menubar](https://www.w3.org/WAI/ARIA/apg/patterns/NavigationMenu/) design pattern.
 - Supports modal and non-modal modes.
 - Supports submenus.
 - Supports items, labels, groups of items.
@@ -33,81 +30,84 @@ import { Menubar } from "@kobalte/core";
 
 ## Anatomy
 
-The menubar consists of:
+The navigation menu consists of:
 
-- **Menubar:** The root container for a menubar.
+- **NavigationMenu:** The root container for a NavigationMenu.
+- **NavigationMenu.Viewport:** Contains the menu rendered by the open menu.
+- **NavigationMenu.Arrow:** An optional arrow element to render alongside the viewport.
 
 The menu consists of:
 
-- **Menubar.Menu:** The container of each menu.
-- **Menubar.Trigger:** The button that toggles the menu.
-- **Menubar.Icon:** A small icon that can be displayed inside the menu trigger as a visual affordance for the fact it can be open.
-- **Menubar.Portal:** Portals its children into the `body` when the menu is open.
-- **Menubar.Content:** Contains the content to be rendered when the menu is open.
-- **Menubar.Arrow:** An optional arrow element to render alongside the menu content.
-- **Menubar.Separator:** Used to visually separate items in the menu.
-- **Menubar.Group:** Used to group multiple items. Use in conjunction with `Menubar.GroupLabel` to ensure good accessibility via automatic labelling.
-- **Menubar.GroupLabel:** Used to render the label of a group. It won't be focusable using arrow keys.
-- **Menubar.Sub:** Contains all the parts of a submenu.
-- **Menubar.SubTrigger:** An item that opens a submenu. Must be rendered inside `Menubar.Sub`.
-- **Menubar.SubContent:** The component that pops out when a submenu is open. Must be rendered inside `Menubar.Sub`.
+- **NavigationMenu.Menu:** The container of each menu.
+- **NavigationMenu.Trigger:** The button that toggles the menu.
+- **NavigationMenu.Icon:** A small icon that can be displayed inside the menu trigger as a visual affordance for the fact it can be open.
+- **NavigationMenu.Portal:** Portals its children into the `NavigationMenu.Viewport` when the menu is open.
+- **NavigationMenu.Content:** Contains the content to be rendered when the menu is open.
+- **NavigationMenu.Separator:** Used to visually separate items in the menu.
+- **NavigationMenu.Group:** Used to group multiple items. Use in conjunction with `NavigationMenu.GroupLabel` to ensure good accessibility via automatic labelling.
+- **NavigationMenu.GroupLabel:** Used to render the label of a group. It won't be focusable using arrow keys.
+- **NavigationMenu.Sub:** Contains all the parts of a submenu.
+- **NavigationMenu.SubTrigger:** An item that opens a submenu. Must be rendered inside `NavigationMenu.Sub`.
+- **NavigationMenu.SubContent:** The component that pops out when a submenu is open. Must be rendered inside `NavigationMenu.Sub`.
 
 The menu item consists of:
 
-- **Menubar.Item:** An item of the select.
-- **Menubar.ItemLabel:** An accessible label to be announced for the item.
-- **Menubar.ItemDescription:** An optional accessible description to be announced for the item.
-- **Menubar.ItemIndicator:** The visual indicator rendered when the item is checked.
+- **NavigationMenu.Item:** An item of the select.
+- **NavigationMenu.ItemLabel:** An accessible label to be announced for the item.
+- **NavigationMenu.ItemDescription:** An optional accessible description to be announced for the item.
+- **NavigationMenu.ItemIndicator:** The visual indicator rendered when the item is checked.
 
 The checkable menu item consists of:
 
-- **Menubar.RadioGroup:** Used to group multiple `Menubar.RadioItem`s and manage the selection.
-- **Menubar.RadioItem:** An item that can be controlled and rendered like a radio.
-- **Menubar.CheckboxItem:** An item that can be controlled and rendered like a checkbox.
+- **NavigationMenu.RadioGroup:** Used to group multiple `NavigationMenu.RadioItem`s and manage the selection.
+- **NavigationMenu.RadioItem:** An item that can be controlled and rendered like a radio.
+- **NavigationMenu.CheckboxItem:** An item that can be controlled and rendered like a checkbox.
 
 ```tsx
-<Menubar>
-	<Menubar.Menu>
-		<Menubar.Trigger>
-			<Menubar.Icon />
-		</Menubar.Trigger>
+<NavigationMenu>
+	<NavigationMenu.Menu>
+		<NavigationMenu.Trigger>
+			<NavigationMenu.Icon />
+		</NavigationMenu.Trigger>
 
-		<Menubar.Portal>
-			<Menubar.Content>
-				<Menubar.Arrow />
+		<NavigationMenu.Portal>
+			<NavigationMenu.Content>
+				<NavigationMenu.Item>
+					<NavigationMenu.ItemLabel />
+					<NavigationMenu.ItemDescription />
+				</NavigationMenu.Item>
 
-				<Menubar.Item>
-					<Menubar.ItemLabel />
-					<Menubar.ItemDescription />
-				</Menubar.Item>
+				<NavigationMenu.Group>
+					<NavigationMenu.GroupLabel />
+					<NavigationMenu.Item />
+				</NavigationMenu.Group>
 
-				<Menubar.Group>
-					<Menubar.GroupLabel />
-					<Menubar.Item />
-				</Menubar.Group>
+				<NavigationMenu.CheckboxItem>
+					<NavigationMenu.ItemIndicator />
+				</NavigationMenu.CheckboxItem>
 
-				<Menubar.CheckboxItem>
-					<Menubar.ItemIndicator />
-				</Menubar.CheckboxItem>
+				<NavigationMenu.RadioGroup>
+					<NavigationMenu.RadioItem>
+						<NavigationMenu.ItemIndicator />
+					</NavigationMenu.RadioItem>
+				</NavigationMenu.RadioGroup>
 
-				<Menubar.RadioGroup>
-					<Menubar.RadioItem>
-						<Menubar.ItemIndicator />
-					</Menubar.RadioItem>
-				</Menubar.RadioGroup>
+				<NavigationMenu.Sub>
+					<NavigationMenu.SubTrigger />
+					<NavigationMenu.Portal>
+						<NavigationMenu.SubContent />
+					</NavigationMenu.Portal>
+				</NavigationMenu.Sub>
 
-				<Menubar.Sub>
-					<Menubar.SubTrigger />
-					<Menubar.Portal>
-						<Menubar.SubContent />
-					</Menubar.Portal>
-				</Menubar.Sub>
+				<NavigationMenu.Separator />
+			</NavigationMenu.Content>
+		</NavigationMenu.Portal>
+	</NavigationMenu.Menu>
 
-				<Menubar.Separator />
-			</Menubar.Content>
-		</Menubar.Portal>
-	</Menubar.Menu>
-</Menubar>
+	<NavigationMenu.Viewport>
+		<NavigationMenu.Arrow />
+	</NavigationMenu.Viewport>
+</NavigationMenu>
 ```
 
 ## Example
@@ -124,7 +124,7 @@ The checkable menu item consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-		import { Menubar } from "@kobalte/core/menubar";
+		import { NavigationMenu } from "@kobalte/core/NavigationMenu";
     import { createSignal } from "solid-js";
     import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "some-icon-library";
     import "./style.css";
@@ -135,199 +135,199 @@ The checkable menu item consists of:
       const [branch, setBranch] = createSignal("main");
 
       return (
-          <Menubar class="menubar__root">
-            <Menubar.Menu>
-              <Menubar.Trigger class="menubar__trigger">
+          <NavigationMenu class="NavigationMenu__root">
+            <NavigationMenu.Menu>
+              <NavigationMenu.Trigger class="NavigationMenu__trigger">
                 Git
-              </Menubar.Trigger>
-              <Menubar.Portal>
-                <Menubar.Content class="menubar__content">
-                  <Menubar.Item class="menubar__item">
-                    Commit <div class="menubar__item-right-slot">⌘+K</div>
-                  </Menubar.Item>
-                  <Menubar.Item class="menubar__item">
-                    Push <div class="menubar__item-right-slot">⇧+⌘+K</div>
-                  </Menubar.Item>
-                  <Menubar.Item class="menubar__item" disabled>
-                    Update Project <div class="menubar__item-right-slot">⌘+T</div>
-                  </Menubar.Item>
-                  <Menubar.Sub overlap gutter={4} shift={-8}>
-                    <Menubar.SubTrigger class="menubar__sub-trigger">
+              </NavigationMenu.Trigger>
+              <NavigationMenu.Portal>
+                <NavigationMenu.Content class="NavigationMenu__content">
+                  <NavigationMenu.Item class="NavigationMenu__item">
+                    Commit <div class="NavigationMenu__item-right-slot">⌘+K</div>
+                  </NavigationMenu.Item>
+                  <NavigationMenu.Item class="NavigationMenu__item">
+                    Push <div class="NavigationMenu__item-right-slot">⇧+⌘+K</div>
+                  </NavigationMenu.Item>
+                  <NavigationMenu.Item class="NavigationMenu__item" disabled>
+                    Update Project <div class="NavigationMenu__item-right-slot">⌘+T</div>
+                  </NavigationMenu.Item>
+                  <NavigationMenu.Sub overlap gutter={4} shift={-8}>
+                    <NavigationMenu.SubTrigger class="NavigationMenu__sub-trigger">
                       GitHub
-                      <div class="menubar__item-right-slot">
+                      <div class="NavigationMenu__item-right-slot">
                         <ChevronRightIcon width={20} height={20} />
                       </div>
-                    </Menubar.SubTrigger>
-                    <Menubar.Portal>
-                      <Menubar.SubContent class="menubar__sub-content">
-                        <Menubar.Item class="menubar__item">
+                    </NavigationMenu.SubTrigger>
+                    <NavigationMenu.Portal>
+                      <NavigationMenu.SubContent class="NavigationMenu__sub-content">
+                        <NavigationMenu.Item class="NavigationMenu__item">
                           Create Pull Request…
-                        </Menubar.Item>
-                        <Menubar.Item class="menubar__item">
+                        </NavigationMenu.Item>
+                        <NavigationMenu.Item class="NavigationMenu__item">
                           View Pull Requests
-                        </Menubar.Item>
-                        <Menubar.Item class="menubar__item">Sync Fork</Menubar.Item>
-                        <Menubar.Separator class="menubar__separator" />
-                        <Menubar.Item class="menubar__item">
+                        </NavigationMenu.Item>
+                        <NavigationMenu.Item class="NavigationMenu__item">Sync Fork</NavigationMenu.Item>
+                        <NavigationMenu.Separator class="NavigationMenu__separator" />
+                        <NavigationMenu.Item class="NavigationMenu__item">
                           Open on GitHub
-                        </Menubar.Item>
-                      </Menubar.SubContent>
-                    </Menubar.Portal>
-                  </Menubar.Sub>
+                        </NavigationMenu.Item>
+                      </NavigationMenu.SubContent>
+                    </NavigationMenu.Portal>
+                  </NavigationMenu.Sub>
 
-                  <Menubar.Separator class="menubar__separator" />
+                  <NavigationMenu.Separator class="NavigationMenu__separator" />
 
-                  <Menubar.CheckboxItem
-                  class="menubar__checkbox-item"
+                  <NavigationMenu.CheckboxItem
+                  class="NavigationMenu__checkbox-item"
                   checked={showGitLog()}
                   onChange={setShowGitLog}
                   >
-                  <Menubar.ItemIndicator class="menubar__item-indicator">
+                  <NavigationMenu.ItemIndicator class="NavigationMenu__item-indicator">
                     <CheckIcon />
-                  </Menubar.ItemIndicator>
+                  </NavigationMenu.ItemIndicator>
                   Show Git Log
-                </Menubar.CheckboxItem>
-                <Menubar.CheckboxItem
-                class="menubar__checkbox-item"
+                </NavigationMenu.CheckboxItem>
+                <NavigationMenu.CheckboxItem
+                class="NavigationMenu__checkbox-item"
                 checked={showHistory()}
                 onChange={setShowHistory}
                 >
-                <Menubar.ItemIndicator class="menubar__item-indicator">
+                <NavigationMenu.ItemIndicator class="NavigationMenu__item-indicator">
                   <CheckIcon />
-                </Menubar.ItemIndicator>
+                </NavigationMenu.ItemIndicator>
                 Show History
-              </Menubar.CheckboxItem>
+              </NavigationMenu.CheckboxItem>
 
-              <Menubar.Separator class="menubar__separator" />
+              <NavigationMenu.Separator class="NavigationMenu__separator" />
 
-              <Menubar.Group>
-                <Menubar.GroupLabel class="menubar__group-label">
+              <NavigationMenu.Group>
+                <NavigationMenu.GroupLabel class="NavigationMenu__group-label">
                   Branches
-                </Menubar.GroupLabel>
-                <Menubar.RadioGroup value={branch()} onChange={setBranch}>
-                  <Menubar.RadioItem class="menubar__radio-item" value="main">
-                    <Menubar.ItemIndicator class="menubar__item-indicator">
+                </NavigationMenu.GroupLabel>
+                <NavigationMenu.RadioGroup value={branch()} onChange={setBranch}>
+                  <NavigationMenu.RadioItem class="NavigationMenu__radio-item" value="main">
+                    <NavigationMenu.ItemIndicator class="NavigationMenu__item-indicator">
                       <DotFilledIcon />
-                    </Menubar.ItemIndicator>
+                    </NavigationMenu.ItemIndicator>
                     main
-                  </Menubar.RadioItem>
-                  <Menubar.RadioItem class="menubar__radio-item" value="develop">
-                    <Menubar.ItemIndicator class="menubar__item-indicator">
+                  </NavigationMenu.RadioItem>
+                  <NavigationMenu.RadioItem class="NavigationMenu__radio-item" value="develop">
+                    <NavigationMenu.ItemIndicator class="NavigationMenu__item-indicator">
                       <DotFilledIcon />
-                    </Menubar.ItemIndicator>
+                    </NavigationMenu.ItemIndicator>
                     develop
-                  </Menubar.RadioItem>
-                </Menubar.RadioGroup>
-              </Menubar.Group>
-            </Menubar.Content>
-          </Menubar.Portal>
-        </Menubar.Menu>
+                  </NavigationMenu.RadioItem>
+                </NavigationMenu.RadioGroup>
+              </NavigationMenu.Group>
+            </NavigationMenu.Content>
+          </NavigationMenu.Portal>
+        </NavigationMenu.Menu>
 
-        <Menubar.Menu>
-          <Menubar.Trigger class="menubar__trigger">
+        <NavigationMenu.Menu>
+          <NavigationMenu.Trigger class="NavigationMenu__trigger">
             File
-          </Menubar.Trigger>
-          <Menubar.Portal>
-            <Menubar.Content class="menubar__content">
-              <Menubar.Item class="menubar__item">
-                New Tab <div class="menubar__item-right-slot">⌘+T</div>
-              </Menubar.Item>
-              <Menubar.Item class="menubar__item">
-                New Window <div class="menubar__item-right-slot">⌘+N</div>
-              </Menubar.Item>
-              <Menubar.Item class="menubar__item" disabled>
+          </NavigationMenu.Trigger>
+          <NavigationMenu.Portal>
+            <NavigationMenu.Content class="NavigationMenu__content">
+              <NavigationMenu.Item class="NavigationMenu__item">
+                New Tab <div class="NavigationMenu__item-right-slot">⌘+T</div>
+              </NavigationMenu.Item>
+              <NavigationMenu.Item class="NavigationMenu__item">
+                New Window <div class="NavigationMenu__item-right-slot">⌘+N</div>
+              </NavigationMenu.Item>
+              <NavigationMenu.Item class="NavigationMenu__item" disabled>
                 New Incognito Window
-              </Menubar.Item>
+              </NavigationMenu.Item>
 
-              <Menubar.Separator class="menubar__separator"/>
+              <NavigationMenu.Separator class="NavigationMenu__separator"/>
 
-              <Menubar.Sub overlap gutter={4} shift={-8}>
-                <Menubar.SubTrigger class="menubar__sub-trigger">
+              <NavigationMenu.Sub overlap gutter={4} shift={-8}>
+                <NavigationMenu.SubTrigger class="NavigationMenu__sub-trigger">
                   Share
-                  <div class="menubar__item-right-slot">
+                  <div class="NavigationMenu__item-right-slot">
                     <ChevronRightIcon width={20} height={20} />
                   </div>
-                </Menubar.SubTrigger>
-                <Menubar.Portal>
-                  <Menubar.SubContent class="menubar__sub-content">
-                    <Menubar.Item class="menubar__item">
+                </NavigationMenu.SubTrigger>
+                <NavigationMenu.Portal>
+                  <NavigationMenu.SubContent class="NavigationMenu__sub-content">
+                    <NavigationMenu.Item class="NavigationMenu__item">
                       Email Link
-                    </Menubar.Item>
-                    <Menubar.Item class="menubar__item">
+                    </NavigationMenu.Item>
+                    <NavigationMenu.Item class="NavigationMenu__item">
                       Messages
-                    </Menubar.Item>
-                    <Menubar.Item class="menubar__item">
+                    </NavigationMenu.Item>
+                    <NavigationMenu.Item class="NavigationMenu__item">
                       Notes
-                    </Menubar.Item>
-                  </Menubar.SubContent>
-                </Menubar.Portal>
-              </Menubar.Sub>
+                    </NavigationMenu.Item>
+                  </NavigationMenu.SubContent>
+                </NavigationMenu.Portal>
+              </NavigationMenu.Sub>
 
-              <Menubar.Separator class="menubar__separator" />
+              <NavigationMenu.Separator class="NavigationMenu__separator" />
 
-              <Menubar.Item class="menubar__item">
-                Print... <div class="menubar__item-right-slot">⌘+P</div>
-              </Menubar.Item>
-            </Menubar.Content>
-          </Menubar.Portal>
-        </Menubar.Menu>
+              <NavigationMenu.Item class="NavigationMenu__item">
+                Print... <div class="NavigationMenu__item-right-slot">⌘+P</div>
+              </NavigationMenu.Item>
+            </NavigationMenu.Content>
+          </NavigationMenu.Portal>
+        </NavigationMenu.Menu>
 
-        <Menubar.Menu>
-          <Menubar.Trigger class="menubar__trigger">
+        <NavigationMenu.Menu>
+          <NavigationMenu.Trigger class="NavigationMenu__trigger">
             Edit
-          </Menubar.Trigger>
-          <Menubar.Portal>
-            <Menubar.Content class="menubar__content">
-              <Menubar.Item class="menubar__item">
-                Undo <div class="menubar__item-right-slot">⌘+Z</div>
-              </Menubar.Item>
-              <Menubar.Item class="menubar__item">
-                Redo <div class="menubar__item-right-slot">⇧+⌘+Z</div>
-              </Menubar.Item>
+          </NavigationMenu.Trigger>
+          <NavigationMenu.Portal>
+            <NavigationMenu.Content class="NavigationMenu__content">
+              <NavigationMenu.Item class="NavigationMenu__item">
+                Undo <div class="NavigationMenu__item-right-slot">⌘+Z</div>
+              </NavigationMenu.Item>
+              <NavigationMenu.Item class="NavigationMenu__item">
+                Redo <div class="NavigationMenu__item-right-slot">⇧+⌘+Z</div>
+              </NavigationMenu.Item>
 
-              <Menubar.Separator class="menubar__separator"/>
+              <NavigationMenu.Separator class="NavigationMenu__separator"/>
 
-              <Menubar.Sub overlap gutter={4} shift={-8}>
-                <Menubar.SubTrigger class="menubar__sub-trigger">
+              <NavigationMenu.Sub overlap gutter={4} shift={-8}>
+                <NavigationMenu.SubTrigger class="NavigationMenu__sub-trigger">
                   Find
-                  <div class="menubar__item-right-slot">
+                  <div class="NavigationMenu__item-right-slot">
                     <ChevronRightIcon width={20} height={20} />
                   </div>
-                </Menubar.SubTrigger>
-                <Menubar.Portal>
-                  <Menubar.SubContent class="menubar__sub-content">
-                    <Menubar.Item class="menubar__item">
+                </NavigationMenu.SubTrigger>
+                <NavigationMenu.Portal>
+                  <NavigationMenu.SubContent class="NavigationMenu__sub-content">
+                    <NavigationMenu.Item class="NavigationMenu__item">
                       Search The Web
-                    </Menubar.Item>
-                    <Menubar.Separator class="menubar__separator"/>
-                    <Menubar.Item class="menubar__item">
+                    </NavigationMenu.Item>
+                    <NavigationMenu.Separator class="NavigationMenu__separator"/>
+                    <NavigationMenu.Item class="NavigationMenu__item">
                       Find...
-                    </Menubar.Item>
-                    <Menubar.Item class="menubar__item">
+                    </NavigationMenu.Item>
+                    <NavigationMenu.Item class="NavigationMenu__item">
                       Find Next
-                    </Menubar.Item>
-                    <Menubar.Item class="menubar__item">
+                    </NavigationMenu.Item>
+                    <NavigationMenu.Item class="NavigationMenu__item">
                       Find Previous
-                    </Menubar.Item>
-                  </Menubar.SubContent>
-                </Menubar.Portal>
-              </Menubar.Sub>
+                    </NavigationMenu.Item>
+                  </NavigationMenu.SubContent>
+                </NavigationMenu.Portal>
+              </NavigationMenu.Sub>
 
-              <Menubar.Separator class="menubar__separator" />
+              <NavigationMenu.Separator class="NavigationMenu__separator" />
 
-              <Menubar.Item class="menubar__item">
+              <NavigationMenu.Item class="NavigationMenu__item">
                 Cut
-              </Menubar.Item>
-              <Menubar.Item class="menubar__item">
+              </NavigationMenu.Item>
+              <NavigationMenu.Item class="NavigationMenu__item">
                 Copy
-              </Menubar.Item>
-              <Menubar.Item class="menubar__item">
+              </NavigationMenu.Item>
+              <NavigationMenu.Item class="NavigationMenu__item">
                 Paste
-              </Menubar.Item>
-            </Menubar.Content>
-          </Menubar.Portal>
-        </Menubar.Menu>
-      </Menubar>
+              </NavigationMenu.Item>
+            </NavigationMenu.Content>
+          </NavigationMenu.Portal>
+        </NavigationMenu.Menu>
+      </NavigationMenu>
       );
     }
     ```
@@ -335,13 +335,13 @@ The checkable menu item consists of:
   </TabsSnippets.Content>
   <TabsSnippets.Content value="style.css">
     ```css
-    .menubar__root {
+    .NavigationMenu__root {
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    .menubar__trigger {
+    .NavigationMenu__trigger {
       appearance: none;
       display: inline-flex;
       justify-content: center;
@@ -358,22 +358,22 @@ The checkable menu item consists of:
       transition: 250ms background-color;
     }
 
-    .menubar__trigger[data-highlighted="true"] {
+    .NavigationMenu__trigger[data-highlighted="true"] {
       background-color: hsl(200 98% 39%);
       color: white;
     }
 
-    .menubar__trigger:first-child {
+    .NavigationMenu__trigger:first-child {
       border-radius: 4px 0 0 4px;
     }
 
-    .menubar__trigger:last-child {
+    .NavigationMenu__trigger:last-child {
       border-left: 2px dashed hsl(240 4% 46%);
       border-radius: 0 4px 4px 0;
     }
 
-    .menubar__content,
-    .menubar__sub-content {
+    .NavigationMenu__content,
+    .NavigationMenu__sub-content {
       min-width: 220px;
       padding: 8px;
       background-color: white;
@@ -387,15 +387,15 @@ The checkable menu item consists of:
       animation: contentHide 250ms ease-in forwards;
     }
 
-    .menubar__content[data-expanded],
-    .menubar__sub-content[data-expanded] {
+    .NavigationMenu__content[data-expanded],
+    .NavigationMenu__sub-content[data-expanded] {
       animation: contentShow 250ms ease-out;
     }
 
-    .menubar__item,
-    .menubar__checkbox-item,
-    .menubar__radio-item,
-    .menubar__sub-trigger {
+    .NavigationMenu__item,
+    .NavigationMenu__checkbox-item,
+    .NavigationMenu__radio-item,
+    .NavigationMenu__sub-trigger {
       font-size: 16px;
       line-height: 1;
       color: hsl(240 4% 16%);
@@ -409,43 +409,43 @@ The checkable menu item consists of:
       outline: none;
     }
 
-    .menubar__sub-trigger[data-expanded] {
+    .NavigationMenu__sub-trigger[data-expanded] {
       background-color: hsl(204 94% 94%);
       color: hsl(201 96% 32%);
     }
 
-    .menubar__item[data-disabled],
-    .menubar__checkbox-item[data-disabled],
-    .menubar__radio-item[data-disabled],
-    .menubar__sub-trigger[data-disabled] {
+    .NavigationMenu__item[data-disabled],
+    .NavigationMenu__checkbox-item[data-disabled],
+    .NavigationMenu__radio-item[data-disabled],
+    .NavigationMenu__sub-trigger[data-disabled] {
       color: hsl(240 5% 65%);
       opacity: 0.5;
       pointer-events: none;
     }
 
-    .menubar__item[data-highlighted],
-    .menubar__checkbox-item[data-highlighted],
-    .menubar__radio-item[data-highlighted],
-    .menubar__sub-trigger[data-highlighted] {
+    .NavigationMenu__item[data-highlighted],
+    .NavigationMenu__checkbox-item[data-highlighted],
+    .NavigationMenu__radio-item[data-highlighted],
+    .NavigationMenu__sub-trigger[data-highlighted] {
       outline: none;
       background-color: hsl(200 98% 39%);
       color: white;
     }
 
-    .menubar__group-label {
+    .NavigationMenu__group-label {
       padding: 0 24px;
       font-size: 14px;
       line-height: 32px;
       color: hsl(240 4% 46%);
     }
 
-    .menubar__separator {
+    .NavigationMenu__separator {
       height: 1px;
       border-top: 1px solid hsl(240 6% 90%);
       margin: 6px;
     }
 
-    .menubar__item-indicator {
+    .NavigationMenu__item-indicator {
       position: absolute;
       left: 0;
       height: 20px;
@@ -455,18 +455,18 @@ The checkable menu item consists of:
       justify-content: center;
     }
 
-    .menubar__item-right-slot {
+    .NavigationMenu__item-right-slot {
       margin-left: auto;
       padding-left: 20px;
       font-size: 14px;
       color: hsl(240 4% 46%);
     }
 
-    [data-highlighted] > .menubar__item-right-slot {
+    [data-highlighted] > .NavigationMenu__item-right-slot {
       color: white;
     }
 
-    [data-disabled] .menubar__item-right-slot {
+    [data-disabled] .NavigationMenu__item-right-slot {
       color: hsl(240 5% 65%);
       opacity: 0.5;
     }
@@ -542,9 +542,9 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 ## API Reference
 
-### Menubar
+### NavigationMenu
 
-`Menubar` is equivalent to the `Root` import from `@kobalte/core/menubar` (and deprecated `Menubar.Root`).
+`NavigationMenu` is equivalent to the `Root` import from `@kobalte/core/NavigationMenu` (and deprecated `NavigationMenu.Root`).
 
 | Prop          | Description                                                                                                                            |
 | :------------ | :------------------------------------------------------------------------------------------------------------------------------------- |
@@ -552,9 +552,9 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | value         | `string` <br/> The controlled value of the menu to open. Should be used in conjunction with onValueChange.                             |
 | onValueChange | `(value: string \| undefined) => void` <br/> Event handler called when the value changes.                                              |
 | loop          | `boolean` <br/> When true, keyboard navigation will loop from last item to first, and vice versa.                                      |
-| focusOnAlt    | `boolean` <br/> When true, click on alt by itsef will focus this Menubar (some browsers interfere)                                     |
+| focusOnAlt    | `boolean` <br/> When true, click on alt by itsef will focus this NavigationMenu (some browsers interfere)                              |
 
-### Menubar.Menu
+### NavigationMenu.Menu
 
 | Prop          | Description                                                                                                                                                                                                                                                                                                                                    |
 | :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -565,7 +565,7 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | forceMount    | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                          |
 | value         | `string` <br/> A unique value that associates the item with an active value when the navigation menu is controlled. This prop is managed automatically when uncontrolled.                                                                                                                                                                      |
 
-`Menubar.Menu` also accepts the following props to customize the placement of the `Menubar.Content`.
+`NavigationMenu.Menu` also accepts the following props to customize the placement of the `NavigationMenu.Content`.
 
 | Prop             | Description                                                                                                                                                                                                                                                                                                                                                          |
 | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -582,7 +582,7 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | arrowPadding     | `number` <br/> The minimum padding between the arrow and the menu content corner.                                                                                                                                                                                                                                                                                    |
 | overflowPadding  | `number` <br/> The minimum padding between the menu content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                                    |
 
-### Menubar.Trigger
+### NavigationMenu.Trigger
 
 | Prop     | Description                                                          |
 | :------- | :------------------------------------------------------------------- |
@@ -594,11 +594,11 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | data-closed    | Present when the menu is close.       |
 | data-disabled  | Present when the trigger is disabled. |
 
-`Menubar.Icon`, `Menubar.Content`, `Menubar.SubTrigger` and `Menubar.SubContent` share the same `data-expanded` attribute.
+`NavigationMenu.Icon`, `NavigationMenu.Content`, `NavigationMenu.SubTrigger` and `NavigationMenu.SubContent` share the same `data-expanded` attribute.
 
-### Menubar.Content
+### NavigationMenu.Content
 
-The popper positioner will copy the same `z-index` as the `Menubar.Content`.
+The popper positioner will copy the same `z-index` as the `NavigationMenu.Content`.
 
 | Prop                 | Description                                                                                                                                                                                                         |
 | :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -609,35 +609,35 @@ The popper positioner will copy the same `z-index` as the `Menubar.Content`.
 | onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
 | onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
 
-### Menubar.Arrow
+### NavigationMenu.Arrow
 
 | Prop | Description                           |
 | :--- | :------------------------------------ |
 | size | `number` <br/> The size of the arrow. |
 
-### Menubar.Item
+### NavigationMenu.Item
 
-| Prop          | Description                                                                                                                                                                                                                                                                                              |
-| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `Menubar.ItemLabel` part if provided, or fallback to the .textContent of the `Menubar.Item`. Use this when the content is complex, or you have non-textual content inside. |
-| disabled      | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                     |
-| closeOnSelect | `boolean` <br/> Whether the menu should close when the item is activated.                                                                                                                                                                                                                                |
-| onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                           |
+| Prop          | Description                                                                                                                                                                                                                                                                                                            |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `NavigationMenu.ItemLabel` part if provided, or fallback to the .textContent of the `NavigationMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| disabled      | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                                   |
+| closeOnSelect | `boolean` <br/> Whether the menu should close when the item is activated.                                                                                                                                                                                                                                              |
+| onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                         |
 
 | Data attribute   | Description                           |
 | :--------------- | :------------------------------------ |
 | data-disabled    | Present when the item is disabled.    |
 | data-highlighted | Present when the item is highlighted. |
 
-`Menubar.ItemLabel`, `Menubar.ItemDescription` and `Menubar.ItemIndicator` shares the same data-attributes.
+`NavigationMenu.ItemLabel`, `NavigationMenu.ItemDescription` and `NavigationMenu.ItemIndicator` shares the same data-attributes.
 
-### Menubar.ItemIndicator
+### NavigationMenu.ItemIndicator
 
 | Prop       | Description                                                                                                                             |
 | :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
 | forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
-### Menubar.RadioGroup
+### NavigationMenu.RadioGroup
 
 | Prop         | Description                                                                                                                                                          |
 | :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -646,15 +646,15 @@ The popper positioner will copy the same `z-index` as the `Menubar.Content`.
 | onChange     | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                         |
 | disabled     | `boolean` <br/> Whether the radio group is disabled or not.                                                                                                          |
 
-### Menubar.RadioItem
+### NavigationMenu.RadioItem
 
-| Prop          | Description                                                                                                                                                                                                                                                                                              |
-| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value         | `string` <br/> The value of the menu item radio.                                                                                                                                                                                                                                                         |
-| textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `Menubar.ItemLabel` part if provided, or fallback to the .textContent of the `Menubar.Item`. Use this when the content is complex, or you have non-textual content inside. |
-| disabled      | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                     |
-| closeOnSelect | `boolean` <br/> Whether the menu should close when the item is checked.                                                                                                                                                                                                                                  |
-| onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                           |
+| Prop          | Description                                                                                                                                                                                                                                                                                                            |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value         | `string` <br/> The value of the menu item radio.                                                                                                                                                                                                                                                                       |
+| textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `NavigationMenu.ItemLabel` part if provided, or fallback to the .textContent of the `NavigationMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| disabled      | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                                   |
+| closeOnSelect | `boolean` <br/> Whether the menu should close when the item is checked.                                                                                                                                                                                                                                                |
+| onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                         |
 
 | Data attribute   | Description                           |
 | :--------------- | :------------------------------------ |
@@ -662,18 +662,18 @@ The popper positioner will copy the same `z-index` as the `Menubar.Content`.
 | data-checked     | Present when the item is checked.     |
 | data-highlighted | Present when the item is highlighted. |
 
-### Menubar.CheckboxItem
+### NavigationMenu.CheckboxItem
 
-| Prop           | Description                                                                                                                                                                                                                                                                                              |
-| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| checked        | `boolean` <br/> The controlled checked state of the item.                                                                                                                                                                                                                                                |
-| defaultChecked | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                                                                                                                                                             |
-| onChange       | `(checked: boolean) => void` <br/> Event handler called when the checked state of the item changes.                                                                                                                                                                                                      |
-| textValue      | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `Menubar.ItemLabel` part if provided, or fallback to the .textContent of the `Menubar.Item`. Use this when the content is complex, or you have non-textual content inside. |
-| indeterminate  | `boolean` <br/> Whether the item is in an indeterminate state.                                                                                                                                                                                                                                           |
-| disabled       | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                     |
-| closeOnSelect  | `boolean` <br/> Whether the menu should close when the item is checked/unchecked.                                                                                                                                                                                                                        |
-| onSelect       | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                           |
+| Prop           | Description                                                                                                                                                                                                                                                                                                            |
+| :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| checked        | `boolean` <br/> The controlled checked state of the item.                                                                                                                                                                                                                                                              |
+| defaultChecked | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                                                                                                                                                                           |
+| onChange       | `(checked: boolean) => void` <br/> Event handler called when the checked state of the item changes.                                                                                                                                                                                                                    |
+| textValue      | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `NavigationMenu.ItemLabel` part if provided, or fallback to the .textContent of the `NavigationMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| indeterminate  | `boolean` <br/> Whether the item is in an indeterminate state.                                                                                                                                                                                                                                                         |
+| disabled       | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                                   |
+| closeOnSelect  | `boolean` <br/> Whether the menu should close when the item is checked/unchecked.                                                                                                                                                                                                                                      |
+| onSelect       | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                         |
 
 | Data attribute     | Description                                         |
 | :----------------- | :-------------------------------------------------- |
@@ -682,7 +682,7 @@ The popper positioner will copy the same `z-index` as the `Menubar.Content`.
 | data-checked       | Present when the item is checked.                   |
 | data-highlighted   | Present when the item is highlighted.               |
 
-### Menubar.Sub
+### NavigationMenu.Sub
 
 | Prop         | Description                                                                                                            |
 | :----------- | :--------------------------------------------------------------------------------------------------------------------- |
@@ -690,7 +690,7 @@ The popper positioner will copy the same `z-index` as the `Menubar.Content`.
 | defaultOpen  | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state. |
 | onOpenChange | `(open: boolean) => void` <br/> Event handler called when the open state of the sub menu changes.                      |
 
-`Menubar.Sub` also accepts the following props to customize the placement of the `Menubar.SubContent`.
+`NavigationMenu.Sub` also accepts the following props to customize the placement of the `NavigationMenu.SubContent`.
 
 | Prop             | Description                                                                                                                                                                                                                                                                        |
 | :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -705,19 +705,19 @@ The popper positioner will copy the same `z-index` as the `Menubar.Content`.
 | arrowPadding     | `number` <br/> The minimum padding between the arrow and the sub menu content corner.                                                                                                                                                                                              |
 | overflowPadding  | `number` <br/> The minimum padding between the sub menu content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                              |
 
-### Menubar.SubTrigger
+### NavigationMenu.SubTrigger
 
-| Prop      | Description                                                                                                                                                                                                                       |
-| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| textValue | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `Menubar.SubTrigger`. Use this when the content is complex, or you have non-textual content inside. |
-| disabled  | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                  |
+| Prop      | Description                                                                                                                                                                                                                              |
+| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| textValue | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `NavigationMenu.SubTrigger`. Use this when the content is complex, or you have non-textual content inside. |
+| disabled  | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                         |
 
 | Data attribute   | Description                           |
 | :--------------- | :------------------------------------ |
 | data-disabled    | Present when the item is disabled.    |
 | data-highlighted | Present when the item is highlighted. |
 
-### Menubar.SubContent
+### NavigationMenu.SubContent
 
 | Prop                 | Description                                                                                                                                                                                                         |
 | :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -728,28 +728,28 @@ The popper positioner will copy the same `z-index` as the `Menubar.Content`.
 
 ## Rendered elements
 
-| Component                 | Default rendered element |
-| :------------------------ | :----------------------- |
-| `Menubar`                 | `div`                    |
-| `Menubar.Menu`            | none                     |
-| `Menubar.Trigger`         | `div`                    |
-| `Menubar.Icon`            | `div`                    |
-| `Menubar.Portal`          | `Portal`                 |
-| `Menubar.Content`         | `div`                    |
-| `Menubar.Arrow`           | `div`                    |
-| `Menubar.Separator`       | `hr`                     |
-| `Menubar.Group`           | `div`                    |
-| `Menubar.GroupLabel`      | `span`                   |
-| `Menubar.Sub`             | none                     |
-| `Menubar.SubTrigger`      | `div`                    |
-| `Menubar.SubContent`      | `div`                    |
-| `Menubar.Item`            | `div`                    |
-| `Menubar.ItemLabel`       | `div`                    |
-| `Menubar.ItemDescription` | `div`                    |
-| `Menubar.ItemIndicator`   | `div`                    |
-| `Menubar.RadioGroup`      | `div`                    |
-| `Menubar.RadioItem`       | `div`                    |
-| `Menubar.CheckboxItem`    | `div`                    |
+| Component                        | Default rendered element |
+| :------------------------------- | :----------------------- |
+| `NavigationMenu`                 | `div`                    |
+| `NavigationMenu.Menu`            | none                     |
+| `NavigationMenu.Trigger`         | `div`                    |
+| `NavigationMenu.Icon`            | `div`                    |
+| `NavigationMenu.Portal`          | `Portal`                 |
+| `NavigationMenu.Content`         | `div`                    |
+| `NavigationMenu.Arrow`           | `div`                    |
+| `NavigationMenu.Separator`       | `hr`                     |
+| `NavigationMenu.Group`           | `div`                    |
+| `NavigationMenu.GroupLabel`      | `span`                   |
+| `NavigationMenu.Sub`             | none                     |
+| `NavigationMenu.SubTrigger`      | `div`                    |
+| `NavigationMenu.SubContent`      | `div`                    |
+| `NavigationMenu.Item`            | `div`                    |
+| `NavigationMenu.ItemLabel`       | `div`                    |
+| `NavigationMenu.ItemDescription` | `div`                    |
+| `NavigationMenu.ItemIndicator`   | `div`                    |
+| `NavigationMenu.RadioGroup`      | `div`                    |
+| `NavigationMenu.RadioItem`       | `div`                    |
+| `NavigationMenu.CheckboxItem`    | `div`                    |
 
 ## Accessibility
 

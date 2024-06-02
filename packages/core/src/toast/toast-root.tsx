@@ -170,7 +170,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 	const { present } = createPresence({
 		show: isOpen,
-		element: () => contentRef() ?? null,
+		element: () => ref() ?? null,
 	});
 
 	const duration = createMemo(() => local.duration || rootContext.duration());
@@ -415,7 +415,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 	createEffect(
 		on(
-			() => presence.isPresent(),
+			() => present(),
 			(isPresent) => !isPresent && deleteToast(),
 		),
 	);

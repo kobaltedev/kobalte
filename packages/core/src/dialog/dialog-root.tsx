@@ -1,6 +1,7 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { ParentProps, createSignal, createUniqueId } from "solid-js";
 
+import createPresence from "solid-presence";
 import { createDisclosureState, createRegisterId } from "../primitives";
 import { DialogContext, DialogContextValue } from "./dialog-context";
 import {
@@ -73,7 +74,7 @@ export function DialogRoot(props: DialogRootProps) {
 	const [descriptionId, setDescriptionId] = createSignal<string>();
 
 	const [overlayRef, setOverlayRef] = createSignal<HTMLElement>();
-	const [contentRef, setcontentRef] = createSignal<HTMLElement>();
+	const [contentRef, setContentRef] = createSignal<HTMLElement>();
 	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
 
 	const disclosureState = createDisclosureState({
@@ -106,7 +107,7 @@ export function DialogRoot(props: DialogRootProps) {
 		overlayRef,
 		setOverlayRef,
 		contentRef,
-		setcontentRef,
+		setContentRef,
 		overlayPresent,
 		contentPresent,
 		close: disclosureState.close,

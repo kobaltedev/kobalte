@@ -57,7 +57,7 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 		on(
 			() => [menubarContext.value(), menubarContext.dataset()],
 			([value]) => {
-				if (!value || value.includes("link-trigger-")) return;
+				if (!value || (value as string).includes("link-trigger-")) return;
 				const triggerRef = document.querySelector(
 					`[data-kb-menu-value-trigger="${value}"]`,
 				);
@@ -65,14 +65,19 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 
 				const middle =
 					triggerRef.getBoundingClientRect()[horizontal() ? "x" : "y"] +
-					triggerRef.getBoundingClientRect()[horizontal() ? "width" : "height"] / 2;
+					triggerRef.getBoundingClientRect()[
+						horizontal() ? "width" : "height"
+					] /
+						2;
 
 				const computed = window.getComputedStyle(ref);
 
 				const initalArrowPos =
 					ref.getBoundingClientRect()[horizontal() ? "x" : "y"] +
 					ref.getBoundingClientRect()[horizontal() ? "width" : "height"] / 2 -
-					Number.parseFloat(computed.transform.split(",")[horizontal() ? 4 : 5]);
+					Number.parseFloat(
+						computed.transform.split(",")[horizontal() ? 4 : 5],
+					);
 
 				setOffset(middle - initalArrowPos);
 			},
@@ -87,7 +92,7 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 		>
 			ref={mergeRefs((el) => (ref = el), local.ref)}
 			style={{
-			 transform: `translate${horizontal() ? "X" : "Y"}(${offset()}px)`,
+				transform: `translate${horizontal() ? "X" : "Y"}(${offset()}px)`,
 				color: "red",
 			}}
 			{...others}

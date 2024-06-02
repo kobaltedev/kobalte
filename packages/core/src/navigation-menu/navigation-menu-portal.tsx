@@ -1,4 +1,4 @@
-import { MenuPortal, MenuPortalProps } from "../menu";
+import { MenuPortal, MenuPortalProps, useMenuContext } from "../menu";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuPortalProps extends MenuPortalProps {}
@@ -8,6 +8,18 @@ export interface NavigationMenuPortalProps extends MenuPortalProps {}
  */
 export function NavigationMenuPortal(props: NavigationMenuPortalProps) {
 	const context = useNavigationMenuContext();
+	const menuContext = useMenuContext();
 
-	return <MenuPortal mount={context.viewportRef()} {...props} />;
+	return (
+		<Show when={context.viewportPresent()}>
+			<MenuPortal
+				mount={
+					menuContext.parentMenuContext() == null
+						? context.viewportRef()
+						: undefined
+				}
+				{...props}
+			/>
+		</Show>
+	);
 }

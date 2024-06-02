@@ -12,12 +12,7 @@ export function DialogPortal(props: DialogPortalProps) {
 	const context = useDialogContext();
 
 	return (
-		<Show
-			when={
-				context.contentPresence.isPresent() ||
-				context.overlayPresence.isPresent()
-			}
-		>
+		<Show when={context.contentPresent() || context.overlayPresent()}>
 			<Portal {...props} />
 		</Show>
 	);

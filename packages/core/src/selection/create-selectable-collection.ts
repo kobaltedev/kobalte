@@ -8,12 +8,13 @@
 
 import {
 	MaybeAccessor,
+	Orientation,
 	access,
 	callHandler,
 	createEventListener,
 	focusWithoutScrolling,
 	getFocusableTreeWalker,
-	scrollIntoView, Orientation
+	scrollIntoView,
 } from "@kobalte/utils";
 import {
 	Accessor,
@@ -129,7 +130,7 @@ export function createSelectableCollection<
 		selectionManager: () => access(mergedProps.selectionManager),
 	});
 
-	const orientation = access(mergedProps.orientation);
+	const orientation = () => access(mergedProps.orientation);
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, typeSelectHandlers.onKeyDown);
@@ -168,7 +169,7 @@ export function createSelectableCollection<
 		const focusedKey = manager.focusedKey();
 
 		switch (e.key) {
-			case (orientation === "vertical" ? "ArrowDown" : "ArrowRight"): {
+			case orientation() === "vertical" ? "ArrowDown" : "ArrowRight": {
 				if (delegate.getKeyBelow) {
 					e.preventDefault();
 
@@ -188,7 +189,7 @@ export function createSelectableCollection<
 				}
 				break;
 			}
-			case (orientation === "vertical" ? "ArrowUp" : "ArrowLeft"): {
+			case orientation() === "vertical" ? "ArrowUp" : "ArrowLeft": {
 				if (delegate.getKeyAbove) {
 					e.preventDefault();
 
@@ -208,7 +209,7 @@ export function createSelectableCollection<
 				}
 				break;
 			}
-			case (orientation === "vertical" ? "ArrowLeft" : "ArrowUp"): {
+			case orientation() === "vertical" ? "ArrowLeft" : "ArrowUp": {
 				if (delegate.getKeyLeftOf) {
 					e.preventDefault();
 
@@ -228,7 +229,7 @@ export function createSelectableCollection<
 				}
 				break;
 			}
-			case (orientation === "vertical" ? "ArrowRight" : "ArrowDown"): {
+			case orientation() === "vertical" ? "ArrowRight" : "ArrowDown": {
 				if (delegate.getKeyRightOf) {
 					e.preventDefault();
 

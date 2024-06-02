@@ -1,4 +1,4 @@
-import { mergeRefs, Orientation } from "@kobalte/utils";
+import { Orientation, mergeRefs } from "@kobalte/utils";
 import {
 	Component,
 	JSX,
@@ -116,37 +116,68 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 		return size.width();
 	});
 
+	createEffect(() =>
+		console.log(context.viewportPresent(), menubarContext.dataset()),
+	);
+
+	const [expanded, setExpanded] = createSignal(false);
+
+	createEffect((init) => {
+		const datasetExpanded = menubarContext.dataset()["data-expanded"] === "";
+
+		console.log("init", init);
+
+		if (context.viewportPresent() && init) {
+			console.log("settrue");
+			setExpanded(true);
+			return false;
+		}
+
+		if (!context.viewportPresent()) {
+			return true;
+		}
+
+		if (!init) {
+			console.log("set", datasetExpanded);
+			setExpanded(datasetExpanded);
+			return false;
+		}
+	}, true);
+
 	return (
-		<Popper.Positioner>
-			<DismissableLayer<
-				Component<
-					Omit<
-						NavigationMenuViewportRenderProps,
-						keyof DismissableLayerRenderProps
+		<Show when={context.viewportPresent()}>
+			<Popper.Positioner>
+				<DismissableLayer<
+					Component<
+						Omit<
+							NavigationMenuViewportRenderProps,
+							keyof DismissableLayerRenderProps
+						>
 					>
 				>
-			>
-				ref={mergeRefs(context.setViewportRef, local.ref)}
-				excludedElements={[context.rootRef]}
-				bypassTopMostLayerCheck
-				style={{
-					"--kb-menu-content-transform-origin":
-						"var(--kb-popper-content-transform-origin)",
-					"--kb-navigation-menu-viewport-height": height()
-						? `${height()}px`
-						: undefined,
-					"--kb-navigation-menu-viewport-width": width()
-						? `${width()}px`
-						: undefined,
-					position: "relative",
-					...local.style,
-				}}
-				onEscapeKeyDown={onEscapeKeyDown}
-				onDismiss={close}
-			  data-orientation={menubarContext.orientation()}
-				{...menubarContext.dataset()}
-				{...others}
-			/>
-		</Popper.Positioner>
+					ref={mergeRefs(context.setViewportRef, local.ref)}
+					excludedElements={[context.rootRef]}
+					bypassTopMostLayerCheck
+					style={{
+						"--kb-menu-content-transform-origin":
+							"var(--kb-popper-content-transform-origin)",
+						"--kb-navigation-menu-viewport-height": height()
+							? `${height()}px`
+							: undefined,
+						"--kb-navigation-menu-viewport-width": width()
+							? `${width()}px`
+							: undefined,
+						position: "relative",
+						...local.style,
+					}}
+					onEscapeKeyDown={onEscapeKeyDown}
+					onDismiss={close}
+					data-expanded={expanded() ? "" : undefined}
+					data-closed={expanded() ? undefined : ""}
+					data-orientation={menubarContext.orientation()}
+					{...others}
+				/>
+			</Popper.Positioner>
+		</Show>
 	);
 }

@@ -7,12 +7,12 @@
  */
 
 import {
+	Orientation,
 	OverrideComponentProps,
 	contains,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
-	Orientation,
 } from "@kobalte/utils";
 import {
 	Accessor,
@@ -87,17 +87,20 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		props as MenubarRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps as typeof mergedProps & {id: string}, [
-		"ref",
-		"value",
-		"defaultValue",
-		"onValueChange",
-		"loop",
-		"focusOnAlt",
-		"autoFocusMenu",
-		"onAutoFocusMenuChange",
-		"orientation",
-	]);
+	const [local, others] = splitProps(
+		mergedProps as typeof mergedProps & { id: string },
+		[
+			"ref",
+			"value",
+			"defaultValue",
+			"onValueChange",
+			"loop",
+			"focusOnAlt",
+			"autoFocusMenu",
+			"onAutoFocusMenuChange",
+			"orientation",
+		],
+	);
 
 	const [value, setValue] = createControllableSignal<string | null | undefined>(
 		{
@@ -120,10 +123,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 	});
 
 	const expanded = () => {
-		const val = value();
-		const focus = autoFocusMenu();
-		// Call both to track signal
-		return val && focus && !value()?.includes("link-trigger-");
+		return value() && autoFocusMenu() && !value()?.includes("link-trigger-");
 	};
 
 	const dataset: Accessor<MenubarDataSet> = createMemo(() => ({
@@ -246,7 +246,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 				ref={mergeRefs((el) => (ref = el), local.ref)}
 				role="menubar"
 				data-orientation={local.orientation!}
-			  aria-orientation={local.orientation!}
+				aria-orientation={local.orientation!}
 				{...others}
 			/>
 		</MenubarContext.Provider>

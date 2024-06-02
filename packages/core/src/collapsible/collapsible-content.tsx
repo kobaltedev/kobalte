@@ -12,13 +12,13 @@ import {
 	Show,
 	ValidComponent,
 	createEffect,
-	createSignal,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
 import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import createPresence from "solid-presence";
+import { createSize } from "../primitives/create-size";
 import {
 	CollapsibleDataSet,
 	useCollapsibleContext,
@@ -79,10 +79,10 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 				id={local.id}
 				style={{
 					"--kb-collapsible-content-height": size.height()
-						? `${height()}px`
+						? `${size.height()}px`
 						: undefined,
 					"--kb-collapsible-content-width": size.width()
-						? `${width()}px`
+						? `${size.width()}px`
 						: undefined,
 					...local.style,
 				}}

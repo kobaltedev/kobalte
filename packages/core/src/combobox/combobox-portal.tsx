@@ -12,7 +12,7 @@ export function ComboboxPortal(props: ComboboxPortalProps) {
 	const context = useComboboxContext();
 
 	return (
-		<Show when={context.contentPresence.isPresent()}>
+		<Show when={context.contentPresent()}>
 			<Portal {...props} />
 		</Show>
 	);

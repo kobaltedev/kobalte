@@ -1,5 +1,5 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { Show, ValidComponent, splitProps } from "solid-js";
+import { Show, ValidComponent, createSignal, splitProps } from "solid-js";
 
 import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import createPresence from "solid-presence";
