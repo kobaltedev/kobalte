@@ -18,12 +18,12 @@ export function BasicExample() {
 				<NavigationMenu.Menu>
 					<NavigationMenu.Trigger class={style["navigation-menu__trigger"]}>
 						Learn{" "}
-						<div
+						<NavigationMenu.Icon
 							aria-hidden="true"
 							class={style["navigation-menu__trigger-indicator"]}
 						>
 							<ChevronDownIcon />
-						</div>
+						</NavigationMenu.Icon>
 					</NavigationMenu.Trigger>
 					<NavigationMenu.Portal>
 						<NavigationMenu.Content
@@ -105,12 +105,11 @@ export function BasicExample() {
 				<NavigationMenu.Menu>
 					<NavigationMenu.Trigger class={style["navigation-menu__trigger"]}>
 						Overview{" "}
-						<div
-							aria-hidden="true"
+						<NavigationMenu.Icon
 							class={style["navigation-menu__trigger-indicator"]}
 						>
 							<ChevronDownIcon />
-						</div>
+						</NavigationMenu.Icon>
 					</NavigationMenu.Trigger>
 					<NavigationMenu.Portal>
 						<NavigationMenu.Content

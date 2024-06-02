@@ -137,16 +137,16 @@ The checkable menu item consists of:
         <>
           <NavigationMenu class="navigation-menu__root" orientation={orientation()}>
             <NavigationMenu.Menu>
-              <NavigationMenu.Trigger class="navigation-menu-trigger">
+              <NavigationMenu.Trigger class="navigation-menu__trigger">
                 Learn{" "}
-                <div aria-hidden="true" class="navigation-menu-trigger-indicator">
+                <NavigationMenu.Icon aria-hidden="true" class="navigation-menu__trigger-indicator">
                   <ChevronDownIcon />
-                </div>
+                </NavigationMenu.Icon>
               </NavigationMenu.Trigger>
               <NavigationMenu.Portal>
-                <NavigationMenu.Content class="navigation-  menu-content content-1">
+                <NavigationMenu.Content class="navigation-menu__content content-1">
                   <NavigationMenu.Item
-                    class="navigation-menu-item-callout"
+                    class="navigation-menu__item-callout"
                     as="a"
                     href="https://kobalte.dev"
                   >
@@ -155,43 +155,43 @@ The checkable menu item consists of:
                       role="presentation"
                       alt="Kobalte"
                     />
-                    <NavigationMenu.ItemLabel class="navigation-menu-item-label">
+                    <NavigationMenu.ItemLabel class="navigation-menu__item-label">
                       Kobalte
                     </NavigationMenu.ItemLabel>
-                    <NavigationMenu.ItemDescription class="navigation-  menu-item-description">
+                    <NavigationMenu.ItemDescription class="navigation-menu__item-description">
                       Unstyled, accessible components for SolidJS.
                     </NavigationMenu.ItemDescription>
                   </NavigationMenu.Item>
                   <NavigationMenu.Item
-                    class="navigation-menu-item"
+                    class="navigation-menu__item"
                     as="a"
                     href="https://pigment.kobalte.dev"
                   >
-                    <NavigationMenu.ItemLabel class="navigation-  menu-item-label">
+                    <NavigationMenu.ItemLabel class="navigation-menu__item-label">
                       Pigment
                     </NavigationMenu.ItemLabel>
-                    <NavigationMenu.ItemDescription class="navigation-  menu-item-description">
+                    <NavigationMenu.ItemDescription class="navigation-menu__item-description">
                       Ready-to-use components with a consistent look and feel.
                     </NavigationMenu.ItemDescription>
                   </NavigationMenu.Item>
                   <NavigationMenu.Item
-                    class="navigation-menu-item"
+                    class="navigation-menu__item"
                     as="a"
                     href="https://www.solidjs.com/"
                   >
-                    <NavigationMenu.ItemLabel class="navigation-  menu-item-label">
+                    <NavigationMenu.ItemLabel class="navigation-menu__item-label">
                       SolidJS
                     </NavigationMenu.ItemLabel>
-                    <NavigationMenu.ItemDescription class="navigation-  menu-item-description">
+                    <NavigationMenu.ItemDescription class="navigation-menu__item-description">
                       Simple and performant reactivity for building user interfaces.
                     </NavigationMenu.ItemDescription>
                   </NavigationMenu.Item>
                   <NavigationMenu.Item
-                    class="navigation-menu-item"
+                    class="navigation-menu__item"
                     as="a"
                     href="https://start.solidjs.com/"
                   >
-                    <NavigationMenu.ItemLabel class="navigation-  menu-item-label">
+                    <NavigationMenu.ItemLabel class="navigation-menu__item-label">
                       SolidStart
                     </NavigationMenu.ItemLabel>
                     <NavigationMenu.ItemDescription class="navigation-menu__item-description">
@@ -205,9 +205,9 @@ The checkable menu item consists of:
             <NavigationMenu.Menu>
               <NavigationMenu.Trigger class="navigation-menu__trigger">
                 Overview{" "}
-                <div aria-hidden="true" class="navigation-menu__trigger-indicator">
+                <NavigationMenu.Icon class="navigation-menu__trigger-indicator">
                   <ChevronDownIcon />
-                </div>
+                </NavigationMenu.Icon>
               </NavigationMenu.Trigger>
               <NavigationMenu.Portal>
                 <NavigationMenu.Content class="navigation-menu__content content-2">
@@ -408,8 +408,8 @@ The checkable menu item consists of:
       display: flex;
       justify-content: center;
       align-items: center;
-      width: var(--kb-navigation-menu-viewport-width);
-      height: var(--kb-navigation-menu-viewport-height);
+      width: var(--kb-navigation-menu__viewport-width);
+      height: var(--kb-navigation-menu__viewport-height);
       z-index: 1000;
       background-color: white;
       border: 1px solid hsl(240 6% 90%);
