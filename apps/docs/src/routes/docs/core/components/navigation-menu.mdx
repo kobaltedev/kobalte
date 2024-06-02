@@ -688,7 +688,7 @@ The checkable menu item consists of:
 
 To make one of the navigation menu triggers a link instead of opening a menu, omit the `NavigationMenu.Menu` and set `as="a"` on the `NavigationMenu.Trigger`.
 
-```tsx {12}
+```tsx {8}
 <NavigationMenu>
 	<NavigationMenu.Menu>
 		<NavigationMenu.Trigger>Opens a regular menu</NavigationMenu.Trigger>
@@ -711,7 +711,7 @@ To make one of the navigation menu triggers a link instead of opening a menu, om
 
 We expose a CSS custom property `--kb-menu-content-transform-origin` which can be used to animate the viewport from its computed origin.
 
-```css {3}
+```css {2}
 /* style.css */
 .navigation-menu__viewport {
 	transform-origin: var(--kb-menu-content-transform-origin);
@@ -746,7 +746,7 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 
 For animating the content of the viewport we apply the attribute `data-motion` of type `"to-start" | "to-end" | "from-start" | "from-end"` on the `NavigationMenu.Content`.
 
-```css {3}
+```css
 /* style.css */
 .navigation-menu__content[data-motion="from-start"] {
 	animation-name: enterFromLeft;
