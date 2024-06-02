@@ -87,7 +87,7 @@ export function NavigationMenuContent<T extends ValidComponent = "div">(
 
 				// When currently active menu set `from-*` motion if there is a previous then upate previous menu
 				if (contextValue === menuRootContext.value()) {
-					if (context.previousMenu() !== undefined) {
+					if (context.previousMenu() != null) {
 						const menus = [...menubarContext.menus()];
 						const prevIndex = menus.indexOf(context.previousMenu()!);
 						const nextIndex = menus.indexOf(contextValue);
@@ -120,6 +120,12 @@ export function NavigationMenuContent<T extends ValidComponent = "div">(
 		>
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}
+			onInteractOutside={(event) => {
+				context.setAutoFocusMenu(false);
+			}}
+			//			onCloseAutoFocus={(event) => {
+			//	if (menubarContext.value() == null) event.preventDefault();
+			//																																																 }}
 			data-motion={motion()}
 			{...others}
 		/>

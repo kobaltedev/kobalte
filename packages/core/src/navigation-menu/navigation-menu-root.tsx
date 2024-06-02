@@ -5,6 +5,7 @@ import {
 	JSX,
 	Setter,
 	ValidComponent,
+	batch,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -24,6 +25,7 @@ import { createControllableSignal } from "../primitives/create-controllable-sign
 import {
 	NavigationMenuContext,
 	NavigationMenuContextValue,
+	NavigationMenuDataSet,
 } from "./navigation-menu-context";
 
 export interface NavigationMenuRootOptions
@@ -132,14 +134,6 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 	const [viewportRef, setViewportRef] = createSignal<HTMLElement>();
 	const [rootRef, setRootRef] = createSignal<HTMLElement>();
 
-	const { present: viewportPresent } = createPresence({
-		show: () =>
-			local.forceMount || (value() && !value()!.includes("link-trigger-")),
-		element: () => viewportRef() ?? null,
-	});
-
-	createEffect(() => console.log("present", viewportPresent()));
-
 	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
 		popperProps.placement ?? others.orientation === "vertical"
 			? "right"
@@ -150,7 +144,33 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 
 	const [previousMenu, setPreviousMenu] = createSignal<string>();
 
+	const [show, setShow] = createSignal(false);
+	const [expanded, setExpanded] = createSignal(false);
+
+	createEffect(() => {
+		if (value() && !value()!.includes("link-trigger-") && autoFocusMenu()) {
+			batch(() => {
+				setExpanded(true);
+				setShow(true);
+			});
+		} else {
+			setExpanded(false);
+			setShow(false);
+		}
+	});
+
+	const dataset: Accessor<NavigationMenuDataSet> = createMemo(() => ({
+		"data-expanded": expanded() ? "" : undefined,
+		"data-closed": !expanded() ? "" : undefined,
+	}));
+
+	const { present: viewportPresent } = createPresence({
+		show: () => local.forceMount || show() || expanded(),
+		element: () => viewportRef() ?? null,
+	});
+
 	const context: NavigationMenuContextValue = {
+		dataset,
 		delayDuration: () => local.delayDuration!,
 		skipDelayDuration: () => local.skipDelayDuration!,
 		autoFocusMenu: autoFocusMenu as Accessor<boolean>,

@@ -56,6 +56,8 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 
 		context.cancelLeaveTimer();
 
+		if (context.dataset()["data-expanded"] === "") return;
+
 		timeoutId = window.setTimeout(() => {
 			context.setAutoFocusMenu(true);
 			menuContext?.triggerRef()?.focus();

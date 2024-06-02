@@ -153,7 +153,7 @@ export function Menu(props: MenuProps) {
 		disclosureState.toggle();
 	};
 
-	const focusContent = () => {
+	const _focusContent = () => {
 		const content = contentRef();
 
 		if (content) {
@@ -161,6 +161,12 @@ export function Menu(props: MenuProps) {
 			listState.selectionManager().setFocused(true);
 			listState.selectionManager().setFocusedKey(undefined);
 		}
+	};
+
+	const focusContent = () => {
+		if (optionalNavigationMenuContext != null)
+			setTimeout(() => _focusContent());
+		else _focusContent();
 	};
 
 	const registerNestedMenu = (element: HTMLElement) => {

@@ -159,7 +159,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		nextMenu: () => {
 			const menusArray = [...menuRefs().keys()];
 
-			if (value() === undefined) {
+			if (value() == null) {
 				setValue(menusArray[0]);
 				return;
 			}
@@ -176,7 +176,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		previousMenu: () => {
 			const menusArray = [...menuRefs().keys()];
 
-			if (value() === undefined) {
+			if (value() == null) {
 				setValue(menusArray[0]);
 				return;
 			}
@@ -199,6 +199,10 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		generateId: createGenerateId(() => others.id!),
 		orientation: () => local.orientation!,
 	};
+
+	createEffect(() => {
+		if (value() == null) setAutoFocusMenu(false);
+	});
 
 	createInteractOutside(
 		{
@@ -228,15 +232,14 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		if (isServer) return;
 		if (local.focusOnAlt) window.addEventListener("keydown", keydownHandler);
 		else window.removeEventListener("keydown", keydownHandler);
+
+		onCleanup(() => {
+			window.removeEventListener("keydown", keydownHandler);
+		});
 	});
 
 	createEffect(() => {
-		if (value() !== undefined && value() !== null) setLastValue(value()!);
-	});
-
-	onCleanup(() => {
-		if (isServer) return;
-		window.removeEventListener("keydown", keydownHandler);
+		if (value() != null) setLastValue(value()!);
 	});
 
 	return (

@@ -326,21 +326,6 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			},
 		};
 
-	createEffect(() =>
-		console.log(
-			"base",
-			optionalNavigationMenuContext === undefined,
-			context.parentMenuContext() != null,
-			optionalNavigationMenuContext === undefined ||
-				context.parentMenuContext() != null,
-		),
-	);
-	onMount(() => {
-		console.log("base mount");
-
-		onCleanup(() => console.log("base unmount"));
-	});
-
 	return (
 		<Show when={context.contentPresent()}>
 			<Show

@@ -116,34 +116,6 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 		return size.width();
 	});
 
-	createEffect(() =>
-		console.log(context.viewportPresent(), menubarContext.dataset()),
-	);
-
-	const [expanded, setExpanded] = createSignal(false);
-
-	createEffect((init) => {
-		const datasetExpanded = menubarContext.dataset()["data-expanded"] === "";
-
-		console.log("init", init);
-
-		if (context.viewportPresent() && init) {
-			console.log("settrue");
-			setExpanded(true);
-			return false;
-		}
-
-		if (!context.viewportPresent()) {
-			return true;
-		}
-
-		if (!init) {
-			console.log("set", datasetExpanded);
-			setExpanded(datasetExpanded);
-			return false;
-		}
-	}, true);
-
 	return (
 		<Show when={context.viewportPresent()}>
 			<Popper.Positioner>
@@ -172,9 +144,8 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 					}}
 					onEscapeKeyDown={onEscapeKeyDown}
 					onDismiss={close}
-					data-expanded={expanded() ? "" : undefined}
-					data-closed={expanded() ? undefined : ""}
 					data-orientation={menubarContext.orientation()}
+					{...context.dataset()}
 					{...others}
 				/>
 			</Popper.Positioner>

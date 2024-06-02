@@ -198,14 +198,14 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 				e.stopPropagation();
 				e.preventDefault();
 				scrollIntoViewport(e.currentTarget);
-				context.toggle("first");
+				context.open("first");
 				optionalMenubarContext?.setAutoFocusMenu(true);
 				optionalMenubarContext?.setValue(key);
 				break;
 			case MENU_KEYS.last(rootContext.orientation()):
 				e.stopPropagation();
 				e.preventDefault();
-				context.toggle("last");
+				context.open("last");
 				break;
 			case MENUBAR_KEYS.next(direction(), rootContext.orientation()):
 				if (optionalMenubarContext === undefined) break;
@@ -243,6 +243,10 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 	};
 
 	createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
+
+	createEffect(() => {
+		console.trace(context.dataset());
+	});
 
 	return (
 		<Button.Root<

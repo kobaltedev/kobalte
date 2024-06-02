@@ -16,6 +16,7 @@ import {
 	PopperArrowRenderProps,
 } from "../popper";
 import { PopperArrow } from "../popper/popper-arrow";
+import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuArrowOptions extends PopperArrowOptions {}
 
@@ -38,6 +39,7 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 ) {
 	let ref: HTMLElement | undefined;
 
+	const context = useNavigationMenuContext();
 	const menubarContext = useMenubarContext();
 
 	const mergedProps = mergeDefaultProps(
@@ -54,9 +56,8 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 	const horizontal = () => menubarContext.orientation() === "horizontal";
 
 	createEffect(
-		on(
-			() => [menubarContext.value(), menubarContext.dataset()],
-			([value]) => {
+		on(menubarContext.value, (value) => {
+			setTimeout(() => {
 				if (!value || (value as string).includes("link-trigger-")) return;
 				const triggerRef = document.querySelector(
 					`[data-kb-menu-value-trigger="${value}"]`,
@@ -80,8 +81,8 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 					);
 
 				setOffset(middle - initalArrowPos);
-			},
-		),
+			});
+		}),
 	);
 
 	return (

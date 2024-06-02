@@ -1,6 +1,11 @@
 import { Accessor, Setter, createContext, useContext } from "solid-js";
 import { Placement } from "../popper/utils";
 
+export interface NavigationMenuDataSet {
+	"data-expanded": string | undefined;
+	"data-closed": string | undefined;
+}
+
 export interface NavigationMenuContextValue {
 	dataset: Accessor<NavigationMenuDataSet>;
 	delayDuration: Accessor<number>;
