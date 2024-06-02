@@ -140,6 +140,10 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 			: "bottom",
 	);
 
+	createEffect(() => {
+		setCurrentPlacement(others.orientation === "vertical" ? "right" : "bottom");
+	});
+
 	let timeoutId: number | undefined;
 
 	const [previousMenu, setPreviousMenu] = createSignal<string>();
