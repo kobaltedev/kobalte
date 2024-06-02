@@ -244,10 +244,6 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 
 	createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
 
-	createEffect(() => {
-		console.trace(context.dataset());
-	});
-
 	return (
 		<Button.Root<
 			Component<

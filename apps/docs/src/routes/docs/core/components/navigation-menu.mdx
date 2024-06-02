@@ -124,418 +124,684 @@ The checkable menu item consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-		import { NavigationMenu } from "@kobalte/core/NavigationMenu";
-    import { createSignal } from "solid-js";
-    import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "some-icon-library";
+    import { NavigationMenu, Orientation } from "@kobalte/core/navigation-menu";
+    import { RadioGroup } from "@kobalte/core/radio-group";
+    import { For, createSignal } from "solid-js";
+
     import "./style.css";
 
-    function App() {
-      const [showGitLog, setShowGitLog] = createSignal(true);
-      const [showHistory, setShowHistory] = createSignal(false);
-      const [branch, setBranch] = createSignal("main");
+    export function BasicExample() {
+      const [orientation, setOrientation] = createSignal<Orientation>("horizontal");
 
       return (
-          <NavigationMenu class="NavigationMenu__root">
+        <>
+          <NavigationMenu class="navigation-menu__root" orientation={orientation()}>
             <NavigationMenu.Menu>
-              <NavigationMenu.Trigger class="NavigationMenu__trigger">
-                Git
+              <NavigationMenu.Trigger class="navigation-menu-trigger">
+                Learn{" "}
+                <div aria-hidden="true" class="navigation-menu-trigger-indicator">
+                  <ChevronDownIcon />
+                </div>
               </NavigationMenu.Trigger>
               <NavigationMenu.Portal>
-                <NavigationMenu.Content class="NavigationMenu__content">
-                  <NavigationMenu.Item class="NavigationMenu__item">
-                    Commit <div class="NavigationMenu__item-right-slot">⌘+K</div>
-                  </NavigationMenu.Item>
-                  <NavigationMenu.Item class="NavigationMenu__item">
-                    Push <div class="NavigationMenu__item-right-slot">⇧+⌘+K</div>
-                  </NavigationMenu.Item>
-                  <NavigationMenu.Item class="NavigationMenu__item" disabled>
-                    Update Project <div class="NavigationMenu__item-right-slot">⌘+T</div>
-                  </NavigationMenu.Item>
-                  <NavigationMenu.Sub overlap gutter={4} shift={-8}>
-                    <NavigationMenu.SubTrigger class="NavigationMenu__sub-trigger">
-                      GitHub
-                      <div class="NavigationMenu__item-right-slot">
-                        <ChevronRightIcon width={20} height={20} />
-                      </div>
-                    </NavigationMenu.SubTrigger>
-                    <NavigationMenu.Portal>
-                      <NavigationMenu.SubContent class="NavigationMenu__sub-content">
-                        <NavigationMenu.Item class="NavigationMenu__item">
-                          Create Pull Request…
-                        </NavigationMenu.Item>
-                        <NavigationMenu.Item class="NavigationMenu__item">
-                          View Pull Requests
-                        </NavigationMenu.Item>
-                        <NavigationMenu.Item class="NavigationMenu__item">Sync Fork</NavigationMenu.Item>
-                        <NavigationMenu.Separator class="NavigationMenu__separator" />
-                        <NavigationMenu.Item class="NavigationMenu__item">
-                          Open on GitHub
-                        </NavigationMenu.Item>
-                      </NavigationMenu.SubContent>
-                    </NavigationMenu.Portal>
-                  </NavigationMenu.Sub>
-
-                  <NavigationMenu.Separator class="NavigationMenu__separator" />
-
-                  <NavigationMenu.CheckboxItem
-                  class="NavigationMenu__checkbox-item"
-                  checked={showGitLog()}
-                  onChange={setShowGitLog}
+                <NavigationMenu.Content class="navigation-  menu-content content-1">
+                  <NavigationMenu.Item
+                    class="navigation-menu-item-callout"
+                    as="a"
+                    href="https://kobalte.dev"
                   >
-                  <NavigationMenu.ItemIndicator class="NavigationMenu__item-indicator">
-                    <CheckIcon />
-                  </NavigationMenu.ItemIndicator>
-                  Show Git Log
-                </NavigationMenu.CheckboxItem>
-                <NavigationMenu.CheckboxItem
-                class="NavigationMenu__checkbox-item"
-                checked={showHistory()}
-                onChange={setShowHistory}
-                >
-                <NavigationMenu.ItemIndicator class="NavigationMenu__item-indicator">
-                  <CheckIcon />
-                </NavigationMenu.ItemIndicator>
-                Show History
-              </NavigationMenu.CheckboxItem>
+                    <img
+                      src="https://kobalte.dev/android-chrome-192x192.png"
+                      role="presentation"
+                      alt="Kobalte"
+                    />
+                    <NavigationMenu.ItemLabel class="navigation-menu-item-label">
+                      Kobalte
+                    </NavigationMenu.ItemLabel>
+                    <NavigationMenu.ItemDescription class="navigation-  menu-item-description">
+                      Unstyled, accessible components for SolidJS.
+                    </NavigationMenu.ItemDescription>
+                  </NavigationMenu.Item>
+                  <NavigationMenu.Item
+                    class="navigation-menu-item"
+                    as="a"
+                    href="https://pigment.kobalte.dev"
+                  >
+                    <NavigationMenu.ItemLabel class="navigation-  menu-item-label">
+                      Pigment
+                    </NavigationMenu.ItemLabel>
+                    <NavigationMenu.ItemDescription class="navigation-  menu-item-description">
+                      Ready-to-use components with a consistent look and feel.
+                    </NavigationMenu.ItemDescription>
+                  </NavigationMenu.Item>
+                  <NavigationMenu.Item
+                    class="navigation-menu-item"
+                    as="a"
+                    href="https://www.solidjs.com/"
+                  >
+                    <NavigationMenu.ItemLabel class="navigation-  menu-item-label">
+                      SolidJS
+                    </NavigationMenu.ItemLabel>
+                    <NavigationMenu.ItemDescription class="navigation-  menu-item-description">
+                      Simple and performant reactivity for building user interfaces.
+                    </NavigationMenu.ItemDescription>
+                  </NavigationMenu.Item>
+                  <NavigationMenu.Item
+                    class="navigation-menu-item"
+                    as="a"
+                    href="https://start.solidjs.com/"
+                  >
+                    <NavigationMenu.ItemLabel class="navigation-  menu-item-label">
+                      SolidStart
+                    </NavigationMenu.ItemLabel>
+                    <NavigationMenu.ItemDescription class="navigation-menu__item-description">
+                      Fine-grained reactivity goes fullstack.
+                    </NavigationMenu.ItemDescription>
+                  </NavigationMenu.Item>
+                </NavigationMenu.Content>
+              </NavigationMenu.Portal>
+            </NavigationMenu.Menu>
 
-              <NavigationMenu.Separator class="NavigationMenu__separator" />
+            <NavigationMenu.Menu>
+              <NavigationMenu.Trigger class="navigation-menu__trigger">
+                Overview{" "}
+                <div aria-hidden="true" class="navigation-menu__trigger-indicator">
+                  <ChevronDownIcon />
+                </div>
+              </NavigationMenu.Trigger>
+              <NavigationMenu.Portal>
+                <NavigationMenu.Content class="navigation-menu__content content-2">
+                  <NavigationMenu.Item
+                    class="navigation-menu__item"
+                    as="a"
+                    href="https://kobalte.dev/docs/core/overview/introduction"
+                  >
+                    <NavigationMenu.ItemLabel class="navigation-menu__item-label">
+                      Introduction
+                    </NavigationMenu.ItemLabel>
+                    <NavigationMenu.ItemDescription class="navigation-menu__item-description">
+                      Build high-quality, accessible design systems and web apps.
+                    </NavigationMenu.ItemDescription>
+                  </NavigationMenu.Item>
+                  <NavigationMenu.Item
+                    class="navigation-menu__item"
+                    as="a"
+                    href="https://kobalte.dev/docs/core/overview/getting-started"
+                  >
+                    <NavigationMenu.ItemLabel class="navigation-menu__item-label">
+                      Getting started
+                    </NavigationMenu.ItemLabel>
+                    <NavigationMenu.ItemDescription class="navigation-menu__item-description">
+                      A quick tutorial to get you up and running with Radix
+                      Primitives.
+                    </NavigationMenu.ItemDescription>
+                  </NavigationMenu.Item>
+                  <NavigationMenu.Item
+                    class="navigation-menu__item"
+                    as="a"
+                    href="https://kobalte.dev/docs/core/overview/styling"
+                  >
+                    <NavigationMenu.ItemLabel class="navigation-menu__item-label">
+                      Styling
+                    </NavigationMenu.ItemLabel>
+                    <NavigationMenu.ItemDescription class="navigation-menu__item-description">
+                      Unstyled and compatible with any styling solution.
+                    </NavigationMenu.ItemDescription>
+                  </NavigationMenu.Item>
+                  <NavigationMenu.Item
+                    class="navigation-menu__item"
+                    as="a"
+                    href="https://kobalte.dev/docs/core/overview/animation"
+                  >
+                    <NavigationMenu.ItemLabel class="navigation-menu__item-label">
+                      Animation
+                    </NavigationMenu.ItemLabel>
+                    <NavigationMenu.ItemDescription class="navigation-menu__item-description">
+                      Use CSS keyframes or any animation library of your choice.
+                    </NavigationMenu.ItemDescription>
+                  </NavigationMenu.Item>
+                  <NavigationMenu.Item
+                    class="navigation-menu__item"
+                    as="a"
+                    href="https://kobalte.dev/docs/core/overview/polymorphism"
+                  >
+                    <NavigationMenu.ItemLabel class="navigation-menu__item-label">
+                      Polymorphism
+                    </NavigationMenu.ItemLabel>
+                    <NavigationMenu.ItemDescription class="navigation-menu__item-description">
+                      Customize behavior or integrate existing libraries.
+                    </NavigationMenu.ItemDescription>
+                  </NavigationMenu.Item>
+                  <NavigationMenu.Item
+                    class="navigation-menu__item"
+                    as="a"
+                    href="https://kobalte.dev/docs/changelog"
+                  >
+                    <NavigationMenu.ItemLabel class="navigation-menu__item-label">
+                      Changelog
+                    </NavigationMenu.ItemLabel>
+                    <NavigationMenu.ItemDescription class="navigation-menu__item-description">
+                      Kobalte releases and their changelogs.
+                    </NavigationMenu.ItemDescription>
+                  </NavigationMenu.Item>
+                </NavigationMenu.Content>
+              </NavigationMenu.Portal>
+            </NavigationMenu.Menu>
 
-              <NavigationMenu.Group>
-                <NavigationMenu.GroupLabel class="NavigationMenu__group-label">
-                  Branches
-                </NavigationMenu.GroupLabel>
-                <NavigationMenu.RadioGroup value={branch()} onChange={setBranch}>
-                  <NavigationMenu.RadioItem class="NavigationMenu__radio-item" value="main">
-                    <NavigationMenu.ItemIndicator class="NavigationMenu__item-indicator">
-                      <DotFilledIcon />
-                    </NavigationMenu.ItemIndicator>
-                    main
-                  </NavigationMenu.RadioItem>
-                  <NavigationMenu.RadioItem class="NavigationMenu__radio-item" value="develop">
-                    <NavigationMenu.ItemIndicator class="NavigationMenu__item-indicator">
-                      <DotFilledIcon />
-                    </NavigationMenu.ItemIndicator>
-                    develop
-                  </NavigationMenu.RadioItem>
-                </NavigationMenu.RadioGroup>
-              </NavigationMenu.Group>
-            </NavigationMenu.Content>
-          </NavigationMenu.Portal>
-        </NavigationMenu.Menu>
+            <NavigationMenu.Trigger
+              class="navigation-menu__trigger"
+              as="a"
+              href="https://github.com/kobaltedev/kobalte"
+              target="_blank"
+            >
+              GitHub
+            </NavigationMenu.Trigger>
 
-        <NavigationMenu.Menu>
-          <NavigationMenu.Trigger class="NavigationMenu__trigger">
-            File
-          </NavigationMenu.Trigger>
-          <NavigationMenu.Portal>
-            <NavigationMenu.Content class="NavigationMenu__content">
-              <NavigationMenu.Item class="NavigationMenu__item">
-                New Tab <div class="NavigationMenu__item-right-slot">⌘+T</div>
-              </NavigationMenu.Item>
-              <NavigationMenu.Item class="NavigationMenu__item">
-                New Window <div class="NavigationMenu__item-right-slot">⌘+N</div>
-              </NavigationMenu.Item>
-              <NavigationMenu.Item class="NavigationMenu__item" disabled>
-                New Incognito Window
-              </NavigationMenu.Item>
+            <NavigationMenu.Viewport class="navigation-menu__viewport">
+              <NavigationMenu.Arrow class="navigation-menu__arrow" />
+            </NavigationMenu.Viewport>
+          </NavigationMenu>
 
-              <NavigationMenu.Separator class="NavigationMenu__separator"/>
+          <div style="height: 2rem;" />
 
-              <NavigationMenu.Sub overlap gutter={4} shift={-8}>
-                <NavigationMenu.SubTrigger class="NavigationMenu__sub-trigger">
-                  Share
-                  <div class="NavigationMenu__item-right-slot">
-                    <ChevronRightIcon width={20} height={20} />
-                  </div>
-                </NavigationMenu.SubTrigger>
-                <NavigationMenu.Portal>
-                  <NavigationMenu.SubContent class="NavigationMenu__sub-content">
-                    <NavigationMenu.Item class="NavigationMenu__item">
-                      Email Link
-                    </NavigationMenu.Item>
-                    <NavigationMenu.Item class="NavigationMenu__item">
-                      Messages
-                    </NavigationMenu.Item>
-                    <NavigationMenu.Item class="NavigationMenu__item">
-                      Notes
-                    </NavigationMenu.Item>
-                  </NavigationMenu.SubContent>
-                </NavigationMenu.Portal>
-              </NavigationMenu.Sub>
-
-              <NavigationMenu.Separator class="NavigationMenu__separator" />
-
-              <NavigationMenu.Item class="NavigationMenu__item">
-                Print... <div class="NavigationMenu__item-right-slot">⌘+P</div>
-              </NavigationMenu.Item>
-            </NavigationMenu.Content>
-          </NavigationMenu.Portal>
-        </NavigationMenu.Menu>
-
-        <NavigationMenu.Menu>
-          <NavigationMenu.Trigger class="NavigationMenu__trigger">
-            Edit
-          </NavigationMenu.Trigger>
-          <NavigationMenu.Portal>
-            <NavigationMenu.Content class="NavigationMenu__content">
-              <NavigationMenu.Item class="NavigationMenu__item">
-                Undo <div class="NavigationMenu__item-right-slot">⌘+Z</div>
-              </NavigationMenu.Item>
-              <NavigationMenu.Item class="NavigationMenu__item">
-                Redo <div class="NavigationMenu__item-right-slot">⇧+⌘+Z</div>
-              </NavigationMenu.Item>
-
-              <NavigationMenu.Separator class="NavigationMenu__separator"/>
-
-              <NavigationMenu.Sub overlap gutter={4} shift={-8}>
-                <NavigationMenu.SubTrigger class="NavigationMenu__sub-trigger">
-                  Find
-                  <div class="NavigationMenu__item-right-slot">
-                    <ChevronRightIcon width={20} height={20} />
-                  </div>
-                </NavigationMenu.SubTrigger>
-                <NavigationMenu.Portal>
-                  <NavigationMenu.SubContent class="NavigationMenu__sub-content">
-                    <NavigationMenu.Item class="NavigationMenu__item">
-                      Search The Web
-                    </NavigationMenu.Item>
-                    <NavigationMenu.Separator class="NavigationMenu__separator"/>
-                    <NavigationMenu.Item class="NavigationMenu__item">
-                      Find...
-                    </NavigationMenu.Item>
-                    <NavigationMenu.Item class="NavigationMenu__item">
-                      Find Next
-                    </NavigationMenu.Item>
-                    <NavigationMenu.Item class="NavigationMenu__item">
-                      Find Previous
-                    </NavigationMenu.Item>
-                  </NavigationMenu.SubContent>
-                </NavigationMenu.Portal>
-              </NavigationMenu.Sub>
-
-              <NavigationMenu.Separator class="NavigationMenu__separator" />
-
-              <NavigationMenu.Item class="NavigationMenu__item">
-                Cut
-              </NavigationMenu.Item>
-              <NavigationMenu.Item class="NavigationMenu__item">
-                Copy
-              </NavigationMenu.Item>
-              <NavigationMenu.Item class="NavigationMenu__item">
-                Paste
-              </NavigationMenu.Item>
-            </NavigationMenu.Content>
-          </NavigationMenu.Portal>
-        </NavigationMenu.Menu>
-      </NavigationMenu>
+          <RadioGroup<Orientation>
+            class="radio-group"
+            value={orientation()}
+            onChange={(value) => setOrientation(value)}
+          >
+            <RadioGroup.Label class="radio-group__label">
+              Orientation
+            </RadioGroup.Label>
+            <div class="radio-group__items">
+              <For each={["Horizontal", "Vertical"]}>
+                {(orientation) => (
+                  <RadioGroup.Item
+                    value={orientation.toLowerCase()}
+                    class={radioStyle.radio}
+                  >
+                    <RadioGroup.ItemInput class="radio__input" />
+                    <RadioGroup.ItemControl class="radio__control">
+                      <RadioGroup.ItemIndicator class="radio__indicator" />
+                    </RadioGroup.ItemControl>
+                    <RadioGroup.ItemLabel class="radio__label">
+                      {orientation}
+                    </RadioGroup.ItemLabel>
+                  </RadioGroup.Item>
+                )}
+              </For>
+            </div>
+          </RadioGroup>
+        </>
       );
     }
     ```
-
   </TabsSnippets.Content>
   <TabsSnippets.Content value="style.css">
     ```css
-    .NavigationMenu__root {
+    .navigation-menu__root {
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 4px;
+      background-color: white;
+      width: max-content;
+      border-radius: 6px;
     }
 
-    .NavigationMenu__trigger {
+    .navigation-menu__root[data-orientation="vertical"] {
+      flex-direction: column;
+    }
+
+    .navigation-menu__trigger {
       appearance: none;
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      height: 40px;
       width: auto;
       outline: none;
-      padding: 0 16px;
-      background-color: #f6f6f7;
-      color: hsl(240 4% 16%);
+      padding: 16px 16px;
+      background-color: white;
+      color: #0284c7;
       font-size: 16px;
       gap: 8px;
       line-height: 0;
       transition: 250ms background-color;
+      border-radius: 4px;
+      border: none;
+      text-decoration: none;
+      font-weight: 500;
     }
 
-    .NavigationMenu__trigger[data-highlighted="true"] {
-      background-color: hsl(200 98% 39%);
-      color: white;
+    .navigation-menu__trigger[data-highlighted="true"] {
+      background-color: #0284c710;
     }
 
-    .NavigationMenu__trigger:first-child {
-      border-radius: 4px 0 0 4px;
+    .navigation-menu__trigger-indicator {
+      position: relative;
+      margin: -7.5px -4px;
+      height: 15px;
+      width: 15px;
+      transition: transform 250ms ease;
     }
 
-    .NavigationMenu__trigger:last-child {
-      border-left: 2px dashed hsl(240 4% 46%);
-      border-radius: 0 4px 4px 0;
+    .navigation- menu-trigger[data-expanded] .navigation- menu-trigger-indicator {
+      transform: rotateX(180deg);
     }
 
-    .NavigationMenu__content,
-    .NavigationMenu__sub-content {
-      min-width: 220px;
-      padding: 8px;
+    .navigation-
+      menu-root[data-orientation="vertical"]
+      .navigation-
+      menu-trigger
+      .navigation-menu__trigger-indicator {
+      transform: rotate(-90deg);
+    }
+
+    .navigation-
+      menu-root[data-orientation="vertical"]
+      .navigation-
+      menu-trigger[data-expanded]
+      .navigation-menu__trigger-indicator {
+      transform: rotate(-90deg) rotateX(180deg);
+    }
+
+    .navigation-menu__viewport {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: var(--kb-navigation-menu-viewport-width);
+      height: var(--kb-navigation-menu-viewport-height);
+      z-index: 1000;
       background-color: white;
-      border-radius: 6px;
       border: 1px solid hsl(240 6% 90%);
       box-shadow:
-      0 4px 6px -1px rgb(0 0 0 / 0.1),
-      0 2px 4px -2px rgb(0 0 0 / 0.1);
-      outline: none;
+        0 4px 6px -1px rgb(0 0 0 / 0.1),
+        0 2px 4px -2px rgb(0 0 0 / 0.1);
+      opacity: 0;
+      overflow-x: clip;
+      overflow-y: visible;
       transform-origin: var(--kb-menu-content-transform-origin);
-      animation: contentHide 250ms ease-in forwards;
-    }
-
-    .NavigationMenu__content[data-expanded],
-    .NavigationMenu__sub-content[data-expanded] {
-      animation: contentShow 250ms ease-out;
-    }
-
-    .NavigationMenu__item,
-    .NavigationMenu__checkbox-item,
-    .NavigationMenu__radio-item,
-    .NavigationMenu__sub-trigger {
-      font-size: 16px;
-      line-height: 1;
-      color: hsl(240 4% 16%);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      height: 32px;
-      padding: 0 8px 0 24px;
-      position: relative;
-      user-select: none;
-      outline: none;
-    }
-
-    .NavigationMenu__sub-trigger[data-expanded] {
-      background-color: hsl(204 94% 94%);
-      color: hsl(201 96% 32%);
-    }
-
-    .NavigationMenu__item[data-disabled],
-    .NavigationMenu__checkbox-item[data-disabled],
-    .NavigationMenu__radio-item[data-disabled],
-    .NavigationMenu__sub-trigger[data-disabled] {
-      color: hsl(240 5% 65%);
-      opacity: 0.5;
+      transition:
+        width,
+        height,
+        250ms ease;
+      animation: viewportHide 250ms ease-in forwards;
       pointer-events: none;
     }
 
-    .NavigationMenu__item[data-highlighted],
-    .NavigationMenu__checkbox-item[data-highlighted],
-    .NavigationMenu__radio-item[data-highlighted],
-    .NavigationMenu__sub-trigger[data-highlighted] {
+    .navigation-menu__viewport[data-orientation="vertical"] {
+      overflow-x: visible;
+      overflow-y: clip;
+    }
+
+    .navigation-menu__viewport[data-expanded] {
+      border-radius: 6px;
+      animation: viewportShow 250ms ease-out;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .navigation-menu__item-callout {
+      box-sizing: border-box;
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0284c7 0%, #42aaff 100%);
+      border-radius: 6px;
+      padding: 25px;
+      text-decoration: none;
       outline: none;
-      background-color: hsl(200 98% 39%);
+      user-select: none;
+      grid-row: span 3;
+    }
+
+    .navigation-menu__item-callout:focus {
+      outline: 2px solid #0284c790;
+    }
+
+    .navigation- menu-item-callout .navigation- menu-item-label {
+      margin-top: 16px;
+      font-size: 1.25rem;
       color: white;
     }
 
-    .NavigationMenu__group-label {
-      padding: 0 24px;
-      font-size: 14px;
-      line-height: 32px;
-      color: hsl(240 4% 46%);
+    .navigation- menu-item-callout .navigation- menu-item-description {
+      color: white;
     }
 
-    .NavigationMenu__separator {
-      height: 1px;
-      border-top: 1px solid hsl(240 6% 90%);
-      margin: 6px;
+    .navigation-menu__item-label {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #18181b;
+      line-height: 1.2;
     }
 
-    .NavigationMenu__item-indicator {
+    .navigation-menu__item-description {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      color: #18181b;
+      line-height: 1.4;
+    }
+
+    .navigation-menu__item-callout > img {
+      width: 45px;
+      height: 45px;
+    }
+
+    .navigation-menu__item {
+      display: block;
+      outline: none;
+      text-decoration: none;
+      user-select: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .navigation- menu-item:hover,
+    .navigation- menu-item:focus {
+      background-color: #0284c710;
+    }
+
+    .navigation-menu__content {
       position: absolute;
+      top: 0;
       left: 0;
-      height: 20px;
-      width: 20px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      box-sizing: border-box;
+      outline: none;
+      display: grid;
+      padding: 22px;
+      margin: 0;
+      column-gap: 10px;
+      grid-template-rows: repeat(3, 1fr);
+      grid-auto-flow: column;
+      animation-duration: 250ms;
+      animation-timing-function: ease;
+      animation-fill-mode: forwards;
+      pointer-events: none;
     }
 
-    .NavigationMenu__item-right-slot {
-      margin-left: auto;
-      padding-left: 20px;
-      font-size: 14px;
-      color: hsl(240 4% 46%);
+    .navigation-menu__content[data-expanded] {
+      pointer-events: auto;
     }
 
-    [data-highlighted] > .NavigationMenu__item-right-slot {
-      color: white;
+    .navigation- menu-content[data-motion="from-start"] {
+      animation-name: enterFromLeft;
+    }
+    .navigation- menu-content[data-motion="from-end"] {
+      animation-name: enterFromRight;
+    }
+    .navigation- menu-content[data-motion="to-start"] {
+      animation-name: exitToLeft;
+    }
+    .navigation- menu-content[data-motion="to-end"] {
+      animation-name: exitToRight;
     }
 
-    [data-disabled] .NavigationMenu__item-right-slot {
-      color: hsl(240 5% 65%);
-      opacity: 0.5;
+    .navigation-
+      menu-content[data-orientation="vertical"][data-motion="from-start"] {
+      animation-name: enterFromTop;
+    }
+    .navigation- menu-content[data-orientation="vertical"][data-motion="from-end"] {
+      animation-name: enterFromBottom;
+    }
+    .navigation- menu-content[data-orientation="vertical"][data-motion="to-start"] {
+      animation-name: exitToTop;
+    }
+    .navigation- menu-content[data-orientation="vertical"][data-motion="to-end"] {
+      animation-name: exitToBottom;
     }
 
-    @keyframes contentShow {
+    .navigation-menu__content.content-1 {
+      width: 500px;
+      grid-template-columns: 0.75fr 1fr;
+    }
+
+    .navigation-menu__content.content-2 {
+      width: 600px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .navigation-menu__arrow {
+      transition: transform 250ms;
+    }
+
+    @keyframes viewportShow {
       from {
         opacity: 0;
-        transform: scale(0.96);
+        transform: rotateX(-20deg) scale(0.96);
       }
       to {
         opacity: 1;
-        transform: scale(1);
+        transform: rotateX(0deg) scale(1);
       }
     }
-
-    @keyframes contentHide {
+    @keyframes viewportHide {
       from {
         opacity: 1;
-        transform: scale(1);
+        transform: rotateX(0deg) scale(1);
       }
       to {
         opacity: 0;
-        transform: scale(0.96);
+        transform: rotateX(-10deg) scale(0.96);
+      }
+    }
+
+    @keyframes enterFromRight {
+      from {
+        opacity: 0;
+        transform: translateX(200px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes enterFromLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-200px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes exitToRight {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(200px);
+      }
+    }
+
+    @keyframes exitToLeft {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(-200px);
+      }
+    }
+
+    @keyframes enterFromBottom {
+      from {
+        opacity: 0;
+        transform: translateY(200px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes enterFromTop {
+      from {
+        opacity: 0;
+        transform: translateY(-200px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes exitToBottom {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(200px);
+      }
+    }
+
+    @keyframes exitToTop {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-200px);
       }
     }
     ```
-
   </TabsSnippets.Content>
   {/* <!-- prettier-ignore-end --> */}
 </TabsSnippets>
 
 ## Usage
 
+### Link Trigger
+
+To make one of the navigation menu triggers a link instead of opening a menu, omit the `NavigationMenu.Menu` and set `as="a"` on the `NavigationMenu.Trigger`.
+
+```tsx {12}
+<NavigationMenu>
+	<NavigationMenu.Menu>
+		<NavigationMenu.Trigger>Opens a regular menu</NavigationMenu.Trigger>
+		<NavigationMenu.Portal>
+			<NavigationMenu.Content>...</NavigationMenu.Content>
+		</NavigationMenu.Portal>
+	</NavigationMenu.Menu>
+
+	<NavigationMenu.Trigger as="a" href="https://kobalte.dev">
+		Opens a link on click and enter
+	</NavigationMenu.Trigger>
+
+	<NavigationMenu.Viewport>
+		<NavigationMenu.Arrow />
+	</NavigationMenu.Viewport>
+</NavigationMenu>
+```
+
 ### Origin-aware animations
 
-We expose a CSS custom property `--kb-popper-content-transform-origin` which can be used to animate the content from its computed origin.
+We expose a CSS custom property `--kb-menu-content-transform-origin` which can be used to animate the viewport from its computed origin.
 
 ```css {3}
 /* style.css */
-.context-menu__content,
-.context-menu__sub-content {
+.navigation-menu__viewport {
 	transform-origin: var(--kb-menu-content-transform-origin);
-	animation: contentHide 250ms ease-in forwards;
+	animation: viewportHide 250ms ease-in forwards;
 }
 
-.context-menu__content[data-expanded],
-.context-menu__sub-content[data-expanded] {
-	animation: contentShow 250ms ease-out;
+.navigation-menu__viewport[data-expanded] {
+	animation: viewportShow 250ms ease-out;
 }
 
-@keyframes contentShow {
+@keyframes viewportShow {
 	from {
 		opacity: 0;
-		transform: scale(0.96);
+		transform: rotateX(-20deg) scale(0.96);
 	}
 	to {
 		opacity: 1;
-		transform: scale(1);
+		transform: rotateX(0deg) scale(1);
 	}
 }
-
-@keyframes contentHide {
+@keyframes viewportHide {
 	from {
 		opacity: 1;
-		transform: scale(1);
+		transform: rotateX(0deg) scale(1);
 	}
 	to {
 		opacity: 0;
-		transform: scale(0.96);
+		transform: rotateX(-10deg) scale(0.96);
+	}
+}
+```
+
+For animating the content of the viewport we apply the attribute `data-motion` of type `"to-start" | "to-end" | "from-start" | "from-end"` on the `NavigationMenu.Content`.
+
+```css {3}
+/* style.css */
+.navigation-menu__content[data-motion="from-start"] {
+	animation-name: enterFromLeft;
+}
+.navigation-menu__content[data-motion="from-end"] {
+	animation-name: enterFromRight;
+}
+.navigation-menu__content[data-motion="to-start"] {
+	animation-name: exitToLeft;
+}
+.navigation-menu__content[data-motion="to-end"] {
+	animation-name: exitToRight;
+}
+
+@keyframes enterFromRight {
+	from {
+		opacity: 0;
+		transform: translateX(200px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes enterFromLeft {
+	from {
+		opacity: 0;
+		transform: translateX(-200px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes exitToRight {
+	from {
+		opacity: 1;
+		transform: translateX(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateX(200px);
+	}
+}
+
+@keyframes exitToLeft {
+	from {
+		opacity: 1;
+		transform: translateX(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateX(-200px);
 	}
 }
 ```
@@ -544,15 +810,34 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 ### NavigationMenu
 
-`NavigationMenu` is equivalent to the `Root` import from `@kobalte/core/NavigationMenu` (and deprecated `NavigationMenu.Root`).
+`NavigationMenu` is equivalent to the `Root` import from `@kobalte/core/NavigationMenu`.
 
-| Prop          | Description                                                                                                                            |
-| :------------ | :------------------------------------------------------------------------------------------------------------------------------------- |
-| defaultValue  | `string` <br/> The value of the menu that should be open when initially rendered. Use when you do not need to control the value state. |
-| value         | `string` <br/> The controlled value of the menu to open. Should be used in conjunction with onValueChange.                             |
-| onValueChange | `(value: string \| undefined) => void` <br/> Event handler called when the value changes.                                              |
-| loop          | `boolean` <br/> When true, keyboard navigation will loop from last item to first, and vice versa.                                      |
-| focusOnAlt    | `boolean` <br/> When true, click on alt by itsef will focus this NavigationMenu (some browsers interfere)                              |
+| Prop              | Description                                                                                                                                                           |
+| :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| defaultValue      | `string` <br/> The value of the menu that should be open when initially rendered. Use when you do not need to control the value state.                                |
+| value             | `string` <br/> The controlled value of the menu to open. Should be used in conjunction with onValueChange.                                                            |
+| onValueChange     | `(value: string \| undefined) => void` <br/> Event handler called when the value changes.                                                                             |
+| loop              | `boolean` <br/> When true, keyboard navigation will loop from last item to first, and vice versa.                                                                     |
+| delayDuration     | `number` <br/> Delay before the menu opens on hover (default 200).                                                                                                    |
+| skipDelayDuration | `boolean` <br/> Open immediately if hovered again within delay (default 300).                                                                                         |
+| loop              | `boolean` <br/> When true, keyboard navigation will loop from last item to first, and vice versa.                                                                     |
+| focusOnAlt        | `boolean` <br/> When true, click on alt by itsef will focus this NavigationMenu (some browsers interfere).                                                            |
+| forceMount        | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### NavigationMenu.Viewport
+
+| Prop                 | Description                                                                                                                                                                                                         |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| onEscapeKeyDown      | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                     |
+| onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
+| onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
+| onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
+
+### NavigationMenu.Arrow
+
+| Prop | Description                           |
+| :--- | :------------------------------------ |
+| size | `number` <br/> The size of the arrow. |
 
 ### NavigationMenu.Menu
 
@@ -598,8 +883,6 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 
 ### NavigationMenu.Content
 
-The popper positioner will copy the same `z-index` as the `NavigationMenu.Content`.
-
 | Prop                 | Description                                                                                                                                                                                                         |
 | :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | onOpenAutoFocus      | `(event: Event) => void` <br/> Event handler called when focus moves into the component after opening. It can be prevented by calling `event.preventDefault`.                                                       |
@@ -608,12 +891,6 @@ The popper positioner will copy the same `z-index` as the `NavigationMenu.Conten
 | onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
 | onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
 | onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
-
-### NavigationMenu.Arrow
-
-| Prop | Description                           |
-| :--- | :------------------------------------ |
-| size | `number` <br/> The size of the arrow. |
 
 ### NavigationMenu.Item
 
@@ -731,12 +1008,13 @@ The popper positioner will copy the same `z-index` as the `NavigationMenu.Conten
 | Component                        | Default rendered element |
 | :------------------------------- | :----------------------- |
 | `NavigationMenu`                 | `div`                    |
+| `NavigationMenu.Viewport`        | `div`                    |
+| `NavigationMenu.Arrow`           | `div`                    |
 | `NavigationMenu.Menu`            | none                     |
 | `NavigationMenu.Trigger`         | `div`                    |
 | `NavigationMenu.Icon`            | `div`                    |
 | `NavigationMenu.Portal`          | `Portal`                 |
 | `NavigationMenu.Content`         | `div`                    |
-| `NavigationMenu.Arrow`           | `div`                    |
 | `NavigationMenu.Separator`       | `hr`                     |
 | `NavigationMenu.Group`           | `div`                    |
 | `NavigationMenu.GroupLabel`      | `span`                   |
@@ -766,4 +1044,4 @@ The popper positioner will copy the same `z-index` as the `NavigationMenu.Conten
 | <Kbd>ArrowRight</Kbd> / <Kbd>ArrowLeft</Kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction. |
 | <Kbd>Home</Kbd>                              | When focus is on an item, moves focus to first item.                                             |
 | <Kbd>End</Kbd>                               | When focus is on an item, moves focus to last item.                                              |
-| <Kbd>Esc</Kbd>                               | Closes the context menu.                                                                         |
+| <Kbd>Esc</Kbd>                               | Closes the menu.                                                                                 |

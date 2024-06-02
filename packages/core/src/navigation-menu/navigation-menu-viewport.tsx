@@ -87,8 +87,6 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 	};
 
 	const onEscapeKeyDown = (e: KeyboardEvent) => {
-		local.onEscapeKeyDown?.(e);
-
 		close();
 	};
 
@@ -142,7 +140,10 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 						position: "relative",
 						...local.style,
 					}}
-					onEscapeKeyDown={onEscapeKeyDown}
+					onEscapeKeyDown={composeEventHandlers([
+						local.onEscapeKeyDown,
+						onEscapeKeyDown,
+					])}
 					onDismiss={close}
 					data-orientation={menubarContext.orientation()}
 					{...context.dataset()}

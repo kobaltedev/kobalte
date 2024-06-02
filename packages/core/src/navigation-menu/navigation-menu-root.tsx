@@ -44,15 +44,6 @@ export interface NavigationMenuRootOptions
 	 */
 	skipDelayDuration?: number;
 
-	/** The value of the menu that should be open when initially rendered. Use when you do not need to control the value state. */
-	defaultValue?: string;
-
-	/** The controlled value of the menu to open. Should be used in conjunction with onValueChange. */
-	value?: string | null;
-
-	/** Event handler called when the value changes. */
-	onValueChange?: (value: string | undefined | null) => void;
-
 	/**
 	 * Used to force mounting when more control is needed.
 	 * Useful when controlling animation with SolidJS animation libraries.
@@ -203,6 +194,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 			<Popper
 				anchorRef={rootRef}
 				contentRef={viewportRef}
+				placement={currentPlacement()}
 				onCurrentPlacementChange={setCurrentPlacement}
 				{...popperProps}
 			>
