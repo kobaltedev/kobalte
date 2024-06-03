@@ -1,5 +1,15 @@
 # @kobalte/core
 
+## 0.13.3
+
+### Patch Changes
+
+- bd6999e: ## v0.13.3 (June 3, 2024)
+
+  **New features**
+
+  - [New `NavigationMenu` component](/docs/core/components/navigation-menu) ([#354](https://github.com/kobaltedev/kobalte/pull/409))
+
 ## 0.13.2
 
 ### Patch Changes

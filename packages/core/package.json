@@ -1,6 +1,6 @@
 {
   "name": "@kobalte/core",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "private": false,
   "description": "Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
   "keywords": [
@@ -57,9 +57,9 @@
     "NOTICE.txt"
   ],
   "scripts": {
-		"build": "pnpm build:cp && pnpm build:tsup",
-		"build:cp": "cp ../../NOTICE.txt .",
-		"build:tsup": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsup",
+    "build": "pnpm build:cp && pnpm build:tsup",
+    "build:cp": "cp ../../NOTICE.txt .",
+    "build:tsup": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsup",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
     "dev": "vite serve dev --host",
     "test-old": "jest --passWithNoTests",
