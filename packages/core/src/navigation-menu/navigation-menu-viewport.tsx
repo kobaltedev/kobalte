@@ -15,7 +15,7 @@ import {
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import { MenubarDataSet, useMenubarContext } from "../menubar/menubar-context";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
 import {
 	FocusOutsideEvent,
@@ -51,8 +51,8 @@ export interface NavigationMenuViewportOptions {
 	onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export interface NavigationMenuViewportCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
+export interface NavigationMenuViewportCommonProps<T extends HTMLElement = HTMLElement> {
+	ref: T | ((el: T) => void);
 	/** The HTML styles attribute (object form only). */
 	style: JSX.CSSProperties;
 }
@@ -64,11 +64,13 @@ export interface NavigationMenuViewportRenderProps
 	"data-orientation": Orientation;
 }
 
-export type NavigationMenuViewportProps = NavigationMenuViewportOptions &
-	Partial<NavigationMenuViewportCommonProps>;
+export type NavigationMenuViewportProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = NavigationMenuViewportOptions &
+	Partial<NavigationMenuViewportCommonProps<ElementOf<T>>>;
 
 export function NavigationMenuViewport<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, NavigationMenuViewportProps>,
+	props: PolymorphicProps<T, NavigationMenuViewportProps<T>>,
 ) {
 	const context = useNavigationMenuContext();
 	const menubarContext = useMenubarContext();

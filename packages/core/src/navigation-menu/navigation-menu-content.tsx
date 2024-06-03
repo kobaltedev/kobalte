@@ -21,17 +21,17 @@ import {
 import { useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
 import { useMenubarContext } from "../menubar/menubar-context";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export type Motion = "to-start" | "to-end" | "from-start" | "from-end";
 
 export interface NavigationMenuContentOptions extends MenuContentOptions {}
 
-export interface NavigationMenuContentCommonProps
-	extends MenuContentCommonProps {
-	onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
-	onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent>;
+export interface NavigationMenuContentCommonProps<T extends HTMLElement = HTMLElement>
+	extends MenuContentCommonProps<T> {
+	onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent>;
+	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
 export interface NavigationMenuContentRenderProps
@@ -40,11 +40,13 @@ export interface NavigationMenuContentRenderProps
 	"data-motion"?: Motion;
 }
 
-export type NavigationMenuContentProps = NavigationMenuContentOptions &
-	Partial<NavigationMenuContentCommonProps>;
+export type NavigationMenuContentProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = NavigationMenuContentOptions &
+	Partial<NavigationMenuContentCommonProps<ElementOf<T>>>;
 
 export function NavigationMenuContent<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, NavigationMenuContentProps>,
+	props: PolymorphicProps<T, NavigationMenuContentProps<T>>,
 ) {
 	const context = useNavigationMenuContext();
 	const menubarContext = useMenubarContext();

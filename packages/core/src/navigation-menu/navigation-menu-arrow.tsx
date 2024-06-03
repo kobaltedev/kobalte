@@ -9,7 +9,7 @@ import {
 } from "solid-js";
 
 import { useMenubarContext } from "../menubar/menubar-context";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	PopperArrowCommonProps,
 	PopperArrowOptions,
@@ -20,22 +20,24 @@ import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuArrowOptions extends PopperArrowOptions {}
 
-export interface NavigationMenuArrowCommonProps
-	extends PopperArrowCommonProps {}
+export interface NavigationMenuArrowCommonProps<T extends HTMLElement = HTMLElement>
+	extends PopperArrowCommonProps<T> {}
 
 export interface NavigationMenuArrowRenderProps
 	extends NavigationMenuArrowCommonProps,
 		PopperArrowRenderProps {}
 
-export type NavigationMenuArrowProps = NavigationMenuArrowOptions &
-	Partial<NavigationMenuArrowCommonProps>;
+export type NavigationMenuArrowProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = NavigationMenuArrowOptions &
+	Partial<NavigationMenuArrowCommonProps<ElementOf<T>>>;
 
 /**
  * An optional arrow element to render alongside the viewport content.
  * Must be rendered in the viewport.
  */
 export function NavigationMenuArrow<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, NavigationMenuArrowProps>,
+	props: PolymorphicProps<T, NavigationMenuArrowProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 

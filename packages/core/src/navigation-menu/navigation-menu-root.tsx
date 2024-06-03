@@ -18,7 +18,7 @@ import {
 	MenubarRootRenderProps,
 } from "../menubar";
 import { MenubarRoot } from "../menubar/menubar-root";
-import { PolymorphicProps } from "../polymorphic";
+import { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
 import { createControllableSignal } from "../primitives/create-controllable-signal";
@@ -54,22 +54,24 @@ export interface NavigationMenuRootOptions
 	onAutoFocusMenuChange?: Setter<boolean>;
 }
 
-export interface NavigationMenuRootCommonProps extends MenubarRootCommonProps {
-	ref: HTMLElement | ((el: HTMLElement) => void);
+export interface NavigationMenuRootCommonProps<T extends HTMLElement = HTMLElement> extends MenubarRootCommonProps<T> {
+	ref: T | ((el: T) => void);
 }
 
 export interface NavigationMenuRootRenderProps
 	extends NavigationMenuRootCommonProps,
 		MenubarRootRenderProps {}
 
-export type NavigationMenuRootProps = NavigationMenuRootOptions &
-	Partial<NavigationMenuRootCommonProps>;
+export type NavigationMenuRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = NavigationMenuRootOptions &
+	Partial<NavigationMenuRootCommonProps<ElementOf<T>>>;
 
 /**
  * A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.
  */
 export function NavigationMenuRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, NavigationMenuRootProps>,
+	props: PolymorphicProps<T, NavigationMenuRootProps<T>>,
 ) {
 	const mergedProps = mergeDefaultProps(
 		{
