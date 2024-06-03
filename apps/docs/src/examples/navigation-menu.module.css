@@ -369,6 +369,6 @@
 	border: 1px solid hsl(240 5% 26%);
 }
 
-[data-kb-theme="dark"].navigation-menu__item-callout {
+[data-kb-theme="dark"] .navigation-menu__item-callout {
 	background: linear-gradient(135deg, #0284c7 0%, #00345e 100%);
 }
