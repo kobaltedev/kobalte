@@ -13,8 +13,9 @@ import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuTriggerOptions extends MenuTriggerOptions {}
 
-export interface NavigationMenuTriggerCommonProps<T extends HTMLElement = HTMLElement>
-	extends MenuTriggerCommonProps<T> {
+export interface NavigationMenuTriggerCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends MenuTriggerCommonProps<T> {
 	onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 }

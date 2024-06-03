@@ -28,8 +28,9 @@ export type Motion = "to-start" | "to-end" | "from-start" | "from-end";
 
 export interface NavigationMenuContentOptions extends MenuContentOptions {}
 
-export interface NavigationMenuContentCommonProps<T extends HTMLElement = HTMLElement>
-	extends MenuContentCommonProps<T> {
+export interface NavigationMenuContentCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends MenuContentCommonProps<T> {
 	onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 }

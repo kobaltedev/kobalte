@@ -54,7 +54,9 @@ export interface NavigationMenuRootOptions
 	onAutoFocusMenuChange?: Setter<boolean>;
 }
 
-export interface NavigationMenuRootCommonProps<T extends HTMLElement = HTMLElement> extends MenubarRootCommonProps<T> {
+export interface NavigationMenuRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends MenubarRootCommonProps<T> {
 	ref: T | ((el: T) => void);
 }
 

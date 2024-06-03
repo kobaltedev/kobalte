@@ -33,8 +33,8 @@ import {
 import { useLocale } from "../i18n/i18n-provider";
 import { createSelectableList } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
 import {
 	FocusOutsideEvent,

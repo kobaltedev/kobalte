@@ -17,8 +17,8 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import createPresence from "solid-presence";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { useTabsContext } from "./tabs-context";
 
 export interface TabsContentOptions {

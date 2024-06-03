@@ -51,7 +51,9 @@ export interface NavigationMenuViewportOptions {
 	onInteractOutside?: (event: InteractOutsideEvent) => void;
 }
 
-export interface NavigationMenuViewportCommonProps<T extends HTMLElement = HTMLElement> {
+export interface NavigationMenuViewportCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	ref: T | ((el: T) => void);
 	/** The HTML styles attribute (object form only). */
 	style: JSX.CSSProperties;

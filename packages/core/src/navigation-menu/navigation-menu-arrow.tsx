@@ -20,8 +20,9 @@ import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuArrowOptions extends PopperArrowOptions {}
 
-export interface NavigationMenuArrowCommonProps<T extends HTMLElement = HTMLElement>
-	extends PopperArrowCommonProps<T> {}
+export interface NavigationMenuArrowCommonProps<
+	T extends HTMLElement = HTMLElement,
+> extends PopperArrowCommonProps<T> {}
 
 export interface NavigationMenuArrowRenderProps
 	extends NavigationMenuArrowCommonProps,
