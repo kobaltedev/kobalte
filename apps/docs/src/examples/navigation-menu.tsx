@@ -144,8 +144,7 @@ export function BasicExample() {
 								<NavigationMenu.ItemDescription
 									class={style["navigation-menu__item-description"]}
 								>
-									A quick tutorial to get you up and running with Radix
-									Primitives.
+									A quick tutorial to get you up and running with Kobalte.
 								</NavigationMenu.ItemDescription>
 							</NavigationMenu.Item>
 							<NavigationMenu.Item
