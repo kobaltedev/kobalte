@@ -12,7 +12,7 @@
  * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/dismissable/src/dismissable-layer.ts
  */
 
-import { contains, getDocument, mergeRefs } from "@kobalte/utils";
+import { access, contains, getDocument, MaybeAccessor, mergeRefs } from "@kobalte/utils";
 import {
 	Accessor,
 	ValidComponent,

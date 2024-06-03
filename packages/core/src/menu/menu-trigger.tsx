@@ -108,10 +108,10 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		"onFocus",
 	]);
 
-	let key = rootContext.value();
+	let key = () => rootContext.value();
 
 	if (optionalMenubarContext !== undefined) {
-		key = rootContext.value() ?? local.id!;
+		key = () => rootContext.value() ?? local.id!;
 		if (optionalMenubarContext.lastValue() === undefined)
 			optionalMenubarContext.setLastValue(key);
 	}
@@ -133,7 +133,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 			() => optionalMenubarContext?.value(),
 			(value) => {
 				if (!isNativeLink()) return;
-				if (value === key) context.triggerRef()?.focus();
+				if (value === key()) context.triggerRef()?.focus();
 			},
 		),
 	);
@@ -146,16 +146,10 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 					optionalMenubarContext.setAutoFocusMenu(true);
 				}
 				context.open(false);
-			} else context.close(true);
+			} else {
+				if (optionalMenubarContext.value() === key()) optionalMenubarContext.closeMenu();
+			}
 		} else context.toggle(true);
-
-		if (
-			optionalMenubarContext !== undefined &&
-			!context.isOpen() &&
-			optionalMenubarContext.value() === key
-		) {
-			optionalMenubarContext.closeMenu();
-		}
 	};
 
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
@@ -229,6 +223,9 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 	const onMouseOver: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onMouseOver);
 
+		// Skip touch event
+		if (context.triggerRef()?.dataset.pointerType === "touch") return;
+		
 		// When one of the menubar menus is open, automatically open others on trigger hover
 		if (
 			!local.disabled &&
@@ -268,14 +265,14 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 			aria-expanded={context.isOpen()}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
 			data-highlighted={
-				key !== undefined && optionalMenubarContext?.value() === key
+				key !== undefined && optionalMenubarContext?.value() === key()
 					? true
 					: undefined
 			}
 			tabIndex={
 				optionalMenubarContext !== undefined
-					? optionalMenubarContext.value() === key ||
-					  optionalMenubarContext.lastValue() === key
+					? optionalMenubarContext.value() === key() ||
+					  optionalMenubarContext.lastValue() === key()
 						? 0
 						: -1
 					: undefined

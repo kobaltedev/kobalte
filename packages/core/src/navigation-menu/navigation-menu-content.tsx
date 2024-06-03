@@ -48,7 +48,6 @@ export function NavigationMenuContent<T extends ValidComponent = "div">(
 ) {
 	const context = useNavigationMenuContext();
 	const menubarContext = useMenubarContext();
-	const menuContext = useMenuContext();
 	const menuRootContext = useMenuRootContext();
 
 	const [motion, setMotion] = createSignal<Motion>();
@@ -72,8 +71,6 @@ export function NavigationMenuContent<T extends ValidComponent = "div">(
 		callHandler(e, local.onPointerLeave);
 
 		context.startLeaveTimer();
-
-		menuContext.close(true);
 	};
 
 	createEffect(
@@ -120,7 +117,7 @@ export function NavigationMenuContent<T extends ValidComponent = "div">(
 		>
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}
-			onInteractOutside={(event) => {
+			onInteractOutside={() => {
 				context.setAutoFocusMenu(false);
 			}}
 			data-motion={motion()}
