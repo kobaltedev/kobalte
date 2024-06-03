@@ -20,7 +20,6 @@ import {
 	type MenuIconOptions as NavigationMenuIconOptions,
 	type MenuIconProps as NavigationMenuIconProps,
 	type MenuIconRenderProps as NavigationMenuIconRenderProps,
-	MenuItem as Item,
 	type MenuItemCommonProps as NavigationMenuItemCommonProps,
 	MenuItemDescription as ItemDescription,
 	type MenuItemDescriptionCommonProps as NavigationMenuItemDescriptionCommonProps,
@@ -86,6 +85,7 @@ import {
 	type NavigationMenuContentProps,
 	type NavigationMenuContentRenderProps,
 } from "./navigation-menu-content";
+import { NavigationMenuItem as Item } from "./navigation-menu-item";
 import {
 	NavigationMenuMenu as Menu,
 	type NavigationMenuMenuOptions,

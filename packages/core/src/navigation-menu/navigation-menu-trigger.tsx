@@ -81,15 +81,17 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 	};
 
 	return (
-		<MenubarTrigger<
-			Component<
-				Omit<NavigationMenuTriggerRenderProps, keyof MenuTriggerRenderProps>
+		<li role="presentation">
+			<MenubarTrigger<
+				Component<
+					Omit<NavigationMenuTriggerRenderProps, keyof MenuTriggerRenderProps>
+				>
 			>
-		>
-			onClick={onClick}
-			onPointerEnter={onPointerEnter}
-			onPointerLeave={onPointerLeave}
-			{...others}
-		/>
+				onClick={onClick}
+				onPointerEnter={onPointerEnter}
+				onPointerLeave={onPointerLeave}
+				{...others}
+			/>
+		</li>
 	);
 }

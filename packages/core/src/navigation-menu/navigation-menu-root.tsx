@@ -72,7 +72,7 @@ export type NavigationMenuRootProps<
 /**
  * A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.
  */
-export function NavigationMenuRoot<T extends ValidComponent = "div">(
+export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 	props: PolymorphicProps<T, NavigationMenuRootProps<T>>,
 ) {
 	const mergedProps = mergeDefaultProps(
@@ -202,18 +202,21 @@ export function NavigationMenuRoot<T extends ValidComponent = "div">(
 				onCurrentPlacementChange={setCurrentPlacement}
 				{...popperProps}
 			>
-				<MenubarRoot<
-					Component<
-						Omit<NavigationMenuRootRenderProps, keyof MenubarRootRenderProps>
+				<nav>
+					<MenubarRoot<
+						Component<
+							Omit<NavigationMenuRootRenderProps, keyof MenubarRootRenderProps>
+						>
 					>
-				>
-					ref={mergeRefs(context.setRootRef, local.ref)}
-					value={value() ?? null}
-					onValueChange={setValue}
-					autoFocusMenu={autoFocusMenu()}
-					onAutoFocusMenuChange={setAutoFocusMenu}
-					{...others}
-				/>
+						as="ul"
+						ref={mergeRefs(context.setRootRef, local.ref)}
+						value={value() ?? null}
+						onValueChange={setValue}
+						autoFocusMenu={autoFocusMenu()}
+						onAutoFocusMenuChange={setAutoFocusMenu}
+						{...others}
+					/>
+				</nav>
 			</Popper>
 		</NavigationMenuContext.Provider>
 	);

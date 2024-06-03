@@ -31,7 +31,6 @@ export function BasicExample() {
 						>
 							<NavigationMenu.Item
 								class={style["navigation-menu__item-callout"]}
-								as="a"
 								href="https://kobalte.dev"
 							>
 								<img
@@ -52,7 +51,6 @@ export function BasicExample() {
 							</NavigationMenu.Item>
 							<NavigationMenu.Item
 								class={style["navigation-menu__item"]}
-								as="a"
 								href="https://pigment.kobalte.dev"
 							>
 								<NavigationMenu.ItemLabel
@@ -68,7 +66,6 @@ export function BasicExample() {
 							</NavigationMenu.Item>
 							<NavigationMenu.Item
 								class={style["navigation-menu__item"]}
-								as="a"
 								href="https://www.solidjs.com/"
 							>
 								<NavigationMenu.ItemLabel
@@ -84,7 +81,6 @@ export function BasicExample() {
 							</NavigationMenu.Item>
 							<NavigationMenu.Item
 								class={style["navigation-menu__item"]}
-								as="a"
 								href="https://start.solidjs.com/"
 							>
 								<NavigationMenu.ItemLabel
@@ -117,7 +113,6 @@ export function BasicExample() {
 						>
 							<NavigationMenu.Item
 								class={style["navigation-menu__item"]}
-								as="a"
 								href="https://kobalte.dev/docs/core/overview/introduction"
 							>
 								<NavigationMenu.ItemLabel
@@ -133,7 +128,6 @@ export function BasicExample() {
 							</NavigationMenu.Item>
 							<NavigationMenu.Item
 								class={style["navigation-menu__item"]}
-								as="a"
 								href="https://kobalte.dev/docs/core/overview/getting-started"
 							>
 								<NavigationMenu.ItemLabel
@@ -149,7 +143,6 @@ export function BasicExample() {
 							</NavigationMenu.Item>
 							<NavigationMenu.Item
 								class={style["navigation-menu__item"]}
-								as="a"
 								href="https://kobalte.dev/docs/core/overview/styling"
 							>
 								<NavigationMenu.ItemLabel
@@ -165,7 +158,6 @@ export function BasicExample() {
 							</NavigationMenu.Item>
 							<NavigationMenu.Item
 								class={style["navigation-menu__item"]}
-								as="a"
 								href="https://kobalte.dev/docs/core/overview/animation"
 							>
 								<NavigationMenu.ItemLabel
@@ -181,7 +173,6 @@ export function BasicExample() {
 							</NavigationMenu.Item>
 							<NavigationMenu.Item
 								class={style["navigation-menu__item"]}
-								as="a"
 								href="https://kobalte.dev/docs/core/overview/polymorphism"
 							>
 								<NavigationMenu.ItemLabel
@@ -197,7 +188,6 @@ export function BasicExample() {
 							</NavigationMenu.Item>
 							<NavigationMenu.Item
 								class={style["navigation-menu__item"]}
-								as="a"
 								href="https://kobalte.dev/docs/changelog"
 							>
 								<NavigationMenu.ItemLabel

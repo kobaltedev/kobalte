@@ -71,7 +71,7 @@ export type NavigationMenuViewportProps<
 > = NavigationMenuViewportOptions &
 	Partial<NavigationMenuViewportCommonProps<ElementOf<T>>>;
 
-export function NavigationMenuViewport<T extends ValidComponent = "div">(
+export function NavigationMenuViewport<T extends ValidComponent = "li">(
 	props: PolymorphicProps<T, NavigationMenuViewportProps<T>>,
 ) {
 	const context = useNavigationMenuContext();
@@ -120,7 +120,7 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 
 	return (
 		<Show when={context.viewportPresent()}>
-			<Popper.Positioner>
+			<Popper.Positioner role="presentation">
 				<DismissableLayer<
 					Component<
 						Omit<
@@ -129,6 +129,7 @@ export function NavigationMenuViewport<T extends ValidComponent = "div">(
 						>
 					>
 				>
+					as="li"
 					ref={mergeRefs(context.setViewportRef, local.ref)}
 					excludedElements={[context.rootRef]}
 					bypassTopMostLayerCheck

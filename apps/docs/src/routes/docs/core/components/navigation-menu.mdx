@@ -147,7 +147,6 @@ The checkable menu item consists of:
                 <NavigationMenu.Content class="navigation-menu__content content-1">
                   <NavigationMenu.Item
                     class="navigation-menu__item-callout"
-                    as="a"
                     href="https://kobalte.dev"
                   >
                     <img
@@ -164,7 +163,6 @@ The checkable menu item consists of:
                   </NavigationMenu.Item>
                   <NavigationMenu.Item
                     class="navigation-menu__item"
-                    as="a"
                     href="https://pigment.kobalte.dev"
                   >
                     <NavigationMenu.ItemLabel class="navigation-menu__item-label">
@@ -176,7 +174,6 @@ The checkable menu item consists of:
                   </NavigationMenu.Item>
                   <NavigationMenu.Item
                     class="navigation-menu__item"
-                    as="a"
                     href="https://www.solidjs.com/"
                   >
                     <NavigationMenu.ItemLabel class="navigation-menu__item-label">
@@ -188,7 +185,6 @@ The checkable menu item consists of:
                   </NavigationMenu.Item>
                   <NavigationMenu.Item
                     class="navigation-menu__item"
-                    as="a"
                     href="https://start.solidjs.com/"
                   >
                     <NavigationMenu.ItemLabel class="navigation-menu__item-label">
@@ -213,7 +209,6 @@ The checkable menu item consists of:
                 <NavigationMenu.Content class="navigation-menu__content content-2">
                   <NavigationMenu.Item
                     class="navigation-menu__item"
-                    as="a"
                     href="https://kobalte.dev/docs/core/overview/introduction"
                   >
                     <NavigationMenu.ItemLabel class="navigation-menu__item-label">
@@ -225,7 +220,6 @@ The checkable menu item consists of:
                   </NavigationMenu.Item>
                   <NavigationMenu.Item
                     class="navigation-menu__item"
-                    as="a"
                     href="https://kobalte.dev/docs/core/overview/getting-started"
                   >
                     <NavigationMenu.ItemLabel class="navigation-menu__item-label">
@@ -237,7 +231,6 @@ The checkable menu item consists of:
                   </NavigationMenu.Item>
                   <NavigationMenu.Item
                     class="navigation-menu__item"
-                    as="a"
                     href="https://kobalte.dev/docs/core/overview/styling"
                   >
                     <NavigationMenu.ItemLabel class="navigation-menu__item-label">
@@ -249,7 +242,6 @@ The checkable menu item consists of:
                   </NavigationMenu.Item>
                   <NavigationMenu.Item
                     class="navigation-menu__item"
-                    as="a"
                     href="https://kobalte.dev/docs/core/overview/animation"
                   >
                     <NavigationMenu.ItemLabel class="navigation-menu__item-label">
@@ -261,7 +253,6 @@ The checkable menu item consists of:
                   </NavigationMenu.Item>
                   <NavigationMenu.Item
                     class="navigation-menu__item"
-                    as="a"
                     href="https://kobalte.dev/docs/core/overview/polymorphism"
                   >
                     <NavigationMenu.ItemLabel class="navigation-menu__item-label">
@@ -273,7 +264,6 @@ The checkable menu item consists of:
                   </NavigationMenu.Item>
                   <NavigationMenu.Item
                     class="navigation-menu__item"
-                    as="a"
                     href="https://kobalte.dev/docs/changelog"
                   >
                     <NavigationMenu.ItemLabel class="navigation-menu__item-label">
@@ -1038,21 +1028,21 @@ For animating the content of the viewport we apply the attribute `data-motion` o
 
 | Component                        | Default rendered element |
 | :------------------------------- | :----------------------- |
-| `NavigationMenu`                 | `div`                    |
-| `NavigationMenu.Viewport`        | `div`                    |
+| `NavigationMenu`                 | `ul`                     |
+| `NavigationMenu.Viewport`        | `li`                     |
 | `NavigationMenu.Arrow`           | `div`                    |
 | `NavigationMenu.Menu`            | none                     |
 | `NavigationMenu.Trigger`         | `div`                    |
 | `NavigationMenu.Icon`            | `div`                    |
 | `NavigationMenu.Portal`          | `Portal`                 |
-| `NavigationMenu.Content`         | `div`                    |
+| `NavigationMenu.Content`         | `ul`                     |
 | `NavigationMenu.Separator`       | `hr`                     |
 | `NavigationMenu.Group`           | `div`                    |
 | `NavigationMenu.GroupLabel`      | `span`                   |
 | `NavigationMenu.Sub`             | none                     |
 | `NavigationMenu.SubTrigger`      | `div`                    |
 | `NavigationMenu.SubContent`      | `div`                    |
-| `NavigationMenu.Item`            | `div`                    |
+| `NavigationMenu.Item`            | `a`                      |
 | `NavigationMenu.ItemLabel`       | `div`                    |
 | `NavigationMenu.ItemDescription` | `div`                    |
 | `NavigationMenu.ItemIndicator`   | `div`                    |

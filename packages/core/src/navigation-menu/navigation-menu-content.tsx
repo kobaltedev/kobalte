@@ -18,7 +18,6 @@ import {
 	MenuContentOptions,
 	MenuContentRenderProps,
 } from "../menu";
-import { useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
 import { useMenubarContext } from "../menubar/menubar-context";
 import { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -46,7 +45,7 @@ export type NavigationMenuContentProps<
 > = NavigationMenuContentOptions &
 	Partial<NavigationMenuContentCommonProps<ElementOf<T>>>;
 
-export function NavigationMenuContent<T extends ValidComponent = "div">(
+export function NavigationMenuContent<T extends ValidComponent = "ul">(
 	props: PolymorphicProps<T, NavigationMenuContentProps<T>>,
 ) {
 	const context = useNavigationMenuContext();
@@ -118,6 +117,7 @@ export function NavigationMenuContent<T extends ValidComponent = "div">(
 				Omit<NavigationMenuContentRenderProps, keyof MenuContentRenderProps>
 			>
 		>
+			as="ul"
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}
 			onInteractOutside={() => {

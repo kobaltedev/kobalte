@@ -16,7 +16,6 @@ import {
 	PopperArrowRenderProps,
 } from "../popper";
 import { PopperArrow } from "../popper/popper-arrow";
-import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuArrowOptions extends PopperArrowOptions {}
 
@@ -42,7 +41,6 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 ) {
 	let ref: HTMLElement | undefined;
 
-	const context = useNavigationMenuContext();
 	const menubarContext = useMenubarContext();
 
 	const mergedProps = mergeDefaultProps(

@@ -32,7 +32,8 @@
 	font-weight: 500;
 }
 
-.navigation-menu__trigger[data-highlighted="true"] {
+.navigation-menu__trigger[data-highlighted="true"],
+[data-kb-theme="dark"] .navigation-menu__trigger[data-highlighted="true"] {
 	background-color: #0284c710;
 }
 
