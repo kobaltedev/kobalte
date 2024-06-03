@@ -17,7 +17,6 @@ import {
 	Component,
 	JSX,
 	ValidComponent,
-	batch,
 	createEffect,
 	createMemo,
 	on,
@@ -147,7 +146,8 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 				}
 				context.open(false);
 			} else {
-				if (optionalMenubarContext.value() === key()) optionalMenubarContext.closeMenu();
+				if (optionalMenubarContext.value() === key())
+					optionalMenubarContext.closeMenu();
 			}
 		} else context.toggle(true);
 	};
@@ -225,7 +225,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 
 		// Skip touch event
 		if (context.triggerRef()?.dataset.pointerType === "touch") return;
-		
+
 		// When one of the menubar menus is open, automatically open others on trigger hover
 		if (
 			!local.disabled &&
@@ -265,7 +265,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 			aria-expanded={context.isOpen()}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
 			data-highlighted={
-				key !== undefined && optionalMenubarContext?.value() === key()
+				key() !== undefined && optionalMenubarContext?.value() === key()
 					? true
 					: undefined
 			}
