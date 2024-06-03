@@ -355,6 +355,11 @@
 	color: #e9e9ea;
 }
 
+[data-kb-theme="dark"] .navigation-menu__item:hover,
+[data-kb-theme="dark"] .navigation-menu__item:focus {
+	background-color: #0284c710;
+}
+
 [data-kb-theme="dark"] .navigation-menu__root {
 	background-color: #27272a;
 }
@@ -362,4 +367,8 @@
 [data-kb-theme="dark"] .navigation-menu__viewport {
 	background-color: #27272a;
 	border: 1px solid hsl(240 5% 26%);
+}
+
+[data-kb-theme="dark"].navigation-menu__item-callout {
+	background: linear-gradient(135deg, #0284c7 0%, #00345e 100%);
 }
