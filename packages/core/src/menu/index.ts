@@ -1,6 +1,7 @@
 export * from "./menu";
 export * from "./menu-checkbox-item";
 export * from "./menu-content";
+export * from "./menu-context";
 export * from "./menu-group";
 export * from "./menu-group-label";
 export * from "./menu-icon";

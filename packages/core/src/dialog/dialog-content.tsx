@@ -217,14 +217,14 @@ export function DialogContent<T extends ValidComponent = "div">(
 	createEffect(() => onCleanup(context.registerContentId(others.id!)));
 
 	return (
-		<Show when={context.contentPresence.isPresent()}>
+		<Show when={context.contentPresent()}>
 			<DismissableLayer<
 				Component<
 					Omit<DialogContentRenderProps, keyof DismissableLayerRenderProps>
 				>
 			>
 				ref={mergeRefs((el) => {
-					context.contentPresence.setRef(el);
+					context.setContentRef(el);
 					ref = el;
 				}, local.ref)}
 				role="dialog"

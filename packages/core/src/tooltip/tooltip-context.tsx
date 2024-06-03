@@ -1,7 +1,5 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { CreatePresenceResult } from "../primitives";
-
 export interface TooltipDataSet {
 	"data-expanded": string | undefined;
 	"data-closed": string | undefined;
@@ -13,7 +11,7 @@ export interface TooltipContextValue {
 	isDisabled: Accessor<boolean>;
 	triggerOnFocusOnly: Accessor<boolean>;
 	contentId: Accessor<string | undefined>;
-	contentPresence: CreatePresenceResult;
+	contentPresent: Accessor<boolean>;
 	openTooltip: (immediate?: boolean) => void;
 	hideTooltip: (immediate?: boolean) => void;
 	cancelOpening: () => void;

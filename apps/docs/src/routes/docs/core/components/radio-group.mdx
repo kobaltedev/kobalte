@@ -85,7 +85,7 @@ The radio item consists of:
       return (
         <RadioGroup class="radio-group">
           <RadioGroup.Label class="radio-group__label">Favorite fruit</RadioGroup.Label>
-          <div class="radio-group__items">
+          <div class="radio-group__items" role="presentation">
             <For each={["Apple", "Orange", "Watermelon"]}>
               {fruit => (
                 <RadioGroup.Item value={fruit} class="radio">
@@ -199,13 +199,15 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 ```tsx {0,4}
 <RadioGroup defaultValue="Orange">
 	<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
-	<div>
+	<div role="presentation">
 		<For each={["Apple", "Orange", "Watermelon"]}>
 			{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
 		</For>
 	</div>
 </RadioGroup>
 ```
+
+The `role="presentation"` is required for all non content elements between the `RadioGroup` and `RadioGroup.Item` due to a bug in Chromium based browsers that incorrectly parse semantics and break screen readers.
 
 ### Controlled value
 
@@ -225,7 +227,7 @@ function ControlledExample() {
 		<>
 			<RadioGroup value={value()} onChange={setValue}>
 				<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
-				<div>
+				<div role="presentation">
 					<For each={["Apple", "Orange", "Watermelon"]}>
 						{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
 					</For>
@@ -248,7 +250,7 @@ The `RadioGroup.Description` component can be used to associate additional help 
 ```tsx {7}
 <RadioGroup>
 	<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
-	<div>
+	<div role="presentation">
 		<For each={["Apple", "Orange", "Watermelon"]}>
 			{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
 		</For>
@@ -280,7 +282,7 @@ function ErrorMessageExample() {
 			validationState={value() !== "Apple" ? "invalid" : "valid"}
 		>
 			<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
-			<div>
+			<div role="presentation">
 				<For each={["Apple", "Orange", "Watermelon"]}>
 					{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
 				</For>
@@ -309,7 +311,7 @@ function HTMLFormExample() {
 		<form onSubmit={onSubmit}>
 			<RadioGroup name="favorite-fruit">
 				<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
-				<div>
+				<div role="presentation">
 					<For each={["Apple", "Orange", "Watermelon"]}>
 						{fruit => <RadioGroup.Item value={fruit}>...</RadioGroup.Item>}
 					</For>

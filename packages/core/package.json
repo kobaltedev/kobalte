@@ -57,7 +57,9 @@
     "NOTICE.txt"
   ],
   "scripts": {
-    "build": "cp ../../NOTICE.txt . && tsup",
+		"build": "pnpm build:cp && pnpm build:tsup",
+		"build:cp": "cp ../../NOTICE.txt .",
+		"build:tsup": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsup",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
     "dev": "vite serve dev --host",
     "test-old": "jest --passWithNoTests",
@@ -69,6 +71,7 @@
     "@internationalized/date": "^3.4.0",
     "@internationalized/number": "^3.2.1",
     "@kobalte/utils": "^0.9.0",
+    "solid-presence": "^0.1.6",
     "solid-prevent-scroll": "^0.1.4"
   },
   "devDependencies": {

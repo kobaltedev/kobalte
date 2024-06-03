@@ -7,6 +7,7 @@
  */
 
 import {
+	Orientation,
 	OverrideComponentProps,
 	contains,
 	createGenerateId,
@@ -15,6 +16,7 @@ import {
 } from "@kobalte/utils";
 import {
 	Accessor,
+	Setter,
 	ValidComponent,
 	createEffect,
 	createMemo,
@@ -38,16 +40,22 @@ export interface MenubarRootOptions {
 	defaultValue?: string;
 
 	/** The controlled value of the menu to open. Should be used in conjunction with onValueChange. */
-	value?: string;
+	value?: string | null;
 
 	/** Event handler called when the value changes. */
-	onValueChange?: (value: string | undefined) => void;
+	onValueChange?: (value: string | undefined | null) => void;
 
 	/** When true, keyboard navigation will loop from last item to first, and vice versa. (default: true) */
 	loop?: boolean;
 
 	/** When true, click on alt by itsef will focus this Menubar (some browsers interfere) */
 	focusOnAlt?: boolean;
+
+	/** The orientation of the menubar. */
+	orientation?: Orientation;
+
+	autoFocusMenu?: boolean;
+	onAutoFocusMenuChange?: Setter<boolean>;
 }
 
 export interface MenubarRootCommonProps<T extends HTMLElement = HTMLElement> {
@@ -57,7 +65,8 @@ export interface MenubarRootCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface MenubarRootRenderProps extends MenubarRootCommonProps {
 	role: "menubar";
-	"data-orientation": "horizontal";
+	"data-orientation": "horizontal" | "vertical";
+	"aria-orientation": "horizontal" | "vertical";
 }
 
 export type MenubarRootProps<
@@ -74,37 +83,53 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 	const defaultId = `menubar-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
-		{ id: defaultId, loop: true },
+		{ id: defaultId, loop: true, orientation: "horizontal" },
 		props as MenubarRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"value",
-		"defaultValue",
-		"onValueChange",
-		"loop",
-		"focusOnAlt",
-	]);
+	const [local, others] = splitProps(
+		mergedProps as typeof mergedProps & { id: string },
+		[
+			"ref",
+			"value",
+			"defaultValue",
+			"onValueChange",
+			"loop",
+			"focusOnAlt",
+			"autoFocusMenu",
+			"onAutoFocusMenuChange",
+			"orientation",
+		],
+	);
 
-	const [value, setValue] = createControllableSignal<string | undefined>({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue,
-		onChange: (value) => local.onValueChange?.(value),
-	});
+	const [value, setValue] = createControllableSignal<string | null | undefined>(
+		{
+			value: () => local.value,
+			defaultValue: () => local.defaultValue,
+			onChange: (value) => local.onValueChange?.(value),
+		},
+	);
 
 	const [lastValue, setLastValue] = createSignal<string | undefined>();
 
-	const [menuRefs, setMenuRefs] = createSignal<Map<string, Array<Element>>>(
+	const [menuRefs, setMenuRefs] = createSignal<Map<string, Array<HTMLElement>>>(
 		new Map<string, Array<HTMLElement>>(),
 	);
 
-	const dataset: Accessor<MenubarDataSet> = createMemo(() => ({
-		"data-expanded": value() !== undefined ? "" : undefined,
-		"data-closed": value() === undefined ? "" : undefined,
-	}));
+	const [autoFocusMenu, setAutoFocusMenu] = createControllableSignal({
+		value: () => local.autoFocusMenu,
+		defaultValue: () => false,
+		onChange: local.onAutoFocusMenuChange,
+	});
 
-	const [autoFocusMenu, setAutoFocusMenu] = createSignal(false);
+	const expanded = () => {
+		return value() && autoFocusMenu() && !value()?.includes("link-trigger-");
+	};
+
+	const dataset: Accessor<MenubarDataSet> = createMemo(() => ({
+		"data-expanded": expanded() ? "" : undefined,
+		"data-closed": !expanded() ? "" : undefined,
+	}));
 
 	const context: MenubarContextValue = {
 		dataset,
@@ -114,22 +139,27 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		setLastValue,
 		menus: () => new Set([...menuRefs().keys()]),
 		menuRefs: () => [...menuRefs().values()].flat(),
+		menuRefMap: () => menuRefs(),
 		registerMenu: (value, refs) => {
 			setMenuRefs((prev) => {
-				prev.set(value, refs);
-				return prev;
+				const map = new Map<string, Array<HTMLElement>>();
+				prev.forEach((value, key) => map.set(key, value));
+				map.set(value, refs);
+				return map;
 			});
 		},
 		unregisterMenu: (value: string) => {
 			setMenuRefs((prev) => {
 				prev.delete(value);
-				return prev;
+				const map = new Map<string, Array<HTMLElement>>();
+				prev.forEach((value, key) => map.set(key, value));
+				return map;
 			});
 		},
 		nextMenu: () => {
 			const menusArray = [...menuRefs().keys()];
 
-			if (value() === undefined) {
+			if (value() == null) {
 				setValue(menusArray[0]);
 				return;
 			}
@@ -146,7 +176,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		previousMenu: () => {
 			const menusArray = [...menuRefs().keys()];
 
-			if (value() === undefined) {
+			if (value() == null) {
 				setValue(menusArray[0]);
 				return;
 			}
@@ -164,14 +194,21 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 			setAutoFocusMenu(false);
 			setValue(undefined);
 		},
-		autoFocusMenu,
+		autoFocusMenu: () => autoFocusMenu()!,
 		setAutoFocusMenu,
 		generateId: createGenerateId(() => others.id!),
+		orientation: () => local.orientation!,
 	};
+
+	createEffect(() => {
+		if (value() == null) setAutoFocusMenu(false);
+	});
+
 	createInteractOutside(
 		{
 			onInteractOutside: () => {
 				context.closeMenu();
+				setTimeout(() => context.closeMenu());
 			},
 			shouldExcludeElement: (element) => {
 				return [ref, ...menuRefs().values()]
@@ -195,15 +232,14 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		if (isServer) return;
 		if (local.focusOnAlt) window.addEventListener("keydown", keydownHandler);
 		else window.removeEventListener("keydown", keydownHandler);
+
+		onCleanup(() => {
+			window.removeEventListener("keydown", keydownHandler);
+		});
 	});
 
 	createEffect(() => {
-		if (value() !== undefined) setLastValue(value());
-	});
-
-	onCleanup(() => {
-		if (isServer) return;
-		window.removeEventListener("keydown", keydownHandler);
+		if (value() != null) setLastValue(value()!);
 	});
 
 	return (
@@ -212,7 +248,8 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 				as="div"
 				ref={mergeRefs((el) => (ref = el), local.ref)}
 				role="menubar"
-				data-orientation="horizontal"
+				data-orientation={local.orientation!}
+				aria-orientation={local.orientation!}
 				{...others}
 			/>
 		</MenubarContext.Provider>

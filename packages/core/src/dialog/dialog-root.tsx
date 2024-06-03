@@ -1,11 +1,8 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { ParentProps, createSignal, createUniqueId } from "solid-js";
 
-import {
-	createDisclosureState,
-	createPresence,
-	createRegisterId,
-} from "../primitives";
+import createPresence from "solid-presence";
+import { createDisclosureState, createRegisterId } from "../primitives";
 import { DialogContext, DialogContextValue } from "./dialog-context";
 import {
 	DIALOG_INTL_TRANSLATIONS,
@@ -76,6 +73,8 @@ export function DialogRoot(props: DialogRootProps) {
 	const [titleId, setTitleId] = createSignal<string>();
 	const [descriptionId, setDescriptionId] = createSignal<string>();
 
+	const [overlayRef, setOverlayRef] = createSignal<HTMLElement>();
+	const [contentRef, setContentRef] = createSignal<HTMLElement>();
 	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
 
 	const disclosureState = createDisclosureState({
@@ -86,8 +85,15 @@ export function DialogRoot(props: DialogRootProps) {
 
 	const shouldMount = () => mergedProps.forceMount || disclosureState.isOpen();
 
-	const overlayPresence = createPresence(shouldMount);
-	const contentPresence = createPresence(shouldMount);
+	const { present: overlayPresent } = createPresence({
+		show: shouldMount,
+		element: () => overlayRef() ?? null,
+	});
+
+	const { present: contentPresent } = createPresence({
+		show: shouldMount,
+		element: () => contentRef() ?? null,
+	});
 
 	const context: DialogContextValue = {
 		translations: () => mergedProps.translations ?? DIALOG_INTL_TRANSLATIONS,
@@ -98,8 +104,12 @@ export function DialogRoot(props: DialogRootProps) {
 		titleId,
 		descriptionId,
 		triggerRef,
-		overlayPresence,
-		contentPresence,
+		overlayRef,
+		setOverlayRef,
+		contentRef,
+		setContentRef,
+		overlayPresent,
+		contentPresent,
 		close: disclosureState.close,
 		toggle: disclosureState.toggle,
 		setTriggerRef,

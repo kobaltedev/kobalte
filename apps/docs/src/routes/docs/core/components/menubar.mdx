@@ -33,9 +33,12 @@ import { Menubar } from "@kobalte/core";
 
 ## Anatomy
 
-The context menu consists of:
+The menubar consists of:
 
 - **Menubar:** The root container for a menubar.
+
+The menu consists of:
+
 - **Menubar.Menu:** The container of each menu.
 - **Menubar.Trigger:** The button that toggles the menu.
 - **Menubar.Icon:** A small icon that can be displayed inside the menu trigger as a visual affordance for the fact it can be open.
@@ -497,9 +500,28 @@ The checkable menu item consists of:
 
 ## Usage
 
+### Link Trigger
+
+To make one of the menubar triggers a link instead of opening a menu, omit the `Menubar.Menu` and set `as="a"` on the `Menubar.Trigger`.
+
+```tsx {12}
+<Menubar>
+	<Menubar.Menu>
+		<Menubar.Trigger>Opens a regular menu</Menubar.Trigger>
+		<Menubar.Portal>
+			<Menubar.Content>...</Menubar.Content>
+		</Menubar.Portal>
+	</Menubar.Menu>
+
+	<Menubar.Trigger as="a" href="https://kobalte.dev">
+		Opens a link on click and enter
+	</Menubar.Trigger>
+</Menubar>
+```
+
 ### Origin-aware animations
 
-We expose a CSS custom property `--kb-popper-content-transform-origin` which can be used to animate the content from its computed origin.
+We expose a CSS custom property `--kb-menu-content-transform-origin` which can be used to animate the content from its computed origin.
 
 ```css {3}
 /* style.css */
@@ -547,9 +569,9 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | :------------ | :------------------------------------------------------------------------------------------------------------------------------------- |
 | defaultValue  | `string` <br/> The value of the menu that should be open when initially rendered. Use when you do not need to control the value state. |
 | value         | `string` <br/> The controlled value of the menu to open. Should be used in conjunction with onValueChange.                             |
-| onValueChange | `(value: string \| undefined) => void` <br/> Event handler called when the value changes.                                              |
+| onValueChange | `(value: string \| undefined \| null) => void` <br/> Event handler called when the value changes.                                      |
 | loop          | `boolean` <br/> When true, keyboard navigation will loop from last item to first, and vice versa.                                      |
-| focusOnAlt    | `boolean` <br/> When true, click on alt by itsef will focus this Menubar (some browsers interfere)                                     |
+| focusOnAlt    | `boolean` <br/> When true, click on alt by itsef will focus this Menubar (some browsers interfere).                                    |
 
 ### Menubar.Menu
 
@@ -763,4 +785,4 @@ The popper positioner will copy the same `z-index` as the `Menubar.Content`.
 | <Kbd>ArrowRight</Kbd> / <Kbd>ArrowLeft</Kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction. |
 | <Kbd>Home</Kbd>                              | When focus is on an item, moves focus to first item.                                             |
 | <Kbd>End</Kbd>                               | When focus is on an item, moves focus to last item.                                              |
-| <Kbd>Esc</Kbd>                               | Closes the context menu.                                                                         |
+| <Kbd>Esc</Kbd>                               | Closes the menu.                                                                                 |

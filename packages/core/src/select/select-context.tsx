@@ -1,7 +1,7 @@
 import { Accessor, JSX, Setter, createContext, useContext } from "solid-js";
 
 import { ListState } from "../list";
-import { CollectionNode, CreatePresenceResult } from "../primitives";
+import { CollectionNode } from "../primitives";
 import { FocusStrategy, KeyboardDelegate } from "../selection";
 
 export interface SelectDataSet {
@@ -20,7 +20,7 @@ export interface SelectContextValue {
 	disallowTypeAhead: Accessor<boolean>;
 	shouldFocusWrap: Accessor<boolean>;
 	selectedOptions: Accessor<any[]>;
-	contentPresence: CreatePresenceResult;
+	contentPresent: Accessor<boolean>;
 	autoFocus: Accessor<FocusStrategy | boolean>;
 	triggerRef: Accessor<HTMLElement | undefined>;
 	triggerId: Accessor<string | undefined>;

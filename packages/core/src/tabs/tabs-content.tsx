@@ -17,8 +17,8 @@ import {
 	splitProps,
 } from "solid-js";
 
+import createPresence from "solid-presence";
 import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { createPresence } from "../primitives";
 import { useTabsContext } from "./tabs-context";
 
 export interface TabsContentOptions {
@@ -55,7 +55,7 @@ export type TabsContentProps<
 export function TabsContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, TabsContentProps<T>>,
 ) {
-	let ref!: HTMLElement;
+	const [ref, setRef] = createSignal<HTMLElement>();
 
 	const context = useTabsContext();
 
@@ -72,10 +72,13 @@ export function TabsContent<T extends ValidComponent = "div">(
 
 	const isSelected = () => context.listState().selectedKey() === local.value;
 
-	const presence = createPresence(() => local.forceMount || isSelected());
+	const { present } = createPresence({
+		show: () => local.forceMount || isSelected(),
+		element: () => ref() ?? null,
+	});
 
 	createEffect(
-		on([() => ref, () => presence.isPresent()], ([ref, isPresent]) => {
+		on([() => ref(), () => present()], ([ref, isPresent]) => {
 			if (ref == null || !isPresent) {
 				return;
 			}
@@ -111,13 +114,10 @@ export function TabsContent<T extends ValidComponent = "div">(
 	);
 
 	return (
-		<Show when={presence.isPresent()}>
+		<Show when={present()}>
 			<Polymorphic<TabsContentRenderProps>
 				as="div"
-				ref={mergeRefs((el) => {
-					presence.setRef(el);
-					ref = el;
-				}, local.ref)}
+				ref={mergeRefs(setRef, local.ref)}
 				id={id()}
 				role="tabpanel"
 				tabIndex={tabIndex()}

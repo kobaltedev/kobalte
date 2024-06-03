@@ -7,6 +7,7 @@
  */
 
 import {
+	Orientation,
 	callHandler,
 	composeEventHandlers,
 	contains,
@@ -21,6 +22,7 @@ import {
 	createEffect,
 	createUniqueId,
 	onCleanup,
+	onMount,
 	splitProps,
 } from "solid-js";
 
@@ -28,9 +30,11 @@ import {
 	DismissableLayer,
 	DismissableLayerRenderProps,
 } from "../dismissable-layer";
+import { useLocale } from "../i18n/i18n-provider";
 import { createSelectableList } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
 import {
 	FocusOutsideEvent,
@@ -40,6 +44,7 @@ import {
 } from "../primitives";
 import { MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
+import { MENUBAR_KEYS } from "./menu-trigger";
 
 export interface MenuContentBaseOptions {
 	/**
@@ -101,6 +106,7 @@ export interface MenuContentBaseRenderProps
 	role: "menu";
 	tabIndex: number | undefined;
 	"aria-labelledby": string | undefined;
+	"data-orientation": Orientation;
 }
 
 export type MenuContentBaseProps<
@@ -115,6 +121,9 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 	const optionalMenubarContext = useOptionalMenubarContext();
+	const optionalNavigationMenuContext = useOptionalNavigationMenuContext();
+
+	const { direction } = useLocale();
 
 	const mergedProps = mergeDefaultProps(
 		{
@@ -159,6 +168,8 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			shouldFocusWrap: true,
 			disallowTypeAhead: () =>
 				!context.listState().selectionManager().isFocused(),
+			orientation: () =>
+				rootContext.orientation() === "horizontal" ? "vertical" : "horizontal",
 		},
 		() => ref,
 	);
@@ -189,7 +200,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		if (optionalMenubarContext !== undefined) {
 			if (e.currentTarget.getAttribute("aria-haspopup") !== "true")
 				switch (e.key) {
-					case "ArrowRight":
+					case MENUBAR_KEYS.next(direction(), rootContext.orientation()):
 						e.stopPropagation();
 						e.preventDefault();
 						context.close(true);
@@ -197,7 +208,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 						optionalMenubarContext.nextMenu();
 
 						break;
-					case "ArrowLeft":
+					case MENUBAR_KEYS.previous(direction(), rootContext.orientation()):
 						if (e.currentTarget.hasAttribute("data-closed")) break;
 
 						e.stopPropagation();
@@ -275,58 +286,91 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 	createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
+	const commonAttributes: Omit<MenuContentBaseRenderProps, keyof MenuDataSet> =
+		{
+			ref: mergeRefs((el) => {
+				context.setContentRef(el);
+				ref = el;
+			}, local.ref),
+			role: "menu",
+			get id() {
+				return local.id;
+			},
+			get tabIndex() {
+				return selectableList.tabIndex();
+			},
+			get "aria-labelledby"() {
+				return context.triggerId();
+			},
+			onKeyDown: composeEventHandlers([
+				local.onKeyDown,
+				selectableList.onKeyDown,
+				onKeyDown,
+			]),
+			onMouseDown: composeEventHandlers([
+				local.onMouseDown,
+				selectableList.onMouseDown,
+			]),
+			onFocusIn: composeEventHandlers([
+				local.onFocusIn,
+				selectableList.onFocusIn,
+			]),
+			onFocusOut: composeEventHandlers([
+				local.onFocusOut,
+				selectableList.onFocusOut,
+			]),
+			onPointerEnter,
+			onPointerMove,
+			get "data-orientation"() {
+				return rootContext.orientation();
+			},
+		};
+
 	return (
-		<Show when={context.contentPresence.isPresent()}>
-			<Popper.Positioner>
-				<DismissableLayer<
-					Component<
-						Omit<MenuContentBaseRenderProps, keyof DismissableLayerRenderProps>
+		<Show when={context.contentPresent()}>
+			<Show
+				when={
+					optionalNavigationMenuContext === undefined ||
+					context.parentMenuContext() != null
+				}
+				fallback={
+					<Polymorphic<MenuContentBaseRenderProps>
+						as="div"
+						{...context.dataset()}
+						{...commonAttributes}
+						{...others}
+					/>
+				}
+			>
+				<Popper.Positioner>
+					<DismissableLayer<
+						Component<
+							Omit<
+								MenuContentBaseRenderProps,
+								keyof DismissableLayerRenderProps
+							>
+						>
 					>
-				>
-					ref={mergeRefs((el) => {
-						context.setContentRef(el);
-						context.contentPresence.setRef(el);
-						ref = el;
-					}, local.ref)}
-					role="menu"
-					id={local.id}
-					tabIndex={selectableList.tabIndex()}
-					disableOutsidePointerEvents={isRootModalContent() && context.isOpen()}
-					excludedElements={[context.triggerRef]}
-					bypassTopMostLayerCheck
-					style={{
-						"--kb-menu-content-transform-origin":
-							"var(--kb-popper-content-transform-origin)",
-						position: "relative",
-						...local.style,
-					}}
-					aria-labelledby={context.triggerId()}
-					onEscapeKeyDown={onEscapeKeyDown}
-					onFocusOutside={onFocusOutside}
-					onDismiss={context.close}
-					onKeyDown={composeEventHandlers([
-						local.onKeyDown,
-						selectableList.onKeyDown,
-						onKeyDown,
-					])}
-					onMouseDown={composeEventHandlers([
-						local.onMouseDown,
-						selectableList.onMouseDown,
-					])}
-					onFocusIn={composeEventHandlers([
-						local.onFocusIn,
-						selectableList.onFocusIn,
-					])}
-					onFocusOut={composeEventHandlers([
-						local.onFocusOut,
-						selectableList.onFocusOut,
-					])}
-					onPointerEnter={onPointerEnter}
-					onPointerMove={onPointerMove}
-					{...context.dataset()}
-					{...others}
-				/>
-			</Popper.Positioner>
+						disableOutsidePointerEvents={
+							isRootModalContent() && context.isOpen()
+						}
+						excludedElements={[context.triggerRef]}
+						bypassTopMostLayerCheck
+						style={{
+							"--kb-menu-content-transform-origin":
+								"var(--kb-popper-content-transform-origin)",
+							position: "relative",
+							...local.style,
+						}}
+						onEscapeKeyDown={onEscapeKeyDown}
+						onFocusOutside={onFocusOutside}
+						onDismiss={context.close}
+						{...context.dataset()}
+						{...commonAttributes}
+						{...others}
+					/>
+				</Popper.Positioner>
+			</Show>
 		</Show>
 	);
 }

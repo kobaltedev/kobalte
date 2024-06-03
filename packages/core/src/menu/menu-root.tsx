@@ -1,6 +1,11 @@
-import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import {
+	Orientation,
+	createGenerateId,
+	mergeDefaultProps,
+} from "@kobalte/utils";
 import { ParentProps, createUniqueId, splitProps } from "solid-js";
 
+import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { createDisclosureState } from "../primitives";
 import { Menu, MenuOptions } from "./menu";
 import { MenuRootContext, MenuRootContextValue } from "./menu-root-context";
@@ -32,6 +37,9 @@ export interface MenuRootOptions extends MenuOptions {
 	 */
 	forceMount?: boolean;
 
+	/** The orientation of the menu. */
+	orientation?: Orientation;
+
 	/**
 	 * A unique value that associates the item with an active value
 	 * when the navigation menu is controlled.
@@ -48,6 +56,8 @@ export interface MenuRootProps extends ParentProps<MenuRootOptions> {}
  * Used to build dropdown menu, context menu and menubar.
  */
 export function MenuRoot(props: MenuRootProps) {
+	const optionalMenubarContext = useOptionalMenubarContext();
+
 	const defaultId = `menu-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
@@ -67,6 +77,7 @@ export function MenuRoot(props: MenuRootProps) {
 		"defaultOpen",
 		"onOpenChange",
 		"value",
+		"orientation",
 	]);
 
 	const disclosureState = createDisclosureState({
@@ -81,6 +92,10 @@ export function MenuRoot(props: MenuRootProps) {
 		forceMount: () => local.forceMount ?? false,
 		generateId: createGenerateId(() => local.id!),
 		value: () => local.value,
+		orientation: () =>
+			local.orientation ??
+			optionalMenubarContext?.orientation() ??
+			"horizontal",
 	};
 
 	return (

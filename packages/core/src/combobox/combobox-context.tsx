@@ -1,7 +1,7 @@
 import { Accessor, JSX, createContext, useContext } from "solid-js";
 
 import { ListState } from "../list";
-import { CollectionNode, CreatePresenceResult } from "../primitives";
+import { CollectionNode } from "../primitives";
 import { FocusStrategy, KeyboardDelegate } from "../selection";
 import { ComboboxTriggerMode } from "./types";
 
@@ -23,7 +23,7 @@ export interface ComboboxContextValue {
 	shouldFocusWrap: Accessor<boolean>;
 	removeOnBackspace: Accessor<boolean>;
 	selectedOptions: Accessor<any[]>;
-	contentPresence: CreatePresenceResult;
+	contentPresent: Accessor<boolean>;
 	autoFocus: Accessor<FocusStrategy | boolean>;
 	activeDescendant: Accessor<string | undefined>;
 	inputValue: Accessor<string | undefined>;

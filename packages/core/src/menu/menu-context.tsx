@@ -2,7 +2,7 @@ import { Accessor, createContext, useContext } from "solid-js";
 
 import { ListState } from "../list";
 import { Placement } from "../popper/utils";
-import { CollectionItemWithRef, CreatePresenceResult } from "../primitives";
+import { CollectionItemWithRef } from "../primitives";
 import { FocusStrategy } from "../selection";
 import { GraceIntent, Side } from "./utils";
 
@@ -14,7 +14,7 @@ export interface MenuDataSet {
 export interface MenuContextValue {
 	dataset: Accessor<MenuDataSet>;
 	isOpen: Accessor<boolean>;
-	contentPresence: CreatePresenceResult;
+	contentPresent: Accessor<boolean>;
 	currentPlacement: Accessor<Placement>;
 	pointerGraceTimeoutId: Accessor<number>;
 	autoFocus: Accessor<FocusStrategy | boolean | undefined>;
@@ -36,7 +36,7 @@ export interface MenuContextValue {
 	setPointerDir: (dir: Side) => void;
 	setPointerGraceTimeoutId: (id: number) => void;
 	setPointerGraceIntent: (intent: GraceIntent | null) => void;
-	registerNestedMenu: (element: Element) => () => void;
+	registerNestedMenu: (element: HTMLElement) => () => void;
 	registerItemToParentDomCollection:
 		| ((item: CollectionItemWithRef) => () => void)
 		| undefined;

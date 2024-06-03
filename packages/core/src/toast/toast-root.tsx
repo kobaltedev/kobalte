@@ -32,7 +32,8 @@ import {
 } from "solid-js";
 import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 
-import { createPresence, createRegisterId } from "../primitives";
+import createPresence from "solid-presence";
+import { createRegisterId } from "../primitives";
 import { ToastContext, ToastContextValue } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
 import { toastStore } from "./toast-store";
@@ -165,8 +166,12 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	const [titleId, setTitleId] = createSignal<string>();
 	const [descriptionId, setDescriptionId] = createSignal<string>();
 	const [isAnimationEnabled, setIsAnimationEnabled] = createSignal(true);
+	const [ref, setRef] = createSignal<HTMLElement>();
 
-	const presence = createPresence(isOpen);
+	const { present } = createPresence({
+		show: isOpen,
+		element: () => ref() ?? null,
+	});
 
 	const duration = createMemo(() => local.duration || rootContext.duration());
 
@@ -410,7 +415,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 	createEffect(
 		on(
-			() => presence.isPresent(),
+			() => present(),
 			(isPresent) => !isPresent && deleteToast(),
 		),
 	);
@@ -427,11 +432,11 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	};
 
 	return (
-		<Show when={presence.isPresent()}>
+		<Show when={present()}>
 			<ToastContext.Provider value={context}>
 				<Polymorphic<ToastRootRenderProps>
 					as="li"
-					ref={mergeRefs(presence.setRef, local.ref)}
+					ref={mergeRefs(setRef, local.ref)}
 					role="status"
 					tabIndex={0}
 					style={{

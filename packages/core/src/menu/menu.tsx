@@ -14,6 +14,7 @@ import {
 import {
 	Accessor,
 	ParentProps,
+	Show,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -21,14 +22,16 @@ import {
 	splitProps,
 } from "solid-js";
 
+import createPresence from "solid-presence";
 import { createListState } from "../list";
+import { useOptionalMenubarContext } from "../menubar/menubar-context";
+import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
 import { Popper, PopperRootOptions } from "../popper";
 import { Placement } from "../popper/utils";
 import {
 	CollectionItemWithRef,
 	createDisclosureState,
 	createHideOutside,
-	createPresence,
 	createRegisterId,
 } from "../primitives";
 import {
@@ -72,10 +75,15 @@ export function Menu(props: MenuProps) {
 	const rootContext = useMenuRootContext();
 	const parentDomCollectionContext = useOptionalDomCollectionContext();
 	const parentMenuContext = useOptionalMenuContext();
+	const optionalMenubarContext = useOptionalMenubarContext();
+	const optionalNavigationMenuContext = useOptionalNavigationMenuContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
-			placement: "bottom-start",
+			placement:
+				rootContext.orientation() === "horizontal"
+					? "bottom-start"
+					: "right-start",
 		},
 		props,
 	);
@@ -102,7 +110,7 @@ export function Menu(props: MenuProps) {
 	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
 		others.placement!,
 	);
-	const [nestedMenus, setNestedMenus] = createSignal<Element[]>([]);
+	const [nestedMenus, setNestedMenus] = createSignal<HTMLElement[]>([]);
 
 	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 
@@ -117,9 +125,10 @@ export function Menu(props: MenuProps) {
 		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
 	});
 
-	const contentPresence = createPresence(
-		() => rootContext.forceMount() || disclosureState.isOpen(),
-	);
+	const { present: contentPresent } = createPresence({
+		show: () => rootContext.forceMount() || disclosureState.isOpen(),
+		element: () => contentRef() ?? null,
+	});
 
 	const listState = createListState({
 		selectionMode: "none",
@@ -144,7 +153,7 @@ export function Menu(props: MenuProps) {
 		disclosureState.toggle();
 	};
 
-	const focusContent = () => {
+	const _focusContent = () => {
 		const content = contentRef();
 
 		if (content) {
@@ -154,7 +163,13 @@ export function Menu(props: MenuProps) {
 		}
 	};
 
-	const registerNestedMenu = (element: Element) => {
+	const focusContent = () => {
+		if (optionalNavigationMenuContext != null)
+			setTimeout(() => _focusContent());
+		else _focusContent();
+	};
+
+	const registerNestedMenu = (element: HTMLElement) => {
 		setNestedMenus((prev) => [...prev, element]);
 
 		const parentUnregister = parentMenuContext?.registerNestedMenu(element);
@@ -218,6 +233,35 @@ export function Menu(props: MenuProps) {
 		});
 	});
 
+	createEffect(() => {
+		if (parentMenuContext !== undefined) return;
+		optionalMenubarContext?.registerMenu(rootContext.value()!, [
+			contentRef()!,
+			...nestedMenus(),
+		]);
+	});
+
+	createEffect(() => {
+		if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
+			return;
+		if (optionalMenubarContext.value() === rootContext.value()!) {
+			triggerRef()?.focus();
+			if (optionalMenubarContext.autoFocusMenu()) open(true);
+		} else close();
+	});
+
+	createEffect(() => {
+		if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
+			return;
+		if (disclosureState.isOpen())
+			optionalMenubarContext.setValue(rootContext.value()!);
+	});
+
+	onCleanup(() => {
+		if (parentMenuContext !== undefined) return;
+		optionalMenubarContext?.unregisterMenu(rootContext.value()!);
+	});
+
 	const dataset: Accessor<MenuDataSet> = createMemo(() => ({
 		"data-expanded": disclosureState.isOpen() ? "" : undefined,
 		"data-closed": !disclosureState.isOpen() ? "" : undefined,
@@ -226,7 +270,7 @@ export function Menu(props: MenuProps) {
 	const context: MenuContextValue = {
 		dataset,
 		isOpen: disclosureState.isOpen,
-		contentPresence,
+		contentPresent,
 		nestedMenus,
 		currentPlacement,
 		pointerGraceTimeoutId: () => pointerGraceTimeoutId,
@@ -259,12 +303,17 @@ export function Menu(props: MenuProps) {
 	return (
 		<DomCollectionProvider>
 			<MenuContext.Provider value={context}>
-				<Popper
-					anchorRef={triggerRef}
-					contentRef={contentRef}
-					onCurrentPlacementChange={setCurrentPlacement}
-					{...others}
-				/>
+				<Show
+					when={optionalNavigationMenuContext === undefined}
+					fallback={others.children}
+				>
+					<Popper
+						anchorRef={triggerRef}
+						contentRef={contentRef}
+						onCurrentPlacementChange={setCurrentPlacement}
+						{...others}
+					/>
+				</Show>
 			</MenuContext.Provider>
 		</DomCollectionProvider>
 	);

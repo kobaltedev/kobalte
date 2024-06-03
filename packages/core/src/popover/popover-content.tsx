@@ -221,7 +221,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 	createEffect(() => onCleanup(context.registerContentId(others.id!)));
 
 	return (
-		<Show when={context.contentPresence.isPresent()}>
+		<Show when={context.contentPresent()}>
 			<Popper.Positioner>
 				<DismissableLayer<
 					Component<
@@ -230,7 +230,6 @@ export function PopoverContent<T extends ValidComponent = "div">(
 				>
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
-						context.contentPresence.setRef(el);
 						ref = el;
 					}, local.ref)}
 					role="dialog"

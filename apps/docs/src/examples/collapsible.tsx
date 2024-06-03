@@ -7,7 +7,7 @@ export function BasicExample() {
 	return (
 		<Collapsible class={style.collapsible}>
 			<Collapsible.Trigger class={style.collapsible__trigger}>
-				<span>What is Kobalte ?</span>
+				<span>What is Kobalte?</span>
 				<ChevronDownIcon class={style["collapsible__trigger-icon"]} />
 			</Collapsible.Trigger>
 			<Collapsible.Content class={style.collapsible__content}>

@@ -19,8 +19,8 @@ import {
 	splitProps,
 } from "solid-js";
 
+import createPresence from "solid-presence";
 import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { createPresence } from "../primitives";
 import {
 	CollapsibleDataSet,
 	useCollapsibleContext,
@@ -51,7 +51,7 @@ export type CollapsibleContentProps<
 export function CollapsibleContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, CollapsibleContentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement>();
 
 	const context = useCollapsibleContext();
 
@@ -62,14 +62,17 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 
 	const [local, others] = splitProps(mergedProps, ["ref", "id", "style"]);
 
-	const presence = createPresence(() => context.shouldMount());
+	const { present } = createPresence({
+		show: context.shouldMount,
+		element: () => ref() ?? null,
+	});
 
 	const [height, setHeight] = createSignal(0);
 	const [width, setWidth] = createSignal(0);
 
 	// When opening we want it to immediately open to retrieve dimensions.
-	// When closing we delay `isPresent` to retrieve dimensions before closing.
-	const isOpen = () => context.isOpen() || presence.isPresent();
+	// When closing we delay `present` to retrieve dimensions before closing.
+	const isOpen = () => context.isOpen() || present();
 
 	let isMountAnimationPrevented = isOpen();
 	let originalStyles: Record<string, string> | undefined;
@@ -87,34 +90,34 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 	createEffect(
 		on(
 			/**
-			 * depends on `presence.isPresent` because it will be `false` on
+			 * depends on `present` because it will be `false` on
 			 * animation end (so when close finishes). This allows us to
 			 * retrieve the dimensions *before* closing.
 			 */
-			[() => presence.isPresent()],
+			present,
 			() => {
-				if (!ref) {
+				if (!ref()) {
 					return;
 				}
 
 				originalStyles = originalStyles || {
-					transitionDuration: ref.style.transitionDuration,
-					animationName: ref.style.animationName,
+					transitionDuration: ref()!.style.transitionDuration,
+					animationName: ref()!.style.animationName,
 				};
 
 				// block any animations/transitions so the element renders at its full dimensions
-				ref.style.transitionDuration = "0s";
-				ref.style.animationName = "none";
+				ref()!.style.transitionDuration = "0s";
+				ref()!.style.animationName = "none";
 
 				// get width and height from full dimensions
-				const rect = ref.getBoundingClientRect();
+				const rect = ref()!.getBoundingClientRect();
 				setHeight(rect.height);
 				setWidth(rect.width);
 
 				// kick off any animations/transitions that were originally set up if it isn't the initial mount
 				if (!isMountAnimationPrevented) {
-					ref.style.transitionDuration = originalStyles.transitionDuration;
-					ref.style.animationName = originalStyles.animationName;
+					ref()!.style.transitionDuration = originalStyles.transitionDuration;
+					ref()!.style.animationName = originalStyles.animationName;
 				}
 			},
 		),
@@ -123,13 +126,10 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 	createEffect(() => onCleanup(context.registerContentId(local.id)));
 
 	return (
-		<Show when={presence.isPresent()}>
+		<Show when={present()}>
 			<Polymorphic<CollapsibleContentRenderProps>
 				as="div"
-				ref={mergeRefs((el) => {
-					presence.setRef(el);
-					ref = el;
-				}, local.ref)}
+				ref={mergeRefs(setRef, local.ref)}
 				id={local.id}
 				style={{
 					"--kb-collapsible-content-height": height()

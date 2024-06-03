@@ -7,12 +7,7 @@
  * https://github.com/ariakit/ariakit/blob/a178c2f2dcc6571ba338fd74c79e3b0eab2a27c5/packages/ariakit/src/popover/__popover-arrow-path.ts
  */
 
-import {
-	OverrideComponentProps,
-	getWindow,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { getWindow, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
 	Accessor,
 	JSX,
@@ -91,7 +86,7 @@ export function PopperArrow<T extends ValidComponent = "div">(
 	const rotate = () => {
 		return `rotate(${
 			ROTATION_DEG[dir()]
-		} ${HALF_DEFAULT_SIZE} ${HALF_DEFAULT_SIZE})`;
+		} ${HALF_DEFAULT_SIZE} ${HALF_DEFAULT_SIZE}) translate(0 2)`;
 	};
 
 	return (
@@ -116,7 +111,11 @@ export function PopperArrow<T extends ValidComponent = "div">(
 			{...others}
 		>
 			{/* biome-ignore lint/a11y/noSvgWithoutTitle: aria hidden */}
-			<svg display="block" viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}>
+			<svg
+				display="block"
+				viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}
+				style="transform:scale(1.02)"
+			>
 				<g transform={rotate()}>
 					<path fill="none" d={ARROW_PATH} />
 					<path stroke="none" d={ARROW_PATH} />

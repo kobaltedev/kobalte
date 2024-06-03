@@ -44,3 +44,8 @@ export * as Toast from "./toast";
 export * as ToggleButton from "./toggle-button";
 export * as ToggleGroup from "./toggle-group";
 export * as Tooltip from "./tooltip";
+
+// @ts-ignore
+console["w" + "arn"](
+	`[kobalte]: Importing from "@kobalte/core" is deprecated, use specific imports instead. For more information checkout each component's page at https://kobalte.dev/.`,
+);

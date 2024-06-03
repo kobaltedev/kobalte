@@ -8,6 +8,7 @@
 
 import {
 	MaybeAccessor,
+	Orientation,
 	access,
 	callHandler,
 	createEventListener,
@@ -73,6 +74,9 @@ interface CreateSelectableCollectionProps {
 
 	/** When virtualized, the Virtualizer function used to scroll to the item of the key provided. */
 	scrollToKey?: (key: string) => void;
+
+	/** The orientation of the selectable collection interactions. */
+	orientation?: MaybeAccessor<Orientation | undefined>;
 }
 
 /**
@@ -125,6 +129,8 @@ export function createSelectableCollection<
 		selectionManager: () => access(mergedProps.selectionManager),
 	});
 
+	const orientation = () => access(mergedProps.orientation) ?? "vertical";
+
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, typeSelectHandlers.onKeyDown);
 
@@ -162,7 +168,7 @@ export function createSelectableCollection<
 		const focusedKey = manager.focusedKey();
 
 		switch (e.key) {
-			case "ArrowDown": {
+			case orientation() === "vertical" ? "ArrowDown" : "ArrowRight": {
 				if (delegate.getKeyBelow) {
 					e.preventDefault();
 
@@ -182,7 +188,7 @@ export function createSelectableCollection<
 				}
 				break;
 			}
-			case "ArrowUp": {
+			case orientation() === "vertical" ? "ArrowUp" : "ArrowLeft": {
 				if (delegate.getKeyAbove) {
 					e.preventDefault();
 
@@ -202,7 +208,7 @@ export function createSelectableCollection<
 				}
 				break;
 			}
-			case "ArrowLeft": {
+			case orientation() === "vertical" ? "ArrowLeft" : "ArrowUp": {
 				if (delegate.getKeyLeftOf) {
 					e.preventDefault();
 
@@ -222,7 +228,7 @@ export function createSelectableCollection<
 				}
 				break;
 			}
-			case "ArrowRight": {
+			case orientation() === "vertical" ? "ArrowRight" : "ArrowDown": {
 				if (delegate.getKeyRightOf) {
 					e.preventDefault();
 

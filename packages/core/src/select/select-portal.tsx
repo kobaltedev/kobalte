@@ -12,7 +12,7 @@ export function SelectPortal(props: SelectPortalProps) {
 	const context = useSelectContext();
 
 	return (
-		<Show when={context.contentPresence.isPresent()}>
+		<Show when={context.contentPresent()}>
 			<Portal {...props} />
 		</Show>
 	);

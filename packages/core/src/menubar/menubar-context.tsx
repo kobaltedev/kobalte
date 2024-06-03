@@ -1,3 +1,4 @@
+import { Orientation } from "@kobalte/utils";
 import { Accessor, Setter, createContext, useContext } from "solid-js";
 
 export interface MenubarDataSet {
@@ -7,15 +8,17 @@ export interface MenubarDataSet {
 
 export interface MenubarContextValue {
 	dataset: Accessor<MenubarDataSet>;
-	value: Accessor<string | undefined>;
+	value: Accessor<string | undefined | null>;
 	setValue: (
 		next:
 			| string
-			| ((prev: string | undefined) => string | undefined)
-			| undefined,
+			| ((prev: string | undefined | null) => string | undefined)
+			| undefined
+			| null,
 	) => void;
 	menus: Accessor<Set<string>>;
-	menuRefs: Accessor<Array<Element>>;
+	menuRefs: Accessor<Array<HTMLElement>>;
+	menuRefMap: Accessor<Map<string, Array<HTMLElement>>>;
 	lastValue: Accessor<string | undefined>;
 	setLastValue: (
 		next:
@@ -23,7 +26,7 @@ export interface MenubarContextValue {
 			| ((prev: string | undefined) => string | undefined)
 			| undefined,
 	) => void;
-	registerMenu: (value: string, refs: Array<Element>) => void;
+	registerMenu: (value: string, refs: Array<HTMLElement>) => void;
 	unregisterMenu: (value: string) => void;
 	nextMenu: () => void;
 	previousMenu: () => void;
@@ -31,6 +34,7 @@ export interface MenubarContextValue {
 	setAutoFocusMenu: Setter<boolean>;
 	autoFocusMenu: Accessor<boolean>;
 	generateId: (part: string) => string;
+	orientation: Accessor<Orientation>;
 }
 
 export const MenubarContext = createContext<MenubarContextValue>();

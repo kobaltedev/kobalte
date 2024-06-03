@@ -1,6 +1,5 @@
 import { Accessor, createContext, useContext } from "solid-js";
 
-import { CreatePresenceResult } from "../primitives";
 import { PopoverIntlTranslations } from "./popover.intl";
 
 export interface PopoverDataSet {
@@ -14,7 +13,7 @@ export interface PopoverContextValue {
 	isOpen: Accessor<boolean>;
 	isModal: Accessor<boolean>;
 	preventScroll: Accessor<boolean>;
-	contentPresence: CreatePresenceResult;
+	contentPresent: Accessor<boolean>;
 	triggerRef: Accessor<HTMLElement | undefined>;
 	contentId: Accessor<string | undefined>;
 	titleId: Accessor<string | undefined>;
