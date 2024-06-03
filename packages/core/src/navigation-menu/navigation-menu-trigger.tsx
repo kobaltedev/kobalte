@@ -54,6 +54,8 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 	) => {
 		callHandler(e, local.onPointerEnter);
 
+		if (e.pointerType === "touch") return;
+
 		context.cancelLeaveTimer();
 
 		if (context.dataset()["data-expanded"] === "") return;
@@ -68,6 +70,8 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 		e,
 	) => {
 		callHandler(e, local.onPointerLeave);
+
+		if (e.pointerType === "touch") return;
 
 		context.startLeaveTimer();
 		if (timeoutId) clearTimeout(timeoutId);

@@ -22,6 +22,7 @@ import {
 	on,
 	onCleanup,
 	splitProps,
+	batch,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -138,12 +139,15 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 	);
 
 	const handleClick = () => {
-		// When opened by click, automatically focus Menubar menus
-		optionalMenubarContext?.setAutoFocusMenu(true);
-
-		// Don't auto focus element for Menubar
-		if (optionalMenubarContext !== undefined) context.toggle(false);
-		else context.toggle(true);
+		if (optionalMenubarContext !== undefined) {
+			// When opened by click, automatically focus Menubar menus
+			if (!context.isOpen()) {
+				if (!optionalMenubarContext.autoFocusMenu()) {
+					optionalMenubarContext.setAutoFocusMenu(true);
+				}
+				context.open(false)
+			}	else context.close(true);
+		} else context.toggle(true);
 
 		if (
 			optionalMenubarContext !== undefined &&
@@ -238,7 +242,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
-		if (optionalMenubarContext !== undefined)
+		if (optionalMenubarContext !== undefined && e.currentTarget.dataset.pointerType !== "touch")
 			optionalMenubarContext.setValue(key);
 	};
 
