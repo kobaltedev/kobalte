@@ -92,7 +92,10 @@ export function MenuRoot(props: MenuRootProps) {
 		forceMount: () => local.forceMount ?? false,
 		generateId: createGenerateId(() => local.id!),
 		value: () => local.value,
-		orientation: () => local.orientation ?? optionalMenubarContext?.orientation() ?? "horizontal",
+		orientation: () =>
+			local.orientation ??
+			optionalMenubarContext?.orientation() ??
+			"horizontal",
 	};
 
 	return (

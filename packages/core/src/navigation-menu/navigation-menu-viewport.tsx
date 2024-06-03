@@ -1,4 +1,4 @@
-import { Orientation, mergeRefs, composeEventHandlers } from "@kobalte/utils";
+import { Orientation, composeEventHandlers, mergeRefs } from "@kobalte/utils";
 import {
 	Component,
 	JSX,

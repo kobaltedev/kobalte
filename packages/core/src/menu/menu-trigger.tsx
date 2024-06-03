@@ -17,12 +17,12 @@ import {
 	Component,
 	JSX,
 	ValidComponent,
+	batch,
 	createEffect,
 	createMemo,
 	on,
 	onCleanup,
 	splitProps,
-	batch,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -145,8 +145,8 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 				if (!optionalMenubarContext.autoFocusMenu()) {
 					optionalMenubarContext.setAutoFocusMenu(true);
 				}
-				context.open(false)
-			}	else context.close(true);
+				context.open(false);
+			} else context.close(true);
 		} else context.toggle(true);
 
 		if (
@@ -242,7 +242,10 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 
-		if (optionalMenubarContext !== undefined && e.currentTarget.dataset.pointerType !== "touch")
+		if (
+			optionalMenubarContext !== undefined &&
+			e.currentTarget.dataset.pointerType !== "touch"
+		)
 			optionalMenubarContext.setValue(key);
 	};
 
