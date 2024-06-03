@@ -110,7 +110,6 @@
 	text-decoration: none;
 	outline: none;
 	user-select: none;
-	grid-row: span 3;
 }
 
 .navigation-menu__item-callout:focus {
@@ -214,6 +213,10 @@
 .navigation-menu__content.content-1 {
 	width: min(500px, 90dvw);
 	grid-template-columns: 0.75fr 1fr;
+}
+
+.navigation-menu__content.content-1 > li:first-child {
+	grid-row: span 3;
 }
 
 .navigation-menu__content.content-2 {

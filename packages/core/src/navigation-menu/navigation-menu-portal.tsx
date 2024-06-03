@@ -1,4 +1,5 @@
-import { Show } from "solid-js";
+import { mergeRefs } from "@kobalte/utils";
+import { Show, splitProps } from "solid-js";
 import { MenuPortal, MenuPortalProps, useMenuContext } from "../menu";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 
@@ -11,15 +12,20 @@ export function NavigationMenuPortal(props: NavigationMenuPortalProps) {
 	const context = useNavigationMenuContext();
 	const menuContext = useMenuContext();
 
+	const [local, others] = splitProps(props, ["ref"]);
+
 	return (
 		<Show when={context.viewportPresent()}>
 			<MenuPortal
+				ref={mergeRefs((ref) => {
+					if (ref) ref.setAttribute("role", "presentation");
+				}, local.ref)}
 				mount={
 					menuContext.parentMenuContext() == null
 						? context.viewportRef()
 						: undefined
 				}
-				{...props}
+				{...others}
 			/>
 		</Show>
 	);
