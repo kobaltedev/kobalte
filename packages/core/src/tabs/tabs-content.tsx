@@ -55,7 +55,7 @@ export type TabsContentProps<
 export function TabsContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, TabsContentProps<T>>,
 ) {
-	let ref!: HTMLElement;
+	const [ref, setRef] = createSignal<HTMLElement>();
 
 	const context = useTabsContext();
 
@@ -74,11 +74,11 @@ export function TabsContent<T extends ValidComponent = "div">(
 
 	const { present } = createPresence({
 		show: () => local.forceMount || isSelected(),
-		element: () => ref ?? null,
+		element: () => ref() ?? null,
 	});
 
 	createEffect(
-		on([() => ref, () => present()], ([ref, isPresent]) => {
+		on([() => ref(), () => present()], ([ref, isPresent]) => {
 			if (ref == null || !isPresent) {
 				return;
 			}
@@ -117,9 +117,7 @@ export function TabsContent<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<TabsContentRenderProps>
 				as="div"
-				ref={mergeRefs((el) => {
-					ref = el;
-				}, local.ref)}
+				ref={mergeRefs(setRef, local.ref)}
 				id={id()}
 				role="tabpanel"
 				tabIndex={tabIndex()}

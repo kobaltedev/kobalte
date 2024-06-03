@@ -1,5 +1,5 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { Show, ValidComponent, createSignal, splitProps } from "solid-js";
+import { Show, ValidComponent, createSignal, splitProps, createEffect } from "solid-js";
 
 import createPresence from "solid-presence";
 import { FormControlDataSet, useFormControlContext } from "../form-control";
@@ -55,7 +55,7 @@ export function CheckboxIndicator<T extends ValidComponent = "div">(
 	const { present } = createPresence({
 		show: () =>
 			local.forceMount || context.indeterminate() || context.checked(),
-		element: ref ?? null,
+			element: () => ref() ?? null,
 	});
 
 	return (
