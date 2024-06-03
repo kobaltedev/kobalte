@@ -220,6 +220,18 @@
 	grid-template-columns: 1fr 1fr;
 }
 
+@media screen and (max-width: 650px) {
+	.navigation-menu__item-label {
+		font-size: 0.9rem;
+		line-height: 1;
+	}
+
+	.navigation-menu__item-description {
+		font-size: 0.75rem;
+		line-height: 1.1;
+	}
+}
+
 .navigation-menu__arrow {
 	transition: transform 250ms;
 }
@@ -331,4 +343,23 @@
 		opacity: 0;
 		transform: translateY(-200px);
 	}
+}
+
+[data-kb-theme="dark"] .navigation-menu__trigger {
+	background-color: #27272a;
+	color: #0284c7;
+}
+
+[data-kb-theme="dark"] .navigation-menu__item-label,
+[data-kb-theme="dark"] .navigation-menu__item-description {
+	color: #e9e9ea;
+}
+
+[data-kb-theme="dark"] .navigation-menu__root {
+	background-color: #27272a;
+}
+
+[data-kb-theme="dark"] .navigation-menu__viewport {
+	background-color: #27272a;
+	border: 1px solid hsl(240 5% 26%);
 }

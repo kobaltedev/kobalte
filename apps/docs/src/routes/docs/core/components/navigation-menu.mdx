@@ -556,6 +556,18 @@ The checkable menu item consists of:
       animation-name: exitToBottom;
     }
 
+    @media screen and (max-width: 650px) {
+      .navigation-menu__item-label {
+        font-size: 0.9rem;
+        line-height: 1;
+      }
+
+      .navigation-menu__item-description {
+        font-size: 0.75rem;
+        line-height: 1.1;
+      }
+    }
+
     .navigation-menu__content.content-1 {
       width: min(500px, 90dvw);
       grid-template-columns: 0.75fr 1fr;
@@ -686,7 +698,25 @@ The checkable menu item consists of:
 
 ## Usage
 
-### Link Trigger
+### Viewport size
+
+Since the viewport content has a position of `absolute` to allow animating, Kobalte exports a custom CSS variable `--kb-navigation-menu-viewport-height` and `--kb-navigation-menu-viewport-width`.
+The height and width will be copied from the active `NavigationMenu.Content`, which can either be set using CSS or automatically calculated based on it's content.
+Combined with a transition CSS rule the size can be animated.
+
+```css {2-3}
+/* style.css */
+.navigation-menu__viewport {
+	width: var(--kb-navigation-menu-viewport-width);
+	height: var(--kb-navigation-menu-viewport-height);
+	transition:
+		width,
+		height,
+		250ms ease;
+}
+```
+
+### Link trigger
 
 To make one of the navigation menu triggers a link instead of opening a menu, omit the `NavigationMenu.Menu` and set `as="a"` on the `NavigationMenu.Trigger`.
 
