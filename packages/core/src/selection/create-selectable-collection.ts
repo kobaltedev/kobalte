@@ -96,7 +96,6 @@ export function createSelectableCollection<
 	const defaultProps: Partial<CreateSelectableCollectionProps> = {
 		selectOnFocus: () =>
 			access(props.selectionManager).selectionBehavior() === "replace",
-		orientation: "vertical",
 	};
 
 	const mergedProps = mergeProps(defaultProps, props);
@@ -130,7 +129,7 @@ export function createSelectableCollection<
 		selectionManager: () => access(mergedProps.selectionManager),
 	});
 
-	const orientation = () => access(mergedProps.orientation);
+	const orientation = () => access(mergedProps.orientation) ?? "vertical";
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, typeSelectHandlers.onKeyDown);
