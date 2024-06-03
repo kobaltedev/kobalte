@@ -9,7 +9,7 @@ export function BasicExample() {
 			<RadioGroup.Label class={style["radio-group__label"]}>
 				Favorite fruit
 			</RadioGroup.Label>
-			<div class={style["radio-group__items"]}>
+			<div class={style["radio-group__items"]} role="presentation">
 				<For each={["Apple", "Orange", "Watermelon"]}>
 					{(fruit) => (
 						<RadioGroup.Item value={fruit} class={style.radio}>
@@ -34,7 +34,7 @@ export function DefaultValueExample() {
 			<RadioGroup.Label class={style["radio-group__label"]}>
 				Favorite fruit
 			</RadioGroup.Label>
-			<div class={style["radio-group__items"]}>
+			<div class={style["radio-group__items"]} role="presentation">
 				<For each={["Apple", "Orange", "Watermelon"]}>
 					{(fruit) => (
 						<RadioGroup.Item value={fruit} class={style.radio}>
@@ -66,7 +66,7 @@ export function ControlledExample() {
 				<RadioGroup.Label class={style["radio-group__label"]}>
 					Favorite fruit
 				</RadioGroup.Label>
-				<div class={style["radio-group__items"]}>
+				<div class={style["radio-group__items"]} role="presentation">
 					<For each={["Apple", "Orange", "Watermelon"]}>
 						{(fruit) => (
 							<RadioGroup.Item value={fruit} class={style.radio}>
@@ -93,7 +93,7 @@ export function DescriptionExample() {
 			<RadioGroup.Label class={style["radio-group__label"]}>
 				Favorite fruit
 			</RadioGroup.Label>
-			<div class={style["radio-group__items"]}>
+			<div class={style["radio-group__items"]} role="presentation">
 				<For each={["Apple", "Orange", "Watermelon"]}>
 					{(fruit) => (
 						<RadioGroup.Item value={fruit} class={style.radio}>
@@ -128,7 +128,7 @@ export function ErrorMessageExample() {
 			<RadioGroup.Label class={style["radio-group__label"]}>
 				Favorite fruit
 			</RadioGroup.Label>
-			<div class={style["radio-group__items"]}>
+			<div class={style["radio-group__items"]} role="presentation">
 				<For each={["Apple", "Orange", "Watermelon"]}>
 					{(fruit) => (
 						<RadioGroup.Item value={fruit} class={style.radio}>
@@ -172,7 +172,7 @@ export function HTMLFormExample() {
 				<RadioGroup.Label class={style["radio-group__label"]}>
 					Favorite fruit
 				</RadioGroup.Label>
-				<div class={style["radio-group__items"]}>
+				<div class={style["radio-group__items"]} role="presentation">
 					<For each={["Apple", "Orange", "Watermelon"]}>
 						{(fruit) => (
 							<RadioGroup.Item value={fruit} class={style.radio}>
