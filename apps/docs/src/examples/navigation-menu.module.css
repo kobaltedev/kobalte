@@ -376,3 +376,10 @@
 [data-kb-theme="dark"] .navigation-menu__item-callout {
 	background: linear-gradient(135deg, #0284c7 0%, #00345e 100%);
 }
+
+.navigation-menu__content.content-empty {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 200px;
+}

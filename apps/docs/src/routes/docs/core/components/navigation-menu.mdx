@@ -1,5 +1,5 @@
 import { Preview, Kbd, TabsSnippets } from "../../../../components";
-import { BasicExample } from "../../../../examples/navigation-menu";
+import { BasicExample, AnimationExample } from "../../../../examples/navigation-menu";
 
 # Navigation Menu
 
@@ -112,7 +112,7 @@ The checkable menu item consists of:
 
 ## Example
 
-<Preview>
+<Preview class="bg-[#f6f6f6]">
 	<BasicExample />
 </Preview>
 
@@ -130,7 +130,7 @@ The checkable menu item consists of:
 
     import "./style.css";
 
-    export function BasicExample() {
+    export function App() {
       const [orientation, setOrientation] = createSignal<Orientation>("horizontal");
 
       return (
@@ -139,7 +139,7 @@ The checkable menu item consists of:
             <NavigationMenu.Menu>
               <NavigationMenu.Trigger class="navigation-menu__trigger">
                 Learn{" "}
-                <NavigationMenu.Icon aria-hidden="true" class="navigation-menu__trigger-indicator">
+                <NavigationMenu.Icon class="navigation-menu__trigger-indicator">
                   <ChevronDownIcon />
                 </NavigationMenu.Icon>
               </NavigationMenu.Trigger>
@@ -374,22 +374,18 @@ The checkable menu item consists of:
       transition: transform 250ms ease;
     }
 
-    .navigation- menu-trigger[data-expanded] .navigation- menu-trigger-indicator {
+    .navigation-menu__trigger-indicator[data-expanded] {
       transform: rotateX(180deg);
     }
 
-    .navigation-
-      menu-root[data-orientation="vertical"]
-      .navigation-
-      menu-trigger
+    .navigation-menu__root[data-orientation="vertical"]
+      .navigation-menu-trigger
       .navigation-menu__trigger-indicator {
       transform: rotate(-90deg);
     }
 
-    .navigation-
-      menu-root[data-orientation="vertical"]
-      .navigation-
-      menu-trigger[data-expanded]
+    .navigation-menu__root[data-orientation="vertical"]
+      .navigation-menu-trigger[data-expanded]
       .navigation-menu__trigger-indicator {
       transform: rotate(-90deg) rotateX(180deg);
     }
@@ -450,13 +446,13 @@ The checkable menu item consists of:
       outline: 2px solid #0284c790;
     }
 
-    .navigation- menu-item-callout .navigation- menu-item-label {
+    .navigation-menu__item-callout .navigation-menu__item-label {
       margin-top: 16px;
       font-size: 1.25rem;
       color: white;
     }
 
-    .navigation- menu-item-callout .navigation- menu-item-description {
+    .navigation-menu__item-callout .navigation-menu__item-description {
       color: white;
     }
 
@@ -491,8 +487,8 @@ The checkable menu item consists of:
       line-height: 1;
     }
 
-    .navigation- menu-item:hover,
-    .navigation- menu-item:focus {
+    .navigation-menu__item:hover,
+    .navigation-menu__item:focus {
       background-color: #0284c710;
     }
 
@@ -518,30 +514,29 @@ The checkable menu item consists of:
       pointer-events: auto;
     }
 
-    .navigation- menu-content[data-motion="from-start"] {
+    .navigation-menu__content[data-motion="from-start"] {
       animation-name: enterFromLeft;
     }
-    .navigation- menu-content[data-motion="from-end"] {
+    .navigation-menu__content[data-motion="from-end"] {
       animation-name: enterFromRight;
     }
-    .navigation- menu-content[data-motion="to-start"] {
+    .navigation-menu__content[data-motion="to-start"] {
       animation-name: exitToLeft;
     }
-    .navigation- menu-content[data-motion="to-end"] {
+    .navigation-menu__content[data-motion="to-end"] {
       animation-name: exitToRight;
     }
 
-    .navigation-
-      menu-content[data-orientation="vertical"][data-motion="from-start"] {
+    .navigation-menu__content[data-orientation="vertical"][data-motion="from-start"] {
       animation-name: enterFromTop;
     }
-    .navigation- menu-content[data-orientation="vertical"][data-motion="from-end"] {
+    .navigation-menu__content[data-orientation="vertical"][data-motion="from-end"] {
       animation-name: enterFromBottom;
     }
-    .navigation- menu-content[data-orientation="vertical"][data-motion="to-start"] {
+    .navigation-menu__content[data-orientation="vertical"][data-motion="to-start"] {
       animation-name: exitToTop;
     }
-    .navigation- menu-content[data-orientation="vertical"][data-motion="to-end"] {
+    .navigation-menu__content[data-orientation="vertical"][data-motion="to-end"] {
       animation-name: exitToBottom;
     }
 
@@ -769,6 +764,8 @@ We expose a CSS custom property `--kb-menu-content-transform-origin` which can b
 }
 ```
 
+### Content animations
+
 For animating the content of the viewport we apply the attribute `data-motion` of type `"to-start" | "to-end" | "from-start" | "from-end"` on the `NavigationMenu.Content`.
 
 ```css
@@ -830,6 +827,203 @@ For animating the content of the viewport we apply the attribute `data-motion` o
 	}
 }
 ```
+
+<Preview class="bg-[#f6f6f6]">
+	<AnimationExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { NavigationMenu } from "@kobalte/core/navigation-menu";
+
+    import "./style.css";
+
+    export function App() {
+
+      return (
+        <NavigationMenu class="navigation-menu__root" orientation={orientation()}>
+          <NavigationMenu.Menu>
+            <NavigationMenu.Trigger class="navigation-menu__trigger">
+              Learn{" "}
+              <NavigationMenu.Icon class="navigation-menu__trigger-indicator">
+                <ChevronDownIcon />
+              </NavigationMenu.Icon>
+            </NavigationMenu.Trigger>
+            <NavigationMenu.Portal>
+              <NavigationMenu.Content class="navigation-menu__content">
+                Learn Content
+              </NavigationMenu.Content>
+            </NavigationMenu.Portal>
+          </NavigationMenu.Menu>
+
+          <NavigationMenu.Menu>
+            <NavigationMenu.Trigger class="navigation-menu__trigger">
+              Overview{" "}
+              <NavigationMenu.Icon class="navigation-menu__trigger-indicator">
+                <ChevronDownIcon />
+              </NavigationMenu.Icon>
+            </NavigationMenu.Trigger>
+            <NavigationMenu.Portal>
+              <NavigationMenu.Content class="navigation-menu__content">
+                Overview Content
+              </NavigationMenu.Content>
+            </NavigationMenu.Portal>
+          </NavigationMenu.Menu>
+
+          <NavigationMenu.Trigger
+            class="navigation-menu__trigger"
+            as="a"
+            href="https://github.com/kobaltedev/kobalte"
+            target="_blank"
+          >
+            GitHub
+          </NavigationMenu.Trigger>
+
+          <NavigationMenu.Viewport class="navigation-menu__viewport">
+            <NavigationMenu.Arrow class="navigation-menu__arrow" />
+          </NavigationMenu.Viewport>
+        </NavigationMenu>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    /* This snippet only includes the minimum to get the behavior working */
+
+    .navigation-menu__viewport {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: var(--kb-navigation-menu__viewport-width);
+      height: var(--kb-navigation-menu__viewport-height);
+      z-index: 1000;
+      opacity: 0;
+      overflow-x: clip;
+      overflow-y: visible;
+      transform-origin: var(--kb-menu-content-transform-origin);
+      transition:
+        width,
+        height,
+        250ms ease;
+      animation: viewportHide 250ms ease-in forwards;
+      pointer-events: none;
+    }
+
+    .navigation-menu__viewport[data-expanded] {
+      animation: viewportShow 250ms ease-out;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .navigation-menu__content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-sizing: border-box;
+      animation-duration: 250ms;
+      animation-timing-function: ease;
+      animation-fill-mode: forwards;
+      pointer-events: none;
+    }
+
+    .navigation-menu__content[data-expanded] {
+      pointer-events: auto;
+    }
+
+    .navigation-menu__content[data-motion="from-start"] {
+      animation-name: enterFromLeft;
+    }
+    .navigation-menu__content[data-motion="from-end"] {
+      animation-name: enterFromRight;
+    }
+    .navigation-menu__content[data-motion="to-start"] {
+      animation-name: exitToLeft;
+    }
+    .navigation-menu__content[data-motion="to-end"] {
+      animation-name: exitToRight;
+    }
+
+    .navigation-menu__arrow {
+      transition: transform 250ms;
+    }
+
+    @keyframes viewportShow {
+      from {
+        opacity: 0;
+        transform: rotateX(-20deg) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: rotateX(0deg) scale(1);
+      }
+    }
+    @keyframes viewportHide {
+      from {
+        opacity: 1;
+        transform: rotateX(0deg) scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: rotateX(-10deg) scale(0.96);
+      }
+    }
+
+    @keyframes enterFromRight {
+      from {
+        opacity: 0;
+        transform: translateX(200px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes enterFromLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-200px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes exitToRight {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(200px);
+      }
+    }
+
+    @keyframes exitToLeft {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(-200px);
+      }
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
 
 ## API Reference
 

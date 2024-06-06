@@ -253,3 +253,61 @@ export function BasicExample() {
 		</>
 	);
 }
+
+export function AnimationExample() {
+	return (
+		<>
+			<NavigationMenu class={style["navigation-menu__root"]}>
+				<NavigationMenu.Menu>
+					<NavigationMenu.Trigger class={style["navigation-menu__trigger"]}>
+						Learn{" "}
+						<NavigationMenu.Icon
+							aria-hidden="true"
+							class={style["navigation-menu__trigger-indicator"]}
+						>
+							<ChevronDownIcon />
+						</NavigationMenu.Icon>
+					</NavigationMenu.Trigger>
+					<NavigationMenu.Portal>
+						<NavigationMenu.Content
+							class={`${style["navigation-menu__content"]} ${style["content-1"]} ${style["content-empty"]}`}
+						>
+							Learn Content
+						</NavigationMenu.Content>
+					</NavigationMenu.Portal>
+				</NavigationMenu.Menu>
+
+				<NavigationMenu.Menu>
+					<NavigationMenu.Trigger class={style["navigation-menu__trigger"]}>
+						Overview{" "}
+						<NavigationMenu.Icon
+							class={style["navigation-menu__trigger-indicator"]}
+						>
+							<ChevronDownIcon />
+						</NavigationMenu.Icon>
+					</NavigationMenu.Trigger>
+					<NavigationMenu.Portal>
+						<NavigationMenu.Content
+							class={`${style["navigation-menu__content"]} ${style["content-2"]} ${style["content-empty"]}`}
+						>
+							Overview Content
+						</NavigationMenu.Content>
+					</NavigationMenu.Portal>
+				</NavigationMenu.Menu>
+
+				<NavigationMenu.Trigger
+					class={style["navigation-menu__trigger"]}
+					as="a"
+					href="https://github.com/kobaltedev/kobalte"
+					target="_blank"
+				>
+					GitHub
+				</NavigationMenu.Trigger>
+
+				<NavigationMenu.Viewport class={style["navigation-menu__viewport"]}>
+					<NavigationMenu.Arrow class={style["navigation-menu__arrow"]} />
+				</NavigationMenu.Viewport>
+			</NavigationMenu>
+		</>
+	);
+}
