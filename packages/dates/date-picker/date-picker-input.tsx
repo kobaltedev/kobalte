@@ -15,16 +15,16 @@ import {
 	toCalendar,
 } from "@internationalized/date";
 import {
-	OverrideComponentProps,
+	type OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Accessor,
+	type Accessor,
 	For,
 	Index,
-	JSX,
+	type JSX,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -32,19 +32,19 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { DateValue } from "../calendar/types";
+import type { DateValue } from "../calendar/types";
 import { asSingleValue } from "../calendar/utils";
 import { useFormControlContext } from "../form-control";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { type AsChildProp, Polymorphic } from "../polymorphic";
 import { useDatePickerContext } from "./date-picker-context";
 import {
 	DatePickerInputContext,
-	DatePickerInputContextValue,
+	type DatePickerInputContextValue,
 } from "./date-picker-input-context";
-import { DatePickerIntlTranslations } from "./date-picker.intl";
-import { DateFieldOptions, DateSegment, SegmentType } from "./types";
+import type { DatePickerIntlTranslations } from "./date-picker.intl";
+import type { DateFieldOptions, DateSegment, SegmentType } from "./types";
 import {
-	FormatterOptions,
+	type FormatterOptions,
 	convertValue,
 	createPlaceholderDate,
 	getDateFieldFormatOptions,
@@ -271,7 +271,7 @@ export function DatePickerInput(props: DatePickerInputProps) {
 							datePickerContext.translations(),
 							segment.type,
 							segment.value,
-					  )
+						)
 					: null;
 
 				return {
@@ -497,7 +497,7 @@ export function DatePickerInput(props: DatePickerInputProps) {
 								granularity,
 								calendar,
 								timeZone,
-						  );
+							);
 				});
 			},
 		),

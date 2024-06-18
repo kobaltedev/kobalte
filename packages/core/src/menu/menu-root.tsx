@@ -1,14 +1,17 @@
 import {
-	Orientation,
+	type Orientation,
 	createGenerateId,
 	mergeDefaultProps,
 } from "@kobalte/utils";
-import { ParentProps, createUniqueId, splitProps } from "solid-js";
+import { type ParentProps, createUniqueId, splitProps } from "solid-js";
 
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { createDisclosureState } from "../primitives";
-import { Menu, MenuOptions } from "./menu";
-import { MenuRootContext, MenuRootContextValue } from "./menu-root-context";
+import { Menu, type MenuOptions } from "./menu";
+import {
+	MenuRootContext,
+	type MenuRootContextValue,
+} from "./menu-root-context";
 
 export interface MenuRootOptions extends MenuOptions {
 	/**

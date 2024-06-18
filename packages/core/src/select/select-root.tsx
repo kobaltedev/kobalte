@@ -1,11 +1,16 @@
-import { Component, ValidComponent, createMemo, splitProps } from "solid-js";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import {
+	type Component,
+	type ValidComponent,
+	createMemo,
+	splitProps,
+} from "solid-js";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import {
 	SelectBase,
-	SelectBaseCommonProps,
-	SelectBaseOptions,
-	SelectBaseRenderProps,
+	type SelectBaseCommonProps,
+	type SelectBaseOptions,
+	type SelectBaseRenderProps,
 } from "./select-base";
 
 export interface SelectSingleSelectionOptions<T> {

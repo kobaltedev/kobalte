@@ -2,7 +2,7 @@ import { nodeTypes } from "@mdx-js/mdx";
 import { defineConfig } from "@solidjs/start/config";
 // @ts-ignore missing types
 import pkg from "@vinxi/plugin-mdx";
-import { Options as AcornOptions, parse } from "acorn";
+import { type Options as AcornOptions, parse } from "acorn";
 // @ts-ignore
 import Slugger from "github-slugger";
 import rehypePrettyCode from "rehype-pretty-code";

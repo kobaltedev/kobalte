@@ -1,7 +1,11 @@
-import { JSX, ValidComponent } from "solid-js";
+import type { JSX, ValidComponent } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { ProgressDataSet, useProgressContext } from "./progress-context";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type ProgressDataSet, useProgressContext } from "./progress-context";
 
 export interface ProgressValueLabelOptions {}
 
@@ -31,9 +35,10 @@ export function ProgressValueLabel<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<ProgressValueLabelRenderProps>
 			as="div"
-			children={context.valueLabel()}
 			{...context.dataset()}
 			{...(props as ProgressValueLabelProps)}
-		/>
+		>
+			{context.valueLabel()}
+		</Polymorphic>
 	);
 }

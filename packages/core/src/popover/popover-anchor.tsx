@@ -1,8 +1,12 @@
 import { mergeRefs } from "@kobalte/utils";
-import { ValidComponent, splitProps } from "solid-js";
+import { type ValidComponent, splitProps } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { PopoverDataSet, usePopoverContext } from "./popover-context";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type PopoverDataSet, usePopoverContext } from "./popover-context";
 
 export interface PopoverAnchorOptions {}
 

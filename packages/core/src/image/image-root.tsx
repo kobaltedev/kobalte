@@ -7,11 +7,15 @@
  */
 
 import { OverrideComponentProps } from "@kobalte/utils";
-import { ValidComponent, createSignal, splitProps } from "solid-js";
+import { type ValidComponent, createSignal, splitProps } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { ImageContext, ImageContextValue } from "./image-context";
-import { ImageLoadingStatus } from "./types";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { ImageContext, type ImageContextValue } from "./image-context";
+import type { ImageLoadingStatus } from "./types";
 
 export interface ImageRootOptions {
 	/**

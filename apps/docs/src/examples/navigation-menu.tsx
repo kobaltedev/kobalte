@@ -1,4 +1,7 @@
-import { NavigationMenu, Orientation } from "@kobalte/core/navigation-menu";
+import {
+	NavigationMenu,
+	type Orientation,
+} from "@kobalte/core/navigation-menu";
 import { RadioGroup } from "@kobalte/core/radio-group";
 import { For, createSignal } from "solid-js";
 

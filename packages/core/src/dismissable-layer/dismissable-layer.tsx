@@ -14,8 +14,8 @@
 
 import { contains, getDocument, mergeRefs } from "@kobalte/utils";
 import {
-	Accessor,
-	ValidComponent,
+	type Accessor,
+	type ValidComponent,
 	createEffect,
 	on,
 	onCleanup,
@@ -23,17 +23,21 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
-	FocusOutsideEvent,
-	InteractOutsideEvent,
-	PointerDownOutsideEvent,
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import {
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
 	createEscapeKeyDown,
 	createInteractOutside,
 } from "../primitives";
 import {
 	DismissableLayerContext,
-	DismissableLayerContextValue,
+	type DismissableLayerContextValue,
 	useOptionalDismissableLayerContext,
 } from "./dismissable-layer-context";
 import { layerStack } from "./layer-stack";

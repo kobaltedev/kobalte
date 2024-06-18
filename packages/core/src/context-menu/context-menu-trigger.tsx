@@ -7,12 +7,17 @@
  */
 
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { JSX, ValidComponent, onCleanup, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, onCleanup, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { MenuDataSet, useMenuContext } from "../menu/menu-context";
+import { combineStyle } from "@solid-primitives/props";
+import { type MenuDataSet, useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { useContextMenuContext } from "./context-menu-context";
 
 export interface ContextMenuTriggerOptions {
@@ -30,9 +35,7 @@ export interface ContextMenuTriggerCommonProps<
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerCancel: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
-
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface ContextMenuTriggerRenderProps
@@ -153,11 +156,13 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		<Polymorphic<ContextMenuTriggerRenderProps>
 			as="div"
 			ref={mergeRefs(menuContext.setTriggerRef, local.ref)}
-			style={{
-				// prevent iOS context menu from appearing
-				"-webkit-touch-callout": "none",
-				...local.style,
-			}}
+			style={combineStyle(
+				{
+					// prevent iOS context menu from appearing
+					"-webkit-touch-callout": "none",
+				},
+				local.style,
+			)}
 			data-disabled={local.disabled ? "" : undefined}
 			onContextMenu={onContextMenu}
 			onPointerDown={onPointerDown}

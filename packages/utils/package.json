@@ -1,69 +1,66 @@
 {
-  "name": "@kobalte/utils",
-  "version": "0.9.0",
-  "private": false,
-  "description": "Common utilities and types for Kobalte.",
-  "keywords": [
-    "solid",
-    "solidjs",
-    "ui",
-    "library",
-    "design-system",
-    "components",
-    "headless",
-    "unstyled",
-    "aria"
-  ],
-  "homepage": "https://github.com/kobaltedev/kobalte/tree/main/packages/utils#readme",
-  "bugs": {
-    "url": "https://github.com/kobaltedev/kobalte/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kobaltedev/kobalte.git"
-  },
-  "license": "MIT",
-  "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
-  "sideEffects": false,
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "solid": "./dist/index.js",
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": "./dist/index.cjs"
-    },
-    "./src/*": "./src/*"
-  },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "source": "src/index.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "scripts": {
-    "build": "tsup",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@solid-primitives/event-listener": "^2.2.14",
-    "@solid-primitives/keyed": "^1.2.0",
-    "@solid-primitives/map": "^0.4.7",
-    "@solid-primitives/media": "^2.2.4",
-    "@solid-primitives/props": "^3.1.8",
-    "@solid-primitives/refs": "^1.0.5",
-    "@solid-primitives/utils": "^6.2.1"
-  },
-  "peerDependencies": {
-    "solid-js": "^1.8.8"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+	"name": "@kobalte/utils",
+	"version": "0.9.0",
+	"private": false,
+	"description": "Common utilities and types for Kobalte.",
+	"keywords": [
+		"solid",
+		"solidjs",
+		"ui",
+		"library",
+		"design-system",
+		"components",
+		"headless",
+		"unstyled",
+		"aria"
+	],
+	"homepage": "https://github.com/kobaltedev/kobalte/tree/main/packages/utils#readme",
+	"bugs": {
+		"url": "https://github.com/kobaltedev/kobalte/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kobaltedev/kobalte.git"
+	},
+	"license": "MIT",
+	"author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"solid": "./dist/index.js",
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"require": "./dist/index.cjs"
+		},
+		"./src/*": "./src/*"
+	},
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"source": "src/index.ts",
+	"files": ["dist", "src"],
+	"scripts": {
+		"build": "tsup",
+		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@solid-primitives/event-listener": "^2.2.14",
+		"@solid-primitives/keyed": "^1.2.0",
+		"@solid-primitives/map": "^0.4.7",
+		"@solid-primitives/media": "^2.2.4",
+		"@solid-primitives/props": "^3.1.8",
+		"@solid-primitives/refs": "^1.0.5",
+		"@solid-primitives/utils": "^6.2.1"
+	},
+	"peerDependencies": {
+		"solid-js": "^1.8.8"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }

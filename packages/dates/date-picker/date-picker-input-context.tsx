@@ -1,10 +1,10 @@
-import {
+import type {
 	Calendar,
-	type ResolvedDateTimeFormatOptions,
+	ResolvedDateTimeFormatOptions,
 } from "@internationalized/date";
-import { Accessor, createContext, useContext } from "solid-js";
+import { type Accessor, createContext, useContext } from "solid-js";
 
-import { DateFieldOptions, DateSegment, SegmentType } from "./types";
+import type { DateFieldOptions, DateSegment, SegmentType } from "./types";
 
 export interface DatePickerInputContextValue {
 	calendar: Accessor<Calendar>;

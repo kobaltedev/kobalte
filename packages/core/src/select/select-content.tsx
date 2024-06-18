@@ -3,24 +3,31 @@ import {
 	focusWithoutScrolling,
 	mergeRefs,
 } from "@kobalte/utils";
-import { Component, JSX, Show, ValidComponent, splitProps } from "solid-js";
+import {
+	type Component,
+	type JSX,
+	Show,
+	type ValidComponent,
+	splitProps,
+} from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import createPreventScroll from "solid-prevent-scroll";
 import {
 	DismissableLayer,
-	DismissableLayerCommonProps,
-	DismissableLayerRenderProps,
+	type DismissableLayerCommonProps,
+	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
 import {
-	FocusOutsideEvent,
-	InteractOutsideEvent,
-	PointerDownOutsideEvent,
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
 } from "../primitives";
-import { SelectDataSet, useSelectContext } from "./select-context";
+import { type SelectDataSet, useSelectContext } from "./select-context";
 
 export interface SelectContentOptions {
 	/**
@@ -50,8 +57,7 @@ export interface SelectContentOptions {
 
 export interface SelectContentCommonProps<T extends HTMLElement = HTMLElement>
 	extends DismissableLayerCommonProps<T> {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface SelectContentRenderProps
@@ -141,12 +147,14 @@ export function SelectContent<T extends ValidComponent = "div">(
 					}, local.ref)}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.triggerRef]}
-					style={{
-						"--kb-select-content-transform-origin":
-							"var(--kb-popper-content-transform-origin)",
-						position: "relative",
-						...local.style,
-					}}
+					style={combineStyle(
+						{
+							"--kb-select-content-transform-origin":
+								"var(--kb-popper-content-transform-origin)",
+							position: "relative",
+						},
+						local.style,
+					)}
 					onEscapeKeyDown={onEscapeKeyDown}
 					onFocusOutside={onFocusOutside}
 					onDismiss={context.close}

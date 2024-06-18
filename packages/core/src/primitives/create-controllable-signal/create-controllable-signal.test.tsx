@@ -195,17 +195,17 @@ describe("createControllableSignal", () => {
 			expect(value()).not.toBeDefined();
 			expect(onChangeSpy).not.toHaveBeenCalled();
 
-			setValue(NaN);
+			setValue(Number.NaN);
 			await Promise.resolve();
 
-			expect(value()).toBe(NaN);
+			expect(value()).toBe(Number.NaN);
 			expect(onChangeSpy).toHaveBeenCalledTimes(1);
-			expect(onChangeSpy).toHaveBeenLastCalledWith(NaN);
+			expect(onChangeSpy).toHaveBeenLastCalledWith(Number.NaN);
 
-			setValue(NaN);
+			setValue(Number.NaN);
 			await Promise.resolve();
 
-			expect(value()).toBe(NaN);
+			expect(value()).toBe(Number.NaN);
 			expect(onChangeSpy).toHaveBeenCalledTimes(1);
 
 			dispose();

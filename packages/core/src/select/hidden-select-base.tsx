@@ -8,7 +8,7 @@
 
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
 import {
-	ComponentProps,
+	type ComponentProps,
 	For,
 	Show,
 	createEffect,
@@ -18,8 +18,8 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { Collection, CollectionNode } from "../primitives";
-import { SelectionManager } from "../selection";
+import type { Collection, CollectionNode } from "../primitives";
+import type { SelectionManager } from "../selection";
 import { isSameSelection } from "../selection/utils";
 
 // In Safari, the <select> cannot have `display: none` or `hidden` for autofill to work.

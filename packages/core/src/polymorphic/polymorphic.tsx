@@ -1,7 +1,12 @@
 /* @refresh reload */
 
-import { OverrideProps } from "@kobalte/utils";
-import { ComponentProps, JSX, ValidComponent, splitProps } from "solid-js";
+import type { OverrideProps } from "@kobalte/utils";
+import {
+	type ComponentProps,
+	type JSX,
+	type ValidComponent,
+	splitProps,
+} from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 export type { OverrideComponentProps, OverrideProps } from "@kobalte/utils";
@@ -13,8 +18,8 @@ export type { OverrideComponentProps, OverrideProps } from "@kobalte/utils";
 export type ElementOf<T> = T extends HTMLElement
 	? T
 	: T extends keyof HTMLElementTagNameMap
-	  ? HTMLElementTagNameMap[T]
-	  : any;
+		? HTMLElementTagNameMap[T]
+		: any;
 
 /**
  * Polymorphic attribute.

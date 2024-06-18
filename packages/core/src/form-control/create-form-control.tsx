@@ -7,16 +7,21 @@
  */
 
 import {
-	MaybeAccessor,
-	ValidationState,
+	type MaybeAccessor,
+	type ValidationState,
 	access,
 	createGenerateId,
 	mergeDefaultProps,
 } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, createUniqueId } from "solid-js";
+import {
+	type Accessor,
+	createMemo,
+	createSignal,
+	createUniqueId,
+} from "solid-js";
 
 import { createRegisterId } from "../primitives";
-import {
+import type {
 	FormControlContextValue,
 	FormControlDataSet,
 } from "./form-control-context";

@@ -8,21 +8,21 @@
 
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
-	Component,
+	type Component,
 	JSX,
-	ValidComponent,
+	type ValidComponent,
 	createSignal,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
 import * as Collapsible from "../collapsible";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import { ElementOf, type PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { useAccordionContext } from "./accordion-context";
 import {
 	AccordionItemContext,
-	AccordionItemContextValue,
+	type AccordionItemContextValue,
 } from "./accordion-item-context";
 
 export interface AccordionItemOptions {

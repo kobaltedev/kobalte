@@ -1,4 +1,4 @@
-import { Accessor } from "solid-js";
+import type { Accessor } from "solid-js";
 
 export interface DomCollectionItem {
 	ref: Accessor<Element | undefined>;

@@ -1,13 +1,13 @@
-import { Component, ValidComponent } from "solid-js";
+import type { Component, ValidComponent } from "solid-js";
 import {
 	FormControlLabel,
-	FormControlLabelCommonProps,
-	FormControlLabelOptions,
-	FormControlLabelRenderProps,
+	type FormControlLabelCommonProps,
+	type FormControlLabelOptions,
+	type FormControlLabelRenderProps,
 } from "../form-control";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { SwitchDataSet, useSwitchContext } from "./switch-context";
-import { SwitchDescriptionCommonProps } from "./switch-description";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { type SwitchDataSet, useSwitchContext } from "./switch-context";
+import type { SwitchDescriptionCommonProps } from "./switch-description";
 
 export interface SwitchLabelOptions extends FormControlLabelOptions {}
 

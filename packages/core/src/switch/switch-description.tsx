@@ -1,12 +1,12 @@
-import { Component, ValidComponent } from "solid-js";
+import type { Component, ValidComponent } from "solid-js";
 import {
 	FormControlDescription,
-	FormControlDescriptionCommonProps,
-	FormControlDescriptionOptions,
-	FormControlDescriptionRenderProps,
+	type FormControlDescriptionCommonProps,
+	type FormControlDescriptionOptions,
+	type FormControlDescriptionRenderProps,
 } from "../form-control";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { SwitchDataSet, useSwitchContext } from "./switch-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { type SwitchDataSet, useSwitchContext } from "./switch-context";
 
 export interface SwitchDescriptionOptions
 	extends FormControlDescriptionOptions {}

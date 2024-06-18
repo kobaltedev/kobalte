@@ -1,13 +1,13 @@
 import { OverrideComponentProps, mergeRefs } from "@kobalte/utils";
-import { Component, ValidComponent, splitProps } from "solid-js";
+import { type Component, type ValidComponent, splitProps } from "solid-js";
 
 import createPreventScroll from "solid-prevent-scroll";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	MenuContentBase,
-	MenuContentBaseCommonProps,
-	MenuContentBaseOptions,
-	MenuContentBaseRenderProps,
+	type MenuContentBaseCommonProps,
+	type MenuContentBaseOptions,
+	type MenuContentBaseRenderProps,
 } from "./menu-content-base";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";

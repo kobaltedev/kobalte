@@ -8,8 +8,8 @@
  */
 
 import {
-	Calendar,
-	DateDuration,
+	type Calendar,
+	type DateDuration,
 	DateFormatter,
 	GregorianCalendar,
 	getDayOfWeek,
@@ -22,9 +22,9 @@ import {
 	today,
 } from "@internationalized/date";
 import {
-	OverrideComponentProps,
-	RangeValue,
-	ValidationState,
+	type OverrideComponentProps,
+	type RangeValue,
+	type ValidationState,
 	contains,
 	getDocument,
 	getWindow,
@@ -32,7 +32,7 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Accessor,
+	type Accessor,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -44,18 +44,18 @@ import {
 import { isServer } from "solid-js/web";
 import { getReadingDirection, useLocale } from "../i18n";
 import { announce } from "../live-announcer";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { type AsChildProp, Polymorphic } from "../polymorphic";
 import { createControllableSignal, createInteractOutside } from "../primitives";
 import {
 	CalendarContext,
-	CalendarContextValue,
-	CalendarDataSet,
+	type CalendarContextValue,
+	type CalendarDataSet,
 } from "./calendar-context";
 import {
 	CALENDAR_INTL_MESSAGES,
-	CalendarIntlTranslations,
+	type CalendarIntlTranslations,
 } from "./calendar.intl";
-import { DateAlignment, DateValue } from "./types";
+import type { DateAlignment, DateValue } from "./types";
 import {
 	alignCenter,
 	alignDate,

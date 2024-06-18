@@ -9,22 +9,22 @@
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
-	Component,
-	ValidComponent,
+	type Component,
+	type ValidComponent,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import {
 	MenuGroup,
-	MenuGroupCommonProps,
-	MenuGroupRenderProps,
+	type MenuGroupCommonProps,
+	type MenuGroupRenderProps,
 } from "./menu-group";
 import {
 	MenuRadioGroupContext,
-	MenuRadioGroupContextValue,
+	type MenuRadioGroupContextValue,
 } from "./menu-radio-group-context";
 import { useMenuRootContext } from "./menu-root-context";
 

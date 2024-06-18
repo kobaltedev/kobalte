@@ -7,8 +7,8 @@
  */
 
 import {
-	MaybeAccessor,
-	Orientation,
+	type MaybeAccessor,
+	type Orientation,
 	access,
 	callHandler,
 	createEventListener,
@@ -17,8 +17,8 @@ import {
 	scrollIntoView,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	JSX,
+	type Accessor,
+	type JSX,
 	createEffect,
 	createMemo,
 	mergeProps,
@@ -28,7 +28,7 @@ import {
 
 import { useLocale } from "../i18n";
 import { createTypeSelect } from "./create-type-select";
-import {
+import type {
 	FocusStrategy,
 	KeyboardDelegate,
 	MultipleSelectionManager,

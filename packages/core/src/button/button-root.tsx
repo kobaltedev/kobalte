@@ -13,9 +13,13 @@
  */
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { ValidComponent, createMemo, splitProps } from "solid-js";
+import { type ValidComponent, createMemo, splitProps } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { createTagName } from "../primitives";
 import { isButton } from "./is-button";
 

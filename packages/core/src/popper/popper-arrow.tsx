@@ -9,17 +9,22 @@
 
 import { getWindow, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
-	Accessor,
-	JSX,
-	ValidComponent,
+	type Accessor,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	splitProps,
 } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import { combineStyle } from "@solid-primitives/props";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { usePopperContext } from "./popper-context";
-import { BasePlacement } from "./utils";
+import type { BasePlacement } from "./utils";
 
 const DEFAULT_SIZE = 30;
 const HALF_DEFAULT_SIZE = DEFAULT_SIZE / 2;
@@ -41,8 +46,7 @@ export interface PopperArrowOptions {
 
 export interface PopperArrowCommonProps<T extends HTMLElement = HTMLElement> {
 	ref: T | ((el: T) => void);
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface PopperArrowRenderProps extends PopperArrowCommonProps {
@@ -81,7 +85,7 @@ export function PopperArrow<T extends ValidComponent = "div">(
 	const borderWidth = () =>
 		contentStyle()?.getPropertyValue(`border-${dir()}-width`) || "0px";
 	const strokeWidth = () => {
-		return parseInt(borderWidth()) * 2 * (DEFAULT_SIZE / local.size!);
+		return Number.parseInt(borderWidth()) * 2 * (DEFAULT_SIZE / local.size!);
 	};
 	const rotate = () => {
 		return `rotate(${
@@ -94,7 +98,7 @@ export function PopperArrow<T extends ValidComponent = "div">(
 			as="div"
 			ref={mergeRefs(context.setArrowRef, local.ref)}
 			aria-hidden="true"
-			style={
+			style={combineStyle(
 				{
 					// server side rendering
 					position: "absolute",
@@ -105,9 +109,9 @@ export function PopperArrow<T extends ValidComponent = "div">(
 					fill: fill(),
 					stroke: stroke(),
 					"stroke-width": strokeWidth(),
-					...local.style,
-				} as JSX.CSSProperties
-			}
+				} as JSX.CSSProperties,
+				local.style,
+			)}
 			{...others}
 		>
 			{/* biome-ignore lint/a11y/noSvgWithoutTitle: aria hidden */}

@@ -1,7 +1,7 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
-	Component,
-	ValidComponent,
+	type Component,
+	type ValidComponent,
 	createEffect,
 	onCleanup,
 	splitProps,
@@ -9,7 +9,7 @@ import {
 
 import { useFormControlContext } from "../form-control";
 import * as Listbox from "../listbox";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useComboboxContext } from "./combobox-context";
 
 export interface ComboboxListboxOptions<Option, OptGroup = never>

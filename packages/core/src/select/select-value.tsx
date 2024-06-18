@@ -4,18 +4,25 @@ import {
 	mergeDefaultProps,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	JSX,
+	type Accessor,
+	type JSX,
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	children,
 	createEffect,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
-import { FormControlDataSet, useFormControlContext } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type FormControlDataSet,
+	useFormControlContext,
+} from "../form-control";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
 export interface SelectValueState<Option> {
@@ -106,8 +113,9 @@ export function SelectValue<Option, T extends ValidComponent = "span">(
 						remove: (option) => context.removeOptionFromSelection(option),
 						clear: () => selectionManager().clearSelection(),
 					}}
-					children={local.children}
-				/>
+				>
+					{local.children}
+				</SelectValueChild>
 			</Show>
 		</Polymorphic>
 	);

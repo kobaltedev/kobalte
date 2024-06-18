@@ -1,6 +1,4 @@
 import {
-	CloseButton,
-	Description,
 	type DialogCloseButtonCommonProps as AlertDialogCloseButtonCommonProps,
 	type DialogCloseButtonOptions as AlertDialogCloseButtonOptions,
 	type DialogCloseButtonProps as AlertDialogCloseButtonProps,
@@ -24,6 +22,8 @@ import {
 	type DialogTriggerOptions as AlertDialogTriggerOptions,
 	type DialogTriggerProps as AlertDialogTriggerProps,
 	type DialogTriggerRenderProps as AlertDialogTriggerRenderProps,
+	CloseButton,
+	Description,
 	Overlay,
 	Portal,
 	Root,
@@ -31,11 +31,11 @@ import {
 	Trigger,
 } from "../dialog";
 import {
+	type AlertDialogContentCommonProps,
+	type AlertDialogContentOptions,
+	type AlertDialogContentProps,
+	type AlertDialogContentRenderProps,
 	AlertDialogContent as Content,
-	AlertDialogContentCommonProps,
-	AlertDialogContentOptions,
-	AlertDialogContentProps,
-	AlertDialogContentRenderProps,
 } from "./alert-dialog-content";
 
 export type {

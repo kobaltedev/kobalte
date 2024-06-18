@@ -16,27 +16,31 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	JSX,
+	type Accessor,
+	type JSX,
 	Match,
 	Show,
 	Switch,
-	ValidComponent,
+	type ValidComponent,
 	createMemo,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
-import { ListState, createListState, createSelectableList } from "../list";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { Collection, CollectionNode } from "../primitives";
+import { type ListState, createListState, createSelectableList } from "../list";
 import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import type { Collection, CollectionNode } from "../primitives";
+import type {
 	FocusStrategy,
 	KeyboardDelegate,
 	SelectionBehavior,
 	SelectionMode,
 } from "../selection";
-import { ListboxContext, ListboxContextValue } from "./listbox-context";
+import { ListboxContext, type ListboxContextValue } from "./listbox-context";
 
 export interface ListboxRootOptions<Option, OptGroup = never> {
 	/** The controlled value of the listbox. */

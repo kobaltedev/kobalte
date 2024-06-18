@@ -8,7 +8,11 @@
 
 import { isServer } from "solid-js/web";
 
-import { ColorMode, ColorModeStorageManager, ConfigColorMode } from "./types";
+import type {
+	ColorMode,
+	ColorModeStorageManager,
+	ConfigColorMode,
+} from "./types";
 
 export const FALLBACK_COLOR_MODE_VALUE: ConfigColorMode = "system";
 

@@ -13,8 +13,8 @@ import {
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import {
-	JSX,
-	ValidComponent,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	on,
@@ -22,18 +22,20 @@ import {
 	splitProps,
 } from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import { useFormControlContext } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { useRadioGroupContext } from "./radio-group-context";
 import {
-	RadioGroupItemDataSet,
+	type RadioGroupItemDataSet,
 	useRadioGroupItemContext,
 } from "./radio-group-item-context";
 
-export interface RadioGroupItemInputOptions {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
-}
+export interface RadioGroupItemInputOptions {}
 
 export interface RadioGroupItemInputCommonProps<
 	T extends HTMLElement = HTMLInputElement,
@@ -46,7 +48,7 @@ export interface RadioGroupItemInputCommonProps<
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
 	"aria-label"?: string;
-	style: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface RadioGroupItemInputRenderProps
@@ -187,7 +189,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 			required={formControlContext.isRequired()}
 			disabled={radioContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={{ ...visuallyHiddenStyles, ...local.style }}
+			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
 			aria-labelledby={ariaLabelledBy()}
 			aria-describedby={ariaDescribedBy()}
 			onChange={onChange}

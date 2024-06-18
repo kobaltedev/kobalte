@@ -8,7 +8,7 @@
 
 import { isServer } from "solid-js/web";
 
-import {
+import type {
 	ColorModeStorageManager,
 	ConfigColorMode,
 	MaybeConfigColorMode,

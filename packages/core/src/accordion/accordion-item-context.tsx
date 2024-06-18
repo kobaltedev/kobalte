@@ -1,4 +1,4 @@
-import { Accessor, createContext, useContext } from "solid-js";
+import { type Accessor, createContext, useContext } from "solid-js";
 
 export interface AccordionItemContextValue {
 	value: Accessor<string>;

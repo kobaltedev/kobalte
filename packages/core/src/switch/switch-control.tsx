@@ -1,9 +1,16 @@
 import { EventKey, callHandler, mergeDefaultProps } from "@kobalte/utils";
-import { JSX, ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, splitProps } from "solid-js";
 
-import { FormControlDataSet, useFormControlContext } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { SwitchDataSet, useSwitchContext } from "./switch-context";
+import {
+	type FormControlDataSet,
+	useFormControlContext,
+} from "../form-control";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type SwitchDataSet, useSwitchContext } from "./switch-context";
 
 export interface SwitchControlOptions {}
 

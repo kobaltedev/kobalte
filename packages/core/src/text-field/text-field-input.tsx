@@ -7,15 +7,19 @@
  */
 
 import { composeEventHandlers, mergeDefaultProps } from "@kobalte/utils";
-import { JSX, ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, splitProps } from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
-	FormControlDataSet,
+	type FormControlDataSet,
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { useTextFieldContext } from "./text-field-context";
 
 export interface TextFieldInputOptions {}

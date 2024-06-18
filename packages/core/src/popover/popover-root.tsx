@@ -8,8 +8,8 @@
 
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
-	Accessor,
-	ParentProps,
+	type Accessor,
+	type ParentProps,
 	createMemo,
 	createSignal,
 	createUniqueId,
@@ -17,16 +17,16 @@ import {
 } from "solid-js";
 
 import createPresence from "solid-presence";
-import { Popper, PopperRootOptions } from "../popper";
+import { Popper, type PopperRootOptions } from "../popper";
 import { createDisclosureState, createRegisterId } from "../primitives";
 import {
 	PopoverContext,
-	PopoverContextValue,
-	PopoverDataSet,
+	type PopoverContextValue,
+	type PopoverDataSet,
 } from "./popover-context";
 import {
 	POPOVER_INTL_TRANSLATIONS,
-	PopoverIntlTranslations,
+	type PopoverIntlTranslations,
 } from "./popover.intl";
 
 export interface PopoverRootOptions

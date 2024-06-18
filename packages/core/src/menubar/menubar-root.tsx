@@ -7,7 +7,7 @@
  */
 
 import {
-	Orientation,
+	type Orientation,
 	OverrideComponentProps,
 	contains,
 	createGenerateId,
@@ -15,9 +15,9 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	Setter,
-	ValidComponent,
+	type Accessor,
+	type Setter,
+	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -27,12 +27,16 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { createControllableSignal, createInteractOutside } from "../primitives";
 import {
 	MenubarContext,
-	MenubarContextValue,
-	MenubarDataSet,
+	type MenubarContextValue,
+	type MenubarDataSet,
 } from "./menubar-context";
 
 export interface MenubarRootOptions {

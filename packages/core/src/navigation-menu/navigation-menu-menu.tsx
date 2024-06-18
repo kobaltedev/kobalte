@@ -7,7 +7,7 @@ import {
 	on,
 	splitProps,
 } from "solid-js";
-import { MenubarMenuOptions, MenubarMenuProps } from "../menubar";
+import type { MenubarMenuOptions, MenubarMenuProps } from "../menubar";
 import { useMenubarContext } from "../menubar/menubar-context";
 import { MenubarMenu } from "../menubar/menubar-menu";
 import { useNavigationMenuContext } from "./navigation-menu-context";

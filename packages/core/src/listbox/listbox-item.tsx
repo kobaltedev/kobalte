@@ -17,23 +17,31 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	JSX,
-	ValidComponent,
+	type Accessor,
+	type JSX,
+	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { CollectionNode, createRegisterId, getItemCount } from "../primitives";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import {
+	type CollectionNode,
+	createRegisterId,
+	getItemCount,
+} from "../primitives";
 import { createSelectableItem } from "../selection";
 import { useListboxContext } from "./listbox-context";
 import {
 	ListboxItemContext,
-	ListboxItemContextValue,
-	ListboxItemDataSet,
+	type ListboxItemContextValue,
+	type ListboxItemDataSet,
 } from "./listbox-item-context";
 
 export interface ListboxItemOptions {

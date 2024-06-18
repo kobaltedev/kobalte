@@ -13,25 +13,25 @@ import {
 	type ProgressLabelRenderProps,
 } from "./progress-label";
 import {
-	ProgressRoot as Root,
 	type ProgressRootCommonProps,
 	type ProgressRootOptions,
 	type ProgressRootProps,
 	type ProgressRootRenderProps,
+	ProgressRoot as Root,
 } from "./progress-root";
 import {
-	ProgressTrack as Track,
 	type ProgressTrackCommonProps,
 	type ProgressTrackOptions,
 	type ProgressTrackProps,
 	type ProgressTrackRenderProps,
+	ProgressTrack as Track,
 } from "./progress-track";
 import {
-	ProgressValueLabel as ValueLabel,
 	type ProgressValueLabelCommonProps,
 	type ProgressValueLabelOptions,
 	type ProgressValueLabelProps,
 	type ProgressValueLabelRenderProps,
+	ProgressValueLabel as ValueLabel,
 } from "./progress-value-label";
 
 export type {

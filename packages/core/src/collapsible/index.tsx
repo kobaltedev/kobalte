@@ -1,23 +1,23 @@
 import {
-	CollapsibleContent as Content,
 	type CollapsibleContentCommonProps,
 	type CollapsibleContentOptions,
 	type CollapsibleContentProps,
 	type CollapsibleContentRenderProps,
+	CollapsibleContent as Content,
 } from "./collapsible-content";
 import {
-	CollapsibleRoot as Root,
 	type CollapsibleRootCommonProps,
 	type CollapsibleRootOptions,
 	type CollapsibleRootProps,
 	type CollapsibleRootRenderProps,
+	CollapsibleRoot as Root,
 } from "./collapsible-root";
 import {
-	CollapsibleTrigger as Trigger,
 	type CollapsibleTriggerCommonProps,
 	type CollapsibleTriggerOptions,
 	type CollapsibleTriggerProps,
 	type CollapsibleTriggerRenderProps,
+	CollapsibleTrigger as Trigger,
 } from "./collapsible-trigger";
 
 export type {

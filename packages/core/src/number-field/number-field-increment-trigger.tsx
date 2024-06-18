@@ -1,9 +1,9 @@
-import { Component, ValidComponent } from "solid-js";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { Component, ValidComponent } from "solid-js";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	NumberFieldVaryTrigger,
-	NumberFieldVaryTriggerCommonProps,
-	NumberFieldVaryTriggerRenderProps,
+	type NumberFieldVaryTriggerCommonProps,
+	type NumberFieldVaryTriggerRenderProps,
 } from "./number-field-vary-trigger";
 
 export interface NumberFieldIncrementTriggerOptions {}

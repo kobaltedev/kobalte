@@ -1,5 +1,5 @@
-import { ValidationState } from "@kobalte/utils";
-import { Accessor, createContext, useContext } from "solid-js";
+import type { ValidationState } from "@kobalte/utils";
+import { type Accessor, createContext, useContext } from "solid-js";
 
 export interface FormControlDataSet {
 	"data-valid": string | undefined;

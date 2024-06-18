@@ -23,7 +23,7 @@ function testPlatform(re: RegExp) {
 		? re.test(
 				// @ts-ignore
 				window.navigator.userAgentData?.platform || window.navigator.platform,
-		  )
+			)
 		: false;
 }
 

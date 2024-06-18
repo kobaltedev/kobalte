@@ -1,8 +1,12 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { JSX, ValidComponent } from "solid-js";
+import type { JSX, ValidComponent } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { MenuDataSet, useMenuContext } from "./menu-context";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type MenuDataSet, useMenuContext } from "./menu-context";
 
 export interface MenuIconOptions {}
 

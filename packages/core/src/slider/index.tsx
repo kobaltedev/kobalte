@@ -1,15 +1,15 @@
 import {
 	FormControlDescription as Description,
+	FormControlErrorMessage as ErrorMessage,
+	FormControlLabel as Label,
 	type FormControlDescriptionCommonProps as SliderDescriptionCommonProps,
 	type FormControlDescriptionOptions as SliderDescriptionOptions,
 	type FormControlDescriptionProps as SliderDescriptionProps,
 	type FormControlDescriptionRenderProps as SliderDescriptionRenderProps,
-	FormControlErrorMessage as ErrorMessage,
 	type FormControlErrorMessageCommonProps as SliderErrorMessageCommonProps,
 	type FormControlErrorMessageOptions as SliderErrorMessageOptions,
 	type FormControlErrorMessageProps as SliderErrorMessageProps,
 	type FormControlErrorMessageRenderProps as SliderErrorMessageRenderProps,
-	FormControlLabel as Label,
 	type FormControlLabelCommonProps as SliderLabelCommonProps,
 	type FormControlLabelOptions as SliderLabelOptions,
 	type FormControlLabelProps as SliderLabelProps,
@@ -24,33 +24,33 @@ import {
 } from "./slider-fill";
 import { SliderInput as Input, type SliderInputProps } from "./slider-input";
 import {
-	type GetValueLabelParams as SliderGetValueLabelParams,
 	SliderRoot as Root,
+	type GetValueLabelParams as SliderGetValueLabelParams,
 	type SliderRootCommonProps,
 	type SliderRootOptions,
 	type SliderRootProps,
 	type SliderRootRenderProps,
 } from "./slider-root";
 import {
-	SliderThumb as Thumb,
 	type SliderThumbCommonProps,
 	type SliderThumbOptions,
 	type SliderThumbProps,
 	type SliderThumbRenderProps,
+	SliderThumb as Thumb,
 } from "./slider-thumb";
 import {
-	SliderTrack as Track,
 	type SliderTrackCommonProps,
 	type SliderTrackOptions,
 	type SliderTrackProps,
 	type SliderTrackRenderProps,
+	SliderTrack as Track,
 } from "./slider-track";
 import {
-	SliderValueLabel as ValueLabel,
 	type SliderValueLabelCommonProps,
 	type SliderValueLabelOptions,
 	type SliderValueLabelProps,
 	type SliderValueLabelRenderProps,
+	SliderValueLabel as ValueLabel,
 } from "./slider-value-label";
 
 export type {

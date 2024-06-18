@@ -1,7 +1,7 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { ParentProps, createUniqueId, splitProps } from "solid-js";
+import { type ParentProps, createUniqueId, splitProps } from "solid-js";
 
-import { MenuRoot, MenuRootOptions } from "../menu";
+import { MenuRoot, type MenuRootOptions } from "../menu";
 import { useMenubarContext } from "./menubar-context";
 
 export interface MenubarMenuOptions extends MenuRootOptions {}

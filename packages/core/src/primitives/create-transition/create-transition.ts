@@ -6,10 +6,10 @@
  * https://github.com/mantinedev/mantine/blob/8546c580fdcaa9653edc6f4813103349a96cfb09/src/mantine-core/src/Transition/use-transition.ts
  */
 
-import { MaybeAccessor, access, createMediaQuery } from "@kobalte/utils";
+import { type MaybeAccessor, access, createMediaQuery } from "@kobalte/utils";
 import {
-	Accessor,
-	JSX,
+	type Accessor,
+	type JSX,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -19,8 +19,11 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { TransitionPhase, getTransitionStyles } from "./get-transition-styles";
-import { TransitionStyles } from "./types";
+import {
+	type TransitionPhase,
+	getTransitionStyles,
+} from "./get-transition-styles";
+import type { TransitionStyles } from "./types";
 
 export interface TransitionOptions {
 	/** The transition styles. */
@@ -127,8 +130,8 @@ export function createTransition(
 			reduceMotion()
 				? 0
 				: shouldMount
-				  ? access(mergedOptions).duration!
-				  : access(mergedOptions).exitDuration!,
+					? access(mergedOptions).duration!
+					: access(mergedOptions).exitDuration!,
 		);
 
 		setEasing(
@@ -147,8 +150,8 @@ export function createTransition(
 		const delay = reduceMotion()
 			? 0
 			: shouldMount
-			  ? access(mergedOptions).delay!
-			  : access(mergedOptions).exitDelay!;
+				? access(mergedOptions).delay!
+				: access(mergedOptions).exitDelay!;
 
 		const preStateTimeoutId = window.setTimeout(() => {
 			preHandler?.();

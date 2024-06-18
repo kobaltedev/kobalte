@@ -1,91 +1,83 @@
 {
-  "name": "@kobalte/core",
-  "version": "0.13.3",
-  "private": false,
-  "description": "Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
-  "keywords": [
-    "solid",
-    "solidjs",
-    "ui",
-    "library",
-    "design-system",
-    "components",
-    "headless",
-    "unstyled",
-    "aria"
-  ],
-  "homepage": "https://github.com/kobaltedev/kobalte/tree/main/packages/core#readme",
-  "bugs": {
-    "url": "https://github.com/kobaltedev/kobalte/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kobaltedev/kobalte.git"
-  },
-  "license": "MIT",
-  "author": "jer3m01 <jer3m01@jer3m01.com>",
-  "contributors": [
-    "Fabien Marie-Louise <fabienml.dev@gmail.com>"
-  ],
-  "sideEffects": false,
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "solid": "./dist/index.jsx",
-      "default": "./dist/index.js"
-    },
-    "./*": {
-      "types": "./dist/*/index.d.ts",
-      "solid": "./dist/*/index.jsx",
-      "default": "./dist/*/index.js"
-    },
-    "./src/*": "./src/*"
-  },
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*/index.d.ts",
-        "./dist/index.d.ts"
-      ]
-    }
-  },
-  "source": "src/index.tsx",
-  "files": [
-    "dist",
-    "src",
-    "NOTICE.txt"
-  ],
-  "scripts": {
-    "build": "pnpm build:cp && pnpm build:tsup",
-    "build:cp": "cp ../../NOTICE.txt .",
-    "build:tsup": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsup",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
-    "dev": "vite serve dev --host",
-    "test-old": "jest --passWithNoTests",
-    "test": "vitest run",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@floating-ui/dom": "^1.5.1",
-    "@internationalized/date": "^3.4.0",
-    "@internationalized/number": "^3.2.1",
-    "@kobalte/utils": "^0.9.0",
-    "solid-presence": "^0.1.6",
-    "solid-prevent-scroll": "^0.1.4"
-  },
-  "devDependencies": {
-    "@kobalte/tests": "^0.6.0",
-    "esbuild-plugin-solid": "^0.5.0",
-    "tsup": "7.2.0"
-  },
-  "peerDependencies": {
-    "solid-js": "^1.8.15"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+	"name": "@kobalte/core",
+	"version": "0.13.3",
+	"private": false,
+	"description": "Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
+	"keywords": [
+		"solid",
+		"solidjs",
+		"ui",
+		"library",
+		"design-system",
+		"components",
+		"headless",
+		"unstyled",
+		"aria"
+	],
+	"homepage": "https://github.com/kobaltedev/kobalte/tree/main/packages/core#readme",
+	"bugs": {
+		"url": "https://github.com/kobaltedev/kobalte/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kobaltedev/kobalte.git"
+	},
+	"license": "MIT",
+	"author": "jer3m01 <jer3m01@jer3m01.com>",
+	"contributors": ["Fabien Marie-Louise <fabienml.dev@gmail.com>"],
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"solid": "./dist/index.jsx",
+			"default": "./dist/index.js"
+		},
+		"./*": {
+			"types": "./dist/*/index.d.ts",
+			"solid": "./dist/*/index.jsx",
+			"default": "./dist/*/index.js"
+		},
+		"./src/*": "./src/*"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"typesVersions": {
+		"*": {
+			"*": ["./dist/*/index.d.ts", "./dist/index.d.ts"]
+		}
+	},
+	"source": "src/index.tsx",
+	"files": ["dist", "src", "NOTICE.txt"],
+	"scripts": {
+		"build": "pnpm build:cp && pnpm build:tsup",
+		"build:cp": "cp ../../NOTICE.txt .",
+		"build:tsup": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsup",
+		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
+		"dev": "vite serve dev --host",
+		"test-old": "jest --passWithNoTests",
+		"test": "vitest run",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@floating-ui/dom": "^1.5.1",
+		"@internationalized/date": "^3.4.0",
+		"@internationalized/number": "^3.2.1",
+		"@kobalte/utils": "^0.9.0",
+		"@solid-primitives/props": "^3.1.8",
+		"solid-presence": "^0.1.6",
+		"solid-prevent-scroll": "^0.1.4"
+	},
+	"devDependencies": {
+		"@kobalte/tests": "^0.6.0",
+		"esbuild-plugin-solid": "^0.5.0",
+		"tsup": "7.2.0"
+	},
+	"peerDependencies": {
+		"solid-js": "^1.8.15"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }

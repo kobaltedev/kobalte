@@ -1,7 +1,11 @@
-import { JSX, ValidComponent } from "solid-js";
+import type { JSX, ValidComponent } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { SliderDataSet, useSliderContext } from "./slider-context";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type SliderDataSet, useSliderContext } from "./slider-context";
 
 export interface SliderValueLabelOptions {}
 

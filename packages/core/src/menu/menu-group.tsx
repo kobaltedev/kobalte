@@ -7,11 +7,18 @@
  */
 
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { ValidComponent, createSignal, createUniqueId } from "solid-js";
+import { type ValidComponent, createSignal, createUniqueId } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { createRegisterId } from "../primitives";
-import { MenuGroupContext, MenuGroupContextValue } from "./menu-group-context";
+import {
+	MenuGroupContext,
+	type MenuGroupContextValue,
+} from "./menu-group-context";
 import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuGroupOptions {}

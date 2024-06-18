@@ -1,15 +1,19 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
-	FormControlDataSet,
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import {
+	type FormControlDataSet,
 	useFormControlContext,
 } from "./form-control-context";
 

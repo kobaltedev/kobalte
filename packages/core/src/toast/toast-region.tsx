@@ -18,27 +18,32 @@ import {
 	mergeDefaultProps,
 } from "@kobalte/utils";
 import {
-	JSX,
-	ValidComponent,
+	type JSX,
+	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import {
 	ToastRegionContext,
-	ToastRegionContextValue,
+	type ToastRegionContextValue,
 } from "./toast-region-context";
 import { toastStore } from "./toast-store";
 import {
 	TOAST_HOTKEY_PLACEHOLDER,
 	TOAST_REGION_INTL_TRANSLATIONS,
-	ToastRegionIntlTranslations,
+	type ToastRegionIntlTranslations,
 } from "./toast.intl";
-import { ToastSwipeDirection } from "./types";
+import type { ToastSwipeDirection } from "./types";
 
 export interface ToastRegionOptions {
 	/** The localized strings of the component. */
@@ -93,8 +98,7 @@ export interface ToastRegionOptions {
 }
 
 export interface ToastRegionCommonProps<T extends HTMLElement = HTMLElement> {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 	id: string;
 }
 
@@ -201,14 +205,16 @@ export function ToastRegion<T extends ValidComponent = "div">(
 				// In case it has size when empty (e.g. padding), we remove pointer events,
 				// so it doesn't prevent interactions with page elements that it overlays.
 				// In case it is a top layer, we explicitly enable pointer-events prevented by a `DismissableLayer`.
-				style={{
-					"pointer-events": hasToasts()
-						? local.topLayer
-							? "auto"
-							: undefined
-						: "none",
-					...local.style,
-				}}
+				style={combineStyle(
+					{
+						"pointer-events": hasToasts()
+							? local.topLayer
+								? "auto"
+								: undefined
+							: "none",
+					},
+					local.style,
+				)}
 				{...topLayerAttr()}
 				{...others}
 			/>

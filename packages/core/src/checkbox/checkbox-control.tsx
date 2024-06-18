@@ -1,9 +1,16 @@
 import { EventKey, callHandler, mergeDefaultProps } from "@kobalte/utils";
-import { JSX, ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, splitProps } from "solid-js";
 
-import { FormControlDataSet, useFormControlContext } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
+import {
+	type FormControlDataSet,
+	useFormControlContext,
+} from "../form-control";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
 
 export interface CheckboxControlOptions {}
 

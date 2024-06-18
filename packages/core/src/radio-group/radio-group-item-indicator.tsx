@@ -1,10 +1,14 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { Show, ValidComponent, createSignal, splitProps } from "solid-js";
+import { Show, type ValidComponent, createSignal, splitProps } from "solid-js";
 
 import createPresence from "solid-presence";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
-	RadioGroupItemDataSet,
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import {
+	type RadioGroupItemDataSet,
 	useRadioGroupItemContext,
 } from "./radio-group-item-context";
 

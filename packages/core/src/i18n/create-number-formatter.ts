@@ -7,11 +7,11 @@
  */
 
 import {
-	NumberFormatOptions,
+	type NumberFormatOptions,
 	NumberFormatter,
 } from "@internationalized/number";
-import { MaybeAccessor, access } from "@kobalte/utils";
-import { Accessor, createMemo } from "solid-js";
+import { type MaybeAccessor, access } from "@kobalte/utils";
+import { type Accessor, createMemo } from "solid-js";
 
 import { useLocale } from "./i18n-provider";
 

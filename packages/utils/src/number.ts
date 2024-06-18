@@ -9,7 +9,11 @@
 /**
  * Takes a value and forces it to the closest min/max if it's outside. Also forces it to the closest valid step.
  */
-export function clamp(value: number, min = -Infinity, max = Infinity): number {
+export function clamp(
+	value: number,
+	min = Number.NEGATIVE_INFINITY,
+	max = Number.POSITIVE_INFINITY,
+): number {
 	return Math.min(Math.max(value, min), max);
 }
 

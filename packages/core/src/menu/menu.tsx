@@ -12,8 +12,8 @@ import {
 	removeItemFromArray,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	ParentProps,
+	type Accessor,
+	type ParentProps,
 	Show,
 	createEffect,
 	createMemo,
@@ -26,10 +26,10 @@ import createPresence from "solid-presence";
 import { createListState } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
-import { Popper, PopperRootOptions } from "../popper";
-import { Placement } from "../popper/utils";
+import { Popper, type PopperRootOptions } from "../popper";
+import type { Placement } from "../popper/utils";
 import {
-	CollectionItemWithRef,
+	type CollectionItemWithRef,
 	createDisclosureState,
 	createHideOutside,
 	createRegisterId,
@@ -38,15 +38,15 @@ import {
 	createDomCollection,
 	useOptionalDomCollectionContext,
 } from "../primitives/create-dom-collection";
-import { FocusStrategy } from "../selection";
+import type { FocusStrategy } from "../selection";
 import {
 	MenuContext,
-	MenuContextValue,
-	MenuDataSet,
+	type MenuContextValue,
+	type MenuDataSet,
 	useOptionalMenuContext,
 } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { GraceIntent, Side, isPointerInGraceArea } from "./utils";
+import { type GraceIntent, type Side, isPointerInGraceArea } from "./utils";
 
 export interface MenuOptions
 	extends Omit<

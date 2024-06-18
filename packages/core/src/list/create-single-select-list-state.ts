@@ -7,17 +7,17 @@
  */
 
 import { access } from "@kobalte/utils";
-import { Accessor, createMemo, mergeProps, splitProps } from "solid-js";
+import { type Accessor, createMemo, mergeProps, splitProps } from "solid-js";
 
 import {
-	CollectionBase,
-	CollectionNode,
+	type CollectionBase,
+	type CollectionNode,
 	createControllableSignal,
 } from "../primitives";
-import { SingleSelection } from "../selection";
+import type { SingleSelection } from "../selection";
 import {
-	CreateListStateProps,
-	ListState,
+	type CreateListStateProps,
+	type ListState,
 	createListState,
 } from "./create-list-state";
 

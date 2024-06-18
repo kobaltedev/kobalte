@@ -13,9 +13,10 @@ import {
 	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
+import { combineStyle } from "@solid-primitives/props";
 import {
-	JSX,
-	ValidComponent,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	on,
@@ -24,12 +25,16 @@ import {
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
-	FormControlDataSet,
+	type FormControlDataSet,
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
 
 export interface CheckboxInputOptions {}
 
@@ -38,8 +43,7 @@ export interface CheckboxInputCommonProps<
 > {
 	id: string;
 	ref: T | ((el: T) => void);
-	/** The HTML styles attribute (object form only). */
-	style: JSX.CSSProperties;
+	style: JSX.CSSProperties | string;
 	onChange: JSX.EventHandlerUnion<T, InputEvent>;
 	onFocus: JSX.FocusEventHandlerUnion<T, FocusEvent>;
 	onBlur: JSX.FocusEventHandlerUnion<T, FocusEvent>;
@@ -183,7 +187,7 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={{ ...visuallyHiddenStyles, ...local.style }}
+			style={combineStyle(visuallyHiddenStyles, local.style)}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}

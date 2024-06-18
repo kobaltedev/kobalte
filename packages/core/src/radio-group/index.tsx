@@ -1,10 +1,10 @@
 import {
 	FormControlDescription as Description,
+	FormControlErrorMessage as ErrorMessage,
 	type FormControlDescriptionCommonProps as RadioGroupDescriptionCommonProps,
 	type FormControlDescriptionOptions as RadioGroupDescriptionOptions,
 	type FormControlDescriptionProps as RadioGroupDescriptionProps,
 	type FormControlDescriptionRenderProps as RadioGroupDescriptionRenderProps,
-	FormControlErrorMessage as ErrorMessage,
 	type FormControlErrorMessageCommonProps as RadioGroupErrorMessageCommonProps,
 	type FormControlErrorMessageOptions as RadioGroupErrorMessageOptions,
 	type FormControlErrorMessageProps as RadioGroupErrorMessageProps,
@@ -60,11 +60,11 @@ import {
 	type RadioGroupLabelRenderProps,
 } from "./radio-group-label";
 import {
-	RadioGroupRoot as Root,
 	type RadioGroupRootCommonProps,
 	type RadioGroupRootOptions,
 	type RadioGroupRootProps,
 	type RadioGroupRootRenderProps,
+	RadioGroupRoot as Root,
 } from "./radio-group-root";
 
 export type {

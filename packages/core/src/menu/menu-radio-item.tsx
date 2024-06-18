@@ -1,12 +1,12 @@
 import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { Component, ValidComponent, splitProps } from "solid-js";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import { type Component, type ValidComponent, splitProps } from "solid-js";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import {
 	MenuItemBase,
-	MenuItemBaseCommonProps,
-	MenuItemBaseOptions,
-	MenuItemBaseRenderProps,
+	type MenuItemBaseCommonProps,
+	type MenuItemBaseOptions,
+	type MenuItemBaseRenderProps,
 } from "./menu-item-base";
 import { useMenuRadioGroupContext } from "./menu-radio-group-context";
 

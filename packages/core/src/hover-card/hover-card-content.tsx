@@ -1,13 +1,23 @@
 import { mergeRefs } from "@kobalte/utils";
-import { Component, JSX, Show, ValidComponent, splitProps } from "solid-js";
+import {
+	type Component,
+	type JSX,
+	Show,
+	type ValidComponent,
+	splitProps,
+} from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import {
 	DismissableLayer,
-	DismissableLayerRenderProps,
+	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
-import { HoverCardDataSet, useHoverCardContext } from "./hover-card-context";
+import {
+	type HoverCardDataSet,
+	useHoverCardContext,
+} from "./hover-card-context";
 
 export interface HoverCardContentOptions {}
 
@@ -17,8 +27,7 @@ export interface HoverCardContentCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	ref: T | ((el: T) => void);
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface HoverCardContentRenderProps
@@ -56,12 +65,14 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 						context.setContentRef(el);
 					}, local.ref)}
 					disableOutsidePointerEvents={false}
-					style={{
-						"--kb-hovercard-content-transform-origin":
-							"var(--kb-popper-content-transform-origin)",
-						position: "relative",
-						...local.style,
-					}}
+					style={combineStyle(
+						{
+							"--kb-hovercard-content-transform-origin":
+								"var(--kb-popper-content-transform-origin)",
+							position: "relative",
+						},
+						local.style,
+					)}
 					onFocusOutside={(e) => e.preventDefault()}
 					onDismiss={context.close}
 					{...context.dataset()}

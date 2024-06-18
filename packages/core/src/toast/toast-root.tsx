@@ -19,9 +19,9 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	JSX,
+	type JSX,
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -30,15 +30,23 @@ import {
 	onMount,
 	splitProps,
 } from "solid-js";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 
+import { combineStyle } from "@solid-primitives/props";
 import createPresence from "solid-presence";
 import { createRegisterId } from "../primitives";
-import { ToastContext, ToastContextValue } from "./toast-context";
+import { ToastContext, type ToastContextValue } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
 import { toastStore } from "./toast-store";
-import { TOAST_INTL_TRANSLATIONS, ToastIntlTranslations } from "./toast.intl";
-import { ToastSwipeDirection } from "./types";
+import {
+	TOAST_INTL_TRANSLATIONS,
+	type ToastIntlTranslations,
+} from "./toast.intl";
+import type { ToastSwipeDirection } from "./types";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
 const TOAST_SWIPE_MOVE_EVENT = "toast.swipeMove";
@@ -105,8 +113,7 @@ export interface ToastRootOptions {
 }
 
 export interface ToastRootCommonProps<T extends HTMLElement = HTMLElement> {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 	id: string;
 	ref: T | ((el: T) => void);
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
@@ -439,12 +446,14 @@ export function ToastRoot<T extends ValidComponent = "li">(
 					ref={mergeRefs(setRef, local.ref)}
 					role="status"
 					tabIndex={0}
-					style={{
-						animation: isAnimationEnabled() ? undefined : "none",
-						"user-select": "none",
-						"touch-action": "none",
-						...local.style,
-					}}
+					style={combineStyle(
+						{
+							animation: isAnimationEnabled() ? undefined : "none",
+							"user-select": "none",
+							"touch-action": "none",
+						},
+						local.style,
+					)}
 					aria-live={local.priority === "high" ? "assertive" : "polite"}
 					aria-atomic="true"
 					aria-labelledby={titleId()}

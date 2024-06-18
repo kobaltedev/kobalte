@@ -1,11 +1,16 @@
 import { OverrideComponentProps } from "@kobalte/utils";
-import { Component, ValidComponent, createMemo, splitProps } from "solid-js";
+import {
+	type Component,
+	type ValidComponent,
+	createMemo,
+	splitProps,
+} from "solid-js";
 
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	ComboboxBase,
-	ComboboxBaseOptions,
-	ComboboxBaseRenderProps,
+	type ComboboxBaseOptions,
+	type ComboboxBaseRenderProps,
 } from "./combobox-base";
 
 export interface ComboboxSingleSelectionOptions<T> {

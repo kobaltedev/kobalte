@@ -1,12 +1,12 @@
-import { Component, ValidComponent } from "solid-js";
+import type { Component, ValidComponent } from "solid-js";
 import {
 	FormControlDescription,
-	FormControlDescriptionCommonProps,
-	FormControlDescriptionProps,
-	FormControlDescriptionRenderProps,
+	type FormControlDescriptionCommonProps,
+	type FormControlDescriptionProps,
+	type FormControlDescriptionRenderProps,
 } from "../form-control";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
 
 export interface CheckboxDescriptionOptions
 	extends FormControlDescriptionProps {}

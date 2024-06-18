@@ -6,15 +6,15 @@
  * https://github.com/adobe/react-spectrum/blob/bfce84fee12a027d9cbc38b43e1747e3e4b4b169/packages/@react-stately/selection/src/SelectionManager.ts
  */
 
-import { Accessor } from "solid-js";
+import type { Accessor } from "solid-js";
 
-import { Collection, CollectionNode } from "../primitives";
+import type { Collection, CollectionNode } from "../primitives";
 import {
-	MultipleSelectionManager,
-	MultipleSelectionState,
+	type MultipleSelectionManager,
+	type MultipleSelectionState,
 	Selection,
-	SelectionBehavior,
-	SelectionMode,
+	type SelectionBehavior,
+	type SelectionMode,
 } from "./types";
 
 /**

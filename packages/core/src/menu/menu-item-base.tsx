@@ -15,24 +15,28 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	JSX,
-	ValidComponent,
+	type Accessor,
+	type JSX,
+	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { CollectionItemWithRef, createRegisterId } from "../primitives";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useMenuContext } from "./menu-context";
 import {
 	MenuItemContext,
-	MenuItemContextValue,
-	MenuItemDataSet,
+	type MenuItemContextValue,
+	type MenuItemDataSet,
 } from "./menu-item.context";
 import { useMenuRootContext } from "./menu-root-context";
 

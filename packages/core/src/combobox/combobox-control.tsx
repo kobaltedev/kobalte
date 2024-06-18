@@ -1,9 +1,22 @@
 import { OverrideComponentProps, isFunction, mergeRefs } from "@kobalte/utils";
-import { Accessor, JSX, ValidComponent, children, splitProps } from "solid-js";
+import {
+	type Accessor,
+	type JSX,
+	type ValidComponent,
+	children,
+	splitProps,
+} from "solid-js";
 
-import { FormControlDataSet, useFormControlContext } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { ComboboxDataSet, useComboboxContext } from "./combobox-context";
+import {
+	type FormControlDataSet,
+	useFormControlContext,
+} from "../form-control";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type ComboboxDataSet, useComboboxContext } from "./combobox-context";
 
 export interface ComboboxControlState<Option> {
 	/** The selected options. */
@@ -75,8 +88,9 @@ export function ComboboxControl<Option, T extends ValidComponent = "div">(
 					remove: (option) => context.removeOptionFromSelection(option),
 					clear: () => selectionManager().clearSelection(),
 				}}
-				children={local.children}
-			/>
+			>
+				{local.children}
+			</ComboboxControlChild>
 		</Polymorphic>
 	);
 }

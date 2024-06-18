@@ -1,4 +1,4 @@
-import { JSX, createContext, useContext } from "solid-js";
+import { type JSX, createContext, useContext } from "solid-js";
 
 export interface BreadcrumbsContextValue {
 	separator: () => string | JSX.Element;

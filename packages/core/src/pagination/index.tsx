@@ -24,18 +24,18 @@ import {
 	type PaginationNextRenderProps,
 } from "./pagination-next";
 import {
-	PaginationPrevious as Previous,
 	type PaginationPreviousCommonProps,
 	type PaginationPreviousOptions,
 	type PaginationPreviousProps,
 	type PaginationPreviousRenderProps,
+	PaginationPrevious as Previous,
 } from "./pagination-previous";
 import {
-	PaginationRoot as Root,
 	type PaginationRootCommonProps,
 	type PaginationRootOptions,
 	type PaginationRootProps,
 	type PaginationRootRenderProps,
+	PaginationRoot as Root,
 } from "./pagination-root";
 
 export type {

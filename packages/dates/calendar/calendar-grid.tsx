@@ -7,24 +7,24 @@
  */
 
 import {
-	DateDuration,
+	type DateDuration,
 	endOfMonth,
 	startOfWeek,
 	today,
 } from "@internationalized/date";
 import {
-	OverrideComponentProps,
+	type OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 } from "@kobalte/utils";
-import { JSX, createMemo, splitProps } from "solid-js";
+import { type JSX, createMemo, splitProps } from "solid-js";
 
 import { createDateFormatter } from "../i18n";
 import { Polymorphic } from "../polymorphic";
 import { useCalendarContext } from "./calendar-context";
 import {
 	CalendarGridContext,
-	CalendarGridContextValue,
+	type CalendarGridContextValue,
 } from "./calendar-grid-context";
 import { getVisibleRangeDescription } from "./utils";
 

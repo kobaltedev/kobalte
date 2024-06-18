@@ -8,15 +8,16 @@
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
-	Component,
-	ValidComponent,
+	type Component,
+	type ValidComponent,
 	createEffect,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import * as Collapsible from "../collapsible";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useAccordionItemContext } from "./accordion-item-context";
 
 export interface AccordionContentOptions {}
@@ -69,11 +70,14 @@ export function AccordionContent<T extends ValidComponent = "div">(
 		>
 			role="region"
 			aria-labelledby={itemContext.triggerId()}
-			style={{
-				"--kb-accordion-content-height": "var(--kb-collapsible-content-height)",
-				"--kb-accordion-content-width": "var(--kb-collapsible-content-width)",
-				...local.style,
-			}}
+			style={combineStyle(
+				{
+					"--kb-accordion-content-height":
+						"var(--kb-collapsible-content-height)",
+					"--kb-accordion-content-width": "var(--kb-collapsible-content-width)",
+				},
+				local.style,
+			)}
 			{...others}
 		/>
 	);

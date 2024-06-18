@@ -1,4 +1,10 @@
-import { Accessor, JSX, Setter, createContext, useContext } from "solid-js";
+import {
+	type Accessor,
+	type JSX,
+	type Setter,
+	createContext,
+	useContext,
+} from "solid-js";
 
 export interface PaginationContextValue {
 	count: Accessor<number>;

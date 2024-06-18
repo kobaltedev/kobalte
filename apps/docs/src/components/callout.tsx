@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { ComponentProps, splitProps } from "solid-js";
+import { type ComponentProps, splitProps } from "solid-js";
 
 interface CalloutProps extends ComponentProps<"div"> {
 	type: "note" | "warning";

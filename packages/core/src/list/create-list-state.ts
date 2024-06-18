@@ -7,16 +7,16 @@
  */
 
 import { access } from "@kobalte/utils";
-import { Accessor, createComputed } from "solid-js";
+import { type Accessor, createComputed } from "solid-js";
 
 import {
-	Collection,
-	CollectionBase,
-	CollectionNode,
+	type Collection,
+	type CollectionBase,
+	type CollectionNode,
 	createCollection,
 } from "../primitives";
 import {
-	CreateMultipleSelectionStateProps,
+	type CreateMultipleSelectionStateProps,
 	SelectionManager,
 	createMultipleSelectionState,
 } from "../selection";

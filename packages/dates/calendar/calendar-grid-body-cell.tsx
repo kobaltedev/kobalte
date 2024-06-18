@@ -7,16 +7,16 @@
  */
 
 import { isToday } from "@internationalized/date";
-import { OverrideComponentProps } from "@kobalte/utils";
+import type { OverrideComponentProps } from "@kobalte/utils";
 import { createMemo, splitProps } from "solid-js";
 
 import { Polymorphic } from "../polymorphic";
 import { useCalendarContext } from "./calendar-context";
 import {
 	CalendarGridBodyCellContext,
-	CalendarGridBodyCellContextValue,
+	type CalendarGridBodyCellContextValue,
 } from "./calendar-grid-body-cell-context";
-import { DateValue } from "./types";
+import type { DateValue } from "./types";
 
 export interface CalendarGridBodyCellOptions {
 	/** The date that this cell represents. */

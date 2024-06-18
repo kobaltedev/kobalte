@@ -1,16 +1,19 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
-	Component,
-	JSX,
-	ValidComponent,
+	type Component,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
 import * as Listbox from "../listbox";
-import { ListboxRootCommonProps, ListboxRootRenderProps } from "../listbox";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type {
+	ListboxRootCommonProps,
+	ListboxRootRenderProps,
+} from "../listbox";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
 export interface SelectListboxOptions<Option, OptGroup = never>

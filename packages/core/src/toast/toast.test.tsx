@@ -5,7 +5,7 @@ import { vi } from "vitest";
 import * as Toast from ".";
 import { I18nProvider } from "../i18n";
 import { toaster } from "./toaster";
-import { ShowToastOptions } from "./types";
+import type { ShowToastOptions } from "./types";
 
 describe("Toast", () => {
 	installPointerEvent();

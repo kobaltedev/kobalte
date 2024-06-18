@@ -7,10 +7,15 @@
  */
 
 import { callHandler } from "@kobalte/utils";
-import { Component, JSX, ValidComponent, splitProps } from "solid-js";
+import {
+	type Component,
+	type JSX,
+	type ValidComponent,
+	splitProps,
+} from "solid-js";
 
 import * as Button from "../button";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useCollapsibleContext } from "./collapsible-context";
 
 export interface CollapsibleTriggerOptions {}

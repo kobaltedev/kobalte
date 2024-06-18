@@ -1,7 +1,16 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { ValidComponent, createEffect, onCleanup, splitProps } from "solid-js";
+import {
+	type ValidComponent,
+	createEffect,
+	onCleanup,
+	splitProps,
+} from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { useToastContext } from "./toast-context";
 
 export interface ToastDescriptionOptions {}

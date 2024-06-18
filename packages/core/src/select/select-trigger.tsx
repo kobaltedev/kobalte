@@ -9,9 +9,9 @@
 
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
-	Component,
-	JSX,
-	ValidComponent,
+	type Component,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	onCleanup,
 	splitProps,
@@ -20,13 +20,13 @@ import {
 import * as Button from "../button";
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
-	FormControlDataSet,
+	type FormControlDataSet,
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createTypeSelect } from "../selection";
-import { SelectDataSet, useSelectContext } from "./select-context";
+import { type SelectDataSet, useSelectContext } from "./select-context";
 
 export interface SelectTriggerOptions {}
 

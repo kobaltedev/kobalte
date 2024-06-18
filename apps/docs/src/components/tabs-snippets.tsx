@@ -1,6 +1,10 @@
-import { Tabs, TabsRootProps } from "@kobalte/core/tabs";
+import { Tabs, type TabsRootProps } from "@kobalte/core/tabs";
 import { clsx } from "clsx";
-import { ComponentProps, ParentComponent, splitProps } from "solid-js";
+import {
+	type ComponentProps,
+	type ParentComponent,
+	splitProps,
+} from "solid-js";
 
 type TabsSnippetsComposite = {
 	List: typeof Tabs.List;

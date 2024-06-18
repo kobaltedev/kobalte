@@ -6,11 +6,24 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
-import { Orientation, composeEventHandlers, mergeRefs } from "@kobalte/utils";
-import { JSX, ValidComponent, createEffect, splitProps } from "solid-js";
+import {
+	type Orientation,
+	composeEventHandlers,
+	mergeRefs,
+} from "@kobalte/utils";
+import {
+	type JSX,
+	type ValidComponent,
+	createEffect,
+	splitProps,
+} from "solid-js";
 
 import { useLocale } from "../i18n";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { createSelectableCollection } from "../selection";
 import { useTabsContext } from "./tabs-context";
 import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate";

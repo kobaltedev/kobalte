@@ -7,7 +7,7 @@
  */
 
 import {
-	OverrideComponentProps,
+	type OverrideComponentProps,
 	callHandler,
 	createFocusManager,
 	getFocusableTreeWalker,
@@ -15,10 +15,10 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, splitProps } from "solid-js";
+import { type JSX, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { type AsChildProp, Polymorphic } from "../polymorphic";
 import { useDatePickerContext } from "./date-picker-context";
 
 export interface DatePickerControlOptions extends AsChildProp {}

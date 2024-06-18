@@ -34,27 +34,27 @@ import {
 	type PopoverDescriptionRenderProps,
 } from "./popover-description";
 import {
-	PopoverPortal as Portal,
 	type PopoverPortalProps,
+	PopoverPortal as Portal,
 } from "./popover-portal";
 import {
-	PopoverRoot as Root,
 	type PopoverRootOptions,
 	type PopoverRootProps,
+	PopoverRoot as Root,
 } from "./popover-root";
 import {
-	PopoverTitle as Title,
 	type PopoverTitleCommonProps,
 	type PopoverTitleOptions,
 	type PopoverTitleProps,
 	type PopoverTitleRenderProps,
+	PopoverTitle as Title,
 } from "./popover-title";
 import {
-	PopoverTrigger as Trigger,
 	type PopoverTriggerCommonProps,
 	type PopoverTriggerOptions,
 	type PopoverTriggerProps,
 	type PopoverTriggerRenderProps,
+	PopoverTrigger as Trigger,
 } from "./popover-trigger";
 
 export type {

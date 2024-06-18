@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/i18n/src/useCollator.ts
  */
 
-import { Accessor, createMemo } from "solid-js";
+import { type Accessor, createMemo } from "solid-js";
 
 import { useLocale } from "./i18n-provider";
 

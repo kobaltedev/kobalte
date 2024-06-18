@@ -1,6 +1,11 @@
-import { Accessor, Setter, createContext, useContext } from "solid-js";
+import {
+	type Accessor,
+	type Setter,
+	createContext,
+	useContext,
+} from "solid-js";
 
-import { DialogIntlTranslations } from "./dialog.intl";
+import type { DialogIntlTranslations } from "./dialog.intl";
 
 export interface DialogContextValue {
 	translations: Accessor<DialogIntlTranslations>;

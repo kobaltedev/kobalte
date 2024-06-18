@@ -1,8 +1,8 @@
-import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
+import { type OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
 
 import { CalendarRoot } from "../calendar/calendar-root";
 import { useFormControlContext } from "../form-control";
-import { AsChildProp } from "../polymorphic";
+import type { AsChildProp } from "../polymorphic";
 import { useDatePickerContext } from "./date-picker-context";
 
 export interface DatePickerCalendarOptions extends AsChildProp {}

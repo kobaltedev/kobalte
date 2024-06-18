@@ -1,13 +1,18 @@
 import {
-	JSX,
-	ValidComponent,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import { combineStyle } from "@solid-primitives/props";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { useToastContext } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
 
@@ -16,8 +21,7 @@ export interface ToastProgressFillOptions {}
 export interface ToastProgressFillCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface ToastProgressFillRenderProps
@@ -67,10 +71,12 @@ export function ToastProgressFill<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<ToastProgressFillRenderProps>
 			as="div"
-			style={{
-				"--kb-toast-progress-fill-width": `${lifeTime()}%`,
-				...local.style,
-			}}
+			style={combineStyle(
+				{
+					"--kb-toast-progress-fill-width": `${lifeTime()}%`,
+				},
+				local.style,
+			)}
 			{...others}
 		/>
 	);

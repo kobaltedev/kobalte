@@ -1,7 +1,12 @@
 import { mergeRefs } from "@kobalte/utils";
-import { JSX, ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, splitProps } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import { combineStyle } from "@solid-primitives/props";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { usePopperContext } from "./popper-context";
 
 export interface PopperPositionerOptions {}
@@ -10,8 +15,7 @@ export interface PopperPositionerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	ref: T | ((el: T) => void);
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface PopperPositionerRenderProps
@@ -42,13 +46,15 @@ export function PopperPositioner<T extends ValidComponent = "div">(
 			as="div"
 			ref={mergeRefs(context.setPositionerRef, local.ref)}
 			data-popper-positioner=""
-			style={{
-				position: "absolute",
-				top: 0,
-				left: 0,
-				"min-width": "max-content",
-				...local.style,
-			}}
+			style={combineStyle(
+				{
+					position: "absolute",
+					top: 0,
+					left: 0,
+					"min-width": "max-content",
+				},
+				local.style,
+			)}
 			{...others}
 		/>
 	);

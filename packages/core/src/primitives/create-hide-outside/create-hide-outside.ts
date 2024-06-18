@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/src/ariaHideOutside.ts
  */
 
-import { MaybeAccessor, access } from "@kobalte/utils";
+import { type MaybeAccessor, access } from "@kobalte/utils";
 import { createEffect, onCleanup } from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";

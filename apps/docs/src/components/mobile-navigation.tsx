@@ -3,13 +3,13 @@ import { createDisclosureState } from "@kobalte/core/primitives/create-disclosur
 import { Separator } from "@kobalte/core/separator";
 import { useIsRouting, useMatch } from "@solidjs/router";
 import { clsx } from "clsx";
-import { ComponentProps, createComputed, splitProps } from "solid-js";
+import { type ComponentProps, createComputed, splitProps } from "solid-js";
 
 import {
 	LATEST_CORE_CHANGELOG_URL,
 	LATEST_CORE_VERSION_NAME,
 } from "../VERSIONS";
-import { NavSection } from "../model/navigation";
+import type { NavSection } from "../model/navigation";
 import { CrossIcon, HamburgerMenuIcon } from "./icons";
 import { Navigation } from "./navigation";
 

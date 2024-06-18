@@ -1,10 +1,10 @@
 import {
 	FormControlDescription as Description,
+	FormControlErrorMessage as ErrorMessage,
 	type FormControlDescriptionCommonProps as SelectDescriptionCommonProps,
 	type FormControlDescriptionOptions as SelectDescriptionOptions,
 	type FormControlDescriptionProps as SelectDescriptionProps,
 	type FormControlDescriptionRenderProps as SelectDescriptionRenderProps,
-	FormControlErrorMessage as ErrorMessage,
 	type FormControlErrorMessageCommonProps as SelectErrorMessageCommonProps,
 	type FormControlErrorMessageOptions as SelectErrorMessageOptions,
 	type FormControlErrorMessageProps as SelectErrorMessageProps,
@@ -15,6 +15,7 @@ import {
 	ItemDescription,
 	ItemIndicator,
 	ItemLabel,
+	Section,
 	type ListboxItemCommonProps as SelectItemCommonProps,
 	type ListboxItemDescriptionCommonProps as SelectItemDescriptionCommonProps,
 	type ListboxItemDescriptionOptions as SelectItemDescriptionOptions,
@@ -32,7 +33,6 @@ import {
 	type ListboxItemProps as SelectItemProps,
 	type ListboxItemRenderProps as SelectItemRenderProps,
 	type ListboxSectionProps as SelectSectionProps,
-	Section,
 } from "../listbox";
 import {
 	Arrow,
@@ -41,9 +41,9 @@ import {
 	type PopperArrowProps as SelectArrowProps,
 	type PopperArrowRenderProps as SelectArrowRenderProps,
 } from "../popper";
-import {
-	type SelectBaseItemComponentProps as SelectRootItemComponentProps,
-	type SelectBaseSectionComponentProps as SelectRootSectionComponentProps,
+import type {
+	SelectBaseItemComponentProps as SelectRootItemComponentProps,
+	SelectBaseSectionComponentProps as SelectRootSectionComponentProps,
 } from "./select-base";
 import {
 	SelectContent as Content,
@@ -82,8 +82,8 @@ import {
 	type SelectPortalProps,
 } from "./select-portal";
 import {
-	type SelectMultipleSelectionOptions,
 	SelectRoot as Root,
+	type SelectMultipleSelectionOptions,
 	type SelectRootCommonProps,
 	type SelectRootOptions,
 	type SelectRootProps,
@@ -91,18 +91,18 @@ import {
 	type SelectSingleSelectionOptions,
 } from "./select-root";
 import {
-	SelectTrigger as Trigger,
 	type SelectTriggerCommonProps,
 	type SelectTriggerOptions,
 	type SelectTriggerProps,
 	type SelectTriggerRenderProps,
+	SelectTrigger as Trigger,
 } from "./select-trigger";
 import {
-	SelectValue as Value,
 	type SelectValueCommonProps,
 	type SelectValueOptions,
 	type SelectValueProps,
 	type SelectValueRenderProps,
+	SelectValue as Value,
 } from "./select-value";
 
 export type {

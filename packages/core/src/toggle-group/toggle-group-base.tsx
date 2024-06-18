@@ -1,27 +1,31 @@
 import {
-	Orientation,
+	type Orientation,
 	composeEventHandlers,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	JSX,
-	ValidComponent,
+	type JSX,
+	type ValidComponent,
 	createSignal,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 import { useLocale } from "../i18n";
 import { createListState } from "../list";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { CollectionItemWithRef } from "../primitives";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import type { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
-import { SelectionMode, createSelectableCollection } from "../selection";
+import { type SelectionMode, createSelectableCollection } from "../selection";
 import { TabsKeyboardDelegate } from "../tabs/tabs-keyboard-delegate";
 import {
 	ToggleGroupContext,
-	ToggleGroupContextValue,
+	type ToggleGroupContextValue,
 } from "./toggle-group-context";
 
 export interface ToggleGroupBaseOptions {

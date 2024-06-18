@@ -1,5 +1,5 @@
 import { accessWith } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal, untrack } from "solid-js";
+import { type Accessor, createMemo, createSignal, untrack } from "solid-js";
 
 export interface CreateControllableSignalProps<T> {
 	/** The value to be used, in controlled mode. */

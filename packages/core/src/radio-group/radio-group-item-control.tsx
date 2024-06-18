@@ -1,9 +1,13 @@
 import { EventKey, callHandler, mergeDefaultProps } from "@kobalte/utils";
-import { JSX, ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, splitProps } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
-	RadioGroupItemDataSet,
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import {
+	type RadioGroupItemDataSet,
 	useRadioGroupItemContext,
 } from "./radio-group-item-context";
 

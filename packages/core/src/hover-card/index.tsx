@@ -13,20 +13,20 @@ import {
 	type HoverCardContentRenderProps,
 } from "./hover-card-content";
 import {
-	HoverCardPortal as Portal,
 	type HoverCardPortalProps,
+	HoverCardPortal as Portal,
 } from "./hover-card-portal";
 import {
-	HoverCardRoot as Root,
 	type HoverCardRootOptions,
 	type HoverCardRootProps,
+	HoverCardRoot as Root,
 } from "./hover-card-root";
 import {
-	HoverCardTrigger as Trigger,
 	type HoverCardTriggerCommonProps,
 	type HoverCardTriggerOptions,
 	type HoverCardTriggerProps,
 	type HoverCardTriggerRenderProps,
+	HoverCardTrigger as Trigger,
 } from "./hover-card-trigger";
 
 export type {

@@ -1,8 +1,8 @@
 import { callHandler } from "@kobalte/utils";
 import {
-	Component,
-	JSX,
-	ValidComponent,
+	type Component,
+	type JSX,
+	type ValidComponent,
 	batch,
 	createEffect,
 	createSignal,
@@ -14,13 +14,13 @@ import {
 
 import {
 	MenuContent,
-	MenuContentCommonProps,
-	MenuContentOptions,
-	MenuContentRenderProps,
+	type MenuContentCommonProps,
+	type MenuContentOptions,
+	type MenuContentRenderProps,
 } from "../menu";
 import { useMenuRootContext } from "../menu/menu-root-context";
 import { useMenubarContext } from "../menubar/menubar-context";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export type Motion = "to-start" | "to-end" | "from-start" | "from-end";

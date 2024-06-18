@@ -1,8 +1,8 @@
 import { useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
-import { ComponentProps, For, Match, Switch, splitProps } from "solid-js";
+import { type ComponentProps, For, Match, Switch, splitProps } from "solid-js";
 
-import { NavSection } from "../model/navigation";
+import type { NavSection } from "../model/navigation";
 
 interface NavigationProps extends ComponentProps<"nav"> {
 	sections: NavSection[];

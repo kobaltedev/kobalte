@@ -1,13 +1,17 @@
-import { JSX, ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, splitProps } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { SliderDataSet, useSliderContext } from "./slider-context";
+import { combineStyle } from "@solid-primitives/props";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type SliderDataSet, useSliderContext } from "./slider-context";
 
 export interface SliderFillOptions {}
 
 export interface SliderFillCommonProps<T extends HTMLElement = HTMLElement> {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface SliderFillRenderProps
@@ -45,11 +49,13 @@ export function SliderFill<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<SliderFillRenderProps>
 			as="div"
-			style={{
-				[context.startEdge()]: `${offsetStart()}%`,
-				[context.endEdge()]: `${offsetEnd()}%`,
-				...local.style,
-			}}
+			style={combineStyle(
+				{
+					[context.startEdge()]: `${offsetStart()}%`,
+					[context.endEdge()]: `${offsetEnd()}%`,
+				},
+				local.style,
+			)}
 			{...context.dataset()}
 			{...others}
 		/>

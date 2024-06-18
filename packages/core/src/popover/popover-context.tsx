@@ -1,6 +1,6 @@
-import { Accessor, createContext, useContext } from "solid-js";
+import { type Accessor, createContext, useContext } from "solid-js";
 
-import { PopoverIntlTranslations } from "./popover.intl";
+import type { PopoverIntlTranslations } from "./popover.intl";
 
 export interface PopoverDataSet {
 	"data-expanded": string | undefined;

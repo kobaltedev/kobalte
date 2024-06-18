@@ -12,9 +12,9 @@ import {
 	mergeDefaultProps,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	JSX,
-	ValidComponent,
+	type Accessor,
+	type JSX,
+	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
@@ -22,13 +22,17 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { useRadioGroupContext } from "./radio-group-context";
 import {
 	RadioGroupItemContext,
-	RadioGroupItemContextValue,
-	RadioGroupItemDataSet,
+	type RadioGroupItemContextValue,
+	type RadioGroupItemDataSet,
 } from "./radio-group-item-context";
 
 export interface RadioGroupItemOptions {

@@ -13,18 +13,25 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	JSX,
-	ValidComponent,
+	type JSX,
+	type ValidComponent,
 	createSignal,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
 import { createListState, createSelectableList } from "../list";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { CollectionItemWithRef } from "../primitives";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import type { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
-import { AccordionContext, AccordionContextValue } from "./accordion-context";
+import {
+	AccordionContext,
+	type AccordionContextValue,
+} from "./accordion-context";
 
 export interface AccordionRootOptions {
 	/** The controlled value of the accordion item(s) to expand. */

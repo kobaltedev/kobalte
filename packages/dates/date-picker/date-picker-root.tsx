@@ -7,24 +7,24 @@
  */
 
 import {
-	Calendar,
-	DateDuration,
+	type Calendar,
+	type DateDuration,
 	DateFormatter,
 	toCalendarDate,
 	toCalendarDateTime,
 } from "@internationalized/date";
 import {
-	OverrideComponentProps,
-	RangeValue,
-	ValidationState,
+	type OverrideComponentProps,
+	type RangeValue,
+	type ValidationState,
 	access,
 	createFocusManager,
 	createGenerateId,
 	mergeDefaultProps,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	JSX,
+	type Accessor,
+	type JSX,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -34,12 +34,12 @@ import {
 	splitProps,
 } from "solid-js";
 
-import {
+import type {
 	CalendarMultipleSelectionOptions,
 	CalendarRangeSelectionOptions,
 	CalendarSingleSelectionOptions,
 } from "../calendar/calendar-root";
-import { DateValue, TimeValue } from "../calendar/types";
+import type { DateValue, TimeValue } from "../calendar/types";
 import {
 	asArrayValue,
 	asSingleValue,
@@ -53,8 +53,8 @@ import {
 	createFormControl,
 } from "../form-control";
 import { getReadingDirection, useLocale } from "../i18n";
-import { AsChildProp, Polymorphic } from "../polymorphic";
-import { Popper, PopperRootOptions } from "../popper";
+import { type AsChildProp, Polymorphic } from "../polymorphic";
+import { Popper, type PopperRootOptions } from "../popper";
 import {
 	createControllableSignal,
 	createDisclosureState,
@@ -64,14 +64,14 @@ import {
 } from "../primitives";
 import {
 	DatePickerContext,
-	DatePickerContextValue,
-	DatePickerDataSet,
+	type DatePickerContextValue,
+	type DatePickerDataSet,
 } from "./date-picker-context";
 import {
 	DATE_PICKER_INTL_MESSAGES,
-	DatePickerIntlTranslations,
+	type DatePickerIntlTranslations,
 } from "./date-picker.intl";
-import {
+import type {
 	DateFieldGranularity,
 	DateFieldHourCycle,
 	DateFieldMaxGranularity,

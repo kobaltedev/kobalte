@@ -1,19 +1,23 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
-	Accessor,
-	Component,
-	JSX,
-	Setter,
-	ValidComponent,
+	type Accessor,
+	type Component,
+	type JSX,
+	type Setter,
+	type ValidComponent,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import {
 	PaginationContext,
-	PaginationContextValue,
+	type PaginationContextValue,
 } from "./pagination-context";
 
 export interface PaginationRootOptions {

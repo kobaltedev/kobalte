@@ -8,23 +8,24 @@
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
-	Component,
-	JSX,
+	type Component,
+	type JSX,
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import {
 	DismissableLayer,
-	DismissableLayerRenderProps,
+	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
-import { PointerDownOutsideEvent } from "../primitives";
-import { TooltipDataSet, useTooltipContext } from "./tooltip-context";
+import type { PointerDownOutsideEvent } from "../primitives";
+import { type TooltipDataSet, useTooltipContext } from "./tooltip-context";
 
 export interface TooltipContentOptions {
 	/**
@@ -45,9 +46,7 @@ export interface TooltipContentCommonProps<
 > {
 	id: string;
 	ref: T | ((el: T) => void);
-
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface TooltipContentRenderProps
@@ -93,12 +92,14 @@ export function TooltipContent<T extends ValidComponent = "div">(
 					}, local.ref)}
 					role="tooltip"
 					disableOutsidePointerEvents={false}
-					style={{
-						"--kb-tooltip-content-transform-origin":
-							"var(--kb-popper-content-transform-origin)",
-						position: "relative",
-						...local.style,
-					}}
+					style={combineStyle(
+						{
+							"--kb-tooltip-content-transform-origin":
+								"var(--kb-popper-content-transform-origin)",
+							position: "relative",
+						},
+						local.style,
+					)}
 					onFocusOutside={(e) => e.preventDefault()}
 					onDismiss={() => context.hideTooltip(true)}
 					{...context.dataset()}

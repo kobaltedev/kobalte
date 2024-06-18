@@ -6,10 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/38a57d3360268fb0cb55c6b42b9a5f6f13bb57d6/packages/@react-aria/breadcrumbs/src/useBreadcrumbItem.ts
  */
 
-import { Component, ValidComponent, splitProps } from "solid-js";
+import { type Component, type ValidComponent, splitProps } from "solid-js";
 
 import * as Link from "../link";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 
 export interface BreadcrumbsLinkOptions {
 	/** Whether the breadcrumb link represents the current page. */

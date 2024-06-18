@@ -7,16 +7,16 @@
  */
 
 import {
-	Orientation,
+	type Orientation,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
 	scrollIntoViewport,
 } from "@kobalte/utils";
 import {
-	Component,
-	JSX,
-	ValidComponent,
+	type Component,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	createMemo,
 	on,
@@ -26,11 +26,11 @@ import {
 
 import * as Button from "../button";
 import { useLocale } from "../i18n/i18n-provider";
-import { Direction } from "../i18n/utils";
+import type { Direction } from "../i18n/utils";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createTagName } from "../primitives/create-tag-name";
-import { MenuDataSet, useMenuContext } from "./menu-context";
+import { type MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 
 export interface MenuTriggerOptions {}
@@ -64,8 +64,8 @@ export const MENUBAR_KEYS = {
 				? "ArrowRight"
 				: "ArrowDown"
 			: orientation === "horizontal"
-			  ? "ArrowLeft"
-			  : "ArrowUp",
+				? "ArrowLeft"
+				: "ArrowUp",
 	previous: (dir: Direction, orientation: Orientation) =>
 		MENUBAR_KEYS.next(dir === "ltr" ? "rtl" : "ltr", orientation),
 };
@@ -272,7 +272,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 			tabIndex={
 				optionalMenubarContext !== undefined
 					? optionalMenubarContext.value() === key() ||
-					  optionalMenubarContext.lastValue() === key()
+						optionalMenubarContext.lastValue() === key()
 						? 0
 						: -1
 					: undefined

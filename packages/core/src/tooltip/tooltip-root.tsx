@@ -22,8 +22,8 @@ import {
 	mergeDefaultProps,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	ParentProps,
+	type Accessor,
+	type ParentProps,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -34,13 +34,13 @@ import {
 import { isServer } from "solid-js/web";
 
 import createPresence from "solid-presence";
-import { Popper, PopperRootOptions } from "../popper";
-import { Placement } from "../popper/utils";
+import { Popper, type PopperRootOptions } from "../popper";
+import type { Placement } from "../popper/utils";
 import { createDisclosureState, createRegisterId } from "../primitives";
 import {
 	TooltipContext,
-	TooltipContextValue,
-	TooltipDataSet,
+	type TooltipContextValue,
+	type TooltipDataSet,
 } from "./tooltip-context";
 import { getTooltipSafeArea } from "./utils";
 

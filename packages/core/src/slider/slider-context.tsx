@@ -1,9 +1,14 @@
-import { Accessor, Setter, createContext, useContext } from "solid-js";
+import {
+	type Accessor,
+	type Setter,
+	createContext,
+	useContext,
+} from "solid-js";
 
-import { FormControlDataSet } from "../form-control";
-import { CollectionItemWithRef } from "../primitives";
-import { SliderState } from "./create-slider-state";
-import { GetValueLabelParams } from "./slider-root";
+import type { FormControlDataSet } from "../form-control";
+import type { CollectionItemWithRef } from "../primitives";
+import type { SliderState } from "./create-slider-state";
+import type { GetValueLabelParams } from "./slider-root";
 
 export interface SliderDataSet extends FormControlDataSet {
 	"data-orientation": "vertical" | "horizontal" | undefined;

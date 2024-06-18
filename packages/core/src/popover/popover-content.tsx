@@ -6,30 +6,31 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Component,
-	JSX,
+	type Component,
+	type JSX,
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import createPreventScroll from "solid-prevent-scroll";
 import {
 	DismissableLayer,
-	DismissableLayerRenderProps,
+	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
 import {
-	FocusOutsideEvent,
-	InteractOutsideEvent,
-	PointerDownOutsideEvent,
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
 } from "../primitives";
-import { PopoverDataSet, usePopoverContext } from "./popover-context";
+import { type PopoverDataSet, usePopoverContext } from "./popover-context";
 
 export interface PopoverContentOptions {
 	/**
@@ -74,8 +75,7 @@ export interface PopoverContentCommonProps<
 > {
 	id: string;
 	ref: T | ((el: T) => void);
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface PopoverContentRenderProps
@@ -236,12 +236,14 @@ export function PopoverContent<T extends ValidComponent = "div">(
 					tabIndex={-1}
 					disableOutsidePointerEvents={context.isOpen() && context.isModal()}
 					excludedElements={[context.triggerRef]}
-					style={{
-						"--kb-popover-content-transform-origin":
-							"var(--kb-popper-content-transform-origin)",
-						position: "relative",
-						...local.style,
-					}}
+					style={combineStyle(
+						{
+							"--kb-popover-content-transform-origin":
+								"var(--kb-popper-content-transform-origin)",
+							position: "relative",
+						},
+						local.style,
+					)}
 					aria-labelledby={context.titleId()}
 					aria-describedby={context.descriptionId()}
 					onPointerDownOutside={onPointerDownOutside}

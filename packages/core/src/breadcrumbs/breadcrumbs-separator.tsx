@@ -1,7 +1,11 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 
-import { JSX, ValidComponent } from "solid-js";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import type { JSX, ValidComponent } from "solid-js";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { useBreadcrumbsContext } from "./breadcrumbs-context";
 
 export interface BreadcrumbsSeparatorOptions {}
@@ -33,9 +37,10 @@ export function BreadcrumbsSeparator<T extends ValidComponent = "span">(
 	return (
 		<Polymorphic<BreadcrumbsSeparatorRenderProps>
 			as="span"
-			children={context.separator()}
 			aria-hidden="true"
 			{...(props as BreadcrumbsSeparatorProps)}
-		/>
+		>
+			{context.separator()}
+		</Polymorphic>
 	);
 }

@@ -1,29 +1,29 @@
 import {
-	OverrideComponentProps,
+	type OverrideComponentProps,
 	contains,
 	focusWithoutScrolling,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, Show, createEffect, onCleanup, splitProps } from "solid-js";
+import { type JSX, Show, createEffect, onCleanup, splitProps } from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import createPreventScroll from "solid-prevent-scroll";
 import { DismissableLayer } from "../dismissable-layer";
 import { useFormControlContext } from "../form-control";
-import { AsChildProp } from "../polymorphic";
+import type { AsChildProp } from "../polymorphic";
 import { Popper } from "../popper";
 import {
-	FocusOutsideEvent,
-	InteractOutsideEvent,
-	PointerDownOutsideEvent,
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
 } from "../primitives";
 import { useDatePickerContext } from "./date-picker-context";
 
 export interface DatePickerContentOptions extends AsChildProp {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 
 	/**
 	 * Event handler called when focus moves to the trigger after closing.
@@ -223,12 +223,14 @@ export function DatePickerContent(props: DatePickerContentProps) {
 					tabIndex={-1}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.controlRef]}
-					style={{
-						"--kb-date-picker-content-transform-origin":
-							"var(--kb-popper-content-transform-origin)",
-						position: "relative",
-						...local.style,
-					}}
+					style={combineStyle(
+						{
+							"--kb-date-picker-content-transform-origin":
+								"var(--kb-popper-content-transform-origin)",
+							position: "relative",
+						},
+						local.style,
+					)}
 					aria-labelledby={ariaLabelledBy()}
 					onPointerDownOutside={onPointerDownOutside}
 					onFocusOutside={onFocusOutside}

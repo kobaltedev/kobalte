@@ -7,10 +7,10 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import { ValidationState, callHandler } from "@kobalte/utils";
+import { type ValidationState, callHandler } from "@kobalte/utils";
 import {
-	JSX,
-	ValidComponent,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	createMemo,
 	on,
@@ -18,10 +18,14 @@ import {
 } from "solid-js";
 
 import { announce, clearAnnouncer } from "../live-announcer";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import {
 	SPIN_BUTTON_INTL_TRANSLATIONS,
-	SpinButtonIntlTranslations,
+	type SpinButtonIntlTranslations,
 } from "./spin-button.intl";
 
 export interface SpinButtonRootOptions {

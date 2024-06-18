@@ -7,11 +7,15 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import { ValidComponent, createEffect, onCleanup } from "solid-js";
+import { type ValidComponent, createEffect, onCleanup } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
-	ListboxItemDataSet,
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import {
+	type ListboxItemDataSet,
 	useListboxItemContext,
 } from "./listbox-item-context";
 
