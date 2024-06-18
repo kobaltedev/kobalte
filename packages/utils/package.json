@@ -35,13 +35,16 @@
         "default": "./dist/index.js"
       },
       "require": "./dist/index.cjs"
-    }
+    },
+    "./src/*": "./src/*"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "source": "src/index.ts",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "build": "tsup",
